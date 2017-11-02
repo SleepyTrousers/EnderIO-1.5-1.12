@@ -24,7 +24,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Compatibility: Glass 2 Glass" required="false">
     <crafting>
       <shapeless>
-        <item name="enderio:blockFusedQuartz:1"/>
+        <item name="enderio:block_fused_quartz:1"/>
       </shapeless>
       <output name="minecraft:glass"/>
     </crafting>
@@ -240,14 +240,14 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Iron Dust, Smelting" required="true">
     <smelting>
-      <input name="enderio:itemPowderIngot:1"/>
+      <input name="enderio:item_material:1"/>
       <output name="minecraft:iron_ingot"/>
     </smelting>
   </recipe>
 
   <recipe name="Gold Dust, Smelting" required="true">
     <smelting>
-      <input name="enderio:itemPowderIngot:2"/>
+      <input name="enderio:item_material:2"/>
       <output name="minecraft:gold_ingot"/>
     </smelting>
   </recipe>
@@ -269,7 +269,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
       </grid>
-      <output name="enderio:blockDarkIronBars" amount="16"/>
+      <output name="enderio:block_dark_iron_bars" amount="16"/>
     </crafting>
   </recipe>
 
@@ -408,20 +408,20 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <level maxlevel="2"/>
       <grid>
-        <item name="DARK_STEEL"/><item name="enderio:blockDarkIronBars"/><item name="DARK_STEEL"/>
-        <item name="enderio:blockDarkIronBars"/><item name="oredict:obsidian"/><item name="enderio:blockDarkIronBars"/>
-        <item name="DARK_STEEL"/><item name="enderio:blockDarkIronBars"/><item name="DARK_STEEL"/>
+        <item name="DARK_STEEL"/><item name="enderio:block_dark_iron_bars"/><item name="DARK_STEEL"/>
+        <item name="enderio:block_dark_iron_bars"/><item name="oredict:obsidian"/><item name="enderio:block_dark_iron_bars"/>
+        <item name="DARK_STEEL"/><item name="enderio:block_dark_iron_bars"/><item name="DARK_STEEL"/>
       </grid>
-      <output name="enderio:blockReinforcedObsidian"/>
+      <output name="enderio:block_reinforced_obsidian"/>
     </crafting>
     <crafting>
       <level minlevel="3"/>
       <grid>
-        <item name="DARK_STEEL_BLOCK"/><item name="enderio:blockDarkIronBars"/><item name="DARK_STEEL_BLOCK"/>
-        <item name="enderio:blockDarkIronBars"/><item name="oredict:obsidian"/><item name="enderio:blockDarkIronBars"/>
-        <item name="DARK_STEEL_BLOCK"/><item name="enderio:blockDarkIronBars"/><item name="DARK_STEEL_BLOCK"/>
+        <item name="DARK_STEEL_BLOCK"/><item name="enderio:block_dark_iron_bars"/><item name="DARK_STEEL_BLOCK"/>
+        <item name="enderio:block_dark_iron_bars"/><item name="oredict:obsidian"/><item name="enderio:block_dark_iron_bars"/>
+        <item name="DARK_STEEL_BLOCK"/><item name="enderio:block_dark_iron_bars"/><item name="DARK_STEEL_BLOCK"/>
       </grid>
-      <output name="enderio:blockReinforcedObsidian"/>
+      <output name="enderio:block_reinforced_obsidian"/>
     </crafting>
   </recipe>
 
@@ -432,18 +432,18 @@ XML editor will display that as tooltips when editing this file.
         <item/><item name="DARK_STEEL"/><item/>
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
       </grid>
-      <output name="enderio:blockDarkSteelAnvil"/>
+      <output name="enderio:block_dark_steel_anvil"/>
     </crafting>
   </recipe>
 
   <recipe name="Dark Steel Ladder" required="true">
     <crafting>
       <grid size="1x3">
-        <item name="enderio:blockDarkIronBars"/>
-        <item name="enderio:blockDarkIronBars"/>
-        <item name="enderio:blockDarkIronBars"/>
+        <item name="enderio:block_dark_iron_bars"/>
+        <item name="enderio:block_dark_iron_bars"/>
+        <item name="enderio:block_dark_iron_bars"/>
       </grid>
-      <output name="enderio:blockDarkSteelLadder" amount="12"/>
+      <output name="enderio:block_dark_steel_ladder" amount="12"/>
     </crafting>
   </recipe>
 
@@ -453,7 +453,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
       </grid>
-      <output name="enderio:blockDarkSteelTrapdoor" amount="1"/>
+      <output name="enderio:block_dark_steel_trapdoor" amount="1"/>
     </crafting>
   </recipe>
 
@@ -469,34 +469,34 @@ XML editor will display that as tooltips when editing this file.
       <shapeless>
         <item name="minecraft:bowl"/><item name="minecraft:milk_bucket"/><item name="cropWheat"/><item name="nuggetEnderpearl"/>
       </shapeless>
-      <output name="enderio:itemEnderFood:0"/>
+      <output name="enderio:item_ender_food:0"/>
     </crafting>
   </recipe>
 
   <recipe name="Copper" required="false">
     <smelting>
-      <input name="enderio:itemPowderIngot:3"/>
+      <input name="enderio:item_material:3"/>
       <output name="ingotCopper"/>
     </smelting>
   </recipe>
 
   <recipe name="Tin" required="false">
     <smelting>
-      <input name="enderio:itemPowderIngot:4"/>
+      <input name="enderio:item_material:4"/>
       <output name="ingotTin"/>
     </smelting>
   </recipe>
 
   <recipe name="Ardite" required="false">
     <smelting>
-      <input name="enderio:itemPowderIngot:9"/>
+      <input name="enderio:item_material:9"/>
       <output name="ingotArdite"/>
     </smelting>
   </recipe>
 
   <recipe name="Cobalt" required="false">
     <smelting>
-      <input name="enderio:itemPowderIngot:10"/>
+      <input name="enderio:item_material:10"/>
       <output name="ingotCobalt"/>
     </smelting>
   </recipe>
@@ -504,7 +504,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Obsidian Smelting" required="false">
     <smelting vanilla="false" tinkers="true">
       <!-- Note: With Dark Steel Balls, one obsidian block will sagmill to 6 powders, so we need to make them smelt that way to avoid duping. -->
-      <input name="enderio:itemPowderIngot:7" amount="6"/>
+      <input name="enderio:item_material:7" amount="6"/>
       <output name="item:obsidian"/>
     </smelting>
   </recipe>
@@ -527,7 +527,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="CHASSIPARTS"/><item /><item name="CHASSIPARTS"/>
         <item /><item name="CHASSIPARTS"/><item />
       </grid>
-      <output name="enderio:blockDecoration1:0" amount="1"/>
+      <output name="enderio:block_decoration1:0" amount="1"/>
     </crafting>
   </recipe>
 
@@ -535,10 +535,10 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item /><item name="ingotIron"/><item />
-        <item name="ingotIron"/><item name="enderio:blockDecoration1:0"/><item name="ingotIron"/>
+        <item name="ingotIron"/><item name="enderio:block_decoration1:0"/><item name="ingotIron"/>
         <item /><item name="ingotIron"/><item />
       </grid>
-      <output name="enderio:blockDecoration1:1" amount="1"/>
+      <output name="enderio:block_decoration1:1" amount="1"/>
     </crafting>
   </recipe>
 
@@ -549,7 +549,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="ingotIron"/><item /><item name="ingotIron"/>
         <item name="CHASSIPARTS"/><item name="ingotIron"/><item name="CHASSIPARTS"/>
       </grid>
-      <output name="enderio:blockDecoration1:1" amount="1"/>
+      <output name="enderio:block_decoration1:1" amount="1"/>
     </crafting>
   </recipe>
 
@@ -560,61 +560,61 @@ XML editor will display that as tooltips when editing this file.
         <item name="CHASSIPARTS"/><item /><item name="CHASSIPARTS"/>
         <item name="ingotIron"/><item name="CHASSIPARTS"/><item name="ingotIron"/>
       </grid>
-      <output name="enderio:blockDecoration1:1" amount="1"/>
+      <output name="enderio:block_decoration1:1" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/1 d" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:6"/>
+        <item name="enderio:block_decoration1:6"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:1" amount="1"/>
+      <output name="enderio:block_decoration1:1" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/2" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:1"/>
+        <item name="enderio:block_decoration1:1"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:2" amount="1"/>
+      <output name="enderio:block_decoration1:2" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/3" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:2"/>
+        <item name="enderio:block_decoration1:2"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:3" amount="1"/>
+      <output name="enderio:block_decoration1:3" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/4" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:3"/>
+        <item name="enderio:block_decoration1:3"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:4" amount="1"/>
+      <output name="enderio:block_decoration1:4" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/5" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:4"/>
+        <item name="enderio:block_decoration1:4"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:5" amount="1"/>
+      <output name="enderio:block_decoration1:5" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/6" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:5"/>
+        <item name="enderio:block_decoration1:5"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:6" amount="1"/>
+      <output name="enderio:block_decoration1:6" amount="1"/>
     </crafting>
   </recipe>
 
@@ -622,10 +622,10 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item /><item name="SOULARIUM"/><item />
-        <item name="SOULARIUM"/><item name="enderio:blockDecoration1:0"/><item name="SOULARIUM"/>
+        <item name="SOULARIUM"/><item name="enderio:block_decoration1:0"/><item name="SOULARIUM"/>
         <item /><item name="SOULARIUM"/><item />
       </grid>
-      <output name="enderio:blockDecoration1:7" amount="1"/>
+      <output name="enderio:block_decoration1:7" amount="1"/>
     </crafting>
   </recipe>
 
@@ -636,7 +636,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="SOULARIUM"/><item /><item name="SOULARIUM"/>
         <item name="CHASSIPARTS"/><item name="SOULARIUM"/><item name="CHASSIPARTS"/>
       </grid>
-      <output name="enderio:blockDecoration1:7" amount="1"/>
+      <output name="enderio:block_decoration1:7" amount="1"/>
     </crafting>
   </recipe>
 
@@ -647,79 +647,79 @@ XML editor will display that as tooltips when editing this file.
         <item name="CHASSIPARTS"/><item /><item name="CHASSIPARTS"/>
         <item name="SOULARIUM"/><item name="CHASSIPARTS"/><item name="SOULARIUM"/>
       </grid>
-      <output name="enderio:blockDecoration1:7" amount="1"/>
+      <output name="enderio:block_decoration1:7" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/7 d" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:12"/>
+        <item name="enderio:block_decoration1:12"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:7" amount="1"/>
+      <output name="enderio:block_decoration1:7" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/8" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:7"/>
+        <item name="enderio:block_decoration1:7"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:8" amount="1"/>
+      <output name="enderio:block_decoration1:8" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/9" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:8"/>
+        <item name="enderio:block_decoration1:8"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:9" amount="1"/>
+      <output name="enderio:block_decoration1:9" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/10" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:9"/>
+        <item name="enderio:block_decoration1:9"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:10" amount="1"/>
+      <output name="enderio:block_decoration1:10" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/11" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:10"/>
+        <item name="enderio:block_decoration1:10"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:11" amount="1"/>
+      <output name="enderio:block_decoration1:11" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/12" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:11"/>
+        <item name="enderio:block_decoration1:11"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:12" amount="1"/>
+      <output name="enderio:block_decoration1:12" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/13" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:1"/><item name="oredict:dyeRed"/>
+        <item name="enderio:block_decoration1:1"/><item name="oredict:dyeRed"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:13" amount="1"/>
+      <output name="enderio:block_decoration1:13" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 1/1 f" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:13"/><item name="minecraft:water_bucket"/>
+        <item name="enderio:block_decoration1:13"/><item name="minecraft:water_bucket"/>
       </shapeless>
-      <output name="enderio:blockDecoration1:1" amount="1"/>
+      <output name="enderio:block_decoration1:1" amount="1"/>
     </crafting>
   </recipe>
 
@@ -727,10 +727,10 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item /><item name="barsIron"/><item />
-        <item name="barsIron"/><item name="enderio:blockDecoration1:0"/><item name="barsIron"/>
+        <item name="barsIron"/><item name="enderio:block_decoration1:0"/><item name="barsIron"/>
         <item /><item name="barsIron"/><item />
       </grid>
-      <output name="enderio:blockDecoration1:14" amount="1"/>
+      <output name="enderio:block_decoration1:14" amount="1"/>
     </crafting>
   </recipe>
 
@@ -741,7 +741,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="barsIron"/><item /><item name="barsIron"/>
         <item name="CHASSIPARTS"/><item name="barsIron"/><item name="CHASSIPARTS"/>
       </grid>
-      <output name="enderio:blockDecoration1:14" amount="1"/>
+      <output name="enderio:block_decoration1:14" amount="1"/>
     </crafting>
   </recipe>
 
@@ -752,7 +752,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="CHASSIPARTS"/><item /><item name="CHASSIPARTS"/>
         <item name="barsIron"/><item name="CHASSIPARTS"/><item name="barsIron"/>
       </grid>
-      <output name="enderio:blockDecoration1:14" amount="1"/>
+      <output name="enderio:block_decoration1:14" amount="1"/>
     </crafting>
   </recipe>
 
@@ -760,10 +760,10 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item /><item name="FUSED_GLASS"/><item />
-        <item name="FUSED_GLASS"/><item name="enderio:blockDecoration1:0"/><item name="FUSED_GLASS"/>
+        <item name="FUSED_GLASS"/><item name="enderio:block_decoration1:0"/><item name="FUSED_GLASS"/>
         <item /><item name="FUSED_GLASS"/><item />
       </grid>
-      <output name="enderio:blockDecoration1:15" amount="1"/>
+      <output name="enderio:block_decoration1:15" amount="1"/>
     </crafting>
   </recipe>
 
@@ -774,7 +774,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="FUSED_GLASS"/><item /><item name="FUSED_GLASS"/>
         <item name="CHASSIPARTS"/><item name="FUSED_GLASS"/><item name="CHASSIPARTS"/>
       </grid>
-      <output name="enderio:blockDecoration1:15" amount="1"/>
+      <output name="enderio:block_decoration1:15" amount="1"/>
     </crafting>
   </recipe>
 
@@ -785,151 +785,151 @@ XML editor will display that as tooltips when editing this file.
         <item name="CHASSIPARTS"/><item /><item name="CHASSIPARTS"/>
         <item name="FUSED_GLASS"/><item name="CHASSIPARTS"/><item name="FUSED_GLASS"/>
       </grid>
-      <output name="enderio:blockDecoration1:15" amount="1"/>
+      <output name="enderio:block_decoration1:15" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/0" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:1"/><item name="minecraft:furnace"/>
+        <item name="enderio:block_decoration1:1"/><item name="minecraft:furnace"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:0" amount="1"/>
+      <output name="enderio:block_decoration2:0" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/1" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:1"/><item name="chestWood"/>
+        <item name="enderio:block_decoration1:1"/><item name="chestWood"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:1" amount="1"/>
+      <output name="enderio:block_decoration2:1" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/2" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:1"/><item name="CHASSIS"/>
+        <item name="enderio:block_decoration1:1"/><item name="CHASSIS"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:2" amount="1"/>
+      <output name="enderio:block_decoration2:2" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/3" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration2:1"/><item name="enderio:blockDecoration2:2"/>
+        <item name="enderio:block_decoration2:1"/><item name="enderio:block_decoration2:2"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:3" amount="2"/>
+      <output name="enderio:block_decoration2:3" amount="2"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/4" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration2:3"/><item name="netherStar"/>
+        <item name="enderio:block_decoration2:3"/><item name="netherStar"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:4" amount="1"/>
+      <output name="enderio:block_decoration2:4" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/5" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:1"/><item name="workbench"/>
+        <item name="enderio:block_decoration1:1"/><item name="workbench"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:5" amount="1"/>
+      <output name="enderio:block_decoration2:5" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/6" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:1"/><item name="gemDiamond"/>
+        <item name="enderio:block_decoration1:1"/><item name="gemDiamond"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:6" amount="1"/>
+      <output name="enderio:block_decoration2:6" amount="1"/>
     </crafting>
   </recipe>
-
+<!--
   <recipe name="Deco Block 2/7" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:1"/><item name="enderio:itemPowerConduit:0"/>
+        <item name="enderio:block_decoration1:1"/><item name="enderio:item_power_conduit:0"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:7" amount="1"/>
+      <output name="enderio:block_decoration2:7" amount="1"/>
     </crafting>
   </recipe>
-
+-->
   <recipe name="Deco Block 2/8" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:1"/><item name="itemFlint"/>
+        <item name="enderio:block_decoration1:1"/><item name="itemFlint"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:8" amount="1"/>
+      <output name="enderio:block_decoration2:8" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/9" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:7"/><item name="minecraft:iron_axe"/>
+        <item name="enderio:block_decoration1:7"/><item name="minecraft:iron_axe"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:9" amount="1"/>
+      <output name="enderio:block_decoration2:9" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/10" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:1"/><item name="GEAR"/>
+        <item name="enderio:block_decoration1:1"/><item name="GEAR"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:10" amount="1"/>
+      <output name="enderio:block_decoration2:10" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/11" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:15"/><item name="barsIron"/>
+        <item name="enderio:block_decoration1:15"/><item name="barsIron"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:11" amount="1"/>
+      <output name="enderio:block_decoration2:11" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/12" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:15"/><item name="enderio:blockDarkIronBars"/>
+        <item name="enderio:block_decoration1:15"/><item name="enderio:block_dark_iron_bars"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:12" amount="1"/>
+      <output name="enderio:block_decoration2:12" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/13" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:1"/><item name="CONDUIT_BINDER"/>
+        <item name="enderio:block_decoration1:1"/><item name="CONDUIT_BINDER"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:13" amount="1"/>
+      <output name="enderio:block_decoration2:13" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/14" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:1"/><item name="ingotIron"/>
+        <item name="enderio:block_decoration1:1"/><item name="ingotIron"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:14" amount="1"/>
+      <output name="enderio:block_decoration2:14" amount="1"/>
     </crafting>
   </recipe>
 
   <recipe name="Deco Block 2/15" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:blockDecoration1:1"/><item name="CAPACITOR1"/>
+        <item name="enderio:block_decoration1:1"/><item name="CAPACITOR1"/>
       </shapeless>
-      <output name="enderio:blockDecoration2:15" amount="1"/>
+      <output name="enderio:block_decoration2:15" amount="1"/>
     </crafting>
   </recipe>
 

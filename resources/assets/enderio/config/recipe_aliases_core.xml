@@ -18,22 +18,22 @@ XML editor will display that as tooltips when editing this file.
 
  -->
 
-  <alias name="ZOMBIE_ELECTRODE" item="enderio:itemFrankenSkull:0" />
-  <alias name="ZOMBIE_CONTROLLER" item="enderio:itemFrankenSkull:1" />
-  <alias name="FRANKEN_ZOMBIE" item="enderio:itemFrankenSkull:2" />
-  <alias name="ENDER_RESONATOR" item="enderio:itemFrankenSkull:3" />
-  <alias name="SENTIENT_ENDER" item="enderio:itemFrankenSkull:4" />
-  <alias name="SKELETAL_CONTRACTOR" item="enderio:itemFrankenSkull:5" />
+  <alias name="ZOMBIE_ELECTRODE" item="enderio:item_material:38" />
+  <alias name="ZOMBIE_CONTROLLER" item="enderio:item_material:39" />
+  <alias name="FRANKEN_ZOMBIE" item="enderio:item_material:40" />
+  <alias name="ENDER_RESONATOR" item="enderio:item_material:41" />
+  <alias name="SENTIENT_ENDER" item="enderio:item_material:42" />
+  <alias name="SKELETAL_CONTRACTOR" item="enderio:item_material:43" />
 
-  <alias name="CAPACITOR1" item="enderio:itemBasicCapacitor:0" />
-  <alias name="CAPACITOR2" item="enderio:itemBasicCapacitor:1" />
-  <alias name="CAPACITOR3" item="enderio:itemBasicCapacitor:2" />
+  <alias name="CAPACITOR1" item="enderio:item_basic_capacitor:0" />
+  <alias name="CAPACITOR2" item="enderio:item_basic_capacitor:1" />
+  <alias name="CAPACITOR3" item="enderio:item_basic_capacitor:2" />
   
   <alias name="GEAR" item="gearStone" />
   <alias name="CHASSIS" item="itemMachineChassi" />
   
   <alias name="FUSED_QUARTZ" item="oredict:fusedQuartz" />
-  <alias name="FUSED_GLASS" item="oredict:fusedGlass" />
+  <alias name="FUSED_GLASS" item="oredict:fusedGlass" ></alias>
   <alias name="ENLIGHTED_QUARTZ" item="oredict:enlightenedFusedQuartz" />
   <alias name="ENLIGHTED_GLASS" item="oredict:enlightenedFusedGlass" />
   <alias name="DARK_QUARTZ" item="oredict:darkFusedQuartz" />
@@ -60,8 +60,8 @@ XML editor will display that as tooltips when editing this file.
   <alias name="SILICON" item="itemSilicon" />
   <alias name="CONDUIT_BINDER" item="itemConduitBinder" />
   <alias name="BINDER_COMPOSITE" item="itemBinderComposite" />
-  <alias name="PULSATING_IRON_NUGGET" item="itemPulsatingIronNugget" />
-  <alias name="VIBRANT_NUGGET" item="itemVibrantNugget" />
+  <alias name="PULSATING_IRON_NUGGET" item="nuggetPulsatingIron" />
+  <alias name="VIBRANT_NUGGET" item="nuggetVibrantAlloy" />
   <alias name="PULSATING_CRYSTAL" item="itemPulsatingCrystal" />
   <alias name="VIBRANT_CRYSTAL" item="itemVibrantCrystal" />
   <alias name="DARK_GRINDING_BALL" item="itemDarkGrindingBall" />
@@ -71,47 +71,47 @@ XML editor will display that as tooltips when editing this file.
   <alias name="NUTRITIOUS_STICK" item="itemNutritiousStick" />
   <alias name="CHASSIPARTS" item="itemChassiParts" />
 
-  <alias name="CAP_BANK_1" item="enderio:blockCapBank:1" />
-  <alias name="CAP_BANK_2" item="enderio:blockCapBank:2" />
-  <alias name="CAP_BANK_3" item="enderio:blockCapBank:3" />
+  <alias name="CAP_BANK_1" item="enderio:block_cap_bank:1" />
+  <alias name="CAP_BANK_2" item="enderio:block_cap_bank:2" />
+  <alias name="CAP_BANK_3" item="enderio:block_cap_bank:3" />
 
-  <alias name="SOLAR_1" item="enderio:blockSolarPanel:0" />
-  <alias name="SOLAR_2" item="enderio:blockSolarPanel:1" />
-  <alias name="SOLAR_3" item="enderio:blockSolarPanel:2" />
+  <alias name="SOLAR_1" item="enderio:block_solar_panel:0" />
+  <alias name="SOLAR_2" item="enderio:block_solar_panel:1" />
+  <alias name="SOLAR_3" item="enderio:block_solar_panel:2" />
 
-  <alias name="CONDUIT_PROBE" item="enderio:itemConduitProbe:0" />
+  <alias name="CONDUIT_PROBE" item="enderio:item_conduit_probe:0" />
 
-  <alias name="HEAD_ENDERMAN" item="enderio:blockEndermanSkull:0" />
+  <alias name="HEAD_ENDERMAN" item="enderio:block_enderman_skull:0" />
   <alias name="HEAD_SKELETON" item="minecraft:skull:0" />
   <alias name="HEAD_CREEPER" item="minecraft:skull:2" />
   <alias name="HEAD_ZOMBIE" item="minecraft:skull:4" />
 
-  <alias name="HEAD_ENDERMAN_TORMENTED" item="enderio:blockEndermanSkull:2" />
+  <alias name="HEAD_ENDERMAN_TORMENTED" item="enderio:block_enderman_skull:2" />
 
-  <alias name="LIGHT_ELECTRIC" item="enderio:blockElectricLight:0" />
-  <alias name="LIGHT_ELECTRIC_INV" item="enderio:blockElectricLight:1" />
-  <alias name="LIGHT_BASIC" item="enderio:blockElectricLight:2" />
-  <alias name="LIGHT_BASIC_INV" item="enderio:blockElectricLight:3" />
-  <alias name="LIGHT_WIRELESS" item="enderio:blockElectricLight:4" />
-  <alias name="LIGHT_WIRELESS_INV" item="enderio:blockElectricLight:5" />
+  <alias name="LIGHT_ELECTRIC" item="enderio:block_electric_light:0" />
+  <alias name="LIGHT_ELECTRIC_INV" item="enderio:block_electric_light:1" />
+  <alias name="LIGHT_BASIC" item="enderio:block_electric_light:2" />
+  <alias name="LIGHT_BASIC_INV" item="enderio:block_electric_light:3" />
+  <alias name="LIGHT_WIRELESS" item="enderio:block_electric_light:4" />
+  <alias name="LIGHT_WIRELESS_INV" item="enderio:block_electric_light:5" />
 
-  <alias name="PPP_WOOD" item="enderio:blockPaintedPressurePlate:0" />
-  <alias name="PPP_STONE" item="enderio:blockPaintedPressurePlate:2" />
-  <alias name="PPP_IRON" item="enderio:blockPaintedPressurePlate:4" />
-  <alias name="PPP_GOLD" item="enderio:blockPaintedPressurePlate:6" />
-  <alias name="PPP_DARK_STEEL" item="enderio:blockPaintedPressurePlate:8" />
-  <alias name="PPP_SOULARIUM" item="enderio:blockPaintedPressurePlate:10" />
-  <alias name="PPP_TUNED" item="enderio:blockPaintedPressurePlate:12" />
+  <alias name="PPP_WOOD" item="enderio:block_painted_pressure_plate:0" />
+  <alias name="PPP_STONE" item="enderio:block_painted_pressure_plate:2" />
+  <alias name="PPP_IRON" item="enderio:block_painted_pressure_plate:4" />
+  <alias name="PPP_GOLD" item="enderio:block_painted_pressure_plate:6" />
+  <alias name="PPP_DARK_STEEL" item="enderio:block_painted_pressure_plate:8" />
+  <alias name="PPP_SOULARIUM" item="enderio:block_painted_pressure_plate:10" />
+  <alias name="PPP_TUNED" item="enderio:block_painted_pressure_plate:12" />
 
-  <alias name="PPP_WOOD_SILENT" item="enderio:blockPaintedPressurePlate:1" />
-  <alias name="PPP_STONE_SILENT" item="enderio:blockPaintedPressurePlate:3" />
-  <alias name="PPP_IRON_SILENT" item="enderio:blockPaintedPressurePlate:5" />
-  <alias name="PPP_GOLD_SILENT" item="enderio:blockPaintedPressurePlate:7" />
-  <alias name="PPP_DARK_STEEL_SILENT" item="enderio:blockPaintedPressurePlate:9" />
-  <alias name="PPP_SOULARIUM_SILENT" item="enderio:blockPaintedPressurePlate:11" />
-  <alias name="PPP_TUNED_SILENT" item="enderio:blockPaintedPressurePlate:13" />
+  <alias name="PPP_WOOD_SILENT" item="enderio:block_painted_pressure_plate:1" />
+  <alias name="PPP_STONE_SILENT" item="enderio:block_painted_pressure_plate:3" />
+  <alias name="PPP_IRON_SILENT" item="enderio:block_painted_pressure_plate:5" />
+  <alias name="PPP_GOLD_SILENT" item="enderio:block_painted_pressure_plate:7" />
+  <alias name="PPP_DARK_STEEL_SILENT" item="enderio:block_painted_pressure_plate:9" />
+  <alias name="PPP_SOULARIUM_SILENT" item="enderio:block_painted_pressure_plate:11" />
+  <alias name="PPP_TUNED_SILENT" item="enderio:block_painted_pressure_plate:13" />
 
-  <alias name="ADVANCED_FILTER" item="enderio:itemBasicFilterUpgrade:1" />
-  <alias name="COUNTING_FILTER" item="enderio:itemBasicFilterUpgrade:2" />
+  <alias name="ADVANCED_FILTER" item="enderio:item_item_filter:1" />
+  <alias name="COUNTING_FILTER" item="enderio:item_item_filter:2" />
 
 </enderio:recipes>
