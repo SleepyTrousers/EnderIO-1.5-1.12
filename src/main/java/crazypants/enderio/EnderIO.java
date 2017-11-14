@@ -18,6 +18,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.enchantment.Enchantments;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.handler.ServerTickHandler;
 import crazypants.enderio.handler.darksteel.DarkSteelController;
 import crazypants.enderio.init.ModObjectRegistry;
 import crazypants.enderio.integration.bigreactors.BRProxy;
@@ -189,7 +190,7 @@ public class EnderIO {
 
   @EventHandler
   public void serverStopped(@Nonnull FMLServerStoppedEvent event) {
-    // TODO 1.11 ConduitNetworkTickHandler.instance.flush();
+    ServerTickHandler.flush();
     ServerChannelRegister.instance.reset();
   }
 

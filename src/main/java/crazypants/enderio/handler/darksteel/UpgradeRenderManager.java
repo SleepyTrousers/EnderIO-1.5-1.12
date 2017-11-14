@@ -15,26 +15,20 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerCape;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToAccessFieldException;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@EventBusSubscriber(modid = EnderIO.MODID)
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class UpgradeRenderManager {
 
   // no WeakHashSet in Java...
   private static final Map<RenderPlayer, Object> injected = new WeakHashMap<RenderPlayer, Object>();
 
   private UpgradeRenderManager() {
-  }
-
-  public static void init(@Nonnull FMLPreInitializationEvent event) {
-    MinecraftForge.EVENT_BUS.register(UpgradeRenderDispatcher.class);
   }
 
   @SideOnly(Side.CLIENT)

@@ -19,7 +19,6 @@ import crazypants.enderio.gui.TooltipHandlerBurnTime;
 import crazypants.enderio.gui.TooltipHandlerFluid;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
 import crazypants.enderio.handler.KeyTracker;
-import crazypants.enderio.handler.darksteel.UpgradeRenderManager;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.init.ModObjectRegistry;
 import crazypants.enderio.integration.jei.JeiAccessor;
@@ -161,7 +160,6 @@ public class ClientProxy extends CommonProxy {
     MinecraftForge.EVENT_BUS.register(TravelController.instance);
     MinecraftForge.EVENT_BUS.register(KeyTracker.instance);
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
-    UpgradeRenderManager.init(event);
     // TODO 1.11 MinecraftForge.EVENT_BUS.register(new TeleportEntityRenderHandler());
   }
 
