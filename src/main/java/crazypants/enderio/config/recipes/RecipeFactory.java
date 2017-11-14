@@ -18,9 +18,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.apache.commons.io.IOUtils;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.config.Config;
 
 public class RecipeFactory {
 
@@ -28,8 +26,18 @@ public class RecipeFactory {
       + "<enderio:recipes xmlns:enderio=\"http://enderio.com/recipes\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://enderio.com/recipes recipes.xsd \">\n"
       + "\n</enderio:recipes>\n";
 
+  private final File configDirectory;
+  private final Class<RecipeFactory> loaderClazz;
+  private final String domain;
+
+  public RecipeFactory(File configDirectory, Class<RecipeFactory> loaderClazz, String domain) {
+    this.configDirectory = configDirectory;
+    this.loaderClazz = loaderClazz;
+    this.domain = domain;
+  }
+
   @SuppressWarnings("resource")
-  public static <T extends RecipeRoot> T readFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
+  public <T extends RecipeRoot> T readFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
     copyCore("recipes.xsd");
     InputStream userFileStream = null, defaultFileStream = null;
     try {
@@ -38,19 +46,19 @@ public class RecipeFactory {
       copyCore(fileName + "_core.xml");
 
       // default first, so the user file has access to the aliases
-      final String coreFile = "/assets/" + EnderIO.DOMAIN + "/config/" + fileName + "_core.xml";
-      defaultFileStream = RecipeFactory.class.getResourceAsStream(coreFile);
+      final String coreFile = "/assets/" + domain + "/config/" + fileName + "_core.xml";
+      defaultFileStream = loaderClazz.getResourceAsStream(coreFile);
       if (defaultFileStream == null) {
         throw new IOException("Could not get resource " + coreFile + " from classpath. ");
       }
       try {
         defaultConfig = readStax(target.copy(target), rootElement, defaultFileStream);
       } catch (XMLStreamException e) {
-        printContentsOnError(RecipeFactory.class.getResourceAsStream(coreFile), coreFile);
+        printContentsOnError(loaderClazz.getResourceAsStream(coreFile), coreFile);
         throw e;
       }
 
-      File configFile = new File(Config.configDirectory, fileName + "_user.xml");
+      File configFile = new File(configDirectory, fileName + "_user.xml");
       if (configFile.exists()) {
         userFileStream = new FileInputStream(configFile);
         try {
@@ -127,12 +135,12 @@ public class RecipeFactory {
     throw new InvalidRecipeConfigException("Missing recipes tag");
   }
 
-  private static void copyCore(String filename) {
+  private void copyCore(String filename) {
     InputStream schemaIn = null;
     OutputStream schemaOut = null;
     try {
-      File file = new File(Config.configDirectory, filename);
-      schemaIn = RecipeFactory.class.getResourceAsStream("/assets/" + EnderIO.DOMAIN + "/config/" + filename);
+      File file = new File(configDirectory, filename);
+      schemaIn = loaderClazz.getResourceAsStream("/assets/" + domain + "/config/" + filename);
       if (schemaIn != null) {
         schemaOut = new FileOutputStream(file);
         IOUtils.copy(schemaIn, schemaOut);

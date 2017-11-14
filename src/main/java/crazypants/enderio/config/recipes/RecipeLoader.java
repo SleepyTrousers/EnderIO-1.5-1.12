@@ -6,6 +6,7 @@ import javax.xml.stream.XMLStreamException;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.config.recipes.xml.Recipes;
 
 public class RecipeLoader {
@@ -16,9 +17,13 @@ public class RecipeLoader {
   }
 
   public static void addRecipes() {
-    for (String filename : RECIPE_FILES) {
+    addRecipes(new RecipeFactory(Config.configDirectory, RecipeFactory.class, EnderIO.DOMAIN), RECIPE_FILES);
+  }
+
+  public static void addRecipes(RecipeFactory recipeFactory, String... files) {
+    for (String filename : files) {
       try {
-        Recipes recipes = RecipeFactory.readFile(new Recipes(), "recipes", "recipe_" + filename);
+        Recipes recipes = recipeFactory.readFile(new Recipes(), "recipes", "recipe_" + filename);
         if (recipes.isValid()) {
           recipes.enforceValidity();
           recipes.register();
