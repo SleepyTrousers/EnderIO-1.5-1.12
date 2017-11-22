@@ -4,7 +4,7 @@
         "textures":{
             "particle":"enderio:blocks/machine_bottom",
             "front":"enderio:blocks/crusher_front",
-            "fronton":"enderio:blocks/crusher_frontOn"
+            "fronton":"enderio:blocks/crusher_front_on"
         }
     },
     "variants":{

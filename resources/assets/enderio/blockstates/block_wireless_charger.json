@@ -32,7 +32,7 @@
 	          		"s6":{ "model":"enderio:block_wireless_charger", "x":270 }
 	            },
 			        "textures":{
-			            "front": "enderio:blocks/block_wireless_chargerOn"
+			            "front": "enderio:blocks/block_wireless_charger_on"
 			        }
             },
             "front_on_east":{  "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },

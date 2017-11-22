@@ -18,7 +18,7 @@
 		  },
 		  "false" : {
 		    "textures": {
-			  "face": "enderio:blocks/block_electric_light_faceOff"
+			  "face": "enderio:blocks/block_electric_light_face_off"
 			}
 		  }
 		},
