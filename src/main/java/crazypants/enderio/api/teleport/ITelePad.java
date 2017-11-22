@@ -1,6 +1,7 @@
 package crazypants.enderio.api.teleport;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
 
@@ -21,7 +22,7 @@ public interface ITelePad extends ITravelAccessable {
    * 
    * @return The master telepad TE. {@code null} if not in a network. Itself if it is the master.
    */
-  @Nonnull
+  @Nullable
   ITelePad getMaster();
 
   /**

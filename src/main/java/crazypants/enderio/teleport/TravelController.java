@@ -689,5 +689,9 @@ public class TravelController {
     }
     return null;
   }
+  
+  public BlockPos getPosPlayerOn() {
+    return onBlockCoord;
+  }
 
 }

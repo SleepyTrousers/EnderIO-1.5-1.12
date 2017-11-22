@@ -74,7 +74,7 @@ public class PacketPassword extends MessageTileEntity<TileEntityBase> {
           if (msg.setLabel) {
             ((ITravelAccessable) te).setItemLabel(msg.stack);
           } else {
-            ((ITravelAccessable) te).getPassword()[msg.slot] = msg.stack;
+            ((ITravelAccessable) te).getPassword().set(msg.slot, msg.stack);
             ((ITravelAccessable) te).clearAuthorisedUsers();
           }
 

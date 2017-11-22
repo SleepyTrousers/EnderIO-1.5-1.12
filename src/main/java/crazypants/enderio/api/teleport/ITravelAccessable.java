@@ -3,6 +3,7 @@ package crazypants.enderio.api.teleport;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.UserIdent;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,9 +34,9 @@ public interface ITravelAccessable {
 
   void setAccessMode(@Nonnull AccessMode accessMode);
 
-  @Nonnull ItemStack[] getPassword();
+  @Nonnull NNList<ItemStack> getPassword();
 
-  void setPassword(@Nonnull ItemStack[] password);
+  void setPassword(@Nonnull NNList<ItemStack> password);
   
   @Nonnull ItemStack getItemLabel();
   
