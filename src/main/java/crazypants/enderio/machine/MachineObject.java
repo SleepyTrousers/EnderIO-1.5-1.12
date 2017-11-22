@@ -38,6 +38,9 @@ import crazypants.enderio.machine.vacuum.BlockXPVacuum;
 import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.render.dummy.BlockMachineIO;
+import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+import crazypants.enderio.teleport.telepad.BlockDialingDevice;
+import crazypants.enderio.teleport.telepad.BlockTelePad;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -86,6 +89,10 @@ public enum MachineObject implements IModObject.Registerable {
   blockTransceiver(BlockTransceiver.class),
   blockVacuumChest(BlockVacuumChest.class),
   blockXPVacuum(BlockXPVacuum.class),
+  
+  blockTravelAnchor(BlockTravelAnchor.class),
+  blockTelePad(BlockTelePad.class),
+  blockDialingDevice(BlockDialingDevice.class),
   ;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
