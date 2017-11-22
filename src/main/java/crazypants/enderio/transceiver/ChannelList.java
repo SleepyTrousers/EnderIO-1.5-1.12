@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.enderio.core.common.util.Log;
+
 public class ChannelList extends EnumMap<ChannelType, Set<Channel>> {
 
   private static final long serialVersionUID = 3922673078596352247L;
@@ -19,7 +21,8 @@ public class ChannelList extends EnumMap<ChannelType, Set<Channel>> {
   @Override
   @Deprecated // so accidental usage shows up
   public Set<Channel> put(ChannelType key, Set<Channel> value) {
-    throw new UnsupportedOperationException();
+    Log.debug("Forcing channel type " + key);
+    return super.put(key, value);
   }
 
   @Override
