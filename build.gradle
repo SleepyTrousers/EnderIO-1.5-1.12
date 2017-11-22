@@ -81,9 +81,9 @@ repositories {
 
 dependencies {
 
-  //  if (!project.hasProperty('useLocalEnderCore')) {
+    if (!project.hasProperty('useLocalEnderCore')) {
         deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
-  //  }
+    }
 
     deobfCompile "mcp.mobius.waila:Hwyla:${waila_version}"
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
