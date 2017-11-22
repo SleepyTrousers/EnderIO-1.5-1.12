@@ -36,7 +36,6 @@ public class ServerTickHandler {
 
   @SubscribeEvent
   public static void onServerTick(TickEvent.ServerTickEvent event) {
-    System.out.println("tick");
     final Profiler profiler = FMLCommonHandler.instance().getMinecraftServerInstance().profiler;
     profiler.startSection("root"); // this event is fired outside the profiler's normal coverage...
     profiler.startSection("ServerTickEvent");
