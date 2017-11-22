@@ -37,7 +37,7 @@ public class OptionalItem implements RecipeConfigElement {
     if (recipeObjects.size() > 1) {
       throw new InvalidRecipeConfigException("Name \"" + name + "\"> references " + recipeObjects.size() + " different things: " + recipeObjects);
     }
-    recipeObject = recipeObjects.isEmpty() ? null : recipeObjects.get(0);
+    recipeObject = recipeObjects.isEmpty() ? ItemStack.EMPTY : recipeObjects.get(0);
     return this;
   }
 
