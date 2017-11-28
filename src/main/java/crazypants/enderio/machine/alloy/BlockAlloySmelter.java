@@ -25,9 +25,9 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
     return res;
   }
 
-  public static final TextureSupplier vanillaSmeltingOn = TextureRegistry.registerTexture("blocks/furnaceSmeltingOn");
-  public static final TextureSupplier vanillaSmeltingOff = TextureRegistry.registerTexture("blocks/furnaceSmeltingOff");
-  public static final TextureSupplier vanillaSmeltingOnly = TextureRegistry.registerTexture("blocks/furnaceSmeltingOnly");
+  public static final TextureSupplier vanillaSmeltingOn = TextureRegistry.registerTexture("blocks/furnace_smelting_on");
+  public static final TextureSupplier vanillaSmeltingOff = TextureRegistry.registerTexture("blocks/furnace_smelting_off");
+  public static final TextureSupplier vanillaSmeltingOnly = TextureRegistry.registerTexture("blocks/furnace_smelting_only");
 
   private BlockAlloySmelter(@Nonnull IModObject modObject) {
     super(modObject, TileAlloySmelter.class);
