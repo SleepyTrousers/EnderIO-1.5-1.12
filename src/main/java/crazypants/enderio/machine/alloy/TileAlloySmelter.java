@@ -19,6 +19,7 @@ import crazypants.enderio.recipe.MachineRecipeRegistry;
 import crazypants.enderio.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.recipe.alloysmelter.VanillaSmeltingRecipe;
+import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -108,7 +109,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
 
     // We will assume anything that is in a slot is valid, so just return whether the new input can be stacked with the current one
     ItemStack currentStackInSlot = inventory[slot];
-    if (currentStackInSlot != null) {
+    if (Prep.isValid(currentStackInSlot)) {
       return currentStackInSlot.isItemEqual(itemstack);
     }
 
@@ -195,6 +196,10 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
       }
     }
     return false;
+  }
+
+  public @Nonnull String getMachineName() {
+    return MachineRecipeRegistry.ALLOYSMELTER;
   }
 
 }
