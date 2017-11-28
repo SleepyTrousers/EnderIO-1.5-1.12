@@ -137,7 +137,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
   }
 
   private void updateOutput() {
-    ItemStack output = null;
+    ItemStack output = ItemStack.EMPTY;
     EnchantmentData enchantment = getInv().getCurrentEnchantmentData();
     if(enchantment != null) {
       output = new ItemStack(Items.ENCHANTED_BOOK);
