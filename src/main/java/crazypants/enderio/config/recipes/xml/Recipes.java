@@ -49,8 +49,9 @@ public class Recipes implements RecipeRoot {
     recipes = new ArrayList<Recipe>();
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public void addRecipes(RecipeRoot other) {
+  public <T extends RecipeRoot> T addRecipes(RecipeRoot other) {
     if (other instanceof Recipes) {
       if (((Recipes) other).recipes == null) {
         // NOP
@@ -86,6 +87,7 @@ public class Recipes implements RecipeRoot {
         aliases = ((Recipes) other).aliases;
       }
     }
+    return (T) this;
   }
 
   @Override

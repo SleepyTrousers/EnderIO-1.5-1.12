@@ -19,6 +19,9 @@ import javax.xml.stream.events.XMLEvent;
 import org.apache.commons.io.IOUtils;
 
 import crazypants.enderio.Log;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.util.ResourceLocation;
 
 public class RecipeFactory {
 
@@ -27,64 +30,53 @@ public class RecipeFactory {
       + "\n</enderio:recipes>\n";
 
   private final File configDirectory;
-  private final Class<RecipeFactory> loaderClazz;
   private final String domain;
 
-  public RecipeFactory(File configDirectory, Class<RecipeFactory> loaderClazz, String domain) {
+  public RecipeFactory(File configDirectory, String domain) {
     this.configDirectory = configDirectory;
-    this.loaderClazz = loaderClazz;
     this.domain = domain;
   }
 
-  @SuppressWarnings("resource")
   public <T extends RecipeRoot> T readFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
-    copyCore("recipes.xsd");
-    InputStream userFileStream = null, defaultFileStream = null;
-    try {
-      T userConfig = null, defaultConfig = null;
+    final ResourceLocation xsdRL = new ResourceLocation(domain, "config/recipes.xsd");
+    final File xsdFL = new File(configDirectory, "recipes.xsd");
+    copyCore(xsdRL, xsdFL);
 
-      copyCore(fileName + "_core.xml");
+    final ResourceLocation coreRL = new ResourceLocation(domain, "config/" + fileName + "_core.xml");
+    final File coreFL = new File(configDirectory, fileName + "_core.xml");
+    copyCore(coreRL, coreFL);
 
-      // default first, so the user file has access to the aliases
-      final String coreFile = "/assets/" + domain + "/config/" + fileName + "_core.xml";
-      defaultFileStream = loaderClazz.getResourceAsStream(coreFile);
-      if (defaultFileStream == null) {
-        throw new IOException("Could not get resource " + coreFile + " from classpath. ");
-      }
+    final File userFL = new File(configDirectory, fileName + "_user.xml");
+
+    T config;
+    try (IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(coreRL)) {
       try {
-        defaultConfig = readStax(target.copy(target), rootElement, defaultFileStream);
+        config = readStax(target.copy(target), rootElement, resource.getInputStream());
       } catch (XMLStreamException e) {
-        printContentsOnError(loaderClazz.getResourceAsStream(coreFile), coreFile);
+        printContentsOnError(resource.getInputStream(), coreRL.toString());
         throw e;
       }
 
-      File configFile = new File(configDirectory, fileName + "_user.xml");
-      if (configFile.exists()) {
-        userFileStream = new FileInputStream(configFile);
+    }
+
+    if (userFL.exists()) {
+      try (InputStream userFileStream = userFL.exists() ? new FileInputStream(userFL) : null;) {
         try {
-          userConfig = readStax(target, rootElement, userFileStream);
+          config = readStax(target, rootElement, userFileStream).addRecipes(config);
         } catch (XMLStreamException e) {
-          printContentsOnError(new FileInputStream(configFile), configFile.toString());
+          printContentsOnError(new FileInputStream(userFL), userFL.toString());
           throw e;
         }
-        userConfig.addRecipes(defaultConfig);
-        return userConfig;
-      } else {
-        BufferedWriter writer = null;
-        try {
-          writer = new BufferedWriter(new FileWriter(configFile, false));
-          writer.write(DEFAULT_USER_FILE);
-        } catch (IOException e) {
-          e.printStackTrace();
-        } finally {
-          IOUtils.closeQuietly(writer);
-        }
-        return defaultConfig;
       }
-    } finally {
-      IOUtils.closeQuietly(userFileStream);
-      IOUtils.closeQuietly(defaultFileStream);
+    } else {
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(userFL, false))) {
+        writer.write(DEFAULT_USER_FILE);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
+
+    return config;
   }
 
   protected static void printContentsOnError(InputStream stream, String filename) throws FileNotFoundException, IOException {
@@ -135,22 +127,15 @@ public class RecipeFactory {
     throw new InvalidRecipeConfigException("Missing recipes tag");
   }
 
-  private void copyCore(String filename) {
-    InputStream schemaIn = null;
-    OutputStream schemaOut = null;
-    try {
-      File file = new File(configDirectory, filename);
-      schemaIn = loaderClazz.getResourceAsStream("/assets/" + domain + "/config/" + filename);
-      if (schemaIn != null) {
-        schemaOut = new FileOutputStream(file);
+  private void copyCore(ResourceLocation resourceLocation, File file) {
+    try (IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation)) {
+      InputStream schemaIn = resource.getInputStream();
+      try (OutputStream schemaOut = new FileOutputStream(file)) {
         IOUtils.copy(schemaIn, schemaOut);
       }
     } catch (IOException e) {
-      Log.error("Copying default recipe file " + filename + " failed. Reason:");
+      Log.error("Copying default recipe file from " + resourceLocation + " to " + file + " failed. Reason:");
       e.printStackTrace();
-    } finally {
-      IOUtils.closeQuietly(schemaIn);
-      IOUtils.closeQuietly(schemaOut);
     }
   }
 
