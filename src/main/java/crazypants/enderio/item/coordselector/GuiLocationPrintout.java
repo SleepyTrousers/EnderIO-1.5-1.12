@@ -26,7 +26,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class GuiLocationPrintout extends GuiScreenBase {
 
-  private static final @Nonnull ResourceLocation GUI_BACKGROUND = EnderIO.proxy.getGuiTexture("locationPrintout");
+  private static final @Nonnull ResourceLocation GUI_BACKGROUND = EnderIO.proxy.getGuiTexture("location_printout");
 
   private final TextFieldEnder tf;
   private TooltipButton okB;
