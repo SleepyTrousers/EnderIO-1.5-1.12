@@ -8,7 +8,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice> {
 
   public GuiSliceAndSplice(InventoryPlayer par1InventoryPlayer, TileSliceAndSplice te) {
-    super(te, new ContainerSliceAndSplice(par1InventoryPlayer, te), "sliceAndSplice");
+    super(te, new ContainerSliceAndSplice(par1InventoryPlayer, te), "slice_and_splice");
 
     addProgressTooltip(103, 49, 24, 16);
   }

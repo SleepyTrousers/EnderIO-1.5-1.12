@@ -60,7 +60,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
   private final @Nonnull ToggleButton showRangeB;
 
   public GuiVacuumChest(@Nonnull InventoryPlayer inventory, @Nonnull TileVacuumChest te) {
-    super(new ContainerVacuumChest(inventory, te), "vacum_chest");
+    super(new ContainerVacuumChest(inventory, te), "vacuum_chest");
     this.te = te;
 
     ySize = 206;

@@ -23,7 +23,7 @@ public class GuiTravelAuth extends GuiContainerBaseEIO {
   private final EntityPlayer player;
 
   public GuiTravelAuth(EntityPlayer player, ITravelAccessable te, World world) {
-    super(new ContainerTravelAuth(player.inventory), "travelAuth");
+    super(new ContainerTravelAuth(player.inventory), "travel_auth");
     this.ta = te;
     title = EnderIO.lang.localize("gui.travelAccessable.enterCode");  
     this.player = player;

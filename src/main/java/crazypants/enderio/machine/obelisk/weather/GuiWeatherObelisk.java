@@ -26,7 +26,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
   private IconButton buttonStart;
   
   public GuiWeatherObelisk(InventoryPlayer inventory, TileWeatherObelisk tileEntity) {
-    super(tileEntity, new ContainerWeatherObelisk(inventory, tileEntity), "weatherObelisk");
+    super(tileEntity, new ContainerWeatherObelisk(inventory, tileEntity), "weather_obelisk");
     
     addProgressTooltip(79, 29, 18, 31);
     

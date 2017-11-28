@@ -29,7 +29,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
   private ToggleButton showRangeB;
 
   public GuiPoweredSpawner(InventoryPlayer par1InventoryPlayer, TilePoweredSpawner te) {
-    super(te, new ContainerPoweredSpawner(par1InventoryPlayer, te), "poweredSpawner");
+    super(te, new ContainerPoweredSpawner(par1InventoryPlayer, te), "powered_spawner");
 
     modeB = MultiIconButton.createRightArrowButton(this, 8888, 115, 10);
     modeB.setSize(10, 16);

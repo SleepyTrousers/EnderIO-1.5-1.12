@@ -49,7 +49,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   }
 
   public GuiTravelAccessable(T te, ContainerTravelAccessable container) {
-    super(container, "travelAccessable");
+    super(container, "travel_accessable");
     this.te = te;
     this.world = container.world;
 

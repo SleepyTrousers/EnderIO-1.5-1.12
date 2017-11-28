@@ -25,7 +25,7 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
   private final IconButton usePlayerXP;
 
   public GuiSoulBinder(InventoryPlayer par1InventoryPlayer, TileSoulBinder te) {
-    super(te, new ContainerSoulBinder(par1InventoryPlayer, te), "soulFuser");
+    super(te, new ContainerSoulBinder(par1InventoryPlayer, te), "soul_fuser");
     usePlayerXP = new IconButton(this, PLAYER_XP_ID, 125, 57, IconEIO.XP);
     usePlayerXP.visible = false;
     usePlayerXP.setToolTip("Use Player XP");    

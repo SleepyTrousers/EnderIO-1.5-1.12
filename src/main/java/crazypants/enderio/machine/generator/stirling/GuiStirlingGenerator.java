@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirlingGenerator> {
 
   public GuiStirlingGenerator(InventoryPlayer par1InventoryPlayer, TileEntityStirlingGenerator te) {
-    super(te, new StirlingGeneratorContainer(par1InventoryPlayer, te), "stirlingGenerator");
+    super(te, new StirlingGeneratorContainer(par1InventoryPlayer, te), "stirling_generator");
 
     final StirlingGeneratorContainer c = (StirlingGeneratorContainer) inventorySlots;
     Rectangle r = new Rectangle(c.getUpgradeOffset(), new Dimension(16, 16));

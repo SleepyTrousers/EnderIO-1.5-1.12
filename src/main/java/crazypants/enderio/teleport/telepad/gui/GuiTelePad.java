@@ -64,7 +64,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   public static int SWITCH_X = 155, SWITCH_Y = 5;
 
   public GuiTelePad(InventoryPlayer playerInv, final TileTelePad te) {
-    super(new ContainerTelePad(playerInv, te), "telePad");
+    super(new ContainerTelePad(playerInv, te), "tele_pad");
     this.te = te;
     ySize = 220;
 

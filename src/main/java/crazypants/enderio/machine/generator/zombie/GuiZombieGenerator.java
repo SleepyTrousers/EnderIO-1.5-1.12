@@ -26,7 +26,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
   private static final Rectangle RECTANGLE_FUEL_TANK = new Rectangle(80, 21, 15, 47);
 
   public GuiZombieGenerator(InventoryPlayer inventory, @Nonnull final TileZombieGenerator tileEntity) {
-    super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity), "zombieGenerator");
+    super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity), "zombie_generator");
     
     addToolTip(new GuiToolTip(RECTANGLE_FUEL_TANK, "") {
 

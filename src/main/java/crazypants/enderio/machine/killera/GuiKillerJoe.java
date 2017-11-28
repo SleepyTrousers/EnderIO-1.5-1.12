@@ -27,7 +27,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
   private ToggleButton showRangeB;
 
   public GuiKillerJoe(InventoryPlayer inventory, final TileKillerJoe tileEntity) {
-    super(tileEntity, new ContainerKillerJoe(inventory, tileEntity), "killerJoe");
+    super(tileEntity, new ContainerKillerJoe(inventory, tileEntity), "killer_joe");
 
     addToolTip(new GuiToolTip(RECTANGLE_FUEL_TANK, "") {
 

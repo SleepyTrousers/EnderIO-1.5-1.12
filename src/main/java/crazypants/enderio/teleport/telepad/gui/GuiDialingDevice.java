@@ -52,7 +52,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
   private final GuiTargetList targetList;
 
   public GuiDialingDevice(@Nonnull InventoryPlayer playerInv, @Nonnull TileDialingDevice te) {
-    super(new ContainerDialingDevice(playerInv, te), "dialingDevice");
+    super(new ContainerDialingDevice(playerInv, te), "dialing_device");
     this.dialingDevice = te;
     telepad = findTelepad();
     

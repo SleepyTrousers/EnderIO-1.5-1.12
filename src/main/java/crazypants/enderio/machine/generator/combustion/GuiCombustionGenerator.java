@@ -25,7 +25,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
   private static final Rectangle RECTANGLE_COOLANT_TANK = new Rectangle(114, 21, 15, 47);
 
   public GuiCombustionGenerator(InventoryPlayer par1InventoryPlayer, TileCombustionGenerator te) {
-    super(te, new ContainerCombustionEngine(par1InventoryPlayer, te), "combustionGen");
+    super(te, new ContainerCombustionEngine(par1InventoryPlayer, te), "combustion_gen");
 
     addToolTip(new GuiToolTip(RECTANGLE_COOLANT_TANK, "") {
 

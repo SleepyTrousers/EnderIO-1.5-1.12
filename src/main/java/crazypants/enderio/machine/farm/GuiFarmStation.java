@@ -35,7 +35,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   ToggleButton showRangeB;
 
   public GuiFarmStation(InventoryPlayer par1InventoryPlayer, @Nonnull TileFarmStation machine) {
-    super(machine, new FarmStationContainer(par1InventoryPlayer, machine), "farmStation");
+    super(machine, new FarmStationContainer(par1InventoryPlayer, machine), "farm_station");
     setYSize(ySize + 3);
 
     showRangeB = new ToggleButton(this, -1, 163, 43, IconEIO.SHOW_RANGE, IconEIO.HIDE_RANGE);
