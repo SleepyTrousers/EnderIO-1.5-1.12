@@ -160,17 +160,16 @@ public class SmartModelAttacher {
       final IProperty holder_property = holder.property;
       final Comparable holder_defaultsValue = holder.defaultsValue;
       final IBakedModel missingModel = event.getModelManager().getMissingModel();
-      if (holder_property != null && block.getDefaultState().getPropertyKeys().contains(holder_property)
-          && holder_defaultsValue != null) {
+      if (holder_property != null && block.getDefaultState().getPropertyKeys().contains(holder_property) && holder_defaultsValue != null) {
         IBlockState defaultState = block.getDefaultState().withProperty(holder_property, holder_defaultsValue);
         ModelResourceLocation defaultMrl = locations.get(defaultState);
         if (defaultMrl == null) {
-          throw new RuntimeException(
-              "Model for state " + defaultState + " failed to load from " + defaultMrl + ". "
-                  + debugOutput(event.getModelRegistry(), defaultMrl, missingModel));
+          throw new RuntimeException("Model for state " + defaultState + " failed to load from " + defaultMrl + ". "
+              + debugOutput(event.getModelRegistry(), defaultMrl, missingModel));
         }
         IBakedModel defaultBakedModel = event.getModelRegistry().getObject(defaultMrl);
-        if (defaultBakedModel == null || defaultBakedModel == missingModel) {
+        if (defaultBakedModel == null) {
+          Log.warn("ModelBakeEvent: cannot register smart model over null model for " + holder.block + ". See model errors below.");
           continue;
         }
         RelayingBakedModel model = new RelayingBakedModel(defaultBakedModel);
@@ -178,13 +177,18 @@ public class SmartModelAttacher {
         ModelResourceLocation itemMrl = new ModelResourceLocation(defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath() + "#inventory");
         event.getModelRegistry().putObject(itemMrl, model);
 
+        if (defaultBakedModel == missingModel) {
+          // This is normal on the first pass. We register our synthetic models above anyway to avoid model loading errors.
+          continue;
+        }
+
         for (Entry<IBlockState, ModelResourceLocation> entry : locations.entrySet()) {
           final ModelResourceLocation entryMrl = NullHelper.notnullF(entry.getValue(), "BlockModelShapes contains null keys");
           final IBlockState entryBlockstate = entry.getKey();
           final IBakedModel existingModel = event.getModelRegistry().getObject(entryMrl);
 
           if (existingModel == null || existingModel == missingModel) {
-            // TODO uncomment event.getModelRegistry().putObject(entryMrl, defaultBakedModel);
+            event.getModelRegistry().putObject(entryMrl, defaultBakedModel);
           } else if (entryBlockstate.getValue(holder_property) == holder.autoValue) {
             event.getModelRegistry().putObject(entryMrl, model);
           }
@@ -193,9 +197,8 @@ public class SmartModelAttacher {
         IBlockState defaultState = block.getDefaultState();
         ModelResourceLocation defaultMrl = locations.get(defaultState);
         if (defaultMrl == null) {
-          throw new RuntimeException(
-              "Model for state " + defaultState + " failed to load from " + defaultMrl + ". "
-                  + debugOutput(event.getModelRegistry(), defaultMrl, missingModel));
+          throw new RuntimeException("Model for state " + defaultState + " failed to load from " + defaultMrl + ". "
+              + debugOutput(event.getModelRegistry(), defaultMrl, missingModel));
         }
         IBakedModel defaultBakedModel = event.getModelRegistry().getObject(defaultMrl);
         if (defaultBakedModel == null || defaultBakedModel == missingModel) {
@@ -217,7 +220,7 @@ public class SmartModelAttacher {
         ModelResourceLocation itemMrl = new ModelResourceLocation(defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath() + "#inventory");
         final IBakedModel model = event.getModelRegistry().getObject(itemMrl);
         if (model == null || model == missingModel) {
-          // event.getModelRegistry().putObject(itemMrl, new RelayingBakedModel(defaultBakedModel));
+          event.getModelRegistry().putObject(itemMrl, new RelayingBakedModel(defaultBakedModel));
         } else {
           event.getModelRegistry().putObject(itemMrl, new RelayingBakedModel(model));
         }
@@ -232,7 +235,7 @@ public class SmartModelAttacher {
 
   @SuppressWarnings("null")
   private static String debugOutput(IRegistry<ModelResourceLocation, IBakedModel> modelRegistry, ModelResourceLocation defaultMrl, IBakedModel missingModel) {
-    String prefix = defaultMrl.getResourceDomain()+ ":" + defaultMrl.getResourcePath();
+    String prefix = defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath();
     if (modelRegistry instanceof RegistrySimple) {
       RegistrySimple<?, ?> rg = (RegistrySimple<?, ?>) modelRegistry;
       StringBuilder sb = new StringBuilder();
@@ -251,6 +254,5 @@ public class SmartModelAttacher {
       return "Loaded states could not be determined because modelRegistry is not a RegistrySimple.";
     }
   }
-  
-  
+
 }
