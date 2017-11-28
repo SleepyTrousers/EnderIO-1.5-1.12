@@ -34,14 +34,14 @@ public class ObeliskRenderManager {
 
   public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation("enderio:obelisk");
 
-  private TextureSupplier[] textures = { TextureRegistry.registerTexture("blocks/obeliskBottom"),
-      TextureRegistry.registerTexture("blocks/blockSoulMachineTop"), TextureRegistry.registerTexture("blocks/blockAttractorSide"),
-      TextureRegistry.registerTexture("blocks/blockAttractorSide"), TextureRegistry.registerTexture("blocks/blockAttractorSide"),
-      TextureRegistry.registerTexture("blocks/blockAttractorSide") };
-  private TextureSupplier[] activeTextures = { TextureRegistry.registerTexture("blocks/obeliskBottom"),
-      TextureRegistry.registerTexture("blocks/blockSoulMachineTop"), TextureRegistry.registerTexture("blocks/blockAttractorSideOn"),
-      TextureRegistry.registerTexture("blocks/blockAttractorSideOn"), TextureRegistry.registerTexture("blocks/blockAttractorSideOn"),
-      TextureRegistry.registerTexture("blocks/blockAttractorSideOn") };
+  private TextureSupplier[] textures = { TextureRegistry.registerTexture("blocks/obelisk_bottom"),
+      TextureRegistry.registerTexture("blocks/block_soul_machine_top"), TextureRegistry.registerTexture("blocks/block_attractor_side"),
+      TextureRegistry.registerTexture("blocks/block_attractor_side"), TextureRegistry.registerTexture("blocks/block_attractor_side"),
+      TextureRegistry.registerTexture("blocks/block_attractor_side") };
+  private TextureSupplier[] activeTextures = { TextureRegistry.registerTexture("blocks/obelisk_bottom"),
+      TextureRegistry.registerTexture("blocks/block_soul_machine_top"), TextureRegistry.registerTexture("blocks/block_attractor_side_on"),
+      TextureRegistry.registerTexture("blocks/block_attractor_side_on"), TextureRegistry.registerTexture("blocks/block_attractor_side_on"),
+      TextureRegistry.registerTexture("blocks/block_attractor_side_on") };
 
   private ObeliskRenderManager() {
   }
