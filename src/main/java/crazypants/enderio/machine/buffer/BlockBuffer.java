@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.MachineObject;
-import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.machine.render.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
@@ -14,6 +13,7 @@ import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.property.EnumRenderMode;
+import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -46,7 +46,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   
 	@Override
 	public Item createBlockItem(IModObject modObject) {
-		return new BlockItemBuffer(this, modObject.getUnlocalisedName());
+    return modObject.apply(new BlockItemBuffer((Block) this));
 	}
 
   @Override

@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.buffer;
 
-import static crazypants.enderio.machine.MachineObject.blockBuffer;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
@@ -24,13 +21,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.machine.MachineObject.blockBuffer;
+
 public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverlayRenderAware {
 
-  public BlockItemBuffer(Block block, String name) {
+  public BlockItemBuffer(Block block) {
     super(block, 0, 0 ,0);
     setHasSubtypes(true);
     setMaxDamage(0);
-    setRegistryName(name);
   }
 
   @Override
