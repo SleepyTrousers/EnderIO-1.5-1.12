@@ -56,14 +56,14 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   private boolean inPause;
 
   public TileZombieGenerator() {
-    super(new SlotDefinition(0, 0, 0), MachineObject.blockZombieGenerator);
+    super(new SlotDefinition(0, 0, 0), MachineObject.block_zombie_generator);
     tank.setTileEntity(this);
     tank.setCanDrain(false);
   }
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockZombieGenerator.getUnlocalisedName();
+    return MachineObject.block_zombie_generator.getUnlocalisedName();
   }
 
 

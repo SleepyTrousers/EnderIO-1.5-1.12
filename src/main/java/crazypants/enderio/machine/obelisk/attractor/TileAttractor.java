@@ -42,7 +42,7 @@ public class TileAttractor extends AbstractMobObelisk {
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockAttractorObelisk.getUnlocalisedName();
+    return MachineObject.block_attractor_obelisk.getUnlocalisedName();
   }
 
   private void untrackAll() {
@@ -148,7 +148,7 @@ public class TileAttractor extends AbstractMobObelisk {
   private class Target extends FakePlayerEIO {
 
     public Target(World world) {
-      super(world, getLocation(), new GameProfile(null, MachineObject.blockAttractorObelisk.getUnlocalisedName() + ":" + getLocation()));
+      super(world, getLocation(), new GameProfile(null, MachineObject.block_attractor_obelisk.getUnlocalisedName() + ":" + getLocation()));
       posY += 1;
     }
   }

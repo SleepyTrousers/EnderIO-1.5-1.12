@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.killera;
 
-import static crazypants.enderio.machine.MachineObject.blockKillerJoe;
+import static crazypants.enderio.machine.MachineObject.block_killer_joe;
 
 import javax.annotation.Nonnull;
 
@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class KillerJoeRenderer extends ManagedTESR<TileKillerJoe> {
 
   public KillerJoeRenderer() {
-    super(blockKillerJoe.getBlock());
+    super(block_killer_joe.getBlock());
   }
 
   @Override

@@ -33,7 +33,7 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
   
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockRelocatorObelisk.getUnlocalisedName();
+    return MachineObject.block_relocator_obelisk.getUnlocalisedName();
   }
 
   @Override

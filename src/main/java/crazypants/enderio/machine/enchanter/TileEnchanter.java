@@ -78,7 +78,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
 
   @Override
   public String getName() {
-    return MachineObject.blockEnchanter.getUnlocalisedName();
+    return MachineObject.block_enchanter.getUnlocalisedName();
   }
 
   @Override
@@ -164,8 +164,6 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
     return currentEnchantment.getCostForLevel(level);
   }
 
-
-
   public void setOutput(@Nonnull ItemStack output) {
     inv.set(inv.size() - 1, output);
     markDirty();
@@ -209,7 +207,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   @Override
   @Nonnull
   public String getMachineName() {
-    return MachineObject.blockEnchanter.getUnlocalisedName();
+    return MachineObject.block_enchanter.getUnlocalisedName();
   }
 
   @Override

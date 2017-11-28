@@ -68,7 +68,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   private BlockTravelAnchor(Class<T> clz) {
-    super(MachineObject.blockTravelAnchor, clz);
+    super(MachineObject.block_travel_anchor, clz);
     initDefaultState();
   }
   

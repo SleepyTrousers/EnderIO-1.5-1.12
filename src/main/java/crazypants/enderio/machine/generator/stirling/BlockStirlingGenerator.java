@@ -32,7 +32,7 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
   }
 
   protected BlockStirlingGenerator() {
-    super(MachineObject.blockStirlingGenerator, TileEntityStirlingGenerator.class);
+    super(MachineObject.block_stirling_generator, TileEntityStirlingGenerator.class);
   }
 
   @Override

@@ -52,7 +52,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   Fluid currentTaskOutputFluid;
 
   public TileVat() {
-    super(new SlotDefinition(0, 1, -1, -1, -1, -1), MachineObject.blockVat);
+    super(new SlotDefinition(0, 1, -1, -1, -1, -1), MachineObject.block_vat);
     inputTank.setTileEntity(this);
     inputTank.setCanDrain(false);
     outputTank.setTileEntity(this);

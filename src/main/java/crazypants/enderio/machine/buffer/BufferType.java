@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.buffer;
 
-import static crazypants.enderio.machine.MachineObject.blockBuffer;
+import static crazypants.enderio.machine.MachineObject.block_buffer;
 
 import java.util.Locale;
 
@@ -43,7 +43,7 @@ public enum BufferType implements IStringSerializable {
   }
 
   public @Nonnull String getUnlocalizedName() {
-    return "tile." + MachineObject.blockBuffer.getUnlocalisedName() + "." + getName();
+    return "tile." + MachineObject.block_buffer.getUnlocalisedName() + "." + getName();
   }
 
   @Nonnull
@@ -56,7 +56,7 @@ public enum BufferType implements IStringSerializable {
   }
 
   public static @Nonnull ItemStack getStack(BufferType type) {
-    return new ItemStack(blockBuffer.getBlock(), 1, type.ordinal());
+    return new ItemStack(block_buffer.getBlock(), 1, type.ordinal());
   }
 
 }

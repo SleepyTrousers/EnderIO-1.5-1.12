@@ -39,7 +39,7 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.machine.MachineObject.blockTravelAnchor;
+import static crazypants.enderio.machine.MachineObject.block_travel_anchor;
 
 @SideOnly(Side.CLIENT)
 public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends ManagedTESR<T> {
@@ -54,7 +54,7 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Man
   }
 
   public TravelEntitySpecialRenderer() {
-    super(blockTravelAnchor.getBlock());
+    super(block_travel_anchor.getBlock());
   }
 
   @Override

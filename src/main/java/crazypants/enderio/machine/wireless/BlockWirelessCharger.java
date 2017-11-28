@@ -219,7 +219,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
 
   @Override
   public void registerRenderers(@Nonnull IModObject modObject) {
-    ClientUtil.registerDefaultItemRenderer(MachineObject.blockWirelessCharger);
+    ClientUtil.registerDefaultItemRenderer(MachineObject.block_wireless_charger);
   }
 
 }

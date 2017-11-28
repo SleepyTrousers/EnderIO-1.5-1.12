@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.reservoir;
 
-import static crazypants.enderio.machine.MachineObject.blockReservoir;
+import static crazypants.enderio.machine.MachineObject.block_reservoir;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -246,7 +246,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   @Override
   @SideOnly(Side.CLIENT)
   public void bindTileEntitySpecialRenderer() {
-    ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer((BlockReservoir) blockReservoir.getBlock()));
+    ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer((BlockReservoir) block_reservoir.getBlock()));
   }
 
 }

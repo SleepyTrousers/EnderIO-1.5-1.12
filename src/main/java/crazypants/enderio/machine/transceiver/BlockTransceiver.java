@@ -62,7 +62,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
   private TextureSupplier portalIcon = TextureRegistry.registerTexture("blocks/ender_still");
 
   private BlockTransceiver() {
-    super(MachineObject.blockTransceiver, TileTransceiver.class);
+    super(MachineObject.block_transceiver, TileTransceiver.class);
   }
 
   @SideOnly(Side.CLIENT)

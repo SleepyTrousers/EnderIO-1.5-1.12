@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 import static crazypants.enderio.init.ModObject.blockEndermanSkull;
-import static crazypants.enderio.machine.MachineObject.blockAversionObelisk;
+import static crazypants.enderio.machine.MachineObject.block_aversion_obelisk;
 
 
 @SideOnly(Side.CLIENT)
@@ -19,7 +19,7 @@ public class AversionObeliskRenderer extends ObeliskSpecialRenderer<TileAversion
   private ItemStack onStack = new ItemStack(blockEndermanSkull.getBlock(), 1, SkullType.REANIMATED_TORMENTED.ordinal());
 
   public AversionObeliskRenderer() {
-    super(null, blockAversionObelisk.getBlock());
+    super(null, block_aversion_obelisk.getBlock());
   }
 
   @Override

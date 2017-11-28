@@ -45,7 +45,7 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
   }
 
   protected BlockFarmStation() {
-    super(MachineObject.blockFarmStation, TileFarmStation.class);
+    super(MachineObject.block_farm_station, TileFarmStation.class);
   }
 
   @Override

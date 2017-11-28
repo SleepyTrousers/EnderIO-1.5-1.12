@@ -85,7 +85,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
   private IFluidCoolant curCoolant;
 
   public TileCombustionGenerator() {
-    super(new SlotDefinition(-1, -1, -1, -1, -1, -1), MachineObject.blockCombustionGenerator);
+    super(new SlotDefinition(-1, -1, -1, -1, -1, -1), MachineObject.block_combustion_generator);
     coolantTank.setTileEntity(this);
     coolantTank.setCanDrain(false);
     fuelTank.setTileEntity(this);
@@ -115,7 +115,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockCombustionGenerator.getUnlocalisedName();
+    return MachineObject.block_combustion_generator.getUnlocalisedName();
   }
 
   @Override

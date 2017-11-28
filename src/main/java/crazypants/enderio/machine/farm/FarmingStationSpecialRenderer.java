@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.farm;
 
-import static crazypants.enderio.machine.MachineObject.blockFarmStation;
+import static crazypants.enderio.machine.MachineObject.block_farm_station;
 
 import javax.annotation.Nonnull;
 
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class FarmingStationSpecialRenderer extends ManagedTESR<TileFarmStation> {
 
   public FarmingStationSpecialRenderer() {
-    super(blockFarmStation.getBlock());
+    super(block_farm_station.getBlock());
   }
 
   @Override

@@ -37,7 +37,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   }
 
   protected BlockCombustionGenerator() {
-    super(MachineObject.blockCombustionGenerator, TileCombustionGenerator.class);
+    super(MachineObject.block_combustion_generator, TileCombustionGenerator.class);
   }
 
   @Override

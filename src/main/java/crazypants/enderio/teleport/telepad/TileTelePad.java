@@ -72,11 +72,11 @@ public class TileTelePad extends TileTravelAnchor
 
   @Nonnull
   private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
-  private final ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(MachineObject.blockTelePad, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER,
+  private final ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER,
       Config.telepadEnergyUsePerTickRF);
-  private final ICapacitorKey maxEnergyStored = new DefaultCapacitorKey(MachineObject.blockTelePad, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER,
+  private final ICapacitorKey maxEnergyStored = new DefaultCapacitorKey(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER,
       Config.telepadEnergyBufferRF);
-  private final ICapacitorKey maxEnergyUsed = new DefaultCapacitorKey(MachineObject.blockTelePad, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER,
+  private final ICapacitorKey maxEnergyUsed = new DefaultCapacitorKey(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER,
       Config.telepadEnergyUsePerTickRF);
 
   @Store

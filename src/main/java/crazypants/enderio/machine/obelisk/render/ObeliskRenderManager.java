@@ -49,38 +49,38 @@ public class ObeliskRenderManager {
   public void registerRenderers() {
     Block block;
 
-    block = blockExperienceObelisk.getBlock();
+    block = block_experience_obelisk.getBlock();
     if (block != null) {
       ObeliskSpecialRenderer<TileExperienceObelisk> eor = new ObeliskSpecialRenderer<TileExperienceObelisk>(new ItemStack(ModObject.itemXpTransfer.getItem()), block);
       registerRenderer(block, TileExperienceObelisk.class, eor);
 
     }
-    block = blockAttractorObelisk.getBlock();
+    block = block_attractor_obelisk.getBlock();
     if (block != null) {
       ObeliskSpecialRenderer<TileAttractor> eor = new ObeliskSpecialRenderer<TileAttractor>(
               Material.ATTRACTOR_CRYSTAL.getStack(), block);
       registerRenderer(block, TileAttractor.class, eor);
     }
 
-    block = blockAversionObelisk.getBlock();
+    block = block_aversion_obelisk.getBlock();
     if (block != null) {
       AversionObeliskRenderer eor = new AversionObeliskRenderer();
       registerRenderer(block, TileAversionObelisk.class, eor);
     }
 
-    block = blockRelocatorObelisk.getBlock();
+    block = block_relocator_obelisk.getBlock();
     if (block != null) {
       RelocatorObeliskRenderer eor = new RelocatorObeliskRenderer();
       registerRenderer(block, TileRelocatorObelisk.class, eor);
     }
 
-    block = blockWeatherObelisk.getBlock();
+    block = block_weather_obelisk.getBlock();
     if (block != null) {
       ObeliskSpecialRenderer<TileWeatherObelisk> eor = new WeatherObeliskSpecialRenderer(new ItemStack(Items.FIREWORKS));
       registerRenderer(block, TileWeatherObelisk.class, eor);
     }
 
-    block = blockInhibitorObelisk.getBlock();
+    block = block_inhibitor_obelisk.getBlock();
     if (block != null) {
       ObeliskSpecialRenderer<TileInhibitorObelisk> eor = new ObeliskSpecialRenderer<TileInhibitorObelisk>(new ItemStack(Items.ENDER_PEARL), block);
       registerRenderer(block, TileInhibitorObelisk.class, eor);

@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.machine.MachineObject.blockTransceiver;
+import static crazypants.enderio.machine.MachineObject.block_transceiver;
 
 @SideOnly(Side.CLIENT)
 public class TransceiverRenderer extends ManagedTESR<TileTransceiver> {
@@ -22,7 +22,7 @@ public class TransceiverRenderer extends ManagedTESR<TileTransceiver> {
   private static final float scale = 0.7f;
 
   public TransceiverRenderer() {
-    super(blockTransceiver.getBlock());
+    super(block_transceiver.getBlock());
   }
 
   @Override
@@ -32,7 +32,7 @@ public class TransceiverRenderer extends ManagedTESR<TileTransceiver> {
 
   @Override
   protected void renderTileEntity(@Nonnull TileTransceiver te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
-    TextureAtlasSprite icon = ((BlockTransceiver) blockTransceiver.getBlock()).getPortalIcon();
+    TextureAtlasSprite icon = ((BlockTransceiver) block_transceiver.getBlock()).getPortalIcon();
 
     float time = Math.abs(50 - (EnderIO.proxy.getTickCount() % 100)) / 50f;
     float localScale = scale + 0.05f - time * 0.1f;

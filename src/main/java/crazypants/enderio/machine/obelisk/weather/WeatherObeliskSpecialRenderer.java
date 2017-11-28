@@ -4,12 +4,12 @@ import crazypants.enderio.machine.obelisk.render.ObeliskSpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import static crazypants.enderio.machine.MachineObject.blockWeatherObelisk;
+import static crazypants.enderio.machine.MachineObject.block_weather_obelisk;
 
 public class WeatherObeliskSpecialRenderer extends ObeliskSpecialRenderer<TileWeatherObelisk> {
   
   public WeatherObeliskSpecialRenderer(ItemStack itemStack) {
-    super(itemStack, blockWeatherObelisk.getBlock());
+    super(itemStack, block_weather_obelisk.getBlock());
   }
   
   @Override

@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.solar;
 
-import static crazypants.enderio.machine.MachineObject.blockSolarPanel;
+import static crazypants.enderio.machine.MachineObject.block_solar_panel;
 
 import com.enderio.core.common.util.BlockCoord;
 
@@ -104,7 +104,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
 
   static int getEnergyPerTick(World world, BlockPos pos) {
     final IBlockState blockState = world.getBlockState(pos);
-    if (blockState.getBlock() == blockSolarPanel.getBlock()) {
+    if (blockState.getBlock() == block_solar_panel.getBlock()) {
       return blockState.getValue(SolarType.KIND).getRfperTick();
     } else {
       return -1;

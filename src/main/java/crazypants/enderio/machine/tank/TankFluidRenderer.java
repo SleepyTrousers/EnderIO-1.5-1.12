@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.tank;
 
-import static crazypants.enderio.machine.MachineObject.blockTank;
+import static crazypants.enderio.machine.MachineObject.block_tank;
 
 import javax.annotation.Nonnull;
 
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TankFluidRenderer extends ManagedTESR<TileTank> {
 
   public TankFluidRenderer() {
-    super(blockTank.getBlock());
+    super(block_tank.getBlock());
   }
 
   @Override

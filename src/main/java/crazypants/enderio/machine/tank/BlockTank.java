@@ -54,7 +54,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   protected BlockTank() {
-    super(MachineObject.blockTank, TileTank.class);
+    super(MachineObject.block_tank, TileTank.class);
     setSoundType(SoundType.GLASS);
     setLightOpacity(0);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO)

@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.enchanter;
 
-import static crazypants.enderio.machine.MachineObject.blockEnchanter;
+import static crazypants.enderio.machine.MachineObject.block_enchanter;
 
 import javax.annotation.Nonnull;
 
@@ -36,7 +36,7 @@ public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implemen
   }
 
   protected BlockEnchanter() {
-    super(MachineObject.blockEnchanter, TileEnchanter.class);
+    super(MachineObject.block_enchanter, TileEnchanter.class);
     setLightOpacity(0);
   }
 
@@ -77,7 +77,7 @@ public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implemen
   @SideOnly(Side.CLIENT)
   public void bindTileEntitySpecialRenderer() {
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, new EnchanterModelRenderer());
-    ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(blockEnchanter.getBlock()), 0, TileEnchanter.class);
+    ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(block_enchanter.getBlock()), 0, TileEnchanter.class);
   }
 
   @Override

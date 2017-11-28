@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ZombieGeneratorRenderer extends ManagedTESR<TileZombieGenerator> {
 
   public ZombieGeneratorRenderer() {
-    super(MachineObject.blockZombieGenerator.getBlock());
+    super(MachineObject.block_zombie_generator.getBlock());
   }
 
   @Override

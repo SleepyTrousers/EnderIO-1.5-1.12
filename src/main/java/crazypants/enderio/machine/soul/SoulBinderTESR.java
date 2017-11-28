@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.soul;
 
-import static crazypants.enderio.machine.MachineObject.blockSoulBinder;
+import static crazypants.enderio.machine.MachineObject.block_soul_binder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +36,7 @@ import net.minecraftforge.client.ForgeHooksClient;
 public class SoulBinderTESR extends ManagedTESR<TileSoulBinder> {
 
   public SoulBinderTESR() {
-    super(blockSoulBinder.getBlock());
+    super(block_soul_binder.getBlock());
   }
 
   @Override

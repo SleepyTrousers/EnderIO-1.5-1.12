@@ -15,12 +15,12 @@ import javax.annotation.Nonnull;
 public class TileInhibitorObelisk extends AbstractRangedTileEntity {
 
   public TileInhibitorObelisk() {
-    super(new SlotDefinition(0, 0, 1), MachineObject.blockInhibitorObelisk);
+    super(new SlotDefinition(0, 0, 1), MachineObject.block_inhibitor_obelisk);
   }
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockInhibitorObelisk.getUnlocalisedName();
+    return MachineObject.block_inhibitor_obelisk.getUnlocalisedName();
   }
 
   @Override

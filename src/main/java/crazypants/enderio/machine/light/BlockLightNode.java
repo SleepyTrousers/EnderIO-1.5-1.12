@@ -33,7 +33,7 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
   public static final PropertyBool ACTIVE = PropertyBool.create("active");
   
   public BlockLightNode() {
-    super(MachineObject.blockLightNode, TileLightNode.class, Material.AIR);
+    super(MachineObject.block_light_node, TileLightNode.class, Material.AIR);
     setCreativeTab(null);
     setTickRandomly(true);
     setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));

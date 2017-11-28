@@ -138,7 +138,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockKillerJoe.getUnlocalisedName();
+    return MachineObject.block_killer_joe.getUnlocalisedName();
   }
 
   // These weapons are tested to work and render correctly in the Killer Joe. That's why this is not in the config file.

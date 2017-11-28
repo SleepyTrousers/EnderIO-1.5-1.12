@@ -45,7 +45,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   private int maxIn = maxOut;
 
   public TileBuffer() {
-    super(new SlotDefinition(9), LEGACY_ENERGY_INTAKE, LEGACY_ENERGY_BUFFER, new DefaultCapacitorKey(MachineObject.blockBuffer, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 0));
+    super(new SlotDefinition(9), LEGACY_ENERGY_INTAKE, LEGACY_ENERGY_BUFFER, new DefaultCapacitorKey(MachineObject.block_buffer, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 0));
   }
 
   @Override

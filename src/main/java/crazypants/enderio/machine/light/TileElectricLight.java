@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.light;
 
 import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.machine.MachineObject.blockLightNode;
+import static crazypants.enderio.machine.MachineObject.block_light_node;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -146,7 +146,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
         for (BlockPos ln : lightNodes) {
           if(ln != null) {
             bs = world.getBlockState(ln);
-            if (bs.getBlock() == blockLightNode.getBlock()) {
+            if (bs.getBlock() == block_light_node.getBlock()) {
               bs = bs.withProperty(BlockLightNode.ACTIVE, isActivated);
               world.setBlockState(ln, bs, 2);
               world.notifyBlockUpdate(ln, bs, bs, 3);
@@ -236,7 +236,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
         for (BlockPos entry : after) {
           if (!before.contains(entry)) {
-            world.setBlockState(entry, blockLightNode.getBlock().getDefaultState(), 3);
+            world.setBlockState(entry, block_light_node.getBlock().getDefaultState(), 3);
             TileEntity te = world.getTileEntity(entry);
             if (te instanceof TileLightNode) {
               ((TileLightNode) te).setParentPos(getPos());
@@ -301,13 +301,13 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
   private boolean isLightNode(Vector3d offset) {
     BlockPos bp = new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ()  + (int) offset.z);
-    return world.getBlockState(bp).getBlock() == blockLightNode.getBlock() && world.getTileEntity(bp) instanceof TileLightNode;
+    return world.getBlockState(bp).getBlock() == block_light_node.getBlock() && world.getTileEntity(bp) instanceof TileLightNode;
   }
 
   private void clearLightNodes() {
     if(lightNodes != null) {
       for (BlockPos ln : lightNodes) {
-        if (world.getBlockState(ln).getBlock() == blockLightNode.getBlock()) {
+        if (world.getBlockState(ln).getBlock() == block_light_node.getBlock()) {
           world.setBlockToAir(ln);
         }
       }

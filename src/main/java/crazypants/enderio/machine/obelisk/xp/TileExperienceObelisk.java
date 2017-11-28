@@ -38,7 +38,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockExperienceObelisk.getUnlocalisedName();
+    return MachineObject.block_experience_obelisk.getUnlocalisedName();
   }
 
   @Override

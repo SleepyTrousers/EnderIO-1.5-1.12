@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.light;
 
-import static crazypants.enderio.machine.MachineObject.blockElectricLight;
+import static crazypants.enderio.machine.MachineObject.block_electric_light;
 
 import crazypants.enderio.TileEntityEio;
 import info.loenwind.autosave.annotations.Storable;
@@ -27,7 +27,7 @@ public class TileLightNode extends TileEntityEio {
 
   public void checkParent() {
     if (hasWorld() && parent != null && world.isBlockLoaded(parent)) {
-      if (world.getBlockState(parent).getBlock() != blockElectricLight.getBlock()) {
+      if (world.getBlockState(parent).getBlock() != block_electric_light.getBlock()) {
         world.setBlockToAir(pos);
       }
     }

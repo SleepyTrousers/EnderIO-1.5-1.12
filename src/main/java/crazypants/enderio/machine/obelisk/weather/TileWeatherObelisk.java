@@ -131,7 +131,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockWeatherObelisk.getUnlocalisedName();
+    return MachineObject.block_weather_obelisk.getUnlocalisedName();
   }
 
   @Override

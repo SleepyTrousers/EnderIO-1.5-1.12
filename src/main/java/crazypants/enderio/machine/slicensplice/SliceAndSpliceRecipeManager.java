@@ -20,8 +20,8 @@ public class SliceAndSpliceRecipeManager extends ManyToOneRecipeManager {
   @Override
   public void loadRecipesFromConfig() {
     super.loadRecipesFromConfig();
-    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockSliceAndSplice.getUnlocalisedName(), new ManyToOneMachineRecipe("SpliceAndSpliceRecipe",
-        MachineObject.blockAlloySmelter.getUnlocalisedName(), this));
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.block_slice_and_splice.getUnlocalisedName(), new ManyToOneMachineRecipe("SpliceAndSpliceRecipe",
+        MachineObject.block_alloy_smelter.getUnlocalisedName(), this));
   }
 
 }

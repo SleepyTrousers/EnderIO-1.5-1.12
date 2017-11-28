@@ -1,7 +1,7 @@
 package crazypants.enderio.teleport.telepad.render;
 
 import static crazypants.enderio.config.Config.telepadIsTravelAnchor;
-import static crazypants.enderio.machine.MachineObject.blockTelePad;
+import static crazypants.enderio.machine.MachineObject.block_tele_pad;
 
 import java.util.Random;
 
@@ -33,10 +33,10 @@ public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer<TileTele
   private final IBlockState blade, lights, glass;
 
   public TelePadSpecialRenderer() {
-    super(blockTelePad.getBlock());
-    blade = blockTelePad.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_WEST);
-    lights = blockTelePad.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON_WEST);
-    glass = blockTelePad.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON);
+    super(block_tele_pad.getBlock());
+    blade = block_tele_pad.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_WEST);
+    lights = block_tele_pad.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON_WEST);
+    glass = block_tele_pad.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON);
 
   }
 

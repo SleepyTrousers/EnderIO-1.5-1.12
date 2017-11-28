@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.enchanter;
 
-import static crazypants.enderio.machine.MachineObject.blockEnchanter;
+import static crazypants.enderio.machine.MachineObject.block_enchanter;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EnchanterModelRenderer extends ManagedTESR<TileEnchanter> {
 
   public EnchanterModelRenderer() {
-    super(blockEnchanter.getBlock());
+    super(block_enchanter.getBlock());
   }
 
   @Nonnull
@@ -55,7 +55,7 @@ public class EnchanterModelRenderer extends ManagedTESR<TileEnchanter> {
     BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
     BlockModelShapes modelShapes = blockrendererdispatcher.getBlockModelShapes();
     IBakedModel bakedModel = modelShapes
-        .getModelForState(MachineObject.blockEnchanter.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
+        .getModelForState(MachineObject.block_enchanter.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
 
     RenderUtil.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

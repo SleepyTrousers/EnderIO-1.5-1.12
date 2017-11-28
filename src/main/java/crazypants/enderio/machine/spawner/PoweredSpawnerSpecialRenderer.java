@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class PoweredSpawnerSpecialRenderer extends ManagedTESR<TilePoweredSpawner> {
 
   public PoweredSpawnerSpecialRenderer() {
-    super(MachineObject.blockPoweredSpawner.getBlock());
+    super(MachineObject.block_powered_spawner.getBlock());
   }
 
   @Override

@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.spawner;
 
-import static crazypants.enderio.machine.MachineObject.blockPoweredSpawner;
+import static crazypants.enderio.machine.MachineObject.block_powered_spawner;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   public static final String KEY_SPAWNED_BY_POWERED_SPAWNER = "spawnedByPoweredSpawner";
 
   public static BlockPoweredSpawner create(@Nonnull IModObject modObject) {
-    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPoweredSpawner.getUnlocalisedName(), new DummyRecipe());
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.block_powered_spawner.getUnlocalisedName(), new DummyRecipe());
 
     PacketHandler.INSTANCE.registerMessage(PacketUpdateNotification.class, PacketUpdateNotification.class, PacketHandler.nextID(), Side.CLIENT);
 
@@ -96,7 +96,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   @SubscribeEvent
   public void handleAnvilEvent(AnvilUpdateEvent evt) {
-    if (evt.getLeft() == null || evt.getLeft().getCount() != 1 || evt.getLeft().getItem() != Item.getItemFromBlock(blockPoweredSpawner.getBlock())) {
+    if (evt.getLeft() == null || evt.getLeft().getCount() != 1 || evt.getLeft().getItem() != Item.getItemFromBlock(block_powered_spawner.getBlock())) {
       return;
     }
     if (evt.getRight() == null || evt.getRight().getCount() != 1 || evt.getRight().getItem() != ModObject.itemBrokenSpawner.getItem()) {

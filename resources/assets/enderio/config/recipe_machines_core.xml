@@ -415,7 +415,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="ingotIron" /><item name="enderio:item_xp_transfer" /><item name="ingotIron" />
         <item name="ingotIron" /><item name="PULSATING_CRYSTAL" /><item name="ingotIron" />
       </grid>
-      <output name="enderio:block_x_p_vacuum" />
+      <output name="enderio:block_xp_vacuum" />
     </crafting>
   </recipe>
 

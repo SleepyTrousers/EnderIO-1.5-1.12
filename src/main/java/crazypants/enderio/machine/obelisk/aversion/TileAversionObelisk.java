@@ -19,7 +19,7 @@ public class TileAversionObelisk extends TileEntityAbstractSpawningObelisk {
   
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockAversionObelisk.getUnlocalisedName();
+    return MachineObject.block_aversion_obelisk.getUnlocalisedName();
   }
 
   @Override

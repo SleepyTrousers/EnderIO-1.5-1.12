@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.solar;
 
-import static crazypants.enderio.machine.MachineObject.blockSolarPanel;
+import static crazypants.enderio.machine.MachineObject.block_solar_panel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -119,13 +119,13 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
     }
     SolarType otherType = null;
     IBlockState otherState = world.getBlockState(other);
-    if (otherState.getBlock() == blockSolarPanel.getBlock()) {
+    if (otherState.getBlock() == block_solar_panel.getBlock()) {
       otherType = otherState.getValue(SolarType.KIND);
     }
     for (BlockPos panel : panels) {
       if (world.isBlockLoaded(panel)) {
         IBlockState state = world.getBlockState(panel);
-        if (state.getBlock() == blockSolarPanel.getBlock()) {
+        if (state.getBlock() == block_solar_panel.getBlock()) {
           return state.getValue(SolarType.KIND) == otherType;
         }
       }

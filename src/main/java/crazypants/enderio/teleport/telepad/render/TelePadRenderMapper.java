@@ -1,6 +1,6 @@
 package crazypants.enderio.teleport.telepad.render;
 
-import static crazypants.enderio.machine.MachineObject.blockTelePad;
+import static crazypants.enderio.machine.MachineObject.block_tele_pad;
 
 import java.util.Collections;
 import java.util.EnumMap;
@@ -46,7 +46,7 @@ public class TelePadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
                                           QuadCollector quadCollector) {
 
-    if (state.getBlock() == blockTelePad.getBlock()) {
+    if (state.getBlock() == block_tele_pad.getBlock()) {
       if (blockLayer == BlockRenderLayer.SOLID) {
         BlockType type = state.getValue(BlockTelePad.BLOCK_TYPE);
         if (type == BlockType.SINGLE) {
