@@ -11,6 +11,7 @@ import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.machine.modes.IoMode;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -23,7 +24,7 @@ import net.minecraft.util.text.TextComponentString;
 @Storable
 public class TileEnchanter extends AbstractMachineEntity implements ISidedInventory {
 
-  @Store
+  @Store(handler = HandleItemStackNNList.class)
   private NNList<ItemStack> inv = new NNList<>(4, ItemStack.EMPTY);
 
   @Override
@@ -39,7 +40,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   @Override
   public ItemStack getStackInSlot(int slot) {
     if (slot < 0 || slot >= inv.size()) {
-      return null;
+      return ItemStack.EMPTY;
     }
     return inv.get(slot);
   }
@@ -100,7 +101,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
 
   @Override
   public boolean isItemValidForSlot(int slot, ItemStack stack) {
-    if (stack == null) {
+    if (stack.isEmpty()) {
       return false;
     }
     if (slot == 0) {
@@ -153,7 +154,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
 
   private int getEnchantmentCost(EnchanterRecipe currentEnchantment) {
     ItemStack item = inv.get(1);
-    if (item == null) {
+    if (item.isEmpty()) {
       return 0;
     }
     if (currentEnchantment == null) {
