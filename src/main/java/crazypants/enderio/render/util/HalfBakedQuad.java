@@ -13,6 +13,7 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
@@ -92,6 +93,22 @@ public class HalfBakedQuad {
     }
   }
 
+  public void recomputeNormals() {
+    Vector3d T1 = new Vector3d();
+    Vector3d T2 = new Vector3d();
+    Vector3d T3 = new Vector3d();
+
+    T1.set(corners.get(1).xyz);
+    T1.sub(corners.get(0).xyz);
+    T2.set(corners.get(2).xyz);
+    T2.sub(corners.get(0).xyz);
+    T3.cross(T1, T2);
+    T3.normalize();
+    for (Vertex vertex : corners) {
+      vertex.setNormal(T3.x, T3.y, T3.z);
+    }
+  }
+
   public void transform(final VertexTransform... xforms) {
     corners.apply(new Callback<Vertex>() {
       @Override
@@ -101,6 +118,7 @@ public class HalfBakedQuad {
         }
       }
     });
+    recomputeNormals();
   }
 
   public void render(@Nonnull VertexBuffer tes) {
@@ -151,8 +169,7 @@ public class HalfBakedQuad {
      *
      */
     public void add(@Nonnull BoundingBox bb, @Nonnull EnumFacing face, double umin, double umax, double vmin, double vmax, TextureAtlasSprite tex,
-        Vector4f color,
-        boolean upsidedown) {
+        Vector4f color, boolean upsidedown) {
       if (upsidedown) {
         store.add(new HalfBakedQuad(bb, face, (float) umin, (float) umax, (float) vmax, (float) vmin, tex, color));
       } else {
