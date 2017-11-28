@@ -1,15 +1,9 @@
 package crazypants.enderio.machine.slicensplice;
 
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
-import static crazypants.enderio.config.Config.slicenspliceToolDamageChance;
-
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.paint.IPaintable;
@@ -28,6 +22,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
+import static crazypants.enderio.config.Config.slicenspliceToolDamageChance;
+
 @Storable
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
@@ -41,7 +40,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockSliceAndSplice.getUnlocalisedName();
+    return MachineRecipeRegistry.SLICENSPLICE;
   }
 
   @Override

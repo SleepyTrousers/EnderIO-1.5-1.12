@@ -6,8 +6,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.ItemUtil;
 
-
-import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.paint.IPaintable;
@@ -53,7 +51,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockPainter.getUnlocalisedName();
+    return MachineRecipeRegistry.PAINTER;
   }
 
   @Override

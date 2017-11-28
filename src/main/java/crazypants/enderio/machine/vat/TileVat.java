@@ -21,6 +21,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -59,7 +60,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockVat.getUnlocalisedName();
+    return MachineRecipeRegistry.VAT;
   }
 
   @Override

@@ -11,7 +11,6 @@ import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
-import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
@@ -75,7 +74,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockSoulBinder.getUnlocalisedName();
+    return MachineRecipeRegistry.SOULBINDER;
   }
     
   @Override

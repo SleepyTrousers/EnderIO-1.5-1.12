@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.farm;
 
-import static crazypants.enderio.config.Config.farmEvictEmptyRFTools;
-import static crazypants.enderio.config.Config.farmStopOnNoOutputSlots;
-
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.UUID;
@@ -23,7 +20,6 @@ import crazypants.enderio.farming.FarmingTool;
 import crazypants.enderio.farming.IFarmer;
 import crazypants.enderio.farming.farmers.IHarvestResult;
 import crazypants.enderio.farming.registry.Commune;
-import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.fakeplayer.FakePlayerEIO;
@@ -34,6 +30,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.recipe.IMachineRecipe;
 import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
 import crazypants.enderio.render.ranged.IRanged;
 import crazypants.enderio.render.ranged.RangeParticle;
 import crazypants.util.Prep;
@@ -62,6 +59,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
+
+import static crazypants.enderio.config.Config.farmEvictEmptyRFTools;
+import static crazypants.enderio.config.Config.farmStopOnNoOutputSlots;
 
 @Storable
 public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarmer, IPaintable.IPaintableTileEntity, IRanged {
@@ -806,7 +806,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockFarmStation.getUnlocalisedName();
+    return MachineRecipeRegistry.FARM;
   }
 
   @Override

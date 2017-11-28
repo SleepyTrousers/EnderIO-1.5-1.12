@@ -1,9 +1,5 @@
 package crazypants.enderio.machine.spawner;
 
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
-
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -15,17 +11,17 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.init.ModObject;
-import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.interfaces.IPoweredTask;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
-import crazypants.enderio.render.ranged.IRanged;
-import crazypants.enderio.render.ranged.RangeParticle;
 import crazypants.enderio.machine.task.PoweredTask;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.render.ranged.IRanged;
+import crazypants.enderio.render.ranged.RangeParticle;
 import crazypants.util.CapturedMob;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -45,6 +41,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
 
 @Storable
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged {
@@ -119,7 +119,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockPoweredSpawner.getUnlocalisedName();
+    return MachineRecipeRegistry.SPAWNER;
   }
 
   @Override

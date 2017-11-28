@@ -1,9 +1,5 @@
 package crazypants.enderio.machine.transceiver;
 
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
-
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
@@ -19,9 +15,7 @@ import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ItemUtil;
 
-import crazypants.enderio.filter.FilterRegistry;
 import crazypants.enderio.filter.filters.ItemFilter;
-import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.modes.IoMode;
@@ -30,6 +24,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.PowerDistributor;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
 import crazypants.enderio.transceiver.Channel;
 import crazypants.enderio.transceiver.ChannelList;
 import crazypants.enderio.transceiver.ChannelType;
@@ -49,6 +44,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
 
@@ -166,7 +165,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockTransceiver.getUnlocalisedName();
+    return MachineRecipeRegistry.TRANSCEIVER;
   }
 
   @Override
