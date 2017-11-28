@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.GuiID;
 import crazypants.enderio.init.IModObject;
-import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.machine.render.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
@@ -22,7 +21,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -34,13 +32,13 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
 
   public static BlockBuffer create(@Nonnull IModObject modObject) {
     PacketHandler.INSTANCE.registerMessage(PacketBufferIO.class, PacketBufferIO.class, PacketHandler.nextID(), Side.SERVER);
-    BlockBuffer res = new BlockBuffer();
+    BlockBuffer res = new BlockBuffer(modObject);
     res.init();
     return res;
   }
 
-  private BlockBuffer() {
-    super(MachineObject.blockBuffer, TileBuffer.class);
+  private BlockBuffer(@Nonnull IModObject modObject) {
+    super(modObject, TileBuffer.class);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BufferType.TYPE, BufferType.ITEM));
   }
   
@@ -78,24 +76,24 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
     for (BufferType type : BufferType.values()) {
-      list.add(new ItemStack(item, 1, type.ordinal()));
+      list.add(BufferType.getStack(type));
     }
   }
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileBuffer) {
-      return new ContainerBuffer(player.inventory, (TileBuffer) te);
+    TileBuffer te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new ContainerBuffer(player.inventory, te);
     }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileBuffer) {
-      return new GuiBuffer(player.inventory, (TileBuffer) te);
+    TileBuffer te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new GuiBuffer(player.inventory, te);
     }
     return null;
   }

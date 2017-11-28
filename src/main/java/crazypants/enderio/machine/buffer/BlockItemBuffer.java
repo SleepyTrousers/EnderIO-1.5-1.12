@@ -22,7 +22,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.machine.MachineObject.blockBuffer;
 
 public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverlayRenderAware {
 
@@ -39,7 +38,11 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
 
   @Override
   public String getUnlocalizedName(ItemStack stack) {
-    return BufferType.values()[stack.getItemDamage()].getUnlocalizedName();
+    return getType(stack).getUnlocalizedName();
+  }
+
+  private static BufferType getType(ItemStack stack) {
+    return BufferType.getTypeFromMeta(stack.getItemDamage());
   }
 
   @Override
@@ -51,7 +54,7 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
       TileEntity te = world.getTileEntity(pos);
       if (te instanceof TileBuffer) {
         TileBuffer buffer = ((TileBuffer) te);
-        BufferType t = BufferType.values()[block.getMetaFromState(newState)];
+        BufferType t = newState.getValue(BufferType.TYPE);
         buffer.setHasInventory(t.hasInventory);
         buffer.setHasPower(t.hasPower);
         buffer.setCreative(t.isCreative);
@@ -63,26 +66,24 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
 
   @Override
   public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
-    if (stack.getCount() == 1 && blockBuffer.getBlock().getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE).hasPower) {
+    if (stack.getCount() == 1 && getType(stack).hasPower) {
       PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
     }
   }
 
   @Override
   public boolean hasEffect(ItemStack stack) {
-    return blockBuffer.getBlock().getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE).isCreative || super.hasEffect(stack);
+    return getType(stack).isCreative || super.hasEffect(stack);
   }
 
   @Override
   public int getMaxEnergyStored(ItemStack stack) {
-    BufferType type = blockBuffer.getBlock().getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE);
-    return type.hasPower ? LEGACY_ENERGY_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR) : 0;
+    return getType(stack).hasPower ? LEGACY_ENERGY_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR) : 0;
   }
 
   @Override
-  public int getMaxInput(ItemStack container) {
-    BufferType type = blockBuffer.getBlock().getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE);
-    return type.hasPower ? Config.powerConduitTierThreeRF / 20 : 0;
+  public int getMaxInput(ItemStack stack) {
+    return getType(stack).hasPower ? Config.powerConduitTierThreeRF / 20 : 0;
   }
 
   @Override
@@ -107,7 +108,7 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-      return backend.hasCapability(capability, facing) && blockBuffer.getBlock().getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE).hasPower;
+      return backend.hasCapability(capability, facing) && getType(container).hasPower;
     }
 
     @Override
@@ -115,7 +116,7 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
       if (!hasCapability(capability, facing)) {
         return null;
       }
-      BufferType type = blockBuffer.getBlock().getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE);
+      BufferType type = getType(container);
       if(!type.hasPower || container.getCount() > 1) {
         return null;
       }
