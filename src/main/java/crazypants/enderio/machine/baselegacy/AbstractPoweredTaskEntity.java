@@ -406,4 +406,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     }
   }
 
+  // task machines need to return a valid constant from MachineRecipeRegistry
+  @Override
+  public abstract String getMachineName();
+
 }
