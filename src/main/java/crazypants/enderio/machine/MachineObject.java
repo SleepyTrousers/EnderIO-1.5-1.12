@@ -37,7 +37,6 @@ import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vacuum.BlockXPVacuum;
 import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
-import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.telepad.BlockDialingDevice;
 import crazypants.enderio.teleport.telepad.BlockTelePad;
@@ -53,8 +52,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIOMachines.MODID)
 public enum MachineObject implements IModObject.Registerable {
 
-  blockMachineIO(BlockMachineIO.class),
-  
   blockAlloySmelter(BlockAlloySmelter.class),
   blockBuffer(BlockBuffer.class),
 //  blockCapBank(BlockCapBank.class),
