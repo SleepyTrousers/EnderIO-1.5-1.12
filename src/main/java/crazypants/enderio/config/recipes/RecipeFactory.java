@@ -19,9 +19,9 @@ import javax.xml.stream.events.XMLEvent;
 import org.apache.commons.io.IOUtils;
 
 import crazypants.enderio.Log;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 
 public class RecipeFactory {
 
@@ -37,6 +37,21 @@ public class RecipeFactory {
     this.domain = domain;
   }
 
+  private InputStream getResource(ResourceLocation resourceLocation) {
+    final ModContainer container = Loader.instance().activeModContainer();
+    if (container != null) {
+      final String resourcePath = String.format("/%s/%s/%s", "assets", resourceLocation.getResourceDomain(), resourceLocation.getResourcePath());
+      final InputStream resourceAsStream = container.getMod().getClass().getResourceAsStream(resourcePath);
+      if (resourceAsStream != null) {
+        return resourceAsStream;
+      } else {
+        throw new RuntimeException("Could not find resource " + resourceLocation);
+      }
+    } else {
+      throw new RuntimeException("Failed to find current mod while looking for resource " + resourceLocation);
+    }
+  }
+
   public <T extends RecipeRoot> T readFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
     final ResourceLocation xsdRL = new ResourceLocation(domain, "config/recipes.xsd");
     final File xsdFL = new File(configDirectory, "recipes.xsd");
@@ -49,11 +64,11 @@ public class RecipeFactory {
     final File userFL = new File(configDirectory, fileName + "_user.xml");
 
     T config;
-    try (IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(coreRL)) {
+    try (InputStream coreFileStream = getResource(coreRL)) {
       try {
-        config = readStax(target.copy(target), rootElement, resource.getInputStream());
+        config = readStax(target.copy(target), rootElement, coreFileStream);
       } catch (XMLStreamException e) {
-        printContentsOnError(resource.getInputStream(), coreRL.toString());
+        printContentsOnError(getResource(coreRL), coreRL.toString());
         throw e;
       }
 
@@ -128,8 +143,7 @@ public class RecipeFactory {
   }
 
   private void copyCore(ResourceLocation resourceLocation, File file) {
-    try (IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation)) {
-      InputStream schemaIn = resource.getInputStream();
+    try (InputStream schemaIn = getResource(resourceLocation)) {
       try (OutputStream schemaOut = new FileOutputStream(file)) {
         IOUtils.copy(schemaIn, schemaOut);
       }
