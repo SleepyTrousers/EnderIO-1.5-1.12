@@ -99,6 +99,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
     super(new SlotDefinition(9, 6, 1), CapacitorKey.LEGACY_ENERGY_INTAKE, CapacitorKey.LEGACY_ENERGY_INTAKE, CapacitorKey.LEGACY_ENERGY_USE);
   }
 
+  @Override
   public int getFarmSize() {
     return 5;//(int) (FARM_BASE_SIZE.getFloat(getCapacitorData()) + FARM_BONUS_SIZE.getFloat(getCapacitorData()));
   }
@@ -116,6 +117,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
     clearNotification();
   }
 
+  @Override
   public boolean tillBlock(BlockPos plantingLocation) {
     BlockPos dirtLoc = plantingLocation.down();
     Block dirtBlock = getBlock(dirtLoc);
@@ -308,6 +310,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
     return Math.max(EnchantmentHelper.getEnchantmentLevel(Enchantments.LOOTING, stack), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
   }
 
+  @Override
   public @Nonnull FakePlayerEIO getFakePlayer() {
     return farmerJoe;
   }
@@ -316,6 +319,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
     return getBlockState(posIn).getBlock();
   }
 
+  @Override
   public @Nonnull IBlockState getBlockState(@Nonnull BlockPos posIn) {
     return world.getBlockState(posIn);
   }
@@ -326,6 +330,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
     return block.isAir(bs, world, bc) || block.isReplaceable(world, bc);
   }
 
+  @Override
   public void setNotification(FarmNotification note) {
     if (!notification.contains(note)) {
       notification.add(note);
@@ -339,6 +344,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
     }
   }
 
+  @Override
   public void clearNotification() {
     if (hasNotification()) {
       notification.clear();
@@ -610,6 +616,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
     return true;
   }
 
+  @Override
   public boolean hasSeed(ItemStack seeds, BlockPos bc) {
     int slot = getSupplySlotForCoord(bc);
     ItemStack inv = inventory[slot];
@@ -621,6 +628,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
    * 
    * <=0 - break no leaves for saplings 50 - break half the leaves for saplings 90 - break 90% of the leaves for saplings
    */
+  @Override
   public int isLowOnSaplings(BlockPos bc) {
     int slot = getSupplySlotForCoord(bc);
     ItemStack inv = inventory[slot];
@@ -659,10 +667,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
     return null;
   }
 
+  @Override
   public ItemStack takeSeedFromSupplies(BlockPos bc) {
     return takeSeedFromSupplies(getSeedTypeInSuppliesFor(bc), bc);
   }
 
+  @Override
   public ItemStack getSeedTypeInSuppliesFor(BlockPos bc) {
     int slot = getSupplySlotForCoord(bc);
     return getSeedTypeInSuppliesFor(slot);

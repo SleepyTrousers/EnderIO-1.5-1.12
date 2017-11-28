@@ -100,24 +100,23 @@ public class EnchanterRecipeParser extends DefaultHandler {
   }
 
   private static String readRecipes(File copyTo, String fileName, boolean replaceIfExists) throws IOException {
-    if(!replaceIfExists && copyTo.exists()) {
-      return readStream(new FileInputStream(copyTo));
+    if (!replaceIfExists && copyTo.exists()) {
+      try (final FileInputStream fis = new FileInputStream(copyTo)) {
+        return readStream(fis);
+      }
     }
 
-    InputStream in = RecipeConfig.class.getResourceAsStream("/assets/enderio/config/" + fileName);
-    if(in == null) {
-      Log.error("Could load default Enchanter recipes.");
-      throw new IOException("Could not resource /assets/enderio/config/" + fileName + " form classpath. ");
+    try (InputStream in = RecipeConfig.class.getResourceAsStream("/assets/enderio/config/" + fileName)) {
+      if (in == null) {
+        Log.error("Could load default Enchanter recipes.");
+        throw new IOException("Could not resource /assets/enderio/config/" + fileName + " form classpath. ");
+      }
+      String output = readStream(in);
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(copyTo, false))) {
+        writer.write(output.toString());
+      }
+      return output.toString();
     }
-    String output = readStream(in);
-    BufferedWriter writer = null;
-    try {
-      writer = new BufferedWriter(new FileWriter(copyTo, false));
-      writer.write(output.toString());
-    } finally {
-      IOUtils.closeQuietly(writer);
-    }
-    return output.toString();
   }
 
   private static String readStream(InputStream in) throws IOException {

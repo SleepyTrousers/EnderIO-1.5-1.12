@@ -19,6 +19,7 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.recipe.vat.VatRecipeManager;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -159,7 +160,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     float mult;
     ItemStack inStack = vat.getStackInSlot(0);
     if (!inStack.isEmpty()) {
-      mult = VatRecipeManager.instance.getMultiplierForInput(inputFluid, inStack, outputFluid);
+      mult = VatRecipeManager.getInstance().getMultiplierForInput(inputFluid, inStack, outputFluid);
       if (mult > 0) {
         String str = "x" + mult;
         x = guiLeft + 63 - fontRenderer.getStringWidth(str) / 2;
@@ -168,7 +169,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     }
     inStack = vat.getStackInSlot(1);
     if (!inStack.isEmpty()) {
-      mult = VatRecipeManager.instance.getMultiplierForInput(inputFluid, inStack, outputFluid);
+      mult = VatRecipeManager.getInstance().getMultiplierForInput(inputFluid, inStack, outputFluid);
       if (mult > 0) {
         String str = "x" + mult;
         x = guiLeft + 113 - fontRenderer.getStringWidth(str) / 2;

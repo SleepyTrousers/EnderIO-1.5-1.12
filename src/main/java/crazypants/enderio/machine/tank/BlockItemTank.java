@@ -31,8 +31,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider {
-  
-  private final Block block;
 
 //  public BlockItemTank(IModObject mo) {
 //    super(mo.getBlock());
@@ -44,7 +42,6 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
 
   public BlockItemTank(Block block, IModObject mo) {
     super(block);
-    this.block = mo.getBlock();
     setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
     setRegistryName(mo.getRegistryName());
@@ -59,18 +56,18 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int meta = par1ItemStack.getItemDamage();
     String result = super.getUnlocalizedName(par1ItemStack);
-    if(meta == 1) {
+    if (meta == 1) {
       result += ".advanced";
     }
     return result;
   }
 
-  @Override  
+  @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-    ItemStack stack = new ItemStack(this, 1,0);
+    ItemStack stack = new ItemStack(this, 1, 0);
     par3List.add(stack);
-    stack = new ItemStack(this, 1,1);
+    stack = new ItemStack(this, 1, 1);
     par3List.add(stack);
   }
 
@@ -93,7 +90,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     ((IAdvancedTooltipProvider) block).addDetailedEntries(itemstack, entityplayer, list, flag);
   }
-  
+
   private SmartTank loadTank(ItemStack stack) {
     if (stack.hasTagCompound()) {
       SmartTank tank = ItemTankHelper.getTank(stack);
@@ -103,7 +100,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
     }
     return stack.getMetadata() == 0 ? new SmartTank(16000) : new SmartTank(32000);
   }
-  
+
   private void saveTank(ItemStack stack, SmartTank tank) {
     if (!stack.hasTagCompound()) {
       stack.setTagCompound(new NBTTagCompound());

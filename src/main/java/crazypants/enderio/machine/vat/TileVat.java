@@ -22,6 +22,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.recipe.vat.VatRecipeManager;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -36,7 +37,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
   public static final int BUCKET_VOLUME = 1000;
-  
+
   @Store
   final SmartTank inputTank = new SmartTank(BUCKET_VOLUME * 8);
   @Store

@@ -20,6 +20,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.recipe.IMachineRecipe;
 import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.recipe.spawner.DummyRecipe;
 import crazypants.enderio.render.ranged.IRanged;
 import crazypants.enderio.render.ranged.RangeParticle;
 import crazypants.util.CapturedMob;
@@ -58,7 +59,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   private boolean sendNotification = false;
 
   public TilePoweredSpawner() {
-    super(new SlotDefinition(1, 1, 1), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
+    super(new SlotDefinition(1, 1, 1), LEGACY_ENERGY_INTAKE, LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
   }
 
   public boolean isSpawnMode() {
@@ -224,7 +225,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     } else {
       ticksDelay = Config.poweredSpawnerMaxDelayTicks - ((Config.poweredSpawnerMaxDelayTicks - Config.poweredSpawnerMinDelayTicks) / 2);
     }
-    ticksDelay /= (float)AbstractBlockObelisk.DUMMY;
+    ticksDelay /= (float) AbstractBlockObelisk.DUMMY;
     int powerPerTick = getPowerUsePerTick();
     res.setRequiredEnergy(powerPerTick * ticksDelay);
     return res;

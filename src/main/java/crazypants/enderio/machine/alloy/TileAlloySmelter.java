@@ -198,6 +198,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     return false;
   }
 
+  @Override
   public @Nonnull String getMachineName() {
     return MachineRecipeRegistry.ALLOYSMELTER;
   }
