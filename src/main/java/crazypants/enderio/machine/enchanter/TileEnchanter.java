@@ -166,7 +166,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
 
 
 
-  public void setOutput(ItemStack output) {
+  public void setOutput(@Nonnull ItemStack output) {
     inv.set(inv.size() - 1, output);
     markDirty();
   }
