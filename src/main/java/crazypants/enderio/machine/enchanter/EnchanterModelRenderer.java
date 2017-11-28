@@ -35,7 +35,8 @@ public class EnchanterModelRenderer extends ManagedTESR<TileEnchanter> {
     super(blockEnchanter.getBlock());
   }
 
-  private static final String TEXTURE = "enderio:textures/blocks/BookStand.png";
+  @Nonnull
+  private static final String TEXTURE = "enderio:textures/blocks/book_stand.png";
 
   private EnchanterModel model = new EnchanterModel();
 
