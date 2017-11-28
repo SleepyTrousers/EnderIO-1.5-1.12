@@ -35,8 +35,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> implements IHaveTESR {
 
-  public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/zombieGen_head");
-  public static final TextureSupplier textureHead2 = TextureRegistry.registerTexture("blocks/zombieGen_head2");
+  public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/zombie_gen_head");
+  public static final TextureSupplier textureHead2 = TextureRegistry.registerTexture("blocks/zombie_gen_head2");
 
   private static final Double px = 1d / 16d;
   public static final AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);

@@ -45,8 +45,8 @@ import net.minecraftforge.server.permission.PermissionAPI;
 public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implements IHaveTESR {
 
   static final String USERNAME = "KillerJoe";
-  public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/killerJoe_head");
-  public static final TextureSupplier textureHead2 = TextureRegistry.registerTexture("blocks/killerJoe_head2");
+  public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/killer_joe_head");
+  public static final TextureSupplier textureHead2 = TextureRegistry.registerTexture("blocks/killer_joe_head2");
   
   private static final Double px = 1d / 16d;
   @Nonnull
