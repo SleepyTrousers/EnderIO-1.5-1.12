@@ -8,7 +8,13 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 
+import crazypants.enderio.capacitor.CapacitorHelper;
+import crazypants.enderio.capacitor.CapacitorKeyType;
+import crazypants.enderio.capacitor.DefaultCapacitorKey;
+import crazypants.enderio.capacitor.Scaler;
+import crazypants.enderio.capacitor.Scaler.IndexedScaler;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.modes.IoMode;
@@ -39,7 +45,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   private int maxIn = maxOut;
 
   public TileBuffer() {
-    super(new SlotDefinition(9), LEGACY_ENERGY_INTAKE, LEGACY_ENERGY_BUFFER, null);
+    super(new SlotDefinition(9), LEGACY_ENERGY_INTAKE, LEGACY_ENERGY_BUFFER, new DefaultCapacitorKey(MachineObject.blockBuffer, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 0));
   }
 
   @Override
