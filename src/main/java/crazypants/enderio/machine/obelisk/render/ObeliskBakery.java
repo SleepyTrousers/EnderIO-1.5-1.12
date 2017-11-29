@@ -1,24 +1,19 @@
 package crazypants.enderio.machine.obelisk.render;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vertex;
+
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
-import org.lwjgl.opengl.GL11;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ObeliskBakery {
 
@@ -37,14 +32,6 @@ public class ObeliskBakery {
   }
 
   public static List<BakedQuad> bake(TextureSupplier[] texs) {
-    return exec(texs, false);
-  }
-
-  public static void render(TextureSupplier[] texs) {
-    exec(texs, true);
-  }
-
-  private static List<BakedQuad> exec(TextureSupplier[] texs, boolean doRender) {
     // Icons for block
     TextureAtlasSprite[] icons = new TextureAtlasSprite[6];
     for (int i = 0; i < icons.length; i++) {
@@ -62,31 +49,13 @@ public class ObeliskBakery {
     }
     buffer3.add(BoundingBox.UNIT_CUBE, EnumFacing.DOWN, 0f, 1f, 0f, 1f, icons[EnumFacing.DOWN.ordinal()], null);
 
-    if (doRender) {
-      buffer1.transform(xform2z);
-      buffer2.transform(xform2x);
-      buffer3.transform(xform3);
+    List<BakedQuad> quads = new ArrayList<BakedQuad>();
 
-      GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-      RenderUtil.bindBlockTexture();
-      VertexBuffer tes = Tessellator.getInstance().getBuffer();
-      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
-      buffer1.render(tes);
-      buffer2.render(tes);
-      buffer3.render(tes);
-      Tessellator.getInstance().draw();
+    buffer1.bake(quads, xform2z);
+    buffer2.bake(quads, xform2x);
+    buffer3.bake(quads, xform3);
 
-      return null;
-    } else {
-
-      List<BakedQuad> quads = new ArrayList<BakedQuad>();
-
-      buffer1.bake(quads, xform2z);
-      buffer2.bake(quads, xform2x);
-      buffer3.bake(quads, xform3);
-
-      return quads;
-    }
+    return quads;
   }
 
   private static class VertXForm2x implements VertexTransform {
