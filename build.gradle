@@ -86,12 +86,12 @@ dependencies {
 }
 
 sourceSets {
-    api {
+    main {
         java {
-            srcDir 'CoFHLib/src/main/java'
-            // Note: If this doesn't work in Eclipse, add those as Resource Filters to the package, not as filters to the source set...
-            exclude '**/cofh/lib/**'
-            exclude '**/IGeneratorParser.java'
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'resources'
         }
     }
 }
