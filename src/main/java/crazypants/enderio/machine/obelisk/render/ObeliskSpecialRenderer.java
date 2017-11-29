@@ -182,7 +182,8 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
           }
 
           if (ibakedmodel.isGui3d()) {
-            GlStateManager.scale(0.5F, 0.5F, 0.5F);
+            // this makes blocks smaller...too small
+            // GlStateManager.scale(0.5F, 0.5F, 0.5F);
           }
           ibakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(ibakedmodel, ItemCameraTransforms.TransformType.GROUND, false);
           this.itemRenderer.renderItem(itemstack, ibakedmodel);
