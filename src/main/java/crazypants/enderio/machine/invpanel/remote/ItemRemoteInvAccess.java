@@ -4,18 +4,19 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.Log;
+
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.Log;
+import crazypants.enderio.base.item.PowerBarOverlayRenderHelper;
+import crazypants.enderio.base.power.IInternalPoweredItem;
+import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
+import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.machine.MachineObject;
-import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
-import crazypants.enderio.power.IInternalPoweredItem;
-import crazypants.enderio.power.ItemPowerCapabilityBackend;
-import crazypants.enderio.power.PowerDisplayUtil;
-import crazypants.enderio.render.IHaveRenderers;
-import crazypants.util.ClientUtil;
-import crazypants.util.NbtValue;
+import crazypants.enderio.util.ClientUtil;
+import crazypants.enderio.util.NbtValue;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,8 +48,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static crazypants.enderio.machine.MachineObject.blockInventoryPanel;
-import static crazypants.util.NbtValue.*;
+import static crazypants.enderio.base.machine.MachineObject.blockInventoryPanel;
+import static crazypants.enderio.util.NbtValue.*;
 
 public class ItemRemoteInvAccess extends Item
     implements IAdvancedTooltipProvider, IOverlayRenderAware, IFluidContainerItem, IInternalPoweredItem, IHaveRenderers {

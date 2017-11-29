@@ -4,16 +4,16 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.GuiID;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.base.render.property.EnumRenderMode6;
+import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.machine.MachineObject;
-import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.machine.invpanel.remote.PacketPrimeInventoryPanelRemote;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.render.property.EnumRenderMode6;
-import crazypants.enderio.render.registry.SmartModelAttacher;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;

@@ -1,11 +1,12 @@
 package crazypants.enderio.machine.invpanel.client;
 
 import com.enderio.core.common.util.ItemUtil;
+
+import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machine.invpanel.GuiInventoryPanel;
 import crazypants.enderio.machine.invpanel.InventoryPanelContainer;
 import crazypants.enderio.machine.invpanel.PacketFetchItem;
 import crazypants.enderio.machine.invpanel.StoredCraftingRecipe;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 

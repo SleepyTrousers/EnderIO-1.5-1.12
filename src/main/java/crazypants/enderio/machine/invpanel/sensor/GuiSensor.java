@@ -2,9 +2,10 @@ package crazypants.enderio.machine.invpanel.sensor;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.network.PacketHandler;
+
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;

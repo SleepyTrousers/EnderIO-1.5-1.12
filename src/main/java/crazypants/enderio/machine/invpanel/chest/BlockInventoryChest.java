@@ -1,15 +1,16 @@
 package crazypants.enderio.machine.invpanel.chest;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import crazypants.enderio.GuiID;
+
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.machine.RenderMappers;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.base.render.ISmartRenderAwareBlock;
+import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.machine.MachineObject;
-import crazypants.enderio.machine.RenderMappers;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.property.EnumRenderMode;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;

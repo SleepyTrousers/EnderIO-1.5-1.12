@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.invpanel.remote;
 
 import com.enderio.core.common.util.NullHelper;
-import crazypants.enderio.Log;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.fluid.Fluids;
+
+import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;

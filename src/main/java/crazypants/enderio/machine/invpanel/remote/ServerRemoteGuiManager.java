@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.invpanel.remote;
 
-import crazypants.enderio.GuiID;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;

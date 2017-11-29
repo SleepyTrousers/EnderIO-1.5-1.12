@@ -3,12 +3,13 @@ package crazypants.enderio.machine.invpanel.chest;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.InventorySlot;
+
+import crazypants.enderio.base.capacitor.CapacitorKeyType;
+import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
+import crazypants.enderio.base.capacitor.Scaler;
+import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.machine.MachineObject;
-import crazypants.enderio.capacitor.CapacitorKeyType;
-import crazypants.enderio.capacitor.DefaultCapacitorKey;
-import crazypants.enderio.capacitor.Scaler;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.util.Prep;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.util.EnumFacing;

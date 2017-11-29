@@ -1,11 +1,12 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import crazypants.enderio.GuiID;
+
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.machine.MachineObject;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.render.IBlockStateWrapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -63,7 +64,7 @@ IPaintable.IWrenchHideablePaint {
 
   @Override
   protected GuiID getGuiId() {
-    return crazypants.enderio.GuiID.GUI_ID_INVENTORY_PANEL_SENSOR;
+    return crazypants.enderio.base.GuiID.GUI_ID_INVENTORY_PANEL_SENSOR;
   }
 
   @Override

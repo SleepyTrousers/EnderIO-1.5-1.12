@@ -1,8 +1,9 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.network.PacketHandler;
+
+import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 

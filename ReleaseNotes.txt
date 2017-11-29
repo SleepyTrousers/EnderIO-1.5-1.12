@@ -19,7 +19,7 @@ Changes
 - #1771 All Killer Joes will now have the same UUID, for server admin purposes
 - Wither skeletons will now drop Tcon necrotic bones and respect Tcon beheading
 - Improve efficiency of wireless chargers (MatthiasM2)
-- Refactor how all EIO blocks drop themselves, should resolve all™ issues with such in the future
+- Refactor how all EIO blocks drop themselves, should resolve allï¿½ issues with such in the future
 - It is now possible to use the yeta wrench shift+left click in creative mode (MatthiasM2)
 - Alloy smelter will now give smelting achievements (iron, fish) (MatthiasM2)
 - Wireless charger will now keep its stored energy when picked up (MatthiasM2)

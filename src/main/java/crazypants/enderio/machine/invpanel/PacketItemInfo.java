@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import com.enderio.core.common.network.NetworkUtil;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;

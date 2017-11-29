@@ -2,15 +2,16 @@ package crazypants.enderio.machine.invpanel.server;
 
 import com.enderio.core.common.network.CompressedDataInput;
 import com.enderio.core.common.network.CompressedDataOutput;
-import crazypants.enderio.EnderIO;
+
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.render.util.CompositeList;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.invpanel.InventoryDatabase;
 import crazypants.enderio.machine.invpanel.PacketDatabaseReset;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.util.CompositeList;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;

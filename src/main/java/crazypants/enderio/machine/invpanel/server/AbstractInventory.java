@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.invpanel.server;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 

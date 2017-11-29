@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.invpanel;
 
-import static crazypants.enderio.machine.MachineObject.itemBasicFilterUpgrade;
+import static crazypants.enderio.base.machine.MachineObject.itemBasicFilterUpgrade;
 
 import java.awt.Point;
 import java.io.IOException;
@@ -15,12 +15,12 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.ItemUtil;
 
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.machine.invpanel.server.ChangeLog;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;

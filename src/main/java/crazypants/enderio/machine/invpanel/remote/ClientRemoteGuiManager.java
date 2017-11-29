@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.invpanel.remote;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiID;
-import crazypants.enderio.Log;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.machine.invpanel.GuiInventoryPanel;
 import crazypants.enderio.machine.invpanel.InventoryPanelContainer;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
