@@ -14,7 +14,7 @@ import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraftforge.common.config.Configuration;
 
-import static crazypants.enderio.base.config.Config.sectionCapacitor;
+import static crazypants.enderio.machines.config.Config.sectionCapacitor;
 
 public enum CapacitorKey implements ICapacitorKey.Computable {
 
@@ -116,7 +116,7 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   private int baseValue;
 
   private CapacitorKey(@Nonnull MachineObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull Scaler scaler, int defaultBaseValue) {
-    this(owner, valueType, scaler, defaultBaseValue, sectionCapacitor, null); // TODO 1.11: use section from local config
+    this(owner, valueType, scaler, defaultBaseValue, sectionCapacitor, null);
   }
 
   private CapacitorKey(@Nonnull MachineObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull Scaler scaler, int defaultBaseValue,
@@ -185,7 +185,7 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
     this.baseValue = baseValue;
   }
 
-  public static void processConfig(Configuration config) { // TODO 1.11: Call this
+  public static void processConfig(Configuration config) {
     CapacitorKeyHelper.processConfig(config, values());
   }
 
