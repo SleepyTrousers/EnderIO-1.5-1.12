@@ -1,14 +1,12 @@
 package crazypants.enderio.machines.machine.obelisk.spawn;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.capacitor.ICapacitorKey;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
-
-import javax.annotation.Nonnull;
 
 
 
@@ -38,11 +36,6 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractMobObeli
     super.invalidate();    
     SpawningObeliskController.instance.deregisterGuard(this);
     registered = false;
-  }
-
-  @Override
-  public float getRange() {
-    return (float) AbstractBlockObelisk.DUMMY;
   }
 
   @Override

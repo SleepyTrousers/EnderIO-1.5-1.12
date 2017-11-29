@@ -18,11 +18,10 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
-import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
-import crazypants.enderio.machines.init.MachineObject;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -32,6 +31,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_USE;
 
 @Storable
 public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
@@ -52,7 +55,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   Fluid currentTaskOutputFluid;
 
   public TileVat() {
-    super(new SlotDefinition(0, 1, -1, -1, -1, -1), MachineObject.block_vat);
+    super(new SlotDefinition(0, 1, -1, -1, -1, -1), VAT_POWER_INTAKE, VAT_POWER_BUFFER, VAT_POWER_USE);
     inputTank.setTileEntity(this);
     inputTank.setCanDrain(false);
     outputTank.setTileEntity(this);

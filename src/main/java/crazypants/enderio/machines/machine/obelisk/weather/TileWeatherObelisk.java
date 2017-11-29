@@ -1,5 +1,12 @@
 package crazypants.enderio.machines.machine.obelisk.weather;
 
+import java.awt.Color;
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.SmartTank;
@@ -31,13 +38,9 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.base.capacitor.CapacitorKey.*;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.awt.*;
-import java.util.Collections;
-import java.util.List;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.WEATHER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.WEATHER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.WEATHER_POWER_USE;
 
 @Storable
 public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, ITankAccess.IExtendedTankAccess {
@@ -121,7 +124,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   private boolean playedFuse = false;
 
   public TileWeatherObelisk() {
-    super(new SlotDefinition(1, 0, 0), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
+    super(new SlotDefinition(1, 0, 0), WEATHER_POWER_INTAKE, WEATHER_POWER_BUFFER, WEATHER_POWER_USE);
     inputTank.setTileEntity(this);
     inputTank.setCanDrain(false);
   }

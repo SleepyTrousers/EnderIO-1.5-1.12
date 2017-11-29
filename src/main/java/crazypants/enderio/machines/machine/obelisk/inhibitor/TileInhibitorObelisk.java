@@ -1,13 +1,17 @@
 package crazypants.enderio.machines.machine.obelisk.inhibitor;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machines.machine.obelisk.AbstractRangedTileEntity;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nonnull;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.INHIBITOR_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.INHIBITOR_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.INHIBITOR_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.INHIBITOR_RANGE;
 
 
 
@@ -15,7 +19,7 @@ import javax.annotation.Nonnull;
 public class TileInhibitorObelisk extends AbstractRangedTileEntity {
 
   public TileInhibitorObelisk() {
-    super(new SlotDefinition(0, 0, 1), MachineObject.block_inhibitor_obelisk);
+    super(new SlotDefinition(0, 0, 1), INHIBITOR_POWER_INTAKE, INHIBITOR_POWER_BUFFER, INHIBITOR_POWER_USE);
   }
 
   @Override
@@ -40,8 +44,7 @@ public class TileInhibitorObelisk extends AbstractRangedTileEntity {
 
   @Override
   public float getRange() {
-    //return AVERSION_RANGE.getFloat(getCapacitorData()) / 2; TODO
-    return (float) AbstractBlockObelisk.DUMMY;
+    return INHIBITOR_RANGE.getFloat(getCapacitorData());
   }
 
   @Override

@@ -45,9 +45,9 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POWER_USE;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
 
@@ -79,7 +79,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
   private boolean bufferStacks = true;
 
   public TileTransceiver() {
-    super(new SlotDefinition(8, 8, 0), LEGACY_ENERGY_INTAKE, LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
+    super(new SlotDefinition(8, 8, 0), TRANSCEIVER_POWER_INTAKE, TRANSCEIVER_POWER_BUFFER, TRANSCEIVER_POWER_USE);
 
     currentTask = new ContinuousTask(getPowerUsePerTick());
 

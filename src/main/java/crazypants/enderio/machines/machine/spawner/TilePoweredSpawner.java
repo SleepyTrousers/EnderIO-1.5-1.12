@@ -22,7 +22,6 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.spawner.DummyRecipe;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
-import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -43,9 +42,10 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_SPEEDUP;
 
 @Storable
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged {
@@ -59,7 +59,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   private boolean sendNotification = false;
 
   public TilePoweredSpawner() {
-    super(new SlotDefinition(1, 1, 1), LEGACY_ENERGY_INTAKE, LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
+    super(new SlotDefinition(1, 1, 1), SPAWNER_POWER_INTAKE, SPAWNER_POWER_BUFFER, SPAWNER_POWER_USE);
   }
 
   public boolean isSpawnMode() {
@@ -225,7 +225,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     } else {
       ticksDelay = Config.poweredSpawnerMaxDelayTicks - ((Config.poweredSpawnerMaxDelayTicks - Config.poweredSpawnerMinDelayTicks) / 2);
     }
-    ticksDelay /= (float) AbstractBlockObelisk.DUMMY;
+    ticksDelay /= SPAWNER_SPEEDUP.get(getCapacitorData());
     int powerPerTick = getPowerUsePerTick();
     res.setRequiredEnergy(powerPerTick * ticksDelay);
     return res;

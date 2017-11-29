@@ -1,5 +1,12 @@
 package crazypants.enderio.machines.machine.obelisk.relocator;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Random;
+import java.util.WeakHashMap;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machines.init.MachineObject;
@@ -13,13 +20,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
-import static crazypants.enderio.base.capacitor.CapacitorKey.*;
-
-import javax.annotation.Nonnull;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
-import java.util.WeakHashMap;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.RELOCATOR_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.RELOCATOR_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.RELOCATOR_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.RELOCATOR_RANGE;
 
 @Storable
 public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
@@ -28,9 +32,14 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
   private final Random rand = new Random();
 
   public TileRelocatorObelisk() {
-    super(new SlotDefinition(12, 0), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
+    super(new SlotDefinition(12, 0), RELOCATOR_POWER_INTAKE, RELOCATOR_POWER_BUFFER, RELOCATOR_POWER_USE);
   }
   
+  @Override
+  public float getRange() {
+    return RELOCATOR_RANGE.get(getCapacitorData());
+  }
+
   @Override
   public @Nonnull String getMachineName() {
     return MachineObject.block_relocator_obelisk.getUnlocalisedName();

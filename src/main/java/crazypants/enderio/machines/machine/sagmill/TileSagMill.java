@@ -18,9 +18,9 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_USE;
 
 @Storable
 public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -36,7 +36,7 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   private boolean useGrindingBall;
 
   public TileSagMill() {
-    super(new SlotDefinition(2, 4), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
+    super(new SlotDefinition(2, 4), SAG_MILL_POWER_INTAKE, SAG_MILL_POWER_BUFFER, SAG_MILL_POWER_USE);
   }
 
   @Override

@@ -1,11 +1,17 @@
 package crazypants.enderio.machines.machine.obelisk.attractor;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machines.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.machines.machine.obelisk.spawn.AbstractMobObelisk;
 import info.loenwind.autosave.annotations.Storable;
@@ -16,14 +22,11 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.TargetContext;
 
-import static crazypants.enderio.base.capacitor.CapacitorKey.*;
 import static crazypants.enderio.base.config.Config.maxMobsAttracted;
-
-import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ATTRACTOR_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ATTRACTOR_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ATTRACTOR_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ATTRACTOR_RANGE;
 
 @Storable
 public class TileAttractor extends AbstractMobObelisk {
@@ -33,12 +36,12 @@ public class TileAttractor extends AbstractMobObelisk {
   private Map<EntityLiving, IMobAttractionHandler> tracking = new HashMap<EntityLiving, IMobAttractionHandler>();
 
   public TileAttractor() {
-    super(new SlotDefinition(12, 0), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
+    super(new SlotDefinition(12, 0), ATTRACTOR_POWER_INTAKE, ATTRACTOR_POWER_BUFFER, ATTRACTOR_POWER_USE);
   }
 
   @Override
   public float getRange() {
-    return (float) AbstractBlockObelisk.DUMMY;
+    return ATTRACTOR_RANGE.get(getCapacitorData());
   }
 
   @Override

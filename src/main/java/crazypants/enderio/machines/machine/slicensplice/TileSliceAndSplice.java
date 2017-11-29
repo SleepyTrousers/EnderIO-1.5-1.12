@@ -22,10 +22,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
 import static crazypants.enderio.base.config.Config.slicenspliceToolDamageChance;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_USE;
 
 @Storable
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -35,7 +35,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   private EntityLivingBase fakePlayer;
 
   public TileSliceAndSplice() {
-    super(new SlotDefinition(8, 1),LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
+    super(new SlotDefinition(8, 1), SLICE_POWER_INTAKE, SLICE_POWER_BUFFER, SLICE_POWER_USE);
   }
 
   @Override

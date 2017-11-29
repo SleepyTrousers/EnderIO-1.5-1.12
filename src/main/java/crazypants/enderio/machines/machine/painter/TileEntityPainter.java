@@ -15,16 +15,16 @@ import crazypants.enderio.base.recipe.painter.AbstractPainterTemplate;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.PAINTER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.PAINTER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.PAINTER_POWER_USE;
 
 @Storable
 public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   public TileEntityPainter() {
     // 0 = input slot, 1 = paint source, 2 = output slot
-    super(new SlotDefinition(2, 1), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
+    super(new SlotDefinition(2, 1), PAINTER_POWER_INTAKE, PAINTER_POWER_BUFFER, PAINTER_POWER_USE);
   }
 
 

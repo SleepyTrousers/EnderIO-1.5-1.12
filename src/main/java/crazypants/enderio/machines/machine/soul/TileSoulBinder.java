@@ -32,9 +32,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_USE;
 
 @Storable
 public class TileSoulBinder extends AbstractPoweredTaskEntity
@@ -63,7 +63,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   };
 
   public TileSoulBinder() {
-    super(new SlotDefinition(2, 2, 1), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
+    super(new SlotDefinition(2, 2, 1), SOUL_BINDER_POWER_INTAKE, SOUL_BINDER_POWER_BUFFER, SOUL_BINDER_POWER_USE);
     xpCont.setTileEntity(this);
   }
 

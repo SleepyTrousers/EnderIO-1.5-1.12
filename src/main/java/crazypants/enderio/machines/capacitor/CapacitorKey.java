@@ -46,8 +46,6 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   ZOMBIE_POWER_BUFFER(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
   ZOMBIE_POWER_GEN(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.FIXED_1, 80),
 
-  // TODO 1.11:
-
   ATTRACTOR_POWER_INTAKE(MachineObject.block_attractor_obelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.QUADRATIC, 80),
   ATTRACTOR_POWER_BUFFER(MachineObject.block_attractor_obelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
   ATTRACTOR_POWER_USE(MachineObject.block_attractor_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 20),
@@ -58,13 +56,19 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   AVERSION_POWER_USE(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.CUBIC, 80),
   AVERSION_RANGE(MachineObject.block_aversion_obelisk, CapacitorKeyType.AREA, Scaler.Factory.RANGE, 16),
 
-  // inhibitor
+  INHIBITOR_POWER_INTAKE(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.CUBIC, 80),
+  INHIBITOR_POWER_BUFFER(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  INHIBITOR_POWER_USE(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.CUBIC, 20),
+  INHIBITOR_RANGE(MachineObject.block_aversion_obelisk, CapacitorKeyType.AREA, Scaler.Factory.RANGE, 8),
 
-  // relocator
+  RELOCATOR_POWER_INTAKE(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.CUBIC, 640),
+  RELOCATOR_POWER_BUFFER(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  RELOCATOR_POWER_USE(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.CUBIC, 80),
+  RELOCATOR_RANGE(MachineObject.block_aversion_obelisk, CapacitorKeyType.AREA, Scaler.Factory.RANGE, 12),
 
   WEATHER_POWER_INTAKE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
   WEATHER_POWER_BUFFER(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  WEATHER_POWER_USE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
+  WEATHER_POWER_USE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 20),
 
   PAINTER_POWER_INTAKE(MachineObject.block_painter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
   PAINTER_POWER_BUFFER(MachineObject.block_painter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
@@ -91,7 +95,9 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   TRANSCEIVER_POWER_BUFFER(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 500000),
   TRANSCEIVER_POWER_USE(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
 
-  // vat
+  VAT_POWER_INTAKE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 80),
+  VAT_POWER_BUFFER(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 100000),
+  VAT_POWER_USE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 20),
 
   //
   ;
