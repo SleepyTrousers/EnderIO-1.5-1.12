@@ -6,14 +6,9 @@ import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.base.capacitor.CapacitorHelper;
-import crazypants.enderio.base.capacitor.CapacitorKey;
-import crazypants.enderio.base.capacitor.CapacitorKeyType;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
-import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
-import crazypants.enderio.base.capacitor.Scaler;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.ILegacyPoweredTile;
 import crazypants.enderio.util.NbtValue;
@@ -34,24 +29,6 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   // Not NBTAction.ITEM to keep the storedEnergy tag out in the open
   private int storedEnergyRF;
   protected float lastSyncPowerStored = -1;
-
-  @Deprecated
-  protected AbstractPoweredMachineEntity(@Nonnull SlotDefinition slotDefinition) {
-    this(slotDefinition, null);
-  }
-
-  protected AbstractPoweredMachineEntity(@Nonnull SlotDefinition slotDefinition, IModObject modObject) {
-    super(slotDefinition);
-    if (modObject == null) {
-      this.maxEnergyRecieved = CapacitorKey.LEGACY_ENERGY_INTAKE;
-      this.maxEnergyStored = CapacitorKey.LEGACY_ENERGY_BUFFER;
-      this.maxEnergyUsed = CapacitorKey.LEGACY_ENERGY_USE;
-    } else {
-      this.maxEnergyRecieved = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80);
-      this.maxEnergyStored = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000);
-      this.maxEnergyUsed = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20);
-    }
-  }
 
   public AbstractPoweredMachineEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
       @Nonnull ICapacitorKey maxEnergyUsed) {

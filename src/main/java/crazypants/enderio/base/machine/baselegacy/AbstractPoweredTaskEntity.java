@@ -11,14 +11,13 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.NBTAction;
 
 import crazypants.enderio.base.capacitor.ICapacitorKey;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.task.PoweredTask;
 import crazypants.enderio.base.machine.task.PoweredTaskProgress;
 import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
-import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -41,18 +40,9 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected boolean startFailed = false;
   protected float nextChance = Float.NaN;
 
-  @Deprecated
-  protected AbstractPoweredTaskEntity(@Nonnull SlotDefinition slotDefinition) {
-    super(slotDefinition);
-  }
-
   protected AbstractPoweredTaskEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
       @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
-  }
-
-  protected AbstractPoweredTaskEntity(@Nonnull SlotDefinition slotDefinition, IModObject modObject) {
-    super(slotDefinition, modObject);
   }
 
   @Override
