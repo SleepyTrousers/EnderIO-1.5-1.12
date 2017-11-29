@@ -2,12 +2,12 @@ package crazypants.enderio.machines.machine.solar;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
-import crazypants.enderio.power.ILegacyPoweredTile;
-import crazypants.enderio.power.IPowerInterface;
-import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.power.forge.InternalPoweredTileWrapper;
+import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
+import crazypants.enderio.base.power.ILegacyPoweredTile;
+import crazypants.enderio.base.power.IPowerInterface;
+import crazypants.enderio.base.power.PowerHandlerUtil;
+import crazypants.enderio.base.power.forge.InternalPoweredTileWrapper;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;

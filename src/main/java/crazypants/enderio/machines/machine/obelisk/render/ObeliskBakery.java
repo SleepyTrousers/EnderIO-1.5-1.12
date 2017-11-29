@@ -9,8 +9,8 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vertex;
 
-import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
-import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
+import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
+import crazypants.enderio.base.render.util.HalfBakedQuad.HalfBakedList;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;

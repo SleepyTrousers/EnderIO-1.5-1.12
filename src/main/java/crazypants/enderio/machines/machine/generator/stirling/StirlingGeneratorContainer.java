@@ -1,11 +1,12 @@
 package crazypants.enderio.machines.machine.generator.stirling;
 
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
+
+import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 
 public class StirlingGeneratorContainer extends AbstractMachineContainer<TileEntityStirlingGenerator> {
 

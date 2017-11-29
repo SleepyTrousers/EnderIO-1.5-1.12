@@ -7,12 +7,12 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.common.util.SoundUtil;
 
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.base.xp.ExperienceBarRenderer;
+import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.machine.obelisk.xp.ContainerExperienceObelisk;
-import crazypants.enderio.network.GuiPacket;
-import crazypants.enderio.xp.ExperienceBarRenderer;
-import crazypants.enderio.xp.XpUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;

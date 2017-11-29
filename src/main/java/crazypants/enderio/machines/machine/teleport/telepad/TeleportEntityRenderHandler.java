@@ -1,6 +1,5 @@
 package crazypants.enderio.machines.machine.teleport.telepad;
 
-import static crazypants.enderio.config.Config.telepadShrinkEffect;
 import static org.lwjgl.opengl.GL11.GL_ONE;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_ZERO;
@@ -20,6 +19,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import static crazypants.enderio.base.config.Config.telepadShrinkEffect;
 
 public class TeleportEntityRenderHandler {
 

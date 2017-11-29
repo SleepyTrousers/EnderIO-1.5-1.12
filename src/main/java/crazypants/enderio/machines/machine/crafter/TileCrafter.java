@@ -1,5 +1,5 @@
 package crazypants.enderio.machines.machine.crafter;
-/*package crazypants.enderio.machines.machine.crafter;
+/*package crazypants.enderio.base.machines.machine.crafter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,11 +12,11 @@ import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.ItemUtil;
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machines.machine.MachineObject;
-import crazypants.enderio.machines.machine.base.te.AbstractCapabilityPoweredMachineEntity;
-import crazypants.enderio.machines.machine.fakeplayer.FakePlayerEIO;
-import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.machines.machine.MachineObject;
+import crazypants.enderio.base.machines.machine.base.te.AbstractCapabilityPoweredMachineEntity;
+import crazypants.enderio.base.machines.machine.fakeplayer.FakePlayerEIO;
+import crazypants.enderio.base.paint.IPaintable;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleItemStack;

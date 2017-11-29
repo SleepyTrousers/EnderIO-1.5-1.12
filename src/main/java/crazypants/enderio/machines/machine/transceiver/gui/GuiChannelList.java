@@ -9,8 +9,8 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Sets;
 
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.transceiver.Channel;
+import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.transceiver.Channel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.VertexBuffer;
 

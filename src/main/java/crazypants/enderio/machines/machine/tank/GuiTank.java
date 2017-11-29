@@ -11,11 +11,11 @@ import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.gui.GuiMachineBase;
-import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.machine.gui.GuiMachineBase;
+import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;

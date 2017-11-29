@@ -1,7 +1,7 @@
 package crazypants.enderio.machines.machine.obelisk.relocator;
 
-import crazypants.enderio.GuiID;
-import crazypants.enderio.init.IModObject;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machines.machine.obelisk.ContainerAbstractObelisk;

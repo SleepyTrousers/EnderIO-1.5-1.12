@@ -2,16 +2,16 @@ package crazypants.enderio.machines.machine.teleport.telepad;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.GuiID;
-import crazypants.enderio.init.IModObject;
+import crazypants.enderio.base.BlockEio;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.ContainerDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.GuiDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetList;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.IHaveRenderers;
-import crazypants.util.ClientUtil;
+import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;

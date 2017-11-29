@@ -5,16 +5,16 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.capacitor.CapacitorKeyHelper;
-import crazypants.enderio.capacitor.CapacitorKeyType;
-import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.capacitor.Scaler;
-import crazypants.enderio.config.Config.Section;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.capacitor.CapacitorKeyHelper;
+import crazypants.enderio.base.capacitor.CapacitorKeyType;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
+import crazypants.enderio.base.capacitor.Scaler;
+import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraftforge.common.config.Configuration;
 
-import static crazypants.enderio.config.Config.sectionCapacitor;
+import static crazypants.enderio.base.config.Config.sectionCapacitor;
 
 public enum CapacitorKey implements ICapacitorKey.Computable {
 

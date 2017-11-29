@@ -11,9 +11,9 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.ITabPanel;
 
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.transceiver.ChannelType;
 import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
-import crazypants.enderio.transceiver.ChannelType;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 

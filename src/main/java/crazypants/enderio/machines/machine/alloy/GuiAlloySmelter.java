@@ -12,10 +12,10 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.machines.machine.alloy.TileAlloySmelter.Mode;
-import crazypants.enderio.network.GuiPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;

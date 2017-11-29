@@ -1,7 +1,8 @@
 package crazypants.enderio.machines.machine.generator.stirling;
 
 import com.enderio.core.common.network.MessageTileEntity;
-import crazypants.enderio.EnderIO;
+
+import crazypants.enderio.base.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;

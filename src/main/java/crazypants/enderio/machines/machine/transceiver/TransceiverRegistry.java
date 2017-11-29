@@ -11,10 +11,10 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.RoundRobinIterator;
 
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.transceiver.Channel;
-import crazypants.enderio.transceiver.ChannelType;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.transceiver.Channel;
+import crazypants.enderio.base.transceiver.ChannelType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;

@@ -1,17 +1,17 @@
 package crazypants.enderio.machines.machine.crafter;
-/*package crazypants.enderio.machines.machine.crafter;
+/*package crazypants.enderio.base.machines.machine.crafter;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.GuiID;
-import crazypants.enderio.machines.machine.MachineObject;
-import crazypants.enderio.machines.machine.base.block.AbstractMachineBlock;
-import crazypants.enderio.machines.machine.render.RenderMappers;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.machines.machine.MachineObject;
+import crazypants.enderio.base.machines.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machines.machine.render.RenderMappers;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;

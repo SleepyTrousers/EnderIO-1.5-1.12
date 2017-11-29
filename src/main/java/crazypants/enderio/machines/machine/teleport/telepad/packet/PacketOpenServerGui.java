@@ -2,7 +2,7 @@ package crazypants.enderio.machines.machine.teleport.telepad.packet;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.enderio.GuiID;
+import crazypants.enderio.base.GuiID;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;

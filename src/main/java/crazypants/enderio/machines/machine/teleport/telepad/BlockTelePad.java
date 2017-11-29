@@ -2,8 +2,15 @@ package crazypants.enderio.machines.machine.teleport.telepad;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.GuiID;
 import crazypants.enderio.api.teleport.ITelePad;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.IHaveTESR;
+import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.teleport.ContainerTravelAccessable;
 import crazypants.enderio.machines.machine.teleport.ContainerTravelAuth;
@@ -20,13 +27,6 @@ import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTelepor
 import crazypants.enderio.machines.machine.teleport.telepad.render.BlockType;
 import crazypants.enderio.machines.machine.teleport.telepad.render.TelePadRenderMapper;
 import crazypants.enderio.machines.machine.teleport.telepad.render.TelePadSpecialRenderer;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IHaveTESR;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.render.property.EnumRenderMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;

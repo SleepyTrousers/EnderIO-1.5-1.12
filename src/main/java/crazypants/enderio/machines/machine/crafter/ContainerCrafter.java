@@ -1,5 +1,5 @@
 package crazypants.enderio.machines.machine.crafter;
-/*package crazypants.enderio.machines.machine.crafter;
+/*package crazypants.enderio.base.machines.machine.crafter;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -12,11 +12,11 @@ import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.inventory.EnderInventory.Type;
 
-import crazypants.enderio.machines.machine.base.container.AbstractCapabilityMachineContainer;
-import crazypants.enderio.machines.machine.base.container.SlotRangeHelper;
-import crazypants.enderio.network.GuiPacket;
-import crazypants.enderio.network.IRemoteExec;
-import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.base.machines.machine.base.container.AbstractCapabilityMachineContainer;
+import crazypants.enderio.base.machines.machine.base.container.SlotRangeHelper;
+import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.base.network.IRemoteExec;
+import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;

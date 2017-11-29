@@ -10,11 +10,11 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.capacitor.DefaultCapacitorData;
-import crazypants.enderio.capacitor.ICapacitorData;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.capacitor.ICapacitorData;
+import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.power.PowerDisplayUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.text.TextFormatting;

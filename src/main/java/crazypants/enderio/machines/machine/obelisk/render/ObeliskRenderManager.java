@@ -1,7 +1,10 @@
 package crazypants.enderio.machines.machine.obelisk.render;
 
-import crazypants.enderio.init.ModObject;
-import crazypants.enderio.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.base.material.material.Material;
+import crazypants.enderio.base.render.registry.TextureRegistry;
+import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.machines.machine.obelisk.attractor.TileAttractor;
 import crazypants.enderio.machines.machine.obelisk.aversion.AversionObeliskRenderer;
 import crazypants.enderio.machines.machine.obelisk.aversion.TileAversionObelisk;
@@ -11,9 +14,6 @@ import crazypants.enderio.machines.machine.obelisk.relocator.TileRelocatorObelis
 import crazypants.enderio.machines.machine.obelisk.weather.TileWeatherObelisk;
 import crazypants.enderio.machines.machine.obelisk.weather.WeatherObeliskSpecialRenderer;
 import crazypants.enderio.machines.machine.obelisk.xp.TileExperienceObelisk;
-import crazypants.enderio.material.material.Material;
-import crazypants.enderio.render.registry.TextureRegistry;
-import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

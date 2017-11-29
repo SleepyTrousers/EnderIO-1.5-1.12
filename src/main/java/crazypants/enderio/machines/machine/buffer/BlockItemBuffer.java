@@ -4,11 +4,11 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
-import crazypants.enderio.capacitor.DefaultCapacitorData;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.power.AbstractPoweredBlockItem;
-import crazypants.enderio.power.ItemPowerCapabilityBackend;
-import crazypants.enderio.render.util.PowerBarOverlayRenderHelper;
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.power.AbstractPoweredBlockItem;
+import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
+import crazypants.enderio.base.render.util.PowerBarOverlayRenderHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
 
 public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverlayRenderAware {
 

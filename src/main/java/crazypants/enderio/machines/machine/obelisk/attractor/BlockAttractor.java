@@ -1,12 +1,12 @@
 package crazypants.enderio.machines.machine.obelisk.attractor;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiID;
-import crazypants.enderio.init.IModObject;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machines.machine.obelisk.PacketObeliskFx;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

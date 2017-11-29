@@ -5,9 +5,9 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.init.IModObject;
-import crazypants.enderio.init.ModObjectRegistry;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machines.machine.buffer.BlockBuffer;

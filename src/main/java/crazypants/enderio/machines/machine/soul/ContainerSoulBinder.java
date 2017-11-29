@@ -8,12 +8,12 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
-import crazypants.enderio.init.ModObject;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.network.GuiPacket;
-import crazypants.enderio.network.IRemoteExec;
-import crazypants.enderio.xp.PacketExperienceContainer;
-import crazypants.enderio.xp.XpUtil;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.base.network.IRemoteExec;
+import crazypants.enderio.base.xp.PacketExperienceContainer;
+import crazypants.enderio.base.xp.XpUtil;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

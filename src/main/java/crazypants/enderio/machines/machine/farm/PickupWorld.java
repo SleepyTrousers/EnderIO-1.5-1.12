@@ -14,7 +14,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSetMultimap;
 
-import crazypants.enderio.machine.fakeplayer.FakePlayerEIO;
+import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

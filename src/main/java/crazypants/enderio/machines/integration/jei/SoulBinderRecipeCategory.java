@@ -1,7 +1,7 @@
 package crazypants.enderio.machines.integration.jei;
 
-import static crazypants.enderio.init.ModObject.itemBrokenSpawner;
-import static crazypants.enderio.init.ModObject.itemSoulVial;
+import static crazypants.enderio.base.init.ModObject.itemBrokenSpawner;
+import static crazypants.enderio.base.init.ModObject.itemSoulVial;
 import static crazypants.enderio.machines.init.MachineObject.block_soul_binder;
 import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
@@ -15,16 +15,16 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.init.ModObject;
-import crazypants.enderio.machine.interfaces.ISoulBinder;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.machine.interfaces.ISoulBinder;
+import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.soul.ISoulBinderRecipe;
+import crazypants.enderio.base.recipe.soul.SoulBinderTunedPressurePlateRecipe;
 import crazypants.enderio.machines.machine.soul.ContainerSoulBinder;
 import crazypants.enderio.machines.machine.soul.GuiSoulBinder;
-import crazypants.enderio.power.PowerDisplayUtil;
-import crazypants.enderio.recipe.MachineRecipeRegistry;
-import crazypants.enderio.recipe.soul.ISoulBinderRecipe;
-import crazypants.enderio.recipe.soul.SoulBinderTunedPressurePlateRecipe;
-import crazypants.util.CapturedMob;
+import crazypants.enderio.util.CapturedMob;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;

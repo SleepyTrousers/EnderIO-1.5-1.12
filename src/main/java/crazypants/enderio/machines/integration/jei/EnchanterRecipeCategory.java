@@ -7,12 +7,12 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.machines.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machines.machine.enchanter.EnchanterRecipe;
 import crazypants.enderio.machines.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machines.machine.enchanter.GuiEnchanter;
-import crazypants.enderio.recipe.IRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;

@@ -9,20 +9,20 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
-import crazypants.enderio.config.Config;
-import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
-import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.recipe.IMachineRecipe;
-import crazypants.enderio.recipe.MachineRecipeInput;
-import crazypants.enderio.recipe.MachineRecipeRegistry;
-import crazypants.enderio.recipe.soul.ISoulBinderRecipe;
-import crazypants.enderio.xp.ExperienceContainer;
-import crazypants.enderio.xp.IHaveExperience;
-import crazypants.enderio.xp.PacketExperienceContainer;
-import crazypants.enderio.xp.XpUtil;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.recipe.MachineRecipeInput;
+import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.soul.ISoulBinderRecipe;
+import crazypants.enderio.base.xp.ExperienceContainer;
+import crazypants.enderio.base.xp.IHaveExperience;
+import crazypants.enderio.base.xp.PacketExperienceContainer;
+import crazypants.enderio.base.xp.XpUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -32,9 +32,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
 
 @Storable
 public class TileSoulBinder extends AbstractPoweredTaskEntity

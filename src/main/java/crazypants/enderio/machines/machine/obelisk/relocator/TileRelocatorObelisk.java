@@ -1,10 +1,10 @@
 package crazypants.enderio.machines.machine.obelisk.relocator;
 
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.farm.PacketFarmAction;
 import crazypants.enderio.machines.machine.obelisk.spawn.TileEntityAbstractSpawningObelisk;
-import crazypants.enderio.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
@@ -13,13 +13,13 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
+import static crazypants.enderio.base.capacitor.CapacitorKey.*;
+
 import javax.annotation.Nonnull;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.WeakHashMap;
-
-import static crazypants.enderio.capacitor.CapacitorKey.*;
 
 @Storable
 public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {

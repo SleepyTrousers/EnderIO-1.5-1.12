@@ -1,9 +1,9 @@
 package crazypants.enderio.machines.machine.slicensplice;
 
+import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.ManyToOneMachineRecipe;
+import crazypants.enderio.base.recipe.ManyToOneRecipeManager;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.recipe.MachineRecipeRegistry;
-import crazypants.enderio.recipe.ManyToOneMachineRecipe;
-import crazypants.enderio.recipe.ManyToOneRecipeManager;
 
 public class SliceAndSpliceRecipeManager extends ManyToOneRecipeManager {
 

@@ -7,9 +7,9 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.fluid.SmartTank;
 
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.fluid.ItemTankHelper;
+import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.fluid.ItemTankHelper;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;

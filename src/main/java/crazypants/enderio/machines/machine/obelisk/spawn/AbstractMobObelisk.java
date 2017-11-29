@@ -3,12 +3,12 @@ package crazypants.enderio.machines.machine.obelisk.spawn;
 import java.util.ArrayList;
 import java.util.List;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.AbstractRangedTileEntity;
-import crazypants.util.CapturedMob;
+import crazypants.enderio.util.CapturedMob;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;

@@ -2,7 +2,7 @@ package crazypants.enderio.machines.machine.slicensplice;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice> {

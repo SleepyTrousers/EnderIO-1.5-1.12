@@ -7,8 +7,8 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 
+import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.render.property.EnumRenderMode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;

@@ -1,6 +1,5 @@
 package crazypants.enderio.machines.machine.obelisk.spawn;
 
-import crazypants.enderio.config.Config;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.tileentity.TileEntity;
@@ -12,6 +11,9 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nonnull;
+
+import crazypants.enderio.base.config.Config;
+
 import java.util.HashMap;
 import java.util.Map;
 

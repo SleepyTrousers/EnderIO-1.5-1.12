@@ -1,7 +1,5 @@
 package crazypants.enderio.machines.machine.reservoir;
 
-import static crazypants.enderio.render.property.EnumMergingBlockRenderMode.RENDER;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,16 +7,18 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.render.ICacheKey;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
-import crazypants.enderio.render.util.ItemQuadCollector;
+import crazypants.enderio.base.render.ICacheKey;
+import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
+import crazypants.enderio.base.render.util.ItemQuadCollector;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.base.render.property.EnumMergingBlockRenderMode.RENDER;
 
 public class ReservoirItemRenderMapper implements IRenderMapper.IItemRenderMapper.IItemStateMapper {
 

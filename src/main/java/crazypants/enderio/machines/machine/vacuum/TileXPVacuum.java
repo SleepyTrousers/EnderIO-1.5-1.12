@@ -12,12 +12,12 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.google.common.base.Predicate;
 
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.xp.ExperienceContainer;
+import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.paint.YetaUtil;
+import crazypants.enderio.base.xp.ExperienceContainer;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.entity.item.EntityXPOrb;

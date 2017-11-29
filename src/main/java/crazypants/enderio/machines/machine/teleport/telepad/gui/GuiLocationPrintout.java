@@ -10,10 +10,10 @@ import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.item.coordselector.PacketUpdateLocationPrintout;
-import crazypants.enderio.item.coordselector.TelepadTarget;
-import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.item.coordselector.PacketUpdateLocationPrintout;
+import crazypants.enderio.base.item.coordselector.TelepadTarget;
+import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;

@@ -2,25 +2,25 @@ package crazypants.enderio.machines.machine.sagmill;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.machine.interfaces.IPoweredTask;
-import crazypants.enderio.machine.task.PoweredTask;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.recipe.IMachineRecipe;
-import crazypants.enderio.recipe.MachineRecipeInput;
-import crazypants.enderio.recipe.MachineRecipeRegistry;
-import crazypants.enderio.recipe.RecipeBonusType;
-import crazypants.enderio.recipe.sagmill.IGrindingMultiplier;
-import crazypants.enderio.recipe.sagmill.SagMillRecipeManager;
+import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.interfaces.IPoweredTask;
+import crazypants.enderio.base.machine.task.PoweredTask;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.recipe.MachineRecipeInput;
+import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeBonusType;
+import crazypants.enderio.base.recipe.sagmill.IGrindingMultiplier;
+import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
 
 @Storable
 public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {

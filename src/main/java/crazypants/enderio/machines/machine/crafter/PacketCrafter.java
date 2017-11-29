@@ -1,5 +1,5 @@
 package crazypants.enderio.machines.machine.crafter;
-/*package crazypants.enderio.machines.machine.crafter;
+/*package crazypants.enderio.base.machines.machine.crafter;
 
 import com.enderio.core.common.network.MessageTileEntity;
 

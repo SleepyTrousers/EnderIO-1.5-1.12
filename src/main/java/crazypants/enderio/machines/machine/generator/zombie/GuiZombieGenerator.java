@@ -12,11 +12,11 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.machine.modes.IoMode;
-import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.modes.IoMode;
+import crazypants.enderio.base.power.PowerDisplayUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 

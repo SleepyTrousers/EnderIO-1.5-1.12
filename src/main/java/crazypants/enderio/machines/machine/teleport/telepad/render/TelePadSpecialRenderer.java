@@ -1,6 +1,6 @@
 package crazypants.enderio.machines.machine.teleport.telepad.render;
 
-import static crazypants.enderio.config.Config.telepadIsTravelAnchor;
+import static crazypants.enderio.base.config.Config.telepadIsTravelAnchor;
 import static crazypants.enderio.machines.init.MachineObject.block_tele_pad;
 
 import java.util.Random;
@@ -9,9 +9,9 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.machines.machine.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
-import crazypants.enderio.render.property.EnumRenderMode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;

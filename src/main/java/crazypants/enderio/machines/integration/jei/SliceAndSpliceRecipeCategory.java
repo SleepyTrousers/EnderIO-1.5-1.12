@@ -5,14 +5,14 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.init.ModObject;
-import crazypants.enderio.integration.jei.RecipeWrapper;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.integration.jei.RecipeWrapper;
+import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice;
 import crazypants.enderio.machines.machine.slicensplice.GuiSliceAndSplice;
 import crazypants.enderio.machines.machine.slicensplice.SliceAndSpliceRecipeManager;
-import crazypants.enderio.power.PowerDisplayUtil;
-import crazypants.enderio.recipe.IRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;

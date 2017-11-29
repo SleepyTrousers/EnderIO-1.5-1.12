@@ -1,7 +1,5 @@
 package crazypants.enderio.machines.machine.teleport.telepad;
 
-import static crazypants.enderio.init.ModObject.itemLocationPrintout;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
@@ -16,21 +14,24 @@ import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.capacitor.CapacitorKeyType;
-import crazypants.enderio.capacitor.DefaultCapacitorData;
-import crazypants.enderio.capacitor.DefaultCapacitorKey;
-import crazypants.enderio.capacitor.ICapacitorData;
-import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.capacitor.Scaler;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.item.coordselector.TelepadTarget;
-import crazypants.enderio.machine.base.te.AbstractMachineEntity;
-import crazypants.enderio.machine.baselegacy.PacketLegacyPowerStorage;
-import crazypants.enderio.machine.sound.MachineSound;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.capacitor.CapacitorKeyType;
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
+import crazypants.enderio.base.capacitor.ICapacitorData;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
+import crazypants.enderio.base.capacitor.Scaler;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.item.coordselector.TelepadTarget;
+import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.base.machine.baselegacy.PacketLegacyPowerStorage;
+import crazypants.enderio.base.machine.sound.MachineSound;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.power.ILegacyPowerReceiver;
+import crazypants.enderio.base.teleport.TeleportUtil;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketFluidLevel;
@@ -38,9 +39,6 @@ import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarg
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTeleport;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTeleportTrigger;
 import crazypants.enderio.machines.machine.teleport.telepad.render.BlockType;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.ILegacyPowerReceiver;
-import crazypants.enderio.teleport.TeleportUtil;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
 import net.minecraft.entity.Entity;
@@ -66,6 +64,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+
+import static crazypants.enderio.base.init.ModObject.itemLocationPrintout;
 
 public class TileTelePad extends TileTravelAnchor
     implements ILegacyPowerReceiver, ITelePad, IProgressTile, IItemHandlerModifiable, ITankAccess.IExtendedTankAccess {

@@ -11,10 +11,10 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.google.common.collect.Lists;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.network.GuiPacket;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.network.GuiPacket;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;

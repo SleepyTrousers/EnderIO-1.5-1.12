@@ -4,16 +4,16 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.recipe.IMachineRecipe;
-import crazypants.enderio.recipe.IManyToOneRecipe;
-import crazypants.enderio.recipe.MachineRecipeInput;
-import crazypants.enderio.recipe.MachineRecipeRegistry;
-import crazypants.enderio.recipe.ManyToOneMachineRecipe;
-import crazypants.enderio.recipe.RecipeInput;
-import crazypants.util.Prep;
+import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.recipe.IManyToOneRecipe;
+import crazypants.enderio.base.recipe.MachineRecipeInput;
+import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.ManyToOneMachineRecipe;
+import crazypants.enderio.base.recipe.RecipeInput;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemAxe;
@@ -22,10 +22,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
-import static crazypants.enderio.config.Config.slicenspliceToolDamageChance;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
+import static crazypants.enderio.base.config.Config.slicenspliceToolDamageChance;
 
 @Storable
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {

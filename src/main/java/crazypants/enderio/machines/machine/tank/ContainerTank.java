@@ -8,8 +8,8 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;

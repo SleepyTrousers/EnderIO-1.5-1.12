@@ -12,10 +12,10 @@ import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.network.GuiPacket;
-import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.base.power.PowerDisplayUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 

@@ -1,5 +1,5 @@
 package crazypants.enderio.machines.machine.transceiver.gui;
-/*package crazypants.enderio.machines.machine.transceiver.gui;
+/*package crazypants.enderio.base.machines.machine.transceiver.gui;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -10,14 +10,14 @@ import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.gui.item.BasicItemFilterGui;
-import crazypants.enderio.conduit.gui.item.IItemFilterContainer;
-import crazypants.enderio.filter.filters.ItemFilter;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machines.machine.transceiver.PacketItemFilter;
-import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
-import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.conduit.gui.item.BasicItemFilterGui;
+import crazypants.enderio.base.conduit.gui.item.IItemFilterContainer;
+import crazypants.enderio.base.filter.filters.ItemFilter;
+import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.machines.machine.transceiver.PacketItemFilter;
+import crazypants.enderio.base.machines.machine.transceiver.TileTransceiver;
+import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 

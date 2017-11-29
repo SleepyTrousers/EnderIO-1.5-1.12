@@ -3,11 +3,11 @@ package crazypants.enderio.machines.machine.farm;
 import java.util.Collections;
 import java.util.List;
 
-import crazypants.enderio.machine.base.block.AbstractMachineBlock;
-import crazypants.enderio.machine.base.te.AbstractMachineEntity;
-import crazypants.enderio.machine.render.MachineRenderMapper;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.property.EnumRenderMode;
+import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.base.machine.render.MachineRenderMapper;
+import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.base.render.property.EnumRenderMode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;

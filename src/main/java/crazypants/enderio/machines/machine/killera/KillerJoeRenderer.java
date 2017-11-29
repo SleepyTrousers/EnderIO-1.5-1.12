@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.ManagedTESR;
 
-import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
-import crazypants.enderio.render.util.TankRenderHelper;
+import crazypants.enderio.base.render.util.TankRenderHelper;
+import crazypants.enderio.base.render.util.HalfBakedQuad.HalfBakedList;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

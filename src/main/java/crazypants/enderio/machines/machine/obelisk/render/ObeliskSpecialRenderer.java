@@ -11,7 +11,7 @@ import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.TileEntityBase;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

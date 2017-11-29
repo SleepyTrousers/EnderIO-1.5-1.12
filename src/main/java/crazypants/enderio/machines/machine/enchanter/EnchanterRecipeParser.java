@@ -24,11 +24,11 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-import crazypants.enderio.Log;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.recipe.RecipeConfig;
-import crazypants.enderio.recipe.RecipeConfigParser;
-import crazypants.enderio.recipe.RecipeInput;
+import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.recipe.RecipeConfig;
+import crazypants.enderio.base.recipe.RecipeConfigParser;
+import crazypants.enderio.base.recipe.RecipeInput;
 import net.minecraft.enchantment.Enchantment;
 
 public class EnchanterRecipeParser extends DefaultHandler {

@@ -2,7 +2,8 @@ package crazypants.enderio.machines.machine.generator.combustion;
 
 import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
-import crazypants.enderio.EnderIO;
+
+import crazypants.enderio.base.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;

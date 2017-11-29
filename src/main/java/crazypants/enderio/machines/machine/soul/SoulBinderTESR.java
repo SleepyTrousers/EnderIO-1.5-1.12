@@ -11,8 +11,8 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.common.util.IBlockAccessWrapper;
 
-import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.render.property.EnumRenderMode;
+import crazypants.enderio.base.paint.YetaUtil;
+import crazypants.enderio.base.render.property.EnumRenderMode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;

@@ -1,6 +1,6 @@
 package crazypants.enderio.machines.machine.spawner;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
 
 public enum SpawnerNotification {
 

@@ -6,9 +6,9 @@ import java.util.Map;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.config.Config;
-import crazypants.enderio.integration.baubles.BaublesUtil;
-import crazypants.util.Prep;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.integration.baubles.BaublesUtil;
+import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

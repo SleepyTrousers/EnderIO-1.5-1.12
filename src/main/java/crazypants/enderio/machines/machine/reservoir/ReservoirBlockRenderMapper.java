@@ -3,10 +3,10 @@ package crazypants.enderio.machines.machine.reservoir;
 import java.util.EnumMap;
 import java.util.List;
 
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.property.IOMode.EnumIOMode;
-import crazypants.enderio.render.rendermapper.ConnectedBlockRenderMapper;
-import crazypants.enderio.render.util.QuadCollector;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
+import crazypants.enderio.base.render.rendermapper.ConnectedBlockRenderMapper;
+import crazypants.enderio.base.render.util.QuadCollector;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;

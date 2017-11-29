@@ -5,9 +5,9 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.Util;
 
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.network.GuiPacket;
-import crazypants.enderio.network.IRemoteExec;
+import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.base.network.IRemoteExec;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.Log;
+import crazypants.enderio.base.Log;
 import net.minecraft.item.ItemStack;
 
 public class EnchanterRecipeManager {

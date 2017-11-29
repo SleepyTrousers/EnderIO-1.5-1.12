@@ -2,7 +2,7 @@ package crazypants.enderio.machines.machine.light;
 
 import java.util.Random;
 
-import crazypants.enderio.BlockEio;
+import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

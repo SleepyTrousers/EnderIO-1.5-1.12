@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.Util;
 
-import crazypants.enderio.machine.base.te.AbstractMachineEntity;
-import crazypants.enderio.machine.modes.IoMode;
+import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.machines.init.MachineObject;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;

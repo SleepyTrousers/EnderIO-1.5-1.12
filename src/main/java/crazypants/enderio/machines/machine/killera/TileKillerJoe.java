@@ -1,7 +1,5 @@
 package crazypants.enderio.machines.machine.killera;
 
-import static crazypants.enderio.config.Config.killerProvokesCreeperExpolosions;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -27,20 +25,20 @@ import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.config.Config;
-import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
-import crazypants.enderio.init.ModObject;
-import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity;
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.machine.fakeplayer.FakePlayerEIO;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.render.ranged.IRanged;
+import crazypants.enderio.base.render.ranged.RangeParticle;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machines.machine.wireless.WirelessChargedLocation;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.render.ranged.IRanged;
-import crazypants.enderio.render.ranged.RangeParticle;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.client.Minecraft;
@@ -76,6 +74,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.TargetContext;
+
+import static crazypants.enderio.base.config.Config.killerProvokesCreeperExpolosions;
 
 @Storable
 public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank, IRanged {

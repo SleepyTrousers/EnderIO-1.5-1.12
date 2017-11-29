@@ -3,7 +3,8 @@ package crazypants.enderio.machines.machine.transceiver.render;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
-import crazypants.enderio.EnderIO;
+
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.machines.machine.transceiver.BlockTransceiver;
 import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
 import net.minecraft.block.state.IBlockState;

@@ -2,14 +2,13 @@ package crazypants.enderio.machines.machine.obelisk;
 
 import com.enderio.core.client.render.BoundingBox;
 
-import crazypants.enderio.capacitor.ICapacitorKey;
-
-import crazypants.enderio.init.ModObject;
-import crazypants.enderio.machine.baselegacy.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.render.ranged.IRanged;
+import crazypants.enderio.base.render.ranged.RangeParticle;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.render.ranged.IRanged;
-import crazypants.enderio.render.ranged.RangeParticle;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;

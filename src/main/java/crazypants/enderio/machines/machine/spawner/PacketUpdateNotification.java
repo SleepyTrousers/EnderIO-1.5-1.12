@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;

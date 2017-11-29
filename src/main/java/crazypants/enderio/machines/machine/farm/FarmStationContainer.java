@@ -11,11 +11,11 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
-import crazypants.enderio.config.Config;
-import crazypants.enderio.farming.FarmingTool;
-import crazypants.enderio.init.ModObject;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
-import crazypants.util.Prep;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.farming.FarmingTool;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

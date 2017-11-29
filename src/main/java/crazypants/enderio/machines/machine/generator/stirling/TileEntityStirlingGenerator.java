@@ -5,16 +5,16 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
 
-import crazypants.enderio.capability.ItemTools;
-import crazypants.enderio.capability.ItemTools.MoveResult;
-import crazypants.enderio.capacitor.DefaultCapacitorData;
-import crazypants.enderio.capacitor.ICapacitorData;
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.capability.ItemTools;
+import crazypants.enderio.base.capability.ItemTools.MoveResult;
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.capacitor.ICapacitorData;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.power.PowerDistributor;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.AbstractGeneratorEntity;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.PowerDistributor;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;

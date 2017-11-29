@@ -2,7 +2,7 @@ package crazypants.enderio.machines.machine.painter;
 
 import javax.annotation.Nullable;
 
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

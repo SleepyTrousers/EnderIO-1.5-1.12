@@ -6,18 +6,18 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.ItemUtil;
 
-import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.recipe.IMachineRecipe;
-import crazypants.enderio.recipe.MachineRecipeRegistry;
-import crazypants.enderio.recipe.painter.AbstractPainterTemplate;
+import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.painter.AbstractPainterTemplate;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
 
 @Storable
 public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {

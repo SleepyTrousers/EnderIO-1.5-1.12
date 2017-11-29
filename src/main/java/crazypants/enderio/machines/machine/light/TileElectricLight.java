@@ -1,6 +1,6 @@
 package crazypants.enderio.machines.machine.light;
 
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
 import static crazypants.enderio.machines.init.MachineObject.block_light_node;
 
 import java.util.ArrayList;
@@ -13,11 +13,11 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.power.ILegacyPowerReceiver;
+import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.machines.machine.wireless.WirelessChargedLocation;
-import crazypants.enderio.power.ILegacyPowerReceiver;
-import crazypants.enderio.power.PowerHandlerUtil;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleBlockPos;
 import net.minecraft.block.Block;

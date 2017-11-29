@@ -11,8 +11,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import crazypants.enderio.Log;
-import crazypants.util.IoUtil;
+import crazypants.enderio.base.Log;
+import crazypants.enderio.util.IoUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 

@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.Lists;
 
-import crazypants.util.Prep;
+import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;

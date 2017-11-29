@@ -1,12 +1,6 @@
 package crazypants.enderio.machines.machine.obelisk.render;
 
 
-import crazypants.enderio.machine.base.te.AbstractMachineEntity;
-import crazypants.enderio.machine.render.MachineRenderMapper;
-import crazypants.enderio.paint.render.PaintedBlockAccessWrapper;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.util.ItemQuadCollector;
-import crazypants.enderio.render.util.QuadCollector;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -17,6 +11,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
+
+import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.base.machine.render.MachineRenderMapper;
+import crazypants.enderio.base.paint.render.PaintedBlockAccessWrapper;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.util.ItemQuadCollector;
+import crazypants.enderio.base.render.util.QuadCollector;
 
 import java.util.List;
 

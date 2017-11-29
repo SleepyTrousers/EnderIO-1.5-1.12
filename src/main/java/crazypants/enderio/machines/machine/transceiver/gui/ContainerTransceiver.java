@@ -6,11 +6,11 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.base.network.IRemoteExec;
 import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
-import crazypants.enderio.network.GuiPacket;
-import crazypants.enderio.network.IRemoteExec;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

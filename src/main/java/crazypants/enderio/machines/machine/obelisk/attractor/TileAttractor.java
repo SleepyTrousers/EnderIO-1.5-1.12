@@ -2,8 +2,8 @@ package crazypants.enderio.machines.machine.obelisk.attractor;
 
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.machine.fakeplayer.FakePlayerEIO;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machines.machine.obelisk.PacketObeliskFx;
@@ -16,14 +16,14 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.TargetContext;
 
+import static crazypants.enderio.base.capacitor.CapacitorKey.*;
+import static crazypants.enderio.base.config.Config.maxMobsAttracted;
+
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import static crazypants.enderio.capacitor.CapacitorKey.*;
-import static crazypants.enderio.config.Config.maxMobsAttracted;
 
 @Storable
 public class TileAttractor extends AbstractMobObelisk {

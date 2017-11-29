@@ -16,10 +16,10 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.Lists;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.machine.gui.GuiOverlayIoConfig;
+import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;

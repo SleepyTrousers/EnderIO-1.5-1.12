@@ -3,12 +3,13 @@ package crazypants.enderio.machines.machine.obelisk.inhibitor;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Maps;
-import crazypants.enderio.GuiID;
-import crazypants.enderio.init.IModObject;
+
+import crazypants.enderio.api.teleport.TeleportEntityEvent;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machines.machine.obelisk.GuiRangedObelisk;
-import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;

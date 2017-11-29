@@ -6,8 +6,8 @@ import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3f;
 
-import crazypants.enderio.config.Config;
-import crazypants.enderio.farming.FarmNotification;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.farming.FarmNotification;
 import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

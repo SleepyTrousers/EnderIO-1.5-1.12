@@ -3,8 +3,8 @@ package crazypants.enderio.machines.machine.transceiver;
 import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.transceiver.ChannelList;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.transceiver.ChannelList;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;

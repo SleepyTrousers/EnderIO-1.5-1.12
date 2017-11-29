@@ -8,11 +8,11 @@ import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.TileEntityBase;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.base.network.IRemoteExec;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.teleport.packet.PacketPassword;
 import crazypants.enderio.machines.machine.teleport.anchor.TileTravelAnchor;
-import crazypants.enderio.network.GuiPacket;
-import crazypants.enderio.network.IRemoteExec;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.packet.PacketPassword;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

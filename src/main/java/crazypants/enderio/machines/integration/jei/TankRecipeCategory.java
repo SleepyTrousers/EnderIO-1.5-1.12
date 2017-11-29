@@ -9,8 +9,8 @@ import javax.annotation.Nonnull;
 
 import com.google.common.collect.ImmutableList;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.machines.machine.tank.GuiTank;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;

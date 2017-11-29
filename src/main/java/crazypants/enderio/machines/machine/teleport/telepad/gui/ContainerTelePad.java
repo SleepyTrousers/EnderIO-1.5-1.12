@@ -1,7 +1,5 @@
 package crazypants.enderio.machines.machine.teleport.telepad.gui;
 
-import static crazypants.enderio.init.ModObject.itemLocationPrintout;
-
 import java.awt.Point;
 import java.util.List;
 
@@ -12,11 +10,13 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnderCap;
 
-import crazypants.enderio.item.coordselector.TelepadTarget;
+import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
+
+import static crazypants.enderio.base.init.ModObject.itemLocationPrintout;
 
 public class ContainerTelePad extends ContainerEnderCap<TileTelePad, TileTelePad> {
 

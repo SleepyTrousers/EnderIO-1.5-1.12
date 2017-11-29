@@ -10,17 +10,17 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.ColorUtil;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
-import crazypants.enderio.fluid.FluidFuelRegister;
-import crazypants.enderio.fluid.IFluidCoolant;
-import crazypants.enderio.fluid.IFluidFuel;
-import crazypants.enderio.init.ModObject;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
+import crazypants.enderio.base.fluid.FluidFuelRegister;
+import crazypants.enderio.base.fluid.IFluidCoolant;
+import crazypants.enderio.base.fluid.IFluidFuel;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.combustion.GuiCombustionGenerator;
 import crazypants.enderio.machines.machine.generator.combustion.TileCombustionGenerator;
-import crazypants.enderio.power.PowerDisplayUtil;
-import crazypants.enderio.recipe.IRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;

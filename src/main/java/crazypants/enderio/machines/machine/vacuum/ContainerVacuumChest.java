@@ -10,9 +10,11 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.Type;
+
+import crazypants.enderio.base.filter.items.BasicFilterTypes;
+
 import com.enderio.core.common.inventory.EnderSlot;
 
-import crazypants.enderio.filter.items.BasicFilterTypes;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 

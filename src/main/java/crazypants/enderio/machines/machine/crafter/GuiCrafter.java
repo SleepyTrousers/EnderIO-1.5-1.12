@@ -1,5 +1,5 @@
 package crazypants.enderio.machines.machine.crafter;
-/*package crazypants.enderio.machines.machine.crafter;
+/*package crazypants.enderio.base.machines.machine.crafter;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,12 +10,12 @@ import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machines.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.network.GuiPacket;
-import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.machines.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.base.power.PowerDisplayUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;

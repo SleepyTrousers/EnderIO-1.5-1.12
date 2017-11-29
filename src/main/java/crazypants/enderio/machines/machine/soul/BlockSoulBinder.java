@@ -6,16 +6,16 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.ClientUtil;
 
-import crazypants.enderio.GuiID;
-import crazypants.enderio.init.IModObject;
-import crazypants.enderio.machine.base.block.AbstractMachineBlock;
-import crazypants.enderio.machine.render.SoulBinderBlockRenderMapper;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.render.SoulBinderBlockRenderMapper;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.IHaveTESR;
+import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IHaveTESR;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;

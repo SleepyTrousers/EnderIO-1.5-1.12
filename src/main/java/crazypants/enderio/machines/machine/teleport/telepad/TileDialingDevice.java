@@ -1,19 +1,17 @@
 package crazypants.enderio.machines.machine.teleport.telepad;
 
-import static crazypants.enderio.init.ModObject.itemLocationPrintout;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.item.coordselector.TelepadTarget;
-import crazypants.enderio.item.coordselector.TelepadTarget.TelepadTargetArrayListHandler;
-import crazypants.enderio.machine.baselegacy.PacketLegacyPowerStorage;
+import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.item.coordselector.TelepadTarget;
+import crazypants.enderio.base.item.coordselector.TelepadTarget.TelepadTargetArrayListHandler;
+import crazypants.enderio.base.machine.baselegacy.PacketLegacyPowerStorage;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetList;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.ILegacyPowerReceiver;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
 import net.minecraft.item.ItemStack;
@@ -23,6 +21,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+
+import static crazypants.enderio.base.init.ModObject.itemLocationPrintout;
 
 public class TileDialingDevice extends TileEntityEio implements ILegacyPowerReceiver, IItemHandlerModifiable {
 

@@ -4,9 +4,9 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.gui.GuiContainerBaseEIO;
+import crazypants.enderio.base.gui.IconEIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;

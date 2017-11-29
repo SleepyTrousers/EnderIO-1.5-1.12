@@ -9,11 +9,11 @@ import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.network.GuiPacket;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.gui.GuiContainerBaseEIO;
+import crazypants.enderio.base.network.GuiPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;

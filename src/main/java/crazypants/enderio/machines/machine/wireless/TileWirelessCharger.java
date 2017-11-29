@@ -5,12 +5,12 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.power.ILegacyPowerReceiver;
-import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.paint.YetaUtil;
+import crazypants.enderio.base.power.ILegacyPowerReceiver;
+import crazypants.enderio.base.power.PowerHandlerUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;

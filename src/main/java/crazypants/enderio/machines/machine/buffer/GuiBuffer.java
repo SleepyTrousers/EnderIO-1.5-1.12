@@ -7,11 +7,11 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.machine.modes.IoMode;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.modes.IoMode;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.power.PowerDisplayUtil;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 

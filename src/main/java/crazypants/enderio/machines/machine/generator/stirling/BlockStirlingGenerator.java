@@ -1,11 +1,11 @@
 package crazypants.enderio.machines.machine.generator.stirling;
 
-import crazypants.enderio.GuiID;
-import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.render.IBlockStateWrapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;

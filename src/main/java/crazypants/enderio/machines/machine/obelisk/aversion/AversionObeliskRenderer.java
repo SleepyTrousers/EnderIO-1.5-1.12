@@ -1,14 +1,13 @@
 package crazypants.enderio.machines.machine.obelisk.aversion;
 
 
-import crazypants.enderio.block.skull.SkullType;
+import crazypants.enderio.base.block.skull.SkullType;
 import crazypants.enderio.machines.machine.obelisk.render.ObeliskSpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-
-import static crazypants.enderio.init.ModObject.blockEndermanSkull;
+import static crazypants.enderio.base.init.ModObject.blockEndermanSkull;
 import static crazypants.enderio.machines.init.MachineObject.block_aversion_obelisk;
 
 

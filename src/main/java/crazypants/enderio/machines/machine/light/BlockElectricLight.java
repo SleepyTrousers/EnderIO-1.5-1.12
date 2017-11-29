@@ -4,12 +4,12 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.vecmath.Vector3f;
 
-import crazypants.enderio.BlockEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.enderio.init.IModObject;
+import crazypants.enderio.base.BlockEio;
+import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.render.IHaveRenderers;
-import crazypants.util.ClientUtil;
+import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;

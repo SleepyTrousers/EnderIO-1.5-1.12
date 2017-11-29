@@ -6,9 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -20,6 +17,10 @@ import static crazypants.enderio.machines.init.MachineObject.block_solar_panel;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
 
 public class SolarPanelNetwork implements IHasConduitProbeData {
 

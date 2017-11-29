@@ -8,16 +8,16 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.TooltipHandlerGrinding;
-import crazypants.enderio.integration.jei.RecipeWrapper;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.gui.TooltipHandlerGrinding;
+import crazypants.enderio.base.integration.jei.RecipeWrapper;
+import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.recipe.IRecipe;
+import crazypants.enderio.base.recipe.RecipeOutput;
+import crazypants.enderio.base.recipe.sagmill.GrindingBall;
+import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.machines.machine.sagmill.ContainerSagMill;
 import crazypants.enderio.machines.machine.sagmill.GuiSagMill;
-import crazypants.enderio.power.PowerDisplayUtil;
-import crazypants.enderio.recipe.IRecipe;
-import crazypants.enderio.recipe.RecipeOutput;
-import crazypants.enderio.recipe.sagmill.GrindingBall;
-import crazypants.enderio.recipe.sagmill.SagMillRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;

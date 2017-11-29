@@ -15,7 +15,7 @@ import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.base.teleport.TravelController;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

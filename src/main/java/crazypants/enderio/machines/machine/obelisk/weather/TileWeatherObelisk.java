@@ -5,12 +5,12 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
-import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
-import crazypants.enderio.machine.baselegacy.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
@@ -31,13 +31,13 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.base.capacitor.CapacitorKey.*;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
-
-import static crazypants.enderio.capacitor.CapacitorKey.*;
 
 @Storable
 public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, ITankAccess.IExtendedTankAccess {

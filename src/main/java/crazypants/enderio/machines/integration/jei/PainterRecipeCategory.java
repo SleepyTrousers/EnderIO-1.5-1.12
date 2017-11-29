@@ -5,7 +5,7 @@ import static crazypants.enderio.machines.machine.painter.ContainerPainter.FIRST
 import static crazypants.enderio.machines.machine.painter.ContainerPainter.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machines.machine.painter.ContainerPainter.NUM_INVENTORY_SLOT;
 import static crazypants.enderio.machines.machine.painter.ContainerPainter.NUM_RECIPE_SLOT;
-import static crazypants.util.NbtValue.BLOCKSTATE;
+import static crazypants.enderio.util.NbtValue.BLOCKSTATE;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,16 +15,16 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
-import crazypants.enderio.config.Config;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
+import crazypants.enderio.base.recipe.painter.AbstractPainterTemplate;
 import crazypants.enderio.machines.machine.painter.ContainerPainter;
 import crazypants.enderio.machines.machine.painter.GuiPainter;
-import crazypants.enderio.power.PowerDisplayUtil;
-import crazypants.enderio.recipe.IMachineRecipe;
-import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
-import crazypants.enderio.recipe.MachineRecipeRegistry;
-import crazypants.enderio.recipe.painter.AbstractPainterTemplate;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;

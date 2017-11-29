@@ -1,12 +1,13 @@
 package crazypants.enderio.machines.machine.obelisk.xp;
 
 import com.enderio.core.client.gui.button.IconButton;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.gui.GuiMachineBase;
-import crazypants.enderio.machine.modes.IoMode;
-import crazypants.enderio.network.GuiPacket;
-import crazypants.enderio.xp.ExperienceBarRenderer;
+
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.machine.gui.GuiMachineBase;
+import crazypants.enderio.base.machine.modes.IoMode;
+import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.base.xp.ExperienceBarRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;

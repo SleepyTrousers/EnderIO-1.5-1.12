@@ -2,14 +2,14 @@ package crazypants.enderio.machines.machine.painter;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.GuiID;
-import crazypants.enderio.init.IModObject;
-import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.painter.EveryPaintableRecipe;
+import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.recipe.MachineRecipeRegistry;
-import crazypants.enderio.recipe.painter.EveryPaintableRecipe;
-import crazypants.enderio.render.IBlockStateWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;

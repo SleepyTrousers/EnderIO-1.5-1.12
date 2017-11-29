@@ -5,14 +5,14 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.baselegacy.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.machine.modes.IoMode;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.ILegacyPowerReceiver;
-import crazypants.enderio.power.PowerDistributor;
-import crazypants.enderio.power.forge.InternalRecieverTileWrapper;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.modes.IoMode;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.power.ILegacyPowerReceiver;
+import crazypants.enderio.base.power.PowerDistributor;
+import crazypants.enderio.base.power.forge.InternalRecieverTileWrapper;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;

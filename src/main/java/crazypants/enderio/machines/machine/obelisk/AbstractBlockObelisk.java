@@ -6,13 +6,13 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.ClientUtil;
 
-import crazypants.enderio.init.IModObject;
-import crazypants.enderio.machine.base.block.AbstractMachineBlock;
-import crazypants.enderio.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.base.render.ITESRItemBlock;
 import crazypants.enderio.machines.machine.obelisk.render.ObeliskRenderMapper;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ITESRItemBlock;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

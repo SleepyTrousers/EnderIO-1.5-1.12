@@ -1,6 +1,6 @@
 package crazypants.enderio.machines.machine.obelisk.inhibitor;
 
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machines.machine.obelisk.AbstractRangedTileEntity;

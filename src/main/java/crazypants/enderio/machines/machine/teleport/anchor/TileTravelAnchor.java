@@ -9,10 +9,10 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.UserIdent;
 
-import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.paint.IPaintable;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.endercore.HandleUserIdent;
