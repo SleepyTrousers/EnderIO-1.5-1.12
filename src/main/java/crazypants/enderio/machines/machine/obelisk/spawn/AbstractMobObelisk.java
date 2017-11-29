@@ -6,7 +6,6 @@ import java.util.List;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.AbstractRangedTileEntity;
 import crazypants.enderio.util.CapturedMob;
 import info.loenwind.autosave.annotations.Storable;
@@ -79,10 +78,6 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
       }
     }
     return result;
-  }
-
-  public AbstractMobObelisk(SlotDefinition slotDefinition, MachineObject modObject) {
-    super(slotDefinition, modObject);
   }
 
   public abstract SpawnObeliskAction getSpawnObeliskAction();

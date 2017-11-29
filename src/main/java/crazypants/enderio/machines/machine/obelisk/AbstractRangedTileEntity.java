@@ -3,12 +3,10 @@ package crazypants.enderio.machines.machine.obelisk;
 import com.enderio.core.client.render.BoundingBox;
 
 import crazypants.enderio.base.capacitor.ICapacitorKey;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
-import crazypants.enderio.machines.init.MachineObject;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
@@ -23,10 +21,6 @@ public abstract class AbstractRangedTileEntity extends AbstractPowerConsumerEnti
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
-  public AbstractRangedTileEntity(SlotDefinition slotDefinition, MachineObject modObject) {
-    super(slotDefinition, modObject);
-  }
-  
   @Override
   @SideOnly(Side.CLIENT)
   public boolean isShowingRange() {

@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.machines.init.MachineObject;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
 
@@ -25,10 +24,6 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractMobObeli
   public TileEntityAbstractSpawningObelisk(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored,
                                            ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
-  }
-
-  public TileEntityAbstractSpawningObelisk(SlotDefinition slotDefinition, MachineObject modObject) {
-    super(slotDefinition, modObject);
   }
 
   @Override
