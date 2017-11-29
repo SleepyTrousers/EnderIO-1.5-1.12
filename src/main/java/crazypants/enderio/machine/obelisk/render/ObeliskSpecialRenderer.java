@@ -157,11 +157,15 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
       boolean flag = false;
 
       if (bindEntityTexture(entity)) {
-        //Must be removed to prevent strange rendering artifacts
+        // Must be removed to prevent strange rendering artifacts.
+        // However this results in a new artifact when the item spins, the sampling 
+        // of what I assume to be mipmapped textures causes spikes to appear when looking at the edge of a texture.
+        // TODO investigate a happy medium here ?
 //        this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).setBlurMipmap(false, false);
         flag = true;
       }
 
+      GlStateManager.enableLighting();
       GlStateManager.enableRescaleNormal();
       GlStateManager.alphaFunc(516, 0.1F);
       GlStateManager.enableBlend();

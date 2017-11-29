@@ -40,7 +40,6 @@ public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> exte
       }
 
     });
-    setLightOpacity(5);
   }
 
   @Override
