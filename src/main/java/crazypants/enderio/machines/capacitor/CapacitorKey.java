@@ -11,7 +11,7 @@ import crazypants.enderio.capacitor.CapacitorKeyType;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
 import crazypants.enderio.config.Config.Section;
-import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machines.init.MachineObject;
 import net.minecraftforge.common.config.Configuration;
 
 import static crazypants.enderio.config.Config.sectionCapacitor;

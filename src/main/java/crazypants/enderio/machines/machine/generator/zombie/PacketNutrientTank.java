@@ -1,0 +1,46 @@
+package crazypants.enderio.machines.machine.generator.zombie;
+
+import com.enderio.core.common.network.MessageTileEntity;
+
+import crazypants.enderio.EnderIO;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+public class PacketNutrientTank extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketNutrientTank, IMessage> {
+
+  private int amount;
+
+  public PacketNutrientTank() {
+  }
+
+  public<T extends TileEntity & IHasNutrientTank> PacketNutrientTank(T tile) {
+    super(tile);
+    amount = tile.getNutrientTank().getFluidAmount();
+  }
+
+  @Override
+  public void toBytes(ByteBuf buf) {
+    super.toBytes(buf);
+    buf.writeInt(amount);
+  }
+
+  @Override
+  public void fromBytes(ByteBuf buf) {
+    super.fromBytes(buf);
+    amount = buf.readInt();
+  }
+
+  @Override
+  public IMessage onMessage(PacketNutrientTank message, MessageContext ctx) {
+    EntityPlayer player = EnderIO.proxy.getClientPlayer();
+    TileEntity tile = message.getTileEntity(player.world);
+    if (tile instanceof IHasNutrientTank) {
+      ((IHasNutrientTank) tile).getNutrientTank().setFluidAmount(message.amount);
+    }
+    return null;
+  }
+}
