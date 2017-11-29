@@ -1,9 +1,5 @@
 package crazypants.enderio.machine.alloy;
 
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
@@ -24,6 +20,9 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_USE;
 @Storable
 public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
@@ -53,7 +52,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   private Mode mode;
 
   public TileAlloySmelter() {
-    super(new SlotDefinition(3, 1), LEGACY_ENERGY_INTAKE, LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
+    super(new SlotDefinition(3, 1), ALLOY_SMELTER_POWER_INTAKE, ALLOY_SMELTER_POWER_BUFFER, ALLOY_SMELTER_POWER_USE);
     mode = Mode.ALL;
   }
 

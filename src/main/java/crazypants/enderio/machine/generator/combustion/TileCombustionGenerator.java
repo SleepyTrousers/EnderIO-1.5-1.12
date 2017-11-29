@@ -37,6 +37,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
+import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_LOSS;
+
 @Storable
 public class TileCombustionGenerator extends AbstractGeneratorEntity
     implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
@@ -85,7 +89,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
   private IFluidCoolant curCoolant;
 
   public TileCombustionGenerator() {
-    super(new SlotDefinition(-1, -1, -1, -1, -1, -1), MachineObject.block_combustion_generator);
+    super(new SlotDefinition(-1, -1, -1, -1, -1, -1), COMBUSTION_POWER_LOSS, COMBUSTION_POWER_BUFFER, COMBUSTION_POWER_GEN);
     coolantTank.setTileEntity(this);
     coolantTank.setCanDrain(false);
     fuelTank.setTileEntity(this);
@@ -163,6 +167,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
         inPause = true;
       }
 
+      usePower(getPowerLossPerTick()); // power loss over time, defaults to 0
       transmitEnergy();
     }
 

@@ -1,9 +1,11 @@
 package crazypants.enderio.machine.obelisk.spawn;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.init.ModObject;
-import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.obelisk.AbstractRangedTileEntity;
 import crazypants.util.CapturedMob;
@@ -11,9 +13,6 @@ import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Storable
 public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
@@ -52,16 +51,6 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
   @Override
   public boolean isActive() {
     return redstoneCheckPassed && hasPower();
-  }
-
-  protected double usePower() {
-    return usePower(getPowerUsePerTick());
-  }
-
-  protected int usePower(int wantToUse) {
-    int used = Math.min(getEnergyStored(), wantToUse);
-    setEnergyStored(Math.max(0, getEnergyStored() - used));
-    return used;
   }
 
   protected boolean isMobInRange(EntityLivingBase mob) {

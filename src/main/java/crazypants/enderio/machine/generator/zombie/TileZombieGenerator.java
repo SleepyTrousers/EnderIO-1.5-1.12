@@ -36,6 +36,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ZOMBIE_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ZOMBIE_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ZOMBIE_POWER_LOSS;
+
 @Storable
 public class TileZombieGenerator extends AbstractGeneratorEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank {
 
@@ -44,7 +48,6 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   @Store
   final SmartTank tank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), Fluid.BUCKET_VOLUME * 2);
 
-  int outputPerTick = Config.zombieGeneratorRfPerTick;
   int tickPerBucketOfFuel = Config.zombieGeneratorTicksPerBucketFuel;
 
   private boolean tanksDirty;
@@ -56,7 +59,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   private boolean inPause;
 
   public TileZombieGenerator() {
-    super(new SlotDefinition(0, 0, 0), MachineObject.block_zombie_generator);
+    super(new SlotDefinition(0, 0, 0), ZOMBIE_POWER_LOSS, ZOMBIE_POWER_BUFFER, ZOMBIE_POWER_GEN);
     tank.setTileEntity(this);
     tank.setCanDrain(false);
   }
@@ -81,11 +84,6 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
       }
     }
     return res;
-  }
-
-  @Override
-  public int getPowerUsePerTick() {
-    return outputPerTick;
   }
 
   @Override
@@ -143,7 +141,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
 
     //once full, don't start again until we have drained 10 seconds worth of power to prevent
     //flickering on and off constantly when powering a machine that draws less than this produces
-    if (inPause && getEnergyStored() >= (getMaxEnergyStored() - (outputPerTick * 200)) && getEnergyStored() > (getMaxEnergyStored() / 8)) {
+    if (inPause && getEnergyStored() >= (getMaxEnergyStored() - (getPowerUsePerTick() * 200)) && getEnergyStored() > (getMaxEnergyStored() / 8)) {
       return false;
     }
     inPause = false;
@@ -158,7 +156,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
       tank.removeFluidAmount(1);
       ticksRemaingFuel = tickPerBucketOfFuel/1000;
     }
-    setEnergyStored(getEnergyStored() + outputPerTick);
+    setEnergyStored(getEnergyStored() + getPowerUsePerTick());
     return true;
   }
   
@@ -173,7 +171,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
     if(powerDis == null) {
       powerDis = new PowerDistributor(BlockCoord.get(this));
     }
-    int transmitted = powerDis.transmitEnergy(world, Math.min(outputPerTick * 2, getEnergyStored()));
+    int transmitted = powerDis.transmitEnergy(world, Math.min(getPowerUsePerTick() * 2, getEnergyStored()));
     setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }

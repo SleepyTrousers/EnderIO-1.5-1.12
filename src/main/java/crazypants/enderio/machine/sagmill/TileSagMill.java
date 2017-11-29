@@ -57,8 +57,8 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   }
 
   @Override
-  protected double usePower() {
-    double res = super.usePower();
+  protected int usePower(int wantToUse) {
+    int res = super.usePower(wantToUse);
     boolean sendGB = false;
 
     if (gb != null && useGrindingBall) {

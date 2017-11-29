@@ -1,20 +1,11 @@
 package crazypants.enderio.machine.buffer;
 
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 
-import crazypants.enderio.capacitor.CapacitorHelper;
-import crazypants.enderio.capacitor.CapacitorKeyType;
-import crazypants.enderio.capacitor.DefaultCapacitorKey;
-import crazypants.enderio.capacitor.Scaler;
-import crazypants.enderio.capacitor.Scaler.IndexedScaler;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.modes.IoMode;
@@ -27,6 +18,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+
+import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_USE;
 
 public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
 
@@ -45,7 +40,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   private int maxIn = maxOut;
 
   public TileBuffer() {
-    super(new SlotDefinition(9), LEGACY_ENERGY_INTAKE, LEGACY_ENERGY_BUFFER, new DefaultCapacitorKey(MachineObject.block_buffer, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 0));
+    super(new SlotDefinition(9), BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, BUFFER_POWER_USE);
   }
 
   @Override
@@ -65,7 +60,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if (!redstoneCheck || getEnergyStored() <= 0) {
+    if (!redstoneCheck || getEnergyStored() <= 0 || !tryToUsePower()) {
       return false;
     }
     if (dist == null) {

@@ -12,7 +12,7 @@ import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.capacitor.CapacitorKey;
+import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.farming.FarmNotification;
 import crazypants.enderio.farming.FarmingAction;
@@ -62,6 +62,12 @@ import net.minecraftforge.server.permission.context.BlockPosContext;
 
 import static crazypants.enderio.config.Config.farmEvictEmptyRFTools;
 import static crazypants.enderio.config.Config.farmStopOnNoOutputSlots;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_BASE_SIZE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_BONUS_SIZE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_STACK_LIMIT;
 
 @Storable
 public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarmer, IPaintable.IPaintableTileEntity, IRanged {
@@ -96,16 +102,16 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
   private boolean wasActive;
 
   public TileFarmStation() {
-    super(new SlotDefinition(9, 6, 1), CapacitorKey.LEGACY_ENERGY_INTAKE, CapacitorKey.LEGACY_ENERGY_INTAKE, CapacitorKey.LEGACY_ENERGY_USE);
+    super(new SlotDefinition(9, 6, 1), FARM_POWER_INTAKE, FARM_POWER_BUFFER, FARM_POWER_USE);
   }
 
   @Override
   public int getFarmSize() {
-    return 5;//(int) (FARM_BASE_SIZE.getFloat(getCapacitorData()) + FARM_BONUS_SIZE.getFloat(getCapacitorData()));
+    return (int) (FARM_BASE_SIZE.getFloat(getCapacitorData()) + FARM_BONUS_SIZE.getFloat(getCapacitorData()));
   }
 
   public int getFarmBaseSize() {
-    return 5;//(int) (FARM_BASE_SIZE.getFloat(BASIC_CAPACITOR) + FARM_BONUS_SIZE.getFloat(BASIC_CAPACITOR));
+    return (int) (FARM_BASE_SIZE.getFloat(DefaultCapacitorData.BASIC_CAPACITOR) + FARM_BONUS_SIZE.getFloat(DefaultCapacitorData.BASIC_CAPACITOR));
   }
 
   public void actionPerformed(boolean isAxe) {
@@ -838,7 +844,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
   @Override
   public int getInventoryStackLimit(int slot) {
     if (slot >= minSupSlot && slot <= maxSupSlot) {
-      return Math.min(16/* TODO FARM_STACK_LIMIT.get(getCapacitorData())*/, 64);
+      return Math.min(FARM_STACK_LIMIT.get(getCapacitorData()), 64);
     }
     return 64;
   }

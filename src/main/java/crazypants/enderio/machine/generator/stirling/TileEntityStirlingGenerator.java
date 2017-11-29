@@ -7,7 +7,7 @@ import com.enderio.core.api.common.util.IProgressTile;
 
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.capability.ItemTools.MoveResult;
-import crazypants.enderio.capacitor.CapacitorKey;
+import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
@@ -28,11 +28,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_LOSS;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_TIME;
+
 @Storable
 public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {
 
-  // public for alloy smelter
-  public static final String SOUND_NAME = "generator.stirling";
+  private static final String SOUND_NAME = "generator.stirling";
 
   /** How many ticks left until the item is burnt. */
   @Store
@@ -45,7 +49,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   private PowerDistributor powerDis;
 
   public TileEntityStirlingGenerator() {
-    super(new SlotDefinition(1, 0), null, CapacitorKey.LEGACY_ENERGY_BUFFER, CapacitorKey.LEGACY_ENERGY_INTAKE);
+    super(new SlotDefinition(1, 0), STIRLING_POWER_LOSS, STIRLING_POWER_BUFFER, STIRLING_POWER_GEN);
   }
 
   @Override
@@ -151,6 +155,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
           }
         }
       }
+      usePower(getPowerLossPerTick()); // power loss over time, defaults to 0
     }
     if (!needsUpdate && sendBurnTimePacket) {
       PacketHandler.sendToAllAround(new PacketBurnTime(this), this);
@@ -175,13 +180,12 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     return false;
   }
 
-  // TODO 
   public static float getEnergyMultiplier(ICapacitorData capacitorType) {
-    return 1;//STIRLING_POWER_GEN.get(capacitorType) / STIRLING_POWER_GEN.get(DefaultCapacitorData.BASIC_CAPACITOR);
+    return STIRLING_POWER_GEN.get(capacitorType) / STIRLING_POWER_GEN.get(DefaultCapacitorData.BASIC_CAPACITOR);
   }
 
   public static float getBurnTimeMultiplier(ICapacitorData capacitorType) {
-    return 1;//STIRLING_POWER_TIME.getFloat(capacitorType);
+    return STIRLING_POWER_TIME.getFloat(capacitorType);
   }
 
   public float getBurnTimeMultiplier() {
@@ -200,4 +204,5 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }
+
 }

@@ -25,4 +25,8 @@ public abstract class AbstractGeneratorEntity extends AbstractPoweredMachineEnti
     super(slotDefinition, modObject);
   }
 
+  public int getPowerLossPerTick() {
+    return maxEnergyRecieved.get(capacitorData);
+  }
+
 }

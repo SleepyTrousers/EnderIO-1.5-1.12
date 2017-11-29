@@ -553,4 +553,9 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
     return super.canInsertItem(slot, itemstack, j);
   }
 
+  @Override
+  public int usePower(int wantToUse) {
+    return super.usePower(wantToUse);
+  }
+
 }

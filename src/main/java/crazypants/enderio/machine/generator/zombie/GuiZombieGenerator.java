@@ -84,7 +84,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
     FontRenderer fr = getFontRenderer();
     int output = 0;
     if(gen.isActive()) {
-      output = gen.outputPerTick;
+      output = gen.getPowerUsePerTick();
     }
     String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr();
