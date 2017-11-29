@@ -1,5 +1,8 @@
 package crazypants.enderio.conduit.redstone;
 
+import static crazypants.enderio.base.ModObject.blockConduitBundle;
+import static crazypants.enderio.base.ModObject.itemRedstoneConduit;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,24 +24,24 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
-import crazypants.enderio.Log;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.base.Log;
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.RaytraceResult;
+import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitComponent;
-import crazypants.enderio.conduit.RaytraceResult;
-import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.RedstoneSettings;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.state.IBlockState;
@@ -56,9 +59,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.ModObject.blockConduitBundle;
-import static crazypants.enderio.ModObject.itemRedstoneConduit;
 
 public class InsulatedRedstoneConduit extends AbstractConduit implements IRedstoneConduit, IConduitComponent {
 

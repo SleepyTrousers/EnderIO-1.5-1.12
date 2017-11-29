@@ -1,5 +1,8 @@
 package crazypants.enderio.conduit.oc;
 
+import static crazypants.enderio.base.ModObject.itemOCConduit;
+import static crazypants.enderio.base.config.Config.enableOCConduitsAnimatedTexture;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -15,24 +18,24 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.RaytraceResult;
+import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.registry.TextureRegistry;
+import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
+import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitComponent;
-import crazypants.enderio.conduit.RaytraceResult;
-import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.OCSettings;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.registry.TextureRegistry;
-import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
-import crazypants.enderio.tool.ToolUtil;
 import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
@@ -50,9 +53,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.ModObject.itemOCConduit;
-import static crazypants.enderio.config.Config.enableOCConduitsAnimatedTexture;
 
 public class OCConduit extends AbstractConduit implements IOCConduit, IConduitComponent {
 

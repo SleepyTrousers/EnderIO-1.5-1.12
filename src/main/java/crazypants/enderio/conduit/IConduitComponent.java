@@ -1,7 +1,7 @@
 package crazypants.enderio.conduit;
 
+import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
-import crazypants.enderio.render.IBlockStateWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

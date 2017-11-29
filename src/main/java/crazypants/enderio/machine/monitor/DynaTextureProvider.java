@@ -13,8 +13,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.texture.DynamicTexture;

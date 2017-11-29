@@ -7,9 +7,9 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.ArrayInventory;
 
-import crazypants.enderio.integration.baubles.BaublesUtil;
+import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.machine.capbank.network.InventoryImpl;
-import crazypants.util.ShadowInventory;
+import crazypants.enderio.util.ShadowInventory;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

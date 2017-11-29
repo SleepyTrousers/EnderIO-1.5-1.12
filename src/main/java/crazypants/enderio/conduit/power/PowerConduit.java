@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.power;
 
+import static crazypants.enderio.base.ModObject.itemPowerConduit;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -15,27 +17,27 @@ import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.RaytraceResult;
+import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.item.PacketConduitProbe;
+import crazypants.enderio.base.machine.RedstoneControlMode;
+import crazypants.enderio.base.power.IPowerInterface;
+import crazypants.enderio.base.power.PowerHandlerUtil;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.IConduitComponent;
-import crazypants.enderio.conduit.RaytraceResult;
-import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.PowerSettings;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.PacketConduitProbe;
-import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.power.IPowerInterface;
-import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -51,8 +53,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.ModObject.itemPowerConduit;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit, IConduitComponent {
 

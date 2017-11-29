@@ -1,5 +1,8 @@
 package crazypants.enderio.conduit.item;
 
+import static crazypants.enderio.base.ModObject.itemBasicFilterUpgrade;
+import static crazypants.enderio.base.ModObject.itemItemConduit;
+
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -13,25 +16,25 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.capability.ItemTools;
+import crazypants.enderio.base.capability.ItemTools;
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.RaytraceResult;
+import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.item.PacketConduitProbe;
+import crazypants.enderio.base.machine.RedstoneControlMode;
+import crazypants.enderio.base.machine.invpanel.chest.TileInventoryChest;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitComponent;
-import crazypants.enderio.conduit.RaytraceResult;
-import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.item.ItemSettings;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
-import crazypants.enderio.item.PacketConduitProbe;
-import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.machine.invpanel.chest.TileInventoryChest;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,9 +52,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-
-import static crazypants.enderio.ModObject.itemBasicFilterUpgrade;
-import static crazypants.enderio.ModObject.itemItemConduit;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit, IConduitComponent {
 

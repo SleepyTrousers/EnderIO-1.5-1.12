@@ -1,11 +1,11 @@
 package crazypants.enderio.conduit.render;
 
+import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
+import crazypants.enderio.base.conduit.registry.ConduitRegistry;
+import crazypants.enderio.base.conduit.registry.ConduitRegistry.ConduitInfo;
+import crazypants.enderio.base.render.registry.TextureRegistry;
+import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.conduit.TileConduitBundle;
-import crazypants.enderio.conduit.geom.ConduitConnectorType;
-import crazypants.enderio.conduit.registry.ConduitRegistry;
-import crazypants.enderio.conduit.registry.ConduitRegistry.ConduitInfo;
-import crazypants.enderio.render.registry.TextureRegistry;
-import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;

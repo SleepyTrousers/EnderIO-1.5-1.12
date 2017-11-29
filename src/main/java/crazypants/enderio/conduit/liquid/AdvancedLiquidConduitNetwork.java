@@ -8,7 +8,7 @@ import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduit;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;

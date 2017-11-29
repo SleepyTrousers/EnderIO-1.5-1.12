@@ -10,11 +10,12 @@ import com.enderio.core.common.util.BlockCoord;
 
 import appeng.api.networking.IGridHost;
 import cofh.api.energy.IEnergyReceiver;
-import crazypants.enderio.conduit.facade.EnumFacadeType;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.Offset;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.ILegacyPowerReceiver;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.facade.EnumFacadeType;
+import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.conduit.geom.Offset;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.SidedEnvironment;
 import net.minecraft.block.Block;

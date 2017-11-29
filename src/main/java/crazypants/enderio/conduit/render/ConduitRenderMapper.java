@@ -3,11 +3,11 @@ package crazypants.enderio.conduit.render;
 import java.util.EnumMap;
 import java.util.List;
 
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
+import crazypants.enderio.base.render.util.QuadCollector;
 import crazypants.enderio.conduit.TileConduitBundle;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.property.IOMode.EnumIOMode;
-import crazypants.enderio.render.util.QuadCollector;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.tileentity.TileEntity;

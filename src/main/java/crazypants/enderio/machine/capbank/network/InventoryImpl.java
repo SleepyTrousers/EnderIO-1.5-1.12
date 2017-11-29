@@ -1,13 +1,13 @@
 package crazypants.enderio.machine.capbank.network;
 
-import static crazypants.enderio.machine.MachineObject.blockCapBank;
+import static crazypants.enderio.base.machine.MachineObject.blockCapBank;
 
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.Util;
 
+import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.machine.capbank.TileCapBank;
-import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

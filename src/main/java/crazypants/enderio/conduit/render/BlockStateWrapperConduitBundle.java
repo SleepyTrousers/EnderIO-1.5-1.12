@@ -11,11 +11,11 @@ import javax.annotation.Nonnull;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
-import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.render.IRenderMapper.IBlockRenderMapper;
+import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
+import crazypants.enderio.base.render.util.QuadCollector;
 import crazypants.enderio.conduit.IConduitComponent;
-import crazypants.enderio.render.IRenderMapper.IBlockRenderMapper;
-import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
-import crazypants.enderio.render.util.QuadCollector;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;

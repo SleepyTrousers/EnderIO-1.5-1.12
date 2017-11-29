@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.capbank.packet;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.machine.capbank.network.NetworkState;

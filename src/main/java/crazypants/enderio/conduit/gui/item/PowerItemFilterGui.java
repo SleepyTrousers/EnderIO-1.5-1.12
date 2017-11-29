@@ -2,13 +2,13 @@ package crazypants.enderio.conduit.gui.item;
 
 import com.enderio.core.client.gui.button.ToggleButton;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.PowerItemFilter;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 
 public class PowerItemFilterGui implements IItemFilterGui {

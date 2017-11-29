@@ -5,13 +5,13 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.config.Config;
+import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.power.AbstractPoweredBlockItem;
+import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
+import crazypants.enderio.base.render.util.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.MachineObject;
-import crazypants.enderio.power.AbstractPoweredBlockItem;
-import crazypants.enderio.power.ItemPowerCapabilityBackend;
-import crazypants.enderio.render.util.PowerBarOverlayRenderHelper;
-import crazypants.util.NbtValue;
+import crazypants.enderio.util.NbtValue;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;

@@ -7,10 +7,10 @@ import java.util.Map;
 
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.base.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory.Target;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
-import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;

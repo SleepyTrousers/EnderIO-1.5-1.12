@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.liquid;
 
-import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConduitUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;

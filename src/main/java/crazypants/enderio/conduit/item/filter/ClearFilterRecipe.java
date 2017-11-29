@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.item.filter;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.conduit.item.FilterRegister;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;

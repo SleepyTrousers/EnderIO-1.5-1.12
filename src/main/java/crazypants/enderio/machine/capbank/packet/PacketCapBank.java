@@ -2,7 +2,7 @@ package crazypants.enderio.machine.capbank.packet;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;

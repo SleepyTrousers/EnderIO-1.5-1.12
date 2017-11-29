@@ -8,7 +8,10 @@ import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.conduit.geom.GeometryKey;
+import crazypants.enderio.base.conduit.geom.Offset;
 import net.minecraft.util.EnumFacing;
 
 public class ConduitGeometryUtil {

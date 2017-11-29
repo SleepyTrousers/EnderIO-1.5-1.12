@@ -2,7 +2,8 @@ package crazypants.enderio.conduit.geom;
 
 import com.enderio.core.client.render.BoundingBox;
 
-import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import net.minecraft.util.EnumFacing;
 
 public class CollidableComponent {

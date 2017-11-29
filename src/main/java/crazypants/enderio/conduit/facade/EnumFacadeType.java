@@ -2,6 +2,7 @@ package crazypants.enderio.conduit.facade;
 
 import java.util.Locale;
 
+import crazypants.enderio.base.conduit.facade.EnumFacadeType;
 import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
 

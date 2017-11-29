@@ -5,9 +5,9 @@ import java.util.List;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

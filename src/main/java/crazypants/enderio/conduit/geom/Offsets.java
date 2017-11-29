@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.geom.Offset;
 import net.minecraft.util.EnumFacing;
 
 public class Offsets {

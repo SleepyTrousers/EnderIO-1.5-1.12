@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.redstone;
 
+import static crazypants.enderio.base.ModObject.blockConduitBundle;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,16 +12,14 @@ import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.config.Config;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.config.Config;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import static crazypants.enderio.ModObject.blockConduitBundle;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
 

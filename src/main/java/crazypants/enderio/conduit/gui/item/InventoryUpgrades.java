@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.gui.item;
 
+import static crazypants.enderio.base.ModObject.itemExtractSpeedUpgrade;
+
 import javax.annotation.Nullable;
 
 import crazypants.enderio.conduit.item.FunctionUpgrade;
@@ -13,8 +15,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-
-import static crazypants.enderio.ModObject.itemExtractSpeedUpgrade;
 
 public class InventoryUpgrades implements IInventory {
 

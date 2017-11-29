@@ -1,15 +1,21 @@
 package crazypants.enderio.conduit;
 
+import static crazypants.enderio.base.ModObject.blockConduitBundle;
+
 import java.util.List;
 
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
 
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IModObject;
-import crazypants.enderio.render.IHaveRenderers;
-import crazypants.util.ClientUtil;
+import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.IModObject;
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitItem;
+import crazypants.enderio.base.render.IHaveRenderers;
+import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.SoundType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,8 +32,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.ModObject.blockConduitBundle;
 
 public abstract class AbstractItemConduit extends Item implements IConduitItem,IHaveRenderers {
 

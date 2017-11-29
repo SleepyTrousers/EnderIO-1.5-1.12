@@ -9,9 +9,9 @@ import java.util.Set;
 
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.power.IPowerInterface;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;

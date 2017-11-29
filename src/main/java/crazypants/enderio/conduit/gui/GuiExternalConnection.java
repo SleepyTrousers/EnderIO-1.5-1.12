@@ -8,9 +8,9 @@ import java.util.List;
 
 import com.enderio.core.api.client.gui.ITabPanel;
 
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;

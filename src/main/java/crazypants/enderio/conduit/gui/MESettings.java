@@ -1,8 +1,8 @@
 package crazypants.enderio.conduit.gui;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.gui.IconEIO;
 
 public class MESettings extends BaseSettingsPanel {
 

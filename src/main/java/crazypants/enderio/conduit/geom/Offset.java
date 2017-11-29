@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.geom;
 
+import crazypants.enderio.base.conduit.geom.Offset;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.util.EnumHelper;
 

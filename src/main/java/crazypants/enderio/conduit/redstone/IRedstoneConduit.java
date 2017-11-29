@@ -5,8 +5,8 @@ import java.util.Set;
 
 import com.enderio.core.common.util.DyeColor;
 
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
 import net.minecraft.util.EnumFacing;
 
 public interface IRedstoneConduit extends IConduit {

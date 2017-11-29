@@ -1,9 +1,9 @@
 package crazypants.enderio.machine.monitor;
 
+import static crazypants.enderio.base.machine.MachineObject.blockCapBank;
+import static crazypants.enderio.base.power.PowerDisplayUtil.formatPower;
+import static crazypants.enderio.base.power.PowerDisplayUtil.formatPowerFloat;
 import static crazypants.enderio.machine.MachineObject.blockAlloySmelter;
-import static crazypants.enderio.machine.MachineObject.blockCapBank;
-import static crazypants.enderio.power.PowerDisplayUtil.formatPower;
-import static crazypants.enderio.power.PowerDisplayUtil.formatPowerFloat;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -21,12 +21,12 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.monitor.TilePowerMonitor.StatData;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;

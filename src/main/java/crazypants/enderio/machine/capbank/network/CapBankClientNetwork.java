@@ -6,15 +6,15 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.machine.modes.RedstoneControlMode;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.power.IPowerStorage;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
-import crazypants.enderio.machine.modes.RedstoneControlMode;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.IPowerStorage;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;

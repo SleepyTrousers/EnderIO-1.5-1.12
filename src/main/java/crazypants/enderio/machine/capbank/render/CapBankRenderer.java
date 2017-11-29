@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.capbank.render;
 
-import static crazypants.enderio.machine.MachineObject.blockCapBank;
+import static crazypants.enderio.base.machine.MachineObject.blockCapBank;
 
 import java.util.EnumMap;
 import java.util.Map;

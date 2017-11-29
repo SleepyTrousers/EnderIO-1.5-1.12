@@ -11,12 +11,14 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 
 import crazypants.enderio.api.tool.IConduitControl;
+import crazypants.enderio.base.conduit.ConduitDisplayMode;
+import crazypants.enderio.base.conduit.IConduit;
 import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.gui.IconEIO.CROSS;
-import static crazypants.enderio.gui.IconEIO.TICK;
-import static crazypants.enderio.gui.IconEIO.YETA_GEAR;
-import static crazypants.util.NbtValue.DISPLAYMODE;
+import static crazypants.enderio.base.gui.IconEIO.CROSS;
+import static crazypants.enderio.base.gui.IconEIO.TICK;
+import static crazypants.enderio.base.gui.IconEIO.YETA_GEAR;
+import static crazypants.enderio.util.NbtValue.DISPLAYMODE;
 
 public class ConduitDisplayMode {
 

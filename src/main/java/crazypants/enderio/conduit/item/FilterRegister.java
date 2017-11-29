@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.item;
 
-import crazypants.enderio.Log;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
 import io.netty.buffer.ByteBuf;

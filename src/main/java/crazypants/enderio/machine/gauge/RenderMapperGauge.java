@@ -10,11 +10,11 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.render.ICacheKey;
+import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.base.render.util.ItemQuadCollector;
 import crazypants.enderio.machine.capbank.render.FillGaugeBakery;
-import crazypants.enderio.render.ICacheKey;
-import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.render.util.ItemQuadCollector;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;

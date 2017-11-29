@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.liquid;
 
+import static crazypants.enderio.base.ModObject.itemLiquidConduit;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,15 +9,15 @@ import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.machine.RedstoneControlMode;
+import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitComponent;
-import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.render.IBlockStateWrapper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
@@ -27,8 +29,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.ModObject.itemLiquidConduit;
 
 public class AdvancedLiquidConduit extends AbstractTankConduit implements IConduitComponent {
 

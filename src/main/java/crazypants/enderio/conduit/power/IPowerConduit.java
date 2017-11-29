@@ -1,8 +1,8 @@
 package crazypants.enderio.conduit.power;
 
-import crazypants.enderio.conduit.IExtractor;
-import crazypants.enderio.power.ILegacyPowerReceiver;
-import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.base.conduit.IExtractor;
+import crazypants.enderio.base.power.ILegacyPowerReceiver;
+import crazypants.enderio.base.power.IPowerInterface;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 

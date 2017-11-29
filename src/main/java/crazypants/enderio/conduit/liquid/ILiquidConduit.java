@@ -1,7 +1,7 @@
 package crazypants.enderio.conduit.liquid;
 
+import crazypants.enderio.base.conduit.IExtractor;
 import net.minecraft.util.EnumFacing;
-import crazypants.enderio.conduit.IExtractor;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public interface ILiquidConduit extends IFluidHandler, IExtractor {

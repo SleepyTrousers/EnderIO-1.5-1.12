@@ -4,16 +4,16 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.ModObject;
+import crazypants.enderio.base.conduit.ConduitDisplayMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.geom.Offset;
+import crazypants.enderio.base.conduit.registry.ConduitRegistry;
+import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.conduit.AbstractItemConduit;
-import crazypants.enderio.conduit.ConduitDisplayMode;
-import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
-import crazypants.enderio.conduit.geom.Offset;
-import crazypants.enderio.conduit.registry.ConduitRegistry;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;

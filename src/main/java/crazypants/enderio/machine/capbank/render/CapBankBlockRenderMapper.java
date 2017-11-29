@@ -1,24 +1,24 @@
 package crazypants.enderio.machine.capbank.render;
 
-import static crazypants.enderio.render.property.EnumMergingBlockRenderMode.RENDER;
+import static crazypants.enderio.base.render.property.EnumMergingBlockRenderMode.RENDER;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
+import crazypants.enderio.base.machine.modes.IoMode;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.dummy.BlockMachineIO;
+import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
+import crazypants.enderio.base.render.property.IOMode;
+import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
+import crazypants.enderio.base.render.rendermapper.ConnectedBlockRenderMapper;
+import crazypants.enderio.base.render.util.QuadCollector;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
-import crazypants.enderio.machine.modes.IoMode;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.dummy.BlockMachineIO;
-import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
-import crazypants.enderio.render.property.IOMode;
-import crazypants.enderio.render.property.IOMode.EnumIOMode;
-import crazypants.enderio.render.rendermapper.ConnectedBlockRenderMapper;
-import crazypants.enderio.render.util.QuadCollector;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;

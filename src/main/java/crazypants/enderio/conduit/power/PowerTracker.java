@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.power;
 
-import crazypants.enderio.power.PerTickIntAverageCalculator;
+import crazypants.enderio.base.power.PerTickIntAverageCalculator;
 
 
 public class PowerTracker {

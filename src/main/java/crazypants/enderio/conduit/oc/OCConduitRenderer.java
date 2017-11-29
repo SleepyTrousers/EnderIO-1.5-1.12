@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.enderio.core.client.render.ColorUtil;
 
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.render.BakedQuadBuilder;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;

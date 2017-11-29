@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.monitor;
 
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 
 class ContainerPowerMonitor extends AbstractMachineContainer<TilePowerMonitor> {

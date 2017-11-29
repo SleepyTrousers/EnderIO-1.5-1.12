@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.ModObject;
+import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.conduit.item.FilterRegister;
-import crazypants.enderio.render.IHaveRenderers;
-import crazypants.util.ClientUtil;
+import crazypants.enderio.util.ClientUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

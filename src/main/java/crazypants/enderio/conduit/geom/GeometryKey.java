@@ -1,6 +1,8 @@
 package crazypants.enderio.conduit.geom;
 
-import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.geom.GeometryKey;
+import crazypants.enderio.base.conduit.geom.Offset;
 import net.minecraft.util.EnumFacing;
 
 public final class GeometryKey {

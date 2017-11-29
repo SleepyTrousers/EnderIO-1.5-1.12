@@ -1,9 +1,9 @@
 package crazypants.enderio.machine;
 
-import static crazypants.enderio.init.ModObject.itemBasicCapacitor;
-import static crazypants.enderio.material.alloy.Alloy.ENERGETIC_ALLOY;
-import static crazypants.enderio.material.alloy.Alloy.VIBRANT_ALLOY;
-import static crazypants.enderio.material.material.Material.VIBRANT_CYSTAL;
+import static crazypants.enderio.base.init.ModObject.itemBasicCapacitor;
+import static crazypants.enderio.base.material.alloy.Alloy.ENERGETIC_ALLOY;
+import static crazypants.enderio.base.material.alloy.Alloy.VIBRANT_ALLOY;
+import static crazypants.enderio.base.material.material.Material.VIBRANT_CYSTAL;
 
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;

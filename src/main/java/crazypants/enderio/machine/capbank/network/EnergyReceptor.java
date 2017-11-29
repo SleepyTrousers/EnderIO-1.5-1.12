@@ -4,10 +4,10 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.machine.modes.IoMode;
+import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.machine.capbank.TileCapBank;
-import crazypants.enderio.machine.modes.IoMode;
-import crazypants.enderio.power.IPowerInterface;
 import net.minecraft.util.EnumFacing;
 
 public class EnergyReceptor {

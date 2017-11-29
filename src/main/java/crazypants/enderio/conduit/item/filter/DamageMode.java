@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.item.filter;
 
-import crazypants.util.Prep;
+import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 
 public enum DamageMode {

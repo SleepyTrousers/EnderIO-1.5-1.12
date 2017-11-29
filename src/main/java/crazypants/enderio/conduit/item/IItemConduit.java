@@ -2,7 +2,7 @@ package crazypants.enderio.conduit.item;
 
 import com.enderio.core.common.util.DyeColor;
 
-import crazypants.enderio.conduit.IExtractor;
+import crazypants.enderio.base.conduit.IExtractor;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;

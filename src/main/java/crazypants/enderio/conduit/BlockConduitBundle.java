@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit;
 
+import static crazypants.enderio.base.ModObject.blockTank;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -15,15 +17,30 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
 
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.ITool;
-import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
-import crazypants.enderio.conduit.facade.EnumFacadeType;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.ConduitConnectorType;
+import crazypants.enderio.base.BlockEio;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.ModObject;
+import crazypants.enderio.base.conduit.ConduitDisplayMode;
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitItem;
+import crazypants.enderio.base.conduit.RaytraceResult;
+import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
+import crazypants.enderio.base.conduit.facade.EnumFacadeType;
+import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.item.ItemConduitProbe;
+import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.YetaUtil;
+import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.registry.SmartModelAttacher;
+import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.GuiExternalConnectionSelector;
@@ -43,16 +60,7 @@ import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.ItemConduitProbe;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.registry.SmartModelAttacher;
-import crazypants.enderio.tool.ToolUtil;
-import crazypants.util.Prep;
+import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
@@ -93,8 +101,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
-
-import static crazypants.enderio.ModObject.blockTank;
 
 public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IGuiHandler, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 

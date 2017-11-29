@@ -4,10 +4,10 @@ import java.util.UUID;
 
 import com.enderio.core.common.BlockEnder;
 
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.conduit.TileConduitBundle;
-import crazypants.enderio.conduit.registry.ConduitRegistry;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

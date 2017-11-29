@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.oc;
 
-import crazypants.enderio.config.Config;
+import crazypants.enderio.base.config.Config;
 import net.minecraftforge.fml.common.Loader;
 
 public class OCUtil {

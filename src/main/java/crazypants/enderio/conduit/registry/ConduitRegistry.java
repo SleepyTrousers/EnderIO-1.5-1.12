@@ -13,10 +13,10 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.Log;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.geom.Offset;
-import crazypants.enderio.conduit.geom.Offsets;
+import crazypants.enderio.base.Log;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.geom.Offset;
+import crazypants.enderio.base.conduit.geom.Offsets;
 import crazypants.enderio.conduit.render.ConduitRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

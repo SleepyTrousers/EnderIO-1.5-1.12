@@ -1,14 +1,16 @@
 package crazypants.enderio.conduit.item;
 
+import static crazypants.enderio.base.ModObject.itemFunctionUpgrade;
+
 import java.util.List;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.render.IHaveRenderers;
-import crazypants.util.ClientUtil;
-import crazypants.util.Prep;
+import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.ModObject;
+import crazypants.enderio.base.render.IHaveRenderers;
+import crazypants.enderio.util.ClientUtil;
+import crazypants.enderio.util.Prep;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,8 +18,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.ModObject.itemFunctionUpgrade;
 
 public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvider, IHaveRenderers {
 

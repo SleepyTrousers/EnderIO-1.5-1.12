@@ -11,9 +11,9 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.ManagedTESR;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.machine.capbank.render.FillGaugeBakery;
-import crazypants.enderio.power.IPowerInterface;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

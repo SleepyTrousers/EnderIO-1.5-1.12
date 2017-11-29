@@ -15,6 +15,8 @@ import com.enderio.core.common.vecmath.Vertex;
 
 import static com.enderio.core.common.util.ForgeDirectionOffsets.offsetScaled;
 
+import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.BakedQuadBuilder;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

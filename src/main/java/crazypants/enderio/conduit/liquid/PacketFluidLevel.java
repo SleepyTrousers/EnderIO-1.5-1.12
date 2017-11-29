@@ -3,7 +3,7 @@ package crazypants.enderio.conduit.liquid;
 import com.enderio.core.EnderCore;
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.conduit.TileConduitBundle;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;

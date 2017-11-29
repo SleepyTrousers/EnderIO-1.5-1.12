@@ -9,12 +9,12 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
-import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.BakedQuadBuilder;
 import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;

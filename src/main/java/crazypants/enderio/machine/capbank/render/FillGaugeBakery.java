@@ -9,13 +9,13 @@ import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.vecmath.Vector3d;
 
+import crazypants.enderio.base.render.util.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
-import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;

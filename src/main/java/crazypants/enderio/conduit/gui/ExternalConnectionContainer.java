@@ -1,5 +1,9 @@
 package crazypants.enderio.conduit.gui;
 
+import static crazypants.enderio.base.ModObject.itemBasicFilterUpgrade;
+import static crazypants.enderio.base.ModObject.itemExtractSpeedUpgrade;
+import static crazypants.enderio.base.ModObject.itemFunctionUpgrade;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +16,13 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.ItemUtil;
 
-import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import crazypants.enderio.conduit.item.SpeedUpgrade;
 import crazypants.enderio.conduit.packet.PacketSlotVisibility;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
@@ -27,10 +31,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-
-import static crazypants.enderio.ModObject.itemBasicFilterUpgrade;
-import static crazypants.enderio.ModObject.itemExtractSpeedUpgrade;
-import static crazypants.enderio.ModObject.itemFunctionUpgrade;
 
 public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrades> {
 

@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.gauge;
 
-import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.base.TileEntityEio;
 import info.loenwind.autosave.annotations.Storable;
 
 @Storable

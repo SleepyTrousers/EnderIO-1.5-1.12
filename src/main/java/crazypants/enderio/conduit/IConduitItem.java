@@ -3,6 +3,7 @@ package crazypants.enderio.conduit;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.tool.IHideFacades;
+import crazypants.enderio.base.conduit.IConduit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 

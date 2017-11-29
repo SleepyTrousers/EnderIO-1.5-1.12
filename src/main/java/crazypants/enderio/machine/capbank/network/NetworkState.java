@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.capbank.network;
 
+import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
-import crazypants.enderio.machine.modes.RedstoneControlMode;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;
 

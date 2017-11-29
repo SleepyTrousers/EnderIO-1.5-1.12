@@ -1,5 +1,8 @@
 package crazypants.enderio.conduit;
 
+import static crazypants.enderio.base.ModObject.blockConduitBundle;
+import static crazypants.enderio.base.config.Config.transparentFacadesLetThroughBeaconBeam;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -17,27 +20,32 @@ import com.enderio.core.common.util.BlockCoord;
 import appeng.api.networking.IGridNode;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEPartLocation;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.conduit.facade.EnumFacadeType;
-import crazypants.enderio.conduit.geom.CollidableCache;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.ConduitConnectorType;
-import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.conduit.geom.Offset;
-import crazypants.enderio.conduit.geom.Offsets;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.conduit.ConduitDisplayMode;
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.facade.EnumFacadeType;
+import crazypants.enderio.base.conduit.geom.CollidableCache;
+import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
+import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.conduit.geom.Offset;
+import crazypants.enderio.base.conduit.geom.Offsets;
+import crazypants.enderio.base.conduit.registry.ConduitRegistry;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.YetaUtil;
+import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
-import crazypants.enderio.conduit.registry.ConduitRegistry;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.render.IBlockStateWrapper;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
 import net.minecraft.block.Block;
@@ -54,9 +62,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.ModObject.blockConduitBundle;
-import static crazypants.enderio.config.Config.transparentFacadesLetThroughBeaconBeam;
 
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent {
 

@@ -6,12 +6,12 @@ import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.gui.GuiContainerBaseEIO;
+import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.filter.DamageModeIconHolder;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.gui.IconEIO;
 import net.minecraft.client.gui.GuiButton;
 
 public class BasicItemFilterGui implements IItemFilterGui {

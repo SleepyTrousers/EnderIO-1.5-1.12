@@ -1,22 +1,26 @@
 package crazypants.enderio.conduit.facade;
 
+import static crazypants.enderio.base.ModObject.blockConduitBundle;
+
 import java.util.List;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.ModObject;
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.facade.EnumFacadeType;
+import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
+import crazypants.enderio.base.machine.MachineRecipeRegistry;
+import crazypants.enderio.base.machine.painter.recipe.FacadePainterRecipe;
+import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.render.IHaveRenderers;
+import crazypants.enderio.base.render.registry.ItemModelRegistry;
 import crazypants.enderio.conduit.BlockConduitBundle;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.painter.recipe.FacadePainterRecipe;
-import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.render.IHaveRenderers;
-import crazypants.enderio.render.registry.ItemModelRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -33,8 +37,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.ModObject.blockConduitBundle;
 
 public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider, IResourceTooltipProvider, IHaveRenderers {
 

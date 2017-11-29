@@ -8,7 +8,7 @@ import java.util.Set;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConduitUtil;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;

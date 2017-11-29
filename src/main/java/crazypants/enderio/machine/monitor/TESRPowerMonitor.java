@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.monitor;
 
-import static crazypants.enderio.machine.MachineObject.blockPowerMonitorv2;
+import static crazypants.enderio.base.machine.MachineObject.blockPowerMonitorv2;
 
 import javax.annotation.Nonnull;
 

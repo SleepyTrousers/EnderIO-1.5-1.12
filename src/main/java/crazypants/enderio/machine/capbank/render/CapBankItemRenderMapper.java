@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.capbank.render;
 
-import static crazypants.enderio.machine.MachineObject.blockCapBank;
-import static crazypants.enderio.render.property.EnumMergingBlockRenderMode.RENDER;
+import static crazypants.enderio.base.machine.MachineObject.blockCapBank;
+import static crazypants.enderio.base.render.property.EnumMergingBlockRenderMode.RENDER;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +10,13 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import crazypants.enderio.base.power.PowerHandlerUtil;
+import crazypants.enderio.base.render.ICacheKey;
+import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
+import crazypants.enderio.base.render.util.ItemQuadCollector;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
-import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.render.ICacheKey;
-import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
-import crazypants.enderio.render.util.ItemQuadCollector;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;

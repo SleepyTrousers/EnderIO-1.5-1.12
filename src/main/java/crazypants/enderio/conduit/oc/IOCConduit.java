@@ -2,7 +2,7 @@ package crazypants.enderio.conduit.oc;
 
 import com.enderio.core.common.util.DyeColor;
 
-import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduit;
 import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.SidedEnvironment;
 import net.minecraft.util.EnumFacing;

@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit;
 
+import static crazypants.enderio.base.ModObject.itemConduitProbe;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -12,18 +14,22 @@ import java.util.UUID;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiID;
-import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitItem;
+import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
+import crazypants.enderio.base.conduit.registry.ConduitRegistry;
+import crazypants.enderio.base.machine.RedstoneControlMode;
+import crazypants.enderio.base.paint.YetaUtil;
+import crazypants.enderio.base.sound.IModSound;
+import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.conduit.me.MEUtil;
 import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.Signal;
-import crazypants.enderio.conduit.registry.ConduitRegistry;
-import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.sound.IModSound;
-import crazypants.enderio.sound.SoundHelper;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -40,8 +46,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.ModObject.itemConduitProbe;
 
 public class ConduitUtil {
 

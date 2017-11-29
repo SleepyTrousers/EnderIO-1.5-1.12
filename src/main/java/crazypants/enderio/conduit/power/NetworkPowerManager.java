@@ -8,12 +8,12 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
-import crazypants.enderio.Log;
-import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.base.Log;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.power.IPowerInterface;
+import crazypants.enderio.base.power.IPowerStorage;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.power.IPowerInterface;
-import crazypants.enderio.power.IPowerStorage;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;

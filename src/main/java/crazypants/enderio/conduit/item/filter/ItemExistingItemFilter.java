@@ -7,9 +7,9 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.ChatUtil;
 import com.enderio.core.common.util.ItemUtil;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

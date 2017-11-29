@@ -2,8 +2,9 @@ package crazypants.enderio.conduit.item.filter;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconEIO;
+
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.gui.IconEIO;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

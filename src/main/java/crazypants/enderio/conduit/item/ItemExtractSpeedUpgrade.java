@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.render.IHaveRenderers;
-import crazypants.util.ClientUtil;
+import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.ModObject;
+import crazypants.enderio.base.render.IHaveRenderers;
+import crazypants.enderio.util.ClientUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
