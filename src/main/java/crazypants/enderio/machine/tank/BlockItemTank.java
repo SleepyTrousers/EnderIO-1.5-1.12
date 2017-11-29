@@ -7,11 +7,9 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.fluid.SmartTank;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.init.IModObject;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.ItemTankHelper;
-import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,19 +30,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider {
 
-//  public BlockItemTank(IModObject mo) {
-//    super(mo.getBlock());
-//    this.block = mo.getBlock();
-//    setHasSubtypes(true);
-//    setMaxDamage(0);
-//    setCreativeTab(EnderIOTab.tabEnderIOMachines);
-//  }
-
-  public BlockItemTank(Block block, IModObject mo) {
+  public BlockItemTank(Block block) {
     super(block);
     setHasSubtypes(true);
+    setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
-    setRegistryName(mo.getRegistryName());
   }
 
   @Override
@@ -53,13 +43,8 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
   }
 
   @Override
-  public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int meta = par1ItemStack.getItemDamage();
-    String result = super.getUnlocalizedName(par1ItemStack);
-    if (meta == 1) {
-      result += ".advanced";
-    }
-    return result;
+  public String getUnlocalizedName(ItemStack stack) {
+    return super.getUnlocalizedName(stack) + EnumTankType.getType(stack).getSuffix();
   }
 
   @Override
@@ -80,9 +65,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     SmartTank tank = loadTank(itemstack);
     if (!tank.isEmpty()) {
-      String str = tank.getFluidAmount() + " " + EnderIO.lang.localize("fluid.millibucket.abr") + " " + PowerDisplayUtil.ofStr() + " "
-          + tank.getFluid().getLocalizedName();
-      list.add(str);
+      list.add(Fluids.MB(tank.getFluid(), tank.getCapacity()));
     }
   }
 
@@ -98,7 +81,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
         return tank;
       }
     }
-    return stack.getMetadata() == 0 ? new SmartTank(16000) : new SmartTank(32000);
+    return EnumTankType.getType(stack).getTank();
   }
 
   private void saveTank(ItemStack stack, SmartTank tank) {

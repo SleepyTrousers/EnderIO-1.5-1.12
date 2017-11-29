@@ -12,7 +12,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.init.IModObject;
-import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
@@ -32,7 +31,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -42,28 +40,28 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock,
-    IPaintable.IWrenchHideablePaint, IHaveTESR {
+public class BlockTank extends AbstractMachineBlock<TileTank>
+    implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
-  public static BlockTank create() {
+  public static BlockTank create(@Nonnull IModObject modObject) {
     PacketHandler.INSTANCE.registerMessage(PacketTankFluid.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketTankVoidMode.class, PacketTankVoidMode.class, PacketHandler.nextID(), Side.SERVER);
-    BlockTank res = new BlockTank();
+    BlockTank res = new BlockTank(modObject);
     res.init();
     return res;
   }
 
-  protected BlockTank() {
-    super(MachineObject.block_tank, TileTank.class);
+  protected BlockTank(@Nonnull IModObject modObject) {
+    super(modObject, TileTank.class);
     setSoundType(SoundType.GLASS);
     setLightOpacity(0);
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO)
-        .withProperty(EnumTankType.KIND, EnumTankType.NORMAL));
-  }  
-  
+    setDefaultState(
+        this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(EnumTankType.KIND, EnumTankType.NORMAL));
+  }
+
   @Override
-  public ItemBlock createBlockItem(IModObject mo) {
-    return new BlockItemTank(this, mo);
+  public ItemBlock createBlockItem(IModObject modObject) {
+    return modObject.apply(new BlockItemTank(this));
   }
 
   @Override
@@ -73,12 +71,12 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   public IBlockState getStateFromMeta(int meta) {
-    return getDefaultState().withProperty(EnumTankType.KIND, EnumTankType.getTypeFromMeta(meta));
+    return getDefaultState().withProperty(EnumTankType.KIND, EnumTankType.getType(meta));
   }
 
   @Override
   public int getMetaFromState(IBlockState state) {
-    return EnumTankType.getMetaFromType(state.getValue(EnumTankType.KIND));
+    return EnumTankType.getMeta(state.getValue(EnumTankType.KIND));
   }
 
   @Override
@@ -92,10 +90,10 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
-  public @Nonnull TileEntity createTileEntity(World world, IBlockState bs) {
-    return new TileTank(getMetaFromState(bs));
+  public @Nonnull TileEntity createTileEntity(World world, IBlockState state) {
+    return new TileTank(state.getValue(EnumTankType.KIND));
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
@@ -104,20 +102,20 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(!(te instanceof TileTank)) {
-      return null;
+    TileTank te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new ContainerTank(player.inventory, te);
     }
-    return new ContainerTank(player.inventory, (TileTank) te);
+    return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(!(te instanceof TileTank)) {
-      return null;
+    TileTank te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new GuiTank(player.inventory, te);
     }
-    return new GuiTank(player.inventory, (TileTank) te);
+    return null;
   }
 
   @Override
@@ -132,9 +130,9 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {
-    TileEntity tank = BlockEnder.getAnyTileEntitySafe(world, pos);
-    if(tank instanceof TileTank) {
-      FluidStack stack = ((TileTank) tank).tank.getFluid();
+    TileTank tank = BlockEnder.getAnyTileEntitySafe(world, pos, TileTank.class);
+    if (tank != null) {
+      FluidStack stack = tank.tank.getFluid();
       return stack == null || stack.amount <= 0 ? 0 : stack.getFluid().getLuminosity(stack);
     }
     return super.getLightValue(bs, world, pos);
@@ -147,10 +145,8 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   public float getExplosionResistance(World world, BlockPos pos, Entity par1Entity, Explosion explosion) {
-    IBlockState bs = world.getBlockState(pos);
-    int meta = getMetaFromState(bs);
-    meta = MathHelper.clamp(meta, 0, 1);
-    if(meta == 1) {
+    IBlockState state = world.getBlockState(pos);
+    if (state.getValue(EnumTankType.KIND).isExplosionResistant()) {
       return Config.EXPLOSION_RESISTANT;
     } else {
       return super.getExplosionResistance(par1Entity);
@@ -164,9 +160,9 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   public int getComparatorInputOverride(IBlockState bs, World w, BlockPos pos) {
-    TileEntity te = w.getTileEntity(pos);
-    if (te instanceof TileTank) {
-      return ((TileTank) te).getComparatorOutput();
+    TileTank te = getTileEntity(w, pos);
+    if (te != null) {
+      return te.getComparatorOutput();
     }
     return 0;
   }
@@ -180,7 +176,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
-    if (itemstack.getItemDamage() == 1) {
+    if (EnumTankType.getType(itemstack).isExplosionResistant()) {
       list.add(TextFormatting.ITALIC + EnderIO.lang.localize("blastResistant"));
     }
   }
@@ -189,7 +185,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return stack.getUnlocalizedName();
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public IItemRenderMapper getItemRenderMapper() {

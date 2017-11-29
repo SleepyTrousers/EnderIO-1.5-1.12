@@ -49,18 +49,14 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   @Store
   private VoidMode voidMode = VoidMode.NEVER;
 
-  public TileTank(int meta) {
+  public TileTank(EnumTankType tankType) {
     super(new SlotDefinition(0, 2, 3, 4, -1, -1));
-    if(meta == 1) {
-      tank = new SmartTank(32000);
-    } else {
-      tank = new SmartTank(16000);
-    }
+    tank = tankType.getTank();
     tank.setTileEntity(this);
   }
 
   public TileTank() {
-    this(0);
+    this(EnumTankType.NORMAL);
   }
 
   @Override
