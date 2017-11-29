@@ -3,6 +3,8 @@ package crazypants.enderio.machine.enchanter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.Log;
 import net.minecraft.item.ItemStack;
 
@@ -14,6 +16,7 @@ public class EnchanterRecipeManager {
     return instance;
   }
 
+  @Nonnull
   private final List<EnchanterRecipe> recipes = new ArrayList<EnchanterRecipe>();
     
   public void loadRecipesFromConfig() {
@@ -45,6 +48,7 @@ public class EnchanterRecipeManager {
     }
   }
 
+  @Nonnull
   public List<EnchanterRecipe> getRecipes() {
     return recipes;
   }
