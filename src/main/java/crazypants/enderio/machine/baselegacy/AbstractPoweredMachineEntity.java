@@ -76,19 +76,19 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
       return;
     }
     boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(5));
-    if(powerChanged) {
+    if (powerChanged) {
       lastSyncPowerStored = storedEnergyRF;
       PacketHandler.sendToAllAround(new PacketLegacyPowerStorage(this), this);
     }
   }
 
-  //RF API Power
+  // RF API Power
 
   @Override
   public boolean canConnectEnergy(@Nonnull EnumFacing from) {
     return !isSideDisabled(from);
   }
-  
+
   @Override
   public int getMaxEnergyStored() {
     return maxEnergyStored.get(capacitorData);
@@ -103,8 +103,8 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   public int getEnergyStored() {
     return storedEnergyRF;
   }
-  
-  //----- Common Machine Functions
+
+  // ----- Common Machine Functions
 
   @Override
   public boolean displayPower() {
@@ -126,7 +126,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   }
 
   public void onCapacitorDataChange() {
-    //Force a check that the new value is in bounds
+    // Force a check that the new value is in bounds
     setEnergyStored(getEnergyStored());
     forceClientUpdate.set();
   }
@@ -138,7 +138,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   @Override
   public void setInventorySlotContents(int slot, @Nonnull ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
-    if(slotDefinition.isUpgradeSlot(slot)) {
+    if (slotDefinition.isUpgradeSlot(slot)) {
       updateCapacitorFromSlot();
     }
   }
@@ -146,14 +146,14 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   @Override
   public @Nonnull ItemStack decrStackSize(int fromSlot, int amount) {
     ItemStack res = super.decrStackSize(fromSlot, amount);
-    if(slotDefinition.isUpgradeSlot(fromSlot)) {
+    if (slotDefinition.isUpgradeSlot(fromSlot)) {
       updateCapacitorFromSlot();
     }
     return res;
   }
 
   private void updateCapacitorFromSlot() {
-    if(slotDefinition.getNumUpgradeSlots() <= 0) {
+    if (slotDefinition.getNumUpgradeSlots() <= 0) {
       capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
     } else {
       final ItemStack stack = inventory[slotDefinition.minUpgradeSlot];
@@ -167,7 +167,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     onCapacitorDataChange();
   }
 
-  //--------- NBT
+  // --------- NBT
 
   @Override
   protected void onAfterNbtRead() {
@@ -184,6 +184,29 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   public void writeToItemStack(@Nonnull ItemStack stack) {
     super.writeToItemStack(stack);
     NbtValue.ENERGY.setInt(stack, storedEnergyRF);
+  }
+
+  // Power use
+
+  protected final boolean tryToUsePower() {
+    int powerUsePerTick = getPowerUsePerTick();
+    if (powerUsePerTick <= 0) {
+      return true;
+    } else if (powerUsePerTick <= getEnergyStored()) {
+      usePower(powerUsePerTick);
+      return true;
+    }
+    return false;
+  }
+
+  protected final int usePower() {
+    return usePower(getPowerUsePerTick());
+  }
+
+  protected int usePower(int wantToUse) {
+    int used = Math.min(getEnergyStored(), wantToUse);
+    setEnergyStored(Math.max(0, getEnergyStored() - used));
+    return used;
   }
 
 }

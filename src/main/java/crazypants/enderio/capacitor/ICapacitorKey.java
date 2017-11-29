@@ -18,8 +18,8 @@ public interface ICapacitorKey {
   int get(@Nonnull ICapacitorData capacitor);
 
   /**
-   * See {@link CapacitorKey#get(ICapacitorData)}, but this method will return the value as a float. Depending on the scaler and capacitor level, this may make a
-   * difference.
+   * See {@link CapacitorKey#get(ICapacitorData)}, but this method will return the value as a float. Depending on the scaler and capacitor level, this may make
+   * a difference.
    */
   float getFloat(@Nonnull ICapacitorData capacitor);
 
@@ -53,6 +53,16 @@ public interface ICapacitorKey {
     int getBaseValue();
 
     void setBaseValue(int baseValue);
+
+    @Override
+    default float getFloat(@Nonnull ICapacitorData capacitor) {
+      return getBaseValue() * getScaler().scaleValue(capacitor.getUnscaledValue(this));
+    };
+
+    @Override
+    default int get(@Nonnull ICapacitorData capacitor) {
+      return (int) (getBaseValue() * getScaler().scaleValue(capacitor.getUnscaledValue(this)));
+    }
 
   }
 

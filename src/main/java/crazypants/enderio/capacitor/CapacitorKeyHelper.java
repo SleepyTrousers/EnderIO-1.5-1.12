@@ -1,7 +1,5 @@
 package crazypants.enderio.capacitor;
 
-import java.util.Locale;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.Lang;
@@ -15,7 +13,7 @@ public class CapacitorKeyHelper {
   private CapacitorKeyHelper() {
   }
 
-  static @Nonnull String localizeComment(@Nonnull Lang lang, @Nonnull Section configSection, @Nonnull String configKey) {
+  static @Nonnull public String localizeComment(@Nonnull Lang lang, @Nonnull Section configSection, @Nonnull String configKey) {
     final String langKey = "config.capacitor." + configKey;
     if (!lang.canLocalize(langKey)) {
       Log.warn("Missing translation: " + langKey);
@@ -25,7 +23,8 @@ public class CapacitorKeyHelper {
 
   public static void processConfig(Configuration config, ICapacitorKey.Computable... keys) {
     for (ICapacitorKey.Computable key : keys) {
-      key.setBaseValue(config.get(key.getConfigSection().name, key.getConfigKey(), key.getDefaultBaseValue(), key.getConfigComment()).getInt(key.getBaseValue()));
+      key.setBaseValue(
+          config.get(key.getConfigSection().name, key.getConfigKey(), key.getDefaultBaseValue(), key.getConfigComment()).getInt(key.getBaseValue()));
       String string = Scaler.Factory.toString(key.getScaler());
       if (string != null) {
         String string2 = config.get(key.getConfigSection().name, key.getConfigKey() + ".scaler", string, null).getString();
@@ -39,8 +38,8 @@ public class CapacitorKeyHelper {
     }
   }
 
-  static @Nonnull String createConfigKey(CapacitorKey key, String configKey) {
-    return configKey == null ? key.name().toLowerCase(Locale.US) : configKey;
+  static @Nonnull public String createConfigKey(ICapacitorKey key, String configKey) {
+    return configKey == null ? key.getName() : configKey;
   }
 
 }

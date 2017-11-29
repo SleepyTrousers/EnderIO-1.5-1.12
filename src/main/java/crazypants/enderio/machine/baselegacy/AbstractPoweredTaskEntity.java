@@ -152,13 +152,9 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     return false;
   }
 
-  protected double usePower() {
-    return usePower(getPowerUsePerTick());
-  }
-
-  public int usePower(int wantToUse) {
-    int used = Math.min(getEnergyStored(), wantToUse);
-    setEnergyStored(Math.max(0, getEnergyStored() - used));
+  @Override
+  protected int usePower(int wantToUse) {
+    int used = super.usePower(wantToUse);
     if (currentTask != null) {
       currentTask.update(used);
     }
