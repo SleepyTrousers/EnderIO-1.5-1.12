@@ -1,14 +1,14 @@
 package crazypants.enderio.api;
 
-import crazypants.enderio.fluid.FluidFuelRegister;
-import crazypants.enderio.item.soulvial.ItemSoulVial;
-import crazypants.enderio.item.spawner.PoweredSpawnerConfig;
-import crazypants.enderio.paint.PaintSourceValidator;
-import crazypants.enderio.recipe.alloysmelter.AlloyRecipeManager;
-import crazypants.enderio.recipe.slicensplice.SliceAndSpliceRecipeManager;
-import crazypants.enderio.recipe.soul.SoulBinderRecipeManager;
-import crazypants.enderio.recipe.vat.VatRecipeManager;
-import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.base.fluid.FluidFuelRegister;
+import crazypants.enderio.base.item.soulvial.ItemSoulVial;
+import crazypants.enderio.base.item.spawner.PoweredSpawnerConfig;
+import crazypants.enderio.base.paint.PaintSourceValidator;
+import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
+import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
+import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
+import crazypants.enderio.base.recipe.vat.VatRecipeManager;
+import crazypants.enderio.base.teleport.TravelController;
 
 /**
  * This class provides the keys for the IMC messages supported by EIO and links the the details of how the messages are processed. It is preferable not to refer

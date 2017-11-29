@@ -9,8 +9,8 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 
-import crazypants.enderio.Log;
-import crazypants.enderio.machine.modes.IoMode;
+import crazypants.enderio.base.Log;
+import crazypants.enderio.base.machine.modes.IoMode;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;

@@ -1,6 +1,6 @@
 package info.loenwind.autosave.handlers.enderio;
 
-import crazypants.enderio.machine.modes.IoMode;
+import crazypants.enderio.base.machine.modes.IoMode;
 import info.loenwind.autosave.handlers.java.HandleAbstractEnum2EnumMap;
 import net.minecraft.util.EnumFacing;
 

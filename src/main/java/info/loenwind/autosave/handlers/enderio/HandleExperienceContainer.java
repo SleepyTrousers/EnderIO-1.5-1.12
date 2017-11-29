@@ -6,9 +6,10 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.xp.ExperienceContainer;
 import info.loenwind.autosave.Registry;
 import com.enderio.core.common.NBTAction;
+
+import crazypants.enderio.base.xp.ExperienceContainer;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.nbt.NBTTagCompound;

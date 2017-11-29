@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 import info.loenwind.autosave.Registry;
 import com.enderio.core.common.NBTAction;
 
-import crazypants.enderio.machine.interfaces.IPoweredTask;
+import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.nbt.NBTTagCompound;

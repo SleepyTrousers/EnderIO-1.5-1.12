@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 
-import crazypants.util.ResettingFlag;
+import crazypants.enderio.util.ResettingFlag;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;

@@ -1,8 +1,8 @@
 package crazypants.enderio.api.teleport;
 
-import crazypants.enderio.config.Config;
-import crazypants.enderio.sound.IModSound;
-import crazypants.enderio.sound.SoundRegistry;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.sound.IModSound;
+import crazypants.enderio.base.sound.SoundRegistry;
 
 public enum TravelSource {
 

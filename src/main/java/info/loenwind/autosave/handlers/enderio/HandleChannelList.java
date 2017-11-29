@@ -4,9 +4,9 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import crazypants.enderio.transceiver.Channel;
-import crazypants.enderio.transceiver.ChannelList;
-import crazypants.enderio.transceiver.ChannelType;
+import crazypants.enderio.base.transceiver.Channel;
+import crazypants.enderio.base.transceiver.ChannelList;
+import crazypants.enderio.base.transceiver.ChannelType;
 import info.loenwind.autosave.handlers.internal.HandleStorable;
 import info.loenwind.autosave.handlers.java.HandleAbstractCollection;
 import info.loenwind.autosave.handlers.java.HandleAbstractEnumMap;
