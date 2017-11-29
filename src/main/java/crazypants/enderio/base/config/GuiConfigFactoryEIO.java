@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.Config.Section;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.config.GuiConfig;
@@ -22,8 +21,8 @@ public class GuiConfigFactoryEIO extends GuiConfig {
     List<IConfigElement> list = new ArrayList<IConfigElement>();
     String prefix = EnderIO.lang.addPrefix("config.");
 
-    for (Section section : Config.sections) {
-      list.add(new ConfigElement(config.getCategory(section.lc()).setLanguageKey(prefix + section.lang)));
+    for (String section : config.getCategoryNames()) {
+      list.add(new ConfigElement(config.getCategory(section).setLanguageKey(prefix + section)));
     }
 
     return list;

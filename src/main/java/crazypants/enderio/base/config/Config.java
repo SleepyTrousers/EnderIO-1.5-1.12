@@ -1,9 +1,6 @@
 package crazypants.enderio.base.config;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
@@ -38,27 +35,11 @@ public final class Config {
 
   public static class Section {
     public final String name;
-    public final String lang;
 
     public Section(String name, String lang) {
-      this.name = name;
-      this.lang = lang;
-      register();
+      this.name = lang;
     }
 
-    private void register() {
-      sections.add(this);
-    }
-
-    public String lc() {
-      return name.toLowerCase(Locale.US);
-    }
-  }
-
-  public static final List<Section> sections;
-
-  static {
-    sections = new ArrayList<Section>();
   }
 
   public static Configuration config;
