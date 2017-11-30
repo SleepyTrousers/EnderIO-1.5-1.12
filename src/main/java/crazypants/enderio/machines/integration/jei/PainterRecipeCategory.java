@@ -1,12 +1,5 @@
 package crazypants.enderio.machines.integration.jei;
 
-import static crazypants.enderio.machines.init.MachineObject.block_painter;
-import static crazypants.enderio.machines.machine.painter.ContainerPainter.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.painter.ContainerPainter.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machines.machine.painter.ContainerPainter.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.painter.ContainerPainter.NUM_RECIPE_SLOT;
-import static crazypants.enderio.util.NbtValue.BLOCKSTATE;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,12 +10,12 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.base.recipe.IMachineRecipe;
-import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
+import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.AbstractPainterTemplate;
+import crazypants.enderio.machines.config.Config;
 import crazypants.enderio.machines.machine.painter.ContainerPainter;
 import crazypants.enderio.machines.machine.painter.GuiPainter;
 import mezz.jei.api.IGuiHelper;
@@ -46,6 +39,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import static crazypants.enderio.machines.init.MachineObject.block_painter;
+import static crazypants.enderio.machines.machine.painter.ContainerPainter.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.painter.ContainerPainter.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machines.machine.painter.ContainerPainter.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.painter.ContainerPainter.NUM_RECIPE_SLOT;
+import static crazypants.enderio.util.NbtValue.BLOCKSTATE;
 
 public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCategory.PainterRecipeWrapper> {
 
@@ -73,7 +73,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
       }
     }
 
-    List<ItemStack> paints = Config.jeiUseShortenedPainterRecipes ? getLimitedItems() : validItems;
+    List<ItemStack> paints = Config.jeiUseShortenedPainterRecipes.get() ? getLimitedItems() : validItems;
 
     int count = 0;
     for (ItemStack paint : paints) {

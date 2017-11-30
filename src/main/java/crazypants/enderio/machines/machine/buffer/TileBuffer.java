@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -16,6 +16,7 @@ import crazypants.enderio.base.power.forge.InternalRecieverTileWrapper;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
@@ -35,7 +36,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   private PowerDistributor dist;
 
   @Store
-  private int maxOut = Config.powerConduitTierThreeRF;
+  private int maxOut = BUFFER_POWER_INTAKE.get(DefaultCapacitorData.BASIC_CAPACITOR);
   @Store
   private int maxIn = maxOut;
 
@@ -192,8 +193,8 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   }
 
   public void setIO(int in, int out) {
-    this.maxIn = in;
-    this.maxOut = out;
+    this.maxIn = MathHelper.clamp(in, 0, maxEnergyRecieved.get(getCapacitorData()));
+    this.maxOut = MathHelper.clamp(out, 0, maxEnergyRecieved.get(getCapacitorData()));
     markDirty();
   }
 

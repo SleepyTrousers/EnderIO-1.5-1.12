@@ -25,10 +25,10 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.recipe.RecipeConfig;
 import crazypants.enderio.base.recipe.RecipeConfigParser;
 import crazypants.enderio.base.recipe.RecipeInput;
+import crazypants.enderio.machines.config.ConfigHandler;
 import net.minecraft.enchantment.Enchantment;
 
 public class EnchanterRecipeParser extends DefaultHandler {
@@ -37,7 +37,7 @@ public class EnchanterRecipeParser extends DefaultHandler {
   private static final String CUSTOM_FILE_NAME = "EnchanterRecipes_User.xml";
 
   public static List<EnchanterRecipe> loadRecipeConfig() {
-    File coreFile = new File(Config.configDirectory, CORE_FILE_NAME);
+    File coreFile = new File(ConfigHandler.getConfigDirectory(), CORE_FILE_NAME);
 
     String defaultVals = null;
     try {
@@ -61,7 +61,7 @@ public class EnchanterRecipeParser extends DefaultHandler {
       return null;
     }
 
-    File userFile = new File(Config.configDirectory, CUSTOM_FILE_NAME);
+    File userFile = new File(ConfigHandler.getConfigDirectory(), CUSTOM_FILE_NAME);
     String userConfigStr = null;
     try {
       userConfigStr = readRecipes(userFile, CUSTOM_FILE_NAME, false);

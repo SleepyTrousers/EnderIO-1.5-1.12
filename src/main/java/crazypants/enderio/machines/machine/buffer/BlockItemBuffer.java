@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.power.AbstractPoweredBlockItem;
 import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
 import crazypants.enderio.base.render.util.PowerBarOverlayRenderHelper;
@@ -22,7 +21,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
 
 public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverlayRenderAware {
 
@@ -79,12 +79,12 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
 
   @Override
   public int getMaxEnergyStored(@Nonnull ItemStack stack) {
-    return getType(stack).hasPower ? LEGACY_ENERGY_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR) : 0;
+    return getType(stack).hasPower ? BUFFER_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR) : 0;
   }
 
   @Override
   public int getMaxInput(@Nonnull ItemStack stack) {
-    return getType(stack).hasPower ? Config.powerConduitTierThreeRF / 20 : 0;
+    return getType(stack).hasPower ? BUFFER_POWER_INTAKE.get(DefaultCapacitorData.BASIC_CAPACITOR) : 0;
   }
 
   @Override

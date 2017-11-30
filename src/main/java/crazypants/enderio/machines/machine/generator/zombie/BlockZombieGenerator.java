@@ -5,7 +5,6 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.GuiID;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -16,6 +15,7 @@ import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
+import crazypants.enderio.machines.config.Config;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.killera.KillerJoeRenderMapper;
 import net.minecraft.block.material.MapColor;
@@ -23,7 +23,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -107,8 +106,8 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   @Override
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     if (rand.nextInt(3) == 0) {
-      TileEntity te = world.getTileEntity(pos);
-      if (te instanceof TileZombieGenerator && ((TileZombieGenerator) te).isActive()) {
+      TileZombieGenerator te = getTileEntity(world, pos);
+      if (te != null && te.isActive()) {
         for (int i = 0; i < 2; i++) {
           float xOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.3f;
           float yOffset = 0.1f;
@@ -119,8 +118,8 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
         }
 
-        if (Config.machineSoundsEnabled) {
-          SoundHelper.playSound(world, pos, SoundHelper.BLOCK_TOP, SoundRegistry.ZOMBIE_BUBBLE, Config.machineSoundVolume * 0.045f,
+        if (Config.machineSoundsEnabled.get()) {
+          SoundHelper.playSound(world, pos, SoundHelper.BLOCK_TOP, SoundRegistry.ZOMBIE_BUBBLE, Config.machineSoundVolume.get() * 0.045f,
               world.rand.nextFloat() * 0.75f);
         }
       }
