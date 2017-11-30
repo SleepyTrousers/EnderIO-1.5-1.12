@@ -262,14 +262,6 @@ public enum ModObject implements IModObject.Registerable {
     return teClazz;
   }
 
-  public final @Nonnull Block getBlockNN() {
-    return NullHelper.notnull(block, "Block " + this + " is unexpectedly missing");
-  }
-
-  public final @Nonnull Item getItemNN() {
-    return NullHelper.notnull(item, "Item " + this + " is unexpectedly missing");
-  }
-
   @Override
   public final @Nonnull Class<?> getClazz() {
     return clazz;

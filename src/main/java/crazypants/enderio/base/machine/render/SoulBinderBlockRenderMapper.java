@@ -3,6 +3,8 @@ package crazypants.enderio.base.machine.render;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
@@ -19,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SoulBinderBlockRenderMapper extends MachineRenderMapper {
 
-  public static final SoulBinderBlockRenderMapper instance = new SoulBinderBlockRenderMapper();
+  public static final @Nonnull SoulBinderBlockRenderMapper instance = new SoulBinderBlockRenderMapper();
 
   private SoulBinderBlockRenderMapper() {
     super(EnumRenderPart.SOUL_FRAME);

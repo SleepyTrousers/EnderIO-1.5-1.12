@@ -12,8 +12,8 @@ import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
-import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity.InventoryWrapper;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -73,7 +73,7 @@ public abstract class AbstractMachineContainer<E extends AbstractInventoryMachin
   /**
    * ATTN: Do not access any non-static field from this method. Your object has not yet been constructed when it is called!
    */
-  protected abstract void addMachineSlots(InventoryPlayer playerInv);
+  protected abstract void addMachineSlots(@Nonnull InventoryPlayer playerInv);
 
   @Override
   public @Nonnull ItemStack transferStackInSlot(@Nonnull EntityPlayer entityPlayer, int slotNumber) {

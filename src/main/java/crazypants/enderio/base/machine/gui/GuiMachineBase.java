@@ -17,8 +17,8 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.gui.IoConfigRenderer.SelectedFace;
+import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -141,7 +141,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
     return configOverlay.isVisible();
   }
 
-  protected T getTileEntity() {
+  protected @Nonnull T getTileEntity() {
     return tileEntity;
   }
 

@@ -1,5 +1,7 @@
 package crazypants.enderio.base.network;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.Log;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -196,7 +198,7 @@ public class GuiPacket implements IMessage {
     return checkAccess(idx, DataType.INT) ? ints[idx] : 0;
   }
 
-  public <E extends Enum<?>> E getEnum(int idx, Class<E> clazz) {
+  public @Nonnull <E extends Enum<?>> E getEnum(int idx, Class<E> clazz) {
     E[] enumConstants = clazz.getEnumConstants();
     return enumConstants[MathHelper.clamp(getInt(idx), 0, enumConstants.length - 1)];
   }
@@ -209,7 +211,7 @@ public class GuiPacket implements IMessage {
     return checkAccess(idx, DataType.LONG) ? longs[idx] : 0L;
   }
 
-  public BlockPos getBlockPos(int idx) {
+  public @Nonnull BlockPos getBlockPos(int idx) {
     return BlockPos.fromLong(getLong(idx));
   }
 
