@@ -37,6 +37,10 @@ public class ValueFactory {
     return new StringValue(section.name, keyname, defaultValue, text);
   }
 
+  public @Nonnull IValue<Boolean> make(@Nonnull Section section, @Nonnull String keyname, @Nonnull Boolean defaultValue, @Nonnull String text) {
+    return new BooleanValue(section.name, keyname, defaultValue, text);
+  }
+
   public interface IValue<T> {
     @Nonnull
     T get();
@@ -121,6 +125,19 @@ public class ValueFactory {
     @Override
     protected @Nullable String makeValue() {
       return config.get(section, keyname, defaultValue, text).getString();
+    }
+
+  }
+
+  public class BooleanValue extends AbstractValue<Boolean> {
+
+    protected BooleanValue(@Nonnull String section, @Nonnull String keyname, @Nonnull Boolean defaultValue, @Nonnull String text) {
+      super(section, keyname, defaultValue, text);
+    }
+
+    @Override
+    protected @Nullable Boolean makeValue() {
+      return config.get(section, keyname, defaultValue, text).getBoolean(defaultValue);
     }
 
   }

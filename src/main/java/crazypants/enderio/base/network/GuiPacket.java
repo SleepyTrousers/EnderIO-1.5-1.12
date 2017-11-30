@@ -2,6 +2,8 @@ package crazypants.enderio.base.network;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.Log;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -157,8 +159,7 @@ public class GuiPacket implements IMessage {
       return false;
     }
     if ((type == DataType.INT && ints == null) || (type == DataType.LONG && longs == null) || (type == DataType.STRING && strings == null)) {
-      Log.warn(
-          "Invalid network packet received (" + guiID + "/" + msgID + "/" + pattern + "): idx" + idx + " no " + type + " data");
+      Log.warn("Invalid network packet received (" + guiID + "/" + msgID + "/" + pattern + "): idx" + idx + " no " + type + " data");
       return false;
     }
     return true;
@@ -200,7 +201,7 @@ public class GuiPacket implements IMessage {
 
   public @Nonnull <E extends Enum<?>> E getEnum(int idx, Class<E> clazz) {
     E[] enumConstants = clazz.getEnumConstants();
-    return enumConstants[MathHelper.clamp(getInt(idx), 0, enumConstants.length - 1)];
+    return NullHelper.notnullJ(enumConstants[MathHelper.clamp(getInt(idx), 0, enumConstants.length - 1)], "clazz.getEnumConstants()");
   }
 
   public boolean getBoolean(int idx) {

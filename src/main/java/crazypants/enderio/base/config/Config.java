@@ -78,8 +78,6 @@ public final class Config {
 
   public static boolean registerRecipes = true;
 
-  public static boolean jeiUseShortenedPainterRecipes = true;
-
   public static double conduitScale = DEFAULT_CONDUIT_SCALE;
 
   public static double transceiverEnergyLoss = 0.1;
@@ -680,11 +678,6 @@ public final class Config {
         .get(sectionAdvanced.name, "perInterfacePowerTrackingEnabled", detailedPowerTrackingEnabled,
             "Enable per tick sampling on individual power inputs and outputs. This allows slightly more detailed messages from the RF Reader but has a negative impact on server performance.")
         .getBoolean(detailedPowerTrackingEnabled);
-
-    jeiUseShortenedPainterRecipes = config
-        .get(sectionPersonal.name, "jeiUseShortenedPainterRecipes", jeiUseShortenedPainterRecipes,
-            "If true, only a handful of sample painter recipes will be shown in JEI. Enable this if you have timing problems starting a world or logging into a server.")
-        .getBoolean(jeiUseShortenedPainterRecipes);
 
     useSneakMouseWheelYetaWrench = config.get(sectionPersonal.name, "useSneakMouseWheelYetaWrench", useSneakMouseWheelYetaWrench,
         "If true, shift-mouse wheel will change the conduit display mode when the YetaWrench is equipped.").getBoolean(useSneakMouseWheelYetaWrench);
