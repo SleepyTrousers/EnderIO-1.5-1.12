@@ -3,6 +3,9 @@ package crazypants.enderio.machines.machine.teleport.telepad;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.TileEntityEio;
@@ -27,32 +30,32 @@ import static crazypants.enderio.base.init.ModObject.itemLocationPrintout;
 public class TileDialingDevice extends TileEntityEio implements ILegacyPowerReceiver, IItemHandlerModifiable {
 
   private static final int RF_PER_TICK = 20;
-  
+
   @Store
   private int storedEnergyRF;
-  
+
   private int lastSyncPowerStored;
-  
+
   @Store(handler = HandleItemStackNNList.class)
   protected NNList<ItemStack> inventory = new NNList<>(2, ItemStack.EMPTY);
 
   @Store
   private DialerFacing facing;
-  
+
   @Store(handler = TelepadTargetArrayListHandler.class)
   private final ArrayList<TelepadTarget> targets = new ArrayList<TelepadTarget>();
-  
+
   @Override
   public void doUpdate() {
     if (world.isRemote) {
       super.doUpdate(); // disable ticking on the client
       return;
     }
-    
-    if(!inventory.get(0).isEmpty() && !inventory.get(1).isEmpty()) {
+
+    if (!inventory.get(0).isEmpty() && !inventory.get(1).isEmpty()) {
       ItemStack stack = inventory.get(0);
       TelepadTarget newTarg = TelepadTarget.readFromNBT(stack);
-      if(newTarg != null && !targets.contains(newTarg)) {
+      if (newTarg != null && !targets.contains(newTarg)) {
         addTarget(newTarg);
         PacketHandler.sendToAllAround(new PacketTargetList(this, newTarg, true), this);
       }
@@ -61,65 +64,63 @@ public class TileDialingDevice extends TileEntityEio implements ILegacyPowerRece
       markDirty();
     }
 
-    if(getEnergyStored() <= 0) {
+    if (getEnergyStored() <= 0) {
       return;
     }
     setEnergyStored(getEnergyStored() - getUsage());
-    
 
     boolean powerChanged = (lastSyncPowerStored != getEnergyStored() && shouldDoWorkThisTick(5));
     if (powerChanged) {
       lastSyncPowerStored = getEnergyStored();
       PacketHandler.sendToAllAround(new PacketLegacyPowerStorage(this), this);
     }
-    
+
   }
-  
+
   public void addTarget(TelepadTarget newTarg) {
-    if(newTarg == null) {
+    if (newTarg == null) {
       return;
     }
     targets.add(newTarg);
     markDirty();
   }
-  
+
   public void removeTarget(TelepadTarget target) {
-    if(target == null) {
+    if (target == null) {
       return;
     }
     targets.remove(target);
     markDirty();
   }
-  
+
   public ArrayList<TelepadTarget> getTargets() {
     return targets;
   }
-  
+
   public void setTargets(Collection<TelepadTarget> t) {
     targets.clear();
-    if(t != null) {
+    if (t != null) {
       targets.addAll(t);
     }
   }
-  
-  
-  //---------------------- Inventory -------------------------------------
-  
+
+  // ---------------------- Inventory -------------------------------------
+
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       return true;
     }
-    return super.hasCapability(capability, facing);
+    return super.hasCapability(capability, facingIn);
   }
-  
+
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       return (T) this;
     }
-    return super.getCapability(capability, facing);
+    return super.getCapability(capability, facingIn);
   }
 
   @Override
@@ -128,27 +129,27 @@ public class TileDialingDevice extends TileEntityEio implements ILegacyPowerRece
   }
 
   @Override
-  public ItemStack getStackInSlot(int slot) {
-    if(slot < 0 || slot >= inventory.size()) {
+  public @Nonnull ItemStack getStackInSlot(int slot) {
+    if (slot < 0 || slot >= inventory.size()) {
       return ItemStack.EMPTY;
     }
     return inventory.get(slot);
   }
-  
+
   @Override
-  public void setStackInSlot(int slot, ItemStack stack) {
-    if(slot < 0 || slot >= inventory.size()) {
+  public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+    if (slot < 0 || slot >= inventory.size()) {
       return;
     }
     inventory.set(slot, stack);
   }
 
   @Override
-  public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+  public @Nonnull ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
     if (slot != 0 || !inventory.get(0).isEmpty() || stack.isEmpty() || stack.getItem() != itemLocationPrintout.getItem()) {
       return stack;
     }
-    if(!simulate) {
+    if (!simulate) {
       inventory.set(0, stack.copy());
       markDirty();
     }
@@ -156,19 +157,19 @@ public class TileDialingDevice extends TileEntityEio implements ILegacyPowerRece
   }
 
   @Override
-  public ItemStack extractItem(int slot, int amount, boolean simulate) {
-    if(slot != 1 || amount < 1 || inventory.get(1).isEmpty()) {
+  public @Nonnull ItemStack extractItem(int slot, int amount, boolean simulate) {
+    if (slot != 1 || amount < 1 || inventory.get(1).isEmpty()) {
       return ItemStack.EMPTY;
     }
     ItemStack res = inventory.get(1).copy();
-    if(!simulate) {
+    if (!simulate) {
       markDirty();
       inventory.set(1, ItemStack.EMPTY);
     }
     return res;
   }
-  
-  //---------------------- Power -------------------------------------
+
+  // ---------------------- Power -------------------------------------
 
   @Override
   public int getEnergyStored() {
@@ -179,7 +180,7 @@ public class TileDialingDevice extends TileEntityEio implements ILegacyPowerRece
   public int getMaxEnergyRecieved(EnumFacing dir) {
     return RF_PER_TICK * 40;
   }
-  
+
   @Override
   public int getMaxEnergyStored() {
     return RF_PER_TICK * 20 * 60 * 4;
@@ -196,7 +197,7 @@ public class TileDialingDevice extends TileEntityEio implements ILegacyPowerRece
   }
 
   @Override
-  public boolean canConnectEnergy(EnumFacing from) {
+  public boolean canConnectEnergy(@Nonnull EnumFacing from) {
     return true;
   }
 
@@ -208,20 +209,20 @@ public class TileDialingDevice extends TileEntityEio implements ILegacyPowerRece
     }
     return max;
   }
-  
+
   public int getUsage() {
     return RF_PER_TICK;
   }
 
   @Override
-  public BlockPos getLocation() {
+  public @Nonnull BlockPos getLocation() {
     return getPos();
   }
 
-  public DialerFacing getFacing() {
-    return facing == null ? DialerFacing.DOWN_TONORTH : facing;
+  public @Nonnull DialerFacing getFacing() {
+    return facing != null ? facing : DialerFacing.DOWN_TONORTH;
   }
-  
+
   public void setFacing(DialerFacing facing) {
     this.facing = facing;
     markDirty();

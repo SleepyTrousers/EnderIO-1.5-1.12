@@ -1,5 +1,6 @@
 package crazypants.enderio.machines.machine.buffer;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
@@ -25,8 +26,8 @@ import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFE
 
 public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverlayRenderAware {
 
-  public BlockItemBuffer(Block block) {
-    super(block, 0, 0 ,0);
+  public BlockItemBuffer(@Nonnull Block block) {
+    super(block, 0, 0, 0);
     setHasSubtypes(true);
     setMaxDamage(0);
   }
@@ -37,7 +38,7 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
   }
 
   @Override
-  public String getUnlocalizedName(ItemStack stack) {
+  public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
     return getType(stack).getUnlocalizedName();
   }
 
@@ -46,8 +47,8 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
   }
 
   @Override
-  public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
-      IBlockState newState) {
+  public boolean placeBlockAt(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side,
+      float hitX, float hitY, float hitZ, @Nonnull IBlockState newState) {
     super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
 
     if (newState.getBlock() == block) {
@@ -65,68 +66,68 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
   }
 
   @Override
-  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+  public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
     if (stack.getCount() == 1 && getType(stack).hasPower) {
       PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
     }
   }
 
   @Override
-  public boolean hasEffect(ItemStack stack) {
+  public boolean hasEffect(@Nonnull ItemStack stack) {
     return getType(stack).isCreative || super.hasEffect(stack);
   }
 
   @Override
-  public int getMaxEnergyStored(ItemStack stack) {
+  public int getMaxEnergyStored(@Nonnull ItemStack stack) {
     return getType(stack).hasPower ? LEGACY_ENERGY_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR) : 0;
   }
 
   @Override
-  public int getMaxInput(ItemStack stack) {
+  public int getMaxInput(@Nonnull ItemStack stack) {
     return getType(stack).hasPower ? Config.powerConduitTierThreeRF / 20 : 0;
   }
 
   @Override
-  public int getMaxOutput(ItemStack container) {
+  public int getMaxOutput(@Nonnull ItemStack container) {
     return getMaxInput(container);
   }
-  
+
   @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
     return new InnerProv(stack);
   }
 
   private class InnerProv implements ICapabilityProvider {
 
-    private final ItemStack container;
-    private final ItemPowerCapabilityBackend backend;
-    
-    public InnerProv(ItemStack container) {
+    private final @Nonnull ItemStack container;
+    private final @Nonnull ItemPowerCapabilityBackend backend;
+
+    public InnerProv(@Nonnull ItemStack container) {
       this.container = container;
       this.backend = new ItemPowerCapabilityBackend(container);
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
       return backend.hasCapability(capability, facing) && getType(container).hasPower;
     }
 
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
       if (!hasCapability(capability, facing)) {
         return null;
       }
       BufferType type = getType(container);
-      if(!type.hasPower || container.getCount() > 1) {
+      if (!type.hasPower || container.getCount() > 1) {
         return null;
       }
-      if(type.isCreative) {
+      if (type.isCreative) {
         return null; // TODO (T)new CreativePowerCap(container);
       }
       return backend.getCapability(capability, facing);
     }
   }
-  
+
   // private class CreativePowerCap extends InternalPoweredItemWrapper {
   //
   // public CreativePowerCap (ItemStack container) {

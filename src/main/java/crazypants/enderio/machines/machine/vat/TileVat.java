@@ -42,9 +42,9 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   public static final int BUCKET_VOLUME = 1000;
 
   @Store
-  final SmartTank inputTank = new SmartTank(BUCKET_VOLUME * 8);
+  final @Nonnull SmartTank inputTank = new SmartTank(BUCKET_VOLUME * 8);
   @Store
-  final SmartTank outputTank = new SmartTank(BUCKET_VOLUME * 8);
+  final @Nonnull SmartTank outputTank = new SmartTank(BUCKET_VOLUME * 8);
 
   private static int IO_MB_TICK = 100;
 
@@ -68,7 +68,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     MachineRecipeInput[] inputs = getRecipeInputs();
     inputs[i] = new MachineRecipeInput(i, itemstack);
     return VatRecipeManager.getInstance().isValidInput(inputs);
@@ -113,24 +113,24 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   }
 
   @Override
-  protected void mergeFluidResult(ResultStack result) {
+  protected void mergeFluidResult(@Nonnull ResultStack result) {
     outputTank.fillInternal(result.fluid, true);
     setTanksDirty();
   }
 
   @Override
-  protected void drainInputFluid(MachineRecipeInput fluid) {
+  protected void drainInputFluid(@Nonnull MachineRecipeInput fluid) {
     inputTank.removeFluidAmount(fluid.fluid.amount);
   }
 
   @Override
-  protected boolean canInsertResultFluid(ResultStack fluid) {
+  protected boolean canInsertResultFluid(@Nonnull ResultStack fluid) {
     int res = outputTank.fillInternal(fluid.fluid, false);
     return res >= fluid.fluid.amount;
   }
 
   @Override
-  protected MachineRecipeInput[] getRecipeInputs() {
+  protected @Nonnull MachineRecipeInput[] getRecipeInputs() {
     MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots() + 1];
     int fromSlot = slotDefinition.minInputSlot;
     for (int i = 0; i < res.length - 1; i++) {
@@ -149,7 +149,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   }
 
   @Override
-  public String getSoundName() {
+  public @Nonnull String getSoundName() {
     return "machine.vat";
   }
 
@@ -179,7 +179,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   }
 
   @Override
-  public FluidTank[] getOutputTanks() {
+  public @Nonnull FluidTank[] getOutputTanks() {
     return new FluidTank[] { outputTank };
   }
 
@@ -247,7 +247,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) getSmartTankFluidHandler().get(facingIn);
     }

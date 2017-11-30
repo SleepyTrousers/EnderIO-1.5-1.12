@@ -1,10 +1,13 @@
 package crazypants.enderio.machines.machine.obelisk.weather;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,9 +18,6 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.Random;
-
 public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk> {
 
   public static BlockWeatherObelisk create(@Nonnull IModObject modObject) {
@@ -26,8 +26,9 @@ public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk
     PacketHandler.INSTANCE.registerMessage(PacketActivateWeather.class, PacketActivateWeather.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketActivateWeather.class, PacketActivateWeather.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketWeatherTank.class, PacketWeatherTank.class, PacketHandler.nextID(), Side.CLIENT);
-    
-    EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.DOMAIN, "weather_rocket"),EntityWeatherRocket.class, "weather_rocket", 33, EnderIO.instance, 64, 3, false); //TODO Check if Forge has a registry for this
+
+    EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.DOMAIN, "weather_rocket"), EntityWeatherRocket.class, "weather_rocket", 33, EnderIO.instance,
+        64, 3, false); // TODO Check if Forge has a registry for this
     return ret;
   }
 
@@ -46,12 +47,12 @@ public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_WEATHER_OBELISK;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
   }
 }

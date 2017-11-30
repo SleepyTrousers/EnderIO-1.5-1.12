@@ -38,11 +38,11 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   @Store(handler = HandleItemStackNNList.class)
   @Nonnull
   private NNList<ItemStack> password = new NNList<>(5, ItemStack.EMPTY);
-  
+
   @Store
   @Nonnull
   private ItemStack itemLabel = ItemStack.EMPTY;
-  
+
   @Store
   private String label;
 
@@ -61,8 +61,8 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
 
   @Override
-  public boolean canBlockBeAccessed(EntityPlayer playerName) {
-    if(accessMode == AccessMode.PUBLIC) {
+  public boolean canBlockBeAccessed(@Nonnull EntityPlayer playerName) {
+    if (accessMode == AccessMode.PUBLIC) {
       return true;
     }
     // Covers protected and private access modes
@@ -76,17 +76,17 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
 
   private boolean checkPassword(ItemStack[] pwd) {
-    if(pwd == null || pwd.length != password.size()) {
+    if (pwd == null || pwd.length != password.size()) {
       return false;
     }
     for (int i = 0; i < pwd.length; i++) {
       ItemStack pw = password.get(i);
       ItemStack tst = pwd[i];
-      if(pw.isEmpty() && !tst.isEmpty()) {
+      if (pw.isEmpty() && !tst.isEmpty()) {
         return false;
       }
-      if(!pw.isEmpty()) {
-        if(tst.isEmpty() || !ItemStack.areItemStacksEqual(pw, tst)) {
+      if (!pw.isEmpty()) {
+        if (tst.isEmpty() || !ItemStack.areItemStacksEqual(pw, tst)) {
           return false;
         }
       }
@@ -95,13 +95,12 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
 
   @Override
-  public boolean getRequiresPassword(EntityPlayer playerName) {
-    return getAccessMode() == AccessMode.PROTECTED && !canUiBeAccessed(playerName)
-        && !isAuthorisedUser(UserIdent.create(playerName.getGameProfile()));
+  public boolean getRequiresPassword(@Nonnull EntityPlayer playerName) {
+    return getAccessMode() == AccessMode.PROTECTED && !canUiBeAccessed(playerName) && !isAuthorisedUser(UserIdent.create(playerName.getGameProfile()));
   }
 
   @Override
-  public boolean authoriseUser(EntityPlayer username, ItemStack[] passwordIn) {
+  public boolean authoriseUser(@Nonnull EntityPlayer username, @Nonnull ItemStack[] passwordIn) {
     if (checkPassword(passwordIn)) {
       authorisedUsers.add(UserIdent.create(username.getGameProfile()));
       return true;
@@ -110,56 +109,56 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
 
   @Override
-  public boolean canUiBeAccessed(EntityPlayer playerName) {
+  public boolean canUiBeAccessed(@Nonnull EntityPlayer playerName) {
     return isOwnerUser(UserIdent.create(playerName.getGameProfile()));
   }
 
   @Override
-  public boolean canSeeBlock(EntityPlayer playerName) {
-    if(accessMode != AccessMode.PRIVATE) {
+  public boolean canSeeBlock(@Nonnull EntityPlayer playerName) {
+    if (accessMode != AccessMode.PRIVATE) {
       return true;
     }
     return isOwnerUser(UserIdent.create(playerName.getGameProfile()));
   }
 
   @Override
-  public AccessMode getAccessMode() {
+  public @Nonnull AccessMode getAccessMode() {
     return accessMode;
   }
 
   @Override
-  public void setAccessMode(AccessMode accessMode) {
+  public void setAccessMode(@Nonnull AccessMode accessMode) {
     this.accessMode = accessMode;
   }
 
   @Override
-  public NNList<ItemStack> getPassword() {
+  public @Nonnull NNList<ItemStack> getPassword() {
     return password;
   }
 
   @Override
-  public void setPassword(NNList<ItemStack> password) {
+  public void setPassword(@Nonnull NNList<ItemStack> password) {
     this.password = password;
   }
 
   @Override
-  public ItemStack getItemLabel() {
+  public @Nonnull ItemStack getItemLabel() {
     return itemLabel;
   }
 
   @Override
-  public void setItemLabel(ItemStack lableIcon) {
+  public void setItemLabel(@Nonnull ItemStack lableIcon) {
     this.itemLabel = lableIcon;
   }
 
   @Override
-  public String getLabel() {  
+  public String getLabel() {
     return label;
   }
 
   @Override
-  public void setLabel(String label) {
-    this.label = label;    
+  public void setLabel(@Nullable String label) {
+    this.label = label;
   }
 
   @Override
@@ -168,7 +167,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
 
   @Override
-  public void setPlacedBy(EntityPlayer player) {
+  public void setPlacedBy(@Nonnull EntityPlayer player) {
     this.owner = UserIdent.create(player.getGameProfile());
   }
 
@@ -182,7 +181,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   public boolean shouldRenderInPass(int pass) {
     return pass == 1;
   }
-  
+
   @Override
   public IBlockState getPaintSource() {
     return sourceBlock;
@@ -194,7 +193,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
 
   @Override
-  public BlockPos getLocation() {
+  public @Nonnull BlockPos getLocation() {
     return getPos();
   }
 }

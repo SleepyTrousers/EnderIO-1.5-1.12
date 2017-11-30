@@ -41,17 +41,17 @@ public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implemen
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_ENCHANTER;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean isFullCube(IBlockState bs) {
+  public boolean isFullCube(@Nonnull IBlockState bs) {
     return false;
   }
 
@@ -77,7 +77,7 @@ public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implemen
   @SideOnly(Side.CLIENT)
   public void bindTileEntitySpecialRenderer() {
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, new EnchanterModelRenderer());
-    ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(block_enchanter.getBlock()), 0, TileEnchanter.class);
+    ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(block_enchanter.getBlockNN()), 0, TileEnchanter.class);
   }
 
   @Override
@@ -88,7 +88,7 @@ public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implemen
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper.IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
 

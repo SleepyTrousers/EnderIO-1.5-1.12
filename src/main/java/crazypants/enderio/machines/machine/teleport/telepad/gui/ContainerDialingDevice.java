@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
@@ -25,7 +24,7 @@ public class ContainerDialingDevice extends ContainerEnderCap<TileDialingDevice,
   }
 
   @Override
-  public Point getPlayerInventoryOffset() {
+  public @Nonnull Point getPlayerInventoryOffset() {
     return new Point(8, 138);
   }
 
@@ -35,7 +34,7 @@ public class ContainerDialingDevice extends ContainerEnderCap<TileDialingDevice,
     int y = 47;
     inventorySlots.indexOf(addSlotToContainer(new SlotItemHandler(getItemHandler(), 0, x, y) {
       @Override
-      public boolean isItemValid(@Nullable ItemStack itemStack) {
+      public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return TelepadTarget.readFromNBT(itemStack) != null;
       }
     }));
@@ -44,7 +43,7 @@ public class ContainerDialingDevice extends ContainerEnderCap<TileDialingDevice,
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(itemLocationPrintout.getItem(), inventorySlots.get(0)));
+    slots.add(new GhostBackgroundItemSlot(itemLocationPrintout.getItemNN(), inventorySlots.get(0)));
   }
 
 }

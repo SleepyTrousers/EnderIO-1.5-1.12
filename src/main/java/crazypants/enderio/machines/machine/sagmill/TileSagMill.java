@@ -45,7 +45,7 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     if (itemstack.isEmpty()) {
       return false;
     }
@@ -113,7 +113,7 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   }
 
   @Override
-  protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
+  protected IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, float chance) {
     PoweredTask res;
     useGrindingBall = false;
     if (gb != null) {
@@ -131,7 +131,7 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   }
 
   @Override
-  public String getSoundName() {
+  public @Nonnull String getSoundName() {
     return "machine.sagmill";
   }
 
@@ -140,9 +140,9 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
     return super.getVolume() * 0.125f;
   }
 
-//  @Override
-//  public void writeCustomNBT(NBTTagCompound nbtRoot) { TODO
-//    super.writeCustomNBT(nbtRoot);
-//    lastSendGbScaled = getBallDurationScaled(16);
-//  }
+  // @Override
+  // public void writeCustomNBT(NBTTagCompound nbtRoot) { TODO
+  // super.writeCustomNBT(nbtRoot);
+  // lastSendGbScaled = getBallDurationScaled(16);
+  // }
 }

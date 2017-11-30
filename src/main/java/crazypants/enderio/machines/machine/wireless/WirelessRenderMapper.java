@@ -28,15 +28,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WirelessRenderMapper implements IRenderMapper.IBlockRenderMapper, IRenderMapper.IItemRenderMapper.IItemStateMapper {
 
-  public static final WirelessRenderMapper instance = new WirelessRenderMapper();
+  public static final @Nonnull WirelessRenderMapper instance = new WirelessRenderMapper();
 
   private WirelessRenderMapper() {
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
-      QuadCollector quadCollector) {
+  public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
+      @Nonnull QuadCollector quadCollector) {
     TileEntity tileEntity = state.getTileEntity();
     Block block = state.getBlock();
 
@@ -48,7 +48,7 @@ public class WirelessRenderMapper implements IRenderMapper.IBlockRenderMapper, I
 
   @SideOnly(Side.CLIENT)
   protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer, TileWirelessCharger tileEntity,
-                                     BlockWirelessCharger block) {
+      BlockWirelessCharger block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
     boolean active = tileEntity.isActive();
@@ -64,7 +64,7 @@ public class WirelessRenderMapper implements IRenderMapper.IBlockRenderMapper, I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ItemQuadCollector itemQuadCollector) {
     List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
     states.add(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON), stack));
     return states;
@@ -72,7 +72,8 @@ public class WirelessRenderMapper implements IRenderMapper.IBlockRenderMapper, I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      boolean isPainted) {
     return null;
   }
 

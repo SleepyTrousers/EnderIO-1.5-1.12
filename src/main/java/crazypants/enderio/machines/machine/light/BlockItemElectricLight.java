@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.light;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.base.EnderIOTab;
@@ -30,7 +32,7 @@ public class BlockItemElectricLight extends ItemBlock implements IResourceToolti
   }
 
   @Override
-  public String getUnlocalizedName(ItemStack par1ItemStack) {
+  public @Nonnull String getUnlocalizedName(@Nonnull ItemStack par1ItemStack) {
     int meta = par1ItemStack.getItemDamage();
     meta = MathHelper.clamp(meta, 0, LightType.values().length - 1);
     return LightType.values()[meta].unlocName;
@@ -38,33 +40,34 @@ public class BlockItemElectricLight extends ItemBlock implements IResourceToolti
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
-    for(LightType type : LightType.values()) {
-      par3List.add(new ItemStack(this,1,type.ordinal()));
+  public void getSubItems(@Nonnull Item par1, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+    for (LightType type : LightType.values()) {
+      par3List.add(new ItemStack(this, 1, type.ordinal()));
     }
   }
 
   @Override
-  public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
-    
-    LightType type = LightType.fromMetadata(stack.getItemDamage());    
-    IBlockState state = newState.withProperty(BlockElectricLight.TYPE, type);      
+  public boolean placeBlockAt(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side,
+      float hitX, float hitY, float hitZ, @Nonnull IBlockState newState) {
+
+    LightType type = LightType.fromMetadata(stack.getItemDamage());
+    IBlockState state = newState.withProperty(BlockElectricLight.TYPE, type);
     if (!world.setBlockState(pos, state, 3)) {
       return false;
     }
-    state = world.getBlockState(pos);    
+    state = world.getBlockState(pos);
     if (state.getBlock() == block) {
       setTileEntityNBT(world, player, pos, stack);
       block.onBlockPlacedBy(world, pos, state, player, stack);
     }
 
     IBlockState bs = world.getBlockState(pos);
-    if(bs.getBlock() == block) {
-      EnumFacing onFace = side;      
+    if (bs.getBlock() == block) {
+      EnumFacing onFace = side;
       TileEntity te = world.getTileEntity(pos);
-      if(te instanceof TileElectricLight) {
+      if (te instanceof TileElectricLight) {
         TileElectricLight el = ((TileElectricLight) te);
-        el.setFace(onFace.getOpposite());        
+        el.setFace(onFace.getOpposite());
         el.setInverted(type.isInverted);
         el.setRequiresPower(type.isPowered);
         el.setWireless(type.isWireless);
@@ -74,7 +77,7 @@ public class BlockItemElectricLight extends ItemBlock implements IResourceToolti
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName(itemStack);
   }
 }

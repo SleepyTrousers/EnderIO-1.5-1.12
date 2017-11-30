@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.painter;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.common.vecmath.Vector4f;
@@ -12,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiPainter extends GuiPoweredMachineBase<TileEntityPainter> {
 
-  public GuiPainter(InventoryPlayer par1InventoryPlayer, TileEntityPainter te) {
+  public GuiPainter(InventoryPlayer par1InventoryPlayer, @Nonnull TileEntityPainter te) {
     super(te, new ContainerPainter(par1InventoryPlayer, te), "painter");
 
     addProgressTooltip(88, 34, 24, 16);
@@ -27,7 +29,7 @@ public class GuiPainter extends GuiPoweredMachineBase<TileEntityPainter> {
 
     drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
 
-    if(shouldRenderProgress()) {
+    if (shouldRenderProgress()) {
       int scaled = getProgressScaled(24);
       drawTexturedModalRect(k + 88, l + 34, 176, 14, scaled + 1, 16);
     }
@@ -36,10 +38,10 @@ public class GuiPainter extends GuiPoweredMachineBase<TileEntityPainter> {
   }
 
   @Override
-  protected void renderSlotHighlight(int slot, Vector4f col) {
-    if(getTileEntity().getSlotDefinition().isOutputSlot(slot)) {
-      renderSlotHighlight(col, 117,31,24,24);
-    } else if(slot != 1) {
+  protected void renderSlotHighlight(int slot, @Nonnull Vector4f col) {
+    if (getTileEntity().getSlotDefinition().isOutputSlot(slot)) {
+      renderSlotHighlight(col, 117, 31, 24, 24);
+    } else if (slot != 1) {
       super.renderSlotHighlight(slot, col);
     }
   }

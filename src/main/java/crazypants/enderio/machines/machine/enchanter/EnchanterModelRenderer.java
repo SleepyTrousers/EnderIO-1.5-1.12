@@ -55,7 +55,7 @@ public class EnchanterModelRenderer extends ManagedTESR<TileEnchanter> {
     BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
     BlockModelShapes modelShapes = blockrendererdispatcher.getBlockModelShapes();
     IBakedModel bakedModel = modelShapes
-        .getModelForState(MachineObject.block_enchanter.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
+        .getModelForState(MachineObject.block_enchanter.getBlockNN().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
 
     RenderUtil.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

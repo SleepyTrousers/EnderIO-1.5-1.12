@@ -30,7 +30,7 @@ public enum Fertilizer {
   NONE(ItemStack.EMPTY) {
 
     @Override
-    public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockPos bc) {
+    public boolean apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
       return false;
     }
   },
@@ -38,7 +38,7 @@ public enum Fertilizer {
   BONEMEAL(new ItemStack(Items.DYE, 1, 15)) {
 
     @Override
-    public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockPos bc) {
+    public boolean apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
       EnumActionResult res = stack.getItem().onItemUse(player, world, bc, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
       return NullHelper.notnullM(res, "onItemUse returned null") != EnumActionResult.PASS;
     }
@@ -47,7 +47,7 @@ public enum Fertilizer {
   FORESTRY_FERTILIZER_COMPOUND(Item.REGISTRY.getObject(new ResourceLocation("Forestry", "fertilizerCompound"))) {
 
     @Override
-    public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockPos bc) {
+    public boolean apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
       return BONEMEAL.apply(stack, player, world, bc);
     }
   },
@@ -55,7 +55,7 @@ public enum Fertilizer {
   BOTANIA_FLORAL_FERTILIZER(Item.REGISTRY.getObject(new ResourceLocation("Botania", "fertilizer"))) {
 
     @Override
-    public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockPos bc) {
+    public boolean apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
       BlockPos below = bc.down();
       Block belowBlock = world.getBlockState(below).getBlock();
       if (belowBlock == Blocks.DIRT || belowBlock == Blocks.GRASS) {
@@ -79,7 +79,7 @@ public enum Fertilizer {
   METALLURGY_FERTILIZER(Item.REGISTRY.getObject(new ResourceLocation("Metallurgy", "fertilizer"))) {
 
     @Override
-    public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockPos bc) {
+    public boolean apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
       return BONEMEAL.apply(stack, player, world, bc);
     }
   },
@@ -87,7 +87,7 @@ public enum Fertilizer {
   GARDEN_CORE_COMPOST(Item.REGISTRY.getObject(new ResourceLocation("GardenCore", "compost_pile"))) {
 
     @Override
-    public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockPos bc) {
+    public boolean apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
       return BONEMEAL.apply(stack, player, world, bc);
     }
   },
@@ -95,17 +95,17 @@ public enum Fertilizer {
   MAGICALCROPS_FERTILIZER(Item.REGISTRY.getObject(new ResourceLocation("magicalcrops", "magicalcrops_MagicalCropFertilizer"))) {
 
     @Override
-    public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockPos bc) {
+    public boolean apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
       return BONEMEAL.apply(stack, player, world, bc);
     }
   },
-  
+
   ACTUALLY_ADDITIONS_FERTILIZER(Item.REGISTRY.getObject(new ResourceLocation("actuallyadditions", "itemFertilizer"))) {
-	  
-	@Override
-	public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockPos bc) {
-	  return BONEMEAL.apply(stack, player, world, bc);
-	}
+
+    @Override
+    public boolean apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
+      return BONEMEAL.apply(stack, player, world, bc);
+    }
   };
 
   private @Nonnull ItemStack stack;

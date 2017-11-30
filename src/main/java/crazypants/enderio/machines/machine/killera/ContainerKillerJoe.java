@@ -2,7 +2,7 @@ package crazypants.enderio.machines.machine.killera;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
@@ -14,17 +14,17 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerKillerJoe extends AbstractMachineContainer<TileKillerJoe> {
 
-  public ContainerKillerJoe(InventoryPlayer playerInv, TileKillerJoe te) {
+  public ContainerKillerJoe(@Nonnull InventoryPlayer playerInv, @Nonnull TileKillerJoe te) {
     super(playerInv, te);
   }
 
   private int slotno;
 
   @Override
-  protected void addMachineSlots(InventoryPlayer playerInv) {
+  protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
     slotno = inventorySlots.indexOf(addSlotToContainer(new Slot(getInv(), 0, 48, 24) {
       @Override
-      public boolean isItemValid(@Nullable ItemStack itemStack) {
+      public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return getInv().isItemValidForSlot(0, itemStack);
       }
     }));

@@ -2,6 +2,7 @@ package crazypants.enderio.machines.machine.transceiver.gui;
 
 import java.awt.Color;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.ITabPanel;
@@ -36,26 +37,26 @@ public class ChannelTab implements ITabPanel {
   private static final int SEND_BUTTON_ID = 6;
   private static final int RECIEVE_BUTTON_ID = 7;
 
-  ChannelType type;
-  GuiTransceiver parent;
+  final @Nonnull ChannelType type;
+  final @Nonnull GuiTransceiver parent;
 
-  IconButton addButton;
-  ToggleButton privateButton;
+  final @Nonnull IconButton addButton;
+  final @Nonnull ToggleButton privateButton;
 
-  GuiTextField newChannelTF;
-  GuiChannelList channelList;
+  final @Nonnull GuiTextField newChannelTF;
+  final @Nonnull GuiChannelList channelList;
 
-  GuiChannelList sendChannels;
-  GuiChannelList recieveChannels;
+  final @Nonnull GuiChannelList sendChannels;
+  final @Nonnull GuiChannelList recieveChannels;
 
-  IconButton deleteChannelB;
-  IconButton sendB;
-  IconButton recieveB;
+  final @Nonnull IconButton deleteChannelB;
+  final @Nonnull IconButton sendB;
+  final @Nonnull IconButton recieveB;
 
-  ListSelectionListener<Channel> selectionListener;
-  TileTransceiver transceiver;
+  final @Nonnull ListSelectionListener<Channel> selectionListener;
+  final @Nonnull TileTransceiver transceiver;
 
-  public ChannelTab(GuiTransceiver guiTransceiver, ChannelType type) {
+  public ChannelTab(@Nonnull GuiTransceiver guiTransceiver, @Nonnull ChannelType type) {
     parent = guiTransceiver;
     this.type = type;
     transceiver = guiTransceiver.getTransciever();
@@ -119,7 +120,7 @@ public class ChannelTab implements ITabPanel {
     selectionListener = new ListSelectionListener<Channel>() {
 
       @Override
-      public void selectionChanged(GuiScrollableList<Channel> list, int selectedIndex) {
+      public void selectionChanged(@Nonnull GuiScrollableList<Channel> list, int selectedIndex) {
         if (selectedIndex < 0) {
           return;
         }
@@ -177,7 +178,7 @@ public class ChannelTab implements ITabPanel {
   }
 
   @Override
-  public IconEIO getIcon() {
+  public @Nonnull IconEIO getIcon() {
     switch (type) {
     case FLUID:
       return IconEIO.WRENCH_OVERLAY_FLUID;
@@ -216,7 +217,7 @@ public class ChannelTab implements ITabPanel {
   }
 
   @Override
-  public void actionPerformed(GuiButton guiButton) {
+  public void actionPerformed(@Nonnull GuiButton guiButton) {
     if (guiButton.id == ADD_BUTTON_ID) {
       addChannelPressed();
     } else if (guiButton.id == DELETE_CHANNEL_BUTTON_ID) {
@@ -265,7 +266,7 @@ public class ChannelTab implements ITabPanel {
   }
 
   private void addChannelPressed() {
-    if (newChannelTF.getText() == null || newChannelTF.getText().trim().isEmpty()) {
+    if (newChannelTF.getText().trim().isEmpty()) {
       return;
     }
     Channel c;

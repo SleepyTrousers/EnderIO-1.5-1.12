@@ -34,7 +34,7 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
   }
 
   @Override
-  protected void addMachineSlots(InventoryPlayer playerInv) {
+  protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
     addSlotToContainer(new Slot(getInv(), 0, 54, 17) {
       @Override
       public boolean isItemValid(@Nonnull ItemStack itemStack) {

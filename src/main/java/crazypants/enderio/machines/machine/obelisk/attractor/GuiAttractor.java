@@ -1,5 +1,13 @@
 package crazypants.enderio.machines.machine.obelisk.attractor;
 
+import java.awt.Color;
+import java.io.IOException;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
@@ -8,14 +16,8 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.base.machine.modes.IoMode;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.io.IOException;
-import java.util.List;
 
 public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
 
@@ -23,7 +25,7 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
 
   private final ToggleButton showRangeB;
 
-  public GuiAttractor(InventoryPlayer par1InventoryPlayer, TileAttractor te) {
+  public GuiAttractor(InventoryPlayer par1InventoryPlayer, @Nonnull TileAttractor te) {
     super(te, new ContainerAttractor(par1InventoryPlayer, te), "attractor");
 
     int x = getXSize() - 5 - BUTTON_SIZE;
@@ -31,7 +33,7 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
     showRangeB.setSize(BUTTON_SIZE, BUTTON_SIZE);
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override
-      public List<String> getToolTipText() {
+      public @Nonnull List<String> getToolTipText() {
         return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
       }
     });
@@ -46,7 +48,7 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) throws IOException {
+  protected void actionPerformed(@Nonnull GuiButton b) throws IOException {
     super.actionPerformed(b);
     if (b.id == RANGE_ID) {
       getTileEntity().setShowRange(showRangeB.isSelected());

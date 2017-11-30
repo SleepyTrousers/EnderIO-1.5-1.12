@@ -1,16 +1,11 @@
 package crazypants.enderio.machines.machine.transceiver;
 
 import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.Util;
-
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -35,7 +30,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -89,47 +83,47 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_TRANSCEIVER;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
   }
-//
-//  @Override
-//  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-//    TileTransceiver te = getTileEntity(world, new BlockPos(x, y, z));
-//    if (te != null && player.isSneaking()) {
-//      for (ChannelType type : ChannelType.VALUES) {
-//        Set<Channel> recieving = te.getRecieveChannels(type);
-//        Set<Channel> sending = te.getSendChannels(type);
-//        String recieve = "[" + buildString(recieving) + "]";
-//        String send = "[" + buildString(sending) + "]";
-//
-//        if (isEmpty(recieve) && isEmpty(send)) {
-//          continue;
-//        }
-//
-//        tooltip.add(TextFormatting.WHITE + EnderIO.lang.localize("trans." + type.name().toLowerCase(Locale.US)));
-//
-//        if (!isEmpty(recieve)) {
-//          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.receiving"), Util.TAB + Util.ALIGNRIGHT
-//              + TextFormatting.WHITE, recieve));
-//        }
-//        if (!isEmpty(send)) {
-//          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.sending"), Util.TAB + Util.ALIGNRIGHT
-//              + TextFormatting.WHITE, send));
-//        }
-//      }
-//    }
-//  }
+  //
+  // @Override
+  // public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+  // TileTransceiver te = getTileEntity(world, new BlockPos(x, y, z));
+  // if (te != null && player.isSneaking()) {
+  // for (ChannelType type : ChannelType.VALUES) {
+  // Set<Channel> recieving = te.getRecieveChannels(type);
+  // Set<Channel> sending = te.getSendChannels(type);
+  // String recieve = "[" + buildString(recieving) + "]";
+  // String send = "[" + buildString(sending) + "]";
+  //
+  // if (isEmpty(recieve) && isEmpty(send)) {
+  // continue;
+  // }
+  //
+  // tooltip.add(TextFormatting.WHITE + EnderIO.lang.localize("trans." + type.name().toLowerCase(Locale.US)));
+  //
+  // if (!isEmpty(recieve)) {
+  // tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.receiving"), Util.TAB + Util.ALIGNRIGHT
+  // + TextFormatting.WHITE, recieve));
+  // }
+  // if (!isEmpty(send)) {
+  // tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.sending"), Util.TAB + Util.ALIGNRIGHT
+  // + TextFormatting.WHITE, send));
+  // }
+  // }
+  // }
+  // }
 
   private boolean isEmpty(String str) {
     return "[]".equals(str);
@@ -150,7 +144,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
 

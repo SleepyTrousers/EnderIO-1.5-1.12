@@ -1,5 +1,8 @@
 package crazypants.enderio.machines.machine.obelisk.xp;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
@@ -23,14 +26,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 @Storable
 public class TileExperienceObelisk extends AbstractInventoryMachineEntity implements IHaveExperience, ITankAccess {
 
   @Store
-  private ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.xpObeliskMaxXpLevel));
+  private final @Nonnull ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.xpObeliskMaxXpLevel));
 
   public TileExperienceObelisk() {
     super(new SlotDefinition(0, 0, 0));
@@ -43,7 +43,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     return false;
   }
 
@@ -84,7 +84,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
   }
 
   @Override
-  public ExperienceContainer getContainer() {
+  public @Nonnull ExperienceContainer getContainer() {
     return xpCont;
   }
 
@@ -94,7 +94,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
   }
 
   @Override
-  public FluidTank[] getOutputTanks() {
+  public @Nonnull FluidTank[] getOutputTanks() {
     return new FluidTank[] { xpCont };
   }
 
@@ -114,7 +114,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) getSmartTankFluidHandler().get(facingIn);
     }

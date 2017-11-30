@@ -16,13 +16,13 @@ public enum EnumTankType implements IStringSerializable {
   NORMAL(16000, false, ""),
   ADVANCED(32000, true, ".advanced");
 
-  public static final PropertyEnum<EnumTankType> KIND = PropertyEnum.<EnumTankType> create("kind", EnumTankType.class);
+  public static final @Nonnull PropertyEnum<EnumTankType> KIND = PropertyEnum.<EnumTankType> create("kind", EnumTankType.class);
 
   private final int size;
   private final boolean explosionResistant;
-  private final String suffix;
+  private final @Nonnull String suffix;
 
-  private EnumTankType(int size, boolean explosionResistant, String suffix) {
+  private EnumTankType(int size, boolean explosionResistant, @Nonnull String suffix) {
     this.size = size;
     this.explosionResistant = explosionResistant;
     this.suffix = suffix;
@@ -37,15 +37,15 @@ public enum EnumTankType implements IStringSerializable {
     return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "Enum.values()");
   }
 
-  public static @Nonnull EnumTankType getType(ItemStack stack) {
+  public static @Nonnull EnumTankType getType(@Nonnull ItemStack stack) {
     return getType(stack.getMetadata());
   }
 
-  public static int getMeta(EnumTankType value) {
+  public static int getMeta(@Nonnull EnumTankType value) {
     return value.ordinal();
   }
 
-  public SmartTank getTank() {
+  public @Nonnull SmartTank getTank() {
     return new SmartTank(size);
   }
 
@@ -53,7 +53,7 @@ public enum EnumTankType implements IStringSerializable {
     return explosionResistant;
   }
 
-  public String getSuffix() {
+  public @Nonnull String getSuffix() {
     return suffix;
   }
 

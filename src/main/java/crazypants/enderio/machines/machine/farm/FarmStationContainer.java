@@ -4,9 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
@@ -28,18 +27,21 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
   // TODO: This is a mess. Someone should make some nice, hand-selected lists of
   // what to put in here.
 
-  static private final List<ItemStack> slotItemsStacks1 = new ArrayList<ItemStack>();
-  static private final List<ItemStack> slotItemsStacks2 = new ArrayList<ItemStack>();
-  static private final List<ItemStack> slotItemsStacks3 = new ArrayList<ItemStack>();
-  static public final List<ItemStack> slotItemsSeeds = new ArrayList<ItemStack>();
-  static public final List<ItemStack> slotItemsProduce = new ArrayList<ItemStack>();
-  static public final List<ItemStack> slotItemsFertilizer = new ArrayList<ItemStack>();
+  // TODO2: Why are these lists? Things would be simpler...
+
+  static private final @Nonnull List<ItemStack> slotItemsStacks1 = new ArrayList<ItemStack>();
+  static private final @Nonnull List<ItemStack> slotItemsStacks2 = new ArrayList<ItemStack>();
+  static private final @Nonnull List<ItemStack> slotItemsStacks3 = new ArrayList<ItemStack>();
+  static public final @Nonnull List<ItemStack> slotItemsSeeds = new ArrayList<ItemStack>();
+  static public final @Nonnull List<ItemStack> slotItemsProduce = new ArrayList<ItemStack>();
+  static public final @Nonnull List<ItemStack> slotItemsFertilizer = new ArrayList<ItemStack>();
   static {
     for (Item item : new Item[] { Items.WOODEN_HOE, Items.STONE_HOE, Items.IRON_HOE, Items.GOLDEN_HOE, Items.DIAMOND_HOE }) {
       slotItemsStacks1.add(new ItemStack(item));
     }
     slotItemsStacks1.addAll(Config.farmHoes.getItemStacks());
-    for (Item item : new Item[] { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE, ModObject.itemDarkSteelAxe.getItem() }) {
+    for (Item item : new Item[] { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE,
+        ModObject.itemDarkSteelAxe.getItem() }) {
       slotItemsStacks2.add(new ItemStack(item));
     }
     for (Item item : new Item[] { Items.SHEARS, ModObject.itemDarkSteelShears.getItem() }) {
@@ -64,8 +66,6 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
     slotItemsProduce.add(new ItemStack(Blocks.PUMPKIN));
     slotItemsFertilizer.add(new ItemStack(Items.DYE, 1, 15));
   }
-
-  static private final Random rand = new Random();
 
   private static final int ROW_TOOLS = 19;
   private static final int ROW_IO = 44;
@@ -102,19 +102,19 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
       new SlotPoint(COL_OUTPUT + THREE, ROW_IO + TWO, slotItemsProduce), //
   };
 
-  public FarmStationContainer(InventoryPlayer inventory, TileFarmStation te) {
+  public FarmStationContainer(@Nonnull InventoryPlayer inventory, @Nonnull TileFarmStation te) {
     super(inventory, te);
   }
 
   @Override
-  protected void addMachineSlots(InventoryPlayer playerInv) {
+  protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
     int i = 0;
     for (SlotPoint p : points) {
       final int slot = i;
       i++;
       addSlotToContainer(p.s = new Slot(getInv(), slot, p.x, p.y) {
         @Override
-        public boolean isItemValid(@Nullable ItemStack itemStack) {
+        public boolean isItemValid(@Nonnull ItemStack itemStack) {
           return getInv().isItemValidForSlot(slot, itemStack);
         }
 
@@ -145,28 +145,29 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
     clean(slotItemsProduce);
 
     for (SlotPoint p : points) {
-      slots.add(new GhostBackgroundItemSlot(p.ghosts.get(rand.nextInt(p.ghosts.size())), p.s));
+      slots.add(new GhostBackgroundItemSlot(p.ghosts, p.s));
     }
   }
 
   @Override
-  public Point getPlayerInventoryOffset() {
+  public @Nonnull Point getPlayerInventoryOffset() {
     return new Point(8, 87);
   }
 
   @Override
-  public Point getUpgradeOffset() {
+  public @Nonnull Point getUpgradeOffset() {
     return new Point(12, 63);
   }
 
   private static class SlotPoint {
     int x, y;
+    @Nonnull
     List<ItemStack> ghosts;
     // It's a bit of a hack having the slot in a static field, but it is only used on the client, and there only one instance of the GUI can exist at any time,
     // so it works.
     Slot s = null;
 
-    SlotPoint(int x, int y, List<ItemStack> ghosts) {
+    SlotPoint(int x, int y, @Nonnull List<ItemStack> ghosts) {
       this.x = x;
       this.y = y;
       this.ghosts = ghosts;

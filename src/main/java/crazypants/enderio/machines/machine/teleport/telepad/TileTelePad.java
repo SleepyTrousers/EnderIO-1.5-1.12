@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Queue;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.api.common.util.ITankAccess;
@@ -87,7 +88,7 @@ public class TileTelePad extends TileTravelAnchor
   private boolean coordsChanged = false;
 
   @Store
-  private TelepadTarget target = new TelepadTarget(new BlockPos(0, 0, 0), Integer.MIN_VALUE);
+  private @Nonnull TelepadTarget target = new TelepadTarget(new BlockPos(0, 0, 0), Integer.MIN_VALUE);
 
   private int lastSyncPowerStored;
 
@@ -95,7 +96,7 @@ public class TileTelePad extends TileTravelAnchor
   private int powerUsed;
   private int requiredPower;
 
-  public static final ResourceLocation ACTIVE_RES = AbstractMachineEntity.getSoundFor("telepad.active");
+  public static final @Nonnull ResourceLocation ACTIVE_RES = AbstractMachineEntity.getSoundFor("telepad.active");
   @SideOnly(Side.CLIENT)
   private MachineSound activeSound;
 
@@ -105,8 +106,8 @@ public class TileTelePad extends TileTravelAnchor
   private final Fluid fluidType;
 
   @Store
-  protected SmartTank tank;
-  
+  protected final @Nonnull SmartTank tank;
+
   private boolean tankDirty = false;
 
   // Used on non-ported TESR
@@ -136,11 +137,11 @@ public class TileTelePad extends TileTravelAnchor
     fluidType = fluid;
 
     int tankCap = 0;
-    if(Config.telepadFluidUse > 0) {
+    if (Config.telepadFluidUse > 0) {
       tankCap = Config.telepadFluidUse * 10;
     }
     tank = new SmartTank(fluidType, tankCap);
-    if(tankCap <= 0) {
+    if (tankCap <= 0) {
       tank.setCanFill(false);
     }
     tank.setCanDrain(false);
@@ -150,7 +151,7 @@ public class TileTelePad extends TileTravelAnchor
   public boolean isFluidEnabled() {
     return tank.getCapacity() > 0;
   }
-  
+
   public boolean wasBlocked() {
     return wasBlocked;
   }
@@ -203,7 +204,7 @@ public class TileTelePad extends TileTravelAnchor
       updateEntityClient();
       return;
     }
-    
+
     if (!inventory.get(0).isEmpty() && inventory.get(1).isEmpty()) {
       ItemStack stack = inventory.get(0);
       TelepadTarget newTarg = TelepadTarget.readFromNBT(stack);
@@ -212,8 +213,8 @@ public class TileTelePad extends TileTravelAnchor
       inventory.set(1, stack);
       markDirty();
     }
-    
-    if(tankDirty && shouldDoWorkThisTick(5)) {
+
+    if (tankDirty && shouldDoWorkThisTick(5)) {
       PacketHandler.sendToAllAround(new PacketFluidLevel(this), this);
       tankDirty = false;
     }
@@ -253,7 +254,7 @@ public class TileTelePad extends TileTravelAnchor
       if (activeSound == null) {
         BlockPos p = getPos();
         activeSound = new MachineSound(ACTIVE_RES, p.getX(), p.getY(), p.getZ(), 0.3f, 1);
-        playSound();
+        FMLClientHandler.instance().getClient().getSoundHandler().playSound(activeSound);
       }
       updateQueuedEntities();
     } else if (!active() && activeSound != null) {
@@ -262,11 +263,6 @@ public class TileTelePad extends TileTravelAnchor
         activeSound = null;
       }
     }
-  }
-
-  @SideOnly(Side.CLIENT)
-  private void playSound() {
-    FMLClientHandler.instance().getClient().getSoundHandler().playSound(activeSound);
   }
 
   private void updateQueuedEntities() {
@@ -361,7 +357,7 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   @Override
-  public AxisAlignedBB getRenderBoundingBox() {
+  public @Nonnull AxisAlignedBB getRenderBoundingBox() {
     return getBoundingBox();
   }
 
@@ -396,7 +392,7 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   @Override
-  public TileEntity getTileEntity() {
+  public @Nonnull TileEntity getTileEntity() {
     return this;
   }
 
@@ -465,7 +461,7 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   @Override
-  public void setCoords(BlockPos coords) {
+  public void setCoords(@Nonnull BlockPos coords) {
     if (Config.telepadLockCoords) {
       return;
     }
@@ -493,7 +489,7 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   @Override
-  public void teleportSpecific(Entity entity) {
+  public void teleportSpecific(@Nonnull Entity entity) {
     if (!inNetwork()) {
       return;
     }
@@ -521,7 +517,7 @@ public class TileTelePad extends TileTravelAnchor
     }
   }
 
-  private List<Entity> getEntitiesInRange() {
+  private @Nonnull List<Entity> getEntitiesInRange() {
     return world.getEntitiesWithinAABB(Entity.class, getRange());
   }
 
@@ -529,7 +525,7 @@ public class TileTelePad extends TileTravelAnchor
     return getRange().isVecInside(new Vec3d(entity.posX, entity.posY, entity.posZ));
   }
 
-  private AxisAlignedBB getRange() {
+  private @Nonnull AxisAlignedBB getRange() {
     BlockPos p = getPos();
     return new AxisAlignedBB(p.getX() - 1, p.getY(), p.getZ() - 1, p.getX() + 2, p.getY() + 3, p.getZ() + 2);
   }
@@ -577,8 +573,8 @@ public class TileTelePad extends TileTravelAnchor
       if (tank.getFluidAmount() < Config.telepadFluidUse) {
         tank.drain(Config.telepadFluidUse, true);
         if (entity instanceof EntityPlayer) {
-          ((EntityPlayer) entity).sendMessage(new TextComponentString(TextFormatting.RED.toString() +
-              EnderIO.lang.localize("chat.telepad.noFluid", new FluidStack(fluidType, 1).getLocalizedName())));
+          ((EntityPlayer) entity).sendMessage(new TextComponentString(
+              TextFormatting.RED.toString() + EnderIO.lang.localize("chat.telepad.noFluid", new FluidStack(fluidType, 1).getLocalizedName())));
         }
         wasBlocked = true;
         return true;
@@ -595,11 +591,11 @@ public class TileTelePad extends TileTravelAnchor
     return !wasBlocked;
   }
 
-  private boolean clientTeleport(Entity entity) {
+  private boolean clientTeleport(@Nonnull Entity entity) {
     return TeleportUtil.checkClientTeleport(entity, target.getLocation(), target.getDimension(), TravelSource.TELEPAD);
   }
 
-  private boolean serverTeleport(Entity entity) {
+  private boolean serverTeleport(@Nonnull Entity entity) {
     dequeueTeleport(entity, true);
     return TeleportUtil.serverTeleport(entity, target.getLocation(), target.getDimension(), false, TravelSource.TELEPAD);
   }
@@ -607,7 +603,7 @@ public class TileTelePad extends TileTravelAnchor
   /* ITravelAccessable overrides */
 
   @Override
-  public boolean canSeeBlock(EntityPlayer playerName) {
+  public boolean canSeeBlock(@Nonnull EntityPlayer playerName) {
     return isMaster() && inNetwork();
   }
 
@@ -646,7 +642,7 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   @Override
-  public boolean canConnectEnergy(EnumFacing from) {
+  public boolean canConnectEnergy(@Nonnull EnumFacing from) {
     return inNetwork() && getMasterTile() != null;
   }
 
@@ -661,7 +657,7 @@ public class TileTelePad extends TileTravelAnchor
     }
     return max;
   }
-  
+
   public int getUsage() {
     return maxEnergyUsed.get(capacitorData);
   }
@@ -683,10 +679,8 @@ public class TileTelePad extends TileTravelAnchor
   // Inventory
 
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-    if (inNetwork() && (
-        capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ||
-        capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) {
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+    if (inNetwork() && (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) {
       return true;
     }
     return super.hasCapability(capability, facing);
@@ -694,7 +688,7 @@ public class TileTelePad extends TileTravelAnchor
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     if (!inNetwork()) {
       return super.getCapability(capability, facing);
     }
@@ -713,7 +707,7 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   @Override
-  public ItemStack getStackInSlot(int slot) {
+  public @Nonnull ItemStack getStackInSlot(int slot) {
     if (slot < 0 || slot >= inventory.size()) {
       return ItemStack.EMPTY;
     }
@@ -721,7 +715,7 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   @Override
-  public void setStackInSlot(int slot, ItemStack stack) {
+  public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
     if (slot < 0 || slot >= inventory.size()) {
       return;
     }
@@ -729,7 +723,7 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   @Override
-  public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+  public @Nonnull ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
     if (slot != 0 || !inventory.get(0).isEmpty() || stack.isEmpty() || stack.getItem() != itemLocationPrintout.getItem()) {
       return stack;
     }
@@ -741,7 +735,7 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   @Override
-  public ItemStack extractItem(int slot, int amount, boolean simulate) {
+  public @Nonnull ItemStack extractItem(int slot, int amount, boolean simulate) {
     if (slot != 1 || amount < 1 || inventory.get(1).isEmpty()) {
       return ItemStack.EMPTY;
     }
@@ -761,14 +755,14 @@ public class TileTelePad extends TileTravelAnchor
       return null;
     }
     TileTelePad master = getMaster();
-    if(master == null) {
+    if (master == null) {
       return null;
     }
     return master.tank;
   }
 
   @Override
-  public FluidTank[] getOutputTanks() {
+  public @Nonnull FluidTank[] getOutputTanks() {
     return new FluidTank[0];
   }
 
@@ -786,7 +780,7 @@ public class TileTelePad extends TileTravelAnchor
     tank.setFluidAmount(level);
   }
 
-  public FluidTank getTank() {
+  public @Nonnull FluidTank getTank() {
     return tank;
   }
 
@@ -797,12 +791,12 @@ public class TileTelePad extends TileTravelAnchor
   @SuppressWarnings("null")
   @Override
   public @Nonnull List<ITankData> getTankDisplayData() {
-    if(inNetwork()) {
+    if (inNetwork()) {
       return getMaster().createDisplayData();
     }
     return Collections.emptyList();
   }
-  
+
   @SuppressWarnings("null")
   private @Nonnull List<ITankData> createDisplayData() {
     ITankData data = new TankData();

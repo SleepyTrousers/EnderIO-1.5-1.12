@@ -1,5 +1,9 @@
 package crazypants.enderio.machines.machine.obelisk.attractor;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
@@ -10,30 +14,26 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
-
 public class ContainerAttractor extends AbstractMachineContainer<TileAttractor> {
 
   private static class BottleSlot extends Slot {
 
-    private BottleSlot(IInventory inventoryIn, int index, int xPosition, int yPosition) {
+    private BottleSlot(@Nonnull IInventory inventoryIn, int index, int xPosition, int yPosition) {
       super(inventoryIn, index, xPosition, yPosition);
     }
 
     @Override
-    public boolean isItemValid(@Nullable ItemStack itemStack) {
+    public boolean isItemValid(@Nonnull ItemStack itemStack) {
       return inventory.isItemValidForSlot(getSlotIndex(), itemStack);
     }
   }
 
-  public ContainerAttractor(InventoryPlayer playerInv, TileAttractor te) {
+  public ContainerAttractor(@Nonnull InventoryPlayer playerInv, @Nonnull TileAttractor te) {
     super(playerInv, te);
   }
 
   @Override
-  protected void addMachineSlots(InventoryPlayer playerInv) {
+  protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
     int x;
     int y = 10;
     for (int row = 0; row < 3; row++) {
@@ -50,7 +50,7 @@ public class ContainerAttractor extends AbstractMachineContainer<TileAttractor> 
   public void createGhostSlots(List<GhostSlot> slots) {
     for (Slot slot : inventorySlots) {
       if (slot instanceof BottleSlot) {
-        slots.add(new GhostBackgroundItemSlot(ModObject.itemSoulVial.getItem(), slot));
+        slots.add(new GhostBackgroundItemSlot(ModObject.itemSoulVial.getItemNN(), slot));
       }
     }
   }

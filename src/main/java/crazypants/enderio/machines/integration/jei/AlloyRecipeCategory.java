@@ -44,13 +44,13 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
       super(recipe);
     }
   }
- 
+
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
-    
+
     registry.addRecipeCategories(new AlloyRecipeCategory(guiHelper));
     registry.handleRecipes(IRecipe.class, AlloyRecipe::new, AlloyRecipeCategory.UID);
     registry.addRecipeClickArea(GuiAlloySmelter.class, 155, 42, 16, 16, AlloyRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_alloy_smelter.getBlock()), AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(block_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
 
     List<IRecipe> result = new ArrayList<IRecipe>();
     result.addAll(AlloyRecipeManager.getInstance().getRecipes());
@@ -59,22 +59,22 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
 
     registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.class, AlloyRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
         FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.class, VanillaRecipeCategoryUid.SMELTING,
-        FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.class, VanillaRecipeCategoryUid.SMELTING, FIRST_RECIPE_SLOT,
+        NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
   }
 
   // ------------ Category
 
-  //Offsets from full size gui, makes it much easier to get the location correct
+  // Offsets from full size gui, makes it much easier to get the location correct
   private int xOff = 45;
   private int yOff = 3;
-  
+
   @Nonnull
   private final IDrawable background;
 
   @Nonnull
   protected final IDrawableAnimated flame;
-  
+
   private AlloyRecipe currentRecipe;
 
   public AlloyRecipeCategory(IGuiHelper guiHelper) {
@@ -92,28 +92,27 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
 
   @Override
   public @Nonnull String getTitle() {
-    String localizedName = block_alloy_smelter.getBlock().getLocalizedName();
-    return localizedName != null ? localizedName : "ERROR";
+    return block_alloy_smelter.getBlockNN().getLocalizedName();
   }
 
   @Override
   public @Nonnull IDrawable getBackground() {
     return background;
   }
-  
+
   @Override
   public void drawExtras(@Nonnull Minecraft minecraft) {
-    if(currentRecipe == null) {
+    if (currentRecipe == null) {
       return;
     }
     String energyString = PowerDisplayUtil.formatPower(currentRecipe.getEnergyRequired()) + " " + PowerDisplayUtil.abrevation();
     minecraft.fontRenderer.drawString(energyString, 108 - xOff, 60 - yOff, 0x808080, false);
-    GlStateManager.color(1,1,1,1);
-    
+    GlStateManager.color(1, 1, 1, 1);
+
     flame.draw(minecraft, 56 - xOff, 36 - yOff);
     flame.draw(minecraft, 103 - xOff, 36 - yOff);
   }
-  
+
   @Override
   public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull AlloyRecipeCategory.AlloyRecipe recipeWrapper, @Nonnull IIngredients ingredients) {
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();

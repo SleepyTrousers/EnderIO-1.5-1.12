@@ -15,6 +15,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.PowerDistributor;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.AbstractGeneratorEntity;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
@@ -36,7 +37,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_
 @Storable
 public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {
 
-  private static final String SOUND_NAME = "generator.stirling";
+  private static final @Nonnull String SOUND_NAME = "generator.stirling";
 
   /** How many ticks left until the item is burnt. */
   @Store
@@ -58,22 +59,22 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     return TileEntityFurnace.isItemFuel(itemstack);
   }
 
-//  @Override
-//  public @Nonnull int[] getSlotsForFace(EnumFacing var1) {
-//    return new int[] { 0 };
-//  }
+  // @Override
+  // public @Nonnull int[] getSlotsForFace(EnumFacing var1) {
+  // return new int[] { 0 };
+  // }
 
   @Override
-  public boolean canInsertItem(int i, ItemStack itemstack, EnumFacing j) {
+  public boolean canInsertItem(int i, @Nonnull ItemStack itemstack, @Nonnull EnumFacing j) {
     return isItemValidForSlot(i, itemstack);
   }
 
   @Override
-  public boolean canExtractItem(int i, ItemStack itemstack, EnumFacing j) {
+  public boolean canExtractItem(int i, @Nonnull ItemStack itemstack, @Nonnull EnumFacing j) {
     return !TileEntityFurnace.isItemFuel(itemstack);
   }
 
@@ -96,24 +97,25 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  public TileEntity getTileEntity() {
+  public @Nonnull TileEntity getTileEntity() {
     return this;
   }
 
   @Override
-  public String getSoundName() {
+  public @Nonnull String getSoundName() {
     return SOUND_NAME;
   }
 
   @Override
-  public void onNeighborBlockChange(IBlockState state, World worldIn, BlockPos posIn, Block blockIn, BlockPos fromPos) {
+  public void onNeighborBlockChange(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos posIn, @Nonnull Block blockIn,
+      @Nonnull BlockPos fromPos) {
     super.onNeighborBlockChange(state, worldIn, posIn, blockIn, fromPos);
     if (powerDis != null) {
       powerDis.neighboursChanged();
     }
   }
 
-  public int getBurnTime(ItemStack item) {
+  public int getBurnTime(@Nonnull ItemStack item) {
     return Math.round(TileEntityFurnace.getItemBurnTime(item) * getBurnTimeMultiplier());
   }
 
@@ -135,21 +137,21 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     if (redstoneCheck) {
 
       if (burnTime <= 0 && getEnergyStored() < getMaxEnergyStored()) {
-        if (inventory[0] != null && inventory[0].getCount() > 0) {
-          burnTime = getBurnTime(inventory[0]);
+        final ItemStack fuelStack = inventory[0];
+        if (fuelStack != null && Prep.isValid(fuelStack)) {
+          burnTime = getBurnTime(fuelStack);
           if (burnTime > 0) {
             totalBurnTime = burnTime;
-            isLavaFired = inventory[0].getItem() == Items.LAVA_BUCKET;
-            ItemStack containedItem = inventory[0].getItem().getContainerItem(inventory[0]);
-            if (containedItem != null) {
-              if (inventory[0].getCount() == 1) {
+            isLavaFired = fuelStack.getItem() == Items.LAVA_BUCKET;
+            ItemStack containedItem = fuelStack.getItem().getContainerItem(fuelStack);
+            decrStackSize(0, 1);
+            if (Prep.isValid(containedItem)) {
+              if (Prep.isInvalid(fuelStack)) {
                 inventory[0] = containedItem;
+                markDirty();
               } else {
-                decrStackSize(0, 1);
                 world.spawnEntity(new EntityItem(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, containedItem));
               }
-            } else {
-              decrStackSize(0, 1);
             }
             needsUpdate = true;
           }
@@ -166,25 +168,26 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {
-    if (dir == null || inventory[0] == null || !shouldDoWorkThisTick(20)) {
+    final ItemStack fuelStack = inventory[0];
+    if (dir == null || fuelStack == null || Prep.isInvalid(fuelStack) || !shouldDoWorkThisTick(20)) {
       return false;
     }
-    if (!canExtractItem(0, inventory[0], dir)) {
+    if (!canExtractItem(0, fuelStack, dir)) {
       return false;
     }
     MoveResult res = ItemTools.move(getPushLimit(), world, getPos(), dir, getPos().offset(dir), dir.getOpposite());
-    if(res == MoveResult.MOVED) {
+    if (res == MoveResult.MOVED) {
       markDirty();
       return true;
     }
     return false;
   }
 
-  public static float getEnergyMultiplier(ICapacitorData capacitorType) {
+  public static float getEnergyMultiplier(@Nonnull ICapacitorData capacitorType) {
     return STIRLING_POWER_GEN.get(capacitorType) / STIRLING_POWER_GEN.get(DefaultCapacitorData.BASIC_CAPACITOR);
   }
 
-  public static float getBurnTimeMultiplier(ICapacitorData capacitorType) {
+  public static float getBurnTimeMultiplier(@Nonnull ICapacitorData capacitorType) {
     return STIRLING_POWER_TIME.getFloat(capacitorType);
   }
 

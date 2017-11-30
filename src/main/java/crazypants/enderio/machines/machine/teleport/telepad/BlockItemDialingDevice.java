@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.teleport.telepad;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.Util;
 
 import net.minecraft.block.Block;
@@ -14,14 +16,13 @@ import net.minecraft.world.World;
 
 public class BlockItemDialingDevice extends ItemBlock {
 
-  public BlockItemDialingDevice(Block b, String name) {
+  public BlockItemDialingDevice(Block b) {
     super(b);
-    setRegistryName(name);
   }
 
   @Override
-  public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
-      IBlockState newState) {
+  public boolean placeBlockAt(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side,
+      float hitX, float hitY, float hitZ, @Nonnull IBlockState newState) {
 
     boolean result = super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
     TileEntity te = world.getTileEntity(pos);
@@ -31,12 +32,12 @@ public class BlockItemDialingDevice extends ItemBlock {
     float dx = Math.abs(0.5f - hitX);
     float dy = Math.abs(0.5f - hitY);
     float dz = Math.abs(0.5f - hitZ);
-    side = side.getOpposite();  
+    side = side.getOpposite();
     DialerFacing facing = DialerFacing.DOWN_TONORTH;
     EnumFacing looking = Util.getFacingFromEntity(player);
     switch (side) {
     case DOWN:
-      
+
       if (looking == EnumFacing.EAST) {
         facing = DialerFacing.DOWN_TOEAST;
       } else if (looking == EnumFacing.WEST) {
@@ -47,7 +48,7 @@ public class BlockItemDialingDevice extends ItemBlock {
         facing = DialerFacing.DOWN_TOSOUTH;
       }
       break;
-    case UP:      
+    case UP:
       if (looking == EnumFacing.EAST) {
         facing = DialerFacing.UP_TOEAST;
       } else if (looking == EnumFacing.WEST) {

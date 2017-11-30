@@ -127,7 +127,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
   }
 
   @Override
-  public boolean canConnectEnergy(EnumFacing from) {
+  public boolean canConnectEnergy(@Nonnull EnumFacing from) {
     return true;
   }
 

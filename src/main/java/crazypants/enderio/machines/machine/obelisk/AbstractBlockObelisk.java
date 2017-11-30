@@ -28,8 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> extends AbstractMachineBlock<T> implements ITESRItemBlock {
 
-  public static final AxisAlignedBB AABB = new AxisAlignedBB(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
-  public static final Float DUMMY = 0f; //TODO Change
+  public static final @Nonnull AxisAlignedBB AABB = new AxisAlignedBB(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
 
   protected AbstractBlockObelisk(@Nonnull IModObject mo, Class<T> teClass) {
     super(mo, teClass, new Material(MapColor.IRON) {
@@ -43,23 +42,23 @@ public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+  public @Nonnull AxisAlignedBB getBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos) {
     return AABB;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
-  
+
   @Override
-  public boolean isFullCube(IBlockState bs) {
+  public boolean isFullCube(@Nonnull IBlockState bs) {
     return false;
-  }  
-  
+  }
+
   @Override
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
-    if (world != null && pos != null && rand != null && isActive(world, pos) && shouldDoWorkThisTick(world, pos, 5)) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
+    if (isActive(world, pos) && shouldDoWorkThisTick(world, pos, 5)) {
       float startX = pos.getX() + 1.0F;
       float startY = pos.getY() + 0.85F;
       float startZ = pos.getZ() + 1.0F;
@@ -68,8 +67,9 @@ public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> exte
         float yOffset = -0.1F + rand.nextFloat() * 0.2F;
         float zOffset = -0.2F - rand.nextFloat() * 0.6F;
 
-        Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SPELL.getParticleID(), startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
-        if(fx != null) {
+        Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SPELL.getParticleID(), startX + xOffset, startY + yOffset,
+            startZ + zOffset, 0.0D, 0.0D, 0.0D);
+        if (fx != null) {
           fx.setRBGColorF(0.2f, 0.2f, 0.8f);
           ClientUtil.setParticleVelocityY(fx, ClientUtil.getParticleVelocityY(fx) * 0.5);
         }
@@ -86,7 +86,7 @@ public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> exte
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderMapper.IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
     return ObeliskRenderMapper.instance;
   }
 

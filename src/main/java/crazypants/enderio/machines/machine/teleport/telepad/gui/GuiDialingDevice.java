@@ -55,7 +55,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
     super(new ContainerDialingDevice(playerInv, te), "dialing_device");
     this.dialingDevice = te;
     telepad = findTelepad();
-    
+
     ySize = 220;
 
     addToolTip(new GuiToolTip(new Rectangle(powerX, powerY, 10, powerScale), "") {
@@ -83,8 +83,8 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
     targetList = new GuiTargetList(w, h, x, y, te);
     targetList.setShowSelectionBox(true);
     targetList.setScrollButtonIds(100, 101);
-    
-    if(telepad != null) {
+
+    if (telepad != null) {
       targetList.setSelection(telepad.getTarget());
     }
 
@@ -109,7 +109,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
   }
 
   private TileTelePad findTelepad() {
-    
+
     BlockPos pos = dialingDevice.getPos();
     EnumFacing forward = dialingDevice.getFacing().getInputSide();
     EnumFacing up;
@@ -124,12 +124,12 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
 
     int range = 4;
     TileTelePad result = null;
-    for (int i = 0; i < range*2; i++) {
-      for(int j=0;j<range*2;j++) {
-        for(int k=0;k<range*2;k++) {
-          BlockPos check = pos.offset(forward, i + 1).offset(side,j-range).offset(up,k-range);
+    for (int i = 0; i < range * 2; i++) {
+      for (int j = 0; j < range * 2; j++) {
+        for (int k = 0; k < range * 2; k++) {
+          BlockPos check = pos.offset(forward, i + 1).offset(side, j - range).offset(up, k - range);
           result = BlockEnder.getAnyTileEntitySafe(dialingDevice.getWorld(), check, TileTelePad.class);
-          if(result != null) {
+          if (result != null) {
             return result.getMaster();
           }
         }
@@ -158,12 +158,12 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
     super.initGui();
 
     String text = EnderIO.lang.localize("gui.telepad.teleport");
-    int width = getFontRenderer().getStringWidth(text) + 10;
+    int textWidth = getFontRenderer().getStringWidth(text) + 10;
 
-    int x = guiLeft + (xSize / 2) - (width / 2);
+    int x = guiLeft + (xSize / 2) - (textWidth / 2);
     int y = guiTop + 85;
 
-    teleportButton = new GuiButton(ID_TELEPORT_BUTTON, x, y, width, 20, text);
+    teleportButton = new GuiButton(ID_TELEPORT_BUTTON, x, y, textWidth, 20, text);
     addButton(teleportButton);
 
     ((ContainerDialingDevice) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
@@ -208,7 +208,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
       renderInfoMessage(sx, sy, txt, 0x000000);
       return;
     }
-    if(targetList.getSelectedElement() == null) {
+    if (targetList.getSelectedElement() == null) {
       String txt = TextFormatting.DARK_RED + "Enter Target";
       renderInfoMessage(sx, sy, txt, 0x000000);
       return;
@@ -235,7 +235,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
   }
 
   @Override
-  protected void actionPerformed(GuiButton button) throws IOException {
+  protected void actionPerformed(@Nonnull GuiButton button) throws IOException {
     super.actionPerformed(button);
 
     if (button.id == ID_TELEPORT_BUTTON) {

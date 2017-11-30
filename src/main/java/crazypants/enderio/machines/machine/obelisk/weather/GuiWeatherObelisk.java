@@ -1,5 +1,12 @@
 package crazypants.enderio.machines.machine.obelisk.weather;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.io.IOException;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
@@ -8,7 +15,6 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machines.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import net.minecraft.client.gui.GuiButton;
@@ -17,20 +23,16 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
-import javax.annotation.Nullable;
-import java.awt.*;
-import java.io.IOException;
-
 public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk> {
-  
-  private static final Rectangle RECTANGLE_TANK = new Rectangle(22, 11, 16, 63);
+
+  private static final @Nonnull Rectangle RECTANGLE_TANK = new Rectangle(22, 11, 16, 63);
   private IconButton buttonStart;
-  
-  public GuiWeatherObelisk(InventoryPlayer inventory, TileWeatherObelisk tileEntity) {
+
+  public GuiWeatherObelisk(@Nonnull InventoryPlayer inventory, @Nonnull TileWeatherObelisk tileEntity) {
     super(tileEntity, new ContainerWeatherObelisk(inventory, tileEntity), "weather_obelisk");
-    
+
     addProgressTooltip(79, 29, 18, 31);
-    
+
     addToolTip(new GuiToolTip(RECTANGLE_TANK, "") {
 
       @Override
@@ -65,19 +67,19 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
 
     addButton(buttonStart = new IconButton(this, 0, x, y, IconEIO.TICK));
     buttonStart.onGuiInit();
-    
+
     refreshButtons();
     ((ContainerWeatherObelisk) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
-  
+
   @Override
   public void updateScreen() {
     super.updateScreen();
-    if(getTileEntity().getWorld().getTotalWorldTime() % 20 == 0) {
+    if (getTileEntity().getWorld().getTotalWorldTime() % 20 == 0) {
       refreshButtons();
     }
   }
-  
+
   private void refreshButtons() {
     FluidStack fs = getTileEntity().getInputTank().getFluid();
     if (fs == null) {
@@ -98,16 +100,16 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     bindGuiTexture();
 
     this.drawTexturedModalRect(getGuiLeft(), getGuiTop(), 0, 0, getXSize(), getYSize());
-    
+
     int x = getGuiLeft() + 22;
     int y = getGuiTop() + 11;
     RenderUtil.renderGuiTank(getTileEntity().getInputTank(), x, y, 0, 16, 63);
 
     bindGuiTexture();
-    
+
     drawTexturedModalRect(x, y, 186, 33, 16, 63);
 
-    if(shouldRenderProgress() && getTileEntity().getActiveTask() != null) {
+    if (shouldRenderProgress() && getTileEntity().getActiveTask() != null) {
       // TODO 1.10 test
       int barHeight = getProgressScaled(ContainerWeatherObelisk.MAX_SCALE);
       Color color = getTileEntity().getActiveTask().color;
@@ -126,24 +128,24 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
   protected int getPowerU() {
     return super.getPowerU();
   }
-  
+
   @Override
   protected int getPowerV() {
     return 33;
   }
-  
+
   @Override
   protected int getPowerX() {
     return super.getPowerX() - 7;
   }
-  
+
   @Override
   protected int getPowerY() {
     return super.getPowerY() - 3;
   }
-  
+
   @Override
-  protected void actionPerformed(GuiButton b) throws IOException {
+  protected void actionPerformed(@Nonnull GuiButton b) throws IOException {
     super.actionPerformed(b);
     if (b.id >= 0 && b.id <= 2) {
       getTileEntity().startTask();

@@ -92,7 +92,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
         if (Prep.isInvalid(getStackInSlot(0)) || Prep.isValid(getStackInSlot(1)) || !hasEntity()) {
           return;
         }
-        ItemStack res = capturedMob.toGenericStack(ModObject.itemSoulVial.getItem(), 1, 1);
+        ItemStack res = capturedMob.toGenericStack(ModObject.itemSoulVial.getItemNN(), 1, 1);
         decrStackSize(0, 1);
         setInventorySlotContents(1, res);
       }
@@ -124,7 +124,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     if (itemstack.isEmpty() || isSpawnMode) {
       return false;
     }
@@ -151,7 +151,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
       }
     } else {
       clearNotification();
-      if (getStackInSlot(0) == null || getStackInSlot(1) != null) {
+      if (Prep.isInvalid(getStackInSlot(0)) || Prep.isValid(getStackInSlot(1))) {
         return null;
       }
     }
@@ -164,15 +164,15 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  protected boolean canInsertResult(float chance, IMachineRecipe nextRecipe) {
+  protected boolean canInsertResult(float chance, @Nonnull IMachineRecipe nextRecipe) {
     return true;
   }
 
   @Override
-  public void writeToItemStack(ItemStack stack) {
+  public void writeToItemStack(@Nonnull ItemStack stack) {
     super.writeToItemStack(stack);
     // save mob the same way as the soul binder adds it to the item
-    if (hasEntity() && stack != null) {
+    if (hasEntity()) {
       if (!stack.hasTagCompound()) {
         stack.setTagCompound(new NBTTagCompound());
       }
@@ -216,7 +216,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
+  protected IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, float chance) {
     PoweredTask res = new PoweredTask(nextRecipe, chance, getRecipeInputs());
     int ticksDelay;
     if (isSpawnMode) {
@@ -362,7 +362,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  public void readFromItemStack(ItemStack stack) {
+  public void readFromItemStack(@Nonnull ItemStack stack) {
     super.readFromItemStack(stack);
     capturedMob = CapturedMob.create(stack);
   }

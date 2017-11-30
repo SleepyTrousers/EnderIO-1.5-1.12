@@ -16,10 +16,10 @@ import crazypants.enderio.base.render.ICacheKey;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode;
+import crazypants.enderio.base.render.util.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.base.render.util.ItemQuadCollector;
 import crazypants.enderio.base.render.util.QuadCollector;
 import crazypants.enderio.base.render.util.TankRenderHelper;
-import crazypants.enderio.base.render.util.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -31,10 +31,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TankItemRenderMapper extends MachineRenderMapper implements IItemRenderMapper.IDynamicOverlayMapper,
-    IRenderMapper.IBlockRenderMapper.IRenderLayerAware {
+public class TankItemRenderMapper extends MachineRenderMapper
+    implements IItemRenderMapper.IDynamicOverlayMapper, IRenderMapper.IBlockRenderMapper.IRenderLayerAware {
 
-  public static final TankItemRenderMapper instance = new TankItemRenderMapper();
+  public static final @Nonnull TankItemRenderMapper instance = new TankItemRenderMapper();
 
   private TankItemRenderMapper() {
     super(null);
@@ -42,8 +42,8 @@ public class TankItemRenderMapper extends MachineRenderMapper implements IItemRe
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
-                                          QuadCollector quadCollector) {
+  public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
+      @Nonnull QuadCollector quadCollector) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
     if (blockLayer == BlockRenderLayer.CUTOUT) {
@@ -57,7 +57,7 @@ public class TankItemRenderMapper extends MachineRenderMapper implements IItemRe
 
   @Override
   @SideOnly(Side.CLIENT)
-  public ItemQuadCollector mapItemDynamicOverlayRender(Block block, ItemStack stack) {
+  public ItemQuadCollector mapItemDynamicOverlayRender(@Nonnull Block block, @Nonnull ItemStack stack) {
     ItemQuadCollector result = new ItemQuadCollector();
     if (stack.hasTagCompound()) {
       SmartTank tank = ItemTankHelper.getTank(stack);
@@ -75,7 +75,7 @@ public class TankItemRenderMapper extends MachineRenderMapper implements IItemRe
   }
 
   @Override
-  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ItemQuadCollector itemQuadCollector) {
     if (!NbtValue.FAKE.hasTag(stack)) {
       return super.mapItemRender(block, stack, itemQuadCollector);
     } else {

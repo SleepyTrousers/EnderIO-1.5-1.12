@@ -22,14 +22,14 @@ import static crazypants.enderio.base.render.property.EnumMergingBlockRenderMode
 
 public class ReservoirItemRenderMapper implements IRenderMapper.IItemRenderMapper.IItemStateMapper {
 
-  public static final ReservoirItemRenderMapper instance = new ReservoirItemRenderMapper();
+  public static final @Nonnull ReservoirItemRenderMapper instance = new ReservoirItemRenderMapper();
 
   protected ReservoirItemRenderMapper() {
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ItemQuadCollector itemQuadCollector) {
     List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
     IBlockState defaultState = block.getDefaultState();
 

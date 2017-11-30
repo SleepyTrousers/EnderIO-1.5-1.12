@@ -2,7 +2,6 @@ package crazypants.enderio.machines.integration.jei;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +17,7 @@ import crazypants.enderio.base.recipe.RecipeInput;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
 import crazypants.enderio.machines.machine.vat.ContainerVat;
 import crazypants.enderio.machines.machine.vat.GuiVat;
+import crazypants.enderio.util.Prep;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -112,13 +112,13 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
     }
 
     @Override
-    public void getIngredients(IIngredients ingredients) {
+    public void getIngredients(@Nonnull IIngredients ingredients) {
       // TODO is this necessary?
       ingredients.setInput(FluidStack.class, inputFl);
     }
-    
+
     @Override
-    public List<String> getTooltipStrings(int mouseX, int mouseY) {
+    public @Nonnull List<String> getTooltipStrings(int mouseX, int mouseY) {
       List<String> res = new ArrayList<String>(2);
       if (inTankBounds.contains(mouseX, mouseY)) {
         res.add(inputFl.getLocalizedName());
@@ -134,15 +134,15 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
 
     registry.addRecipeCategories(new VatRecipeCategory(guiHelper));
     registry.handleRecipes(IRecipe.class, VatRecipeWrapper::new, VatRecipeCategory.UID);
-//    // TODO what was the purpose of this?
-//      @Override
-//      public boolean isRecipeValid(@Nonnull VatRecipeWrapper recipe) {
-//        return recipe.isValid();
-//      }
-//
-//    });
+    // // TODO what was the purpose of this?
+    // @Override
+    // public boolean isRecipeValid(@Nonnull VatRecipeWrapper recipe) {
+    // return recipe.isValid();
+    // }
+    //
+    // });
     registry.addRecipeClickArea(GuiVat.class, 155, 42, 16, 16, VatRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_vat.getBlock()), VatRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(block_vat.getBlockNN()), VatRecipeCategory.UID);
 
     registry.addRecipes(VatRecipeManager.getInstance().getRecipes(), UID);
 
@@ -194,7 +194,7 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
     ArrayList<ItemStack> inputsOne = new ArrayList<ItemStack>();
     ArrayList<ItemStack> inputsTwo = new ArrayList<ItemStack>();
     for (RecipeInput input : currentRecipe.getRecipe().getInputs()) {
-      if (input.getInput() != null) {
+      if (Prep.isValid(input.getInput())) {
         List<ItemStack> equivs = getInputStacks(input);
         if (input.getSlotNumber() == 0) {
           inputsOne.addAll(equivs);

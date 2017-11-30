@@ -30,7 +30,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 public class TileReservoir extends TileEntityEio implements ITankAccess.IExtendedTankAccess {
 
   @Store
-  SmartTank tank = new SmartTank(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
+  final @Nonnull SmartTank tank = new SmartTank(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
   public boolean canRefill = false;
 
   @Store
@@ -50,7 +50,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
     for (EnumFacing neighbor : EnumFacing.VALUES) {
       BlockPos pos1 = getPos().offset(neighbor);
       TileEntity tileEntity = world.getTileEntity(pos1);
-      if (tileEntity instanceof TileReservoir && ((TileReservoir) tileEntity).tank != null && !seen.contains(tileEntity)) {
+      if (tileEntity instanceof TileReservoir && !seen.contains(tileEntity)) {
         seen.add((TileReservoir) tileEntity);
         got += ((TileReservoir) tileEntity).tank.getFluidAmount();
         if (got >= Fluid.BUCKET_VOLUME * 2) {
@@ -59,7 +59,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
         for (EnumFacing neighbor2 : EnumFacing.VALUES) {
           BlockPos pos2 = pos1.offset(neighbor2);
           TileEntity tileEntity2 = world.getTileEntity(pos2);
-          if (tileEntity2 instanceof TileReservoir && ((TileReservoir) tileEntity2).tank != null && !seen.contains(tileEntity2)) {
+          if (tileEntity2 instanceof TileReservoir && !seen.contains(tileEntity2)) {
             seen.add((TileReservoir) tileEntity2);
             got += ((TileReservoir) tileEntity2).tank.getFluidAmount();
             if (got >= Fluid.BUCKET_VOLUME * 2) {
@@ -99,7 +99,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
     }
   }
 
-  protected void doLeak(BlockPos pos1, int maxAmount) {
+  protected void doLeak(@Nonnull BlockPos pos1, int maxAmount) {
     TileEntity tileEntity = world.getTileEntity(pos1);
     if (tileEntity instanceof TileReservoir && !((TileReservoir) tileEntity).tank.isFull()) {
       FluidStack canDrain = tank.drainInternal(maxAmount, false);
@@ -136,9 +136,6 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
   public void doUpdate() {
     if (world.isRemote) {
       super.doUpdate(); // disable ticking on the client
-      return;
-    }
-    if (tank == null) {
       return;
     }
 
@@ -188,7 +185,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
   }
 
   @Override
-  public FluidTank[] getOutputTanks() {
+  public @Nonnull FluidTank[] getOutputTanks() {
     return new FluidTank[] { tank };
   }
 
@@ -237,27 +234,27 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
       smartTankFluidHandler = new SmartTankFluidHandler(tank) {
 
         @Override
-        protected boolean canFill(EnumFacing from) {
+        protected boolean canFill(@Nonnull EnumFacing from) {
           return true;
         }
 
         @Override
-        protected boolean canDrain(EnumFacing from) {
+        protected boolean canDrain(@Nonnull EnumFacing from) {
           return TileReservoir.this.canRefill;
         }
 
         @Override
-        protected boolean canAccess(EnumFacing from) {
+        protected boolean canAccess(@Nonnull EnumFacing from) {
           return true;
         }
-        
+
       };
     }
     return smartTankFluidHandler;
   }
 
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return getSmartTankFluidHandler().has(facingIn);
     }
@@ -266,7 +263,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) getSmartTankFluidHandler().get(facingIn);
     }

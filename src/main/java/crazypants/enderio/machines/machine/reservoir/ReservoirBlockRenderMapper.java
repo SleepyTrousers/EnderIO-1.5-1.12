@@ -3,6 +3,8 @@ package crazypants.enderio.machines.machine.reservoir;
 import java.util.EnumMap;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.base.render.rendermapper.ConnectedBlockRenderMapper;
@@ -18,13 +20,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ReservoirBlockRenderMapper extends ConnectedBlockRenderMapper {
 
-  public ReservoirBlockRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public ReservoirBlockRenderMapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     super(state, world, pos);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      boolean isPainted) {
     TileEntity tileEntity = state.getTileEntity();
     if ((tileEntity instanceof TileReservoir) && ((TileReservoir) tileEntity).isAutoEject()) {
       EnumMap<EnumFacing, EnumIOMode> result = new EnumMap<EnumFacing, EnumIOMode>(EnumFacing.class);
@@ -41,24 +44,25 @@ public class ReservoirBlockRenderMapper extends ConnectedBlockRenderMapper {
 
   @Override
   @SideOnly(Side.CLIENT)
-  protected List<IBlockState> renderBody(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer, QuadCollector quadCollector) {
+  protected List<IBlockState> renderBody(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
+      @Nonnull QuadCollector quadCollector) {
     return null;
   }
 
   @Override
-  protected boolean isSameKind(IBlockState state, IBlockState other) {
+  protected boolean isSameKind(@Nonnull IBlockState state, @Nonnull IBlockState other) {
     return state.getBlock() == other.getBlock();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  protected IBlockState getMergedBlockstate(IBlockState state) {
+  protected IBlockState getMergedBlockstate(@Nonnull IBlockState state) {
     return null;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  protected IBlockState getBorderedBlockstate(IBlockState state) {
+  protected IBlockState getBorderedBlockstate(@Nonnull IBlockState state) {
     return state;
   }
 

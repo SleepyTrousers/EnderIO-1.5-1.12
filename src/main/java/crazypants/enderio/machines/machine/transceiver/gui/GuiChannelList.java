@@ -3,6 +3,8 @@ package crazypants.enderio.machines.machine.transceiver.gui;
 import java.awt.Color;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
 import com.google.common.base.Predicate;
@@ -18,9 +20,9 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
 
   private FluentIterable<Channel> channels;
 
-  private final GuiTransceiver parent;
+  private final @Nonnull GuiTransceiver parent;
 
-  public GuiChannelList(GuiTransceiver parent, int width, int height, int originX, int originY) {
+  public GuiChannelList(@Nonnull GuiTransceiver parent, int width, int height, int originX, int originY) {
     super(width, height, originX, originY, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 4);
     this.parent = parent;
   }
@@ -28,7 +30,7 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
   void setChannels(Set<Channel> val, Predicate<Channel> filter) {
     if (val == null) {
       channels = FluentIterable.from(Sets.<Channel> newHashSet());
-    }
+    } // FIXME: else?
     channels = FluentIterable.from(val).filter(filter);
   }
 
@@ -38,7 +40,7 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
   }
 
   @Override
-  public Channel getElementAt(int index) {
+  public @Nonnull Channel getElementAt(int index) {
     if (index < 0 || index >= channels.size()) {
       return null;
     }
@@ -55,7 +57,7 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
   }
 
   @Override
-  protected void drawElement(int index, int xPosition, int yPosition, int rowHeight, VertexBuffer renderer) {
+  protected void drawElement(int index, int xPosition, int yPosition, int rowHeight, @Nonnull VertexBuffer renderer) {
     if (index < 0 || index >= channels.size()) {
       return;
     }

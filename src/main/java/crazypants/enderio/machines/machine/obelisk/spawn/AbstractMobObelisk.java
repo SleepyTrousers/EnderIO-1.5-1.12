@@ -3,6 +3,8 @@ package crazypants.enderio.machines.machine.obelisk.spawn;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -21,16 +23,16 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
     AVERT("blockSpawnGuard.action"),
     RELOCATE("blockSpawnRelocator.action"),
     SPAWN("blockPoweredSpawner.action"),
-  
+
     ;
-  
-    private final String langKey;
-  
-    private SpawnObeliskAction(String langKey) {
+
+    private final @Nonnull String langKey;
+
+    private SpawnObeliskAction(@Nonnull String langKey) {
       this.langKey = langKey;
     }
-  
-    public String getActionString() {
+
+    public @Nonnull String getActionString() {
       return EnderIO.lang.localize(langKey);
     }
   }
@@ -40,8 +42,8 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if(!slotDefinition.isInputSlot(i)) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
+    if (!slotDefinition.isInputSlot(i)) {
       return false;
     }
     return CapturedMob.containsSoul(itemstack);

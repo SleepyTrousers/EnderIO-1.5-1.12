@@ -21,7 +21,7 @@ public class ContainerVat extends AbstractMachineContainer<TileVat> {
   }
 
   @Override
-  protected void addMachineSlots(InventoryPlayer playerInv) {
+  protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
     addSlotToContainer(new Slot(getInv(), 0, 56, 12) {
       @Override
       public boolean isItemValid(@Nonnull ItemStack itemStack) {

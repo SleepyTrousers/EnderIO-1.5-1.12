@@ -59,7 +59,7 @@ public class SoulBinderTESR extends ManagedTESR<TileSoulBinder> {
     GL11.glEnable(GL11.GL_LIGHTING); // sic!
   }
 
-  public static void renderBlockModel(World world, BlockPos pos, IBlockState state, boolean translateToOrigin, boolean relight) {
+  public static void renderBlockModel(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, boolean translateToOrigin, boolean relight) {
     VertexBuffer wr = Tessellator.getInstance().getBuffer();
     wr.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
     if (translateToOrigin) {
@@ -94,7 +94,7 @@ public class SoulBinderTESR extends ManagedTESR<TileSoulBinder> {
 
     private final Map<BlockPos, Pair<Integer, Integer>> light = new HashMap<BlockPos, Pair<Integer, Integer>>();
 
-    public WorldWrapper(World world, BlockPos pos) {
+    public WorldWrapper(@Nonnull World world, @Nonnull BlockPos pos) {
       super(world);
 
       // faces
@@ -165,7 +165,7 @@ public class SoulBinderTESR extends ManagedTESR<TileSoulBinder> {
     }
 
     @Override
-    public int getCombinedLight(BlockPos pos, int lightValue) {
+    public int getCombinedLight(@Nonnull BlockPos pos, int lightValue) {
       if (light.containsKey(pos)) {
         Pair<Integer, Integer> pair = light.get(pos);
         int sky = pair.getLeft(), blk = pair.getRight();
@@ -178,7 +178,7 @@ public class SoulBinderTESR extends ManagedTESR<TileSoulBinder> {
     }
 
     @Override
-    public IBlockState getBlockState(BlockPos pos) {
+    public @Nonnull IBlockState getBlockState(@Nonnull BlockPos pos) {
       if (light.containsKey(pos)) {
         return Blocks.AIR.getDefaultState();
       }
@@ -186,7 +186,7 @@ public class SoulBinderTESR extends ManagedTESR<TileSoulBinder> {
     }
 
     @Override
-    public boolean isAirBlock(BlockPos pos) {
+    public boolean isAirBlock(@Nonnull BlockPos pos) {
       if (light.containsKey(pos)) {
         return true;
       }

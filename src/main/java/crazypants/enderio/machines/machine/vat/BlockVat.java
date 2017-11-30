@@ -15,7 +15,6 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -45,12 +44,12 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
   }
 
   @Override
-  public int getLightOpacity(IBlockState state) {
+  public int getLightOpacity(@Nonnull IBlockState state) {
     return 0;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState state) {
+  public boolean isOpaqueCube(@Nonnull IBlockState state) {
     return false;
   }
 
@@ -77,13 +76,13 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_VAT;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, EnumFacing side) {
+  public boolean shouldSideBeRendered(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     return true;
   }
 
@@ -91,27 +90,25 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     // Spit some "steam" out the spout
-    if (world != null && pos != null && rand != null) {
-      TileVat te = getTileEntity(world, pos);
-      if (te != null && te.isActive()) {
-        float pX = pos.getX() + 0.5f;
-        float pY = pos.getY() + 0.7f;
-        float pZ = pos.getZ() + 0.5f;
+    TileVat te = getTileEntity(world, pos);
+    if (te != null && te.isActive()) {
+      float pX = pos.getX() + 0.5f;
+      float pY = pos.getY() + 0.7f;
+      float pZ = pos.getZ() + 0.5f;
 
-        EnumFacing dir = te.getFacing();
-        pX += 0.6f * dir.getFrontOffsetX();
-        pZ += 0.6f * dir.getFrontOffsetZ();
+      EnumFacing dir = te.getFacing();
+      pX += 0.6f * dir.getFrontOffsetX();
+      pZ += 0.6f * dir.getFrontOffsetZ();
 
-        double velX = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetX();
-        double velZ = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetZ();
-        int num = rand.nextInt(4) + 2;
-        for (int k = 0; k < num; k++) {
-          ParticleManager er = Minecraft.getMinecraft().effectRenderer;
-          Particle fx = er.spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), pX, pY, pZ, 1, 1, 1, 0);
-          if (fx != null) {
-            fx.setRBGColorF(1 - (rand.nextFloat() * 0.2f), 1 - (rand.nextFloat() * 0.1f), 1 - (rand.nextFloat() * 0.2f));
-            ClientUtil.setParticleVelocity(fx, velX, -0.06, velZ);
-          }
+      double velX = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetX();
+      double velZ = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetZ();
+      int num = rand.nextInt(4) + 2;
+      for (int k = 0; k < num; k++) {
+        ParticleManager er = Minecraft.getMinecraft().effectRenderer;
+        Particle fx = er.spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), pX, pY, pZ, 1, 1, 1, 0);
+        if (fx != null) {
+          fx.setRBGColorF(1 - (rand.nextFloat() * 0.2f), 1 - (rand.nextFloat() * 0.1f), 1 - (rand.nextFloat() * 0.2f));
+          ClientUtil.setParticleVelocity(fx, velX, -0.06, velZ);
         }
       }
     }
@@ -119,7 +116,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
 

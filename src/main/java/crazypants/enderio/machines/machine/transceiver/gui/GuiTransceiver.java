@@ -23,13 +23,13 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
   GeneralTab generalTab;
 
-  public GuiTransceiver(InventoryPlayer par1InventoryPlayer, @Nonnull TileTransceiver te) {
+  public GuiTransceiver(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileTransceiver te) {
     super(te, new ContainerTransceiver(par1InventoryPlayer, te), "transceiver", "itemFilter");
 
     generalTab = new GeneralTab(this);
     tabs.add(generalTab);
-//    FilterTab filterTab = new FilterTab(this);
-//    tabs.add(filterTab);
+    // FilterTab filterTab = new FilterTab(this);
+    // tabs.add(filterTab);
     tabs.add(new ChannelTab(this, ChannelType.POWER));
     tabs.add(new ChannelTab(this, ChannelType.ITEM));
     tabs.add(new ChannelTab(this, ChannelType.FLUID));
@@ -79,7 +79,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
       }
     }
   }
-  
+
   void doDefaultKeyTyped(char par1, int par2) {
     try {
       super.keyTyped(par1, par2);
@@ -175,7 +175,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   }
 
   @Override
-  protected void actionPerformed(GuiButton guiButton) throws IOException {
+  protected void actionPerformed(@Nonnull GuiButton guiButton) throws IOException {
     super.actionPerformed(guiButton);
     tabs.get(activeTab).actionPerformed(guiButton);
   }
@@ -200,11 +200,11 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
-  public TileTransceiver getTransciever() {
+  public @Nonnull TileTransceiver getTransciever() {
     return getTileEntity();
   }
 
-  public ContainerTransceiver getContainer() {
+  public @Nonnull ContainerTransceiver getContainer() {
     return (ContainerTransceiver) inventorySlots;
   }
 

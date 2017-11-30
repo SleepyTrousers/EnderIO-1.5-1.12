@@ -25,8 +25,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> implements IPaintable.INonSolidBlockPaintableBlock,
-    IPaintable.IWrenchHideablePaint {
+public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator>
+    implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockCombustionGenerator create() {
     PacketHandler.INSTANCE.registerMessage(PacketCombustionTank.class, PacketCombustionTank.class, PacketHandler.nextID(), Side.CLIENT);
@@ -41,7 +41,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   }
 
   @Override
-  public int getLightOpacity(IBlockState bs) {
+  public int getLightOpacity(@Nonnull IBlockState bs) {
     return 0;
   }
 
@@ -68,19 +68,19 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_COMBUSTION_GEN;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     // If active, randomly throw some smoke around
-    if (world != null && pos != null && isActive(world, pos)) {
+    if (isActive(world, pos)) {
 
       TileEntity te = world.getTileEntity(pos);
       EnumFacing facing = EnumFacing.SOUTH;
@@ -110,7 +110,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
 

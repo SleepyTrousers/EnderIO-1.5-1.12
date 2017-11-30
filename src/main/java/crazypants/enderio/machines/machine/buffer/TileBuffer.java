@@ -49,7 +49,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     return true;
   }
 
@@ -90,23 +90,23 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   }
 
   @Override
-  public void writeToItemStack(ItemStack stack) {
+  public void writeToItemStack(@Nonnull ItemStack stack) {
     super.writeToItemStack(stack);
     stack.setItemDamage(BufferType.get(this).ordinal());
   }
 
   @Override
-  public boolean canInsertItem(int slot, ItemStack itemstack, EnumFacing side) {
+  public boolean canInsertItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
     return hasInventory && super.canInsertItem(slot, itemstack, side);
   }
-  
+
   @Override
-  public boolean canExtractItem(int slot, ItemStack itemstack, EnumFacing side) {
+  public boolean canExtractItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
     return hasInventory() && super.canExtractItem(slot, itemstack, side);
   }
 
   @Override
-  public boolean canConnectEnergy(EnumFacing from) {
+  public boolean canConnectEnergy(@Nonnull EnumFacing from) {
     return hasPower;
   }
 
@@ -143,7 +143,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
     if (dir == null || !shouldDoWorkThisTick(20)) {
       return false;
     }
-    
+
     if (isCreative()) {
       ItemStack[] invCopy = new ItemStack[inventory.length];
       for (int i = 0; i < inventory.length; i++) {
@@ -212,7 +212,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityEnergy.ENERGY) {
       return hasPower ? (T) new InternalRecieverTileWrapper(this, facingIn) : null;
     }

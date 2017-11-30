@@ -12,7 +12,6 @@ import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode;
-import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -41,11 +40,11 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
     super(modObject, TileBuffer.class);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BufferType.TYPE, BufferType.ITEM));
   }
-  
-	@Override
-	public Item createBlockItem(IModObject modObject) {
-    return modObject.apply(new BlockItemBuffer((Block) this));
-	}
+
+  @Override
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new BlockItemBuffer(this));
+  }
 
   @Override
   protected @Nonnull BlockStateContainer createBlockState() {
@@ -53,28 +52,28 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
     return getDefaultState().withProperty(BufferType.TYPE, BufferType.getTypeFromMeta(meta));
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     return BufferType.getMetaFromType(state.getValue(BufferType.TYPE));
   }
 
   @Override
-  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+  public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     return state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO);
   }
 
   @Override
-  public int damageDropped(IBlockState st) {
+  public int damageDropped(@Nonnull IBlockState st) {
     return getMetaFromState(st);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull Item item, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     for (BufferType type : BufferType.values()) {
       list.add(BufferType.getStack(type));
     }
@@ -99,13 +98,13 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_BUFFER;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
 
@@ -122,12 +121,12 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   }
 
   @Override
-  public boolean hasComparatorInputOverride(IBlockState state) {
+  public boolean hasComparatorInputOverride(@Nonnull IBlockState state) {
     return state.getValue(BufferType.TYPE).hasInventory;
   }
 
   @Override
-  public int getComparatorInputOverride(IBlockState blockState1, World worldIn, BlockPos pos) {
+  public int getComparatorInputOverride(@Nonnull IBlockState blockState1, @Nonnull World worldIn, @Nonnull BlockPos pos) {
     return Container.calcRedstone(getTileEntity(worldIn, pos));
   }
 

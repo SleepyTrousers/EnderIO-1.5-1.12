@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.enchanter;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -57,7 +59,7 @@ public class EnchanterModel extends ModelBase {
   }
 
   @Override
-  public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+  public void render(@Nonnull Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
     coverRight.render(f5);
     coverMiddle.render(f5);
     coverLeft.render(f5);

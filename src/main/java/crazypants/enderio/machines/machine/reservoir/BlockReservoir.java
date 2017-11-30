@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.api.common.util.ITankAccess;
@@ -15,13 +14,13 @@ import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
-import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.tool.ToolUtil;
-import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.util.Prep;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -80,72 +79,68 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   }
 
   @Override
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (tab != null) {
       super.getSubBlocks(itemIn, tab, list);
     }
   }
 
   @Override
-  protected BlockStateContainer createBlockState() {
+  protected @Nonnull BlockStateContainer createBlockState() {
     return new BlockStateContainer(this, new IProperty[] { EnumMergingBlockRenderMode.RENDER });
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
     return getDefaultState();
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     return 0;
   }
 
   @Override
-  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+  public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     return state.withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (state != null && world != null && pos != null) {
-      ReservoirBlockRenderMapper renderMapper = new ReservoirBlockRenderMapper(state, world, pos);
-      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, renderMapper);
-      blockStateWrapper.addCacheKey(renderMapper);
-      blockStateWrapper.bakeModel();
-      return blockStateWrapper;
-    } else {
-      return state;
-    }
+  public @Nonnull IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    ReservoirBlockRenderMapper renderMapper = new ReservoirBlockRenderMapper(state, world, pos);
+    IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, renderMapper);
+    blockStateWrapper.addCacheKey(renderMapper);
+    blockStateWrapper.bakeModel();
+    return blockStateWrapper;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return ReservoirItemRenderMapper.instance;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public BlockRenderLayer getBlockLayer() {
+  public @Nonnull BlockRenderLayer getBlockLayer() {
     return BlockRenderLayer.SOLID;
   }
 
   @Override
-  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+  public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {
     return true;
   }
 
   @Override
-  public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
+  public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer,
+      @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
     TileEntity te;
-    if (!entityPlayer.isSneaking() && entityPlayer.inventory.getCurrentItem() != null
-        && (te = world.getTileEntity(pos)) instanceof TileReservoir) {
+    if (!entityPlayer.isSneaking() && Prep.isValid(entityPlayer.inventory.getCurrentItem()) && (te = world.getTileEntity(pos)) instanceof TileReservoir) {
       TileReservoir tank = ((TileReservoir) te);
       if (ToolUtil.isToolEquipped(entityPlayer, hand)) {
         tank.setAutoEject(!tank.isAutoEject());
-        world.notifyBlockUpdate(pos, state, state, 3); 
+        world.notifyBlockUpdate(pos, state, state, 3);
         return true;
       }
       if (tank.tank.getAvailableSpace() >= Fluid.BUCKET_VOLUME && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, tank)) {
@@ -198,7 +193,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
     }
 
     @Override
-    public FluidTank[] getOutputTanks() {
+    public @Nonnull FluidTank[] getOutputTanks() {
       return parents.get(0).getOutputTanks();
     }
 
@@ -221,25 +216,23 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public @Nonnull TileEntity createTileEntity(World world, IBlockState metadata) {
+  public @Nonnull TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState metadata) {
     return new TileReservoir();
   }
 
-
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public boolean shouldSideBeRendered(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     return !(world.getBlockState(pos.offset(side)).getBlock() instanceof BlockReservoir);
   }
 
-
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack stack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack stack) {
     return getUnlocalizedName();
   }
 

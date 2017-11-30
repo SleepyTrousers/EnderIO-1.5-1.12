@@ -3,6 +3,7 @@ package crazypants.enderio.machines.machine.tank;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
@@ -60,7 +61,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank>
   }
 
   @Override
-  public ItemBlock createBlockItem(IModObject modObject) {
+  public ItemBlock createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new BlockItemTank(this));
   }
 
@@ -70,33 +71,33 @@ public class BlockTank extends AbstractMachineBlock<TileTank>
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
     return getDefaultState().withProperty(EnumTankType.KIND, EnumTankType.getType(meta));
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     return EnumTankType.getMeta(state.getValue(EnumTankType.KIND));
   }
 
   @Override
-  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+  public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     return state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO);
   }
 
   @Override
-  public int damageDropped(IBlockState st) {
+  public int damageDropped(@Nonnull IBlockState st) {
     return getMetaFromState(st);
   }
 
   @Override
-  public @Nonnull TileEntity createTileEntity(World world, IBlockState state) {
+  public @Nonnull TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
     return new TileTank(state.getValue(EnumTankType.KIND));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+  public boolean shouldSideBeRendered(@Nonnull IBlockState bs, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     return true;
   }
 
@@ -119,17 +120,17 @@ public class BlockTank extends AbstractMachineBlock<TileTank>
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_TANK;
   }
 
   @Override
-  public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {
+  public int getLightValue(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     TileTank tank = BlockEnder.getAnyTileEntitySafe(world, pos, TileTank.class);
     if (tank != null) {
       FluidStack stack = tank.tank.getFluid();
@@ -140,11 +141,11 @@ public class BlockTank extends AbstractMachineBlock<TileTank>
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
   }
 
   @Override
-  public float getExplosionResistance(World world, BlockPos pos, Entity par1Entity, Explosion explosion) {
+  public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity par1Entity, @Nonnull Explosion explosion) {
     IBlockState state = world.getBlockState(pos);
     if (state.getValue(EnumTankType.KIND).isExplosionResistant()) {
       return Config.EXPLOSION_RESISTANT;
@@ -154,12 +155,12 @@ public class BlockTank extends AbstractMachineBlock<TileTank>
   }
 
   @Override
-  public boolean hasComparatorInputOverride(IBlockState bs) {
+  public boolean hasComparatorInputOverride(@Nonnull IBlockState bs) {
     return true;
   }
 
   @Override
-  public int getComparatorInputOverride(IBlockState bs, World w, BlockPos pos) {
+  public int getComparatorInputOverride(@Nonnull IBlockState bs, @Nonnull World w, @Nonnull BlockPos pos) {
     TileTank te = getTileEntity(w, pos);
     if (te != null) {
       return te.getComparatorOutput();
@@ -169,12 +170,12 @@ public class BlockTank extends AbstractMachineBlock<TileTank>
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     if (EnumTankType.getType(itemstack).isExplosionResistant()) {
       list.add(TextFormatting.ITALIC + EnderIO.lang.localize("blastResistant"));
@@ -182,13 +183,13 @@ public class BlockTank extends AbstractMachineBlock<TileTank>
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack stack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack stack) {
     return stack.getUnlocalizedName();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return TankItemRenderMapper.instance;
   }
 

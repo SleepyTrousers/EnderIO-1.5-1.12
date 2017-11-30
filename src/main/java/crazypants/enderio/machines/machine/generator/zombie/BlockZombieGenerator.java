@@ -38,8 +38,8 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/zombie_gen_head");
   public static final TextureSupplier textureHead2 = TextureRegistry.registerTexture("blocks/zombie_gen_head2");
 
-  private static final Double px = 1d / 16d;
-  public static final AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
+  private static final double px = 1d / 16d;
+  public static final @Nonnull AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
 
   public static BlockZombieGenerator create() {
     PacketHandler.INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, PacketHandler.nextID(), Side.CLIENT);
@@ -59,9 +59,9 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
     });
     setLightOpacity(5);
   }
-  
+
   @Override
-  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+  public @Nonnull AxisAlignedBB getBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos) {
     return AABB;
   }
 
@@ -76,42 +76,42 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_ZOMBIE_GEN;
   }
 
   @Override
-  public int getLightOpacity(IBlockState bs) {
+  public int getLightOpacity(@Nonnull IBlockState bs) {
     return 0;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean isFullCube(IBlockState bs) {
+  public boolean isFullCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
-    if(rand.nextInt(3) == 0) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
+    if (rand.nextInt(3) == 0) {
       TileEntity te = world.getTileEntity(pos);
-      if(te instanceof TileZombieGenerator && ((TileZombieGenerator) te).isActive()) {
+      if (te instanceof TileZombieGenerator && ((TileZombieGenerator) te).isActive()) {
         for (int i = 0; i < 2; i++) {
           float xOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.3f;
           float yOffset = 0.1f;
           float zOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.3f;
-          
+
           BubbleFX fx = new BubbleFX(world, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0, 0.5, 0);
           Minecraft.getMinecraft().effectRenderer.addEffect(fx);
 
         }
 
-        if(Config.machineSoundsEnabled) {
+        if (Config.machineSoundsEnabled) {
           SoundHelper.playSound(world, pos, SoundHelper.BLOCK_TOP, SoundRegistry.ZOMBIE_BUBBLE, Config.machineSoundVolume * 0.045f,
               world.rand.nextFloat() * 0.75f);
         }
@@ -127,7 +127,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return KillerJoeRenderMapper.zombieGen;
   }
 
@@ -138,7 +138,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   @Override
-  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+  public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {
     return true;
   }
 

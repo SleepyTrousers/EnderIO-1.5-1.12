@@ -2,7 +2,7 @@ package crazypants.enderio.machines.machine.spawner;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
@@ -21,28 +21,28 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
   private Slot slotInput;
   private Slot slotOutput;
 
-  public ContainerPoweredSpawner(InventoryPlayer playerInv, TilePoweredSpawner te) {
+  public ContainerPoweredSpawner(@Nonnull InventoryPlayer playerInv, @Nonnull TilePoweredSpawner te) {
     super(playerInv, te);
   }
 
   @Override
-  protected void addMachineSlots(InventoryPlayer playerInv) {
+  protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
     slotInput = addSlotToContainer(new Slot(getInv(), 0, 54, 42) {
       @Override
-      public boolean isItemValid(@Nullable ItemStack itemStack) {
+      public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return getInv().isItemValidForSlot(0, itemStack);
       }
     });
     slotOutput = addSlotToContainer(new Slot(getInv(), 1, 105, 42) {
       @Override
-      public boolean isItemValid(@Nullable ItemStack itemStack) {
+      public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return false;
       }
     });
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    final GhostBackgroundItemSlot ghostBackgroundItemSlot = new GhostBackgroundItemSlot(ModObject.itemSoulVial.getItem(), slotInput);
+    final GhostBackgroundItemSlot ghostBackgroundItemSlot = new GhostBackgroundItemSlot(ModObject.itemSoulVial.getItemNN(), slotInput);
     ghostBackgroundItemSlot.y = 42;
     slots.add(ghostBackgroundItemSlot);
   }
@@ -56,7 +56,7 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
   public IMessage networkExec(int id, GuiPacket message) {
     switch (id) {
     case 0:
-      //getInv().setSpawnMode(message.getBoolean(0)); TODO Implement
+      // getInv().setSpawnMode(message.getBoolean(0)); TODO Implement
       break;
     default:
       break;

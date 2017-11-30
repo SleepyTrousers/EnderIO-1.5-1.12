@@ -22,14 +22,14 @@ import static crazypants.enderio.base.render.property.EnumMergingBlockRenderMode
 
 public class SolarItemRenderMapper implements IRenderMapper.IItemRenderMapper.IItemStateMapper {
 
-  public static final SolarItemRenderMapper instance = new SolarItemRenderMapper();
+  public static final @Nonnull SolarItemRenderMapper instance = new SolarItemRenderMapper();
 
   protected SolarItemRenderMapper() {
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ItemQuadCollector itemQuadCollector) {
     List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
     IBlockState defaultState = block.getDefaultState();
     SolarType bankType = SolarType.getTypeFromMeta(stack.getItemDamage());

@@ -47,14 +47,14 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   static final String USERNAME = "KillerJoe";
   public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/killer_joe_head");
   public static final TextureSupplier textureHead2 = TextureRegistry.registerTexture("blocks/killer_joe_head2");
-  
+
   private static final Double px = 1d / 16d;
   @Nonnull
   public static final AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
 
   public static BlockKillerJoe create() {
     PacketHandler.INSTANCE.registerMessage(PacketSwing.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);
-    
+
     BlockKillerJoe res = new BlockKillerJoe();
     MinecraftForge.EVENT_BUS.register(res);
     res.init();
@@ -71,26 +71,26 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
 
     });
     setLightOpacity(5);
-    setSoundType(SoundType.GLASS);    
+    setSoundType(SoundType.GLASS);
   }
 
   @Override
-  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+  public @Nonnull AxisAlignedBB getBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos) {
     return AABB;
   }
 
   @Override
-  public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+  public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity exploder, @Nonnull Explosion explosion) {
     return Config.EXPLOSION_RESISTANT;
   }
-  
+
   @SubscribeEvent
-  public void getKillDisplayName(PlayerEvent.NameFormat nameEvt)  {
-    if(nameEvt.getUsername() != null && nameEvt.getUsername().startsWith(USERNAME)) {
+  public void getKillDisplayName(PlayerEvent.NameFormat nameEvt) {
+    if (nameEvt.getUsername() != null && nameEvt.getUsername().startsWith(USERNAME)) {
       nameEvt.setDisplayname(getLocalizedName());
     }
   }
-  
+
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     return new ContainerKillerJoe(player.inventory, (TileKillerJoe) world.getTileEntity(new BlockPos(x, y, z)));
@@ -102,17 +102,17 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_KILLER_JOE;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
-  
+
   @Override
-  public boolean isFullCube(IBlockState bs) {
+  public boolean isFullCube(@Nonnull IBlockState bs) {
     return false;
   }
 
@@ -124,7 +124,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return KillerJoeRenderMapper.killerJoe;
   }
 
@@ -133,9 +133,9 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   public IBlockRenderMapper getBlockRenderMapper() {
     return KillerJoeRenderMapper.killerJoe;
   }
-  
+
   @Override
-  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+  public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {
     return true;
   }
 
@@ -148,10 +148,10 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   protected static String permissionAttacking;
 
   @Override
-  public void init(IModObject mo, FMLInitializationEvent event) {
+  public void init(@Nonnull IModObject mo, @Nonnull FMLInitializationEvent event) {
     super.init(mo, event);
-    permissionAttacking = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attack." + getRegistryName().getResourcePath().toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
-        "Permission for the block " + getRegistryName() + " of Ender IO to attack entities."
+    permissionAttacking = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attack." + getRegistryName().getResourcePath().toLowerCase(Locale.ENGLISH),
+        DefaultPermissionLevel.ALL, "Permission for the block " + getRegistryName() + " of Ender IO to attack entities."
             + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");
   }
 

@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
@@ -23,10 +24,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
 
-  private static final Rectangle RECTANGLE_FUEL_TANK = new Rectangle(18, 11, 15, 47);
-  private ToggleButton showRangeB;
+  private static final @Nonnull Rectangle RECTANGLE_FUEL_TANK = new Rectangle(18, 11, 15, 47);
+  private final @Nonnull ToggleButton showRangeB;
 
-  public GuiKillerJoe(InventoryPlayer inventory, final TileKillerJoe tileEntity) {
+  public GuiKillerJoe(@Nonnull InventoryPlayer inventory, final @Nonnull TileKillerJoe tileEntity) {
     super(tileEntity, new ContainerKillerJoe(inventory, tileEntity), "killer_joe");
 
     addToolTip(new GuiToolTip(RECTANGLE_FUEL_TANK, "") {
@@ -37,7 +38,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
         String heading = EnderIO.lang.localize("killerJoe.fuelTank");
         text.add(heading);
         text.add(Fluids.toCapactityString(getTileEntity().tank));
-        if(tileEntity.tank.getFluidAmount() < tileEntity.getActivationAmount()) {
+        if (tileEntity.tank.getFluidAmount() < tileEntity.getActivationAmount()) {
           text.add(EnderIO.lang.localize("gui.fluid.minReq", Fluids.MB(tileEntity.getActivationAmount())));
         }
       }
@@ -48,7 +49,6 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
     int bw = 16;
 
     int x = 81;
-    int y = 44;
 
     x += spacing + bw;
 
@@ -59,7 +59,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
     showRangeB.setSize(BUTTON_SIZE, BUTTON_SIZE);
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override
-      public List<String> getToolTipText() {
+      public @Nonnull List<String> getToolTipText() {
         return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
       }
     });
@@ -84,7 +84,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) throws IOException {
+  protected void actionPerformed(@Nonnull GuiButton b) throws IOException {
     super.actionPerformed(b);
     if (b == showRangeB) {
       getTileEntity().setShowRange(showRangeB.isSelected());
@@ -100,7 +100,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
   public void renderSlotHighlights(IoMode mode) {
     super.renderSlotHighlights(mode);
 
-    if(mode == IoMode.PULL || mode == IoMode.PUSH_PULL) {
+    if (mode == IoMode.PULL || mode == IoMode.PUSH_PULL) {
       int x = 16;
       int y = 9;
       int w = 15 + 4;
@@ -121,7 +121,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
     int x = guiLeft + 18;
     int y = guiTop + 11;
     TileKillerJoe joe = getTileEntity();
-    if(joe.tank.getFluidAmount() > 0) {
+    if (joe.tank.getFluidAmount() > 0) {
       RenderUtil.renderGuiTank(joe.tank.getFluid(), joe.tank.getCapacity(), joe.tank.getFluidAmount(), x, y, zLevel, 16, 47);
     }
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);

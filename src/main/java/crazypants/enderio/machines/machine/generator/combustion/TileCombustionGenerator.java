@@ -42,23 +42,22 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWE
 import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_LOSS;
 
 @Storable
-public class TileCombustionGenerator extends AbstractGeneratorEntity
-    implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
+public class TileCombustionGenerator extends AbstractGeneratorEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
   @Store
-  private final SmartTank coolantTank = new SmartTank(Fluid.BUCKET_VOLUME * 5) {
+  private final @Nonnull SmartTank coolantTank = new SmartTank(Fluid.BUCKET_VOLUME * 5) {
 
     @Override
-    public boolean canFillFluidType(FluidStack resource) {
+    public boolean canFillFluidType(@Nullable FluidStack resource) {
       return super.canFillFluidType(resource) && FluidFuelRegister.instance.getCoolant(resource.getFluid()) != null;
     }
 
   };
   @Store
-  private final SmartTank fuelTank = new SmartTank(Fluid.BUCKET_VOLUME * 5) {
+  private final @Nonnull SmartTank fuelTank = new SmartTank(Fluid.BUCKET_VOLUME * 5) {
 
     @Override
-    public boolean canFillFluidType(FluidStack resource) {
+    public boolean canFillFluidType(@Nullable FluidStack resource) {
       return super.canFillFluidType(resource) && FluidFuelRegister.instance.getFuel(resource.getFluid()) != null;
     }
 
@@ -107,7 +106,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
     if (dir != null && coolantTank.getFluidAmount() < coolantTank.getCapacity()) {
       if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), coolantTank, IO_MB_TICK) > 0) {
         setTanksDirty();
-        }
+      }
     }
     return res;
   }
@@ -123,7 +122,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     return false;
   }
 
@@ -133,7 +132,8 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
   }
 
   @Override
-  public void onNeighborBlockChange(IBlockState state, World worldIn, BlockPos posIn, Block blockIn, BlockPos fromPos) {
+  public void onNeighborBlockChange(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos posIn, @Nonnull Block blockIn,
+      @Nonnull BlockPos fromPos) {
     super.onNeighborBlockChange(state, worldIn, posIn, blockIn, fromPos);
     if (powerDis != null) {
       powerDis.neighboursChanged();
@@ -322,11 +322,11 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
     return fuel.getPowerPerCycle();
   }
 
-  public SmartTank getCoolantTank() {
+  public @Nonnull SmartTank getCoolantTank() {
     return coolantTank;
   }
 
-  public SmartTank getFuelTank() {
+  public @Nonnull SmartTank getFuelTank() {
     return fuelTank;
   }
 
@@ -344,8 +344,8 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
   }
 
   @Override
-  public FluidTank[] getOutputTanks() {
-    return new FluidTank[] { /* coolantTank, fuelTank */};
+  public @Nonnull FluidTank[] getOutputTanks() {
+    return new FluidTank[] { /* coolantTank, fuelTank */ };
   }
 
   @Override
@@ -409,7 +409,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) getSmartTankFluidHandler().get(facingIn);
     }

@@ -40,14 +40,14 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   private static int IO_MB_TICK = 100;
 
   @Store
-  protected SmartTank tank;
+  protected final @Nonnull SmartTank tank;
   protected int lastUpdateLevel = -1;
-  
+
   private boolean tankDirty = false;
   private int lastFluidLuminosity = 0;
 
   @Store
-  private VoidMode voidMode = VoidMode.NEVER;
+  private @Nonnull VoidMode voidMode = VoidMode.NEVER;
 
   public TileTank(EnumTankType tankType) {
     super(new SlotDefinition(0, 2, 3, 4, -1, -1));
@@ -83,7 +83,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
 
   private int getFilledLevel() {
     int level = (int) Math.floor(16 * tank.getFilledRatio());
-    if(level == 0 && tank.getFluidAmount() > 0) {
+    if (level == 0 && tank.getFluidAmount() > 0) {
       level = 1;
     }
     return level;
@@ -92,26 +92,26 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   public boolean canVoidItems() {
     return tank.getFluid() != null && tank.getFluid().getFluid().getTemperature() > 973;
   }
-  
-  public VoidMode getVoidMode() {
+
+  public @Nonnull VoidMode getVoidMode() {
     return voidMode;
   }
-  
-  public void setVoidMode(VoidMode mode) {
+
+  public void setVoidMode(@Nonnull VoidMode mode) {
     this.voidMode = mode;
   }
-  
+
   @Override
   public @Nonnull String getMachineName() {
     return "tank";
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack item) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack item) {
     if (canVoidItems() && voidMode == VoidMode.ALWAYS && i < getSlotDefinition().getMaxInputSlot()) {
       return false;
     }
-    if (i == 0) {      
+    if (i == 0) {
       return FluidUtil.getFluidTypeFromItem(item) != null;
     } else if (i == 1) {
       return FluidUtil.hasEmptyCapacity(item) || canBeMended(item);
@@ -120,9 +120,9 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     }
     return false;
   }
-  
+
   @Override
-  public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
+  public void setInventorySlotContents(int slot, @Nonnull ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
   }
 
@@ -130,7 +130,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   public boolean isActive() {
     return false;
   }
-  
+
   private static long lastSendTickAll = -1;
   private long nextSendTickThis = -1;
   private int sendPrio = 0;
@@ -155,15 +155,15 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   protected boolean processTasks(boolean redstoneCheck) {
     processItems(redstoneCheck);
     int filledLevel = getFilledLevel();
-    if(lastUpdateLevel != filledLevel) {
+    if (lastUpdateLevel != filledLevel) {
       lastUpdateLevel = filledLevel;
       setTanksDirty();
     }
     if (tankDirty && canSendClientUpdate()) {
       PacketHandler.sendToAllAround(new PacketTankFluid(this), this);
       world.updateComparatorOutputLevel(pos, getBlockType());
-      int thisFluidLuminosity = tank.getFluid() == null || tank.getFluid().getFluid() == null || tank.getFluidAmount() == 0 ? 0 : tank.getFluid().getFluid()
-          .getLuminosity(tank.getFluid());
+      int thisFluidLuminosity = tank.getFluid() == null || tank.getFluid().getFluid() == null || tank.getFluidAmount() == 0 ? 0
+          : tank.getFluid().getFluid().getLuminosity(tank.getFluid());
       if (thisFluidLuminosity != lastFluidLuminosity) {
         world.checkLight(getPos());
         world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 3);
@@ -176,7 +176,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     }
     return false;
   }
-  
+
   public int getComparatorOutput() {
     if (tank.isEmpty()) {
       return 0;
@@ -186,10 +186,10 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   }
 
   private boolean processItems(boolean redstoneCheck) {
-    if(!redstoneCheck) {
+    if (!redstoneCheck) {
       return false;
     }
-    if(!shouldDoWorkThisTick(20)) {
+    if (!shouldDoWorkThisTick(20)) {
       return false;
     }
     if (inventory[2] != null && canVoidItems()) {
@@ -207,8 +207,8 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   private boolean mendItem() {
     final int output = getSlotDefinition().getMaxOutputSlot();
     final int input = getSlotDefinition().getMinInputSlot() + 1;
-    if (inventory[output] != null || inventory[input] == null || !inventory[input].isItemDamaged()
-        || tank.isEmpty() || EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, inventory[input]) <= 0) {
+    if (inventory[output] != null || inventory[input] == null || !inventory[input].isItemDamaged() || tank.isEmpty()
+        || EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, inventory[input]) <= 0) {
       return false;
     }
 
@@ -254,7 +254,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     if (fill.result.fluidStack == null) {
       return false;
     }
-    
+
     int slot = getSlotDefinition().getMaxOutputSlot();
 
     if (inventory[slot] != null) {
@@ -284,10 +284,10 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     if (fill.result.fluidStack == null) {
       return false;
     }
-    
+
     int slot = getSlotDefinition().getMinOutputSlot();
 
-    if (inventory[slot] != null && fill.result.itemStack != null) {
+    if (inventory[slot] != null && Prep.isValid(fill.result.itemStack)) {
       if (inventory[slot].isStackable() && ItemUtil.areStackMergable(inventory[slot], fill.result.itemStack)
           && inventory[slot].getCount() < inventory[slot].getMaxStackSize()) {
         fill.result.itemStack.grow(inventory[slot].getCount());
@@ -298,7 +298,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
 
     getInputTank(fill.result.fluidStack).setFluid(fill.remainder.fluidStack);
     setInventorySlotContents(getSlotDefinition().getMinInputSlot(), fill.remainder.itemStack);
-    if (fill.result.itemStack != null) {
+    if (Prep.isValid(fill.result.itemStack)) {
       setInventorySlotContents(slot, fill.result.itemStack);
     }
 
@@ -313,7 +313,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   }
 
   @Override
-  public FluidTank[] getOutputTanks() {
+  public @Nonnull FluidTank[] getOutputTanks() {
     return new FluidTank[] { tank };
   }
 
@@ -366,7 +366,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) getSmartTankFluidHandler().get(facingIn);
     }

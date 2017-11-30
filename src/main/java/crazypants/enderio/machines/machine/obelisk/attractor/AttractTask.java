@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.obelisk.attractor;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.tileentity.TileEntity;
@@ -9,14 +11,14 @@ import net.minecraftforge.common.util.FakePlayer;
 
 class AttractTask extends EntityAIBase {
 
-  private EntityLiving mob;
-  BlockPos coord;
-  private FakePlayer target;
+  private final @Nonnull EntityLiving mob;
+  final @Nonnull BlockPos coord;
+  private final @Nonnull FakePlayer target;
   private int updatesSincePathing;
 
   private boolean started = false;
 
-  AttractTask(EntityLiving mob, FakePlayer target, BlockPos coord) {
+  AttractTask(@Nonnull EntityLiving mob, @Nonnull FakePlayer target, @Nonnull BlockPos coord) {
     this.mob = mob;
     this.coord = coord;
     this.target = target;

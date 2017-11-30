@@ -1,17 +1,13 @@
 package crazypants.enderio.machines.machine.spawner;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.GuiID;
@@ -31,7 +27,7 @@ import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.util.CapturedMob;
-import net.minecraft.block.BlockMobSpawner;
+import crazypants.enderio.util.Prep;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -40,41 +36,34 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.machines.init.MachineObject.block_powered_spawner;
 
-public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock,
-    IPaintable.IWrenchHideablePaint, IHaveTESR {
- 
-  public static final String KEY_SPAWNED_BY_POWERED_SPAWNER = "spawnedByPoweredSpawner";
+public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner>
+    implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
+
+  public static final @Nonnull String KEY_SPAWNED_BY_POWERED_SPAWNER = "spawnedByPoweredSpawner";
 
   public static BlockPoweredSpawner create(@Nonnull IModObject modObject) {
     MachineRecipeRegistry.instance.registerRecipe(MachineObject.block_powered_spawner.getUnlocalisedName(), new DummyRecipe());
 
     PacketHandler.INSTANCE.registerMessage(PacketUpdateNotification.class, PacketUpdateNotification.class, PacketHandler.nextID(), Side.CLIENT);
 
-    //Ensure costs are loaded at startup
+    // Ensure costs are loaded at startup
     PoweredSpawnerConfig.getInstance();
 
     BlockPoweredSpawner res = new BlockPoweredSpawner(modObject);
@@ -97,10 +86,10 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   @SubscribeEvent
   public void handleAnvilEvent(AnvilUpdateEvent evt) {
-    if (evt.getLeft() == null || evt.getLeft().getCount() != 1 || evt.getLeft().getItem() != Item.getItemFromBlock(block_powered_spawner.getBlock())) {
+    if (Prep.isInvalid(evt.getLeft()) || evt.getLeft().getCount() != 1 || evt.getLeft().getItem() != block_powered_spawner.getItem()) {
       return;
     }
-    if (evt.getRight() == null || evt.getRight().getCount() != 1 || evt.getRight().getItem() != ModObject.itemBrokenSpawner.getItem()) {
+    if (Prep.isInvalid(evt.getRight()) || evt.getRight().getCount() != 1 || evt.getRight().getItem() != ModObject.itemBrokenSpawner.getItem()) {
       return;
     }
 
@@ -111,7 +100,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
     evt.setCost(Config.powerSpawnerAddSpawnerCost);
     evt.setOutput(evt.getLeft().copy());
-    if(evt.getOutput().getTagCompound() == null) {
+    if (evt.getOutput().getTagCompound() == null) {
       evt.getOutput().setTagCompound(new NBTTagCompound());
     }
     evt.getOutput().getTagCompound().setBoolean("eio.abstractMachine", true);
@@ -122,20 +111,20 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   public void onLivingUpdate(LivingUpdateEvent livingUpdate) {
 
     Entity ent = livingUpdate.getEntityLiving();
-    if(!ent.getEntityData().hasKey(KEY_SPAWNED_BY_POWERED_SPAWNER)) {
+    if (!ent.getEntityData().hasKey(KEY_SPAWNED_BY_POWERED_SPAWNER)) {
       return;
     }
-    if(fieldpersistenceRequired == null) {
+    if (fieldpersistenceRequired == null) {
       ent.getEntityData().removeTag(KEY_SPAWNED_BY_POWERED_SPAWNER);
       return;
     }
 
     long spawnTime = ent.getEntityData().getLong(KEY_SPAWNED_BY_POWERED_SPAWNER);
     long livedFor = livingUpdate.getEntity().world.getTotalWorldTime() - spawnTime;
-    if(livedFor > Config.poweredSpawnerDespawnTimeSeconds*20) {      
+    if (livedFor > Config.poweredSpawnerDespawnTimeSeconds * 20) {
       try {
         fieldpersistenceRequired.setBoolean(livingUpdate.getEntityLiving(), false);
-        
+
         ent.getEntityData().removeTag(KEY_SPAWNED_BY_POWERED_SPAWNER);
       } catch (Exception e) {
         Log.warn("BlockPoweredSpawner.onLivingUpdate: Error occured allowing entity to despawn: " + e);
@@ -151,7 +140,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TilePoweredSpawner) {
+    if (te instanceof TilePoweredSpawner) {
       return new ContainerPoweredSpawner(player.inventory, (TilePoweredSpawner) te);
     }
     return null;
@@ -160,24 +149,24 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TilePoweredSpawner) {
+    if (te instanceof TilePoweredSpawner) {
       return new GuiPoweredSpawner(player.inventory, (TilePoweredSpawner) te);
     }
     return null;
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_POWERED_SPAWNER;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     CapturedMob mob = CapturedMob.create(itemstack);
     if (mob != null) {
       list.add(mob.getDisplayName());
@@ -187,11 +176,11 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     if (CapturedMob.containsSoul(itemstack)) {
       SpecialTooltipHandler.addDetailedTooltipFromResources(list, "tile.blockPoweredSpawner");
     } else {
@@ -202,7 +191,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @SuppressWarnings("null")
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull Item item, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     super.getSubBlocks(item, tab, list);
     list.add(CapturedMob.create(new ResourceLocation("enderman")).toStack(item, 0, 1));
     list.add(CapturedMob.create(new ResourceLocation("chicken")).toStack(item, 0, 1));
@@ -213,7 +202,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
 

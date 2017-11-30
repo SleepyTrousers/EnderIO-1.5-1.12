@@ -10,7 +10,6 @@ import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
-import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -54,12 +53,12 @@ public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements I
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_CRUSHER;
   }
 
   @Override
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
 
     TileSagMill te = (TileSagMill) world.getTileEntity(pos);
     if (te != null && te.isActive()) {

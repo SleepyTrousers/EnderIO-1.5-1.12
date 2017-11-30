@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.NNList;
@@ -29,8 +30,8 @@ import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.recipe.IMachineRecipe;
-import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
+import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
 import crazypants.enderio.util.Prep;
@@ -124,7 +125,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
   }
 
   @Override
-  public boolean tillBlock(BlockPos plantingLocation) {
+  public boolean tillBlock(@Nonnull BlockPos plantingLocation) {
     BlockPos dirtLoc = plantingLocation.down();
     Block dirtBlock = getBlock(dirtLoc);
     if (dirtBlock == Blocks.FARMLAND) {
@@ -138,7 +139,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
         // else we don't know if the ground can even be tilled, so no notification
         return false;
       }
-
 
       boolean doDamage = world.rand.nextFloat() < Config.farmToolTakeDamageChance && canDamage(tool);
       if (!doDamage) {
@@ -199,20 +199,20 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
     return getLootingValue(FarmingTool.AXE);
   }
 
-//  public void damageAxe(Block blk, BlockPos bc) {
-//    damageTool(FarmingTool.AXE, blk, bc, 1);
-//  }
-//
-//  public void damageHoe(int i, BlockPos bc) {
-//    damageTool(FarmingTool.HOE, null, bc, i);
-//  }
-//
-//  public void damageShears(Block blk, BlockPos bc) {
-//    damageTool(FarmingTool.SHEARS, blk, bc, 1);
-//  }
+  // public void damageAxe(Block blk, BlockPos bc) {
+  // damageTool(FarmingTool.AXE, blk, bc, 1);
+  // }
+  //
+  // public void damageHoe(int i, BlockPos bc) {
+  // damageTool(FarmingTool.HOE, null, bc, i);
+  // }
+  //
+  // public void damageShears(Block blk, BlockPos bc) {
+  // damageTool(FarmingTool.SHEARS, blk, bc, 1);
+  // }
 
   @Override
-  public boolean hasTool(FarmingTool type) {
+  public boolean hasTool(@Nonnull FarmingTool type) {
     return getTool(type) != null;
   }
 
@@ -228,7 +228,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
   }
 
   @Override
-  public ItemStack getTool(FarmingTool type) {
+  public @Nonnull ItemStack getTool(@Nonnull FarmingTool type) {
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
       if (FarmingTool.isBrokenTinkerTool(inventory[i]) || isDryRfTool(inventory[i])) {
         for (int j = slotDefinition.minOutputSlot; j <= slotDefinition.maxOutputSlot; j++) {
@@ -259,7 +259,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
     return Prep.getEmpty();
   }
 
-//  @Override
+  // @Override
   // TODO what is this needed for ?
   public void damageTool(FarmingTool type, Block blk, BlockPos bc, int damage) {
     ItemStack tool = getTool(type);
@@ -308,10 +308,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
   }
 
   @Override
-  public int getLootingValue(FarmingTool tool) {
+  public int getLootingValue(@Nonnull FarmingTool tool) {
     return getLootingValue(getTool(tool));
   }
-  
+
   private int getLootingValue(ItemStack stack) {
     return Math.max(EnchantmentHelper.getEnchantmentLevel(Enchantments.LOOTING, stack), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
   }
@@ -337,7 +337,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
   }
 
   @Override
-  public void setNotification(FarmNotification note) {
+  public void setNotification(@Nonnull FarmNotification note) {
     if (!notification.contains(note)) {
       notification.add(note);
       sendNotification = true;
@@ -367,7 +367,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack stack) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack stack) {
     if (Prep.isInvalid(stack)) {
       return false;
     }
@@ -510,8 +510,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
         startUsingItem(inventory[minFirtSlot]);
         if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, world, bc)) {
           inventory[minFirtSlot] = endUsingItem(false).get(0); // FIXME ???
-          PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc),
-              new TargetPoint(world.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
+          PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc), new TargetPoint(world.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
           if (Prep.isValid(inventory[minFirtSlot]) && inventory[minFirtSlot].getCount() == 0) {
             inventory[minFirtSlot] = Prep.getEmpty(); // TODO 1.11 remove
           }
@@ -527,19 +526,19 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
   }
 
   @Override
-  public FakePlayerEIO startUsingItem(ItemStack item) {
+  public FakePlayerEIO startUsingItem(@Nonnull ItemStack item) {
     farmerJoe.inventory.mainInventory.set(0, item);
     farmerJoe.inventory.currentItem = 0;
     return farmerJoe;
   }
 
   @Override
-  public FakePlayerEIO startUsingItem(FarmingTool tool) {
+  public FakePlayerEIO startUsingItem(@Nonnull FarmingTool tool) {
     return startUsingItem(getTool(tool));
   }
 
   @Override
-  public NNList<ItemStack> endUsingItem(boolean trashHandItem) {
+  public @Nonnull NNList<ItemStack> endUsingItem(boolean trashHandItem) {
     NNList<ItemStack> ret = new NNList<>();
     if (!trashHandItem) {
       ret.add(farmerJoe.inventory.mainInventory.get(0));
@@ -560,41 +559,40 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
 
   // TODO this and startUsingItem could be default impl
   @Override
-  public NNList<ItemStack> endUsingItem(FarmingTool tool) {
+  public @Nonnull NNList<ItemStack> endUsingItem(@Nonnull FarmingTool tool) {
     return endUsingItem(false);
   }
-  
- // TODO no idea what to do with these
+
+  // TODO no idea what to do with these
   @Override
-  public void handleExtraItems(NNList<ItemStack> items, BlockPos pos) {
+  public void handleExtraItems(@Nonnull NNList<ItemStack> items, @Nullable BlockPos pos) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
-  public boolean checkAction(FarmingAction action, FarmingTool tool) {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  public void registerAction(FarmingAction action, FarmingTool tool) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void registerAction(FarmingAction action, FarmingTool tool, IBlockState state, BlockPos pos) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public boolean isSlotLocked(BlockPos pos) {
+  public boolean checkAction(@Nonnull FarmingAction action, @Nonnull FarmingTool tool) {
     // TODO Auto-generated method stub
     return false;
   }
 
+  @Override
+  public void registerAction(@Nonnull FarmingAction action, @Nonnull FarmingTool tool) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void registerAction(@Nonnull FarmingAction action, @Nonnull FarmingTool tool, @Nonnull IBlockState state, @Nonnull BlockPos pos) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public boolean isSlotLocked(@Nonnull BlockPos pos) {
+    // TODO Auto-generated method stub
+    return false;
+  }
 
   private int bonemealCooldown = 4; // no need to persist this
 
@@ -623,7 +621,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
   }
 
   @Override
-  public boolean hasSeed(ItemStack seeds, BlockPos bc) {
+  public boolean hasSeed(@Nonnull ItemStack seeds, @Nonnull BlockPos bc) {
     int slot = getSupplySlotForCoord(bc);
     ItemStack inv = inventory[slot];
     return Prep.isValid(inv) && (inv.getCount() > 1 || !isSlotLocked(slot)) && inv.isItemEqual(seeds);
@@ -635,14 +633,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
    * <=0 - break no leaves for saplings 50 - break half the leaves for saplings 90 - break 90% of the leaves for saplings
    */
   @Override
-  public int isLowOnSaplings(BlockPos bc) {
+  public int isLowOnSaplings(@Nonnull BlockPos bc) {
     int slot = getSupplySlotForCoord(bc);
     ItemStack inv = inventory[slot];
 
     return 90 * (Config.farmSaplingReserveAmount - (Prep.isInvalid(inv) ? 0 : inv.getCount())) / Config.farmSaplingReserveAmount; // TODO 1.11 clean up
   }
 
-  public ItemStack takeSeedFromSupplies(ItemStack stack, BlockPos forBlock) {
+  public @Nonnull ItemStack takeSeedFromSupplies(@Nonnull ItemStack stack, @Nonnull BlockPos forBlock) {
     return takeSeedFromSupplies(stack, forBlock, true);
   }
 
@@ -674,12 +672,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
   }
 
   @Override
-  public ItemStack takeSeedFromSupplies(BlockPos bc) {
+  public @Nonnull ItemStack takeSeedFromSupplies(@Nonnull BlockPos bc) {
     return takeSeedFromSupplies(getSeedTypeInSuppliesFor(bc), bc);
   }
 
   @Override
-  public ItemStack getSeedTypeInSuppliesFor(BlockPos bc) {
+  public @Nonnull ItemStack getSeedTypeInSuppliesFor(@Nonnull BlockPos bc) {
     int slot = getSupplySlotForCoord(bc);
     return getSeedTypeInSuppliesFor(slot);
   }
@@ -837,7 +835,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
   }
 
   @Override
-  protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
+  protected IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, float chance) {
     return new ContinuousTask(getPowerUsePerTick());
   }
 

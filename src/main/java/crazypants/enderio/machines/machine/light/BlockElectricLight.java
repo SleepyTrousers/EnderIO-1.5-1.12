@@ -34,9 +34,9 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   static final float BLOCK_EDGE_MAX = 0.5f + (BLOCK_WIDTH / 2);
   static final float BLOCK_EDGE_MIN = 0.5f - (BLOCK_WIDTH / 2);
 
-  public static final PropertyEnum<LightType> TYPE = PropertyEnum.<LightType> create("type", LightType.class);
-  public static final PropertyBool ACTIVE = PropertyBool.create("active");
-  public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.<EnumFacing> create("face", EnumFacing.class);
+  public static final @Nonnull PropertyEnum<LightType> TYPE = PropertyEnum.<LightType> create("type", LightType.class);
+  public static final @Nonnull PropertyBool ACTIVE = PropertyBool.create("active");
+  public static final @Nonnull PropertyEnum<EnumFacing> FACING = PropertyEnum.<EnumFacing> create("face", EnumFacing.class);
 
   public static BlockElectricLight create() {
     BlockElectricLight result = new BlockElectricLight();
@@ -51,7 +51,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+  public @Nonnull AxisAlignedBB getBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos) {
 
     EnumFacing onFace = EnumFacing.DOWN;
     TileEntity te = source.getTileEntity(pos);
@@ -96,17 +96,17 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  public ItemBlock createBlockItem(IModObject mo) {
+  public ItemBlock createBlockItem(@Nonnull IModObject mo) {
     return new BlockItemElectricLight(this, mo.getUnlocalisedName());
   }
 
   @Override
-  public BlockStateContainer createBlockState() {
+  public @Nonnull BlockStateContainer createBlockState() {
     return new BlockStateContainer(this, TYPE, ACTIVE, FACING);
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     boolean active = state.getValue(ACTIVE).booleanValue();
     int type = state.getValue(TYPE).getMetadata();
     if (active) {
@@ -116,25 +116,25 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
     LightType type = LightType.fromMetadata(meta & 7);
     return getDefaultState().withProperty(TYPE, type).withProperty(ACTIVE, meta > 7);
   }
 
   @Override
-  public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     TileElectricLight te = getTileEntitySafe(world, pos);
     return state.withProperty(FACING, te == null ? EnumFacing.DOWN : te.getFace());
   }
 
   @Override
-  public int damageDropped(IBlockState state) {
+  public int damageDropped(@Nonnull IBlockState state) {
     return state.getValue(TYPE).ordinal();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers(IModObject mo) {
+  public void registerRenderers(@Nonnull IModObject mo) {
     Item item = Item.getItemFromBlock(this);
     int numTypes = LightType.values().length;
     for (int i = 0; i < numTypes; i++) {
@@ -143,9 +143,9 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {
+  public int getLightValue(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     Block block = bs.getBlock();
-    if (block != null && block != this) {
+    if (block != this) {
       return block.getLightValue(bs, world, pos);
     }
     return bs.getValue(ACTIVE) ? 15 : 0;
@@ -157,22 +157,22 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+  public AxisAlignedBB getCollisionBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     return null;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean isFullCube(IBlockState bs) {
+  public boolean isFullCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+  public void neighborChanged(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull Block blockIn, @Nonnull BlockPos fromPos) {
     TileElectricLight te = getTileEntity(worldIn, pos);
     if (te != null) {
       te.onNeighborBlockChange(blockIn);
@@ -180,7 +180,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+  public void breakBlock(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
     TileElectricLight te = getTileEntity(worldIn, pos);
     if (te != null) {
       te.onBlockRemoved();

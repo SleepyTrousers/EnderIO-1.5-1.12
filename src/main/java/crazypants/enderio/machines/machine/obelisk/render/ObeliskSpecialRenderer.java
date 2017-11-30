@@ -41,13 +41,13 @@ import static org.lwjgl.opengl.GL11.glTranslated;
 @SideOnly(Side.CLIENT)
 public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTESR<T> {
 
-  private ItemStack floatingStack;
+  private final @Nonnull ItemStack floatingStack;
 
-  private Random rand = new Random();
+  private final @Nonnull Random rand = new Random();
 
   private RenderEntityItem rei;
 
-  public ObeliskSpecialRenderer(ItemStack itemStack, Block block) {
+  public ObeliskSpecialRenderer(@Nonnull ItemStack itemStack, Block block) {
     super(block);
     this.floatingStack = itemStack;
   }
@@ -88,7 +88,7 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
     GlStateManager.disableRescaleNormal();
   }
 
-  protected void renderItemStack(T te, World world, double x, double y, double z, float tick) {
+  protected void renderItemStack(T te, @Nonnull World world, double x, double y, double z, float tick) {
     if (ei == null) {
       ei = new EntityItem(world, 0, 0, 0, getFloatingItem(te));
     }
@@ -129,11 +129,11 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
    * @param te
    *          CAN BE NULL
    */
-  protected ItemStack getFloatingItem(T te) {
+  protected @Nonnull ItemStack getFloatingItem(T te) {
     return floatingStack;
   }
 
-  //Required to prevent bobbing
+  // Required to prevent bobbing
   private static class InnerRenderEntityItem extends RenderEntityItem {
 
     private Random random = new Random();
@@ -149,19 +149,19 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
       return false;
     }
 
-    //This method is copied straight from the parent, solely to disable 'setBlurMipmap' 
+    // This method is copied straight from the parent, solely to disable 'setBlurMipmap'
     @Override
-    public void doRender(EntityItem entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void doRender(@Nonnull EntityItem entity, double x, double y, double z, float entityYaw, float partialTicks) {
       ItemStack itemstack = entity.getEntityItem();
       random.setSeed(187L);
       boolean flag = false;
 
       if (bindEntityTexture(entity)) {
         // Must be removed to prevent strange rendering artifacts.
-        // However this results in a new artifact when the item spins, the sampling 
+        // However this results in a new artifact when the item spins, the sampling
         // of what I assume to be mipmapped textures causes spikes to appear when looking at the edge of a texture.
         // TODO investigate a happy medium here ?
-//        this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).setBlurMipmap(false, false);
+        // this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).setBlurMipmap(false, false);
         flag = true;
       }
 
@@ -169,7 +169,7 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
       GlStateManager.enableRescaleNormal();
       GlStateManager.alphaFunc(516, 0.1F);
       GlStateManager.enableBlend();
-       GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+      GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
       GlStateManager.pushMatrix();
       IBakedModel ibakedmodel = this.itemRenderer.getItemModelMesher().getItemModel(itemstack);
       int i = this.func_177077_a(entity, x, y, z, partialTicks, ibakedmodel);
@@ -201,11 +201,10 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
       bindEntityTexture(entity);
 
       if (flag) {
-      //Must be removed to prevent strange rendering artifacts
-//        this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).restoreLastBlurMipmap();
+        // Must be removed to prevent strange rendering artifacts
+        // this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).restoreLastBlurMipmap();
       }
-      
-      
+
     }
 
     private int func_177077_a(EntityItem itemIn, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_) {
@@ -216,7 +215,7 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
         return 0;
       } else {
         boolean flag = p_177077_9_.isGui3d();
-        int i = this.getModelCount(itemstack);        
+        int i = this.getModelCount(itemstack);
         float f1 = shouldBob() ? MathHelper.sin((itemIn.getAge() + p_177077_8_) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F : 0;
         float f2 = p_177077_9_.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
         GlStateManager.translate((float) p_177077_2_, (float) p_177077_4_ + f1 + 0.25F * f2, (float) p_177077_6_);

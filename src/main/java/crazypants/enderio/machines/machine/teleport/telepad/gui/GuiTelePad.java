@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
@@ -26,6 +27,7 @@ import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketOpenServerGui;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
+import crazypants.enderio.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -43,14 +45,13 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   ToggleTravelButton switchButton;
   GuiButton teleportButton;
 
-  // private World world;
-  private final TileTelePad te;
+  private final @Nonnull TileTelePad te;
 
-  private TextFieldEnder xTF, yTF, zTF, dimTF;
+  private final @Nonnull TextFieldEnder xTF, yTF, zTF, dimTF;
 
   private static final int powerX = 8;
   private static final int powerY = 9;
-  private int powerScale = Config.telepadFluidUse > 0 ? 57 : 120;
+  private int powerScale = Config.telepadFluidUse > 0 ? 57 : 120; // TODO -> method
 
   private static final int progressX = 26;
   private static final int progressY = 110;
@@ -59,11 +60,11 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   private static final int fluidX = 8;
   private static final int fluidY = 71;
   private static final int fluidScale = 58;
-  private static final Rectangle RECTANGLE_TANK = new Rectangle(fluidX, fluidY, 10, fluidScale);
+  private static final @Nonnull Rectangle RECTANGLE_TANK = new Rectangle(fluidX, fluidY, 10, fluidScale);
 
   public static int SWITCH_X = 155, SWITCH_Y = 5;
 
-  public GuiTelePad(InventoryPlayer playerInv, final TileTelePad te) {
+  public GuiTelePad(@Nonnull InventoryPlayer playerInv, final @Nonnull TileTelePad te) {
     super(new ContainerTelePad(playerInv, te), "tele_pad");
     this.te = te;
     ySize = 220;
@@ -90,8 +91,8 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
         protected void updateText() {
           text.clear();
           String heading = EnderIO.lang.localize("tank.tank");
-          if(te.getTank().getFluid() != null) {
-            heading += ": " + new FluidStack(te.getFluidType(), 1000).getLocalizedName();//te.getTank().getFluid().getLocalizedName();
+          if (te.getTank().getFluid() != null) {
+            heading += ": " + new FluidStack(te.getFluidType(), 1000).getLocalizedName();// te.getTank().getFluid().getLocalizedName();
           }
           text.add(heading);
           text.add(Fluids.toCapactityString(te.getTank()));
@@ -155,12 +156,12 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     switchButton.onGuiInit();
 
     String text = EnderIO.lang.localize("gui.telepad.teleport");
-    int width = getFontRenderer().getStringWidth(text) + 10;
+    int textWidth = getFontRenderer().getStringWidth(text) + 10;
 
-    int x = guiLeft + (xSize / 2) - (width / 2);
+    int x = guiLeft + (xSize / 2) - (textWidth / 2);
     int y = guiTop + 83;
 
-    teleportButton = new GuiButton(ID_TELEPORT_BUTTON, x, y, width, 20, text);
+    teleportButton = new GuiButton(ID_TELEPORT_BUTTON, x, y, textWidth, 20, text);
     addButton(teleportButton);
 
     ((ContainerTelePad) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
@@ -170,7 +171,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   public void updateScreen() {
     super.updateScreen();
 
-    if (te.getStackInSlot(0) != null) {
+    if (Prep.isValid(te.getStackInSlot(0))) {
       te.setTarget(TelepadTarget.readFromNBT(te.getStackInSlot(0)));
       xTF.setText(Integer.toString(te.getX()));
       yTF.setText(Integer.toString(te.getY()));
@@ -222,7 +223,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
       bindGuiTexture();
       drawTexturedModalRect(sx + fluidX, sy + fluidY, 213, v, 10, fluidScale);
     }
-    
+
     int powerScaled = te.getPowerScaled(powerScale);
     drawTexturedModalRect(sx + powerX, sy + powerY + powerScale - powerScaled, xSize, 0, 10, powerScaled);
     int progressScaled = Util.getProgressScaled(progressScale, te);
@@ -249,9 +250,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     }
 
     String name = te.getTarget().getName();
-    if (name != null) {
-      fnt.drawStringWithShadow(name, sx + xSize / 2 - fnt.getStringWidth(name) / 2, getGuiTop() + 10, 0xffffff);
-    }
+    fnt.drawStringWithShadow(name, sx + xSize / 2 - fnt.getStringWidth(name) / 2, getGuiTop() + 10, 0xffffff);
 
     super.drawGuiContainerBackgroundLayer(p_146976_1_, p_146976_2_, p_146976_3_);
   }
@@ -264,7 +263,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   }
 
   @Override
-  protected void actionPerformed(GuiButton button) throws IOException {
+  protected void actionPerformed(@Nonnull GuiButton button) throws IOException {
     super.actionPerformed(button);
 
     if (button.id == ID_TELEPORT_BUTTON) {

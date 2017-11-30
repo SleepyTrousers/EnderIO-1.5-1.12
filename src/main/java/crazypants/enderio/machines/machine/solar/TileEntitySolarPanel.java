@@ -1,6 +1,7 @@
 package crazypants.enderio.machines.machine.solar;
 
-import com.enderio.core.common.util.BlockCoord;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
@@ -12,7 +13,6 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -23,9 +23,6 @@ import net.minecraftforge.energy.CapabilityEnergy;
 
 import static crazypants.enderio.machines.init.MachineObject.block_solar_panel;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 @Storable
 public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPoweredTile, IHasConduitProbeData {
 
@@ -34,9 +31,8 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
 
   protected SolarPanelNetwork network = new SolarPanelNetwork();
 
-  
   @Override
-  public boolean canConnectEnergy(EnumFacing from) {
+  public boolean canConnectEnergy(@Nonnull EnumFacing from) {
     return from == EnumFacing.DOWN;
   }
 
@@ -55,8 +51,8 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
   }
 
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY ) {
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY) {
       return facingIn == EnumFacing.DOWN;
     }
     return super.hasCapability(capability, facingIn);
@@ -64,13 +60,13 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityEnergy.ENERGY) {
       return facingIn != EnumFacing.DOWN ? null : (T) new InternalPoweredTileWrapper(this, facingIn);
     }
     return super.getCapability(capability, facingIn);
   }
-  
+
   @Override
   public void doUpdate() {
     if (!hasWorld() || world.isRemote) {
@@ -102,7 +98,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
     return getEnergyPerTick(world, pos);
   }
 
-  static int getEnergyPerTick(World world, BlockPos pos) {
+  static int getEnergyPerTick(@Nonnull World world, @Nonnull BlockPos pos) {
     final IBlockState blockState = world.getBlockState(pos);
     if (blockState.getBlock() == block_solar_panel.getBlock()) {
       return blockState.getValue(SolarType.KIND).getRfperTick();
@@ -159,7 +155,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
   }
 
   @Override
-  public BlockPos getLocation() {
+  public @Nonnull BlockPos getLocation() {
     return pos;
   }
 
@@ -168,6 +164,5 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
   public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
     return network.getConduitProbeData(player, side);
   }
-
 
 }

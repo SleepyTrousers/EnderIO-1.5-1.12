@@ -148,9 +148,9 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
           .add(Items.WOODEN_SWORD).add(Items.STONE_SWORD).add(Items.IRON_SWORD).add(Items.GOLDEN_SWORD).add(Items.DIAMOND_SWORD)
           .add(ModObject.itemDarkSteelSword.getItem()).add(Items.WOODEN_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE).add(Items.DIAMOND_AXE)
           .add(ModObject.itemDarkSteelAxe.getItem());
-  
+
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     if (itemstack.isEmpty()) {
       return false;
     }
@@ -186,7 +186,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   @Override
-  public boolean canExtractItem(int slot, ItemStack itemstack, EnumFacing side) {
+  public boolean canExtractItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
     if (isSideDisabled(side)) {
       return false;
     }
@@ -199,7 +199,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
 
-    //send any maintaince packets no more than twice a second
+    // send any maintaince packets no more than twice a second
     if (shouldDoWorkThisTick(10)) {
       if (tanksDirty) {
         PacketHandler.sendToAllAround(new PacketNutrientTank(this), this);
@@ -219,10 +219,9 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
       return false;
     }
 
-    
     Attackera atackera = getAttackera();
     atackera.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, getStackInSlot(0));
-    if(atackera.getTicksSinceLastSwing() < atackera.getCooldownPeriod()) {
+    if (atackera.getTicksSinceLastSwing() < atackera.getCooldownPeriod()) {
       return false;
     }
 
@@ -250,7 +249,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
           }
           if (ent instanceof EntityZombie) {
             zCache.cache.add((EntityZombie) ent);
-          }                      
+          }
           try {
             if (togglePvp) {
               FMLCommonHandler.instance().getMinecraftServerInstance().setAllowPvp(true);
@@ -289,7 +288,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   @Override
-  public void setFacing(EnumFacing facing) {
+  public void setFacing(@Nonnull EnumFacing facing) {
     super.setFacing(facing);
     frontFaceAndSides = new EnumFacing[] { facing, facing.rotateY(), facing.rotateYCCW() };
   }
@@ -367,7 +366,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     return Config.killerMendingEnabled && inventory[0] != null && inventory[0].isItemDamaged()
         && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, inventory[0]) > 0;
   }
-  
+
   private int durabilityToXp(int durability) {
     return durability / 2;
   }
@@ -436,7 +435,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     return chargedLocation;
   }
 
-  private BoundingBox getKillBounds() {
+  private @Nonnull BoundingBox getKillBounds() {
     if (killBounds == null) {
       BoundingBox bb = new BoundingBox(getLocation());
       Vector3d min = bb.getMin();
@@ -465,7 +464,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     return killBounds;
   }
 
-  private AxisAlignedBB getHooverBounds() {
+  private @Nonnull AxisAlignedBB getHooverBounds() {
     if (hooverBounds == null) {
       BoundingBox bb = new BoundingBox(getLocation());
       Vector3d min = bb.getMin();
@@ -528,7 +527,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     @Override
     public void onUpdate() {
 
-      setHeldItem(EnumHand.MAIN_HAND, getStackInSlot(0));      
+      setHeldItem(EnumHand.MAIN_HAND, getStackInSlot(0));
 
       ItemStack prev = prevWeapon;
       ItemStack cur = getHeldItemMainhand();
@@ -547,15 +546,15 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
         markDirty();
       }
       ticksSinceLastSwing++;
-      
+
     }
-    
+
     public int getTicksSinceLastSwing() {
       return ticksSinceLastSwing;
     }
 
     @Override
-    public boolean isCreeperTarget(EntityCreeper swellingCreeper) {
+    public boolean isCreeperTarget(@Nonnull EntityCreeper swellingCreeper) {
       return killerProvokesCreeperExpolosions;
     }
 
@@ -565,12 +564,12 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   public FluidTank getInputTank(FluidStack forFluidType) {
     if (forFluidType != null && forFluidType.getFluid() == Fluids.NUTRIENT_DISTILLATION.getFluid()) {
       return tank;
-    }   
+    }
     return null;
   }
 
   @Override
-  public FluidTank[] getOutputTanks() {
+  public @Nonnull FluidTank[] getOutputTanks() {
     return new FluidTank[] {};
   }
 
@@ -650,7 +649,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) getSmartTankFluidHandler().get(facingIn);
     }

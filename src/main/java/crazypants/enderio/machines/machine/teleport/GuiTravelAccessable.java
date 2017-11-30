@@ -3,6 +3,8 @@ package crazypants.enderio.machines.machine.teleport;
 import java.awt.Color;
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.CheckBox;
@@ -27,28 +29,28 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   private static final int ID_PRIVATE = 1;
   private static final int ID_PROTECTED = 2;
 
-  private CheckBox publicCB;
-  private CheckBox privateCB;
-  private CheckBox protectedCB;
+  private final @Nonnull CheckBox publicCB;
+  private final @Nonnull CheckBox privateCB;
+  private final @Nonnull CheckBox protectedCB;
 
-  private TextFieldEnder tf;
+  private final @Nonnull TextFieldEnder tf;
 
-  private String publicStr;
-  private String privateStr;
-  private String protectedStr;
+  private final @Nonnull String publicStr;
+  private final @Nonnull String privateStr;
+  private final @Nonnull String protectedStr;
 
-  protected T te;
-  private int col0x;
-  private int col1x;
-  private int col2x;
+  protected final @Nonnull T te;
+  private final int col0x;
+  private final int col1x;
+  private final int col2x;
 
   protected World world;
 
-  public GuiTravelAccessable(InventoryPlayer playerInv, T te, World world) {
+  public GuiTravelAccessable(@Nonnull InventoryPlayer playerInv, @Nonnull T te, @Nonnull World world) {
     this(te, new ContainerTravelAccessable(playerInv, te, world));
   }
 
-  public GuiTravelAccessable(T te, ContainerTravelAccessable container) {
+  public GuiTravelAccessable(@Nonnull T te, @Nonnull ContainerTravelAccessable container) {
     super(container, "travel_accessable");
     this.te = te;
     this.world = container.world;
@@ -63,8 +65,8 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
 
     col1x = 88;
     col0x = (col1x - fr.getStringWidth(protectedStr) / 2) / 2;
-    col2x = (col1x + fr.getStringWidth(protectedStr) / 2);
-    col2x += (176 - col2x) / 2;
+    int tmp = (col1x + fr.getStringWidth(protectedStr) / 2);
+    col2x = tmp + (176 - tmp) / 2;
 
     int x = 0;
     int y = 50;
@@ -82,12 +84,12 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     publicCB.setSelected(te.getAccessMode() == AccessMode.PUBLIC);
 
     ySize = 185;
-    
+
     textFields.add(tf);
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) {
+  protected void actionPerformed(@Nonnull GuiButton b) {
     privateCB.setSelected(b.id == ID_PRIVATE);
     protectedCB.setSelected(b.id == ID_PROTECTED);
     publicCB.setSelected(b.id == ID_PUBLIC);
@@ -111,14 +113,14 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     tf.setMaxStringLength(32);
     tf.setFocused(true);
     String txt = te.getLabel();
-    if(txt != null && txt.length() > 0) {
+    if (txt != null && txt.length() > 0) {
       tf.setText(txt);
     }
 
     ((ContainerTravelAccessable) inventorySlots).addGhostSlots(getGhostSlotHandler().getGhostSlots());
 
   }
-  
+
   @Override
   public void updateScreen() {
     super.updateScreen();
@@ -158,18 +160,18 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
 
   private void checkLabelForChange() {
     String newTxt = tf.getText();
-    if(newTxt != null && newTxt.length() == 0) {
+    if (newTxt.length() == 0) {
       newTxt = null;
     }
 
     String curText = te.getLabel();
-    if(curText != null && curText.length() == 0) {
+    if (curText != null && curText.length() == 0) {
       curText = null;
     }
 
     boolean changed = false;
-    if(newTxt == null) {
-      if(curText == null) {
+    if (newTxt == null) {
+      if (curText == null) {
         changed = false;
       } else {
         changed = true;
@@ -177,7 +179,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     } else {
       changed = !newTxt.equals(curText);
     }
-    if(!changed) {
+    if (!changed) {
       return;
     }
     te.setLabel(newTxt);
@@ -188,7 +190,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   protected void drawForegroundImpl(int mouseX, int mouseY) {
     super.drawForegroundImpl(mouseX, mouseY);
 
-    if(te.getAccessMode() != AccessMode.PROTECTED) {
+    if (te.getAccessMode() != AccessMode.PROTECTED) {
       bindGuiTexture();
       GL11.glColor4f(1, 1, 1, 0.75f);
       GL11.glEnable(GL11.GL_BLEND);

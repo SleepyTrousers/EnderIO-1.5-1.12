@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -22,26 +23,26 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
 
   public static final int GUI_WIDTH = 256;
 
-  static final Point PLAYER_INV_OFFSET = new Point(47, 86);
+  static final @Nonnull Point PLAYER_INV_OFFSET = new Point(47, 86);
 
-  static final Point ITEM_INV_OFFSET = new Point(54, 30);
+  static final @Nonnull Point ITEM_INV_OFFSET = new Point(54, 30);
 
-  static final Point HIDDEN_OFFSET = new Point(-3000, -3000);
+  static final @Nonnull Point HIDDEN_OFFSET = new Point(-3000, -3000);
 
-  static final Point FILTER_OFFSET = new Point(PLAYER_INV_OFFSET.x, 30);
+  static final @Nonnull Point FILTER_OFFSET = new Point(PLAYER_INV_OFFSET.x, 30);
 
-  public ContainerTransceiver(InventoryPlayer inventory, TileTransceiver te) {
+  public ContainerTransceiver(@Nonnull InventoryPlayer inventory, @Nonnull TileTransceiver te) {
     super(inventory, te);
   }
 
   @Override
-  protected void addMachineSlots(InventoryPlayer playerInv) {
+  protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
 
     int i;
     for (i = 0; i < 8; i++) {
       addSlotToContainer(new Slot(getInv(), i, 0, 0) {
         @Override
-        public boolean isItemValid(@Nullable ItemStack itemstack) {
+        public boolean isItemValid(@Nonnull ItemStack itemstack) {
           return getInv().isItemValidForSlot(getSlotIndex(), itemstack);
         }
       });
@@ -104,7 +105,7 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
   }
 
   @Override
-  public Point getPlayerInventoryOffset() {
+  public @Nonnull Point getPlayerInventoryOffset() {
     return PLAYER_INV_OFFSET;
   }
 
@@ -121,7 +122,7 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
   }
 
   @Override
-  protected int getIndexOfFirstPlayerInvSlot(SlotDefinition slotDef) {
+  protected int getIndexOfFirstPlayerInvSlot(@Nonnull SlotDefinition slotDef) {
     return slotDef.getNumSlots();
   }
 

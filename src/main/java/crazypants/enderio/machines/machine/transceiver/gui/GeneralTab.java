@@ -5,6 +5,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.ITabPanel;
@@ -22,13 +24,13 @@ import net.minecraft.client.gui.GuiButton;
 public class GeneralTab implements ITabPanel {
 
   private static final int SEND_BAR_OFFSET = 13;
-  ContainerTransceiver container;
-  GuiTransceiver parent;
-  GuiToolTip sendPowerBarTT;
+  final @Nonnull ContainerTransceiver container;
+  final @Nonnull GuiTransceiver parent;
+  final @Nonnull GuiToolTip sendPowerBarTT;
 
-  ToggleButton bufferSizeB;
+  final @Nonnull ToggleButton bufferSizeB;
 
-  public GeneralTab(GuiTransceiver guiTransceiver) {
+  public GeneralTab(@Nonnull GuiTransceiver guiTransceiver) {
     parent = guiTransceiver;
     container = parent.getContainer();
 
@@ -67,7 +69,7 @@ public class GeneralTab implements ITabPanel {
   }
 
   @Override
-  public IconEIO getIcon() {
+  public @Nonnull IconEIO getIcon() {
     return IconEIO.IO_CONFIG_UP;
   }
 
@@ -133,15 +135,15 @@ public class GeneralTab implements ITabPanel {
 
   private void updateSendPowerBarTooltip(List<String> text) {
     text.add(EnderIO.lang.localize("gui.machine.sendReceivebuffer"));
-    text.add(EnderIO.lang.localize("itemGasConduit.tooltip.maxIo") + " "
-        + PowerDisplayUtil.formatPowerPerTick(parent.getTransciever().getMaxEnergyRecieved(null)));
+    text.add(
+        EnderIO.lang.localize("itemGasConduit.tooltip.maxIo") + " " + PowerDisplayUtil.formatPowerPerTick(parent.getTransciever().getMaxEnergyRecieved(null)));
     int maxEnergy = parent.getTransciever().getMaxEnergyStored() / 2;
     int energyStored = Math.max(0, parent.getTransciever().getEnergyStored() - maxEnergy);
     text.add(PowerDisplayUtil.formatStoredPower(energyStored, maxEnergy));
   }
 
   @Override
-  public void actionPerformed(GuiButton guiButton) {
+  public void actionPerformed(@Nonnull GuiButton guiButton) {
     if (guiButton == bufferSizeB) {
       parent.getTransciever().setBufferStacks(bufferSizeB.isSelected());
       GuiPacket.send(parent, ContainerTransceiver.EXEC_SET_BUFFER, bufferSizeB.isSelected());

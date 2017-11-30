@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.machines.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machines.machine.enchanter.EnchanterRecipe;
 import crazypants.enderio.machines.machine.enchanter.EnchanterRecipeManager;
@@ -69,7 +68,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
       if (stack == null) {
         return;
       }
-      int level = rec.getLevelForStackSize(stack.getCount());      
+      int level = rec.getLevelForStackSize(stack.getCount());
       int cost = rec.getCostForLevel(level);
       String str = I18n.format("container.repair.cost", new Object[] { cost });
       minecraft.fontRenderer.drawString(str, 6, 36, 0x80FF20);
@@ -101,15 +100,15 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
 
     registry.addRecipeCategories(new EnchanterRecipeCategory(guiHelper));
     registry.handleRecipes(EnchanterRecipe.class, EnchanterRecipeWrapper::new, EnchanterRecipeCategory.UID);
-//    TODO what was this for?
-//      @Override
-//      public boolean isRecipeValid(@Nonnull EnchanterRecipeWrapper recipe) {
-//        return recipe.isValid();
-//      }
-//
-//    });
+    // TODO what was this for?
+    // @Override
+    // public boolean isRecipeValid(@Nonnull EnchanterRecipeWrapper recipe) {
+    // return recipe.isValid();
+    // }
+    //
+    // });
     registry.addRecipeClickArea(GuiEnchanter.class, 155, 8, 16, 16, EnchanterRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_enchanter.getBlock()), EnchanterRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(block_enchanter.getBlockNN()), EnchanterRecipeCategory.UID);
 
     registry.addRecipes(EnchanterRecipeManager.getInstance().getRecipes(), UID);
 
@@ -151,7 +150,8 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
   }
 
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull EnchanterRecipeCategory.EnchanterRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull EnchanterRecipeCategory.EnchanterRecipeWrapper recipeWrapper,
+      @Nonnull IIngredients ingredients) {
 
     currentRecipe = recipeWrapper;
 

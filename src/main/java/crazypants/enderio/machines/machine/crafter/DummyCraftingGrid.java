@@ -1,8 +1,10 @@
 package crazypants.enderio.machines.machine.crafter;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NullHelper;
+
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,33 +33,29 @@ public class DummyCraftingGrid implements IInventory {
   }
 
   @Override
-  public ItemStack getStackInSlot(int var1) {
+  public @Nonnull ItemStack getStackInSlot(int var1) {
     if (var1 < 0 || var1 >= inv.length) {
-      return null;
+      return Prep.getEmpty();
     }
-    return inv[var1];
+    return NullHelper.first(inv[var1], Prep.getEmpty());
   }
 
   @Override
-  public ItemStack decrStackSize(int fromSlot, int amount) {
+  public @Nonnull ItemStack decrStackSize(int fromSlot, int amount) {
     ItemStack item = inv[fromSlot];
     inv[fromSlot] = null;
     if (item == null) {
-      return null;
+      return Prep.getEmpty();
     }
     item.setCount(0);
     return item;
   }
 
   @Override
-  public void setInventorySlotContents(int i, @Nullable ItemStack itemstack) {
-    if (itemstack != null) {
-      inv[i] = itemstack.copy();
-      if (i < 9) {
-        inv[i].setCount(0);
-      }
-    } else {
-      inv[i] = null;
+  public void setInventorySlotContents(int i, @Nonnull ItemStack itemstack) {
+    inv[i] = itemstack.copy();
+    if (i < 9) {
+      inv[i].setCount(0); // FIXME 1.11
     }
   }
 
@@ -69,9 +67,9 @@ public class DummyCraftingGrid implements IInventory {
   }
 
   @Override
-  public ItemStack removeStackFromSlot(int index) {
+  public @Nonnull ItemStack removeStackFromSlot(int index) {
     ItemStack res = getStackInSlot(index);
-    setInventorySlotContents(index, null);
+    setInventorySlotContents(index, Prep.getEmpty());
     return res;
   }
 
@@ -95,20 +93,20 @@ public class DummyCraftingGrid implements IInventory {
   }
 
   @Override
-  public boolean isUsableByPlayer(EntityPlayer var1) {
+  public boolean isUsableByPlayer(@Nonnull EntityPlayer var1) {
     return true;
   }
 
   @Override
-  public void openInventory(EntityPlayer e) {
+  public void openInventory(@Nonnull EntityPlayer e) {
   }
 
   @Override
-  public void closeInventory(EntityPlayer e) {
+  public void closeInventory(@Nonnull EntityPlayer e) {
   }
 
   @Override
-  public boolean isItemValidForSlot(int var1, ItemStack var2) {
+  public boolean isItemValidForSlot(int var1, @Nonnull ItemStack var2) {
     return var1 < 9;
   }
 

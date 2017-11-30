@@ -37,11 +37,10 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POW
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_USE;
 
 @Storable
-public class TileSoulBinder extends AbstractPoweredTaskEntity
-    implements IHaveExperience, ITankAccess, IPaintable.IPaintableTileEntity {
+public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveExperience, ITankAccess, IPaintable.IPaintableTileEntity {
 
   @Store
-  private final ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel)) {
+  private final @Nonnull ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel)) {
     @Override
     public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
       return super.drain(from, Math.min(XpUtil.experienceToLiquid(getExcessXP()), maxDrain), doDrain);
@@ -68,7 +67,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   }
 
   @Override
-  public ExperienceContainer getContainer() {  
+  public @Nonnull ExperienceContainer getContainer() {
     return xpCont;
   }
 
@@ -76,15 +75,15 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   public @Nonnull String getMachineName() {
     return MachineRecipeRegistry.SOULBINDER;
   }
-    
+
   @Override
   public int getInventoryStackLimit() {
     return 1;
   }
-  
+
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
-    if(xpCont.isDirty()) {
+    if (xpCont.isDirty()) {
       PacketHandler.sendToAllAround(new PacketExperienceContainer(this), this);
       xpCont.setDirty(false);
     }
@@ -97,11 +96,11 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   @Override
   protected IMachineRecipe canStartNextTask(float chance) {
     IMachineRecipe recipe = super.canStartNextTask(chance);
-    if(recipe == null) {
+    if (recipe == null) {
       return null;
     }
-    int xpRequired = ((ISoulBinderRecipe)recipe).getExperienceRequired();
-    if(xpCont.getExperienceTotal() >= xpRequired) {
+    int xpRequired = ((ISoulBinderRecipe) recipe).getExperienceRequired();
+    if (xpCont.getExperienceTotal() >= xpRequired) {
       return recipe;
     }
     return null;
@@ -113,38 +112,38 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
 
   /**
    * Computes the required amount of XP to start the current recipe.
+   * 
    * @return 0 if no XP is required, negative when more than required XP is stored.
    */
   private int getXPRequired() {
-    if(currentTask != null) {
+    if (currentTask != null) {
       return 0;
     }
     IMachineRecipe nextRecipe = getNextRecipe();
-    if(! (nextRecipe instanceof ISoulBinderRecipe)) {
+    if (!(nextRecipe instanceof ISoulBinderRecipe)) {
       return 0;
     }
-    return ((ISoulBinderRecipe)nextRecipe).getExperienceRequired() - getContainer().getExperienceTotal();
+    return ((ISoulBinderRecipe) nextRecipe).getExperienceRequired() - getContainer().getExperienceTotal();
   }
 
   public int getCurrentlyRequiredLevel() {
-    if(currentTask != null) {
+    if (currentTask != null) {
       return -1;
     }
     IMachineRecipe nextRecipe = getNextRecipe();
-    if(! (nextRecipe instanceof ISoulBinderRecipe)) {
+    if (!(nextRecipe instanceof ISoulBinderRecipe)) {
       return -1;
     }
-    return ((ISoulBinderRecipe)nextRecipe).getExperienceLevelsRequired();
+    return ((ISoulBinderRecipe) nextRecipe).getExperienceLevelsRequired();
   }
-  
 
   @Override
-  protected boolean startNextTask(IMachineRecipe nextRecipe, float chance) {
-    int xpRequired = ((ISoulBinderRecipe)nextRecipe).getExperienceRequired();
-    if(xpCont.getExperienceTotal() < xpRequired) {
+  protected boolean startNextTask(@Nonnull IMachineRecipe nextRecipe, float chance) {
+    int xpRequired = ((ISoulBinderRecipe) nextRecipe).getExperienceRequired();
+    if (xpCont.getExperienceTotal() < xpRequired) {
       return false;
     }
-    if(super.startNextTask(nextRecipe, chance)) {
+    if (super.startNextTask(nextRecipe, chance)) {
       xpCont.drain(null, XpUtil.experienceToLiquid(xpRequired), true);
       return true;
     }
@@ -152,27 +151,24 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int slot, ItemStack item) {
-    if(!slotDefinition.isInputSlot(slot)) {
+  public boolean isMachineItemValidForSlot(int slot, @Nonnull ItemStack item) {
+    if (!slotDefinition.isInputSlot(slot)) {
       return false;
     }
     MachineRecipeInput newInput = new MachineRecipeInput(slot, item);
-    int otherSlot = slot == 0 ? 1 : 0;    
-    if(inventory[otherSlot] == null) {
+    int otherSlot = slot == 0 ? 1 : 0;
+    if (inventory[otherSlot] == null) {
       List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), newInput);
-      if(recipes.isEmpty()) {
+      if (recipes.isEmpty()) {
         return false;
-      }    
-      for(IMachineRecipe rec : recipes) {
-        if(rec != null && rec.isValidInput(newInput)) {
+      }
+      for (IMachineRecipe rec : recipes) {
+        if (rec != null && rec.isValidInput(newInput)) {
           return true;
         }
-      }  
+      }
     } else {
-      MachineRecipeInput[] inputs = new MachineRecipeInput[] {
-          newInput,
-          new MachineRecipeInput(otherSlot, inventory[otherSlot])
-      };
+      MachineRecipeInput[] inputs = new MachineRecipeInput[] { newInput, new MachineRecipeInput(otherSlot, inventory[otherSlot]) };
       return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), inputs) != null;
     }
     return false;
@@ -190,7 +186,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
     }
     return res;
   }
-  
+
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {
     boolean res = super.doPush(dir);
@@ -204,8 +200,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   }
 
   /**
-   * Determines how much stored XP can/should be removed because it is not
-   * needed for the next recipe.
+   * Determines how much stored XP can/should be removed because it is not needed for the next recipe.
    * 
    * @return A number between 0 and the amount of stored XP
    */
@@ -225,7 +220,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   }
 
   @Override
-  public FluidTank[] getOutputTanks() {
+  public @Nonnull FluidTank[] getOutputTanks() {
     return new FluidTank[] { xpCont };
   }
 
@@ -233,7 +228,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   public void setTanksDirty() {
     xpCont.setDirty(true);
   }
-  
+
   public boolean isWorking() {
     return currentTask == null ? false : currentTask.getProgress() >= 0;
   }
@@ -250,7 +245,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   }
 
   @Override
-  public String getSoundName() {
+  public @Nonnull String getSoundName() {
     return "machine.soulbinder";
   }
 
@@ -285,7 +280,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) getSmartTankFluidHandler().get(facingIn);
     }

@@ -15,9 +15,7 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.IFluidCoolant;
 import crazypants.enderio.base.fluid.IFluidFuel;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.power.PowerDisplayUtil;
-import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.combustion.GuiCombustionGenerator;
 import crazypants.enderio.machines.machine.generator.combustion.TileCombustionGenerator;
@@ -95,7 +93,7 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
 
     registry.addRecipeCategories(new CombustionRecipeCategory(guiHelper));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_combustion_generator.getBlock(), 1, 0), CombustionRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_combustion_generator.getBlockNN(), 1, 0), CombustionRecipeCategory.UID);
     registry.addRecipeClickArea(GuiCombustionGenerator.class, 155, 42, 16, 16, CombustionRecipeCategory.UID);
 
     long start = System.nanoTime();

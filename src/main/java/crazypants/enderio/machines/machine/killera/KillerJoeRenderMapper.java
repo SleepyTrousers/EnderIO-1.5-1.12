@@ -27,10 +27,10 @@ import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
+import crazypants.enderio.base.render.util.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.base.render.util.ItemQuadCollector;
 import crazypants.enderio.base.render.util.QuadCollector;
 import crazypants.enderio.base.render.util.TankRenderHelper;
-import crazypants.enderio.base.render.util.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.machines.machine.generator.zombie.BlockZombieGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -45,8 +45,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class KillerJoeRenderMapper extends MachineRenderMapper implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware,
-    IItemRenderMapper.IDynamicOverlayMapper {
+public class KillerJoeRenderMapper extends MachineRenderMapper
+    implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IItemRenderMapper.IDynamicOverlayMapper {
 
   private final TextureSupplier head1, head2;
 
@@ -64,8 +64,8 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
-                                          QuadCollector quadCollector) {
+  public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
+      @Nonnull QuadCollector quadCollector) {
     Block block = state.getBlock();
     if (blockLayer == BlockRenderLayer.TRANSLUCENT) {
       return Collections.singletonList(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON));
@@ -154,7 +154,7 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ItemQuadCollector itemQuadCollector) {
     List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
     states.add(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT), stack));
     if (!stack.hasTagCompound()) {
@@ -173,7 +173,7 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
 
   @Override
   @SideOnly(Side.CLIENT)
-  public ItemQuadCollector mapItemDynamicOverlayRender(Block block, ItemStack stack) {
+  public ItemQuadCollector mapItemDynamicOverlayRender(@Nonnull Block block, @Nonnull ItemStack stack) {
     if (stack.hasTagCompound()) {
       ItemQuadCollector result = new ItemQuadCollector();
       result.addQuads(null, renderFuel(stack));

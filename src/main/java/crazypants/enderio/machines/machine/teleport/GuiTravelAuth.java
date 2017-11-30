@@ -2,6 +2,8 @@ package crazypants.enderio.machines.machine.teleport;
 
 import java.awt.Color;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.ColorUtil;
@@ -16,22 +18,22 @@ import net.minecraft.world.World;
 
 public class GuiTravelAuth extends GuiContainerBaseEIO {
 
-  private final String title;
-  private final ITravelAccessable ta;
-  
-  private boolean failed = false;
-  private final EntityPlayer player;
+  private final @Nonnull String title;
+  private final @Nonnull ITravelAccessable ta;
 
-  public GuiTravelAuth(EntityPlayer player, ITravelAccessable te, World world) {
+  private boolean failed = false;
+  private final @Nonnull EntityPlayer player;
+
+  public GuiTravelAuth(@Nonnull EntityPlayer player, @Nonnull ITravelAccessable te, @Nonnull World world) {
     super(new ContainerTravelAuth(player.inventory), "travel_auth");
     this.ta = te;
-    title = EnderIO.lang.localize("gui.travelAccessable.enterCode");  
+    title = EnderIO.lang.localize("gui.travelAccessable.enterCode");
     this.player = player;
   }
 
   @Override
   public void initGui() {
-    super.initGui();    
+    super.initGui();
     int sy = (height - ySize) / 2;
     String str = EnderIO.lang.localize("gui.travelAccessable.ok");
     int strLen = getFontRenderer().getStringWidth(str);
@@ -42,23 +44,23 @@ public class GuiTravelAuth extends GuiContainerBaseEIO {
   }
 
   @Override
-  protected void actionPerformed(GuiButton par1GuiButton) {
+  protected void actionPerformed(@Nonnull GuiButton par1GuiButton) {
     ContainerTravelAuth poo = (ContainerTravelAuth) inventorySlots;
-    if(ta.authoriseUser(player, poo.getInv().getInventory())) {
+    if (ta.authoriseUser(player, poo.getInv().getInventory())) {
       this.mc.displayGuiScreen((GuiScreen) null);
       this.mc.setIngameFocus();
     } else {
-      //      System.out.print("GuiTravelAuth.actionPerformed: Password is: ");
-      //      for (ItemStack is : ta.getPassword()) {
-      //        System.out.print((is == null ? is : is.getDisplayName()) + ",");
-      //      }
-      //      System.out.println();
-      //      System.out.print("GuiTravelAuth.actionPerformed: I offered: ");
-      //      for (ItemStack is : poo.enteredPassword) {
-      //        System.out.print((is == null ? is : is.getDisplayName()) + ",");
-      //      }
-      //      System.out.println();
-      //      System.out.println();
+      // System.out.print("GuiTravelAuth.actionPerformed: Password is: ");
+      // for (ItemStack is : ta.getPassword()) {
+      // System.out.print((is == null ? is : is.getDisplayName()) + ",");
+      // }
+      // System.out.println();
+      // System.out.print("GuiTravelAuth.actionPerformed: I offered: ");
+      // for (ItemStack is : poo.enteredPassword) {
+      // System.out.print((is == null ? is : is.getDisplayName()) + ",");
+      // }
+      // System.out.println();
+      // System.out.println();
       failed = true;
       poo.dirty = false;
     }
@@ -76,12 +78,12 @@ public class GuiTravelAuth extends GuiContainerBaseEIO {
     getFontRenderer().drawString(title, width / 2 - sw / 2, sy + 12, ColorUtil.getRGB(Color.red));
 
     ContainerTravelAuth poo = (ContainerTravelAuth) inventorySlots;
-    if(poo.dirty) {
+    if (poo.dirty) {
       poo.dirty = false;
       failed = false;
     }
 
-    if(failed) {
+    if (failed) {
       drawRect(sx + 43, sy + 27, sx + 43 + 90, sy + 27 + 18, ColorUtil.getARGB(new Color(1f, 0f, 0f, 0.5f)));
     }
 

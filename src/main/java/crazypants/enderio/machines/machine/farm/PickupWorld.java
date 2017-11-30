@@ -79,7 +79,7 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public boolean spawnEntity(Entity entityIn) {
+  public boolean spawnEntity(@Nonnull Entity entityIn) {
     if (entityIn instanceof EntityItem) {
       final EntityItem entityItem = (EntityItem) entityIn;
       ItemStack itemstack = entityItem.getEntityItem();
@@ -102,7 +102,7 @@ public class PickupWorld extends World {
   // from here on: just relays to the wrapped world
 
   @Override
-  protected IChunkProvider createChunkProvider() {
+  protected @Nonnull IChunkProvider createChunkProvider() {
     return null; // FIXME
   }
 
@@ -112,27 +112,27 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public World init() {
+  public @Nonnull World init() {
     return wrapped.init();
   }
 
   @Override
-  public Biome getBiome(BlockPos pos) {
+  public @Nonnull Biome getBiome(@Nonnull BlockPos pos) {
     return wrapped.getBiome(pos);
   }
 
   @Override
-  public Biome getBiomeForCoordsBody(BlockPos pos) {
+  public @Nonnull Biome getBiomeForCoordsBody(@Nonnull BlockPos pos) {
     return wrapped.getBiomeForCoordsBody(pos);
   }
 
   @Override
-  public BiomeProvider getBiomeProvider() {
+  public @Nonnull BiomeProvider getBiomeProvider() {
     return wrapped.getBiomeProvider();
   }
 
   @Override
-  public void initialize(WorldSettings settings) {
+  public void initialize(@Nonnull WorldSettings settings) {
     wrapped.initialize(settings);
   }
 
@@ -148,97 +148,97 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public IBlockState getGroundAboveSeaLevel(BlockPos pos) {
+  public @Nonnull IBlockState getGroundAboveSeaLevel(@Nonnull BlockPos pos) {
     return wrapped.getGroundAboveSeaLevel(pos);
   }
 
   @Override
-  public boolean isAirBlock(BlockPos pos) {
+  public boolean isAirBlock(@Nonnull BlockPos pos) {
     return wrapped.isAirBlock(pos);
   }
 
   @Override
-  public boolean isBlockLoaded(BlockPos pos) {
+  public boolean isBlockLoaded(@Nonnull BlockPos pos) {
     return wrapped.isBlockLoaded(pos);
   }
 
   @Override
-  public boolean isBlockLoaded(BlockPos pos, boolean allowEmpty) {
+  public boolean isBlockLoaded(@Nonnull BlockPos pos, boolean allowEmpty) {
     return wrapped.isBlockLoaded(pos, allowEmpty);
   }
 
   @Override
-  public boolean isAreaLoaded(BlockPos center, int radius) {
+  public boolean isAreaLoaded(@Nonnull BlockPos center, int radius) {
     return wrapped.isAreaLoaded(center, radius);
   }
 
   @Override
-  public boolean isAreaLoaded(BlockPos center, int radius, boolean allowEmpty) {
+  public boolean isAreaLoaded(@Nonnull BlockPos center, int radius, boolean allowEmpty) {
     return wrapped.isAreaLoaded(center, radius, allowEmpty);
   }
 
   @Override
-  public boolean isAreaLoaded(BlockPos from, BlockPos to) {
+  public boolean isAreaLoaded(@Nonnull BlockPos from, @Nonnull BlockPos to) {
     return wrapped.isAreaLoaded(from, to);
   }
 
   @Override
-  public boolean isAreaLoaded(BlockPos from, BlockPos to, boolean allowEmpty) {
+  public boolean isAreaLoaded(@Nonnull BlockPos from, @Nonnull BlockPos to, boolean allowEmpty) {
     return wrapped.isAreaLoaded(from, to, allowEmpty);
   }
 
   @Override
-  public boolean isAreaLoaded(StructureBoundingBox box) {
+  public boolean isAreaLoaded(@Nonnull StructureBoundingBox box) {
     return wrapped.isAreaLoaded(box);
   }
 
   @Override
-  public boolean isAreaLoaded(StructureBoundingBox box, boolean allowEmpty) {
+  public boolean isAreaLoaded(@Nonnull StructureBoundingBox box, boolean allowEmpty) {
     return wrapped.isAreaLoaded(box, allowEmpty);
   }
 
   @Override
-  public Chunk getChunkFromBlockCoords(BlockPos pos) {
+  public @Nonnull Chunk getChunkFromBlockCoords(@Nonnull BlockPos pos) {
     return wrapped.getChunkFromBlockCoords(pos);
   }
 
   @Override
-  public Chunk getChunkFromChunkCoords(int chunkX, int chunkZ) {
+  public @Nonnull Chunk getChunkFromChunkCoords(int chunkX, int chunkZ) {
     return wrapped.getChunkFromChunkCoords(chunkX, chunkZ);
   }
 
   @Override
-  public boolean setBlockState(BlockPos pos, IBlockState newState, int flags) {
+  public boolean setBlockState(@Nonnull BlockPos pos, @Nonnull IBlockState newState, int flags) {
     return wrapped.setBlockState(pos, newState, flags);
   }
 
   @Override
-  public void markAndNotifyBlock(BlockPos pos, Chunk chunk, IBlockState iblockstate, IBlockState newState, int flags) {
+  public void markAndNotifyBlock(@Nonnull BlockPos pos, @Nullable Chunk chunk, @Nonnull IBlockState iblockstate, @Nonnull IBlockState newState, int flags) {
     wrapped.markAndNotifyBlock(pos, chunk, iblockstate, newState, flags);
   }
 
   @Override
-  public boolean setBlockToAir(BlockPos pos) {
+  public boolean setBlockToAir(@Nonnull BlockPos pos) {
     return wrapped.setBlockToAir(pos);
   }
 
   @Override
-  public boolean destroyBlock(BlockPos pos, boolean dropBlock) {
+  public boolean destroyBlock(@Nonnull BlockPos pos, boolean dropBlock) {
     return wrapped.destroyBlock(pos, dropBlock);
   }
 
   @Override
-  public boolean setBlockState(BlockPos pos, IBlockState state) {
+  public boolean setBlockState(@Nonnull BlockPos pos, @Nonnull IBlockState state) {
     return wrapped.setBlockState(pos, state);
   }
 
   @Override
-  public void notifyBlockUpdate(BlockPos pos, IBlockState oldState, IBlockState newState, int flags) {
+  public void notifyBlockUpdate(@Nonnull BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newState, int flags) {
     wrapped.notifyBlockUpdate(pos, oldState, newState, flags);
   }
-  
+
   @Override
-  public void notifyNeighborsRespectDebug(BlockPos pos, Block blockType, boolean p_175722_3_) {
+  public void notifyNeighborsRespectDebug(@Nonnull BlockPos pos, @Nonnull Block blockType, boolean p_175722_3_) {
     wrapped.notifyNeighborsRespectDebug(pos, blockType, p_175722_3_);
   }
 
@@ -248,7 +248,7 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public void markBlockRangeForRenderUpdate(BlockPos rangeMin, BlockPos rangeMax) {
+  public void markBlockRangeForRenderUpdate(@Nonnull BlockPos rangeMin, @Nonnull BlockPos rangeMax) {
     wrapped.markBlockRangeForRenderUpdate(rangeMin, rangeMax);
   }
 
@@ -258,47 +258,47 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public void notifyNeighborsOfStateChange(BlockPos pos, Block blockType, boolean updateObservers) {
+  public void notifyNeighborsOfStateChange(@Nonnull BlockPos pos, @Nonnull Block blockType, boolean updateObservers) {
     wrapped.notifyNeighborsOfStateChange(pos, blockType, updateObservers);
   }
 
   @Override
-  public void notifyNeighborsOfStateExcept(BlockPos pos, Block blockType, EnumFacing skipSide) {
+  public void notifyNeighborsOfStateExcept(@Nonnull BlockPos pos, @Nonnull Block blockType, @Nonnull EnumFacing skipSide) {
     wrapped.notifyNeighborsOfStateExcept(pos, blockType, skipSide);
   }
 
   @Override
-  public boolean isBlockTickPending(BlockPos pos, Block blockType) {
+  public boolean isBlockTickPending(@Nonnull BlockPos pos, @Nonnull Block blockType) {
     return wrapped.isBlockTickPending(pos, blockType);
   }
 
   @Override
-  public boolean canSeeSky(BlockPos pos) {
+  public boolean canSeeSky(@Nonnull BlockPos pos) {
     return wrapped.canSeeSky(pos);
   }
 
   @Override
-  public boolean canBlockSeeSky(BlockPos pos) {
+  public boolean canBlockSeeSky(@Nonnull BlockPos pos) {
     return wrapped.canBlockSeeSky(pos);
   }
 
   @Override
-  public int getLight(BlockPos pos) {
+  public int getLight(@Nonnull BlockPos pos) {
     return wrapped.getLight(pos);
   }
 
   @Override
-  public int getLightFromNeighbors(BlockPos pos) {
+  public int getLightFromNeighbors(@Nonnull BlockPos pos) {
     return wrapped.getLightFromNeighbors(pos);
   }
 
   @Override
-  public int getLight(BlockPos pos, boolean checkNeighbors) {
+  public int getLight(@Nonnull BlockPos pos, boolean checkNeighbors) {
     return wrapped.getLight(pos, checkNeighbors);
   }
 
   @Override
-  public BlockPos getHeight(BlockPos pos) {
+  public @Nonnull BlockPos getHeight(@Nonnull BlockPos pos) {
     return wrapped.getHeight(pos);
   }
 
@@ -313,37 +313,37 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public int getLightFromNeighborsFor(EnumSkyBlock type, BlockPos pos) {
+  public int getLightFromNeighborsFor(@Nonnull EnumSkyBlock type, @Nonnull BlockPos pos) {
     return wrapped.getLightFromNeighborsFor(type, pos);
   }
 
   @Override
-  public int getLightFor(EnumSkyBlock type, BlockPos pos) {
+  public int getLightFor(@Nonnull EnumSkyBlock type, @Nonnull BlockPos pos) {
     return wrapped.getLightFor(type, pos);
   }
 
   @Override
-  public void setLightFor(EnumSkyBlock type, BlockPos pos, int lightValue) {
+  public void setLightFor(@Nonnull EnumSkyBlock type, @Nonnull BlockPos pos, int lightValue) {
     wrapped.setLightFor(type, pos, lightValue);
   }
 
   @Override
-  public void notifyLightSet(BlockPos pos) {
+  public void notifyLightSet(@Nonnull BlockPos pos) {
     wrapped.notifyLightSet(pos);
   }
 
   @Override
-  public int getCombinedLight(BlockPos pos, int lightValue) {
+  public int getCombinedLight(@Nonnull BlockPos pos, int lightValue) {
     return wrapped.getCombinedLight(pos, lightValue);
   }
 
   @Override
-  public float getLightBrightness(BlockPos pos) {
+  public float getLightBrightness(@Nonnull BlockPos pos) {
     return wrapped.getLightBrightness(pos);
   }
 
   @Override
-  public IBlockState getBlockState(BlockPos pos) {
+  public @Nonnull IBlockState getBlockState(@Nonnull BlockPos pos) {
     return wrapped.getBlockState(pos);
   }
 
@@ -354,102 +354,105 @@ public class PickupWorld extends World {
 
   @Override
   @Nullable
-  public RayTraceResult rayTraceBlocks(Vec3d start, Vec3d end) {
+  public RayTraceResult rayTraceBlocks(@Nonnull Vec3d start, @Nonnull Vec3d end) {
     return wrapped.rayTraceBlocks(start, end);
   }
 
   @Override
   @Nullable
-  public RayTraceResult rayTraceBlocks(Vec3d start, Vec3d end, boolean stopOnLiquid) {
+  public RayTraceResult rayTraceBlocks(@Nonnull Vec3d start, @Nonnull Vec3d end, boolean stopOnLiquid) {
     return wrapped.rayTraceBlocks(start, end, stopOnLiquid);
   }
 
   @Override
   @Nullable
-  public RayTraceResult rayTraceBlocks(Vec3d vec31, Vec3d vec32, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox,
+  public RayTraceResult rayTraceBlocks(@Nonnull Vec3d vec31, @Nonnull Vec3d vec32, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox,
       boolean returnLastUncollidableBlock) {
     return wrapped.rayTraceBlocks(vec31, vec32, stopOnLiquid, ignoreBlockWithoutBoundingBox, returnLastUncollidableBlock);
   }
 
   @Override
-  public void playSound(@Nullable EntityPlayer player, BlockPos pos, SoundEvent soundIn, SoundCategory category, float volume, float pitch) {
-    wrapped.playSound(player, pos, soundIn, category, volume, pitch);
+  public void playSound(@Nullable EntityPlayer player1, @Nonnull BlockPos pos, @Nonnull SoundEvent soundIn, @Nonnull SoundCategory category, float volume,
+      float pitch) {
+    wrapped.playSound(player1, pos, soundIn, category, volume, pitch);
   }
 
   @Override
-  public void playSound(@Nullable EntityPlayer player, double x, double y, double z, SoundEvent soundIn, SoundCategory category, float volume, float pitch) {
-    wrapped.playSound(player, x, y, z, soundIn, category, volume, pitch);
+  public void playSound(@Nullable EntityPlayer player1, double x, double y, double z, @Nonnull SoundEvent soundIn, @Nonnull SoundCategory category,
+      float volume, float pitch) {
+    wrapped.playSound(player1, x, y, z, soundIn, category, volume, pitch);
   }
 
   @Override
-  public void playSound(double x, double y, double z, SoundEvent soundIn, SoundCategory category, float volume, float pitch, boolean distanceDelay) {
+  public void playSound(double x, double y, double z, @Nonnull SoundEvent soundIn, @Nonnull SoundCategory category, float volume, float pitch,
+      boolean distanceDelay) {
     wrapped.playSound(x, y, z, soundIn, category, volume, pitch, distanceDelay);
   }
 
   @Override
-  public void playRecord(BlockPos blockPositionIn, @Nullable SoundEvent soundEventIn) {
+  public void playRecord(@Nonnull BlockPos blockPositionIn, @Nullable SoundEvent soundEventIn) {
     wrapped.playRecord(blockPositionIn, soundEventIn);
   }
 
   @Override
-  public void spawnParticle(EnumParticleTypes particleType, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed,
-      int... parameters) {
+  public void spawnParticle(@Nonnull EnumParticleTypes particleType, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed,
+      @Nonnull int... parameters) {
     wrapped.spawnParticle(particleType, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, parameters);
   }
 
   @Override
-  public void spawnParticle(EnumParticleTypes particleType, boolean ignoreRange, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed,
-      double zSpeed, int... parameters) {
+  public void spawnParticle(@Nonnull EnumParticleTypes particleType, boolean ignoreRange, double xCoord, double yCoord, double zCoord, double xSpeed,
+      double ySpeed, double zSpeed, @Nonnull int... parameters) {
     wrapped.spawnParticle(particleType, ignoreRange, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, parameters);
   }
 
   @Override
-  public boolean addWeatherEffect(Entity entityIn) {
+  public boolean addWeatherEffect(@Nonnull Entity entityIn) {
     return wrapped.addWeatherEffect(entityIn);
   }
 
   @Override
-  public void onEntityAdded(Entity entityIn) {
+  public void onEntityAdded(@Nonnull Entity entityIn) {
     wrapped.onEntityAdded(entityIn);
   }
 
   @Override
-  public void onEntityRemoved(Entity entityIn) {
+  public void onEntityRemoved(@Nonnull Entity entityIn) {
     wrapped.onEntityRemoved(entityIn);
   }
 
   @Override
-  public void removeEntity(Entity entityIn) {
+  public void removeEntity(@Nonnull Entity entityIn) {
     wrapped.removeEntity(entityIn);
   }
 
   @Override
-  public void removeEntityDangerously(Entity entityIn) {
+  public void removeEntityDangerously(@Nonnull Entity entityIn) {
     wrapped.removeEntityDangerously(entityIn);
   }
 
   @Override
-  public void addEventListener(IWorldEventListener listener) {
+  public void addEventListener(@Nonnull IWorldEventListener listener) {
     wrapped.addEventListener(listener);
   }
 
   @Override
-  public List<AxisAlignedBB> getCollisionBoxes(@Nullable Entity entityIn, AxisAlignedBB aabb) {
+  public @Nonnull List<AxisAlignedBB> getCollisionBoxes(@Nullable Entity entityIn, @Nonnull AxisAlignedBB aabb) {
     return wrapped.getCollisionBoxes(entityIn, aabb);
   }
-  
+
   @Override
-  public boolean /*isInsideWorldBorder*/ func_191503_g(Entity p_191503_1_) {
+  public boolean /* isInsideWorldBorder */ func_191503_g(@Nonnull Entity p_191503_1_) {
     return wrapped.func_191503_g(p_191503_1_);
   }
 
   @Override
-  public void removeEventListener(IWorldEventListener listener) {
+  public void removeEventListener(@Nonnull IWorldEventListener listener) {
     wrapped.removeEventListener(listener);
   }
 
   @Override
-  public boolean collidesWithAnyBlock(AxisAlignedBB bbox) {
+  public boolean collidesWithAnyBlock(@Nonnull AxisAlignedBB bbox) {
     return wrapped.collidesWithAnyBlock(bbox);
   }
 
@@ -474,12 +477,12 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public Vec3d getSkyColor(Entity entityIn, float partialTicks) {
+  public @Nonnull Vec3d getSkyColor(@Nonnull Entity entityIn, float partialTicks) {
     return wrapped.getSkyColor(entityIn, partialTicks);
   }
 
   @Override
-  public Vec3d getSkyColorBody(Entity entityIn, float partialTicks) {
+  public @Nonnull Vec3d getSkyColorBody(@Nonnull Entity entityIn, float partialTicks) {
     return wrapped.getSkyColorBody(entityIn, partialTicks);
   }
 
@@ -509,27 +512,27 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public Vec3d getCloudColour(float partialTicks) {
+  public @Nonnull Vec3d getCloudColour(float partialTicks) {
     return wrapped.getCloudColour(partialTicks);
   }
 
   @Override
-  public Vec3d getCloudColorBody(float partialTicks) {
+  public @Nonnull Vec3d getCloudColorBody(float partialTicks) {
     return wrapped.getCloudColorBody(partialTicks);
   }
 
   @Override
-  public Vec3d getFogColor(float partialTicks) {
+  public @Nonnull Vec3d getFogColor(float partialTicks) {
     return wrapped.getFogColor(partialTicks);
   }
 
   @Override
-  public BlockPos getPrecipitationHeight(BlockPos pos) {
+  public @Nonnull BlockPos getPrecipitationHeight(@Nonnull BlockPos pos) {
     return wrapped.getPrecipitationHeight(pos);
   }
 
   @Override
-  public BlockPos getTopSolidOrLiquidBlock(BlockPos pos) {
+  public @Nonnull BlockPos getTopSolidOrLiquidBlock(@Nonnull BlockPos pos) {
     return wrapped.getTopSolidOrLiquidBlock(pos);
   }
 
@@ -544,22 +547,22 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public boolean isUpdateScheduled(BlockPos pos, Block blk) {
+  public boolean isUpdateScheduled(@Nonnull BlockPos pos, @Nonnull Block blk) {
     return wrapped.isUpdateScheduled(pos, blk);
   }
 
   @Override
-  public void scheduleUpdate(BlockPos pos, Block blockIn, int delay) {
+  public void scheduleUpdate(@Nonnull BlockPos pos, @Nonnull Block blockIn, int delay) {
     wrapped.scheduleUpdate(pos, blockIn, delay);
   }
 
   @Override
-  public void updateBlockTick(BlockPos pos, Block blockIn, int delay, int priority) {
+  public void updateBlockTick(@Nonnull BlockPos pos, @Nonnull Block blockIn, int delay, int priority) {
     wrapped.updateBlockTick(pos, blockIn, delay, priority);
   }
 
   @Override
-  public void scheduleBlockUpdate(BlockPos pos, Block blockIn, int delay, int priority) {
+  public void scheduleBlockUpdate(@Nonnull BlockPos pos, @Nonnull Block blockIn, int delay, int priority) {
     wrapped.scheduleBlockUpdate(pos, blockIn, delay, priority);
   }
 
@@ -573,118 +576,118 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public boolean addTileEntity(TileEntity tile) {
+  public boolean addTileEntity(@Nonnull TileEntity tile) {
     return wrapped.addTileEntity(tile);
   }
 
   @Override
-  public void addTileEntities(Collection<TileEntity> tileEntityCollection) {
+  public void addTileEntities(@Nonnull Collection<TileEntity> tileEntityCollection) {
     wrapped.addTileEntities(tileEntityCollection);
   }
 
   @Override
-  public void updateEntity(Entity ent) {
+  public void updateEntity(@Nonnull Entity ent) {
     wrapped.updateEntity(ent);
   }
 
   @Override
-  public void updateEntityWithOptionalForce(Entity entityIn, boolean forceUpdate) {
+  public void updateEntityWithOptionalForce(@Nonnull Entity entityIn, boolean forceUpdate) {
     wrapped.updateEntityWithOptionalForce(entityIn, forceUpdate);
   }
 
   @Override
-  public boolean checkNoEntityCollision(AxisAlignedBB bb) {
+  public boolean checkNoEntityCollision(@Nonnull AxisAlignedBB bb) {
     return wrapped.checkNoEntityCollision(bb);
   }
 
   @Override
-  public boolean checkNoEntityCollision(AxisAlignedBB bb, @Nullable Entity entityIn) {
+  public boolean checkNoEntityCollision(@Nonnull AxisAlignedBB bb, @Nullable Entity entityIn) {
     return wrapped.checkNoEntityCollision(bb, entityIn);
   }
 
   @Override
-  public boolean checkBlockCollision(AxisAlignedBB bb) {
+  public boolean checkBlockCollision(@Nonnull AxisAlignedBB bb) {
     return wrapped.checkBlockCollision(bb);
   }
 
   @Override
-  public boolean containsAnyLiquid(AxisAlignedBB bb) {
+  public boolean containsAnyLiquid(@Nonnull AxisAlignedBB bb) {
     return wrapped.containsAnyLiquid(bb);
   }
 
   @Override
-  public boolean isFlammableWithin(AxisAlignedBB bb) {
+  public boolean isFlammableWithin(@Nonnull AxisAlignedBB bb) {
     return wrapped.isFlammableWithin(bb);
   }
 
   @Override
-  public boolean handleMaterialAcceleration(AxisAlignedBB bb, Material materialIn, Entity entityIn) {
+  public boolean handleMaterialAcceleration(@Nonnull AxisAlignedBB bb, @Nonnull Material materialIn, @Nonnull Entity entityIn) {
     return wrapped.handleMaterialAcceleration(bb, materialIn, entityIn);
   }
 
   @Override
-  public boolean isMaterialInBB(AxisAlignedBB bb, Material materialIn) {
+  public boolean isMaterialInBB(@Nonnull AxisAlignedBB bb, @Nonnull Material materialIn) {
     return wrapped.isMaterialInBB(bb, materialIn);
   }
 
   @Override
-  public Explosion createExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean isSmoking) {
+  public @Nonnull Explosion createExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean isSmoking) {
     return wrapped.createExplosion(entityIn, x, y, z, strength, isSmoking);
   }
 
   @Override
-  public Explosion newExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean isFlaming, boolean isSmoking) {
+  public @Nonnull Explosion newExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean isFlaming, boolean isSmoking) {
     return wrapped.newExplosion(entityIn, x, y, z, strength, isFlaming, isSmoking);
   }
 
   @Override
-  public float getBlockDensity(Vec3d vec, AxisAlignedBB bb) {
+  public float getBlockDensity(@Nonnull Vec3d vec, @Nonnull AxisAlignedBB bb) {
     return wrapped.getBlockDensity(vec, bb);
   }
 
   @Override
-  public boolean extinguishFire(@Nullable EntityPlayer player, BlockPos pos, EnumFacing side) {
-    return wrapped.extinguishFire(player, pos, side);
+  public boolean extinguishFire(@Nullable EntityPlayer player1, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
+    return wrapped.extinguishFire(player1, pos, side);
   }
 
   @Override
-  public String getDebugLoadedEntities() {
+  public @Nonnull String getDebugLoadedEntities() {
     return wrapped.getDebugLoadedEntities();
   }
 
   @Override
-  public String getProviderName() {
+  public @Nonnull String getProviderName() {
     return wrapped.getProviderName();
   }
 
   @Override
   @Nullable
-  public TileEntity getTileEntity(BlockPos pos) {
+  public TileEntity getTileEntity(@Nonnull BlockPos pos) {
     return wrapped.getTileEntity(pos);
   }
 
   @Override
-  public void setTileEntity(BlockPos pos, @Nullable TileEntity tileEntityIn) {
+  public void setTileEntity(@Nonnull BlockPos pos, @Nullable TileEntity tileEntityIn) {
     wrapped.setTileEntity(pos, tileEntityIn);
   }
 
   @Override
-  public void removeTileEntity(BlockPos pos) {
+  public void removeTileEntity(@Nonnull BlockPos pos) {
     wrapped.removeTileEntity(pos);
   }
 
   @Override
-  public void markTileEntityForRemoval(TileEntity tileEntityIn) {
+  public void markTileEntityForRemoval(@Nonnull TileEntity tileEntityIn) {
     wrapped.markTileEntityForRemoval(tileEntityIn);
   }
 
   @Override
-  public boolean isBlockFullCube(BlockPos pos) {
+  public boolean isBlockFullCube(@Nonnull BlockPos pos) {
     return wrapped.isBlockFullCube(pos);
   }
 
   @Override
-  public boolean isBlockNormalCube(BlockPos pos, boolean _default) {
+  public boolean isBlockNormalCube(@Nonnull BlockPos pos, boolean _default) {
     return wrapped.isBlockNormalCube(pos, _default);
   }
 
@@ -722,7 +725,7 @@ public class PickupWorld extends World {
   }
 
   @Override
-  protected void playMoodSoundAndCheckLight(int p_147467_1_, int p_147467_2_, Chunk chunkIn) {
+  protected void playMoodSoundAndCheckLight(int p_147467_1_, int p_147467_2_, @Nonnull Chunk chunkIn) {
   }
 
   @Override
@@ -730,47 +733,47 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public void immediateBlockTick(BlockPos pos, IBlockState state, Random random) {
+  public void immediateBlockTick(@Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random random) {
     wrapped.immediateBlockTick(pos, state, random);
   }
 
   @Override
-  public boolean canBlockFreezeWater(BlockPos pos) {
+  public boolean canBlockFreezeWater(@Nonnull BlockPos pos) {
     return wrapped.canBlockFreezeWater(pos);
   }
 
   @Override
-  public boolean canBlockFreezeNoWater(BlockPos pos) {
+  public boolean canBlockFreezeNoWater(@Nonnull BlockPos pos) {
     return wrapped.canBlockFreezeNoWater(pos);
   }
 
   @Override
-  public boolean canBlockFreeze(BlockPos pos, boolean noWaterAdj) {
+  public boolean canBlockFreeze(@Nonnull BlockPos pos, boolean noWaterAdj) {
     return wrapped.canBlockFreeze(pos, noWaterAdj);
   }
 
   @Override
-  public boolean canBlockFreezeBody(BlockPos pos, boolean noWaterAdj) {
+  public boolean canBlockFreezeBody(@Nonnull BlockPos pos, boolean noWaterAdj) {
     return wrapped.canBlockFreezeBody(pos, noWaterAdj);
   }
 
   @Override
-  public boolean canSnowAt(BlockPos pos, boolean checkLight) {
+  public boolean canSnowAt(@Nonnull BlockPos pos, boolean checkLight) {
     return wrapped.canSnowAt(pos, checkLight);
   }
 
   @Override
-  public boolean canSnowAtBody(BlockPos pos, boolean checkLight) {
+  public boolean canSnowAtBody(@Nonnull BlockPos pos, boolean checkLight) {
     return wrapped.canSnowAtBody(pos, checkLight);
   }
 
   @Override
-  public boolean checkLight(BlockPos pos) {
+  public boolean checkLight(@Nonnull BlockPos pos) {
     return wrapped.checkLight(pos);
   }
 
   @Override
-  public boolean checkLightFor(EnumSkyBlock lightType, BlockPos pos) {
+  public boolean checkLightFor(@Nonnull EnumSkyBlock lightType, @Nonnull BlockPos pos) {
     return wrapped.checkLightFor(lightType, pos);
   }
 
@@ -781,49 +784,51 @@ public class PickupWorld extends World {
 
   @Override
   @Nullable
-  public List<NextTickListEntry> getPendingBlockUpdates(Chunk chunkIn, boolean p_72920_2_) {
+  public List<NextTickListEntry> getPendingBlockUpdates(@Nonnull Chunk chunkIn, boolean p_72920_2_) {
     return wrapped.getPendingBlockUpdates(chunkIn, p_72920_2_);
   }
 
   @Override
   @Nullable
-  public List<NextTickListEntry> getPendingBlockUpdates(StructureBoundingBox structureBB, boolean p_175712_2_) {
+  public List<NextTickListEntry> getPendingBlockUpdates(@Nonnull StructureBoundingBox structureBB, boolean p_175712_2_) {
     return wrapped.getPendingBlockUpdates(structureBB, p_175712_2_);
   }
 
   @Override
-  public List<Entity> getEntitiesWithinAABBExcludingEntity(@Nullable Entity entityIn, AxisAlignedBB bb) {
+  public @Nonnull List<Entity> getEntitiesWithinAABBExcludingEntity(@Nullable Entity entityIn, @Nonnull AxisAlignedBB bb) {
     return wrapped.getEntitiesWithinAABBExcludingEntity(entityIn, bb);
   }
 
   @Override
-  public List<Entity> getEntitiesInAABBexcluding(@Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable Predicate<? super Entity> predicate) {
+  public @Nonnull List<Entity> getEntitiesInAABBexcluding(@Nullable Entity entityIn, @Nonnull AxisAlignedBB boundingBox,
+      @Nullable Predicate<? super Entity> predicate) {
     return wrapped.getEntitiesInAABBexcluding(entityIn, boundingBox, predicate);
   }
 
   @Override
-  public <T extends Entity> List<T> getEntities(Class<? extends T> entityType, Predicate<? super T> filter) {
+  public @Nonnull <T extends Entity> List<T> getEntities(@Nonnull Class<? extends T> entityType, @Nonnull Predicate<? super T> filter) {
     return wrapped.getEntities(entityType, filter);
   }
 
   @Override
-  public <T extends Entity> List<T> getPlayers(Class<? extends T> playerType, Predicate<? super T> filter) {
+  public @Nonnull <T extends Entity> List<T> getPlayers(@Nonnull Class<? extends T> playerType, @Nonnull Predicate<? super T> filter) {
     return wrapped.getPlayers(playerType, filter);
   }
 
   @Override
-  public <T extends Entity> List<T> getEntitiesWithinAABB(Class<? extends T> classEntity, AxisAlignedBB bb) {
+  public @Nonnull <T extends Entity> List<T> getEntitiesWithinAABB(@Nonnull Class<? extends T> classEntity, @Nonnull AxisAlignedBB bb) {
     return wrapped.getEntitiesWithinAABB(classEntity, bb);
   }
 
   @Override
-  public <T extends Entity> List<T> getEntitiesWithinAABB(Class<? extends T> clazz, AxisAlignedBB aabb, @Nullable Predicate<? super T> filter) {
+  public @Nonnull <T extends Entity> List<T> getEntitiesWithinAABB(@Nonnull Class<? extends T> clazz, @Nonnull AxisAlignedBB aabb,
+      @Nullable Predicate<? super T> filter) {
     return wrapped.getEntitiesWithinAABB(clazz, aabb, filter);
   }
 
   @Override
   @Nullable
-  public <T extends Entity> T findNearestEntityWithinAABB(Class<? extends T> entityType, AxisAlignedBB aabb, T closestTo) {
+  public <T extends Entity> T findNearestEntityWithinAABB(@Nonnull Class<? extends T> entityType, @Nonnull AxisAlignedBB aabb, @Nonnull T closestTo) {
     return wrapped.findNearestEntityWithinAABB(entityType, aabb, closestTo);
   }
 
@@ -834,27 +839,27 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public List<Entity> getLoadedEntityList() {
+  public @Nonnull List<Entity> getLoadedEntityList() {
     return wrapped.getLoadedEntityList();
   }
 
   @Override
-  public void markChunkDirty(BlockPos pos, TileEntity unusedTileEntity) {
+  public void markChunkDirty(@Nonnull BlockPos pos, @Nonnull TileEntity unusedTileEntity) {
     wrapped.markChunkDirty(pos, unusedTileEntity);
   }
 
   @Override
-  public int countEntities(Class<?> entityType) {
+  public int countEntities(@Nonnull Class<?> entityType) {
     return wrapped.countEntities(entityType);
   }
 
   @Override
-  public void loadEntities(Collection<Entity> entityCollection) {
+  public void loadEntities(@Nonnull Collection<Entity> entityCollection) {
     wrapped.loadEntities(entityCollection);
   }
 
   @Override
-  public void unloadEntities(Collection<Entity> entityCollection) {
+  public void unloadEntities(@Nonnull Collection<Entity> entityCollection) {
     wrapped.unloadEntities(entityCollection);
   }
 
@@ -869,49 +874,49 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public int getStrongPower(BlockPos pos, EnumFacing direction) {
+  public int getStrongPower(@Nonnull BlockPos pos, @Nonnull EnumFacing direction) {
     return wrapped.getStrongPower(pos, direction);
   }
 
   @Override
-  public WorldType getWorldType() {
+  public @Nonnull WorldType getWorldType() {
     return wrapped.getWorldType();
   }
 
   @Override
-  public int getStrongPower(BlockPos pos) {
+  public int getStrongPower(@Nonnull BlockPos pos) {
     return wrapped.getStrongPower(pos);
   }
 
   @Override
-  public boolean isSidePowered(BlockPos pos, EnumFacing side) {
+  public boolean isSidePowered(@Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     return wrapped.isSidePowered(pos, side);
   }
 
   @Override
-  public int getRedstonePower(BlockPos pos, EnumFacing facing) {
+  public int getRedstonePower(@Nonnull BlockPos pos, @Nonnull EnumFacing facing) {
     return wrapped.getRedstonePower(pos, facing);
   }
 
   @Override
-  public boolean isBlockPowered(BlockPos pos) {
+  public boolean isBlockPowered(@Nonnull BlockPos pos) {
     return wrapped.isBlockPowered(pos);
   }
 
   @Override
-  public int isBlockIndirectlyGettingPowered(BlockPos pos) {
+  public int isBlockIndirectlyGettingPowered(@Nonnull BlockPos pos) {
     return wrapped.isBlockIndirectlyGettingPowered(pos);
   }
 
   @Override
   @Nullable
-  public EntityPlayer getClosestPlayerToEntity(Entity entityIn, double distance) {
+  public EntityPlayer getClosestPlayerToEntity(@Nonnull Entity entityIn, double distance) {
     return wrapped.getClosestPlayerToEntity(entityIn, distance);
   }
 
   @Override
   @Nullable
-  public EntityPlayer getNearestPlayerNotCreative(Entity entityIn, double distance) {
+  public EntityPlayer getNearestPlayerNotCreative(@Nonnull Entity entityIn, double distance) {
     return wrapped.getNearestPlayerNotCreative(entityIn, distance);
   }
 
@@ -928,13 +933,13 @@ public class PickupWorld extends World {
 
   @Override
   @Nullable
-  public EntityPlayer getNearestAttackablePlayer(Entity entityIn, double maxXZDistance, double maxYDistance) {
+  public EntityPlayer getNearestAttackablePlayer(@Nonnull Entity entityIn, double maxXZDistance, double maxYDistance) {
     return wrapped.getNearestAttackablePlayer(entityIn, maxXZDistance, maxYDistance);
   }
 
   @Override
   @Nullable
-  public EntityPlayer getNearestAttackablePlayer(BlockPos pos, double maxXZDistance, double maxYDistance) {
+  public EntityPlayer getNearestAttackablePlayer(@Nonnull BlockPos pos, double maxXZDistance, double maxYDistance) {
     return wrapped.getNearestAttackablePlayer(pos, maxXZDistance, maxYDistance);
   }
 
@@ -947,13 +952,13 @@ public class PickupWorld extends World {
 
   @Override
   @Nullable
-  public EntityPlayer getPlayerEntityByName(String name) {
+  public EntityPlayer getPlayerEntityByName(@Nonnull String name) {
     return wrapped.getPlayerEntityByName(name);
   }
 
   @Override
   @Nullable
-  public EntityPlayer getPlayerEntityByUUID(UUID uuid) {
+  public EntityPlayer getPlayerEntityByUUID(@Nonnull UUID uuid) {
     return wrapped.getPlayerEntityByUUID(uuid);
   }
 
@@ -993,57 +998,57 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public BlockPos getSpawnPoint() {
+  public @Nonnull BlockPos getSpawnPoint() {
     return wrapped.getSpawnPoint();
   }
 
   @Override
-  public void setSpawnPoint(BlockPos pos) {
+  public void setSpawnPoint(@Nonnull BlockPos pos) {
     wrapped.setSpawnPoint(pos);
   }
 
   @Override
-  public void joinEntityInSurroundings(Entity entityIn) {
+  public void joinEntityInSurroundings(@Nonnull Entity entityIn) {
     wrapped.joinEntityInSurroundings(entityIn);
   }
 
   @Override
-  public boolean isBlockModifiable(EntityPlayer player, BlockPos pos) {
-    return wrapped.isBlockModifiable(player, pos);
+  public boolean isBlockModifiable(@Nonnull EntityPlayer player1, @Nonnull BlockPos pos) {
+    return wrapped.isBlockModifiable(player1, pos);
   }
 
   @Override
-  public boolean canMineBlockBody(EntityPlayer player, BlockPos pos) {
-    return wrapped.canMineBlockBody(player, pos);
+  public boolean canMineBlockBody(@Nonnull EntityPlayer player1, @Nonnull BlockPos pos) {
+    return wrapped.canMineBlockBody(player1, pos);
   }
 
   @Override
-  public void setEntityState(Entity entityIn, byte state) {
+  public void setEntityState(@Nonnull Entity entityIn, byte state) {
     wrapped.setEntityState(entityIn, state);
   }
 
   @Override
-  public IChunkProvider getChunkProvider() {
+  public @Nonnull IChunkProvider getChunkProvider() {
     return wrapped.getChunkProvider();
   }
 
   @Override
-  public void addBlockEvent(BlockPos pos, Block blockIn, int eventID, int eventParam) {
+  public void addBlockEvent(@Nonnull BlockPos pos, @Nonnull Block blockIn, int eventID, int eventParam) {
     wrapped.addBlockEvent(pos, blockIn, eventID, eventParam);
   }
 
   @Override
-  public ISaveHandler getSaveHandler() {
+  public @Nonnull ISaveHandler getSaveHandler() {
     return wrapped.getSaveHandler();
   }
 
   @Override
-  public WorldInfo getWorldInfo() {
+  public @Nonnull WorldInfo getWorldInfo() {
     return wrapped.getWorldInfo();
   }
 
   @Override
-  public GameRules getGameRules() {
+  public @Nonnull GameRules getGameRules() {
     return wrapped.getGameRules();
   }
 
@@ -1083,12 +1088,12 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public boolean isRainingAt(BlockPos strikePosition) {
+  public boolean isRainingAt(@Nonnull BlockPos strikePosition) {
     return wrapped.isRainingAt(strikePosition);
   }
 
   @Override
-  public boolean isBlockinHighHumidity(BlockPos pos) {
+  public boolean isBlockinHighHumidity(@Nonnull BlockPos pos) {
     return wrapped.isBlockinHighHumidity(pos);
   }
 
@@ -1099,28 +1104,28 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public void setData(String dataID, WorldSavedData worldSavedDataIn) {
+  public void setData(@Nonnull String dataID, @Nonnull WorldSavedData worldSavedDataIn) {
     wrapped.setData(dataID, worldSavedDataIn);
   }
 
   @Override
-  public int getUniqueDataId(String key) {
+  public int getUniqueDataId(@Nonnull String key) {
     return wrapped.getUniqueDataId(key);
   }
 
   @Override
-  public void playBroadcastSound(int id, BlockPos pos, int data) {
+  public void playBroadcastSound(int id, @Nonnull BlockPos pos, int data) {
     wrapped.playBroadcastSound(id, pos, data);
   }
 
   @Override
-  public void playEvent(int type, BlockPos pos, int data) {
+  public void playEvent(int type, @Nonnull BlockPos pos, int data) {
     wrapped.playEvent(type, pos, data);
   }
 
   @Override
-  public void playEvent(@Nullable EntityPlayer player, int type, BlockPos pos, int data) {
-    wrapped.playEvent(player, type, pos, data);
+  public void playEvent(@Nullable EntityPlayer player1, int type, @Nonnull BlockPos pos, int data) {
+    wrapped.playEvent(player1, type, pos, data);
   }
 
   @Override
@@ -1134,12 +1139,12 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public Random setRandomSeed(int p_72843_1_, int p_72843_2_, int p_72843_3_) {
+  public @Nonnull Random setRandomSeed(int p_72843_1_, int p_72843_2_, int p_72843_3_) {
     return wrapped.setRandomSeed(p_72843_1_, p_72843_2_, p_72843_3_);
   }
 
   @Override
-  public CrashReportCategory addWorldInfoToCrashReport(CrashReport report) {
+  public @Nonnull CrashReportCategory addWorldInfoToCrashReport(@Nonnull CrashReport report) {
     return wrapped.addWorldInfoToCrashReport(report);
   }
 
@@ -1149,12 +1154,12 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress) {
+  public void sendBlockBreakProgress(int breakerId, @Nonnull BlockPos pos, int progress) {
     wrapped.sendBlockBreakProgress(breakerId, pos, progress);
   }
 
   @Override
-  public Calendar getCurrentDate() {
+  public @Nonnull Calendar getCurrentDate() {
     return wrapped.getCurrentDate();
   }
 
@@ -1164,22 +1169,22 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public Scoreboard getScoreboard() {
+  public @Nonnull Scoreboard getScoreboard() {
     return wrapped.getScoreboard();
   }
 
   @Override
-  public void updateComparatorOutputLevel(BlockPos pos, Block blockIn) {
+  public void updateComparatorOutputLevel(@Nonnull BlockPos pos, @Nonnull Block blockIn) {
     wrapped.updateComparatorOutputLevel(pos, blockIn);
   }
 
   @Override
-  public DifficultyInstance getDifficultyForLocation(BlockPos pos) {
+  public @Nonnull DifficultyInstance getDifficultyForLocation(@Nonnull BlockPos pos) {
     return wrapped.getDifficultyForLocation(pos);
   }
 
   @Override
-  public EnumDifficulty getDifficulty() {
+  public @Nonnull EnumDifficulty getDifficulty() {
     return wrapped.getDifficulty();
   }
 
@@ -1204,12 +1209,12 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public VillageCollection getVillageCollection() {
+  public @Nonnull VillageCollection getVillageCollection() {
     return wrapped.getVillageCollection();
   }
 
   @Override
-  public WorldBorder getWorldBorder() {
+  public @Nonnull WorldBorder getWorldBorder() {
     return wrapped.getWorldBorder();
   }
 
@@ -1219,32 +1224,32 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public boolean isSideSolid(BlockPos pos, EnumFacing side) {
+  public boolean isSideSolid(@Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     return wrapped.isSideSolid(pos, side);
   }
 
   @Override
-  public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default) {
+  public boolean isSideSolid(@Nonnull BlockPos pos, @Nonnull EnumFacing side, boolean _default) {
     return wrapped.isSideSolid(pos, side, _default);
   }
 
   @Override
-  public ImmutableSetMultimap<ChunkPos, Ticket> getPersistentChunks() {
+  public @Nonnull ImmutableSetMultimap<ChunkPos, Ticket> getPersistentChunks() {
     return wrapped.getPersistentChunks();
   }
 
   @Override
-  public Iterator<Chunk> getPersistentChunkIterable(Iterator<Chunk> chunkIterator) {
+  public @Nonnull Iterator<Chunk> getPersistentChunkIterable(@Nonnull Iterator<Chunk> chunkIterator) {
     return wrapped.getPersistentChunkIterable(chunkIterator);
   }
 
   @Override
-  public int getBlockLightOpacity(BlockPos pos) {
+  public int getBlockLightOpacity(@Nonnull BlockPos pos) {
     return wrapped.getBlockLightOpacity(pos);
   }
 
   @Override
-  public int countEntities(EnumCreatureType type, boolean forSpawnCount) {
+  public int countEntities(@Nonnull EnumCreatureType type, boolean forSpawnCount) {
     return wrapped.countEntities(type, forSpawnCount);
   }
 
@@ -1253,27 +1258,27 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     return wrapped.hasCapability(capability, facing);
   }
 
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     return wrapped.getCapability(capability, facing);
   }
 
   @Override
-  public MapStorage getPerWorldStorage() {
+  public @Nonnull MapStorage getPerWorldStorage() {
     return wrapped.getPerWorldStorage();
   }
 
   @Override
-  public void sendPacketToServer(Packet<?> packetIn) {
+  public void sendPacketToServer(@Nonnull Packet<?> packetIn) {
     wrapped.sendPacketToServer(packetIn);
   }
 
   @Override
-  public LootTableManager getLootTableManager() {
+  public @Nonnull LootTableManager getLootTableManager() {
     return wrapped.getLootTableManager();
   }
 

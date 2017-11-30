@@ -7,8 +7,6 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import com.google.common.collect.ImmutableList;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.machines.machine.tank.GuiTank;
@@ -29,7 +27,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import static crazypants.enderio.machines.init.MachineObject.block_tank;
@@ -60,7 +57,7 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
     }
 
     @Override
-    public void getIngredients(IIngredients ingredients) {
+    public void getIngredients(@Nonnull IIngredients ingredients) {
       if (itemInput != null) {
         ingredients.setInputs(ItemStack.class, Collections.singletonList(itemInput));
       }
@@ -80,8 +77,8 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
 
     registry.addRecipeCategories(new TankRecipeCategory(guiHelper));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_tank.getBlock(), 1, 0), TankRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_tank.getBlock(), 1, 1), TankRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(block_tank.getBlockNN(), 1, 0), TankRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(block_tank.getBlockNN(), 1, 1), TankRecipeCategory.UID);
     registry.addRecipeClickArea(GuiTank.class, 155, 42, 16, 16, TankRecipeCategory.UID);
 
     long start = System.nanoTime();
@@ -127,8 +124,7 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
 
     // registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerTank.class, TankRecipeCategory.UID, 0, 2, 3, 4 * 9);
 
-    Log.info(String.format("TankRecipeCategory: Added %d tank recipes to JEI in %.3f seconds.", result.size(),
-        (end - start) / 1000000000d));
+    Log.info(String.format("TankRecipeCategory: Added %d tank recipes to JEI in %.3f seconds.", result.size(), (end - start) / 1000000000d));
   }
 
   @SuppressWarnings("unused")

@@ -12,7 +12,6 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -25,8 +24,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice> implements IPaintable.ISolidBlockPaintableBlock,
-    IPaintable.IWrenchHideablePaint {
+public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice>
+    implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockSliceAndSplice create(@Nonnull IModObject modObject) {
     BlockSliceAndSplice result = new BlockSliceAndSplice(modObject);
@@ -57,13 +56,13 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_SLICE_N_SPLICE;
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     TileSliceAndSplice te = getTileEntity(world, pos);
     if (te != null && isActive(world, pos)) {
       int x = pos.getX();
@@ -86,8 +85,8 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
           vx += front == EnumFacing.WEST ? -v : v;
         }
 
-        Particle fx = Minecraft.getMinecraft().effectRenderer
-            .spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), px, y + 0.5, pz, vx, 0, vz, 0);
+        Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), px, y + 0.5, pz, vx, 0, vz,
+            0);
         if (fx != null) {
           fx.setRBGColorF(0.3f + (rand.nextFloat() * 0.1f), 0.1f + (rand.nextFloat() * 0.1f), 0.1f + (rand.nextFloat() * 0.1f));
           fx.multiplyVelocity(0.25f);
@@ -99,7 +98,7 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.SOUL_MAPPER;
   }
 

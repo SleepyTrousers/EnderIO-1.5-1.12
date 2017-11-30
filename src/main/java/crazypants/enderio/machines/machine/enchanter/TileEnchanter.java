@@ -28,7 +28,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   private NNList<ItemStack> inv = new NNList<>(4, ItemStack.EMPTY);
 
   @Override
-  public boolean isUsableByPlayer(EntityPlayer player) {
+  public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
     return canPlayerAccess(player);
   }
 
@@ -38,7 +38,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   }
 
   @Override
-  public ItemStack getStackInSlot(int slot) {
+  public @Nonnull ItemStack getStackInSlot(int slot) {
     if (slot < 0 || slot >= inv.size()) {
       return ItemStack.EMPTY;
     }
@@ -46,7 +46,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   }
 
   @Override
-  public ItemStack decrStackSize(int slot, int amount) {
+  public @Nonnull ItemStack decrStackSize(int slot, int amount) {
     return Util.decrStackSize(this, slot, amount);
   }
 
@@ -61,23 +61,23 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
       contents.setCount(getInventoryStackLimit());
     }
   }
-  
+
   @Override
-  public ItemStack removeStackFromSlot(int index) {
+  public @Nonnull ItemStack removeStackFromSlot(int index) {
     ItemStack res = getStackInSlot(index);
     setInventorySlotContents(index, res);
     return res;
   }
-  
+
   @Override
-  public void clear() {       
-    for(int i=0;i<inv.size();++i) {
+  public void clear() {
+    for (int i = 0; i < inv.size(); ++i) {
       inv.set(i, ItemStack.EMPTY);
     }
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return MachineObject.block_enchanter.getUnlocalisedName();
   }
 
@@ -92,15 +92,15 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   }
 
   @Override
-  public void openInventory(EntityPlayer p) {
+  public void openInventory(@Nonnull EntityPlayer p) {
   }
 
   @Override
-  public void closeInventory(EntityPlayer p) {
+  public void closeInventory(@Nonnull EntityPlayer p) {
   }
 
   @Override
-  public boolean isItemValidForSlot(int slot, ItemStack stack) {
+  public boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack) {
     if (stack.isEmpty()) {
       return false;
     }
@@ -115,7 +115,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
     }
     return false;
   }
-  
+
   @Override
   public boolean isEmpty() {
     return inv.stream().allMatch(ItemStack::isEmpty);
@@ -159,7 +159,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
     }
     if (currentEnchantment == null) {
       return 0;
-    }    
+    }
     int level = currentEnchantment.getLevelForStackSize(item.getCount());
     return currentEnchantment.getCostForLevel(level);
   }
@@ -170,12 +170,12 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   }
 
   @Override
-  public int[] getSlotsForFace(EnumFacing side) {
+  public @Nonnull int[] getSlotsForFace(@Nonnull EnumFacing side) {
     return new int[0];
   }
 
   @Override
-  public ITextComponent getDisplayName() {
+  public @Nonnull ITextComponent getDisplayName() {
     return new TextComponentString(getName());
   }
 
@@ -195,12 +195,12 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   }
 
   @Override
-  public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {   
+  public boolean canInsertItem(int index, @Nonnull ItemStack itemStackIn, @Nonnull EnumFacing direction) {
     return false;
   }
 
   @Override
-  public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+  public boolean canExtractItem(int index, @Nonnull ItemStack stack, @Nonnull EnumFacing direction) {
     return false;
   }
 

@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.teleport.telepad;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.base.BlockEio;
@@ -31,16 +33,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IHaveRenderers {
 
   public static BlockDialingDevice create() {
-    
+
     PacketHandler.INSTANCE.registerMessage(PacketTargetList.class, PacketTargetList.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketTargetList.class, PacketTargetList.class, PacketHandler.nextID(), Side.CLIENT);
-    
+
     BlockDialingDevice ret = new BlockDialingDevice();
     ret.init();
     return ret;
   }
 
-  public static PropertyEnum<DialerFacing> FACING = PropertyEnum.create("facing", DialerFacing.class);
+  public static final @Nonnull PropertyEnum<DialerFacing> FACING = PropertyEnum.create("facing", DialerFacing.class);
 
   public BlockDialingDevice() {
     super(MachineObject.block_dialing_device, TileDialingDevice.class);
@@ -56,12 +58,12 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements I
   }
 
   @Override
-  public ItemBlock createBlockItem(IModObject mo) {
-    return new BlockItemDialingDevice(this, mo.getUnlocalisedName());
+  public ItemBlock createBlockItem(@Nonnull IModObject mo) {
+    return mo.apply(new BlockItemDialingDevice(this));
   }
 
   @Override
-  public TileEntity createNewTileEntity(World worldIn, int meta) {
+  public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta) {
     return new TileDialingDevice();
   }
 
@@ -70,8 +72,8 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements I
     if (world == null) {
       return null;
     }
-    TileDialingDevice te = getTileEntity(world, new BlockPos(x,y,z));
-    if(te == null) {
+    TileDialingDevice te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te == null) {
       return null;
     }
     return new ContainerDialingDevice(player.inventory, te);
@@ -82,29 +84,26 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements I
     if (world == null) {
       return null;
     }
-    TileDialingDevice te = getTileEntity(world, new BlockPos(x,y,z));
-    if(te == null) {
+    TileDialingDevice te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te == null) {
       return null;
     }
     return new GuiDialingDevice(player.inventory, te);
   }
-  
+
   @Override
-  protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+  protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
     GuiID.GUI_ID_TELEPAD_DIALING_DEVICE.openGui(world, pos, entityPlayer, side);
     return true;
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
     return getDefaultState();
   }
 
   @Override
-  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-    if (worldIn == null || pos == null) {
-      return state;
-    }
+  public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     TileDialingDevice tile = getTileEntitySafe(worldIn, pos);
     if (tile != null) {
       DialerFacing facing = tile.getFacing();
@@ -115,33 +114,33 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements I
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     return 0;
   }
 
   @Override
-  protected BlockStateContainer createBlockState() {
+  protected @Nonnull BlockStateContainer createBlockState() {
     return new BlockStateContainer(this, FACING);
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean isFullCube(IBlockState bs) {
+  public boolean isFullCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers(IModObject mo) {
+  public void registerRenderers(@Nonnull IModObject mo) {
     ClientUtil.registerDefaultItemRenderer(mo);
   }
 

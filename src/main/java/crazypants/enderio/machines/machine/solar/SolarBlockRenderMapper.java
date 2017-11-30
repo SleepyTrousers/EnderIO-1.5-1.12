@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
@@ -22,7 +24,7 @@ import static crazypants.enderio.base.render.property.EnumMergingBlockRenderMode
 
 public class SolarBlockRenderMapper extends ConnectedBlockRenderMapper {
 
-  public SolarBlockRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public SolarBlockRenderMapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     super(state, world, pos);
     skip_top = true;
     skip_side = true;
@@ -31,38 +33,40 @@ public class SolarBlockRenderMapper extends ConnectedBlockRenderMapper {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      boolean isPainted) {
     return null;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  protected List<IBlockState> renderBody(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer, QuadCollector quadCollector) {
+  protected List<IBlockState> renderBody(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
+      @Nonnull QuadCollector quadCollector) {
     List<IBlockState> result = new ArrayList<IBlockState>();
     result.add(state.getState().withProperty(RENDER, EnumMergingBlockRenderMode.sides));
     return result;
   }
 
   @Override
-  protected boolean isSameKind(IBlockState state, IBlockAccess world, BlockPos pos, BlockPos other) {
+  protected boolean isSameKind(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull BlockPos other) {
     return pos.getY() == other.getY() && isSameKind(state, world.getBlockState(other));
   }
 
   @Override
-  protected boolean isSameKind(IBlockState state, IBlockState other) {
+  protected boolean isSameKind(@Nonnull IBlockState state, @Nonnull IBlockState other) {
     return state.getBlock() == other.getBlock()
         && (Config.photovoltaicCanTypesJoins || state.getValue(SolarType.KIND).connectTo(other.getValue(SolarType.KIND)));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  protected IBlockState getMergedBlockstate(IBlockState state) {
+  protected IBlockState getMergedBlockstate(@Nonnull IBlockState state) {
     return null;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  protected IBlockState getBorderedBlockstate(IBlockState state) {
+  protected IBlockState getBorderedBlockstate(@Nonnull IBlockState state) {
     return state;
   }
 

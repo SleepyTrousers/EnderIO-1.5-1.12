@@ -45,13 +45,13 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
       super(recipe);
     }
   }
- 
+
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
-    
+
     registry.addRecipeCategories(new SliceAndSpliceRecipeCategory(guiHelper));
     registry.handleRecipes(IRecipe.class, SliceAndSpliceRecipe::new, SliceAndSpliceRecipeCategory.UID);
     registry.addRecipeClickArea(GuiSliceAndSplice.class, 155, 42, 16, 16, SliceAndSpliceRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_slice_and_splice.getBlock()), SliceAndSpliceRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(block_slice_and_splice.getBlockNN()), SliceAndSpliceRecipeCategory.UID);
 
     registry.addRecipes(SliceAndSpliceRecipeManager.getInstance().getRecipes(), UID);
 
@@ -61,16 +61,16 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
 
   // ------------ Category
 
-  //Offsets from full size gui, makes it much easier to get the location correct
+  // Offsets from full size gui, makes it much easier to get the location correct
   private int xOff = 34;
   private int yOff = 10;
-  
+
   @Nonnull
   private final IDrawable background;
 
   @Nonnull
   protected final IDrawableAnimated arror;
-  
+
   private SliceAndSpliceRecipe currentRecipe;
 
   public SliceAndSpliceRecipeCategory(IGuiHelper guiHelper) {
@@ -88,8 +88,7 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
 
   @Override
   public @Nonnull String getTitle() {
-    String localizedName = block_slice_and_splice.getBlock().getLocalizedName();
-    return localizedName != null ? localizedName : "ERROR";
+    return block_slice_and_splice.getBlockNN().getLocalizedName();
   }
 
   @Override
@@ -99,18 +98,19 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
 
   @Override
   public void drawExtras(@Nonnull Minecraft minecraft) {
-    if(currentRecipe == null) {
+    if (currentRecipe == null) {
       return;
     }
     String energyString = PowerDisplayUtil.formatPower(currentRecipe.getEnergyRequired()) + " " + PowerDisplayUtil.abrevation();
-    minecraft.fontRenderer.drawString(energyString, 108 - xOff, 72 - yOff, 0x808080, false);    
-    GlStateManager.color(1,1,1,1);
-    
+    minecraft.fontRenderer.drawString(energyString, 108 - xOff, 72 - yOff, 0x808080, false);
+    GlStateManager.color(1, 1, 1, 1);
+
     arror.draw(minecraft, 104 - xOff, 49 - yOff);
   }
-  
+
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SliceAndSpliceRecipeCategory.SliceAndSpliceRecipe recipeWrapper, @Nonnull IIngredients ingredients) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SliceAndSpliceRecipeCategory.SliceAndSpliceRecipe recipeWrapper,
+      @Nonnull IIngredients ingredients) {
     currentRecipe = recipeWrapper;
 
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
@@ -122,17 +122,15 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
     guiItemStacks.init(4, true, 79 - xOff, 39 - yOff);
     guiItemStacks.init(5, true, 43 - xOff, 57 - yOff);
     guiItemStacks.init(6, true, 61 - xOff, 57 - yOff);
-    guiItemStacks.init(7, true, 79 - xOff, 57 - yOff);        
+    guiItemStacks.init(7, true, 79 - xOff, 57 - yOff);
     guiItemStacks.init(8, false, 133 - xOff, 48 - yOff);
 
-    
     guiItemStacks.set(0, getAxes());
     guiItemStacks.set(1, getShears());
-    
-    
+
     List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
     int slot = 2;
-    for(List<ItemStack> input : inputs) {
+    for (List<ItemStack> input : inputs) {
       if (input != null) {
         guiItemStacks.set(slot, input);
       }
@@ -143,7 +141,7 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
       guiItemStacks.set(8, output);
     }
   }
-  
+
   private @Nonnull List<ItemStack> getAxes() {
     List<ItemStack> res = new ArrayList<ItemStack>();
     res.add(new ItemStack(Items.WOODEN_AXE));
@@ -153,10 +151,10 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
     res.add(new ItemStack(ModObject.itemDarkSteelAxe.getItemNN()));
     return res;
   }
-  
+
   private @Nonnull List<ItemStack> getShears() {
     List<ItemStack> res = new ArrayList<ItemStack>();
-    res.add(new ItemStack(Items.SHEARS));    
+    res.add(new ItemStack(Items.SHEARS));
     res.add(new ItemStack(ModObject.itemDarkSteelShears.getItemNN()));
     return res;
   }

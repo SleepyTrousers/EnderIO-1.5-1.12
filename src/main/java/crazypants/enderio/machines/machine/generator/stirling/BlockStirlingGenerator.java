@@ -1,5 +1,9 @@
 package crazypants.enderio.machines.machine.generator.stirling;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.network.PacketHandler;
@@ -16,11 +20,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.Random;
-
-public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirlingGenerator> implements IPaintable.ISolidBlockPaintableBlock,
-    IPaintable.IWrenchHideablePaint {
+public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirlingGenerator>
+    implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockStirlingGenerator create() {
 
@@ -46,13 +47,13 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_STIRLING_GEN;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     TileEntityStirlingGenerator te = (TileEntityStirlingGenerator) world.getTileEntity(pos);
     if (te != null && te.isActive()) {
       EnumFacing front = te.facing;

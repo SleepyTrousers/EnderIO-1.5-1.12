@@ -13,8 +13,6 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.INHIBITOR_POWER
 import static crazypants.enderio.machines.capacitor.CapacitorKey.INHIBITOR_POWER_USE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.INHIBITOR_RANGE;
 
-
-
 @Storable
 public class TileInhibitorObelisk extends AbstractRangedTileEntity {
 
@@ -28,7 +26,7 @@ public class TileInhibitorObelisk extends AbstractRangedTileEntity {
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     return false;
   }
 

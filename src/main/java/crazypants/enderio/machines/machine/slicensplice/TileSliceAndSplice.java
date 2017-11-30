@@ -56,11 +56,11 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
     return super.canStartNextTask(chance);
   }
 
-  private ItemStack getAxe() {
+  private @Nonnull ItemStack getAxe() {
     return inventory[axeIndex];
   }
 
-  private ItemStack getShears() {
+  private @Nonnull ItemStack getShears() {
     return inventory[shearsIndex];
   }
 
@@ -94,7 +94,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
     return super.usePower(wantToUse);
   }
 
-  private void damageTool(ItemStack tool, int toolIndex) {
+  private void damageTool(@Nonnull ItemStack tool, int toolIndex) {
     if (Prep.isValid(tool) && tool.isItemStackDamageable()) {
       tool.damageItem(1, getFakePlayer());
       if (tool.getItemDamage() >= tool.getMaxDamage()) {
@@ -103,15 +103,16 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
     }
   }
 
-  private EntityLivingBase getFakePlayer() {
+  private @Nonnull EntityLivingBase getFakePlayer() {
     if (fakePlayer == null) {
-      fakePlayer = FakePlayerFactory.getMinecraft(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(world.provider.getDimension()));
+      fakePlayer = FakePlayerFactory
+          .getMinecraft(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(world.provider.getDimension()));
     }
     return fakePlayer;
   }
 
   @Override
-  protected MachineRecipeInput[] getRecipeInputs() {
+  protected @Nonnull MachineRecipeInput[] getRecipeInputs() {
     MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots() - 2];
     int fromSlot = slotDefinition.minInputSlot;
     for (int i = 0; i < res.length; i++) {
@@ -122,7 +123,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int slot, @Nonnull ItemStack itemstack) {
     if (Prep.isInvalid(itemstack)) {
       return false;
     }

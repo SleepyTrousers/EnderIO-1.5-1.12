@@ -2,7 +2,7 @@ package crazypants.enderio.machines.machine.tank;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
@@ -25,39 +25,39 @@ public class ContainerTank extends AbstractMachineContainer<TileTank> {
   // only used on client where there can only be one GUI open at any given time
   private static Slot inFull, inEmpty, outEmpty, outFull;
 
-  public ContainerTank(InventoryPlayer playerInv, TileTank te) {
+  public ContainerTank(@Nonnull InventoryPlayer playerInv, @Nonnull TileTank te) {
     super(playerInv, te);
   }
 
   @Override
-  protected void addMachineSlots(InventoryPlayer playerInv) {
+  protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
     addSlotToContainer(inFull = new Slot(getInv(), 0, 44, 21) {
       @Override
-      public boolean isItemValid(@Nullable ItemStack itemStack) {
+      public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return getInv().isItemValidForSlot(0, itemStack);
       }
     });
     addSlotToContainer(inEmpty = new Slot(getInv(), 1, 116, 21) {
       @Override
-      public boolean isItemValid(@Nullable ItemStack itemStack) {
+      public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return getInv().isItemValidForSlot(1, itemStack);
       }
     });
     addSlotToContainer(new Slot(getInv(), 2, 10000, 10000) {
       @Override
-      public boolean isItemValid(@Nullable ItemStack itemStack) {
+      public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return getInv().isItemValidForSlot(2, itemStack);
       }
-    });    
+    });
     addSlotToContainer(outEmpty = new Slot(getInv(), 3, 44, 52) {
       @Override
-      public boolean isItemValid(@Nullable ItemStack itemStack) {
+      public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return getInv().isItemValidForSlot(3, itemStack);
       }
     });
     addSlotToContainer(outFull = new Slot(getInv(), 4, 116, 52) {
       @Override
-      public boolean isItemValid(@Nullable ItemStack itemStack) {
+      public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return getInv().isItemValidForSlot(4, itemStack);
       }
     });

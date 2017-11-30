@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
@@ -25,18 +26,19 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
-  private static final Rectangle RECTANGLE_OUTPUT_TANK = new Rectangle(132, 12, 15, 47);
+  private static final @Nonnull Rectangle RECTANGLE_OUTPUT_TANK = new Rectangle(132, 12, 15, 47);
 
-  private static final Rectangle RECTANGLE_INPUT_TANK = new Rectangle(30, 12, 15, 47);
+  private static final @Nonnull Rectangle RECTANGLE_INPUT_TANK = new Rectangle(30, 12, 15, 47);
 
-  private static final String GUI_TEXTURE = "vat";
+  private static final @Nonnull String GUI_TEXTURE = "vat";
 
-  private final IconButton dump1, dump2;
+  private final @Nonnull IconButton dump1, dump2;
 
-  public GuiVat(InventoryPlayer inventory, TileVat te) {
+  public GuiVat(@Nonnull InventoryPlayer inventory, @Nonnull TileVat te) {
     super(te, new ContainerVat(inventory, te), GUI_TEXTURE);
 
     addToolTip(new GuiToolTip(RECTANGLE_INPUT_TANK, "") {
@@ -45,8 +47,9 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
       protected void updateText() {
         text.clear();
         String heading = EnderIO.lang.localize("vat.inputTank");
-        if (getTileEntity().inputTank.getFluid() != null) {
-          heading += ": " + getTileEntity().inputTank.getFluid().getLocalizedName();
+        final FluidStack fluid = getTileEntity().inputTank.getFluid();
+        if (fluid != null) {
+          heading += ": " + fluid.getLocalizedName();
         }
         text.add(heading);
         text.add(Fluids.toCapactityString(getTileEntity().inputTank));
@@ -60,8 +63,9 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
       protected void updateText() {
         text.clear();
         String heading = EnderIO.lang.localize("vat.outputTank");
-        if (getTileEntity().outputTank.getFluid() != null) {
-          heading += ": " + getTileEntity().outputTank.getFluid().getLocalizedName();
+        final FluidStack fluid = getTileEntity().outputTank.getFluid();
+        if (fluid != null) {
+          heading += ": " + fluid.getLocalizedName();
         }
         text.add(heading);
         text.add(Fluids.toCapactityString(getTileEntity().outputTank));
@@ -181,7 +185,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
-  private void renderVat(TextureAtlasSprite inputIcon, TextureAtlasSprite outputIcon, float progress) {
+  private void renderVat(@Nonnull TextureAtlasSprite inputIcon, @Nonnull TextureAtlasSprite outputIcon, float progress) {
     RenderUtil.bindBlockTexture();
 
     int x = guiLeft + 76;
@@ -202,7 +206,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) throws IOException {
+  protected void actionPerformed(@Nonnull GuiButton b) throws IOException {
     super.actionPerformed(b);
 
     if (b == dump1) {

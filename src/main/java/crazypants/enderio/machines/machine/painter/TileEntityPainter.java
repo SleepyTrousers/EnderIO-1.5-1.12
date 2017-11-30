@@ -27,15 +27,13 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
     super(new SlotDefinition(2, 1), PAINTER_POWER_INTAKE, PAINTER_POWER_BUFFER, PAINTER_POWER_USE);
   }
 
-
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack itemStack) {
-    if(i > 1) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemStack) {
+    if (i > 1) {
       return false;
     }
     ItemStack paint = i == 0 ? inventory[1] : itemStack;
     ItemStack targt = i == 0 ? itemStack : inventory[0];
-
 
     Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(getMachineName());
     for (IMachineRecipe rec : recipes.values()) {
@@ -55,7 +53,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
   }
 
   @Override
-  protected int getNumCanMerge(ItemStack itemStack, ItemStack result) {
+  protected int getNumCanMerge(@Nonnull ItemStack itemStack, @Nonnull ItemStack result) {
     if (!ItemUtil.areStackMergable(itemStack, result)) {
       // next result is a different item type
       return 0;

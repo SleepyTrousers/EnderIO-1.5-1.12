@@ -3,6 +3,8 @@ package crazypants.enderio.machines.machine.teleport;
 import java.awt.Point;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.ArrayInventory;
@@ -16,11 +18,11 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
 
   static class AuthInventory extends ArrayInventory {
     private ContainerTravelAuth container;
-    
-    private AuthInventory(ItemStack[] inv) {
+
+    private AuthInventory(@Nonnull ItemStack[] inv) {
       super(inv);
     }
-    
+
     private void setContainer(ContainerTravelAuth container) {
       this.container = container;
     }
@@ -37,18 +39,18 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
     }
 
     @Override
-    public ItemStack getStackInSlot(int i) {
-      if(i < 0 || i >= items.length) {
+    public @Nonnull ItemStack getStackInSlot(int i) {
+      if (i < 0 || i >= items.length) {
         return ItemStack.EMPTY;
       }
       return super.getStackInSlot(i);
     }
 
     @Override
-    public ItemStack decrStackSize(int fromSlot, int amount) {
+    public @Nonnull ItemStack decrStackSize(int fromSlot, int amount) {
       ItemStack item = super.getStackInSlot(fromSlot);
       items[fromSlot] = ItemStack.EMPTY;
-      if(item.isEmpty()) {
+      if (item.isEmpty()) {
         return ItemStack.EMPTY;
       }
       item.setCount(0);
@@ -56,8 +58,8 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
     }
 
     @Override
-    public void setInventorySlotContents(int i, ItemStack itemstack) {
-      if(!itemstack.isEmpty()) {
+    public void setInventorySlotContents(int i, @Nonnull ItemStack itemstack) {
+      if (!itemstack.isEmpty()) {
         items[i] = itemstack.copy();
         items[i].setCount(0);
       } else {
@@ -66,7 +68,7 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
     }
 
     @Override
-    public String getName() {
+    public @Nonnull String getName() {
       return "Password";
     }
 
@@ -75,20 +77,20 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
       return 0;
     }
 
-    public ItemStack[] getInventory() {
+    public @Nonnull ItemStack[] getInventory() {
       return this.items;
     }
   }
 
   boolean dirty = false;
 
-  public ContainerTravelAuth(InventoryPlayer playerInv) {
+  public ContainerTravelAuth(@Nonnull InventoryPlayer playerInv) {
     super(playerInv, new AuthInventory(new ItemStack[5]));
     getInv().setContainer(this);
   }
 
   @Override
-  protected void addSlots(InventoryPlayer playerInv) {
+  protected void addSlots(@Nonnull InventoryPlayer playerInv) {
   }
 
   public void addGhostSlots(List<GhostSlot> ghostSlots) {
@@ -101,14 +103,14 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
   }
 
   @Override
-  public Point getPlayerInventoryOffset() {
+  public @Nonnull Point getPlayerInventoryOffset() {
     Point p = super.getPlayerInventoryOffset();
     p.translate(0, -1);
     return p;
   }
 
   @Override
-  public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+  public @Nonnull ItemStack transferStackInSlot(@Nonnull EntityPlayer par1EntityPlayer, int par2) {
     return ItemStack.EMPTY;
   }
 
@@ -127,13 +129,13 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
     }
 
     @Override
-    public ItemStack getStack() {
+    public @Nonnull ItemStack getStack() {
       ItemStack stack = inv.getStackInSlot(slot);
       return stack;
     }
 
     @Override
-    public void putStack(ItemStack stack) {
+    public void putStack(@Nonnull ItemStack stack) {
       inv.setInventorySlotContents(slot, stack);
     }
 

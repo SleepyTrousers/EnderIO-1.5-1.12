@@ -3,6 +3,8 @@ package crazypants.enderio.machines.machine.teleport;
 import java.awt.Point;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.TileEntityBase;
@@ -27,21 +29,23 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
   public static final int EXEC_ACCESS_MODE = 0;
   public static final int EXEC_LABEL = 1;
 
-  ITravelAccessable ta;
-  TileEntity te;
-  World world;
+  final @Nonnull ITravelAccessable ta;
+  final TileEntity te;
+  final @Nonnull World world;
 
-  public ContainerTravelAccessable(InventoryPlayer playerInv, final ITravelAccessable travelAccessable, World world) {
+  public ContainerTravelAccessable(@Nonnull InventoryPlayer playerInv, final @Nonnull ITravelAccessable travelAccessable, @Nonnull World world) {
     super(playerInv, playerInv);
     ta = travelAccessable;
     this.world = world;
     if (ta instanceof TileEntity) {
       te = ((TileEntity) ta);
+    } else {
+      te = null;
     }
   }
 
   @Override
-  protected void addSlots(InventoryPlayer playerInv) {
+  protected void addSlots(@Nonnull InventoryPlayer playerInv) {
   }
 
   public void addGhostSlots(List<GhostSlot> ghostSlots) {
@@ -58,12 +62,12 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
   }
 
   @Override
-  public Point getPlayerInventoryOffset() {
+  public @Nonnull Point getPlayerInventoryOffset() {
     return new Point(8, 103);
   }
 
   @Override
-  public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
+  public @Nonnull ItemStack transferStackInSlot(@Nonnull EntityPlayer entityPlayer, int slotIndex) {
     return ItemStack.EMPTY;
   }
 
@@ -84,7 +88,7 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
     }
 
     @Override
-    public ItemStack getStack() {
+    public @Nonnull ItemStack getStack() {
       if (isAuth) {
         return ta.getPassword().get(slot);
       } else {
@@ -93,7 +97,7 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
     }
 
     @Override
-    public void putStack(ItemStack stack) {
+    public void putStack(@Nonnull ItemStack stack) {
       if (isAuth) {
         if (ta instanceof TileEntityBase) {
           PacketHandler.INSTANCE.sendToServer(PacketPassword.setPassword((TileEntityBase) ta, slot, stack));
@@ -131,9 +135,11 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
     default:
       return null;
     }
-    IBlockState bs = te.getWorld().getBlockState(te.getPos());
-    te.getWorld().notifyBlockUpdate(te.getPos(), bs, bs, 3);
-    te.getWorld().markChunkDirty(te.getPos(), te);
+    if (te != null) {
+      IBlockState bs = te.getWorld().getBlockState(te.getPos());
+      te.getWorld().notifyBlockUpdate(te.getPos(), bs, bs, 3);
+      te.getWorld().markChunkDirty(te.getPos(), te);
+    }
     return null;
   }
 

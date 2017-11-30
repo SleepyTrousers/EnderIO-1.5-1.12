@@ -42,7 +42,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     showRangeB.setSize(16, 16);
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override
-      public List<String> getToolTipText() {
+      public @Nonnull List<String> getToolTipText() {
         return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
       }
     });
@@ -128,7 +128,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) throws IOException {
+  protected void actionPerformed(@Nonnull GuiButton b) throws IOException {
     if (b == showRangeB) {
       getTileEntity().setShowRange(showRangeB.isSelected());
       return;

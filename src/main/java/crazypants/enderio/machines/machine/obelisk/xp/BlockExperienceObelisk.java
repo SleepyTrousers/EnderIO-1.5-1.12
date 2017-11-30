@@ -1,8 +1,11 @@
 package crazypants.enderio.machines.machine.obelisk.xp;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,9 +15,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import java.util.Random;
 
 public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceObelisk> {
 
@@ -34,7 +34,7 @@ public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceO
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName();
   }
 
@@ -57,13 +57,13 @@ public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceO
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_XP_OBELISK;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     // Has no particles
   }
 

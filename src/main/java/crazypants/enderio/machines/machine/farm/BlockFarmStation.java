@@ -69,7 +69,7 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_FARM_STATATION;
   }
 
@@ -107,27 +107,27 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
   }
 
   @Override
-  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+  public boolean shouldSideBeRendered(@Nonnull IBlockState bs, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     return true;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack stack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack stack) {
     return getUnlocalizedName();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return FarmingStationRenderMapper.instance;
   }
 
@@ -152,7 +152,7 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
   protected static @Nonnull String permissionFarming = "";
 
   @Override
-  public void init(IModObject mo, FMLInitializationEvent event) {
+  public void init(@Nonnull IModObject mo, @Nonnull FMLInitializationEvent event) {
     super.init(mo, event);
     permissionFarming = PermissionAPI.registerNode(EnderIO.DOMAIN + ".farm." + getUnlocalizedName().toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
         "Permission for the block " + getUnlocalizedName() + " of Ender IO to farm land. This includes tilling, planting, harvesting and fertilizing."

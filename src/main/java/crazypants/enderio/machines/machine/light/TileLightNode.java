@@ -15,11 +15,11 @@ public class TileLightNode extends TileEntityEio {
   BlockPos parent;
 
   public TileElectricLight getParent() {
-    if (world == null || parent == null) {
+    if (parent == null) {
       return null;
     }
     TileEntity te = world.getTileEntity(parent);
-    if(te instanceof TileElectricLight) {
+    if (te instanceof TileElectricLight) {
       return (TileElectricLight) te;
     }
     return null;
@@ -35,14 +35,14 @@ public class TileLightNode extends TileEntityEio {
 
   public void onNeighbourChanged() {
     TileElectricLight p = getParent();
-    if(p != null) {
+    if (p != null) {
       p.nodeNeighbourChanged(this);
     }
   }
 
   public void onBlockRemoved() {
     TileElectricLight p = getParent();
-    if(p != null) {
+    if (p != null) {
       p.nodeRemoved(this);
     }
   }

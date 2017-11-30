@@ -3,6 +3,8 @@ package crazypants.enderio.machines.machine.obelisk.render;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -21,12 +23,12 @@ public class ObeliskBakery {
   private static final float WIDTH = 18f / 32f * WIDE_PINCH;
   private static final float HEIGHT = 0.475f;
 
-  private static final BoundingBox bb1 = BoundingBox.UNIT_CUBE.scale(WIDTH, HEIGHT, 1).translate(0, -0.5f + HEIGHT / 2, 0);
-  private static final BoundingBox bb2 = BoundingBox.UNIT_CUBE.scale(1, HEIGHT, WIDTH).translate(0, -0.5f + HEIGHT / 2, 0);
+  private static final @Nonnull BoundingBox bb1 = BoundingBox.UNIT_CUBE.scale(WIDTH, HEIGHT, 1).translate(0, -0.5f + HEIGHT / 2, 0);
+  private static final @Nonnull BoundingBox bb2 = BoundingBox.UNIT_CUBE.scale(1, HEIGHT, WIDTH).translate(0, -0.5f + HEIGHT / 2, 0);
 
-  private static final VertXForm2x xform2x = new VertXForm2x();
-  private static final VertXForm2z xform2z = new VertXForm2z();
-  private static final VertXForm3 xform3 = new VertXForm3();
+  private static final @Nonnull VertXForm2x xform2x = new VertXForm2x();
+  private static final @Nonnull VertXForm2z xform2z = new VertXForm2z();
+  private static final @Nonnull VertXForm3 xform3 = new VertXForm3();
 
   private ObeliskBakery() {
   }
@@ -61,12 +63,12 @@ public class ObeliskBakery {
   private static class VertXForm2x implements VertexTransform {
 
     @Override
-    public void apply(Vertex vertex) {
+    public void apply(@Nonnull Vertex vertex) {
       apply(vertex.xyz);
     }
 
     @Override
-    public void apply(Vector3d vec) {
+    public void apply(@Nonnull Vector3d vec) {
       double pinch = WIDE_PINCH;
       if (vec.y > 0.2) {
         pinch = 0.5;
@@ -77,7 +79,7 @@ public class ObeliskBakery {
     }
 
     @Override
-    public void applyToNormal(Vector3f vec) {
+    public void applyToNormal(@Nonnull Vector3f vec) {
     }
 
   }
@@ -85,12 +87,12 @@ public class ObeliskBakery {
   private static class VertXForm2z implements VertexTransform {
 
     @Override
-    public void apply(Vertex vertex) {
+    public void apply(@Nonnull Vertex vertex) {
       apply(vertex.xyz);
     }
 
     @Override
-    public void apply(Vector3d vec) {
+    public void apply(@Nonnull Vector3d vec) {
       double pinch = WIDE_PINCH;
       if (vec.y > 0.2) {
         pinch = 0.5;
@@ -101,7 +103,7 @@ public class ObeliskBakery {
     }
 
     @Override
-    public void applyToNormal(Vector3f vec) {
+    public void applyToNormal(@Nonnull Vector3f vec) {
     }
 
   }
@@ -109,12 +111,12 @@ public class ObeliskBakery {
   private static class VertXForm3 implements VertexTransform {
 
     @Override
-    public void apply(Vertex vertex) {
+    public void apply(@Nonnull Vertex vertex) {
       apply(vertex.xyz);
     }
 
     @Override
-    public void apply(Vector3d vec) {
+    public void apply(@Nonnull Vector3d vec) {
       vec.x -= 0.5;
       vec.x *= WIDE_PINCH;
       vec.x += 0.5;
@@ -124,7 +126,7 @@ public class ObeliskBakery {
     }
 
     @Override
-    public void applyToNormal(Vector3f vec) {
+    public void applyToNormal(@Nonnull Vector3f vec) {
     }
 
   }

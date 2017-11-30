@@ -38,7 +38,7 @@ public enum BufferType implements IStringSerializable {
       "PropertyEnum.create()");
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return name().toLowerCase(Locale.ENGLISH);
   }
 
@@ -46,9 +46,8 @@ public enum BufferType implements IStringSerializable {
     return "tile." + MachineObject.block_buffer.getUnlocalisedName() + "." + getName();
   }
 
-  @Nonnull
-  public static BufferType getTypeFromMeta(int meta) {
-    return values()[meta >= 0 && meta < values().length ? meta : 0];
+  public static @Nonnull BufferType getTypeFromMeta(int meta) {
+    return NullHelper.first(values()[meta >= 0 && meta < values().length ? meta : 0], ITEM);
   }
 
   public static int getMetaFromType(BufferType value) {
@@ -56,7 +55,7 @@ public enum BufferType implements IStringSerializable {
   }
 
   public static @Nonnull ItemStack getStack(BufferType type) {
-    return new ItemStack(block_buffer.getBlock(), 1, type.ordinal());
+    return new ItemStack(block_buffer.getBlockNN(), 1, type.ordinal());
   }
 
 }

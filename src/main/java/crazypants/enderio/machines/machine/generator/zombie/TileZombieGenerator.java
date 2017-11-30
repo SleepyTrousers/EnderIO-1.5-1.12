@@ -69,7 +69,6 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
     return MachineObject.block_zombie_generator.getUnlocalisedName();
   }
 
-
   @Override
   public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
     return mode != IoMode.PUSH && mode != IoMode.PUSH_PULL;
@@ -87,7 +86,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     return false;
   }
 
@@ -95,11 +94,12 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   public boolean isActive() {
     return active;
   }
-  
+
   @Override
-  public void onNeighborBlockChange(IBlockState state, World worldIn, BlockPos posIn, Block blockIn, BlockPos fromPos) {
+  public void onNeighborBlockChange(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos posIn, @Nonnull Block blockIn,
+      @Nonnull BlockPos fromPos) {
     super.onNeighborBlockChange(state, worldIn, posIn, blockIn, fromPos);
-    if(powerDis != null) {
+    if (powerDis != null) {
       powerDis.neighboursChanged();
     }
   }
@@ -108,8 +108,8 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   protected boolean processTasks(boolean redstoneCheck) {
     boolean res = false;
 
-    if(!redstoneCheck) {
-      if(active) {
+    if (!redstoneCheck) {
+      if (active) {
         active = false;
         res = true;
       }
@@ -117,19 +117,19 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
     } else {
 
       boolean isActive = generateEnergy();
-      if(isActive != active) {
+      if (isActive != active) {
         active = isActive;
         res = true;
       }
 
-      if(getEnergyStored() >= getMaxEnergyStored()) {
+      if (getEnergyStored() >= getMaxEnergyStored()) {
         inPause = true;
       }
 
       transmitEnergy();
     }
 
-    if(tanksDirty) {
+    if (tanksDirty) {
       PacketHandler.sendToAllAround(new PacketNutrientTank(this), this);
       tanksDirty = false;
     }
@@ -139,36 +139,35 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
 
   private boolean generateEnergy() {
 
-    //once full, don't start again until we have drained 10 seconds worth of power to prevent
-    //flickering on and off constantly when powering a machine that draws less than this produces
+    // once full, don't start again until we have drained 10 seconds worth of power to prevent
+    // flickering on and off constantly when powering a machine that draws less than this produces
     if (inPause && getEnergyStored() >= (getMaxEnergyStored() - (getPowerUsePerTick() * 200)) && getEnergyStored() > (getMaxEnergyStored() / 8)) {
       return false;
     }
     inPause = false;
 
-    if(tank.getFluidAmount() < getActivationAmount()) {
+    if (tank.getFluidAmount() < getActivationAmount()) {
       return false;
     }
-    
-    
+
     ticksRemaingFuel--;
-    if(ticksRemaingFuel <= 0) {
+    if (ticksRemaingFuel <= 0) {
       tank.removeFluidAmount(1);
-      ticksRemaingFuel = tickPerBucketOfFuel/1000;
+      ticksRemaingFuel = tickPerBucketOfFuel / 1000;
     }
     setEnergyStored(getEnergyStored() + getPowerUsePerTick());
     return true;
   }
-  
+
   int getActivationAmount() {
     return (int) (tank.getCapacity() * 0.7f);
   }
 
   private boolean transmitEnergy() {
-    if(getEnergyStored() <= 0) {
+    if (getEnergyStored() <= 0) {
       return false;
     }
-    if(powerDis == null) {
+    if (powerDis == null) {
       powerDis = new PowerDistributor(BlockCoord.get(this));
     }
     int transmitted = powerDis.transmitEnergy(world, Math.min(getPowerUsePerTick() * 2, getEnergyStored()));
@@ -179,7 +178,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   public int getFluidStored(EnumFacing from) {
     return tank.getFluidAmount();
   }
-  
+
   @Override
   public boolean shouldRenderInPass(int pass) {
     return pass == 1;
@@ -194,7 +193,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   }
 
   @Override
-  public FluidTank[] getOutputTanks() {
+  public @Nonnull FluidTank[] getOutputTanks() {
     return new FluidTank[0];
   }
 
@@ -244,7 +243,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) getSmartTankFluidHandler().get(facingIn);
     }

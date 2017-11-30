@@ -58,7 +58,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
     registry.addRecipeCategories(new SagMillRecipeCategory(guiHelper));
     registry.handleRecipes(IRecipe.class, SagRecipe::new, SagMillRecipeCategory.UID);
     registry.addRecipeClickArea(GuiSagMill.class, 155, 42, 16, 16, SagMillRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_sag_mill.getBlock()), SagMillRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(block_sag_mill.getBlockNN()), SagMillRecipeCategory.UID);
 
     registry.addRecipes(SagMillRecipeManager.getInstance().getRecipes(), UID);
 
@@ -98,7 +98,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
 
   @Override
   public @Nonnull String getTitle() {
-    return block_sag_mill.getBlock().getLocalizedName();
+    return block_sag_mill.getBlockNN().getLocalizedName();
   }
 
   @Override
@@ -114,7 +114,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
     String energyString = PowerDisplayUtil.formatPower(currentRecipe.getEnergyRequired()) + " " + PowerDisplayUtil.abrevation();
     minecraft.fontRenderer.drawString(energyString, 135 - xOff, 60 - yOff, 0x808080, false);
     GlStateManager.color(1, 1, 1, 1);
-    
+
     arrow.draw(minecraft, 80 - xOff, 32 - yOff);
   }
 

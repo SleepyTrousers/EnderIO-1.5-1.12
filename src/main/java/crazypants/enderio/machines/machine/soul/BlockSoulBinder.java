@@ -15,7 +15,6 @@ import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -33,7 +32,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
   public static BlockSoulBinder create(@Nonnull IModObject modObject) {
-    //PacketDrainPlayerXP.register();//TODO Fix
+    // PacketDrainPlayerXP.register();//TODO Fix
     BlockSoulBinder result = new BlockSoulBinder(modObject);
     result.init();
     return result;
@@ -62,23 +61,23 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder>
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_SOUL_BINDER;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public int getLightOpacity(IBlockState bs) {
+  public int getLightOpacity(@Nonnull IBlockState bs) {
     return 0;
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     int x = pos.getX();
     int y = pos.getY();
     int z = pos.getZ();
@@ -104,7 +103,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder>
   }
 
   @Override
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return SoulBinderBlockRenderMapper.instance;
   }
 

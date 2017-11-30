@@ -1,10 +1,13 @@
 package crazypants.enderio.machines.machine.obelisk.attractor;
 
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machines.machine.obelisk.PacketObeliskFx;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,9 +18,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
-
-import javax.annotation.Nonnull;
-import java.util.Locale;
 
 public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
 
@@ -52,17 +52,17 @@ public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_ATTRACTOR;
   }
 
   protected static String permissionAttracting;
 
   @Override
-  public void init(IModObject object, FMLInitializationEvent event) {
+  public void init(@Nonnull IModObject object, @Nonnull FMLInitializationEvent event) {
     super.init(object, event);
-    permissionAttracting = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attract." + this.getUnlocalizedName().toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
-        "Permission for the block " + this.getUnlocalizedName() + " of Ender IO to attract entities."
+    permissionAttracting = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attract." + this.getUnlocalizedName().toLowerCase(Locale.ENGLISH),
+        DefaultPermissionLevel.ALL, "Permission for the block " + this.getUnlocalizedName() + " of Ender IO to attract entities."
             + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");
   }
 

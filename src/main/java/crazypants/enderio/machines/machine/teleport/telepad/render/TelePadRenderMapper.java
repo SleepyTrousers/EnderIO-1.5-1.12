@@ -30,21 +30,20 @@ import static crazypants.enderio.machines.init.MachineObject.block_tele_pad;
 
 public class TelePadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemStateMapper {
 
-  @Nonnull
-  public static final TelePadRenderMapper instance = new TelePadRenderMapper();
+  public static final @Nonnull TelePadRenderMapper instance = new TelePadRenderMapper();
 
-  private static final EnumRenderMode GLASS_TOP_MODEL = EnumRenderMode.FRONT_ON;
-  private static final EnumRenderMode FULL_MODEL = EnumRenderMode.FRONT_EAST;
-  private static final EnumRenderMode SINGLE_MODEL = EnumRenderMode.FRONT;
-  private static final EnumRenderMode SINGLE_MODEL_INVENTORY = EnumRenderMode.FRONT_SOUTH;
+  private static final @Nonnull EnumRenderMode GLASS_TOP_MODEL = EnumRenderMode.FRONT_ON;
+  private static final @Nonnull EnumRenderMode FULL_MODEL = EnumRenderMode.FRONT_EAST;
+  private static final @Nonnull EnumRenderMode SINGLE_MODEL = EnumRenderMode.FRONT;
+  private static final @Nonnull EnumRenderMode SINGLE_MODEL_INVENTORY = EnumRenderMode.FRONT_SOUTH;
 
   protected TelePadRenderMapper() {
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
-                                          QuadCollector quadCollector) {
+  public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
+      @Nonnull QuadCollector quadCollector) {
 
     if (state.getBlock() == block_tele_pad.getBlock()) {
       if (blockLayer == BlockRenderLayer.SOLID) {
@@ -68,14 +67,15 @@ public class TelePadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
   @SuppressWarnings("deprecation")
   @Override
   @SideOnly(Side.CLIENT)
-  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
-    return Collections.singletonList(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, SINGLE_MODEL_INVENTORY),
-        (ItemStack) null));
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ItemQuadCollector itemQuadCollector) {
+    return Collections
+        .singletonList(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, SINGLE_MODEL_INVENTORY), (ItemStack) null));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      boolean isPainted) {
     return null;
   }
 

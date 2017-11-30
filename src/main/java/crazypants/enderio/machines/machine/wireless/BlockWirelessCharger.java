@@ -1,5 +1,8 @@
 package crazypants.enderio.machines.machine.wireless;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.base.BlockEio;
@@ -11,8 +14,8 @@ import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.render.IRenderMapper;
-import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
@@ -35,11 +38,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implements IResourceTooltipProvider, ISmartRenderAwareBlock,
-    IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
+public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
+    implements IResourceTooltipProvider, ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
 
   public static BlockWirelessCharger create(@Nonnull IModObject modObject) {
 
@@ -78,31 +78,27 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     return 0;
   }
 
   @Override
   @Nonnull
-  public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+  public IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     return getDefaultState();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   @Nonnull
-  public final IBlockState getExtendedState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
-      TileWirelessCharger tileEntity = getTileEntitySafe(world, pos);
-      if (tileEntity != null) {
-        setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
-      }
-      blockStateWrapper.bakeModel();
-      return blockStateWrapper;
-    } else {
-      return state;
+  public final IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
+    TileWirelessCharger tileEntity = getTileEntitySafe(world, pos);
+    if (tileEntity != null) {
+      setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
     }
+    blockStateWrapper.bakeModel();
+    return blockStateWrapper;
   }
 
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
@@ -116,7 +112,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return WirelessRenderMapper.instance;
   }
 
@@ -126,12 +122,12 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState state) {
+  public boolean isOpaqueCube(@Nonnull IBlockState state) {
     return false;
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName();
   }
 
@@ -141,7 +137,8 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player, @Nonnull ItemStack stack) {
+  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
+      @Nonnull ItemStack stack) {
     if (!stack.isEmpty()) {
       TileEntity te = world.getTileEntity(pos);
       if (te instanceof TileWirelessCharger) {
@@ -164,7 +161,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   // ///////////////////////////////////////////////////////////////////////
 
   @Override
-  public IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, EnumFacing side) {
+  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
     IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
     return paintSource != null ? paintSource : world.getBlockState(pos);
   }
@@ -197,26 +194,25 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+  public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {
     return true;
   }
 
-    @SideOnly(Side.CLIENT)
+  @SideOnly(Side.CLIENT)
   @Override
-  public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
+  public boolean addHitEffects(@Nonnull IBlockState state, @Nonnull World world, @Nonnull RayTraceResult target, @Nonnull ParticleManager effectRenderer) {
     return PaintHelper.addHitEffects(state, world, target, effectRenderer);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
+  public boolean addDestroyEffects(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ParticleManager effectRenderer) {
     return PaintHelper.addDestroyEffects(world, pos, effectRenderer);
   }
 
   // ///////////////////////////////////////////////////////////////////////
   // PAINT END
   // ///////////////////////////////////////////////////////////////////////
-
 
   @Override
   public void registerRenderers(@Nonnull IModObject modObject) {

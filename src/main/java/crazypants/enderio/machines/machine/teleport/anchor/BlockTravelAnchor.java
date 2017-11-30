@@ -21,8 +21,8 @@ import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
-import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
@@ -71,7 +71,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     super(MachineObject.block_travel_anchor, clz);
     initDefaultState();
   }
-  
+
   protected BlockTravelAnchor(@Nonnull IModObject mo, Class<T> teClass) {
     super(mo, teClass);
   }
@@ -97,28 +97,28 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  protected BlockStateContainer createBlockState() {
+  protected @Nonnull BlockStateContainer createBlockState() {
     return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER });
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
     return getDefaultState();
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     return 0;
   }
 
   @Override
-  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+  public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     return getDefaultState();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public final IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public final @Nonnull IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     if (NullHelper.untrust(state) != null && NullHelper.untrust(world) != null && NullHelper.untrust(pos) != null) {
       IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
       T tileEntity = getTileEntitySafe(world, pos);
@@ -143,7 +143,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return TelePadRenderMapper.instance;
   }
 
@@ -153,12 +153,13 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  public TileEntity createNewTileEntity(World var1, int var2) {
+  public TileEntity createNewTileEntity(@Nonnull World var1, int var2) {
     return new TileTravelAnchor();
   }
 
   @Override
-  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
+  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase entity,
+      @Nonnull ItemStack stack) {
     if (entity instanceof EntityPlayer) {
       TileEntity te = world.getTileEntity(pos);
       if (te instanceof TileTravelAnchor) {
@@ -172,7 +173,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+  protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
     TileEntity te = world.getTileEntity(pos);
     if (!world.isRemote && te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
@@ -221,7 +222,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileTravelAnchor anchor, ItemStack drop) {
+  protected void processDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable TileTravelAnchor anchor, @Nonnull ItemStack drop) {
     PainterUtil2.setSourceBlock(drop, getPaintSource(getDefaultState(), world, pos));
   }
 
@@ -231,12 +232,12 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName();
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
@@ -245,13 +246,13 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   // ///////////////////////////////////////////////////////////////////////
 
   @Override
-  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
     IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
     return paintSource != null ? paintSource : world.getBlockState(pos);
   }
 
   @Override
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
     T te = getTileEntity(world, pos);
     if (te != null) {
       ((IPaintable.IPaintableTileEntity) te).setPaintSource(paintSource);
@@ -259,12 +260,12 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  public void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
     PainterUtil2.setSourceBlock(stack, paintSource);
   }
 
   @Override
-  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     T te = getTileEntitySafe(world, pos);
     if (te != null) {
       return ((IPaintable.IPaintableTileEntity) te).getPaintSource();
@@ -273,24 +274,24 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  public IBlockState getPaintSource(Block block, ItemStack stack) {
+  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
     return PainterUtil2.getSourceBlock(stack);
   }
 
   @Override
-  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+  public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {
     return true;
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
+  public boolean addHitEffects(@Nonnull IBlockState state, @Nonnull World world, @Nonnull RayTraceResult target, @Nonnull ParticleManager effectRenderer) {
     return PaintHelper.addHitEffects(state, world, target, effectRenderer);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
+  public boolean addDestroyEffects(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ParticleManager effectRenderer) {
     return PaintHelper.addDestroyEffects(world, pos, effectRenderer);
   }
 
@@ -300,7 +301,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers(IModObject mo) {
+  public void registerRenderers(@Nonnull IModObject mo) {
     ClientUtil.registerDefaultItemRenderer(mo);
   }
 

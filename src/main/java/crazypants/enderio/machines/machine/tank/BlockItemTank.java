@@ -2,6 +2,7 @@ package crazypants.enderio.machines.machine.tank;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
@@ -43,13 +44,13 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
   }
 
   @Override
-  public String getUnlocalizedName(ItemStack stack) {
+  public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
     return super.getUnlocalizedName(stack) + EnumTankType.getType(stack).getSuffix();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+  public void getSubItems(@Nonnull Item par1, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     ItemStack stack = new ItemStack(this, 1, 0);
     par3List.add(stack);
     stack = new ItemStack(this, 1, 1);
@@ -57,12 +58,12 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
   }
 
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     ((IAdvancedTooltipProvider) block).addCommonEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SmartTank tank = loadTank(itemstack);
     if (!tank.isEmpty()) {
       list.add(Fluids.MB(tank.getFluid(), tank.getCapacity()));
@@ -70,7 +71,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     ((IAdvancedTooltipProvider) block).addDetailedEntries(itemstack, entityplayer, list, flag);
   }
 
@@ -92,25 +93,25 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
   }
 
   @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
     return new CapabilityProvider(stack);
   }
 
   private class CapabilityProvider implements IFluidHandlerItem, ICapabilityProvider {
-    protected final ItemStack container;
+    protected final @Nonnull ItemStack container;
 
-    private CapabilityProvider(ItemStack container) {
+    private CapabilityProvider(@Nonnull ItemStack container) {
       this.container = container;
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
       return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
       return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T) this : null;
     }
 
@@ -155,7 +156,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
     }
 
     @Override
-    public ItemStack getContainer() {
+    public @Nonnull ItemStack getContainer() {
       return container;
     }
 

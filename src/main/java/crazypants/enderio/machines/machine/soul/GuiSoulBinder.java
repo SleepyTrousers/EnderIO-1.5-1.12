@@ -2,6 +2,8 @@ package crazypants.enderio.machines.machine.soul;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
@@ -21,40 +23,39 @@ import net.minecraft.init.SoundEvents;
 public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
 
   private static final int PLAYER_XP_ID = 985162394;
-  
+
   private final IconButton usePlayerXP;
 
-  public GuiSoulBinder(InventoryPlayer par1InventoryPlayer, TileSoulBinder te) {
+  public GuiSoulBinder(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileSoulBinder te) {
     super(te, new ContainerSoulBinder(par1InventoryPlayer, te), "soul_fuser");
     usePlayerXP = new IconButton(this, PLAYER_XP_ID, 125, 57, IconEIO.XP);
     usePlayerXP.visible = false;
-    usePlayerXP.setToolTip("Use Player XP");    
+    usePlayerXP.setToolTip("Use Player XP");
 
     addProgressTooltip(80, 34, 24, 16);
   }
 
   @Override
-  public void initGui() {    
+  public void initGui() {
     super.initGui();
     usePlayerXP.onGuiInit();
     ((ContainerSoulBinder) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) throws IOException {    
+  protected void actionPerformed(@Nonnull GuiButton b) throws IOException {
     super.actionPerformed(b);
-    if(b.id == PLAYER_XP_ID) {
+    if (b.id == PLAYER_XP_ID) {
       int xp = XpUtil.getPlayerXP(Minecraft.getMinecraft().player);
-      if(xp > 0 || Minecraft.getMinecraft().player.capabilities.isCreativeMode) {
+      if (xp > 0 || Minecraft.getMinecraft().player.capabilities.isCreativeMode) {
         GuiPacket.send(this, ContainerExperienceObelisk.ADD_XP, getTileEntity().getCurrentlyRequiredLevel());
-        SoundUtil.playClientSoundFX(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, getTileEntity());        
+        SoundUtil.playClientSoundFX(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, getTileEntity());
       }
     }
   }
 
   /**
-   * Draw the background layer for the GuiContainer (everything behind the
-   * items)
+   * Draw the background layer for the GuiContainer (everything behind the items)
    */
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
@@ -67,8 +68,8 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
     int i1;
 
     TileSoulBinder binder = getTileEntity();
-    
-    if(shouldRenderProgress()) {
+
+    if (shouldRenderProgress()) {
       i1 = getProgressScaled(24);
       drawTexturedModalRect(k + 80, l + 34, 176, 14, i1 + 1, 16);
     }
@@ -76,10 +77,10 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
     usePlayerXP.visible = binder.needsXP();
 
     ExperienceBarRenderer.render(this, getGuiLeft() + 56, getGuiTop() + 68, 65, binder.getContainer(), binder.getCurrentlyRequiredLevel());
-    
+
     bindGuiTexture();
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-    
+
   }
 
 }
