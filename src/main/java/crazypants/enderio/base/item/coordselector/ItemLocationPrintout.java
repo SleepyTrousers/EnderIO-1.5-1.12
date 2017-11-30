@@ -30,9 +30,8 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.IGuiHandler;
 
-public class ItemLocationPrintout extends Item implements IGuiHandler {
+public class ItemLocationPrintout extends Item implements GuiID.IEioGuiHandler {
 
   public static ItemLocationPrintout create(@Nonnull IModObject modObject) {
     ItemLocationPrintout result = new ItemLocationPrintout(modObject);
@@ -121,12 +120,12 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
     return null;
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
     if (GuiID.GUI_ID_LOCATION_PRINTOUT_CREATE.is(ID)) {
 
       int foundPaper = -1;
@@ -141,12 +140,12 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
         return null;
       }
 
-      TelepadTarget target = new TelepadTarget(new BlockPos(x, y, z), world.provider.getDimension());
+      TelepadTarget target = new TelepadTarget(pos, world.provider.getDimension());
       ItemStack stack = new ItemStack(this);
       target.writeToNBT(stack);
       return new GuiLocationPrintout(target, stack, foundPaper);
     } else {
-      EnumHand hand = x == 0 ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+      EnumHand hand = pos.getX() == 0 ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
       EntityEquipmentSlot slot = hand == EnumHand.MAIN_HAND ? EntityEquipmentSlot.MAINHAND : EntityEquipmentSlot.OFFHAND;
 
       TelepadTarget target = TelepadTarget.readFromNBT(player.getItemStackFromSlot(slot));

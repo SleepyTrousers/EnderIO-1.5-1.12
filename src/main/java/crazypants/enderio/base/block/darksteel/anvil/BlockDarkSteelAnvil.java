@@ -28,11 +28,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider, IHaveRenderers, IGuiHandler, IModObject.WithBlockItem {
+public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider, IHaveRenderers, GuiID.IEioGuiHandler, IModObject.WithBlockItem {
 
   public static BlockDarkSteelAnvil create(@Nonnull IModObject modObject) {
     MinecraftForge.EVENT_BUS.register(BlockDarkSteelAnvil.class);
@@ -54,12 +53,12 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerDarkSteelAnvil(player.inventory, NullHelper.notnullF(world, "getServerGuiElement without world?"), x, y, z, player);
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    return new ContainerDarkSteelAnvil(player.inventory, world, pos, player);
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
     return new GuiDarkSteelAnvil(player.inventory, player.world);
   }
 

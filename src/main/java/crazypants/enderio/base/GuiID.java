@@ -80,7 +80,7 @@ public enum GuiID {
 
   private final GuiID basePermission;
   private final boolean synthetic, hasBlockPosInXYZ;
-  private IGuiHandler handler = null;
+  private IEioGuiHandler handler = null;
 
   private GuiID() {
     this(null, false, true);
@@ -189,7 +189,7 @@ public enum GuiID {
     }
   }
 
-  public static void registerGuiHandler(@Nonnull GuiID id, @Nonnull IGuiHandler handler) {
+  public static void registerGuiHandler(@Nonnull GuiID id, @Nonnull IEioGuiHandler handler) {
     if (id.handler != null) {
       throw new InvalidParameterException("Handler for " + id + " already set to " + id.handler);
     }
@@ -213,10 +213,11 @@ public enum GuiID {
     NetworkRegistry.INSTANCE.registerGuiHandler(EnderIO.getInstance(), new IGuiHandler() {
       @Override
       public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+        final BlockPos pos = new BlockPos(x, y, z);
         final GuiID guid = byID(id);
-        IGuiHandler handler = guid.handler;
-        if (handler != null && world != null && (!guid.hasBlockPosInXYZ || world.isBlockLoaded(new BlockPos(x, y, z)))) {
-          final Object guiElement = handler.getServerGuiElement(id, player, world, x, y, z);
+        IEioGuiHandler handler = guid.handler;
+        if (handler != null && world != null && player != null && (!guid.hasBlockPosInXYZ || world.isBlockLoaded(pos))) {
+          final Object guiElement = handler.getServerGuiElement(id, player, world, pos);
           if (guiElement instanceof IRemoteExec) {
             ((IRemoteExec) guiElement).setGuiID(id);
           }
@@ -227,9 +228,10 @@ public enum GuiID {
 
       @Override
       public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-        IGuiHandler handler = byID(id).handler;
-        if (handler != null) {
-          final Object guiElement = handler.getClientGuiElement(id, player, world, x, y, z);
+        final BlockPos pos = new BlockPos(x, y, z);
+        IEioGuiHandler handler = byID(id).handler;
+        if (handler != null && world != null && player != null) {
+          final Object guiElement = handler.getClientGuiElement(id, player, world, pos);
           if (guiElement instanceof IRemoteExec) {
             ((IRemoteExec) guiElement).setGuiID(id);
           }
@@ -240,4 +242,11 @@ public enum GuiID {
     });
   }
 
+  public interface IEioGuiHandler {
+    @Nullable
+    Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos);
+
+    @Nullable
+    Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos);
+  }
 }

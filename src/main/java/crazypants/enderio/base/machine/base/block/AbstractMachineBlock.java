@@ -43,12 +43,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio<T>
-    implements IGuiHandler, IResourceTooltipProvider, ISmartRenderAwareBlock {
+    implements GuiID.IEioGuiHandler, IResourceTooltipProvider, ISmartRenderAwareBlock {
 
   protected final @Nonnull Random random;
 

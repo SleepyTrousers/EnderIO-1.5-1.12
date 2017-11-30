@@ -24,7 +24,7 @@ import static crazypants.enderio.base.init.ModObject.blockDarkSteelAnvil;
 
 public class ContainerDarkSteelAnvil extends ContainerRepair {
 
-  private int x, y, z;
+  private final @Nonnull BlockPos pos;
 
   private final Field _outputSlot = ReflectionHelper.findField(ContainerRepair.class, "outputSlot", "field_82852_f");
   private final Field _inputSlots = ReflectionHelper.findField(ContainerRepair.class, "inputSlots", "field_82853_g");
@@ -32,11 +32,11 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
   // public at the moment
   // private final Field _materialCost = ReflectionHelper.findField(ContainerRepair.class, "materialCost", "stackSizeToBeUsedInRepair", "field_82856_l");
 
-  public ContainerDarkSteelAnvil(@Nonnull InventoryPlayer playerInv, final @Nonnull World world, final int x, final int y, final int z,
+  public ContainerDarkSteelAnvil(@Nonnull InventoryPlayer playerInv, final @Nonnull World world, final @Nonnull BlockPos pos,
       @Nonnull EntityPlayer player) {
-    super(playerInv, world, new BlockPos(x, y, z), player);
+    super(playerInv, world, pos, player);
+    this.pos = pos;
 
-    final BlockPos blockPosIn = new BlockPos(x, y, z);
     final IInventory outputSlot, inputSlots;
     // final int materialCost;
 
@@ -47,10 +47,6 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-
-    this.x = x;
-    this.y = y;
-    this.z = z;
 
     this.inventorySlots.set(2, new Slot(NullHelper.notnullM(outputSlot, "ContainerRepair.outputSlot is null"), 2, 134, 47) {
 
@@ -87,7 +83,7 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
         }
 
         ContainerDarkSteelAnvil.this.maximumCost = 0;
-        IBlockState iblockstate = world.getBlockState(blockPosIn);
+        IBlockState iblockstate = world.getBlockState(pos);
 
         if (!playerIn.capabilities.isCreativeMode && !world.isRemote && iblockstate.getBlock() == blockDarkSteelAnvil.getBlock()
             && playerIn.getRNG().nextFloat() < Config.darkSteelAnvilDamageChance) {
@@ -95,14 +91,14 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
           ++l;
 
           if (l > 2) {
-            world.setBlockToAir(blockPosIn);
-            world.playEvent(1029, blockPosIn, 0);
+            world.setBlockToAir(pos);
+            world.playEvent(1029, pos, 0);
           } else {
-            world.setBlockState(blockPosIn, iblockstate.withProperty(BlockAnvil.DAMAGE, l), 2);
-            world.playEvent(1030, blockPosIn, 0);
+            world.setBlockState(pos, iblockstate.withProperty(BlockAnvil.DAMAGE, l), 2);
+            world.playEvent(1030, pos, 0);
           }
         } else if (!world.isRemote) {
-          world.playEvent(1030, blockPosIn, 0);
+          world.playEvent(1030, pos, 0);
         }
         return stack;
       }
@@ -111,6 +107,6 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
 
   @Override
   public boolean canInteractWith(@Nonnull EntityPlayer player) {
-    return player.world.getBlockState(new BlockPos(x, y, z)).getBlock() == blockDarkSteelAnvil.getBlock();
+    return player.world.getBlockState(pos).getBlock() == blockDarkSteelAnvil.getBlock();
   }
 }
