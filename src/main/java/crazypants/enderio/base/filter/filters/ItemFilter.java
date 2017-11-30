@@ -49,7 +49,8 @@ public class ItemFilter implements IInventory, IItemFilter {
     }
 
     @Override
-    public boolean store(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, String name, ItemFilter object)
+    public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+        @Nonnull ItemFilter object)
         throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
       NBTTagCompound root = new NBTTagCompound();
       object.writeToNBT(root);
@@ -58,7 +59,8 @@ public class ItemFilter implements IInventory, IItemFilter {
     }
 
     @Override
-    public ItemFilter read(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, Field field, String name, ItemFilter object)
+    public ItemFilter read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+        @Nullable ItemFilter object)
         throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
       if (object == null) {
         object = new ItemFilter();

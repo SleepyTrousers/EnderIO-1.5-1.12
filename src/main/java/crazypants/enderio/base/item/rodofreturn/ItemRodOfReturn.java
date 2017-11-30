@@ -114,13 +114,16 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
     ItemStack stack = player.getHeldItem(hand);
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof ITelePad) {
-      ITelePad tp = (ITelePad)te;
-      pos = tp.getMaster().getLocation();
-      setTarget(stack, pos, world.provider.getDimension());
-      player.sendMessage(Lang.RETURN_ROD_SYNC_TELEPAD.toChat(BlockCoord.chatString(pos, TextFormatting.WHITE)));
-      player.stopActiveHand();
-      return EnumActionResult.SUCCESS;
-    } else if(Config.rodOfReturnCanTargetAnywhere) {
+      ITelePad tp = ((ITelePad) te).getMaster();
+      if (tp != null) {
+        pos = tp.getLocation();
+        setTarget(stack, pos, world.provider.getDimension());
+        player.sendMessage(Lang.RETURN_ROD_SYNC_TELEPAD.toChat(BlockCoord.chatString(pos, TextFormatting.WHITE)));
+        player.stopActiveHand();
+        return EnumActionResult.SUCCESS;
+      }
+    }
+    if (Config.rodOfReturnCanTargetAnywhere) {
       setTarget(stack, pos, world.provider.getDimension());
       player.sendMessage(Lang.RETURN_ROD_SYNC.toChat(BlockCoord.chatString(pos, TextFormatting.WHITE)));
       player.stopActiveHand();

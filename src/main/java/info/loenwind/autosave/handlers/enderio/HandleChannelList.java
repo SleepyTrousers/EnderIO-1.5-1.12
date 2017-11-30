@@ -4,6 +4,8 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.transceiver.Channel;
 import crazypants.enderio.base.transceiver.ChannelList;
 import crazypants.enderio.base.transceiver.ChannelType;
@@ -17,7 +19,7 @@ public class HandleChannelList extends HandleAbstractEnumMap<ChannelType, Set<Ch
     super(ChannelType.class, new HandleAbstractCollection<Channel, Set<Channel>>(new HandleStorable<>()) {
 
       @Override
-      protected Set<Channel> makeCollection() {
+      protected @Nonnull Set<Channel> makeCollection() {
         return new HashSet<>();
       }
 
@@ -30,7 +32,7 @@ public class HandleChannelList extends HandleAbstractEnumMap<ChannelType, Set<Ch
   }
 
   @Override
-  protected EnumMap<ChannelType, Set<Channel>> makeMap() {
+  protected @Nonnull EnumMap<ChannelType, Set<Channel>> makeMap() {
     return new ChannelList();
   }
   

@@ -26,9 +26,9 @@ public enum SpeciesMode {
 
   @SideOnly(Side.CLIENT)
   public enum IconHolder implements CycleButton.ICycleEnum {
-    BOTH(SpeciesMode.BOTH, IconEIO.FILTER_SPECIES_BOTH),
-    PRIMARY(SpeciesMode.PRIMARY, IconEIO.FILTER_SPECIES_PRIMARY),
-    SECONDARY(SpeciesMode.SECONDARY, IconEIO.FILTER_SPECIES_SECONDARY);
+    BOTH_ICON(SpeciesMode.BOTH, IconEIO.FILTER_SPECIES_BOTH),
+    PRIMARY_ICON(SpeciesMode.PRIMARY, IconEIO.FILTER_SPECIES_PRIMARY),
+    SECONDARY_ICON(SpeciesMode.SECONDARY, IconEIO.FILTER_SPECIES_SECONDARY);
 
     private final @Nonnull SpeciesMode mode;
     private final @Nonnull IWidgetIcon icon;
@@ -58,7 +58,7 @@ public enum SpeciesMode {
           return holder;
         }
       }
-      return BOTH;
+      return BOTH_ICON;
     }
 
   }

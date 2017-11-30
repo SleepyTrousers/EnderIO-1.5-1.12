@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -29,10 +30,10 @@ public class RecipeFactory {
       + "<enderio:recipes xmlns:enderio=\"http://enderio.com/recipes\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://enderio.com/recipes recipes.xsd \">\n"
       + "\n</enderio:recipes>\n";
 
-  private final File configDirectory;
-  private final String domain;
+  private final @Nonnull File configDirectory;
+  private final @Nonnull String domain;
 
-  public RecipeFactory(File configDirectory, String domain) {
+  public RecipeFactory(@Nonnull File configDirectory, @Nonnull String domain) {
     this.configDirectory = configDirectory;
     this.domain = domain;
   }
@@ -52,6 +53,7 @@ public class RecipeFactory {
     }
   }
 
+  @SuppressWarnings("resource")
   public <T extends RecipeRoot> T readFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
     final ResourceLocation xsdRL = new ResourceLocation(domain, "config/recipes.xsd");
     final File xsdFL = new File(configDirectory, "recipes.xsd");
@@ -95,8 +97,8 @@ public class RecipeFactory {
   }
 
   protected static void printContentsOnError(InputStream stream, String filename) throws FileNotFoundException, IOException {
-    Log.error("Failed to parse xml from file '", filename, "'. Content:");
     try {
+      Log.error("Failed to parse xml from file '", filename, "'. Content:");
       int data = 0;
       while (data != -1) {
         StringBuilder sb1 = new StringBuilder(), sb2 = new StringBuilder();

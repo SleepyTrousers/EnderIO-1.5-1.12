@@ -34,9 +34,9 @@ import net.minecraftforge.fml.relauncher.Side;
 public final class Config {
 
   public static class Section {
-    public final String name;
+    public final @Nonnull String name;
 
-    public Section(String name, String lang) {
+    public Section(String name, @Nonnull String lang) {
       this.name = lang;
     }
 
@@ -86,6 +86,10 @@ public final class Config {
   public static int transceiverBucketTransmissionCostRF = 100;
 
   public static File configDirectory;
+
+  public static @Nonnull File getConfigDirectory() {
+    return NullHelper.notnull(configDirectory, "trying to access config before preInit");
+  }
 
   public static int recipeLevel = 2;
   public static boolean addPeacefulRecipes = false;

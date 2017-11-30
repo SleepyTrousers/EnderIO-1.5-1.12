@@ -17,7 +17,7 @@ public class RecipeLoader {
   }
 
   public static void addRecipes() {
-    addRecipes(new RecipeFactory(Config.configDirectory, EnderIO.DOMAIN), RECIPE_FILES);
+    addRecipes(new RecipeFactory(Config.getConfigDirectory(), EnderIO.DOMAIN), RECIPE_FILES);
   }
 
   public static void addRecipes(RecipeFactory recipeFactory, String... files) {
