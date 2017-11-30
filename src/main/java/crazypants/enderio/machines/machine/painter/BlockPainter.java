@@ -11,7 +11,6 @@ import crazypants.enderio.base.recipe.painter.EveryPaintableRecipe;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -39,26 +38,26 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> implem
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof TileEntityPainter) {
-      return new ContainerPainter(player.inventory, (TileEntityPainter) te);
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileEntityPainter te = getTileEntity(world, pos);
+    if (te != null) {
+      return new ContainerPainter(player.inventory, te);
     }
     return null;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileEntityPainter) {
-      return new GuiPainter(player.inventory, (TileEntityPainter) te);
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileEntityPainter te = getTileEntity(world, pos);
+    if (te != null) {
+      return new GuiPainter(player.inventory, te);
     }
     return null;
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_PAINTER;
   }
 

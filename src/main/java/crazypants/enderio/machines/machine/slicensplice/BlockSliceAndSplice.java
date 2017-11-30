@@ -38,8 +38,8 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileSliceAndSplice te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileSliceAndSplice te = getTileEntity(world, pos);
     if (te != null) {
       return new ContainerSliceAndSplice(player.inventory, te);
     }
@@ -47,8 +47,8 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileSliceAndSplice te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileSliceAndSplice te = getTileEntity(world, pos);
     if (te != null) {
       return new GuiSliceAndSplice(player.inventory, te);
     }

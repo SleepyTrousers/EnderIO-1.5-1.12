@@ -66,13 +66,21 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerZombieGenerator(player.inventory, (TileZombieGenerator) world.getTileEntity(new BlockPos(x, y, z)));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileZombieGenerator te = getTileEntity(world, pos);
+    if (te != null) {
+      return new ContainerZombieGenerator(player.inventory, te);
+    }
+    return null;
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiZombieGenerator(player.inventory, (TileZombieGenerator) world.getTileEntity(new BlockPos(x, y, z)));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileZombieGenerator te = getTileEntity(world, pos);
+    if (te != null) {
+      return new GuiZombieGenerator(player.inventory, te);
+    }
+    return null;
   }
 
   @Override

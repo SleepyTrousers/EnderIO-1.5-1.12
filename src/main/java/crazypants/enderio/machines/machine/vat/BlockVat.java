@@ -54,9 +54,9 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
     if (world != null) {
-      TileVat te = getTileEntity(world, new BlockPos(x, y, z));
+      TileVat te = getTileEntity(world, pos);
       if (te != null) {
         return new ContainerVat(player.inventory, te);
       }
@@ -65,9 +65,9 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
     if (world != null) {
-      TileVat te = getTileEntity(world, new BlockPos(x, y, z));
+      TileVat te = getTileEntity(world, pos);
       if (te != null) {
         return new GuiVat(player.inventory, te);
       }

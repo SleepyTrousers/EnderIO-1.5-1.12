@@ -65,8 +65,8 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileTransceiver te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileTransceiver te = getTileEntity(world, pos);
     if (te != null) {
       return new ContainerTransceiver(player.inventory, te);
     }
@@ -74,8 +74,8 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileTransceiver te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileTransceiver te = getTileEntity(world, pos);
     if (te != null) {
       return new GuiTransceiver(player.inventory, te);
     }
@@ -99,7 +99,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
   //
   // @Override
   // public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-  // TileTransceiver te = getTileEntity(world, new BlockPos(x, y, z));
+  // TileTransceiver te = getTileEntity(world, pos);
   // if (te != null && player.isSneaking()) {
   // for (ChannelType type : ChannelType.VALUES) {
   // Set<Channel> recieving = te.getRecieveChannels(type);

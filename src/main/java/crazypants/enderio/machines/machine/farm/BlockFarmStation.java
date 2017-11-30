@@ -49,9 +49,8 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    @SuppressWarnings("null")
-    TileFarmStation te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileFarmStation te = getTileEntity(world, pos);
     if (te != null) {
       return new FarmStationContainer(player.inventory, te);
     }
@@ -59,9 +58,8 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    @SuppressWarnings("null")
-    TileFarmStation te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileFarmStation te = getTileEntity(world, pos);
     if (te != null) {
       return new GuiFarmStation(player.inventory, te);
     }

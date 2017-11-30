@@ -12,7 +12,6 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -35,19 +34,19 @@ public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements I
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileSagMill) {
-      return new ContainerSagMill(player.inventory, (TileSagMill) te);
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileSagMill te = getTileEntity(world, pos);
+    if (te != null) {
+      return new ContainerSagMill(player.inventory, te);
     }
     return null;
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileSagMill) {
-      return new GuiSagMill(player.inventory, (TileSagMill) te);
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileSagMill te = getTileEntity(world, pos);
+    if (te != null) {
+      return new GuiSagMill(player.inventory, te);
     }
     return null;
   }

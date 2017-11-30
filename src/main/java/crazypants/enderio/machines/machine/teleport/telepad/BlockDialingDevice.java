@@ -26,11 +26,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IHaveRenderers {
+public class BlockDialingDevice extends BlockEio<TileDialingDevice>
+    implements GuiID.IEioGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IHaveRenderers {
 
   public static BlockDialingDevice create() {
 
@@ -68,11 +68,8 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements I
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    if (world == null) {
-      return null;
-    }
-    TileDialingDevice te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileDialingDevice te = getTileEntity(world, pos);
     if (te == null) {
       return null;
     }
@@ -80,11 +77,8 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements I
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    if (world == null) {
-      return null;
-    }
-    TileDialingDevice te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileDialingDevice te = getTileEntity(world, pos);
     if (te == null) {
       return null;
     }

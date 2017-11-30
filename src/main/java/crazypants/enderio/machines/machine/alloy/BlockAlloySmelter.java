@@ -12,7 +12,6 @@ import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -42,19 +41,19 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileAlloySmelter) {
-      return new ContainerAlloySmelter(player.inventory, (TileAlloySmelter) te);
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileAlloySmelter te = getTileEntity(world, pos);
+    if (te != null) {
+      return new ContainerAlloySmelter(player.inventory, te);
     }
     return null;
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileAlloySmelter) {
-      return new GuiAlloySmelter(player.inventory, (TileAlloySmelter) te);
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileAlloySmelter te = getTileEntity(world, pos);
+    if (te != null) {
+      return new GuiAlloySmelter(player.inventory, te);
     }
     return null;
   }

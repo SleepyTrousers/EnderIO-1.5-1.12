@@ -9,16 +9,12 @@ import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PainterUtil2;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveRenderers;
-import crazypants.enderio.base.render.IRenderMapper;
-import crazypants.enderio.base.render.ISmartRenderAwareBlock;
-import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
@@ -39,11 +35,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiHandler, IResourceTooltipProvider, IRedstoneConnectable,
+public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements GuiID.IEioGuiHandler, IResourceTooltipProvider, IRedstoneConnectable,
     IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
 
   public static BlockVacuumChest create(@Nonnull IModObject modObject) {
@@ -125,19 +120,19 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   }
 
   protected @Nonnull BlockStateWrapperBase createBlockStateWrapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    return new BlockStateWrapperBase(state, world, pos, null);//getBlockRenderMapper());
+    return new BlockStateWrapperBase(state, world, pos, null);// getBlockRenderMapper());
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public @Nonnull IItemRenderMapper getItemRenderMapper() {
-//    return RenderMappers.TELEPAD_MAPPER; // TODO: Why are we using this mapper for the vacuum chest?
-//  }
-//
-//  @SideOnly(Side.CLIENT)
-//  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
-//    return RenderMappers.TELEPAD_MAPPER; // TODO: Why are we using this mapper for the vacuum chest?
-//  }
+  // @Override
+  // @SideOnly(Side.CLIENT)
+  // public @Nonnull IItemRenderMapper getItemRenderMapper() {
+  // return RenderMappers.TELEPAD_MAPPER; // TODO: Why are we using this mapper for the vacuum chest?
+  // }
+  //
+  // @SideOnly(Side.CLIENT)
+  // public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+  // return RenderMappers.TELEPAD_MAPPER; // TODO: Why are we using this mapper for the vacuum chest?
+  // }
 
   @Override
   protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
@@ -181,19 +176,19 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileVacuumChest) {
-      return new ContainerVacuumChest(player.inventory, (TileVacuumChest) te);
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileVacuumChest te = getTileEntity(world, pos);
+    if (te != null) {
+      return new ContainerVacuumChest(player.inventory, te);
     }
     return null;
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileVacuumChest) {
-      return new GuiVacuumChest(player.inventory, (TileVacuumChest) te);
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileVacuumChest te = getTileEntity(world, pos);
+    if (te != null) {
+      return new GuiVacuumChest(player.inventory, te);
     }
     return null;
   }

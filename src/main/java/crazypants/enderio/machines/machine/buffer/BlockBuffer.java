@@ -80,8 +80,8 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileBuffer te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileBuffer te = getTileEntity(world, pos);
     if (te != null) {
       return new ContainerBuffer(player.inventory, te);
     }
@@ -89,8 +89,8 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileBuffer te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileBuffer te = getTileEntity(world, pos);
     if (te != null) {
       return new GuiBuffer(player.inventory, te);
     }

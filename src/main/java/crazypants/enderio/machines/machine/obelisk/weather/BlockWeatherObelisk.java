@@ -37,13 +37,21 @@ public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerWeatherObelisk(player.inventory, (TileWeatherObelisk) world.getTileEntity(new BlockPos(x, y, z)));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileWeatherObelisk te = getTileEntity(world, pos);
+    if (te != null) {
+      return new ContainerWeatherObelisk(player.inventory, te);
+    }
+    return null;
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiWeatherObelisk(player.inventory, (TileWeatherObelisk) world.getTileEntity(new BlockPos(x, y, z)));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileWeatherObelisk te = getTileEntity(world, pos);
+    if (te != null) {
+      return new GuiWeatherObelisk(player.inventory, te);
+    }
+    return null;
   }
 
   @Override

@@ -21,13 +21,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.machines.init.MachineObject.block_enchanter;
 
-public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implements IGuiHandler, IResourceTooltipProvider, ITESRItemBlock, IHaveTESR {
+public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implements GuiID.IEioGuiHandler, IResourceTooltipProvider, ITESRItemBlock, IHaveTESR {
 
   public static BlockEnchanter create(@Nonnull IModObject modObject) {
     BlockEnchanter res = new BlockEnchanter();
@@ -56,8 +55,8 @@ public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implemen
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEnchanter tileEntity = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileEnchanter tileEntity = getTileEntity(world, pos);
     if (tileEntity != null) {
       return new ContainerEnchanter(player, player.inventory, tileEntity);
     }
@@ -65,8 +64,8 @@ public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implemen
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEnchanter tileEntity = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileEnchanter tileEntity = getTileEntity(world, pos);
     if (tileEntity != null) {
       return new GuiEnchanter(player, player.inventory, tileEntity);
     }

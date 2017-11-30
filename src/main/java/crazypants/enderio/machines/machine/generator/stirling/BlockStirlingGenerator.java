@@ -37,13 +37,21 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new StirlingGeneratorContainer(player.inventory, (TileEntityStirlingGenerator) world.getTileEntity(new BlockPos(x, y, z)));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileEntityStirlingGenerator te = getTileEntity(world, pos);
+    if (te != null) {
+      return new StirlingGeneratorContainer(player.inventory, te);
+    }
+    return null;
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiStirlingGenerator(player.inventory, (TileEntityStirlingGenerator) world.getTileEntity(new BlockPos(x, y, z)));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileEntityStirlingGenerator te = getTileEntity(world, pos);
+    if (te != null) {
+      return new GuiStirlingGenerator(player.inventory, te);
+    }
+    return null;
   }
 
   @Override

@@ -1,8 +1,9 @@
 package crazypants.enderio.machines.machine.obelisk.aversion;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machines.machine.obelisk.ContainerAbstractObelisk;
 import crazypants.enderio.machines.machine.obelisk.GuiRangedObelisk;
@@ -10,8 +11,6 @@ import crazypants.enderio.machines.machine.obelisk.spawn.SpawningObeliskControll
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
 
 public class BlockAversionObelisk extends AbstractBlockObelisk<TileAversionObelisk> {
 
@@ -30,8 +29,8 @@ public class BlockAversionObelisk extends AbstractBlockObelisk<TileAversionObeli
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileAversionObelisk te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileAversionObelisk te = getTileEntity(world, pos);
     if (te != null) {
       return new ContainerAbstractObelisk(player.inventory, te);
     }
@@ -39,8 +38,8 @@ public class BlockAversionObelisk extends AbstractBlockObelisk<TileAversionObeli
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileAversionObelisk te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileAversionObelisk te = getTileEntity(world, pos);
     if (te != null) {
       return new GuiRangedObelisk(player.inventory, te);
     }

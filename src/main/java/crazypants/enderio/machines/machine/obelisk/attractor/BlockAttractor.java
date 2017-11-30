@@ -34,8 +34,8 @@ public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileAttractor te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileAttractor te = getTileEntity(world, pos);
     if (te != null) {
       return new ContainerAttractor(player.inventory, te);
     }
@@ -43,8 +43,8 @@ public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileAttractor te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileAttractor te = getTileEntity(world, pos);
     if (te != null) {
       return new GuiAttractor(player.inventory, te);
     }

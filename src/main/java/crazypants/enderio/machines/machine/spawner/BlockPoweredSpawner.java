@@ -36,7 +36,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -138,19 +137,19 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TilePoweredSpawner) {
-      return new ContainerPoweredSpawner(player.inventory, (TilePoweredSpawner) te);
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TilePoweredSpawner te = getTileEntity(world, pos);
+    if (te != null) {
+      return new ContainerPoweredSpawner(player.inventory, te);
     }
     return null;
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TilePoweredSpawner) {
-      return new GuiPoweredSpawner(player.inventory, (TilePoweredSpawner) te);
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TilePoweredSpawner te = getTileEntity(world, pos);
+    if (te != null) {
+      return new GuiPoweredSpawner(player.inventory, te);
     }
     return null;
   }

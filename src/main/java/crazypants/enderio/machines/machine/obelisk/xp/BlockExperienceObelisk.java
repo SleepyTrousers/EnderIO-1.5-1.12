@@ -39,8 +39,8 @@ public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceO
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileExperienceObelisk te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileExperienceObelisk te = getTileEntity(world, pos);
     if (te != null) {
       return new ContainerExperienceObelisk(te);
     }
@@ -48,8 +48,8 @@ public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceO
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileExperienceObelisk te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileExperienceObelisk te = getTileEntity(world, pos);
     if (te != null) {
       return new GuiExperienceObelisk(player.inventory, te);
     }

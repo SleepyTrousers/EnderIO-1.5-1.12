@@ -52,11 +52,10 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider,
+public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> implements GuiID.IEioGuiHandler, ITileEntityProvider, IResourceTooltipProvider,
     ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers, IHaveTESR {
 
   public static BlockTravelAnchor<TileTravelAnchor> create() {
@@ -194,9 +193,8 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    @SuppressWarnings("null")
-    T te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    T te = getTileEntity(world, pos);
     if (te != null) {
       if (GuiID.GUI_ID_TRAVEL_ACCESSABLE.is(ID)) {
         return new ContainerTravelAccessable(player.inventory, te, world);
@@ -208,9 +206,8 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    @SuppressWarnings("null")
-    T te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    T te = getTileEntity(world, pos);
     if (te != null) {
       if (GuiID.GUI_ID_TRAVEL_ACCESSABLE.is(ID)) {
         return new GuiTravelAccessable<T>(player.inventory, te, world);

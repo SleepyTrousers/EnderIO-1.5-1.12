@@ -92,13 +92,21 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new ContainerKillerJoe(player.inventory, (TileKillerJoe) world.getTileEntity(new BlockPos(x, y, z)));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileKillerJoe te = getTileEntity(world, pos);
+    if (te != null) {
+      return new ContainerKillerJoe(player.inventory, te);
+    }
+    return null;
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiKillerJoe(player.inventory, (TileKillerJoe) world.getTileEntity(new BlockPos(x, y, z)));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileKillerJoe te = getTileEntity(world, pos);
+    if (te != null) {
+      return new GuiKillerJoe(player.inventory, te);
+    }
+    return null;
   }
 
   @Override

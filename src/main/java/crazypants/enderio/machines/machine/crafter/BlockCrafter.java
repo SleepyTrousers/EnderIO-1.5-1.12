@@ -33,8 +33,8 @@ public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements I
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileCrafter te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileCrafter te = getTileEntity(world, pos);
     if (te != null) {
       return new ContainerCrafter(player.inventory, te, null);
     }
@@ -42,8 +42,8 @@ public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements I
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileCrafter te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileCrafter te = getTileEntity(world, pos);
     if (te != null) {
       return new GuiCrafter(player.inventory, te);
     }

@@ -1,8 +1,9 @@
 package crazypants.enderio.machines.machine.obelisk.relocator;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machines.machine.obelisk.ContainerAbstractObelisk;
 import crazypants.enderio.machines.machine.obelisk.GuiRangedObelisk;
@@ -10,8 +11,6 @@ import crazypants.enderio.machines.machine.obelisk.spawn.SpawningObeliskControll
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
 
 public class BlockRelocatorObelisk extends AbstractBlockObelisk<TileRelocatorObelisk> {
 
@@ -30,8 +29,8 @@ public class BlockRelocatorObelisk extends AbstractBlockObelisk<TileRelocatorObe
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileRelocatorObelisk te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileRelocatorObelisk te = getTileEntity(world, pos);
     if (te != null) {
       return new ContainerAbstractObelisk(player.inventory, te);
     }
@@ -39,8 +38,8 @@ public class BlockRelocatorObelisk extends AbstractBlockObelisk<TileRelocatorObe
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileRelocatorObelisk te = getTileEntity(world, new BlockPos(x, y, z));
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    TileRelocatorObelisk te = getTileEntity(world, pos);
     if (te != null) {
       return new GuiRangedObelisk(player.inventory, te);
     }
@@ -48,7 +47,7 @@ public class BlockRelocatorObelisk extends AbstractBlockObelisk<TileRelocatorObe
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_SPAWN_RELOCATOR;
   }
 }

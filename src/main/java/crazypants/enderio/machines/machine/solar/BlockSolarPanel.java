@@ -131,7 +131,7 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
 
   // @Override
   // public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-  // TileEntity te = getTileEntity(world, new BlockPos(x, y, z));
+  // TileEntity te = getTileEntity(world, pos);
   // if(te instanceof TileEntitySolarPanel) {
   // TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
   // float efficiency = solar.calculateLightRatio();
