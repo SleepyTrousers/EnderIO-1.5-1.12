@@ -49,7 +49,14 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
 
     @Override
     public boolean canFillFluidType(@Nullable FluidStack resource) {
-      return super.canFillFluidType(resource) && FluidFuelRegister.instance.getCoolant(resource.getFluid()) != null;
+      if (resource == null) {
+        return false;
+      }
+      final Fluid fluidIn = resource.getFluid();
+      if (fluidIn == null) {
+        return false;
+      }
+      return super.canFillFluidType(resource) && FluidFuelRegister.instance.getCoolant(fluidIn) != null;
     }
 
   };
@@ -58,7 +65,14 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
 
     @Override
     public boolean canFillFluidType(@Nullable FluidStack resource) {
-      return super.canFillFluidType(resource) && FluidFuelRegister.instance.getFuel(resource.getFluid()) != null;
+      if (resource == null) {
+        return false;
+      }
+      final Fluid fluidIn = resource.getFluid();
+      if (fluidIn == null) {
+        return false;
+      }
+      return super.canFillFluidType(resource) && FluidFuelRegister.instance.getFuel(fluidIn) != null;
     }
 
   };
@@ -217,7 +231,11 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
 
     ticksRemaingFuel--;
     if (ticksRemaingFuel <= 0) {
-      curFuel = FluidFuelRegister.instance.getFuel(getFuelTank().getFluid());
+      final FluidStack fluid = getFuelTank().getFluid();
+      if (fluid == null) {
+        return false;
+      }
+      curFuel = FluidFuelRegister.instance.getFuel(fluid);
       if (curFuel == null) {
         return false;
       }
@@ -227,7 +245,11 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
       }
       ticksRemaingFuel = getNumTicksPerMbFuel(curFuel) * drained;
     } else if (curFuel == null) {
-      curFuel = FluidFuelRegister.instance.getFuel(getFuelTank().getFluid());
+      final FluidStack fluid = getFuelTank().getFluid();
+      if (fluid == null) {
+        return false;
+      }
+      curFuel = FluidFuelRegister.instance.getFuel(fluid);
       if (curFuel == null) {
         return false;
       }
@@ -258,7 +280,12 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   }
 
   protected void updateCoolantFromTank() {
-    curCoolant = FluidFuelRegister.instance.getCoolant(getCoolantTank().getFluid());
+    final FluidStack fluid = getCoolantTank().getFluid();
+    if (fluid == null) {
+      curCoolant = null;
+    } else {
+      curCoolant = FluidFuelRegister.instance.getCoolant(fluid);
+    }
   }
 
   private int getPowerPerCycle() {
@@ -269,7 +296,15 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
     if (getFuelTank().getFluidAmount() <= 0) {
       return 0;
     }
-    return getNumTicksPerMbFuel(FluidFuelRegister.instance.getFuel(getFuelTank().getFluid().getFluid()));
+    final FluidStack fluidStack = getFuelTank().getFluid();
+    if (fluidStack == null) {
+      return 0;
+    }
+    final Fluid fluid = fluidStack.getFluid();
+    if (fluid == null) {
+      return 0;
+    }
+    return getNumTicksPerMbFuel(FluidFuelRegister.instance.getFuel(fluid));
   }
 
   public int getNumTicksPerMbCoolant() {
@@ -277,7 +312,8 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
       return 0;
     }
     if (world.isRemote) {
-      curFuel = FluidFuelRegister.instance.getFuel(getFuelTank().getFluid());
+      final FluidStack fluid = getFuelTank().getFluid();
+      curFuel = fluid == null ? null : FluidFuelRegister.instance.getFuel(fluid);
       updateCoolantFromTank();
     }
     return getNumTicksPerMbCoolant(curCoolant, curFuel);
@@ -315,7 +351,11 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
     if (getFuelTank().getFluidAmount() <= 0) {
       return 0;
     }
-    IFluidFuel fuel = FluidFuelRegister.instance.getFuel(getFuelTank().getFluid());
+    final FluidStack fluid = getFuelTank().getFluid();
+    if (fluid == null) {
+      return 0;
+    }
+    IFluidFuel fuel = FluidFuelRegister.instance.getFuel(fluid);
     if (fuel == null) {
       return 0;
     }
@@ -333,10 +373,14 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
     if (forFluidType != null) {
-      if (FluidFuelRegister.instance.getCoolant(forFluidType.getFluid()) != null) {
+      final Fluid fluid = forFluidType.getFluid();
+      if (fluid == null) {
+        return null;
+      }
+      if (FluidFuelRegister.instance.getCoolant(fluid) != null) {
         return coolantTank;
       }
-      if (FluidFuelRegister.instance.getFuel(forFluidType.getFluid()) != null) {
+      if (FluidFuelRegister.instance.getFuel(fluid) != null) {
         return fuelTank;
       }
     }

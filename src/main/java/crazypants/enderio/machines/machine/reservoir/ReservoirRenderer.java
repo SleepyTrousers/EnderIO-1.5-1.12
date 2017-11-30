@@ -12,6 +12,8 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.fluid.SmartTank;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.vecmath.Vertex;
 
 import net.minecraft.block.state.IBlockState;
@@ -25,8 +27,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
 public class ReservoirRenderer extends ManagedTESR<TileReservoir> {
 
@@ -51,7 +55,8 @@ public class ReservoirRenderer extends ManagedTESR<TileReservoir> {
 
   private Set<EnumFacing> getMergers(World world, BlockPos pos) {
     EnumSet<EnumFacing> result = EnumSet.noneOf(EnumFacing.class);
-    for (EnumFacing dir : EnumFacing.VALUES) {
+    for (NNIterator<EnumFacing> facings = NNList.FACING.fastIterator(); facings.hasNext();) {
+      EnumFacing dir = facings.next();
       BlockPos pos2 = pos.offset(dir);
       if (world.getBlockState(pos2).getBlock() == block) {
         result.add(dir);
@@ -181,9 +186,10 @@ public class ReservoirRenderer extends ManagedTESR<TileReservoir> {
   }
 
   private void renderTankFluid(SmartTank tank, Set<EnumFacing> mergers, World world, BlockPos pos) {
-    TextureAtlasSprite icon = RenderUtil.getStillTexture(tank.getFluid());
-    if (icon != null) {
-      int color = tank.getFluid().getFluid().getColor(tank.getFluid());
+    final FluidStack fluid = tank.getFluid();
+    if (fluid != null) {
+      TextureAtlasSprite icon = RenderUtil.getStillTexture(fluid);
+      int color = fluid.getFluid().getColor(fluid);
       float fullness = tank.getFilledRatio();
 
       boolean[][][] merge = getMergers9(world, pos);
@@ -198,7 +204,8 @@ public class ReservoirRenderer extends ManagedTESR<TileReservoir> {
         } else {
           GlStateManager.cullFace(CullFace.BACK);
         }
-        for (EnumFacing dir : EnumFacing.VALUES) {
+        for (NNIterator<EnumFacing> facings = NNList.FACING.fastIterator(); facings.hasNext();) {
+          EnumFacing dir = facings.next();
           float fullness2 = 0;
           if (mergers.contains(dir)) {
             BlockPos pos2 = pos.offset(dir);
@@ -223,7 +230,8 @@ public class ReservoirRenderer extends ManagedTESR<TileReservoir> {
     }
   }
 
-  public static void renderFace(VertexBuffer tes, BoundingBox bb, EnumFacing face, float minU, float maxU, float minV, float maxV, int color) {
+  public static void renderFace(@Nonnull VertexBuffer tes, @Nonnull BoundingBox bb, @Nonnull EnumFacing face, float minU, float maxU, float minV, float maxV,
+      int color) {
     float d = 1f; // LightUtil.diffuseLight(face);
     float r = d * ((color >> 16) & 0xFF) / 255f, g = d * ((color >> 8) & 0xFF) / 255f, b = d * (color & 0xFF) / 255f, a = ((color >> 24) & 0xFF) / 255f;
 
