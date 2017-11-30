@@ -10,7 +10,7 @@ import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
 
-import static crazypants.enderio.machines.config.Config.config;
+import static crazypants.enderio.machines.config.ConfigHandler.config;
 
 public class GuiConfigFactory extends GuiConfig {
 

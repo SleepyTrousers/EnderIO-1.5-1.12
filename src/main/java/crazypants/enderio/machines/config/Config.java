@@ -1,95 +1,26 @@
 package crazypants.enderio.machines.config;
 
-import java.io.File;
-
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.event.ConfigFileChangedEvent;
-
-import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.machines.EnderIOMachines;
-import crazypants.enderio.machines.capacitor.CapacitorKey;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import crazypants.enderio.base.config.ValueFactory;
+import crazypants.enderio.base.config.ValueFactory.IValue;
 
-@EventBusSubscriber(modid = EnderIOMachines.MODID)
 public class Config {
 
   public static final @Nonnull Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
+  public static final @Nonnull Section sectionTest = new Section("Test Section", "test");
+  public static final @Nonnull Section ENCHANTER = new Section("", "enchanter");
 
-  public static Configuration config;
+  static final ValueFactory F = new ValueFactory();
 
-  public static File getConfigDirectory() {
-    return crazypants.enderio.base.config.Config.configDirectory;
-  }
+  public static final IValue<Integer> test = F.make(sectionTest, "bar", 123, "A test F");
 
-  public static void init(FMLPreInitializationEvent event) {
-    File configDirectory = getConfigDirectory();
-    if (configDirectory == null) {
-      Log.warn(EnderIOMachines.MOD_NAME + " was initialized before " + EnderIO.MOD_NAME + ". This should not happen.");
-      crazypants.enderio.base.config.Config.init(event);
-      configDirectory = getConfigDirectory();
-    }
-
-    File configFile = new File(configDirectory, EnderIOMachines.MODID + ".cfg");
-    config = new Configuration(configFile);
-    syncConfig(false);
-  }
-
-  public static void init(FMLInitializationEvent event) {
-  }
-
-  public static void init(FMLPostInitializationEvent event) {
-  }
-
-  public static void syncConfig(boolean load) {
-    try {
-      if (load) {
-        config.load();
-      }
-      processConfig();
-    } catch (Exception e) {
-      Log.error(EnderIOMachines.MOD_NAME + " has a problem loading its configuration:");
-      e.printStackTrace();
-    } finally {
-      if (config.hasChanged()) {
-        config.save();
-      }
-    }
-  }
-
-  @SubscribeEvent
-  public static void onConfigChanged(OnConfigChangedEvent event) {
-    if (event.getModID().equals(EnderIOMachines.MODID)) {
-      Log.info("Updating config...");
-      syncConfig(false);
-      init((FMLInitializationEvent) null);
-      init((FMLPostInitializationEvent) null);
-    }
-  }
-
-  @SubscribeEvent
-  public static void onConfigFileChanged(ConfigFileChangedEvent event) {
-    if (event.getModID().equals(EnderIOMachines.MODID)) {
-      Log.info("Updating config...");
-      syncConfig(true);
-      event.setSuccessful();
-      init((FMLInitializationEvent) null);
-      init((FMLPostInitializationEvent) null);
-    }
-  }
-
-  private static void processConfig() {
-    // nothing to do ... yet!
-
-    CapacitorKey.processConfig(config);
-  }
+  public static final IValue<Integer> enchanterBaseLevelCost = F.make(ENCHANTER, "enchanterBaseLevelCost", 2, //
+      "Base level cost added to all recipes in the enchanter.");
+  public static final IValue<Double> enchanterLevelCostFactor = F.make(ENCHANTER, "enchanterLevelCostFactor", 0.75, //
+      "The final XP cost for an enchantment is multiplied by this value. To halve costs set to 0.5, to double them set it to 2.");
+  public static final IValue<Double> enchanterLapisCostFactor = F.make(ENCHANTER, "enchanterLapisCostFactor", 3.0, //
+      "The lapis cost is enchant level multiplied by this value.");
 
 }

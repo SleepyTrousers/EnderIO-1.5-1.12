@@ -2,7 +2,7 @@ package crazypants.enderio.machines;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.machines.config.Config;
+import crazypants.enderio.machines.config.ConfigHandler;
 import crazypants.enderio.machines.machine.obelisk.render.ObeliskRenderManager;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -36,17 +36,17 @@ public class EnderIOMachines {
 
   @EventHandler
   public static void init(FMLPreInitializationEvent event) {
-    Config.init(event);
+    ConfigHandler.init(event);
   }
 
   @EventHandler
   public static void init(FMLInitializationEvent event) {
-    Config.init(event);
+    ConfigHandler.init(event);
   }
 
   @EventHandler
   public static void init(FMLPostInitializationEvent event) {
-    Config.init(event);
+    ConfigHandler.init(event);
   }
 
 }
