@@ -25,7 +25,6 @@ import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.init.ModObject;
@@ -35,6 +34,7 @@ import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
+import crazypants.enderio.machines.config.Config;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
@@ -58,6 +58,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -96,11 +97,13 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   private static final int IO_MB_TICK = 250;
 
-  protected BoundingBox killBounds;
-
   private EnumFacing[] frontFaceAndSides;
 
-  protected AxisAlignedBB hooverBounds;
+  protected final static @Nonnull BoundingBox NULL_AABB = new BoundingBox(new BlockPos(0, 0, 0));
+
+  protected @Nonnull AxisAlignedBB hooverBounds = NULL_AABB;
+
+  protected @Nonnull BoundingBox killBounds = NULL_AABB;
 
   protected Attackera attackera;
 
@@ -235,13 +238,13 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
           }
           boolean togglePvp = false;
           if (ent instanceof EntityPlayer && !FMLCommonHandler.instance().getMinecraftServerInstance().isPVPEnabled()) {
-            if (Config.killerPvPoffDisablesSwing) {
+            if (Config.killerPvPoffDisablesSwing.get()) {
               continue;
-            } else if (Config.killerPvPoffIsIgnored) {
+            } else if (Config.killerPvPoffIsIgnored.get()) {
               togglePvp = true;
             }
           }
-          if (Config.killerJoeMustSee && !canJoeSee(ent)) {
+          if (Config.killerJoeMustSee.get() && !canJoeSee(ent)) {
             continue;
           }
           if (!PermissionAPI.hasPermission(getOwner().getAsGameProfile(), BlockKillerJoe.permissionAttacking, new TargetContext(atackera, ent))) {
@@ -300,7 +303,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   private void hooverXP() {
 
-    double maxDist = Config.killerJoeHooverXpLength;
+    double maxDist = Math.max(Config.killerJoeHooverXpHeight.get(), Math.max(Config.killerJoeHooverXpLength.get(), Config.killerJoeHooverXpWidth.get()));
 
     List<EntityXPOrb> xp = world.getEntitiesWithinAABB(EntityXPOrb.class, getHooverBounds(), null);
 
@@ -363,7 +366,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   private boolean needsMending() {
-    return Config.killerMendingEnabled && inventory[0] != null && inventory[0].isItemDamaged()
+    return Config.killerMendingEnabled.get() && inventory[0] != null && inventory[0].isItemDamaged()
         && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, inventory[0]) > 0;
   }
 
@@ -436,28 +439,32 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   private @Nonnull BoundingBox getKillBounds() {
-    if (killBounds == null) {
+    if (killBounds == NULL_AABB) {
+      double killerJoeAttackHeight = Config.killerJoeAttackHeight.get();
+      double killerJoeAttackLength = Config.killerJoeAttackLength.get();
+      double killerJoeAttackWidth = Config.killerJoeAttackWidth.get();
+
       BoundingBox bb = new BoundingBox(getLocation());
       Vector3d min = bb.getMin();
       Vector3d max = bb.getMax();
-      max.y += Config.killerJoeAttackHeight;
-      min.y -= Config.killerJoeAttackHeight;
+      max.y += killerJoeAttackHeight;
+      min.y -= killerJoeAttackHeight;
 
       EnumFacing facingDir = facing;
       if (ForgeDirectionOffsets.isPositiveOffset(facingDir)) {
-        max.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeAttackLength));
+        max.add(ForgeDirectionOffsets.offsetScaled(facingDir, killerJoeAttackLength));
         min.add(ForgeDirectionOffsets.forDir(facingDir));
       } else {
-        min.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeAttackLength));
+        min.add(ForgeDirectionOffsets.offsetScaled(facingDir, killerJoeAttackLength));
         max.add(ForgeDirectionOffsets.forDir(facingDir));
 
       }
       if (facingDir.getFrontOffsetX() == 0) {
-        min.x -= Config.killerJoeAttackWidth;
-        max.x += Config.killerJoeAttackWidth;
+        min.x -= killerJoeAttackWidth;
+        max.x += killerJoeAttackWidth;
       } else {
-        min.z -= Config.killerJoeAttackWidth;
-        max.z += Config.killerJoeAttackWidth;
+        min.z -= killerJoeAttackWidth;
+        max.z += killerJoeAttackWidth;
       }
       killBounds = new BoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
     }
@@ -465,28 +472,32 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   private @Nonnull AxisAlignedBB getHooverBounds() {
-    if (hooverBounds == null) {
+    if (hooverBounds == NULL_AABB) {
+      double killerJoeHooverXpHeight = Config.killerJoeHooverXpHeight.get();
+      double killerJoeHooverXpLength = Config.killerJoeHooverXpLength.get();
+      double killerJoeHooverXpWidth = Config.killerJoeHooverXpWidth.get();
+
       BoundingBox bb = new BoundingBox(getLocation());
       Vector3d min = bb.getMin();
       Vector3d max = bb.getMax();
-      max.y += Config.killerJoeAttackHeight;
-      min.y -= Config.killerJoeAttackHeight;
+      max.y += killerJoeHooverXpHeight;
+      min.y -= killerJoeHooverXpHeight;
 
       EnumFacing facingDir = facing;
       if (ForgeDirectionOffsets.isPositiveOffset(facingDir)) {
-        max.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeHooverXpLength));
+        max.add(ForgeDirectionOffsets.offsetScaled(facingDir, killerJoeHooverXpLength));
         min.add(ForgeDirectionOffsets.forDir(facingDir));
       } else {
-        min.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeHooverXpLength));
+        min.add(ForgeDirectionOffsets.offsetScaled(facingDir, killerJoeHooverXpLength));
         max.add(ForgeDirectionOffsets.forDir(facingDir));
 
       }
       if (facingDir.getFrontOffsetX() == 0) {
-        min.x -= Config.killerJoeHooverXpWidth * 2;
-        max.x += Config.killerJoeHooverXpWidth * 2;
+        min.x -= killerJoeHooverXpWidth * 2;
+        max.x += killerJoeHooverXpWidth * 2;
       } else {
-        min.z -= Config.killerJoeHooverXpWidth * 2;
-        max.z += Config.killerJoeHooverXpWidth * 2;
+        min.z -= killerJoeHooverXpWidth * 2;
+        max.z += killerJoeHooverXpWidth * 2;
       }
       hooverBounds = new AxisAlignedBB(min.x, min.y, min.z, max.x, max.y, max.z);
     }
@@ -496,7 +507,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   // ------------------------------- Fluid Stuff
 
   private void useNutrient() {
-    tank.removeFluidAmount(Config.killerJoeNutrientUsePerAttackMb);
+    tank.removeFluidAmount(Config.killerJoeNutrientUsePerAttackMb.get());
   }
 
   @Override

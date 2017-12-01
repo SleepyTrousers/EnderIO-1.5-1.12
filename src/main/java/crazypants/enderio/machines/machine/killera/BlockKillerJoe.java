@@ -153,13 +153,13 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
     ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, new KillerJoeRenderer());
   }
 
-  protected static String permissionAttacking;
+  protected static @Nonnull String permissionAttacking = "(unititialized)";
 
   @Override
   public void init(@Nonnull IModObject mo, @Nonnull FMLInitializationEvent event) {
     super.init(mo, event);
-    permissionAttacking = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attack." + getRegistryName().getResourcePath().toLowerCase(Locale.ENGLISH),
-        DefaultPermissionLevel.ALL, "Permission for the block " + getRegistryName() + " of Ender IO to attack entities."
+    permissionAttacking = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attack." + mo.getRegistryName().getResourcePath().toLowerCase(Locale.ENGLISH),
+        DefaultPermissionLevel.ALL, "Permission for the block " + mo.getUnlocalisedName() + " of Ender IO to attack entities."
             + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");
   }
 
