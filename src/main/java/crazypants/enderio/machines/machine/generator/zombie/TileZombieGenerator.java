@@ -13,13 +13,13 @@ import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerDistributor;
+import crazypants.enderio.machines.config.Config;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.AbstractGeneratorEntity;
 import info.loenwind.autosave.annotations.Storable;
@@ -48,14 +48,13 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   @Store
   final SmartTank tank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), Fluid.BUCKET_VOLUME * 2);
 
-  int tickPerBucketOfFuel = Config.zombieGeneratorTicksPerBucketFuel;
-
   private boolean tanksDirty;
   @Store(NBTAction.UPDATE)
   private boolean active = false;
   private PowerDistributor powerDis;
 
-  private int ticksRemaingFuel;
+  @Store
+  private float ticksRemaingFuel;
   private boolean inPause;
 
   public TileZombieGenerator() {
@@ -139,6 +138,17 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
 
   private boolean generateEnergy() {
 
+    // if there are still ticks left from the last mB of fuel we used, keep producing energy no matter what
+    if (ticksRemaingFuel >= 1f) {
+      doGenerateEnergy();
+      return true;
+    }
+
+    // if the tank is too empty, we do nothing
+    if (tank.getFluidAmount() < getActivationAmount()) {
+      return false;
+    }
+
     // once full, don't start again until we have drained 10 seconds worth of power to prevent
     // flickering on and off constantly when powering a machine that draws less than this produces
     if (inPause && getEnergyStored() >= (getMaxEnergyStored() - (getPowerUsePerTick() * 200)) && getEnergyStored() > (getMaxEnergyStored() / 8)) {
@@ -146,21 +156,28 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
     }
     inPause = false;
 
-    if (tank.getFluidAmount() < getActivationAmount()) {
-      return false;
+    // eat more fuel and add ticks
+    while (ticksRemaingFuel < 1f && tank.getFluidAmount() > 0) {
+      tank.removeFluidAmount(1);
+      ticksRemaingFuel += Config.ticksPerBucketOfFuel.get() / 1000f;
     }
 
-    ticksRemaingFuel--;
-    if (ticksRemaingFuel <= 0) {
-      tank.removeFluidAmount(1);
-      ticksRemaingFuel = tickPerBucketOfFuel / 1000;
+    // check that we didn't run out of fuel without even gathering enough for 1 tick...
+    if (ticksRemaingFuel >= 1f) {
+      doGenerateEnergy();
+      return true;
     }
+
+    return false;
+  }
+
+  private void doGenerateEnergy() {
+    ticksRemaingFuel -= 1f;
     setEnergyStored(getEnergyStored() + getPowerUsePerTick());
-    return true;
   }
 
   int getActivationAmount() {
-    return (int) (tank.getCapacity() * 0.7f);
+    return (int) (tank.getCapacity() * Config.minimumTankLevel.get());
   }
 
   private boolean transmitEnergy() {
