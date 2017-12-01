@@ -267,7 +267,6 @@ public final class Config {
   public static int maxPhotovoltaicVibrantOutputRF = 160;
 
   public static int zombieGeneratorRfPerTick = 80;
-  public static int zombieGeneratorTicksPerBucketFuel = 10000;
 
   public static boolean addFuelTooltipsToAllFluidContainers = true;
   public static boolean addFurnaceFuelTootip = true;
@@ -368,16 +367,6 @@ public final class Config {
 
   public static float machineSoundVolume = 1.0f;
 
-  public static int killerJoeNutrientUsePerAttackMb = 5;
-  public static double killerJoeAttackHeight = 2;
-  public static double killerJoeAttackWidth = 2;
-  public static double killerJoeAttackLength = 4;
-  public static double killerJoeHooverXpWidth = 5;
-  public static double killerJoeHooverXpLength = 10;
-  public static boolean killerJoeMustSee = false;
-  public static boolean killerPvPoffDisablesSwing = false;
-  public static boolean killerPvPoffIsIgnored = false;
-  public static boolean killerMendingEnabled = true;
   public static boolean killerProvokesCreeperExpolosions = false;
 
   public static double xpVacuumRange = 10;
@@ -1094,12 +1083,6 @@ public final class Config {
         .get(sectionPower.name, "fireWaterPowerTotalBurnTime", fireWaterPowerTotalBurnTime, "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000")
         .getInt(fireWaterPowerTotalBurnTime);
 
-    zombieGeneratorRfPerTick = config.get(sectionPower.name, "zombieGeneratorRfPerTick", zombieGeneratorRfPerTick, "The amount of power generated per tick.")
-        .getInt(zombieGeneratorRfPerTick);
-    zombieGeneratorTicksPerBucketFuel = config
-        .get(sectionPower.name, "zombieGeneratorTicksPerMbFuel", zombieGeneratorTicksPerBucketFuel, "The number of ticks one bucket of fuel lasts.")
-        .getInt(zombieGeneratorTicksPerBucketFuel);
-
     addFuelTooltipsToAllFluidContainers = config
         .get(sectionPersonal.name, "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
             "If true, the RF/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.")
@@ -1265,32 +1248,6 @@ public final class Config {
         "The delay in ticks between when nutrient distillation boosts your food value.").getInt((int) nutrientFoodBoostDelay);
     rocketFuelIsExplosive = config
         .get(sectionFluid.name, "rocketFuelIsExplosive", rocketFuelIsExplosive, "If enabled, Rocket Fuel will explode when in contact with fire.").getBoolean();
-
-    killerJoeNutrientUsePerAttackMb = config.get(sectionKiller.name, "killerJoeNutrientUsePerAttackMb", killerJoeNutrientUsePerAttackMb,
-        "The number of millibuckets of nutrient fluid used per attack.").getInt(killerJoeNutrientUsePerAttackMb);
-
-    killerJoeAttackHeight = config.get(sectionKiller.name, "killerJoeAttackHeight", killerJoeAttackHeight, "The reach of attacks above and bellow Joe.")
-        .getDouble(killerJoeAttackHeight);
-    killerJoeAttackWidth = config.get(sectionKiller.name, "killerJoeAttackWidth", killerJoeAttackWidth, "The reach of attacks to each side of Joe.")
-        .getDouble(killerJoeAttackWidth);
-    killerJoeAttackLength = config.get(sectionKiller.name, "killerJoeAttackLength", killerJoeAttackLength, "The reach of attacks in front of Joe.")
-        .getDouble(killerJoeAttackLength);
-    killerJoeHooverXpLength = config
-        .get(sectionKiller.name, "killerJoeHooverXpLength", killerJoeHooverXpLength, "The distance from which XP will be gathered to each side of Joe.")
-        .getDouble(killerJoeHooverXpLength);
-    killerJoeHooverXpWidth = config
-        .get(sectionKiller.name, "killerJoeHooverXpWidth", killerJoeHooverXpWidth, "The distance from which XP will be gathered in front of Joe.")
-        .getDouble(killerJoeHooverXpWidth);
-
-    killerJoeMustSee = config.get(sectionKiller.name, "killerJoeMustSee", killerJoeMustSee, "Set whether the Killer Joe can attack through blocks.")
-        .getBoolean();
-    killerPvPoffDisablesSwing = config.get(sectionKiller.name, "killerPvPoffDisablesSwing", killerPvPoffDisablesSwing,
-        "Set whether the Killer Joe swings even if PvP is off (that swing will do nothing unless killerPvPoffIsIgnored is enabled).").getBoolean();
-    killerPvPoffIsIgnored = config.get(sectionKiller.name, "killerPvPoffIsIgnored", killerPvPoffIsIgnored,
-        "Set whether the Killer Joe ignores PvP settings and always hits players (killerPvPoffDisablesSwing must be off for this to work).").getBoolean();
-    killerMendingEnabled = config
-        .get(sectionKiller.name, "killerMending", killerMendingEnabled, "If enabled, picked up XP will be used for the enchantement 'Mending' on the weapon.")
-        .getBoolean();
 
     killerProvokesCreeperExpolosions = config.get(sectionKiller.name, "killerProvokesCreeperExpolosions", killerProvokesCreeperExpolosions,
         "If enabled, Creepers will explode for the Killer Joe just like for any player.").getBoolean();
