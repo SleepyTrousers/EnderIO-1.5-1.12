@@ -17,6 +17,7 @@ import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.machines.config.Config;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 
@@ -25,9 +26,9 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
   @Nonnull
   private static final Rectangle RECTANGLE_FUEL_TANK = new Rectangle(80, 21, 15, 47);
 
-  public GuiZombieGenerator(InventoryPlayer inventory, @Nonnull final TileZombieGenerator tileEntity) {
+  public GuiZombieGenerator(@Nonnull InventoryPlayer inventory, @Nonnull final TileZombieGenerator tileEntity) {
     super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity), "zombie_generator");
-    
+
     addToolTip(new GuiToolTip(RECTANGLE_FUEL_TANK, "") {
 
       @Override
@@ -36,7 +37,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
         String heading = EnderIO.lang.localize("zombieGenerator.fuelTank");
         text.add(heading);
         text.add(Fluids.toCapactityString(getTileEntity().tank));
-        if(tileEntity.tank.getFluidAmount() < tileEntity.getActivationAmount()) {
+        if (tileEntity.tank.getFluidAmount() < tileEntity.getActivationAmount()) {
           text.add(EnderIO.lang.localize("gui.fluid.minReq", Fluids.MB(tileEntity.getActivationAmount())));
         }
       }
@@ -62,7 +63,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
   public void renderSlotHighlights(IoMode mode) {
     super.renderSlotHighlights(mode);
 
-    if(mode == IoMode.PULL || mode == IoMode.PUSH_PULL) {
+    if (mode == IoMode.PULL || mode == IoMode.PUSH_PULL) {
       int x = 78;
       int y = 19;
       int w = 15 + 4;
@@ -83,7 +84,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
 
     FontRenderer fr = getFontRenderer();
     int output = 0;
-    if(gen.isActive()) {
+    if (gen.isActive()) {
       output = gen.getPowerUsePerTick();
     }
     String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
@@ -93,12 +94,12 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
 
     int x = guiLeft + 80;
     int y = guiTop + 21;
-    if(gen.tank.getFluidAmount() > 0) {
+    if (gen.tank.getFluidAmount() > 0) {
 
       RenderUtil.renderGuiTank(gen.tank.getFluid(), gen.tank.getCapacity(), gen.tank.getFluidAmount(), x, y, zLevel, 16, 47);
 
-      if(gen.isActive()) {
-        txt = gen.tickPerBucketOfFuel / 1000 + " " + EnderIO.lang.localize("power.tmb");
+      if (gen.isActive()) {
+        txt = Config.ticksPerBucketOfFuel.get() / 1000 + " " + EnderIO.lang.localize("power.tmb");
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 46, ColorUtil.getRGB(Color.WHITE));
       }

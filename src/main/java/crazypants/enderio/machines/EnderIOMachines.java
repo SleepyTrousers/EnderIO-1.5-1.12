@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.machines.config.ConfigHandler;
 import crazypants.enderio.machines.machine.obelisk.render.ObeliskRenderManager;
+import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -27,7 +28,7 @@ public class EnderIOMachines {
   public static final @Nonnull String DOMAIN = "enderio";
   public static final @Nonnull String MOD_NAME = "Ender IO Machines";
   public static final @Nonnull String VERSION = "@VERSION@";
-  
+
   @SubscribeEvent
   @SideOnly(Side.CLIENT)
   public static void onModelRegister(ModelRegistryEvent event) {
@@ -42,6 +43,7 @@ public class EnderIOMachines {
   @EventHandler
   public static void init(FMLInitializationEvent event) {
     ConfigHandler.init(event);
+    PacketHandler.init(event);
   }
 
   @EventHandler

@@ -78,6 +78,7 @@ public class ConfigHandler {
       event.setSuccessful();
       init((FMLInitializationEvent) null);
       init((FMLPostInitializationEvent) null);
+      // TODO: if this is a server we should re-send the config sync packet to all connected players
     }
   }
 
