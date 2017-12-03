@@ -17,6 +17,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
@@ -78,6 +79,20 @@ public class ValueFactory {
       return this;
     }
 
+    default IValue<T> setRange(double min, double max) {
+      setMin(min);
+      setMax(max);
+      return this;
+    }
+
+    default IValue<T> setMin(double min) {
+      return this;
+    }
+
+    default IValue<T> setMax(double max) {
+      return this;
+    }
+
   }
 
   public abstract class AbstractValue<T> implements IValue<T> {
@@ -86,6 +101,7 @@ public class ValueFactory {
     protected final @Nonnull String section, keyname, text;
     protected final @Nonnull T defaultValue;
     protected @Nullable T value = null;
+    protected Double minValue, maxValue;
 
     protected AbstractValue(@Nonnull String section, @Nonnull String keyname, @Nonnull T defaultValue, @Nonnull String text) {
       this.section = section;
@@ -120,6 +136,18 @@ public class ValueFactory {
     }
 
     protected abstract @Nullable T makeValue();
+
+    @Override
+    public IValue<T> setMin(double min) {
+      this.minValue = min;
+      return this;
+    }
+
+    @Override
+    public IValue<T> setMax(double max) {
+      this.maxValue = max;
+      return this;
+    }
 
     @Override
     @Nonnull
@@ -196,7 +224,14 @@ public class ValueFactory {
 
     @Override
     protected @Nullable Integer makeValue() {
-      return config.get(section, keyname, defaultValue, text).getInt(defaultValue);
+      final Property property = config.get(section, keyname, defaultValue, text);
+      if (minValue != null) {
+        property.setMinValue(minValue);
+      }
+      if (maxValue != null) {
+        property.setMaxValue(maxValue);
+      }
+      return property.getInt(defaultValue);
     }
 
     @Override
@@ -214,7 +249,14 @@ public class ValueFactory {
 
     @Override
     protected @Nullable Double makeValue() {
-      return config.get(section, keyname, defaultValue, text).getDouble(defaultValue);
+      final Property property = config.get(section, keyname, defaultValue, text);
+      if (minValue != null) {
+        property.setMinValue(minValue);
+      }
+      if (maxValue != null) {
+        property.setMaxValue(maxValue);
+      }
+      return property.getDouble(defaultValue);
     }
 
     @Override
@@ -232,7 +274,14 @@ public class ValueFactory {
 
     @Override
     protected @Nullable Float makeValue() {
-      return (float) config.get(section, keyname, defaultValue, text).getDouble(defaultValue);
+      final Property property = config.get(section, keyname, defaultValue, text);
+      if (minValue != null) {
+        property.setMinValue(minValue);
+      }
+      if (maxValue != null) {
+        property.setMaxValue(maxValue);
+      }
+      return (float) property.getDouble(defaultValue);
     }
 
     @Override

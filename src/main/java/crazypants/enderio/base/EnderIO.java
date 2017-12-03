@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.Lang;
 import com.enderio.core.common.util.EntityUtil;
@@ -15,6 +16,7 @@ import com.google.common.collect.ImmutableList;
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.IEnderIOAddon;
 import crazypants.enderio.base.enchantment.Enchantments;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.Fluids;
@@ -50,6 +52,7 @@ import info.loenwind.scheduler.Celeb;
 import info.loenwind.scheduler.Scheduler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -68,7 +71,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 
 @Mod(modid = crazypants.enderio.base.EnderIO.MODID, name = crazypants.enderio.base.EnderIO.MOD_NAME, version = crazypants.enderio.base.EnderIO.VERSION, //
     dependencies = "after:endercore;after:hwyla;after:jei", guiFactory = "crazypants.enderio.base.config.ConfigFactoryEIO")
-public class EnderIO {
+public class EnderIO implements IEnderIOAddon {
 
   public static final @Nonnull String MODID = "enderiobase";
   public static final @Nonnull String DOMAIN = "enderio";
@@ -290,6 +293,12 @@ public class EnderIO {
 
   public static @Nonnull EnderIO getInstance() {
     return NullHelper.notnullF(instance, "instance is missing");
+  }
+
+  @Override
+  @Nullable
+  public Configuration getConfiguration() {
+    return Config.config;
   }
 
 }
