@@ -1,5 +1,7 @@
 package crazypants.enderio.base.network;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.base.EnderIO;
@@ -30,7 +32,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketHandler {
 
-  public static final ThreadedNetworkWrapper INSTANCE = new ThreadedNetworkWrapper(EnderIO.DOMAIN);
+  public static final @Nonnull ThreadedNetworkWrapper INSTANCE = new ThreadedNetworkWrapper(EnderIO.DOMAIN);
 
   private static int ID = 0;
 
@@ -55,8 +57,6 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketRedstoneMode.Handler.class, PacketRedstoneMode.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(GuiPacket.Handler.class, GuiPacket.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketExperienceContainer.class, PacketExperienceContainer.class, nextID(), Side.CLIENT);
-    // TODO 1.11 move to sub-mod
-    // INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketConduitProbe.Handler.class, PacketConduitProbe.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketConduitProbeMode.class, PacketConduitProbeMode.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(YetaWrenchPacketProcessor.Handler.class, YetaWrenchPacketProcessor.class, nextID(), Side.SERVER);
@@ -74,6 +74,7 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketMagnetState.Handler.class, PacketMagnetState.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketOpenAuthGui.Handler.class, PacketOpenAuthGui.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketUpdateLocationPrintout.Handler.class, PacketUpdateLocationPrintout.class, nextID(), Side.SERVER);
+    // INSTANCE.registerMessage(new PacketConfigSyncNewHandler(Config.F), PacketConfigSyncNew.class, PacketHandler.nextID(), Side.CLIENT);
 
   }
 

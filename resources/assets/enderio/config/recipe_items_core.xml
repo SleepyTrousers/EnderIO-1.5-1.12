@@ -22,7 +22,7 @@ XML editor will display that as tooltips when editing this file.
  -->
 
   <recipe name="Frank'N'Zombie" required="true">
-    <config section="Recipe Settings" name="addPeacefulRecipes" value="true" />
+    <config section="recipe" name="addPeacefulRecipes" value="true" />
     <crafting>
       <grid size="3x3">
         <item name="ingotGold" /><item name="gemDiamond" /><item name="ingotGold" />
@@ -34,7 +34,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Sentient Ender" required="true">
-    <config section="Recipe Settings" name="addPeacefulRecipes" value="true" />
+    <config section="recipe" name="addPeacefulRecipes" value="true" />
     <crafting>
       <grid size="3x3">
         <item name="gemDiamond" /><item name="gemDiamond" /><item name="gemDiamond" />
