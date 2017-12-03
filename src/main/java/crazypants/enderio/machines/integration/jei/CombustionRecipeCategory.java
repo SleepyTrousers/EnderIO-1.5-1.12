@@ -12,13 +12,12 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.IFluidCoolant;
 import crazypants.enderio.base.fluid.IFluidFuel;
 import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.machine.generator.combustion.CombustionMath;
 import crazypants.enderio.machines.machine.generator.combustion.GuiCombustionGenerator;
-import crazypants.enderio.machines.machine.generator.combustion.TileCombustionGenerator;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -46,15 +45,12 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
   public static class CombustionRecipeWrapper extends BlankRecipeWrapper {
 
     private final FluidStack fluidCoolant, fluidFuel;
-    private final float fluidCoolantPerTick, fluidFuelPerTick;
-    private final int rfPerTick;
+    private final CombustionMath math;
 
-    private CombustionRecipeWrapper(FluidStack fluidCoolant, FluidStack fluidFuel, float fluidCoolantPerTick, float fluidFuelPerTick, int rfPerTick) {
+    private CombustionRecipeWrapper(FluidStack fluidCoolant, FluidStack fluidFuel, CombustionMath math) {
       this.fluidCoolant = fluidCoolant;
       this.fluidFuel = fluidFuel;
-      this.fluidCoolantPerTick = fluidCoolantPerTick;
-      this.fluidFuelPerTick = fluidFuelPerTick;
-      this.rfPerTick = rfPerTick;
+      this.math = math;
     }
 
     public void setInfoData(Map<Integer, ? extends IGuiIngredient<ItemStack>> ings) {
@@ -69,19 +65,18 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
       FontRenderer fr = minecraft.fontRenderer;
 
-      String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(rfPerTick) + " " + PowerDisplayUtil.abrevation()
-          + PowerDisplayUtil.perTickStr();
+      String txt = EnderIO.lang.localize("combustionGenerator.output", PowerDisplayUtil.formatPowerPerTick(math.getEnergyPerTick()));
       int sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow(txt, 176 / 2 - sw / 2 - xOff, fr.FONT_HEIGHT / 2, ColorUtil.getRGB(Color.WHITE));
 
       int y = 21 - yOff - 2;
       int x = 114 - xOff;
-      txt = fluidCoolantPerTick + " " + EnderIO.lang.localize("power.tmb");
+      txt = math.getTicksPerCoolant() + " " + EnderIO.lang.localize("power.tmb");
       sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
 
       x = 48 - xOff;
-      txt = fluidFuelPerTick + " " + EnderIO.lang.localize("power.tmb");
+      txt = math.getTicksPerFuel() + " " + EnderIO.lang.localize("power.tmb");
       sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
 
@@ -103,13 +98,14 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     List<CombustionRecipeWrapper> result = new ArrayList<CombustionRecipeWrapper>();
 
     for (Fluid fluid1 : fluids.values()) {
-      IFluidCoolant coolant = FluidFuelRegister.instance.getCoolant(fluid1);
+      IFluidCoolant coolant = CombustionMath.toCoolant(fluid1);
       if (coolant != null) {
         for (Fluid fluid2 : fluids.values()) {
-          IFluidFuel fuel = FluidFuelRegister.instance.getFuel(fluid2);
+          IFluidFuel fuel = CombustionMath.toFuel(fluid2);
           if (fuel != null) {
-            result.add(new CombustionRecipeWrapper(new FluidStack(fluid1, 1000), new FluidStack(fluid2, 1000),
-                TileCombustionGenerator.getNumTicksPerMbCoolant(coolant, fuel), TileCombustionGenerator.getNumTicksPerMbFuel(fuel), fuel.getPowerPerCycle()));
+            CombustionMath math = new CombustionMath(coolant, fuel, 1f);
+            result.add(new CombustionRecipeWrapper(new FluidStack(fluid1, 1000), new FluidStack(fluid2, 1000), math));
+            // TODO: enhanced one
           }
         }
       }

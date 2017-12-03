@@ -36,3 +36,5 @@
 ## translation reports
 resources/assets/enderio/lang/*.lang.txt
 /ebin/
+
+resources/assets/enderio/textures/gui/40/Corel Auto-Preserve/

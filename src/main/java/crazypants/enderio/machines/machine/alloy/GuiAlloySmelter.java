@@ -23,20 +23,27 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 
-public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
+public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiPoweredMachineBase<T> {
 
   private final @Nonnull IIconButton vanillaFurnaceButton;
   private final @Nonnull GuiToolTip vanillaFurnaceTooltip;
+  private final boolean isSimple;
 
   protected static final int SMELT_MODE_BUTTON_ID = 76;
 
-  public GuiAlloySmelter(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileAlloySmelter furnaceInventory) {
-    super(furnaceInventory, new ContainerAlloySmelter(par1InventoryPlayer, furnaceInventory), "alloy_smelter");
+  public GuiAlloySmelter(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull T furnaceInventory) {
+    super(furnaceInventory, ContainerAlloySmelter.create(par1InventoryPlayer, furnaceInventory), "alloy_smelter", "simple_alloy_smelter");
+
+    isSimple = furnaceInventory instanceof TileAlloySmelter.Simple;
 
     vanillaFurnaceButton = new IIconButton(getFontRenderer(), SMELT_MODE_BUTTON_ID, 0, 0, null, RenderUtil.BLOCK_TEX);
     vanillaFurnaceButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
+    vanillaFurnaceButton.visible = !isSimple;
 
     vanillaFurnaceTooltip = new GuiToolTip(new Rectangle(xSize - 5 - BUTTON_SIZE, 62, BUTTON_SIZE, BUTTON_SIZE), (String[]) null);
+    vanillaFurnaceTooltip.setIsVisible(!isSimple);
+
+    redstoneButton.setIsVisible(!isSimple);
 
     addProgressTooltip(55, 35, 14, 14);
     addProgressTooltip(103, 35, 14, 14);
@@ -66,7 +73,8 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
 
   @Override
   protected void mouseClicked(int x, int y, int button) throws IOException {
-    if (button == 1 && vanillaFurnaceButton.isMouseOver()) {
+    if (button == 1 && vanillaFurnaceButton.isMouseOver() && !isSimple) {
+      // um, why do we need this?
       Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
       actionPerformed(vanillaFurnaceButton, 1);
     }
@@ -105,7 +113,7 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    bindGuiTexture();
+    bindGuiTexture(isSimple ? 1 : 0);
     int sx = guiLeft;
     int sy = guiTop;
 

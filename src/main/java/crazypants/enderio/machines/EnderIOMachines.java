@@ -4,7 +4,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.config.IEnderIOAddon;
+import crazypants.enderio.machines.config.Config;
 import crazypants.enderio.machines.config.ConfigHandler;
+import crazypants.enderio.machines.config.RecipeLoaderMachines;
 import crazypants.enderio.machines.machine.obelisk.render.ObeliskRenderManager;
 import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -23,7 +25,8 @@ import static crazypants.enderio.machines.EnderIOMachines.MODID;
 import static crazypants.enderio.machines.EnderIOMachines.MOD_NAME;
 import static crazypants.enderio.machines.EnderIOMachines.VERSION;
 
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION) // , guiFactory = "crazypants.enderio.machines.config.gui.ConfigFactory")
+@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:" + crazypants.enderio.base.EnderIO.MODID) // , guiFactory =
+                                                                                                                         // "crazypants.enderio.machines.config.gui.ConfigFactory")
 @EventBusSubscriber(Side.CLIENT)
 public class EnderIOMachines implements IEnderIOAddon {
 
@@ -47,6 +50,10 @@ public class EnderIOMachines implements IEnderIOAddon {
   public static void init(FMLInitializationEvent event) {
     ConfigHandler.init(event);
     PacketHandler.init(event);
+
+    if (Config.registerRecipes.get()) {
+      RecipeLoaderMachines.addRecipes();
+    }
   }
 
   @EventHandler

@@ -18,7 +18,28 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySmelter> implements IRemoteExec.IContainer {
+public abstract class ContainerAlloySmelter<T extends TileAlloySmelter> extends AbstractMachineContainer<T> implements IRemoteExec.IContainer {
+
+  public static class Normal extends ContainerAlloySmelter<TileAlloySmelter> {
+    public Normal(@Nonnull InventoryPlayer playerInv, @Nonnull TileAlloySmelter te) {
+      super(playerInv, te);
+    }
+  }
+
+  public static class Simple extends ContainerAlloySmelter<TileAlloySmelter.Simple> {
+    public Simple(@Nonnull InventoryPlayer playerInv, @Nonnull TileAlloySmelter.Simple te) {
+      super(playerInv, te);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public static @Nonnull <E extends TileAlloySmelter> ContainerAlloySmelter<E> create(@Nonnull InventoryPlayer playerInv, @Nonnull E te) {
+    if (te instanceof TileAlloySmelter.Simple) {
+      return (ContainerAlloySmelter<E>) new Simple(playerInv, (TileAlloySmelter.Simple) te);
+    } else {
+      return (ContainerAlloySmelter<E>) new Normal(playerInv, te);
+    }
+  }
 
   // JEI wants this data without giving us a chance to instantiate a container
   public static int FIRST_RECIPE_SLOT = 0;
@@ -28,7 +49,7 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
 
   private final @Nonnull EntityPlayer player;
 
-  public ContainerAlloySmelter(@Nonnull InventoryPlayer playerInv, @Nonnull TileAlloySmelter te) {
+  private ContainerAlloySmelter(@Nonnull InventoryPlayer playerInv, @Nonnull T te) {
     super(playerInv, te);
     player = playerInv.player;
   }

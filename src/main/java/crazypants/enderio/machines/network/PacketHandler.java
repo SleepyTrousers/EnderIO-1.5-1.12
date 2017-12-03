@@ -8,6 +8,8 @@ import crazypants.enderio.base.config.PacketConfigSyncNew;
 import crazypants.enderio.base.config.PacketConfigSyncNew.PacketConfigSyncNewHandler;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.Config;
+import crazypants.enderio.machines.machine.generator.combustion.PacketCombustionTank;
+import crazypants.enderio.machines.machine.generator.stirling.PacketBurnTime;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
@@ -43,6 +45,8 @@ public class PacketHandler {
   public static void init(FMLInitializationEvent event) {
     INSTANCE.registerMessage(new PacketConfigSyncNewHandler(Config.F), PacketConfigSyncNew.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketBurnTime.class, PacketBurnTime.class, nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketCombustionTank.class, PacketCombustionTank.class, nextID(), Side.CLIENT);
   }
 
 }

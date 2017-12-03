@@ -2,13 +2,12 @@ package crazypants.enderio.machines.machine.generator.combustion;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class ContainerCombustionEngine extends AbstractMachineContainer<AbstractInventoryMachineEntity> {
+public class ContainerCombustionGenerator<T extends TileCombustionGenerator> extends AbstractMachineContainer<T> {
 
-  public ContainerCombustionEngine(@Nonnull InventoryPlayer playerInv, @Nonnull AbstractInventoryMachineEntity te) {
+  public ContainerCombustionGenerator(@Nonnull InventoryPlayer playerInv, @Nonnull T te) {
     super(playerInv, te);
   }
 

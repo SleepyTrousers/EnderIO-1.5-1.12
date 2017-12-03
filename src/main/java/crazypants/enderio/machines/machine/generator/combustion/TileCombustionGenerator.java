@@ -12,17 +12,18 @@ import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
+import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.IFluidCoolant;
 import crazypants.enderio.base.fluid.IFluidFuel;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.PowerDistributor;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.AbstractGeneratorEntity;
+import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
@@ -40,42 +41,29 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_GEN;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_LOSS;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_LOSS;
 
 @Storable
 public class TileCombustionGenerator extends AbstractGeneratorEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
-  @Store
-  private final @Nonnull SmartTank coolantTank = new SmartTank(Fluid.BUCKET_VOLUME * 5) {
+  public static class Enhanced extends TileCombustionGenerator {
 
-    @Override
-    public boolean canFillFluidType(@Nullable FluidStack resource) {
-      if (resource == null) {
-        return false;
-      }
-      final Fluid fluidIn = resource.getFluid();
-      if (fluidIn == null) {
-        return false;
-      }
-      return super.canFillFluidType(resource) && FluidFuelRegister.instance.getCoolant(fluidIn) != null;
+    public Enhanced() {
+      super(new SlotDefinition(-1, -1, -1, -1, -1, -1), ENHANCED_COMBUSTION_POWER_LOSS, ENHANCED_COMBUSTION_POWER_BUFFER, ENHANCED_COMBUSTION_POWER_GEN);
     }
 
-  };
-  @Store
-  private final @Nonnull SmartTank fuelTank = new SmartTank(Fluid.BUCKET_VOLUME * 5) {
-
     @Override
-    public boolean canFillFluidType(@Nullable FluidStack resource) {
-      if (resource == null) {
-        return false;
-      }
-      final Fluid fluidIn = resource.getFluid();
-      if (fluidIn == null) {
-        return false;
-      }
-      return super.canFillFluidType(resource) && FluidFuelRegister.instance.getFuel(fluidIn) != null;
+    protected float getMachineQuality() {
+      return 1.5f; // TODO config
     }
+  }
 
-  };
+  @Store
+  private final @Nonnull SmartTank coolantTank;
+  @Store
+  private final @Nonnull SmartTank fuelTank;
   private boolean tanksDirty;
 
   @Store({ NBTAction.ITEM, NBTAction.SAVE })
@@ -101,8 +89,19 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   private IFluidFuel curFuel;
   private IFluidCoolant curCoolant;
 
+  protected float getMachineQuality() {
+    return 1f;
+  }
+
   public TileCombustionGenerator() {
-    super(new SlotDefinition(-1, -1, -1, -1, -1, -1), COMBUSTION_POWER_LOSS, COMBUSTION_POWER_BUFFER, COMBUSTION_POWER_GEN);
+    this(new SlotDefinition(-1, -1, -1, -1, -1, -1), COMBUSTION_POWER_LOSS, COMBUSTION_POWER_BUFFER, COMBUSTION_POWER_GEN);
+  }
+
+  protected TileCombustionGenerator(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+      @Nonnull ICapacitorKey maxEnergyUsed) {
+    super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+    coolantTank = new CoolantTank(Math.round(Fluid.BUCKET_VOLUME * 5 * getMachineQuality()));
+    fuelTank = new FuelTank(Math.round(Fluid.BUCKET_VOLUME * 5 * getMachineQuality()));
     coolantTank.setTileEntity(this);
     coolantTank.setCanDrain(false);
     fuelTank.setTileEntity(this);
@@ -181,8 +180,8 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
         inPause = true;
       }
 
-      usePower(getPowerLossPerTick()); // power loss over time, defaults to 0
       transmitEnergy();
+      usePower(getPowerLossPerTick());
     }
 
     if (tanksDirty && shouldDoWorkThisTick(10)) {
@@ -214,129 +213,78 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
 
     generated = 0;
 
-    if ((ticksRemaingCoolant <= 0 && getCoolantTank().getFluidAmount() <= 0) || (ticksRemaingFuel <= 0 && getFuelTank().getFluidAmount() <= 0)
+    // Check: We have no ticks remaining and cannot refill?
+    // Check: We are full?
+    if ((ticksRemaingCoolant <= 0 && getCoolantTank().isEmpty()) || (ticksRemaingFuel <= 0 && getFuelTank().isEmpty())
         || getEnergyStored() >= getMaxEnergyStored()) {
       return false;
     }
 
     // once full, don't start again until we have drained 10 seconds worth of power to prevent
     // flickering on and off constantly when powering a machine that draws less than this produces
+    CombustionMath math = getMath();
     if (inPause) {
-      int powerPerCycle = getPowerPerCycle();
+      int powerPerCycle = math.getEnergyPerTick();
       if (getEnergyStored() >= (getMaxEnergyStored() - (powerPerCycle * 200)) && getEnergyStored() > (getMaxEnergyStored() / 8)) {
         return false;
       }
     }
     inPause = false;
 
-    ticksRemaingFuel--;
+    // Use old ticks
+    if (ticksRemaingCoolant > 0 && ticksRemaingFuel > 0 && math.getEnergyPerTick() > 0) {
+      ticksRemaingFuel--;
+      ticksRemaingCoolant--;
+      generated = math.getEnergyPerTick();
+      setEnergyStored(getEnergyStored() + generated);
+      return true;
+    }
+    // oops, seems we need to refill...
+
+    // Check: Refresh from fluid if we're out of ticks
     if (ticksRemaingFuel <= 0) {
-      final FluidStack fluid = getFuelTank().getFluid();
-      if (fluid == null) {
-        return false;
-      }
-      curFuel = FluidFuelRegister.instance.getFuel(fluid);
-      if (curFuel == null) {
-        return false;
-      }
-      int drained = getFuelTank().removeFluidAmount(100);
-      if (drained == 0) {
-        return false;
-      }
-      ticksRemaingFuel = getNumTicksPerMbFuel(curFuel) * drained;
-    } else if (curFuel == null) {
-      final FluidStack fluid = getFuelTank().getFluid();
-      if (fluid == null) {
-        return false;
-      }
-      curFuel = FluidFuelRegister.instance.getFuel(fluid);
-      if (curFuel == null) {
-        return false;
-      }
+      curFuel = null;
     }
-
-    ticksRemaingCoolant--;
     if (ticksRemaingCoolant <= 0) {
-      updateCoolantFromTank();
-      if (curCoolant == null) {
-        return false;
-      }
-      int drained = getCoolantTank().removeFluidAmount(100);
-      if (drained == 0) {
-        return false;
-      }
-      ticksRemaingCoolant = getNumTicksPerMbCoolant(curCoolant, curFuel) * drained;
-    } else if (curCoolant == null) {
-      updateCoolantFromTank();
-      if (curCoolant == null) {
-        return false;
-      }
-    }
-
-    generated = getPowerPerCycle();
-    setEnergyStored(getEnergyStored() + generated);
-
-    return getFuelTank().getFluidAmount() > 0 && getCoolantTank().getFluidAmount() > 0;
-  }
-
-  protected void updateCoolantFromTank() {
-    final FluidStack fluid = getCoolantTank().getFluid();
-    if (fluid == null) {
       curCoolant = null;
-    } else {
-      curCoolant = FluidFuelRegister.instance.getCoolant(fluid);
     }
+
+    // new math as one of the fluids may have changed
+    math = getMath();
+
+    // can we draw energy from what we have in our tanks?
+    if (math.getEnergyPerTick() <= 0) {
+      return false;
+    }
+
+    // re-fill
+    if (ticksRemaingCoolant <= 0) {
+      ticksRemaingCoolant += math.getTicksPerCoolant(getCoolantTank().removeFluidAmount(100));
+    }
+    if (ticksRemaingFuel <= 0) {
+      ticksRemaingFuel += math.getTicksPerFuel(getFuelTank().removeFluidAmount(100));
+    }
+
+    // last sanity check, then generate energy
+    if (ticksRemaingCoolant > 0 && ticksRemaingFuel > 0) {
+      ticksRemaingFuel--;
+      ticksRemaingCoolant--;
+      generated = math.getEnergyPerTick();
+      setEnergyStored(getEnergyStored() + generated);
+      return true;
+    }
+
+    return false;
   }
 
-  private int getPowerPerCycle() {
-    return curFuel == null ? 0 : curFuel.getPowerPerCycle();
-  }
-
-  public int getNumTicksPerMbFuel() {
-    if (getFuelTank().getFluidAmount() <= 0) {
-      return 0;
+  CombustionMath getMath() {
+    if (curFuel == null) {
+      curFuel = CombustionMath.toFuel(getFuelTank());
     }
-    final FluidStack fluidStack = getFuelTank().getFluid();
-    if (fluidStack == null) {
-      return 0;
+    if (curCoolant == null) {
+      curCoolant = CombustionMath.toCoolant(getCoolantTank());
     }
-    final Fluid fluid = fluidStack.getFluid();
-    if (fluid == null) {
-      return 0;
-    }
-    return getNumTicksPerMbFuel(FluidFuelRegister.instance.getFuel(fluid));
-  }
-
-  public int getNumTicksPerMbCoolant() {
-    if (getFuelTank().getFluidAmount() <= 0) {
-      return 0;
-    }
-    if (world.isRemote) {
-      final FluidStack fluid = getFuelTank().getFluid();
-      curFuel = fluid == null ? null : FluidFuelRegister.instance.getFuel(fluid);
-      updateCoolantFromTank();
-    }
-    return getNumTicksPerMbCoolant(curCoolant, curFuel);
-  }
-
-  public static int getNumTicksPerMbFuel(IFluidFuel fuel) {
-    if (fuel == null) {
-      return 0;
-    }
-    return fuel.getTotalBurningTime() / 1000;
-  }
-
-  public static float HEAT_PER_RF = 0.00023F;
-
-  public static int getNumTicksPerMbCoolant(IFluidCoolant coolant, IFluidFuel fuel) {
-    if (coolant == null || fuel == null) {
-      return 0;
-    }
-    float power = fuel.getPowerPerCycle();
-    float cooling = coolant.getDegreesCoolingPerMB(100);
-    double toCool = 1d / (HEAT_PER_RF * power);
-    int numTicks = (int) Math.round(toCool / (cooling * 1000));
-    return numTicks;
+    return new CombustionMath(curCoolant, curFuel, getMachineQuality());
   }
 
   public int getGeneratedLastTick() {
@@ -348,18 +296,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
 
   @Override
   public int getPowerUsePerTick() {
-    if (getFuelTank().getFluidAmount() <= 0) {
-      return 0;
-    }
-    final FluidStack fluid = getFuelTank().getFluid();
-    if (fluid == null) {
-      return 0;
-    }
-    IFluidFuel fuel = FluidFuelRegister.instance.getFuel(fluid);
-    if (fuel == null) {
-      return 0;
-    }
-    return fuel.getPowerPerCycle();
+    return 0;
   }
 
   public @Nonnull SmartTank getCoolantTank() {

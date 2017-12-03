@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import javax.annotation.Nonnull;
 
-public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerator> implements IMessageHandler<PacketBurnTime, IMessage> {
+public class PacketBurnTime extends MessageTileEntity<TileStirlingGenerator> implements IMessageHandler<PacketBurnTime, IMessage> {
 
   public int burnTime;
   public int totalBurnTime;
@@ -20,7 +20,7 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
   public PacketBurnTime() {
   }
 
-  public PacketBurnTime(@Nonnull TileEntityStirlingGenerator tile) {
+  public PacketBurnTime(@Nonnull TileStirlingGenerator tile) {
     super(tile);
     burnTime = tile.burnTime;
     totalBurnTime = tile.totalBurnTime;
@@ -47,7 +47,7 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
   public IMessage onMessage(PacketBurnTime message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     if (player != null) {
-      TileEntityStirlingGenerator tile = message.getTileEntity(player.world);
+      TileStirlingGenerator tile = message.getTileEntity(player.world);
       if (tile != null) {
         tile.burnTime = message.burnTime;
         tile.totalBurnTime = message.totalBurnTime;

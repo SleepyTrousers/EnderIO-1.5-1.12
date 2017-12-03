@@ -3,6 +3,7 @@ package crazypants.enderio.machines.machine.alloy;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
@@ -23,8 +24,26 @@ import net.minecraft.item.ItemStack;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_USE;
+
 @Storable
 public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
+
+  public static class Simple extends TileAlloySmelter {
+
+    public Simple() {
+      super(new SlotDefinition(3, 1, 0), SIMPLE_ALLOY_SMELTER_POWER_INTAKE, SIMPLE_ALLOY_SMELTER_POWER_BUFFER, SIMPLE_ALLOY_SMELTER_POWER_USE);
+      mode = Mode.ALLOY;
+    }
+
+    @Override
+    public Mode getMode() {
+      return Mode.ALLOY;
+    }
+
+  }
 
   public static enum Mode {
     ALL,
@@ -49,7 +68,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   }
 
   @Store
-  private Mode mode;
+  protected Mode mode;
 
   public TileAlloySmelter() {
     super(new SlotDefinition(3, 1), ALLOY_SMELTER_POWER_INTAKE, ALLOY_SMELTER_POWER_BUFFER, ALLOY_SMELTER_POWER_USE);
@@ -107,7 +126,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     }
 
     // We will assume anything that is in a slot is valid, so just return whether the new input can be stacked with the current one
-    ItemStack currentStackInSlot = inventory[slot];
+    ItemStack currentStackInSlot = NullHelper.first(inventory[slot], Prep.getEmpty());
     if (Prep.isValid(currentStackInSlot)) {
       return currentStackInSlot.isItemEqual(itemstack);
     }

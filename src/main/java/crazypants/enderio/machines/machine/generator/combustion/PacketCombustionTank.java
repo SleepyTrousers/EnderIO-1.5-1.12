@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.generator.combustion;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
 
@@ -10,8 +12,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import javax.annotation.Nonnull;
-
 public class PacketCombustionTank extends MessageTileEntity<TileCombustionGenerator> implements IMessageHandler<PacketCombustionTank, IMessage> {
 
   public NBTTagCompound nbtRoot;
@@ -19,7 +19,7 @@ public class PacketCombustionTank extends MessageTileEntity<TileCombustionGenera
   public PacketCombustionTank() {
   }
 
-  public PacketCombustionTank(@Nonnull TileCombustionGenerator tile) { // TODO: DONE111
+  public PacketCombustionTank(@Nonnull TileCombustionGenerator tile) {
     super(tile);
     nbtRoot = new NBTTagCompound();
     if (tile.getCoolantTank().getFluidAmount() > 0) {

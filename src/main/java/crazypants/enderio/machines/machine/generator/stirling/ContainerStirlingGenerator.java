@@ -7,9 +7,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class StirlingGeneratorContainer extends AbstractMachineContainer<TileEntityStirlingGenerator> {
+public class ContainerStirlingGenerator<T extends TileStirlingGenerator> extends AbstractMachineContainer<T> {
 
-  public StirlingGeneratorContainer(@Nonnull InventoryPlayer playerInv, @Nonnull TileEntityStirlingGenerator te) {
+  public ContainerStirlingGenerator(@Nonnull InventoryPlayer playerInv, @Nonnull T te) {
     super(playerInv, te);
   }
 

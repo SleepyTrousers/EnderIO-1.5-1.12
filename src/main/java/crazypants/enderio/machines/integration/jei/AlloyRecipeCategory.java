@@ -28,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import static crazypants.enderio.machines.init.MachineObject.block_alloy_smelter;
+import static crazypants.enderio.machines.init.MachineObject.block_simple_alloy_smelter;
 import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.NUM_INVENTORY_SLOT;
@@ -51,16 +52,20 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
     registry.handleRecipes(IRecipe.class, AlloyRecipe::new, AlloyRecipeCategory.UID);
     registry.addRecipeClickArea(GuiAlloySmelter.class, 155, 42, 16, 16, AlloyRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(block_simple_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID);
 
     List<IRecipe> result = new ArrayList<IRecipe>();
     result.addAll(AlloyRecipeManager.getInstance().getRecipes());
     result.addAll(AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes());
     registry.addRecipes(result, UID);
 
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.class, AlloyRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
-        FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.class, VanillaRecipeCategoryUid.SMELTING, FIRST_RECIPE_SLOT,
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.Normal.class, AlloyRecipeCategory.UID, FIRST_RECIPE_SLOT,
         NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.Simple.class, AlloyRecipeCategory.UID, FIRST_RECIPE_SLOT,
+        NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT - 1, NUM_INVENTORY_SLOT);
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.Normal.class, VanillaRecipeCategoryUid.SMELTING, FIRST_RECIPE_SLOT,
+        NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
+
   }
 
   // ------------ Category

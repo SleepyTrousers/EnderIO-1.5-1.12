@@ -2,7 +2,10 @@ package crazypants.enderio.machines.config;
 
 import java.io.File;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.event.ConfigFileChangedEvent;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
@@ -21,12 +24,16 @@ public class ConfigHandler {
 
   public static Configuration config;
 
-  public static File getConfigDirectory() {
+  public static @Nonnull File getConfigDirectory() {
+    return NullHelper.notnull(getConfigDirectoryRaw(), EnderIO.MOD_NAME + " configuration failed");
+  }
+
+  public static File getConfigDirectoryRaw() {
     return crazypants.enderio.base.config.Config.configDirectory;
   }
 
   public static void init(FMLPreInitializationEvent event) {
-    File configDirectory = getConfigDirectory();
+    File configDirectory = getConfigDirectoryRaw();
     if (configDirectory == null) {
       Log.warn(EnderIOMachines.MOD_NAME + " was initialized before " + EnderIO.MOD_NAME + ". This should not happen.");
       crazypants.enderio.base.config.Config.init(event);

@@ -9,12 +9,13 @@ import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.capability.ItemTools.MoveResult;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorData;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.PowerDistributor;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.AbstractGeneratorEntity;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -29,13 +30,29 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_LOSS;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_GEN;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_LOSS;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_TIME;
 
 @Storable
-public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {
+public class TileStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {
+
+  public static class Simple extends TileStirlingGenerator {
+
+    public Simple() {
+      super(new SlotDefinition(1, 0, 0), SIMPLE_STIRLING_POWER_LOSS, SIMPLE_STIRLING_POWER_BUFFER, SIMPLE_STIRLING_POWER_GEN);
+    }
+
+    @Override
+    public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
+      return super.isMachineItemValidForSlot(i, itemstack) && Prep.isInvalid(itemstack.getItem().getContainerItem(itemstack));
+    }
+
+  }
 
   private static final @Nonnull String SOUND_NAME = "generator.stirling";
 
@@ -49,8 +66,13 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
   private PowerDistributor powerDis;
 
-  public TileEntityStirlingGenerator() {
-    super(new SlotDefinition(1, 0), STIRLING_POWER_LOSS, STIRLING_POWER_BUFFER, STIRLING_POWER_GEN);
+  public TileStirlingGenerator() {
+    super(new SlotDefinition(1, 0, 1), STIRLING_POWER_LOSS, STIRLING_POWER_BUFFER, STIRLING_POWER_GEN);
+  }
+
+  protected TileStirlingGenerator(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+      @Nonnull ICapacitorKey maxEnergyUsed) {
+    super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
   @Override
@@ -133,32 +155,29 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     }
 
     transmitEnergy();
+    usePower(getPowerLossPerTick());
 
-    if (redstoneCheck) {
-
-      if (burnTime <= 0 && getEnergyStored() < getMaxEnergyStored()) {
-        final ItemStack fuelStack = inventory[0];
-        if (fuelStack != null && Prep.isValid(fuelStack)) {
-          burnTime = getBurnTime(fuelStack);
-          if (burnTime > 0) {
-            totalBurnTime = burnTime;
-            isLavaFired = fuelStack.getItem() == Items.LAVA_BUCKET;
-            ItemStack containedItem = fuelStack.getItem().getContainerItem(fuelStack);
-            decrStackSize(0, 1);
-            if (Prep.isValid(containedItem)) {
-              if (Prep.isInvalid(fuelStack)) {
-                inventory[0] = containedItem;
-                markDirty();
-              } else {
-                world.spawnEntity(new EntityItem(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, containedItem));
-              }
+    if (redstoneCheck && burnTime <= 0 && getEnergyStored() < getMaxEnergyStored()) {
+      final ItemStack fuelStack = inventory[0];
+      if (fuelStack != null && Prep.isValid(fuelStack)) {
+        burnTime = getBurnTime(fuelStack);
+        if (burnTime > 0) {
+          totalBurnTime = burnTime;
+          isLavaFired = fuelStack.getItem() == Items.LAVA_BUCKET;
+          ItemStack containedItem = fuelStack.getItem().getContainerItem(fuelStack.splitStack(1));
+          if (Prep.isValid(containedItem)) {
+            if (Prep.isInvalid(fuelStack)) {
+              inventory[0] = containedItem;
+            } else {
+              world.spawnEntity(new EntityItem(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, containedItem));
             }
-            needsUpdate = true;
           }
+          markDirty();
+          needsUpdate = true;
         }
       }
-      usePower(getPowerLossPerTick()); // power loss over time, defaults to 0
     }
+
     if (!needsUpdate && sendBurnTimePacket) {
       PacketHandler.sendToAllAround(new PacketBurnTime(this), this);
     }

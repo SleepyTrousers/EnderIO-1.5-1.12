@@ -43,6 +43,13 @@ public final class Config {
     }
   };
 
+  public static final IValue<Boolean> registerRecipes = new IValue<Boolean>() {
+    @Override
+    public @Nonnull Boolean get() {
+      return crazypants.enderio.base.config.Config.registerRecipes;
+    }
+  };
+
   public static final IValue<Integer> ticksPerBucketOfFuel = F.make(ZOMBIE, "ticksPerBucketOfFuel", 10 * 60 * 20, //
       "The number of ticks one bucket of fuel lasts.").setMin(1).sync();
   public static final IValue<Float> minimumTankLevel = F.make(ZOMBIE, "minimumTankLevel", 0.7f, //

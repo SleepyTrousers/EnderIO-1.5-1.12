@@ -53,27 +53,30 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIOMachines.MODID)
 public enum MachineObject implements IModObject.Registerable {
 
+  block_simple_alloy_smelter(BlockAlloySmelter.class, "create_simple"),
   block_alloy_smelter(BlockAlloySmelter.class),
   block_buffer(BlockBuffer.class),
-//  blockCapBank(BlockCapBank.class),
+  // blockCapBank(BlockCapBank.class),
   block_enchanter(BlockEnchanter.class),
   block_farm_station(BlockFarmStation.class),
   block_combustion_generator(BlockCombustionGenerator.class),
+  block_enhanced_combustion_generator(BlockCombustionGenerator.class, "create_enhanced"),
+  block_simple_stirling_generator(BlockStirlingGenerator.class, "create_simple"),
   block_stirling_generator(BlockStirlingGenerator.class),
   block_zombie_generator(BlockZombieGenerator.class),
 
   block_killer_joe(BlockKillerJoe.class),
   block_electric_light(BlockElectricLight.class),
   block_light_node(BlockLightNode.class),
-  
-  //Obelisks
+
+  // Obelisks
   block_attractor_obelisk(BlockAttractor.class),
   block_aversion_obelisk(BlockAversionObelisk.class),
   block_inhibitor_obelisk(BlockInhibitorObelisk.class),
   block_relocator_obelisk(BlockRelocatorObelisk.class),
   block_weather_obelisk(BlockWeatherObelisk.class),
   block_experience_obelisk(BlockExperienceObelisk.class),
-  
+
   block_painter(BlockPainter.class),
   block_reservoir(BlockReservoir.class),
   block_sag_mill(BlockSagMill.class),
@@ -87,7 +90,7 @@ public enum MachineObject implements IModObject.Registerable {
   block_transceiver(BlockTransceiver.class),
   block_vacuum_chest(BlockVacuumChest.class),
   block_xp_vacuum(BlockXPVacuum.class),
-  
+
   block_travel_anchor(BlockTravelAnchor.class),
   block_tele_pad(BlockTelePad.class),
   block_dialing_device(BlockDialingDevice.class),
