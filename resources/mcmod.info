@@ -1,8 +1,8 @@
 [
 {
-  "modid": "EnderIO",
-  "name": "Ender IO",
-  "description": "Compact conduits, painted things and all sorts of stuff and bling.",
+  "modid": "enderio-machines",
+  "name": "Ender IO Machines",
+  "description": "All sorts of stuff and bling.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "http://enderio.com",
@@ -12,8 +12,9 @@
   "logoFile": "",
   "screenshots": [
   ],
-  "parent":"",
+  "parent":"enderio",
   "dependencies": [
+        "enderio"
   ]
 }
 ]

@@ -1,11 +1,14 @@
 package crazypants.enderio.machines;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import crazypants.enderio.base.config.IEnderIOAddon;
 import crazypants.enderio.machines.config.ConfigHandler;
 import crazypants.enderio.machines.machine.obelisk.render.ObeliskRenderManager;
 import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -20,9 +23,9 @@ import static crazypants.enderio.machines.EnderIOMachines.MODID;
 import static crazypants.enderio.machines.EnderIOMachines.MOD_NAME;
 import static crazypants.enderio.machines.EnderIOMachines.VERSION;
 
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION, guiFactory = "crazypants.enderio.machines.config.gui.ConfigFactory")
+@Mod(modid = MODID, name = MOD_NAME, version = VERSION) // , guiFactory = "crazypants.enderio.machines.config.gui.ConfigFactory")
 @EventBusSubscriber(Side.CLIENT)
-public class EnderIOMachines {
+public class EnderIOMachines implements IEnderIOAddon {
 
   public static final @Nonnull String MODID = "enderio-machines";
   public static final @Nonnull String DOMAIN = "enderio";
@@ -49,6 +52,12 @@ public class EnderIOMachines {
   @EventHandler
   public static void init(FMLPostInitializationEvent event) {
     ConfigHandler.init(event);
+  }
+
+  @Override
+  @Nullable
+  public Configuration getConfiguration() {
+    return ConfigHandler.config;
   }
 
 }
