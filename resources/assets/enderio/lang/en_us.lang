@@ -1296,13 +1296,15 @@ enderio.gui.machine.vat.dump.fail=Dumping failed, output tank is not empty
 enderio.gui.machine.vat.dump.active=Dumping failed, cannot put liquids into the output tank while the Vat is working
 
 //Combustion Gen
-enderio.combustionGenerator.coolantTank=Coolant
-enderio.combustionGenerator.fuelTank=Fuel
-enderio.combustionGenerator.output=Generating:
+enderio.combustionGenerator.coolantTank.empty=Coolant
+enderio.combustionGenerator.coolantTank=Coolant: %s
+enderio.combustionGenerator.fuelTank.empty=Fuel
+enderio.combustionGenerator.fuelTank=Fuel: %s
+enderio.combustionGenerator.output=Generating: %s
 
 //Stirling Gen
-enderio.stirlingGenerator.output=Generating:
-enderio.stirlingGenerator.burnRate=Burn Rate:
+enderio.stirlingGenerator.output=Generating: %s
+enderio.stirlingGenerator.burnRate=Burn Rate: %s%%
 enderio.stirlingGenerator.upgradeslot=Upgrade slot
 enderio.stirlingGenerator.upgrades={0} gives {2}{1,number,#.#}x{3} efficiency
 enderio.stirlingGenerator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF

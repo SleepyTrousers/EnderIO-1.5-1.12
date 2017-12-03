@@ -44,8 +44,13 @@ public class OptionalItem implements RecipeConfigElement {
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
     if (!isValid()) {
-      throw new InvalidRecipeConfigException("Could not find a crafting ingredient for '" + name + "' (stack=" + stack + ", object=" + recipeObject + ")");
+      throw new InvalidRecipeConfigException(
+          "Could not find a crafting ingredient for '" + name + "' (stack=" + friendlyName(stack) + ", object=" + friendlyName(recipeObject) + ")");
     }
+  }
+
+  private String friendlyName(Object o) {
+    return o == null || (o instanceof ItemStack && Prep.isInvalid((ItemStack) o)) ? "empty" : o.toString();
   }
 
   @Override

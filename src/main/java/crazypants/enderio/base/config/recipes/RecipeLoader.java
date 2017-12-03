@@ -11,7 +11,7 @@ import crazypants.enderio.base.config.recipes.xml.Recipes;
 
 public class RecipeLoader {
 
-  private static final String[] RECIPE_FILES = { "aliases", "materials", "items", "machines" };
+  private static final String[] RECIPE_FILES = { "aliases", "materials", "items", "base" };
 
   private RecipeLoader() {
   }
