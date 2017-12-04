@@ -10,9 +10,10 @@ import com.enderio.core.common.util.ChatUtil;
 import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.Lang;
+import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.init.ModObjectRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -31,13 +32,13 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class ItemLocationPrintout extends Item implements GuiID.IEioGuiHandler {
+public class ItemLocationPrintout extends Item implements IEioGuiHandler {
+
+  static final int GUI_ID_LOCATION_PRINTOUT_CREATE = 1337;
+  static final int GUI_ID_LOCATION_PRINTOUT = 31337;
 
   public static ItemLocationPrintout create(@Nonnull IModObject modObject) {
-    ItemLocationPrintout result = new ItemLocationPrintout(modObject);
-    GuiID.registerGuiHandler(GuiID.GUI_ID_LOCATION_PRINTOUT, result);
-    GuiID.registerGuiHandler(GuiID.GUI_ID_LOCATION_PRINTOUT_CREATE, result);
-    return result;
+    return new ItemLocationPrintout(modObject);
   }
 
   protected ItemLocationPrintout(@Nonnull IModObject modObject) {
@@ -55,7 +56,7 @@ public class ItemLocationPrintout extends Item implements GuiID.IEioGuiHandler {
   public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     ItemStack stack = player.getHeldItem(hand);
     if (player.isSneaking() && TelepadTarget.readFromNBT(stack) != null) {
-      GuiID.GUI_ID_LOCATION_PRINTOUT.openClientGui(world, player, hand.ordinal(), 0, 0);
+      ModObjectRegistry.getModObjectNN(this).openClientGui(world, player, GUI_ID_LOCATION_PRINTOUT, hand.ordinal(), 0);
       return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
     }
     return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
@@ -120,14 +121,12 @@ public class ItemLocationPrintout extends Item implements GuiID.IEioGuiHandler {
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    if (GuiID.GUI_ID_LOCATION_PRINTOUT_CREATE.is(ID)) {
-
+  @Nullable
+  public Object getGuiElement(boolean server, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int ID,
+      int handID, int param3) {
+    if (server) {
+      return null;
+    } else if (GUI_ID_LOCATION_PRINTOUT_CREATE == ID) {
       int foundPaper = -1;
       for (int paperIndex = 0; paperIndex < player.inventoryContainer.inventorySlots.size() && foundPaper < 0; paperIndex++) {
         ItemStack invItem = player.inventoryContainer.inventorySlots.get(paperIndex).getStack();
@@ -144,8 +143,8 @@ public class ItemLocationPrintout extends Item implements GuiID.IEioGuiHandler {
       ItemStack stack = new ItemStack(this);
       target.writeToNBT(stack);
       return new GuiLocationPrintout(target, stack, foundPaper);
-    } else {
-      EnumHand hand = pos.getX() == 0 ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+    } else if (GUI_ID_LOCATION_PRINTOUT == ID) {
+      EnumHand hand = handID == 0 ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
       EntityEquipmentSlot slot = hand == EnumHand.MAIN_HAND ? EntityEquipmentSlot.MAINHAND : EntityEquipmentSlot.OFFHAND;
 
       TelepadTarget target = TelepadTarget.readFromNBT(player.getItemStackFromSlot(slot));
@@ -154,6 +153,8 @@ public class ItemLocationPrintout extends Item implements GuiID.IEioGuiHandler {
       } else {
         return null;
       }
+    } else {
+      return null;
     }
   }
 

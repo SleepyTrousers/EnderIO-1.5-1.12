@@ -30,7 +30,7 @@ public final class Registry {
     return ConduitRegistry.getConduitBlock();
   }
 
-  public static void registerConduitBlock(@Nonnull IModObject block) {
+  public static void registerConduitBlock(@Nonnull IModObject.Registerable block) {
     ConduitRegistry.registerConduitBlock(block);
   }
 

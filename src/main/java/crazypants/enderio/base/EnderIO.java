@@ -140,7 +140,6 @@ public class EnderIO implements IEnderIOAddon {
 
     PacketHandler.init(event);
 
-    GuiID.init(event);
     GuiHelper.init(event);
 
     MaterialRecipes.init(event);

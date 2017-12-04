@@ -37,42 +37,50 @@ public class GuiHelper {
     NetworkRegistry.INSTANCE.registerGuiHandler(EnderIODummy.getInstance(), new GuiHandler()); // TODO: switch to real mod
   }
 
-  public static void openGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side,
-      int param) {
+  public static boolean openGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer,
+      @Nullable EnumFacing side, int param) {
     if (!world.isRemote) {
       if (PermissionAPI.hasPermission(entityPlayer.getGameProfile(), getPermission(mo),
           new BlockPosContext(entityPlayer, pos, world.getBlockState(pos), side))) {
-        openGui(world, entityPlayer, getID(mo), pos, side, param, 0, 0);
+        return openGui(world, entityPlayer, getID(mo), pos, side, param, 0, 0);
       } else {
         entityPlayer.sendMessage(Lang.GUI_PERMISSION_DENIED.toChat());
+        return false;
       }
+    } else {
+      return true;
     }
   }
 
-  public static void openGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
+  public static boolean openGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
     if (!world.isRemote) {
       if (PermissionAPI.hasPermission(entityPlayer.getGameProfile(), getPermission(mo), new PlayerContext(entityPlayer))) {
-        openGui(world, entityPlayer, getID(mo), null, null, a, b, c);
+        return openGui(world, entityPlayer, getID(mo), null, null, a, b, c);
       } else {
         entityPlayer.sendMessage(Lang.GUI_PERMISSION_DENIED.toChat());
+        return false;
       }
+    } else {
+      return true;
     }
   }
 
-  public static void openClientGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer,
-      @Nullable EnumFacing side) {
+  public static boolean openClientGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer,
+      @Nullable EnumFacing side, int param) {
     if (world.isRemote) {
-      openGui(world, entityPlayer, getID(mo), pos, side, 0, 0, 0);
+      return openGui(world, entityPlayer, getID(mo), pos, side, param, 0, 0);
     }
+    return false;
   }
 
-  public static void openClientGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
+  public static boolean openClientGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
     if (world.isRemote) {
-      openGui(world, entityPlayer, getID(mo), null, null, a, b, c);
+      return openGui(world, entityPlayer, getID(mo), null, null, a, b, c);
     }
+    return false;
   }
 
-  protected static void openGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int id, @Nullable BlockPos pos, @Nullable EnumFacing facing,
+  protected static boolean openGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int id, @Nullable BlockPos pos, @Nullable EnumFacing facing,
       int param1, int param2, int param3) {
     int a, b, c, d;
     a = (facing == null ? 0xFF : facing.ordinal()) | id << 8;
@@ -90,6 +98,7 @@ public class GuiHelper {
     d = param1;
 
     entityPlayer.openGui(EnderIODummy.getInstance(), a, world, b, c, d); // TODO
+    return true;
   }
 
   // TODO: This ID depends on the order the modObjects were registered, which depends on the order the RegistryEvent.Register<Block> was executed and the

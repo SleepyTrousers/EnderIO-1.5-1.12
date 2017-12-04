@@ -22,6 +22,9 @@ class GuiHandler implements IGuiHandler {
   @Override
   @Nullable
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    if (!world.isRemote) {
+      throw new RuntimeException("Cannot show GUI on the server---no screen, no user, no coffee...");
+    }
     return getGuiElement(false, ID, player, world, x, y, z);
   }
 

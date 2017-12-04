@@ -17,7 +17,6 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -256,11 +255,11 @@ public class ConduitUtil {
     if (cons.size() == 1) {
       EnumFacing facing = cons.iterator().next();
       if (facing != null) {
-        GuiID.facing2guiid(facing).openGui(world, new BlockPos(x, y, z), player, facing);
+        ConduitRegistry.getConduitModObjectNN().openGui(world, new BlockPos(x, y, z), player, facing, 0);
       }
       return;
     }
-    GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.openClientGui(world, new BlockPos(x, y, z), player, null);
+    ConduitRegistry.getConduitModObjectNN().openClientGui(world, new BlockPos(x, y, z), player, null, 0);
   }
 
   public static void playBreakSound(@Nonnull SoundType snd, @Nonnull World world, int x, int y, int z) {

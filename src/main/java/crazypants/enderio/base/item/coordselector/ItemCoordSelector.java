@@ -9,8 +9,8 @@ import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.init.ModObject;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -69,9 +69,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
       bc = bc.offset(dir);
     }
 
-    GuiID.GUI_ID_LOCATION_PRINTOUT_CREATE.openClientGui(world, player, bc.getX(), bc.getY(), bc.getZ());
-
-    return true;
+    return ModObject.itemLocationPrintout.openClientGui(world, bc, player, null, ItemLocationPrintout.GUI_ID_LOCATION_PRINTOUT_CREATE);
   }
 
   @Override

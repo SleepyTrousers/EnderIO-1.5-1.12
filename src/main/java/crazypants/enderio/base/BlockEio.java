@@ -89,8 +89,7 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
    */
   public boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side, int param) {
     if (this instanceof IEioGuiHandler) {
-      ModObjectRegistry.getModObjectNN(this).openGui(world, pos, entityPlayer, side, param);
-      return true;
+      return ModObjectRegistry.getModObjectNN(this).openGui(world, pos, entityPlayer, side, param);
     }
     return false;
   }

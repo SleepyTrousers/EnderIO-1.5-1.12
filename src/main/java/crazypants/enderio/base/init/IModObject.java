@@ -50,28 +50,28 @@ public interface IModObject extends IProducer {
 
     void setBlock(@Nullable Block obj);
 
-    default void openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer) {
-      openGui(world, pos, entityPlayer, null, 0);
+    default boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer) {
+      return openGui(world, pos, entityPlayer, null, 0);
     }
 
-    default void openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side) {
-      openGui(world, pos, entityPlayer, side, 0);
+    default boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side) {
+      return openGui(world, pos, entityPlayer, side, 0);
     }
 
-    default void openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side, int param) {
-      GuiHelper.openGui(this, world, pos, entityPlayer, side, param);
+    default boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side, int param) {
+      return GuiHelper.openGui(this, world, pos, entityPlayer, side, param);
     }
 
-    default void openGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
-      GuiHelper.openGui(this, world, entityPlayer, a, b, c);
+    default boolean openGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
+      return GuiHelper.openGui(this, world, entityPlayer, a, b, c);
     }
 
-    default void openClientGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side) {
-      GuiHelper.openClientGui(this, world, pos, entityPlayer, side);
+    default boolean openClientGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side, int param) {
+      return GuiHelper.openClientGui(this, world, pos, entityPlayer, side, param);
     }
 
-    default void openClientGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
-      GuiHelper.openClientGui(this, world, entityPlayer, a, b, c);
+    default boolean openClientGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
+      return GuiHelper.openClientGui(this, world, entityPlayer, a, b, c);
     }
 
   }

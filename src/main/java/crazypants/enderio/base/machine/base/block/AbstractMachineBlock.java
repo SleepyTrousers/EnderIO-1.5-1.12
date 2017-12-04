@@ -10,7 +10,7 @@ import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.BlockEio;
-import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -32,9 +32,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -47,7 +49,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio<T>
-    implements GuiID.IEioGuiHandler, IResourceTooltipProvider, ISmartRenderAwareBlock {
+    implements IEioGuiHandler.WithPos, IResourceTooltipProvider, ISmartRenderAwareBlock {
 
   protected final @Nonnull Random random;
 
@@ -71,8 +73,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   protected void init() {
     super.init();
-    if (getGuiId() != null) // TODO throw away with GuiID
-      GuiID.registerGuiHandler(getGuiId(), this);
     registerInSmartModelAttacher();
   }
 
@@ -123,14 +123,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @SideOnly(Side.CLIENT)
   public @Nonnull BlockRenderLayer getBlockLayer() {
     return BlockRenderLayer.CUTOUT;
-  }
-
-  @Override
-  protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
-    if (super.openGui(world, pos, entityPlayer, side))
-      return true;// TODO drop this whole method
-    getGuiId().openGui(world, pos, entityPlayer, side);
-    return true;
   }
 
   @Override
@@ -201,8 +193,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       }
     }
   }
-
-  protected abstract @Nonnull GuiID getGuiId();
 
   protected boolean isActive(@Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos) {
     AbstractMachineEntity te = getTileEntitySafe(blockAccess, pos);
@@ -308,5 +298,33 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   // ///////////////////////////////////////////////////////////////////////
   // PAINT END
   // ///////////////////////////////////////////////////////////////////////
+
+  @Override
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1) {
+    T te = getTileEntity(world, pos);
+    if (te != null) {
+      return getServerGuiElement(player, world, pos, facing, param1, te);
+    }
+    return null;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1) {
+    T te = getTileEntity(world, pos);
+    if (te != null) {
+      return getClientGuiElement(player, world, pos, facing, param1, te);
+    }
+    return null;
+  }
+
+  public abstract @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nullable EnumFacing facing, int param1, @Nonnull T te);
+
+  @SideOnly(Side.CLIENT)
+  public abstract @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nullable EnumFacing facing, int param1, @Nonnull T te);
 
 }
