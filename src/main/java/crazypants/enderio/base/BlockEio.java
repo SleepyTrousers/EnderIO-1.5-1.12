@@ -6,7 +6,9 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.tool.ToolUtil;
 import net.minecraft.block.material.Material;
@@ -75,6 +77,22 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
 
   public boolean shouldWrench(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
     return true;
+  }
+
+  @Override
+  protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
+    return openGui(world, pos, entityPlayer, side, 0);
+  }
+
+  /**
+   * To be called from mod code, e.g. a GUI button's network packet to switch GUIs.
+   */
+  public boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side, int param) {
+    if (this instanceof IEioGuiHandler) {
+      ModObjectRegistry.getModObjectNN(this).openGui(world, pos, entityPlayer, side, param);
+      return true;
+    }
+    return false;
   }
 
 }

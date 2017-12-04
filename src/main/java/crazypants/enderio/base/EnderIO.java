@@ -20,6 +20,7 @@ import crazypants.enderio.base.config.IEnderIOAddon;
 import crazypants.enderio.base.enchantment.Enchantments;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.gui.handler.GuiHelper;
 import crazypants.enderio.base.handler.ServerTickHandler;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.init.CommonProxy;
@@ -140,6 +141,7 @@ public class EnderIO implements IEnderIOAddon {
     PacketHandler.init(event);
 
     GuiID.init(event);
+    GuiHelper.init(event);
 
     MaterialRecipes.init(event);
 

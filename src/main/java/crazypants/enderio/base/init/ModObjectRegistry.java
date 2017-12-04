@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -15,6 +16,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
@@ -40,6 +42,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class ModObjectRegistry {
 
   private static final NNList<IModObject.Registerable> objects = new NNList<IModObject.Registerable>();
+  private static final NNList<IModObject.Registerable> wrappedObjects = NNList.wrap(Collections.unmodifiableList(objects));
+  private static final Map<Object, IModObject.Registerable> reverseMapping = new IdentityHashMap<>();
 
   public static <T extends Enum<T> & IModObject.Registerable> void addModObjects(Class<T> enumClass) {
     objects.addAll(Arrays.asList(enumClass.getEnumConstants()));
@@ -165,7 +169,7 @@ public class ModObjectRegistry {
       }
     }
   }
-  
+
   private static RuntimeException throwCreationError(@Nonnull IModObject.Registerable mo, @Nonnull String blockMethodName, @Nullable Object ex) {
     String str = "ModObject:create: Could not create instance for " + mo.getClazz() + " using method " + blockMethodName;
     Log.error(str + (ex instanceof Exception ? " Exception: " : " Object: ") + Objects.toString(ex));
@@ -175,7 +179,7 @@ public class ModObjectRegistry {
       throw new RuntimeException(str);
     }
   }
-  
+
   private static Object createObject(@Nonnull IModObject.Registerable mo, @Nonnull String methodName) {
     Object obj;
     try {
@@ -198,6 +202,7 @@ public class ModObjectRegistry {
     if (obj instanceof Block) {
       mo.setBlock((Block) obj);
       event.getRegistry().register((Block) obj);
+      reverseMapping.put(obj, mo);
     } else {
       throwCreationError(mo, blockMethodName, obj);
     }
@@ -209,6 +214,7 @@ public class ModObjectRegistry {
     if (obj instanceof Item) {
       mo.setItem((Item) obj);
       event.getRegistry().register((Item) obj);
+      reverseMapping.put(obj, mo);
     } else {
       throwCreationError(mo, itemMethodName, obj);
     }
@@ -221,6 +227,7 @@ public class ModObjectRegistry {
       if (item != null) {
         mo.setItem(item);
         event.getRegistry().register(item);
+        reverseMapping.put(item, mo);
       }
     } else if (block == null) {
       Log.warn("ModObject:create: " + mo + " is does neither have a block nor an item");
@@ -236,8 +243,25 @@ public class ModObjectRegistry {
   public static @Nonnull String sanitizeName(@Nonnull String name) {
     return name.replaceAll("([A-Z])", "_$0").toLowerCase(Locale.ENGLISH);
   }
-  
-  public static List<IModObject.Registerable> getObjects() {
-    return Collections.unmodifiableList(objects);
+
+  public static NNList<IModObject.Registerable> getObjects() {
+    return wrappedObjects;
   }
+
+  public static @Nullable IModObject.Registerable getModObject(@Nonnull Block forBlock) {
+    return reverseMapping.get(forBlock);
+  }
+
+  public static @Nonnull IModObject.Registerable getModObjectNN(@Nonnull Block forBlock) {
+    return NullHelper.notnull(reverseMapping.get(forBlock), "missing modObject");
+  }
+
+  public static @Nullable IModObject.Registerable getModObject(@Nonnull Item forItem) {
+    return reverseMapping.get(forItem);
+  }
+
+  public static @Nonnull IModObject.Registerable getModObjectNN(@Nonnull Item forItem) {
+    return NullHelper.notnull(reverseMapping.get(forItem), "missing modObject");
+  }
+
 }

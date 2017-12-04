@@ -5,11 +5,16 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.stackable.IProducer;
 
+import crazypants.enderio.base.gui.handler.GuiHelper;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
@@ -44,6 +49,31 @@ public interface IModObject extends IProducer {
     void setItem(@Nullable Item obj);
 
     void setBlock(@Nullable Block obj);
+
+    default void openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer) {
+      openGui(world, pos, entityPlayer, null, 0);
+    }
+
+    default void openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side) {
+      openGui(world, pos, entityPlayer, side, 0);
+    }
+
+    default void openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side, int param) {
+      GuiHelper.openGui(this, world, pos, entityPlayer, side, param);
+    }
+
+    default void openGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
+      GuiHelper.openGui(this, world, entityPlayer, a, b, c);
+    }
+
+    default void openClientGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer,
+        @Nullable EnumFacing side) {
+      GuiHelper.openClientGui(this, world, pos, entityPlayer, side);
+    }
+
+    default void openClientGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
+      GuiHelper.openClientGui(this, world, entityPlayer, a, b, c);
+    }
 
   }
 

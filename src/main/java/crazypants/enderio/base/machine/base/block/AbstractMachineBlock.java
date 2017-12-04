@@ -71,7 +71,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   protected void init() {
     super.init();
-    GuiID.registerGuiHandler(getGuiId(), this);
+    if (getGuiId() != null) // TODO throw away with GuiID
+      GuiID.registerGuiHandler(getGuiId(), this);
     registerInSmartModelAttacher();
   }
 
@@ -126,6 +127,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
+    if (super.openGui(world, pos, entityPlayer, side))
+      return true;// TODO drop this whole method
     getGuiId().openGui(world, pos, entityPlayer, side);
     return true;
   }
