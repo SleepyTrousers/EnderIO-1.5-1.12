@@ -44,7 +44,7 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
     this.id = KEY_UPGRADE_PREFIX + id;
     this.levelCost = tag.getInteger(KEY_LEVEL_COST);
     this.unlocName = tag.getString(KEY_UNLOC_NAME);
-    if(tag.hasKey(KEY_UPGRADE_ITEM)) {
+    if (tag.hasKey(KEY_UPGRADE_ITEM)) {
       this.upgradeItem = new ItemStack((NBTTagCompound) tag.getTag(KEY_UPGRADE_ITEM));
     } else {
       this.upgradeItem = Prep.getEmpty();
@@ -60,7 +60,7 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
   public @Nonnull ItemStack getUpgradeItem() {
     return upgradeItem;
   }
-  
+
   @Override
   public @Nonnull String getUpgradeItemName() {
     return getUpgradeItem().getDisplayName();
@@ -94,7 +94,7 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
   public @Nonnull String getUnlocalizedName() {
     return unlocName;
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderUpgrade getRender() {
@@ -110,12 +110,12 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
   @Override
   public void writeToItem(@Nonnull ItemStack stack) {
     NBTTagCompound upgradeRoot = new NBTTagCompound();
-    upgradeRoot.setInteger(KEY_LEVEL_COST, levelCost);
+    upgradeRoot.setInteger(KEY_LEVEL_COST, getLevelCost());
     upgradeRoot.setString(KEY_UNLOC_NAME, getUnlocalizedName());
 
-      NBTTagCompound itemRoot = new NBTTagCompound();
-      getUpgradeItem().writeToNBT(itemRoot);
-      upgradeRoot.setTag(KEY_UPGRADE_ITEM, itemRoot);
+    NBTTagCompound itemRoot = new NBTTagCompound();
+    getUpgradeItem().writeToNBT(itemRoot);
+    upgradeRoot.setTag(KEY_UPGRADE_ITEM, itemRoot);
 
     writeUpgradeToNBT(upgradeRoot);
 
