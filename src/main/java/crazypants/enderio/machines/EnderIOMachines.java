@@ -3,11 +3,14 @@ package crazypants.enderio.machines;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.config.IEnderIOAddon;
 import crazypants.enderio.base.registry.Registry;
 import crazypants.enderio.machines.config.Config;
 import crazypants.enderio.machines.config.ConfigHandler;
 import crazypants.enderio.machines.config.RecipeLoaderMachines;
+import crazypants.enderio.machines.config.config.SolarConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.render.ObeliskRenderManager;
 import crazypants.enderio.machines.network.PacketHandler;
@@ -27,8 +30,7 @@ import static crazypants.enderio.machines.EnderIOMachines.MODID;
 import static crazypants.enderio.machines.EnderIOMachines.MOD_NAME;
 import static crazypants.enderio.machines.EnderIOMachines.VERSION;
 
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:" + crazypants.enderio.base.EnderIO.MODID) // , guiFactory =
-                                                                                                                         // "crazypants.enderio.machines.config.gui.ConfigFactory")
+@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:" + crazypants.enderio.base.EnderIO.MODID)
 @EventBusSubscriber(Side.CLIENT)
 public class EnderIOMachines implements IEnderIOAddon {
 
@@ -58,10 +60,8 @@ public class EnderIOMachines implements IEnderIOAddon {
     }
 
     Registry.enableSolarUpgrade(MachineObject.block_solar_panel.getItemNN(),
-        new int[] { crazypants.enderio.base.config.Config.darkSteelSolarOneCost, crazypants.enderio.base.config.Config.darkSteelSolarTwoCost,
-            crazypants.enderio.base.config.Config.darkSteelSolarThreeCost },
-        new int[] { crazypants.enderio.base.config.Config.darkSteelSolarOneGen, crazypants.enderio.base.config.Config.darkSteelSolarTwoGen,
-            crazypants.enderio.base.config.Config.darkSteelSolarThreeGen });
+        new NNList<>(SolarConfig.darkSteelSolarOneCost, SolarConfig.darkSteelSolarTwoCost, SolarConfig.darkSteelSolarThreeCost),
+        new NNList<>(SolarConfig.darkSteelSolarOneGen, SolarConfig.darkSteelSolarTwoGen, SolarConfig.darkSteelSolarThreeGen));
   }
 
   @EventHandler

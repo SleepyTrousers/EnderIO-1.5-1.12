@@ -19,7 +19,7 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerDistributor;
-import crazypants.enderio.machines.config.Config;
+import crazypants.enderio.machines.config.config.ZombieGenConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.AbstractGeneratorEntity;
 import info.loenwind.autosave.annotations.Storable;
@@ -159,7 +159,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
     // eat more fuel and add ticks
     while (ticksRemaingFuel < 1f && tank.getFluidAmount() > 0) {
       tank.removeFluidAmount(1);
-      ticksRemaingFuel += Config.ticksPerBucketOfFuel.get() / 1000f;
+      ticksRemaingFuel += ZombieGenConfig.ticksPerBucketOfFuel.get() / 1000f;
     }
 
     // check that we didn't run out of fuel without even gathering enough for 1 tick...
@@ -177,7 +177,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   }
 
   int getActivationAmount() {
-    return (int) (tank.getCapacity() * Config.minimumTankLevel.get());
+    return (int) (tank.getCapacity() * ZombieGenConfig.minimumTankLevel.get());
   }
 
   private boolean transmitEnergy() {

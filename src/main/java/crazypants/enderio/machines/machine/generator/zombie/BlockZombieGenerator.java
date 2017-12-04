@@ -15,7 +15,7 @@ import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
-import crazypants.enderio.machines.config.Config;
+import crazypants.enderio.machines.config.config.ClientConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.killera.KillerJoeRenderMapper;
 import net.minecraft.block.material.MapColor;
@@ -111,8 +111,8 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
         }
 
-        if (Config.machineSoundsEnabled.get()) {
-          SoundHelper.playSound(world, pos, SoundHelper.BLOCK_TOP, SoundRegistry.ZOMBIE_BUBBLE, Config.machineSoundVolume.get() * 0.045f,
+        if (ClientConfig.machineSoundsEnabled.get()) {
+          SoundHelper.playSound(world, pos, SoundHelper.BLOCK_TOP, SoundRegistry.ZOMBIE_BUBBLE, ClientConfig.machineSoundVolume.get() * 0.045f,
               world.rand.nextFloat() * 0.75f);
         }
       }

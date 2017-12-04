@@ -15,7 +15,7 @@ import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.AbstractPainterTemplate;
-import crazypants.enderio.machines.config.Config;
+import crazypants.enderio.machines.config.config.ClientConfig;
 import crazypants.enderio.machines.machine.painter.ContainerPainter;
 import crazypants.enderio.machines.machine.painter.GuiPainter;
 import mezz.jei.api.IGuiHelper;
@@ -73,7 +73,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
       }
     }
 
-    List<ItemStack> paints = Config.jeiUseShortenedPainterRecipes.get() ? getLimitedItems() : validItems;
+    List<ItemStack> paints = ClientConfig.jeiUseShortenedPainterRecipes.get() ? getLimitedItems() : validItems;
 
     int count = 0;
     for (ItemStack paint : paints) {

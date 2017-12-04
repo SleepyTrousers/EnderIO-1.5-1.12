@@ -17,7 +17,7 @@ import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.power.PowerDisplayUtil;
-import crazypants.enderio.machines.config.Config;
+import crazypants.enderio.machines.config.config.ZombieGenConfig;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 
@@ -99,7 +99,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
       RenderUtil.renderGuiTank(gen.tank.getFluid(), gen.tank.getCapacity(), gen.tank.getFluidAmount(), x, y, zLevel, 16, 47);
 
       if (gen.isActive()) {
-        txt = Config.ticksPerBucketOfFuel.get() / 1000 + " " + EnderIO.lang.localize("power.tmb");
+        txt = ZombieGenConfig.ticksPerBucketOfFuel.get() / 1000 + " " + EnderIO.lang.localize("power.tmb");
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 46, ColorUtil.getRGB(Color.WHITE));
       }

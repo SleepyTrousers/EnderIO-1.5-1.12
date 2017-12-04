@@ -34,7 +34,7 @@ import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
-import crazypants.enderio.machines.config.Config;
+import crazypants.enderio.machines.config.config.KillerJoeConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
@@ -238,13 +238,13 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
           }
           boolean togglePvp = false;
           if (ent instanceof EntityPlayer && !FMLCommonHandler.instance().getMinecraftServerInstance().isPVPEnabled()) {
-            if (Config.killerPvPoffDisablesSwing.get()) {
+            if (KillerJoeConfig.killerPvPoffDisablesSwing.get()) {
               continue;
-            } else if (Config.killerPvPoffIsIgnored.get()) {
+            } else if (KillerJoeConfig.killerPvPoffIsIgnored.get()) {
               togglePvp = true;
             }
           }
-          if (Config.killerJoeMustSee.get() && !canJoeSee(ent)) {
+          if (KillerJoeConfig.killerJoeMustSee.get() && !canJoeSee(ent)) {
             continue;
           }
           if (!PermissionAPI.hasPermission(getOwner().getAsGameProfile(), BlockKillerJoe.permissionAttacking, new TargetContext(atackera, ent))) {
@@ -303,7 +303,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   private void hooverXP() {
 
-    double maxDist = Math.max(Config.killerJoeHooverXpHeight.get(), Math.max(Config.killerJoeHooverXpLength.get(), Config.killerJoeHooverXpWidth.get()));
+    double maxDist = Math.max(KillerJoeConfig.killerJoeHooverXpHeight.get(), Math.max(KillerJoeConfig.killerJoeHooverXpLength.get(), KillerJoeConfig.killerJoeHooverXpWidth.get()));
 
     List<EntityXPOrb> xp = world.getEntitiesWithinAABB(EntityXPOrb.class, getHooverBounds(), null);
 
@@ -366,7 +366,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   private boolean needsMending() {
-    return Config.killerMendingEnabled.get() && inventory[0] != null && inventory[0].isItemDamaged()
+    return KillerJoeConfig.killerMendingEnabled.get() && inventory[0] != null && inventory[0].isItemDamaged()
         && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, inventory[0]) > 0;
   }
 
@@ -440,9 +440,9 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   private @Nonnull BoundingBox getKillBounds() {
     if (killBounds == NULL_AABB) {
-      double killerJoeAttackHeight = Config.killerJoeAttackHeight.get();
-      double killerJoeAttackLength = Config.killerJoeAttackLength.get();
-      double killerJoeAttackWidth = Config.killerJoeAttackWidth.get();
+      double killerJoeAttackHeight = KillerJoeConfig.killerJoeAttackHeight.get();
+      double killerJoeAttackLength = KillerJoeConfig.killerJoeAttackLength.get();
+      double killerJoeAttackWidth = KillerJoeConfig.killerJoeAttackWidth.get();
 
       BoundingBox bb = new BoundingBox(getLocation());
       Vector3d min = bb.getMin();
@@ -473,9 +473,9 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   private @Nonnull AxisAlignedBB getHooverBounds() {
     if (hooverBounds == NULL_AABB) {
-      double killerJoeHooverXpHeight = Config.killerJoeHooverXpHeight.get();
-      double killerJoeHooverXpLength = Config.killerJoeHooverXpLength.get();
-      double killerJoeHooverXpWidth = Config.killerJoeHooverXpWidth.get();
+      double killerJoeHooverXpHeight = KillerJoeConfig.killerJoeHooverXpHeight.get();
+      double killerJoeHooverXpLength = KillerJoeConfig.killerJoeHooverXpLength.get();
+      double killerJoeHooverXpWidth = KillerJoeConfig.killerJoeHooverXpWidth.get();
 
       BoundingBox bb = new BoundingBox(getLocation());
       Vector3d min = bb.getMin();
@@ -507,7 +507,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   // ------------------------------- Fluid Stuff
 
   private void useNutrient() {
-    tank.removeFluidAmount(Config.killerJoeNutrientUsePerAttackMb.get());
+    tank.removeFluidAmount(KillerJoeConfig.killerJoeNutrientUsePerAttackMb.get());
   }
 
   @Override

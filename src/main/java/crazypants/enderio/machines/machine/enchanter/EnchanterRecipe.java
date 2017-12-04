@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.recipe.RecipeInput;
-import crazypants.enderio.machines.config.Config;
+import crazypants.enderio.machines.config.config.EnchanterConfig;
 import crazypants.enderio.util.Prep;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
@@ -71,14 +71,14 @@ public class EnchanterRecipe {
     // -1 cause its the index
     double min = Math.max(1, enchantment.getMinEnchantability(level));
     min *= costMultiplier; // per recipe scaling
-    int cost = (int) Math.round(min * Config.enchanterLevelCostFactor.get()); // global scaling
-    cost += Config.enchanterBaseLevelCost.get(); // add base cost
+    int cost = (int) Math.round(min * EnchanterConfig.enchanterLevelCostFactor.get()); // global scaling
+    cost += EnchanterConfig.enchanterBaseLevelCost.get(); // add base cost
     return cost;
   }
 
   public int getLapizForLevel(int level) {
     int res = enchantment.getMaxLevel() == 1 ? 5 : level;
-    return (int) Math.max(1, Math.round(res * Config.enchanterLapisCostFactor.get()));
+    return (int) Math.max(1, Math.round(res * EnchanterConfig.enchanterLapisCostFactor.get()));
   }
 
   public int getLapizForStackSize(int stackSize) {
