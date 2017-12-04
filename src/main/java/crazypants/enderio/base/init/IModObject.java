@@ -62,16 +62,15 @@ public interface IModObject extends IProducer {
       GuiHelper.openGui(this, world, pos, entityPlayer, side, param);
     }
 
-    default void openGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
+    default void openGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
       GuiHelper.openGui(this, world, entityPlayer, a, b, c);
     }
 
-    default void openClientGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer,
-        @Nullable EnumFacing side) {
+    default void openClientGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side) {
       GuiHelper.openClientGui(this, world, pos, entityPlayer, side);
     }
 
-    default void openClientGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
+    default void openClientGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
       GuiHelper.openClientGui(this, world, entityPlayer, a, b, c);
     }
 
