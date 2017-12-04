@@ -44,7 +44,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   private final int col1x;
   private final int col2x;
 
-  protected World world;
+  protected final @Nonnull World world;
 
   public GuiTravelAccessable(@Nonnull InventoryPlayer playerInv, @Nonnull T te, @Nonnull World world) {
     this(te, new ContainerTravelAccessable(playerInv, te, world));

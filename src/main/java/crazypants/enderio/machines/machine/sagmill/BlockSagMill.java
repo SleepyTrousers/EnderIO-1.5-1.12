@@ -3,21 +3,24 @@ package crazypants.enderio.machines.machine.sagmill;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
@@ -34,26 +37,16 @@ public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements I
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileSagMill te = getTileEntity(world, pos);
-    if (te != null) {
-      return new ContainerSagMill(player.inventory, te);
-    }
-    return null;
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileSagMill te) {
+    return new ContainerSagMill(player.inventory, te);
   }
 
   @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileSagMill te = getTileEntity(world, pos);
-    if (te != null) {
-      return new GuiSagMill(player.inventory, te);
-    }
-    return null;
-  }
-
-  @Override
-  protected @Nonnull GuiID getGuiId() {
-    return GuiID.GUI_ID_CRUSHER;
+  @SideOnly(Side.CLIENT)
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileSagMill te) {
+    return new GuiSagMill(player.inventory, te);
   }
 
   @Override

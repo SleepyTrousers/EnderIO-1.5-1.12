@@ -5,8 +5,8 @@ import java.util.Random;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.render.RenderMappers;
@@ -26,8 +26,10 @@ import crazypants.enderio.machines.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machines.machine.transceiver.gui.GuiTransceiver;
 import crazypants.enderio.machines.machine.transceiver.render.TransceiverRenderer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -65,26 +67,16 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileTransceiver te = getTileEntity(world, pos);
-    if (te != null) {
-      return new ContainerTransceiver(player.inventory, te);
-    }
-    return null;
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileTransceiver te) {
+    return new ContainerTransceiver(player.inventory, te);
   }
 
   @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileTransceiver te = getTileEntity(world, pos);
-    if (te != null) {
-      return new GuiTransceiver(player.inventory, te);
-    }
-    return null;
-  }
-
-  @Override
-  protected @Nonnull GuiID getGuiId() {
-    return GuiID.GUI_ID_TRANSCEIVER;
+  @SideOnly(Side.CLIENT)
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileTransceiver te) {
+    return new GuiTransceiver(player.inventory, te);
   }
 
   @Override

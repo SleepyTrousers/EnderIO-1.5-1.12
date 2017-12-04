@@ -10,7 +10,6 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
@@ -25,8 +24,10 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -102,31 +103,21 @@ public class BlockTank extends AbstractMachineBlock<TileTank>
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileTank te = getTileEntity(world, pos);
-    if (te != null) {
-      return new ContainerTank(player.inventory, te);
-    }
-    return null;
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileTank te) {
+    return new ContainerTank(player.inventory, te);
   }
 
   @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileTank te = getTileEntity(world, pos);
-    if (te != null) {
-      return new GuiTank(player.inventory, te);
-    }
-    return null;
+  @SideOnly(Side.CLIENT)
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileTank te) {
+    return new GuiTank(player.inventory, te);
   }
 
   @Override
   public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
-  }
-
-  @Override
-  protected @Nonnull GuiID getGuiId() {
-    return GuiID.GUI_ID_TANK;
   }
 
   @Override

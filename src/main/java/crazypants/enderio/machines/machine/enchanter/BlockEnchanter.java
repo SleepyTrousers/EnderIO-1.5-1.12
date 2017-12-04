@@ -1,10 +1,10 @@
 package crazypants.enderio.machines.machine.enchanter;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
@@ -14,8 +14,11 @@ import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.ITESRItemBlock;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -26,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.machines.init.MachineObject.block_enchanter;
 
-public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implements GuiID.IEioGuiHandler, IResourceTooltipProvider, ITESRItemBlock, IHaveTESR {
+public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implements IResourceTooltipProvider, ITESRItemBlock, IHaveTESR {
 
   public static BlockEnchanter create(@Nonnull IModObject modObject) {
     BlockEnchanter res = new BlockEnchanter();
@@ -40,11 +43,6 @@ public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implemen
   }
 
   @Override
-  protected @Nonnull GuiID getGuiId() {
-    return GuiID.GUI_ID_ENCHANTER;
-  }
-
-  @Override
   public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
@@ -55,21 +53,16 @@ public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implemen
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileEnchanter tileEntity = getTileEntity(world, pos);
-    if (tileEntity != null) {
-      return new ContainerEnchanter(player, player.inventory, tileEntity);
-    }
-    return null;
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileEnchanter te) {
+    return new ContainerEnchanter(player, player.inventory, te);
   }
 
   @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileEnchanter tileEntity = getTileEntity(world, pos);
-    if (tileEntity != null) {
-      return new GuiEnchanter(player, player.inventory, tileEntity);
-    }
-    return null;
+  @SideOnly(Side.CLIENT)
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileEnchanter te) {
+    return new GuiEnchanter(player, player.inventory, te);
   }
 
   @Override

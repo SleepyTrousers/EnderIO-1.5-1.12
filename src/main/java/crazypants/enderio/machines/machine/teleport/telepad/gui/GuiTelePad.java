@@ -16,7 +16,6 @@ import com.enderio.core.common.util.Util;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
@@ -24,6 +23,8 @@ import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.machine.teleport.telepad.BlockTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketOpenServerGui;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
@@ -257,9 +258,8 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
   @Override
   public void switchGui() {
-    BlockPos pos = te.getLocation();
-    GuiID.GUI_ID_TELEPAD_TRAVEL.openClientGui(te.getWorld(), pos, mc.player, null);
-    PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, GuiID.GUI_ID_TELEPAD_TRAVEL));
+    MachineObject.block_tele_pad.openClientGui(te.getWorld(), te.getPos(), mc.player, null, BlockTelePad.GUI_ID_TELEPAD_TRAVEL);
+    PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, BlockTelePad.GUI_ID_TELEPAD_TRAVEL));
   }
 
   @Override

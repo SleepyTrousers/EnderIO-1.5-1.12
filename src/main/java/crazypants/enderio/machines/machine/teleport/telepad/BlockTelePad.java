@@ -1,9 +1,9 @@
 package crazypants.enderio.machines.machine.teleport.telepad;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.api.teleport.ITelePad;
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -32,8 +32,10 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -47,6 +49,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPaintable.ISolidBlockPaintableBlock, /* IWailaInfoProvider, */IHaveTESR {
+
+  public static final int GUI_ID_TELEPAD = 0;
+  public static final int GUI_ID_TELEPAD_TRAVEL = 1;
 
   @SuppressWarnings("rawtypes")
   public static BlockTravelAnchor create() {
@@ -73,12 +78,6 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BLOCK_TYPE, BlockType.SINGLE));
     setLightOpacity(255);
     useNeighborBrightness = true;
-  }
-
-  @Override
-  protected void registerGuiHandlers() {
-    GuiID.registerGuiHandler(GuiID.GUI_ID_TELEPAD, this);
-    GuiID.registerGuiHandler(GuiID.GUI_ID_TELEPAD_TRAVEL, this);
   }
 
   @Override
@@ -161,7 +160,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
 
       // from here out we know that we are connected and are the master
       if (tp.canBlockBeAccessed(entityPlayer)) {
-        GuiID.GUI_ID_TELEPAD.openGui(world, pos, entityPlayer, side);
+        return openGui(world, pos, entityPlayer, side, GUI_ID_TELEPAD);
       } else {
         sendPrivateChatMessage(entityPlayer, tp.getOwner());
       }
@@ -170,12 +169,13 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int ID) {
     TileTelePad te = getTileEntity(world, pos);
     if (te != null) {
-      if (GuiID.GUI_ID_TELEPAD.is(ID)) {
+      if (GUI_ID_TELEPAD == ID) {
         return new ContainerTelePad(player.inventory, te);
-      } else if (GuiID.GUI_ID_TELEPAD_TRAVEL.is(ID)) {
+      } else if (GUI_ID_TELEPAD_TRAVEL == ID) {
         return new ContainerTravelAccessable(player.inventory, te, world);
       } else {
         return new ContainerTravelAuth(player.inventory);
@@ -185,12 +185,14 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   }
 
   @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+  @SideOnly(Side.CLIENT)
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int ID) {
     TileTelePad te = getTileEntity(world, pos);
     if (te != null) {
-      if (GuiID.GUI_ID_TELEPAD.is(ID)) {
+      if (GUI_ID_TELEPAD == ID) {
         return new GuiTelePad(player.inventory, te);
-      } else if (GuiID.GUI_ID_TELEPAD_TRAVEL.is(ID)) {
+      } else if (GUI_ID_TELEPAD_TRAVEL == ID) {
         return new GuiAugmentedTravelAccessible(player.inventory, te, world);
       } else {
         return new GuiTravelAuth(player, te, world);

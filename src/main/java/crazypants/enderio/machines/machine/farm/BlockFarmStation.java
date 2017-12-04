@@ -4,9 +4,9 @@ import java.util.Locale;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -19,7 +19,9 @@ import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.IOMode;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -49,26 +51,16 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileFarmStation te = getTileEntity(world, pos);
-    if (te != null) {
-      return new FarmStationContainer(player.inventory, te);
-    }
-    return null;
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileFarmStation te) {
+    return new FarmStationContainer(player.inventory, te);
   }
 
   @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileFarmStation te = getTileEntity(world, pos);
-    if (te != null) {
-      return new GuiFarmStation(player.inventory, te);
-    }
-    return null;
-  }
-
-  @Override
-  protected @Nonnull GuiID getGuiId() {
-    return GuiID.GUI_ID_FARM_STATATION;
+  @SideOnly(Side.CLIENT)
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileFarmStation te) {
+    return new GuiFarmStation(player.inventory, te);
   }
 
   @Override

@@ -3,8 +3,8 @@ package crazypants.enderio.machines.machine.slicensplice;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
@@ -14,8 +14,10 @@ import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -38,26 +40,16 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileSliceAndSplice te = getTileEntity(world, pos);
-    if (te != null) {
-      return new ContainerSliceAndSplice(player.inventory, te);
-    }
-    return null;
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileSliceAndSplice te) {
+    return new ContainerSliceAndSplice(player.inventory, te);
   }
 
   @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileSliceAndSplice te = getTileEntity(world, pos);
-    if (te != null) {
-      return new GuiSliceAndSplice(player.inventory, te);
-    }
-    return null;
-  }
-
-  @Override
-  protected @Nonnull GuiID getGuiId() {
-    return GuiID.GUI_ID_SLICE_N_SPLICE;
+  @SideOnly(Side.CLIENT)
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileSliceAndSplice te) {
+    return new GuiSliceAndSplice(player.inventory, te);
   }
 
   @SideOnly(Side.CLIENT)

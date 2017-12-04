@@ -1,8 +1,8 @@
 package crazypants.enderio.machines.machine.painter;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.paint.IPaintable;
@@ -10,7 +10,10 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.EveryPaintableRecipe;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.machines.init.MachineObject;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -38,27 +41,16 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> implem
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileEntityPainter te = getTileEntity(world, pos);
-    if (te != null) {
-      return new ContainerPainter(player.inventory, te);
-    }
-    return null;
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileEntityPainter te) {
+    return new ContainerPainter(player.inventory, te);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileEntityPainter te = getTileEntity(world, pos);
-    if (te != null) {
-      return new GuiPainter(player.inventory, te);
-    }
-    return null;
-  }
-
-  @Override
-  protected @Nonnull GuiID getGuiId() {
-    return GuiID.GUI_ID_PAINTER;
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileEntityPainter te) {
+    return new GuiPainter(player.inventory, te);
   }
 
   @Override

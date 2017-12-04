@@ -1,18 +1,21 @@
 package crazypants.enderio.machines.machine.obelisk.aversion;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
-import crazypants.enderio.machines.machine.obelisk.ContainerAbstractObelisk;
 import crazypants.enderio.machines.machine.obelisk.GuiRangedObelisk;
 import crazypants.enderio.machines.machine.obelisk.spawn.SpawningObeliskController;
+import crazypants.enderio.machines.machine.obelisk.xp.AbstractBlockRangedObelisk;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockAversionObelisk extends AbstractBlockObelisk<TileAversionObelisk> {
+public class BlockAversionObelisk extends AbstractBlockRangedObelisk<TileAversionObelisk> {
 
   public static BlockAversionObelisk create(@Nonnull IModObject modObject) {
     BlockAversionObelisk res = new BlockAversionObelisk(modObject);
@@ -29,25 +32,10 @@ public class BlockAversionObelisk extends AbstractBlockObelisk<TileAversionObeli
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileAversionObelisk te = getTileEntity(world, pos);
-    if (te != null) {
-      return new ContainerAbstractObelisk(player.inventory, te);
-    }
-    return null;
+  @SideOnly(Side.CLIENT)
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileAversionObelisk te) {
+    return new GuiRangedObelisk(player.inventory, te);
   }
 
-  @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    TileAversionObelisk te = getTileEntity(world, pos);
-    if (te != null) {
-      return new GuiRangedObelisk(player.inventory, te);
-    }
-    return null;
-  }
-
-  @Override
-  protected GuiID getGuiId() {
-    return GuiID.GUI_ID_SPAWN_GUARD;
-  }
 }

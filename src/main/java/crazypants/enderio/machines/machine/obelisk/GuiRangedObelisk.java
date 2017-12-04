@@ -27,7 +27,7 @@ public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEn
   private static final int RANGE_ID = 8738924;
 
   public GuiRangedObelisk(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull AbstractRangedTileEntity te) {
-    this(par1InventoryPlayer, te, new ContainerAbstractObelisk(par1InventoryPlayer, te), "attractor");
+    this(par1InventoryPlayer, te, new ContainerRangedObelisk(par1InventoryPlayer, te), "attractor");
   }
 
   public GuiRangedObelisk(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull AbstractRangedTileEntity te, @Nonnull Container container, String... texture) {
@@ -50,8 +50,8 @@ public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEn
     super.initGui();
     showRangeB.onGuiInit();
     showRangeB.setSelected(getTileEntity().isShowingRange());
-    if (isGhostSlotsEnabled() && inventorySlots instanceof ContainerAbstractObelisk) {
-      ((ContainerAbstractObelisk) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
+    if (isGhostSlotsEnabled() && inventorySlots instanceof ContainerRangedObelisk) {
+      ((ContainerRangedObelisk) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
     }
   }
 

@@ -1,10 +1,13 @@
 package crazypants.enderio.machines.machine.teleport.telepad.gui;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.teleport.GuiTravelAccessable;
+import crazypants.enderio.machines.machine.teleport.telepad.BlockTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketOpenServerGui;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -16,7 +19,7 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable<TileTelePa
 
   ToggleTravelButton switchButton;
 
-  public GuiAugmentedTravelAccessible(InventoryPlayer playerInv, TileTelePad te, World world) {
+  public GuiAugmentedTravelAccessible(@Nonnull InventoryPlayer playerInv, @Nonnull TileTelePad te, @Nonnull World world) {
     super(playerInv, te, world);
     switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, GuiTelePad.SWITCH_X, GuiTelePad.SWITCH_Y, IconEIO.IO_WHATSIT);
     switchButton.setToolTip(EnderIO.lang.localize("gui.telepad.configure.telepad"));
@@ -30,7 +33,7 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable<TileTelePa
 
   @Override
   public void switchGui() {
-    GuiID.GUI_ID_TELEPAD.openClientGui(world, te.getPos(), mc.player, null);
-    PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, GuiID.GUI_ID_TELEPAD));
+    MachineObject.block_tele_pad.openClientGui(world, te.getPos(), mc.player, null, BlockTelePad.GUI_ID_TELEPAD);
+    PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, BlockTelePad.GUI_ID_TELEPAD));
   }
 }

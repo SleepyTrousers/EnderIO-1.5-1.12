@@ -3,8 +3,8 @@ package crazypants.enderio.machines.machine.generator.combustion;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
@@ -15,9 +15,11 @@ import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -30,27 +32,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends AbstractMachineBlock<T>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  protected final @Nonnull GuiID guiID;
   protected boolean isEnhanced = false;
 
   public static BlockCombustionGenerator<TileCombustionGenerator> create(@Nonnull IModObject modObject) {
-    BlockCombustionGenerator<TileCombustionGenerator> gen = new BlockCombustionGenerator<>(modObject, TileCombustionGenerator.class,
-        GuiID.GUI_ID_COMBUSTION_GEN);
+    BlockCombustionGenerator<TileCombustionGenerator> gen = new BlockCombustionGenerator<>(modObject, TileCombustionGenerator.class);
     gen.init();
     return gen;
   }
 
   public static BlockCombustionGenerator<TileCombustionGenerator.Enhanced> create_enhanced(@Nonnull IModObject modObject) {
-    BlockCombustionGenerator<TileCombustionGenerator.Enhanced> gen = new BlockCombustionGenerator<>(modObject, TileCombustionGenerator.Enhanced.class,
-        GuiID.GUI_ID_COMBUSTION_GEN_ENH);
+    BlockCombustionGenerator<TileCombustionGenerator.Enhanced> gen = new BlockCombustionGenerator<>(modObject, TileCombustionGenerator.Enhanced.class);
     gen.init();
     gen.isEnhanced = true;
     return gen;
   }
 
-  protected BlockCombustionGenerator(@Nonnull IModObject modObject, @Nonnull Class<T> teClass, @Nonnull GuiID guiID) {
+  protected BlockCombustionGenerator(@Nonnull IModObject modObject, @Nonnull Class<T> teClass) {
     super(modObject, teClass);
-    this.guiID = guiID;
   }
 
   @Override
@@ -59,26 +57,16 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    T te = getTileEntity(world, pos);
-    if (te != null) {
-      return new ContainerCombustionGenerator<T>(player.inventory, te);
-    }
-    return null;
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull T te) {
+    return new ContainerCombustionGenerator<T>(player.inventory, te);
   }
 
   @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
-    T te = getTileEntity(world, pos);
-    if (te != null) {
-      return new GuiCombustionGenerator<T>(player.inventory, te);
-    }
-    return null;
-  }
-
-  @Override
-  protected @Nonnull GuiID getGuiId() {
-    return guiID;
+  @SideOnly(Side.CLIENT)
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull T te) {
+    return new GuiCombustionGenerator<T>(player.inventory, te);
   }
 
   @Override

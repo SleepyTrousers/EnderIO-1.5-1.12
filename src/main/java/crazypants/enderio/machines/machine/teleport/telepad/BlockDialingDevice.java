@@ -1,11 +1,12 @@
 package crazypants.enderio.machines.machine.teleport.telepad;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.base.BlockEio;
-import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -18,7 +19,9 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -30,7 +33,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockDialingDevice extends BlockEio<TileDialingDevice>
-    implements GuiID.IEioGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IHaveRenderers {
+    implements IEioGuiHandler.WithPos, ITileEntityProvider, IResourceTooltipProvider, IHaveRenderers {
 
   public static BlockDialingDevice create() {
 
@@ -52,12 +55,6 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice>
   }
 
   @Override
-  protected final void init() {
-    super.init();
-    GuiID.registerGuiHandler(GuiID.GUI_ID_TELEPAD_DIALING_DEVICE, this);
-  }
-
-  @Override
   public ItemBlock createBlockItem(@Nonnull IModObject mo) {
     return mo.apply(new BlockItemDialingDevice(this));
   }
@@ -68,7 +65,8 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice>
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1) {
     TileDialingDevice te = getTileEntity(world, pos);
     if (te == null) {
       return null;
@@ -77,18 +75,14 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice>
   }
 
   @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+  @SideOnly(Side.CLIENT)
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1) {
     TileDialingDevice te = getTileEntity(world, pos);
     if (te == null) {
       return null;
     }
     return new GuiDialingDevice(player.inventory, te);
-  }
-
-  @Override
-  protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
-    GuiID.GUI_ID_TELEPAD_DIALING_DEVICE.openGui(world, pos, entityPlayer, side);
-    return true;
   }
 
   @Override

@@ -11,7 +11,7 @@ import com.enderio.core.common.util.UserIdent;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
@@ -39,9 +39,11 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -55,8 +57,10 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> implements GuiID.IEioGuiHandler, ITileEntityProvider, IResourceTooltipProvider,
+public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> implements IEioGuiHandler.WithPos, ITileEntityProvider, IResourceTooltipProvider,
     ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers, IHaveTESR {
+
+  protected static final int GUI_ID_TRAVEL_ACCESSABLE = 0;
 
   public static BlockTravelAnchor<TileTravelAnchor> create() {
     PacketHandler.INSTANCE.registerMessage(PacketDrainStaff.class, PacketDrainStaff.class, PacketHandler.nextID(), Side.SERVER);
@@ -82,13 +86,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   @Override
   protected final void init() {
     super.init();
-    registerGuiHandlers();
     registerInSmartModelAttacher();
-  }
-
-  protected void registerGuiHandlers() {
-    GuiID.registerGuiHandler(GuiID.GUI_ID_TRAVEL_ACCESSABLE, this);
-    GuiID.registerGuiHandler(GuiID.GUI_ID_TRAVEL_AUTH, this);
   }
 
   protected void registerInSmartModelAttacher() {
@@ -177,7 +175,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     if (!world.isRemote && te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if (ta.canUiBeAccessed(entityPlayer)) {
-        GuiID.GUI_ID_TRAVEL_ACCESSABLE.openGui(world, pos, entityPlayer, side);
+        return openGui(world, pos, entityPlayer, side, GUI_ID_TRAVEL_ACCESSABLE);
       } else {
         sendPrivateChatMessage(entityPlayer, ta.getOwner());
       }
@@ -193,10 +191,11 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int ID) {
     T te = getTileEntity(world, pos);
     if (te != null) {
-      if (GuiID.GUI_ID_TRAVEL_ACCESSABLE.is(ID)) {
+      if (GUI_ID_TRAVEL_ACCESSABLE == ID) {
         return new ContainerTravelAccessable(player.inventory, te, world);
       } else {
         return new ContainerTravelAuth(player.inventory);
@@ -206,10 +205,12 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+  @SideOnly(Side.CLIENT)
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int ID) {
     T te = getTileEntity(world, pos);
     if (te != null) {
-      if (GuiID.GUI_ID_TRAVEL_ACCESSABLE.is(ID)) {
+      if (GUI_ID_TRAVEL_ACCESSABLE == ID) {
         return new GuiTravelAccessable<T>(player.inventory, te, world);
       } else {
         return new GuiTravelAuth(player, te, world);

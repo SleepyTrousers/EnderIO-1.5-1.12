@@ -14,9 +14,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerAbstractObelisk extends AbstractMachineContainer<AbstractRangedTileEntity> {
+public class ContainerRangedObelisk extends AbstractMachineContainer<AbstractRangedTileEntity> {
 
-  public ContainerAbstractObelisk(@Nonnull InventoryPlayer playerInv, @Nonnull AbstractRangedTileEntity te) {
+  public ContainerRangedObelisk(@Nonnull InventoryPlayer playerInv, @Nonnull AbstractRangedTileEntity te) {
     super(playerInv, te);
   }
 

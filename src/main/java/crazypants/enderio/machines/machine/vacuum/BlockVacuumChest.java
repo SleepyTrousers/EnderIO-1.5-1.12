@@ -7,7 +7,7 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.BlockEio;
-import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
@@ -23,6 +23,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,7 +39,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements GuiID.IEioGuiHandler, IResourceTooltipProvider, IRedstoneConnectable,
+public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IEioGuiHandler.WithPos, IResourceTooltipProvider, IRedstoneConnectable,
     IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
 
   public static BlockVacuumChest create(@Nonnull IModObject modObject) {
@@ -74,7 +75,6 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements GuiID
   @Override
   protected void init() {
     super.init();
-    GuiID.registerGuiHandler(GuiID.GUI_ID_VACUUM_CHEST, this);
     registerInSmartModelAttacher();
   }
 
@@ -135,12 +135,6 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements GuiID
   // }
 
   @Override
-  protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
-    GuiID.GUI_ID_VACUUM_CHEST.openGui(world, pos, entityPlayer, side);
-    return true;
-  }
-
-  @Override
   public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
     return false;
   }
@@ -176,7 +170,8 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements GuiID
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1) {
     TileVacuumChest te = getTileEntity(world, pos);
     if (te != null) {
       return new ContainerVacuumChest(player.inventory, te);
@@ -185,7 +180,9 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements GuiID
   }
 
   @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+  @SideOnly(Side.CLIENT)
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1) {
     TileVacuumChest te = getTileEntity(world, pos);
     if (te != null) {
       return new GuiVacuumChest(player.inventory, te);

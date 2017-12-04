@@ -4,9 +4,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.config.IEnderIOAddon;
+import crazypants.enderio.base.registry.Registry;
 import crazypants.enderio.machines.config.Config;
 import crazypants.enderio.machines.config.ConfigHandler;
 import crazypants.enderio.machines.config.RecipeLoaderMachines;
+import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.render.ObeliskRenderManager;
 import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -54,6 +56,12 @@ public class EnderIOMachines implements IEnderIOAddon {
     if (Config.registerRecipes.get()) {
       RecipeLoaderMachines.addRecipes();
     }
+
+    Registry.enableSolarUpgrade(MachineObject.block_solar_panel.getItemNN(),
+        new int[] { crazypants.enderio.base.config.Config.darkSteelSolarOneCost, crazypants.enderio.base.config.Config.darkSteelSolarTwoCost,
+            crazypants.enderio.base.config.Config.darkSteelSolarThreeCost },
+        new int[] { crazypants.enderio.base.config.Config.darkSteelSolarOneGen, crazypants.enderio.base.config.Config.darkSteelSolarTwoGen,
+            crazypants.enderio.base.config.Config.darkSteelSolarThreeGen });
   }
 
   @EventHandler
