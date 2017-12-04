@@ -3,8 +3,10 @@ package crazypants.enderio.machines.machine.generator.stirling;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.paint.IPaintable;
@@ -20,30 +22,28 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockStirlingGenerator<T extends TileStirlingGenerator> extends AbstractMachineBlock<T>
-    implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
-
-  protected final @Nonnull GuiID guiID;
+    implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IEioGuiHandler.WithPos {
 
   public static BlockStirlingGenerator<TileStirlingGenerator> create(@Nonnull IModObject modObject) {
-    BlockStirlingGenerator<TileStirlingGenerator> gen = new BlockStirlingGenerator<>(modObject, TileStirlingGenerator.class, GuiID.GUI_ID_STIRLING_GEN);
+    BlockStirlingGenerator<TileStirlingGenerator> gen = new BlockStirlingGenerator<>(modObject, TileStirlingGenerator.class);
     gen.init();
     return gen;
   }
 
   public static BlockStirlingGenerator<TileStirlingGenerator.Simple> create_simple(@Nonnull IModObject modObject) {
-    BlockStirlingGenerator<TileStirlingGenerator.Simple> gen = new BlockStirlingGenerator<>(modObject, TileStirlingGenerator.Simple.class,
-        GuiID.GUI_ID_SIMPLE_STIRLING_GEN);
+    BlockStirlingGenerator<TileStirlingGenerator.Simple> gen = new BlockStirlingGenerator<>(modObject, TileStirlingGenerator.Simple.class);
     gen.init();
     return gen;
   }
 
-  protected BlockStirlingGenerator(@Nonnull IModObject modObject, @Nonnull Class<T> teClass, @Nonnull GuiID guiID) {
+  protected BlockStirlingGenerator(@Nonnull IModObject modObject, @Nonnull Class<T> teClass) {
     super(modObject, teClass);
-    this.guiID = guiID;
   }
 
   @Override
-  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+  @Nullable
+  public Object getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1) {
     T te = getTileEntity(world, pos);
     if (te != null) {
       return new ContainerStirlingGenerator<T>(player.inventory, te);
@@ -52,7 +52,9 @@ public class BlockStirlingGenerator<T extends TileStirlingGenerator> extends Abs
   }
 
   @Override
-  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+  @Nullable
+  public Object getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1) {
     T te = getTileEntity(world, pos);
     if (te != null) {
       return new GuiStirlingGenerator<T>(player.inventory, te);
@@ -61,8 +63,18 @@ public class BlockStirlingGenerator<T extends TileStirlingGenerator> extends Abs
   }
 
   @Override
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    return null;
+  }
+
+  @Override
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos) {
+    return null;
+  }
+
+  @Override
   protected @Nonnull GuiID getGuiId() {
-    return guiID;
+    return null;
   }
 
   @Override
