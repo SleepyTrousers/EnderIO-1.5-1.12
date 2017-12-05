@@ -9,7 +9,6 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -23,6 +22,7 @@ import crazypants.enderio.base.xp.ExperienceContainer;
 import crazypants.enderio.base.xp.IHaveExperience;
 import crazypants.enderio.base.xp.PacketExperienceContainer;
 import crazypants.enderio.base.xp.XpUtil;
+import crazypants.enderio.machines.config.config.SoulBinderConfig;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -40,7 +40,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POW
 public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveExperience, ITankAccess, IPaintable.IPaintableTileEntity {
 
   @Store
-  private final @Nonnull ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel)) {
+  private final @Nonnull ExperienceContainer xpCont = new ExperienceContainer() {
     @Override
     public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
       return super.drain(from, Math.min(XpUtil.experienceToLiquid(getExcessXP()), maxDrain), doDrain);
@@ -180,7 +180,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     int req = getXPRequired();
     if (dir != null && req > 0) {
       if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), xpCont,
-          Math.min(XpUtil.experienceToLiquid(req), Config.fluidConduitExtractRate)) > 0) {
+          Math.min(XpUtil.experienceToLiquid(req), SoulBinderConfig.soulFluidInputRate.get())) > 0) {
         setTanksDirty();
       }
     }
@@ -190,7 +190,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {
     boolean res = super.doPush(dir);
-    int maxAmount = Math.min(XpUtil.experienceToLiquid(getExcessXP()), Config.fluidConduitExtractRate);
+    int maxAmount = Math.min(XpUtil.experienceToLiquid(getExcessXP()), SoulBinderConfig.soulFluidOutputRate.get());
     if (dir != null && maxAmount > 0) {
       if (FluidWrapper.transfer(xpCont, world, getPos().offset(dir), dir.getOpposite(), maxAmount) > 0) {
         setTanksDirty();

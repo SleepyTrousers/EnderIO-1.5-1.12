@@ -11,7 +11,6 @@ import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -141,11 +140,6 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
     res[res.length - 1] = new MachineRecipeInput(0, inputTank.getFluid());
 
     return res;
-  }
-
-  @Override
-  public int getPowerUsePerTick() {
-    return Config.vatPowerUserPerTickRF;
   }
 
   @Override

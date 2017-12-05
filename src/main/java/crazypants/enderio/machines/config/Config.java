@@ -11,6 +11,7 @@ import crazypants.enderio.machines.config.config.ClientConfig;
 import crazypants.enderio.machines.config.config.EnchanterConfig;
 import crazypants.enderio.machines.config.config.KillerJoeConfig;
 import crazypants.enderio.machines.config.config.SolarConfig;
+import crazypants.enderio.machines.config.config.SoulBinderConfig;
 import crazypants.enderio.machines.config.config.SpawnerConfig;
 import crazypants.enderio.machines.config.config.VacuumConfig;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
@@ -47,6 +48,7 @@ public final class Config {
     EnchanterConfig.F.getClass();
     KillerJoeConfig.F.getClass();
     SolarConfig.F.getClass();
+    SoulBinderConfig.F.getClass();
     SpawnerConfig.F.getClass();
     VacuumConfig.F.getClass();
     ZombieGenConfig.F.getClass();
