@@ -49,7 +49,8 @@ public class ValueFactory {
     if (config.hasChanged()) {
       config.save();
     }
-    preloadValues.clear();
+    // Note: Forge trashes the config when loading it from disk, so we need to re-configure all values every time that happens
+    // preloadValues.clear();
   }
 
   public @Nonnull IValue<Integer> make(@Nonnull Section section, @Nonnull String keyname, int defaultValue, @Nonnull String text) {
@@ -236,14 +237,8 @@ public class ValueFactory {
 
     @Override
     protected @Nullable Integer makeValue() {
-      final Property property = config.get(section, keyname, defaultValue, text);
-      if (minValue != null) {
-        property.setMinValue(minValue);
-      }
-      if (maxValue != null) {
-        property.setMaxValue(maxValue);
-      }
-      return property.getInt(defaultValue);
+      return config.getInt(keyname, section, defaultValue, minValue != null ? minValue.intValue() : Integer.MIN_VALUE,
+          maxValue != null ? maxValue.intValue() : Integer.MAX_VALUE, text);
     }
 
     @Override
@@ -261,7 +256,9 @@ public class ValueFactory {
 
     @Override
     protected @Nullable Double makeValue() {
-      final Property property = config.get(section, keyname, defaultValue, text);
+      String comment = text + " [range: " + (minValue != null ? minValue : Double.NEGATIVE_INFINITY) + " ~ " + (maxValue != null ? maxValue : Double.MAX_VALUE)
+          + ", default: " + defaultValue + "]";
+      final Property property = config.get(section, keyname, defaultValue, comment);
       if (minValue != null) {
         property.setMinValue(minValue);
       }
@@ -286,14 +283,8 @@ public class ValueFactory {
 
     @Override
     protected @Nullable Float makeValue() {
-      final Property property = config.get(section, keyname, defaultValue, text);
-      if (minValue != null) {
-        property.setMinValue(minValue);
-      }
-      if (maxValue != null) {
-        property.setMaxValue(maxValue);
-      }
-      return (float) property.getDouble(defaultValue);
+      return config.getFloat(keyname, section, defaultValue, minValue == null ? Float.NEGATIVE_INFINITY : minValue.floatValue(),
+          maxValue == null ? Float.MAX_VALUE : maxValue.floatValue(), text);
     }
 
     @Override
@@ -311,7 +302,7 @@ public class ValueFactory {
 
     @Override
     protected @Nullable String makeValue() {
-      return config.get(section, keyname, defaultValue, text).getString();
+      return config.getString(keyname, section, defaultValue, text);
     }
 
     @Override
@@ -329,7 +320,7 @@ public class ValueFactory {
 
     @Override
     protected @Nullable Boolean makeValue() {
-      return config.get(section, keyname, defaultValue, text).getBoolean(defaultValue);
+      return config.getBoolean(keyname, section, defaultValue, text);
     }
 
     @Override
@@ -347,9 +338,7 @@ public class ValueFactory {
 
     @Override
     protected @Nullable RebuildableThings makeValue() {
-      String[] array = defaultValue.getNameList().toArray(new String[0]);
-      String[] stringList = config.getStringList(keyname, section, array, text);
-      return new RebuildableThings(stringList);
+      return new RebuildableThings(config.getStringList(keyname, section, defaultValue.getNameList().toArray(new String[0]), text));
     }
 
     @Override
@@ -359,6 +348,7 @@ public class ValueFactory {
 
     @Override
     public void save(ByteBuf buf) {
+      Log.warn("StringList config options cannot be synced to the client. This is a coding error.");
     }
   }
 

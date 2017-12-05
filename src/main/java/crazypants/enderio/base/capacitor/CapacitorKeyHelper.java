@@ -23,16 +23,16 @@ public class CapacitorKeyHelper {
 
   public static void processConfig(Configuration config, ICapacitorKey.Computable... keys) {
     for (ICapacitorKey.Computable key : keys) {
-      key.setBaseValue(
-          config.get(key.getConfigSection().name, key.getConfigKey(), key.getDefaultBaseValue(), key.getConfigComment()).getInt(key.getBaseValue()));
+      key.setBaseValue(config.getInt(key.getConfigKey(), key.getConfigSection().name, key.getDefaultBaseValue(), Integer.MIN_VALUE, Integer.MAX_VALUE,
+          key.getConfigComment()));
       String string = Scaler.Factory.toString(key.getScaler());
       if (string != null) {
-        String string2 = config.get(key.getConfigSection().name, key.getConfigKey() + ".scaler", string, null).getString();
+        String string2 = config.getString(key.getConfigKey() + ".scaler", key.getConfigSection().name, string, "Scaler for " + key.getConfigKey());
         Scaler tmp = Scaler.Factory.fromString(string2);
         if (tmp != null) {
           key.setScaler(tmp);
         } else {
-          config.get(key.getConfigSection().name, key.getConfigKey() + ".scaler", string, null).set(string);
+          config.get(key.getConfigSection().name, key.getConfigKey() + ".scaler", string, "Scaler for " + key.getConfigKey()).set(string);
         }
       }
     }
