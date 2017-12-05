@@ -153,7 +153,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
     if (te != null) {
       te.writeToItemStack(drop);
     }
-    PainterUtil2.setSourceBlock(drop, getPaintSource(null, world, pos));
+    PainterUtil2.setSourceBlock(drop, getPaintSource(world.getBlockState(pos), world, pos));
   }
 
   // ///////////////////////////////////////////////////////////////////////

@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 
@@ -18,9 +20,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.relauncher.Side;
@@ -57,13 +57,14 @@ public class EnchanterModelRenderer extends ManagedTESR<TileEnchanter> {
     IBakedModel bakedModel = modelShapes
         .getModelForState(MachineObject.block_enchanter.getBlockNN().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
 
-    RenderUtil.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+    RenderUtil.bindBlockTexture();
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.enableRescaleNormal();
     GlStateManager.pushMatrix();
 
     Tessellator tessellator = Tessellator.getInstance();
     VertexBuffer vertexbuffer = tessellator.getBuffer();
-    vertexbuffer.begin(7, DefaultVertexFormats.ITEM);
+    vertexbuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
 
     for (EnumFacing enumfacing : EnumFacing.values()) {
       this.renderQuads(vertexbuffer, bakedModel.getQuads((IBlockState) null, enumfacing, 0L));
@@ -73,6 +74,7 @@ public class EnchanterModelRenderer extends ManagedTESR<TileEnchanter> {
     tessellator.draw();
 
     GlStateManager.popMatrix();
+    GlStateManager.disableRescaleNormal();
   }
 
   private void renderQuads(VertexBuffer renderer, List<BakedQuad> quads) {
@@ -91,7 +93,7 @@ public class EnchanterModelRenderer extends ManagedTESR<TileEnchanter> {
     GlStateManager.rotate(facing.getHorizontalIndex() * 90f, 0, 1, 0);
 
     RenderUtil.bindTexture(TEXTURE);
-    model.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F - 0.006f);
+    model.render(0.0625F - 0.006f);
 
     GlStateManager.popMatrix();
   }

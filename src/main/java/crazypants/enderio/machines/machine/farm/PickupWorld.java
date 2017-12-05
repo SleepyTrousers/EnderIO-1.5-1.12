@@ -101,9 +101,10 @@ public class PickupWorld extends World {
 
   // from here on: just relays to the wrapped world
 
+  @SuppressWarnings("null")
   @Override
   protected @Nonnull IChunkProvider createChunkProvider() {
-    return null; // FIXME
+    return null;
   }
 
   @Override

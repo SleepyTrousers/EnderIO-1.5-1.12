@@ -45,16 +45,14 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
 
   private final @Nonnull Random rand = new Random();
 
-  private RenderEntityItem rei;
+  private RenderEntityItem rei = null;
+  private EntityItem enityItem = null;
+  private List<BakedQuad> bakedQuads = null;
 
   public ObeliskSpecialRenderer(@Nonnull ItemStack itemStack, Block block) {
     super(block);
     this.floatingStack = itemStack;
   }
-
-  private EntityItem ei = null;
-
-  private List<BakedQuad> bakedQuads = null;
 
   @Override
   protected void renderTileEntity(@Nonnull T te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
@@ -89,8 +87,9 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
   }
 
   protected void renderItemStack(T te, @Nonnull World world, double x, double y, double z, float tick) {
+    EntityItem ei = this.enityItem;
     if (ei == null) {
-      ei = new EntityItem(world, 0, 0, 0, getFloatingItem(te));
+      this.enityItem = ei = new EntityItem(world, 0, 0, 0, getFloatingItem(te));
     }
     ei.setEntityItemStack(getFloatingItem(te));
     ei.hoverStart = (float) ((EnderIO.proxy.getTickCount() * 0.05f + (tick * 0.05f)) % (Math.PI * 2));
@@ -150,6 +149,7 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
     }
 
     // This method is copied straight from the parent, solely to disable 'setBlurMipmap'
+    @SuppressWarnings("null")
     @Override
     public void doRender(@Nonnull EntityItem entity, double x, double y, double z, float entityYaw, float partialTicks) {
       ItemStack itemstack = entity.getEntityItem();
@@ -207,6 +207,7 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
 
     }
 
+    @SuppressWarnings({ "null", "unused" })
     private int func_177077_a(EntityItem itemIn, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_) {
       ItemStack itemstack = itemIn.getEntityItem();
       Item item = itemstack.getItem();
