@@ -34,7 +34,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements IResourceTooltipProvider, ISmartRenderAwareBlock {
+public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResourceTooltipProvider, ISmartRenderAwareBlock {
 
   public static BlockSolarPanel create(@Nonnull IModObject modObject) {
     BlockSolarPanel result = new BlockSolarPanel(modObject);
@@ -45,7 +45,7 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   private static final float BLOCK_HEIGHT = 2.5f / 16f;
 
   private BlockSolarPanel(@Nonnull IModObject modObject) {
-    super(modObject, TileEntitySolarPanel.class);
+    super(modObject, TileSolarPanel.class);
     setLightOpacity(255);
     useNeighborBrightness = true;
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO).withProperty(SolarType.KIND,
@@ -159,8 +159,8 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   public void randomDisplayTick(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     if (state.getValue(SolarType.KIND) == SolarType.VIBRANT) {
       TileEntity te = getTileEntity(world, pos);
-      if (te instanceof TileEntitySolarPanel) {
-        TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
+      if (te instanceof TileSolarPanel) {
+        TileSolarPanel solar = (TileSolarPanel) te;
         if (solar.canSeeSun() && solar.calculateLightRatio() / 3 > rand.nextFloat()) {
           double d0 = pos.getX() + 0.5D + (Math.random() - 0.5D) * 0.5D;
           double d1 = pos.getY() + BLOCK_HEIGHT;

@@ -15,8 +15,8 @@ import com.enderio.core.client.render.ColorUtil;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorData;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.text.TextFormatting;
@@ -107,7 +107,7 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiPo
     if (getTileEntity().isActive()) {
       output = getTileEntity().getPowerUsePerTick();
     }
-    String txt = EnderIO.lang.localize("stirlingGenerator.output", PowerDisplayUtil.formatPowerPerTick(output));
+    String txt = EnderIO.lang.localize("stirlingGenerator.output", LangPower.RFt(output));
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 

@@ -11,7 +11,7 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.TooltipHandlerGrinding;
 import crazypants.enderio.base.integration.jei.RecipeWrapper;
-import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.base.recipe.sagmill.GrindingBall;
@@ -111,7 +111,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
     if (currentRecipe == null) {
       return;
     }
-    String energyString = PowerDisplayUtil.formatPower(currentRecipe.getEnergyRequired()) + " " + PowerDisplayUtil.abrevation();
+    String energyString = LangPower.format(currentRecipe.getEnergyRequired()) + " " + LangPower.abrevation();
     minecraft.fontRenderer.drawString(energyString, 135 - xOff, 60 - yOff, 0x808080, false);
     GlStateManager.color(1, 1, 1, 1);
 

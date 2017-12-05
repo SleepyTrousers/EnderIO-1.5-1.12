@@ -13,10 +13,10 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.lang.LangFluid;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.machine.modes.IoMode;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -36,9 +36,9 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
         text.clear();
         String heading = EnderIO.lang.localize("zombieGenerator.fuelTank");
         text.add(heading);
-        text.add(Fluids.toCapactityString(getTileEntity().tank));
+        text.add(LangFluid.toCapactityString(getTileEntity().tank));
         if (tileEntity.tank.getFluidAmount() < tileEntity.getActivationAmount()) {
-          text.add(EnderIO.lang.localize("gui.fluid.minReq", Fluids.MB(tileEntity.getActivationAmount())));
+          text.add(EnderIO.lang.localize("gui.fluid.minReq", LangFluid.MB(tileEntity.getActivationAmount())));
         }
       }
     });
@@ -87,8 +87,8 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
     if (gen.isActive()) {
       output = gen.getPowerUsePerTick();
     }
-    String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
-        + PowerDisplayUtil.perTickStr();
+    String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + LangPower.format(output) + " " + LangPower.abrevation()
+        + LangPower.perTickStr();
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, guiTop + fr.FONT_HEIGHT / 2 + 3, ColorUtil.getRGB(Color.WHITE));
 

@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.jei.RecipeWrapper;
-import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice;
 import crazypants.enderio.machines.machine.slicensplice.GuiSliceAndSplice;
@@ -101,7 +101,7 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
     if (currentRecipe == null) {
       return;
     }
-    String energyString = PowerDisplayUtil.formatPower(currentRecipe.getEnergyRequired()) + " " + PowerDisplayUtil.abrevation();
+    String energyString = LangPower.format(currentRecipe.getEnergyRequired()) + " " + LangPower.abrevation();
     minecraft.fontRenderer.drawString(energyString, 108 - xOff, 72 - yOff, 0x808080, false);
     GlStateManager.color(1, 1, 1, 1);
 

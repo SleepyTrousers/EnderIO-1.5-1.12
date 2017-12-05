@@ -32,11 +32,11 @@ public class SolarPanelNetwork implements ISolarPanelNetwork {
   private int energyAvailableThisTick = 0;
   private long lastTick = -1, nextCollectTick = 0;
 
-  public static void build(@Nonnull TileEntitySolarPanel panel) {
+  public static void build(@Nonnull TileSolarPanel panel) {
     new SolarPanelNetwork(panel).isValid();
   }
 
-  private SolarPanelNetwork(@Nonnull TileEntitySolarPanel panel) {
+  private SolarPanelNetwork(@Nonnull TileSolarPanel panel) {
     this.world = panel.getWorld();
     this.valid = true;
     panels.add(panel.getPos().toImmutable());
@@ -58,8 +58,8 @@ public class SolarPanelNetwork implements ISolarPanelNetwork {
         BlockPos panel = iterator.next();
         if (panel != null && world.isBlockLoaded(panel)) {
           TileEntity tileEntity = world.getTileEntity(panel);
-          if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasWorld()) {
-            if (((TileEntitySolarPanel) tileEntity).network == this) {
+          if (tileEntity instanceof TileSolarPanel && !tileEntity.isInvalid() && tileEntity.hasWorld()) {
+            if (((TileSolarPanel) tileEntity).network == this) {
               for (NNIterator<EnumFacing> facings = NNList.FACING_HORIZONTAL.fastIterator(); facings.hasNext();) {
                 final BlockPos neighbor = panel.offset(facings.next());
                 if (!panels.contains(neighbor) && world.isBlockLoaded(neighbor)) {
@@ -78,11 +78,11 @@ public class SolarPanelNetwork implements ISolarPanelNetwork {
           BlockPos candidate = candidateItr.next();
           if (!panels.contains(candidate) && canConnect(candidate)) {
             TileEntity tileEntity = world.getTileEntity(candidate);
-            if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasWorld()) {
+            if (tileEntity instanceof TileSolarPanel && !tileEntity.isInvalid() && tileEntity.hasWorld()) {
               panels.add(candidate.toImmutable());
-              final ISolarPanelNetwork otherNetwork = ((TileEntitySolarPanel) tileEntity).network;
+              final ISolarPanelNetwork otherNetwork = ((TileSolarPanel) tileEntity).network;
               if (otherNetwork != this) {
-                ((TileEntitySolarPanel) tileEntity).setNetwork(this);
+                ((TileSolarPanel) tileEntity).setNetwork(this);
                 for (BlockPos other : otherNetwork.getPanels()) {
                   if (other != null && !panels.contains(other) && world.isBlockLoaded(other)) {
                     candidates.add(other);
@@ -152,11 +152,11 @@ public class SolarPanelNetwork implements ISolarPanelNetwork {
       if (tick > nextCollectTick) {
         nextCollectTick = tick + SolarConfig.solarRecalcSunTick.get();
         energyMaxPerTick = energyAvailablePerTick = 0;
-        float lightRatio = TileEntitySolarPanel.calculateLightRatio(world);
+        float lightRatio = TileSolarPanel.calculateLightRatio(world);
         for (BlockPos panel : panels) {
           if (panel != null && world.isBlockLoaded(panel)) {
             if (energyMaxPerTickPerPanel < 0 || SolarConfig.canSolarTypesJoin.get()) {
-              energyMaxPerTickPerPanel = TileEntitySolarPanel.getEnergyPerTick(world, panel);
+              energyMaxPerTickPerPanel = TileSolarPanel.getEnergyPerTick(world, panel);
               if (energyMaxPerTickPerPanel < 0) {
                 // a panel was removed without its TE being invalidated. Force rebuilding the network.
                 destroyNetwork();
@@ -164,7 +164,7 @@ public class SolarPanelNetwork implements ISolarPanelNetwork {
               }
             }
             energyMaxPerTick += energyMaxPerTickPerPanel;
-            if (TileEntitySolarPanel.canSeeSun(world, panel)) {
+            if (TileSolarPanel.canSeeSun(world, panel)) {
               energyAvailablePerTick += energyMaxPerTickPerPanel * lightRatio;
             }
           }

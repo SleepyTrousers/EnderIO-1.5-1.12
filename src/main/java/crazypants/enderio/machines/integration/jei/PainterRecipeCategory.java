@@ -10,7 +10,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -137,7 +137,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
     
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {           
-      String energyString = PowerDisplayUtil.formatPower(energyRequired) + " " + PowerDisplayUtil.abrevation();
+      String energyString = LangPower.format(energyRequired) + " " + LangPower.abrevation();
       minecraft.fontRenderer.drawString(energyString, 6, 36, 0x808080, false);    
       GlStateManager.color(1,1,1,1);      
     }

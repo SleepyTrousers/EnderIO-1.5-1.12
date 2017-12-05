@@ -8,6 +8,7 @@ import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
@@ -54,9 +55,9 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
     if (hasPower) {
       maxInput.setMaxStringLength(10);
-      maxInput.setText(PowerDisplayUtil.formatPower(getTileEntity().getMaxInput()));
+      maxInput.setText(LangPower.format(getTileEntity().getMaxInput()));
       maxOutput.setMaxStringLength(10);
-      maxOutput.setText(PowerDisplayUtil.formatPower(getTileEntity().getMaxOutput()));
+      maxOutput.setText(LangPower.format(getTileEntity().getMaxOutput()));
     }
   }
 
@@ -83,14 +84,14 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   private void setMaxOutput(int output) {
     if (output != lastOutput) {
       lastOutput = output;
-      maxOutput.setText(PowerDisplayUtil.formatPower(output));
+      maxOutput.setText(LangPower.format(output));
     }
   }
 
   private void setMaxInput(int input) {
     if (input != lastInput) {
       lastInput = input;
-      maxInput.setText(PowerDisplayUtil.formatPower(input));
+      maxInput.setText(LangPower.format(input));
       sendUpdateToServer();
     }
   }

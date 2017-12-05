@@ -16,8 +16,8 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.network.GuiPacket;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 
@@ -127,19 +127,19 @@ public class GeneralTab implements ITabPanel {
 
   public void updatePowerBarTooltip(List<String> text) {
     text.add(EnderIO.lang.localize("gui.machine.localbuffer"));
-    text.add(EnderIO.lang.localize("gui.machine.upkeep") + " " + PowerDisplayUtil.formatPowerPerTick(parent.getPowerOutputValue()));
+    text.add(EnderIO.lang.localize("gui.machine.upkeep") + " " + LangPower.RFt(parent.getPowerOutputValue()));
     int maxEnergy = parent.getTransciever().getMaxEnergyStored() / 2;
     int energyStored = Math.min(parent.getTransciever().getEnergyStored(), maxEnergy);
-    text.add(PowerDisplayUtil.formatStoredPower(energyStored, maxEnergy));
+    text.add(LangPower.RF(energyStored, maxEnergy));
   }
 
   private void updateSendPowerBarTooltip(List<String> text) {
     text.add(EnderIO.lang.localize("gui.machine.sendReceivebuffer"));
     text.add(
-        EnderIO.lang.localize("itemGasConduit.tooltip.maxIo") + " " + PowerDisplayUtil.formatPowerPerTick(parent.getTransciever().getMaxEnergyRecieved(null)));
+        EnderIO.lang.localize("itemGasConduit.tooltip.maxIo") + " " + LangPower.RFt(parent.getTransciever().getMaxEnergyRecieved(null)));
     int maxEnergy = parent.getTransciever().getMaxEnergyStored() / 2;
     int energyStored = Math.max(0, parent.getTransciever().getEnergyStored() - maxEnergy);
-    text.add(PowerDisplayUtil.formatStoredPower(energyStored, maxEnergy));
+    text.add(LangPower.RF(energyStored, maxEnergy));
   }
 
   @Override

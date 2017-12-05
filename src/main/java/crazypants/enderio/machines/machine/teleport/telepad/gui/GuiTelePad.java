@@ -17,12 +17,12 @@ import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
+import crazypants.enderio.base.lang.LangFluid;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.teleport.telepad.BlockTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
@@ -96,7 +96,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
             heading += ": " + new FluidStack(te.getFluidType(), 1000).getLocalizedName();// te.getTank().getFluid().getLocalizedName();
           }
           text.add(heading);
-          text.add(Fluids.toCapactityString(te.getTank()));
+          text.add(LangFluid.toCapactityString(te.getTank()));
         }
       });
     }
@@ -146,9 +146,9 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   }
 
   protected void updatePowerBarTooltip(List<String> text) {
-    text.add(getPowerOutputLabel() + " " + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation()
-        + PowerDisplayUtil.perTickStr());
-    text.add(PowerDisplayUtil.formatStoredPower(te.getEnergyStored(), te.getMaxEnergyStored()));
+    text.add(getPowerOutputLabel() + " " + LangPower.format(getPowerOutputValue()) + " " + LangPower.abrevation()
+        + LangPower.perTickStr());
+    text.add(LangPower.RF(te.getEnergyStored(), te.getMaxEnergyStored()));
   }
 
   @Override

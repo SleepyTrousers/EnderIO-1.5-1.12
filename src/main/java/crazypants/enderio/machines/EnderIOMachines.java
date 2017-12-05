@@ -3,6 +3,7 @@ package crazypants.enderio.machines;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.Lang;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.config.IEnderIOAddon;
@@ -68,6 +69,8 @@ public class EnderIOMachines implements IEnderIOAddon {
   public static void init(FMLPostInitializationEvent event) {
     ConfigHandler.init(event);
   }
+
+  public static final @Nonnull Lang lang = new Lang(DOMAIN);
 
   @Override
   @Nullable

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.soul.ISoulBinderRecipe;
 import crazypants.enderio.base.recipe.soul.SoulBinderTunedPressurePlateRecipe;
@@ -70,7 +70,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
       String str = I18n.format("container.repair.cost", new Object[] { cost });
       minecraft.fontRenderer.drawString(str, 6, 26, 0x80FF20);
 
-      String energyString = PowerDisplayUtil.formatPower(recipe.getEnergyRequired()) + " " + PowerDisplayUtil.abrevation();
+      String energyString = LangPower.format(recipe.getEnergyRequired()) + " " + LangPower.abrevation();
       minecraft.fontRenderer.drawString(energyString, 6, 36, 0x808080, false);
       GlStateManager.color(1, 1, 1, 1);
     }

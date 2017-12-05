@@ -15,8 +15,8 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
@@ -52,7 +52,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
           heading += ": " + fluid.getLocalizedName();
         }
         text.add(heading);
-        text.add(Fluids.toCapactityString(getTileEntity().inputTank));
+        text.add(LangFluid.toCapactityString(getTileEntity().inputTank));
       }
 
     });
@@ -68,7 +68,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
           heading += ": " + fluid.getLocalizedName();
         }
         text.add(heading);
-        text.add(Fluids.toCapactityString(getTileEntity().outputTank));
+        text.add(LangFluid.toCapactityString(getTileEntity().outputTank));
       }
 
     });

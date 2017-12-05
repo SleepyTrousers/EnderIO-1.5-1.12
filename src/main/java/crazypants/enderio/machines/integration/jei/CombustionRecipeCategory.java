@@ -14,8 +14,10 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.IFluidCoolant;
 import crazypants.enderio.base.fluid.IFluidFuel;
-import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.lang.LangFluid;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.generator.combustion.CombustionMath;
 import crazypants.enderio.machines.machine.generator.combustion.GuiCombustionGenerator;
 import mezz.jei.api.IGuiHelper;
@@ -65,18 +67,18 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
       FontRenderer fr = minecraft.fontRenderer;
 
-      String txt = EnderIO.lang.localize("combustionGenerator.output", PowerDisplayUtil.formatPowerPerTick(math.getEnergyPerTick()));
+      String txt = Lang.COMB_GEN_OUTPUT.get(LangPower.RFt(math.getEnergyPerTick()));
       int sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow(txt, 176 / 2 - sw / 2 - xOff, fr.FONT_HEIGHT / 2, ColorUtil.getRGB(Color.WHITE));
 
       int y = 21 - yOff - 2;
       int x = 114 - xOff;
-      txt = math.getTicksPerCoolant() + " " + EnderIO.lang.localize("power.tmb");
+      txt = LangFluid.MBt( math.getTicksPerCoolant() );
       sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
 
       x = 48 - xOff;
-      txt = math.getTicksPerFuel() + " " + EnderIO.lang.localize("power.tmb");
+      txt = LangFluid.MBt(math.getTicksPerFuel());
       sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
 

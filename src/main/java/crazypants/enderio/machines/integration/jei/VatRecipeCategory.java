@@ -11,7 +11,7 @@ import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.integration.jei.RecipeWrapper;
-import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.RecipeInput;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
@@ -90,7 +90,7 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
       RenderUtil.renderGuiTank(outputFl, outputFl.amount, outputFl.amount, outTankBounds.x, outTankBounds.y, 0, outTankBounds.width, outTankBounds.height);
 
       IRecipe rec = getRecipe();
-      String energyString = PowerDisplayUtil.formatPower(rec.getEnergyRequired()) + " " + PowerDisplayUtil.abrevation();
+      String energyString = LangPower.format(rec.getEnergyRequired()) + " " + LangPower.abrevation();
       minecraft.fontRenderer.drawString(energyString, 76, 58, 0x808080, false);
 
     }

@@ -17,8 +17,8 @@ import com.enderio.core.common.util.Util;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.machines.machine.teleport.telepad.TileDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
@@ -148,9 +148,9 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
   }
 
   protected void updatePowerBarTooltip(List<String> text) {
-    text.add(getPowerOutputLabel() + " " + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation()
-        + PowerDisplayUtil.perTickStr());
-    text.add(PowerDisplayUtil.formatStoredPower(dialingDevice.getEnergyStored(), dialingDevice.getMaxEnergyStored()));
+    text.add(getPowerOutputLabel() + " " + LangPower.format(getPowerOutputValue()) + " " + LangPower.abrevation()
+        + LangPower.perTickStr());
+    text.add(LangPower.RF(dialingDevice.getEnergyStored(), dialingDevice.getMaxEnergyStored()));
   }
 
   @Override

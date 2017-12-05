@@ -14,10 +14,10 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.fluid.SmartTank;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.lang.LangFluid;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.machine.modes.IoMode;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fluids.FluidStack;
@@ -41,7 +41,7 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
         } else {
           text.add(EnderIO.lang.localize("combustionGenerator.coolantTank.empty"));
         }
-        text.add(Fluids.toCapactityString(getTileEntity().getCoolantTank()));
+        text.add(LangFluid.toCapactityString(getTileEntity().getCoolantTank()));
       }
 
     });
@@ -57,7 +57,7 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
         } else {
           text.add(EnderIO.lang.localize("combustionGenerator.fuelTank.empty"));
         }
-        text.add(Fluids.toCapactityString(getTileEntity().getFuelTank()));
+        text.add(LangFluid.toCapactityString(getTileEntity().getFuelTank()));
       }
 
     });
@@ -109,7 +109,7 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
     if (gen.isActive()) {
       output = math.getEnergyPerTick();
     }
-    String txt = EnderIO.lang.localize("combustionGenerator.output", PowerDisplayUtil.formatPowerPerTick(output));
+    String txt = EnderIO.lang.localize("combustionGenerator.output", LangPower.RFt(output));
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, guiTop + fr.FONT_HEIGHT / 2 + 3, ColorUtil.getRGB(Color.WHITE));
 

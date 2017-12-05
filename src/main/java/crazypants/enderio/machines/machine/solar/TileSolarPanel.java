@@ -23,7 +23,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import static crazypants.enderio.machines.init.MachineObject.block_solar_panel;
 
 @Storable
-public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPoweredTile, IHasConduitProbeData {
+public class TileSolarPanel extends TileEntityEio implements ILegacyPoweredTile, IHasConduitProbeData {
 
   protected ISolarPanelNetwork network = NoSolarPanelNetwork.INSTANCE;
 
@@ -63,12 +63,15 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
     return super.getCapability(capability, facingIn);
   }
 
+  private int idleCounter = 0;
+
   @Override
   public void doUpdate() {
-    if (!hasWorld() || world.isRemote) {
-      if (world.isRemote) {
-        super.doUpdate(); // disable ticking on the client
-      }
+    if (!hasWorld()) {
+      return;
+    }
+    if (world.isRemote) {
+      super.doUpdate(); // disable ticking on the client
       return;
     }
 
@@ -76,12 +79,21 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
       SolarPanelNetwork.build(this);
     }
 
+    if (idleCounter > 0) {
+      idleCounter--;
+      return;
+    }
+
     IPowerInterface receptor = PowerHandlerUtil.getPowerInterface(world.getTileEntity(getPos().offset(EnumFacing.DOWN)), EnumFacing.UP);
     if (receptor != null && receptor.receiveEnergy(1, true) > 0) {
       int canTransmit = network.getEnergyAvailableThisTick(); // <-- potentially expensive operation
       if (canTransmit > 0) {
         network.extractEnergy(receptor.receiveEnergy(canTransmit, false));
+      } else {
+        idleCounter = world.rand.nextInt(32);
       }
+    } else {
+      idleCounter = world.rand.nextInt(256);
     }
   }
 
