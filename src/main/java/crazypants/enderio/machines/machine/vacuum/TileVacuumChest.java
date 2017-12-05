@@ -15,7 +15,6 @@ import com.enderio.core.common.util.MagnetUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.capability.ItemTools;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
@@ -27,6 +26,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
+import crazypants.enderio.machines.config.config.VacuumConfig;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -72,7 +72,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
   public static final int FILTER_SLOTS = 5;
 
   @Store
-  private int range = Config.vacuumChestRange;
+  private int range = VacuumConfig.vacuumChestRange.get();
   @Store
   private ItemFilter filter;
 
@@ -106,6 +106,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
 
   private List<EntityItem> selectEntitiesWithinAABB(World worldIn, AxisAlignedBB bb) {
     List<EntityItem> result = new ArrayList<EntityItem>();
+    final int maxItems = VacuumConfig.vacuumChestMaxItems.get();
 
     final int minChunkX = MathHelper.floor((bb.minX) / 16.0D);
     final int maxChunkX = MathHelper.floor((bb.maxX) / 16.0D);
@@ -125,7 +126,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
             if (!entity.isDead && (entity instanceof EntityItem) && entity.getEntityBoundingBox().intersectsWith(bb)
                 && (filter == null || filter.doesItemPassFilter(null, ((EntityItem) entity).getEntityItem())) && MagnetUtil.shouldAttract(getPos(), entity)) {
               result.add((EntityItem) entity);
-              if (Config.vacuumChestMaxItems > 0 && Config.vacuumChestMaxItems <= result.size()) {
+              if (maxItems > 0 && maxItems <= result.size()) {
                 return result;
               }
             }
@@ -187,7 +188,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
   }
 
   private int limitRange(int rangeIn) {
-    return Math.max(0, Math.min(Config.vacuumChestRange, rangeIn));
+    return Math.max(0, Math.min(VacuumConfig.vacuumChestRange.get(), rangeIn));
   }
 
   public void setRange(int range) {

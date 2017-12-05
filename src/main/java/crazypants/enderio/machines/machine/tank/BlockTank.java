@@ -10,7 +10,6 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.network.PacketHandler;
@@ -20,6 +19,7 @@ import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode;
+import crazypants.enderio.machines.config.Config;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -139,7 +139,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank>
   public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity par1Entity, @Nonnull Explosion explosion) {
     IBlockState state = world.getBlockState(pos);
     if (state.getValue(EnumTankType.KIND).isExplosionResistant()) {
-      return Config.EXPLOSION_RESISTANT;
+      return Config.explosionResistantBlockHardness.get();
     } else {
       return super.getExplosionResistance(par1Entity);
     }

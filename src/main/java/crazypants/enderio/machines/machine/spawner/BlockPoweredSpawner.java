@@ -11,7 +11,6 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
@@ -24,6 +23,7 @@ import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.machines.config.config.SpawnerConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
@@ -99,7 +99,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
       return;
     }
 
-    evt.setCost(Config.powerSpawnerAddSpawnerCost);
+    evt.setCost(SpawnerConfig.powerSpawnerAddSpawnerCost.get());
     evt.setOutput(evt.getLeft().copy());
     if (evt.getOutput().getTagCompound() == null) {
       evt.getOutput().setTagCompound(new NBTTagCompound());
@@ -122,7 +122,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
     long spawnTime = ent.getEntityData().getLong(KEY_SPAWNED_BY_POWERED_SPAWNER);
     long livedFor = livingUpdate.getEntity().world.getTotalWorldTime() - spawnTime;
-    if (livedFor > Config.poweredSpawnerDespawnTimeSeconds * 20) {
+    if (livedFor > SpawnerConfig.poweredSpawnerDespawnTimeSeconds.get() * 20) {
       try {
         fieldpersistenceRequired.setBoolean(livingUpdate.getEntityLiving(), false);
 

@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.machines.config.config.SolarConfig;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.IStringSerializable;
 
@@ -47,12 +47,12 @@ public enum SolarType implements IStringSerializable {
 
   public int getRfperTick() {
     switch (this) {
-    case ADVANCED:
-      return Config.maxPhotovoltaicAdvancedOutputRF;
     case SIMPLE:
-      return Config.maxPhotovoltaicOutputRF;
+      return SolarConfig.solarPanelOneOutput.get();
+    case ADVANCED:
+      return SolarConfig.solarPanelTwoOutput.get();
     case VIBRANT:
-      return Config.maxPhotovoltaicVibrantOutputRF;
+      return SolarConfig.solarPanelThreeOutput.get();
     default:
       return 0;
     }

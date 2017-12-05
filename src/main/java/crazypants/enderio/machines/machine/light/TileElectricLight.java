@@ -15,7 +15,7 @@ import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerHandlerUtil;
-import crazypants.enderio.machines.machine.wireless.WirelessChargedLocation;
+import crazypants.enderio.base.power.wireless.WirelessChargedLocation;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleBlockPos;
 import net.minecraft.block.Block;

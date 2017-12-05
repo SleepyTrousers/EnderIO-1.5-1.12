@@ -13,11 +13,11 @@ import com.enderio.core.common.util.NNList.Callback;
 import com.google.common.base.Predicate;
 
 import crazypants.enderio.base.TileEntityEio;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.xp.ExperienceContainer;
+import crazypants.enderio.machines.config.config.VacuumConfig;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -32,7 +32,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   private static final int IO_MB_TICK = 10000; // no need to speed down the vacuum any more than necessary, let the limit be the piping
 
-  private double range = Config.xpVacuumRange;
+  private double range = VacuumConfig.vacuumXPRange.get();
 
   @Store
   private boolean formed = false;
@@ -116,7 +116,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
   }
 
   private int limitRange(int rangeIn) {
-    return Math.max(0, Math.min(Config.vacuumChestRange, rangeIn));
+    return Math.max(0, Math.min(VacuumConfig.vacuumXPRange.get(), rangeIn));
   }
 
   public void setRange(int range) {

@@ -6,12 +6,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
 import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.base.render.rendermapper.ConnectedBlockRenderMapper;
 import crazypants.enderio.base.render.util.QuadCollector;
+import crazypants.enderio.machines.config.config.SolarConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -55,7 +55,7 @@ public class SolarBlockRenderMapper extends ConnectedBlockRenderMapper {
   @Override
   protected boolean isSameKind(@Nonnull IBlockState state, @Nonnull IBlockState other) {
     return state.getBlock() == other.getBlock()
-        && (Config.photovoltaicCanTypesJoins || state.getValue(SolarType.KIND).connectTo(other.getValue(SolarType.KIND)));
+        && (SolarConfig.canSolarTypesJoin.get() || state.getValue(SolarType.KIND).connectTo(other.getValue(SolarType.KIND)));
   }
 
   @Override

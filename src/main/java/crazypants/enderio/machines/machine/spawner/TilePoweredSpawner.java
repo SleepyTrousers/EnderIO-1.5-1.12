@@ -9,7 +9,6 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -22,6 +21,7 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.spawner.DummyRecipe;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
+import crazypants.enderio.machines.config.config.SpawnerConfig;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -79,7 +79,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     if (hasEntity()) {
       if (isSpawnMode) {
         boolean spawnedOne = false;
-        for (int i = 0; i < Config.poweredSpawnerSpawnCount; ++i) {
+        for (int i = 0; i < SpawnerConfig.poweredSpawnerSpawnCount.get(); ++i) {
           if (trySpawnEntity()) {
             spawnedOne = true;
           }
@@ -141,9 +141,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
       return null;
     }
     if (isSpawnMode) {
-      if (Config.poweredSpawnerMaxPlayerDistance > 0) {
+      if (SpawnerConfig.poweredSpawnerMaxPlayerDistance.get() > 0) {
         BlockPos p = getPos();
-        if (world.getClosestPlayer(p.getX() + 0.5, p.getX() + 0.5, p.getX() + 0.5, Config.poweredSpawnerMaxPlayerDistance, false) == null) {
+        if (world.getClosestPlayer(p.getX() + 0.5, p.getX() + 0.5, p.getX() + 0.5, SpawnerConfig.poweredSpawnerMaxPlayerDistance.get(), false) == null) {
           setNotification(SpawnerNotification.NO_PLAYER);
           return null;
         }
@@ -220,10 +220,11 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     PoweredTask res = new PoweredTask(nextRecipe, chance, getRecipeInputs());
     int ticksDelay;
     if (isSpawnMode) {
-      ticksDelay = Config.poweredSpawnerMinDelayTicks
-          + (int) Math.round((Config.poweredSpawnerMaxDelayTicks - Config.poweredSpawnerMinDelayTicks) * Math.random());
+      ticksDelay = SpawnerConfig.poweredSpawnerMinDelayTicks.get()
+          + (int) Math.round((SpawnerConfig.poweredSpawnerMaxDelayTicks.get() - SpawnerConfig.poweredSpawnerMinDelayTicks.get()) * Math.random());
     } else {
-      ticksDelay = Config.poweredSpawnerMaxDelayTicks - ((Config.poweredSpawnerMaxDelayTicks - Config.poweredSpawnerMinDelayTicks) / 2);
+      ticksDelay = SpawnerConfig.poweredSpawnerMaxDelayTicks.get()
+          - ((SpawnerConfig.poweredSpawnerMaxDelayTicks.get() - SpawnerConfig.poweredSpawnerMinDelayTicks.get()) / 2);
     }
     ticksDelay /= SPAWNER_SPEEDUP.get(getCapacitorData());
     int powerPerTick = getPowerUsePerTick();
@@ -235,7 +236,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     boolean spaceClear = world.checkNoEntityCollision(entityliving.getEntityBoundingBox())
         && world.getCollisionBoxes(entityliving, entityliving.getEntityBoundingBox()).isEmpty()
         && (!world.containsAnyLiquid(entityliving.getEntityBoundingBox()) || entityliving.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
-    if (spaceClear && Config.poweredSpawnerUseVanillaSpawChecks) {
+    if (spaceClear && SpawnerConfig.poweredSpawnerUseVanillaSpawChecks.get()) {
       // Full checks for lighting, dimension etc
       spaceClear = entityliving.getCanSpawnHere();
     }
@@ -244,7 +245,8 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   Entity createEntity(DifficultyInstance difficulty, boolean forceAlive) {
     Entity ent = capturedMob.getEntity(world, pos, difficulty, false);
-    if (forceAlive && Config.poweredSpawnerMaxPlayerDistance <= 0 && Config.poweredSpawnerDespawnTimeSeconds > 0 && ent instanceof EntityLiving) {
+    if (forceAlive && SpawnerConfig.poweredSpawnerMaxPlayerDistance.get() <= 0 && SpawnerConfig.poweredSpawnerDespawnTimeSeconds.get() > 0
+        && ent instanceof EntityLiving) {
       ent.getEntityData().setLong(BlockPoweredSpawner.KEY_SPAWNED_BY_POWERED_SPAWNER, world.getTotalWorldTime());
       ((EntityLiving) ent).enablePersistence();
     }
@@ -262,9 +264,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
     int spawnRange = getRange();
 
-    if (Config.poweredSpawnerMaxNearbyEntities > 0) {
+    if (SpawnerConfig.poweredSpawnerMaxNearbyEntities.get() > 0) {
       int nearbyEntities = world.getEntitiesWithinAABB(entity.getClass(), getBounds().expand(spawnRange, 2, spawnRange), EntitySelectors.IS_ALIVE).size();
-      if (nearbyEntities >= Config.poweredSpawnerMaxNearbyEntities) {
+      if (nearbyEntities >= SpawnerConfig.poweredSpawnerMaxNearbyEntities.get()) {
         cleanupUnspawnedEntity(entity);
         setNotification(SpawnerNotification.AREA_FULL);
         return false;
@@ -272,7 +274,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
       removeNotification(SpawnerNotification.AREA_FULL);
     }
 
-    for (int i = 0; i < Config.poweredSpawnerMaxSpawnTries; i++) {
+    for (int i = 0; i < SpawnerConfig.poweredSpawnerMaxSpawnTries.get(); i++) {
       double x = getPos().getX() + .5 + (world.rand.nextDouble() - world.rand.nextDouble()) * spawnRange;
       double y = getPos().getY() + world.rand.nextInt(3) - 1;
       double z = getPos().getZ() + .5 + (world.rand.nextDouble() - world.rand.nextDouble()) * spawnRange;
@@ -320,7 +322,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     }
 
     EntityLiving entityliving = (EntityLiving) entity;
-    int spawnRange = Config.poweredSpawnerSpawnRange;
+    int spawnRange = SpawnerConfig.poweredSpawnerSpawnRange.get();
 
     int minxi = MathHelper.floor(getPos().getX() + (0.0d - Math.nextAfter(1.0d, 0.0d)) * spawnRange);
     int maxxi = MathHelper.floor(getPos().getX() + (Math.nextAfter(1.0d, 0.0d) - 0.0d) * spawnRange);
@@ -417,7 +419,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   public int getRange() {
-    return Config.poweredSpawnerSpawnRange;
+    return SpawnerConfig.poweredSpawnerSpawnRange.get();
   }
 
   // RANGE END
