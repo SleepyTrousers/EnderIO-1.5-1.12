@@ -14,7 +14,6 @@ import com.enderio.core.common.util.NNList.NNIterator;
 import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.integration.forestry.ForestryUtil;
 import crazypants.enderio.base.integration.top.TOPUtil;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
@@ -27,6 +26,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetectorUpgrade
 import crazypants.enderio.base.item.darksteel.upgrade.speed.SpeedUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.spoon.SpoonUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.travel.TravelUpgrade;
+import crazypants.enderio.base.lang.Lang;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;

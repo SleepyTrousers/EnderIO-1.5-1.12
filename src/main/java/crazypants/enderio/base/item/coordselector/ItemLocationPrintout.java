@@ -10,10 +10,10 @@ import com.enderio.core.common.util.ChatUtil;
 import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.lang.Lang;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;

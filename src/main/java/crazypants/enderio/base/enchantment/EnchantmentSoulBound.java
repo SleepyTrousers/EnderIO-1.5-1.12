@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.api.common.enchant.IAdvancedEnchant;
 
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.lang.Lang;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.inventory.EntityEquipmentSlot;

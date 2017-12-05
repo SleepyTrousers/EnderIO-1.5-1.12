@@ -9,6 +9,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.paint.PainterUtil2;
 import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.Reader;

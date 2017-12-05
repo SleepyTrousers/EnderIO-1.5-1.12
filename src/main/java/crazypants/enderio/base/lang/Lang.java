@@ -1,7 +1,9 @@
-package crazypants.enderio.base;
+package crazypants.enderio.base.lang;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
 import net.minecraft.util.text.TextComponentString;
 
 public enum Lang {
@@ -40,6 +42,7 @@ public enum Lang {
   BLOCK_BLAST_RESISTANT(true, "block.tooltip.blastResistant"),
   MACHINE_UPGRADE(true, "machine.tooltip.upgrade"),
   ENCHANT_SOULBOUND("description.enchantment.enderio.soulBound"),
+  FLUID_TICKPER(true, "fluid.millibucket.format.tickper"),
   FLUID_AMOUNT(true, "fluid.millibucket.format"),
   FLUID_LEVEL(true, "fluid.millibucket.format.of"),
   GUI_REDSTONE_MODE(true, "gui.tooltip.redstoneControlMode"),
@@ -60,6 +63,9 @@ public enum Lang {
   CONDUIT_FILTER_CLEAR_WARNING("itemConduitFilterUpgrade.clearConfigWarning"),
   CONDUIT_FILTER_UPDATED("item.itemExistingItemFilter.filterUpdated"),
   CONDUIT_FILTER_NOTUPDATED("item.itemExistingItemFilter.filterNotUpdated"),
+  POWER(true, "power.format"),
+  POWER_OF(true, "power.format.of"),
+  POWER_PERTICK(true, "power.format.pertick"),
   XXXXXX0(""),
 
   ;

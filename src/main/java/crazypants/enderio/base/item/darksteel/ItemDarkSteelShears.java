@@ -16,7 +16,6 @@ import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.base.Predicate;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.IDarkSteelItem;
@@ -24,6 +23,7 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.render.util.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;

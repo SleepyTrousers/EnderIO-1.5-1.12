@@ -14,8 +14,8 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
@@ -281,9 +281,9 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
           String line1 = EnderIO.lang.localize("top.rf.value",
               (data.avgRF == 0 ? TextFormatting.WHITE : data.avgRF > 0 ? TextFormatting.GREEN + "+" : TextFormatting.RED)
-                  + PowerDisplayUtil.formatPower(data.avgRF));
-          String line2 = EnderIO.lang.localize("top.rf.value", TextFormatting.WHITE + PowerDisplayUtil.formatPower(data.maxRFIn));
-          String line3 = EnderIO.lang.localize("top.rf.value", TextFormatting.WHITE + PowerDisplayUtil.formatPower(data.maxRFOut));
+                  + LangPower.format(data.avgRF));
+          String line2 = EnderIO.lang.localize("top.rf.value", TextFormatting.WHITE + LangPower.format(data.maxRFIn));
+          String line3 = EnderIO.lang.localize("top.rf.value", TextFormatting.WHITE + LangPower.format(data.maxRFOut));
           rfLine = rfLine.vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(line1).text(line2).text(line3);
         }
       } else {

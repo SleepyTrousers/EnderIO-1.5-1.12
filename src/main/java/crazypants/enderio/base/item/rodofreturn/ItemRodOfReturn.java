@@ -19,17 +19,17 @@ import com.enderio.core.common.vecmath.Vector3d;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
+import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.power.AbstractPoweredItem;
 import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.base.render.util.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TeleportUtil;
 import net.minecraft.client.Minecraft;
@@ -237,10 +237,10 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    list.add(Lang.RETURN_ROD_FLUID.get(PowerDisplayUtil.formatPower(FLUIDAMOUNT.getInt(itemStack, 0)),
-        PowerDisplayUtil.formatPower(Config.rodOfReturnFluidStorage)));
-    list.add(Lang.RETURN_ROD_POWER.get(PowerDisplayUtil.formatPower(getEnergyStored(itemStack)), PowerDisplayUtil.formatPower(Config.rodOfReturnPowerStorage),
-        PowerDisplayUtil.abrevation()));
+    list.add(Lang.RETURN_ROD_FLUID.get(LangPower.format(FLUIDAMOUNT.getInt(itemStack, 0)),
+        LangPower.format(Config.rodOfReturnFluidStorage)));
+    list.add(Lang.RETURN_ROD_POWER.get(LangPower.format(getEnergyStored(itemStack)), LangPower.format(Config.rodOfReturnPowerStorage),
+        LangPower.abrevation()));
   }
 
   @Override

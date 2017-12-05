@@ -7,11 +7,11 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
 
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.fuel.ISolidFuelHandler;
 import crazypants.enderio.base.machine.fuel.SolidFuelCenter;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -24,8 +24,7 @@ public class TooltipHandlerBurnTime implements ITooltipCallback {
     if (burnTime > 0) {
       if (handler.isInGUI()) {
         int rate = handler.getPowerUsePerTick();
-        list.add(Lang.FUEL_GENERATES.get(PowerDisplayUtil.formatPower(burnTime * rate), PowerDisplayUtil.abrevation(),
-            PowerDisplayUtil.formatPower(rate), PowerDisplayUtil.abrevation(), PowerDisplayUtil.perTickStr()));
+        list.add(Lang.FUEL_GENERATES.get(LangPower.RF(burnTime * rate), LangPower.RFt(rate)));
       } else if (Config.addFurnaceFuelTootip) {
         list.add(Lang.FUEL_BURNTIME.get(burnTime));
       }

@@ -443,14 +443,18 @@ enderio.farm.note.noShears=No Shears
 enderio.farm.note.noTreetap=No Treetap
 enderio.farm.note.noPower=No Power
 
+enderio.power.format=%s µI
+enderio.power.format.of=%s / %s µI
+enderio.power.format.pertick=%s µI/t
+
 enderio.fluid.millibucket.format=%s mB
 enderio.fluid.millibucket.format.name=%s mB of %s
-enderio.fluid.millibucket.format.of=%s/%s mB
-enderio.fluid.millibucket.format.ofname=%s/%s mB of %s
+enderio.fluid.millibucket.format.of=%s / %s mB
+enderio.fluid.millibucket.format.ofname=%s / %s mB of %s
+enderio.fluid.millibucket.format.tickper=%s t/mB
 
 enderio.fuel.tooltip.heading=Fuel Details
-// pre-formatted number, "RF" ("power.rf"), pre-formatted number, "RF" ("power.rf"), "/t" ("power.tick")
-enderio.fuel.tooltip.generates=Generates %s %s at %s %s%s
+enderio.fuel.tooltip.generates=Generates % at %s
 enderio.fuel.tooltip.burnTime=burn time %s
 enderio.coolant.tooltip.heading=Coolant
 enderio.coolant.tooltip.degreesPerBucket=%s Deg per bucket
@@ -636,9 +640,6 @@ enderio.itemConduitFilterUpgrade.clearConfigWarning=%sThis will clear all stored
 // These keys have not (yet) been confirmed in 1.11
 
 //Power
-enderio.power.rf=RF
-enderio.power.tmb=t/mB
-enderio.power.tick=/t
 enderio.power.maxOutput=Max Output
 
 //Enderface
@@ -1300,7 +1301,6 @@ enderio.combustionGenerator.coolantTank.empty=Coolant
 enderio.combustionGenerator.coolantTank=Coolant: %s
 enderio.combustionGenerator.fuelTank.empty=Fuel
 enderio.combustionGenerator.fuelTank=Fuel: %s
-enderio.combustionGenerator.output=Generating: %s
 
 //Stirling Gen
 enderio.stirlingGenerator.output=Generating: %s

@@ -11,8 +11,8 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredMachineEntity;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import info.loenwind.scheduler.Celeb;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -57,9 +57,9 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
       }
       text.add(lang.get(frame));
     }
-    text.add(getPowerOutputLabel() + " " + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation()
-        + PowerDisplayUtil.perTickStr());
-    text.add(PowerDisplayUtil.formatStoredPower(getTileEntity().getEnergyStored(), getTileEntity().getMaxEnergyStored()));
+    text.add(getPowerOutputLabel() + " " + LangPower.format(getPowerOutputValue()) + " " + LangPower.abrevation()
+        + LangPower.perTickStr());
+    text.add(LangPower.RF(getTileEntity().getEnergyStored(), getTileEntity().getMaxEnergyStored()));
   }
 
   public void renderPowerBar(int k, int l) {

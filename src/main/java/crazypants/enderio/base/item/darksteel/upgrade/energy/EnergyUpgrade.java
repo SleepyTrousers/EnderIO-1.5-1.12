@@ -13,8 +13,8 @@ import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.IDarkSteelItem;
 import crazypants.enderio.base.item.travelstaff.ItemTravelStaff;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.material.material.Material;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -104,7 +104,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
       SpecialTooltipHandler.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
 
       String percDamage = (int) Math.round(getAbsorptionRatio() * 100) + "";
-      String capString = PowerDisplayUtil.formatPower(capacity) + " " + PowerDisplayUtil.abrevation();
+      String capString = LangPower.format(capacity) + " " + LangPower.abrevation();
       for (int i = 0; i < upgradeStr.size(); i++) {
         String str = upgradeStr.get(i);
         str = str.replaceAll("\\$P", capString);

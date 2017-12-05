@@ -15,8 +15,8 @@ import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.IRenderUpgrade;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.power.AbstractPoweredItem;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.base.render.IHasPlayerRenderer;
 import crazypants.enderio.base.render.util.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.NbtValue;
@@ -94,8 +94,8 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    String str = PowerDisplayUtil.formatPower(NbtValue.ENERGY.getInt(itemStack)) + "/" + PowerDisplayUtil.formatPower(Config.magnetPowerCapacityRF) + " "
-        + PowerDisplayUtil.abrevation();
+    String str = LangPower.format(NbtValue.ENERGY.getInt(itemStack)) + "/" + LangPower.format(Config.magnetPowerCapacityRF) + " "
+        + LangPower.abrevation();
     list.add(str);
   }
 

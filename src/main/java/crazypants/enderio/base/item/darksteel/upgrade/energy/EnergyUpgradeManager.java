@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.travelstaff.ItemTravelStaff;
-import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.lang.LangPower;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -102,7 +102,7 @@ public abstract class EnergyUpgradeManager {
     if (up == null) {
       return null;
     }
-    return PowerDisplayUtil.formatStoredPower(up.energy, up.capacity);
+    return LangPower.RF(up.energy, up.capacity);
   }
 
   public static int getEnergyStored(@Nonnull ItemStack container) {

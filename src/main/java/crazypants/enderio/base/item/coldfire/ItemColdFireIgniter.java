@@ -11,11 +11,11 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.render.util.PowerBarOverlayRenderHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -209,7 +209,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    list.add(Fluids.MB(FLUIDAMOUNT.getInt(itemStack, 0), FLUID_CAPACITY, getFluidType(itemStack)));
+    list.add(LangFluid.MB(FLUIDAMOUNT.getInt(itemStack, 0), FLUID_CAPACITY, getFluidType(itemStack)));
   }
 
   @Override

@@ -9,13 +9,13 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.ChatUtil;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.filters.ExistingItemFilter;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

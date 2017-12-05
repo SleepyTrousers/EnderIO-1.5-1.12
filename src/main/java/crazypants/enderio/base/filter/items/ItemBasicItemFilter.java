@@ -7,12 +7,12 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.ClientUtil;
 import crazypants.enderio.util.NbtValue;

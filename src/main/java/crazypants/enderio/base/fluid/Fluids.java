@@ -7,7 +7,6 @@ import com.enderio.core.common.fluid.BlockFluidEnder;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.integration.railcraft.RailcraftUtil;
 import net.minecraft.block.Block;
@@ -23,8 +22,6 @@ import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.UniversalBucket;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -42,7 +39,7 @@ public enum Fluids {
     }
 
     @Override
-    protected BlockFluidEnder init() {
+    protected @Nonnull BlockFluidEnder init() {
       return new BlockFluidEio.NutrientDistillation(getFluid(), material, color);
     }
   },
@@ -57,8 +54,9 @@ public enum Fluids {
     protected Fluid init(@Nonnull Fluid fluid) {
       return fluid.setDensity(-10).setViscosity(100).setTemperature(5).setGaseous(true);
     }
+
     @Override
-    protected BlockFluidEnder init() {
+    protected @Nonnull BlockFluidEnder init() {
       BlockFluidEnder result = new BlockFluidEio.VaporOfLevity(getFluid(), material, color);
       result.setQuantaPerBlock(1);
       return result;
@@ -71,7 +69,7 @@ public enum Fluids {
     }
 
     @Override
-    protected BlockFluidEnder init() {
+    protected @Nonnull BlockFluidEnder init() {
       return new BlockFluidEio.Hootch(getFluid(), material, color);
     }
   },
@@ -82,7 +80,7 @@ public enum Fluids {
     }
 
     @Override
-    protected BlockFluidEnder init() {
+    protected @Nonnull BlockFluidEnder init() {
       return new BlockFluidEio.RocketFuel(getFluid(), material, color);
     }
   },
@@ -93,7 +91,7 @@ public enum Fluids {
     }
 
     @Override
-    protected BlockFluidEnder init() {
+    protected @Nonnull BlockFluidEnder init() {
       return new BlockFluidEio.FireWater(getFluid(), material, color);
     }
   },
@@ -108,8 +106,9 @@ public enum Fluids {
     protected Fluid init(@Nonnull Fluid fluid) {
       return fluid.setDensity(200).setViscosity(400);
     }
+
     @Override
-    protected BlockFluidEnder init() {
+    protected @Nonnull BlockFluidEnder init() {
       BlockFluidEnder result = new BlockFluidEio.LiquidSunshine(getFluid(), material, color);
       result.setLightLevel(1);
       return result;
@@ -128,7 +127,7 @@ public enum Fluids {
     }
 
     @Override
-    protected BlockFluidEnder init() {
+    protected @Nonnull BlockFluidEnder init() {
       return new BlockFluidEio.CloudSeedConcentrated(getFluid(), material, color);
     }
   };
@@ -151,16 +150,16 @@ public enum Fluids {
 
   protected abstract Fluid init(@Nonnull Fluid fluid);
 
-  protected BlockFluidEnder init() {
+  protected @Nonnull BlockFluidEnder init() {
     return new BlockFluidEnder(getFluid(), material, color) {
     };
   }
 
-  public ResourceLocation getStill() {
+  public @Nonnull ResourceLocation getStill() {
     return new ResourceLocation(EnderIO.DOMAIN, "blocks/fluid_" + name + "_still");
   }
 
-  public ResourceLocation getFlowing() {
+  public @Nonnull ResourceLocation getFlowing() {
     return new ResourceLocation(EnderIO.DOMAIN, "blocks/fluid_" + name + "_flow");
   }
 
@@ -174,33 +173,6 @@ public enum Fluids {
       throw new NullPointerException("Forge Universal Bucket is missing");
     }
     return UniversalBucket.getFilledBucket(universalBucket, getFluid());
-  }
-
-  public static String toCapactityString(IFluidTank tank) {
-    if (tank == null) {
-      return MB(0, 0);
-    }
-    return MB(tank.getFluidAmount(), tank.getCapacity());
-  }
-
-  public static String MB(int amount) {
-    return Lang.FLUID_AMOUNT.get(amount);
-  }
-
-  public static String MB(int amount, int total) {
-    return Lang.FLUID_LEVEL.get(amount, total);
-  }
-
-  public static String MB(FluidStack amount, int total) {
-    return Lang.FLUID_LEVEL_NAME.get(amount.amount, total, amount.getLocalizedName());
-  }
-
-  public static String MB(int amount, int total, Fluid fluid) {
-    return MB(new FluidStack(fluid, amount), total);
-  }
-
-  public static String MB(int amount, Fluid fluid) {
-    return Lang.FLUID_AMOUNT_NAME.get(amount, new FluidStack(fluid, amount).getLocalizedName());
   }
 
   @SubscribeEvent(priority = EventPriority.HIGH)

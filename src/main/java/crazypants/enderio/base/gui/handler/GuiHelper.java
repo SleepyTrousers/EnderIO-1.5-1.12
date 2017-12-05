@@ -7,10 +7,10 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIODummy;
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.IModObject.Registerable;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;

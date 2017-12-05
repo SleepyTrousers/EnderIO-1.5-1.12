@@ -18,7 +18,6 @@ import com.google.common.collect.Multimap;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
@@ -37,6 +36,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManage
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetectorUpgrade;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PainterUtil2.IWithPaintName;

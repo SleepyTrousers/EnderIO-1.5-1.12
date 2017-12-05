@@ -13,10 +13,10 @@ import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PainterUtil2;
 import crazypants.enderio.base.paint.render.PaintHelper;

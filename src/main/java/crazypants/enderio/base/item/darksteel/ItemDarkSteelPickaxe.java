@@ -18,7 +18,6 @@ import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.Lang;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.IDarkSteelItem;
@@ -28,8 +27,9 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.item.darksteel.upgrade.spoon.SpoonUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.travel.TravelUpgrade;
+import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.material.alloy.Alloy;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.base.render.util.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TravelController;
 import crazypants.enderio.util.Prep;
@@ -288,7 +288,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       list.add(Lang.PICK_POWERED.get(TextFormatting.WHITE, Config.darkSteelPickEffeciencyBoostWhenPowered));
       list.add(Lang.PICK_OBSIDIAN.get(TextFormatting.WHITE, Config.darkSteelPickEffeciencyObsidian));
       list.add(
-          Lang.PICK_OBSIDIAN_COST.get(TextFormatting.WHITE, PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian), PowerDisplayUtil.abrevation()));
+          Lang.PICK_OBSIDIAN_COST.get(TextFormatting.WHITE, LangPower.format(Config.darkSteelPickPowerUseObsidian), LangPower.abrevation()));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }

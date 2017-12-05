@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
 
-import crazypants.enderio.base.Lang;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.recipe.sagmill.IGrindingMultiplier;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import net.minecraft.entity.player.EntityPlayer;
