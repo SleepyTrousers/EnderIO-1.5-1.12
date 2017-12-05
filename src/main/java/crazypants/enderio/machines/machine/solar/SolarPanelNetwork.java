@@ -32,10 +32,15 @@ public class SolarPanelNetwork implements ISolarPanelNetwork {
   private int energyAvailableThisTick = 0;
   private long lastTick = -1, nextCollectTick = 0;
 
-  public SolarPanelNetwork(@Nonnull TileEntitySolarPanel panel) {
+  public static void build(@Nonnull TileEntitySolarPanel panel) {
+    new SolarPanelNetwork(panel).isValid();
+  }
+
+  private SolarPanelNetwork(@Nonnull TileEntitySolarPanel panel) {
     this.world = panel.getWorld();
     this.valid = true;
     panels.add(panel.getPos().toImmutable());
+    panel.setNetwork(this);
     nextCollectTick = 0;
     cleanupMemberlist();
   }
@@ -96,6 +101,9 @@ public class SolarPanelNetwork implements ISolarPanelNetwork {
           candidates.remove(candidate);
         }
       }
+    }
+    if (panels.isEmpty()) {
+      destroyNetwork();
     }
   }
 

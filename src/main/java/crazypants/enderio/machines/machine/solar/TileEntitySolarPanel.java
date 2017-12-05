@@ -73,10 +73,16 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
     }
 
     if (!network.isValid()) {
-      network = new SolarPanelNetwork(this);
+      SolarPanelNetwork.build(this);
     }
 
-    transmitEnergy();
+    IPowerInterface receptor = PowerHandlerUtil.getPowerInterface(world.getTileEntity(getPos().offset(EnumFacing.DOWN)), EnumFacing.UP);
+    if (receptor != null && receptor.receiveEnergy(1, true) > 0) {
+      int canTransmit = network.getEnergyAvailableThisTick(); // <-- potentially expensive operation
+      if (canTransmit > 0) {
+        network.extractEnergy(receptor.receiveEnergy(canTransmit, false));
+      }
+    }
   }
 
   @Override
@@ -124,16 +130,6 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
 
     lightValue = MathHelper.clamp(lightValue, 0, 15);
     return lightValue / 15f;
-  }
-
-  private void transmitEnergy() {
-    IPowerInterface receptor = PowerHandlerUtil.getPowerInterface(world.getTileEntity(getPos().offset(EnumFacing.DOWN)), EnumFacing.UP);
-    if (receptor != null) {
-      int canTransmit = network.getEnergyAvailableThisTick(); // <-- potentially expensive operation
-      if (canTransmit > 0) {
-        network.extractEnergy(receptor.receiveEnergy(canTransmit, false));
-      }
-    }
   }
 
   @Override
