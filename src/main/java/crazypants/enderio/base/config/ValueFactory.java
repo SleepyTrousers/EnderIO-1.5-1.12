@@ -92,16 +92,19 @@ public class ValueFactory {
       return this;
     }
 
+    @Nonnull
     default IValue<T> setRange(double min, double max) {
       setMin(min);
       setMax(max);
       return this;
     }
 
+    @Nonnull
     default IValue<T> setMin(double min) {
       return this;
     }
 
+    @Nonnull
     default IValue<T> setMax(double max) {
       return this;
     }
@@ -151,12 +154,14 @@ public class ValueFactory {
     protected abstract @Nullable T makeValue();
 
     @Override
+    @Nonnull
     public IValue<T> setMin(double min) {
       this.minValue = min;
       return this;
     }
 
     @Override
+    @Nonnull
     public IValue<T> setMax(double max) {
       this.maxValue = max;
       return this;

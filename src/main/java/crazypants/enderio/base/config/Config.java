@@ -255,9 +255,6 @@ public final class Config {
   public static int rocketFuelPowerTotalBurnTime = 7000;
   public static int fireWaterPowerPerCycleRF = 80;
   public static int fireWaterPowerTotalBurnTime = 15000;
-  public static int vatPowerUserPerTickRF = 20;
-
-  public static int zombieGeneratorRfPerTick = 80;
 
   public static boolean addFuelTooltipsToAllFluidContainers = true;
   public static boolean addFurnaceFuelTootip = true;
@@ -370,7 +367,6 @@ public final class Config {
   public static int soulBinderAttractorCystalLevels = 4;
   public static int soulBinderTunedPressurePlateLevels = 2;
   public static int soulBinderTunedPressurePlateRF = 250000;
-  public static int soulBinderMaxXpLevel = 40;
 
   public static float slicenspliceToolDamageChance = 0.01f;
 
@@ -612,9 +608,6 @@ public final class Config {
         "Amount of energy lost when transfered by Dimensional Transceiver; 0 is no loss, 1 is 100% loss").getDouble(transceiverEnergyLoss);
     transceiverBucketTransmissionCostRF = config.get(sectionEfficiency.name, "transceiverBucketTransmissionCostRF", transceiverBucketTransmissionCostRF,
         "The cost in RF of transporting a bucket of fluid via a Dimensional Transceiver.").getInt(transceiverBucketTransmissionCostRF);
-
-    vatPowerUserPerTickRF = config.get(sectionPower.name, "vatPowerUserPerTickRF", vatPowerUserPerTickRF, "Power use (RF/t) used by the vat.")
-        .getInt(vatPowerUserPerTickRF);
 
     detailedPowerTrackingEnabled = config
         .get(sectionAdvanced.name, "perInterfacePowerTrackingEnabled", detailedPowerTrackingEnabled,
@@ -1234,9 +1227,6 @@ public final class Config {
     // "The number of levels required to create an ender rail.").getInt(soulBinderEnderRailLevels);
     soulBinderTunedPressurePlateLevels = config.get(sectionSoulBinder.name, "soulBinderTunedPressurePlateLevels", soulBinderTunedPressurePlateLevels,
         "The number of levels required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateLevels);
-
-    soulBinderMaxXpLevel = config.get(sectionSoulBinder.name, "soulBinderMaxXPLevel", soulBinderMaxXpLevel, "Maximum level of XP the soul binder can contain.")
-        .getInt();
 
     slicenspliceToolDamageChance = (float) config.get(sectionAdvanced.name, "slicenspliceToolDamageChance", slicenspliceToolDamageChance,
         "The chance that a tool will take damage each tick while the Slice'n'Splice is running (0 = no chance, 1 = 100% chance). "
