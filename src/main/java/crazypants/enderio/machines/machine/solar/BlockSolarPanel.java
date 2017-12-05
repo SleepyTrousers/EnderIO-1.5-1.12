@@ -5,6 +5,8 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.init.IModObject;
@@ -33,9 +35,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements IResourceTooltipProvider, ISmartRenderAwareBlock {
-
-  @SideOnly(Side.CLIENT)
-  private static SolarItemRenderMapper RENDER_MAPPER;
 
   public static BlockSolarPanel create(@Nonnull IModObject modObject) {
     BlockSolarPanel result = new BlockSolarPanel(modObject);
@@ -129,27 +128,6 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
     return getUnlocalizedName();
   }
 
-  // @Override
-  // public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-  // TileEntity te = getTileEntity(world, pos);
-  // if(te instanceof TileEntitySolarPanel) {
-  // TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
-  // float efficiency = solar.calculateLightRatio();
-  // if(!solar.canSeeSun()) {
-  // tooltip.add(TextFormatting.RED + EnderIO.lang.localize("tooltip.sunlightBlocked"));
-  // } else {
-  // tooltip.add(String.format("%s : %s%.0f%%", TextFormatting.WHITE + EnderIO.lang.localize("tooltip.efficiency") + TextFormatting.RESET,
-  // TextFormatting.WHITE, efficiency * 100));
-  // }
-  // }
-  // }
-  //
-  //
-  // @Override
-  // public int getDefaultDisplayMask(World world, int x, int y, int z) {
-  // return 0;
-  // }
-
   @Override
   public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
@@ -168,9 +146,12 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
-    for (SolarType solarType : SolarType.KIND.getAllowedValues()) {
-      list.add(new ItemStack(this, 1, damageDropped(getDefaultState().withProperty(SolarType.KIND, solarType))));
-    }
+    NNList.of(SolarType.class).apply(new Callback<SolarType>() {
+      @Override
+      public void apply(@Nonnull SolarType solarType) {
+        list.add(new ItemStack(itemIn, 1, SolarType.getMetaFromType(solarType)));
+      }
+    });
   }
 
   @Override
@@ -184,7 +165,7 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
           double d0 = pos.getX() + 0.5D + (Math.random() - 0.5D) * 0.5D;
           double d1 = pos.getY() + BLOCK_HEIGHT;
           double d2 = pos.getZ() + 0.5D + (Math.random() - 0.5D) * 0.5D;
-          world.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0x47 / 255d, 0x9f / 255d, 0xa3 / 255d, new int[0]);
+          world.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0x47 / 255d, 0x9f / 255d, 0xa3 / 255d);
         }
       }
     }

@@ -1,16 +1,16 @@
 package crazypants.enderio.machines.machine.solar;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
+
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
 import crazypants.enderio.machines.config.config.SolarConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,10 +21,10 @@ import net.minecraft.world.World;
 
 import static crazypants.enderio.machines.init.MachineObject.block_solar_panel;
 
-public class SolarPanelNetwork implements IHasConduitProbeData {
+public class SolarPanelNetwork implements ISolarPanelNetwork {
 
-  private Set<BlockPos> panels = new HashSet<BlockPos>();
-  private World world = null;
+  private final @Nonnull Set<BlockPos> panels = new HashSet<BlockPos>();
+  private final @Nonnull World world;
   private boolean valid = false;
 
   private int energyMaxPerTick = 0;
@@ -32,32 +32,17 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
   private int energyAvailableThisTick = 0;
   private long lastTick = -1, nextCollectTick = 0;
 
-  public SolarPanelNetwork() {
-    this((World) null);
-  }
-
-  public SolarPanelNetwork(World world) {
-    this.world = world;
-  }
-
-  public SolarPanelNetwork(TileEntitySolarPanel panel) {
+  public SolarPanelNetwork(@Nonnull TileEntitySolarPanel panel) {
     this.world = panel.getWorld();
     this.valid = true;
+    panels.add(panel.getPos().toImmutable());
+    nextCollectTick = 0;
+    cleanupMemberlist();
   }
 
-  void onUpdate(TileEntitySolarPanel panel, boolean force) {
-    if (valid && (force || !contains(panel))) {
-      panels.add(panel.getPos().toImmutable());
-      nextCollectTick = 0;
-      cleanupMemberlist();
-    }
-  }
-
-  boolean contains(TileEntitySolarPanel panel) {
-    if (world == null) {
-      world = panel.getWorld();
-    }
-    return panels.contains(panel.getPos().toImmutable());
+  @Override
+  public @Nonnull Set<BlockPos> getPanels() {
+    return panels;
   }
 
   void cleanupMemberlist() {
@@ -66,12 +51,12 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
       Set<BlockPos> candidates = new HashSet<BlockPos>();
       while (iterator.hasNext()) {
         BlockPos panel = iterator.next();
-        if (world.isBlockLoaded(panel)) {
+        if (panel != null && world.isBlockLoaded(panel)) {
           TileEntity tileEntity = world.getTileEntity(panel);
           if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasWorld()) {
             if (((TileEntitySolarPanel) tileEntity).network == this) {
-              for (EnumFacing neighborDir : EnumFacing.Plane.HORIZONTAL) {
-                final BlockPos neighbor = panel.offset(neighborDir);
+              for (NNIterator<EnumFacing> facings = NNList.FACING_HORIZONTAL.fastIterator(); facings.hasNext();) {
+                final BlockPos neighbor = panel.offset(facings.next());
                 if (!panels.contains(neighbor) && world.isBlockLoaded(neighbor)) {
                   candidates.add(neighbor);
                 }
@@ -83,23 +68,24 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
         iterator.remove();
       }
       while (!candidates.isEmpty()) {
-        List<BlockPos> candidateList = new ArrayList<BlockPos>(candidates);
-        for (BlockPos candidate : candidateList) {
+        NNList<BlockPos> candidateList = new NNList<BlockPos>(candidates);
+        for (NNIterator<BlockPos> candidateItr = candidateList.iterator(); candidateItr.hasNext();) {
+          BlockPos candidate = candidateItr.next();
           if (!panels.contains(candidate) && canConnect(candidate)) {
             TileEntity tileEntity = world.getTileEntity(candidate);
             if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasWorld()) {
               panels.add(candidate.toImmutable());
-              final SolarPanelNetwork otherNetwork = ((TileEntitySolarPanel) tileEntity).network;
+              final ISolarPanelNetwork otherNetwork = ((TileEntitySolarPanel) tileEntity).network;
               if (otherNetwork != this) {
                 ((TileEntitySolarPanel) tileEntity).setNetwork(this);
-                for (BlockPos other : otherNetwork.panels) {
-                  if (!panels.contains(other) && world.isBlockLoaded(other)) {
+                for (BlockPos other : otherNetwork.getPanels()) {
+                  if (other != null && !panels.contains(other) && world.isBlockLoaded(other)) {
                     candidates.add(other);
                   }
                 }
                 otherNetwork.destroyNetwork();
-                for (EnumFacing neighborDir : EnumFacing.Plane.HORIZONTAL) {
-                  final BlockPos neighbor = candidate.offset(neighborDir);
+                for (NNIterator<EnumFacing> facings = NNList.FACING_HORIZONTAL.fastIterator(); facings.hasNext();) {
+                  final BlockPos neighbor = candidate.offset(facings.next());
                   if (!panels.contains(neighbor) && world.isBlockLoaded(neighbor)) {
                     candidates.add(neighbor);
                   }
@@ -113,52 +99,47 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
     }
   }
 
-  private boolean canConnect(BlockPos other) {
+  private boolean canConnect(@Nonnull BlockPos other) {
     if (SolarConfig.canSolarTypesJoin.get() || panels.isEmpty()) {
       return true;
     }
-    SolarType otherType = null;
     IBlockState otherState = world.getBlockState(other);
     if (otherState.getBlock() == block_solar_panel.getBlock()) {
-      otherType = otherState.getValue(SolarType.KIND);
-    }
-    for (BlockPos panel : panels) {
-      if (world.isBlockLoaded(panel)) {
-        IBlockState state = world.getBlockState(panel);
-        if (state.getBlock() == block_solar_panel.getBlock()) {
-          return state.getValue(SolarType.KIND) == otherType;
+      for (BlockPos panel : panels) {
+        if (panel != null && world.isBlockLoaded(panel)) {
+          IBlockState state = world.getBlockState(panel);
+          if (state.getBlock() == block_solar_panel.getBlock()) {
+            return state.getValue(SolarType.KIND).connectTo(otherState.getValue(SolarType.KIND));
+          }
         }
       }
     }
     return false;
   }
 
-  /**
-   * Actually destroys all references to this network, creating an invalid
-   * network for each panel on this current one.
-   */
-  void destroyNetwork() {
-    for (BlockPos panel : panels) {
-      if (world.isBlockLoaded(panel)) {
-        TileEntity tileEntity = world.getTileEntity(panel);
-        if (tileEntity instanceof TileEntitySolarPanel && ((TileEntitySolarPanel) tileEntity).network == this) {
-          ((TileEntitySolarPanel) tileEntity).setNetwork(new SolarPanelNetwork(world));
-        }
-      }
-    }
+  @Override
+  public void destroyNetwork() {
+    energyMaxPerTick = energyAvailablePerTick = energyAvailableThisTick = 0;
+    nextCollectTick = Long.MAX_VALUE;
     panels.clear();
     valid = false;
   }
 
+  @Override
   public boolean isValid() {
     return valid;
   }
 
-  private int rfMax = -1;
+  /**
+   * If different kinds of panels can not joint together, this is the amount of energy any panel of this network can produce per tick.
+   * 
+   * Otherwise it is just a ever changing local value.
+   */
+  private int energyMaxPerTickPerPanel = -1;
 
   private void updateEnergy() {
     long tick = EnderIO.proxy.getServerTickCount();
-    if (tick != lastTick && world != null) {
+    if (tick != lastTick) {
       lastTick = tick;
       if (tick > nextCollectTick) {
         nextCollectTick = tick + SolarConfig.solarRecalcSunTick.get();
@@ -166,19 +147,17 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
         float lightRatio = TileEntitySolarPanel.calculateLightRatio(world);
         for (BlockPos panel : panels) {
           if (panel != null && world.isBlockLoaded(panel)) {
-            if (rfMax < 0 || SolarConfig.canSolarTypesJoin.get()) {
-              final int energyPerTick = TileEntitySolarPanel.getEnergyPerTick(world, panel);
-              if (energyPerTick < 0) {
+            if (energyMaxPerTickPerPanel < 0 || SolarConfig.canSolarTypesJoin.get()) {
+              energyMaxPerTickPerPanel = TileEntitySolarPanel.getEnergyPerTick(world, panel);
+              if (energyMaxPerTickPerPanel < 0) {
                 // a panel was removed without its TE being invalidated. Force rebuilding the network.
                 destroyNetwork();
-                energyAvailableThisTick = energyAvailablePerTick = 0;
                 return;
               }
-              rfMax = energyPerTick;
             }
-            energyMaxPerTick += rfMax;
+            energyMaxPerTick += energyMaxPerTickPerPanel;
             if (TileEntitySolarPanel.canSeeSun(world, panel)) {
-              energyAvailablePerTick += rfMax * lightRatio;
+              energyAvailablePerTick += energyMaxPerTickPerPanel * lightRatio;
             }
           }
         }
@@ -187,20 +166,24 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
     }
   }
 
+  @Override
   public void extractEnergy(int maxExtract) {
     energyAvailableThisTick = Math.max(energyAvailableThisTick - maxExtract, 0);
   }
 
+  @Override
   public int getEnergyAvailableThisTick() {
     updateEnergy();
     return energyAvailableThisTick;
   }
 
+  @Override
   public int getEnergyAvailablePerTick() {
     updateEnergy();
     return energyAvailablePerTick;
   }
 
+  @Override
   public int getEnergyMaxPerTick() {
     updateEnergy();
     return energyMaxPerTick;
@@ -216,7 +199,7 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
   public String toString() {
     return "SolarPanelNetwork [panels=" + panels.size() + ", valid=" + valid + ", energyMaxPerTick=" + energyMaxPerTick + ", energyAvailablePerTick="
         + energyAvailablePerTick + ", energyAvailableThisTick=" + energyAvailableThisTick + ", lastTick=" + lastTick + ", nextCollectTick=" + nextCollectTick
-        + ", rfMax=" + rfMax + "]";
+        + ", rfMax=" + energyMaxPerTickPerPanel + "]";
   }
 
 }

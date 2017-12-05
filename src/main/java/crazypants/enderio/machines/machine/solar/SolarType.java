@@ -37,8 +37,8 @@ public enum SolarType implements IStringSerializable {
     return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "Enum.values()");
   }
 
-  public static int getMetaFromType(@Nonnull SolarType fusedQuartzType) {
-    return fusedQuartzType.ordinal();
+  public static int getMetaFromType(@Nonnull SolarType solarType) {
+    return solarType.ordinal();
   }
 
   public @Nonnull String getUnlocalisedName() {

@@ -10,7 +10,6 @@ import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.power.forge.InternalPoweredTileWrapper;
 import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -26,10 +25,7 @@ import static crazypants.enderio.machines.init.MachineObject.block_solar_panel;
 @Storable
 public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPoweredTile, IHasConduitProbeData {
 
-  @Store
-  private boolean forceNetworkSearch = true;
-
-  protected SolarPanelNetwork network = new SolarPanelNetwork();
+  protected ISolarPanelNetwork network = NoSolarPanelNetwork.INSTANCE;
 
   @Override
   public boolean canConnectEnergy(@Nonnull EnumFacing from) {
@@ -80,12 +76,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
       network = new SolarPanelNetwork(this);
     }
 
-    network.onUpdate(this, forceNetworkSearch);
-    forceNetworkSearch = false;
-
-    if (network.isValid()) {
-      transmitEnergy();
-    }
+    transmitEnergy();
   }
 
   @Override
@@ -150,7 +141,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
     return true;
   }
 
-  public void setNetwork(SolarPanelNetwork network) {
+  public void setNetwork(ISolarPanelNetwork network) {
     this.network = network;
   }
 
