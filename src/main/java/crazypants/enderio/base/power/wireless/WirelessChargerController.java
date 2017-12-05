@@ -10,7 +10,8 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.ChargerConfig;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,21 +19,15 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class WirelessChargerController {
 
   public static @Nonnull WirelessChargerController instance = new WirelessChargerController();
-
-  public static final int RANGE = Config.wirelessChargerRange;
-  public static final int RANGE_SQ = RANGE * RANGE;
-
-  static {
-    MinecraftForge.EVENT_BUS.register(WirelessChargerController.instance);
-  }
 
   private final @Nonnull Map<Integer, Map<BlockPos, IWirelessCharger>> perWorldChargers = new HashMap<Integer, Map<BlockPos, IWirelessCharger>>();
   private int changeCount;
@@ -46,28 +41,28 @@ public class WirelessChargerController {
     changeCount++;
   }
 
-  public void deregisterCharger(@Nonnull IWirelessCharger capBank) {
-    Map<BlockPos, IWirelessCharger> chargers = getChargersForWorld(capBank.getworld());
-    chargers.remove(capBank.getLocation());
+  public void deregisterCharger(@Nonnull IWirelessCharger charger) {
+    Map<BlockPos, IWirelessCharger> chargers = getChargersForWorld(charger.getworld());
+    chargers.remove(charger.getLocation());
     changeCount++;
   }
 
   @SubscribeEvent
-  public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+  public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
     if (event.side == Side.CLIENT || event.phase != TickEvent.Phase.END || event.player.isSpectator()) {
       return;
     }
-    chargePlayersItems(NullHelper.notnullF(event.player, "TickEvent.PlayerTickEvent without player"));
+    instance.chargePlayersItems(NullHelper.notnullF(event.player, "TickEvent.PlayerTickEvent without player"));
   }
 
   public int getChangeCount() {
     return changeCount;
   }
 
-  public void getChargers(@Nonnull World world, @Nonnull BlockPos bc, @Nonnull Collection<IWirelessCharger> res) {
+  public void getChargers(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Collection<IWirelessCharger> res) {
     Map<BlockPos, IWirelessCharger> chargers = getChargersForWorld(world);
     for (IWirelessCharger wc : chargers.values()) {
-      if (inRange(wc.getLocation(), bc)) {
+      if (inRange(wc.getLocation(), pos)) {
         res.add(wc);
       }
     }
@@ -78,10 +73,10 @@ public class WirelessChargerController {
     if (chargers.isEmpty()) {
       return;
     }
-    BlockPos bc = BlockCoord.get(player);
-    for (IWirelessCharger capBank : chargers.values()) {
-      if (capBank.isActive() && inRange(capBank.getLocation(), bc)) {
-        boolean done = chargeFromCapBank(player, capBank);
+    BlockPos pos = BlockCoord.get(player);
+    for (IWirelessCharger charger : chargers.values()) {
+      if (charger.isActive() && inRange(charger.getLocation(), pos)) {
+        boolean done = chargeFromCapBank(player, charger);
         if (done) {
           return;
         }
@@ -90,6 +85,7 @@ public class WirelessChargerController {
   }
 
   private boolean inRange(BlockPos a, BlockPos b) {
+    int RANGE = ChargerConfig.wirelessChargerRange.get();
     // distSq can overflow int, so check for square coords first.
     int dx = a.getX() - b.getX();
     if (dx > RANGE || dx < -RANGE) {
@@ -99,13 +95,14 @@ public class WirelessChargerController {
     if (dz > RANGE || dz < -RANGE) {
       return false;
     }
-    return a.distanceSq(b) <= RANGE_SQ;
+    int dy = a.getY() - b.getY();
+    return (dx * dx + dy * dy + dz * dz) <= (RANGE * RANGE);
   }
 
-  private boolean chargeFromCapBank(@Nonnull EntityPlayer player, @Nonnull IWirelessCharger capBank) {
-    boolean res = capBank.chargeItems(player.inventory.armorInventory);
-    res |= capBank.chargeItems(player.inventory.mainInventory);
-    res |= capBank.chargeItems(player.inventory.offHandInventory);
+  private boolean chargeFromCapBank(@Nonnull EntityPlayer player, @Nonnull IWirelessCharger charger) {
+    boolean res = charger.chargeItems(player.inventory.armorInventory);
+    res |= charger.chargeItems(player.inventory.mainInventory);
+    res |= charger.chargeItems(player.inventory.offHandInventory);
     IInventory baubles = BaublesUtil.instance().getBaubles(player);
     if (baubles != null) {
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
@@ -113,7 +110,7 @@ public class WirelessChargerController {
         if (Prep.isValid(item)) {
           // mustn't change the item that is in the slot or Baubles will ignore the change
           item = item.copy();
-          if (capBank.chargeItems(new NNList<>(item))) {
+          if (charger.chargeItems(new NNList<>(item))) {
             baubles.setInventorySlotContents(i, item);
             res = true;
           }

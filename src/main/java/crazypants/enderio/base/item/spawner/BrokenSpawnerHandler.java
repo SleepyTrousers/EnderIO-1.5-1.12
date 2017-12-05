@@ -2,8 +2,6 @@ package crazypants.enderio.base.item.spawner;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -11,12 +9,11 @@ import com.enderio.core.common.util.NNMap;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.SpawnerConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.BlockMobSpawner;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntity;
@@ -33,13 +30,6 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 public class BrokenSpawnerHandler {
 
   public static void init(@Nonnull FMLPreInitializationEvent event) {
-    String[] blackListNames = Config.brokenSpawnerToolBlacklist;
-    for (String blackListName : blackListNames) {
-      if (blackListName != null) {
-        toolBlackList.add(new ResourceLocation(blackListName));
-      }
-    }
-
     try {
       getEntityIdMethod = ReflectionHelper.findMethod(MobSpawnerBaseLogic.class, null, new String[] { "getEntityId", "func_190895_g" }, new Class<?>[0]);
     } catch (Exception e) {
@@ -53,8 +43,6 @@ public class BrokenSpawnerHandler {
 
     MinecraftForge.EVENT_BUS.register(BrokenSpawnerHandler.class);
   }
-
-  private static final List<ResourceLocation> toolBlackList = new ArrayList<ResourceLocation>();
 
   private static Method getEntityIdMethod;
   private static Field spawnDelayField;
@@ -71,18 +59,13 @@ public class BrokenSpawnerHandler {
         TileEntity tile = evt.getPlayer().world.getTileEntity(NullHelper.notnullF(evt.getPos(), "BlockEvent.BreakEvent.getPos()"));
         if (tile instanceof TileEntityMobSpawner) {
 
-          if (Math.random() > Config.brokenSpawnerDropChance) {
+          if (Math.random() > SpawnerConfig.brokenSpawnerDropChance.get()) {
             return;
           }
 
           ItemStack equipped = evt.getPlayer().getHeldItemMainhand();
-          if (Prep.isValid(equipped)) {
-            for (ResourceLocation uid : toolBlackList) {
-              Item blackListItem = Item.REGISTRY.getObject(uid);
-              if (blackListItem == equipped.getItem()) {
-                return;
-              }
-            }
+          if (Prep.isValid(equipped) && SpawnerConfig.brokenSpawnerToolBlacklist.get().contains(equipped)) {
+            return;
           }
 
           TileEntityMobSpawner spawner = (TileEntityMobSpawner) tile;

@@ -15,6 +15,7 @@ import com.enderio.core.common.vecmath.VecmathUtil;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.CapacitorKey;
+import crazypants.enderio.base.config.config.BaseConfig;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -256,10 +257,6 @@ public final class Config {
   public static int fireWaterPowerTotalBurnTime = 15000;
   public static int vatPowerUserPerTickRF = 20;
 
-  public static int maxPhotovoltaicOutputRF = 10;
-  public static int maxPhotovoltaicAdvancedOutputRF = 40;
-  public static int maxPhotovoltaicVibrantOutputRF = 160;
-
   public static int zombieGeneratorRfPerTick = 80;
 
   public static boolean addFuelTooltipsToAllFluidContainers = true;
@@ -312,7 +309,6 @@ public final class Config {
   public static int magnetRange = 5;
   public static String[] magnetBlacklist = new String[] { "appliedenergistics2:item.ItemCrystalSeed", "Botania:livingrock", "Botania:manaTablet" };
   public static int magnetMaxItems = 20;
-  public static int vacuumChestMaxItems = 40;
 
   public static boolean magnetAllowInMainInventory = false;
   public static boolean magnetAllowInBaublesSlot = true;
@@ -335,24 +331,7 @@ public final class Config {
 
   public static boolean capacitorBankRenderPowerOverlayOnItem = false;
 
-  public static int poweredSpawnerMinDelayTicks = 200;
-  public static int poweredSpawnerMaxDelayTicks = 800;
-  public static int poweredSpawnerMaxPlayerDistance = 0;
-  public static int poweredSpawnerDespawnTimeSeconds = 120;
-  public static int poweredSpawnerSpawnCount = 4;
-  public static int poweredSpawnerSpawnRange = 4;
-  public static int poweredSpawnerMaxNearbyEntities = 6;
-  public static int poweredSpawnerMaxSpawnTries = 3;
-  public static boolean poweredSpawnerUseVanillaSpawChecks = false;
-  public static double brokenSpawnerDropChance = 1;
-  public static String[] brokenSpawnerToolBlacklist = new String[] { "RotaryCraft:rotarycraft_item_bedpick" };
-  public static int powerSpawnerAddSpawnerCost = 16;
-
   public static int painterEnergyPerTaskRF = 2000;
-
-  public static int vacuumChestRange = 6;
-
-  public static int wirelessChargerRange = 24;
 
   public static long nutrientFoodBoostDelay = 400;
   public static boolean rocketFuelIsExplosive = true;
@@ -453,9 +432,6 @@ public final class Config {
 
   public static String coldFireIgniterFluidType = "vapor_of_levity";
   public static int coldFireIgniterMbPerUse = 10;
-
-  public static boolean photovoltaicCanTypesJoins = true;
-  public static int photovoltaicRecalcSunTick = 100;
 
   public static boolean debugUpdatePackets = false;
 
@@ -605,28 +581,11 @@ public final class Config {
             "If set to false redstone conduits will look the same whether they are recieving a signal or not. This can help with performance.")
         .getBoolean(redstoneConduitsShowState);
 
-    maxPhotovoltaicOutputRF = config
-        .get(sectionPower.name, "maxPhotovoltaicOutputRF", maxPhotovoltaicOutputRF, "Maximum output in RF/t of the Photovoltaic Panels.")
-        .getInt(maxPhotovoltaicOutputRF);
-    maxPhotovoltaicAdvancedOutputRF = config.get(sectionPower.name, "maxPhotovoltaicAdvancedOutputRF", maxPhotovoltaicAdvancedOutputRF,
-        "Maximum output in RF/t of the Advanced Photovoltaic Panels.").getInt(maxPhotovoltaicAdvancedOutputRF);
-    maxPhotovoltaicVibrantOutputRF = config
-        .get(sectionPower.name, "maxPhotovoltaicVibrantOutputRF", maxPhotovoltaicVibrantOutputRF, "Maximum output in RF/t of the Vibrant Photovoltaic Panels.")
-        .getInt(maxPhotovoltaicVibrantOutputRF);
-
-    photovoltaicCanTypesJoins = config.get(sectionPower.name, "photovoltaicCanTypesJoins", photovoltaicCanTypesJoins,
-        "When enabled Photovoltaic Panels of different kinds can join together as a multi-block").getBoolean(photovoltaicCanTypesJoins);
-    photovoltaicRecalcSunTick = config.get(sectionPower.name, "photovoltaicRecalcSunTick", photovoltaicRecalcSunTick,
-        "How often (in ticks) the Photovoltaic Panels should check the sun's angle.").getInt(photovoltaicRecalcSunTick);
-
     conduitScale = config
         .get(sectionAesthetic.name, "conduitScale", DEFAULT_CONDUIT_SCALE,
             "Valid values are between 0-1, smallest conduits at 0, largest at 1.\n" + "In SMP, all clients must be using the same value as the server.")
         .getDouble(DEFAULT_CONDUIT_SCALE);
     conduitScale = VecmathUtil.clamp(conduitScale, 0, 1);
-
-    wirelessChargerRange = config.get(sectionEfficiency.name, "wirelessChargerRange", wirelessChargerRange, "The range of the wireless charger")
-        .getInt(wirelessChargerRange);
 
     fluidConduitExtractRate = config.get(sectionEfficiency.name, "fluidConduitExtractRate", fluidConduitExtractRate,
         "Number of millibuckets per tick extracted by a fluid conduits auto extracting").getInt(fluidConduitExtractRate);
@@ -684,10 +643,6 @@ public final class Config {
         .get(sectionEfficiency.name, "itemConduitUsePhyscialDistance", itemConduitUsePhyscialDistance,
             "If true, " + "'line of sight' distance rather than conduit path distance is used to calculate priorities.")
         .getBoolean(itemConduitUsePhyscialDistance);
-
-    vacuumChestRange = config.get(sectionEfficiency.name, "vacumChestRange", vacuumChestRange, "The range of the vacuum chest").getInt(vacuumChestRange);
-    vacuumChestMaxItems = config.get(sectionEfficiency.name, "vacuumChestMaxItems", vacuumChestMaxItems,
-        "Maximum number of items the vacuum chest can effect at a time. (-1 for unlimited)").getInt(vacuumChestMaxItems);
 
     travelAnchorMaximumDistance = config.get(sectionAnchor.name, "travelAnchorMaxDistance", travelAnchorMaximumDistance,
         "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaximumDistance);
@@ -1189,40 +1144,6 @@ public final class Config {
 
     crafterRfPerCraft = config.get("AutoCrafter Settings", "crafterRfPerCraft", crafterRfPerCraft, "RF used per autocrafted recipe").getInt(crafterRfPerCraft);
 
-    poweredSpawnerMinDelayTicks = config
-        .get(sectionSpawner.name, "poweredSpawnerMinDelayTicks", poweredSpawnerMinDelayTicks, "Min tick delay between spawns for a non-upgraded spawner")
-        .getInt(poweredSpawnerMinDelayTicks);
-    poweredSpawnerMaxDelayTicks = config
-        .get(sectionSpawner.name, "poweredSpawnerMaxDelayTicks", poweredSpawnerMaxDelayTicks, "Min tick delay between spawns for a non-upgraded spawner")
-        .getInt(poweredSpawnerMaxDelayTicks);
-    poweredSpawnerMaxPlayerDistance = config
-        .get(sectionSpawner.name, "poweredSpawnerMaxPlayerDistance", poweredSpawnerMaxPlayerDistance,
-            "Max distance of the closest player for the spawner to be active. A zero value will remove the player check")
-        .getInt(poweredSpawnerMaxPlayerDistance);
-    poweredSpawnerDespawnTimeSeconds = config.get(sectionSpawner.name, "poweredSpawnerDespawnTimeSeconds", poweredSpawnerDespawnTimeSeconds,
-        "Number of seconds in which spawned entities are protected from despawning").getInt(poweredSpawnerDespawnTimeSeconds);
-    poweredSpawnerSpawnCount = config.get(sectionSpawner.name, "poweredSpawnerSpawnCount", poweredSpawnerSpawnCount, "Number of entities to spawn each time")
-        .getInt(poweredSpawnerSpawnCount);
-    poweredSpawnerSpawnRange = config.get(sectionSpawner.name, "poweredSpawnerSpawnRange", poweredSpawnerSpawnRange, "Spawning range in X/Z")
-        .getInt(poweredSpawnerSpawnRange);
-    poweredSpawnerMaxNearbyEntities = config.get(sectionSpawner.name, "poweredSpawnerMaxNearbyEntities", poweredSpawnerMaxNearbyEntities,
-        "Max number of entities in the nearby area until no more are spawned. A zero value will remove this check").getInt(poweredSpawnerMaxNearbyEntities);
-    poweredSpawnerMaxSpawnTries = config
-        .get(sectionSpawner.name, "poweredSpawnerMaxSpawnTries", poweredSpawnerMaxSpawnTries, "Number of tries to find a suitable spawning location")
-        .getInt(poweredSpawnerMaxSpawnTries);
-    poweredSpawnerUseVanillaSpawChecks = config
-        .get(sectionSpawner.name, "poweredSpawnerUseVanillaSpawChecks", poweredSpawnerUseVanillaSpawChecks,
-            "If true, regular spawn checks such as lighting level and dimension will be made before spawning mobs")
-        .getBoolean(poweredSpawnerUseVanillaSpawChecks);
-    brokenSpawnerDropChance = (float) config.get(sectionSpawner.name, "brokenSpawnerDropChance", brokenSpawnerDropChance,
-        "The chance a broken spawner will be dropped when a spawner is broken. 1 = 100% chance, 0 = 0% chance").getDouble(brokenSpawnerDropChance);
-    brokenSpawnerToolBlacklist = config.getStringList("brokenSpawnerToolBlacklist", sectionSpawner.name, brokenSpawnerToolBlacklist,
-        "When a spawner is broken with these tools they will not drop a broken spawner");
-
-    powerSpawnerAddSpawnerCost = config
-        .get(sectionSpawner.name, "powerSpawnerAddSpawnerCost", powerSpawnerAddSpawnerCost, "The number of levels it costs to add a broken spawner")
-        .getInt(powerSpawnerAddSpawnerCost);
-
     nutrientFoodBoostDelay = config.get(sectionFluid.name, "nutrientFluidFoodBoostDelay", nutrientFoodBoostDelay,
         "The delay in ticks between when nutrient distillation boosts your food value.").getInt((int) nutrientFoodBoostDelay);
     rocketFuelIsExplosive = config
@@ -1452,6 +1373,7 @@ public final class Config {
         "If true, the item count will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
 
     CapacitorKey.processConfig(config);
+    BaseConfig.F.setConfig(config);
   }
 
   public static void checkYetaAccess() {

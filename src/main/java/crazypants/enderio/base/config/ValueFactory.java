@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
+import com.enderio.core.common.util.stackable.RebuildableThings;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config.Section;
@@ -26,6 +27,7 @@ public class ValueFactory {
 
   protected final @Nonnull ThreadedNetworkWrapper network;
   protected Configuration config = null;
+  protected boolean inInit = false;
   protected Map<String, Object> serverConfig = null;
   protected int generation = 0;
   protected final @Nonnull NNList<AbstractValue<?>> syncValues = new NNList<>();
@@ -39,8 +41,13 @@ public class ValueFactory {
   public void setConfig(Configuration config) {
     this.config = config;
     generation++;
+    inInit = true;
     for (AbstractValue<?> value : preloadValues) {
       value.get();
+    }
+    inInit = false;
+    if (config.hasChanged()) {
+      config.save();
     }
     preloadValues.clear();
   }
@@ -63,6 +70,11 @@ public class ValueFactory {
 
   public @Nonnull IValue<Boolean> make(@Nonnull Section section, @Nonnull String keyname, @Nonnull Boolean defaultValue, @Nonnull String text) {
     return new BooleanValue(section.name, keyname, defaultValue, text).preload();
+  }
+
+  public @Nonnull IValue<RebuildableThings> make(@Nonnull Section section, @Nonnull String keyname, @Nonnull RebuildableThings defaultValue,
+      @Nonnull String text) {
+    return new ThingsValue(section.name, keyname, defaultValue, text).preload();
   }
 
   public interface IValue<T> {
@@ -126,7 +138,7 @@ public class ValueFactory {
           }
         } else {
           value = makeValue();
-          if (config.hasChanged()) {
+          if (!inInit && config.hasChanged()) {
             config.save();
           }
         }
@@ -162,7 +174,7 @@ public class ValueFactory {
       return this;
     };
 
-    public final void save(final ByteBuf buf) {
+    public void save(final ByteBuf buf) {
       final byte[] bytes = keyname.getBytes(Charset.forName("UTF-8"));
       buf.writeInt(bytes.length);
       buf.writeBytes(bytes);
@@ -327,6 +339,29 @@ public class ValueFactory {
 
   }
 
+  public class ThingsValue extends AbstractValue<RebuildableThings> {
+
+    protected ThingsValue(@Nonnull String section, @Nonnull String keyname, @Nonnull RebuildableThings defaultValue, @Nonnull String text) {
+      super(section, keyname, defaultValue, text);
+    }
+
+    @Override
+    protected @Nullable RebuildableThings makeValue() {
+      String[] array = defaultValue.getNameList().toArray(new String[0]);
+      String[] stringList = config.getStringList(keyname, section, array, text);
+      return new RebuildableThings(stringList);
+    }
+
+    @Override
+    protected DataTypes getDataType() {
+      return DataTypes.NONE;
+    }
+
+    @Override
+    public void save(ByteBuf buf) {
+    }
+  }
+
   protected static enum DataTypes {
     INTEGER {
       @Override
@@ -386,6 +421,16 @@ public class ValueFactory {
       @Override
       protected Object readValue(ByteBuf buf) {
         return buf.readBoolean();
+      }
+    },
+    NONE {
+      @Override
+      protected void saveValue(ByteBuf buf, @Nonnull Object value) {
+      }
+
+      @Override
+      protected Object readValue(ByteBuf buf) {
+        return null;
       }
     };
 
