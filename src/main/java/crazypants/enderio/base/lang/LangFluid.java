@@ -28,13 +28,17 @@ public final class LangFluid {
     return Lang.FLUID_AMOUNT_NAME.get(amount, new FluidStack(fluid, amount).getLocalizedName());
   }
 
-  public static @Nonnull String MBt(int amount) {
+  public static @Nonnull String tMB(int amount) {
     return Lang.FLUID_TICKPER.get(amount);
   }
 
-  public static @Nonnull String toCapactityString(IFluidTank tank) {
+  public static @Nonnull String MB(IFluidTank tank) {
     if (tank == null) {
       return MB(0, 0);
+    }
+    FluidStack fluid = tank.getFluid();
+    if (fluid != null) {
+      return MB(fluid, tank.getCapacity());
     }
     return MB(tank.getFluidAmount(), tank.getCapacity());
   }

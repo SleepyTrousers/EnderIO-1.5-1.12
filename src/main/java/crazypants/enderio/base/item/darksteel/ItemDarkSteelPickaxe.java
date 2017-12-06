@@ -287,8 +287,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(Lang.PICK_POWERED.get(TextFormatting.WHITE, Config.darkSteelPickEffeciencyBoostWhenPowered));
       list.add(Lang.PICK_OBSIDIAN.get(TextFormatting.WHITE, Config.darkSteelPickEffeciencyObsidian));
-      list.add(
-          Lang.PICK_OBSIDIAN_COST.get(TextFormatting.WHITE, LangPower.format(Config.darkSteelPickPowerUseObsidian), LangPower.abrevation()));
+      list.add(Lang.PICK_OBSIDIAN_COST.get(TextFormatting.WHITE, LangPower.RF(Config.darkSteelPickPowerUseObsidian)));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }

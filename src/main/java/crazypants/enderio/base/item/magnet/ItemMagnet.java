@@ -94,9 +94,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    String str = LangPower.format(NbtValue.ENERGY.getInt(itemStack)) + "/" + LangPower.format(Config.magnetPowerCapacityRF) + " "
-        + LangPower.abrevation();
-    list.add(str);
+    list.add(LangPower.RF(NbtValue.ENERGY.getInt(itemStack), Config.magnetPowerCapacityRF));
   }
 
   @Override
@@ -111,7 +109,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
   }
 
   private void extractEnergyInternal(@Nonnull ItemStack itemStack, int extract) {
-    if(extract <= 0) {
+    if (extract <= 0) {
       return;
     }
     int energy = getEnergyStored(itemStack);

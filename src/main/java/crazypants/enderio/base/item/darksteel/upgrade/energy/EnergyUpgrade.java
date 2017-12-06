@@ -104,7 +104,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
       SpecialTooltipHandler.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
 
       String percDamage = (int) Math.round(getAbsorptionRatio() * 100) + "";
-      String capString = LangPower.format(capacity) + " " + LangPower.abrevation();
+      String capString = LangPower.RF(capacity);
       for (int i = 0; i < upgradeStr.size(); i++) {
         String str = upgradeStr.get(i);
         str = str.replaceAll("\\$P", capString);

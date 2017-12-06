@@ -57,8 +57,7 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
       }
       text.add(lang.get(frame));
     }
-    text.add(getPowerOutputLabel() + " " + LangPower.format(getPowerOutputValue()) + " " + LangPower.abrevation()
-        + LangPower.perTickStr());
+    text.add(getPowerOutputLabel() + " " + LangPower.RFt(getPowerOutputValue()));
     text.add(LangPower.RF(getTileEntity().getEnergyStored(), getTileEntity().getMaxEnergyStored()));
   }
 
