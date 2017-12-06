@@ -25,9 +25,9 @@ import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.integration.jei.JeiAccessor;
+import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machine.invpanel.client.CraftingHelper;
@@ -222,7 +222,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         protected void updateText() {
           text.clear();
           text.add(EnderIO.lang.localize("gui.inventorypanel.tooltip.fuelTank"));
-          text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
+          text.add(LangFluid.MB(getTileEntity().fuelTank));
         }
       });
     }

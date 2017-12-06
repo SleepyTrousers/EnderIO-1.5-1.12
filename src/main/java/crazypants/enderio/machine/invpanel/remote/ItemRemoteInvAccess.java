@@ -9,9 +9,10 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.item.PowerBarOverlayRenderHelper;
+import crazypants.enderio.base.lang.LangFluid;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.power.IInternalPoweredItem;
 import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
@@ -245,10 +246,8 @@ public class ItemRemoteInvAccess extends Item
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    list.add(PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/" + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " "
-        + PowerDisplayUtil.abrevation());
-    list.add(FLUIDAMOUNT.getInt(itemStack, 0) + " " + EnderIO.lang.localize("fluid.millibucket.abr") + " " + PowerDisplayUtil.ofStr() + " "
-        + getFluidType(itemStack).getLocalizedName(null));
+    list.add(LangPower.RF(getEnergyStored(itemStack) ,getMaxEnergyStored(itemStack)));
+    list.add(LangFluid.MB(FLUIDAMOUNT.getInt(itemStack, 0), getFluidType(itemStack)));
   }
 
   @Override
