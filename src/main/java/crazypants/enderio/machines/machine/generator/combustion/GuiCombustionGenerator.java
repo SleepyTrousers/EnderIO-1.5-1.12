@@ -41,7 +41,7 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
         } else {
           text.add(EnderIO.lang.localize("combustionGenerator.coolantTank.empty"));
         }
-        text.add(LangFluid.toCapactityString(getTileEntity().getCoolantTank()));
+        text.add(LangFluid.MB(getTileEntity().getCoolantTank()));
       }
 
     });
@@ -57,7 +57,7 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
         } else {
           text.add(EnderIO.lang.localize("combustionGenerator.fuelTank.empty"));
         }
-        text.add(LangFluid.toCapactityString(getTileEntity().getFuelTank()));
+        text.add(LangFluid.MB(getTileEntity().getFuelTank()));
       }
 
     });
@@ -126,7 +126,7 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
       }
 
       if (gen.isActive()) {
-        txt = math.getTicksPerCoolant() + " " + EnderIO.lang.localize("power.tmb");
+        txt = LangFluid.tMB(math.getTicksPerCoolant());
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
       }
@@ -150,7 +150,7 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
       }
 
       if (gen.isActive()) {
-        txt = math.getTicksPerFuel() + " " + EnderIO.lang.localize("power.tmb");
+        txt = LangFluid.tMB(math.getTicksPerFuel());
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
       }

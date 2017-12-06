@@ -44,7 +44,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
           heading += ": " + tank.getFluid().getLocalizedName();
         }
         text.add(heading);
-        text.add(LangFluid.toCapactityString(getTileEntity().getInputTank()));
+        text.add(LangFluid.MB(getTileEntity().getInputTank()));
       }
     });
   }

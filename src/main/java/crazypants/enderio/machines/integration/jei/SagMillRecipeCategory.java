@@ -111,7 +111,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
     if (currentRecipe == null) {
       return;
     }
-    String energyString = LangPower.format(currentRecipe.getEnergyRequired()) + " " + LangPower.abrevation();
+    String energyString = LangPower.RF(currentRecipe.getEnergyRequired());
     minecraft.fontRenderer.drawString(energyString, 135 - xOff, 60 - yOff, 0x808080, false);
     GlStateManager.color(1, 1, 1, 1);
 

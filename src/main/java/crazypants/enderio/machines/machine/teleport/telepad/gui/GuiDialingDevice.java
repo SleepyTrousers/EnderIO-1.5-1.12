@@ -148,8 +148,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
   }
 
   protected void updatePowerBarTooltip(List<String> text) {
-    text.add(getPowerOutputLabel() + " " + LangPower.format(getPowerOutputValue()) + " " + LangPower.abrevation()
-        + LangPower.perTickStr());
+    text.add(getPowerOutputLabel() + " " + LangPower.RFt(getPowerOutputValue()));
     text.add(LangPower.RF(dialingDevice.getEnergyStored(), dialingDevice.getMaxEnergyStored()));
   }
 

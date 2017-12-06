@@ -36,7 +36,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
         text.clear();
         String heading = EnderIO.lang.localize("zombieGenerator.fuelTank");
         text.add(heading);
-        text.add(LangFluid.toCapactityString(getTileEntity().tank));
+        text.add(LangFluid.MB(getTileEntity().tank));
         if (tileEntity.tank.getFluidAmount() < tileEntity.getActivationAmount()) {
           text.add(EnderIO.lang.localize("gui.fluid.minReq", LangFluid.MB(tileEntity.getActivationAmount())));
         }
@@ -87,8 +87,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
     if (gen.isActive()) {
       output = gen.getPowerUsePerTick();
     }
-    String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + LangPower.format(output) + " " + LangPower.abrevation()
-        + LangPower.perTickStr();
+    String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + LangPower.RFt(output);
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, guiTop + fr.FONT_HEIGHT / 2 + 3, ColorUtil.getRGB(Color.WHITE));
 
@@ -99,7 +98,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
       RenderUtil.renderGuiTank(gen.tank.getFluid(), gen.tank.getCapacity(), gen.tank.getFluidAmount(), x, y, zLevel, 16, 47);
 
       if (gen.isActive()) {
-        txt = ZombieGenConfig.ticksPerBucketOfFuel.get() / 1000 + " " + EnderIO.lang.localize("power.tmb");
+        txt = LangFluid.tMB(ZombieGenConfig.ticksPerBucketOfFuel.get() / 1000);
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 46, ColorUtil.getRGB(Color.WHITE));
       }

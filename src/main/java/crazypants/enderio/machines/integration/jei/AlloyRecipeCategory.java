@@ -110,7 +110,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
     if (currentRecipe == null) {
       return;
     }
-    String energyString = LangPower.format(currentRecipe.getEnergyRequired()) + " " + LangPower.abrevation();
+    String energyString = LangPower.RF(currentRecipe.getEnergyRequired());
     minecraft.fontRenderer.drawString(energyString, 108 - xOff, 60 - yOff, 0x808080, false);
     GlStateManager.color(1, 1, 1, 1);
 

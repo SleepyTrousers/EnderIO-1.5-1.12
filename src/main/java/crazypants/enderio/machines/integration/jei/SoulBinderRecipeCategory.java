@@ -70,7 +70,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
       String str = I18n.format("container.repair.cost", new Object[] { cost });
       minecraft.fontRenderer.drawString(str, 6, 26, 0x80FF20);
 
-      String energyString = LangPower.format(recipe.getEnergyRequired()) + " " + LangPower.abrevation();
+      String energyString = LangPower.RF(recipe.getEnergyRequired());
       minecraft.fontRenderer.drawString(energyString, 6, 36, 0x808080, false);
       GlStateManager.color(1, 1, 1, 1);
     }

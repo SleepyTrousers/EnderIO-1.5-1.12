@@ -90,7 +90,7 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
       RenderUtil.renderGuiTank(outputFl, outputFl.amount, outputFl.amount, outTankBounds.x, outTankBounds.y, 0, outTankBounds.width, outTankBounds.height);
 
       IRecipe rec = getRecipe();
-      String energyString = LangPower.format(rec.getEnergyRequired()) + " " + LangPower.abrevation();
+      String energyString = LangPower.RF(rec.getEnergyRequired());
       minecraft.fontRenderer.drawString(energyString, 76, 58, 0x808080, false);
 
     }

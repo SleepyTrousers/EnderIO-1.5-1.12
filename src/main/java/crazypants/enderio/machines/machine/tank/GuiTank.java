@@ -41,7 +41,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
           heading += ": " + fluid.getLocalizedName();
         }
         text.add(heading);
-        text.add(LangFluid.toCapactityString(getTileEntity().tank));
+        text.add(LangFluid.MB(getTileEntity().tank));
       }
 
     });

@@ -52,7 +52,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
           heading += ": " + fluid.getLocalizedName();
         }
         text.add(heading);
-        text.add(LangFluid.toCapactityString(getTileEntity().inputTank));
+        text.add(LangFluid.MB(getTileEntity().inputTank));
       }
 
     });
@@ -68,7 +68,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
           heading += ": " + fluid.getLocalizedName();
         }
         text.add(heading);
-        text.add(LangFluid.toCapactityString(getTileEntity().outputTank));
+        text.add(LangFluid.MB(getTileEntity().outputTank));
       }
 
     });

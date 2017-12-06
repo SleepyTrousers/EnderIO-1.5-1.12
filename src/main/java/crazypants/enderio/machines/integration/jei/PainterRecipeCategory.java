@@ -137,7 +137,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
     
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {           
-      String energyString = LangPower.format(energyRequired) + " " + LangPower.abrevation();
+      String energyString = LangPower.RF(energyRequired);
       minecraft.fontRenderer.drawString(energyString, 6, 36, 0x808080, false);    
       GlStateManager.color(1,1,1,1);      
     }

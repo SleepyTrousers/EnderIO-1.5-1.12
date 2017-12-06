@@ -96,7 +96,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
             heading += ": " + new FluidStack(te.getFluidType(), 1000).getLocalizedName();// te.getTank().getFluid().getLocalizedName();
           }
           text.add(heading);
-          text.add(LangFluid.toCapactityString(te.getTank()));
+          text.add(LangFluid.MB(te.getTank()));
         }
       });
     }
@@ -146,8 +146,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   }
 
   protected void updatePowerBarTooltip(List<String> text) {
-    text.add(getPowerOutputLabel() + " " + LangPower.format(getPowerOutputValue()) + " " + LangPower.abrevation()
-        + LangPower.perTickStr());
+    text.add(getPowerOutputLabel() + " " + LangPower.RFt(getPowerOutputValue()));
     text.add(LangPower.RF(te.getEnergyStored(), te.getMaxEnergyStored()));
   }
 

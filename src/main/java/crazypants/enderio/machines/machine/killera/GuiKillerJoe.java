@@ -37,7 +37,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
         text.clear();
         String heading = EnderIO.lang.localize("killerJoe.fuelTank");
         text.add(heading);
-        text.add(LangFluid.toCapactityString(getTileEntity().tank));
+        text.add(LangFluid.MB(getTileEntity().tank));
         if (tileEntity.tank.getFluidAmount() < tileEntity.getActivationAmount()) {
           text.add(EnderIO.lang.localize("gui.fluid.minReq", LangFluid.MB(tileEntity.getActivationAmount())));
         }

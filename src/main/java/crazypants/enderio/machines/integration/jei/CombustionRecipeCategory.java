@@ -73,12 +73,12 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
 
       int y = 21 - yOff - 2;
       int x = 114 - xOff;
-      txt = LangFluid.MBt( math.getTicksPerCoolant() );
+      txt = LangFluid.tMB( math.getTicksPerCoolant() );
       sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
 
       x = 48 - xOff;
-      txt = LangFluid.MBt(math.getTicksPerFuel());
+      txt = LangFluid.tMB(math.getTicksPerFuel());
       sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
 

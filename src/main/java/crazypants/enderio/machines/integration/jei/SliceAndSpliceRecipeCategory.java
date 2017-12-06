@@ -101,7 +101,7 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
     if (currentRecipe == null) {
       return;
     }
-    String energyString = LangPower.format(currentRecipe.getEnergyRequired()) + " " + LangPower.abrevation();
+    String energyString = LangPower.RF(currentRecipe.getEnergyRequired());
     minecraft.fontRenderer.drawString(energyString, 108 - xOff, 72 - yOff, 0x808080, false);
     GlStateManager.color(1, 1, 1, 1);
 
