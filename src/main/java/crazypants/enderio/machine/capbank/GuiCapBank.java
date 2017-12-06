@@ -13,6 +13,7 @@ import com.enderio.core.common.vecmath.VecmathUtil;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiButtonIoConfig;
 import crazypants.enderio.base.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
@@ -93,9 +94,9 @@ public class GuiCapBank extends GuiContainerBaseEIO {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(PowerDisplayUtil.formatPower(network.getEnergyStoredL()) + " " + PowerDisplayUtil.ofStr());
-        text.add(TextFormatting.WHITE + PowerDisplayUtil.formatPower(network.getMaxEnergyStoredL()) + " " + TextFormatting.GRAY
-            + PowerDisplayUtil.abrevation());
+        text.add(LangPower.format(network.getEnergyStoredL()) + " " + LangPower.ofStr());
+        text.add(TextFormatting.WHITE + LangPower.format(network.getMaxEnergyStoredL()) + " " + TextFormatting.GRAY
+            + LangPower.abrevation());
 
         float change = network.getAverageChangePerTick();
         String color = TextFormatting.WHITE.toString();
@@ -104,8 +105,8 @@ public class GuiCapBank extends GuiContainerBaseEIO {
         } else if (change < 0) {
           color = TextFormatting.RED.toString();
         }
-        text.add(String.format("%s%s%s" + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr(), color,
-            PowerDisplayUtil.formatPower(Math.round(change)), " " + TextFormatting.GRAY.toString()));
+        text.add(String.format("%s%s%s" + LangPower.abrevation() + LangPower.perTickStr(), color,
+            LangPower.format(Math.round(change)), " " + TextFormatting.GRAY.toString()));
       }
 
     });
@@ -230,7 +231,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   private void setMaxOutput(int output) {
     if (output != network.getMaxOutput()) {
       network.setMaxOutput(output);
-      maxOutputTF.setText(PowerDisplayUtil.formatPower(network.getMaxOutput()));
+      maxOutputTF.setText(LangPower.format(network.getMaxOutput()));
       sendUpdateToServer();
     }
   }
@@ -238,7 +239,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   private void setMaxInput(int input) {
     if (input != network.getMaxInput()) {
       network.setMaxInput(input);
-      maxInputTF.setText(PowerDisplayUtil.formatPower(network.getMaxInput()));
+      maxInputTF.setText(LangPower.format(network.getMaxInput()));
       sendUpdateToServer();
     }
   }
@@ -287,8 +288,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
     int midX = sx + xSize / 2;
 
-    String str = EnderIO.lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(network.getMaxIO()) + " " + PowerDisplayUtil.abrevation()
-        + PowerDisplayUtil.perTickStr();
+    String str = EnderIO.lang.localize("gui.capBank.maxIo") + " " + LangPower.RFt(network.getMaxIO());
     FontRenderer fontRenderer = getFontRenderer();
     int swid = fontRenderer.getStringWidth(str);
     int x = midX - swid / 2;
@@ -382,8 +382,8 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   }
 
   private void updateFieldsFromState() {
-    maxInputTF.setText(PowerDisplayUtil.formatPower(network.getMaxInput()));
-    maxOutputTF.setText(PowerDisplayUtil.formatPower(network.getMaxOutput()));
+    maxInputTF.setText(LangPower.format(network.getMaxInput()));
+    maxOutputTF.setText(LangPower.format(network.getMaxOutput()));
     textFieldsHaveRealData = true;
     inputRsButton.setModeRaw(RedstoneControlMode.IconHolder.getFromMode(network.getInputControlMode()));
     outputRsButton.setModeRaw(RedstoneControlMode.IconHolder.getFromMode(network.getOutputControlMode()));

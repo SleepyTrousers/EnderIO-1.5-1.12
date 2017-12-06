@@ -20,9 +20,9 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
@@ -195,7 +195,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    list.add(PowerDisplayUtil.formatStoredPower(BlockItemCapBank.getStoredEnergyForItem(itemstack), CapBankType.getTypeFromMeta(itemstack.getItemDamage())
+    list.add(LangPower.RF(BlockItemCapBank.getStoredEnergyForItem(itemstack), CapBankType.getTypeFromMeta(itemstack.getItemDamage())
         .getMaxEnergyStored()));
     final @Nullable NBTTagCompound tagCompound = itemstack.getTagCompound();
     if (tagCompound != null) {

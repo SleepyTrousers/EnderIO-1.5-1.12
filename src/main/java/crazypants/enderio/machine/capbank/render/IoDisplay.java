@@ -13,7 +13,7 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
@@ -210,11 +210,11 @@ public class IoDisplay implements IInfoRenderer {
 
   protected String getChangeText(float average, FontRenderer fr) {
     int change = Math.round(Math.abs(average));
-    String txt = PowerDisplayUtil.formatInteger(change);
+    String txt = LangPower.format(change);
     int width = fr.getStringWidth(txt);
     if (width > 38 && change > 1000) {
       change = change / 1000;
-      txt = PowerDisplayUtil.formatInteger(change) + "K";
+      txt = LangPower.format(change) + "K";
     }
     return txt;
   }

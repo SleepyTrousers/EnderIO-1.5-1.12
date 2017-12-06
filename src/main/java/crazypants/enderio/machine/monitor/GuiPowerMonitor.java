@@ -22,9 +22,11 @@ import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.lang.LangPower.formatPower;
+import crazypants.enderio.base.lang.LangPower.formatPowerFloat;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.machine.monitor.TilePowerMonitor.StatData;
 import net.minecraft.client.gui.FontRenderer;
@@ -165,8 +167,8 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
 
       if (engineControlStart_value == null) {
         engineControlEnabled.setSelected(engineControlEnabled_value = getTileEntity().isEngineControlEnabled());
-        engineControlStart.setText(engineControlStart_value = PowerDisplayUtil.formatInteger(getTileEntity().getStartLevel() * 100));
-        engineControlStop.setText(engineControlStop_value = PowerDisplayUtil.formatInteger(getTileEntity().getStopLevel() * 100));
+        engineControlStart.setText(engineControlStart_value = LangPower.format(getTileEntity().getStartLevel() * 100));
+        engineControlStop.setText(engineControlStop_value = LangPower.format(getTileEntity().getStopLevel() * 100));
       }
 
       if (engineControlEnabled_value != engineControlEnabled.isSelected() || !engineControlStart_value.equals(engineControlStart.getText())
@@ -179,11 +181,11 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
       }
 
       if (engineControlEnabled_value != getTileEntity().isEngineControlEnabled()
-          || !engineControlStart_value.equals(PowerDisplayUtil.formatInteger(getTileEntity().getStartLevel() * 100))
-          || !engineControlStop_value.equals(PowerDisplayUtil.formatInteger(getTileEntity().getStopLevel() * 100))) {
+          || !engineControlStart_value.equals(LangPower.format(getTileEntity().getStartLevel() * 100))
+          || !engineControlStop_value.equals(LangPower.format(getTileEntity().getStopLevel() * 100))) {
         engineControlEnabled.setSelected(engineControlEnabled_value = getTileEntity().isEngineControlEnabled());
-        engineControlStart.setText(engineControlStart_value = PowerDisplayUtil.formatInteger(getTileEntity().getStartLevel() * 100));
-        engineControlStop.setText(engineControlStop_value = PowerDisplayUtil.formatInteger(getTileEntity().getStopLevel() * 100));
+        engineControlStart.setText(engineControlStart_value = LangPower.format(getTileEntity().getStartLevel() * 100));
+        engineControlStop.setText(engineControlStop_value = LangPower.format(getTileEntity().getStopLevel() * 100));
       }
 
       break;
@@ -423,47 +425,47 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
     tooltipAverageInput.setBounds(new Rectangle(TEXT_MARGIN_LEFT + TEXT_WIDTH / 2, TEXT_MARGIN_TOP + 2 * LINE_Y_OFFSET, TEXT_WIDTH / 2, 16));
 
     StringBuilder sb = new StringBuilder();
-    sb.append(formatPower(statData.powerInConduits));
+    sb.append(LangPower.format(statData.powerInConduits));
     sb.append(" ");
-    sb.append(PowerDisplayUtil.ofStr());
+    sb.append(LangPower.ofStr());
     sb.append(" ");
-    sb.append(formatPower(statData.maxPowerInConduits));
+    sb.append(LangPower.format(statData.maxPowerInConduits));
     sb.append(" ");
-    sb.append(PowerDisplayUtil.abrevation());
+    sb.append(LangPower.abrevation());
     fontRenderer.drawString(sb.toString(), x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET, valuesCol, false);
 
     sb = new StringBuilder();
-    sb.append(formatPower(statData.powerInCapBanks));
+    sb.append(LangPower.format(statData.powerInCapBanks));
     sb.append(" ");
-    sb.append(PowerDisplayUtil.ofStr());
+    sb.append(LangPower.ofStr());
     sb.append(" ");
-    sb.append(formatPower(statData.maxPowerInCapBanks));
+    sb.append(LangPower.format(statData.maxPowerInCapBanks));
     sb.append(" ");
-    sb.append(PowerDisplayUtil.abrevation());
+    sb.append(LangPower.abrevation());
     fontRenderer.drawString(sb.toString(), x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET + LINE_Y_OFFSET, valuesCol, false);
 
     sb = new StringBuilder();
-    sb.append(formatPower(statData.powerInMachines));
+    sb.append(LangPower.format(statData.powerInMachines));
     sb.append(" ");
-    sb.append(PowerDisplayUtil.ofStr());
+    sb.append(LangPower.ofStr());
     sb.append(" ");
-    sb.append(formatPower(statData.maxPowerInMachines));
+    sb.append(LangPower.format(statData.maxPowerInMachines));
     sb.append(" ");
-    sb.append(PowerDisplayUtil.abrevation());
+    sb.append(LangPower.abrevation());
     fontRenderer.drawString(sb.toString(), x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET + 3 * LINE_Y_OFFSET, valuesCol, false);
 
     sb = new StringBuilder();
-    sb.append(formatPowerFloat(statData.aveRfSent));
+    sb.append(LangPower.format(statData.aveRfSent));
     sb.append(" ");
-    sb.append(PowerDisplayUtil.abrevation());
-    sb.append(PowerDisplayUtil.perTickStr());
+    sb.append(LangPower.abrevation());
+    sb.append(LangPower.perTickStr());
     fontRenderer.drawString(sb.toString(), x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET + 2 * LINE_Y_OFFSET, valuesCol, false);
 
     sb = new StringBuilder();
-    sb.append(formatPowerFloat(statData.aveRfReceived));
+    sb.append(LangPower.format(statData.aveRfReceived));
     sb.append(" ");
-    sb.append(PowerDisplayUtil.abrevation());
-    sb.append(PowerDisplayUtil.perTickStr());
+    sb.append(LangPower.abrevation());
+    sb.append(LangPower.perTickStr());
     fontRenderer.drawString(sb.toString(), x + TEXT_X_OFFSET + TEXT_WIDTH / 2, y + TEXT_Y_OFFSET + 2 * LINE_Y_OFFSET, valuesCol, false);
 
   }

@@ -11,7 +11,7 @@ import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,12 +67,11 @@ public class ItemPowerConduit extends AbstractItemConduit {
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
     if(PREFIX == null) {
-      POSTFIX = " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
       PREFIX = EnderIO.lang.localize("power.maxOutput") + " ";
     }
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
     int cap = PowerConduit.getMaxEnergyIO(itemStack.getMetadata());
-    list.add(PREFIX + PowerDisplayUtil.formatPower(cap) + POSTFIX);
+    list.add(PREFIX + LangPower.RFt(cap));
   }
   
   @Override
