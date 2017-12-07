@@ -15,7 +15,6 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.Util;
 import com.google.common.collect.Lists;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
@@ -23,7 +22,7 @@ import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.telepad.BlockTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketOpenServerGui;
@@ -32,11 +31,9 @@ import crazypants.enderio.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
@@ -91,11 +88,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
         @Override
         protected void updateText() {
           text.clear();
-          String heading = EnderIO.lang.localize("tank.tank");
-          if (te.getTank().getFluid() != null) {
-            heading += ": " + new FluidStack(te.getFluidType(), 1000).getLocalizedName();// te.getTank().getFluid().getLocalizedName();
-          }
-          text.add(heading);
+          text.add(Lang.GUI_TELEPAD_TANK.get());
           text.add(LangFluid.MB(te.getTank()));
         }
       });
@@ -125,7 +118,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     textFields.addAll(Lists.newArrayList(xTF, yTF, zTF, dimTF));
 
     switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, SWITCH_X, SWITCH_Y, IconEIO.IO_WHATSIT);
-    switchButton.setToolTip(EnderIO.lang.localize("gui.telepad.configure.travel"));
+    switchButton.setToolTip(Lang.GUI_TELEPAD_TO_TRAVEL.get());
   }
 
   @Override
@@ -137,16 +130,12 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     return super.getIngredientUnderMouse(mouseX, mouseY);
   }
 
-  private String getPowerOutputLabel() {
-    return I18n.format("enderio.gui.max");
-  }
-
   protected int getPowerOutputValue() {
     return te.getUsage();
   }
 
   protected void updatePowerBarTooltip(List<String> text) {
-    text.add(getPowerOutputLabel() + " " + LangPower.RFt(getPowerOutputValue()));
+    text.add(Lang.GUI_TELEPAD_MAX.get(LangPower.RFt(getPowerOutputValue())));
     text.add(LangPower.RF(te.getEnergyStored(), te.getMaxEnergyStored()));
   }
 
@@ -155,7 +144,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     super.initGui();
     switchButton.onGuiInit();
 
-    String text = EnderIO.lang.localize("gui.telepad.teleport");
+    String text = Lang.GUI_TELEPAD_TELEPORT.get();
     int textWidth = getFontRenderer().getStringWidth(text) + 10;
 
     int x = guiLeft + (xSize / 2) - (textWidth / 2);
@@ -245,7 +234,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
       String name = e.getName();
       fnt.drawString(name, sx + xSize / 2 - fnt.getStringWidth(name) / 2, sy + progressY + fnt.FONT_HEIGHT + 6, 0x000000);
     } else if (te.wasBlocked()) {
-      String s = EnderIO.lang.localize("gui.telepad.blocked");
+      String s = Lang.GUI_TELEPAD_ERROR_BLOCKED.get();
       fnt.drawString(s, sx + xSize / 2 - fnt.getStringWidth(s) / 2, sy + progressY + fnt.FONT_HEIGHT + 6, 0xAA0000);
     }
 
@@ -257,7 +246,6 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
   @Override
   public void switchGui() {
-    MachineObject.block_tele_pad.openClientGui(te.getWorld(), te.getPos(), mc.player, null, BlockTelePad.GUI_ID_TELEPAD_TRAVEL);
     PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, BlockTelePad.GUI_ID_TELEPAD_TRAVEL));
   }
 

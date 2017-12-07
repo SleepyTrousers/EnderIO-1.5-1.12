@@ -145,8 +145,8 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   }
 
   @Override
-  protected String getPowerOutputLabel() {
-    return Lang.GUI_FARM_BASEUSE.get();
+  protected String getPowerOutputLabel(@Nonnull String rft) {
+    return Lang.GUI_FARM_BASEUSE.get(rft);
   }
 
   @Override

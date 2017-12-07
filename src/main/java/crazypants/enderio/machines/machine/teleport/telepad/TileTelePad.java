@@ -17,7 +17,6 @@ import com.google.common.collect.Queues;
 
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.CapacitorKeyType;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
@@ -34,6 +33,7 @@ import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.teleport.TeleportUtil;
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketFluidLevel;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
@@ -52,8 +52,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -253,8 +251,7 @@ public class TileTelePad extends TileTravelAnchor
     if (active()) {
       if (activeSound == null) {
         BlockPos p = getPos();
-        activeSound = new MachineSound(ACTIVE_RES, p.getX(), p.getY(), p.getZ(), 0.3f, 1);
-        FMLClientHandler.instance().getClient().getSoundHandler().playSound(activeSound);
+        FMLClientHandler.instance().getClient().getSoundHandler().playSound(activeSound = new MachineSound(ACTIVE_RES, p.getX(), p.getY(), p.getZ(), 0.3f, 1));
       }
       updateQueuedEntities();
     } else if (!active() && activeSound != null) {
@@ -573,8 +570,7 @@ public class TileTelePad extends TileTravelAnchor
       if (tank.getFluidAmount() < Config.telepadFluidUse) {
         tank.drain(Config.telepadFluidUse, true);
         if (entity instanceof EntityPlayer) {
-          ((EntityPlayer) entity).sendMessage(new TextComponentString(
-              TextFormatting.RED.toString() + EnderIO.lang.localize("chat.telepad.noFluid", new FluidStack(fluidType, 1).getLocalizedName())));
+          ((EntityPlayer) entity).sendMessage(Lang.GUI_TELEPAD_NOFLUID.toChatServer(new FluidStack(fluidType, 1).getLocalizedName()));
         }
         wasBlocked = true;
         return true;

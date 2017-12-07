@@ -14,18 +14,17 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.telepad.TileDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumFacing;
@@ -139,16 +138,12 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
     return result;
   }
 
-  private String getPowerOutputLabel() {
-    return I18n.format("enderio.gui.max");
-  }
-
   protected int getPowerOutputValue() {
     return dialingDevice.getUsage();
   }
 
   protected void updatePowerBarTooltip(List<String> text) {
-    text.add(getPowerOutputLabel() + " " + LangPower.RFt(getPowerOutputValue()));
+    text.add(Lang.GUI_TELEPAD_MAX.get(LangPower.RFt(getPowerOutputValue())));
     text.add(LangPower.RF(dialingDevice.getEnergyStored(), dialingDevice.getMaxEnergyStored()));
   }
 
@@ -156,7 +151,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
   public void initGui() {
     super.initGui();
 
-    String text = EnderIO.lang.localize("gui.telepad.teleport");
+    String text = Lang.GUI_TELEPAD_TELEPORT.get();
     int textWidth = getFontRenderer().getStringWidth(text) + 10;
 
     int x = guiLeft + (xSize / 2) - (textWidth / 2);
@@ -222,7 +217,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
       String name = e.getName();
       renderInfoMessage(sx, sy, name, 0x000000);
     } else if (telepad.wasBlocked()) {
-      String s = EnderIO.lang.localize("gui.telepad.blocked");
+      String s = Lang.GUI_TELEPAD_ERROR_BLOCKED.get();
       renderInfoMessage(sx, sy, s, 0xAA0000);
     }
 

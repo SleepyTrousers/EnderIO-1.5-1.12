@@ -7,8 +7,8 @@ import com.enderio.core.client.gui.button.IconButton;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 
@@ -55,7 +55,7 @@ public class GuiEnchanter extends GuiContainerBaseEIO {
         bindGuiTexture();
         drawTexturedModalRect(sx + 99, sy + 33, 176, 0, 28, 21);
       }            
-      String s = I18n.format("container.repair.cost", new Object[] {Integer.valueOf(curCost)});
+      String s = Lang.GUI_VANILLA_REPAIR_COST.get(curCost);
       drawCenteredString(Minecraft.getMinecraft().fontRenderer, s, sx + xSize/2, sy + 57, col);
     }
 

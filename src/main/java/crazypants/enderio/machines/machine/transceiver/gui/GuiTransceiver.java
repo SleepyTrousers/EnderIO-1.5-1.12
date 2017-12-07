@@ -147,11 +147,6 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   }
 
   @Override
-  public String getPowerOutputLabel() {
-    return super.getPowerOutputLabel();
-  }
-
-  @Override
   public int getPowerOutputValue() {
     return super.getPowerOutputValue();
   }

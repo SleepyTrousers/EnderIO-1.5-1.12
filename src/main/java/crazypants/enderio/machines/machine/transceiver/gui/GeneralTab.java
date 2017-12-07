@@ -7,19 +7,18 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class GeneralTab implements ITabPanel {
 
@@ -37,8 +36,8 @@ public class GeneralTab implements ITabPanel {
     int x = parent.getXSize() - 5 - 16;
     int y = 43;
     bufferSizeB = new ToggleButton(parent, 4327, x, y, IconEIO.ITEM_SINGLE, IconEIO.ITEM_STACK);
-    bufferSizeB.setSelectedToolTip(EnderIO.lang.localize("gui.machine.bufferingstacks"));
-    bufferSizeB.setUnselectedToolTip(EnderIO.lang.localize("gui.machine.bufferingsingle"));
+    bufferSizeB.setSelectedToolTip(Lang.GUI_TRANS_BUFFER_STACKS.get());
+    bufferSizeB.setUnselectedToolTip(Lang.GUI_TRANS_BUFFER_SINGLES.get());
     bufferSizeB.setSelected(parent.getTransciever().isBufferStacks());
 
     sendPowerBarTT = new GuiToolTip(new Rectangle(parent.getPowerX() + SEND_BAR_OFFSET, parent.getPowerY(), parent.getPowerWidth(), parent.getPowerHeight()),
@@ -78,7 +77,7 @@ public class GeneralTab implements ITabPanel {
     int top = parent.getGuiTop();
     int left = parent.getGuiLeft();
 
-    GL11.glColor3f(1, 1, 1);
+    GlStateManager.color(1, 1, 1);
 
     // Inventory
     parent.bindGuiTexture();
@@ -90,11 +89,11 @@ public class GeneralTab implements ITabPanel {
     parent.drawTexturedModalRect(left + invRoot.x - 1 + (18 * 4) + container.getItemBufferSpacing(), top + invRoot.y - 1, 24, 180, 72, 36);
 
     FontRenderer fr = parent.getFontRenderer();
-    String sendTxt = EnderIO.lang.localize("gui.send");
+    String sendTxt = Lang.GUI_TRANS_CHANNEL_SEND.get();
     int x = left + invRoot.x + 36 - fr.getStringWidth(sendTxt) / 2;
     int y = top + invRoot.y - fr.FONT_HEIGHT - 3;
     fr.drawStringWithShadow(sendTxt, x, y, ColorUtil.getRGB(Color.WHITE));
-    String recText = EnderIO.lang.localize("gui.receive");
+    String recText = Lang.GUI_TRANS_CHANNEL_RECEIVE.get();
     x = left + invRoot.x + 72 + container.getItemBufferSpacing() + 36 - fr.getStringWidth(recText) / 2;
     fr.drawStringWithShadow(recText, x, y, ColorUtil.getRGB(Color.WHITE));
 
@@ -103,7 +102,7 @@ public class GeneralTab implements ITabPanel {
 
     // Power
     parent.bindGuiTexture();
-    GL11.glColor3f(1, 1, 1);
+    GlStateManager.color(1, 1, 1);
 
     x = left + parent.getPowerX() - 1;
     y = top + parent.getPowerY() - 1;
@@ -126,17 +125,16 @@ public class GeneralTab implements ITabPanel {
   }
 
   public void updatePowerBarTooltip(List<String> text) {
-    text.add(EnderIO.lang.localize("gui.machine.localbuffer"));
-    text.add(EnderIO.lang.localize("gui.machine.upkeep") + " " + LangPower.RFt(parent.getPowerOutputValue()));
+    text.add(Lang.GUI_TRANS_BUFFER_LOCAL.get());
+    text.add(Lang.GUI_TRANS_BUFFER_UPKEEP.get(LangPower.RFt(parent.getPowerOutputValue())));
     int maxEnergy = parent.getTransciever().getMaxEnergyStored() / 2;
     int energyStored = Math.min(parent.getTransciever().getEnergyStored(), maxEnergy);
     text.add(LangPower.RF(energyStored, maxEnergy));
   }
 
   private void updateSendPowerBarTooltip(List<String> text) {
-    text.add(EnderIO.lang.localize("gui.machine.sendReceivebuffer"));
-    text.add(
-        EnderIO.lang.localize("itemGasConduit.tooltip.maxIo") + " " + LangPower.RFt(parent.getTransciever().getMaxEnergyRecieved(null)));
+    text.add(Lang.GUI_TRANS_BUFFER_SHARED.get());
+    text.add(Lang.GUI_TRANS_BUFFER_MAXIO.get(LangPower.RFt(parent.getTransciever().getMaxEnergyRecieved(null))));
     int maxEnergy = parent.getTransciever().getMaxEnergyStored() / 2;
     int energyStored = Math.max(0, parent.getTransciever().getEnergyStored() - maxEnergy);
     text.add(LangPower.RF(energyStored, maxEnergy));

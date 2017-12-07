@@ -13,9 +13,9 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -55,9 +55,9 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     this.te = te;
     this.world = container.world;
 
-    publicStr = EnderIO.lang.localize("gui.travelAccessable.public");
-    privateStr = EnderIO.lang.localize("gui.travelAccessable.private");
-    protectedStr = EnderIO.lang.localize("gui.travelAccessable.protected");
+    publicStr = Lang.GUI_AUTH_PUBLIC.get();
+    privateStr = Lang.GUI_AUTH_PRIVATE.get();
+    protectedStr = Lang.GUI_AUTH_PROTECTED.get();
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 

@@ -9,8 +9,8 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,7 +27,7 @@ public class GuiTravelAuth extends GuiContainerBaseEIO {
   public GuiTravelAuth(@Nonnull EntityPlayer player, @Nonnull ITravelAccessable te, @Nonnull World world) {
     super(new ContainerTravelAuth(player.inventory), "travel_auth");
     this.ta = te;
-    title = EnderIO.lang.localize("gui.travelAccessable.enterCode");
+    title = Lang.GUI_AUTH_PROMPT.get();
     this.player = player;
   }
 
@@ -35,7 +35,7 @@ public class GuiTravelAuth extends GuiContainerBaseEIO {
   public void initGui() {
     super.initGui();
     int sy = (height - ySize) / 2;
-    String str = EnderIO.lang.localize("gui.travelAccessable.ok");
+    String str = Lang.GUI_AUTH_PROMPT_BUTTON.get();
     int strLen = getFontRenderer().getStringWidth(str);
     GuiButton okB = new GuiButton(0, width / 2 - (strLen / 2) - 5, sy + 50, strLen + 10, 20, str);
     buttonList.clear();

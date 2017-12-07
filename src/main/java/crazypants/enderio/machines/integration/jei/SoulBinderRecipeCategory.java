@@ -12,6 +12,7 @@ import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.soul.ISoulBinderRecipe;
 import crazypants.enderio.base.recipe.soul.SoulBinderTunedPressurePlateRecipe;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.soul.ContainerSoulBinder;
 import crazypants.enderio.machines.machine.soul.GuiSoulBinder;
 import crazypants.enderio.util.CapturedMob;
@@ -27,7 +28,6 @@ import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -67,7 +67,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
       int cost = recipe.getExperienceLevelsRequired();
-      String str = I18n.format("container.repair.cost", new Object[] { cost });
+      String str = Lang.GUI_VANILLA_REPAIR_COST.get(cost);
       minecraft.fontRenderer.drawString(str, 6, 26, 0x80FF20);
 
       String energyString = LangPower.RF(recipe.getEnergyRequired());

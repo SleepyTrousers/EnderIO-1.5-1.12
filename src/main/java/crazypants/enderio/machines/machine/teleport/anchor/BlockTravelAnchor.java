@@ -10,7 +10,6 @@ import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.base.BlockEio;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.network.PacketHandler;
@@ -27,6 +26,7 @@ import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.ContainerTravelAccessable;
 import crazypants.enderio.machines.machine.teleport.ContainerTravelAuth;
 import crazypants.enderio.machines.machine.teleport.GuiTravelAccessable;
@@ -185,8 +185,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   public static void sendPrivateChatMessage(EntityPlayer player, UserIdent owner) {
     if (!player.isSneaking()) {
-      ChatUtil.sendNoSpam(player, EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " " + TextFormatting.RED + owner.getPlayerName()
-          + TextFormatting.WHITE + " " + EnderIO.lang.localize("gui.travelAccessable.privateBlock2"));
+      ChatUtil.sendNoSpam(player, Lang.GUI_AUTH_ERROR_PRIVATE.toChatServer(TextFormatting.RED + owner.getPlayerName() + TextFormatting.WHITE));
     }
   }
 

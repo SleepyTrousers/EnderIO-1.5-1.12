@@ -5,6 +5,8 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.machine.teleport.anchor.BlockTravelAnchor;
+import crazypants.enderio.machines.machine.teleport.telepad.BlockTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,7 +45,11 @@ public class PacketOpenServerGui extends MessageTileEntity<TileTelePad> implemen
     World world = message.getWorld(ctx);
     TileTelePad te = message.getTileEntity(world);
     if (te != null) {
-      MachineObject.block_tele_pad.openGui(world, te.getPos(), player, null, message.id);
+      if (message.id == BlockTelePad.GUI_ID_TELEPAD_TRAVEL && !te.canUiBeAccessed(player)) {
+        BlockTravelAnchor.sendPrivateChatMessage(player, te.getOwner());
+      } else {
+        MachineObject.block_tele_pad.openGui(world, te.getPos(), player, null, message.id);
+      }
     }
     return null;
   }

@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machines.machine.enchanter.EnchanterRecipe;
 import crazypants.enderio.machines.machine.enchanter.EnchanterRecipeManager;
@@ -22,7 +23,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -70,7 +70,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
       }
       int level = rec.getLevelForStackSize(stack.getCount());
       int cost = rec.getCostForLevel(level);
-      String str = I18n.format("container.repair.cost", new Object[] { cost });
+      String str = Lang.GUI_VANILLA_REPAIR_COST.get(cost);
       minecraft.fontRenderer.drawString(str, 6, 36, 0x80FF20);
     }
 

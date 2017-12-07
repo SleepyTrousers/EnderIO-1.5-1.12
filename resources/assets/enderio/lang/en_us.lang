@@ -12,7 +12,7 @@ enderio.gui.alloy.mode.furnace=Furnace Only
 enderio.gui.buffer.in=Max In:
 enderio.gui.buffer.out=Max Out:
 
-enderio.gui.farm.baseUse=Base Use:
+enderio.gui.farm.baseUse=Base Use: %s
 
 enderio.gui.ranged.showRange=Show Range
 enderio.gui.ranged.hideRange=Hide Range
@@ -76,13 +76,43 @@ enderio.gui.vat.inputTank=Input Tank
 enderio.gui.vat.outputTank=Output Tank
 enderio.gui.vat.dump=Dump Input Tank Into Output Tank
 enderio.gui.vat.void=Void Output Tank
-enderio.gui.vat.dump.fail=Dumping failed, output tank is not empty
-enderio.gui.vat.dump.active=Dumping failed, cannot put liquids into the output tank while the Vat is working
+enderio.chat.vat.dump.fail=Dumping failed, output tank is not empty
+enderio.chat.vat.dump.active=Dumping failed, cannot put liquids into the output tank while the Vat is working
 
 enderio.gui.vacuum.range=Suction Strength
 enderio.gui.vacuum.header.chest=Vacuum Chest
 enderio.gui.vacuum.header.filter=Item Filter
 enderio.gui.vacuum.header.range=Range
 
+enderio.gui.trans.publicChannel=Public Channel
+enderio.gui.trans.privateChannel=Private Channel
+enderio.gui.trans.addChannel=Add Channel
+enderio.gui.trans.deleteChannel=Delete Channel
+enderio.gui.trans.available=Available
+enderio.gui.trans.receive=Receive
+enderio.gui.trans.send=Send
+enderio.gui.trans.buffer.local=Local Buffer
+enderio.gui.trans.buffer.local.upkeep=Upkeep: %s
+enderio.gui.trans.buffer.shared=Send/Receive Buffer
+enderio.gui.trans.buffer.shared.maxIo=Max IO: %s
+enderio.gui.trans.buffer.item.stacks=Accept item stacks
+enderio.gui.trans.buffer.item.single=Limit to single items
+enderio.gui.trans.channel.receive=Receive
+enderio.gui.trans.channel.send=Send
+
+enderio.gui.travel_accessable.public=Public
+enderio.gui.travel_accessable.private=Private
+enderio.gui.travel_accessable.protected=Protected
+enderio.gui.travel_accessable.prompt=Access Code Required
+enderio.gui.travel_accessable.promp.login=Authorise
+enderio.chat.travel_accessable.error.private=Only %s may change this block's settings.
+
+enderio.chat.telepad.noFluid=Not enough %s to teleport!
+enderio.gui.telepad.configure.travel=Travel Settings
+enderio.gui.telepad.configure.telepad=Telepad Settings
+enderio.gui.telepad.blocked=Teleport Blocked!
+enderio.gui.telepad.teleport=Teleport!
+enderio.gui.telepad.tank=Reagent Tank
+enderio.gui.telepad.max=Max: %s
 
 

@@ -22,6 +22,7 @@ import crazypants.enderio.base.transceiver.Channel;
 import crazypants.enderio.base.transceiver.ChannelType;
 import crazypants.enderio.base.transceiver.ClientChannelRegister;
 import crazypants.enderio.base.transceiver.PacketAddRemoveChannel;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.transceiver.PacketSendRecieveChannel;
 import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
 import net.minecraft.client.Minecraft;
@@ -63,12 +64,12 @@ public class ChannelTab implements ITabPanel {
 
     newChannelTF = new GuiTextField(76543, parent.getFontRenderer(), 7, 12, 103, 16);
     addButton = new IconButton(parent, ADD_BUTTON_ID, 137, 12, IconEIO.PLUS);
-    addButton.setToolTip(EnderIO.lang.localize("gui.trans.addChannel"));
+    addButton.setToolTip(Lang.GUI_TRANS_CHANNEL_ADD.get());
     addButton.enabled = false;
 
     privateButton = new ToggleButton(parent, PRIVATE_BUTTON_ID, 118, 12, IconEIO.LOCK_UNLOCKED, IconEIO.LOCK_LOCKED);
-    privateButton.setSelectedToolTip(EnderIO.lang.localize("gui.trans.privateChannel"));
-    privateButton.setUnselectedToolTip(EnderIO.lang.localize("gui.trans.publicChannel"));
+    privateButton.setSelectedToolTip(Lang.GUI_TRANS_CHANNEL_PRIVATE.get());
+    privateButton.setUnselectedToolTip(Lang.GUI_TRANS_CHANNEL_PUBLIC.get());
 
     int w = 104;
     int h = 90;
@@ -80,7 +81,7 @@ public class ChannelTab implements ITabPanel {
     channelList.setScrollButtonIds(100, 101);
 
     deleteChannelB = new IconButton(parent, DELETE_CHANNEL_BUTTON_ID, x + w - 20, y + h + 4, IconEIO.MINUS);
-    deleteChannelB.setToolTip(EnderIO.lang.localize("gui.trans.deleteChannel"));
+    deleteChannelB.setToolTip(Lang.GUI_TRANS_CHANNEL_DELETE.get());
 
     Predicate<Channel> predicate = new Predicate<Channel>() {
       @Override
@@ -207,13 +208,13 @@ public class ChannelTab implements ITabPanel {
     int top = parent.getGuiTop();
     int x = left + 59;
     int y = top + 36;
-    parent.drawCenteredString(parent.getFontRenderer(), EnderIO.lang.localize("gui.available"), x, y, ColorUtil.getRGB(Color.white));
+    parent.drawCenteredString(parent.getFontRenderer(), Lang.GUI_TRANS_AVAILABLE.get(), x, y, ColorUtil.getRGB(Color.white));
 
     x = left + 199;
-    parent.drawCenteredString(parent.getFontRenderer(), EnderIO.lang.localize("gui.send"), x, y, ColorUtil.getRGB(Color.white));
+    parent.drawCenteredString(parent.getFontRenderer(), Lang.GUI_TRANS_SEND.get(), x, y, ColorUtil.getRGB(Color.white));
 
     y += 56;
-    parent.drawCenteredString(parent.getFontRenderer(), EnderIO.lang.localize("gui.receive"), x, y, ColorUtil.getRGB(Color.white));
+    parent.drawCenteredString(parent.getFontRenderer(), Lang.GUI_TRANS_RECEIVE.get(), x, y, ColorUtil.getRGB(Color.white));
   }
 
   @Override
