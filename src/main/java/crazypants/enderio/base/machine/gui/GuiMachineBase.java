@@ -108,7 +108,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
     }
   }
 
-  public void renderSlotHighlights(IoMode mode) {
+  public void renderSlotHighlights(@Nonnull IoMode mode) {
     SlotDefinition slotDef = tileEntity.getSlotDefinition();
 
     for (Slot invSlot : inventorySlots.inventorySlots) {
@@ -127,7 +127,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
     renderSlotHighlight(col, invSlot.xPos, invSlot.yPos, 16, 16);
   }
 
-  protected void renderSlotHighlight(Slot invSlot, @Nonnull Vector4f col) {
+  protected void renderSlotHighlight(@Nonnull Slot invSlot, @Nonnull Vector4f col) {
     renderSlotHighlight(col, invSlot.xPos, invSlot.yPos, 16, 16);
   }
 

@@ -9,13 +9,13 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 
 public class GuiInventoryMachineBase<T extends AbstractInventoryMachineEntity> extends GuiMachineBase<T> {
-  
+
   protected GuiInventoryMachineBase(@Nonnull T machine, @Nonnull Container par1Container, String[] guiTexture) {
     super(machine, par1Container, guiTexture);
   }
 
   @Override
-  public void renderSlotHighlights(IoMode mode) {
+  public void renderSlotHighlights(@Nonnull IoMode mode) {
     SlotDefinition slotDef = getTileEntity().getSlotDefinition();
 
     for (Slot invSlot : inventorySlots.inventorySlots) {

@@ -941,7 +941,6 @@ tile.blockFarmStation.tooltip.detailed.line5=applied when harvesting
 tile.blockFarmStation.tooltip.detailed.line6=Upgrade with capacitors to increase
 tile.blockFarmStation.tooltip.detailed.line7=range, upgrade also increases power use
 
-enderio.farm.gui.baseUse=Base Use:
 
 tile.blockTank.name=Fluid Tank
 tile.blockTank.advanced.name=Pressurized Fluid Tank
@@ -1161,8 +1160,6 @@ item.itemSpawnEggEnderIO.name=Spawn
 
 //------GUI
 
-enderio.gui.simple.in=Max In:
-enderio.gui.simple.out=Max Out:
 
 enderio.gui.available=Available
 enderio.gui.disabled=Disabled
@@ -1277,10 +1274,6 @@ enderio.gui.trans.publicHeading=Public
 enderio.gui.trans.privateHeading=Private
 
 //Alloy Smelter
-enderio.gui.alloy.mode.heading=Furnace Mode
-enderio.gui.alloy.mode.all=All Smelting
-enderio.gui.alloy.mode.alloy=Alloys Only
-enderio.gui.alloy.mode.furnace=Furnace Only
 
 //Vacuum chest
 enderio.gui.vacuum.range=Suction Strength
@@ -1297,10 +1290,6 @@ enderio.gui.machine.vat.dump.fail=Dumping failed, output tank is not empty
 enderio.gui.machine.vat.dump.active=Dumping failed, cannot put liquids into the output tank while the Vat is working
 
 //Combustion Gen
-enderio.combustionGenerator.coolantTank.empty=Coolant
-enderio.combustionGenerator.coolantTank=Coolant: %s
-enderio.combustionGenerator.fuelTank.empty=Fuel
-enderio.combustionGenerator.fuelTank=Fuel: %s
 
 //Stirling Gen
 enderio.stirlingGenerator.output=Generating: %s
@@ -1327,8 +1316,6 @@ enderio.gui.telepad.configure.telepad=Telepad Settings
 enderio.gui.telepad.blocked=Teleport Blocked!
 
 //Spawn Gurad [sic]
-enderio.gui.spawnGurad.showRange=Show Range
-enderio.gui.spawnGurad.hideRange=Hide Range
 enderio.gui.spawnGurad.range=Range:
 
 //conduits
