@@ -943,21 +943,9 @@ tile.blockTank.advanced.name=Pressurized Fluid Tank
 tile.blockTank.tooltip.detailed.line1=Portable fluid tank
 tile.blockTank.tooltip.detailed.line2=Can be used to empty and
 tile.blockTank.tooltip.detailed.line3=fill fluid containers
-enderio.tank.tank=Tank
 enderio.tooltip.none=None
 enderio.tooltip.fluidStored=Fluid Stored
 
-enderio.gui.tooltip.voidslot=Void Slot
-enderio.gui.void.mode=Void Mode
-
-enderio.gui.void.mode.always=Always
-enderio.gui.void.mode.always.desc=Void slot accepts all items
-
-enderio.gui.void.mode.if_not_container=If Not Container
-enderio.gui.void.mode.if_not_container.desc=Void slot accepts all items that are not fluid containers
-
-enderio.gui.void.mode.never=Never
-enderio.gui.void.mode.never.desc=Void slot does not accept items
 
 tile.blockCrafter.name=Crafter
 tile.blockCrafter.tooltip.detailed.line1=A powered auto-crafter
@@ -970,8 +958,8 @@ tile.blockVacuumChest.tooltip.detailed.line1=Pulls nearby items
 tile.blockVacuumChest.tooltip.detailed.line2=into its inventory
 
 tile.blockPoweredSpawner.name=Powered Spawner
-tile.blockPoweredSpawner.tooltip.empty=Empty
 enderio.tile.blockPoweredSpawner.tooltip.none=None
+// TODO 1.11: The following two need to be moved and renamed, too:
 tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Combine with a broken
 tile.blockPoweredSpawner.empty.tooltip.detailed.line2=spawner in an anvil
 tile.blockPoweredSpawner.tooltip.detailed.line1=Supply with power to
@@ -1178,8 +1166,6 @@ enderio.gui.machine.ioMode.disabled=Disabled
 enderio.gui.machine.ioMode.pullPush=Push / Pull
 enderio.gui.machine.ioMode.pullPush.colored=%sPush %s/ %sPull
 enderio.gui.machine.ioMode=Mode: %s
-enderio.gui.machine.poweredspawner.capture=Capture
-enderio.gui.machine.poweredspawner.spawn=Spawn
 enderio.gui.machine.receivefilter=Receive Filter
 enderio.gui.machine.sendfilter=Send Filter
 enderio.gui.machine.sendReceivebuffer=Send/Receive Buffer
@@ -1256,18 +1242,8 @@ enderio.gui.trans.privateHeading=Private
 //Alloy Smelter
 
 //Vacuum chest
-enderio.gui.vacuum.range=Suction Strength
-enderio.gui.vacuum.header.chest=Vacuum Chest
-enderio.gui.vacuum.header.filter=Item Filter
-enderio.gui.vacuum.header.range=Range
 
 //Vat
-enderio.vat.outputTank=Output Tank
-enderio.vat.inputTank=Input Tank
-enderio.gui.machine.vat.dump.1=Dump Input Tank Into Output Tank
-enderio.gui.machine.vat.dump.2=Void Output Tank
-enderio.gui.machine.vat.dump.fail=Dumping failed, output tank is not empty
-enderio.gui.machine.vat.dump.active=Dumping failed, cannot put liquids into the output tank while the Vat is working
 
 //Combustion Gen
 
@@ -1543,11 +1519,6 @@ enderio.soulvial.player.denied=No! How would you feel if you had to play this ga
 enderio.soulvial.blacklisted.denied=Permission denied - this entity is blacklisted
 
 
-enderio.spawner.note.areaFull=Too many mobs
-enderio.spawner.note.noLocationFound=No space found
-enderio.spawner.note.noLocationAtAll=No viable space
-enderio.spawner.note.badSoul=Bad soul, cannot create entity
-enderio.spawner.note.noPlayer=No player in range
 
 
 fluid.electricalsteel=Molten Electrical Steel

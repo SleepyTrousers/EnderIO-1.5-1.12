@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.EntityUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
@@ -376,27 +377,27 @@ public class CapturedMob { // TODO: DONE111
   @Override
   public String toString() {
     return "CapturedMob [" + "entityId=" + entityId + ", " + (customName != null ? "customName=" + customName + ", " : "")
-        + (entityNbt != null ? "entityNbt=" + entityNbt + ", " : "") + "getDisplayName()="
-        + getDisplayName() + ", getHealth()=" + getHealth() + ", getMaxHealth()=" + getMaxHealth() + ", "
-        + (getColor() != null ? "getColor()=" + getColor() + ", " : "") + (getFluidName() != null ? "getFluidName()=" + getFluidName() : "") + "]";
+        + (entityNbt != null ? "entityNbt=" + entityNbt + ", " : "") + "getDisplayName()=" + getDisplayName() + ", getHealth()=" + getHealth()
+        + ", getMaxHealth()=" + getMaxHealth() + ", " + (getColor() != null ? "getColor()=" + getColor() + ", " : "")
+        + (getFluidName() != null ? "getFluidName()=" + getFluidName() : "") + "]";
   }
 
   /*
    * Note: The Ender Dragon cannot be spawned as expected. All of its logic (moving, fighting, being hit, ...) is a special manager class, which is very
    * hardcoded to the specifics of the vanilla dragon fight.
    */
-  public static @Nonnull List<CapturedMob> getSouls(List<ResourceLocation> list) {
-    List<CapturedMob> result = new ArrayList<CapturedMob>(list.size());
+  public static @Nonnull NNList<CapturedMob> getSouls(List<ResourceLocation> list) {
+    NNList<CapturedMob> result = new NNList<CapturedMob>();
     for (ResourceLocation mobName : list) {
       CapturedMob soul = create(mobName);
       if (soul != null && !DRAGON.equals(mobName)) {
-          result.add(soul);
+        result.add(soul);
       }
     }
     return result;
   }
 
-  public static @Nonnull List<CapturedMob> getAllSouls() {
+  public static @Nonnull NNList<CapturedMob> getAllSouls() {
     return getSouls(EntityUtil.getAllRegisteredMobNames());
   }
 
