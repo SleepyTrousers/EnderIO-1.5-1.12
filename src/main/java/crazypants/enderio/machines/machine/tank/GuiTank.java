@@ -12,15 +12,14 @@ import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GuiTank extends GuiMachineBase<TileTank> {
 
@@ -35,18 +34,13 @@ public class GuiTank extends GuiMachineBase<TileTank> {
       @Override
       protected void updateText() {
         text.clear();
-        String heading = EnderIO.lang.localize("tank.tank");
-        final FluidStack fluid = getTileEntity().tank.getFluid();
-        if (fluid != null) {
-          heading += ": " + fluid.getLocalizedName();
-        }
-        text.add(heading);
+        text.add(Lang.GUI_TANK_TANK_TANK_TANK.get());
         text.add(LangFluid.MB(getTileEntity().tank));
       }
 
     });
 
-    addToolTip(new GuiToolTip(new Rectangle(14, 35, 18, 18), EnderIO.lang.localize("gui.tooltip.voidslot")) {
+    addToolTip(new GuiToolTip(new Rectangle(14, 35, 18, 18), Lang.GUI_TANK_VOID_SLOT.get()) {
       @Override
       public boolean shouldDraw() {
         return super.shouldDraw() && getTileEntity().canVoidItems();

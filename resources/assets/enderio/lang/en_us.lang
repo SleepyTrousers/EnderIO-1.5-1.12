@@ -51,6 +51,38 @@ enderio.gui.xp_obelisk.button.retrieve.10.line2=player XP levels
 enderio.gui.xp_obelisk.button.retrieve.all.line1=Retrieve all
 enderio.gui.xp_obelisk.button.retrieve.all.line2=player XP levels
 
-enderio.block_solar_panel.maxoutput=Max Output: %s
+enderio.block_solar_panel.tooltip.maxoutput=Max Output: %s
+
+enderio.block_powered_spawner.tooltip.empty=Empty
+enderio.gui.powered_spawner.capture=Capture
+enderio.gui.powered_spawner.spawn=Spawn
+enderio.block_powered_spawner.note.areaFull=Too many mobs
+enderio.block_powered_spawner.note.noLocationFound=No space found
+enderio.block_powered_spawner.note.noLocationAtAll=No viable space
+enderio.block_powered_spawner.note.badSoul=Bad soul, cannot create entity
+enderio.block_powered_spawner.note.noPlayer=No player in range
+
+enderio.gui.tank.tank=Tank
+enderio.gui.tank.void.slot=Void Slot
+enderio.gui.tank.void.mode=Void Mode
+enderio.gui.tank.void.mode.always=Always
+enderio.gui.tank.void.mode.always.desc=Void slot accepts all items
+enderio.gui.tank.void.mode.if_not_container=If Not Container
+enderio.gui.tank.void.mode.if_not_container.desc=Void slot accepts all items that are not fluid containers
+enderio.gui.tank.void.mode.never=Never
+enderio.gui.tank.void.mode.never.desc=Void slot does not accept items
+
+enderio.gui.vat.inputTank=Input Tank
+enderio.gui.vat.outputTank=Output Tank
+enderio.gui.vat.dump=Dump Input Tank Into Output Tank
+enderio.gui.vat.void=Void Output Tank
+enderio.gui.vat.dump.fail=Dumping failed, output tank is not empty
+enderio.gui.vat.dump.active=Dumping failed, cannot put liquids into the output tank while the Vat is working
+
+enderio.gui.vacuum.range=Suction Strength
+enderio.gui.vacuum.header.chest=Vacuum Chest
+enderio.gui.vacuum.header.filter=Item Filter
+enderio.gui.vacuum.header.range=Range
+
 
 

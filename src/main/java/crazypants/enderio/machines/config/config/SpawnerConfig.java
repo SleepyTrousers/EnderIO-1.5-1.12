@@ -35,4 +35,7 @@ public final class SpawnerConfig {
   public static final IValue<Boolean> poweredSpawnerUseVanillaSpawChecks = F.make("poweredSpawnerUseVanillaSpawChecks", false, //
       "If true, regular spawn checks such as lighting level and dimension will be made before spawning mobs").sync();
 
+  public static final IValue<Boolean> poweredSpawnerAddAllMobsCreative = F.make("poweredSpawnerAddAllMobsCreative", false, //
+      "If true, spawners for all mos will be added to the creative menu. Otherwise only a handfull of samples are added. (Client setting.)");
+
 }

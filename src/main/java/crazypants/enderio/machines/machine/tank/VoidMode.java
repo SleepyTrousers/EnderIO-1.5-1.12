@@ -9,8 +9,8 @@ import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton.ICycleEnum;
 import com.google.common.collect.Lists;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.machines.EnderIOMachines;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,9 +32,13 @@ public enum VoidMode {
     IconHolder(@Nonnull VoidMode mode, @Nonnull IWidgetIcon icon) {
       this.mode = mode;
       this.icon = icon;
-      String prefix = "gui.void.mode";
-      String str = prefix + "." + name().toLowerCase(Locale.US);
+      String prefix = "gui.tank.void.mode";
+      String str = prefix + "." + name().replace("_ICON", "").toLowerCase(Locale.US);
       this.unlocTooltips = Lists.newArrayList(prefix, str, str + ".desc");
+      // e.g.:
+      // * enderio.gui.tank.void.mode
+      // * enderio.gui.tank.void.mode.always
+      // * enderio.gui.tank.void.mode.always.desc
     }
 
     @Override
@@ -44,7 +48,7 @@ public enum VoidMode {
 
     @Override
     public @Nonnull List<String> getTooltipLines() {
-      return EnderIO.lang.localizeAll(unlocTooltips);
+      return EnderIOMachines.lang.localizeAll(unlocTooltips);
     }
 
     public @Nonnull VoidMode getMode() {

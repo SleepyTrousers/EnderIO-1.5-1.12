@@ -1,9 +1,11 @@
 package crazypants.enderio.machines.machine.vat;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
+import crazypants.enderio.machines.lang.Lang;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -17,7 +19,7 @@ public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessa
     super();
   }
 
-  public PacketDumpTank(TileVat te, int tank) {
+  public PacketDumpTank(@Nonnull TileVat te, int tank) {
     super(te);
     this.tank = tank;
   }
@@ -25,13 +27,13 @@ public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessa
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    buf.writeInt(tank);
+    buf.writeByte(tank);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
-    tank = buf.readInt();
+    tank = buf.readByte();
   }
 
   @Override
@@ -44,15 +46,18 @@ public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessa
         if (te.inputTank.isEmpty()) {
           // NOP
         } else if (te.isActive()) {
-          ctx.getServerHandler().player.sendMessage(new TextComponentTranslation("enderio.gui.machine.vat.dump.active"));
+          ctx.getServerHandler().player.sendMessage(Lang.GUI_VAT_DUMP_ACTIVE.toChatServer());
         } else if (te.outputTank.isEmpty()) {
           te.outputTank.setFluid(te.inputTank.getFluid());
           te.inputTank.setFluid(null);
-        } else if (te.outputTank.getFluid().isFluidEqual(te.inputTank.getFluid()) && te.outputTank.getAvailableSpace() > 0) {
-          FluidStack drain = te.inputTank.drainInternal(te.outputTank.getAvailableSpace(), true);
-          te.outputTank.fill(drain, true);
         } else {
-          ctx.getServerHandler().player.sendMessage(new TextComponentTranslation("enderio.gui.machine.vat.dump.fail"));
+          final FluidStack fluidInOutput = te.outputTank.getFluid();
+          if (fluidInOutput != null && fluidInOutput.isFluidEqual(te.inputTank.getFluid()) && !te.outputTank.isFull()) {
+            FluidStack drain = te.inputTank.drainInternal(te.outputTank.getAvailableSpace(), true);
+            te.outputTank.fill(drain, true);
+          } else {
+            ctx.getServerHandler().player.sendMessage(Lang.GUI_VAT_DUMP_FAIL.toChatServer());
+          }
         }
       }
       te.markDirty();

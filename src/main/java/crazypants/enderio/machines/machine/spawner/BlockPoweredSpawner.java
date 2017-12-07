@@ -8,8 +8,8 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.NNList.Callback;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
@@ -25,6 +25,7 @@ import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.machines.config.config.SpawnerConfig;
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.state.IBlockState;
@@ -36,7 +37,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -101,11 +101,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
     evt.setCost(SpawnerConfig.powerSpawnerAddSpawnerCost.get());
     evt.setOutput(evt.getLeft().copy());
-    if (evt.getOutput().getTagCompound() == null) {
-      evt.getOutput().setTagCompound(new NBTTagCompound());
-    }
-    evt.getOutput().getTagCompound().setBoolean("eio.abstractMachine", true);
-    spawnerType.toNbt(evt.getOutput().getTagCompound());
+    evt.getOutput().setTagCompound(spawnerType.toNbt(evt.getOutput().getTagCompound()));
   }
 
   @SubscribeEvent
@@ -162,7 +158,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     if (mob != null) {
       list.add(mob.getDisplayName());
     } else {
-      list.add(EnderIO.lang.localizeExact("tile.blockPoweredSpawner.tooltip.empty"));
+      list.add(Lang.SPAWNER_EMPTY.get());
     }
   }
 
@@ -184,11 +180,20 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(@Nonnull Item item, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     super.getSubBlocks(item, tab, list);
-    list.add(CapturedMob.create(new ResourceLocation("enderman")).toStack(item, 0, 1));
-    list.add(CapturedMob.create(new ResourceLocation("chicken")).toStack(item, 0, 1));
-    list.add(CapturedMob.create(new ResourceLocation("skeleton")).toStack(item, 0, 1));
-    list.add(CapturedMob.create(new ResourceLocation("wither_skeleton")).toStack(item, 0, 1));
-    list.add(CapturedMob.create(new ResourceLocation("stray")).toStack(item, 0, 1));
+    if (SpawnerConfig.poweredSpawnerAddAllMobsCreative.get()) {
+      CapturedMob.getAllSouls().apply(new Callback<CapturedMob>() {
+        @Override
+        public void apply(CapturedMob mob) {
+          list.add(mob.toStack(item, 0, 1));
+        }
+      });
+    } else {
+      list.add(CapturedMob.create(new ResourceLocation("enderman")).toStack(item, 0, 1));
+      list.add(CapturedMob.create(new ResourceLocation("chicken")).toStack(item, 0, 1));
+      list.add(CapturedMob.create(new ResourceLocation("skeleton")).toStack(item, 0, 1));
+      list.add(CapturedMob.create(new ResourceLocation("wither_skeleton")).toStack(item, 0, 1));
+      list.add(CapturedMob.create(new ResourceLocation("stray")).toStack(item, 0, 1));
+    }
   }
 
   @Override

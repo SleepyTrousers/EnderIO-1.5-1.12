@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.machines.EnderIOMachines;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
 public enum Lang {
 
@@ -46,8 +47,30 @@ public enum Lang {
   GUI_XP_RETR_10_2("gui.xp_obelisk.button.retrieve.10.line2"),
   GUI_XP_RETR_ALL_1("gui.xp_obelisk.button.retrieve.all.line1"),
   GUI_XP_RETR_ALL_2("gui.xp_obelisk.button.retrieve.all.line2"),
-  SOLAR_MAXOUTPUT("block_solar_panel.maxoutput"),
-  XXXXX39(""),
+  SOLAR_MAXOUTPUT("block_solar_panel.tooltip.maxoutput"),
+  SPAWNER_EMPTY("enderio.block_powered_spawner.tooltip.empty"),
+  GUI_SPAWNER_CAPTURE("gui.powered_spawner.capture"),
+  GUI_SPAWNER_SPAWN("gui.powered_spawner.spawn"),
+  GUI_TANK_TANK_TANK_TANK("gui.tank.tank"),
+  GUI_TANK_VOID_SLOT("gui.tank.void.slot"),
+  GUI_VAT_ITANK("gui.vat.inputTank"),
+  GUI_VAT_OTANK("gui.vat.outputTank"),
+  GUI_VAT_DUMP("gui.vat.dump"),
+  GUI_VAT_VOID("gui.vat.void"),
+  GUI_VAT_DUMP_FAIL("gui.vat.dump.fail"),
+  GUI_VAT_DUMP_ACTIVE("gui.vat.dump.active"),
+  GUI_VACUUM_RANGE_TOOLTIP("gui.vacuum.range"),
+  GUI_VACUUM_CHEST("gui.vacuum.header.chest"),
+  GUI_VACUUM_FILTER("gui.vacuum.header.filter"),
+  GUI_VACUUM_RANGE("gui.vacuum.header.range"),
+  GUI_VACUUM_INVENTORY(false, "container.inventory"), // vanilla key
+  XX17839(""),
+  XX27839(""),
+  XX37839(""),
+  XX47839(""),
+  XX57839(""),
+  XX67839(""),
+  XX77839(""),
 
   ;
 
@@ -79,6 +102,14 @@ public enum Lang {
 
   public @Nonnull TextComponentString toChat(@Nonnull Object... params) {
     return new TextComponentString(EnderIOMachines.lang.localizeExact(key, params));
+  }
+
+  public @Nonnull TextComponentTranslation toChatServer() {
+    return new TextComponentTranslation(key);
+  }
+
+  public @Nonnull TextComponentTranslation toChatServer(@Nonnull Object... params) {
+    return new TextComponentTranslation(key, params);
   }
 
   static {

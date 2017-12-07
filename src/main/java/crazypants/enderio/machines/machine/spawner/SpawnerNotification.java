@@ -1,6 +1,6 @@
 package crazypants.enderio.machines.machine.spawner;
 
-import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.machines.EnderIOMachines;
 
 public enum SpawnerNotification {
 
@@ -17,7 +17,7 @@ public enum SpawnerNotification {
   }
 
   public String getDisplayString() {
-    return EnderIO.lang.localize("spawner.note." + langStr);
+    return EnderIOMachines.lang.localize("block_powered_spawner.note." + langStr);
   }
 
 }

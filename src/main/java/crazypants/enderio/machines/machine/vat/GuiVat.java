@@ -13,20 +13,20 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
@@ -46,12 +46,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
       @Override
       protected void updateText() {
         text.clear();
-        String heading = EnderIO.lang.localize("vat.inputTank");
-        final FluidStack fluid = getTileEntity().inputTank.getFluid();
-        if (fluid != null) {
-          heading += ": " + fluid.getLocalizedName();
-        }
-        text.add(heading);
+        text.add(Lang.GUI_VAT_ITANK.get());
         text.add(LangFluid.MB(getTileEntity().inputTank));
       }
 
@@ -62,21 +57,16 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
       @Override
       protected void updateText() {
         text.clear();
-        String heading = EnderIO.lang.localize("vat.outputTank");
-        final FluidStack fluid = getTileEntity().outputTank.getFluid();
-        if (fluid != null) {
-          heading += ": " + fluid.getLocalizedName();
-        }
-        text.add(heading);
+        text.add(Lang.GUI_VAT_OTANK.get());
         text.add(LangFluid.MB(getTileEntity().outputTank));
       }
 
     });
 
     dump1 = new IconButton(this, 1, 29, 62, IconEIO.DUMP_LIQUID);
-    dump1.setToolTip(EnderIO.lang.localize("gui.machine.vat.dump.1"));
+    dump1.setToolTip(Lang.GUI_VAT_DUMP.get());
     dump2 = new IconButton(this, 2, 131, 62, IconEIO.VOID_LIQUID);
-    dump2.setToolTip(EnderIO.lang.localize("gui.machine.vat.dump.2"));
+    dump2.setToolTip(Lang.GUI_VAT_VOID.get());
 
     addProgressTooltip(81, 63, 14, 14);
   }
@@ -101,7 +91,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
   }
 
   @Override
-  public void renderSlotHighlights(IoMode mode) {
+  public void renderSlotHighlights(@Nonnull IoMode mode) {
     super.renderSlotHighlights(mode);
 
     int x = 30;
@@ -148,15 +138,15 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     RenderUtil.renderGuiTank(vat.outputTank, x, y, zLevel, 15, 47);
 
     Fluid outputFluid;
-    if (vat.outputTank.getFluidAmount() > 0) {
-      outputFluid = vat.outputTank.getFluid().getFluid();
+    if (!vat.outputTank.isEmpty()) {
+      outputFluid = NullHelper.notnull(vat.outputTank.getFluid(), "internal logic error").getFluid();
     } else {
       outputFluid = vat.currentTaskOutputFluid;
     }
 
     Fluid inputFluid;
-    if (vat.inputTank.getFluidAmount() > 0) {
-      inputFluid = vat.inputTank.getFluid().getFluid();
+    if (!vat.inputTank.isEmpty()) {
+      inputFluid = NullHelper.notnull(vat.inputTank.getFluid(), "internal logic error").getFluid();
     } else {
       inputFluid = vat.currentTaskInputFluid;
     }

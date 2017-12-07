@@ -13,10 +13,10 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.google.common.collect.Lists;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -47,7 +47,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override
       public @Nonnull List<String> getToolTipText() {
-        return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
+        return Lists.newArrayList((showRangeB.isSelected() ? Lang.GUI_HIDE_RANGE : Lang.GUI_SHOW_RANGE).get());
       }
     });
 
@@ -79,14 +79,14 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
 
     if (spawnMode) {
       getGhostSlotHandler().getGhostSlots().clear();
-      header = EnderIO.lang.localize("gui.machine.poweredspawner.spawn");
+      header = Lang.GUI_SPAWNER_SPAWN.get();
       progressTooltipRect.x = 80;
       progressTooltipRect.y = 34;
       progressTooltipRect.width = 14;
       progressTooltipRect.height = 14;
     } else {
       ((ContainerPoweredSpawner) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
-      header = EnderIO.lang.localize("gui.machine.poweredspawner.capture");
+      header = Lang.GUI_SPAWNER_CAPTURE.get();
       progressTooltipRect.x = 52;
       progressTooltipRect.y = 40;
       progressTooltipRect.width = 72;

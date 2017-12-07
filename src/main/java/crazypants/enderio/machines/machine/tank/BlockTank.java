@@ -9,8 +9,8 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.BlockEnder;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
@@ -169,7 +169,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank>
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     if (EnumTankType.getType(itemstack).isExplosionResistant()) {
-      list.add(TextFormatting.ITALIC + EnderIO.lang.localize("blastResistant"));
+      list.add(TextFormatting.ITALIC + Lang.BLOCK_BLAST_RESISTANT.get());
     }
   }
 
