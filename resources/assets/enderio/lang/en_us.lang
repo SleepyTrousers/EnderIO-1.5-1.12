@@ -16,3 +16,41 @@ enderio.gui.farm.baseUse=Base Use:
 
 enderio.gui.ranged.showRange=Show Range
 enderio.gui.ranged.hideRange=Hide Range
+enderio.gui.ranged.range=Range: %s
+
+enderio.gui.stirling_generator.output=Generating: %s
+enderio.gui.stirling_generator.burnRate=Burn Rate: %s%%
+enderio.gui.stirling_generator.upgradeslot=Upgrade slot
+enderio.gui.stirling_generator.upgrades={0} gives {2}{1,number,#.#}x{3} efficiency
+enderio.gui.stirling_generator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
+
+enderio.gui.zombie_generator.output=Generating: %s
+enderio.gui.zombie_generator.fuelTank=Nutrient Tank
+enderio.gui.zombie_generator.fluid.minReq=%s Required for activation
+
+enderio.gui.killerJoe.fuelTank=Nutrient Tank
+enderio.gui.killerJoe.fluid.minReq=%s Required for activation
+
+enderio.block_attractor_obelisk.action=Attracts
+enderio.block_aversion_obelisk.action=Prevents spawning
+enderio.block_powered_spawner.action=Spawns
+enderio.block_relocator_obelisk.action=Relocates
+
+enderio.gui.weather_obelisk.fuelTank=Catalyst Tank
+
+enderio.gui.xp_obelisk.button.store.1.line1=Store 1
+enderio.gui.xp_obelisk.button.store.1.line2=level of player XP
+enderio.gui.xp_obelisk.button.store.10.line1=Store 10
+enderio.gui.xp_obelisk.button.store.10.line2=levels of player XP
+enderio.gui.xp_obelisk.button.store.all.line1=Store all
+enderio.gui.xp_obelisk.button.store.all.line2=player XP
+enderio.gui.xp_obelisk.button.retrieve.1.line1=Retrieve 1
+enderio.gui.xp_obelisk.button.retrieve.1.line2=player XP level
+enderio.gui.xp_obelisk.button.retrieve.10.line1=Retrieve 10
+enderio.gui.xp_obelisk.button.retrieve.10.line2=player XP levels
+enderio.gui.xp_obelisk.button.retrieve.all.line1=Retrieve all
+enderio.gui.xp_obelisk.button.retrieve.all.line2=player XP levels
+
+enderio.block_solar_panel.maxoutput=Max Output: %s
+
+

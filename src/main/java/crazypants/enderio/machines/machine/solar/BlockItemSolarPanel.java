@@ -9,9 +9,9 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -50,7 +50,7 @@ public class BlockItemSolarPanel extends ItemBlock implements IAdvancedTooltipPr
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     int prod = SolarType.getTypeFromMeta(itemstack.getMetadata()).getRfperTick();
-    list.add(EnderIO.lang.localize("maxSolorProduction") + " " + LangPower.RFt(prod));
+    list.add(Lang.SOLAR_MAXOUTPUT.get(LangPower.RFt(prod)));
   }
 
   @Override

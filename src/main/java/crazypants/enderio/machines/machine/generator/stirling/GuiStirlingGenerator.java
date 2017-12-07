@@ -12,11 +12,11 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.text.TextFormatting;
@@ -36,8 +36,8 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiPo
     if (!isSimple) {
       final ContainerStirlingGenerator<?> c = (ContainerStirlingGenerator<?>) inventorySlots;
       Rectangle r = new Rectangle(c.getUpgradeOffset(), new Dimension(16, 16));
-      MessageFormat fmt = new MessageFormat(EnderIO.lang.localize("stirlingGenerator.upgrades"));
-      ttMan.addToolTip(new GuiToolTip(r, EnderIO.lang.localize("stirlingGenerator.upgradeslot"), formatUpgrade(fmt, DefaultCapacitorData.ACTIVATED_CAPACITOR),
+      MessageFormat fmt = new MessageFormat(Lang.GUI_STIRGEN_UPGRADES.get());
+      ttMan.addToolTip(new GuiToolTip(r, Lang.GUI_STIRGEN_SLOT.get(), formatUpgrade(fmt, DefaultCapacitorData.ACTIVATED_CAPACITOR),
           formatUpgrade(fmt, DefaultCapacitorData.ENDER_CAPACITOR)) {
         @Override
         public boolean shouldDraw() {
@@ -73,7 +73,7 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiPo
     int remainingSecs = remainingTicks / 20;
     int remainingRF = getTileEntity().getPowerUsePerTick() * remainingTicks;
     Object[] objects = { remaining, remainingSecs / 60, remainingSecs % 60, remainingRF };
-    return MessageFormat.format(EnderIO.lang.localize("stirlingGenerator.remaining"), objects);
+    return MessageFormat.format(Lang.GUI_STIRGEN_REMAINING.get(), objects);
   }
 
   @Override
@@ -107,12 +107,12 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiPo
     if (getTileEntity().isActive()) {
       output = getTileEntity().getPowerUsePerTick();
     }
-    String txt = EnderIO.lang.localize("stirlingGenerator.output", LangPower.RFt(output));
+    String txt = Lang.GUI_STIRGEN_OUTPUT.get(LangPower.RFt(output));
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
-    txt = EnderIO.lang.localize("stirlingGenerator.burnRate",
-        Math.round(getTileEntity().getBurnTimeMultiplier() / TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.BASIC_CAPACITOR) * 100));
+    txt = Lang.GUI_STIRGEN_RATE
+        .get(Math.round(getTileEntity().getBurnTimeMultiplier() / TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.BASIC_CAPACITOR) * 100));
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));

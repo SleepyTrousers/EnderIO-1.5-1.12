@@ -13,9 +13,9 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.google.common.collect.Lists;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -39,7 +39,7 @@ public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEn
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override
       public @Nonnull List<String> getToolTipText() {
-        return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
+        return Lists.newArrayList((showRangeB.isSelected() ? Lang.GUI_HIDE_RANGE : Lang.GUI_SHOW_RANGE).get());
       }
     });
 
@@ -71,8 +71,7 @@ public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEn
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
     int range = (int) getTileEntity().getRange();
-    drawCenteredString(fontRenderer, EnderIO.lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx / 2 + 9, getGuiTop() + 68,
-        ColorUtil.getRGB(Color.white));
+    drawCenteredString(fontRenderer, Lang.GUI_RANGE.get(range), getGuiLeft() + sx / 2 + 9, getGuiTop() + 68, ColorUtil.getRGB(Color.white));
   }
 
   @Override

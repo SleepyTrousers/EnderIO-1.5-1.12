@@ -7,19 +7,18 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 import com.google.common.collect.Lists;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.machine.modes.IoMode;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
@@ -35,11 +34,10 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
       @Override
       protected void updateText() {
         text.clear();
-        String heading = EnderIO.lang.localize("killerJoe.fuelTank");
-        text.add(heading);
+        text.add(Lang.GUI_JOE_FTANK.get());
         text.add(LangFluid.MB(getTileEntity().tank));
         if (tileEntity.tank.getFluidAmount() < tileEntity.getActivationAmount()) {
-          text.add(EnderIO.lang.localize("gui.fluid.minReq", LangFluid.MB(tileEntity.getActivationAmount())));
+          text.add(Lang.GUI_JOE_MINREQ.get(LangFluid.MB(tileEntity.getActivationAmount())));
         }
       }
 
@@ -60,7 +58,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override
       public @Nonnull List<String> getToolTipText() {
-        return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
+        return Lists.newArrayList((showRangeB.isSelected() ? Lang.GUI_HIDE_RANGE : Lang.GUI_SHOW_RANGE).get());
       }
     });
 
@@ -97,7 +95,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
   }
 
   @Override
-  public void renderSlotHighlights(IoMode mode) {
+  public void renderSlotHighlights(@Nonnull IoMode mode) {
     super.renderSlotHighlights(mode);
 
     if (mode == IoMode.PULL || mode == IoMode.PUSH_PULL) {
@@ -112,7 +110,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
@@ -121,7 +119,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
     int x = guiLeft + 18;
     int y = guiTop + 11;
     TileKillerJoe joe = getTileEntity();
-    if (joe.tank.getFluidAmount() > 0) {
+    if (!joe.tank.isEmpty()) {
       RenderUtil.renderGuiTank(joe.tank.getFluid(), joe.tank.getCapacity(), joe.tank.getFluidAmount(), x, y, zLevel, 16, 47);
     }
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);

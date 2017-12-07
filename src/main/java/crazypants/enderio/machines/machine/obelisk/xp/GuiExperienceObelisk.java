@@ -1,21 +1,21 @@
 package crazypants.enderio.machines.machine.obelisk.xp;
 
+import java.io.IOException;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.gui.button.IconButton;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
-import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.xp.ExperienceBarRenderer;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
-
-import javax.annotation.Nonnull;
-import java.io.IOException;
 
 public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> {
 
@@ -43,38 +43,38 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
     p = new IconButton(this, 800, x, y, IconEIO.SINGLE_PLUS);
     p.setSize(bw, bw);
     p.setIconMargin(2, 2);
-    p.setToolTip(EnderIO.lang.localize("gui.machine.button.storelevel"), EnderIO.lang.localize("gui.machine.tooltip.storelevel"));
+    p.setToolTip(Lang.GUI_XP_STORE_1_1.get(), Lang.GUI_XP_STORE_1_2.get());
 
     x += spacing + bw;
     pp = new IconButton(this, 801, x, y, IconEIO.DOUBLE_PLUS);
     pp.setSize(bw, bw);
     pp.setIconMargin(2, 2);
-    pp.setToolTip(EnderIO.lang.localize("gui.machine.button.storelevels"), EnderIO.lang.localize("gui.machine.tooltip.storelevels"));
+    pp.setToolTip(Lang.GUI_XP_STORE_10_1.get(), Lang.GUI_XP_STORE_10_2.get());
 
     x += spacing + bw;
     ppp = new IconButton(this, 802, x, y, IconEIO.TRIPLE_PLUS);
     ppp.setSize(bw, bw);
     ppp.setIconMargin(2, 2);
-    ppp.setToolTip(EnderIO.lang.localize("gui.machine.button.storeall"), EnderIO.lang.localize("gui.machine.tooltip.storeall"));
+    ppp.setToolTip(Lang.GUI_XP_STORE_ALL_1.get(), Lang.GUI_XP_STORE_ALL_2.get());
 
     x = startX;
     y = 75;
     m = new IconButton(this, 803, x, y, IconEIO.SINGLE_MINUS);
     m.setSize(bw, bw);
     m.setIconMargin(2, 2);
-    m.setToolTip(EnderIO.lang.localize("gui.machine.button.retrievelevel"), EnderIO.lang.localize("gui.machine.tooltip.retrievelevel"));
+    m.setToolTip(Lang.GUI_XP_RETR_1_1.get(), Lang.GUI_XP_RETR_1_2.get());
 
     x += spacing + bw;
     mm = new IconButton(this, 804, x, y, IconEIO.DOUBLE_MINUS);
     mm.setSize(bw, bw);
     mm.setIconMargin(2, 2);
-    mm.setToolTip(EnderIO.lang.localize("gui.machine.button.retrievelevels"), EnderIO.lang.localize("gui.machine.tooltip.retrievelevels"));
+    mm.setToolTip(Lang.GUI_XP_RETR_10_1.get(), Lang.GUI_XP_RETR_10_2.get());
 
     x += spacing + bw;
     mmm = new IconButton(this, 805, x, y, IconEIO.TRIPLE_MINUS);
     mmm.setSize(bw, bw);
     mmm.setIconMargin(2, 2);
-    mmm.setToolTip(EnderIO.lang.localize("gui.machine.button.retrieveall"), EnderIO.lang.localize("gui.machine.tooltip.retrieveall"));
+    mmm.setToolTip(Lang.GUI_XP_RETR_ALL_1.get(), Lang.GUI_XP_RETR_ALL_2.get());
   }
 
   @Override

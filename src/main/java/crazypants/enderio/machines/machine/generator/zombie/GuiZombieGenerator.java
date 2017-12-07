@@ -6,39 +6,35 @@ import java.awt.Rectangle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerator> {
 
-  @Nonnull
-  private static final Rectangle RECTANGLE_FUEL_TANK = new Rectangle(80, 21, 15, 47);
+  private static final @Nonnull Rectangle RECTANGLE_FUEL_TANK = new Rectangle(80, 21, 15, 47);
 
   public GuiZombieGenerator(@Nonnull InventoryPlayer inventory, @Nonnull final TileZombieGenerator tileEntity) {
     super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity), "zombie_generator");
 
     addToolTip(new GuiToolTip(RECTANGLE_FUEL_TANK, "") {
-
       @Override
       protected void updateText() {
         text.clear();
-        String heading = EnderIO.lang.localize("zombieGenerator.fuelTank");
-        text.add(heading);
+        text.add(Lang.GUI_ZOMBGEN_FTANK.get());
         text.add(LangFluid.MB(getTileEntity().tank));
         if (tileEntity.tank.getFluidAmount() < tileEntity.getActivationAmount()) {
-          text.add(EnderIO.lang.localize("gui.fluid.minReq", LangFluid.MB(tileEntity.getActivationAmount())));
+          text.add(Lang.GUI_ZOMBGEN_MINREQ.get(LangFluid.MB(tileEntity.getActivationAmount())));
         }
       }
     });
@@ -46,8 +42,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
   }
 
   @Override
-  @Nullable
-  public Object getIngredientUnderMouse(int mouseX, int mouseY) {
+  public @Nullable Object getIngredientUnderMouse(int mouseX, int mouseY) {
     if (RECTANGLE_FUEL_TANK.contains(mouseX, mouseY)) {
       return getTileEntity().tank.getFluid();
     }
@@ -60,7 +55,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
   }
 
   @Override
-  public void renderSlotHighlights(IoMode mode) {
+  public void renderSlotHighlights(@Nonnull IoMode mode) {
     super.renderSlotHighlights(mode);
 
     if (mode == IoMode.PULL || mode == IoMode.PUSH_PULL) {
@@ -70,12 +65,11 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
       int h = 47 + 4;
       renderSlotHighlight(PULL_COLOR, x, y, w, h);
     }
-
   }
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
@@ -87,13 +81,13 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
     if (gen.isActive()) {
       output = gen.getPowerUsePerTick();
     }
-    String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + LangPower.RFt(output);
+    String txt = Lang.GUI_ZOMBGEN_OUTPUT.get(LangPower.RFt(output));
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, guiTop + fr.FONT_HEIGHT / 2 + 3, ColorUtil.getRGB(Color.WHITE));
 
     int x = guiLeft + 80;
     int y = guiTop + 21;
-    if (gen.tank.getFluidAmount() > 0) {
+    if (!gen.tank.isEmpty()) {
 
       RenderUtil.renderGuiTank(gen.tank.getFluid(), gen.tank.getCapacity(), gen.tank.getFluidAmount(), x, y, zLevel, 16, 47);
 

@@ -11,17 +11,16 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 
 public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk> {
 
@@ -38,12 +37,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
       @Override
       protected void updateText() {
         text.clear();
-        FluidTank tank = getTileEntity().getInputTank();
-        String heading = EnderIO.lang.localize("tank.tank");
-        if (tank.getFluid() != null) {
-          heading += ": " + tank.getFluid().getLocalizedName();
-        }
-        text.add(heading);
+        text.add(Lang.GUI_WEATHER_FTANK.get());
         text.add(LangFluid.MB(getTileEntity().getInputTank()));
       }
     });

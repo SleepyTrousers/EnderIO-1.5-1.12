@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.obelisk.AbstractRangedTileEntity;
 import crazypants.enderio.util.CapturedMob;
 import info.loenwind.autosave.annotations.Storable;
@@ -19,10 +19,10 @@ import net.minecraft.util.math.Vec3d;
 public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
 
   public static enum SpawnObeliskAction {
-    ATTRACT("blockAttractor.action"),
-    AVERT("blockSpawnGuard.action"),
-    RELOCATE("blockSpawnRelocator.action"),
-    SPAWN("blockPoweredSpawner.action"),
+    ATTRACT("block_attractor_obelisk.action"),
+    AVERT("block_aversion_obelisk.action"),
+    RELOCATE("block_relocator_obelisk.action"),
+    SPAWN("block_powered_spawner.action"),
 
     ;
 
@@ -33,7 +33,7 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
     }
 
     public @Nonnull String getActionString() {
-      return EnderIO.lang.localize(langKey);
+      return EnderIOMachines.lang.localize(langKey);
     }
   }
 
