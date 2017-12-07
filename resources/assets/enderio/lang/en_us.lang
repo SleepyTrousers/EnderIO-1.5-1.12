@@ -31,11 +31,6 @@ enderio.gui.zombie_generator.fluid.minReq=%s Required for activation
 enderio.gui.killerJoe.fuelTank=Nutrient Tank
 enderio.gui.killerJoe.fluid.minReq=%s Required for activation
 
-enderio.block_attractor_obelisk.action=Attracts
-enderio.block_aversion_obelisk.action=Prevents spawning
-enderio.block_powered_spawner.action=Spawns
-enderio.block_relocator_obelisk.action=Relocates
-
 enderio.gui.weather_obelisk.fuelTank=Catalyst Tank
 
 enderio.gui.xp_obelisk.button.store.1.line1=Store 1

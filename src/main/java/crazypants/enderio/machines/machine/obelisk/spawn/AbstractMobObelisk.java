@@ -1,13 +1,12 @@
 package crazypants.enderio.machines.machine.obelisk.spawn;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.machines.machine.obelisk.AbstractRangedTileEntity;
 import crazypants.enderio.util.CapturedMob;
 import info.loenwind.autosave.annotations.Storable;
@@ -16,26 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 
 @Storable
-public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
-
-  public static enum SpawnObeliskAction {
-    ATTRACT("block_attractor_obelisk.action"),
-    AVERT("block_aversion_obelisk.action"),
-    RELOCATE("block_relocator_obelisk.action"),
-    SPAWN("block_powered_spawner.action"),
-
-    ;
-
-    private final @Nonnull String langKey;
-
-    private SpawnObeliskAction(@Nonnull String langKey) {
-      this.langKey = langKey;
-    }
-
-    public @Nonnull String getActionString() {
-      return EnderIOMachines.lang.localize(langKey);
-    }
-  }
+public abstract class AbstractMobObelisk extends AbstractRangedTileEntity implements EntityAction.Implementer {
 
   public AbstractMobObelisk(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored, ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
@@ -71,8 +51,9 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
     return false;
   }
 
-  public List<CapturedMob> getMobsInFilter() {
-    List<CapturedMob> result = new ArrayList<CapturedMob>();
+  @Override
+  public @Nonnull NNList<CapturedMob> getEntities() {
+    NNList<CapturedMob> result = new NNList<>();
     for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot; i++) {
       CapturedMob mob = CapturedMob.create(inventory[i]);
       if (mob != null) {
@@ -82,6 +63,5 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
     return result;
   }
 
-  public abstract SpawnObeliskAction getSpawnObeliskAction();
 
 }

@@ -3,6 +3,7 @@ package crazypants.enderio.machines.machine.obelisk.aversion;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.spawn.TileEntityAbstractSpawningObelisk;
 import info.loenwind.autosave.annotations.Storable;
@@ -36,8 +37,8 @@ public class TileAversionObelisk extends TileEntityAbstractSpawningObelisk {
   }
 
   @Override
-  public SpawnObeliskAction getSpawnObeliskAction() {
-    return SpawnObeliskAction.AVERT;
+  public @Nonnull EntityAction getEntityAction() {
+    return EntityAction.AVERT;
   }
 
 }

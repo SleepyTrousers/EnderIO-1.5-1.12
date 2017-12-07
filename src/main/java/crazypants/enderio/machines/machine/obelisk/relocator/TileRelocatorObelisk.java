@@ -8,6 +8,7 @@ import java.util.WeakHashMap;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.farm.PacketFarmAction;
@@ -98,8 +99,8 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
   }
 
   @Override
-  public SpawnObeliskAction getSpawnObeliskAction() {
-    return SpawnObeliskAction.RELOCATE;
+  public @Nonnull EntityAction getEntityAction() {
+    return EntityAction.RELOCATE;
   }
 
 }

@@ -7,12 +7,14 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.NBTAction;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
+import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.base.machine.task.PoweredTask;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
@@ -48,7 +50,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_POWER_U
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_SPEEDUP;
 
 @Storable
-public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged {
+public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged, EntityAction.Implementer {
 
   @Store({ NBTAction.SYNC, NBTAction.UPDATE, NBTAction.SAVE })
   private CapturedMob capturedMob = null;
@@ -468,6 +470,21 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   private void sendNotification() {
     sendNotification = false;
     PacketHandler.INSTANCE.sendToAll(new PacketUpdateNotification(this, getNotification()));
+  }
+
+  @Override
+  @Nonnull
+  public NNList<CapturedMob> getEntities() {
+    if (capturedMob != null) {
+      return new NNList<>(capturedMob);
+    }
+    return NNList.emptyList();
+  }
+
+  @Override
+  @Nonnull
+  public EntityAction getEntityAction() {
+    return EntityAction.SPAWN;
   }
 
   // NOTIFICATION END

@@ -11,6 +11,7 @@ import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
+import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.machines.machine.obelisk.spawn.AbstractMobObelisk;
@@ -145,8 +146,8 @@ public class TileAttractor extends AbstractMobObelisk {
   }
 
   @Override
-  public SpawnObeliskAction getSpawnObeliskAction() {
-    return SpawnObeliskAction.ATTRACT;
+  public @Nonnull EntityAction getEntityAction() {
+    return EntityAction.ATTRACT;
   }
 
   private class Target extends FakePlayerEIO {
