@@ -1,1 +1,18 @@
-enderio.combustionGenerator.output=Generating: %s
+enderio.gui.combustion_generator.output=Generating: %s
+enderio.gui.combustion_generator.coolantTank.empty=Coolant
+enderio.gui.combustion_generator.coolantTank=Coolant: %s
+enderio.gui.combustion_generator.fuelTank.empty=Fuel
+enderio.gui.combustion_generator.fuelTank=Fuel: %s
+
+enderio.gui.alloy.mode.heading=Furnace Mode
+enderio.gui.alloy.mode.all=All Smelting
+enderio.gui.alloy.mode.alloy=Alloys Only
+enderio.gui.alloy.mode.furnace=Furnace Only
+
+enderio.gui.buffer.in=Max In:
+enderio.gui.buffer.out=Max Out:
+
+enderio.gui.farm.baseUse=Base Use:
+
+enderio.gui.ranged.showRange=Show Range
+enderio.gui.ranged.hideRange=Hide Range

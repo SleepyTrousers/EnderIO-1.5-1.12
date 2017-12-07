@@ -2,33 +2,37 @@ package crazypants.enderio.machines.machine.buffer;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.lang.Lang;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
 public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
-  private static final String TEXTURE_SIMPLE = "buffer";
-  private static final String TEXTURE_FULL = "buffer_full";
+  private static final @Nonnull String TEXTURE_SIMPLE = "buffer";
+  private static final @Nonnull String TEXTURE_FULL = "buffer_full";
 
   private TextFieldEnder maxInput;
   private TextFieldEnder maxOutput;
 
   private int lastInput, lastOutput;
 
-  private boolean hasInventory, hasPower; // needed because the GUI can be opened before the TE is in sync with the server
+  private final boolean hasInventory, hasPower;
 
-  public GuiBuffer(InventoryPlayer par1InventoryPlayer, TileBuffer te) {
+  public GuiBuffer(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileBuffer te) {
     super(te, new ContainerBuffer(par1InventoryPlayer, te), TEXTURE_SIMPLE, TEXTURE_FULL);
     hasInventory = te.hasInventory();
     hasPower = te.hasPower();
@@ -138,7 +142,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
     bindGuiTexture(isFull() ? 1 : 0);
     int sx = (width - xSize) / 2;
@@ -158,15 +162,15 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
-    String invName = EnderIO.lang.localizeExact(getTileEntity().getMachineName() + ".name");
+    String invName = EnderIOMachines.lang.localizeExact(getTileEntity().getMachineName() + ".name");
     getFontRenderer().drawStringWithShadow(invName, sx + (xSize / 2) - (getFontRenderer().getStringWidth(invName) / 2), sy + 4, 0xFFFFFF);
 
     if (hasPower) {
       sx += isFull() ? 19 : 57;
       sy += 17;
 
-      getFontRenderer().drawStringWithShadow(EnderIO.lang.localize("gui.simple.in"), sx, sy, 0xFFFFFF);
-      getFontRenderer().drawStringWithShadow(EnderIO.lang.localize("gui.simple.out"), sx, sy + 27, 0xFFFFFF);
+      getFontRenderer().drawStringWithShadow(Lang.GUI_BUFFER_IN.get(), sx, sy, 0xFFFFFF);
+      getFontRenderer().drawStringWithShadow(Lang.GUI_BUFFER_OUT.get(), sx, sy + 27, 0xFFFFFF);
     }
   }
 
@@ -175,7 +179,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   }
 
   @Override
-  public void renderSlotHighlights(IoMode mode) {
+  public void renderSlotHighlights(@Nonnull IoMode mode) {
     if (!hasInventory) {
       return;
     }

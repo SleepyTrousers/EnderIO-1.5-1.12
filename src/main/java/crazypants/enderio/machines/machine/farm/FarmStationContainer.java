@@ -7,8 +7,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.farming.FarmingTool;
@@ -136,7 +136,7 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
     }
   }
 
-  public void createGhostSlots(List<GhostSlot> slots) {
+  public void createGhostSlots(GhostSlotHandler slots) {
     clean(slotItemsStacks1);
     clean(slotItemsStacks2);
     clean(slotItemsStacks3);

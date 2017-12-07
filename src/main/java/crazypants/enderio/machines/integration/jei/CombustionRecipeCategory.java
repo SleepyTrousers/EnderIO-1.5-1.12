@@ -67,7 +67,7 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
       FontRenderer fr = minecraft.fontRenderer;
 
-      String txt = Lang.COMB_GEN_OUTPUT.get(LangPower.RFt(math.getEnergyPerTick()));
+      String txt = Lang.GUI_COMBGEN_OUTPUT.get(LangPower.RFt(math.getEnergyPerTick()));
       int sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow(txt, 176 / 2 - sw / 2 - xOff, fr.FONT_HEIGHT / 2, ColorUtil.getRGB(Color.WHITE));
 

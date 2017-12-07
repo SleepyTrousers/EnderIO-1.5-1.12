@@ -12,9 +12,9 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.alloy.TileAlloySmelter.Mode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -98,16 +98,16 @@ public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiPoweredMachi
 
   private void updateVanillaFurnaceButton() {
     TextureAtlasSprite icon = BlockAlloySmelter.vanillaSmeltingOn.get(TextureAtlasSprite.class);
-    String unlocText = "gui.alloy.mode.all";
+    Lang unlocText = Lang.GUI_ALLOY_MODE_ALL;
     if (getTileEntity().getMode() == Mode.ALLOY) {
       icon = BlockAlloySmelter.vanillaSmeltingOff.get(TextureAtlasSprite.class);
-      unlocText = "gui.alloy.mode.alloy";
+      unlocText = Lang.GUI_ALLOY_MODE_ALLOY;
     } else if (getTileEntity().getMode() == Mode.FURNACE) {
       icon = BlockAlloySmelter.vanillaSmeltingOnly.get(TextureAtlasSprite.class);
-      unlocText = "gui.alloy.mode.furnace";
+      unlocText = Lang.GUI_ALLOY_MODE_FURNACE;
     }
     vanillaFurnaceButton.setIcon(icon);
-    vanillaFurnaceTooltip.setToolTipText(EnderIO.lang.localize("gui.alloy.mode.heading"), EnderIO.lang.localize(unlocText));
+    vanillaFurnaceTooltip.setToolTipText(Lang.GUI_ALLOY_MODE.get(), unlocText.get());
   }
 
   @Override

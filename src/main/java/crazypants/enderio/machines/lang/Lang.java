@@ -8,7 +8,6 @@ import net.minecraft.util.text.TextComponentString;
 
 public enum Lang {
 
-  COMB_GEN_OUTPUT("generator.combustion.output"),
   XXXXXX1(""),
   XXXXXX2(""),
   XXXXXX3(""),
@@ -18,6 +17,25 @@ public enum Lang {
   XXXXXX7(""),
   XXXXXX8(""),
   XXXXXX9(""),
+  GUI_COMBGEN_OUTPUT("gui.combustion_generator.output"),
+  GUI_ALLOY_MODE("gui.alloy.mode.heading"),
+  GUI_ALLOY_MODE_ALL("gui.alloy.mode.all"),
+  GUI_ALLOY_MODE_ALLOY("gui.alloy.mode.alloy"),
+  GUI_ALLOY_MODE_FURNACE("gui.alloy.mode.furnace"),
+  GUI_BUFFER_IN("gui.buffer.in"),
+  GUI_BUFFER_OUT("gui.buffer.out"),
+  GUI_FARM_BASEUSE("gui.farm.baseUse"),
+  GUI_SHOW_RANGE("gui.ranged.showRange"),
+  GUI_HIDE_RANGE("gui.ranged.hideRange"),
+  GUI_COMBGEN_CTANK("gui.combustion_generator.coolantTank"),
+  GUI_COMBGEN_CTANK_EMPTY("gui.combustion_generator.coolantTank.empty"),
+  GUI_COMBGEN_FTANK("gui.combustion_generator.fuelTank"),
+  GUI_COMBGEN_FTANK_EMPTY("gui.combustion_generator.fuelTank.empty"),
+  XXXXX28(""),
+  XXXXX29(""),
+  XXXXX38(""),
+  XXXXX39(""),
+
 
   ;
 

@@ -16,10 +16,10 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.Lists;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -34,7 +34,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   private static final int LOCK_ID = 1234;
   ToggleButton showRangeB;
 
-  public GuiFarmStation(InventoryPlayer par1InventoryPlayer, @Nonnull TileFarmStation machine) {
+  public GuiFarmStation(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileFarmStation machine) {
     super(machine, new FarmStationContainer(par1InventoryPlayer, machine), "farm_station");
     setYSize(ySize + 3);
 
@@ -43,7 +43,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override
       public @Nonnull List<String> getToolTipText() {
-        return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
+        return Lists.newArrayList((showRangeB.isSelected() ? Lang.GUI_HIDE_RANGE : Lang.GUI_SHOW_RANGE).get());
       }
     });
   }
@@ -70,7 +70,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     buttonList.add(createLockButton(TileFarmStation.minSupSlot + 2, x, y + 20));
     buttonList.add(createLockButton(TileFarmStation.minSupSlot + 3, x + 52, y + 20));
 
-    ((FarmStationContainer) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
+    ((FarmStationContainer) inventorySlots).createGhostSlots(getGhostSlotHandler());
 
     showRangeB.onGuiInit();
     showRangeB.setSelected(getTileEntity().isShowingRange());
@@ -146,7 +146,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
 
   @Override
   protected String getPowerOutputLabel() {
-    return EnderIO.lang.localize("farm.gui.baseUse");
+    return Lang.GUI_FARM_BASEUSE.get();
   }
 
   @Override

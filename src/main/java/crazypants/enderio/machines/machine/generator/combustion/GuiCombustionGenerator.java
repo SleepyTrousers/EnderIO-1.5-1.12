@@ -13,11 +13,11 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.fluid.SmartTank;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.machine.modes.IoMode;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fluids.FluidStack;
@@ -37,9 +37,9 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
         text.clear();
         final FluidStack coolant = getTileEntity().getCoolantTank().getFluid();
         if (coolant != null) {
-          text.add(EnderIO.lang.localize("combustionGenerator.coolantTank", coolant.getLocalizedName()));
+          text.add(Lang.GUI_COMBGEN_CTANK.get(coolant.getLocalizedName()));
         } else {
-          text.add(EnderIO.lang.localize("combustionGenerator.coolantTank.empty"));
+          text.add(Lang.GUI_COMBGEN_CTANK_EMPTY.get());
         }
         text.add(LangFluid.MB(getTileEntity().getCoolantTank()));
       }
@@ -53,9 +53,9 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
         text.clear();
         final FluidStack fuel = getTileEntity().getFuelTank().getFluid();
         if (fuel != null) {
-          text.add(EnderIO.lang.localize("combustionGenerator.fuelTank", fuel.getLocalizedName()));
+          text.add(Lang.GUI_COMBGEN_FTANK.get(fuel.getLocalizedName()));
         } else {
-          text.add(EnderIO.lang.localize("combustionGenerator.fuelTank.empty"));
+          text.add(Lang.GUI_COMBGEN_FTANK_EMPTY.get());
         }
         text.add(LangFluid.MB(getTileEntity().getFuelTank()));
       }
@@ -77,7 +77,7 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
   }
 
   @Override
-  public void renderSlotHighlights(IoMode mode) {
+  public void renderSlotHighlights(@Nonnull IoMode mode) {
     super.renderSlotHighlights(mode);
 
     if (mode == IoMode.PULL || mode == IoMode.PUSH_PULL) {
@@ -109,7 +109,7 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
     if (gen.isActive()) {
       output = math.getEnergyPerTick();
     }
-    String txt = EnderIO.lang.localize("combustionGenerator.output", LangPower.RFt(output));
+    String txt = Lang.GUI_COMBGEN_OUTPUT.get(LangPower.RFt(output));
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, guiTop + fr.FONT_HEIGHT / 2 + 3, ColorUtil.getRGB(Color.WHITE));
 
