@@ -1,7 +1,6 @@
 package crazypants.enderio.base.machine.gui;
 
 import java.awt.Rectangle;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +18,7 @@ import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.IoConfigRenderer.SelectedFace;
 import crazypants.enderio.base.gui.RedstoneModeButton;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -177,8 +177,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
   }
 
   protected String formatProgressTooltip(int scaledProgress, float progress) {
-    Object[] objects = { scaledProgress };
-    return MessageFormat.format(EnderIO.lang.localize("gui.progress"), objects);
+    return Lang.GUI_GENERIC_PROGRESS.get(scaledProgress);
   }
 
   protected int scaleProgressForTooltip(float progress) {

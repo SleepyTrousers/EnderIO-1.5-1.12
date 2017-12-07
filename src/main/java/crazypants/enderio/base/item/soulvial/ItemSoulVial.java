@@ -21,7 +21,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -40,6 +39,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -258,9 +258,8 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
       if (fluidName != null) {
         Fluid fluid = FluidRegistry.getFluid(fluidName);
         if (fluid != null) {
-          String unlocalizedName = fluid.getUnlocalizedName();
-          String name = I18n.format(unlocalizedName);
-          par3List.add(Lang.SOUL_VIAL_FLUID.get(name));
+          String localizedName = fluid.getLocalizedName(new FluidStack(fluid, 1));
+          par3List.add(Lang.SOUL_VIAL_FLUID.get(localizedName));
         }
       }
 

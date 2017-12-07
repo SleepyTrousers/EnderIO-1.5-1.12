@@ -67,6 +67,8 @@ public enum Lang {
   POWER_OF(true, "power.format.of"),
   POWER_PERTICK(true, "power.format.pertick"),
   XXXXXX0(""),
+  GUI_GENERIC_MAX(true, "gui.generic.max"),
+  GUI_GENERIC_PROGRESS(true, "gui.generic.progress"),
 
   ;
 

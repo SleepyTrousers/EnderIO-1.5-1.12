@@ -19,7 +19,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockWall;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -289,7 +288,7 @@ public class CapturedMob { // TODO: DONE111
   }
 
   public @Nonnull String getDisplayName() {
-    String baseName = I18n.format("entity." + EntityList.getTranslationName(entityId) + ".name");
+    String baseName = EnderIO.lang.localizeExact("entity." + EntityList.getTranslationName(entityId) + ".name");
     if (baseName.trim().isEmpty()) {
       if (customName != null && !customName.trim().isEmpty()) {
         return NullHelper.notnullJ(customName, "private final field changed its value");

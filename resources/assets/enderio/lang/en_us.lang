@@ -636,6 +636,9 @@ enderio.itemConduitFilterUpgrade.configured=%sConfigured
 enderio.itemConduitFilterUpgrade.clearConfigMethod=%sPlace in crafting grid to clear
 enderio.itemConduitFilterUpgrade.clearConfigWarning=%sThis will clear all stored filter settings!
 
+enderio.gui.generic.max=Max: %s
+enderio.gui.generic.progress=Progress %s%%
+
 
 // These keys have not (yet) been confirmed in 1.11
 
@@ -1091,8 +1094,6 @@ tile.blockTelePad.name=Telepad Block
 tile.blockTelePad.tooltip.detailed.line1=Uses power to teleport entities
 tile.blockTelePad.tooltip.detailed.line2=to a specific position and dimension.
 tile.blockTelePad.tooltip.detailed.line3=Must be placed in a 3x1x3 multiblock.
-enderio.gui.telepad.teleport=Teleport!
-enderio.chat.telepad.noFluid=Not enough %s to teleport!
 
 tile.blockDialingDevice.name=Dialing Device
 tile.blockDialingDevice.tooltip.detailed.line1=Place near a Telepad 
@@ -1144,8 +1145,6 @@ item.itemSpawnEggEnderIO.name=Spawn
 enderio.gui.available=Available
 enderio.gui.disabled=Disabled
 enderio.gui.enabled=Enabled
-enderio.gui.max=Max:
-enderio.gui.progress=Progress {0,number}%
 enderio.gui.receive=Receive
 enderio.gui.send=Send
 enderio.gui.sendReceive=Send & Receive 
@@ -1168,9 +1167,6 @@ enderio.gui.machine.ioMode.pullPush.colored=%sPush %s/ %sPull
 enderio.gui.machine.ioMode=Mode: %s
 enderio.gui.machine.receivefilter=Receive Filter
 enderio.gui.machine.sendfilter=Send Filter
-enderio.gui.machine.sendReceivebuffer=Send/Receive Buffer
-enderio.gui.machine.localbuffer=Local Buffer
-enderio.gui.machine.upkeep=Upkeep:
 enderio.gui.machine.bufferingstacks=Buffering item stacks
 enderio.gui.machine.bufferingsingle=Buffering single items
 enderio.gui.machine.percraft=Per Craft
@@ -1228,16 +1224,6 @@ enderio.gui.capBank.inputMode=Input
 enderio.gui.capBank.outputMode=Output
 
 //Transceiver
-enderio.gui.trans.publicChannel=Public Channel
-enderio.gui.trans.privateChannel=Private Channel
-enderio.gui.trans.addChannel=Add Channel
-enderio.gui.trans.deleteChannel=Delete Channel
-enderio.gui.trans.activateChannel=Activate Channel
-enderio.gui.trans.powerMode=Power Mode
-enderio.gui.trans.fluidMode=Fluid Mode
-enderio.gui.trans.itemMode=Item Mode
-enderio.gui.trans.publicHeading=Public
-enderio.gui.trans.privateHeading=Private
 
 //Alloy Smelter
 
@@ -1250,21 +1236,11 @@ enderio.gui.trans.privateHeading=Private
 //Stirling Gen
 
 //Travel Blocks
-enderio.gui.travelAccessable.privateBlock1=Only
-enderio.gui.travelAccessable.privateBlock2=may change this blocks settings.
-enderio.gui.travelAccessable.public=Public
-enderio.gui.travelAccessable.private=Private
-enderio.gui.travelAccessable.protected=Protected
 enderio.gui.travelAccessable.unauthorised=You are not allowed to access this block.
-enderio.gui.travelAccessable.enterCode=Access Code Required
-enderio.gui.travelAccessable.ok=Authorise
 enderio.gui.travelAccessable.skipLocked=Skipped locked anchor, use targeted teleport.
 enderio.gui.travelAccessable.skipObstructed=Skipped obstructed anchor.
 enderio.gui.travelAccessable.skipPrivate=Skipped private anchor.
 
-enderio.gui.telepad.configure.travel=Travel Settings
-enderio.gui.telepad.configure.telepad=Telepad Settings
-enderio.gui.telepad.blocked=Teleport Blocked!
 
 //Spawn Gurad [sic]
 

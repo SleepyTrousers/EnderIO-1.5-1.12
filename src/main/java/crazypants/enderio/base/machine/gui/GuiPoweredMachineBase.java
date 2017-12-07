@@ -11,11 +11,11 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredMachineEntity;
 import info.loenwind.scheduler.Celeb;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;
 
 public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEntity> extends GuiInventoryMachineBase<T> {
@@ -41,8 +41,8 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
     });
   }
 
-  protected String getPowerOutputLabel() {
-    return I18n.format("enderio.gui.max");
+  protected String getPowerOutputLabel(@Nonnull String rft) {
+    return Lang.GUI_GENERIC_MAX.get(rft);
   }
 
   protected int getPowerOutputValue() {
@@ -57,7 +57,7 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
       }
       text.add(lang.get(frame));
     }
-    text.add(getPowerOutputLabel() + " " + LangPower.RFt(getPowerOutputValue()));
+    text.add(getPowerOutputLabel(LangPower.RFt(getPowerOutputValue())));
     text.add(LangPower.RF(getTileEntity().getEnergyStored(), getTileEntity().getMaxEnergyStored()));
   }
 
