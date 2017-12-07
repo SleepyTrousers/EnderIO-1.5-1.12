@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.interfaces.IClearableConfiguration;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
@@ -16,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -98,7 +98,7 @@ public class ClearConfigRecipe implements IRecipe {
           && ((ContainerWorkbench) event.getEntityPlayer().openContainer).craftResult.getStackInSlot(0) == event.getItemStack())
           || (event.getEntityPlayer().openContainer instanceof ContainerPlayer
               && ((ContainerPlayer) event.getEntityPlayer().openContainer).craftResult.getStackInSlot(0) == event.getItemStack())) {
-        event.getToolTip().add(TextFormatting.RED.toString() + TextFormatting.ITALIC + EnderIO.lang.localize("machine.tooltip.clearConfig"));
+        event.getToolTip().add(Lang.RECIPE_CLEAR.get());
       }
     }
   }

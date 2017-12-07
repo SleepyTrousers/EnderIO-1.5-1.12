@@ -203,9 +203,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
       list.add(str);
     }
     if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(Lang.DARK_STEEL_POWERED.get(TextFormatting.WHITE));
+      list.addAll(Lang.DARK_STEEL_POWERED.getLines(TextFormatting.WHITE));
       if (itemstack.getItem() == ModObject.itemDarkSteelBoots.getItemNN()) {
-        list.add(Lang.DARK_BOOTS_POWERED.get(TextFormatting.WHITE));
+        list.addAll(Lang.DARK_BOOTS_POWERED.getLines(TextFormatting.WHITE));
       }
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);

@@ -34,7 +34,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.Fluid;
@@ -111,7 +110,7 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
     }
 
     if (!PermissionAPI.hasPermission(player.getGameProfile(), permissionPlace, new BlockPosContext(player, pos, null, side))) {
-      player.sendMessage(new TextComponentString(EnderIO.lang.localize("soulvial.denied")));
+      player.sendMessage(Lang.SOUL_VIAL_DENIED.toChatServer());
       return EnumActionResult.SUCCESS;
     }
 
@@ -147,9 +146,9 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
     CapturedMob capturedMob = CapturedMob.create(entity);
     if (capturedMob == null) {
       if (entity instanceof EntityPlayer) {
-        player.sendMessage(new TextComponentString(EnderIO.lang.localize("soulvial.player.denied")));
+        player.sendMessage(Lang.SOUL_VIAL_DENIED_PLAYER.toChatServer());
       } else if (CapturedMob.isBlacklisted(entity)) {
-        player.sendMessage(new TextComponentString(EnderIO.lang.localize("soulvial.blacklisted.denied")));
+        player.sendMessage(Lang.SOUL_VIAL_DENIED_AALISTED.toChatServer());
       }
       return false;
     }
@@ -157,11 +156,11 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
     // then check for reasons this specific one cannot
     if (entity instanceof IEntityOwnable && ((IEntityOwnable) entity).getOwnerId() != null && !player.equals(((IEntityOwnable) entity).getOwner())
         && !PermissionAPI.hasPermission(player.getGameProfile(), permissionPickupOwned, new TargetContext(player, entity))) {
-      player.sendMessage(new TextComponentString(EnderIO.lang.localize("soulvial.owned.denied")));
+      player.sendMessage(Lang.SOUL_VIAL_DENIED_OWNED_PET.toChatServer());
       return false;
     }
     if (!PermissionAPI.hasPermission(player.getGameProfile(), permissionPickup, new TargetContext(player, entity))) {
-      player.sendMessage(new TextComponentString(EnderIO.lang.localize("soulvial.denied")));
+      player.sendMessage(Lang.SOUL_VIAL_DENIED.toChatServer());
       return false;
     }
 

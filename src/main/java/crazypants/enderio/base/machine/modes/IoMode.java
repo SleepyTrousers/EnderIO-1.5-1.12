@@ -61,7 +61,7 @@ public enum IoMode {
     case PUSH:
       return TextFormatting.GOLD + loc;
     case PUSH_PULL:
-      return String.format(EnderIO.lang.localize(this.getUnlocalisedName() + ".colored"), TextFormatting.GOLD, TextFormatting.WHITE, TextFormatting.AQUA);
+      return EnderIO.lang.localize(this.getUnlocalisedName() + ".colored", TextFormatting.GOLD, TextFormatting.WHITE, TextFormatting.AQUA);
     default:
       return loc;
     }

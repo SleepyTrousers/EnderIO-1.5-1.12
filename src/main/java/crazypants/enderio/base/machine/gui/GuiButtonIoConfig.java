@@ -1,17 +1,14 @@
 package crazypants.enderio.base.machine.gui;
 
-import java.util.ArrayList;
-
 import javax.annotation.Nonnull;
 
 import org.lwjgl.input.Keyboard;
 
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.ToggleButton;
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.interfaces.IIoConfigurable;
 import crazypants.enderio.base.machine.modes.PacketIoMode;
 import crazypants.enderio.base.network.PacketHandler;
@@ -28,14 +25,8 @@ public class GuiButtonIoConfig<E extends TileEntity & IIoConfigurable> extends T
     this.configOverlay = configOverlay;
     this.configOverlay.setConfigB(this);
 
-    String configTooltip = EnderIO.lang.localize("gui.machine.ioMode.overlay.tooltip");
-    setUnselectedToolTip(configTooltip);
-
-    ArrayList<String> list = new ArrayList<String>();
-    SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.machine.ioMode.overlay.tooltip.visible.line");
-    if (!list.isEmpty()) {
-      setSelectedToolTip(list.toArray(new String[list.size()]));
-    }
+    setUnselectedToolTip(Lang.GUI_GENERIC_OVERLAY.get());
+    setSelectedToolTip(Lang.GUI_GENERIC_OVERLAY_ON.getLines().toArray(new String[0]));
   }
 
   @Override

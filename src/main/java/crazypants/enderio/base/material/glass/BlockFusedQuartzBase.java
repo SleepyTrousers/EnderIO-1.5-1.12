@@ -5,13 +5,13 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.BlockEio;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.block.painted.BlockItemPaintedBlock;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.ICustomItemResourceLocation;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import net.minecraft.block.Block;
@@ -39,7 +39,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
     setSoundType(SoundType.GLASS);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
-  
+
   @Override
   public Item createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new BlockItemFusedQuartzBase(this));
@@ -93,7 +93,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
 
   @Override
   public boolean isSideSolid(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
-    if(side == EnumFacing.UP) { //stop drips
+    if (side == EnumFacing.UP) { // stop drips
       return false;
     }
     return true;
@@ -126,13 +126,13 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
       super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
       FusedQuartzType type = determineQuartzType(par1ItemStack);
       if (type.isBlastResistant()) {
-        par3List.add(EnderIO.lang.localize("blastResistant"));
+        par3List.add(Lang.BLOCK_BLAST_RESISTANT.get());
       }
       if (type.isEnlightened()) {
-        par3List.add(EnderIO.lang.localize("lightEmitter"));
+        par3List.add(Lang.BLOCK_LIGHT_EMITTER.get());
       }
       if (type.getLightOpacity() > 0) {
-        par3List.add(EnderIO.lang.localize("lightBlocker"));
+        par3List.add(Lang.BLOCK_LIGHT_BLOCKER.get());
       }
     }
 

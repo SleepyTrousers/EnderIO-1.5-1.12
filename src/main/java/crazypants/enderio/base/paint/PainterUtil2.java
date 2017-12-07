@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.FluidUtil;
 
-import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
@@ -151,9 +151,9 @@ public class PainterUtil2 {
       }
     }
     if (sourceName == null || sourceName.isEmpty()) {
-      return EnderIO.lang.localize("blockPainter.unpainted");
+      return Lang.PAINTED_NOT.get();
     } else {
-      return EnderIO.lang.localize("blockPainter.paintedWith", sourceName);
+      return Lang.PAINTED_WITH.get(sourceName);
     }
   }
 

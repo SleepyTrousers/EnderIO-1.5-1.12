@@ -10,11 +10,11 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.base.BlockEio;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.integration.tic.TicProxy;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.SoundType;
@@ -121,7 +121,7 @@ public class BlockAlloy extends BlockEio<TileEntityEio> implements IAdvancedTool
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    list.add(EnderIO.lang.localize("tooltip.isBeaconBase"));
+    list.add(Lang.BETTER_WITH_BACON.get());
   }
 
   @Override

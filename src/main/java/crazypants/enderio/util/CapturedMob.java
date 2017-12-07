@@ -14,6 +14,7 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.lang.Lang;
 import info.loenwind.scheduler.Celeb;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
@@ -127,7 +128,7 @@ public class CapturedMob { // TODO: DONE111
     stack.setTagCompound(toNbt(null));
     if (item == itemSoulVial.getItem() && customName == null && PIG.equals(entityId) && Math.random() < 0.01) {
       NullHelper.notnullM(stack.getTagCompound(), "getTagCompound() doesn't produce value that was set with setTagCompound()").setString(CUSTOM_NAME_KEY,
-          EnderIO.lang.localize("easteregg.piginabottle"));
+          Lang.EASTER_PIGGY.get());
     }
     return stack;
   }
@@ -139,7 +140,7 @@ public class CapturedMob { // TODO: DONE111
     }
     data.setString(ENTITY_ID_KEY, entityId.toString());
     if (item == itemSoulVial.getItem() && customName == null && PIG.equals(entityId) && Math.random() < 0.01) {
-      data.setString(CUSTOM_NAME_KEY, EnderIO.lang.localize("easteregg.piginabottle"));
+      data.setString(CUSTOM_NAME_KEY, Lang.EASTER_PIGGY.get());
     }
     ItemStack stack = new ItemStack(item, amount, meta);
     stack.setTagCompound(data);
@@ -273,22 +274,22 @@ public class CapturedMob { // TODO: DONE111
     }
 
     if (entity instanceof EntityWitherSkeleton) {
-          if (Celeb.H31.isOn() && Math.random() < 0.25) {
+      if (Celeb.H31.isOn() && Math.random() < 0.25) {
         entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
         ((EntityWitherSkeleton) entity).setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
-          } else if (Celeb.C06.isOn() && Math.random() < 0.25) {
+      } else if (Celeb.C06.isOn() && Math.random() < 0.25) {
         entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.LEATHER_BOOTS : Items.STICK));
-          } else if (Math.random() < 0.1) {
+      } else if (Math.random() < 0.1) {
         entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModObject.itemDarkSteelSword.getItemNN()));
         ((EntityWitherSkeleton) entity).setDropChance(EntityEquipmentSlot.MAINHAND, 0.00001F);
-          }
+      }
     }
 
     return entity;
   }
 
   public @Nonnull String getDisplayName() {
-    String baseName = EnderIO.lang.localizeExact("entity." + EntityList.getTranslationName(entityId) + ".name");
+    String baseName = EnderIO.lang.localizeExact("entity." + getTranslationName() + ".name");
     if (baseName.trim().isEmpty()) {
       if (customName != null && !customName.trim().isEmpty()) {
         return NullHelper.notnullJ(customName, "private final field changed its value");
@@ -302,6 +303,10 @@ public class CapturedMob { // TODO: DONE111
         return baseName;
       }
     }
+  }
+
+  public String getTranslationName() {
+    return EntityList.getTranslationName(entityId);
   }
 
   public float getHealth() {

@@ -1,5 +1,6 @@
 package crazypants.enderio.base.integration.top;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
@@ -54,6 +55,8 @@ import static crazypants.enderio.base.config.Config.topShowRedstoneByDefault;
 import static crazypants.enderio.base.config.Config.topShowSideConfigByDefault;
 import static crazypants.enderio.base.config.Config.topShowTanksByDefault;
 import static crazypants.enderio.base.config.Config.topShowXPByDefault;
+import static mcjty.theoneprobe.api.IProbeInfo.ENDLOC;
+import static mcjty.theoneprobe.api.IProbeInfo.STARTLOC;
 
 public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInfoProvider, IProbeConfigProvider {
 
@@ -83,7 +86,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     if (mode == ProbeMode.DEBUG) {
       probeInfo.text(blockState.toString());
     }
-    if (probeInfo != null && world != null && blockState != null && hitData != null && (blockState.getBlock() instanceof BlockEio || blockState.getBlock() instanceof IPaintable)) {
+    if (probeInfo != null && world != null && blockState != null && hitData != null
+        && (blockState.getBlock() instanceof BlockEio || blockState.getBlock() instanceof IPaintable)) {
       TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, NullHelper.notnull(hitData.getPos(), "JEI wants it so"));
       if (tileEntity != null) {
         EioBox eiobox = new EioBox(probeInfo);
@@ -167,16 +171,21 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
+  private @Nonnull String loc(String string) {
+    return STARTLOC + string + ENDLOC;
+  }
+
   private void mkMobsBox(ProbeMode mode, EioBox mobbox, World world, TOPData data) {
     if (data.hasMobs) {
       if (mode != ProbeMode.NORMAL || topShowMobsByDefault) {
-        mobbox.get().text(TextFormatting.YELLOW + EnderIO.lang.localize("top.action.header", data.mobAction));
+        mobbox.get().text(TextFormatting.YELLOW + EnderIO.lang.localize("top.action.header", loc(data.mobAction)));
 
         if (data.mobs.isEmpty()) {
-          mobbox.get().text(TextFormatting.DARK_RED + EnderIO.lang.localize("top.action.none"));
+          mobbox.get().text(TextFormatting.DARK_RED + loc("top.action.none"));
         } else if (data.mobs.size() <= 4) {
           for (CapturedMob capturedMob : data.mobs) {
-            mobbox.get().horizontal(mobbox.center()).entity(capturedMob.getEntity(world, false)).text(capturedMob.getDisplayName());
+            mobbox.get().horizontal(mobbox.center()).entity(capturedMob.getEntity(world, false))
+                .text(loc("entity." + capturedMob.getTranslationName() + ".name"));
           }
         } else {
           IProbeInfo mobList = mobbox.get().horizontal(mobbox.center());
@@ -185,9 +194,9 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
             if (count++ >= 4) {
               mobList = mobbox.get().horizontal(mobbox.center());
               count = 0;
-          }
+            }
             mobList.entity(capturedMob.getEntity(world, false));
-        }
+          }
         }
       } else {
         mobbox.addMore();
@@ -280,8 +289,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
               .text(TextFormatting.YELLOW + EnderIO.lang.localize("top.rf.header.maxout"));
 
           String line1 = EnderIO.lang.localize("top.rf.value",
-              (data.avgRF == 0 ? TextFormatting.WHITE : data.avgRF > 0 ? TextFormatting.GREEN + "+" : TextFormatting.RED)
-                  + LangPower.format(data.avgRF));
+              (data.avgRF == 0 ? TextFormatting.WHITE : data.avgRF > 0 ? TextFormatting.GREEN + "+" : TextFormatting.RED) + LangPower.format(data.avgRF));
           String line2 = EnderIO.lang.localize("top.rf.value", TextFormatting.WHITE + LangPower.format(data.maxRFIn));
           String line3 = EnderIO.lang.localize("top.rf.value", TextFormatting.WHITE + LangPower.format(data.maxRFOut));
           rfLine = rfLine.vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(line1).text(line2).text(line3);
@@ -313,8 +321,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
       if (mode != ProbeMode.NORMAL || topShowItemCountDefault) {
         eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Blocks.CHEST)).progress(data.fillCur, data.fillMax,
             eiobox.getProbeinfo().defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.items")).filledColor(0xfff8f83c)
-                .alternateFilledColor(0xffcfac0b)
-                .borderColor(0xffcfac0b));
+                .alternateFilledColor(0xffcfac0b).borderColor(0xffcfac0b));
       } else {
         eiobox.addMore();
       }
@@ -362,7 +369,6 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
       }
     }
   }
-
 
   /**
    * @return true if some information was hidden

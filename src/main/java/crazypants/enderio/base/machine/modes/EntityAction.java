@@ -4,14 +4,13 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.util.CapturedMob;
 
 public enum EntityAction { // TODO 1.11 implement on obelisks and spawner
-  ATTRACT("blockAttractor.action"),
-  AVERT("blockSpawnGuard.action"),
-  RELOCATE("blockSpawnRelocator.action"),
-  SPAWN("blockPoweredSpawner.action"),
+  ATTRACT("entity_action.block_attractor_obelisk.action"),
+  AVERT("entity_action.block_aversion_obelisk.action"),
+  RELOCATE("entity_action.block_relocator_obelisk.action"),
+  SPAWN("entity_action.block_powered_spawner.action"),
 
   ;
 
@@ -22,7 +21,8 @@ public enum EntityAction { // TODO 1.11 implement on obelisks and spawner
   }
 
   public String getActionString() {
-    return EnderIO.lang.localize(langKey);
+    // Note: Must be translated by the consumer
+    return langKey;
   }
 
   public static interface Implementer {
