@@ -782,7 +782,6 @@ tile.blockSolarPanel.tooltip.common.line1=Solar Power!
 tile.blockSolarPanel.tooltip.detailed.line1=Produces power during daylight hours
 tile.blockSolarPanel.tooltip.detailed.line2=Must have a clear line of sight to
 tile.blockSolarPanel.tooltip.detailed.line3=the sky
-enderio.maxSolorProduction=Max Output
 enderio.tooltip.efficiency=Efficiency
 enderio.tooltip.sunlightBlocked=Sky Blocked!
 
@@ -916,15 +915,12 @@ tile.blockCombustionGenerator.tooltip.detailed.line3=Output dependent on fuel
 tile.blockZombieGenerator.name=Zombie Generator
 tile.blockZombieGenerator.tooltip.detailed.line1=Consumes Nutrient Distillation
 tile.blockZombieGenerator.tooltip.detailed.line2=to generate power
-enderio.zombieGenerator.fuelTank=Nutrient Tank
-enderio.gui.fluid.minReq=%s Required for activation
 
 tile.blockKillerJoe.name=Killer Joe
 tile.blockKillerJoe.tooltip.detailed.line1=Attacks nearby creatures when
 tile.blockKillerJoe.tooltip.detailed.line2=supplied with a sword and
 tile.blockKillerJoe.tooltip.detailed.line3=Nutrient Distillation
 
-enderio.killerJoe.fuelTank=Nutrient Tank
 enderio.killerJoe.giveXp.tooltip=Take XP
 enderio.killerJoe.giveXp10.tooltip=Take 10 Levels of XP
 
@@ -982,7 +978,6 @@ tile.blockPoweredSpawner.tooltip.detailed.line1=Supply with power to
 tile.blockPoweredSpawner.tooltip.detailed.line2=activate
 tile.blockPoweredSpawner.tooltip.detailed.line3=Upgrade with capacitors to increase
 tile.blockPoweredSpawner.tooltip.detailed.line4=speed and energy storage
-enderio.blockPoweredSpawner.action=Spawns
 
 tile.blockSoulBinder.name=Soul Binder
 tile.blockSoulBinder.tooltip.detailed.line1=Used to convert the type of
@@ -993,17 +988,14 @@ tile.blockAttractor.tooltip.detailed.line1=Draws mobs towards it
 tile.blockAttractor.tooltip.detailed.line2=Specify the mobs to effect
 tile.blockAttractor.tooltip.detailed.line3=by placing their souls
 tile.blockAttractor.tooltip.detailed.line4=within the device
-enderio.blockAttractor.action=Attracts
 
 tile.blockSpawnGuard.name=Aversion Obelisk
 tile.blockSpawnGuard.tooltip.detailed.line1=Prevents mobs from spawning
 tile.blockSpawnGuard.tooltip.detailed.line2=within its area of effect
-enderio.blockSpawnGuard.action=Prevents spawning
 
 tile.blockSpawnRelocator.name=Relocator Obelisk
 tile.blockSpawnRelocator.tooltip.detailed.line1=Relocates mobs that spawn
 tile.blockSpawnRelocator.tooltip.detailed.line2=within its area of effect
-enderio.blockSpawnRelocator.action=Relocates
 
 tile.blockExperienceObelisk.name=Experience Obelisk
 tile.blockExperienceObelisk.tooltip.detailed.line1=Stores Experience
@@ -1176,18 +1168,6 @@ enderio.gui.tooltip.redstoneControlMode.on=Active with signal
 enderio.gui.tooltip.redstoneControlMode.off=Active without signal
 enderio.gui.tooltip.redstoneControlMode.never=Never active
 
-enderio.gui.machine.button.storelevel=Store 1
-enderio.gui.machine.tooltip.storelevel=level of player XP
-enderio.gui.machine.button.storelevels=Store 10
-enderio.gui.machine.tooltip.storelevels=levels of player XP
-enderio.gui.machine.button.storeall=Store all
-enderio.gui.machine.tooltip.storeall=player XP
-enderio.gui.machine.button.retrievelevel=Retrieve 1
-enderio.gui.machine.tooltip.retrievelevel=player XP level
-enderio.gui.machine.button.retrievelevels=Retrieve 10
-enderio.gui.machine.tooltip.retrievelevels=player XP levels
-enderio.gui.machine.button.retrieveall=Retrieve all
-enderio.gui.machine.tooltip.retrieveall=player XP levels
 enderio.gui.machine.ioMode.overlay.tooltip=Configure IO
 enderio.gui.machine.ioMode.overlay.tooltip.visible.line1=Shift click to reset all sides
 enderio.gui.machine.ioMode.overlay.tooltip.visible.line2=to their default setting
@@ -1292,11 +1272,6 @@ enderio.gui.machine.vat.dump.active=Dumping failed, cannot put liquids into the 
 //Combustion Gen
 
 //Stirling Gen
-enderio.stirlingGenerator.output=Generating: %s
-enderio.stirlingGenerator.burnRate=Burn Rate: %s%%
-enderio.stirlingGenerator.upgradeslot=Upgrade slot
-enderio.stirlingGenerator.upgrades={0} gives {2}{1,number,#.#}x{3} efficiency
-enderio.stirlingGenerator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
 
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Only
@@ -1316,7 +1291,6 @@ enderio.gui.telepad.configure.telepad=Telepad Settings
 enderio.gui.telepad.blocked=Teleport Blocked!
 
 //Spawn Gurad [sic]
-enderio.gui.spawnGurad.range=Range:
 
 //conduits
 enderio.gui.conduit.ioMode=Mode
