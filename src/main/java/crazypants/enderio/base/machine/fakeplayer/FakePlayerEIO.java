@@ -57,8 +57,9 @@ public class FakePlayerEIO extends FakePlayer {
     return owner == UserIdent.NOBODY ? null : owner.getUUID();
   }
 
-  public void setOwner(@Nullable UserIdent owner) {
+  public @Nonnull FakePlayerEIO setOwner(@Nullable UserIdent owner) {
     this.owner = owner == null ? UserIdent.NOBODY : owner;
+    return this;
   }
 
   public void clearOwner() {

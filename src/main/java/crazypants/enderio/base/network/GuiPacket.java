@@ -171,8 +171,8 @@ public class GuiPacket implements IMessage {
 
   private EntityPlayerMP player;
 
-  public EntityPlayerMP getPlayer() {
-    return player;
+  public @Nonnull EntityPlayerMP getPlayer() {
+    return NullHelper.notnull(player, "got a network packet that wasn't sent by a player. what?");
   }
 
   public static class Handler implements IMessageHandler<GuiPacket, IMessage> {
