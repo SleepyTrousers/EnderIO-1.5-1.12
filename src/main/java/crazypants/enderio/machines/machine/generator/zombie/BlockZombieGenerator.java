@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper.IBlockRenderMapper;
@@ -44,7 +43,6 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   public static final @Nonnull AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
 
   public static BlockZombieGenerator create() {
-    PacketHandler.INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, PacketHandler.nextID(), Side.CLIENT);
     BlockZombieGenerator gen = new BlockZombieGenerator();
     gen.init();
     return gen;

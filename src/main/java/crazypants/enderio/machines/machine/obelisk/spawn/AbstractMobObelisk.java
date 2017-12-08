@@ -17,7 +17,8 @@ import net.minecraft.util.math.Vec3d;
 @Storable
 public abstract class AbstractMobObelisk extends AbstractRangedTileEntity implements EntityAction.Implementer {
 
-  public AbstractMobObelisk(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored, ICapacitorKey maxEnergyUsed) {
+  public AbstractMobObelisk(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+      @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
@@ -35,15 +36,12 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity implem
   }
 
   protected boolean isMobInRange(EntityLivingBase mob) {
-    if (mob == null || getBounds() == null) {
-      return false;
-    }
-    return getBounds().isVecInside(new Vec3d(mob.posX, mob.posY, mob.posZ));
+    return mob != null && getBounds().isVecInside(new Vec3d(mob.posX, mob.posY, mob.posZ));
   }
 
   protected boolean isMobInFilter(EntityLivingBase entity) {
     for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot; i++) {
-      CapturedMob mob = CapturedMob.create(inventory[i]);
+      CapturedMob mob = CapturedMob.create(getStackInSlot(i));
       if (mob != null && mob.isSameType(entity)) {
         return true;
       }
@@ -55,13 +53,12 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity implem
   public @Nonnull NNList<CapturedMob> getEntities() {
     NNList<CapturedMob> result = new NNList<>();
     for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot; i++) {
-      CapturedMob mob = CapturedMob.create(inventory[i]);
+      CapturedMob mob = CapturedMob.create(getStackInSlot(i));
       if (mob != null) {
         result.add(mob);
       }
     }
     return result;
   }
-
 
 }

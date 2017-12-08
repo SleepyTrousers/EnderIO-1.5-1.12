@@ -5,9 +5,6 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import info.loenwind.autosave.annotations.Storable;
-import net.minecraft.entity.EntityLivingBase;
-
-
 
 @Storable
 public abstract class TileEntityAbstractSpawningObelisk extends AbstractMobObelisk implements ISpawnCallback {
@@ -15,20 +12,16 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractMobObeli
   private boolean registered = false;
 
   @Override
-  public abstract Result isSpawnPrevented(EntityLivingBase mob);
-
-  @Override
   public abstract @Nonnull String getMachineName();
-  
 
-  public TileEntityAbstractSpawningObelisk(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored,
-                                           ICapacitorKey maxEnergyUsed) {
+  public TileEntityAbstractSpawningObelisk(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved,
+      @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
   @Override
   public void invalidate() {
-    super.invalidate();    
+    super.invalidate();
     SpawningObeliskController.instance.deregisterGuard(this);
     registered = false;
   }
@@ -36,13 +29,13 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractMobObeli
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
     if (redstoneCheck && hasPower()) {
-      if(!registered) {
+      if (!registered) {
         SpawningObeliskController.instance.registerGuard(this);
         registered = true;
       }
       usePower();
-    } 
-    return false;    
+    }
+    return false;
   }
 
 }

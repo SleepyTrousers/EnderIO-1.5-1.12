@@ -26,7 +26,6 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.task.ContinuousTask;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.recipe.IMachineRecipe;
@@ -34,6 +33,7 @@ import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -55,7 +55,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
@@ -363,7 +362,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
   }
 
   private void sendNotification() {
-    PacketHandler.INSTANCE.sendToAll(new PacketUpdateNotification(this, notification));
+    PacketHandler.sendToAllAround(new PacketUpdateNotification(this, notification), this);
   }
 
   @Override
@@ -479,7 +478,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
         boolean done = false;
         if (harvest.getHarvestedBlocks() != null && !harvest.getHarvestedBlocks().isEmpty()) {
           PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-          PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(world.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
+          PacketHandler.sendToAllAround(pkt, this, 64);
           done = true;
         }
         if (harvest.getDrops() != null) {
@@ -510,7 +509,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
         startUsingItem(inventory[minFirtSlot]);
         if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, world, bc)) {
           inventory[minFirtSlot] = endUsingItem(false).get(0); // FIXME ???
-          PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc), new TargetPoint(world.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
+          PacketHandler.sendToAllAround(new PacketFarmAction(bc), this, 64);
           if (Prep.isValid(inventory[minFirtSlot]) && inventory[minFirtSlot].getCount() == 0) {
             inventory[minFirtSlot] = Prep.getEmpty(); // TODO 1.11 remove
           }
@@ -801,7 +800,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
 
   public void toggleLockedState(int slot) {
     if (world.isRemote) {
-      PacketHandler.INSTANCE.sendToServer(new PacketFarmLockedSlot(this, slot));
+      PacketHandler.sendToServer(new PacketFarmLockedSlot(this, slot));
     }
     setSlotLocked(slot, !isSlotLocked(slot));
   }
@@ -883,7 +882,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
   }
 
   @Override
-  public BoundingBox getBounds() {
+  public @Nonnull BoundingBox getBounds() {
     return new BoundingBox(getPos()).expand(getRange(), 0, getRange());
   }
 

@@ -402,7 +402,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  public BoundingBox getBounds() {
+  public @Nonnull BoundingBox getBounds() {
     if (isSpawnMode) {
       if (bounds == null) {
         bounds = new BoundingBox(getPos()).expand(getRange(), 1d, getRange());

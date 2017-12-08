@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.killera;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
@@ -13,7 +15,7 @@ public class PacketSwing extends MessageTileEntity<TileKillerJoe> implements IMe
   public PacketSwing() {
   }
 
-  public PacketSwing(TileKillerJoe tile) {
+  public PacketSwing(@Nonnull TileKillerJoe tile) {
     super(tile);
   }
 
@@ -26,6 +28,5 @@ public class PacketSwing extends MessageTileEntity<TileKillerJoe> implements IMe
     }
     return null;
   }
-
 
 }

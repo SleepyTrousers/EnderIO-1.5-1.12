@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
@@ -32,7 +31,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockBuffer create(@Nonnull IModObject modObject) {
-    PacketHandler.INSTANCE.registerMessage(PacketBufferIO.class, PacketBufferIO.class, PacketHandler.nextID(), Side.SERVER);
     BlockBuffer res = new BlockBuffer(modObject);
     res.init();
     return res;

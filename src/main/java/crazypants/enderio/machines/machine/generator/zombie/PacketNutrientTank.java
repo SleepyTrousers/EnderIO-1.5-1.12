@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.generator.zombie;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
@@ -17,7 +19,7 @@ public class PacketNutrientTank extends MessageTileEntity<TileEntity> implements
   public PacketNutrientTank() {
   }
 
-  public<T extends TileEntity & IHasNutrientTank> PacketNutrientTank(T tile) {
+  public <T extends TileEntity & IHasNutrientTank> PacketNutrientTank(@Nonnull T tile) {
     super(tile);
     amount = tile.getNutrientTank().getFluidAmount();
   }

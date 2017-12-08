@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.ClientUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;

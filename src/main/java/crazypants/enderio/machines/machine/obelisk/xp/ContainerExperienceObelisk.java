@@ -1,14 +1,13 @@
 package crazypants.enderio.machines.machine.obelisk.xp;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.network.IRemoteExec;
 import crazypants.enderio.base.xp.PacketExperienceContainer;
 import crazypants.enderio.base.xp.XpUtil;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 
 public class ContainerExperienceObelisk extends Container implements IRemoteExec.IContainer {
 
@@ -16,9 +15,9 @@ public class ContainerExperienceObelisk extends Container implements IRemoteExec
   public static final int DWN_XP = 43;
   public static final int REM_XP = 44;
 
-  private TileExperienceObelisk inv;
-  
-  public ContainerExperienceObelisk(TileExperienceObelisk inv) {
+  private final @Nonnull TileExperienceObelisk inv;
+
+  public ContainerExperienceObelisk(@Nonnull TileExperienceObelisk inv) {
     this.inv = inv;
   }
 

@@ -20,7 +20,7 @@ public class TileAversionObelisk extends TileEntityAbstractSpawningObelisk {
   public TileAversionObelisk() {
     super(new SlotDefinition(12, 0), AVERSION_POWER_INTAKE, AVERSION_POWER_BUFFER, AVERSION_POWER_USE);
   }
-  
+
   @Override
   public float getRange() {
     return AVERSION_RANGE.get(getCapacitorData());
@@ -32,7 +32,7 @@ public class TileAversionObelisk extends TileEntityAbstractSpawningObelisk {
   }
 
   @Override
-  public Result isSpawnPrevented(EntityLivingBase mob) {
+  public @Nonnull Result isSpawnPrevented(EntityLivingBase mob) {
     return (redstoneCheckPassed && hasPower() && isMobInRange(mob) && isMobInFilter(mob)) ? Result.DENY : Result.NEXT;
   }
 

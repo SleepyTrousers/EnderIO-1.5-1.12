@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper.IBlockRenderMapper;
@@ -56,8 +55,6 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   public static final AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
 
   public static BlockKillerJoe create() {
-    PacketHandler.INSTANCE.registerMessage(PacketSwing.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);
-
     BlockKillerJoe res = new BlockKillerJoe();
     MinecraftForge.EVENT_BUS.register(res);
     res.init();

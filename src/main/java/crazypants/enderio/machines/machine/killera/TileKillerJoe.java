@@ -2,7 +2,6 @@ package crazypants.enderio.machines.machine.killera;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -22,7 +21,6 @@ import com.enderio.core.common.util.UserIdent;
 import com.enderio.core.common.util.stackable.Things;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
-import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.base.fluid.Fluids;
@@ -31,7 +29,6 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.wireless.WirelessChargedLocation;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
@@ -39,6 +36,8 @@ import crazypants.enderio.machines.config.config.KillerJoeConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
+import crazypants.enderio.machines.network.PacketHandler;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.client.Minecraft;
@@ -61,16 +60,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
@@ -80,20 +75,6 @@ import static crazypants.enderio.base.config.Config.killerProvokesCreeperExpolos
 
 @Storable
 public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank, IRanged {
-
-  public static class ZombieCache {
-
-    private Set<EntityZombie> cache = Sets.newHashSet();
-
-    @SubscribeEvent
-    public void onSummonAid(SummonAidEvent event) {
-      if (!cache.isEmpty() && cache.remove(event.getSummoner())) {
-        event.setResult(Result.DENY);
-      }
-    }
-  }
-
-  public static ZombieCache zCache;
 
   private static final int IO_MB_TICK = 250;
 
@@ -130,11 +111,6 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   public TileKillerJoe() {
     super(new SlotDefinition(1, 0, 0));
-
-    if (zCache == null) {
-      zCache = new ZombieCache();
-      MinecraftForge.EVENT_BUS.register(zCache);
-    }
     tank.setTileEntity(this);
     tank.setCanDrain(false);
   }
@@ -176,9 +152,9 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
         }
       }
       getAttackera().onUpdate();
-      if (inventory[0] != null != hadSword) {
+      if (Prep.isValid(getStackInSlot(0)) != hadSword) {
         updateBlock();
-        hadSword = inventory[0] != null;
+        hadSword = Prep.isValid(getStackInSlot(0));
       }
     }
     super.doUpdate();
@@ -251,7 +227,8 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
             continue;
           }
           if (ent instanceof EntityZombie) {
-            zCache.cache.add((EntityZombie) ent);
+            // TODO: tag the entity instead (see Powered Spawner)
+            ZombieCache.cache.add(ent.getUniqueID());
           }
           try {
             if (togglePvp) {
@@ -303,7 +280,8 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   private void hooverXP() {
 
-    double maxDist = Math.max(KillerJoeConfig.killerJoeHooverXpHeight.get(), Math.max(KillerJoeConfig.killerJoeHooverXpLength.get(), KillerJoeConfig.killerJoeHooverXpWidth.get()));
+    double maxDist = Math.max(KillerJoeConfig.killerJoeHooverXpHeight.get(),
+        Math.max(KillerJoeConfig.killerJoeHooverXpLength.get(), KillerJoeConfig.killerJoeHooverXpWidth.get()));
 
     List<EntityXPOrb> xp = world.getEntitiesWithinAABB(EntityXPOrb.class, getHooverBounds(), null);
 
@@ -341,9 +319,9 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   private void hooverXP(EntityXPOrb entity) {
     if (!world.isRemote && !entity.isDead && needsMending()) {
       int xpValue = entity.getXpValue();
-      int i = Math.min(xpToDurability(xpValue), inventory[0].getItemDamage());
+      int i = Math.min(xpToDurability(xpValue), getStackInSlot(0).getItemDamage());
       xpValue -= durabilityToXp(i);
-      inventory[0].setItemDamage(inventory[0].getItemDamage() - i);
+      getStackInSlot(0).setItemDamage(getStackInSlot(0).getItemDamage() - i);
       markDirty();
       if (xpValue > 0) {
         entity.xpValue = xpValue;
@@ -361,13 +339,13 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     } else if (isMending) {
       return true;
     } else {
-      return isMending = inventory[0].getItem().getDurabilityForDisplay(inventory[0]) > .1;
+      return isMending = getStackInSlot(0).getItem().getDurabilityForDisplay(getStackInSlot(0)) > .1;
     }
   }
 
   private boolean needsMending() {
-    return KillerJoeConfig.killerMendingEnabled.get() && inventory[0] != null && inventory[0].isItemDamaged()
-        && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, inventory[0]) > 0;
+    return KillerJoeConfig.killerMendingEnabled.get() && getStackInSlot(0).isItemDamaged()
+        && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, getStackInSlot(0)) > 0;
   }
 
   private int durabilityToXp(int durability) {
@@ -620,7 +598,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   @Override
-  public BoundingBox getBounds() {
+  public @Nonnull BoundingBox getBounds() {
     return getKillBounds();
   }
 

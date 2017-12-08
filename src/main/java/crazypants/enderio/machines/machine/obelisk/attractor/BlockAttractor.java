@@ -7,9 +7,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
-import crazypants.enderio.machines.machine.obelisk.PacketObeliskFx;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -26,7 +24,6 @@ import net.minecraftforge.server.permission.PermissionAPI;
 public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
 
   public static BlockAttractor create(@Nonnull IModObject modObject) {
-    PacketHandler.INSTANCE.registerMessage(PacketObeliskFx.class, PacketObeliskFx.class, PacketHandler.nextID(), Side.CLIENT);
     BlockAttractor res = new BlockAttractor(modObject);
     res.init();
     MinecraftForge.EVENT_BUS.register(new EndermanFixer());
@@ -50,7 +47,7 @@ public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
     return new GuiAttractor(player.inventory, te);
   }
 
-  protected static String permissionAttracting;
+  protected static @Nonnull String permissionAttracting = "(unititialized)";
 
   @Override
   public void init(@Nonnull IModObject object, @Nonnull FMLInitializationEvent event) {

@@ -48,9 +48,10 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
   private static PredicateItemStack PREDICATE_FILTER = new PredicateItemStack() {
     @Override
     public boolean doApply(@Nonnull ItemStack input) {
-      return input.getItem() instanceof IItemFilterUpgrade; // TODO is this right? input.getItem() == MachineObject.itemItemFilter.getItem() && input.getItemDamage() == 0;
+      return input.getItem() instanceof IItemFilterUpgrade; // TODO is this right? input.getItem() == MachineObject.itemItemFilter.getItem() &&
+                                                            // input.getItemDamage() == 0;
     }
-  };  
+  };
 
   private Callback<ItemStack> CALLBACK_FILTER = new Callback<ItemStack>() {
     @Override
@@ -251,7 +252,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
   }
 
   @Override
-  public BoundingBox getBounds() {
+  public @Nonnull BoundingBox getBounds() {
     return new BoundingBox(getPos()).expand(getRange() + (range == 0 ? 1 / 32f : 0));
   }
 

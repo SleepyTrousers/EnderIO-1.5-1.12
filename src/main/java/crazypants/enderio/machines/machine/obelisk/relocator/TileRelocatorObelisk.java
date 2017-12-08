@@ -9,17 +9,15 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.EntityAction;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.machines.machine.farm.PacketFarmAction;
+import crazypants.enderio.machines.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.machines.machine.obelisk.spawn.TileEntityAbstractSpawningObelisk;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 import static crazypants.enderio.machines.capacitor.CapacitorKey.RELOCATOR_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.RELOCATOR_POWER_INTAKE;
@@ -35,7 +33,7 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
   public TileRelocatorObelisk() {
     super(new SlotDefinition(12, 0), RELOCATOR_POWER_INTAKE, RELOCATOR_POWER_BUFFER, RELOCATOR_POWER_USE);
   }
-  
+
   @Override
   public float getRange() {
     return RELOCATOR_RANGE.get(getCapacitorData());
@@ -47,7 +45,7 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
   }
 
   @Override
-  public Result isSpawnPrevented(EntityLivingBase mob) {
+  public @Nonnull Result isSpawnPrevented(EntityLivingBase mob) {
     if (redstoneCheckPassed && hasPower() && isMobInRange(mob) && isMobInFilter(mob)) {
       relocationQueue.put(mob, null);
       return Result.DONE;
@@ -82,13 +80,11 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
                 && (world.containsAnyLiquid(bb) == mob.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
 
             if (spaceClear) {
-              PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(new BlockPos(mob.posX, mob.posY, mob.posZ)),
-                  new TargetPoint(world.provider.getDimension(), mob.posX, mob.posY, mob.posZ, 64));
+              PacketObeliskFx.create(mob, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL);
               mob.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
-              mob.setPositionAndUpdate(x - dx / 2, y, z - dz / 2);
+              mob.setPositionAndUpdate(x - dx / 2, y + .05, z - dz / 2);
               mob.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
-              PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(new BlockPos(mob.posX, mob.posY, mob.posZ)),
-                  new TargetPoint(world.provider.getDimension(), mob.posX, mob.posY, mob.posZ, 64));
+              PacketObeliskFx.create(mob, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL);
               iterator.remove();
             }
           }

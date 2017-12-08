@@ -12,10 +12,10 @@ import com.enderio.core.client.render.RenderUtil;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.machine.modes.IoMode;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.lang.Lang;
+import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -101,7 +101,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   }
 
   protected void sendUpdateToServer() {
-    PacketHandler.INSTANCE.sendToServer(new PacketBufferIO(getTileEntity(), lastInput, lastOutput));
+    PacketHandler.sendToServer(new PacketBufferIO(getTileEntity(), lastInput, lastOutput));
   }
 
   @Override
