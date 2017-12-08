@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
@@ -20,50 +21,64 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IConduit {
 
-  @SideOnly(Side.CLIENT)
-  ITabPanel createPanelForConduit(Object gui, IConduit con); // TODO 1.11 GuiExternalConnection
+  // stuff that would be on the class, not the object if there were interfaces for classes...
 
   @SideOnly(Side.CLIENT)
-  int getTabOrderForConduit(IConduit con);
+  @Nonnull
+  ITabPanel createGuiPanel(@Nonnull Object gui); // TODO 1.11 IGuiExternalConnection
+
+  @SideOnly(Side.CLIENT)
+  int getGuiPanelTabOrder();
+
+  public @Nonnull IConduitNetwork<?, ?> createNetworkForType();
 
   // Base functionality
   @Nonnull
   Class<? extends IConduit> getBaseConduitType();
 
+  @Nonnull
   ItemStack createItem();
 
-  List<ItemStack> getDrops();
+  @Nonnull
+  NNList<ItemStack> getDrops();
 
-  int getLightValue();
+  default int getLightValue() {
+    return 0;
+  }
+
+  default int getExternalRedstoneLevel() {
+    return 0;
+  }
 
   boolean isActive();
 
   void setActive(boolean active);
 
-  void writeToNBT(NBTTagCompound conduitBody);
+  void writeToNBT(@Nonnull NBTTagCompound conduitBody);
 
-  void readFromNBT(NBTTagCompound conduitBody, short nbtVersion);
+  void readFromNBT(@Nonnull NBTTagCompound conduitBody);
 
   // Container
 
-  void setBundle(IConduitBundle tileConduitBundle);
+  void setBundle(@Nonnull IConduitBundle tileConduitBundle);
 
-  IConduitBundle getBundle();
+  @Nonnull
+  IConduitBundle getBundle() throws NullPointerException;
 
   void onAddedToBundle();
 
   void onRemovedFromBundle();
 
-  BlockCoord getLocation();
+  @Nonnull
+  BlockCoord getLocation() throws NullPointerException; // TODO: does this do anything else but getBundle().getLocation()? If not: bye, bye!
 
-  // Conections
+  // Connections
+
   boolean hasConnections();
 
   boolean hasExternalConnections();
@@ -72,97 +87,119 @@ public interface IConduit {
 
   // Conduit Connections
 
-  boolean canConnectToConduit(EnumFacing direction, IConduit conduit);
+  boolean canConnectToConduit(@Nonnull EnumFacing direction, @Nonnull IConduit conduit);
 
+  @Nonnull
   Set<EnumFacing> getConduitConnections();
 
-  boolean containsConduitConnection(EnumFacing dir);
+  default boolean containsConduitConnection(@Nonnull EnumFacing dir) {
+    return getConduitConnections().contains(dir);
+  }
 
-  void conduitConnectionAdded(EnumFacing fromDirection);
+  void conduitConnectionAdded(@Nonnull EnumFacing fromDirection);
 
-  void conduitConnectionRemoved(EnumFacing fromDirection);
+  void conduitConnectionRemoved(@Nonnull EnumFacing fromDirection);
 
   void connectionsChanged();
 
-  IConduitNetwork<?, ?> getNetwork();
+  @Nonnull
+  IConduitNetwork<?, ?> getNetwork() throws NullPointerException;
 
-  boolean setNetwork(IConduitNetwork<?, ?> network);
+  boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network); // TODO: is setNetwork(null) used to clear the network?
 
   // External Connections
 
-  boolean canConnectToExternal(EnumFacing direction, boolean ignoreConnectionMode);
+  boolean canConnectToExternal(@Nonnull EnumFacing direction, boolean ignoreConnectionMode);
 
+  @Nonnull
   Set<EnumFacing> getExternalConnections();
 
-  boolean containsExternalConnection(EnumFacing dir);
+  default boolean containsExternalConnection(@Nonnull EnumFacing dir) {
+    return getExternalConnections().contains(dir);
+  }
 
-  void externalConnectionAdded(EnumFacing fromDirection);
+  void externalConnectionAdded(@Nonnull EnumFacing fromDirection);
 
-  void externalConnectionRemoved(EnumFacing fromDirection);
+  void externalConnectionRemoved(@Nonnull EnumFacing fromDirection);
 
-  boolean isConnectedTo(EnumFacing dir);
+  boolean isConnectedTo(@Nonnull EnumFacing dir); // TODO: what does this do?
 
-  ConnectionMode getConnectionMode(EnumFacing dir);
+  @Nonnull
+  ConnectionMode getConnectionMode(@Nonnull EnumFacing dir);
 
-  void setConnectionMode(EnumFacing dir, ConnectionMode mode);
+  void setConnectionMode(@Nonnull EnumFacing dir, @Nonnull ConnectionMode mode);
 
-  boolean hasConnectionMode(ConnectionMode mode);
+  boolean supportsConnectionMode(@Nonnull ConnectionMode mode);
 
-  ConnectionMode getNextConnectionMode(EnumFacing dir);
+  @Nonnull
+  default ConnectionMode getNextConnectionMode(@Nonnull EnumFacing dir) {
+    return NNList.of(ConnectionMode.class).next(getConnectionMode(dir));
+  }
 
-  ConnectionMode getPreviousConnectionMode(EnumFacing dir);
+  @Nonnull
+  default ConnectionMode getPreviousConnectionMode(@Nonnull EnumFacing dir) {
+    return NNList.of(ConnectionMode.class).prev(getConnectionMode(dir));
+  }
 
-  // rendering, only needed us default rendering is used
+  // rendering, only needed if default rendering is used
+  interface WithDefaultRendering extends IConduit {
 
-  @SideOnly(Side.CLIENT)
-  TextureAtlasSprite getTextureForState(CollidableComponent component);
+    @SideOnly(Side.CLIENT)
+    @Nonnull
+    TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component);
 
-  @SideOnly(Side.CLIENT)
-  TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component);
+    @SideOnly(Side.CLIENT)
+    @Nonnull
+    TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component);
 
-  @SideOnly(Side.CLIENT)
-  public Vector4f getTransmitionTextureColorForState(CollidableComponent component);
+    @SideOnly(Side.CLIENT)
+    public @Nonnull Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component);
 
-  float getTransmitionGeometryScale();
+    @SideOnly(Side.CLIENT)
+    float getTransmitionGeometryScale();
 
-  float getSelfIlluminationForState(CollidableComponent component);
+    @SideOnly(Side.CLIENT)
+    float getSelfIlluminationForState(@Nonnull CollidableComponent component);
 
-  // geometry
+    /**
+     * Should the texture of the conduit connectors be mirrored around the conduit node?
+     */
+    @SideOnly(Side.CLIENT)
+    boolean shouldMirrorTexture();
+
+  }
+
+  // geometry (collision, a.k.a. server-side)
 
   boolean haveCollidablesChangedSinceLastCall();
 
+  @Nonnull
   Collection<CollidableComponent> getCollidableComponents();
 
-  Collection<CollidableComponent> createCollidables(CacheKey key);
+  @Nonnull
+  Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key);
 
+  @Nonnull
   Class<? extends IConduit> getCollidableType();
 
-  // Actions
+  // Actions (mostly relayed from the Block/TE methods of the same name)
 
-  boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all);
+  boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all);
 
-  void onChunkUnload(World world);
+  void onChunkUnload();
 
-  void updateEntity(World world);
+  void updateEntity(); // Please, do not tick unless really, really needed!
 
-  boolean onNeighborBlockChange(Block blockId);
+  boolean onNeighborBlockChange(@Nonnull Block block);
 
-  boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos);
-
-  // For Copy/Paste of connection settings
-  boolean writeConnectionSettingsToNBT(EnumFacing dir, NBTTagCompound nbt);
-
-  boolean readConduitSettingsFromNBT(EnumFacing dir, NBTTagCompound nbt);
-
-  public IConduitNetwork<?, ?> createNetworkForType();
-
-  /**
-   * Should the texture of the conduit connectors be mirrored around the conduit node?
-   */
-  boolean shouldMirrorTexture();
+  boolean onNeighborChange(@Nonnull BlockPos neighbourPos);
 
   void invalidate();
 
-  int getExternalRedstoneLevel();
+  // For Copy/Paste of connection settings
+
+  boolean writeConnectionSettingsToNBT(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound nbt);
+
+  boolean readConduitSettingsFromNBT(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound nbt);
 
 }
