@@ -74,7 +74,8 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   private static final @Nonnull ResourceLocation ENDERZOO_ENDERMINY = new ResourceLocation("enderzoo", "enderminy");
 
   static final @Nonnull ToolMaterial MATERIAL = NullHelper
-      .notnull(EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 2000, 8, 3, 25), "failed to add tool material");
+      .notnull(EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 2000, 8, 3.0001f, 25), "failed to add tool material");
+  // 3.0001f = more desirable for mobs (i.e. they'll pick it up even if they already have diamond)
 
   private final @Nonnull AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered",
       Config.darkSteelSwordPoweredDamageBonus, 0);
