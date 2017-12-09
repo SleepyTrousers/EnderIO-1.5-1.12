@@ -12,6 +12,8 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.base.TileEntityEio;
 import info.loenwind.autosave.annotations.Storable;
@@ -47,8 +49,8 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
     Set<TileReservoir> seen = new HashSet<TileReservoir>();
     seen.add(this);
     int got = tank.getFluidAmount();
-    for (EnumFacing neighbor : EnumFacing.VALUES) {
-      BlockPos pos1 = getPos().offset(neighbor);
+    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+      BlockPos pos1 = getPos().offset(itr.next());
       TileEntity tileEntity = world.getTileEntity(pos1);
       if (tileEntity instanceof TileReservoir && !seen.contains(tileEntity)) {
         seen.add((TileReservoir) tileEntity);
@@ -56,8 +58,8 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
         if (got >= Fluid.BUCKET_VOLUME * 2) {
           return true;
         }
-        for (EnumFacing neighbor2 : EnumFacing.VALUES) {
-          BlockPos pos2 = pos1.offset(neighbor2);
+        for (NNIterator<EnumFacing> itr2 = NNList.FACING.fastIterator(); itr2.hasNext();) {
+          BlockPos pos2 = pos1.offset(itr2.next());
           TileEntity tileEntity2 = world.getTileEntity(pos2);
           if (tileEntity2 instanceof TileReservoir && !seen.contains(tileEntity2)) {
             seen.add((TileReservoir) tileEntity2);
@@ -72,49 +74,61 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
     return false;
   }
 
-  private static int IO_MB_TICK = 100;
+  private static final int IO_MB_TICK = 100;
 
   protected void doPush() {
-    if (tank.getFluidAmount() > 0) {
-      for (EnumFacing dir : EnumFacing.VALUES) {
-        if (dir != null && tank.getFluidAmount() > 0) {
-          if (FluidWrapper.transfer(tank, world, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
-            setTanksDirty();
-          }
+    if (!tank.isEmpty()) {
+      for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext() && !tank.isEmpty();) {
+        final EnumFacing dir = itr.next();
+        final BlockPos neighbor = getPos().offset(dir);
+        if (world.getBlockState(neighbor).getBlock() != blockType && FluidWrapper.transfer(tank, world, neighbor, dir.getOpposite(), IO_MB_TICK) > 0) {
+          setTanksDirty();
         }
       }
     }
   }
 
+  /**
+   * Leak fluid to blocks below
+   */
   protected void doLeak() {
     BlockPos down = getPos().down();
-    int max = Math.min(tank.getFluidAmount() / 3, IO_MB_TICK);
-    if (max <= 0) {
-      max = 2;
-    }
-    doLeak(down, max);
-    for (EnumFacing dir : EnumFacing.Plane.HORIZONTAL) {
-      BlockPos pos1 = down.offset(dir);
-      doLeak(pos1, max / 2);
-    }
-  }
-
-  protected void doLeak(@Nonnull BlockPos pos1, int maxAmount) {
-    TileEntity tileEntity = world.getTileEntity(pos1);
-    if (tileEntity instanceof TileReservoir && !((TileReservoir) tileEntity).tank.isFull()) {
-      FluidStack canDrain = tank.drainInternal(maxAmount, false);
-      if (canDrain != null && canDrain.amount > 0) {
-        int fill = ((TileReservoir) tileEntity).tank.fill(canDrain, true);
-        tank.drainInternal(fill, true);
-        ((TileReservoir) tileEntity).setTanksDirty();
-        setTanksDirty();
+    if (doLeak(down)) {
+      for (NNIterator<EnumFacing> itr = NNList.FACING_HORIZONTAL.fastIterator(); itr.hasNext() && !tank.isEmpty(); doLeak(down.offset(itr.next()))) {
       }
     }
   }
 
+  /**
+   * Leak fluid to other blocks (which should be below the current one).
+   * 
+   * @param otherPos
+   * @return true if the target block was a reservoir. False otherwise.
+   */
+  protected boolean doLeak(@Nonnull BlockPos otherPos) {
+    TileEntity tileEntity = world.getTileEntity(otherPos);
+    if (tileEntity instanceof TileReservoir) {
+      final TileReservoir otherTe = (TileReservoir) tileEntity;
+      if (!otherTe.tank.isFull()) {
+        FluidStack canDrain = tank.drainInternal(otherTe.tank.getAvailableSpace(), false);
+        if (canDrain != null && canDrain.amount > 0) {
+          int fill = otherTe.tank.fill(canDrain, true);
+          tank.drainInternal(fill, true);
+          otherTe.setTanksDirty();
+          setTanksDirty();
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Equalize fluid levels with neighbors
+   */
   protected void doEqualize() {
-    for (EnumFacing dir : EnumFacing.Plane.HORIZONTAL) {
-      BlockPos pos1 = getPos().offset(dir);
+    for (NNIterator<EnumFacing> itr = NNList.FACING_HORIZONTAL.fastIterator(); itr.hasNext() && !tank.isEmpty();) {
+      BlockPos pos1 = getPos().offset(itr.next());
       TileEntity tileEntity = world.getTileEntity(pos1);
       if (tileEntity instanceof TileReservoir) {
         TileReservoir other = (TileReservoir) tileEntity;

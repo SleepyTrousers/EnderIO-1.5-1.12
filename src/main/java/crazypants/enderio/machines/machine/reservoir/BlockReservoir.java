@@ -1,14 +1,10 @@
 package crazypants.enderio.machines.machine.reservoir;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.init.IModObject;
@@ -20,7 +16,6 @@ import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.tool.ToolUtil;
-import crazypants.enderio.util.Prep;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -40,8 +35,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -80,7 +73,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
 
   @Override
   public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
-    if (tab != null) {
+    if (NullHelper.untrust(tab) != null) {
       super.getSubBlocks(itemIn, tab, list);
     }
   }
@@ -135,84 +128,28 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   @Override
   public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer,
       @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
-    TileEntity te;
-    if (!entityPlayer.isSneaking() && Prep.isValid(entityPlayer.inventory.getCurrentItem()) && (te = world.getTileEntity(pos)) instanceof TileReservoir) {
-      TileReservoir tank = ((TileReservoir) te);
-      if (ToolUtil.isToolEquipped(entityPlayer, hand)) {
-        tank.setAutoEject(!tank.isAutoEject());
-        world.notifyBlockUpdate(pos, state, state, 3);
-        return true;
-      }
-      if (tank.tank.getAvailableSpace() >= Fluid.BUCKET_VOLUME && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, tank)) {
-        return true;
-      } else if (!tank.tank.isFull() && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, new TankWrapper(tank, world, pos))) {
-        return true;
-      }
-      if (FluidUtil.fillPlayerHandItemFromInternalTank(world, pos, entityPlayer, hand, tank)) {
-        return true;
-      }
-    }
-    return super.onBlockActivated(world, pos, state, entityPlayer, hand, side, hitX, hitY, hitZ);
-  }
-
-  private static class TankWrapper implements ITankAccess {
-
-    private final List<ITankAccess> parents = new ArrayList<ITankAccess>();
-    private SmartTank tank;
-    private final World world;
-    private final BlockPos pos;
-
-    private TankWrapper(ITankAccess parent, World world, BlockPos pos) {
-      this.parents.add(parent);
-      this.world = world;
-      this.pos = pos;
-    }
-
-    @Override
-    public FluidTank getInputTank(FluidStack forFluidType) {
-      FluidTank parentTank = parents.get(0).getInputTank(forFluidType);
-      if (parentTank == null) {
-        return null;
-      }
-      int free = parentTank.getCapacity() - parentTank.getFluidAmount();
-      for (EnumFacing face : EnumFacing.values()) {
-        TileEntity neighbor = world.getTileEntity(pos.offset(face));
-        if (neighbor instanceof ITankAccess) {
-          FluidTank tank2 = ((ITankAccess) neighbor).getInputTank(forFluidType);
-          if (tank2 != null) {
-            free += tank2.getCapacity() - tank2.getFluidAmount();
-            parents.add(((ITankAccess) neighbor));
-          }
+    if (!entityPlayer.isSneaking()) {
+      TileReservoir tank = getTileEntity(world, pos);
+      if (tank != null) {
+        if (ToolUtil.isToolEquipped(entityPlayer, hand)) {
+          tank.setAutoEject(!tank.isAutoEject());
+          world.notifyBlockUpdate(pos, state, state, 3);
+          return true;
+        }
+        if (tank.tank.getAvailableSpace() >= Fluid.BUCKET_VOLUME && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, tank)) {
+          return true;
+        } else if (!tank.tank.isFull()
+            && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, new ReservoirTankWrapper(tank, world, pos))) {
+          return true;
+        }
+        if (FluidUtil.fillPlayerHandItemFromInternalTank(world, pos, entityPlayer, hand, tank)) {
+          return true;
         }
       }
-      if (free < Fluid.BUCKET_VOLUME) {
-        free = Fluid.BUCKET_VOLUME;
-      }
-      tank = new SmartTank(parentTank.getFluid(), free);
-      return tank;
+    } else if (ToolUtil.breakBlockWithTool(this, world, pos, side, entityPlayer, hand, permissionNodeWrenching)) {
+      return true;
     }
-
-    @Override
-    public @Nonnull FluidTank[] getOutputTanks() {
-      return parents.get(0).getOutputTanks();
-    }
-
-    @Override
-    public void setTanksDirty() {
-      FluidStack stack = tank.getFluid();
-      if (stack.amount > 0) {
-        for (ITankAccess parent : parents) {
-          FluidTank ptank = parent.getInputTank(stack);
-          stack.amount -= ptank.fill(stack, true);
-          parent.setTanksDirty();
-          if (stack.amount <= 0) {
-            return;
-          }
-        }
-      }
-      tank.setCapacity(0);
-    }
-
+    return false; // super also has fluid transfer code, avoid that
   }
 
   @Override
@@ -228,7 +165,8 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   @Override
   @SideOnly(Side.CLIENT)
   public boolean shouldSideBeRendered(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
-    return !(world.getBlockState(pos.offset(side)).getBlock() instanceof BlockReservoir);
+    return !(world.getBlockState(pos.offset(side)).getBlock() instanceof BlockReservoir)
+        && !world.getBlockState(pos.offset(side)).doesSideBlockRendering(world, pos.offset(side), side.getOpposite());
   }
 
   @Override

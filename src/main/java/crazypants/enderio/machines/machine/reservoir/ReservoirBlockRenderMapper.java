@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
+
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.base.render.rendermapper.ConnectedBlockRenderMapper;
@@ -31,7 +34,8 @@ public class ReservoirBlockRenderMapper extends ConnectedBlockRenderMapper {
     TileEntity tileEntity = state.getTileEntity();
     if ((tileEntity instanceof TileReservoir) && ((TileReservoir) tileEntity).isAutoEject()) {
       EnumMap<EnumFacing, EnumIOMode> result = new EnumMap<EnumFacing, EnumIOMode>(EnumFacing.class);
-      for (EnumFacing face : EnumFacing.values()) {
+      for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+        EnumFacing face = itr.next();
         IBlockState neighborState = world.getBlockState(pos.offset(face));
         if (!isSameKind(state, neighborState)) {
           result.put(face, EnumIOMode.RESERVOIR);
