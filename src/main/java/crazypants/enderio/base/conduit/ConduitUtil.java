@@ -156,12 +156,12 @@ public class ConduitUtil {
     }
   }
 
-  public static IConduit readConduitFromNBT(@Nonnull NBTTagCompound conduitRoot, short nbtVersion) {
+  public static IConduit readConduitFromNBT(@Nonnull NBTTagCompound conduitRoot) {
     if (conduitRoot.hasKey("UUID")) {
       String UUIDString = conduitRoot.getString("UUID");
       IConduit result = ConduitRegistry.getInstance(UUID.fromString(UUIDString));
       if (result != null) {
-        result.readFromNBT(conduitRoot, nbtVersion);
+        result.readFromNBT(conduitRoot);
       }
       return result;
     }
@@ -178,7 +178,7 @@ public class ConduitUtil {
     } catch (Exception e) {
       throw new RuntimeException("Could not create an instance of the conduit with name: " + typeName, e);
     }
-    result.readFromNBT(conduitBody, nbtVersion);
+    result.readFromNBT(conduitBody);
     return result;
 
   }
