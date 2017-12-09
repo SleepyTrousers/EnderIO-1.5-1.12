@@ -1,6 +1,6 @@
 package crazypants.enderio.machines.machine.vacuum;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -18,7 +18,6 @@ import crazypants.enderio.base.render.util.QuadCollector;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -26,47 +25,34 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class XPRenderMapper implements IRenderMapper.IBlockRenderMapper, IRenderMapper.IItemRenderMapper.IItemStateMapper {
+public class VacuumRenderMapper implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemStateMapper {
 
-  public static final @Nonnull XPRenderMapper instance = new XPRenderMapper();
+  public static final @Nonnull VacuumRenderMapper instance = new VacuumRenderMapper();
+
+  private static final @Nonnull EnumRenderMode SINGLE_MODEL = EnumRenderMode.FRONT;
+  private static final @Nonnull EnumRenderMode SINGLE_MODEL_INVENTORY = EnumRenderMode.FRONT_SOUTH;
+
+  protected VacuumRenderMapper() {
+  }
 
   @Override
   @SideOnly(Side.CLIENT)
   public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
       @Nonnull QuadCollector quadCollector) {
-    TileEntity tileEntity = state.getTileEntity();
-    Block block = state.getBlock();
 
-    if ((tileEntity instanceof TileXPVacuum) && (block instanceof BlockXPVacuum)) {
-      return render(state.getState(), world, pos, blockLayer, (TileXPVacuum) tileEntity, (BlockXPVacuum) block);
+    if (blockLayer == BlockRenderLayer.CUTOUT) {
+      return Collections.singletonList(state.getState().withProperty(EnumRenderMode.RENDER, SINGLE_MODEL));
     }
+
     return null;
   }
 
-  @SideOnly(Side.CLIENT)
-  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer, TileXPVacuum tileEntity,
-      BlockXPVacuum block) {
-    List<IBlockState> states = new ArrayList<IBlockState>();
-
-    EnumFacing facing = EnumFacing.NORTH;
-
-    boolean formed = tileEntity.isFormed();
-
-    if (formed) {
-      states.add(state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON.rotate(facing)));
-    } else {
-      states.add(state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT.rotate(facing)));
-    }
-
-    return states;
-  }
-
+  @SuppressWarnings("deprecation")
   @Override
   @SideOnly(Side.CLIENT)
   public List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ItemQuadCollector itemQuadCollector) {
-    List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
-    states.add(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON_SOUTH), stack));
-    return states;
+    return Collections
+        .singletonList(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, SINGLE_MODEL_INVENTORY), (ItemStack) null));
   }
 
   @Override

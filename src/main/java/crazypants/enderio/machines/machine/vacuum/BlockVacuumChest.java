@@ -15,6 +15,9 @@ import crazypants.enderio.base.paint.PainterUtil2;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveRenderers;
+import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
@@ -39,8 +42,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IEioGuiHandler.WithPos, IResourceTooltipProvider, IRedstoneConnectable,
-    IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
+public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmartRenderAwareBlock, IEioGuiHandler.WithPos, IResourceTooltipProvider,
+    IRedstoneConnectable, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
 
   public static BlockVacuumChest create(@Nonnull IModObject modObject) {
     PacketHandler.INSTANCE.registerMessage(PacketVaccumChest.Handler.class, PacketVaccumChest.class, PacketHandler.nextID(), Side.SERVER);
@@ -120,19 +123,19 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IEioG
   }
 
   protected @Nonnull BlockStateWrapperBase createBlockStateWrapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    return new BlockStateWrapperBase(state, world, pos, null);// getBlockRenderMapper());
+    return new BlockStateWrapperBase(state, world, pos, getBlockRenderMapper());
   }
 
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public @Nonnull IItemRenderMapper getItemRenderMapper() {
-  // return RenderMappers.TELEPAD_MAPPER; // TODO: Why are we using this mapper for the vacuum chest?
-  // }
-  //
-  // @SideOnly(Side.CLIENT)
-  // public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
-  // return RenderMappers.TELEPAD_MAPPER; // TODO: Why are we using this mapper for the vacuum chest?
-  // }
+  @Override
+  @SideOnly(Side.CLIENT)
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
+    return VacuumRenderMapper.instance;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+    return VacuumRenderMapper.instance;
+  }
 
   @Override
   public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {

@@ -2,8 +2,8 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle":"enderio:blocks/block_travel_anchor_body",
-            "all": "enderio:blocks/block_travel_anchor_body",
+            "particle":"enderio:blocks/block_xp_vacuum",
+            "all": "enderio:blocks/block_xp_vacuum_on",
 		    "body": "enderio:blocks/block_travel_anchor_body",
 		    "core": "enderio:blocks/xpjuicestill",
 		    "inner": "enderio:blocks/block_travel_anchor_inner"
