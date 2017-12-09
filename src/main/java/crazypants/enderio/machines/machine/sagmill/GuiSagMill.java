@@ -2,16 +2,17 @@ package crazypants.enderio.machines.machine.sagmill;
 
 import java.awt.Rectangle;
 
-import org.lwjgl.opengl.GL11;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
 
 import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiSagMill extends GuiPoweredMachineBase<TileSagMill> {
 
-  public GuiSagMill(InventoryPlayer par1InventoryPlayer, TileSagMill inventory) {
+  public GuiSagMill(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileSagMill inventory) {
     super(inventory, new ContainerSagMill(par1InventoryPlayer, inventory), "crusher");
     addToolTip(new GuiToolTip(new Rectangle(142, 23, 5, 17), "") {
 
@@ -27,7 +28,7 @@ public class GuiSagMill extends GuiPoweredMachineBase<TileSagMill> {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
 
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);

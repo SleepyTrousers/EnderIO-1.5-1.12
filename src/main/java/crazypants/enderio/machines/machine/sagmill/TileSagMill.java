@@ -6,7 +6,6 @@ import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.task.PoweredTask;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
@@ -14,6 +13,8 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.base.recipe.sagmill.IGrindingMultiplier;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
+import crazypants.enderio.machines.network.PacketHandler;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -46,10 +47,7 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
 
   @Override
   public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
-    if (itemstack.isEmpty()) {
-      return false;
-    }
-    return SagMillRecipeManager.getInstance().isValidInput(new MachineRecipeInput(i, itemstack));
+    return Prep.isValid(itemstack) && SagMillRecipeManager.getInstance().isValidInput(new MachineRecipeInput(i, itemstack));
   }
 
   public int getBallDurationScaled(int scale) {
@@ -77,12 +75,13 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
       }
     }
     if (gb == null) {
-      gb = SagMillRecipeManager.getInstance().getGrindballFromStack(inventory[1]);
+      gb = SagMillRecipeManager.getInstance().getGrindballFromStack(getStackInSlot(1));
       if (gb != null) {
         maxGbUse = gb.getDurationMJ();
         decrStackSize(1, 1);
         markDirty();
         sendGB = false; // the tile update will also sync the grinding ball
+        lastSendGbScaled = getBallDurationScaled(16);
       }
     }
     if (sendGB) {
@@ -140,9 +139,4 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
     return super.getVolume() * 0.125f;
   }
 
-  // @Override
-  // public void writeCustomNBT(NBTTagCompound nbtRoot) { TODO
-  // super.writeCustomNBT(nbtRoot);
-  // lastSendGbScaled = getBallDurationScaled(16);
-  // }
 }

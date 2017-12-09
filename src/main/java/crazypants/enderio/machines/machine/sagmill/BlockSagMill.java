@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import net.minecraft.block.state.IBlockState;
@@ -25,8 +24,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockSagMill create(@Nonnull IModObject modObject) {
-    PacketHandler.INSTANCE.registerMessage(PacketGrindingBall.class, PacketGrindingBall.class, PacketHandler.nextID(), Side.CLIENT);
-
     BlockSagMill res = new BlockSagMill(modObject);
     res.init();
     return res;
@@ -51,8 +48,7 @@ public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements I
 
   @Override
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
-
-    TileSagMill te = (TileSagMill) world.getTileEntity(pos);
+    TileSagMill te = getTileEntity(world, pos);
     if (te != null && te.isActive()) {
       EnumFacing front = te.facing;
 

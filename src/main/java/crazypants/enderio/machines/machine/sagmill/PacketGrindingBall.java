@@ -1,39 +1,40 @@
 package crazypants.enderio.machines.machine.sagmill;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.network.MessageTileEntity;
+
 import crazypants.enderio.base.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrindingBall, IMessage> {
+public class PacketGrindingBall extends MessageTileEntity<TileSagMill> implements IMessage, IMessageHandler<PacketGrindingBall, IMessage> {
 
-  private long pos;
   int currGbUse;
   int maxGbUse;
 
   public PacketGrindingBall() {
   }
 
-  public PacketGrindingBall(TileSagMill ent) {
-    pos = ent.getPos().toLong();
+  public PacketGrindingBall(@Nonnull TileSagMill ent) {
+    super(ent);
     currGbUse = ent.currGbUse;
     maxGbUse = ent.gb == null ? 0 : ent.gb.getDurationMJ();
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
-    buf.writeLong(pos);
+    super.toBytes(buf);
     buf.writeInt(currGbUse);
     buf.writeInt(maxGbUse);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    pos = buf.readLong();
+    super.fromBytes(buf);
     currGbUse = buf.readInt();
     maxGbUse = buf.readInt();
   }
@@ -41,11 +42,10 @@ public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrind
   @Override
   public IMessage onMessage(PacketGrindingBall message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.world.getTileEntity(BlockPos.fromLong(message.pos));
-    if (te instanceof TileSagMill) {
-      TileSagMill me = (TileSagMill) te;
-      me.currGbUse = message.currGbUse;
-      me.maxGbUse = message.maxGbUse;
+    TileSagMill te = message.getTileEntity(player.world);
+    if (te != null) {
+      te.currGbUse = message.currGbUse;
+      te.maxGbUse = message.maxGbUse;
     }
     return null;
   }
