@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.conduit.IConduit;
 import net.minecraft.util.EnumFacing;
 
@@ -13,11 +15,11 @@ public class CollidableCache {
 
   private final Map<CacheKey, Collection<CollidableComponent>> cache = new HashMap<CollidableCache.CacheKey, Collection<CollidableComponent>>();
 
-  public CacheKey createKey(Class<? extends IConduit> baseType, Offset offset, EnumFacing dir, boolean isStub) {
+  public CacheKey createKey(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset offset, @Nonnull EnumFacing dir, boolean isStub) {
     return new CacheKey(baseType, offset, dir, isStub);
   }
 
-  public Collection<CollidableComponent> getCollidables(CacheKey key, IConduit conduit) {
+  public Collection<CollidableComponent> getCollidables(@Nonnull CacheKey key, @Nonnull IConduit conduit) {
     Collection<CollidableComponent> result = cache.get(key);
     if (result == null) {
       result = conduit.createCollidables(key);
@@ -28,14 +30,13 @@ public class CollidableCache {
 
   public static class CacheKey {
 
-    public final Class<? extends IConduit> baseType;
-    public final String className; // used to generate reliable equals /
-                                   // hashcode
-    public final Offset offset;
-    public final EnumFacing dir;
+    public final @Nonnull Class<? extends IConduit> baseType;
+    public final @Nonnull String className; // used to generate reliable equals / hashcode
+    public final @Nonnull Offset offset;
+    public final @Nonnull EnumFacing dir;
     public final boolean isStub;
 
-    public CacheKey(Class<? extends IConduit> baseType, Offset offset, EnumFacing dir, boolean isStub) {
+    public CacheKey(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset offset, @Nonnull EnumFacing dir, boolean isStub) {
       this.baseType = baseType;
       className = baseType.getCanonicalName();
       this.offset = offset;
@@ -47,10 +48,10 @@ public class CollidableCache {
     public int hashCode() {
       final int prime = 31;
       int result = 1;
-      result = prime * result + ((className == null) ? 0 : className.hashCode());
-      result = prime * result + ((dir == null) ? 0 : dir.hashCode());
+      result = prime * result + className.hashCode();
+      result = prime * result + dir.hashCode();
       result = prime * result + (isStub ? 1231 : 1237);
-      result = prime * result + ((offset == null) ? 0 : offset.hashCode());
+      result = prime * result + offset.hashCode();
       return result;
     }
 
@@ -66,11 +67,7 @@ public class CollidableCache {
         return false;
       }
       CacheKey other = (CacheKey) obj;
-      if (className == null) {
-        if (other.className != null) {
-          return false;
-        }
-      } else if (!className.equals(other.className)) {
+      if (!className.equals(other.className)) {
         return false;
       }
       if (dir != other.dir) {

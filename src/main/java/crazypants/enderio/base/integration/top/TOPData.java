@@ -28,8 +28,8 @@ import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode.IconHolder;
 import crazypants.enderio.base.machine.task.ContinuousTask;
-import crazypants.enderio.base.paint.PainterUtil2;
 import crazypants.enderio.base.paint.IPaintable.IPaintableTileEntity;
+import crazypants.enderio.base.paint.PainterUtil2;
 import crazypants.enderio.base.power.EnergyTank;
 import crazypants.enderio.base.power.ILegacyPoweredTile;
 import crazypants.enderio.base.power.IPowerStorage;
@@ -140,7 +140,7 @@ class TOPData {
     if (tileEntity instanceof IRanged) {
       IRanged te = (IRanged) tileEntity;
       bounds = te.getBounds();
-      hasRange = bounds != null;
+      hasRange = true;
     }
 
     if (tileEntity instanceof EntityAction.Implementer) {
