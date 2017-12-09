@@ -30,14 +30,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockDecorationFacing extends BlockDecoration {
 
   public static BlockDecoration create(@Nonnull IModObject modObject) {
-    return new BlockDecorationFacing(modObject);
+    return new BlockDecorationFacing(modObject, EnumDecoBlock.TYPE15);
+  }
+
+  public static BlockDecoration create2(@Nonnull IModObject modObject) {
+    return new BlockDecorationFacing(modObject, EnumDecoBlock.TYPE00);
   }
 
   public static final @Nonnull PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class, EnumFacing.HORIZONTALS);
   public static final @Nonnull PropertyBool ACTIVE = PropertyBool.create("active");
 
-  private BlockDecorationFacing(@Nonnull IModObject modObject) {
-    super(modObject);
+  private BlockDecorationFacing(@Nonnull IModObject modObject, @Nonnull EnumDecoBlock maxMeta) {
+    super(modObject, maxMeta);
   }
 
   @Override

@@ -279,6 +279,24 @@ tile.block_decoration2.type13.name=Travel Anchor (decoration block)
 tile.block_decoration2.type14.name=Vacuum Chest (decoration block)
 tile.block_decoration2.type15.name=Wireless Charger (decoration block)
 
+tile.block_decoration3.name=Decoration Block
+tile.block_decoration3.type00.name=XP Vacuum (decoration block)
+tile.block_decoration3.type01.name=n/a (decoration block)
+tile.block_decoration3.type02.name=n/a (decoration block)
+tile.block_decoration3.type03.name=n/a (decoration block)
+tile.block_decoration3.type04.name=n/a (decoration block)
+tile.block_decoration3.type05.name=n/a (decoration block)
+tile.block_decoration3.type06.name=n/a (decoration block)
+tile.block_decoration3.type07.name=n/a (decoration block)
+tile.block_decoration3.type08.name=n/a (decoration block)
+tile.block_decoration3.type09.name=n/a (decoration block)
+tile.block_decoration3.type10.name=n/a (decoration block)
+tile.block_decoration3.type11.name=n/a (decoration block)
+tile.block_decoration3.type12.name=n/a (decoration block)
+tile.block_decoration3.type13.name=n/a (decoration block)
+tile.block_decoration3.type14.name=n/a (decoration block)
+tile.block_decoration3.type15.name=n/a (decoration block)
+
 tile.block_detector_block.name=Block Detector
 tile.block_detector_block_silent.name=Block Detector (Silent)
 

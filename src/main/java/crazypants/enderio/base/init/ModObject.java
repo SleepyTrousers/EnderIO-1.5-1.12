@@ -104,6 +104,7 @@ public enum ModObject implements IModObject.Registerable {
   blockSelfResettingLever300(BlockSelfResettingLever.class, "create300"),
   blockDecoration1(BlockDecoration.class),
   blockDecoration2(BlockDecorationFacing.class),
+  blockDecoration3(BlockDecorationFacing.class, "create2"),
 
   // Painter
   blockPaintedFence(BlockPaintedFence.class),

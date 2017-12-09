@@ -33,11 +33,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockDecoration extends Block implements IHaveRenderers, IModObject.WithBlockItem {
 
+  private final @Nonnull EnumDecoBlock maxMeta;
+
   public static BlockDecoration create(@Nonnull IModObject modObject) {
-    return new BlockDecoration(modObject);
+    return new BlockDecoration(modObject, EnumDecoBlock.TYPE15);
   }
 
-  protected BlockDecoration(@Nonnull IModObject modObject) {
+  protected BlockDecoration(@Nonnull IModObject modObject, @Nonnull EnumDecoBlock maxMeta) {
     super(Material.ROCK);
     setCreativeTab(EnderIOTab.tabEnderIO);
     modObject.apply(this);
@@ -45,6 +47,7 @@ public class BlockDecoration extends Block implements IHaveRenderers, IModObject
     setSoundType(SoundType.METAL);
     setHarvestLevel("pickaxe", 0);
     initDefaultState();
+    this.maxMeta = maxMeta;
   }
 
   protected void initDefaultState() {
@@ -73,6 +76,9 @@ public class BlockDecoration extends Block implements IHaveRenderers, IModObject
     while (iterator.hasNext()) {
       EnumDecoBlock type = iterator.next();
       list.add(new ItemStack(itemIn, 1, EnumDecoBlock.getMetaFromType(type)));
+      if (type == maxMeta) {
+        return;
+      }
     }
   }
 
