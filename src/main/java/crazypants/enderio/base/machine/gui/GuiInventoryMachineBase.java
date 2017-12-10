@@ -10,7 +10,7 @@ import net.minecraft.inventory.Slot;
 
 public class GuiInventoryMachineBase<T extends AbstractInventoryMachineEntity> extends GuiMachineBase<T> {
 
-  protected GuiInventoryMachineBase(@Nonnull T machine, @Nonnull Container par1Container, String[] guiTexture) {
+  protected GuiInventoryMachineBase(@Nonnull T machine, @Nonnull Container par1Container, String... guiTexture) {
     super(machine, par1Container, guiTexture);
   }
 

@@ -6,77 +6,102 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import com.enderio.core.client.gui.IDrawingElement;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredMachineEntity;
 import info.loenwind.scheduler.Celeb;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.inventory.Container;
 
-public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEntity> extends GuiInventoryMachineBase<T> {
+public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawingElement {
 
-  protected static final int POWER_Y = 14;
-  protected final int POWER_X = 15;
-  protected static final int POWER_WIDTH = 10;
-  protected static final int POWER_HEIGHT = 42;
-  protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
+  public class PowerBarTooltip extends GuiToolTip {
+    public PowerBarTooltip() {
+      super(new Rectangle(x, y, width, height));
+    }
 
-  public GuiPoweredMachineBase(@Nonnull T machine, @Nonnull Container container, String... guiTexture) {
-    super(machine, container, guiTexture);
-    addToolTip(new GuiToolTip(new Rectangle(getPowerX(), getPowerY(), getPowerWidth(), getPowerHeight()), "") {
-
-      @Override
-      protected void updateText() {
-        text.clear();
-        if (renderPowerBar()) {
-          updatePowerBarTooltip(text);
+    @Override
+    protected void updateText() {
+      text.clear();
+      if (Celeb.C24.isOn()) {
+        int frame = (int) ((EnderIO.proxy.getTickCount() / 30) % (lang.size() - 1));
+        if (frame == 0) {
+          Collections.shuffle(lang);
         }
+        text.add(lang.get(frame));
       }
+      text.add(getPowerOutputLabel(LangPower.RFt(machine.getPowerUsePerTick())));
+      text.add(LangPower.RF(machine.getEnergyStored(), machine.getMaxEnergyStored()));
+    }
+  }
 
-    });
+  private final @Nonnull T machine;
+  private final @Nonnull GuiContainerBaseEIO owner;
+  private final @Nonnull PowerBarTooltip tooltip;
+  private int x, y, width, height;
+
+  public PowerBar(@Nonnull T machine, @Nonnull GuiContainerBaseEIO owner, int height) {
+    this(machine, owner, -1, -1, -1, height);
+  }
+
+  public PowerBar(@Nonnull T machine, @Nonnull GuiContainerBaseEIO owner) {
+    this(machine, owner, -1, -1, -1, -1);
+  }
+
+  public PowerBar(@Nonnull T machine, @Nonnull GuiContainerBaseEIO owner, int x, int y) {
+    this(machine, owner, x, y, -1, -1);
+  }
+
+  public PowerBar(@Nonnull T machine, @Nonnull GuiContainerBaseEIO owner, int x, int y, int height) {
+    this(machine, owner, x, y, -1, height);
+  }
+
+  protected PowerBar(@Nonnull T machine, @Nonnull GuiContainerBaseEIO owner, int x, int y, int width, int height) {
+    this.machine = machine;
+    this.owner = owner;
+    this.x = x > 0 ? x : 15;
+    this.y = y > 0 ? y : 14;
+    this.width = width > 0 ? width : 10;
+    this.height = height > 0 ? height : 42;
+    tooltip = new PowerBarTooltip();
+  }
+
+  @Override
+  public @Nullable GuiToolTip getTooltip() {
+    return tooltip;
   }
 
   protected String getPowerOutputLabel(@Nonnull String rft) {
     return Lang.GUI_GENERIC_MAX.get(rft);
   }
 
-  protected int getPowerOutputValue() {
-    return getTileEntity().getPowerUsePerTick();
-  }
-
-  protected void updatePowerBarTooltip(List<String> text) {
-    if (Celeb.C24.isOn()) {
-      int frame = (int) ((EnderIO.proxy.getTickCount() / 30) % (lang.size() - 1));
-      if (frame == 0) {
-        Collections.shuffle(lang);
-      }
-      text.add(lang.get(frame));
-    }
-    text.add(getPowerOutputLabel(LangPower.RFt(getPowerOutputValue())));
-    text.add(LangPower.RF(getTileEntity().getEnergyStored(), getTileEntity().getMaxEnergyStored()));
-  }
-
-  public void renderPowerBar(int guiX0, int guiY0) {
-    if (renderPowerBar()) {
+  @Override
+  public void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+      GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       RenderUtil.bindTexture(EnderIO.DOMAIN + ":textures/gui/overlay.png");
       GlStateManager.enableBlend();
-      final int barHeight = getTileEntity().getEnergyStoredScaled(getPowerHeight());
-      final int barWidth = getPowerWidth();
+      int guiX0 = owner.getGuiLeft();
+      int guiY0 = owner.getGuiTop();
+
+    final int barHeight = machine.getEnergyStoredScaled(height);
+    final int barWidth = width;
       int barFrame = (int) ((EnderIO.proxy.getTickCount() / 3) % 20);
       if (barFrame > 10) {
         barFrame = 20 - barFrame;
       }
-      final int drawX = guiX0 + getPowerX();
-      final int yOffset = (getPowerY() + getPowerHeight()) - barHeight;
+    final int drawX = guiX0 + x;
+    final int yOffset = (y + height) - barHeight;
       final int drawY = guiY0 + yOffset;
       final int drawU = barFrame * 10;
       final int drawV = 128;
-      drawTexturedModalRect(drawX, drawY, drawU, drawV, barWidth, barHeight);
+      owner.drawTexturedModalRect(drawX, drawY, drawU, drawV, barWidth, barHeight);
 
       final int overlayFrame = (int) ((EnderIO.proxy.getTickCount()) % 128);
       int drawUoverlay = 128;
@@ -85,57 +110,18 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
         drawUoverlay += 10;
         drawVoverlay -= 64;
       }
-      drawTexturedModalRect(drawX, drawY, drawUoverlay, drawVoverlay, barWidth, barHeight);
+      owner.drawTexturedModalRect(drawX, drawY, drawUoverlay, drawVoverlay, barWidth, barHeight);
 
       if (Celeb.C24.isOn()) {
-        final int fullBarHeight = getPowerHeight();
-        final int drawYfullBar = guiY0 + (getPowerY() + getPowerHeight()) - fullBarHeight;
+      final int fullBarHeight = height;
+      final int drawYfullBar = guiY0 + (y + height) - fullBarHeight;
         final int c24Frame = (int) ((EnderIO.proxy.getTickCount() / 3) % 25);
         final int drawUc24 = c24Frame * 10;
         final int drawVc24 = 0;
-        drawTexturedModalRect(drawX, drawYfullBar, drawUc24, drawVc24, barWidth, fullBarHeight);
+        owner.drawTexturedModalRect(drawX, drawYfullBar, drawUc24, drawVc24, barWidth, fullBarHeight);
       }
-      bindGuiTexture();
+      owner.bindGuiTexture();
       GlStateManager.disableBlend();
-    }
-  }
-
-  protected int getPowerX() {
-    return POWER_X;
-  }
-
-  protected int getPowerY() {
-    return POWER_Y;
-  }
-
-  protected int getPowerWidth() {
-    return POWER_WIDTH;
-  }
-
-  protected int getPowerHeight() {
-    return POWER_HEIGHT;
-  }
-
-  @Override
-  protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    int k = (width - xSize) / 2;
-    int l = (height - ySize) / 2;
-    renderPowerBar(k, l);
-
-    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-  }
-
-  protected int getPowerV() {
-    return 31;
-  }
-
-  protected int getPowerU() {
-    return 176;
-  }
-
-  protected boolean renderPowerBar() {
-    return true;
   }
 
   private static final List<String> lang = Arrays.asList(new String[] { "Krismasi Njema", "UKhisimusi omuhle", "Moni Wa Chikondwelero Cha Kristmasi",
