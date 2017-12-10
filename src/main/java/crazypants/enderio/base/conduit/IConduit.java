@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.ITabPanel;
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -21,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -73,9 +73,6 @@ public interface IConduit {
   void onAddedToBundle();
 
   void onRemovedFromBundle();
-
-  @Nonnull
-  BlockCoord getLocation() throws NullPointerException; // TODO: does this do anything else but getBundle().getLocation()? If not: bye, bye!
 
   // Connections
 
@@ -188,7 +185,7 @@ public interface IConduit {
 
   void onChunkUnload();
 
-  void updateEntity(); // Please, do not tick unless really, really needed!
+  void updateEntity(@Nonnull World world); // Please, do not tick unless really, really needed!
 
   boolean onNeighborBlockChange(@Nonnull Block block);
 

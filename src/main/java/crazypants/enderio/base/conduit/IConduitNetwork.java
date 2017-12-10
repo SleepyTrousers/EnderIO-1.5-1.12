@@ -1,7 +1,39 @@
 package crazypants.enderio.base.conduit;
 
-public interface IConduitNetwork<T1, T2> {
+import java.util.Collection;
+import java.util.List;
 
-  // TODO 1.11
+import javax.annotation.Nonnull;
+
+import net.minecraft.profiler.Profiler;
+import net.minecraft.world.World;
+
+/**
+ * 
+ * @author EpicSquid315
+ *
+ * @param <T>
+ *          Base Conduit Class
+ * @param <I>
+ *          Implementation of the Conduit Class
+ */
+public interface IConduitNetwork<T extends IConduit, I extends T> {
+
+  // TODO: Tidy and edit Javadocs
+  public void init(@Nonnull IConduitBundle tile, Collection<I> connections, @Nonnull World world);
+
+  public Class<T> getBaseConduitType();
+  
+  public void setNetwork(@Nonnull World world, @Nonnull IConduitBundle tile);
+
+  public void addConduit(I newConduit);
+
+  public void destroyNetwork();
+
+  public @Nonnull List<I> getConduits();
+
+  public void sendBlockUpdatesForEntireNetwork();
+
+  public void doNetworkTick(Profiler profiler);
 
 }
