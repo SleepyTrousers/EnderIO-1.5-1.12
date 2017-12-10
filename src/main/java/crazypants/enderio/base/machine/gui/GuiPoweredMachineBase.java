@@ -61,17 +61,42 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
     text.add(LangPower.RF(getTileEntity().getEnergyStored(), getTileEntity().getMaxEnergyStored()));
   }
 
-  public void renderPowerBar(int k, int l) {
+  public void renderPowerBar(int guiX0, int guiY0) {
     if (renderPowerBar()) {
-      int i1 = getTileEntity().getEnergyStoredScaled(getPowerHeight());
-      drawTexturedModalRect(k + getPowerX(), l + (getPowerY() + getPowerHeight()) - i1, getPowerU(), getPowerV(), getPowerWidth(), i1);
-      if (Celeb.C24.isOn()) {
-        i1 = getPowerHeight();
-        int frame = (int) ((EnderIO.proxy.getTickCount() / 3) % 25) * 10;
-        RenderUtil.bindTexture(EnderIO.DOMAIN + ":textures/gui/overlay.png");
-        drawTexturedModalRect(k + getPowerX(), l + (getPowerY() + getPowerHeight()) - i1, frame, 0, getPowerWidth(), i1);
-        bindGuiTexture();
+      RenderUtil.bindTexture(EnderIO.DOMAIN + ":textures/gui/overlay.png");
+      GlStateManager.enableBlend();
+      final int barHeight = getTileEntity().getEnergyStoredScaled(getPowerHeight());
+      final int barWidth = getPowerWidth();
+      int barFrame = (int) ((EnderIO.proxy.getTickCount() / 3) % 20);
+      if (barFrame > 10) {
+        barFrame = 20 - barFrame;
       }
+      final int drawX = guiX0 + getPowerX();
+      final int yOffset = (getPowerY() + getPowerHeight()) - barHeight;
+      final int drawY = guiY0 + yOffset;
+      final int drawU = barFrame * 10;
+      final int drawV = 128;
+      drawTexturedModalRect(drawX, drawY, drawU, drawV, barWidth, barHeight);
+
+      final int overlayFrame = (int) ((EnderIO.proxy.getTickCount()) % 128);
+      int drawUoverlay = 128;
+      int drawVoverlay = 128 + overlayFrame;
+      if (drawVoverlay + barHeight > 255) {
+        drawUoverlay += 10;
+        drawVoverlay -= 64;
+      }
+      drawTexturedModalRect(drawX, drawY, drawUoverlay, drawVoverlay, barWidth, barHeight);
+
+      if (Celeb.C24.isOn()) {
+        final int fullBarHeight = getPowerHeight();
+        final int drawYfullBar = guiY0 + (getPowerY() + getPowerHeight()) - fullBarHeight;
+        final int c24Frame = (int) ((EnderIO.proxy.getTickCount() / 3) % 25);
+        final int drawUc24 = c24Frame * 10;
+        final int drawVc24 = 0;
+        drawTexturedModalRect(drawX, drawYfullBar, drawUc24, drawVc24, barWidth, fullBarHeight);
+      }
+      bindGuiTexture();
+      GlStateManager.disableBlend();
     }
   }
 

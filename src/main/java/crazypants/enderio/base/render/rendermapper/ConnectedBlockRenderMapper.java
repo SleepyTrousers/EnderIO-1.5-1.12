@@ -134,7 +134,7 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
 
     boolean block_up = getNeighbor(pos, pos.offset(EnumFacing.UP));
     boolean block_down = getNeighbor(pos, pos.offset(EnumFacing.DOWN));
-    NNIterator<EnumFacing> iterator = NNList.FACING_HORIZONTAL.iterator();
+    NNIterator<EnumFacing> iterator = NNList.FACING_HORIZONTAL.fastIterator();
     while (iterator.hasNext()) {
       EnumFacing facing = iterator.next();
       boolean block_facing = getNeighbor(pos, pos.offset(facing));
