@@ -1,7 +1,5 @@
 package crazypants.enderio.conduit;
 
-import static crazypants.enderio.base.ModObject.blockTank;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -13,27 +11,27 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.GuiID;
-import crazypants.enderio.base.ModObject;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.base.conduit.IConduitItem;
 import crazypants.enderio.base.conduit.RaytraceResult;
-import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.base.conduit.facade.EnumFacadeType;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.item.ItemConduitProbe;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.item.conduitprobe.ItemConduitProbe;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PainterUtil2;
@@ -44,6 +42,7 @@ import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.GuiExternalConnectionSelector;
+import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.conduit.liquid.PacketFluidLevel;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
 import crazypants.enderio.conduit.packet.PacketExistingItemFilterSnapshot;
@@ -84,6 +83,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -101,6 +101,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
+
+import static crazypants.enderio.base.ModObject.blockTank;
 
 public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IGuiHandler, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
@@ -136,7 +138,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   private AxisAlignedBB bounds;
 
   protected BlockConduitBundle() {
-    super(ModObject.blockConduitBundle.getUnlocalisedName(), TileConduitBundle.class);
+    super(ConduitObject.block_conduit_bundle, TileConduitBundle.class);
     setBlockBounds(0.334, 0.334, 0.334, 0.667, 0.667, 0.667);
     setHardness(1.5f);
     setResistance(10.0f);
@@ -156,7 +158,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+  @Nonnull
+  public AxisAlignedBB getBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos) {
     return bounds;
   }
 
@@ -171,17 +174,19 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     return state.getValue(OPAQUE) ? 1 : 0;
   }
 
   @Override
+  @Nonnull
   public IBlockState getStateFromMeta(int meta) {
     return getDefaultState().withProperty(OPAQUE, meta == 1);
   }
 
   @Override
-  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+  @Nonnull
+  public IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     if (state != null && world != null && pos != null) {
       IBlockStateWrapper blockStateWrapper = new BlockStateWrapperConduitBundle(state, world, pos, ConduitRenderMapper.instance);
       TileConduitBundle bundle = getTileEntitySafe(world, pos);
@@ -207,7 +212,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
+  public boolean addHitEffects(@Nonnull IBlockState state, @Nonnull World world, @Nonnull RayTraceResult target, @Nonnull ParticleManager effectRenderer) {
 
     TextureAtlasSprite tex = null;
 
@@ -220,8 +225,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     } else if (target.hitInfo instanceof CollidableComponent) {
       CollidableComponent cc = (CollidableComponent) target.hitInfo;
       IConduit con = cb.getConduit(cc.conduitType);
-      if (con != null) {
-        tex = con.getTextureForState(cc);
+      if (con != null && con instanceof IConduit.WithDefaultRendering) {
+        tex = ((IConduit.WithDefaultRendering) con).getTextureForState(cc);
       }
     }
     if (tex == null) {
@@ -234,7 +239,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
   
   @Override
-  public boolean addLandingEffects(IBlockState state, net.minecraft.world.WorldServer world, BlockPos bp, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles ) {
+  public boolean addLandingEffects(@Nonnull IBlockState state, @Nonnull net.minecraft.world.WorldServer world, @Nonnull BlockPos bp,
+      @Nonnull IBlockState iblockstate, @Nonnull EntityLivingBase entity, int numberOfParticles) {
     //TODO: Should probably register a dummy state for this, but this gives a nice generic grey color for non facded blocks
     int stateId = Block.getStateId(blockTank.getBlock().getDefaultState());
     TileConduitBundle te = getTileEntity(world, bp);
@@ -250,7 +256,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
+  public boolean addDestroyEffects(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ParticleManager effectRenderer) {
     if (lastHitIcon == null) {
       lastHitIcon = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(blockTank.getBlock().getDefaultState());
     }
@@ -268,7 +274,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
           double d0 = pos.getX() + (j + 0.5D) / i;
           double d1 = pos.getY() + (k + 0.5D) / i;
           double d2 = pos.getZ() + (l + 0.5D) / i;
-          ParticleDigging fx = (ParticleDigging) new ParticleDigging.Factory().getEntityFX(-1, world, d0, d1, d2, d0 - pos.getX() - 0.5D,
+          ParticleDigging fx = (ParticleDigging) new ParticleDigging.Factory().createParticle(-1, world, d0, d1, d2, d0 - pos.getX() - 0.5D,
               d1 - pos.getY() - 0.5D, d2 - pos.getZ() - 0.5D, 0);
           fx.setBlockPos(pos);
           fx.setParticleTexture(tex);
@@ -281,7 +287,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @SideOnly(Side.CLIENT)
-  private void addBlockHitEffects(World world, ParticleManager effectRenderer, int x, int y, int z, EnumFacing sideEnum, TextureAtlasSprite tex) {
+  private void addBlockHitEffects(@Nonnull World world, @Nonnull ParticleManager effectRenderer, int x, int y, int z, @Nonnull EnumFacing sideEnum,
+      TextureAtlasSprite tex) {
 
     float f = 0.1F;
 
@@ -310,8 +317,10 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public ItemStack getPickBlock(IBlockState bs, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-    ItemStack ret = null;
+  @Nonnull
+  public ItemStack getPickBlock(@Nonnull IBlockState bs, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nonnull EntityPlayer player) {
+    ItemStack ret = ItemStack.EMPTY;
 
     if (target != null && target.hitInfo instanceof CollidableComponent) {
       CollidableComponent cc = (CollidableComponent) target.hitInfo;
@@ -332,17 +341,17 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public int damageDropped(IBlockState state) {
+  public int damageDropped(@Nonnull IBlockState state) {
     return state == null ? 0 : state.getBlock().getMetaFromState(state);
   }
 
   @Override
-  public int quantityDropped(Random r) {
+  public int quantityDropped(@Nonnull Random r) {
     return 0;
   }
 
   @Override
-  public boolean isSideSolid(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public boolean isSideSolid(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     TileEntity te = getTileEntitySafe(world, pos);
     if (!(te instanceof IConduitBundle)) {
       return false;
@@ -352,27 +361,27 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public boolean canBeReplacedByLeaves(IBlockState bs, IBlockAccess world, BlockPos pos) {
+  public boolean canBeReplacedByLeaves(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     return false;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean isFullCube(IBlockState bs) {
+  public boolean isFullCube(@Nonnull IBlockState bs) {
     return bs.getValue(OPAQUE);
   }
 
   @Override
-  public int getLightOpacity(IBlockState bs) {
+  public int getLightOpacity(@Nonnull IBlockState bs) {
     return bs.getValue(OPAQUE) ? 255 : 0;
   }
 
   @Override
-  public int getLightOpacity(IBlockState bs, IBlockAccess world, BlockPos pos) {
+  public int getLightOpacity(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     if (bs.getValue(OPAQUE)) {
       return 255;
     }
@@ -384,7 +393,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {
+  public int getLightValue(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     TileEntity te = getTileEntitySafe(world, pos);
     if (!(te instanceof IConduitBundle)) {
       return super.getLightValue(bs, world, pos);
@@ -409,7 +418,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @SuppressWarnings("deprecation")
   @Override
-  public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
+  @Nonnull
+  public SoundType getSoundType(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nullable Entity entity) {
     IConduitBundle te = getTileEntitySafe(world, pos);
     if (te != null && te.hasFacade()) {
       return te.getPaintSource().getBlock().getSoundType();
@@ -420,7 +430,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @Deprecated
   @Override
   @SideOnly(Side.CLIENT)
-  public int getPackedLightmapCoords(IBlockState bs, IBlockAccess worldIn, BlockPos pos) {
+  public int getPackedLightmapCoords(@Nonnull IBlockState bs, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     IConduitBundle te = getTileEntitySafe(worldIn, pos);
     if (te != null && te.hasFacade()) {
       if (te.getFacadeRenderedAs() == FacadeRenderState.WIRE_FRAME) {
@@ -433,7 +443,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @SideOnly(Side.CLIENT)
-  public int getMixedBrightnessForFacade(IBlockState bs, IBlockAccess worldIn, BlockPos pos, Block facadeBlock) {
+  public int getMixedBrightnessForFacade(@Nonnull IBlockState bs, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nonnull Block facadeBlock) {
     int i = worldIn.getCombinedLight(pos, getLightValue(bs, worldIn, pos));
     if (i == 0 && facadeBlock instanceof BlockSlab) {
       pos = pos.down();
@@ -446,7 +456,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
   }
 
-  private int getNeightbourBrightness(IBlockAccess worldIn, BlockPos pos) {
+  private int getNeightbourBrightness(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     int result = worldIn.getCombinedLight(pos.up(), 0);
     for (EnumFacing dir : EnumFacing.HORIZONTALS) {
       int val = worldIn.getCombinedLight(pos.offset(dir), 0);
@@ -459,7 +469,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Deprecated
   @Override
-  public float getBlockHardness(IBlockState bs, World world, BlockPos pos) {
+  public float getBlockHardness(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos) {
     IConduitBundle te = getTileEntity(world, pos);
     if (te == null) {
       return super.getBlockHardness(bs, world, pos);
@@ -468,7 +478,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public float getExplosionResistance(World world, BlockPos pos, Entity par1Entity, Explosion explosion) {
+  public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity par1Entity, @Nonnull Explosion explosion) {
     float resist = getExplosionResistance(par1Entity);
     IConduitBundle te = (IConduitBundle) world.getTileEntity(pos);
     return te != null && te.getFacadeType().isHardened() ? resist * 10 : resist;
@@ -478,7 +488,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   public void onBreakSpeed(BreakSpeed event) {
     if (event.getState().getBlock() == this) {
       ItemStack held = event.getEntityPlayer().getHeldItemMainhand();
-      if (held == null || held.getItem().getHarvestLevel(held, "pickaxe") == -1) {
+      if (held.isEmpty() || held.getItem().getHarvestLevel(held, "pickaxe", event.getEntityPlayer(), event.getState()) == -1) {
         event.setNewSpeed(event.getNewSpeed() + 2);
       }
       IConduitBundle te = (IConduitBundle) event.getEntity().world.getTileEntity(event.getPos());
@@ -493,7 +503,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public int getStrongPower(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public int getStrongPower(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     IRedstoneConduit con = getRedstoneConduit(world, pos);
     if (con == null) {
       return 0;
@@ -502,7 +512,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public int getWeakPower(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     IRedstoneConduit con = getRedstoneConduit(world, pos);
     if (con == null) {
       return 0;
@@ -512,19 +522,19 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public boolean canProvidePower(IBlockState bs) {
+  public boolean canProvidePower(@Nonnull IBlockState bs) {
     return true;
   }
 
   @Override
-  public boolean removedByPlayer(IBlockState bs, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, boolean willHarvest) {
     IConduitBundle te = (IConduitBundle) world.getTileEntity(pos);
     if (te == null) {
       return true;
     }
 
     boolean breakBlock = true;
-    List<ItemStack> drop = new ArrayList<ItemStack>();
+    NNList<ItemStack> drop = new NNList<>(ItemStack.EMPTY);
     if (YetaUtil.isSolidFacadeRendered(te, player)) {
       breakBlock = false;
       ItemStack fac = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, EnumFacadeType.getMetaFromType(te.getFacadeType()));
@@ -603,14 +613,14 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       }
     }
 
-    BlockCoord bc = te.getLocation();
-    ConduitUtil.playBreakSound(SoundType.METAL, te.getBundleworld(), bc.x, bc.y, bc.z);
+    BlockPos bc = te.getLocation();
+    ConduitUtil.playBreakSound(SoundType.METAL, te.getBundleworld(), bc.getX(), bc.getY(), bc.getZ());
 
     return true;
   }
 
   @Override
-  public void breakBlock(World world, BlockPos pos, IBlockState state) {
+  public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
 
     TileEntity tile = world.getTileEntity(pos);
     if (!(tile instanceof IConduitBundle)) {
@@ -622,16 +632,18 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
+  public void onBlockClicked(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player) {
     ItemStack equipped = player.getHeldItemMainhand();
-    if (!player.isSneaking() || equipped == null || !ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND)) {
+    if (!player.isSneaking() || equipped.isEmpty() || !ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND)) {
       return;
     }
     ConduitUtil.openConduitGui(world, pos, player);
   }
 
+
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack held, EnumFacing side,
+  public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer player, @Nonnull EnumHand hand,
+      @Nonnull EnumFacing side,
       float hitX, float hitY, float hitZ) {
 
     int x = pos.getX();
@@ -644,7 +656,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     
     ItemStack stack = player.getHeldItem(hand);
     if (Prep.isValid(stack) && stack.getItem() == Items.STICK) { // TODO: remove this later!
-      player.addChatMessage(new TextComponentString("You clicked on " + bundle));
+      player.sendMessage(new TextComponentString("You clicked on " + bundle));
     }
     if (Prep.isValid(stack) && stack.getItem() == ModObject.itemConduitFacade.getItem()) {
       // add or replace facade
@@ -732,7 +744,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   }
 
-  private boolean handleWrenchClick(World world, int x, int y, int z, EntityPlayer player, EnumHand hand) {
+  private boolean handleWrenchClick(@Nonnull World world, int x, int y, int z, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     ITool tool = ToolUtil.getEquippedTool(player, hand);
     if (tool != null) {
       BlockPos pos = new BlockPos(x, y, z);
@@ -740,7 +752,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         if (!world.isRemote) {
           IBlockState bs = world.getBlockState(pos);
           if (!PermissionAPI.hasPermission(player.getGameProfile(), permissionNodeWrenching, new BlockPosContext(player, pos, bs, null))) {
-            player.addChatMessage(new TextComponentString(EnderIO.lang.localize("wrench.permission.denied")));
+            player.sendMessage(new TextComponentString(EnderIO.lang.localize("wrench.permission.denied")));
             return false;
           }
           BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(world, pos, bs, player);
@@ -757,7 +769,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return false;
   }
 
-  private boolean handleConduitProbeClick(World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack) {
+  private boolean handleConduitProbeClick(@Nonnull World world, int x, int y, int z, @Nonnull EntityPlayer player, @Nonnull IConduitBundle bundle,
+      @Nonnull ItemStack stack) {
     if (stack.getItemDamage() != 1) {
       return false; // not in copy paste mode
     }
@@ -768,14 +781,16 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return ItemConduitProbe.copyPasteSettings(player, stack, bundle, rr.component.dir);
   }
 
-  private boolean handleConduitClick(World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack, EnumHand hand) {
+  private boolean handleConduitClick(@Nonnull World world, int x, int y, int z, @Nonnull EntityPlayer player, @Nonnull IConduitBundle bundle,
+      @Nonnull ItemStack stack, @Nonnull EnumHand hand) {
     IConduitItem equipped = (IConduitItem) stack.getItem();
     if (!bundle.hasType(equipped.getBaseConduitType())) {
       if (!world.isRemote) {
         bundle.addConduit(equipped.createConduit(stack, player));
         ConduitUtil.playBreakSound(SoundType.METAL, world, x, y, z);
         if (!player.capabilities.isCreativeMode) {
-          player.getHeldItem(hand).stackSize--;
+          ItemStack held = player.getHeldItem(hand);
+          held.setCount(held.getCount() - 1);
         }
       }
       return true;
@@ -783,7 +798,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return false;
   }
 
-  public boolean handleFacadeClick(World world, BlockPos pos, EntityPlayer player, EnumFacing side, IConduitBundle bundle, ItemStack stack, EnumHand hand,
+  public boolean handleFacadeClick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, @Nonnull EnumFacing side,
+      @Nonnull IConduitBundle bundle, @Nonnull ItemStack stack, @Nonnull EnumHand hand,
       float hitX, float hitY, float hitZ) {
 
     // Add facade
@@ -816,7 +832,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       ConduitUtil.playPlaceSound(facadeID.getBlock().getSoundType(), world, pos.getX(), pos.getY(), pos.getZ());
     }
     if (!player.capabilities.isCreativeMode) {
-      stack.stackSize--;
+      stack.setCount(stack.getCount() - 1);
     }
     IBlockState bs = world.getBlockState(pos);
     world.notifyBlockUpdate(pos, bs, bs, 3);
@@ -824,7 +840,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return true;
   }
 
-  private boolean facadeEquals(IConduitBundle bundle, IBlockState b, int facadeType) {
+  private boolean facadeEquals(@Nonnull IConduitBundle bundle, @Nonnull IBlockState b, int facadeType) {
     IBlockState a = bundle.getPaintSource();
     if (a == null) {
       return false;
@@ -875,7 +891,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Deprecated
   @Override
-  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {
+  public void neighborChanged(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock,
+      @Nonnull BlockPos neighborPos) {
     if (neighborBlock != this) {
       TileConduitBundle conduit = getTileEntity(world, pos);
       if (conduit != null) {
@@ -885,7 +902,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+  public void onNeighborChange(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull BlockPos neighbor) {
     if (world.getBlockState(neighbor).getBlock() != this) {
       TileConduitBundle conduit = getTileEntity(world, pos);
       if (conduit != null) {
@@ -896,8 +913,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Deprecated
   @Override
-  public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB axisalignedbb, List<AxisAlignedBB> arraylist,
-      @Nullable Entity par7Entity) {
+  public void addCollisionBoxToList(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull AxisAlignedBB axisalignedbb,
+      @Nonnull List<AxisAlignedBB> arraylist, @Nullable Entity par7Entity, boolean b) {
 
     IConduitBundle con = getTileEntity(world, pos);
     if(con == null) {
@@ -905,18 +922,18 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
     if (con.hasFacade()) {
       setBlockBounds(0, 0, 0, 1, 1, 1);
-      super.addCollisionBoxToList(state, world, pos, axisalignedbb, arraylist, par7Entity);
+      super.addCollisionBoxToList(state, world, pos, axisalignedbb, arraylist, par7Entity, b);
     } else {
 
       Collection<CollidableComponent> collidableComponents = con.getCollidableComponents();
       for (CollidableComponent bnd : collidableComponents) {
         setBlockBounds(bnd.bound.minX, bnd.bound.minY, bnd.bound.minZ, bnd.bound.maxX, bnd.bound.maxY, bnd.bound.maxZ);
-        super.addCollisionBoxToList(state, world, pos, axisalignedbb, arraylist, par7Entity);
+        super.addCollisionBoxToList(state, world, pos, axisalignedbb, arraylist, par7Entity, b);
       }
 
       if (con.getConduits().isEmpty()) { // just in case
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        super.addCollisionBoxToList(state, world, pos, axisalignedbb, arraylist, par7Entity);
+        super.addCollisionBoxToList(state, world, pos, axisalignedbb, arraylist, par7Entity, b);
       }
     }
 
@@ -926,11 +943,13 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World world, BlockPos pos) {
+  @Nonnull
+  public AxisAlignedBB getSelectedBoundingBox(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos) {
 
     TileEntity te = world.getTileEntity(pos);
     EntityPlayer player = Minecraft.getMinecraft().player;
     if (!(te instanceof IConduitBundle)) {
+      // TODO: Fix
       return null;
     }
     IConduitBundle con = (IConduitBundle) te;
@@ -986,7 +1005,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public RayTraceResult collisionRayTrace(IBlockState state, World world, BlockPos pos, Vec3d origin, Vec3d direction) {
+  public RayTraceResult collisionRayTrace(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Vec3d origin,
+      @Nonnull Vec3d direction) {
 
     RaytraceResult raytraceResult = doRayTrace(world, pos.getX(), pos.getY(), pos.getZ(), origin, direction, null);
     RayTraceResult ret = null;
@@ -1000,7 +1020,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return ret;
   }
 
-  public RaytraceResult doRayTrace(World world, int x, int y, int z, EntityPlayer entityPlayer) {
+  public RaytraceResult doRayTrace(@Nonnull World world, int x, int y, int z, @Nonnull EntityPlayer entityPlayer) {
     List<RaytraceResult> allHits = doRayTraceAll(world, x, y, z, entityPlayer);
     if (allHits == null) {
       return null;
@@ -1009,7 +1029,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return RaytraceResult.getClosestHit(origin, allHits);
   }
 
-  public List<RaytraceResult> doRayTraceAll(World world, int x, int y, int z, EntityPlayer entityPlayer) {
+  public List<RaytraceResult> doRayTraceAll(@Nonnull World world, int x, int y, int z, @Nonnull EntityPlayer entityPlayer) {
     double pitch = Math.toRadians(entityPlayer.rotationPitch);
     double yaw = Math.toRadians(entityPlayer.rotationYaw);
 
@@ -1024,7 +1044,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return doRayTraceAll(world.getBlockState(new BlockPos(x, y, z)), world, x, y, z, origin, direction, entityPlayer);
   }
 
-  private RaytraceResult doRayTrace(World world, int x, int y, int z, Vec3d origin, Vec3d direction, EntityPlayer entityPlayer) {
+  private RaytraceResult doRayTrace(@Nonnull World world, int x, int y, int z, @Nonnull Vec3d origin, @Nonnull Vec3d direction,
+      @Nonnull EntityPlayer entityPlayer) {
     List<RaytraceResult> allHits = doRayTraceAll(world.getBlockState(new BlockPos(x, y, z)), world, x, y, z, origin, direction, entityPlayer);
     if (allHits == null) {
       return null;
@@ -1032,7 +1053,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return RaytraceResult.getClosestHit(origin, allHits);
   }
 
-  protected List<RaytraceResult> doRayTraceAll(IBlockState bs, World world, int x, int y, int z, Vec3d origin, Vec3d direction, EntityPlayer player) {
+  protected List<RaytraceResult> doRayTraceAll(@Nonnull IBlockState bs, @Nonnull World world, int x, int y, int z, @Nonnull Vec3d origin,
+      @Nonnull Vec3d direction, @Nonnull EntityPlayer player) {
 
     BlockPos pos = new BlockPos(x, y, z);
     TileEntity te = world.getTileEntity(pos);
@@ -1079,7 +1101,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return hits;
   }
 
-  private static IRedstoneConduit getRedstoneConduit(IBlockAccess world, BlockPos pos) {
+  private static IRedstoneConduit getRedstoneConduit(@Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     TileEntity te = world.getTileEntity(pos);
     if (!(te instanceof IConduitBundle)) {
       return null;
@@ -1088,8 +1110,10 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return bundle.getConduit(IRedstoneConduit.class);
   }
 
+  // PAINT
+
   @Override
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       ((IPaintableTileEntity) te).setPaintSource(paintSource);
@@ -1097,12 +1121,12 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
     PainterUtil2.setSourceBlock(stack, paintSource);
   }
 
   @Override
-  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     TileEntity te = getTileEntitySafe(world, pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       return ((IPaintableTileEntity) te).getPaintSource();
@@ -1111,7 +1135,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public IBlockState getPaintSource(Block block, ItemStack stack) {
+  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
     return PainterUtil2.getSourceBlock(stack);
   }
 
@@ -1123,13 +1147,13 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public boolean canRenderInLayer(BlockRenderLayer layer) {
+  public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {
     return true;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (tab != null) {
       super.getSubBlocks(itemIn, tab, list);
     }

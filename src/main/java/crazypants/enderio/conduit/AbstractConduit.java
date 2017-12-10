@@ -1,7 +1,5 @@
 package crazypants.enderio.conduit;
 
-import static crazypants.enderio.base.ModObject.blockConduitBundle;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -11,17 +9,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.enderio.core.common.util.BlockCoord;
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache;
+import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import net.minecraft.block.Block;
@@ -32,12 +33,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class AbstractConduit implements IConduit {
+import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
+
+public abstract class AbstractConduit implements IConduit, IConduit.WithDefaultRendering {
 
   protected final Set<EnumFacing> conduitConnections = EnumSet.noneOf(EnumFacing.class);
 
@@ -76,7 +78,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean writeConnectionSettingsToNBT(EnumFacing dir, NBTTagCompound nbt) {
+  public boolean writeConnectionSettingsToNBT(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound nbt) {
     if (!getExternalConnections().contains(dir)) {
       return false;
     }
@@ -87,7 +89,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean readConduitSettingsFromNBT(EnumFacing dir, NBTTagCompound nbt) {
+  public boolean readConduitSettingsFromNBT(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound nbt) {
     if (!getExternalConnections().contains(dir)) {
       return false;
     }
@@ -103,13 +105,13 @@ public abstract class AbstractConduit implements IConduit {
     return true;
   }
 
-  protected void readTypeSettings(EnumFacing dir, NBTTagCompound dataRoot) {
+  protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
   }
 
-  protected void writeTypeSettingsToNbt(EnumFacing dir, NBTTagCompound dataRoot) {
+  protected void writeTypeSettingsToNbt(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
   }
 
-  protected NBTTagCompound getNbtRootForType(NBTTagCompound nbt, boolean createIfNull) {
+  protected NBTTagCompound getNbtRootForType(@Nonnull NBTTagCompound nbt, boolean createIfNull) {
     Class<? extends IConduit> bt = getBaseConduitType();
     String dataRootName = bt.getSimpleName();
     NBTTagCompound dataRoot = null;
@@ -124,7 +126,8 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public ConnectionMode getConnectionMode(EnumFacing dir) {
+  @Nonnull
+  public ConnectionMode getConnectionMode(@Nonnull EnumFacing dir) {
     ConnectionMode res = conectionModes.get(dir);
     if (res == null) {
       return getDefaultConnectionMode();
@@ -132,17 +135,20 @@ public abstract class AbstractConduit implements IConduit {
     return res;
   }
 
+  @Nonnull
   protected ConnectionMode getDefaultConnectionMode() {
     return ConnectionMode.IN_OUT;
   }
 
   @Override
-  public List<ItemStack> getDrops() {
-    return Collections.singletonList(createItem());
+  @Nonnull
+  public NNList<ItemStack> getDrops() {
+    // return Collections.singletonList(createItem());
+    return new NNList<ItemStack>(1, ItemStack.EMPTY);
   }
 
   @Override
-  public void setConnectionMode(EnumFacing dir, ConnectionMode mode) {
+  public void setConnectionMode(@Nonnull EnumFacing dir, @Nonnull ConnectionMode mode) {
     ConnectionMode oldVal = conectionModes.get(dir);
     if (oldVal == mode) {
       return;
@@ -157,10 +163,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean hasConnectionMode(ConnectionMode mode) {
-    if (mode == null) {
-      return false;
-    }
+  public boolean supportsConnectionMode(@Nonnull ConnectionMode mode) {
     if (mode == getDefaultConnectionMode() && conectionModes.size() != 6) {
       return true;
     }
@@ -173,7 +176,8 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public ConnectionMode getNextConnectionMode(EnumFacing dir) {
+  @Nonnull
+  public ConnectionMode getNextConnectionMode(@Nonnull EnumFacing dir) {
     ConnectionMode curMode = getConnectionMode(dir);
     ConnectionMode next = ConnectionMode.getNext(curMode);
     if (next == ConnectionMode.NOT_SET) {
@@ -183,7 +187,8 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public ConnectionMode getPreviousConnectionMode(EnumFacing dir) {
+  @Nonnull
+  public ConnectionMode getPreviousConnectionMode(@Nonnull EnumFacing dir) {
     ConnectionMode curMode = getConnectionMode(dir);
     ConnectionMode prev = ConnectionMode.getPrevious(curMode);
     if (prev == ConnectionMode.NOT_SET) {
@@ -202,46 +207,40 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public BlockCoord getLocation() {
-    if (bundle == null) {
-      return null;
-    }
-    return bundle.getLocation();
-  }
-
-  @Override
-  public void setBundle(IConduitBundle tileConduitBundle) {
+  public void setBundle(@Nonnull IConduitBundle tileConduitBundle) {
     bundle = tileConduitBundle;
   }
 
   @Override
+  @Nonnull
   public IConduitBundle getBundle() {
     return bundle;
   }
 
   // Connections
   @Override
+  @Nonnull
   public Set<EnumFacing> getConduitConnections() {
     return conduitConnections;
   }
 
   @Override
-  public boolean containsConduitConnection(EnumFacing dir) {
+  public boolean containsConduitConnection(@Nonnull EnumFacing dir) {
     return conduitConnections.contains(dir);
   }
 
   @Override
-  public void conduitConnectionAdded(EnumFacing fromDirection) {
+  public void conduitConnectionAdded(@Nonnull EnumFacing fromDirection) {
     conduitConnections.add(fromDirection);
   }
 
   @Override
-  public void conduitConnectionRemoved(EnumFacing fromDirection) {
+  public void conduitConnectionRemoved(@Nonnull EnumFacing fromDirection) {
     conduitConnections.remove(fromDirection);
   }
 
   @Override
-  public boolean canConnectToConduit(EnumFacing direction, IConduit conduit) {
+  public boolean canConnectToConduit(@Nonnull EnumFacing direction, @Nonnull IConduit conduit) {
     if (conduit == null) {
       return false;
     }
@@ -250,11 +249,12 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean canConnectToExternal(EnumFacing direction, boolean ignoreConnectionMode) {
+  public boolean canConnectToExternal(@Nonnull EnumFacing direction, boolean ignoreConnectionMode) {
     return false;
   }
 
   @Override
+  @Nonnull
   public Set<EnumFacing> getExternalConnections() {
     return externalConnections;
   }
@@ -275,22 +275,22 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean containsExternalConnection(EnumFacing dir) {
+  public boolean containsExternalConnection(@Nonnull EnumFacing dir) {
     return externalConnections.contains(dir);
   }
 
   @Override
-  public void externalConnectionAdded(EnumFacing fromDirection) {
+  public void externalConnectionAdded(@Nonnull EnumFacing fromDirection) {
     externalConnections.add(fromDirection);
   }
 
   @Override
-  public void externalConnectionRemoved(EnumFacing fromDirection) {
+  public void externalConnectionRemoved(@Nonnull EnumFacing fromDirection) {
     externalConnections.remove(fromDirection);
   }
 
   @Override
-  public boolean isConnectedTo(EnumFacing dir) {
+  public boolean isConnectedTo(@Nonnull EnumFacing dir) {
     return containsConduitConnection(dir) || containsExternalConnection(dir);
   }
 
@@ -308,21 +308,21 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
+  public void writeToNBT(@Nonnull NBTTagCompound conduitBody) {
     int[] dirs = new int[conduitConnections.size()];
     Iterator<EnumFacing> cons = conduitConnections.iterator();
     for (int i = 0; i < dirs.length; i++) {
       dirs[i] = cons.next().ordinal();
     }
-    nbtRoot.setIntArray("connections", dirs);
+    conduitBody.setIntArray("connections", dirs);
 
     dirs = new int[externalConnections.size()];
     cons = externalConnections.iterator();
     for (int i = 0; i < dirs.length; i++) {
       dirs[i] = cons.next().ordinal();
     }
-    nbtRoot.setIntArray("externalConnections", dirs);
-    nbtRoot.setBoolean("signalActive", active);
+    conduitBody.setIntArray("externalConnections", dirs);
+    conduitBody.setBoolean("signalActive", active);
 
     if (conectionModes.size() > 0) {
       byte[] modes = new byte[6];
@@ -331,27 +331,27 @@ public abstract class AbstractConduit implements IConduit {
         modes[i] = (byte) getConnectionMode(dir).ordinal();
         i++;
       }
-      nbtRoot.setByteArray("conModes", modes);
+      conduitBody.setByteArray("conModes", modes);
     }
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
+  public void readFromNBT(@Nonnull NBTTagCompound conduitBody) {
     conduitConnections.clear();
-    int[] dirs = nbtRoot.getIntArray("connections");
+    int[] dirs = conduitBody.getIntArray("connections");
     for (int i = 0; i < dirs.length; i++) {
       conduitConnections.add(EnumFacing.values()[dirs[i]]);
     }
 
     externalConnections.clear();
-    dirs = nbtRoot.getIntArray("externalConnections");
+    dirs = conduitBody.getIntArray("externalConnections");
     for (int i = 0; i < dirs.length; i++) {
       externalConnections.add(EnumFacing.values()[dirs[i]]);
     }
-    active = nbtRoot.getBoolean("signalActive");
+    active = conduitBody.getBoolean("signalActive");
 
     conectionModes.clear();
-    byte[] modes = nbtRoot.getByteArray("conModes");
+    byte[] modes = conduitBody.getByteArray("conModes");
     if (modes != null && modes.length == 6) {
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
@@ -368,12 +368,12 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all) {
+  public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     return false;
   }
 
   @Override
-  public float getSelfIlluminationForState(CollidableComponent component) {
+  public float getSelfIlluminationForState(@Nonnull CollidableComponent component) {
     return isActive() ? 1 : 0;
   }
 
@@ -383,15 +383,15 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public void onChunkUnload(World world) {
-    AbstractConduitNetwork<?, ?> network = getNetwork();
+  public void onChunkUnload() {
+    IConduitNetwork<?, ?> network = getNetwork();
     if (network != null) {
       network.destroyNetwork();
     }
   }
 
   @Override
-  public void updateEntity(World world) {
+  public void updateEntity(@Nonnull World world) {
     if (world.isRemote) {
       return;
     }
@@ -447,8 +447,8 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   protected void updateNetwork(World world) {
-    BlockCoord pos = getLocation();
-    if (getNetwork() == null && world.isBlockLoaded(pos.getBlockPos())) {
+    BlockPos pos = bundle.getLocation();
+    if (getNetwork() == null && world.isBlockLoaded(pos)) {
       ConduitUtil.ensureValidNetwork(this);
       if (getNetwork() != null) {
         getNetwork().sendBlockUpdatesForEntireNetwork();
@@ -500,11 +500,11 @@ public abstract class AbstractConduit implements IConduit {
     conduitConnections.clear();
 
     if (!externalConnections.isEmpty()) {
-      world.notifyNeighborsOfStateChange(te.getPos(), te.getBlockType());
+      world.notifyNeighborsOfStateChange(te.getPos(), te.getBlockType(), true);
     }
     externalConnections.clear();
 
-    AbstractConduitNetwork<?, ?> network = getNetwork();
+    IConduitNetwork<?, ?> network = getNetwork();
     if (network != null) {
       network.destroyNetwork();
     }
@@ -512,12 +512,12 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean onNeighborBlockChange(Block block) {
+  public boolean onNeighborBlockChange(@Nonnull Block block) {
 
     // NB: No need to check externals if the neighbour that changed was a
     // conduit bundle as this
     // can't effect external connections.
-    if (block == blockConduitBundle.getBlock()) {
+    if (block == block_conduit_bundle.getBlock()) {
       return false;
     }
 
@@ -549,22 +549,25 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos) {
+  public boolean onNeighborChange(@Nonnull BlockPos neighbourPos) {
     return false;
   }
 
   @Override
-  public Collection<CollidableComponent> createCollidables(CacheKey key) {    
+  @Nonnull
+  public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
     return Collections.singletonList(new CollidableComponent(getCollidableType(), ConduitGeometryUtil.instance.getBoundingBox(
         getBaseConduitType(), key.dir, key.isStub, key.offset), key.dir, null));
   }
 
   @Override
+  @Nonnull
   public Class<? extends IConduit> getCollidableType() {
     return getBaseConduitType();
   }
 
   @Override
+  @Nonnull
   public List<CollidableComponent> getCollidableComponents() {
 
     if (collidables != null && !collidablesDirty) {
@@ -585,12 +588,12 @@ public abstract class AbstractConduit implements IConduit {
     return result;
   }
 
-  protected boolean renderStub(EnumFacing dir) {
+  protected boolean renderStub(@Nonnull EnumFacing dir) {
     // return getConectionMode(dir) == ConnectionMode.DISABLED;
     return false;
   }
 
-  private Collection<CollidableComponent> getCollidables(EnumFacing dir) {
+  private Collection<CollidableComponent> getCollidables(@Nonnull EnumFacing dir) {
     CollidableCache cc = CollidableCache.instance;
     Class<? extends IConduit> type = getCollidableType();
     if (isConnectedTo(dir) && getConnectionMode(dir) != ConnectionMode.DISABLED) {
@@ -631,4 +634,5 @@ public abstract class AbstractConduit implements IConduit {
     return "AbstractConduit [getClass()=" + getClass() + ", lastExternalRedstoneLevel=" + lastExternalRedstoneLevel + ", getConduitConnections()="
         + getConduitConnections() + ", getExternalConnections()=" + getExternalConnections() + ", getNetwork()=" + getNetwork() + "]";
   }
+
 }
