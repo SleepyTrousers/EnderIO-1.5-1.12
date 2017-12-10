@@ -12,7 +12,8 @@ import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
 import crazypants.enderio.machines.lang.Lang;
@@ -20,7 +21,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerator> {
+public class GuiZombieGenerator extends GuiInventoryMachineBase<TileZombieGenerator> {
 
   private static final @Nonnull Rectangle RECTANGLE_FUEL_TANK = new Rectangle(80, 21, 15, 47);
 
@@ -39,6 +40,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
       }
     });
 
+    addDrawingElement(new PowerBar<>(tileEntity, this, 15, 20, 48));
   }
 
   @Override
@@ -100,21 +102,6 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
 
     bindGuiTexture();
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-  }
-
-  @Override
-  protected int getPowerX() {
-    return 15;
-  }
-
-  @Override
-  protected int getPowerY() {
-    return 20;
-  }
-
-  @Override
-  protected int getPowerHeight() {
-    return 48;
   }
 
 }

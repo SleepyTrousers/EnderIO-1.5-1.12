@@ -6,11 +6,12 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
 
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GuiSagMill extends GuiPoweredMachineBase<TileSagMill> {
+public class GuiSagMill extends GuiInventoryMachineBase<TileSagMill> {
 
   public GuiSagMill(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileSagMill inventory) {
     super(inventory, new ContainerSagMill(par1InventoryPlayer, inventory), "crusher");
@@ -24,6 +25,8 @@ public class GuiSagMill extends GuiPoweredMachineBase<TileSagMill> {
     });
 
     addProgressTooltip(79, 31, 18, 24);
+
+    addDrawingElement(new PowerBar<>(inventory, this));
   }
 
   @Override

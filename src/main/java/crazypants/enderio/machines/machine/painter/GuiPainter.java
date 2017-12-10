@@ -6,18 +6,21 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiPainter extends GuiPoweredMachineBase<TileEntityPainter> {
+public class GuiPainter extends GuiInventoryMachineBase<TileEntityPainter> {
 
-  public GuiPainter(InventoryPlayer par1InventoryPlayer, @Nonnull TileEntityPainter te) {
+  public GuiPainter(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileEntityPainter te) {
     super(te, new ContainerPainter(par1InventoryPlayer, te), "painter");
 
     addProgressTooltip(88, 34, 24, 16);
+
+    addDrawingElement(new PowerBar<>(te, this));
   }
 
   @Override

@@ -12,7 +12,8 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.alloy.TileAlloySmelter.Mode;
@@ -23,7 +24,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 
-public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiPoweredMachineBase<T> {
+public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMachineBase<T> {
 
   private final @Nonnull IIconButton vanillaFurnaceButton;
   private final @Nonnull GuiToolTip vanillaFurnaceTooltip;
@@ -47,6 +48,8 @@ public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiPoweredMachi
 
     addProgressTooltip(55, 35, 14, 14);
     addProgressTooltip(103, 35, 14, 14);
+
+    addDrawingElement(new PowerBar<>(furnaceInventory, this));
   }
 
   @Override

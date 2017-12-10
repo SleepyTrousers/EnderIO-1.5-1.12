@@ -15,7 +15,8 @@ import com.enderio.core.client.render.ColorUtil;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -24,7 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiPoweredMachineBase<T> {
+public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiInventoryMachineBase<T> {
 
   private final boolean isSimple;
 
@@ -46,9 +47,10 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiPo
       });
     } else {
       redstoneButton.setIsVisible(false);
-      // TODO "X" over slot
     }
     addProgressTooltip(80, 52, 14, 14);
+
+    addDrawingElement(new PowerBar<>(te, this));
   }
 
   private static float getFactor(@Nonnull ICapacitorData upgrade) {

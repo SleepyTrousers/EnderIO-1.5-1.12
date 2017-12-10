@@ -6,8 +6,6 @@ import java.awt.Rectangle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
@@ -15,14 +13,16 @@ import com.enderio.core.common.fluid.SmartTank;
 
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends GuiPoweredMachineBase<T> {
+public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends GuiInventoryMachineBase<T> {
 
   private static final @Nonnull Rectangle RECTANGLE_FUEL_TANK = new Rectangle(48, 21, 15, 47);
   private static final @Nonnull Rectangle RECTANGLE_COOLANT_TANK = new Rectangle(114, 21, 15, 47);
@@ -62,6 +62,7 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
 
     });
 
+    addDrawingElement(new PowerBar<>(te, this, 10, 13, 60));
   }
 
   @Override
@@ -96,7 +97,7 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
@@ -161,21 +162,6 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
 
     bindGuiTexture();
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-  }
-
-  @Override
-  protected int getPowerX() {
-    return 10;
-  }
-
-  @Override
-  protected int getPowerY() {
-    return 13;
-  }
-
-  @Override
-  protected int getPowerHeight() {
-    return 60;
   }
 
 }

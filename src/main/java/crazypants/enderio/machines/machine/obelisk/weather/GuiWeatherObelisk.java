@@ -13,7 +13,8 @@ import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangFluid;
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
@@ -22,7 +23,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk> {
+public class GuiWeatherObelisk extends GuiInventoryMachineBase<TileWeatherObelisk> {
 
   private static final @Nonnull Rectangle RECTANGLE_TANK = new Rectangle(22, 11, 16, 63);
   private IconButton buttonStart;
@@ -41,6 +42,8 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
         text.add(LangFluid.MB(getTileEntity().getInputTank()));
       }
     });
+
+    addDrawingElement(new PowerBar<>(tileEntity, this, 8, 11, 63));
   }
 
   @Override
@@ -111,31 +114,6 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
       this.drawTexturedModalRect(getGuiLeft() + 81, getGuiTop() + 58 - barHeight, getXSize(), 32 - barHeight, 12, barHeight);
     }
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-  }
-
-  @Override
-  protected int getPowerHeight() {
-    return 63;
-  }
-
-  @Override
-  protected int getPowerU() {
-    return super.getPowerU();
-  }
-
-  @Override
-  protected int getPowerV() {
-    return 33;
-  }
-
-  @Override
-  protected int getPowerX() {
-    return super.getPowerX() - 7;
-  }
-
-  @Override
-  protected int getPowerY() {
-    return super.getPowerY() - 3;
   }
 
   @Override

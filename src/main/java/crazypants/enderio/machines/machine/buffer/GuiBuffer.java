@@ -10,7 +10,8 @@ import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.machines.EnderIOMachines;
@@ -20,7 +21,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
-public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
+public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
 
   private static final @Nonnull String TEXTURE_SIMPLE = "buffer";
   private static final @Nonnull String TEXTURE_FULL = "buffer_full";
@@ -50,6 +51,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
       textFields.add(maxInput);
       textFields.add(maxOutput);
+      addDrawingElement(new PowerBar<>(te, this, isFull() ? 6 : 44, 15, 52));
     }
   }
 
@@ -107,36 +109,6 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   @Override
   protected boolean showRecipeButton() {
     return false;
-  }
-
-  @Override
-  protected boolean renderPowerBar() {
-    return hasPower;
-  }
-
-  @Override
-  public int getYSize() {
-    return ySize;
-  }
-
-  @Override
-  protected int getPowerHeight() {
-    return 52;
-  }
-
-  @Override
-  protected int getPowerX() {
-    return isFull() ? 6 : 44;
-  }
-
-  @Override
-  protected int getPowerY() {
-    return 15;
-  }
-
-  @Override
-  protected int getPowerV() {
-    return 0;
   }
 
   @Override

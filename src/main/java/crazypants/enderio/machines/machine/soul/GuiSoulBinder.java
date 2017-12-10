@@ -10,7 +10,8 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.common.util.SoundUtil;
 
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.xp.ExperienceBarRenderer;
 import crazypants.enderio.base.xp.XpUtil;
@@ -20,7 +21,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 
-public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
+public class GuiSoulBinder extends GuiInventoryMachineBase<TileSoulBinder> {
 
   private static final int PLAYER_XP_ID = 985162394;
 
@@ -30,9 +31,11 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
     super(te, new ContainerSoulBinder(par1InventoryPlayer, te), "soul_fuser");
     usePlayerXP = new IconButton(this, PLAYER_XP_ID, 125, 57, IconEIO.XP);
     usePlayerXP.visible = false;
-    usePlayerXP.setToolTip("Use Player XP");
+    usePlayerXP.setToolTip("Use Player XP"); // FIXME: Lang
 
     addProgressTooltip(80, 34, 24, 16);
+
+    addDrawingElement(new PowerBar<>(te, this));
   }
 
   @Override

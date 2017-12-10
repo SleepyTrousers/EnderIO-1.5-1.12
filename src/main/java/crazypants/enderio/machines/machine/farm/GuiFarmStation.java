@@ -17,8 +17,9 @@ import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.GuiOverlayIoConfig;
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -27,7 +28,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
-public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
+public class GuiFarmStation extends GuiInventoryMachineBase<TileFarmStation> {
 
   private static final int EXTRA_WITH = 8;
 
@@ -46,16 +47,17 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
         return Lists.newArrayList((showRangeB.isSelected() ? Lang.GUI_HIDE_RANGE : Lang.GUI_SHOW_RANGE).get());
       }
     });
+    addDrawingElement(new PowerBar<TileFarmStation>(machine, this, 45) {
+      @Override
+      protected String getPowerOutputLabel(@Nonnull String rft) {
+        return Lang.GUI_FARM_BASEUSE.get(rft);
+      }
+    });
   }
 
   @Override
   public int getXSize() {
     return 176 + EXTRA_WITH;
-  }
-
-  @Override
-  protected int getPowerU() {
-    return getXSize();
   }
 
   @Override
@@ -142,16 +144,6 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   @Override
   protected boolean showRecipeButton() {
     return false;
-  }
-
-  @Override
-  protected String getPowerOutputLabel(@Nonnull String rft) {
-    return Lang.GUI_FARM_BASEUSE.get(rft);
-  }
-
-  @Override
-  protected int getPowerHeight() {
-    return super.getPowerHeight() + 3;
   }
 
 }

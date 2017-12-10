@@ -17,7 +17,8 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangFluid;
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
@@ -28,7 +29,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
-public class GuiVat extends GuiPoweredMachineBase<TileVat> {
+public class GuiVat extends GuiInventoryMachineBase<TileVat> {
 
   private static final @Nonnull Rectangle RECTANGLE_OUTPUT_TANK = new Rectangle(132, 12, 15, 47);
 
@@ -69,6 +70,8 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     dump2.setToolTip(Lang.GUI_VAT_VOID.get());
 
     addProgressTooltip(81, 63, 14, 14);
+
+    addDrawingElement(new PowerBar<>(te, this, 10, 13, 60));
   }
 
   @Override
@@ -208,21 +211,6 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
   private void dump(int i) {
     PacketHandler.INSTANCE.sendToServer(new PacketDumpTank(getTileEntity(), i));
-  }
-
-  @Override
-  protected int getPowerX() {
-    return 10;
-  }
-
-  @Override
-  protected int getPowerY() {
-    return 13;
-  }
-
-  @Override
-  protected int getPowerHeight() {
-    return 60;
   }
 
 }

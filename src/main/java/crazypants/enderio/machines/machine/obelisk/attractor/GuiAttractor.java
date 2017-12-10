@@ -12,13 +12,14 @@ import com.enderio.core.client.render.ColorUtil;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
+public class GuiAttractor extends GuiInventoryMachineBase<TileAttractor> {
 
   private static final int RANGE_ID = 8738924;
 
@@ -36,6 +37,8 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
         return Lists.newArrayList((showRangeB.isSelected() ? Lang.GUI_HIDE_RANGE : Lang.GUI_SHOW_RANGE).get());
       }
     });
+
+    addDrawingElement(new PowerBar<>(te, this));
   }
 
   @Override

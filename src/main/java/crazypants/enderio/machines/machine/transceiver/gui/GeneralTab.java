@@ -40,8 +40,7 @@ public class GeneralTab implements ITabPanel {
     bufferSizeB.setUnselectedToolTip(Lang.GUI_TRANS_BUFFER_SINGLES.get());
     bufferSizeB.setSelected(parent.getTransciever().isBufferStacks());
 
-    sendPowerBarTT = new GuiToolTip(new Rectangle(parent.getPowerX() + SEND_BAR_OFFSET, parent.getPowerY(), parent.getPowerWidth(), parent.getPowerHeight()),
-        "") {
+    sendPowerBarTT = new GuiToolTip(new Rectangle(11 + SEND_BAR_OFFSET, 14, 10, 58), "") {
       @Override
       protected void updateText() {
         text.clear();
@@ -104,9 +103,9 @@ public class GeneralTab implements ITabPanel {
     parent.bindGuiTexture();
     GlStateManager.color(1, 1, 1);
 
-    x = left + parent.getPowerX() - 1;
-    y = top + parent.getPowerY() - 1;
-    int maxHeight = parent.getPowerHeight();
+    x = left + 11 - 1;
+    y = top + 14 - 1;
+    int maxHeight = 58;
 
     parent.drawTexturedModalRect(x, y, 233, 196, 12, maxHeight + 2);
     parent.drawTexturedModalRect(x + SEND_BAR_OFFSET, y, 233, 196, 12, maxHeight + 2);
@@ -114,19 +113,19 @@ public class GeneralTab implements ITabPanel {
     int totalPixelHeight = parent.getTransciever().getEnergyStoredScaled(maxHeight * 2);
     int fillHeight = Math.min(totalPixelHeight, maxHeight);
 
-    int fillY = y + 1 + parent.getPowerHeight() - fillHeight;
+    int fillY = y + 1 + 58 - fillHeight;
     x += 1;
-    parent.drawTexturedModalRect(x, fillY, parent.getPowerU(), parent.getPowerV(), parent.getPowerWidth(), fillHeight);
+    parent.drawTexturedModalRect(x, fillY, 246, 196, 10, fillHeight);
 
     fillHeight = Math.max(0, totalPixelHeight - maxHeight);
-    fillY = y + 1 + parent.getPowerHeight() - fillHeight;
-    parent.drawTexturedModalRect(x + SEND_BAR_OFFSET, fillY, parent.getPowerU() - 25, parent.getPowerV(), parent.getPowerWidth(), fillHeight);
+    fillY = y + 1 + 58 - fillHeight;
+    parent.drawTexturedModalRect(x + SEND_BAR_OFFSET, fillY, 246 - 25, 196, 10, fillHeight);
 
   }
 
   public void updatePowerBarTooltip(List<String> text) {
     text.add(Lang.GUI_TRANS_BUFFER_LOCAL.get());
-    text.add(Lang.GUI_TRANS_BUFFER_UPKEEP.get(LangPower.RFt(parent.getPowerOutputValue())));
+    text.add(Lang.GUI_TRANS_BUFFER_UPKEEP.get(LangPower.RFt(parent.getTransciever().getPowerUsePerTick())));
     int maxEnergy = parent.getTransciever().getMaxEnergyStored() / 2;
     int energyStored = Math.min(parent.getTransciever().getEnergyStored(), maxEnergy);
     text.add(LangPower.RF(energyStored, maxEnergy));

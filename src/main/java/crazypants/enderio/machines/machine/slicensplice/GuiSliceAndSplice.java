@@ -1,16 +1,21 @@
 package crazypants.enderio.machines.machine.slicensplice;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice> {
+public class GuiSliceAndSplice extends GuiInventoryMachineBase<TileSliceAndSplice> {
 
-  public GuiSliceAndSplice(InventoryPlayer par1InventoryPlayer, TileSliceAndSplice te) {
+  public GuiSliceAndSplice(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileSliceAndSplice te) {
     super(te, new ContainerSliceAndSplice(par1InventoryPlayer, te), "slice_and_splice");
 
     addProgressTooltip(103, 49, 24, 16);
+
+    addDrawingElement(new PowerBar<>(te, this));
   }
 
   @Override

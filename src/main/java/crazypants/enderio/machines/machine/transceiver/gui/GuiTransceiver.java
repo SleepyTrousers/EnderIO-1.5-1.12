@@ -11,13 +11,13 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.ITabPanel;
 
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.transceiver.ChannelType;
 import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
+public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> {
 
   private int activeTab = 0;
   private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
@@ -33,11 +33,6 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     tabs.add(new ChannelTab(this, ChannelType.POWER));
     tabs.add(new ChannelTab(this, ChannelType.ITEM));
     tabs.add(new ChannelTab(this, ChannelType.FLUID));
-  }
-
-  @Override
-  protected void updatePowerBarTooltip(List<String> text) {
-    generalTab.updatePowerBarTooltip(text);
   }
 
   @Override
@@ -106,49 +101,8 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     redstoneButton.visible = activeTab == 0;
   }
 
-  @Override
-  public void renderPowerBar(int k, int l) {
-    // super.renderPowerBar(k, l);
-  }
-
-  @Override
   protected boolean renderPowerBar() {
     return activeTab == 0;
-  }
-
-  @Override
-  public int getPowerX() {
-    return super.getPowerX() - 4;
-  }
-
-  @Override
-  public int getPowerHeight() {
-    return 58;
-  }
-
-  @Override
-  public int getPowerY() {
-    return super.getPowerY();
-  }
-
-  @Override
-  public int getPowerWidth() {
-    return POWER_WIDTH;
-  }
-
-  @Override
-  public int getPowerV() {
-    return 196;
-  }
-
-  @Override
-  public int getPowerU() {
-    return 246;
-  }
-
-  @Override
-  public int getPowerOutputValue() {
-    return super.getPowerOutputValue();
   }
 
   @Override

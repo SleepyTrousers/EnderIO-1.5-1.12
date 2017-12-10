@@ -14,13 +14,14 @@ import com.enderio.core.client.render.ColorUtil;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 
-public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEntity> {
+public class GuiRangedObelisk extends GuiInventoryMachineBase<AbstractRangedTileEntity> {
 
   ToggleButton showRangeB;
 
@@ -43,6 +44,7 @@ public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEn
       }
     });
 
+    addDrawingElement(new PowerBar<>(te, this));
   }
 
   @Override

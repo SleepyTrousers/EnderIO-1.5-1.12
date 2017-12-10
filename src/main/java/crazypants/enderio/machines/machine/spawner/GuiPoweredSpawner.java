@@ -14,7 +14,8 @@ import com.enderio.core.client.render.ColorUtil;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
@@ -22,7 +23,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner> {
+public class GuiPoweredSpawner extends GuiInventoryMachineBase<TilePoweredSpawner> {
 
   private final @Nonnull MultiIconButton modeB;
   private final @Nonnull Rectangle progressTooltipRect;
@@ -51,6 +52,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
       }
     });
 
+    addDrawingElement(new PowerBar<>(te, this));
   }
 
   @Override
