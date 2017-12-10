@@ -27,7 +27,7 @@ public enum ConduitObject implements IModObject.Registerable {
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
-    ModObjectRegistry.addModObjects(ConduitObject.class);
+    crazypants.enderio.base.registry.Registry.registerConduitBlock(block_conduit_bundle);
   }
 
   final @Nonnull String unlocalisedName;
