@@ -46,6 +46,41 @@ public class ConduitUtil {
 
   public static final Random RANDOM = new Random();
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  public static void ensureValidNetwork(IConduit conduit) {
+    TileEntity te = conduit.getBundle().getEntity();
+    World world = te.getWorld();
+    Collection<? extends IConduit> connections = getConnectedConduits(world, te.getPos(), conduit.getBaseConduitType());
+
+    if (reuseNetwork(conduit, connections, world)) {
+      return;
+    }
+
+    IConduitNetwork res = conduit.createNetworkForType();
+    res.init(conduit.getBundle(), connections, world);
+    return;
+  }
+
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  private static boolean reuseNetwork(IConduit con, Collection<? extends IConduit> connections, @Nonnull World world) {
+    IConduitNetwork network = null;
+    for (IConduit conduit : connections) {
+      if (network == null) {
+        network = conduit.getNetwork();
+      } else if (network != conduit.getNetwork()) {
+        return false;
+      }
+    }
+    if (network == null) {
+      return false;
+    }
+    if (con.setNetwork(network)) {
+      network.addConduit(con);
+      return true;
+    }
+    return false;
+  }
+
   public static boolean forceSkylightRecalculation(@Nonnull World world, int xCoord, int yCoord, int zCoord) {
     return forceSkylightRecalculation(world, new BlockPos(xCoord, yCoord, zCoord));
   }
