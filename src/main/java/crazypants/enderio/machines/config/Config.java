@@ -8,7 +8,6 @@ import crazypants.enderio.base.config.ValueFactory;
 import crazypants.enderio.base.config.ValueFactory.IValue;
 import crazypants.enderio.base.config.config.ChargerConfig;
 import crazypants.enderio.machines.config.config.ClientConfig;
-import crazypants.enderio.machines.config.config.EnchanterConfig;
 import crazypants.enderio.machines.config.config.KillerJoeConfig;
 import crazypants.enderio.machines.config.config.SolarConfig;
 import crazypants.enderio.machines.config.config.SoulBinderConfig;
@@ -37,7 +36,6 @@ public final class Config {
       return crazypants.enderio.base.config.Config.EXPLOSION_RESISTANT;
     }
   };
-  
 
   //
 
@@ -45,7 +43,6 @@ public final class Config {
     // force sub-configs to be classloaded with the main config
     ChargerConfig.F.getClass();
     ClientConfig.F.getClass();
-    EnchanterConfig.F.getClass();
     KillerJoeConfig.F.getClass();
     SolarConfig.F.getClass();
     SoulBinderConfig.F.getClass();

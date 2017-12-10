@@ -82,7 +82,7 @@ public abstract class ContainerAlloySmelter<T extends TileAlloySmelter> extends 
 
     int numResults = 0;
 
-    public SlotSmelter(IInventory par1iInventory, int par2, int par3, int par4) {
+    public SlotSmelter(@Nonnull IInventory par1iInventory, int par2, int par3, int par4) {
       super(par1iInventory, par2, par3, par4);
     }
 

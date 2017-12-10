@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.buffer;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import io.netty.buffer.ByteBuf;
@@ -14,7 +16,7 @@ public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMe
 
   private int in, out;
 
-  public PacketBufferIO(TileBuffer tile, int in, int out) {
+  public PacketBufferIO(@Nonnull TileBuffer tile, int in, int out) {
     super(tile);
     tile.setIO(in, out);
     this.in = in;

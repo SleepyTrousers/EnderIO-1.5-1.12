@@ -8,13 +8,14 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
+import crazypants.enderio.base.recipe.MachineRecipeInput;
+import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.enchanter.EnchanterRecipe;
 import crazypants.enderio.machines.init.MachineObject;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
-import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -104,16 +105,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
     if (stack.isEmpty()) {
       return false;
     }
-    if (slot == 0) {
-      return Items.WRITABLE_BOOK == stack.getItem();
-    }
-    if (slot == 1) {
-      return EnchanterRecipeManager.getInstance().getEnchantmentRecipeForInput(stack) != null;
-    }
-    if (slot == 2) {
-      return stack.getItem() == Items.DYE && stack.getMetadata() == 4;
-    }
-    return false;
+    return !MachineRecipeRegistry.instance.getRecipesForInput(MachineRecipeRegistry.ENCHANTER, new MachineRecipeInput(slot, stack)).isEmpty();
   }
 
   @Override
@@ -125,43 +117,16 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
     if (inv.get(0).isEmpty() || inv.get(1).isEmpty() || inv.get(2).isEmpty()) {
       return null;
     }
-    EnchanterRecipe ench = EnchanterRecipeManager.getInstance().getEnchantmentRecipeForInput(inv.get(1));
-    if (ench == null) {
-      return null;
-    }
-    int level = ench.getLevelForStackSize(inv.get(1).getCount());
-    if (level <= 0) {
-      return null;
-    }
-    if ((inv.get(2).getCount()) < ench.getLapizForStackSize(inv.get(1).getCount())) {
-      return null;
-    }
-    return ench;
-  }
-
-  public EnchantmentData getCurrentEnchantmentData() {
-    EnchanterRecipe rec = getCurrentEnchantmentRecipe();
-    if (rec == null) {
-      return null;
-    }
-    int level = rec.getLevelForStackSize(inv.get(1).getCount());
-    return new EnchantmentData(rec.getEnchantment(), level);
+    return (EnchanterRecipe) MachineRecipeRegistry.instance.getRecipeForInputs(MachineRecipeRegistry.ENCHANTER, getInvAsMachineRecipeInput());
   }
 
   public int getCurrentEnchantmentCost() {
-    return getEnchantmentCost(getCurrentEnchantmentRecipe());
+    final EnchanterRecipe currentEnchantmentRecipe = getCurrentEnchantmentRecipe();
+    return currentEnchantmentRecipe != null ? currentEnchantmentRecipe.getXPCost(getInvAsMachineRecipeInput()) : 0;
   }
 
-  private int getEnchantmentCost(EnchanterRecipe currentEnchantment) {
-    ItemStack item = inv.get(1);
-    if (item.isEmpty()) {
-      return 0;
-    }
-    if (currentEnchantment == null) {
-      return 0;
-    }
-    int level = currentEnchantment.getLevelForStackSize(item.getCount());
-    return currentEnchantment.getCostForLevel(level);
+  public @Nonnull MachineRecipeInput[] getInvAsMachineRecipeInput() {
+    return new MachineRecipeInput[] { new MachineRecipeInput(0, inv.get(0)), new MachineRecipeInput(1, inv.get(1)), new MachineRecipeInput(2, inv.get(2)) };
   }
 
   public void setOutput(@Nonnull ItemStack output) {
@@ -207,7 +172,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   @Override
   @Nonnull
   public String getMachineName() {
-    return MachineObject.block_enchanter.getUnlocalisedName();
+    return MachineRecipeRegistry.ENCHANTER;
   }
 
   @Override

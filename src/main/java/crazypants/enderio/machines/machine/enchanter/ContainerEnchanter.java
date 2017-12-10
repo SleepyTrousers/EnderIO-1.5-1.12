@@ -10,8 +10,10 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
 
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
+import crazypants.enderio.base.recipe.MachineRecipeInput;
+import crazypants.enderio.base.recipe.enchanter.EnchanterRecipe;
 import crazypants.enderio.util.Prep;
-import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -96,21 +98,19 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
 
       @Override
       public @Nonnull ItemStack onTake(@Nonnull EntityPlayer player, @Nonnull ItemStack stack) {
-        if (!player.capabilities.isCreativeMode) {
-          player.addExperienceLevel(-te.getCurrentEnchantmentCost());
-        }
-        EnchantmentData enchData = te.getCurrentEnchantmentData();
-        EnchanterRecipe recipe = te.getCurrentEnchantmentRecipe();
-        ItemStack curStack = te.getStackInSlot(1);
-        if (recipe == null || enchData == null || Prep.isInvalid(curStack)) {
-          Log.error("Enchanting yielded result without resources");
+        EnchanterRecipe currentEnchantmentRecipe = getInv().getCurrentEnchantmentRecipe();
+        if (currentEnchantmentRecipe != null) {
+          List<MachineRecipeInput> quantitiesConsumed = currentEnchantmentRecipe.getQuantitiesConsumed(getInv().getInvAsMachineRecipeInput());
+          for (MachineRecipeInput machineRecipeInput : quantitiesConsumed) {
+            te.decrStackSize(machineRecipeInput.slotNumber, machineRecipeInput.item.getCount());
+          }
+          if (!player.capabilities.isCreativeMode) {
+            player.addExperienceLevel(-currentEnchantmentRecipe.getXPCost(getInv().getInvAsMachineRecipeInput()));
+          }
         } else {
-          te.decrStackSize(2, recipe.getLapizForStackSize(curStack.getCount()));
-          te.decrStackSize(1, recipe.getItemsPerLevel() * enchData.enchantmentLevel);
-          te.markDirty();
+          Log.error("Enchanting yielded result without resources");
         }
 
-        te.setInventorySlotContents(0, (ItemStack) null);
         if (!te.getWorld().isRemote) {
           te.getWorld().playEvent(1030, te.getPos(), 0);
           te.getWorld().playEvent(2005, te.getPos().up(), 0);
@@ -139,13 +139,13 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
   }
 
   private void updateOutput() {
-    ItemStack output = ItemStack.EMPTY;
-    EnchantmentData enchantment = getInv().getCurrentEnchantmentData();
-    if (enchantment != null) {
-      output = new ItemStack(Items.ENCHANTED_BOOK);
-      Items.ENCHANTED_BOOK.addEnchantment(output, enchantment);
+    EnchanterRecipe currentEnchantmentRecipe = getInv().getCurrentEnchantmentRecipe();
+    if (currentEnchantmentRecipe != null) {
+      ResultStack[] completedResult = currentEnchantmentRecipe.getCompletedResult(FIRST_INVENTORY_SLOT, getInv().getInvAsMachineRecipeInput());
+      getInv().setOutput(completedResult[0].item);
+    } else {
+      getInv().setOutput(Prep.getEmpty());
     }
-    getInv().setOutput(output);
   }
 
   @Override
