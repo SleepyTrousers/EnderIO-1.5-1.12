@@ -1,8 +1,12 @@
 package crazypants.enderio.base.config.recipes;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 
 import javax.xml.stream.XMLStreamException;
+
+import org.apache.commons.io.IOUtils;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
@@ -18,6 +22,18 @@ public class RecipeLoader {
 
   public static void addRecipes() {
     addRecipes(new RecipeFactory(Config.getConfigDirectory(), EnderIO.DOMAIN), RECIPE_FILES);
+  }
+
+  public static void addIMCRecipe(String recipe) throws XMLStreamException, IOException {
+    try (InputStream is = IOUtils.toInputStream(recipe, Charset.forName("UTF-8"))) {
+      Recipes recipes = RecipeFactory.readStax(new Recipes(), "recipes", is);
+      if (recipes.isValid()) {
+        recipes.enforceValidity();
+        recipes.register();
+        return;
+      }
+      throw new InvalidRecipeConfigException("empty XML");
+    }
   }
 
   public static void addRecipes(RecipeFactory recipeFactory, String... files) {

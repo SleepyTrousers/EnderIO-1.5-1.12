@@ -18,7 +18,7 @@ public class Recipe extends AbstractConditional {
 
   private boolean disabled;
 
-  private List<AbstractCrafting> craftings;
+  private List<AbstractConditional> craftings;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -43,7 +43,7 @@ public class Recipe extends AbstractConditional {
     }
     try {
       int count = 0;
-      for (AbstractCrafting crafting : craftings) {
+      for (AbstractConditional crafting : craftings) {
         if (required) {
           if (crafting.isActive()) {
             crafting.enforceValidity();
@@ -79,7 +79,7 @@ public class Recipe extends AbstractConditional {
     if (!disabled && valid && active) {
       Log.debug("Registering XML recipe '" + getName() + "'");
       if (craftings != null) {
-        for (AbstractCrafting crafting : craftings) {
+        for (AbstractConditional crafting : craftings) {
           if (crafting.isValid() && crafting.isActive()) {
             crafting.register();
             return;
@@ -121,23 +121,30 @@ public class Recipe extends AbstractConditional {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("crafting".equals(name)) {
       if (craftings == null) {
-        craftings = new ArrayList<AbstractCrafting>();
+        craftings = new ArrayList<AbstractConditional>();
       }
       craftings.add(factory.read(new Crafting(), startElement));
       return true;
     }
     if ("smelting".equals(name)) {
       if (craftings == null) {
-        craftings = new ArrayList<AbstractCrafting>();
+        craftings = new ArrayList<AbstractConditional>();
       }
       craftings.add(factory.read(new Smelting(), startElement));
       return true;
     }
     if ("casting".equals(name)) {
       if (craftings == null) {
-        craftings = new ArrayList<AbstractCrafting>();
+        craftings = new ArrayList<AbstractConditional>();
       }
       craftings.add(factory.read(new Casting(), startElement));
+      return true;
+    }
+    if ("enchanting".equals(name)) {
+      if (craftings == null) {
+        craftings = new ArrayList<AbstractConditional>();
+      }
+      craftings.add(factory.read(new Enchanting(), startElement));
       return true;
     }
 

@@ -42,8 +42,9 @@ public interface IMachineRecipe {
   /**
    * Returns the how bonus should be handled for this input
    **/
-  @Nonnull
-  RecipeBonusType getBonusType(@Nonnull MachineRecipeInput... inputs);
+  default @Nonnull RecipeBonusType getBonusType(@Nonnull MachineRecipeInput... inputs) {
+    return RecipeBonusType.NONE;
+  }
 
   /**
    * Only returns true if output can be generated using these inputs. If
@@ -79,7 +80,9 @@ public interface IMachineRecipe {
    * @param output
    * @return
    */
-  float getExperienceForOutput(@Nonnull ItemStack output);
+  default float getExperienceForOutput(@Nonnull ItemStack output) {
+    return 0;
+  }
 
   /**
    * Should return true if the specified parameter is can be used in this

@@ -17,6 +17,7 @@ import crazypants.enderio.api.IMC;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.IEnderIOAddon;
+import crazypants.enderio.base.config.recipes.RecipeLoader;
 import crazypants.enderio.base.enchantment.Enchantments;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.Fluids;
@@ -146,6 +147,9 @@ public class EnderIO implements IEnderIOAddon {
 
     MaterialCraftingHandler.init(event);
 
+    // Register the enchants
+    Enchantments.init(event);
+
     proxy.init(event);
   }
 
@@ -157,9 +161,6 @@ public class EnderIO implements IEnderIOAddon {
     ModObjectRegistry.init(event);
 
     LootManager.init(event);
-
-    // Register the enchants
-    Enchantments.init(event);
 
     // This must be loaded before parsing the recipes so we get the preferred
     // outputs
@@ -210,9 +211,10 @@ public class EnderIO implements IEnderIOAddon {
     processImc(evt.getMessages());
   }
 
-  private void processImc(ImmutableList<IMCMessage> messages) {
+  void processImc(ImmutableList<IMCMessage> messages) {
     for (IMCMessage msg : messages) {
       String key = msg.key;
+      Log.info("Processing IMC message " + key + " from " + msg.getSender());
       try {
         if (msg.isStringMessage()) {
           String value = msg.getStringValue();
@@ -228,7 +230,7 @@ public class EnderIO implements IEnderIOAddon {
           } else if (IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
             Config.TRAVEL_BLACKLIST.add(value);
           } else if (IMC.ENCHANTER_RECIPE.equals(key)) {
-            // TODO 1.11 EnchanterRecipeManager.getInstance().addCustomRecipes(value);
+            RecipeLoader.addIMCRecipe(value);
           } else if (IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
             SliceAndSpliceRecipeManager.getInstance().addCustomRecipes(key);
           }
@@ -265,6 +267,7 @@ public class EnderIO implements IEnderIOAddon {
           }
         }
       } catch (Exception e) {
+        e.printStackTrace();
         Log.error("Error occurred handling IMC message " + key + " from " + msg.getSender());
       }
     }

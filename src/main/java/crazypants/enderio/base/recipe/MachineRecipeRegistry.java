@@ -20,6 +20,7 @@ public class MachineRecipeRegistry {
   public static final @Nonnull String SPAWNER = "spawner";
   public static final @Nonnull String FARM = "farmingstation";
   public static final @Nonnull String TRANSCEIVER = "transceiver";
+  public static final @Nonnull String ENCHANTER = "enchanter";
 
   public static final @Nonnull MachineRecipeRegistry instance = new MachineRecipeRegistry();
 

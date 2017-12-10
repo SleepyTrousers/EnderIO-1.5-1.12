@@ -9,6 +9,7 @@ public final class BaseConfig {
 
   static {
     ChargerConfig.F.getClass();
+    EnchanterConfig.F.getClass();
     SpawnerConfig.F.getClass();
   }
 
