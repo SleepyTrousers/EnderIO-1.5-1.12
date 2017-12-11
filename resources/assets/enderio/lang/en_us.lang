@@ -111,3 +111,196 @@ enderio.gui.telepad.tank=Reagent Tank
 enderio.gui.telepad.max=Max: %s
 
 
+tile.block_alloy_smelter.name=Alloy Smelter
+tile.block_alloy_smelter.tooltip.detailed.line1=Used to create EnderIO alloys
+tile.block_alloy_smelter.tooltip.detailed.line2=Can also be used as a powered
+tile.block_alloy_smelter.tooltip.detailed.line3=furnace
+tile.block_alloy_smelter.tooltip.detailed.line4=Upgrade with capacitors to increase
+tile.block_alloy_smelter.tooltip.detailed.line5=speed and energy storage
+
+
+tile.block_buffer.item.name=Item Buffer
+tile.block_buffer.power.name=Power Buffer
+tile.block_buffer.omni.name=Omni Buffer
+tile.block_buffer.creative.name=Creative Buffer
+
+tile.block_crafter.name=Crafter
+tile.block_crafter.tooltip.detailed.line1=A powered auto-crafter
+tile.block_crafter.tooltip.detailed.line2=Consumes power per operation
+tile.block_crafter.tooltip.detailed.line3=Can be upgraded to increase speed
+tile.block_crafter.tooltip.detailed.line4=and energy storage with capacitors
+
+tile.block_enchanter.name=Enchanter
+tile.block_enchanter.tooltip.detailed.line1=Uses XP to combine items
+tile.block_enchanter.tooltip.detailed.line2=and a book and quill to
+tile.block_enchanter.tooltip.detailed.line3=created enchanted books
+
+tile.block_farm_station.name=Farming Station
+tile.block_farm_station.tooltip.detailed.line1=Plants and harvests crops
+tile.block_farm_station.tooltip.detailed.line2=Requires power and
+tile.block_farm_station.tooltip.detailed.line3=appropriate tools (hoe, axe)
+tile.block_farm_station.tooltip.detailed.line4=Looting / fortune on tools
+tile.block_farm_station.tooltip.detailed.line5=applied when harvesting
+tile.block_farm_station.tooltip.detailed.line6=Upgrade with capacitors to increase
+tile.block_farm_station.tooltip.detailed.line7=range, upgrade also increases power use
+
+;generators
+
+tile.block_combustion_generator.name=Combustion Generator
+tile.block_combustion_generator.tooltip.detailed.line1=Burns liquid fuel to generate power
+tile.block_combustion_generator.tooltip.detailed.line2=Requires a coolant (e.g. water)
+tile.block_combustion_generator.tooltip.detailed.line3=Output dependent on fuel
+
+tile.block_stirling_generator.name=Stirling Generator
+tile.block_stirling_generator.tooltip.detailed.line1=Burns solid fuel to generate power
+tile.block_stirling_generator.tooltip.detailed.line2=Can be upgraded to increase output
+tile.block_stirling_generator.tooltip.detailed.line3=and efficiency with capacitors
+
+tile.block_zombie_generator.name=Zombie Generator
+tile.block_zombie_generator.tooltip.detailed.line1=Consumes Nutrient Distillation
+tile.block_zombie_generator.tooltip.detailed.line2=to generate power
+
+tile.block_killer_joe.name=Killer Joe
+tile.block_killer_joe.tooltip.detailed.line1=Attacks nearby creatures when
+tile.block_killer_joe.tooltip.detailed.line2=supplied with a sword and
+tile.block_killer_joe.tooltip.detailed.line3=Nutrient Distillation
+
+enderio.block_killer_joe.giveXp.tooltip=Take XP
+enderio.block_killer_joe.giveXp10.tooltip=Take 10 Levels of XP
+
+;Obelisks
+
+tile.block_attractor_obelisk.name=Attractor Obelisk
+tile.block_attractor_obelisk.tooltip.detailed.line1=Draws mobs towards it
+tile.block_attractor_obelisk.tooltip.detailed.line2=Specify the mobs to effect
+tile.block_attractor_obelisk.tooltip.detailed.line3=by placing their souls
+tile.block_attractor_obelisk.tooltip.detailed.line4=within the device
+
+tile.block_aversion_obelisk.name=Aversion Obelisk
+tile.block_aversion_obelisk.tooltip.detailed.line1=Prevents mobs from spawning
+tile.block_aversion_obelisk.tooltip.detailed.line2=within its area of effect
+
+tile.block_inhibitor_obelisk.name=Inhibitor Obelisk
+tile.block_inhibitor_obelisk.tooltip.detailed.line1=Prevents teleporting within 
+tile.block_inhibitor_obelisk.tooltip.detailed.line2=its area of effect
+
+tile.block_relocator_obelisk.name=Relocator Obelisk
+tile.block_relocator_obelisk.tooltip.detailed.line1=Relocates mobs that spawn
+tile.block_relocator_obelisk.tooltip.detailed.line2=within its area of effect
+
+tile.block_weather_obelisk.name=Weather Obelisk
+tile.block_weather_obelisk.tooltip.detailed.line1=Changes the current weather
+tile.block_weather_obelisk.tooltip.detailed.line2=Requires a lot of power and
+tile.block_weather_obelisk.tooltip.detailed.line3=a catalyst item
+
+tile.block_experience_obelisk.name=Experience Obelisk
+tile.block_experience_obelisk.tooltip.detailed.line1=Stores Experience
+tile.block_experience_obelisk.tooltip.detailed.line2=Can output liquid XP to
+tile.block_experience_obelisk.tooltip.detailed.line3=adjacent tanks
+
+; no description
+tile.block_painter.name=Painting Machine
+
+tile.block_reservoir.name=Reservoir
+tile.block_reservoir.tooltip.detailed.line1=When connected with other Reservoirs:
+tile.block_reservoir.tooltip.detailed.line2=Add two buckets of water for
+tile.block_reservoir.tooltip.detailed.line3=an infinite water source.
+tile.block_reservoir.tooltip.detailed.line4=Produces one bucket per second
+tile.block_reservoir.tooltip.detailed.line5=R-Click with a wrench to
+tile.block_reservoir.tooltip.detailed.line6=enable auto-output
+
+tile.block_sag_mill.name=SAG Mill
+tile.block_sag_mill.tooltip.detailed.line1=Grinds ore and other items
+tile.block_sag_mill.tooltip.detailed.line2=Add grinding balls to increase output
+tile.block_sag_mill.tooltip.detailed.line3=and efficiency
+tile.block_sag_mill.tooltip.detailed.line4=Upgrade with capacitors to increase
+tile.block_sag_mill.tooltip.detailed.line5=speed and energy storage
+tile.block_sag_mill.tooltipPrefix=Contains
+
+tile.block_slice_and_splice.name=Slice'N'Splice
+tile.block_slice_and_splice.tooltip.detailed.line1=Slices heads and splices in
+tile.block_slice_and_splice.tooltip.detailed.line2=all sorts of useful things
+
+tile.block_solar_panel.name=Photovoltaic Cell
+tile.block_solar_panel.advanced.name=Advanced Photovoltaic Cell
+tile.block_solar_panel.vibrant.name=Vibrant Photovoltaic Cell
+tile.block_solar_panel.tooltip.common.line1=Solar Power!
+tile.block_solar_panel.tooltip.detailed.line1=Produces power during daylight hours
+tile.block_solar_panel.tooltip.detailed.line2=Must have a clear line of sight to
+tile.block_solar_panel.tooltip.detailed.line3=the sky
+enderio.tooltip.efficiency=Efficiency
+enderio.tooltip.sunlightBlocked=Sky Blocked!
+
+tile.block_soul_binder.name=Soul Binder
+tile.block_soul_binder.tooltip.detailed.line1=Used to convert the type of
+tile.block_soul_binder.tooltip.detailed.line2=a broken spawner
+
+tile.block_powered_spawner.name=Powered Spawner
+enderio.tile.block_powered_spawner.tooltip.none=None
+
+tile.block_powered_spawner.empty.tooltip.detailed.line1=Combine with a broken
+tile.block_powered_spawner.empty.tooltip.detailed.line2=spawner in an anvil
+tile.block_powered_spawner.tooltip.detailed.line1=Supply with power to
+tile.block_powered_spawner.tooltip.detailed.line2=activate
+tile.block_powered_spawner.tooltip.detailed.line3=Upgrade with capacitors to increase
+tile.block_powered_spawner.tooltip.detailed.line4=speed and energy storage
+
+tile.block_tank.name=Fluid Tank
+tile.block_tank.advanced.name=Pressurized Fluid Tank
+tile.block_tank.tooltip.detailed.line1=Portable fluid tank
+tile.block_tank.tooltip.detailed.line2=Can be used to empty and
+tile.block_tank.tooltip.detailed.line3=fill fluid containers
+enderio.tooltip.none=None
+enderio.tooltip.fluidStored=Fluid Stored
+
+
+;//Travel
+tile.block_travel_anchor.name=Travel Anchor
+tile.block_travel_anchor.tooltip.detailed.line1=Allows teleportation between anchors
+tile.block_travel_anchor.tooltip.detailed.line2=Stand on one Anchor, look at
+tile.block_travel_anchor.tooltip.detailed.line3=another and jump to travel
+tile.block_travel_anchor.tooltip.detailed.line4=Can also be used with the Staff
+tile.block_travel_anchor.tooltip.detailed.line5=of Travel
+tile.block_travel_anchor.tooltip.detailed.line6=Can be painted in the Painting Machine
+
+enderio.block_travel_platform.invalidTarget=Destination is Obstructed
+enderio.block_travel_platform.outOfRange=Destination out of range
+
+tile.block_tele_pad.name=Telepad Block
+tile.block_tele_pad.tooltip.detailed.line1=Uses power to teleport entities
+tile.block_tele_pad.tooltip.detailed.line2=to a specific position and dimension.
+tile.block_tele_pad.tooltip.detailed.line3=Must be placed in a 3x1x3 multiblock.
+
+tile.block_dialing_device.name=Dialing Device
+tile.block_dialing_device.tooltip.detailed.line1=Place near a Telepad 
+tile.block_dialing_device.tooltip.detailed.line2=Stores and sets destinations.
+
+
+item.itemLocationPrintout.name=Location Printout
+item.itemLocationPrintout.tooltip.detailed.line1=Created using the Coordinate Selector
+item.itemLocationPrintout.tooltip.detailed.line2=Used to add destinations to a Telepad
+item.itemLocationPrintout.chat.setTarget=Target set to
+item.itemLocationPrintout.chat.addTarget=Added target
+item.itemLocationPrintout.chat.noPaper=No Paper in Inventory
+
+tile.block_transceiver.name=Dimensional Transceiver
+tile.block_transceiver.tooltip.detailed.line1=Transports items, fluids and power
+tile.block_transceiver.tooltip.detailed.line2=wirelessly across any distance and
+tile.block_transceiver.tooltip.detailed.line3=between dimensions
+
+tile.block_vacuum_chest.name=Vacuum Chest
+tile.block_vacuum_chest.tooltip.detailed.line1=Pulls nearby items
+tile.block_vacuum_chest.tooltip.detailed.line2=into its inventory
+
+;not working
+tile.block_xp_vacuum.name=XP Vacuum
+tile.block_xp_vacuum.tooltip.detailed.line1=Pulls nearby XP orbs and pushes
+tile.block_xp_vacuum.tooltip.detailed.line2=them into adjacent tanks/conduits.
+tile.block_xp_vacuum.tooltip.detailed.line3=Needs to be activated with liquid XP.
+
+tile.block_vat.name=The Vat
+tile.block_vat.tooltip.detailed.line1=Used to brew EnderIO fluids
+
+tile.block_wireless_charger.name=Wireless Charger
+tile.block_wireless_charger.tooltip.detailed.line1=Charges items in nearby
+tile.block_wireless_charger.tooltip.detailed.line2=players inventories
