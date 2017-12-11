@@ -62,7 +62,7 @@ public class ConduitNetworkTickHandler {
   }
 
   public void tickEnd(TickEvent.ServerTickEvent event) {
-    final Profiler theProfiler = FMLCommonHandler.instance().getMinecraftServerInstance().theProfiler;
+    final Profiler theProfiler = FMLCommonHandler.instance().getMinecraftServerInstance().profiler;
     theProfiler.startSection("root"); // this event is fired outside the profilers normal coverage...
     theProfiler.startSection("EnderIO_All_Conduit_Networks_Tick");
     for (TickListener h : listeners) {
