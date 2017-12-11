@@ -223,7 +223,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> im
                 if (sidesToNotify.contains(side)) {
                   final BlockPos offset = pos.offset(side);
                   tracker.start("World.notifyNeighborsOfStateChange() from " + pos + " to " + offset + " (" + world.getBlockState(offset) + ")");
-                  world.notifyNeighborsOfStateChange(offset, blockType, false);
+                  world.neighborChanged(offset, blockType, pos);
                   tracker.stop();
                 }
               }
