@@ -219,13 +219,11 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> im
             tracker.stop();
 
             if (!canceled) {
-              for (EnumFacing side : WEDUNS) {
-                if (sidesToNotify.contains(side)) {
+              for (EnumFacing side : sidesToNotify) {
                   final BlockPos offset = pos.offset(side);
                   tracker.start("World.notifyNeighborsOfStateChange() from " + pos + " to " + offset + " (" + world.getBlockState(offset) + ")");
                   world.neighborChanged(offset, blockType, pos);
                   tracker.stop();
-                }
               }
             }
           }
