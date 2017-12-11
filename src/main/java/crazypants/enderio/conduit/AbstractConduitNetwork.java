@@ -7,10 +7,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.diagnostics.ConduitNeighborUpdateTracker;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -23,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 
 //I=base type, I is the base class of the implementations accepted by the network 
-public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
+public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> implements IConduitNetwork<T, I> {
 
   private final List<I> conduits = new ArrayList<I>();
 
@@ -35,7 +38,8 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
     this.baseConduitClass = baseConduitClass;
   }
 
-  public void init(IConduitBundle tile, Collection<I> connections, World world) {
+  @Override
+  public void init(@Nonnull IConduitBundle tile, Collection<I> connections, @Nonnull World world) {
 
     if(world.isRemote) {
       throw new UnsupportedOperationException();
@@ -43,7 +47,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
 
     // Destroy all existing networks around this block
     for (I con : connections) {
-      AbstractConduitNetwork<?, ?> network = con.getNetwork();
+      IConduitNetwork<?, ?> network = con.getNetwork();
       if(network != null) {
         network.destroyNetwork();
       }
@@ -51,11 +55,13 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
     setNetwork(world, tile);
   }
 
+  @Override
   public final Class<T> getBaseConduitType() {
     return baseConduitClass;
   }
 
-  protected void setNetwork(World world, IConduitBundle tile) {
+  @Override
+  public void setNetwork(@Nonnull World world, @Nonnull IConduitBundle tile) {
 
     T conduit = tile.getConduit(getBaseConduitType());
 
@@ -74,35 +80,36 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
     }
   }
 
-  public void addConduit(I newconduit) {
+  @Override
+  public void addConduit(I newConduit) {
     if (conduits.isEmpty()) {
       ConduitNetworkTickHandler.instance.registerNetwork(this);
     }
-    BlockPos newpos = null;
+    BlockPos newPos = null;
     boolean error = false;
     // Step 1: Is the new conduit attached to a TE that is valid?
-    final IConduitBundle newbundle = newconduit.getBundle();
-    if (newbundle == null) {
-      Log.info("Tried to add invalid conduit to network: ", newconduit);
+    final IConduitBundle newBundle = newConduit.getBundle();
+    if (newBundle == null) {
+      Log.info("Tried to add invalid conduit to network: ", newConduit);
       error = true;
     } else {
-      final TileEntity newte = newbundle.getEntity();
-      if (!newte.hasworld()) {
-        Log.info("Tried to add invalid (no world) conduit to network: ", newconduit);
+      final TileEntity newte = newBundle.getEntity();
+      if (!newte.hasWorld()) {
+        Log.info("Tried to add invalid (no world) conduit to network: ", newConduit);
         error = true;
       }
       if (newte.isInvalid()) {
-        Log.info("Tried to add invalid (invalidated) conduit to network: ", newconduit);
+        Log.info("Tried to add invalid (invalidated) conduit to network: ", newConduit);
         error = true;
       }
-      newpos = newte.getPos();
+      newPos = newte.getPos();
       final World newworld = newte.getWorld();
-      if (!newworld.isBlockLoaded(newpos)) {
-        Log.info("Tried to add invalid (unloaded) conduit to network: ", newconduit);
+      if (!newworld.isBlockLoaded(newPos)) {
+        Log.info("Tried to add invalid (unloaded) conduit to network: ", newConduit);
         error = true;
       }
       if (newworld.getTileEntity(newte.getPos()) != newte) {
-        Log.info("Tried to add invalid (world disagrees) conduit to network: ", newconduit);
+        Log.info("Tried to add invalid (world disagrees) conduit to network: ", newConduit);
         error = true;
       }
     }
@@ -113,46 +120,47 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
     // Step 2: Check for duplicates and other errors
     List<I> old = new ArrayList<I>(conduits);
     conduits.clear();
-    for (I oldconduit : old) {
+    for (I oldConduit : old) {
       // Step 2.1: Fast skip if we have a real dupe
-      if (newconduit == oldconduit) {
+      if (newConduit == oldConduit) {
         continue;
       }
       // Step 2.2: Check if the old conduit's TE is valid
-      final IConduitBundle oldbundle = oldconduit.getBundle();
-      final TileEntity oldte = oldbundle.getEntity();
-      if (oldte == null || oldte.isInvalid() || !oldte.hasworld()) {
-        oldconduit.setNetwork(null);
+      final IConduitBundle oldBundle = oldConduit.getBundle();
+      final TileEntity oldTe = oldBundle.getEntity();
+      if (oldTe == null || oldTe.isInvalid() || !oldTe.hasWorld()) {
+        oldConduit.setNetwork(null);
         continue; // bad conduit, skip it
       }
       // Step 2.2b: Check if the target position is loaded
-      final World oldworld = oldbundle.getBundleworld();
-      final BlockPos oldpos = oldte.getPos();
-      if (!oldworld.isBlockLoaded(oldpos)) {
-        Log.info("Removed unloaded but valid conduit from network: " + oldconduit);
-        oldconduit.setNetwork(null);
+      final World oldWorld = oldBundle.getBundleworld();
+      final BlockPos oldPos = oldTe.getPos();
+      if (!oldWorld.isBlockLoaded(oldPos)) {
+        Log.info("Removed unloaded but valid conduit from network: " + oldConduit);
+        oldConduit.setNetwork(null);
         continue; // bad conduit, skip it
       }
       // Step 2.3: Check if the old conduit's TE matches what its world has
-      if (oldworld.getTileEntity(oldpos) != oldte) {
-        oldconduit.setNetwork(null);
+      if (oldWorld.getTileEntity(oldPos) != oldTe) {
+        oldConduit.setNetwork(null);
         continue; // bad conduit, skip it
       }
       // Step 2.4: Check if the new conduit is for the same position as the old. This should not happen, as the new conduit should have been gotten from the
       // world and the old conduit already was checked against the world...
-      if (newpos != null && newpos.equals(oldpos)) {
-        Log.info("Tried to add invalid conduit to network! Old conduit: ", oldconduit, "/", oldbundle, " New conduit: ", newconduit, "/", oldbundle,
-            " World says: ", oldworld.getTileEntity(newpos));
-        newconduit = null;
+      if (newPos != null && newPos.equals(oldPos)) {
+        Log.info("Tried to add invalid conduit to network! Old conduit: ", oldConduit, "/", oldBundle, " New conduit: ", newConduit, "/", oldBundle,
+            " World says: ", oldWorld.getTileEntity(newPos));
+        newConduit = null;
       }
-      conduits.add(oldconduit);
+      conduits.add(oldConduit);
     }
     // Step 3: Add the new conduit
-    if (newconduit != null) {
-      conduits.add(newconduit);
+    if (newConduit != null) {
+      conduits.add(newConduit);
     }
   }
 
+  @Override
   public void destroyNetwork() {
     for (I con : conduits) {
       con.setNetwork(null);
@@ -161,6 +169,8 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
     ConduitNetworkTickHandler.instance.unregisterNetwork(this);
   }
 
+  @Override
+  @Nonnull
   public List<I> getConduits() {
     return conduits;
   }
@@ -168,6 +178,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
   private static final EnumFacing[] WEDUNS = new EnumFacing[] { EnumFacing.WEST, EnumFacing.EAST, EnumFacing.DOWN, EnumFacing.UP, EnumFacing.NORTH,
       EnumFacing.SOUTH };
 
+  @Override
   public void sendBlockUpdatesForEntireNetwork() {
     ConduitNeighborUpdateTracker tracker = null;
     Set<BlockPos> notified = new HashSet<BlockPos>();
@@ -203,7 +214,8 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
 
           if (!sidesToNotify.isEmpty()) {
             tracker.start("ForgeEventFactory.onNeighborNotify() at " + pos);
-            boolean canceled = ForgeEventFactory.onNeighborNotify(world, pos, bs, sidesToNotify).isCanceled();
+            // TODO Set the 4th parameter to only update the redstone state when the conduit network has a redstone conduit network in it
+            boolean canceled = ForgeEventFactory.onNeighborNotify(world, pos, bs, sidesToNotify, false).isCanceled();
             tracker.stop();
 
             if (!canceled) {
@@ -211,7 +223,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
                 if (sidesToNotify.contains(side)) {
                   final BlockPos offset = pos.offset(side);
                   tracker.start("World.notifyNeighborsOfStateChange() from " + pos + " to " + offset + " (" + world.getBlockState(offset) + ")");
-                  world.notifyBlockOfStateChange(offset, blockType);
+                  world.notifyNeighborsOfStateChange(offset, blockType, false);
                   tracker.stop();
                 }
               }
@@ -229,12 +241,13 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     for (IConduit con : conduits) {
-      sb.append(con.getLocation());
+      sb.append(con.getBundle().getLocation());
       sb.append(", ");
     }
     return "AbstractConduitNetwork@" + Integer.toHexString(hashCode()) + " [conduits=" + sb.toString() + "]";
   }
 
+  @Override
   public void doNetworkTick(Profiler theProfiler) {
   }
 }
