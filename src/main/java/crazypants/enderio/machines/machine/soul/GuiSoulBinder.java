@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.common.util.SoundUtil;
 
@@ -18,6 +16,7 @@ import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.machine.obelisk.xp.ContainerExperienceObelisk;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 
@@ -62,7 +61,7 @@ public class GuiSoulBinder extends GuiInventoryMachineBase<TileSoulBinder> {
    */
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int k = guiLeft;
     int l = guiTop;
@@ -83,7 +82,6 @@ public class GuiSoulBinder extends GuiInventoryMachineBase<TileSoulBinder> {
 
     bindGuiTexture();
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-
   }
 
 }

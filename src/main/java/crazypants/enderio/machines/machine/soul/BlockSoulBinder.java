@@ -34,7 +34,6 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
   public static BlockSoulBinder create(@Nonnull IModObject modObject) {
-    // PacketDrainPlayerXP.register();//TODO Fix
     BlockSoulBinder result = new BlockSoulBinder(modObject);
     result.init();
     return result;

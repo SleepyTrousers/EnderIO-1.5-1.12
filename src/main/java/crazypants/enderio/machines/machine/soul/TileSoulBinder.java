@@ -23,6 +23,7 @@ import crazypants.enderio.base.xp.IHaveExperience;
 import crazypants.enderio.base.xp.PacketExperienceContainer;
 import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.config.config.SoulBinderConfig;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -157,7 +158,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     }
     MachineRecipeInput newInput = new MachineRecipeInput(slot, item);
     int otherSlot = slot == 0 ? 1 : 0;
-    if (inventory[otherSlot] == null) {
+    if (Prep.isInvalid(getStackInSlot(otherSlot))) {
       List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), newInput);
       if (recipes.isEmpty()) {
         return false;
@@ -168,7 +169,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
         }
       }
     } else {
-      MachineRecipeInput[] inputs = new MachineRecipeInput[] { newInput, new MachineRecipeInput(otherSlot, inventory[otherSlot]) };
+      MachineRecipeInput[] inputs = new MachineRecipeInput[] { newInput, new MachineRecipeInput(otherSlot, getStackInSlot(otherSlot)) };
       return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), inputs) != null;
     }
     return false;

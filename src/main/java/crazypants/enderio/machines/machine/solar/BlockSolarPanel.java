@@ -22,7 +22,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -116,13 +115,6 @@ public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResour
     return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
   }
 
-  // @Override
-  // public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity
-  // entityIn) {
-  // setBlockBoundsBasedOnState(worldIn, pos);
-  // super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn);
-  // }
-
   @Override
   public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName();
@@ -158,15 +150,11 @@ public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResour
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     if (state.getValue(SolarType.KIND) == SolarType.VIBRANT) {
-      TileEntity te = getTileEntity(world, pos);
-      if (te instanceof TileSolarPanel) {
-        TileSolarPanel solar = (TileSolarPanel) te;
-        if (solar.canSeeSun() && solar.calculateLightRatio() / 3 > rand.nextFloat()) {
-          double d0 = pos.getX() + 0.5D + (Math.random() - 0.5D) * 0.5D;
-          double d1 = pos.getY() + BLOCK_HEIGHT;
-          double d2 = pos.getZ() + 0.5D + (Math.random() - 0.5D) * 0.5D;
-          world.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0x47 / 255d, 0x9f / 255d, 0xa3 / 255d);
-        }
+      if (TileSolarPanel.canSeeSun(world, pos) && TileSolarPanel.calculateLightRatio(world) / 3 > rand.nextFloat()) {
+        double d0 = pos.getX() + 0.5D + (Math.random() - 0.5D) * 0.5D;
+        double d1 = pos.getY() + BLOCK_HEIGHT;
+        double d2 = pos.getZ() + 0.5D + (Math.random() - 0.5D) * 0.5D;
+        world.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0x47 / 255d, 0x9f / 255d, 0xa3 / 255d);
       }
     }
   }
