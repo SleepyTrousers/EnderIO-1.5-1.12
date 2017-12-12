@@ -2,45 +2,45 @@
 #
 # Please wait until the en_us lang file has been completed before translating.
 #
-enderio.block_powered_spawner.note.areaFull=??????? ????? ?????
+enderio.block_powered_spawner.note.areaFull=Слишком много мобов
 #                                       en: Too many mobs
-enderio.block_powered_spawner.note.badSoul=?????? ???? ?? ????? ??????? ????????
+enderio.block_powered_spawner.note.badSoul=Плохая душа не может создать существо
 #                                      en: Bad soul, cannot create entity
-enderio.block_powered_spawner.note.noLocationAtAll=??? ??????????????? ????????????
+enderio.block_powered_spawner.note.noLocationAtAll=Нет жизнеспособного пространства
 #                                              en: No viable space
-enderio.block_powered_spawner.note.noLocationFound=?? ?????????? ????????????
+enderio.block_powered_spawner.note.noLocationFound=Не достаточно пространства
 #                                              en: No space found
-enderio.block_powered_spawner.note.noPlayer=??? ??????? ? ?????????
+enderio.block_powered_spawner.note.noPlayer=Нет игроков в диапазоне
 #                                       en: No player in range
-enderio.block_powered_spawner.tooltip.empty=??????
+enderio.block_powered_spawner.tooltip.empty=Пустой
 #                                       en: Empty
 enderio.block_solar_panel.tooltip.maxoutput=
 #                                       en: Max Output: %s
-enderio.chat.telepad.noFluid=???????????? %s ??? ????????????!
+enderio.chat.telepad.noFluid=Недостаточно %s для телепортации!
 #                        en: Not enough %s to teleport!
 enderio.chat.travel_accessable.error.private=
 #                                        en: Only %s may change this block's settings.
-enderio.chat.vat.dump.active=?? ??????? ????????, ?????????? ??????????? ???????? ? ????? ???? ?? ????? ??? ??????
+enderio.chat.vat.dump.active=Не удалось сбросить, невозможно переместить жидкость в выход чана во время его работы
 #                        en: Dumping failed, cannot put liquids into the output tank while the Vat is working
-enderio.chat.vat.dump.fail=?? ??????? ????????, ????? ???? ????????
+enderio.chat.vat.dump.fail=Не удалось сбросить, выход чана заполнен
 #                      en: Dumping failed, output tank is not empty
-enderio.gui.alloy.mode.all=???????? ???? ??????????
+enderio.gui.alloy.mode.all=Выплавка всех материалов
 #                      en: All Smelting
-enderio.gui.alloy.mode.alloy=?????? ??????
+enderio.gui.alloy.mode.alloy=Только сплавы
 #                        en: Alloys Only
-enderio.gui.alloy.mode.furnace=?????? ??????? ???????
+enderio.gui.alloy.mode.furnace=Только обычные рецепты
 #                          en: Furnace Only
-enderio.gui.alloy.mode.heading=????? ????
+enderio.gui.alloy.mode.heading=Режим печи
 #                          en: Furnace Mode
-enderio.gui.buffer.in=????. ????:
+enderio.gui.buffer.in=Макс. вход:
 #                 en: Max In:
-enderio.gui.buffer.out=????. ?????:
+enderio.gui.buffer.out=Макс. выход:
 #                  en: Max Out:
-enderio.gui.combustion_generator.coolantTank.empty=??????????
+enderio.gui.combustion_generator.coolantTank.empty=Охладитель
 #                                              en: Coolant
 enderio.gui.combustion_generator.coolantTank=
 #                                        en: Coolant: %s
-enderio.gui.combustion_generator.fuelTank.empty=???????
+enderio.gui.combustion_generator.fuelTank.empty=Топливо
 #                                           en: Fuel
 enderio.gui.combustion_generator.fuelTank=
 #                                     en: Fuel: %s
@@ -48,63 +48,63 @@ enderio.gui.combustion_generator.output=
 #                                   en: Generating: %s
 enderio.gui.farm.baseUse=
 #                    en: Base Use: %s
-enderio.gui.killerJoe.fluid.minReq=??? ????????? ?????????: %s
+enderio.gui.killerJoe.fluid.minReq=Для активации требуется: %s
 #                              en: %s Required for activation
-enderio.gui.killerJoe.fuelTank=??????????? ?????????
+enderio.gui.killerJoe.fuelTank=Питательный резервуар
 #                          en: Nutrient Tank
-enderio.gui.powered_spawner.capture=?????????
+enderio.gui.powered_spawner.capture=Захватить
 #                               en: Capture
-enderio.gui.powered_spawner.spawn=?????????
+enderio.gui.powered_spawner.spawn=Призывать
 #                             en: Spawn
-enderio.gui.ranged.hideRange=???????? ?????? ????????
+enderio.gui.ranged.hideRange=Спрятать радиус действия
 #                        en: Hide Range
-enderio.gui.ranged.range=????????: %s
+enderio.gui.ranged.range=Диапазон: %s
 #                    en: Range: %s
-enderio.gui.ranged.showRange=???????? ?????? ????????
+enderio.gui.ranged.showRange=Показать радиус действия
 #                        en: Show Range
 enderio.gui.stirling_generator.burnRate=
 #                                   en: Burn Rate: %s%%
 enderio.gui.stirling_generator.output=
 #                                 en: Generating: %s
-enderio.gui.stirling_generator.remaining=???????? {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
+enderio.gui.stirling_generator.remaining=Осталось {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
 #                                    en: Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
-enderio.gui.stirling_generator.upgrades={0} ???? {2}{1,number,#.#}x{3} ?????????????
+enderio.gui.stirling_generator.upgrades={0} даёт {2}{1,number,#.#}x{3} эффективности
 #                                   en: {0} gives {2}{1,number,#.#}x{3} efficiency
-enderio.gui.stirling_generator.upgradeslot=???? ?????????
+enderio.gui.stirling_generator.upgradeslot=Слот улучшения
 #                                      en: Upgrade slot
-enderio.gui.tank.tank=?????????
+enderio.gui.tank.tank=Резервуар
 #                 en: Tank
-enderio.gui.tank.void.mode.always.desc=???? ???????? ????????? ??? ????????
+enderio.gui.tank.void.mode.always.desc=Слот удаления принимает все предметы
 #                                  en: Void slot accepts all items
-enderio.gui.tank.void.mode.always=??????
+enderio.gui.tank.void.mode.always=Всегда
 #                             en: Always
-enderio.gui.tank.void.mode.if_not_container.desc=???? ???????? ????????? ??? ????????, ?? ?????????? ??????????? ????????????
+enderio.gui.tank.void.mode.if_not_container.desc=Слот удаления принимает все предметы, не являющиеся жидкостными контейнерами
 #                                            en: Void slot accepts all items that are not fluid containers
-enderio.gui.tank.void.mode.if_not_container=???? ?? ?????????
+enderio.gui.tank.void.mode.if_not_container=Если не контейнер
 #                                       en: If Not Container
-enderio.gui.tank.void.mode.never.desc=???? ???????? ?? ????????? ????????
+enderio.gui.tank.void.mode.never.desc=Слот удаления не принимает предметы
 #                                 en: Void slot does not accept items
-enderio.gui.tank.void.mode.never=???????
+enderio.gui.tank.void.mode.never=Никогда
 #                            en: Never
-enderio.gui.tank.void.mode=????? ????????
+enderio.gui.tank.void.mode=Режим удаления
 #                      en: Void Mode
-enderio.gui.tank.void.slot=???? ????????
+enderio.gui.tank.void.slot=Слот удаления
 #                      en: Void Slot
-enderio.gui.telepad.blocked=???????? ????????????!
+enderio.gui.telepad.blocked=Телепорт заблокирован!
 #                       en: Teleport Blocked!
-enderio.gui.telepad.configure.telepad=????????? ?????????
+enderio.gui.telepad.configure.telepad=Настройки телепорта
 #                                 en: Telepad Settings
-enderio.gui.telepad.configure.travel=????????? ???????????
+enderio.gui.telepad.configure.travel=Настройки путешествий
 #                                en: Travel Settings
 enderio.gui.telepad.max=
 #                   en: Max: %s
 enderio.gui.telepad.tank=
 #                    en: Reagent Tank
-enderio.gui.telepad.teleport=?????????????????!
+enderio.gui.telepad.teleport=Телепортироваться!
 #                        en: Teleport!
-enderio.gui.trans.addChannel=???????? ?????
+enderio.gui.trans.addChannel=Добавить канал
 #                        en: Add Channel
-enderio.gui.trans.available=????????
+enderio.gui.trans.available=Доступно
 #                       en: Available
 enderio.gui.trans.buffer.item.single=
 #                                en: Limit to single items
@@ -112,361 +112,361 @@ enderio.gui.trans.buffer.item.stacks=
 #                                en: Accept item stacks
 enderio.gui.trans.buffer.local.upkeep=
 #                                 en: Upkeep: %s
-enderio.gui.trans.buffer.local=??????? ?????
+enderio.gui.trans.buffer.local=Местный буфер
 #                          en: Local Buffer
 enderio.gui.trans.buffer.shared.maxIo=
 #                                 en: Max IO: %s
-enderio.gui.trans.buffer.shared=????? ????????/??????
+enderio.gui.trans.buffer.shared=Буфер отправки/приёма
 #                           en: Send/Receive Buffer
-enderio.gui.trans.channel.receive=????????
+enderio.gui.trans.channel.receive=Получать
 #                             en: Receive
-enderio.gui.trans.channel.send=??????????
+enderio.gui.trans.channel.send=Отправлять
 #                          en: Send
-enderio.gui.trans.deleteChannel=??????? ?????
+enderio.gui.trans.deleteChannel=Удалить канал
 #                           en: Delete Channel
-enderio.gui.trans.privateChannel=??????? ?????
+enderio.gui.trans.privateChannel=Частный канал
 #                            en: Private Channel
-enderio.gui.trans.publicChannel=????????????? ?????
+enderio.gui.trans.publicChannel=Общедоступный канал
 #                           en: Public Channel
-enderio.gui.trans.receive=????????
+enderio.gui.trans.receive=Получать
 #                     en: Receive
-enderio.gui.trans.send=??????????
+enderio.gui.trans.send=Отправлять
 #                  en: Send
-enderio.gui.travel_accessable.private=???????
+enderio.gui.travel_accessable.private=Частный
 #                                 en: Private
-enderio.gui.travel_accessable.promp.login=????????????????
+enderio.gui.travel_accessable.promp.login=Авторизироваться
 #                                     en: Authorise
-enderio.gui.travel_accessable.prompt=????????? ??? ???????
+enderio.gui.travel_accessable.prompt=Требуется код доступа
 #                                en: Access Code Required
-enderio.gui.travel_accessable.protected=??????????
+enderio.gui.travel_accessable.protected=Защищённый
 #                                   en: Protected
-enderio.gui.travel_accessable.public=?????????????
+enderio.gui.travel_accessable.public=Общедоступный
 #                                en: Public
-enderio.gui.vacuum.header.chest=????????? ??????
+enderio.gui.vacuum.header.chest=Вакуумный сундук
 #                           en: Vacuum Chest
-enderio.gui.vacuum.header.filter=?????????? ??????
+enderio.gui.vacuum.header.filter=Предметный фильтр
 #                            en: Item Filter
-enderio.gui.vacuum.header.range=?????????
+enderio.gui.vacuum.header.range=Дальность
 #                           en: Range
-enderio.gui.vacuum.range=???? ??????????
+enderio.gui.vacuum.range=Сила всасывания
 #                    en: Suction Strength
-enderio.gui.vat.dump=???????? ???? ???? ? ????? ????
+enderio.gui.vat.dump=Сбросить вход чана в выход чана
 #                en: Dump Input Tank Into Output Tank
-enderio.gui.vat.inputTank=???? ????
+enderio.gui.vat.inputTank=Вход чана
 #                     en: Input Tank
-enderio.gui.vat.outputTank=????? ????
+enderio.gui.vat.outputTank=Выход чана
 #                      en: Output Tank
-enderio.gui.vat.void=?????????? ????? ????
+enderio.gui.vat.void=Опустошить выход чана
 #                en: Void Output Tank
 enderio.gui.weather_obelisk.fuelTank=
 #                                en: Catalyst Tank
-enderio.gui.xp_obelisk.button.retrieve.1.line1=??????? 1
+enderio.gui.xp_obelisk.button.retrieve.1.line1=Забрать 1
 #                                          en: Retrieve 1
-enderio.gui.xp_obelisk.button.retrieve.1.line2=??????? ????? ??????
+enderio.gui.xp_obelisk.button.retrieve.1.line2=уровень опыта игрока
 #                                          en: player XP level
-enderio.gui.xp_obelisk.button.retrieve.10.line1=??????? 10
+enderio.gui.xp_obelisk.button.retrieve.10.line1=Забрать 10
 #                                           en: Retrieve 10
-enderio.gui.xp_obelisk.button.retrieve.10.line2=?????? ????? ??????
+enderio.gui.xp_obelisk.button.retrieve.10.line2=уровни опыта игрока
 #                                           en: player XP levels
-enderio.gui.xp_obelisk.button.retrieve.all.line1=??????? ???
+enderio.gui.xp_obelisk.button.retrieve.all.line1=Забрать все
 #                                            en: Retrieve all
-enderio.gui.xp_obelisk.button.retrieve.all.line2=?????? ????? ??????
+enderio.gui.xp_obelisk.button.retrieve.all.line2=уровни опыта игрока
 #                                            en: player XP levels
-enderio.gui.xp_obelisk.button.store.1.line1=?????? 1
+enderio.gui.xp_obelisk.button.store.1.line1=Отдать 1
 #                                       en: Store 1
-enderio.gui.xp_obelisk.button.store.1.line2=??????? ????? ??????
+enderio.gui.xp_obelisk.button.store.1.line2=уровень опыта игрока
 #                                       en: level of player XP
-enderio.gui.xp_obelisk.button.store.10.line1=?????? 10
+enderio.gui.xp_obelisk.button.store.10.line1=Отдать 10
 #                                        en: Store 10
-enderio.gui.xp_obelisk.button.store.10.line2=??????? ????? ??????
+enderio.gui.xp_obelisk.button.store.10.line2=уровней опыта игрока
 #                                        en: levels of player XP
-enderio.gui.xp_obelisk.button.store.all.line1=?????? ????
+enderio.gui.xp_obelisk.button.store.all.line1=Отдать весь
 #                                         en: Store all
-enderio.gui.xp_obelisk.button.store.all.line2=???? ??????
+enderio.gui.xp_obelisk.button.store.all.line2=опыт игрока
 #                                         en: player XP
-enderio.gui.zombie_generator.fluid.minReq=??? ????????? ?????????: %s
+enderio.gui.zombie_generator.fluid.minReq=Для активации требуется: %s
 #                                     en: %s Required for activation
-enderio.gui.zombie_generator.fuelTank=??????????? ?????????
+enderio.gui.zombie_generator.fuelTank=Питательный резервуар
 #                                 en: Nutrient Tank
 enderio.gui.zombie_generator.output=
 #                               en: Generating: %s
-item.itemLocationPrintout.chat.addTarget=????????? ????
+item.itemLocationPrintout.chat.addTarget=Добавлена цель
 #                                    en: Added target
-item.itemLocationPrintout.chat.noPaper=??? ?????? ? ?????????
+item.itemLocationPrintout.chat.noPaper=Нет бумаги в инвентаре
 #                                  en: No Paper in Inventory
-item.itemLocationPrintout.chat.setTarget=???? ??????????? ??
+item.itemLocationPrintout.chat.setTarget=Цель установлена на
 #                                    en: Target set to
-item.itemLocationPrintout.name=?????????? ???????????????
+item.itemLocationPrintout.name=Распечаток местонахождения
 #                          en: Location Printout
-item.itemLocationPrintout.tooltip.detailed.line1=?????? ? ?????????????? ??????????? ?????????
+item.itemLocationPrintout.tooltip.detailed.line1=Создан с использованием настройщика координат
 #                                            en: Created using the Coordinate Selector
-item.itemLocationPrintout.tooltip.detailed.line2=???????????? ??? ?????????? ???? ?????????? ? ?????????
+item.itemLocationPrintout.tooltip.detailed.line2=Используется для добавления мест назначения к телепорту
 #                                            en: Used to add destinations to a Telepad
-tile.block_alloy_smelter.name=????? ???????
+tile.block_alloy_smelter.name=Завод сплавов
 #                         en: Alloy Smelter
-tile.block_alloy_smelter.tooltip.detailed.line1=???????????? ??? ???????? ??????? EnderIO
+tile.block_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
 #                                           en: Used to create EnderIO alloys
-tile.block_alloy_smelter.tooltip.detailed.line2=????? ????? ?????????????? ??? ????,
+tile.block_alloy_smelter.tooltip.detailed.line2=Может также использоваться как печь,
 #                                           en: Can also be used as a powered
-tile.block_alloy_smelter.tooltip.detailed.line3=?????????? ????????
+tile.block_alloy_smelter.tooltip.detailed.line3=питающаяся энергией
 #                                           en: furnace
-tile.block_alloy_smelter.tooltip.detailed.line4=???????? ????????????, ????? ?????????
+tile.block_alloy_smelter.tooltip.detailed.line4=Добавьте конденсаторы, чтобы увеличить
 #                                           en: Upgrade with capacitors to increase
-tile.block_alloy_smelter.tooltip.detailed.line5=???????? ? ????????? ???????
+tile.block_alloy_smelter.tooltip.detailed.line5=скорость и хранилище энергии
 #                                           en: speed and energy storage
-tile.block_attractor_obelisk.name=????????????? ???????
+tile.block_attractor_obelisk.name=Притягивающий обелиск
 #                             en: Attractor Obelisk
-tile.block_attractor_obelisk.tooltip.detailed.line1=??????????? ????? ? ????
+tile.block_attractor_obelisk.tooltip.detailed.line1=Притягивает мобов к себе
 #                                               en: Draws mobs towards it
-tile.block_attractor_obelisk.tooltip.detailed.line2=??????? ????? ??? ????????????,
+tile.block_attractor_obelisk.tooltip.detailed.line2=Укажите мобов для притягивания,
 #                                               en: Specify the mobs to effect
-tile.block_attractor_obelisk.tooltip.detailed.line3=???????? ?? ????
+tile.block_attractor_obelisk.tooltip.detailed.line3=поместив их души
 #                                               en: by placing their souls
-tile.block_attractor_obelisk.tooltip.detailed.line4=?????? ?????????
+tile.block_attractor_obelisk.tooltip.detailed.line4=внутрь механизма
 #                                               en: within the device
-tile.block_aversion_obelisk.name=??????? ??????????
+tile.block_aversion_obelisk.name=Обелиск отвращения
 #                            en: Aversion Obelisk
-tile.block_aversion_obelisk.tooltip.detailed.line1=????????? ????? ??????????
+tile.block_aversion_obelisk.tooltip.detailed.line1=Запрещает мобам появляться
 #                                              en: Prevents mobs from spawning
-tile.block_aversion_obelisk.tooltip.detailed.line2=? ???????? ???????? ????????
+tile.block_aversion_obelisk.tooltip.detailed.line2=в пределах действия обелиска
 #                                              en: within its area of effect
-tile.block_buffer.creative.name=?????????? ?????
+tile.block_buffer.creative.name=Творческий буфер
 #                           en: Creative Buffer
-tile.block_buffer.item.name=?????????? ?????
+tile.block_buffer.item.name=Предметный буфер
 #                       en: Item Buffer
-tile.block_buffer.omni.name=????????????? ?????
+tile.block_buffer.omni.name=Универсальный буфер
 #                       en: Omni Buffer
-tile.block_buffer.power.name=?????????????? ?????
+tile.block_buffer.power.name=Энергетический буфер
 #                        en: Power Buffer
-tile.block_combustion_generator.name=????????? ??????????? ????????
+tile.block_combustion_generator.name=Генератор внутреннего сгорания
 #                                en: Combustion Generator
-tile.block_combustion_generator.tooltip.detailed.line1=??????? ?????? ??????? ??? ???????????? ???????
+tile.block_combustion_generator.tooltip.detailed.line1=Сжигает жидкое топливо для производства энергии
 #                                                  en: Burns liquid fuel to generate power
-tile.block_combustion_generator.tooltip.detailed.line2=??????? ?????????? (???????? ????)
+tile.block_combustion_generator.tooltip.detailed.line2=Требует охладитель (например воду)
 #                                                  en: Requires a coolant (e.g. water)
-tile.block_combustion_generator.tooltip.detailed.line3=????? ??????? ?? ???????
+tile.block_combustion_generator.tooltip.detailed.line3=Выход зависит от топлива
 #                                                  en: Output dependent on fuel
-tile.block_crafter.name=?????????
+tile.block_crafter.name=Создатель
 #                   en: Crafter
-tile.block_crafter.tooltip.detailed.line1=????????????? ????-?????????
+tile.block_crafter.tooltip.detailed.line1=Электрический авто-создатель
 #                                     en: A powered auto-crafter
-tile.block_crafter.tooltip.detailed.line2=?????????? ??????? ?? ????????
+tile.block_crafter.tooltip.detailed.line2=Потребляет энергию за операцию
 #                                     en: Consumes power per operation
-tile.block_crafter.tooltip.detailed.line3=????? ???? ??????? ??????????????, ?????
+tile.block_crafter.tooltip.detailed.line3=Может быть улучшен конденсаторами, чтобы
 #                                     en: Can be upgraded to increase speed
-tile.block_crafter.tooltip.detailed.line4=????????? ???????? ? ????????? ???????
+tile.block_crafter.tooltip.detailed.line4=увеличить скорость и хранилище энергии
 #                                     en: and energy storage with capacitors
-tile.block_dialing_device.name=???????? ??????????
+tile.block_dialing_device.name=Наборное устройство
 #                          en: Dialing Device
-tile.block_dialing_device.tooltip.detailed.line1=????????????? ????? ? ??????????
+tile.block_dialing_device.tooltip.detailed.line1=Располагается рядом с телепортом
 #                                            en: Place near a Telepad
-tile.block_dialing_device.tooltip.detailed.line2=?????? ? ????????????? ????? ??????????.
+tile.block_dialing_device.tooltip.detailed.line2=Хранит и устанавливает места назначения.
 #                                            en: Stores and sets destinations.
-tile.block_enchanter.name=????????????
+tile.block_enchanter.name=Зачарователь
 #                     en: Enchanter
-tile.block_enchanter.tooltip.detailed.line1=?????????? ????, ????? ??????????
+tile.block_enchanter.tooltip.detailed.line1=Использует опыт, чтобы объединять
 #                                       en: Uses XP to combine items
-tile.block_enchanter.tooltip.detailed.line2=???????? ? ?????? ? ????? ??? ????????
+tile.block_enchanter.tooltip.detailed.line2=предметы с книгой и пером для создания
 #                                       en: and a book and quill to
-tile.block_enchanter.tooltip.detailed.line3=???????????? ????
+tile.block_enchanter.tooltip.detailed.line3=зачарованных книг
 #                                       en: created enchanted books
-tile.block_experience_obelisk.name=??????? ?????
+tile.block_experience_obelisk.name=Обелиск опыта
 #                              en: Experience Obelisk
-tile.block_experience_obelisk.tooltip.detailed.line1=???????? ????
+tile.block_experience_obelisk.tooltip.detailed.line1=Содержит опыт
 #                                                en: Stores Experience
-tile.block_experience_obelisk.tooltip.detailed.line2=????? ???????? ?????? ????
+tile.block_experience_obelisk.tooltip.detailed.line2=Может отдавать жидкий опыт
 #                                                en: Can output liquid XP to
-tile.block_experience_obelisk.tooltip.detailed.line3=?????????????? ???????????
+tile.block_experience_obelisk.tooltip.detailed.line3=присоединённым резервуарам
 #                                                en: adjacent tanks
-tile.block_farm_station.name=?????????? ???????
+tile.block_farm_station.name=Фермерская станция
 #                        en: Farming Station
-tile.block_farm_station.tooltip.detailed.line1=?????? ? ???????? ????????
+tile.block_farm_station.tooltip.detailed.line1=Сажает и собирает растения
 #                                          en: Plants and harvests crops
-tile.block_farm_station.tooltip.detailed.line2=??????? ??????? ?
+tile.block_farm_station.tooltip.detailed.line2=Требует энергию и
 #                                          en: Requires power and
-tile.block_farm_station.tooltip.detailed.line3=?????????? ??????????? (??????, ?????)
+tile.block_farm_station.tooltip.detailed.line3=надлежащие инструменты (мотыгу, топор)
 #                                          en: appropriate tools (hoe, axe)
-tile.block_farm_station.tooltip.detailed.line4=??????/????? ?? ????????????
+tile.block_farm_station.tooltip.detailed.line4=Добыча/удача на инструментах
 #                                          en: Looting / fortune on tools
-tile.block_farm_station.tooltip.detailed.line5=??????????? ??? ????? ??????
+tile.block_farm_station.tooltip.detailed.line5=применяется при сборе урожая
 #                                          en: applied when harvesting
-tile.block_farm_station.tooltip.detailed.line6=???????? ????????????, ????? ?????????
+tile.block_farm_station.tooltip.detailed.line6=Добавьте конденсаторы, чтобы увеличить
 #                                          en: Upgrade with capacitors to increase
-tile.block_farm_station.tooltip.detailed.line7=?????????, ????????? ????? ???????? ??????????? ???????
+tile.block_farm_station.tooltip.detailed.line7=дальность, улучшение также повышает потребление энергии
 #                                          en: range, upgrade also increases power use
-tile.block_inhibitor_obelisk.name=??????? ??????????
+tile.block_inhibitor_obelisk.name=Обелиск замедления
 #                             en: Inhibitor Obelisk
-tile.block_inhibitor_obelisk.tooltip.detailed.line1=????????? ?????????????????
+tile.block_inhibitor_obelisk.tooltip.detailed.line1=Запрещает телепортироваться
 #                                               en: Prevents teleporting within
-tile.block_inhibitor_obelisk.tooltip.detailed.line2=? ???????? ???????? ????????
+tile.block_inhibitor_obelisk.tooltip.detailed.line2=в пределах действия обелиска
 #                                               en: its area of effect
-tile.block_killer_joe.name=?????? ???
+tile.block_killer_joe.name=Киллер Джо
 #                      en: Killer Joe
-tile.block_killer_joe.tooltip.detailed.line1=??????? ????????? ???????, ????
+tile.block_killer_joe.tooltip.detailed.line1=Атакует ближайших существ, если
 #                                        en: Attacks nearby creatures when
-tile.block_killer_joe.tooltip.detailed.line2=??????? ????? ?
+tile.block_killer_joe.tooltip.detailed.line2=снабжён мечом и
 #                                        en: supplied with a sword and
-tile.block_killer_joe.tooltip.detailed.line3=??????????? ???????????
+tile.block_killer_joe.tooltip.detailed.line3=питательным дистиллятом
 #                                        en: Nutrient Distillation
-tile.block_painter.name=??????????? ????????
+tile.block_painter.name=Покрасочный механизм
 #                   en: Painting Machine
-tile.block_powered_spawner.empty.tooltip.detailed.line1=?????????? ?? ?????????
+tile.block_powered_spawner.empty.tooltip.detailed.line1=Объедините со сломанным
 #                                                   en: Combine with a broken
-tile.block_powered_spawner.empty.tooltip.detailed.line2=????????? ? ??????????
+tile.block_powered_spawner.empty.tooltip.detailed.line2=спаунером в наковальне
 #                                                   en: spawner in an anvil
-tile.block_powered_spawner.name=????????????? ???????
+tile.block_powered_spawner.name=Электрический спаунер
 #                           en: Powered Spawner
-tile.block_powered_spawner.tooltip.detailed.line1=??????? ???????, ?????
+tile.block_powered_spawner.tooltip.detailed.line1=Подайте энергию, чтобы
 #                                             en: Supply with power to
-tile.block_powered_spawner.tooltip.detailed.line2=????????????
+tile.block_powered_spawner.tooltip.detailed.line2=активировать
 #                                             en: activate
-tile.block_powered_spawner.tooltip.detailed.line3=???????? ????????????, ????? ?????????
+tile.block_powered_spawner.tooltip.detailed.line3=Добавьте конденсаторы, чтобы увеличить
 #                                             en: Upgrade with capacitors to increase
-tile.block_powered_spawner.tooltip.detailed.line4=???????? ? ????????? ???????
+tile.block_powered_spawner.tooltip.detailed.line4=скорость и хранилище энергии
 #                                             en: speed and energy storage
-tile.block_relocator_obelisk.name=??????? ?????????
+tile.block_relocator_obelisk.name=Обелиск релокации
 #                             en: Relocator Obelisk
-tile.block_relocator_obelisk.tooltip.detailed.line1=?????????? ?????, ???????????
+tile.block_relocator_obelisk.tooltip.detailed.line1=Перемещает мобов, появившихся
 #                                               en: Relocates mobs that spawn
-tile.block_relocator_obelisk.tooltip.detailed.line2=? ???????? ???????? ????????
+tile.block_relocator_obelisk.tooltip.detailed.line2=в пределах действия обелиска
 #                                               en: within its area of effect
-tile.block_reservoir.name=?????????
+tile.block_reservoir.name=Резервуар
 #                     en: Reservoir
-tile.block_reservoir.tooltip.detailed.line1=??? ??????????? ? ?????? ???????????:
+tile.block_reservoir.tooltip.detailed.line1=При подключении с другим резервуаром:
 #                                       en: When connected with other Reservoirs:
-tile.block_reservoir.tooltip.detailed.line2=???????? ??? ????? ???? ???
+tile.block_reservoir.tooltip.detailed.line2=Добавьте два ведра воды для
 #                                       en: Add two buckets of water for
-tile.block_reservoir.tooltip.detailed.line3=???????????? ????????? ????
+tile.block_reservoir.tooltip.detailed.line3=бесконечного источника воды
 #                                       en: an infinite water source.
-tile.block_reservoir.tooltip.detailed.line4=?????????? ???? ????? ? ???????
+tile.block_reservoir.tooltip.detailed.line4=Производит одно ведро в секунду
 #                                       en: Produces one bucket per second
-tile.block_reservoir.tooltip.detailed.line5=??? ? ??????? ??????, ?????
+tile.block_reservoir.tooltip.detailed.line5=ПКМ с гаечным ключом, чтобы
 #                                       en: R-Click with a wrench to
-tile.block_reservoir.tooltip.detailed.line6=???????? ????-?????
+tile.block_reservoir.tooltip.detailed.line6=включить авто-выход
 #                                       en: enable auto-output
-tile.block_sag_mill.name=?????????
+tile.block_sag_mill.name=Дробитель
 #                    en: SAG Mill
-tile.block_sag_mill.tooltip.detailed.line1=?????? ???? ? ?????? ????????
+tile.block_sag_mill.tooltip.detailed.line1=Дробит руду и другие предметы
 #                                      en: Grinds ore and other items
-tile.block_sag_mill.tooltip.detailed.line2=???????? ???????????? ??????, ????? ?????????
+tile.block_sag_mill.tooltip.detailed.line2=Добавьте измельчающие шарики, чтобы увеличить
 #                                      en: Add grinding balls to increase output
-tile.block_sag_mill.tooltip.detailed.line3=????? ? ?????????????
+tile.block_sag_mill.tooltip.detailed.line3=выход и эффективность
 #                                      en: and efficiency
-tile.block_sag_mill.tooltip.detailed.line4=???????? ????????????, ????? ?????????
+tile.block_sag_mill.tooltip.detailed.line4=Добавьте конденсаторы, чтобы увеличить
 #                                      en: Upgrade with capacitors to increase
-tile.block_sag_mill.tooltip.detailed.line5=???????? ? ????????? ???????
+tile.block_sag_mill.tooltip.detailed.line5=скорость и хранилище энергии
 #                                      en: speed and energy storage
-tile.block_sag_mill.tooltipPrefix=????????
+tile.block_sag_mill.tooltipPrefix=Содержит
 #                             en: Contains
-tile.block_slice_and_splice.name=�?????????? ? ???????????�
+tile.block_slice_and_splice.name=«Отрубатель и сращиватель»
 #                            en: Slice'N'Splice
-tile.block_slice_and_splice.tooltip.detailed.line1=???????? ?????? ? ?????????? ??
+tile.block_slice_and_splice.tooltip.detailed.line1=Отрубает головы и превращает их
 #                                              en: Slices heads and splices in
-tile.block_slice_and_splice.tooltip.detailed.line2=?? ?????? ???????? ????
+tile.block_slice_and_splice.tooltip.detailed.line2=во всякие полезные вещи
 #                                              en: all sorts of useful things
-tile.block_solar_panel.advanced.name=??????????? ????????????? ??????
+tile.block_solar_panel.advanced.name=Продвинутая фотовольтовая ячейка
 #                                en: Advanced Photovoltaic Cell
-tile.block_solar_panel.name=????????????? ??????
+tile.block_solar_panel.name=Фотовольтовая ячейка
 #                       en: Photovoltaic Cell
-tile.block_solar_panel.tooltip.common.line1=????????? ???????!
+tile.block_solar_panel.tooltip.common.line1=Солнечная энергия!
 #                                       en: Solar Power!
-tile.block_solar_panel.tooltip.detailed.line1=?????????? ??????? ? ??????? ????? ?????
+tile.block_solar_panel.tooltip.detailed.line1=Производит энергию в светлое время суток
 #                                         en: Produces power during daylight hours
-tile.block_solar_panel.tooltip.detailed.line2=?????? ????? ?????? ????????????
+tile.block_solar_panel.tooltip.detailed.line2=Должна иметь чистое пространство
 #                                         en: Must have a clear line of sight to
-tile.block_solar_panel.tooltip.detailed.line3=? ????
+tile.block_solar_panel.tooltip.detailed.line3=к небу
 #                                         en: the sky
-tile.block_solar_panel.vibrant.name=??????????? ????????????? ??????
+tile.block_solar_panel.vibrant.name=Вибрирующая фотовольтовая ячейка
 #                               en: Vibrant Photovoltaic Cell
-tile.block_soul_binder.name=??????????? ???
+tile.block_soul_binder.name=Связыватель душ
 #                       en: Soul Binder
-tile.block_soul_binder.tooltip.detailed.line1=???????????? ??? ??????????????
+tile.block_soul_binder.tooltip.detailed.line1=Используется для преобразования
 #                                         en: Used to convert the type of
-tile.block_soul_binder.tooltip.detailed.line2=???? ?????????? ????????
+tile.block_soul_binder.tooltip.detailed.line2=типа сломанного спаунера
 #                                         en: a broken spawner
-tile.block_stirling_generator.name=????????? ?????????
+tile.block_stirling_generator.name=Генератор Стирлинга
 #                              en: Stirling Generator
-tile.block_stirling_generator.tooltip.detailed.line1=??????? ??????? ??????? ??? ???????????? ???????
+tile.block_stirling_generator.tooltip.detailed.line1=Сжигает твёрдое топливо для производства энергии
 #                                                en: Burns solid fuel to generate power
-tile.block_stirling_generator.tooltip.detailed.line2=????? ???? ??????? ??????????????,
+tile.block_stirling_generator.tooltip.detailed.line2=Может быть улучшен конденсаторами,
 #                                                en: Can be upgraded to increase output
-tile.block_stirling_generator.tooltip.detailed.line3=????? ????????? ????? ? ?????????????
+tile.block_stirling_generator.tooltip.detailed.line3=чтобы увеличить выход и эффективность
 #                                                en: and efficiency with capacitors
-tile.block_tank.advanced.name=?????????? ????????? ??? ?????????
+tile.block_tank.advanced.name=Жидкостный резервуар под давлением
 #                         en: Pressurized Fluid Tank
-tile.block_tank.name=?????????? ?????????
+tile.block_tank.name=Жидкостный резервуар
 #                en: Fluid Tank
-tile.block_tank.tooltip.detailed.line1=?????????? ?????????? ?????????
+tile.block_tank.tooltip.detailed.line1=Переносной жидкостный резервуар
 #                                  en: Portable fluid tank
-tile.block_tank.tooltip.detailed.line2=????? ???? ??????????? ??? ??????????? ?
+tile.block_tank.tooltip.detailed.line2=Может быть использован для опустошения и
 #                                  en: Can be used to empty and
-tile.block_tank.tooltip.detailed.line3=?????????? ?????????? ???????????
+tile.block_tank.tooltip.detailed.line3=заполнения жидкостных контейнеров
 #                                  en: fill fluid containers
-tile.block_tele_pad.name=???? ?????????
+tile.block_tele_pad.name=Блок телепорта
 #                    en: Telepad Block
-tile.block_tele_pad.tooltip.detailed.line1=?????????? ??????? ??? ????????????
+tile.block_tele_pad.tooltip.detailed.line1=Использует энергию для телепортации
 #                                      en: Uses power to teleport entities
-tile.block_tele_pad.tooltip.detailed.line2=????????? ? ????????? ??????? ? ?????????.
+tile.block_tele_pad.tooltip.detailed.line2=сущностей в указанную позицию и измерение.
 #                                      en: to a specific position and dimension.
-tile.block_tele_pad.tooltip.detailed.line3=?????? ???? ???????? ? ???? ??????????? 3x1x3.
+tile.block_tele_pad.tooltip.detailed.line3=Должен быть размещён в виде мультиблока 3x1x3.
 #                                      en: Must be placed in a 3x1x3 multiblock.
-tile.block_transceiver.name=???????????????? ????????????????
+tile.block_transceiver.name=Пространственный приёмопередатчик
 #                       en: Dimensional Transceiver
-tile.block_transceiver.tooltip.detailed.line1=????????? ????????, ???????? ? ???????
+tile.block_transceiver.tooltip.detailed.line1=Переносит предметы, жидкости и энергию
 #                                         en: Transports items, fluids and power
-tile.block_transceiver.tooltip.detailed.line2=??? ???????? ?? ????? ?????????? ?
+tile.block_transceiver.tooltip.detailed.line2=без проводов на любое расстояние и
 #                                         en: wirelessly across any distance and
-tile.block_transceiver.tooltip.detailed.line3=????? ???????????
+tile.block_transceiver.tooltip.detailed.line3=между измерениями
 #                                         en: between dimensions
-tile.block_travel_anchor.name=????? ???????????
+tile.block_travel_anchor.name=Якорь путешествия
 #                         en: Travel Anchor
-tile.block_travel_anchor.tooltip.detailed.line1=????????? ????????????????? ????? ???????
+tile.block_travel_anchor.tooltip.detailed.line1=Позволяет телепортироваться между якорями
 #                                           en: Allows teleportation between anchors
-tile.block_travel_anchor.tooltip.detailed.line2=???????? ?? ???? ?????, ??????????
+tile.block_travel_anchor.tooltip.detailed.line2=Встаньте на один якорь, посмотрите
 #                                           en: Stand on one Anchor, look at
-tile.block_travel_anchor.tooltip.detailed.line3=?? ?????? ? ???????? ??? ???????????
+tile.block_travel_anchor.tooltip.detailed.line3=на другой и прыгните для путешествия
 #                                           en: another and jump to travel
-tile.block_travel_anchor.tooltip.detailed.line4=????? ????? ?????????????? ? ???????
+tile.block_travel_anchor.tooltip.detailed.line4=Может также использоваться с посохом
 #                                           en: Can also be used with the Staff
-tile.block_travel_anchor.tooltip.detailed.line5=???????????
+tile.block_travel_anchor.tooltip.detailed.line5=путешествия
 #                                           en: of Travel
-tile.block_travel_anchor.tooltip.detailed.line6=????? ???? ???????? ? ??????????? ?????????
+tile.block_travel_anchor.tooltip.detailed.line6=Может быть покрашен в покрасочном механизме
 #                                           en: Can be painted in the Painting Machine
-tile.block_vacuum_chest.name=????????? ??????
+tile.block_vacuum_chest.name=Вакуумный сундук
 #                        en: Vacuum Chest
-tile.block_vacuum_chest.tooltip.detailed.line1=????????? ????????? ????????
+tile.block_vacuum_chest.tooltip.detailed.line1=Втягивает ближайшие предметы
 #                                          en: Pulls nearby items
-tile.block_vacuum_chest.tooltip.detailed.line2=? ???? ?????????
+tile.block_vacuum_chest.tooltip.detailed.line2=в свой инвентарь
 #                                          en: into its inventory
-tile.block_vat.name=???
+tile.block_vat.name=Чан
 #               en: The Vat
-tile.block_vat.tooltip.detailed.line1=???????????? ??? ????? ????????? EnderIO
+tile.block_vat.tooltip.detailed.line1=Используется для варки жидкостей EnderIO
 #                                 en: Used to brew EnderIO fluids
-tile.block_weather_obelisk.name=???????? ???????
+tile.block_weather_obelisk.name=Погодный обелиск
 #                           en: Weather Obelisk
-tile.block_weather_obelisk.tooltip.detailed.line1=???????? ??????? ??????
+tile.block_weather_obelisk.tooltip.detailed.line1=Изменяет текущую погоду
 #                                             en: Changes the current weather
-tile.block_weather_obelisk.tooltip.detailed.line2=??????? ????? ??????? ?
+tile.block_weather_obelisk.tooltip.detailed.line2=Требует много энергии и
 #                                             en: Requires a lot of power and
-tile.block_weather_obelisk.tooltip.detailed.line3=??????? ? ???????? ????????????
+tile.block_weather_obelisk.tooltip.detailed.line3=предмет в качестве катализатора
 #                                             en: a catalyst item
-tile.block_wireless_charger.name=???????????? ????????
+tile.block_wireless_charger.name=Беспроводной зарядник
 #                            en: Wireless Charger
-tile.block_wireless_charger.tooltip.detailed.line1=???????? ????????? ????????
+tile.block_wireless_charger.tooltip.detailed.line1=Заряжает ближайшие предметы
 #                                              en: Charges items in nearby
-tile.block_wireless_charger.tooltip.detailed.line2=? ?????????? ???????
+tile.block_wireless_charger.tooltip.detailed.line2=в инвентарях игроков
 #                                              en: players inventories
-tile.block_xp_vacuum.name=?????? ?????
+tile.block_xp_vacuum.name=Вакуум опыта
 #                     en: XP Vacuum
-tile.block_xp_vacuum.tooltip.detailed.line1=????????? ????????? ????? ????? ? ???????????
+tile.block_xp_vacuum.tooltip.detailed.line1=Втягивает ближайшие сферы опыта и выталкивает
 #                                       en: Pulls nearby XP orbs and pushes
-tile.block_xp_vacuum.tooltip.detailed.line2=?? ? ??????????? ??????????/?????.
+tile.block_xp_vacuum.tooltip.detailed.line2=их в прилегающие резервуары/трубы.
 #                                       en: them into adjacent tanks/conduits.
-tile.block_xp_vacuum.tooltip.detailed.line3=?????? ???? ??????????? ? ??????? ??????? ?????.
+tile.block_xp_vacuum.tooltip.detailed.line3=Должен быть активирован с помощью жидкого опыта.
 #                                       en: Needs to be activated with liquid XP.
-tile.block_zombie_generator.name=????? ?????????
+tile.block_zombie_generator.name=Зомби генератор
 #                            en: Zombie Generator
-tile.block_zombie_generator.tooltip.detailed.line1=?????????? ??????????? ?????????
+tile.block_zombie_generator.tooltip.detailed.line1=Потребляет питательный дистиллят
 #                                              en: Consumes Nutrient Distillation
-tile.block_zombie_generator.tooltip.detailed.line2=??? ???????????? ???????
+tile.block_zombie_generator.tooltip.detailed.line2=для производства энергии
 #                                              en: to generate power

@@ -32,9 +32,9 @@ enderio.gui.alloy.mode.furnace=Solo Horno
 #                          en: Furnace Only
 enderio.gui.alloy.mode.heading=Modo Horno
 #                          en: Furnace Mode
-enderio.gui.buffer.in=Entrada máx.:
+enderio.gui.buffer.in=Entrada mÃ¡x.:
 #                 en: Max In:
-enderio.gui.buffer.out=Salida máx.:
+enderio.gui.buffer.out=Salida mÃ¡x.:
 #                  en: Max Out:
 enderio.gui.combustion_generator.coolantTank.empty=Refrigerante
 #                                              en: Coolant
@@ -48,7 +48,7 @@ enderio.gui.combustion_generator.output=
 #                                   en: Generating: %s
 enderio.gui.farm.baseUse=
 #                    en: Base Use: %s
-enderio.gui.killerJoe.fluid.minReq=%s requeridos para la activación.
+enderio.gui.killerJoe.fluid.minReq=%s requeridos para la activaciÃ³n.
 #                              en: %s Required for activation
 enderio.gui.killerJoe.fuelTank=Tanque de Nutriente
 #                          en: Nutrient Tank
@@ -74,23 +74,23 @@ enderio.gui.stirling_generator.upgradeslot=Ranura de Mejora
 #                                      en: Upgrade slot
 enderio.gui.tank.tank=Tanque
 #                 en: Tank
-enderio.gui.tank.void.mode.always.desc=La ranura de vacío acepta todos los objetos.
+enderio.gui.tank.void.mode.always.desc=La ranura de vacÃ­o acepta todos los objetos.
 #                                  en: Void slot accepts all items
 enderio.gui.tank.void.mode.always=Siempre
 #                             en: Always
-enderio.gui.tank.void.mode.if_not_container.desc=La ranura de vacío acepta todos los objetos que no sean contenedores de fluidos.
+enderio.gui.tank.void.mode.if_not_container.desc=La ranura de vacÃ­o acepta todos los objetos que no sean contenedores de fluidos.
 #                                            en: Void slot accepts all items that are not fluid containers
 enderio.gui.tank.void.mode.if_not_container=Ignorar Contenedores
 #                                       en: If Not Container
-enderio.gui.tank.void.mode.never.desc=La ranura de vacío no acepta ningún objeto.
+enderio.gui.tank.void.mode.never.desc=La ranura de vacÃ­o no acepta ningÃºn objeto.
 #                                 en: Void slot does not accept items
 enderio.gui.tank.void.mode.never=Nunca
 #                            en: Never
-enderio.gui.tank.void.mode=Modo Vacío
+enderio.gui.tank.void.mode=Modo VacÃ­o
 #                      en: Void Mode
-enderio.gui.tank.void.slot=Ranura de Vacío
+enderio.gui.tank.void.slot=Ranura de VacÃ­o
 #                      en: Void Slot
-enderio.gui.telepad.blocked=¡Teletransporte Bloqueado!
+enderio.gui.telepad.blocked=Â¡Teletransporte Bloqueado!
 #                       en: Teleport Blocked!
 enderio.gui.telepad.configure.telepad=Ajustes del Telepad
 #                                 en: Telepad Settings
@@ -100,9 +100,9 @@ enderio.gui.telepad.max=
 #                   en: Max: %s
 enderio.gui.telepad.tank=
 #                    en: Reagent Tank
-enderio.gui.telepad.teleport=¡Teletransportación!
+enderio.gui.telepad.teleport=Â¡TeletransportaciÃ³n!
 #                        en: Teleport!
-enderio.gui.trans.addChannel=Añadir Canal
+enderio.gui.trans.addChannel=AÃ±adir Canal
 #                        en: Add Channel
 enderio.gui.trans.available=Disponible
 #                       en: Available
@@ -112,25 +112,25 @@ enderio.gui.trans.buffer.item.stacks=
 #                                en: Accept item stacks
 enderio.gui.trans.buffer.local.upkeep=
 #                                 en: Upkeep: %s
-enderio.gui.trans.buffer.local=Búfer Local
+enderio.gui.trans.buffer.local=BÃºfer Local
 #                          en: Local Buffer
 enderio.gui.trans.buffer.shared.maxIo=
 #                                 en: Max IO: %s
-enderio.gui.trans.buffer.shared=Búfer de envío/recibo
+enderio.gui.trans.buffer.shared=BÃºfer de envÃ­o/recibo
 #                           en: Send/Receive Buffer
 enderio.gui.trans.channel.receive=Recibe
 #                             en: Receive
-enderio.gui.trans.channel.send=Envía
+enderio.gui.trans.channel.send=EnvÃ­a
 #                          en: Send
 enderio.gui.trans.deleteChannel=Eliminar Canal
 #                           en: Delete Channel
 enderio.gui.trans.privateChannel=Canal Privado
 #                            en: Private Channel
-enderio.gui.trans.publicChannel=Canal Público
+enderio.gui.trans.publicChannel=Canal PÃºblico
 #                           en: Public Channel
 enderio.gui.trans.receive=Recibe
 #                     en: Receive
-enderio.gui.trans.send=Envía
+enderio.gui.trans.send=EnvÃ­a
 #                  en: Send
 enderio.gui.travel_accessable.private=Privado
 #                                 en: Private
@@ -140,7 +140,7 @@ enderio.gui.travel_accessable.prompt=Requiere Codigo de Acceso
 #                                en: Access Code Required
 enderio.gui.travel_accessable.protected=Protegido
 #                                   en: Protected
-enderio.gui.travel_accessable.public=Público
+enderio.gui.travel_accessable.public=PÃºblico
 #                                en: Public
 enderio.gui.vacuum.header.chest=Cofre Aspirador
 #                           en: Vacuum Chest
@@ -148,7 +148,7 @@ enderio.gui.vacuum.header.filter=Filtro de Objetos
 #                            en: Item Filter
 enderio.gui.vacuum.header.range=Rango
 #                           en: Range
-enderio.gui.vacuum.range=Fuerza de succión
+enderio.gui.vacuum.range=Fuerza de succiÃ³n
 #                    en: Suction Strength
 enderio.gui.vat.dump=Verter Tanque de Entrada
 #                en: Dump Input Tank Into Output Tank
@@ -184,7 +184,7 @@ enderio.gui.xp_obelisk.button.store.all.line1=Almacenar toda
 #                                         en: Store all
 enderio.gui.xp_obelisk.button.store.all.line2=XP del jugador
 #                                         en: player XP
-enderio.gui.zombie_generator.fluid.minReq=%s requeridos para la activación.
+enderio.gui.zombie_generator.fluid.minReq=%s requeridos para la activaciÃ³n.
 #                                     en: %s Required for activation
 enderio.gui.zombie_generator.fuelTank=Tanque de Nutriente
 #                                 en: Nutrient Tank
@@ -202,11 +202,11 @@ item.itemLocationPrintout.tooltip.detailed.line1=
 #                                            en: Created using the Coordinate Selector
 item.itemLocationPrintout.tooltip.detailed.line2=
 #                                            en: Used to add destinations to a Telepad
-tile.block_alloy_smelter.name=Fundición de Aleaciones
+tile.block_alloy_smelter.name=FundiciÃ³n de Aleaciones
 #                         en: Alloy Smelter
-tile.block_alloy_smelter.tooltip.detailed.line1=Se usa para crear aleaciones EnderIO o como horno eléctrico común.
+tile.block_alloy_smelter.tooltip.detailed.line1=Se usa para crear aleaciones EnderIO o como horno elÃ©ctrico comÃºn.
 #                                           en: Used to create EnderIO alloys
-tile.block_alloy_smelter.tooltip.detailed.line2=Puedes mejorarlo con condensadores para aumentar la velocidad y el almacenamiento de energía.
+tile.block_alloy_smelter.tooltip.detailed.line2=Puedes mejorarlo con condensadores para aumentar la velocidad y el almacenamiento de energÃ­a.
 #                                           en: Can also be used as a powered
 tile.block_alloy_smelter.tooltip.detailed.line3=
 #                                           en: furnace
@@ -214,9 +214,9 @@ tile.block_alloy_smelter.tooltip.detailed.line4=
 #                                           en: Upgrade with capacitors to increase
 tile.block_alloy_smelter.tooltip.detailed.line5=
 #                                           en: speed and energy storage
-tile.block_attractor_obelisk.name=Obelisco de Atracción
+tile.block_attractor_obelisk.name=Obelisco de AtracciÃ³n
 #                             en: Attractor Obelisk
-tile.block_attractor_obelisk.tooltip.detailed.line1=Atrae criaturas hacia él.
+tile.block_attractor_obelisk.tooltip.detailed.line1=Atrae criaturas hacia Ã©l.
 #                                               en: Draws mobs towards it
 tile.block_attractor_obelisk.tooltip.detailed.line2=Especifica la criatura a atraer colocando su alma dentro del aparato.
 #                                               en: Specify the mobs to effect
@@ -224,35 +224,35 @@ tile.block_attractor_obelisk.tooltip.detailed.line3=
 #                                               en: by placing their souls
 tile.block_attractor_obelisk.tooltip.detailed.line4=
 #                                               en: within the device
-tile.block_aversion_obelisk.name=Obelisco de Aversión
+tile.block_aversion_obelisk.name=Obelisco de AversiÃ³n
 #                            en: Aversion Obelisk
-tile.block_aversion_obelisk.tooltip.detailed.line1=Previene que las criaturas aparezcan dentro de su área de efecto.
+tile.block_aversion_obelisk.tooltip.detailed.line1=Previene que las criaturas aparezcan dentro de su Ã¡rea de efecto.
 #                                              en: Prevents mobs from spawning
 tile.block_aversion_obelisk.tooltip.detailed.line2=
 #                                              en: within its area of effect
-tile.block_buffer.creative.name=Búfer Creativo
+tile.block_buffer.creative.name=BÃºfer Creativo
 #                           en: Creative Buffer
-tile.block_buffer.item.name=Búfer de Objetos
+tile.block_buffer.item.name=BÃºfer de Objetos
 #                       en: Item Buffer
-tile.block_buffer.omni.name=OmniBúfer
+tile.block_buffer.omni.name=OmniBÃºfer
 #                       en: Omni Buffer
-tile.block_buffer.power.name=Búfer de Energía
+tile.block_buffer.power.name=BÃºfer de EnergÃ­a
 #                        en: Power Buffer
-tile.block_combustion_generator.name=Generador de Combustión
+tile.block_combustion_generator.name=Generador de CombustiÃ³n
 #                                en: Combustion Generator
-tile.block_combustion_generator.tooltip.detailed.line1=Consume combustible líquido para generar energía.
+tile.block_combustion_generator.tooltip.detailed.line1=Consume combustible lÃ­quido para generar energÃ­a.
 #                                                  en: Burns liquid fuel to generate power
 tile.block_combustion_generator.tooltip.detailed.line2=Requiere un refrigerante (ej. agua).
 #                                                  en: Requires a coolant (e.g. water)
-tile.block_combustion_generator.tooltip.detailed.line3=La cantidad de energía de salida depende del combustible utilizado.
+tile.block_combustion_generator.tooltip.detailed.line3=La cantidad de energÃ­a de salida depende del combustible utilizado.
 #                                                  en: Output dependent on fuel
 tile.block_crafter.name=Fabricador
 #                   en: Crafter
-tile.block_crafter.tooltip.detailed.line1=Fabricador automático eléctrico.
+tile.block_crafter.tooltip.detailed.line1=Fabricador automÃ¡tico elÃ©ctrico.
 #                                     en: A powered auto-crafter
-tile.block_crafter.tooltip.detailed.line2=Consume energía por operación.
+tile.block_crafter.tooltip.detailed.line2=Consume energÃ­a por operaciÃ³n.
 #                                     en: Consumes power per operation
-tile.block_crafter.tooltip.detailed.line3=Se puede mejorar con condensadores para aumentar la velocidad y el almacenamiento de energía.
+tile.block_crafter.tooltip.detailed.line3=Se puede mejorar con condensadores para aumentar la velocidad y el almacenamiento de energÃ­a.
 #                                     en: Can be upgraded to increase speed
 tile.block_crafter.tooltip.detailed.line4=
 #                                     en: and energy storage with capacitors
@@ -274,19 +274,19 @@ tile.block_experience_obelisk.name=Obelisco de Experiencia
 #                              en: Experience Obelisk
 tile.block_experience_obelisk.tooltip.detailed.line1=Almacena experiencia.
 #                                                en: Stores Experience
-tile.block_experience_obelisk.tooltip.detailed.line2=Puede extraer XP Líquida hacia tanques adyacentes.
+tile.block_experience_obelisk.tooltip.detailed.line2=Puede extraer XP LÃ­quida hacia tanques adyacentes.
 #                                                en: Can output liquid XP to
 tile.block_experience_obelisk.tooltip.detailed.line3=
 #                                                en: adjacent tanks
-tile.block_farm_station.name=Estación de Cultivo
+tile.block_farm_station.name=EstaciÃ³n de Cultivo
 #                        en: Farming Station
 tile.block_farm_station.tooltip.detailed.line1=Planta y cosecha cultivos.
 #                                          en: Plants and harvests crops
-tile.block_farm_station.tooltip.detailed.line2=Requiere energía y herramientas apropiadas (azada y hacha).
+tile.block_farm_station.tooltip.detailed.line2=Requiere energÃ­a y herramientas apropiadas (azada y hacha).
 #                                          en: Requires power and
 tile.block_farm_station.tooltip.detailed.line3=Saqueo y Fortuna en las herramientas se aplican cuando se cosecha.
 #                                          en: appropriate tools (hoe, axe)
-tile.block_farm_station.tooltip.detailed.line4=Mejórala con condensadores para aumentar el rango. La mejora también aumenta la energía usada.
+tile.block_farm_station.tooltip.detailed.line4=MejÃ³rala con condensadores para aumentar el rango. La mejora tambiÃ©n aumenta la energÃ­a usada.
 #                                          en: Looting / fortune on tools
 tile.block_farm_station.tooltip.detailed.line5=
 #                                          en: applied when harvesting
@@ -304,21 +304,21 @@ tile.block_killer_joe.name=Killer Joe
 #                      en: Killer Joe
 tile.block_killer_joe.tooltip.detailed.line1=Ataca a las criaturas cercanas cuando se le proporciona una espada y Destilado de Nutrientes.
 #                                        en: Attacks nearby creatures when
-tile.block_killer_joe.tooltip.detailed.line2=La experiencia se puede drenar como XP Líquida usando tuberías de fluidos.
+tile.block_killer_joe.tooltip.detailed.line2=La experiencia se puede drenar como XP LÃ­quida usando tuberÃ­as de fluidos.
 #                                        en: supplied with a sword and
 tile.block_killer_joe.tooltip.detailed.line3=
 #                                        en: Nutrient Distillation
-tile.block_painter.name=Máquina de Pintar
+tile.block_painter.name=MÃ¡quina de Pintar
 #                   en: Painting Machine
-tile.block_powered_spawner.empty.tooltip.detailed.line1=Combínalo con un Spawner Roto en un yunque.
+tile.block_powered_spawner.empty.tooltip.detailed.line1=CombÃ­nalo con un Spawner Roto en un yunque.
 #                                                   en: Combine with a broken
 tile.block_powered_spawner.empty.tooltip.detailed.line2=
 #                                                   en: spawner in an anvil
-tile.block_powered_spawner.name=Spawner Eléctrico
+tile.block_powered_spawner.name=Spawner ElÃ©ctrico
 #                           en: Powered Spawner
-tile.block_powered_spawner.tooltip.detailed.line1=Proporciónale energía para activarlo.
+tile.block_powered_spawner.tooltip.detailed.line1=ProporciÃ³nale energÃ­a para activarlo.
 #                                             en: Supply with power to
-tile.block_powered_spawner.tooltip.detailed.line2=Se puede mejorar con condensadores para aumentar la velocidad y el almacenamiento de energía.
+tile.block_powered_spawner.tooltip.detailed.line2=Se puede mejorar con condensadores para aumentar la velocidad y el almacenamiento de energÃ­a.
 #                                             en: activate
 tile.block_powered_spawner.tooltip.detailed.line3=
 #                                             en: Upgrade with capacitors to increase
@@ -334,7 +334,7 @@ tile.block_reservoir.name=Tanque
 #                     en: Reservoir
 tile.block_reservoir.tooltip.detailed.line1=Se crea formando una estructura de 2x2x1.
 #                                       en: When connected with other Reservoirs:
-tile.block_reservoir.tooltip.detailed.line2=Añade dos cubos de agua para producir una fuente infinita de agua.
+tile.block_reservoir.tooltip.detailed.line2=AÃ±ade dos cubos de agua para producir una fuente infinita de agua.
 #                                       en: Add two buckets of water for
 tile.block_reservoir.tooltip.detailed.line3=Produce un cubo por segundo.
 #                                       en: an infinite water source.
@@ -348,9 +348,9 @@ tile.block_sag_mill.name=Moledora SAG
 #                    en: SAG Mill
 tile.block_sag_mill.tooltip.detailed.line1=Muele menas y otros objetos.
 #                                      en: Grinds ore and other items
-tile.block_sag_mill.tooltip.detailed.line2=Añade bolas de molido para incrementar la producción y eficiencia.
+tile.block_sag_mill.tooltip.detailed.line2=AÃ±ade bolas de molido para incrementar la producciÃ³n y eficiencia.
 #                                      en: Add grinding balls to increase output
-tile.block_sag_mill.tooltip.detailed.line3=Mejórala con condensadores para aumentar la velocidad y el almacenamiento de energía.
+tile.block_sag_mill.tooltip.detailed.line3=MejÃ³rala con condensadores para aumentar la velocidad y el almacenamiento de energÃ­a.
 #                                      en: and efficiency
 tile.block_sag_mill.tooltip.detailed.line4=
 #                                      en: Upgrade with capacitors to increase
@@ -360,19 +360,19 @@ tile.block_sag_mill.tooltipPrefix=Contiene
 #                             en: Contains
 tile.block_slice_and_splice.name=Rebanayempalma
 #                            en: Slice'N'Splice
-tile.block_slice_and_splice.tooltip.detailed.line1=Rebana cabezas y las empalma en todo tipo de cosas útiles.
+tile.block_slice_and_splice.tooltip.detailed.line1=Rebana cabezas y las empalma en todo tipo de cosas Ãºtiles.
 #                                              en: Slices heads and splices in
 tile.block_slice_and_splice.tooltip.detailed.line2=
 #                                              en: all sorts of useful things
-tile.block_solar_panel.advanced.name=Célula Fotovoltaica Avanzada
+tile.block_solar_panel.advanced.name=CÃ©lula Fotovoltaica Avanzada
 #                                en: Advanced Photovoltaic Cell
-tile.block_solar_panel.name=Célula Fotovoltaica
+tile.block_solar_panel.name=CÃ©lula Fotovoltaica
 #                       en: Photovoltaic Cell
-tile.block_solar_panel.tooltip.common.line1=¡Energía Solar!
+tile.block_solar_panel.tooltip.common.line1=Â¡EnergÃ­a Solar!
 #                                       en: Solar Power!
-tile.block_solar_panel.tooltip.detailed.line1=Produce energía durante las horas de luz
+tile.block_solar_panel.tooltip.detailed.line1=Produce energÃ­a durante las horas de luz
 #                                         en: Produces power during daylight hours
-tile.block_solar_panel.tooltip.detailed.line2=Debe colocarse de cara al cielo y sin ningún obstáculo entremedias.
+tile.block_solar_panel.tooltip.detailed.line2=Debe colocarse de cara al cielo y sin ningÃºn obstÃ¡culo entremedias.
 #                                         en: Must have a clear line of sight to
 tile.block_solar_panel.tooltip.detailed.line3=
 #                                         en: the sky
@@ -386,9 +386,9 @@ tile.block_soul_binder.tooltip.detailed.line2=
 #                                         en: a broken spawner
 tile.block_stirling_generator.name=Generador Stirling
 #                              en: Stirling Generator
-tile.block_stirling_generator.tooltip.detailed.line1=Quema combustible sólido para generar energía.
+tile.block_stirling_generator.tooltip.detailed.line1=Quema combustible sÃ³lido para generar energÃ­a.
 #                                                en: Burns solid fuel to generate power
-tile.block_stirling_generator.tooltip.detailed.line2=Puede mejorarse para aumentar la energía de salida y la eficiencia con condensadores.
+tile.block_stirling_generator.tooltip.detailed.line2=Puede mejorarse para aumentar la energÃ­a de salida y la eficiencia con condensadores.
 #                                                en: Can be upgraded to increase output
 tile.block_stirling_generator.tooltip.detailed.line3=
 #                                                en: and efficiency with capacitors
@@ -396,7 +396,7 @@ tile.block_tank.advanced.name=Tanque de Fluidos Presurizado
 #                         en: Pressurized Fluid Tank
 tile.block_tank.name=Tanque de Fluidos
 #                en: Fluid Tank
-tile.block_tank.tooltip.detailed.line1=Tanque de fluidos portátil.
+tile.block_tank.tooltip.detailed.line1=Tanque de fluidos portÃ¡til.
 #                                  en: Portable fluid tank
 tile.block_tank.tooltip.detailed.line2=Se puede usar para vaciar y llenar contenedores de fluido.
 #                                  en: Can be used to empty and
@@ -404,7 +404,7 @@ tile.block_tank.tooltip.detailed.line3=
 #                                  en: fill fluid containers
 tile.block_tele_pad.name=Bloque Telepad
 #                    en: Telepad Block
-tile.block_tele_pad.tooltip.detailed.line1=Usa energía para teletransportar entidades a un posición y dimensión específica.
+tile.block_tele_pad.tooltip.detailed.line1=Usa energÃ­a para teletransportar entidades a un posiciÃ³n y dimensiÃ³n especÃ­fica.
 #                                      en: Uses power to teleport entities
 tile.block_tele_pad.tooltip.detailed.line2=Debe formar un multibloque de 3x1x3.
 #                                      en: to a specific position and dimension.
@@ -412,7 +412,7 @@ tile.block_tele_pad.tooltip.detailed.line3=
 #                                      en: Must be placed in a 3x1x3 multiblock.
 tile.block_transceiver.name=Transceptor Dimensional
 #                       en: Dimensional Transceiver
-tile.block_transceiver.tooltip.detailed.line1=Transfiere objetos, fluidos y energía inalámbricamente desde cualquier distancia y entre dimensiones.
+tile.block_transceiver.tooltip.detailed.line1=Transfiere objetos, fluidos y energÃ­a inalÃ¡mbricamente desde cualquier distancia y entre dimensiones.
 #                                         en: Transports items, fluids and power
 tile.block_transceiver.tooltip.detailed.line2=
 #                                         en: wirelessly across any distance and
@@ -420,13 +420,13 @@ tile.block_transceiver.tooltip.detailed.line3=
 #                                         en: between dimensions
 tile.block_travel_anchor.name=Ancla de Viaje
 #                         en: Travel Anchor
-tile.block_travel_anchor.tooltip.detailed.line1=Permite la teletransportación entre anclas.
+tile.block_travel_anchor.tooltip.detailed.line1=Permite la teletransportaciÃ³n entre anclas.
 #                                           en: Allows teleportation between anchors
-tile.block_travel_anchor.tooltip.detailed.line2=Colócate en una ancla, mira hacia otra ancla y salta para teletransportarte.
+tile.block_travel_anchor.tooltip.detailed.line2=ColÃ³cate en una ancla, mira hacia otra ancla y salta para teletransportarte.
 #                                           en: Stand on one Anchor, look at
-tile.block_travel_anchor.tooltip.detailed.line3=También se puede usar con la Vara de Viaje.
+tile.block_travel_anchor.tooltip.detailed.line3=TambiÃ©n se puede usar con la Vara de Viaje.
 #                                           en: another and jump to travel
-tile.block_travel_anchor.tooltip.detailed.line4=Se puede pintar en la Máquina de Pintar.
+tile.block_travel_anchor.tooltip.detailed.line4=Se puede pintar en la MÃ¡quina de Pintar.
 #                                           en: Can also be used with the Staff
 tile.block_travel_anchor.tooltip.detailed.line5=
 #                                           en: of Travel
@@ -446,11 +446,11 @@ tile.block_weather_obelisk.name=Obelisco del Clima
 #                           en: Weather Obelisk
 tile.block_weather_obelisk.tooltip.detailed.line1=Cambia el clima actual.
 #                                             en: Changes the current weather
-tile.block_weather_obelisk.tooltip.detailed.line2=Requiere mucha energía y un objeto catalizador.
+tile.block_weather_obelisk.tooltip.detailed.line2=Requiere mucha energÃ­a y un objeto catalizador.
 #                                             en: Requires a lot of power and
 tile.block_weather_obelisk.tooltip.detailed.line3=
 #                                             en: a catalyst item
-tile.block_wireless_charger.name=Cargador Inalámbrico
+tile.block_wireless_charger.name=Cargador InalÃ¡mbrico
 #                            en: Wireless Charger
 tile.block_wireless_charger.tooltip.detailed.line1=Carga los objetos recargables de los inventarios de los jugadores cercanos.
 #                                              en: Charges items in nearby
@@ -466,7 +466,7 @@ tile.block_xp_vacuum.tooltip.detailed.line3=
 #                                       en: Needs to be activated with liquid XP.
 tile.block_zombie_generator.name=Generador Zombi
 #                            en: Zombie Generator
-tile.block_zombie_generator.tooltip.detailed.line1=Consume Destilado de Nutrientes para generar energía.
+tile.block_zombie_generator.tooltip.detailed.line1=Consume Destilado de Nutrientes para generar energÃ­a.
 #                                              en: Consumes Nutrient Distillation
 tile.block_zombie_generator.tooltip.detailed.line2=
 #                                              en: to generate power

@@ -28,7 +28,7 @@ enderio.gui.alloy.mode.all=Przetapiaj wszystko
 #                      en: All Smelting
 enderio.gui.alloy.mode.alloy=Tylko stopy
 #                        en: Alloys Only
-enderio.gui.alloy.mode.furnace=Tylko jak zwyk?y piec
+enderio.gui.alloy.mode.furnace=Tylko jak zwykły piec
 #                          en: Furnace Only
 enderio.gui.alloy.mode.heading=Tryb pieca
 #                          en: Furnace Mode
@@ -102,7 +102,7 @@ enderio.gui.telepad.tank=
 #                    en: Reagent Tank
 enderio.gui.telepad.teleport=
 #                        en: Teleport!
-enderio.gui.trans.addChannel=Dodaj kana?
+enderio.gui.trans.addChannel=Dodaj kanał
 #                        en: Add Channel
 enderio.gui.trans.available=
 #                       en: Available
@@ -120,23 +120,23 @@ enderio.gui.trans.buffer.shared=
 #                           en: Send/Receive Buffer
 enderio.gui.trans.channel.receive=Odbieraj
 #                             en: Receive
-enderio.gui.trans.channel.send=Wysy?aj
+enderio.gui.trans.channel.send=Wysyłaj
 #                          en: Send
-enderio.gui.trans.deleteChannel=Usu? kana?
+enderio.gui.trans.deleteChannel=Usuń kanał
 #                           en: Delete Channel
-enderio.gui.trans.privateChannel=Prywatny kana?
+enderio.gui.trans.privateChannel=Prywatny kanał
 #                            en: Private Channel
-enderio.gui.trans.publicChannel=Publiczny kana?
+enderio.gui.trans.publicChannel=Publiczny kanał
 #                           en: Public Channel
 enderio.gui.trans.receive=Odbieraj
 #                     en: Receive
-enderio.gui.trans.send=Wysy?aj
+enderio.gui.trans.send=Wysyłaj
 #                  en: Send
 enderio.gui.travel_accessable.private=Prywatny
 #                                 en: Private
 enderio.gui.travel_accessable.promp.login=Autoryzuj
 #                                     en: Authorise
-enderio.gui.travel_accessable.prompt=Podaj has?o
+enderio.gui.travel_accessable.prompt=Podaj hasło
 #                                en: Access Code Required
 enderio.gui.travel_accessable.protected=Chroniony
 #                                   en: Protected

@@ -12,7 +12,7 @@ enderio.block_powered_spawner.note.noLocationFound=
 #                                              en: No space found
 enderio.block_powered_spawner.note.noPlayer=
 #                                       en: No player in range
-enderio.block_powered_spawner.tooltip.empty=?
+enderio.block_powered_spawner.tooltip.empty=空
 #                                       en: Empty
 enderio.block_solar_panel.tooltip.maxoutput=
 #                                       en: Max Output: %s
@@ -20,27 +20,27 @@ enderio.chat.telepad.noFluid=
 #                        en: Not enough %s to teleport!
 enderio.chat.travel_accessable.error.private=
 #                                        en: Only %s may change this block's settings.
-enderio.chat.vat.dump.active=?????????????????
+enderio.chat.vat.dump.active=导出失败，不能在酿液桶工作时导出。
 #                        en: Dumping failed, cannot put liquids into the output tank while the Vat is working
-enderio.chat.vat.dump.fail=??????????
+enderio.chat.vat.dump.fail=导出失败，输出槽非空
 #                      en: Dumping failed, output tank is not empty
-enderio.gui.alloy.mode.all=????
+enderio.gui.alloy.mode.all=全部烧炼
 #                      en: All Smelting
-enderio.gui.alloy.mode.alloy=????
+enderio.gui.alloy.mode.alloy=仅限合金
 #                        en: Alloys Only
-enderio.gui.alloy.mode.furnace=????
+enderio.gui.alloy.mode.furnace=仅限熔炉
 #                          en: Furnace Only
-enderio.gui.alloy.mode.heading=????
+enderio.gui.alloy.mode.heading=熔炉模式
 #                          en: Furnace Mode
-enderio.gui.buffer.in=????:
+enderio.gui.buffer.in=最大输入:
 #                 en: Max In:
-enderio.gui.buffer.out=????:
+enderio.gui.buffer.out=最大输出:
 #                  en: Max Out:
-enderio.gui.combustion_generator.coolantTank.empty=???
+enderio.gui.combustion_generator.coolantTank.empty=冷却剂
 #                                              en: Coolant
 enderio.gui.combustion_generator.coolantTank=
 #                                        en: Coolant: %s
-enderio.gui.combustion_generator.fuelTank.empty=??
+enderio.gui.combustion_generator.fuelTank.empty=燃料
 #                                           en: Fuel
 enderio.gui.combustion_generator.fuelTank=
 #                                     en: Fuel: %s
@@ -48,63 +48,63 @@ enderio.gui.combustion_generator.output=
 #                                   en: Generating: %s
 enderio.gui.farm.baseUse=
 #                    en: Base Use: %s
-enderio.gui.killerJoe.fluid.minReq=???? %s
+enderio.gui.killerJoe.fluid.minReq=激活需要 %s
 #                              en: %s Required for activation
-enderio.gui.killerJoe.fuelTank=????
+enderio.gui.killerJoe.fuelTank=营养液槽
 #                          en: Nutrient Tank
-enderio.gui.powered_spawner.capture=??
+enderio.gui.powered_spawner.capture=收获
 #                               en: Capture
-enderio.gui.powered_spawner.spawn=??
+enderio.gui.powered_spawner.spawn=生成
 #                             en: Spawn
-enderio.gui.ranged.hideRange=????
+enderio.gui.ranged.hideRange=隐藏范围
 #                        en: Hide Range
-enderio.gui.ranged.range=???%s
+enderio.gui.ranged.range=范围：%s
 #                    en: Range: %s
-enderio.gui.ranged.showRange=????
+enderio.gui.ranged.showRange=显示范围
 #                        en: Show Range
 enderio.gui.stirling_generator.burnRate=
 #                                   en: Burn Rate: %s%%
 enderio.gui.stirling_generator.output=
 #                                 en: Generating: %s
-enderio.gui.stirling_generator.remaining=?? {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
+enderio.gui.stirling_generator.remaining=残余 {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
 #                                    en: Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
-enderio.gui.stirling_generator.upgrades={0} ?? {2}{1,number,#.#}x{3} ???
+enderio.gui.stirling_generator.upgrades={0} 提供 {2}{1,number,#.#}x{3} 的效率
 #                                   en: {0} gives {2}{1,number,#.#}x{3} efficiency
-enderio.gui.stirling_generator.upgradeslot=???
+enderio.gui.stirling_generator.upgradeslot=升级栏
 #                                      en: Upgrade slot
-enderio.gui.tank.tank=???
+enderio.gui.tank.tank=流体箱
 #                 en: Tank
-enderio.gui.tank.void.mode.always.desc=???????????
+enderio.gui.tank.void.mode.always.desc=空白物品栏接受所有物品
 #                                  en: Void slot accepts all items
-enderio.gui.tank.void.mode.always=??
+enderio.gui.tank.void.mode.always=持续
 #                             en: Always
-enderio.gui.tank.void.mode.if_not_container.desc=?????????????????
+enderio.gui.tank.void.mode.if_not_container.desc=空白物品栏接受所有物品除了液体容器
 #                                            en: Void slot accepts all items that are not fluid containers
-enderio.gui.tank.void.mode.if_not_container=???
+enderio.gui.tank.void.mode.if_not_container=非容器
 #                                       en: If Not Container
-enderio.gui.tank.void.mode.never.desc=????????????
+enderio.gui.tank.void.mode.never.desc=空白物品栏不接受任何物品
 #                                 en: Void slot does not accept items
-enderio.gui.tank.void.mode.never=??
+enderio.gui.tank.void.mode.never=从不
 #                            en: Never
-enderio.gui.tank.void.mode=????
+enderio.gui.tank.void.mode=空白模式
 #                      en: Void Mode
-enderio.gui.tank.void.slot=?????
+enderio.gui.tank.void.slot=空白物品栏
 #                      en: Void Slot
-enderio.gui.telepad.blocked=????!
+enderio.gui.telepad.blocked=传送锁定!
 #                       en: Teleport Blocked!
-enderio.gui.telepad.configure.telepad=?????
+enderio.gui.telepad.configure.telepad=传送台设置
 #                                 en: Telepad Settings
-enderio.gui.telepad.configure.travel=????
+enderio.gui.telepad.configure.travel=旅行设置
 #                                en: Travel Settings
 enderio.gui.telepad.max=
 #                   en: Max: %s
 enderio.gui.telepad.tank=
 #                    en: Reagent Tank
-enderio.gui.telepad.teleport=??!
+enderio.gui.telepad.teleport=传送!
 #                        en: Teleport!
-enderio.gui.trans.addChannel=????
+enderio.gui.trans.addChannel=添加频道
 #                        en: Add Channel
-enderio.gui.trans.available=??
+enderio.gui.trans.available=可用
 #                       en: Available
 enderio.gui.trans.buffer.item.single=
 #                                en: Limit to single items
@@ -112,81 +112,81 @@ enderio.gui.trans.buffer.item.stacks=
 #                                en: Accept item stacks
 enderio.gui.trans.buffer.local.upkeep=
 #                                 en: Upkeep: %s
-enderio.gui.trans.buffer.local=????
+enderio.gui.trans.buffer.local=本地缓存
 #                          en: Local Buffer
 enderio.gui.trans.buffer.shared.maxIo=
 #                                 en: Max IO: %s
-enderio.gui.trans.buffer.shared=??/????
+enderio.gui.trans.buffer.shared=发送/接收缓存
 #                           en: Send/Receive Buffer
-enderio.gui.trans.channel.receive=??
+enderio.gui.trans.channel.receive=接收
 #                             en: Receive
-enderio.gui.trans.channel.send=??
+enderio.gui.trans.channel.send=发送
 #                          en: Send
-enderio.gui.trans.deleteChannel=????
+enderio.gui.trans.deleteChannel=删除频道
 #                           en: Delete Channel
-enderio.gui.trans.privateChannel=????
+enderio.gui.trans.privateChannel=私人频道
 #                            en: Private Channel
-enderio.gui.trans.publicChannel=????
+enderio.gui.trans.publicChannel=公共频道
 #                           en: Public Channel
-enderio.gui.trans.receive=??
+enderio.gui.trans.receive=接收
 #                     en: Receive
-enderio.gui.trans.send=??
+enderio.gui.trans.send=发送
 #                  en: Send
-enderio.gui.travel_accessable.private=??
+enderio.gui.travel_accessable.private=私有
 #                                 en: Private
-enderio.gui.travel_accessable.promp.login=???
+enderio.gui.travel_accessable.promp.login=已授权
 #                                     en: Authorise
-enderio.gui.travel_accessable.prompt=??????
+enderio.gui.travel_accessable.prompt=需要访问密码
 #                                en: Access Code Required
-enderio.gui.travel_accessable.protected=???
+enderio.gui.travel_accessable.protected=被保护
 #                                   en: Protected
-enderio.gui.travel_accessable.public=??
+enderio.gui.travel_accessable.public=公共
 #                                en: Public
-enderio.gui.vacuum.header.chest=????
+enderio.gui.vacuum.header.chest=真空箱子
 #                           en: Vacuum Chest
-enderio.gui.vacuum.header.filter=?????
+enderio.gui.vacuum.header.filter=物品过滤器
 #                            en: Item Filter
-enderio.gui.vacuum.header.range=??
+enderio.gui.vacuum.header.range=范围
 #                           en: Range
-enderio.gui.vacuum.range=????
+enderio.gui.vacuum.range=吸取力度
 #                    en: Suction Strength
-enderio.gui.vat.dump=?????
+enderio.gui.vat.dump=导出输入槽
 #                en: Dump Input Tank Into Output Tank
-enderio.gui.vat.inputTank=???
+enderio.gui.vat.inputTank=输入槽
 #                     en: Input Tank
-enderio.gui.vat.outputTank=???
+enderio.gui.vat.outputTank=输出槽
 #                      en: Output Tank
-enderio.gui.vat.void=?????
+enderio.gui.vat.void=导出输出槽
 #                en: Void Output Tank
 enderio.gui.weather_obelisk.fuelTank=
 #                                en: Catalyst Tank
-enderio.gui.xp_obelisk.button.retrieve.1.line1=??1?
+enderio.gui.xp_obelisk.button.retrieve.1.line1=取出1级
 #                                          en: Retrieve 1
-enderio.gui.xp_obelisk.button.retrieve.1.line2=??XP??
+enderio.gui.xp_obelisk.button.retrieve.1.line2=玩家XP级数
 #                                          en: player XP level
-enderio.gui.xp_obelisk.button.retrieve.10.line1=??10?
+enderio.gui.xp_obelisk.button.retrieve.10.line1=取出10级
 #                                           en: Retrieve 10
-enderio.gui.xp_obelisk.button.retrieve.10.line2=??XP??
+enderio.gui.xp_obelisk.button.retrieve.10.line2=玩家XP级数
 #                                           en: player XP levels
-enderio.gui.xp_obelisk.button.retrieve.all.line1=????
+enderio.gui.xp_obelisk.button.retrieve.all.line1=取出全部
 #                                            en: Retrieve all
-enderio.gui.xp_obelisk.button.retrieve.all.line2=??XP??
+enderio.gui.xp_obelisk.button.retrieve.all.line2=玩家XP级数
 #                                            en: player XP levels
-enderio.gui.xp_obelisk.button.store.1.line1=??1?
+enderio.gui.xp_obelisk.button.store.1.line1=储存1级
 #                                       en: Store 1
-enderio.gui.xp_obelisk.button.store.1.line2=??XP
+enderio.gui.xp_obelisk.button.store.1.line2=玩家XP
 #                                       en: level of player XP
-enderio.gui.xp_obelisk.button.store.10.line1=??10?
+enderio.gui.xp_obelisk.button.store.10.line1=储存10级
 #                                        en: Store 10
-enderio.gui.xp_obelisk.button.store.10.line2=??XP
+enderio.gui.xp_obelisk.button.store.10.line2=玩家XP
 #                                        en: levels of player XP
-enderio.gui.xp_obelisk.button.store.all.line1=????
+enderio.gui.xp_obelisk.button.store.all.line1=储存玩家
 #                                         en: Store all
-enderio.gui.xp_obelisk.button.store.all.line2=??XP
+enderio.gui.xp_obelisk.button.store.all.line2=全部XP
 #                                         en: player XP
-enderio.gui.zombie_generator.fluid.minReq=???? %s
+enderio.gui.zombie_generator.fluid.minReq=激活需要 %s
 #                                     en: %s Required for activation
-enderio.gui.zombie_generator.fuelTank=????
+enderio.gui.zombie_generator.fuelTank=营养液槽
 #                                 en: Nutrient Tank
 enderio.gui.zombie_generator.output=
 #                               en: Generating: %s
@@ -196,65 +196,65 @@ item.itemLocationPrintout.chat.noPaper=
 #                                  en: No Paper in Inventory
 item.itemLocationPrintout.chat.setTarget=
 #                                    en: Target set to
-item.itemLocationPrintout.name=?????
+item.itemLocationPrintout.name=坐标记录仪
 #                          en: Location Printout
-item.itemLocationPrintout.tooltip.detailed.line1=?????????
+item.itemLocationPrintout.tooltip.detailed.line1=使用坐标记录仪制作
 #                                            en: Created using the Coordinate Selector
-item.itemLocationPrintout.tooltip.detailed.line2=?????????
+item.itemLocationPrintout.tooltip.detailed.line2=可为传送台添加坐标
 #                                            en: Used to add destinations to a Telepad
-tile.block_alloy_smelter.name=???
+tile.block_alloy_smelter.name=合金炉
 #                         en: Alloy Smelter
-tile.block_alloy_smelter.tooltip.detailed.line1=??????????
+tile.block_alloy_smelter.tooltip.detailed.line1=用于生产末影接口里的
 #                                           en: Used to create EnderIO alloys
-tile.block_alloy_smelter.tooltip.detailed.line2=??????????
+tile.block_alloy_smelter.tooltip.detailed.line2=合金炉可以当做一个能
 #                                           en: Can also be used as a powered
-tile.block_alloy_smelter.tooltip.detailed.line3=?????????
+tile.block_alloy_smelter.tooltip.detailed.line3=使用能量的熔炉使用
 #                                           en: furnace
-tile.block_alloy_smelter.tooltip.detailed.line4=????????
+tile.block_alloy_smelter.tooltip.detailed.line4=使用电容器升级可
 #                                           en: Upgrade with capacitors to increase
-tile.block_alloy_smelter.tooltip.detailed.line5=?????????
+tile.block_alloy_smelter.tooltip.detailed.line5=增加速度与能量存储
 #                                           en: speed and energy storage
-tile.block_attractor_obelisk.name=???????
+tile.block_attractor_obelisk.name=生物诱引方尖碑
 #                             en: Attractor Obelisk
-tile.block_attractor_obelisk.tooltip.detailed.line1=??????
+tile.block_attractor_obelisk.tooltip.detailed.line1=将怪物引向它
 #                                               en: Draws mobs towards it
-tile.block_attractor_obelisk.tooltip.detailed.line2=??????
+tile.block_attractor_obelisk.tooltip.detailed.line2=将生物的灵魂
 #                                               en: Specify the mobs to effect
-tile.block_attractor_obelisk.tooltip.detailed.line3=??????
+tile.block_attractor_obelisk.tooltip.detailed.line3=装瓶放入设备
 #                                               en: by placing their souls
-tile.block_attractor_obelisk.tooltip.detailed.line4=???????
+tile.block_attractor_obelisk.tooltip.detailed.line4=来指定吸引类型
 #                                               en: within the device
-tile.block_aversion_obelisk.name=???????
+tile.block_aversion_obelisk.name=生物排除方尖碑
 #                            en: Aversion Obelisk
-tile.block_aversion_obelisk.tooltip.detailed.line1=???????
+tile.block_aversion_obelisk.tooltip.detailed.line1=在它的工作范围
 #                                              en: Prevents mobs from spawning
-tile.block_aversion_obelisk.tooltip.detailed.line2=??????
+tile.block_aversion_obelisk.tooltip.detailed.line2=的生物重定向
 #                                              en: within its area of effect
-tile.block_buffer.creative.name=?????
+tile.block_buffer.creative.name=创造缓存器
 #                           en: Creative Buffer
-tile.block_buffer.item.name=?????
+tile.block_buffer.item.name=物品缓存器
 #                       en: Item Buffer
-tile.block_buffer.omni.name=??????
+tile.block_buffer.omni.name=多功能缓存器
 #                       en: Omni Buffer
-tile.block_buffer.power.name=?????
+tile.block_buffer.power.name=能量缓存器
 #                        en: Power Buffer
-tile.block_combustion_generator.name=?????
+tile.block_combustion_generator.name=燃烧发电机
 #                                en: Combustion Generator
-tile.block_combustion_generator.tooltip.detailed.line1=??????????
+tile.block_combustion_generator.tooltip.detailed.line1=燃烧液体燃料产生能量
 #                                                  en: Burns liquid fuel to generate power
-tile.block_combustion_generator.tooltip.detailed.line2=????? (???)
+tile.block_combustion_generator.tooltip.detailed.line2=需要冷却剂 (比如水)
 #                                                  en: Requires a coolant (e.g. water)
-tile.block_combustion_generator.tooltip.detailed.line3=?????????
+tile.block_combustion_generator.tooltip.detailed.line3=输出能量取决于燃料
 #                                                  en: Output dependent on fuel
-tile.block_crafter.name=???
+tile.block_crafter.name=合成器
 #                   en: Crafter
-tile.block_crafter.tooltip.detailed.line1=???????????
+tile.block_crafter.tooltip.detailed.line1=靠能量工作的自动合成器
 #                                     en: A powered auto-crafter
-tile.block_crafter.tooltip.detailed.line2=??????????
+tile.block_crafter.tooltip.detailed.line2=每次合成都会消耗能量
 #                                     en: Consumes power per operation
-tile.block_crafter.tooltip.detailed.line3=?????????
+tile.block_crafter.tooltip.detailed.line3=使用电容器升级可以
 #                                     en: Can be upgraded to increase speed
-tile.block_crafter.tooltip.detailed.line4=?????????
+tile.block_crafter.tooltip.detailed.line4=增加速度与能量存储
 #                                     en: and energy storage with capacitors
 tile.block_dialing_device.name=
 #                          en: Dialing Device
@@ -262,199 +262,199 @@ tile.block_dialing_device.tooltip.detailed.line1=
 #                                            en: Place near a Telepad
 tile.block_dialing_device.tooltip.detailed.line2=
 #                                            en: Stores and sets destinations.
-tile.block_enchanter.name=???
+tile.block_enchanter.name=附魔器
 #                     en: Enchanter
-tile.block_enchanter.tooltip.detailed.line1=??XP????
+tile.block_enchanter.tooltip.detailed.line1=使用XP让物品与
 #                                       en: Uses XP to combine items
-tile.block_enchanter.tooltip.detailed.line2=??????
+tile.block_enchanter.tooltip.detailed.line2=来制作附魔书
 #                                       en: and a book and quill to
 tile.block_enchanter.tooltip.detailed.line3=
 #                                       en: created enchanted books
-tile.block_experience_obelisk.name=???????
+tile.block_experience_obelisk.name=经验交换方尖碑
 #                              en: Experience Obelisk
-tile.block_experience_obelisk.tooltip.detailed.line1=??????
+tile.block_experience_obelisk.tooltip.detailed.line1=用于储存经验
 #                                                en: Stores Experience
-tile.block_experience_obelisk.tooltip.detailed.line2=????XP??
+tile.block_experience_obelisk.tooltip.detailed.line2=可将液态XP输出
 #                                                en: Can output liquid XP to
-tile.block_experience_obelisk.tooltip.detailed.line3=???????
+tile.block_experience_obelisk.tooltip.detailed.line3=至相邻的储罐中
 #                                                en: adjacent tanks
-tile.block_farm_station.name=???
+tile.block_farm_station.name=种植站
 #                        en: Farming Station
-tile.block_farm_station.tooltip.detailed.line1=???????
+tile.block_farm_station.tooltip.detailed.line1=种植与收割作物
 #                                          en: Plants and harvests crops
-tile.block_farm_station.tooltip.detailed.line2=?????
+tile.block_farm_station.tooltip.detailed.line2=需要能量与
 #                                          en: Requires power and
-tile.block_farm_station.tooltip.detailed.line3=????? (?, ?)
+tile.block_farm_station.tooltip.detailed.line3=合适的工具 (锄, 斧)
 #                                          en: appropriate tools (hoe, axe)
-tile.block_farm_station.tooltip.detailed.line4=?????? / ??
+tile.block_farm_station.tooltip.detailed.line4=工具上的掠夺 / 时运
 #                                          en: Looting / fortune on tools
-tile.block_farm_station.tooltip.detailed.line5=??????????
+tile.block_farm_station.tooltip.detailed.line5=效果在收割时仍然有效
 #                                          en: applied when harvesting
-tile.block_farm_station.tooltip.detailed.line6=????????
+tile.block_farm_station.tooltip.detailed.line6=使用电容器升级可
 #                                          en: Upgrade with capacitors to increase
-tile.block_farm_station.tooltip.detailed.line7=?????????
+tile.block_farm_station.tooltip.detailed.line7=增加范围与能量消耗
 #                                          en: range, upgrade also increases power use
-tile.block_inhibitor_obelisk.name=???????
+tile.block_inhibitor_obelisk.name=传送抑制方尖碑
 #                             en: Inhibitor Obelisk
-tile.block_inhibitor_obelisk.tooltip.detailed.line1=??????
+tile.block_inhibitor_obelisk.tooltip.detailed.line1=阻止工作范围
 #                                               en: Prevents teleporting within
-tile.block_inhibitor_obelisk.tooltip.detailed.line2=??????
+tile.block_inhibitor_obelisk.tooltip.detailed.line2=内的一切传送
 #                                               en: its area of effect
-tile.block_killer_joe.name=???
+tile.block_killer_joe.name=杀手乔
 #                      en: Killer Joe
-tile.block_killer_joe.tooltip.detailed.line1=????????????
+tile.block_killer_joe.tooltip.detailed.line1=当你提供一把剑和营养精华
 #                                        en: Attacks nearby creatures when
-tile.block_killer_joe.tooltip.detailed.line2=??,?????????
+tile.block_killer_joe.tooltip.detailed.line2=液时,这台机器就会自动攻
 #                                        en: supplied with a sword and
-tile.block_killer_joe.tooltip.detailed.line3=??????
+tile.block_killer_joe.tooltip.detailed.line3=击附近的生物
 #                                        en: Nutrient Distillation
-tile.block_painter.name=???
+tile.block_painter.name=喷涂机
 #                   en: Painting Machine
-tile.block_powered_spawner.empty.tooltip.detailed.line1=???????
+tile.block_powered_spawner.empty.tooltip.detailed.line1=与破损的刷怪笼
 #                                                   en: Combine with a broken
-tile.block_powered_spawner.empty.tooltip.detailed.line2=??????
+tile.block_powered_spawner.empty.tooltip.detailed.line2=在铁砧里结合
 #                                                   en: spawner in an anvil
-tile.block_powered_spawner.name=?????
+tile.block_powered_spawner.name=电动刷怪笼
 #                           en: Powered Spawner
-tile.block_powered_spawner.tooltip.detailed.line1=????
+tile.block_powered_spawner.tooltip.detailed.line1=提供能量
 #                                             en: Supply with power to
-tile.block_powered_spawner.tooltip.detailed.line2=????
+tile.block_powered_spawner.tooltip.detailed.line2=即可工作
 #                                             en: activate
-tile.block_powered_spawner.tooltip.detailed.line3=????????
+tile.block_powered_spawner.tooltip.detailed.line3=使用电容器升级可
 #                                             en: Upgrade with capacitors to increase
-tile.block_powered_spawner.tooltip.detailed.line4=?????????
+tile.block_powered_spawner.tooltip.detailed.line4=增加速度与能量存储
 #                                             en: speed and energy storage
-tile.block_relocator_obelisk.name=??????
+tile.block_relocator_obelisk.name=重定向方尖碑
 #                             en: Relocator Obelisk
-tile.block_relocator_obelisk.tooltip.detailed.line1=??????
+tile.block_relocator_obelisk.tooltip.detailed.line1=将工作范围内
 #                                               en: Relocates mobs that spawn
-tile.block_relocator_obelisk.tooltip.detailed.line2=??????
+tile.block_relocator_obelisk.tooltip.detailed.line2=的生物重定向
 #                                               en: within its area of effect
-tile.block_reservoir.name=???
+tile.block_reservoir.name=蓄水库
 #                     en: Reservoir
-tile.block_reservoir.tooltip.detailed.line1=2x2x1?????
+tile.block_reservoir.tooltip.detailed.line1=2x2x1放置时形成
 #                                       en: When connected with other Reservoirs:
-tile.block_reservoir.tooltip.detailed.line2=??2????
+tile.block_reservoir.tooltip.detailed.line2=添加2桶水即可
 #                                       en: Add two buckets of water for
-tile.block_reservoir.tooltip.detailed.line3=????????
+tile.block_reservoir.tooltip.detailed.line3=形成一个无限水源
 #                                       en: an infinite water source.
-tile.block_reservoir.tooltip.detailed.line4=???????
+tile.block_reservoir.tooltip.detailed.line4=每秒产生一桶水
 #                                       en: Produces one bucket per second
-tile.block_reservoir.tooltip.detailed.line5=??????
+tile.block_reservoir.tooltip.detailed.line5=手持扳手右击
 #                                       en: R-Click with a wrench to
-tile.block_reservoir.tooltip.detailed.line6=???????
+tile.block_reservoir.tooltip.detailed.line6=可启用自动输出
 #                                       en: enable auto-output
-tile.block_sag_mill.name=SAG???
+tile.block_sag_mill.name=SAG磨粉机
 #                    en: SAG Mill
-tile.block_sag_mill.tooltip.detailed.line1=?????????
+tile.block_sag_mill.tooltip.detailed.line1=研磨矿物与其它物品
 #                                      en: Grinds ore and other items
-tile.block_sag_mill.tooltip.detailed.line2=????????
+tile.block_sag_mill.tooltip.detailed.line2=添加研磨珠可提高
 #                                      en: Add grinding balls to increase output
-tile.block_sag_mill.tooltip.detailed.line3=?????
+tile.block_sag_mill.tooltip.detailed.line3=输出与效率
 #                                      en: and efficiency
-tile.block_sag_mill.tooltip.detailed.line4=????????
+tile.block_sag_mill.tooltip.detailed.line4=使用电容器升级可
 #                                      en: Upgrade with capacitors to increase
-tile.block_sag_mill.tooltip.detailed.line5=?????????
+tile.block_sag_mill.tooltip.detailed.line5=增加速度与能量存储
 #                                      en: speed and energy storage
-tile.block_sag_mill.tooltipPrefix=??
+tile.block_sag_mill.tooltipPrefix=包含
 #                             en: Contains
-tile.block_slice_and_splice.name=?????
+tile.block_slice_and_splice.name=头颅装配机
 #                            en: Slice'N'Splice
-tile.block_slice_and_splice.tooltip.detailed.line1=???????
+tile.block_slice_and_splice.tooltip.detailed.line1=切开头颅并装入
 #                                              en: Slices heads and splices in
-tile.block_slice_and_splice.tooltip.detailed.line2=???????
+tile.block_slice_and_splice.tooltip.detailed.line2=各种有用的装置
 #                                              en: all sorts of useful things
-tile.block_solar_panel.advanced.name=?????
+tile.block_solar_panel.advanced.name=高级光伏板
 #                                en: Advanced Photovoltaic Cell
-tile.block_solar_panel.name=???
+tile.block_solar_panel.name=光伏板
 #                       en: Photovoltaic Cell
-tile.block_solar_panel.tooltip.common.line1=???!
+tile.block_solar_panel.tooltip.common.line1=太阳能!
 #                                       en: Solar Power!
-tile.block_solar_panel.tooltip.detailed.line1=??????
+tile.block_solar_panel.tooltip.detailed.line1=白天产生能量
 #                                         en: Produces power during daylight hours
-tile.block_solar_panel.tooltip.detailed.line2=????
+tile.block_solar_panel.tooltip.detailed.line2=顶部必须
 #                                         en: Must have a clear line of sight to
-tile.block_solar_panel.tooltip.detailed.line3=????
+tile.block_solar_panel.tooltip.detailed.line3=直面天空
 #                                         en: the sky
-tile.block_solar_panel.vibrant.name=?????
+tile.block_solar_panel.vibrant.name=脉冲光伏板
 #                               en: Vibrant Photovoltaic Cell
-tile.block_soul_binder.name=?????
+tile.block_soul_binder.name=灵魂绑定器
 #                       en: Soul Binder
-tile.block_soul_binder.tooltip.detailed.line1=???????
+tile.block_soul_binder.tooltip.detailed.line1=用于转变破损的
 #                                         en: Used to convert the type of
-tile.block_soul_binder.tooltip.detailed.line2=???????
+tile.block_soul_binder.tooltip.detailed.line2=刷怪笼刷怪类型
 #                                         en: a broken spawner
-tile.block_stirling_generator.name=??????
+tile.block_stirling_generator.name=斯特林发电机
 #                              en: Stirling Generator
-tile.block_stirling_generator.tooltip.detailed.line1=??????????
+tile.block_stirling_generator.tooltip.detailed.line1=燃烧固体燃料产生能量
 #                                                en: Burns solid fuel to generate power
-tile.block_stirling_generator.tooltip.detailed.line2=??????????
+tile.block_stirling_generator.tooltip.detailed.line2=可通过添加电容器升级
 #                                                en: Can be upgraded to increase output
-tile.block_stirling_generator.tooltip.detailed.line3=???????
+tile.block_stirling_generator.tooltip.detailed.line3=增加输出与效率
 #                                                en: and efficiency with capacitors
-tile.block_tank.advanced.name=?????
+tile.block_tank.advanced.name=高压流体箱
 #                         en: Pressurized Fluid Tank
-tile.block_tank.name=???
+tile.block_tank.name=流体箱
 #                en: Fluid Tank
-tile.block_tank.tooltip.detailed.line1=??????
+tile.block_tank.tooltip.detailed.line1=便携式流体箱
 #                                  en: Portable fluid tank
-tile.block_tank.tooltip.detailed.line2=??????
+tile.block_tank.tooltip.detailed.line2=可用于清空或
 #                                  en: Can be used to empty and
-tile.block_tank.tooltip.detailed.line3=??????
+tile.block_tank.tooltip.detailed.line3=注满液体容器
 #                                  en: fill fluid containers
-tile.block_tele_pad.name=???
+tile.block_tele_pad.name=传送台
 #                    en: Telepad Block
-tile.block_tele_pad.tooltip.detailed.line1=????????
+tile.block_tele_pad.tooltip.detailed.line1=使用能量传送生物
 #                                      en: Uses power to teleport entities
-tile.block_tele_pad.tooltip.detailed.line2=??????????.
+tile.block_tele_pad.tooltip.detailed.line2=到指定世界的特定位置.
 #                                      en: to a specific position and dimension.
-tile.block_tele_pad.tooltip.detailed.line3=???? 3x1x3 ?????.
+tile.block_tele_pad.tooltip.detailed.line3=必须摆成 3x1x3 多方块结构.
 #                                      en: Must be placed in a 3x1x3 multiblock.
-tile.block_transceiver.name=?????
+tile.block_transceiver.name=空间传送器
 #                       en: Dimensional Transceiver
-tile.block_transceiver.tooltip.detailed.line1=???????
+tile.block_transceiver.tooltip.detailed.line1=在不同空间之间
 #                                         en: Transports items, fluids and power
-tile.block_transceiver.tooltip.detailed.line2=???????
+tile.block_transceiver.tooltip.detailed.line2=跨距离无线传输
 #                                         en: wirelessly across any distance and
-tile.block_transceiver.tooltip.detailed.line3=??,?????
+tile.block_transceiver.tooltip.detailed.line3=物品,流体和能量
 #                                         en: between dimensions
-tile.block_travel_anchor.name=???
+tile.block_travel_anchor.name=旅行锚
 #                         en: Travel Anchor
-tile.block_travel_anchor.tooltip.detailed.line1=?????????
+tile.block_travel_anchor.tooltip.detailed.line1=允许在锚点之间传送
 #                                           en: Allows teleportation between anchors
-tile.block_travel_anchor.tooltip.detailed.line2=??????, ??
+tile.block_travel_anchor.tooltip.detailed.line2=站在一个锚上, 看着
 #                                           en: Stand on one Anchor, look at
-tile.block_travel_anchor.tooltip.detailed.line3=????,????????
+tile.block_travel_anchor.tooltip.detailed.line3=另外一个,然后跳跃即可传送
 #                                           en: another and jump to travel
-tile.block_travel_anchor.tooltip.detailed.line4=?????????
+tile.block_travel_anchor.tooltip.detailed.line4=也可以使用旅行权杖
 #                                           en: Can also be used with the Staff
-tile.block_travel_anchor.tooltip.detailed.line5=??????
+tile.block_travel_anchor.tooltip.detailed.line5=来使用旅行锚
 #                                           en: of Travel
-tile.block_travel_anchor.tooltip.detailed.line6=????????
+tile.block_travel_anchor.tooltip.detailed.line6=可在喷涂机内喷涂
 #                                           en: Can be painted in the Painting Machine
-tile.block_vacuum_chest.name=????
+tile.block_vacuum_chest.name=真空箱子
 #                        en: Vacuum Chest
-tile.block_vacuum_chest.tooltip.detailed.line1=??????
+tile.block_vacuum_chest.tooltip.detailed.line1=将附近的物品
 #                                          en: Pulls nearby items
-tile.block_vacuum_chest.tooltip.detailed.line2=????
+tile.block_vacuum_chest.tooltip.detailed.line2=吸入其中
 #                                          en: into its inventory
-tile.block_vat.name=???
+tile.block_vat.name=酿液桶
 #               en: The Vat
-tile.block_vat.tooltip.detailed.line1=????????????
+tile.block_vat.tooltip.detailed.line1=用于生产末影接口中的流体
 #                                 en: Used to brew EnderIO fluids
-tile.block_weather_obelisk.name=?????
+tile.block_weather_obelisk.name=气象方尖碑
 #                           en: Weather Obelisk
-tile.block_weather_obelisk.tooltip.detailed.line1=??????
+tile.block_weather_obelisk.tooltip.detailed.line1=改变当前天气
 #                                             en: Changes the current weather
-tile.block_weather_obelisk.tooltip.detailed.line2=??????
+tile.block_weather_obelisk.tooltip.detailed.line2=需要大量能量
 #                                             en: Requires a lot of power and
-tile.block_weather_obelisk.tooltip.detailed.line3=?????
+tile.block_weather_obelisk.tooltip.detailed.line3=和催化物品
 #                                             en: a catalyst item
-tile.block_wireless_charger.name=?????
+tile.block_wireless_charger.name=无线充能器
 #                            en: Wireless Charger
-tile.block_wireless_charger.tooltip.detailed.line1=???????
+tile.block_wireless_charger.tooltip.detailed.line1=给附近玩家物品
 #                                              en: Charges items in nearby
-tile.block_wireless_charger.tooltip.detailed.line2=???????
+tile.block_wireless_charger.tooltip.detailed.line2=栏中的物品充能
 #                                              en: players inventories
 tile.block_xp_vacuum.name=
 #                     en: XP Vacuum
@@ -464,9 +464,9 @@ tile.block_xp_vacuum.tooltip.detailed.line2=
 #                                       en: them into adjacent tanks/conduits.
 tile.block_xp_vacuum.tooltip.detailed.line3=
 #                                       en: Needs to be activated with liquid XP.
-tile.block_zombie_generator.name=?????
+tile.block_zombie_generator.name=僵尸发电机
 #                            en: Zombie Generator
-tile.block_zombie_generator.tooltip.detailed.line1=???????
+tile.block_zombie_generator.tooltip.detailed.line1=消耗营养精华液
 #                                              en: Consumes Nutrient Distillation
-tile.block_zombie_generator.tooltip.detailed.line2=?????
+tile.block_zombie_generator.tooltip.detailed.line2=来产生能量
 #                                              en: to generate power

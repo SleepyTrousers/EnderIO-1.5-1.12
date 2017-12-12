@@ -24,19 +24,19 @@ enderio.chat.vat.dump.active=
 #                        en: Dumping failed, cannot put liquids into the output tank while the Vat is working
 enderio.chat.vat.dump.fail=
 #                      en: Dumping failed, output tank is not empty
-enderio.gui.alloy.mode.all=Pe?ení všeho
+enderio.gui.alloy.mode.all=PeÄenÃ­ vÅ¡eho
 #                      en: All Smelting
 enderio.gui.alloy.mode.alloy=Pouze slitiny
 #                        en: Alloys Only
 enderio.gui.alloy.mode.furnace=Pouze pec
 #                          en: Furnace Only
-enderio.gui.alloy.mode.heading=Mód pece
+enderio.gui.alloy.mode.heading=MÃ³d pece
 #                          en: Furnace Mode
 enderio.gui.buffer.in=
 #                 en: Max In:
 enderio.gui.buffer.out=
 #                  en: Max Out:
-enderio.gui.combustion_generator.coolantTank.empty=Chladi?
+enderio.gui.combustion_generator.coolantTank.empty=ChladiÄ
 #                                              en: Coolant
 enderio.gui.combustion_generator.coolantTank=
 #                                        en: Coolant: %s
@@ -60,7 +60,7 @@ enderio.gui.ranged.hideRange=
 #                        en: Hide Range
 enderio.gui.ranged.range=
 #                    en: Range: %s
-enderio.gui.ranged.showRange=Zobrazit vzdálenost
+enderio.gui.ranged.showRange=Zobrazit vzdÃ¡lenost
 #                        en: Show Range
 enderio.gui.stirling_generator.burnRate=
 #                                   en: Burn Rate: %s%%
@@ -72,7 +72,7 @@ enderio.gui.stirling_generator.upgrades=
 #                                   en: {0} gives {2}{1,number,#.#}x{3} efficiency
 enderio.gui.stirling_generator.upgradeslot=
 #                                      en: Upgrade slot
-enderio.gui.tank.tank=Nádr
+enderio.gui.tank.tank=NÃ¡drÅ¾
 #                 en: Tank
 enderio.gui.tank.void.mode.always.desc=
 #                                  en: Void slot accepts all items
@@ -102,7 +102,7 @@ enderio.gui.telepad.tank=
 #                    en: Reagent Tank
 enderio.gui.telepad.teleport=
 #                        en: Teleport!
-enderio.gui.trans.addChannel=P?idat kanál
+enderio.gui.trans.addChannel=PÅ™idat kanÃ¡l
 #                        en: Add Channel
 enderio.gui.trans.available=
 #                       en: Available
@@ -118,29 +118,29 @@ enderio.gui.trans.buffer.shared.maxIo=
 #                                 en: Max IO: %s
 enderio.gui.trans.buffer.shared=
 #                           en: Send/Receive Buffer
-enderio.gui.trans.channel.receive=P?ijímat
+enderio.gui.trans.channel.receive=PÅ™ijÃ­mat
 #                             en: Receive
-enderio.gui.trans.channel.send=Posílat
+enderio.gui.trans.channel.send=PosÃ­lat
 #                          en: Send
-enderio.gui.trans.deleteChannel=Smazat kanál
+enderio.gui.trans.deleteChannel=Smazat kanÃ¡l
 #                           en: Delete Channel
-enderio.gui.trans.privateChannel=Soukromı kanál
+enderio.gui.trans.privateChannel=SoukromÃ½ kanÃ¡l
 #                            en: Private Channel
-enderio.gui.trans.publicChannel=Ve?ejnı kanál
+enderio.gui.trans.publicChannel=VeÅ™ejnÃ½ kanÃ¡l
 #                           en: Public Channel
-enderio.gui.trans.receive=P?ijímat
+enderio.gui.trans.receive=PÅ™ijÃ­mat
 #                     en: Receive
-enderio.gui.trans.send=Posílat
+enderio.gui.trans.send=PosÃ­lat
 #                  en: Send
-enderio.gui.travel_accessable.private=Soukromé
+enderio.gui.travel_accessable.private=SoukromÃ©
 #                                 en: Private
 enderio.gui.travel_accessable.promp.login=Autorizace
 #                                     en: Authorise
-enderio.gui.travel_accessable.prompt=Pot?ebnı p?ístupovı kód
+enderio.gui.travel_accessable.prompt=PotÅ™ebnÃ½ pÅ™Ã­stupovÃ½ kÃ³d
 #                                en: Access Code Required
-enderio.gui.travel_accessable.protected=Chrán?né
+enderio.gui.travel_accessable.protected=ChrÃ¡nÄ›nÃ©
 #                                   en: Protected
-enderio.gui.travel_accessable.public=Ve?ejné
+enderio.gui.travel_accessable.public=VeÅ™ejnÃ©
 #                                en: Public
 enderio.gui.vacuum.header.chest=
 #                           en: Vacuum Chest
@@ -152,9 +152,9 @@ enderio.gui.vacuum.range=
 #                    en: Suction Strength
 enderio.gui.vat.dump=
 #                en: Dump Input Tank Into Output Tank
-enderio.gui.vat.inputTank=Vstupní nádr
+enderio.gui.vat.inputTank=VstupnÃ­ nÃ¡drÅ¾
 #                     en: Input Tank
-enderio.gui.vat.outputTank=Vıstupní nádr
+enderio.gui.vat.outputTank=VÃ½stupnÃ­ nÃ¡drÅ¾
 #                      en: Output Tank
 enderio.gui.vat.void=
 #                en: Void Output Tank
@@ -204,29 +204,29 @@ item.itemLocationPrintout.tooltip.detailed.line2=
 #                                            en: Used to add destinations to a Telepad
 tile.block_alloy_smelter.name=
 #                         en: Alloy Smelter
-tile.block_alloy_smelter.tooltip.detailed.line1=Pouita pro tvorbu EnderIO slitin
+tile.block_alloy_smelter.tooltip.detailed.line1=PouÅ¾ita pro tvorbu EnderIO slitin
 #                                           en: Used to create EnderIO alloys
-tile.block_alloy_smelter.tooltip.detailed.line2=M?e bıt také pouita jako napájená
+tile.block_alloy_smelter.tooltip.detailed.line2=MÅ¯Å¾e bÃ½t takÃ© pouÅ¾ita jako napÃ¡jenÃ¡
 #                                           en: Can also be used as a powered
 tile.block_alloy_smelter.tooltip.detailed.line3=pec
 #                                           en: furnace
-tile.block_alloy_smelter.tooltip.detailed.line4=Vylepši s kondenzátorama pro navıšení
+tile.block_alloy_smelter.tooltip.detailed.line4=VylepÅ¡i s kondenzÃ¡torama pro navÃ½Å¡enÃ­
 #                                           en: Upgrade with capacitors to increase
-tile.block_alloy_smelter.tooltip.detailed.line5=rychlosti a úloišt? energie
+tile.block_alloy_smelter.tooltip.detailed.line5=rychlosti a ÃºloÅ¾iÅ¡tÄ› energie
 #                                           en: speed and energy storage
-tile.block_attractor_obelisk.name=Obeliskovı atraktor
+tile.block_attractor_obelisk.name=ObeliskovÃ½ atraktor
 #                             en: Attractor Obelisk
-tile.block_attractor_obelisk.tooltip.detailed.line1=P?itahuje k sob? monstra
+tile.block_attractor_obelisk.tooltip.detailed.line1=PÅ™itahuje k sobÄ› monstra
 #                                               en: Draws mobs towards it
-tile.block_attractor_obelisk.tooltip.detailed.line2=Ur?i p?íšery efektem
+tile.block_attractor_obelisk.tooltip.detailed.line2=UrÄi pÅ™Ã­Å¡ery efektem
 #                                               en: Specify the mobs to effect
-tile.block_attractor_obelisk.tooltip.detailed.line3=poloením jejich duší
+tile.block_attractor_obelisk.tooltip.detailed.line3=poloÅ¾enÃ­m jejich duÅ¡Ã­
 #                                               en: by placing their souls
-tile.block_attractor_obelisk.tooltip.detailed.line4=k za?ízení
+tile.block_attractor_obelisk.tooltip.detailed.line4=k zaÅ™Ã­zenÃ­
 #                                               en: within the device
-tile.block_aversion_obelisk.name=Obeliskovı odpor
+tile.block_aversion_obelisk.name=ObeliskovÃ½ odpor
 #                            en: Aversion Obelisk
-tile.block_aversion_obelisk.tooltip.detailed.line1=Zabrání rod?ní monster
+tile.block_aversion_obelisk.tooltip.detailed.line1=ZabrÃ¡nÃ­ rodÄ›nÃ­ monster
 #                                              en: Prevents mobs from spawning
 tile.block_aversion_obelisk.tooltip.detailed.line2=
 #                                              en: within its area of effect
@@ -238,23 +238,23 @@ tile.block_buffer.omni.name=
 #                       en: Omni Buffer
 tile.block_buffer.power.name=
 #                        en: Power Buffer
-tile.block_combustion_generator.name=Spalovací generátor
+tile.block_combustion_generator.name=SpalovacÃ­ generÃ¡tor
 #                                en: Combustion Generator
-tile.block_combustion_generator.tooltip.detailed.line1=Spaluje tekuté palivo pro generování energie
+tile.block_combustion_generator.tooltip.detailed.line1=Spaluje tekutÃ© palivo pro generovÃ¡nÃ­ energie
 #                                                  en: Burns liquid fuel to generate power
-tile.block_combustion_generator.tooltip.detailed.line2=Pot?ebuje chlazení (nap?. vodu)
+tile.block_combustion_generator.tooltip.detailed.line2=PotÅ™ebuje chlazenÃ­ (napÅ™. vodu)
 #                                                  en: Requires a coolant (e.g. water)
-tile.block_combustion_generator.tooltip.detailed.line3=Vıstup se odvíjí od typu paliva
+tile.block_combustion_generator.tooltip.detailed.line3=VÃ½stup se odvÃ­jÃ­ od typu paliva
 #                                                  en: Output dependent on fuel
-tile.block_crafter.name=Vyráb??
+tile.block_crafter.name=VyrÃ¡bÄ›Ä
 #                   en: Crafter
-tile.block_crafter.tooltip.detailed.line1=Napájenı auto-vyráb??
+tile.block_crafter.tooltip.detailed.line1=NapÃ¡jenÃ½ auto-vyrÃ¡bÄ›Ä
 #                                     en: A powered auto-crafter
-tile.block_crafter.tooltip.detailed.line2=Spot?ebuje energii za operaci
+tile.block_crafter.tooltip.detailed.line2=SpotÅ™ebuje energii za operaci
 #                                     en: Consumes power per operation
-tile.block_crafter.tooltip.detailed.line3=M?e bıt vylepšen pro navıšení rychlosti
+tile.block_crafter.tooltip.detailed.line3=MÅ¯Å¾e bÃ½t vylepÅ¡en pro navÃ½Å¡enÃ­ rychlosti
 #                                     en: Can be upgraded to increase speed
-tile.block_crafter.tooltip.detailed.line4=a úloišt? energie s kondenzátory
+tile.block_crafter.tooltip.detailed.line4=a ÃºloÅ¾iÅ¡tÄ› energie s kondenzÃ¡tory
 #                                     en: and energy storage with capacitors
 tile.block_dialing_device.name=
 #                          en: Dialing Device
@@ -264,35 +264,35 @@ tile.block_dialing_device.tooltip.detailed.line2=
 #                                            en: Stores and sets destinations.
 tile.block_enchanter.name=
 #                     en: Enchanter
-tile.block_enchanter.tooltip.detailed.line1=Vyuívá XP pro zkombinování p?edm?t?
+tile.block_enchanter.tooltip.detailed.line1=VyuÅ¾Ã­vÃ¡ XP pro zkombinovÃ¡nÃ­ pÅ™edmÄ›tÅ¯
 #                                       en: Uses XP to combine items
-tile.block_enchanter.tooltip.detailed.line2=vytvo?ení o?arovanıch knih
+tile.block_enchanter.tooltip.detailed.line2=vytvoÅ™enÃ­ oÄarovanÃ½ch knih
 #                                       en: and a book and quill to
 tile.block_enchanter.tooltip.detailed.line3=
 #                                       en: created enchanted books
-tile.block_experience_obelisk.name=Obelisk zkušeností
+tile.block_experience_obelisk.name=Obelisk zkuÅ¡enostÃ­
 #                              en: Experience Obelisk
-tile.block_experience_obelisk.tooltip.detailed.line1=P?i poloení na tekutinovou nádr
+tile.block_experience_obelisk.tooltip.detailed.line1=PÅ™i poloÅ¾enÃ­ na tekutinovou nÃ¡drÅ¾
 #                                                en: Stores Experience
-tile.block_experience_obelisk.tooltip.detailed.line2=Klikni pravım tla?ítkem pro pouití uloenıch tekutıch XP
+tile.block_experience_obelisk.tooltip.detailed.line2=Klikni pravÃ½m tlaÄÃ­tkem pro pouÅ¾itÃ­ uloÅ¾enÃ½ch tekutÃ½ch XP
 #                                                en: Can output liquid XP to
-tile.block_experience_obelisk.tooltip.detailed.line3=Klikni se Shiftem pravım tla?ítkem s prázdnou rukou
+tile.block_experience_obelisk.tooltip.detailed.line3=Klikni se Shiftem pravÃ½m tlaÄÃ­tkem s prÃ¡zdnou rukou
 #                                                en: adjacent tanks
-tile.block_farm_station.name=Farmá?ská stanice
+tile.block_farm_station.name=FarmÃ¡Å™skÃ¡ stanice
 #                        en: Farming Station
-tile.block_farm_station.tooltip.detailed.line1=Sází a sklízí rostliny
+tile.block_farm_station.tooltip.detailed.line1=SÃ¡zÃ­ a sklÃ­zÃ­ rostliny
 #                                          en: Plants and harvests crops
-tile.block_farm_station.tooltip.detailed.line2=Pot?ebuje energii a
+tile.block_farm_station.tooltip.detailed.line2=PotÅ™ebuje energii a
 #                                          en: Requires power and
-tile.block_farm_station.tooltip.detailed.line3=p?íslušné nástroje (motyka, sekera)
+tile.block_farm_station.tooltip.detailed.line3=pÅ™Ã­sluÅ¡nÃ© nÃ¡stroje (motyka, sekera)
 #                                          en: appropriate tools (hoe, axe)
-tile.block_farm_station.tooltip.detailed.line4=Ko?ist / št?stí se aplikuje na
+tile.block_farm_station.tooltip.detailed.line4=KoÅ™ist / Å¡tÄ›stÃ­ se aplikuje na
 #                                          en: Looting / fortune on tools
-tile.block_farm_station.tooltip.detailed.line5=nástroje p?i sklízení
+tile.block_farm_station.tooltip.detailed.line5=nÃ¡stroje pÅ™i sklÃ­zenÃ­
 #                                          en: applied when harvesting
-tile.block_farm_station.tooltip.detailed.line6=Vylepši s kondenzátorama pro navıšení
+tile.block_farm_station.tooltip.detailed.line6=VylepÅ¡i s kondenzÃ¡torama pro navÃ½Å¡enÃ­
 #                                          en: Upgrade with capacitors to increase
-tile.block_farm_station.tooltip.detailed.line7=dosahu, vylepší také energii, kterou vyuívá
+tile.block_farm_station.tooltip.detailed.line7=dosahu, vylepÅ¡Ã­ takÃ© energii, kterou vyuÅ¾Ã­vÃ¡
 #                                          en: range, upgrade also increases power use
 tile.block_inhibitor_obelisk.name=
 #                             en: Inhibitor Obelisk
@@ -300,29 +300,29 @@ tile.block_inhibitor_obelisk.tooltip.detailed.line1=
 #                                               en: Prevents teleporting within
 tile.block_inhibitor_obelisk.tooltip.detailed.line2=
 #                                               en: its area of effect
-tile.block_killer_joe.name=Zabiják Joe
+tile.block_killer_joe.name=ZabijÃ¡k Joe
 #                      en: Killer Joe
-tile.block_killer_joe.tooltip.detailed.line1=Úto?í na monstra poblí kdy
+tile.block_killer_joe.tooltip.detailed.line1=ÃštoÄÃ­ na monstra poblÃ­Å¾ kdyÅ¾
 #                                        en: Attacks nearby creatures when
-tile.block_killer_joe.tooltip.detailed.line2=je zásobenı me?em a
+tile.block_killer_joe.tooltip.detailed.line2=je zÃ¡sobenÃ½ meÄem a
 #                                        en: supplied with a sword and
-tile.block_killer_joe.tooltip.detailed.line3=Destilovanımi ivinami
+tile.block_killer_joe.tooltip.detailed.line3=DestilovanÃ½mi Å¾ivinami
 #                                        en: Nutrient Distillation
-tile.block_painter.name=Barvící stroj
+tile.block_painter.name=BarvÃ­cÃ­ stroj
 #                   en: Painting Machine
-tile.block_powered_spawner.empty.tooltip.detailed.line1=Zkombinuj se zni?enım
+tile.block_powered_spawner.empty.tooltip.detailed.line1=Zkombinuj se zniÄenÃ½m
 #                                                   en: Combine with a broken
-tile.block_powered_spawner.empty.tooltip.detailed.line2=spawnerem v kovadlin?
+tile.block_powered_spawner.empty.tooltip.detailed.line2=spawnerem v kovadlinÄ›
 #                                                   en: spawner in an anvil
-tile.block_powered_spawner.name=Pohán?nı spawner
+tile.block_powered_spawner.name=PohÃ¡nÄ›nÃ½ spawner
 #                           en: Powered Spawner
-tile.block_powered_spawner.tooltip.detailed.line1=Zásobuj energií pro
+tile.block_powered_spawner.tooltip.detailed.line1=ZÃ¡sobuj energiÃ­ pro
 #                                             en: Supply with power to
 tile.block_powered_spawner.tooltip.detailed.line2=aktivaci
 #                                             en: activate
-tile.block_powered_spawner.tooltip.detailed.line3=Vylepši s kondenzátorama pro navıšení
+tile.block_powered_spawner.tooltip.detailed.line3=VylepÅ¡i s kondenzÃ¡torama pro navÃ½Å¡enÃ­
 #                                             en: Upgrade with capacitors to increase
-tile.block_powered_spawner.tooltip.detailed.line4=rychlosti a úloišt? energie
+tile.block_powered_spawner.tooltip.detailed.line4=rychlosti a ÃºloÅ¾iÅ¡tÄ› energie
 #                                             en: speed and energy storage
 tile.block_relocator_obelisk.name=
 #                             en: Relocator Obelisk
@@ -330,49 +330,49 @@ tile.block_relocator_obelisk.tooltip.detailed.line1=
 #                                               en: Relocates mobs that spawn
 tile.block_relocator_obelisk.tooltip.detailed.line2=
 #                                               en: within its area of effect
-tile.block_reservoir.name=Nádr
+tile.block_reservoir.name=NÃ¡drÅ¾
 #                     en: Reservoir
-tile.block_reservoir.tooltip.detailed.line1=Sloená p?i poloení 2x2x1
+tile.block_reservoir.tooltip.detailed.line1=SloÅ¾enÃ¡ pÅ™i poloÅ¾enÃ­ 2x2x1
 #                                       en: When connected with other Reservoirs:
-tile.block_reservoir.tooltip.detailed.line2=P?idej dva kbelíky vody pro
+tile.block_reservoir.tooltip.detailed.line2=PÅ™idej dva kbelÃ­ky vody pro
 #                                       en: Add two buckets of water for
-tile.block_reservoir.tooltip.detailed.line3=nekone?nı zdroj vody
+tile.block_reservoir.tooltip.detailed.line3=nekoneÄnÃ½ zdroj vody
 #                                       en: an infinite water source.
-tile.block_reservoir.tooltip.detailed.line4=Produkuje jeden kbelík za sekundu
+tile.block_reservoir.tooltip.detailed.line4=Produkuje jeden kbelÃ­k za sekundu
 #                                       en: Produces one bucket per second
-tile.block_reservoir.tooltip.detailed.line5=Klikni pravım tla?ítkem s klí?em
+tile.block_reservoir.tooltip.detailed.line5=Klikni pravÃ½m tlaÄÃ­tkem s klÃ­Äem
 #                                       en: R-Click with a wrench to
-tile.block_reservoir.tooltip.detailed.line6=pro povolení auto-vıstupu
+tile.block_reservoir.tooltip.detailed.line6=pro povolenÃ­ auto-vÃ½stupu
 #                                       en: enable auto-output
 tile.block_sag_mill.name=
 #                    en: SAG Mill
-tile.block_sag_mill.tooltip.detailed.line1=Drtí rudy a jiné p?edm?ty
+tile.block_sag_mill.tooltip.detailed.line1=DrtÃ­ rudy a jinÃ© pÅ™edmÄ›ty
 #                                      en: Grinds ore and other items
-tile.block_sag_mill.tooltip.detailed.line2=P?idej drtící ?epele pro zvıšení vıkonu
+tile.block_sag_mill.tooltip.detailed.line2=PÅ™idej drtÃ­cÃ­ Äepele pro zvÃ½Å¡enÃ­ vÃ½konu
 #                                      en: Add grinding balls to increase output
 tile.block_sag_mill.tooltip.detailed.line3=a efektivity
 #                                      en: and efficiency
-tile.block_sag_mill.tooltip.detailed.line4=Vylepši s kondenzátorama pro navıšení
+tile.block_sag_mill.tooltip.detailed.line4=VylepÅ¡i s kondenzÃ¡torama pro navÃ½Å¡enÃ­
 #                                      en: Upgrade with capacitors to increase
-tile.block_sag_mill.tooltip.detailed.line5=rychlosti a úloišt? energie
+tile.block_sag_mill.tooltip.detailed.line5=rychlosti a ÃºloÅ¾iÅ¡tÄ› energie
 #                                      en: speed and energy storage
 tile.block_sag_mill.tooltipPrefix=Obsahuje
 #                             en: Contains
 tile.block_slice_and_splice.name=
 #                            en: Slice'N'Splice
-tile.block_slice_and_splice.tooltip.detailed.line1=Tento šikovnı robot
+tile.block_slice_and_splice.tooltip.detailed.line1=Tento Å¡ikovnÃ½ robot
 #                                              en: Slices heads and splices in
-tile.block_slice_and_splice.tooltip.detailed.line2=nabízí všechny typy uite?nıch v?cí
+tile.block_slice_and_splice.tooltip.detailed.line2=nabÃ­zÃ­ vÅ¡echny typy uÅ¾iteÄnÃ½ch vÄ›cÃ­
 #                                              en: all sorts of useful things
-tile.block_solar_panel.advanced.name=Pokro?ilı fotovoltaickı ?lánek
+tile.block_solar_panel.advanced.name=PokroÄilÃ½ fotovoltaickÃ½ ÄlÃ¡nek
 #                                en: Advanced Photovoltaic Cell
-tile.block_solar_panel.name=Fotovoltaickı ?lánek
+tile.block_solar_panel.name=FotovoltaickÃ½ ÄlÃ¡nek
 #                       en: Photovoltaic Cell
 tile.block_solar_panel.tooltip.common.line1=
 #                                       en: Solar Power!
-tile.block_solar_panel.tooltip.detailed.line1=P?es den vyrábí energii
+tile.block_solar_panel.tooltip.detailed.line1=PÅ™es den vyrÃ¡bÃ­ energii
 #                                         en: Produces power during daylight hours
-tile.block_solar_panel.tooltip.detailed.line2=Musí mít p?ímı p?ístup k
+tile.block_solar_panel.tooltip.detailed.line2=MusÃ­ mÃ­t pÅ™Ã­mÃ½ pÅ™Ã­stup k
 #                                         en: Must have a clear line of sight to
 tile.block_solar_panel.tooltip.detailed.line3=obloze
 #                                         en: the sky
@@ -380,27 +380,27 @@ tile.block_solar_panel.vibrant.name=
 #                               en: Vibrant Photovoltaic Cell
 tile.block_soul_binder.name=
 #                       en: Soul Binder
-tile.block_soul_binder.tooltip.detailed.line1=Za?ízení pro p?evedení typu
+tile.block_soul_binder.tooltip.detailed.line1=ZaÅ™Ã­zenÃ­ pro pÅ™evedenÃ­ typu
 #                                         en: Used to convert the type of
-tile.block_soul_binder.tooltip.detailed.line2=zni?eného spawneru
+tile.block_soul_binder.tooltip.detailed.line2=zniÄenÃ©ho spawneru
 #                                         en: a broken spawner
-tile.block_stirling_generator.name=Stirling?v generátor
+tile.block_stirling_generator.name=StirlingÅ¯v generÃ¡tor
 #                              en: Stirling Generator
-tile.block_stirling_generator.tooltip.detailed.line1=Spaluje pevné palivo pro vırobu energie
+tile.block_stirling_generator.tooltip.detailed.line1=Spaluje pevnÃ© palivo pro vÃ½robu energie
 #                                                en: Burns solid fuel to generate power
-tile.block_stirling_generator.tooltip.detailed.line2=M?e bıt vylepšenı pro zvıšení vıkonu
+tile.block_stirling_generator.tooltip.detailed.line2=MÅ¯Å¾e bÃ½t vylepÅ¡enÃ½ pro zvÃ½Å¡enÃ­ vÃ½konu
 #                                                en: Can be upgraded to increase output
-tile.block_stirling_generator.tooltip.detailed.line3=a efektivity s kondenzátorama
+tile.block_stirling_generator.tooltip.detailed.line3=a efektivity s kondenzÃ¡torama
 #                                                en: and efficiency with capacitors
-tile.block_tank.advanced.name=Tlaková tekutinová nádr
+tile.block_tank.advanced.name=TlakovÃ¡ tekutinovÃ¡ nÃ¡drÅ¾
 #                         en: Pressurized Fluid Tank
-tile.block_tank.name=Tekutinová nádr
+tile.block_tank.name=TekutinovÃ¡ nÃ¡drÅ¾
 #                en: Fluid Tank
-tile.block_tank.tooltip.detailed.line1=P?enosná tekutinová nádr
+tile.block_tank.tooltip.detailed.line1=PÅ™enosnÃ¡ tekutinovÃ¡ nÃ¡drÅ¾
 #                                  en: Portable fluid tank
-tile.block_tank.tooltip.detailed.line2=M?e bıt pouito na vyprázdn?ní a
+tile.block_tank.tooltip.detailed.line2=MÅ¯Å¾e bÃ½t pouÅ¾ito na vyprÃ¡zdnÄ›nÃ­ a
 #                                  en: Can be used to empty and
-tile.block_tank.tooltip.detailed.line3=napln?ní tekutinovıch nádob
+tile.block_tank.tooltip.detailed.line3=naplnÄ›nÃ­ tekutinovÃ½ch nÃ¡dob
 #                                  en: fill fluid containers
 tile.block_tele_pad.name=
 #                    en: Telepad Block
@@ -410,37 +410,37 @@ tile.block_tele_pad.tooltip.detailed.line2=
 #                                      en: to a specific position and dimension.
 tile.block_tele_pad.tooltip.detailed.line3=
 #                                      en: Must be placed in a 3x1x3 multiblock.
-tile.block_transceiver.name=Dimenzionální vysíla?
+tile.block_transceiver.name=DimenzionÃ¡lnÃ­ vysÃ­laÄ
 #                       en: Dimensional Transceiver
-tile.block_transceiver.tooltip.detailed.line1=P?esouvá p?edm?ty, tekutiny a energii
+tile.block_transceiver.tooltip.detailed.line1=PÅ™esouvÃ¡ pÅ™edmÄ›ty, tekutiny a energii
 #                                         en: Transports items, fluids and power
-tile.block_transceiver.tooltip.detailed.line2=bezdrátov? na jakoukoliv vzdálenost a
+tile.block_transceiver.tooltip.detailed.line2=bezdrÃ¡tovÄ› na jakoukoliv vzdÃ¡lenost a
 #                                         en: wirelessly across any distance and
 tile.block_transceiver.tooltip.detailed.line3=mezi dimenzemi
 #                                         en: between dimensions
-tile.block_travel_anchor.name=Cestovní kotva
+tile.block_travel_anchor.name=CestovnÃ­ kotva
 #                         en: Travel Anchor
-tile.block_travel_anchor.tooltip.detailed.line1=Umo?uje teleportaci mezi kotvami
+tile.block_travel_anchor.tooltip.detailed.line1=UmoÅ¾Åˆuje teleportaci mezi kotvami
 #                                           en: Allows teleportation between anchors
-tile.block_travel_anchor.tooltip.detailed.line2=St?j na jedné kotv?, dívej se na
+tile.block_travel_anchor.tooltip.detailed.line2=StÅ¯j na jednÃ© kotvÄ›, dÃ­vej se na
 #                                           en: Stand on one Anchor, look at
-tile.block_travel_anchor.tooltip.detailed.line3=další a vysko? pro cestování
+tile.block_travel_anchor.tooltip.detailed.line3=dalÅ¡Ã­ a vyskoÄ pro cestovÃ¡nÃ­
 #                                           en: another and jump to travel
-tile.block_travel_anchor.tooltip.detailed.line4=M?e bıt také pouita s ty?í
+tile.block_travel_anchor.tooltip.detailed.line4=MÅ¯Å¾e bÃ½t takÃ© pouÅ¾ita s tyÄÃ­
 #                                           en: Can also be used with the Staff
-tile.block_travel_anchor.tooltip.detailed.line5=cestování
+tile.block_travel_anchor.tooltip.detailed.line5=cestovÃ¡nÃ­
 #                                           en: of Travel
-tile.block_travel_anchor.tooltip.detailed.line6=M?e bıt obarvena v barvicím stroji
+tile.block_travel_anchor.tooltip.detailed.line6=MÅ¯Å¾e bÃ½t obarvena v barvicÃ­m stroji
 #                                           en: Can be painted in the Painting Machine
 tile.block_vacuum_chest.name=
 #                        en: Vacuum Chest
-tile.block_vacuum_chest.tooltip.detailed.line1=Sbírá p?edm?ty poblí
+tile.block_vacuum_chest.tooltip.detailed.line1=SbÃ­rÃ¡ pÅ™edmÄ›ty poblÃ­Å¾
 #                                          en: Pulls nearby items
-tile.block_vacuum_chest.tooltip.detailed.line2=do jejího inventá?e
+tile.block_vacuum_chest.tooltip.detailed.line2=do jejÃ­ho inventÃ¡Å™e
 #                                          en: into its inventory
-tile.block_vat.name=Ká?
+tile.block_vat.name=KÃ¡Ä
 #               en: The Vat
-tile.block_vat.tooltip.detailed.line1=Pouita k va?ení EnderIO tekutin
+tile.block_vat.tooltip.detailed.line1=PouÅ¾ita k vaÅ™enÃ­ EnderIO tekutin
 #                                 en: Used to brew EnderIO fluids
 tile.block_weather_obelisk.name=
 #                           en: Weather Obelisk
@@ -450,11 +450,11 @@ tile.block_weather_obelisk.tooltip.detailed.line2=
 #                                             en: Requires a lot of power and
 tile.block_weather_obelisk.tooltip.detailed.line3=
 #                                             en: a catalyst item
-tile.block_wireless_charger.name=Bezdrátovı nabíje?
+tile.block_wireless_charger.name=BezdrÃ¡tovÃ½ nabÃ­jeÄ
 #                            en: Wireless Charger
-tile.block_wireless_charger.tooltip.detailed.line1=Nabíjí p?edm?ty v inventá?ích
+tile.block_wireless_charger.tooltip.detailed.line1=NabÃ­jÃ­ pÅ™edmÄ›ty v inventÃ¡Å™Ã­ch
 #                                              en: Charges items in nearby
-tile.block_wireless_charger.tooltip.detailed.line2=hrá??, kte?í jsou poblí
+tile.block_wireless_charger.tooltip.detailed.line2=hrÃ¡ÄÅ¯, kteÅ™Ã­ jsou poblÃ­Å¾
 #                                              en: players inventories
 tile.block_xp_vacuum.name=
 #                     en: XP Vacuum
@@ -464,9 +464,9 @@ tile.block_xp_vacuum.tooltip.detailed.line2=
 #                                       en: them into adjacent tanks/conduits.
 tile.block_xp_vacuum.tooltip.detailed.line3=
 #                                       en: Needs to be activated with liquid XP.
-tile.block_zombie_generator.name=Zombie generátor
+tile.block_zombie_generator.name=Zombie generÃ¡tor
 #                            en: Zombie Generator
-tile.block_zombie_generator.tooltip.detailed.line1=Konzumuje Destilované ivity
+tile.block_zombie_generator.tooltip.detailed.line1=Konzumuje DestilovanÃ© Å¾ivity
 #                                              en: Consumes Nutrient Distillation
-tile.block_zombie_generator.tooltip.detailed.line2=pro generování energie
+tile.block_zombie_generator.tooltip.detailed.line2=pro generovÃ¡nÃ­ energie
 #                                              en: to generate power
