@@ -165,9 +165,6 @@ tile.block_killer_joe.tooltip.detailed.line1=Attacks nearby creatures when
 tile.block_killer_joe.tooltip.detailed.line2=supplied with a sword and
 tile.block_killer_joe.tooltip.detailed.line3=Nutrient Distillation
 
-enderio.block_killer_joe.giveXp.tooltip=Take XP
-enderio.block_killer_joe.giveXp10.tooltip=Take 10 Levels of XP
-
 ;Obelisks
 
 tile.block_attractor_obelisk.name=Attractor Obelisk
