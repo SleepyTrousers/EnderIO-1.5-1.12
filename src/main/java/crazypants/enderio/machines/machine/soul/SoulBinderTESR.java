@@ -59,6 +59,7 @@ public class SoulBinderTESR extends ManagedTESR<TileSoulBinder> {
     GL11.glEnable(GL11.GL_LIGHTING); // sic!
   }
 
+  @SuppressWarnings("null")
   public static void renderBlockModel(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, boolean translateToOrigin, boolean relight) {
     VertexBuffer wr = Tessellator.getInstance().getBuffer();
     wr.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
@@ -94,6 +95,7 @@ public class SoulBinderTESR extends ManagedTESR<TileSoulBinder> {
 
     private final Map<BlockPos, Pair<Integer, Integer>> light = new HashMap<BlockPos, Pair<Integer, Integer>>();
 
+    @SuppressWarnings("null")
     public WorldWrapper(@Nonnull World world, @Nonnull BlockPos pos) {
       super(world);
 

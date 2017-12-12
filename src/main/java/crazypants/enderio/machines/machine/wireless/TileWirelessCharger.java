@@ -6,13 +6,15 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.NBTAction;
 
 import crazypants.enderio.base.TileEntityEio;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.power.wireless.IWirelessCharger;
 import crazypants.enderio.base.power.wireless.WirelessChargerController;
+import crazypants.enderio.machines.capacitor.CapacitorKey;
+import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
@@ -24,12 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
 
 @Storable
-public class TileWirelessCharger extends TileEntityEio
-    implements ILegacyPowerReceiver, IWirelessCharger, IPaintable.IPaintableTileEntity {
-
-  public static final int MAX_ENERGY_STORED = 200000;
-  public static final int MAX_ENERGY_IN = 10000;
-  public static final int MAX_ENERGY_OUT = 10000;
+public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerReceiver, IWirelessCharger, IPaintable.IPaintableTileEntity {
 
   @Store
   int storedEnergyRF;
@@ -61,7 +58,7 @@ public class TileWirelessCharger extends TileEntityEio
     }
 
     if ((lastPowerUpdate == -1) || (lastPowerUpdate == 0 && storedEnergyRF > 0) || (lastPowerUpdate > 0 && storedEnergyRF == 0)
-        || (lastPowerUpdate != storedEnergyRF && shouldDoWorkThisTick(20))) {
+        || (lastPowerUpdate != storedEnergyRF && shouldDoWorkThisTick(3 * 60 * 20))) {
       lastPowerUpdate = storedEnergyRF;
       PacketHandler.sendToAllAround(new PacketStoredEnergy(this), this);
     }
@@ -71,7 +68,7 @@ public class TileWirelessCharger extends TileEntityEio
   @Override
   public boolean chargeItems(NonNullList<ItemStack> items) {
     boolean chargedItem = false;
-    int available = Math.min(MAX_ENERGY_OUT, storedEnergyRF);
+    int available = Math.min(CapacitorKey.WIRELESS_POWER_OUTPUT.get(DefaultCapacitorData.BASIC_CAPACITOR), storedEnergyRF);
     for (int i = 0, end = items.size(); i < end && available > 0; i++) {
       ItemStack item = items.get(i);
       if (!item.isEmpty()) {
@@ -96,7 +93,7 @@ public class TileWirelessCharger extends TileEntityEio
 
   @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {
-    return MAX_ENERGY_IN;
+    return CapacitorKey.WIRELESS_POWER_INTAKE.get(DefaultCapacitorData.BASIC_CAPACITOR);
   }
 
   @Override
@@ -106,7 +103,7 @@ public class TileWirelessCharger extends TileEntityEio
 
   @Override
   public int getMaxEnergyStored() {
-    return MAX_ENERGY_STORED;
+    return CapacitorKey.WIRELESS_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR);
   }
 
   @Override
@@ -135,7 +132,7 @@ public class TileWirelessCharger extends TileEntityEio
   }
 
   @Override
-  public World getworld() {
+  public @Nonnull World getworld() {
     return getWorld();
   }
 

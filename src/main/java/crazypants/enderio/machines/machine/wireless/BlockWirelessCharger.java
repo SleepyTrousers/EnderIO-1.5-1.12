@@ -7,7 +7,6 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PainterUtil2;
 import crazypants.enderio.base.paint.render.PaintHelper;
@@ -28,7 +27,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -42,9 +40,6 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
     implements IResourceTooltipProvider, ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
 
   public static BlockWirelessCharger create(@Nonnull IModObject modObject) {
-
-    PacketHandler.INSTANCE.registerMessage(PacketStoredEnergy.class, PacketStoredEnergy.class, PacketHandler.nextID(), Side.CLIENT);
-
     BlockWirelessCharger res = new BlockWirelessCharger(modObject);
     res.init();
     return res;
@@ -53,15 +48,11 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
   private BlockWirelessCharger(@Nonnull IModObject modObject) {
     super(modObject, TileWirelessCharger.class);
     setLightOpacity(1);
-    initDefaultState();
-  }
-
-  private void initDefaultState() {
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
-    registerInSmartModelAttacher();
   }
 
-  private void registerInSmartModelAttacher() {
+  @Override
+  protected void init() {
     SmartModelAttacher.register(this);
   }
 
@@ -139,12 +130,10 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
   @Override
   public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
       @Nonnull ItemStack stack) {
-    if (!stack.isEmpty()) {
-      TileEntity te = world.getTileEntity(pos);
-      if (te instanceof TileWirelessCharger) {
-        ((TileWirelessCharger) te).readFromItemStack(stack);
-        ((TileWirelessCharger) te).setPaintSource(PainterUtil2.getSourceBlock(stack));
-      }
+    TileWirelessCharger te = getTileEntity(world, pos);
+    if (te != null) {
+      te.readFromItemStack(stack);
+      te.setPaintSource(PainterUtil2.getSourceBlock(stack));
     }
   }
 
@@ -217,6 +206,6 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
   @Override
   public void registerRenderers(@Nonnull IModObject modObject) {
     ClientUtil.registerDefaultItemRenderer(MachineObject.block_wireless_charger);
-  }
+  } // TODO: check if this is needed---smartmodelattacher should already take care of it...
 
 }
