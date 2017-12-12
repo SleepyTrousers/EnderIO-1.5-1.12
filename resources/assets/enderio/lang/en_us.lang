@@ -832,35 +832,12 @@ enderio.easteregg.piginabottle=Bacon in a Bottle
 ;
 ;
 ;//Machines
-;tile.blockStirlingGenerator.name=Stirling Generator
-;tile.blockStirlingGenerator.tooltip.detailed.line1=Burns solid fuel to generate power
-;tile.blockStirlingGenerator.tooltip.detailed.line2=Can be upgraded to increase output
-;tile.blockStirlingGenerator.tooltip.detailed.line3=and efficiency with capacitors
+
 ;
-;tile.blockReservoir.name=Reservoir
-;tile.blockReservoir.tooltip.detailed.line1=When connected with other Reservoirs:
-;tile.blockReservoir.tooltip.detailed.line2=Add two buckets of water for
-;tile.blockReservoir.tooltip.detailed.line3=an infinite water source.
-;tile.blockReservoir.tooltip.detailed.line4=Produces one bucket per second
-;tile.blockReservoir.tooltip.detailed.line5=R-Click with a wrench to
-;tile.blockReservoir.tooltip.detailed.line6=enable auto-output
+
 ;
-;tile.blockAlloySmelter.name=Alloy Smelter
-;tile.blockAlloySmelter.tooltip.detailed.line1=Used to create EnderIO alloys
-;tile.blockAlloySmelter.tooltip.detailed.line2=Can also be used as a powered
-;tile.blockAlloySmelter.tooltip.detailed.line3=furnace
-;tile.blockAlloySmelter.tooltip.detailed.line4=Upgrade with capacitors to increase
-;tile.blockAlloySmelter.tooltip.detailed.line5=speed and energy storage
 ;
-;tile.blockSolarPanel.name=Photovoltaic Cell
-;tile.blockSolarPanel.advanced.name=Advanced Photovoltaic Cell
-;tile.blockSolarPanel.vibrant.name=Vibrant Photovoltaic Cell
-;tile.blockSolarPanel.tooltip.common.line1=Solar Power!
-;tile.blockSolarPanel.tooltip.detailed.line1=Produces power during daylight hours
-;tile.blockSolarPanel.tooltip.detailed.line2=Must have a clear line of sight to
-;tile.blockSolarPanel.tooltip.detailed.line3=the sky
-;enderio.tooltip.efficiency=Efficiency
-;enderio.tooltip.sunlightBlocked=Sky Blocked!
+
 ;
 ;item.itemElectricLight.name=Powered Light
 ;item.itemElectricLight.tooltip.detailed.line1=Lights a large area when supplied with
@@ -917,26 +894,12 @@ enderio.easteregg.piginabottle=Bacon in a Bottle
 ;enderio.capbank.iodisplay.input=Input
 ;enderio.capbank.iodisplay.output=Output
 ;
-;tile.blockWirelessCharger.name=Wireless Charger
-;tile.blockWirelessCharger.tooltip.detailed.line1=Charges items in nearby
-;tile.blockWirelessCharger.tooltip.detailed.line2=players inventories
-;
-;tile.blockSagMill.name=SAG Mill
-;tile.blockSagMill.tooltip.detailed.line1=Grinds ore and other items
-;tile.blockSagMill.tooltip.detailed.line2=Add grinding balls to increase output
-;tile.blockSagMill.tooltip.detailed.line3=and efficiency
-;tile.blockSagMill.tooltip.detailed.line4=Upgrade with capacitors to increase
-;tile.blockSagMill.tooltip.detailed.line5=speed and energy storage
-;tile.blockSagMill.tooltipPrefix=Contains
 ;
 ;tile.blockHyperCube.name=Dimensional Transceiver (Deprecated)
 ;tile.blockHyperCube.tooltip.detailed.line1=Convert to new model by placing
 ;tile.blockHyperCube.tooltip.detailed.line2=in the crafting grid
 ;
-;tile.blockTransceiver.name=Dimensional Transceiver
-;tile.blockTransceiver.tooltip.detailed.line1=Transports items, fluids and power
-;tile.blockTransceiver.tooltip.detailed.line2=wirelessly across any distance and
-;tile.blockTransceiver.tooltip.detailed.line3=between dimensions
+
 ;
 ;tile.blockEnderRail.name=Ender Rail
 ;tile.blockEnderRail.tooltip.detailed.line1=Teleports minecarts when placed
@@ -976,77 +939,8 @@ enderio.easteregg.piginabottle=Bacon in a Bottle
 ;tile.blockGauge.tooltip.detailed.line1=Displays RF levels of adjacent
 ;tile.blockGauge.tooltip.detailed.line2=blocks.
 ;
-;tile.blockVat.name=The Vat
-;tile.blockVat.tooltip.detailed.line1=Used to brew EnderIO fluids
+
 ;
-;tile.blockEnchanter.name=Enchanter
-;tile.blockEnchanter.tooltip.detailed.line1=Uses XP to combine items
-;tile.blockEnchanter.tooltip.detailed.line2=and a book and quill to
-;tile.blockEnchanter.tooltip.detailed.line3=created enchanted books
-;
-;tile.blockCombustionGenerator.name=Combustion Generator
-;tile.blockCombustionGenerator.tooltip.detailed.line1=Burns liquid fuel to generate power
-;tile.blockCombustionGenerator.tooltip.detailed.line2=Requires a coolant (e.g. water)
-;tile.blockCombustionGenerator.tooltip.detailed.line3=Output dependent on fuel
-;
-;tile.blockZombieGenerator.name=Zombie Generator
-;tile.blockZombieGenerator.tooltip.detailed.line1=Consumes Nutrient Distillation
-;tile.blockZombieGenerator.tooltip.detailed.line2=to generate power
-;
-;tile.blockKillerJoe.name=Killer Joe
-;tile.blockKillerJoe.tooltip.detailed.line1=Attacks nearby creatures when
-;tile.blockKillerJoe.tooltip.detailed.line2=supplied with a sword and
-;tile.blockKillerJoe.tooltip.detailed.line3=Nutrient Distillation
-;
-;enderio.killerJoe.giveXp.tooltip=Take XP
-;enderio.killerJoe.giveXp10.tooltip=Take 10 Levels of XP
-;
-;tile.blockSliceAndSplice.name=Slice'N'Splice
-;tile.blockSliceAndSplice.tooltip.detailed.line1=Slices heads and splices in
-;tile.blockSliceAndSplice.tooltip.detailed.line2=all sorts of useful things
-;
-;tile.blockFarmStation.name=Farming Station
-;tile.blockFarmStation.tooltip.detailed.line1=Plants and harvests crops
-;tile.blockFarmStation.tooltip.detailed.line2=Requires power and
-;tile.blockFarmStation.tooltip.detailed.line3=appropriate tools (hoe, axe)
-;tile.blockFarmStation.tooltip.detailed.line4=Looting / fortune on tools
-;tile.blockFarmStation.tooltip.detailed.line5=applied when harvesting
-;tile.blockFarmStation.tooltip.detailed.line6=Upgrade with capacitors to increase
-;tile.blockFarmStation.tooltip.detailed.line7=range, upgrade also increases power use
-;
-;
-;tile.blockTank.name=Fluid Tank
-;tile.blockTank.advanced.name=Pressurized Fluid Tank
-;tile.blockTank.tooltip.detailed.line1=Portable fluid tank
-;tile.blockTank.tooltip.detailed.line2=Can be used to empty and
-;tile.blockTank.tooltip.detailed.line3=fill fluid containers
-;enderio.tooltip.none=None
-;enderio.tooltip.fluidStored=Fluid Stored
-;
-;
-;tile.blockCrafter.name=Crafter
-;tile.blockCrafter.tooltip.detailed.line1=A powered auto-crafter
-;tile.blockCrafter.tooltip.detailed.line2=Consumes power per operation
-;tile.blockCrafter.tooltip.detailed.line3=Can be upgraded to increase speed
-;tile.blockCrafter.tooltip.detailed.line4=and energy storage with capacitors
-;
-;tile.blockVacuumChest.name=Vacuum Chest
-;tile.blockVacuumChest.tooltip.detailed.line1=Pulls nearby items
-;tile.blockVacuumChest.tooltip.detailed.line2=into its inventory
-;
-;tile.blockPoweredSpawner.name=Powered Spawner
-;enderio.tile.blockPoweredSpawner.tooltip.none=None
-;// TODO 1.11: The following two need to be moved and renamed, too:
-;tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Combine with a broken
-;tile.blockPoweredSpawner.empty.tooltip.detailed.line2=spawner in an anvil
-;tile.blockPoweredSpawner.tooltip.detailed.line1=Supply with power to
-;tile.blockPoweredSpawner.tooltip.detailed.line2=activate
-;tile.blockPoweredSpawner.tooltip.detailed.line3=Upgrade with capacitors to increase
-;tile.blockPoweredSpawner.tooltip.detailed.line4=speed and energy storage
-;
-;tile.blockSoulBinder.name=Soul Binder
-;tile.blockSoulBinder.tooltip.detailed.line1=Used to convert the type of
-;tile.blockSoulBinder.tooltip.detailed.line2=a broken spawner
 ;
 ;tile.blockAttractor.name=Attractor Obelisk
 ;tile.blockAttractor.tooltip.detailed.line1=Draws mobs towards it
@@ -1054,32 +948,6 @@ enderio.easteregg.piginabottle=Bacon in a Bottle
 ;tile.blockAttractor.tooltip.detailed.line3=by placing their souls
 ;tile.blockAttractor.tooltip.detailed.line4=within the device
 ;
-;tile.blockSpawnGuard.name=Aversion Obelisk
-;tile.blockSpawnGuard.tooltip.detailed.line1=Prevents mobs from spawning
-;tile.blockSpawnGuard.tooltip.detailed.line2=within its area of effect
-;
-;tile.blockSpawnRelocator.name=Relocator Obelisk
-;tile.blockSpawnRelocator.tooltip.detailed.line1=Relocates mobs that spawn
-;tile.blockSpawnRelocator.tooltip.detailed.line2=within its area of effect
-;
-;tile.blockExperienceObelisk.name=Experience Obelisk
-;tile.blockExperienceObelisk.tooltip.detailed.line1=Stores Experience
-;tile.blockExperienceObelisk.tooltip.detailed.line2=Can output liquid XP to
-;tile.blockExperienceObelisk.tooltip.detailed.line3=adjacent tanks
-;
-;tile.blockWeatherObelisk.name=Weather Obelisk
-;tile.blockWeatherObelisk.tooltip.detailed.line1=Changes the current weather
-;tile.blockWeatherObelisk.tooltip.detailed.line2=Requires a lot of power and
-;tile.blockWeatherObelisk.tooltip.detailed.line3=a catalyst item
-;
-;tile.blockInhibitorObelisk.name=Inhibitor Obelisk
-;tile.blockInhibitorObelisk.tooltip.detailed.line1=Prevents teleporting within 
-;tile.blockInhibitorObelisk.tooltip.detailed.line2=its area of effect
-;
-;tile.blockBuffer.item.name=Item Buffer
-;tile.blockBuffer.power.name=Power Buffer
-;tile.blockBuffer.omni.name=Omni Buffer
-;tile.blockBuffer.creative.name=Creative Buffer
 ;
 ;tile.blockInventoryPanel.name=Inventory Panel
 ;tile.blockInventoryPanel.tooltip.basic.line1=Remote access and crafting
@@ -1147,47 +1015,6 @@ enderio.easteregg.piginabottle=Bacon in a Bottle
 ;enderio.gui.inventorySensor.control2=Stop when >=
 ;
 ;
-;//Blocks
-;
-;
-;
-;
-;//Travel
-;tile.blockTravelAnchor.name=Travel Anchor
-;tile.blockTravelAnchor.tooltip.detailed.line1=Allows teleportation between anchors
-;tile.blockTravelAnchor.tooltip.detailed.line2=Stand on one Anchor, look at
-;tile.blockTravelAnchor.tooltip.detailed.line3=another and jump to travel
-;tile.blockTravelAnchor.tooltip.detailed.line4=Can also be used with the Staff
-;tile.blockTravelAnchor.tooltip.detailed.line5=of Travel
-;tile.blockTravelAnchor.tooltip.detailed.line6=Can be painted in the Painting Machine
-;
-;enderio.blockTravelPlatform.invalidTarget=Destination is Obstructed
-;enderio.blockTravelPlatform.outOfRange=Destination out of range
-;
-;tile.blockTelePad.name=Telepad Block
-;tile.blockTelePad.tooltip.detailed.line1=Uses power to teleport entities
-;tile.blockTelePad.tooltip.detailed.line2=to a specific position and dimension.
-;tile.blockTelePad.tooltip.detailed.line3=Must be placed in a 3x1x3 multiblock.
-;
-;tile.blockDialingDevice.name=Dialing Device
-;tile.blockDialingDevice.tooltip.detailed.line1=Place near a Telepad 
-;tile.blockDialingDevice.tooltip.detailed.line2=Stores and sets destinations.
-;
-;
-;item.itemLocationPrintout.name=Location Printout
-;item.itemLocationPrintout.tooltip.detailed.line1=Created using the Coordinate Selector
-;item.itemLocationPrintout.tooltip.detailed.line2=Used to add destinations to a Telepad
-;item.itemLocationPrintout.chat.setTarget=Target set to
-;item.itemLocationPrintout.chat.addTarget=Added target
-;item.itemLocationPrintout.chat.noPaper=No Paper in Inventory
-;
-;
-;
-;
-;//Painter
-;tile.blockPainter.name=Painting Machine
-;
-;
 ;enderio.painter.tooltip.wasPainted=§oWhat did you think that would do?
 ;
 ;tile.blockPainter.tooltip.detailed.line1=Used to paint:
@@ -1199,9 +1026,7 @@ enderio.easteregg.piginabottle=Bacon in a Bottle
 ;
 ;//Items
 ;
-;
-;
-;
+
 ;
 ;item.itemSpawnEggEnderIO.name=Spawn
 ;
@@ -1281,18 +1106,7 @@ enderio.easteregg.piginabottle=Bacon in a Bottle
 ;enderio.gui.capBank.inputMode=Input
 ;enderio.gui.capBank.outputMode=Output
 ;
-;//Transceiver
-;
-;//Alloy Smelter
-;
-;//Vacuum chest
-;
-;//Vat
-;
-;//Combustion Gen
-;
-;//Stirling Gen
-;
+
 ;//Travel Blocks
 ;enderio.gui.travelAccessable.unauthorised=You are not allowed to access this block.
 ;enderio.gui.travelAccessable.skipLocked=Skipped locked anchor, use targeted teleport.
@@ -1509,15 +1323,6 @@ enderio.easteregg.piginabottle=Bacon in a Bottle
 ;
 ;
 ;
-;
-;
-;
-;
-;tile.blockXPVacuum.name=XP Vacuum
-;tile.blockXPVacuum.tooltip.detailed.line1=Pulls nearby XP orbs and pushes
-;tile.blockXPVacuum.tooltip.detailed.line2=them into adjacent tanks/conduits.
-;tile.blockXPVacuum.tooltip.detailed.line3=Needs to be activated with liquid XP.
-;
 ;tile.blockInventoryChest_tiny.name=Tiny Inventory System Storage
 ;tile.blockInventoryChest_small.name=Small Inventory System Storage
 ;tile.blockInventoryChest_medium.name=Medium Inventory System Storage
@@ -1528,10 +1333,7 @@ enderio.easteregg.piginabottle=Bacon in a Bottle
 ;tile.blockInventoryChest_warehouse.name=Inventory System Storage Warehouse
 ;tile.blockInventoryChest_warehouse13.name=Inventory System Storage Extended Warehouse
 ;
-;
-;
-;
-;
+
 ;fluid.electricalsteel=Molten Electrical Steel
 ;fluid.energeticalloy=Molten Energetic Alloy
 ;fluid.vibrantalloy=Molten Vibrant Alloy
