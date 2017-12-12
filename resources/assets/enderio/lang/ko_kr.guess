@@ -2,54 +2,988 @@
 #
 # Please wait until the en_us lang file has been completed before translating.
 #
+;# Types. smelting=
+#              en: Alloy Smelter Speed, intake=all machines max power input, buffer=all
+;# crushed=
+#      en: sag mill speed, cleancut=slice'n'splice speed, tight=soul binder speed, aa=painter
+;# green=
+#    en: Farming Station area, red=Stirling Generator power generation, mobby=spawner speedup,
+;# machines buffer size, crafting=
+#                             en: Crafter speed, area=all machines "area" attribute (e.g. farm),
+;//display string for Skeleton(type=
+#                               en: =1)
+;enderio.blockConduitBundle=??? ??
+#                       en: Conduit Bundle
+;enderio.capbank.change=
+#                   en: I/O
+;enderio.capbank.iodisplay.gain=
+#                           en: In
+;enderio.capbank.iodisplay.input=Input
+#                            en: Input
+;enderio.capbank.iodisplay.loss=
+#                           en: Out
+;enderio.capbank.iodisplay.output=Output
+#                             en: Output
+;enderio.capbank.iodisplay.stable=
+#                             en: I/O
+;enderio.capbank.maxIO=Max I/O
+#                  en: Max I/O
+;enderio.capbank.maxIn=Max Input
+#                  en: Max Input
+;enderio.capbank.maxOut=Max Output
+#                   en: Max Output
+;enderio.category.darksteelarmor=
+#                            en: Dark Steel Armor
+;enderio.category.tools=
+#                   en: Tools
+;enderio.config.capacitor.alloy_smelter_power_buffer=
+#                                                en: Alloy Smelter: Internal power buffer size (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.alloy_smelter_power_intake=
+#                                                en: Alloy Smelter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.alloy_smelter_power_use=
+#                                             en: Alloy Smelter: Power use per tick (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.buffer_power_buffer=
+#                                         en: Energy/Omni Buffer: Internal power buffer size (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.buffer_power_intake=
+#                                         en: Energy/Omni Buffer: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.crafter_power_buffer=
+#                                          en: Crafter: Internal power buffer size (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.crafter_power_intake=
+#                                          en: Crafter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.crafter_ticks=
+#                                   en: Crafter: Ticks per crafting operation (will be scaled by the used upgrade capacitor)
+;enderio.filterUpgradeAdvanced.name=?? ??? ??
+#                               en: Advanced Item Filter
+;enderio.filterUpgradeBasic.name=?? ??? ??
+#                            en: Basic Item Filter
+;enderio.filterUpgradeLimited.name=
+#                              en: Counting Item Filter
+;enderio.filterUpgradeSpecies.name=
+#                              en: Forestry Species Item Filter
+;enderio.fluid.millibucketsTick=mB/t
+#                           en: mB/t
+;enderio.gas.gasTick=Gas/t
+#                en: Gas/t
+;enderio.gui.available=
+#                  en: Available
+;enderio.gui.capBank.inputMode=Input
+#                          en: Input
+;enderio.gui.capBank.inputRs=Input Redstone Mode
+#                        en: Input Redstone Mode
+;enderio.gui.capBank.maxInput=Max Input
+#                         en: Max Input
+;enderio.gui.capBank.maxIo=Max I/O
+#                      en: Max I/O
+;enderio.gui.capBank.maxOutput=Max Output
+#                          en: Max Output
+;enderio.gui.capBank.outputMode=Output
+#                           en: Output
+;enderio.gui.capBank.outputRs=Output Redstone Mode
+#                         en: Output Redstone Mode
+;enderio.gui.conduit.button.clear=
+#                             en: Clear
+;enderio.gui.conduit.button.merge=
+#                             en: Merge
+;enderio.gui.conduit.button.show=
+#                            en: Show
+;enderio.gui.conduit.button.snap.tooltip=
+#                                    en: Optional|If no snapshot is set,|the inventory content will|be used as filter
+;enderio.gui.conduit.button.snap=
+#                            en: Snapshot
+;enderio.gui.conduit.fluid.autoExtract=Auto Extract
+#                                  en: Auto Extract
+;enderio.gui.conduit.fluid.blacklist=
+#                                en: Blacklist
+;enderio.gui.conduit.fluid.filter=Filter
+#                             en: Filter
+;enderio.gui.conduit.fluid.whitelist=
+#                                en: Whitelist
+;enderio.gui.conduit.gas.autoExtract=Auto Extract
+#                                en: Auto Extract
+;enderio.gui.conduit.ioMode=Mode
+#                       en: Mode
+;enderio.gui.conduit.item.blacklist=
+#                               en: Blacklist
+;enderio.gui.conduit.item.channel=Channel
+#                             en: Channel
+;enderio.gui.conduit.item.damage.damage_00_00=
+#                                         en: Not Damaged
+;enderio.gui.conduit.item.damage.damage_00_25=
+#                                         en: Up to 25% Damaged
+;enderio.gui.conduit.item.damage.damage_00_50=
+#                                         en: Up to 50% Damaged
+;enderio.gui.conduit.item.damage.damage_00_75=
+#                                         en: Up to 75% Damaged
+;enderio.gui.conduit.item.damage.damage_01_00=
+#                                         en: Damaged
+;enderio.gui.conduit.item.damage.damage_25_00=
+#                                         en: More than 25% Damaged
+;enderio.gui.conduit.item.damage.damage_50_00=
+#                                         en: More than 50% Damaged
+;enderio.gui.conduit.item.damage.damage_75_00=
+#                                         en: More than 75% Damaged
+;enderio.gui.conduit.item.damage.damage_not=
+#                                       en: Cannot be Damaged
+;enderio.gui.conduit.item.damage.damage_yes=
+#                                       en: Can be Damaged
+;enderio.gui.conduit.item.damage.disabled=
+#                                     en: Ignore Damage
+;enderio.gui.conduit.item.extractionFilter=Extract
+#                                      en: Extract
+;enderio.gui.conduit.item.filterupgrade=
+#                                   en: Insert Item Filter
+;enderio.gui.conduit.item.functionupgrade.line1=
+#                                           en: Possible function upgrades:
+;enderio.gui.conduit.item.ignoreMetaData=Ignore Meta Data
+#                                    en: Ignore Meta Data
+;enderio.gui.conduit.item.ignoreNBT=Ignore NBT Data
+#                               en: Ignore NBT Data
+;enderio.gui.conduit.item.insertionFilter=Insert
+#                                     en: Insert
+;enderio.gui.conduit.item.matchMetaData=Match Meta Data
+#                                   en: Match Meta Data
+;enderio.gui.conduit.item.matchNBT=Match NBT Data
+#                              en: Match NBT Data
+;enderio.gui.conduit.item.oreDicDisabled=Ore Dictionary Disabled
+#                                    en: Ore Dictionary Disabled
+;enderio.gui.conduit.item.oreDicEnabled=Ore Dictionary Enabled
+#                                   en: Ore Dictionary Enabled
+;enderio.gui.conduit.item.priority=Priority
+#                              en: Priority
+;enderio.gui.conduit.item.roundRobinDisabled=Round Robin Disabled
+#                                        en: Round Robin Disabled
+;enderio.gui.conduit.item.roundRobinEnabled=Round Robin Enabled
+#                                       en: Round Robin Enabled
+;enderio.gui.conduit.item.selfFeedDisabled=Self Feed Disabled
+#                                      en: Self Feed Disabled
+;enderio.gui.conduit.item.selfFeedEnabled=Self Feed Enabled
+#                                     en: Self Feed Enabled
+;enderio.gui.conduit.item.sigCol=Signal Color
+#                            en: Signal Color
+;enderio.gui.conduit.item.species.both=
+#                                  en: Match primary and secondary species
+;enderio.gui.conduit.item.species.primary=
+#                                     en: Match primary species only
+;enderio.gui.conduit.item.species.secondary=
+#                                       en: Match secondary species only
+;enderio.gui.conduit.item.speedupgrade2=
+#                                   en: Max upgrades is 15; Max downgrades is 1
+;enderio.gui.conduit.item.speedupgrade=
+#                                  en: Insert Item Conduit Speed Upgrades/Downgrade
+;enderio.gui.conduit.item.stickyDisbaled=Sticky Mode Disabled
+#                                    en: Sticky Mode Disabled
+;enderio.gui.conduit.item.stickyEnabled=Sticky Mode Enabled|Selected items will only|be sent to this or other|Sticky outputs.
+#                                   en: Sticky Mode Enabled|Selected items will only|be sent to this or other|Sticky outputs.
+;enderio.gui.conduit.item.whitelist=
+#                               en: Whitelist
+;enderio.gui.conduit.redstone.color=Color
+#                               en: Color
+;enderio.gui.conduit.redstone.signalColor=Signal Color
+#                                     en: Signal Color
+;enderio.gui.conduit.redstone.signalStrengh.tooltip=Output a strong redstone signal
+#                                               en: Output a strong redstone signal
+;enderio.gui.conduit.redstone.signalStrengh=Strong Signal
+#                                       en: Strong Signal
+;enderio.gui.disabled=Disabled
+#                 en: Disabled
+;enderio.gui.enabled=???
+#                en: Enabled
+;enderio.gui.inventorySensor.control1=
+#                                 en: Start when <
+;enderio.gui.inventorySensor.control2=
+#                                 en: Stop when >=
+;enderio.gui.inventorypanel.header.crafting=
+#                                       en: Crafting grid
+;enderio.gui.inventorypanel.header.return=
+#                                     en: Return area
+;enderio.gui.inventorypanel.header.storage=
+#                                      en: Storage area
+;enderio.gui.inventorypanel.info.filter=
+#                                   en: <filter by name>
+;enderio.gui.inventorypanel.info.offline=
+#                                    en: <OFFLINE>
+;enderio.gui.inventorypanel.tooltip.addrecipe.line1=
+#                                               en: Store the current crafting recipe
+;enderio.gui.inventorypanel.tooltip.addrecipe.line2=
+#                                               en: A maximum of 6 recipes can be stored.
+;enderio.gui.inventorypanel.tooltip.addrecipe.line3=
+#                                               en: Left clicking a stored recipe will try to put
+;enderio.gui.inventorypanel.tooltip.addrecipe.line4=
+#                                               en: items for one crafting operation into the grid.
+;enderio.gui.inventorypanel.tooltip.addrecipe.line5=
+#                                               en: Shift left clicking tries to fill the crafting
+;enderio.gui.inventorypanel.tooltip.addrecipe.line6=
+#                                               en: grid to the maximum.
+;enderio.gui.inventorypanel.tooltip.addrecipe.line7=
+#                                               en: Right click a stored recipe to delete it.
+;enderio.gui.inventorypanel.tooltip.clear.line1=
+#                                           en: Clear crafting grid
+;enderio.gui.inventorypanel.tooltip.clear.line2=
+#                                           en: Moves all items to the return area
+;enderio.gui.inventorypanel.tooltip.filterslot.line1=
+#                                                en: Filter card slot
+;enderio.gui.inventorypanel.tooltip.filterslot.line2=
+#                                                en: Place configured item filters in
+;enderio.gui.inventorypanel.tooltip.filterslot.line3=
+#                                                en: here to select which items to show.
+;enderio.gui.inventorypanel.tooltip.fuelTank=
+#                                        en: Nutrient Tank
+;enderio.gui.inventorypanel.tooltip.itemsstored=
+#                                           en: Items Stored: %s
+;enderio.gui.inventorypanel.tooltip.refill.line1=
+#                                            en: Refills the crafting grid.
+;enderio.gui.inventorypanel.tooltip.refill.line2=
+#                                            en: Click to place items
+;enderio.gui.inventorypanel.tooltip.refill.line3=
+#                                            en: for one crafting operation,
+;enderio.gui.inventorypanel.tooltip.refill.line4=
+#                                            en: shift click to place as
+;enderio.gui.inventorypanel.tooltip.refill.line5=
+#                                            en: many items as possible.
+;enderio.gui.inventorypanel.tooltip.return.line1=
+#                                            en: Item return area
+;enderio.gui.inventorypanel.tooltip.return.line2=
+#                                            en: Items placed here can be extracted
+;enderio.gui.inventorypanel.tooltip.return.line3=
+#                                            en: by an item conduit, but will not be
+;enderio.gui.inventorypanel.tooltip.return.line4=
+#                                            en: used for crafting.
+;enderio.gui.inventorypanel.tooltip.return.line5=
+#                                            en: Click to change into storage area.
+;enderio.gui.inventorypanel.tooltip.sort.count_down.line1=
+#                                                     en: Sort items by their quantity
+;enderio.gui.inventorypanel.tooltip.sort.count_down.line2=
+#                                                     en: Starting with the highest quantity
+;enderio.gui.inventorypanel.tooltip.sort.count_up.line1=
+#                                                   en: Sort items by their quantity
+;enderio.gui.inventorypanel.tooltip.sort.count_up.line2=
+#                                                   en: Starting with the lonely ones
+;enderio.gui.inventorypanel.tooltip.sort.mod_down.line1=
+#                                                   en: Sort items by mod ID
+;enderio.gui.inventorypanel.tooltip.sort.mod_down.line2=
+#                                                   en: Items from the same mod are sorted by name
+;enderio.gui.inventorypanel.tooltip.sort.mod_up.line1=
+#                                                 en: Sort items by mod ID
+;enderio.gui.inventorypanel.tooltip.sort.mod_up.line2=
+#                                                 en: Items from the same mod are sorted by name
+;enderio.gui.inventorypanel.tooltip.sort.mod_up.line3=
+#                                                 en: Starting at the end of the alphabet
+;enderio.gui.inventorypanel.tooltip.sort.name_down.line1=
+#                                                    en: Sort items by name
+;enderio.gui.inventorypanel.tooltip.sort.name_up.line1=
+#                                                  en: Sort items by name
+;enderio.gui.inventorypanel.tooltip.sort.name_up.line2=
+#                                                  en: Starting at the end of the alphabet
+;enderio.gui.inventorypanel.tooltip.storage.line1=
+#                                             en: Item storage area
+;enderio.gui.inventorypanel.tooltip.storage.line2=
+#                                             en: Small temporary item storage area.
+;enderio.gui.inventorypanel.tooltip.storage.line3=
+#                                             en: Click to change into return area
+;enderio.gui.inventorypanel.tooltip.sync.jei.line1=
+#                                              en: Text entered into filter field will be remembered.
+;enderio.gui.inventorypanel.tooltip.sync.jei.line2=
+#                                              en: Text entered into JEI field will not be remembered.
+;enderio.gui.inventorypanel.tooltip.sync.jei=
+#                                        en: JEI Sync
+;enderio.gui.inventorypanel.tooltip.sync.nei=
+#                                        en: NEI Sync
+;enderio.gui.inventorypanel.tooltip.sync=
+#                                    en: NEI/JEI Sync
+;enderio.gui.machine.bufferingsingle=
+#                                en: Buffering single items
+;enderio.gui.machine.bufferingstacks=
+#                                en: Buffering item stacks
+;enderio.gui.machine.ioMode=?? : %s
+#                       en: Mode: %s
+;enderio.gui.machine.percraft=
+#                         en: Per Craft
+;enderio.gui.machine.receivefilter=
+#                              en: Receive Filter
+;enderio.gui.machine.sendfilter=
+#                           en: Send Filter
+;enderio.gui.machine.side.down=??
+#                          en: Down
+;enderio.gui.machine.side.east=?
+#                          en: East
+;enderio.gui.machine.side.north=?
+#                           en: North
+;enderio.gui.machine.side.south=?
+#                           en: South
+;enderio.gui.machine.side.up=?
+#                        en: Up
+;enderio.gui.machine.side.west=?
+#                          en: West
+;enderio.gui.machine.side=?? : %s
+#                     en: Side: %s
+;enderio.gui.mjReader.conduitBuffer=Internal Buffer
+#                               en: Internal Buffer
+;enderio.gui.mjReader.connectionDir=connection to the
+#                               en: connection to:
+;enderio.gui.mjReader.currentRequest=Current request
+#                                en: Current request
+;enderio.gui.mjReader.extractedItem=Item
+#                               en: Item
+;enderio.gui.mjReader.extractedItems=Extracted items
+#                                en: Extracted items
+;enderio.gui.mjReader.insertedInto=will be inserted into:
+#                              en: will be inserted into:
+;enderio.gui.mjReader.itemHeading=Item Conduit
+#                             en: Item Conduit
+;enderio.gui.mjReader.itemNoConnections=has no external connections
+#                                   en: has no external connections
+;enderio.gui.mjReader.networkHeading=Power Network
+#                                en: Power Network
+;enderio.gui.mjReader.noItem=Can not receive
+#                        en: Can not receive
+;enderio.gui.mjReader.noItems=Receives no items.
+#                         en: Receives no items.
+;enderio.gui.mjReader.noOutputs=has no valid outputs
+#                           en: has no valid outputs
+;enderio.gui.mjReader.noPowerFromSide=cannot receive power from this side
+#                                 en: cannot receive power from this side
+;enderio.gui.mjReader.receiveItem1=Can receive
+#                              en: Can receive
+;enderio.gui.mjReader.receiveItem2=from:
+#                              en: from:
+;enderio.gui.mjReader.receiveItems=Can receive items from:
+#                              en: Can receive items from:
+;enderio.gui.mjReader.requestRange=Per tick request range
+#                              en: Per tick request range
+;enderio.gui.powerMonitor.emit=Emit
+#                          en: Emit
+;enderio.gui.powerMonitor.engineControl=?? ??
+#                                   en: Engine Control
+;enderio.gui.powerMonitor.engineSection1=Emit signal when storage less
+#                                    en: Emit signal when storage less
+;enderio.gui.powerMonitor.engineSection2=than
+#                                    en: than
+;enderio.gui.powerMonitor.engineSection3=% full.
+#                                    en: % full.
+;enderio.gui.powerMonitor.engineSection4=Stop when storage greater than
+#                                    en: Stop when storage greater than
+;enderio.gui.powerMonitor.engineSection5=or equal to
+#                                    en: or equal to
+;enderio.gui.powerMonitor.monHeading1=Conduit Storage
+#                                 en: Conduit Storage
+;enderio.gui.powerMonitor.monHeading2=Capacitor Bank Storage
+#                                 en: Capacitor Bank Storage
+;enderio.gui.powerMonitor.monHeading3=Machine Buffers
+#                                 en: Machine Buffers
+;enderio.gui.powerMonitor.monHeading4=Average output over 5 seconds
+#                                 en: Average output over 5 seconds
+;enderio.gui.powerMonitor.monHeading5=Average input over 5 seconds
+#                                 en: Average input over 5 seconds
+;enderio.gui.powerMonitor.noNetworkError=
+#                                    en: No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
+;enderio.gui.powerMonitor.of=of
+#                        en: of
+;enderio.gui.receive=??
+#                en: Receive
+;enderio.gui.send=??
+#             en: Send
+;enderio.gui.sendReceive=?? & ??
+#                    en: Send & Receive
+;enderio.gui.travelAccessable.skipLocked=
+#                                    en: Skipped locked anchor, use targeted teleport.
+;enderio.gui.travelAccessable.skipObstructed=
+#                                        en: Skipped obstructed anchor.
+;enderio.gui.travelAccessable.skipPrivate=
+#                                     en: Skipped private anchor.
+;enderio.gui.travelAccessable.unauthorised=You are not allowed to access this block.
+#                                      en: You are not allowed to access this block.
+;enderio.gui.weather.requiredfluid=
+#                              en: Required Fluid: %s mB
+;enderio.gui.weather.task.clear=
+#                           en: Clear Weather
+;enderio.gui.weather.task.rain=
+#                          en: Rainy Weather
+;enderio.gui.weather.task.storm=
+#                           en: Thunderstorm
+;enderio.item.itemConduitFacade.tooltip.notpainted=
+#                                              en: Not Painted
+;enderio.item.itemExistingItemFilter.filterNotUpdated=
+#                                                 en: The snapshot already covers all items in the inventory
+;enderio.item.itemExistingItemFilter.filterUpdated=
+#                                              en: New items have been added to the snapshot
+;enderio.itemGasConduit.name=?? ???
+#                        en: Gas Conduit
+;enderio.itemGasConduit.tooltip.detailed.line1=???? ?? ?? ??
+#                                          en: Transfers Mekanism-compatible gases
+;enderio.itemGasConduit.tooltip.maxExtract=?? ???:
+#                                      en: Max Extract:
+;enderio.itemGasConduit.tooltip.maxIo=?? ??:
+#                                 en: Max IO:
+;enderio.itemItemConduit.name=Item Conduit
+#                         en: Item Conduit
+;enderio.itemLiquidConduit.lockedType=?? ?? ??
+#                                 en: Fluid type locked to
+;enderio.itemLiquidConduit.lockedWaila=
+#                                  en: Locked to
+;enderio.itemLiquidConduit.name=?? ???
+#                           en: Fluid Conduit
+;enderio.itemLiquidConduit.tooltip.detailed.line1=??? ??? ??? ????.
+#                                             en: Fluid flow respects gravity
+;enderio.itemLiquidConduit.tooltip.detailed.line2=??? ??? ??? ??
+#                                             en: Flow rate dependent on fluid
+;enderio.itemLiquidConduit.tooltip.detailed.line3=?? ? ????.
+#                                             en: viscosity
+;enderio.itemLiquidConduit.tooltip.maxExtract=?? ???:
+#                                         en: Max Extract:
+;enderio.itemLiquidConduit.tooltip.maxIo=?? ??:
+#                                    en: Max IO:
+;enderio.itemLiquidConduit.unlockedType=?? ?? ?? ??
+#                                   en: Fluid type unlocked
+;enderio.itemLiquidConduitAdvanced.name=??? ?? ???
+#                                   en: Pressurized Fluid Conduit
+;enderio.itemLiquidConduitEnder.name=??? ?? ???
+#                                en: Ender Fluid Conduit
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line1=??? ????????.
+#                                                  en: Instant fluid teleportation
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line2=?? ?? ???? ???
+#                                                  en: allows multiple fluids to be
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line3=?????? ??? ? ????.
+#                                                  en: transported on the same line
+;enderio.itemMEConduit.channelsUsed=
+#                               en: {0,number} of {1,number} Channels
+;enderio.itemMEConduit.name=ME ???
+#                       en: ME Conduit
+;enderio.itemMEConduitDense.name=??? ME ???
+#                            en: Dense ME Conduit
+;enderio.itemOCConduit.name=
+#                       en: Network Conduit (OC)
+;enderio.itemPowerConduit.name=??? ???
+#                          en: Energy Conduit
+;enderio.itemPowerConduitEnder.name=??? ??? ???
+#                               en: Ender Energy Conduit
+;enderio.itemPowerConduitEnhanced.name=?? ??? ???
+#                                  en: Enhanced Energy Conduit
+;enderio.itemRedstoneConduitInsulated.name=?? ???? ???
+#                                      en: Redstone Conduit
+;enderio.keybind.fovminus=
+#                     en: Camera: Zoom in (creative only)
+;enderio.keybind.fovminusfast=
+#                         en: Camera: Zoom in fast (creative only)
+;enderio.keybind.fovplus=
+#                    en: Camera: Zoom out (creative only)
+;enderio.keybind.fovplusfast=
+#                        en: Camera: Zoom out fast (creative only)
+;enderio.keybind.fovreset=
+#                     en: Camera: Reset Zoom (creative only)
+;enderio.keybind.glidertoggle=
+#                         en: Glider/Elytra Toggle
+;enderio.keybind.gogglesofrevealing=
+#                               en: Goggles of Revealing
+;enderio.keybind.jump=
+#                 en: Jump
+;enderio.keybind.magnet=
+#                   en: Toggle Electromagnet
+;enderio.keybind.nightvision=
+#                        en: Night Vision
+;enderio.keybind.soundlocator=
+#                         en: Sound Locator
+;enderio.keybind.speed=
+#                  en: Speed
+;enderio.keybind.stepassist=
+#                       en: Step Assist
+;enderio.keybind.top=
+#                en: Toggle The One Probe (Helmet Upgrade)
+;enderio.keybind.yetawrenchmode=
+#                           en: Yeta Wrench Mode
+;enderio.loot.capacitor.aa=
+#                      en: Hiding %s
+;enderio.loot.capacitor.area=
+#                        en: Big %s
+;enderio.loot.capacitor.baselevel.10=
+#                                en: %s Dud
+;enderio.loot.capacitor.baselevel.15=
+#                                en: %s
+;enderio.loot.capacitor.baselevel.25=
+#                                en: Enhanced %s
+;enderio.loot.capacitor.baselevel.35=
+#                                en: Wonder %s
+;enderio.loot.capacitor.baselevel.45=
+#                                en: Impossible %s
+;enderio.loot.capacitor.buffer=
+#                          en: Insatiable %s
+;enderio.loot.capacitor.cleancut=
+#                            en: Clean Cut %s
+;enderio.loot.capacitor.crafting=
+#                            en: Crafty %s
+;enderio.loot.capacitor.crushed=
+#                           en: Crushed %s
+;enderio.loot.capacitor.entry.0=
+#                           en: An attached note describes this as "%s"
+;enderio.loot.capacitor.entry.1=
+#                           en: You can decipher ancient runes that translate roughly as "%s". Odd...
+;enderio.loot.capacitor.entry.2=
+#                           en: By the power of Enderskull, I have the %s!
+;enderio.loot.capacitor.entry.3=
+#                           en: If you had to describe this, "%s" would be a good name.
+;enderio.loot.capacitor.entry.4=
+#                           en: If you had to describe this, "%s" would be a bad name.
+;enderio.loot.capacitor.entry.5=
+#                           en: This "%s" is the property of Randalf the Tinkerer. Unauthorized removal is unauthorized!
+;enderio.loot.capacitor.entry.6=
+#                           en: This "%s" is the property of Randalf the Ex-Tinkerer. Unauthorized removal is welcome!
+;enderio.loot.capacitor.entry.7=
+#                           en: Your "%s" can now be upgraded free of charge to "Capacitor 1". Press ok or abort to do so.
+;enderio.loot.capacitor.entry.count=
+#                               en: 8
+;enderio.loot.capacitor.green=
+#                         en: Planting %s
+;enderio.loot.capacitor.intake=
+#                          en: Hungry %s
+;enderio.loot.capacitor.level.10=
+#                            en: Failed %s
+;enderio.loot.capacitor.level.15=
+#                            en: Simple %s
+;enderio.loot.capacitor.level.25=
+#                            en: Nice %s
+;enderio.loot.capacitor.level.30=
+#                            en: Good %s
+;enderio.loot.capacitor.level.35=
+#                            en: Enhanced %s
+;enderio.loot.capacitor.level.40=
+#                            en: Premium %s
+;enderio.loot.capacitor.level.42=
+#                            en: Incredibly %s
+;enderio.loot.capacitor.level.45=
+#                            en: Unstable %s
+;enderio.loot.capacitor.mobby=
+#                         en: Villainous %s
+;enderio.loot.capacitor.red=
+#                       en: Hot %s
+;enderio.loot.capacitor.smelting=
+#                            en: Smelting %s
+;enderio.loot.capacitor.tight=
+#                         en: Tight %s
+;enderio.loot.capacitor.title.0=
+#                           en: Remarkable Capacitor
+;enderio.loot.capacitor.title.10=
+#                            en: A Mystery wrapped in tin foil
+;enderio.loot.capacitor.title.11=
+#                            en: Something wonderful
+;enderio.loot.capacitor.title.12=
+#                            en: A Capacitor. Maybe
+;enderio.loot.capacitor.title.13=
+#                            en: Heaven Cent
+;enderio.loot.capacitor.title.14=
+#                            en: Don't turn it on, take it apart!
+;enderio.loot.capacitor.title.1=
+#                           en: Unremarkable Capacitor
+;enderio.loot.capacitor.title.2=
+#                           en: Found Capacitor
+;enderio.loot.capacitor.title.3=
+#                           en: Lost Capacitor
+;enderio.loot.capacitor.title.4=
+#                           en: Ancient Capacitor
+;enderio.loot.capacitor.title.5=
+#                           en: Magic Capacitor
+;enderio.loot.capacitor.title.6=
+#                           en: Capacitor of Holding
+;enderio.loot.capacitor.title.7=
+#                           en: Capacitor of the Southern Winds
+;enderio.loot.capacitor.title.8=
+#                           en: Capacitor of What is This Doing Here
+;enderio.loot.capacitor.title.9=
+#                           en: Modified Power Holding Device
+;enderio.loot.capacitor.title.count=
+#                               en: 15
+;enderio.nei.alloysmelter=
+#                     en: Alloy Smelter
+;enderio.nei.enchanter=
+#                  en: Enchanter
+;enderio.nei.sagmill.outputchance=
+#                             en: Chance: {0,choice,0#'<1'|0<{0,number}}%
+;enderio.nei.sagmill=
+#                en: SAG Mill
+;enderio.nei.slicensplice=
+#                     en: Slice'N'Splice
+;enderio.nei.soulbinder=
+#                   en: Soul Binder
+;enderio.nei.vat=
+#            en: Vat
+;enderio.painter.tooltip.wasPainted=�oWhat did you think that would do?
+#                               en: �oWhat did you think that would do?
+;enderio.power.maxOutput=Max Output
+#                    en: Max Output
+;enderio.remoteinv.chat.error=
+#                         en: ERROR: Technical error, see log
+;enderio.remoteinv.chat.invalidtarget=
+#                                 en: ERROR: Target does not exist
+;enderio.remoteinv.chat.invalidtargetworld=
+#                                      en: ERROR: Target in unaccessible dimension
+;enderio.remoteinv.chat.notarget=
+#                            en: ERROR: No target
+;enderio.remoteinv.chat.notloaded=
+#                             en: ERROR: Target is not loaded
+;enderio.remoteinv.chat.outoffluid=
+#                              en: ERROR: Out of {FLUIDNAME}
+;enderio.remoteinv.chat.outofpower=
+#                              en: ERROR: Out of power
+;enderio.remoteinv.chat.outofrange=
+#                              en: ERROR: Out of range
+;enderio.remoteinv.chat.set=
+#                       en: Target set
+;enderio.tooltip.anvilupgrades=
+#                          en: Anvil Upgrades:
+;enderio.tooltip.burntime=
+#                     en: Burn Time: {0,number}
+;enderio.tooltip.meta=
+#                 en: Meta:
+;enderio.tooltip.oredict=
+#                    en: Ore Dictionary:
+;enderio.tooltip.uid=
+#                en: UID:
+;enderio.trans.fluid=??
+#                en: Fluid
+;enderio.trans.item=Item
+#               en: Item
+;enderio.trans.power=??
+#                en: Power
+;enderio.trans.rail=
+#               en: Rail
+;enderio.trans.receiving=??
+#                    en: Receiving
+;enderio.trans.sending=??
+#                  en: Sending
+;enderio.trans.showChannels=??? ?? ???? ????
+#                       en: <Shift to show channels>
+;enderio.waila.config.hiddenfacades=
+#                               en: Sneaky Facades
+;enderio.weatherObelisk.fuelTank=
+#                            en: Barometric Flux Tank
+;entity.ZombieVillager.name=
+#                       en: Zombie Villager
+;entity.witherSkeleton.name=
+#                       en: Wither Skeleton
+;fluid.conductiveiron=
+#                 en: Molten Conductive Iron
+;fluid.darksteel=
+#            en: Molten Dark Steel
+;fluid.electricalsteel=
+#                  en: Molten Electrical Steel
+;fluid.ender=
+#        en: Liquidfied Ender Pearls
+;fluid.energeticalloy=
+#                 en: Molten Energetic Alloy
+;fluid.glowstone=
+#            en: Glowgas
+;fluid.pulsatingiron=
+#                en: Molten Pulsating Iron
+;fluid.redstone=
+#           en: Molten Redstone
+;fluid.redstonealloy=
+#                en: Molten Redstone Alloy
+;fluid.soularium=
+#            en: Molten Soularium
+;fluid.vibrantalloy=
+#               en: Molten Vibrant Alloy
+;item.enderio.itemEnderface.name=?? ??
+#                            en: Enderface
+;item.itemElectricLight.name=??
+#                        en: Powered Light
+;item.itemElectricLight.tooltip.detailed.line1=??? ???
+#                                          en: Lights a large area when supplied with
+;item.itemElectricLight.tooltip.detailed.line2=?? ??? ?? ???.
+#                                          en: power and a redstone signal.
+;item.itemElectricLightInverted.name=?? (???)
+#                                en: Powered Light (Inverted)
+;item.itemElectricLightInverted.tooltip.detailed.line1=??? ???
+#                                                  en: Lights a large area when supplied with
+;item.itemElectricLightInverted.tooltip.detailed.line2=?? ??? ?? ???.
+#                                                  en: power.
+;item.itemElectricLightInverted.tooltip.detailed.line3=???? ??? ? ? ????.
+#                                                  en: Turn off with a redstone signal.
+;item.itemExistingItemFilter.name=???? ??? ??
+#                             en: Existing Item Filter
+;item.itemExistingItemFilter.tooltip.basic.line1=??? ???? ?????
+#                                            en: Upgrade for item conduits
+;item.itemExistingItemFilter.tooltip.detailed.line1=?? ????? ??
+#                                               en: Selects only items already
+;item.itemExistingItemFilter.tooltip.detailed.line2=????? ?????.
+#                                               en: in the inventory
+;item.itemExistingItemFilter.tooltip.detailed.line3=
+#                                               en: Right click while sneaking
+;item.itemExistingItemFilter.tooltip.detailed.line4=
+#                                               en: on an inventory to add the
+;item.itemExistingItemFilter.tooltip.detailed.line5=
+#                                               en: content to the snapshot
+;item.itemExtractSpeedDowngrade.name=
+#                                en: Item Conduit Speed Downgrade
+;item.itemExtractSpeedDowngrade.tooltip.basic.line1=
+#                                               en: Downgrade for item conduits
+;item.itemExtractSpeedDowngrade.tooltip.detailed.line1=
+#                                                  en: Reduces speed to 1
+;item.itemExtractSpeedDowngrade.tooltip.detailed.line2=
+#                                                  en: item per extraction
+;item.itemExtractSpeedUpgrade.name=??? ??? ?? ?????
+#                              en: Item Conduit Speed Upgrade
+;item.itemExtractSpeedUpgrade.tooltip.basic.line1=??? ???? ?????
+#                                             en: Upgrade for item conduits
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line1=? ? ??? ? ???? ??? ??
+#                                                en: Increases speed by 4
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line2=????? 1?? 4?? ?????.
+#                                                en: items per extraction
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line3=?? 15??? ?? ? ????.
+#                                                en: Max upgrades is 15
+;item.itemInventoryPanelUpgrade.name=
+#                                en: Remote Awareness Upgrade
+;item.itemInventoryPanelUpgrade.tooltip.basic.line1=
+#                                               en: Inventory Panel Remote Awareness
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line1=
+#                                                  en: Function upgrade for item conduits
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line2=
+#                                                  en: Allows Inventory Panels attached
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line3=
+#                                                  en: to this network to see and extract
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line4=
+#                                                  en: items from this inventory independent
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line5=
+#                                                  en: of the conduit mode.
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line6=
+#                                                  en: (No need to set the conduit to extract)
+;item.itemLight.name=?
+#                en: Light
+;item.itemLight.tooltip.detailed.line1=???? ??? ???
+#                                  en: Emits light with a
+;item.itemLight.tooltip.detailed.line2=?? ????.
+#                                  en: redstone signal.
+;item.itemLightInverted.name=? (???)
+#                        en: Light (Inverted)
+;item.itemLightInverted.tooltip.detailed.line1=?? ????.
+#                                          en: Emits light, disable with
+;item.itemLightInverted.tooltip.detailed.line2=???? ??? ? ? ????.
+#                                          en: a redstone signal.
+;item.itemModItemFilter.name=??? ?? ??
+#                        en: Mod Item Filter
+;item.itemModItemFilter.tooltip.basic.line1=??? ???? ?????
+#                                       en: Upgrade for item conduits
+;item.itemModItemFilter.tooltip.detailed.line1=??? ???
+#                                          en: Selects only items for a specified
+;item.itemModItemFilter.tooltip.detailed.line2=????? ?????.
+#                                          en: mod/s
+;item.itemPowerItemFilter.name=
+#                          en: Chargeable Item Filter
+;item.itemPowerItemFilter.tooltip.basic.line1=??? ???? ?????
+#                                         en: Upgrade for item conduits
+;item.itemPowerItemFilter.tooltip.detailed.line1=
+#                                            en: Filters chargeable items based on
+;item.itemPowerItemFilter.tooltip.detailed.line2=
+#                                            en: how much RF they have stored
+;item.itemRemoteInvAccessadvanced.name=
+#                                  en: Advanced Inventory Panel Remote
+;item.itemRemoteInvAccessadvanced.tooltip.detailed.line1=
+#                                                    en: Allows you to access an Inventory Panel from anywhere in the same dimension.
+;item.itemRemoteInvAccessadvanced.tooltip.detailed.line2=
+#                                                    en: Crouch-Right-Click a panel to bind the remote to it.
+;item.itemRemoteInvAccessadvanced.tooltip.detailed.line3=
+#                                                    en: Uses {FLUIDNAME} to open a connection and RF to keep it open.
+;item.itemRemoteInvAccessbasic.name=
+#                               en: Inventory Panel Remote
+;item.itemRemoteInvAccessbasic.tooltip.detailed.line1=
+#                                                 en: Allows you to access an Inventory Panel from up to 5 chunks away.
+;item.itemRemoteInvAccessbasic.tooltip.detailed.line2=
+#                                                 en: Crouch-Right-Click a panel to bind the remote to it.
+;item.itemRemoteInvAccessbasic.tooltip.detailed.line3=
+#                                                 en: Uses {FLUIDNAME} to open a connection and RF to keep it open.
+;item.itemRemoteInvAccessender.name=
+#                               en: Ender Inventory Panel Remote
+;item.itemRemoteInvAccessender.tooltip.detailed.line1=
+#                                                 en: Allows you to access an Inventory Panel from anywhere.
+;item.itemRemoteInvAccessender.tooltip.detailed.line2=
+#                                                 en: Crouch-Right-Click a panel to bind the remote to it.
+;item.itemRemoteInvAccessender.tooltip.detailed.line3=
+#                                                 en: Uses {FLUIDNAME} to open a connection and RF to keep it open.
+;item.itemSpawnEggEnderIO.name=
+#                          en: Spawn
+;item.itemWirelessLight.name=?? ??
+#                        en: Wireless Powered Light
+;item.itemWirelessLight.tooltip.detailed.line1=??? ???
+#                                          en: Lights a large area when supplied with
+;item.itemWirelessLight.tooltip.detailed.line2=?? ??? ?? ???.
+#                                          en: power and a redstone signal.
+;item.itemWirelessLight.tooltip.detailed.line3=?? ?????? ??? ?? ? ????.
+#                                          en: Can receive power from wireless chargers.
+;item.itemWirelessLightInverted.name=?? ?? (???)
+#                                en: Wireless Powered Light (Inverted)
+;item.itemWirelessLightInverted.tooltip.detailed.line1=??? ???
+#                                                  en: Lights a large area when supplied with
+;item.itemWirelessLightInverted.tooltip.detailed.line2=?? ??? ?? ???.
+#                                                  en: power.
+;item.itemWirelessLightInverted.tooltip.detailed.line3=???? ??? ? ? ????.
+#                                                  en: Turn off with a redstone signal.
+;item.itemWirelessLightInverted.tooltip.detailed.line4=?? ?????? ??? ?? ? ????.
+#                                                  en: Can receive power from wireless chargers.
+;itemGroup.enderio.invalid=
+#                      en: Invalid
+;itemGroup.enderio.items=
+#                    en: Ender IO Items
+;itemGroup.enderio.machines=
+#                       en: Ender IO Machines
+;itemGroup.enderio.main=
+#                   en: Ender IO
+;itemGroup.enderio.materials=
+#                        en: Ender IO Materials
+;tile.blockAttractor.name=??? ?????
+#                     en: Attractor Obelisk
+;tile.blockAttractor.tooltip.detailed.line1=?? ???? ??????.
+#                                       en: Draws mobs towards it
+;tile.blockAttractor.tooltip.detailed.line2=?? ?? ??? ???
+#                                       en: Specify the mobs to effect
+;tile.blockAttractor.tooltip.detailed.line3=? ??? ?? ??
+#                                       en: by placing their souls
+;tile.blockAttractor.tooltip.detailed.line4=?????? ?????.
+#                                       en: within the device
+;tile.blockCapBank.activated.name=
+#                             en: Capacitor Bank
+;tile.blockCapBank.creative.name=
+#                            en: Creative Capacitor Bank
+;tile.blockCapBank.simple.name=
+#                          en: Basic Capacitor Bank
+;tile.blockCapBank.tooltip.detailed.line1=
+#                                     en: Multi-block energy storage.
+;tile.blockCapBank.tooltip.detailed.line2=
+#                                     en: Can charge RF powered items.
+;tile.blockCapBank.tooltip.detailed.line3=
+#                                     en: Shift-R-Click on a face with an empty hand
+;tile.blockCapBank.tooltip.detailed.line4=
+#                                     en: to change information display
+;tile.blockCapBank.tooltip.hasItems=
+#                               en: {0,number,integer} {0,choice,1#item|1<items} in inventory
+;tile.blockCapBank.tooltipPrefix=???:
+#                            en: Contains
+;tile.blockCapBank.vibrant.name=
+#                           en: Vibrant Capacitor Bank
+;tile.blockCapacitorBank.creative.name=?????? ???
+#                                  en: Creative Capacitor Bank (Deprecated)
+;tile.blockCapacitorBank.name=???
+#                         en: Capacitor Bank (Deprecated)
+;tile.blockCapacitorBank.tooltip.detailed.line1=???? ??? ??????.
+#                                           en: Convert to new block by placing
+;tile.blockCapacitorBank.tooltip.detailed.line2=RF? ???? ????? ??? ? ????.
+#                                           en: in a crafting grid
+;tile.blockCapacitorBank.tooltipPrefix=???:
+#                                  en: Contains
+;tile.blockConduitBundle.name=Conduit Connector
+#                         en: Conduit Connector
+;tile.blockEnderRail.name=?? ??
+#                     en: Ender Rail
+;tile.blockEnderRail.tooltip.detailed.line1=?? ???? ?? ???
+#                                       en: Teleports minecarts when placed
+;tile.blockEnderRail.tooltip.detailed.line2=????? ????????.
+#                                       en: on a Dimensional Transceiver
+;tile.blockEnderRail.tooltip.detailed.line3=?? ????? ?? ???
+#                                       en: Set destinations using the
+;tile.blockEnderRail.tooltip.detailed.line4=???? ????? ????.
+#                                       en: Transceiver's rail tab
+;tile.blockEnderRail.tooltip.detailed.line5=?? ?? ??? ????
+#                                       en: Set direction with a Shift-R-Click
+;tile.blockEnderRail.tooltip.detailed.line6=??? ?? ? ????.
+#                                       en: of a wrench
+;tile.blockGauge.name=
+#                 en: RF Gauge
+;tile.blockGauge.tooltip.detailed.line1=
+#                                   en: Displays RF levels of adjacent
+;tile.blockGauge.tooltip.detailed.line2=
+#                                   en: blocks.
+;tile.blockHyperCube.name=?? ???? (???)
+#                     en: Dimensional Transceiver (Deprecated)
+;tile.blockHyperCube.tooltip.detailed.line1=???? ???
+#                                       en: Convert to new model by placing
+;tile.blockHyperCube.tooltip.detailed.line2=????? ???? ????.
+#                                       en: in the crafting grid
+;tile.blockInventoryChest_big.name=
+#                              en: Big Inventory System Storage
+;tile.blockInventoryChest_enormous.name=
+#                                   en: Enormous Inventory System Storage
+;tile.blockInventoryChest_huge.name=
+#                               en: Huge Inventory System Storage
+;tile.blockInventoryChest_large.name=
+#                                en: Large Inventory System Storage
+;tile.blockInventoryChest_medium.name=
+#                                 en: Medium Inventory System Storage
+;tile.blockInventoryChest_small.name=
+#                                en: Small Inventory System Storage
+;tile.blockInventoryChest_tiny.name=
+#                               en: Tiny Inventory System Storage
+;tile.blockInventoryChest_warehouse.name=
+#                                    en: Inventory System Storage Warehouse
+;tile.blockInventoryChest_warehouse13.name=
+#                                      en: Inventory System Storage Extended Warehouse
+;tile.blockInventoryPanel.name=
+#                          en: Inventory Panel
+;tile.blockInventoryPanel.tooltip.basic.line1=
+#                                         en: Remote access and crafting
+;tile.blockInventoryPanel.tooltip.detailed.line1=
+#                                            en: Allows remote access to inventories via
+;tile.blockInventoryPanel.tooltip.detailed.line2=
+#                                            en: Remote Awareness Upgrades in item conduits.
+;tile.blockInventoryPanel.tooltip.detailed.line3=
+#                                            en: Uses Nutrient Distillation for power.
+;tile.blockInventoryPanel.tooltip.detailed.line4=
+#                                            en: Offers a persistent crafting grid.
+;tile.blockInventoryPanelSensor.name=
+#                                en: Inventory Sensor
+;tile.blockInventoryPanelSensor.tooltip.detailed.line1=
+#                                                  en: Emits redstone signals based
+;tile.blockInventoryPanelSensor.tooltip.detailed.line2=
+#                                                  en: on the number of an item available
+;tile.blockInventoryPanelSensor.tooltip.detailed.line3=
+#                                                  en: in an Inventory Panel network
+;tile.blockPainter.tooltip.detailed.line1=??? ?? ??? ??? ? ????:
+#                                     en: Used to paint:
+;tile.blockPainter.tooltip.detailed.line2=??? ??, ??, ???,
+#                                     en: Conduit Facades, Stairs, Fences, Gates,
+;tile.blockPainter.tooltip.detailed.line3=??? ?, ? ??, ??? ??,
+#                                     en: Slabs, Cobblestone, Cobblestone Walls,
+;tile.blockPainter.tooltip.detailed.line4=?? ?, ???, ??,
+#                                     en: Glowstone, Redstone, Carpet, Pressure
+;tile.blockPainter.tooltip.detailed.line5=?? ???,
+#                                     en: Plates, Quite Clear Glass, Fused Quartz,
+;tile.blockPainter.tooltip.detailed.line6=???? ?
+#                                     en: Trapdoors, and most machines
+;tile.blockPowerMonitor.name=?? ???
+#                        en: Power Monitor
+;tile.blockPowerMonitor.tooltip.detailed.line1=
+#                                          en: Displays details of power use and
+;tile.blockPowerMonitor.tooltip.detailed.line2=
+#                                          en: storage
+;tile.blockPowerMonitor.tooltip.detailed.line3=
+#                                          en: Can be used to emit redstone
+;tile.blockPowerMonitor.tooltip.detailed.line4=
+#                                          en: based on stored power levels
+;tile.blockPowerMonitor.tooltip.detailed.line5=
+#                                          en: Must be attached to an EnderIO
+;tile.blockPowerMonitor.tooltip.detailed.line6=
+#                                          en: conduit
+;tile.blockPowerMonitorv2.name=
+#                          en: Graphical Power Monitor
+;tile.blockPowerMonitorv2.tooltip.detailed.line1=
+#                                            en: Displays details of power use and
+;tile.blockPowerMonitorv2.tooltip.detailed.line2=
+#                                            en: storage
+;tile.blockPowerMonitorv2.tooltip.detailed.line3=
+#                                            en: Can be used to emit redstone
+;tile.blockPowerMonitorv2.tooltip.detailed.line4=
+#                                            en: based on stored power levels
+;tile.blockPowerMonitorv2.tooltip.detailed.line5=
+#                                            en: Must be attached to an EnderIO
+;tile.blockPowerMonitorv2.tooltip.detailed.line6=
+#                                            en: conduit
 description.enchantment.enderio.soulBound=
 #                                     en: Prevents item from being lost on death
 enchantment.soulBound=
 #                 en: Soulbound
-enderio.block.tooltip.blastResistant=폭발 저항
+enderio.block.tooltip.blastResistant=?? ??
 #                                en: Blast Resistant
-enderio.blockAttractor.action=
-#                         en: Attracts
-enderio.blockConduitBundle=컨두잇 묶음
-#                      en: Conduit Bundle
-enderio.blockPainter.paintedWith=채색된 블럭:
-#                            en: Painted with: %s
-enderio.blockPainter.unpainted=
-#                          en: Not painted
-enderio.blockPoweredSpawner.action=
-#                              en: Spawns
-enderio.blockSpawnGuard.action=
-#                          en: Prevents spawning
-enderio.blockSpawnRelocator.action=
-#                              en: Relocates
-enderio.blockTravelPlatform.invalidTarget=목적지가 파괴되었습니다.
-#                                     en: Destination is Obstructed
-enderio.blockTravelPlatform.outOfRange=목적지와의 거리가 너무 멉니다.
-#                                  en: Destination out of range
-enderio.capbank.change=
-#                  en: I/O
-enderio.capbank.iodisplay.gain=
-#                          en: In
-enderio.capbank.iodisplay.input=Input
-#                           en: Input
-enderio.capbank.iodisplay.loss=
-#                          en: Out
-enderio.capbank.iodisplay.output=Output
-#                            en: Output
-enderio.capbank.iodisplay.stable=
-#                            en: I/O
-enderio.capbank.maxIO=Max I/O
-#                 en: Max I/O
-enderio.capbank.maxIn=Max Input
-#                 en: Max Input
-enderio.capbank.maxOut=Max Output
-#                  en: Max Output
-enderio.category.darksteelarmor=
-#                           en: Dark Steel Armor
-enderio.category.tools=
-#                  en: Tools
-enderio.chat.telepad.noFluid=
-#                        en: Not enough %s to teleport!
+enderio.block.tooltip.isBeaconBase=???? ?? ??
+#                              en: Can be used as beacon base
+enderio.block.tooltip.lightBlocker=
+#                              en: Blocks Light
+enderio.block.tooltip.lightEmitter=?? ????.
+#                              en: Emits Light
 enderio.color.black=
 #               en: Black
 enderio.color.blue=
@@ -82,16 +1016,6 @@ enderio.color.white=
 #               en: White
 enderio.color.yellow=
 #                en: Yellow
-enderio.combustionGenerator.coolantTank.empty=Coolant
-#                                         en: Coolant
-enderio.combustionGenerator.coolantTank=Coolant
-#                                   en: Coolant: %s
-enderio.combustionGenerator.fuelTank.empty=Fuel
-#                                      en: Fuel
-enderio.combustionGenerator.fuelTank=Fuel
-#                                en: Fuel: %s
-enderio.combustionGenerator.output=Generating:
-#                              en: Generating: %s
 enderio.config.advanced.tooltip=For those who can't have enough configs.
 #                           en: For those who can't have enough configs.
 enderio.config.advanced=Advanced Settings
@@ -104,24 +1028,8 @@ enderio.config.anchor.tooltip=Anchors away!
 #                         en: Anchors away!
 enderio.config.anchor=Anchor Settings
 #                 en: Anchor Settings
-enderio.config.capacitor.alloy_smelter_power_buffer=
-#                                               en: Alloy Smelter: Internal power buffer size (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.alloy_smelter_power_intake=
-#                                               en: Alloy Smelter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.alloy_smelter_power_use=
-#                                            en: Alloy Smelter: Power use per tick (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.buffer_power_buffer=
-#                                        en: Energy/Omni Buffer: Internal power buffer size (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.buffer_power_intake=
-#                                        en: Energy/Omni Buffer: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.crafter_power_buffer=
-#                                         en: Crafter: Internal power buffer size (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.crafter_power_intake=
-#                                         en: Crafter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.crafter_ticks=
-#                                  en: Crafter: Ticks per crafting operation (will be scaled by the used upgrade capacitor)
-enderio.config.darksteel.tooltip=It's not just regular steel, it's §odark§r§e steel.
-#                            en: It's not just regular steel, it's §odark§r§e steel.
+enderio.config.darksteel.tooltip=It's not just regular steel, it's �odark�r�e steel.
+#                            en: It's not just regular steel, it's �odark�r�e steel.
 enderio.config.darksteel=Dark Steel
 #                    en: Dark Steel
 enderio.config.efficiency.tooltip=Where do the numbers end?
@@ -332,48 +1240,48 @@ enderio.darksteel.upgrade.travel.tooltip.detailed.line2=activate a travel anchor
 #                                                   en: activate a travel anchor or Ender IO
 enderio.easteregg.piginabottle=
 #                          en: Bacon in a Bottle
-enderio.farm.gui.baseUse=
-#                    en: Base Use:
-enderio.farm.note.noAxe=도끼 필요
+enderio.entity_action.block_attractor_obelisk.action=
+#                                                en: Attracts
+enderio.entity_action.block_aversion_obelisk.action=
+#                                               en: Prevents spawning
+enderio.entity_action.block_powered_spawner.action=
+#                                              en: Spawns
+enderio.entity_action.block_relocator_obelisk.action=
+#                                                en: Relocates
+enderio.farm.note.noAxe=?? ??
 #                   en: No Axe
-enderio.farm.note.noHoe=괭이 필요
+enderio.farm.note.noHoe=?? ??
 #                   en: No Hoe
-enderio.farm.note.noPower=전력 부족
+enderio.farm.note.noPower=?? ??
 #                     en: No Power
-enderio.farm.note.noSeeds=씨앗 필요
+enderio.farm.note.noSeeds=?? ??
 #                     en: No Seeds
 enderio.farm.note.noShears=
 #                      en: No Shears
 enderio.farm.note.noTreetap=
 #                       en: No Treetap
-enderio.farm.note.outputFull=인벤토리 꽉 참
+enderio.farm.note.outputFull=???? ? ?
 #                        en: Output Full
-enderio.filterUpgradeAdvanced.name=고급 아이템 필터
-#                              en: Advanced Item Filter
-enderio.filterUpgradeBasic.name=기본 아이템 필터
-#                           en: Basic Item Filter
-enderio.filterUpgradeLimited.name=
-#                             en: Counting Item Filter
-enderio.filterUpgradeSpecies.name=
-#                             en: Forestry Species Item Filter
 enderio.fluid.millibucket.format.name=
 #                                 en: %s mB of %s
 enderio.fluid.millibucket.format.of=
-#                               en: %s/%s mB
+#                               en: %s / %s mB
 enderio.fluid.millibucket.format.ofname=
-#                                   en: %s/%s mB of %s
+#                                   en: %s / %s mB of %s
+enderio.fluid.millibucket.format.tickper=
+#                                    en: %s t/mB
 enderio.fluid.millibucket.format=
 #                            en: %s mB
-enderio.fluid.millibucketsTick=mB/t
-#                          en: mB/t
-enderio.fuel.tooltip.burnTime=연료 소모시간 {0,number}
+enderio.fuel.tooltip.burnTime=?? ???? {0,number}
 #                         en: burn time %s
 enderio.fuel.tooltip.generates=
-#                          en: Generates %s %s at %s %s%s
-enderio.fuel.tooltip.heading=연료 세부사항
+#                          en: Generates % at %s
+enderio.fuel.tooltip.heading=?? ????
 #                        en: Fuel Details
-enderio.gas.gasTick=Gas/t
-#               en: Gas/t
+enderio.generic.tooltip.paintedWith=??? ??:
+#                               en: Painted with: %s
+enderio.generic.tooltip.unpainted=
+#                             en: Not painted
 enderio.grindingball.tooltip.line1=
 #                              en: %sSAG Mill Grinding Ball
 enderio.grindingball.tooltip.line2=
@@ -382,50 +1290,6 @@ enderio.grindingball.tooltip.line3=
 #                              en: %sBonus Output %s
 enderio.grindingball.tooltip.line4=
 #                              en: %sPower Reduction %s
-enderio.gui.alloy.mode.all=All Smelting
-#                      en: All Smelting
-enderio.gui.alloy.mode.alloy=Alloys Only
-#                        en: Alloys Only
-enderio.gui.alloy.mode.furnace=Furnace Only
-#                          en: Furnace Only
-enderio.gui.alloy.mode.heading=Furnace Mode
-#                          en: Furnace Mode
-enderio.gui.available=
-#                 en: Available
-enderio.gui.capBank.inputMode=Input
-#                         en: Input
-enderio.gui.capBank.inputRs=Input Redstone Mode
-#                       en: Input Redstone Mode
-enderio.gui.capBank.maxInput=Max Input
-#                        en: Max Input
-enderio.gui.capBank.maxIo=Max I/O
-#                     en: Max I/O
-enderio.gui.capBank.maxOutput=Max Output
-#                         en: Max Output
-enderio.gui.capBank.outputMode=Output
-#                          en: Output
-enderio.gui.capBank.outputRs=Output Redstone Mode
-#                        en: Output Redstone Mode
-enderio.gui.conduit.button.clear=
-#                            en: Clear
-enderio.gui.conduit.button.merge=
-#                            en: Merge
-enderio.gui.conduit.button.show=
-#                           en: Show
-enderio.gui.conduit.button.snap.tooltip=
-#                                   en: Optional|If no snapshot is set,|the inventory content will|be used as filter
-enderio.gui.conduit.button.snap=
-#                           en: Snapshot
-enderio.gui.conduit.fluid.autoExtract=Auto Extract
-#                                 en: Auto Extract
-enderio.gui.conduit.fluid.blacklist=
-#                               en: Blacklist
-enderio.gui.conduit.fluid.filter=Filter
-#                            en: Filter
-enderio.gui.conduit.fluid.whitelist=
-#                               en: Whitelist
-enderio.gui.conduit.gas.autoExtract=Auto Extract
-#                               en: Auto Extract
 enderio.gui.conduit.ioMode.disabled=Disabled
 #                               en: Disabled
 enderio.gui.conduit.ioMode.inOut=In / Out
@@ -436,224 +1300,22 @@ enderio.gui.conduit.ioMode.notSet=Default
 #                             en: Default
 enderio.gui.conduit.ioMode.output=Insert
 #                             en: Insert
-enderio.gui.conduit.ioMode=Mode
-#                      en: Mode
-enderio.gui.conduit.item.blacklist=Blacklist
-#                              en: Blacklist
-enderio.gui.conduit.item.channel=Channel
-#                            en: Channel
-enderio.gui.conduit.item.damage.damage_00_00=
-#                                        en: Not Damaged
-enderio.gui.conduit.item.damage.damage_00_25=
-#                                        en: Up to 25% Damaged
-enderio.gui.conduit.item.damage.damage_00_50=
-#                                        en: Up to 50% Damaged
-enderio.gui.conduit.item.damage.damage_00_75=
-#                                        en: Up to 75% Damaged
-enderio.gui.conduit.item.damage.damage_01_00=
-#                                        en: Damaged
-enderio.gui.conduit.item.damage.damage_25_00=
-#                                        en: More than 25% Damaged
-enderio.gui.conduit.item.damage.damage_50_00=
-#                                        en: More than 50% Damaged
-enderio.gui.conduit.item.damage.damage_75_00=
-#                                        en: More than 75% Damaged
-enderio.gui.conduit.item.damage.damage_not=
-#                                      en: Cannot be Damaged
-enderio.gui.conduit.item.damage.damage_yes=
-#                                      en: Can be Damaged
-enderio.gui.conduit.item.damage.disabled=
-#                                    en: Ignore Damage
-enderio.gui.conduit.item.extractionFilter=Extract
-#                                     en: Extract
-enderio.gui.conduit.item.filterupgrade=
-#                                  en: Insert Item Filter
-enderio.gui.conduit.item.functionupgrade.line1=
-#                                          en: Possible function upgrades:
-enderio.gui.conduit.item.ignoreMetaData=Ignore Meta Data
-#                                   en: Ignore Meta Data
-enderio.gui.conduit.item.ignoreNBT=Ignore NBT Data
-#                              en: Ignore NBT Data
-enderio.gui.conduit.item.insertionFilter=Insert
-#                                    en: Insert
-enderio.gui.conduit.item.matchMetaData=Match Meta Data
-#                                  en: Match Meta Data
-enderio.gui.conduit.item.matchNBT=Match NBT Data
-#                             en: Match NBT Data
-enderio.gui.conduit.item.oreDicDisabled=Ore Dictionary Disabled
-#                                   en: Ore Dictionary Disabled
-enderio.gui.conduit.item.oreDicEnabled=Ore Dictionary Enabled
-#                                  en: Ore Dictionary Enabled
-enderio.gui.conduit.item.priority=Priority
-#                             en: Priority
-enderio.gui.conduit.item.roundRobinDisabled=Round Robin Disabled
-#                                       en: Round Robin Disabled
-enderio.gui.conduit.item.roundRobinEnabled=Round Robin Enabled
-#                                      en: Round Robin Enabled
-enderio.gui.conduit.item.selfFeedDisabled=Self Feed Disabled
-#                                     en: Self Feed Disabled
-enderio.gui.conduit.item.selfFeedEnabled=Self Feed Enabled
-#                                    en: Self Feed Enabled
-enderio.gui.conduit.item.sigCol=Signal Color
-#                           en: Signal Color
-enderio.gui.conduit.item.species.both=
-#                                 en: Match primary and secondary species
-enderio.gui.conduit.item.species.primary=
-#                                    en: Match primary species only
-enderio.gui.conduit.item.species.secondary=
-#                                      en: Match secondary species only
-enderio.gui.conduit.item.speedupgrade2=
-#                                  en: Max upgrades is 15; Max downgrades is 1
-enderio.gui.conduit.item.speedupgrade=
-#                                 en: Insert Item Conduit Speed Upgrades/Downgrade
-enderio.gui.conduit.item.stickyDisbaled=Sticky Mode Disabled
-#                                   en: Sticky Mode Disabled
-enderio.gui.conduit.item.stickyEnabled=Sticky Mode Enabled|Selected items will only|be sent to this or other|Sticky outputs.
-#                                  en: Sticky Mode Enabled|Selected items will only|be sent to this or other|Sticky outputs.
-enderio.gui.conduit.item.whitelist=Whitelist
-#                              en: Whitelist
-enderio.gui.conduit.redstone.color=Color
-#                              en: Color
-enderio.gui.conduit.redstone.signalColor=Signal Color
-#                                    en: Signal Color
-enderio.gui.conduit.redstone.signalStrengh.tooltip=Output a strong redstone signal
-#                                              en: Output a strong redstone signal
-enderio.gui.conduit.redstone.signalStrengh=Strong Signal
-#                                      en: Strong Signal
-enderio.gui.disabled=Disabled
-#                en: Disabled
-enderio.gui.enabled=활성화
-#               en: Enabled
-enderio.gui.fluid.minReq=
-#                    en: %s Required for activation
-enderio.gui.inventorySensor.control1=
-#                                en: Start when <
-enderio.gui.inventorySensor.control2=
-#                                en: Stop when >=
-enderio.gui.inventorypanel.header.crafting=
-#                                      en: Crafting grid
-enderio.gui.inventorypanel.header.return=
-#                                    en: Return area
-enderio.gui.inventorypanel.header.storage=
-#                                     en: Storage area
-enderio.gui.inventorypanel.info.filter=
-#                                  en: <filter by name>
-enderio.gui.inventorypanel.info.offline=
-#                                   en: <OFFLINE>
-enderio.gui.inventorypanel.tooltip.addrecipe.line1=
-#                                              en: Store the current crafting recipe
-enderio.gui.inventorypanel.tooltip.addrecipe.line2=
-#                                              en: A maximum of 6 recipes can be stored.
-enderio.gui.inventorypanel.tooltip.addrecipe.line3=
-#                                              en: Left clicking a stored recipe will try to put
-enderio.gui.inventorypanel.tooltip.addrecipe.line4=
-#                                              en: items for one crafting operation into the grid.
-enderio.gui.inventorypanel.tooltip.addrecipe.line5=
-#                                              en: Shift left clicking tries to fill the crafting
-enderio.gui.inventorypanel.tooltip.addrecipe.line6=
-#                                              en: grid to the maximum.
-enderio.gui.inventorypanel.tooltip.addrecipe.line7=
-#                                              en: Right click a stored recipe to delete it.
-enderio.gui.inventorypanel.tooltip.clear.line1=
-#                                          en: Clear crafting grid
-enderio.gui.inventorypanel.tooltip.clear.line2=
-#                                          en: Moves all items to the return area
-enderio.gui.inventorypanel.tooltip.filterslot.line1=
-#                                               en: Filter card slot
-enderio.gui.inventorypanel.tooltip.filterslot.line2=
-#                                               en: Place configured item filters in
-enderio.gui.inventorypanel.tooltip.filterslot.line3=
-#                                               en: here to select which items to show.
-enderio.gui.inventorypanel.tooltip.fuelTank=
-#                                       en: Nutrient Tank
-enderio.gui.inventorypanel.tooltip.itemsstored=
-#                                          en: Items Stored: %s
-enderio.gui.inventorypanel.tooltip.refill.line1=
-#                                           en: Refills the crafting grid.
-enderio.gui.inventorypanel.tooltip.refill.line2=
-#                                           en: Click to place items
-enderio.gui.inventorypanel.tooltip.refill.line3=
-#                                           en: for one crafting operation,
-enderio.gui.inventorypanel.tooltip.refill.line4=
-#                                           en: shift click to place as
-enderio.gui.inventorypanel.tooltip.refill.line5=
-#                                           en: many items as possible.
-enderio.gui.inventorypanel.tooltip.return.line1=
-#                                           en: Item return area
-enderio.gui.inventorypanel.tooltip.return.line2=
-#                                           en: Items placed here can be extracted
-enderio.gui.inventorypanel.tooltip.return.line3=
-#                                           en: by an item conduit, but will not be
-enderio.gui.inventorypanel.tooltip.return.line4=
-#                                           en: used for crafting.
-enderio.gui.inventorypanel.tooltip.return.line5=
-#                                           en: Click to change into storage area.
-enderio.gui.inventorypanel.tooltip.sort.count_down.line1=
-#                                                    en: Sort items by their quantity
-enderio.gui.inventorypanel.tooltip.sort.count_down.line2=
-#                                                    en: Starting with the highest quantity
-enderio.gui.inventorypanel.tooltip.sort.count_up.line1=
-#                                                  en: Sort items by their quantity
-enderio.gui.inventorypanel.tooltip.sort.count_up.line2=
-#                                                  en: Starting with the lonely ones
-enderio.gui.inventorypanel.tooltip.sort.mod_down.line1=
-#                                                  en: Sort items by mod ID
-enderio.gui.inventorypanel.tooltip.sort.mod_down.line2=
-#                                                  en: Items from the same mod are sorted by name
-enderio.gui.inventorypanel.tooltip.sort.mod_up.line1=
-#                                                en: Sort items by mod ID
-enderio.gui.inventorypanel.tooltip.sort.mod_up.line2=
-#                                                en: Items from the same mod are sorted by name
-enderio.gui.inventorypanel.tooltip.sort.mod_up.line3=
-#                                                en: Starting at the end of the alphabet
-enderio.gui.inventorypanel.tooltip.sort.name_down.line1=
-#                                                   en: Sort items by name
-enderio.gui.inventorypanel.tooltip.sort.name_up.line1=
-#                                                 en: Sort items by name
-enderio.gui.inventorypanel.tooltip.sort.name_up.line2=
-#                                                 en: Starting at the end of the alphabet
-enderio.gui.inventorypanel.tooltip.storage.line1=
-#                                            en: Item storage area
-enderio.gui.inventorypanel.tooltip.storage.line2=
-#                                            en: Small temporary item storage area.
-enderio.gui.inventorypanel.tooltip.storage.line3=
-#                                            en: Click to change into return area
-enderio.gui.inventorypanel.tooltip.sync.jei.line1=
-#                                             en: Text entered into filter field will be remembered.
-enderio.gui.inventorypanel.tooltip.sync.jei.line2=
-#                                             en: Text entered into JEI field will not be remembered.
-enderio.gui.inventorypanel.tooltip.sync.jei=
-#                                       en: JEI Sync
-enderio.gui.inventorypanel.tooltip.sync.nei=
-#                                       en: NEI Sync
-enderio.gui.inventorypanel.tooltip.sync=
-#                                   en: NEI/JEI Sync
-enderio.gui.machine.bufferingsingle=
-#                               en: Buffering single items
-enderio.gui.machine.bufferingstacks=
-#                               en: Buffering item stacks
-enderio.gui.machine.button.retrieveall=
-#                                  en: Retrieve all
-enderio.gui.machine.button.retrievelevel=
-#                                    en: Retrieve 1
-enderio.gui.machine.button.retrievelevels=
-#                                     en: Retrieve 10
-enderio.gui.machine.button.storeall=
-#                               en: Store all
-enderio.gui.machine.button.storelevel=
-#                                 en: Store 1
-enderio.gui.machine.button.storelevels=
-#                                  en: Store 10
+enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=??? ??
+#                                                    en: Configure IO
+enderio.gui.generic.ioMode.overlay.tooltip.visible.line2=
+#                                                    en: Shift click to reset all sides
+enderio.gui.generic.ioMode.overlay.tooltip.visible.line3=
+#                                                    en: to their default setting
+enderio.gui.generic.ioMode.overlay.tooltip=??? ??
+#                                      en: Configure IO
+enderio.gui.generic.max=
+#                   en: Max: %s
+enderio.gui.generic.progress=
+#                        en: Progress %s%%
 enderio.gui.machine.ioMode.disabled=Disabled
 #                               en: Disabled
-enderio.gui.machine.ioMode.none=없음
+enderio.gui.machine.ioMode.none=??
 #                           en: None
-enderio.gui.machine.ioMode.overlay.tooltip.visible.line1=
-#                                                    en: Shift click to reset all sides
-enderio.gui.machine.ioMode.overlay.tooltip.visible.line2=
-#                                                    en: to their default setting
-enderio.gui.machine.ioMode.overlay.tooltip=입출력 설정
-#                                      en: Configure IO
 enderio.gui.machine.ioMode.pull=Pull
 #                           en: Pull
 enderio.gui.machine.ioMode.pullPush.colored=%sPush %s/ %sPull
@@ -662,546 +1324,48 @@ enderio.gui.machine.ioMode.pullPush=Push / Pull
 #                               en: Push / Pull
 enderio.gui.machine.ioMode.push=Push
 #                           en: Push
-enderio.gui.machine.ioMode=모드 : %s
-#                      en: Mode: %s
-enderio.gui.machine.localbuffer=
-#                           en: Local Buffer
-enderio.gui.machine.percraft=
-#                        en: Per Craft
-enderio.gui.machine.poweredspawner.capture=
-#                                      en: Capture
-enderio.gui.machine.poweredspawner.spawn=
-#                                    en: Spawn
-enderio.gui.machine.receivefilter=
-#                             en: Receive Filter
-enderio.gui.machine.sendReceivebuffer=
-#                                 en: Send/Receive Buffer
-enderio.gui.machine.sendfilter=
-#                          en: Send Filter
-enderio.gui.machine.side.down=아래
-#                         en: Down
-enderio.gui.machine.side.east=동
-#                         en: East
-enderio.gui.machine.side.north=북
-#                          en: North
-enderio.gui.machine.side.south=남
-#                          en: South
-enderio.gui.machine.side.up=위
-#                       en: Up
-enderio.gui.machine.side.west=서
-#                         en: West
-enderio.gui.machine.side=방향 : %s
-#                    en: Side: %s
-enderio.gui.machine.tooltip.retrieveall=
-#                                   en: player XP levels
-enderio.gui.machine.tooltip.retrievelevel=
-#                                     en: player XP level
-enderio.gui.machine.tooltip.retrievelevels=
-#                                      en: player XP levels
-enderio.gui.machine.tooltip.storeall=
-#                                en: player XP
-enderio.gui.machine.tooltip.storelevel=
-#                                  en: level of player XP
-enderio.gui.machine.tooltip.storelevels=
-#                                   en: levels of player XP
-enderio.gui.machine.upkeep=
-#                      en: Upkeep:
-enderio.gui.machine.vat.dump.1=Dump Input Tank
-#                          en: Dump Input Tank Into Output Tank
-enderio.gui.machine.vat.dump.2=Dump Output Tank
-#                          en: Void Output Tank
-enderio.gui.machine.vat.dump.active=
-#                               en: Dumping failed, cannot put liquids into the output tank while the Vat is working
-enderio.gui.machine.vat.dump.fail=
-#                             en: Dumping failed, output tank is not empty
-enderio.gui.max=
-#           en: Max:
-enderio.gui.mjReader.conduitBuffer=Internal Buffer
-#                              en: Internal Buffer
-enderio.gui.mjReader.connectionDir=connection to the
-#                              en: connection to:
-enderio.gui.mjReader.currentRequest=Current request
-#                               en: Current request
-enderio.gui.mjReader.extractedItem=Item
-#                              en: Item
-enderio.gui.mjReader.extractedItems=Extracted items
-#                               en: Extracted items
-enderio.gui.mjReader.insertedInto=will be inserted into:
-#                             en: will be inserted into:
-enderio.gui.mjReader.itemHeading=Item Conduit
-#                            en: Item Conduit
-enderio.gui.mjReader.itemNoConnections=has no external connections
-#                                  en: has no external connections
-enderio.gui.mjReader.networkHeading=Power Network
-#                               en: Power Network
-enderio.gui.mjReader.noItem=Can not receive
-#                       en: Can not receive
-enderio.gui.mjReader.noItems=Receives no items.
-#                        en: Receives no items.
-enderio.gui.mjReader.noOutputs=has no valid outputs
-#                          en: has no valid outputs
-enderio.gui.mjReader.noPowerFromSide=cannot receive power from this side
-#                                en: cannot receive power from this side
-enderio.gui.mjReader.receiveItem1=Can receive
-#                             en: Can receive
-enderio.gui.mjReader.receiveItem2=from:
-#                             en: from:
-enderio.gui.mjReader.receiveItems=Can receive items from:
-#                             en: Can receive items from:
-enderio.gui.mjReader.requestRange=Per tick request range
-#                             en: Per tick request range
 enderio.gui.permission.denied=
 #                         en: Permission denied
-enderio.gui.powerMonitor.emit=Emit
-#                         en: Emit
-enderio.gui.powerMonitor.engineControl=엔진 설정
-#                                  en: Engine Control
-enderio.gui.powerMonitor.engineSection1=Emit signal when storage less
-#                                   en: Emit signal when storage less
-enderio.gui.powerMonitor.engineSection2=than
-#                                   en: than
-enderio.gui.powerMonitor.engineSection3=% full.
-#                                   en: % full.
-enderio.gui.powerMonitor.engineSection4=Stop when storage greater than
-#                                   en: Stop when storage greater than
-enderio.gui.powerMonitor.engineSection5=or equal to
-#                                   en: or equal to
-enderio.gui.powerMonitor.monHeading1=Conduit Storage
-#                                en: Conduit Storage
-enderio.gui.powerMonitor.monHeading2=Capacitor Bank Storage
-#                                en: Capacitor Bank Storage
-enderio.gui.powerMonitor.monHeading3=Machine Buffers
-#                                en: Machine Buffers
-enderio.gui.powerMonitor.monHeading4=Average output over 5 seconds
-#                                en: Average output over 5 seconds
-enderio.gui.powerMonitor.monHeading5=Average input over 5 seconds
-#                                en: Average input over 5 seconds
-enderio.gui.powerMonitor.noNetworkError=
-#                                   en: No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
-enderio.gui.powerMonitor.of=of
-#                       en: of
-enderio.gui.progress=
-#                en: Progress {0,number}%
-enderio.gui.receive=수신
-#               en: Receive
-enderio.gui.send=발신
-#            en: Send
-enderio.gui.sendReceive=수신 & 발신
-#                   en: Send & Receive
-enderio.gui.simple.in=
-#                 en: Max In:
-enderio.gui.simple.out=
-#                  en: Max Out:
-enderio.gui.spawnGurad.hideRange=
-#                            en: Hide Range
-enderio.gui.spawnGurad.range=Range:
-#                        en: Range:
-enderio.gui.spawnGurad.showRange=Show Range
-#                            en: Show Range
-enderio.gui.telepad.blocked=
-#                       en: Teleport Blocked!
-enderio.gui.telepad.configure.telepad=
-#                                 en: Telepad Settings
-enderio.gui.telepad.configure.travel=
-#                                en: Travel Settings
-enderio.gui.telepad.teleport=
-#                        en: Teleport!
-enderio.gui.tooltip.redstoneControlMode.ignore=언제나 활성화
+enderio.gui.tooltip.redstoneControlMode.ignore=??? ???
 #                                          en: Always active
-enderio.gui.tooltip.redstoneControlMode.never=비활성화
+enderio.gui.tooltip.redstoneControlMode.never=????
 #                                         en: Never active
-enderio.gui.tooltip.redstoneControlMode.off=신호가 없으면 활성화
+enderio.gui.tooltip.redstoneControlMode.off=??? ??? ???
 #                                       en: Active without signal
-enderio.gui.tooltip.redstoneControlMode.on=신호가 있으면 활성화
+enderio.gui.tooltip.redstoneControlMode.on=??? ??? ???
 #                                      en: Active with signal
-enderio.gui.tooltip.redstoneControlMode=레드스톤 모드
+enderio.gui.tooltip.redstoneControlMode=???? ??
 #                                   en: Redstone Mode
-enderio.gui.tooltip.voidslot=
-#                        en: Void Slot
-enderio.gui.trans.activateChannel=Activate Channel
-#                             en: Activate Channel
-enderio.gui.trans.addChannel=Add Channel
-#                        en: Add Channel
-enderio.gui.trans.deleteChannel=Delete Channel
-#                           en: Delete Channel
-enderio.gui.trans.fluidMode=Fluid Mode
-#                       en: Fluid Mode
-enderio.gui.trans.itemMode=Item Mode
-#                      en: Item Mode
-enderio.gui.trans.powerMode=Power Mode
-#                       en: Power Mode
-enderio.gui.trans.privateChannel=Private Channel
-#                            en: Private Channel
-enderio.gui.trans.privateHeading=Private
-#                            en: Private
-enderio.gui.trans.publicChannel=Public Channel
-#                           en: Public Channel
-enderio.gui.trans.publicHeading=Public
-#                           en: Public
-enderio.gui.travelAccessable.enterCode=Access Code Required
-#                                  en: Access Code Required
-enderio.gui.travelAccessable.ok=Authorise
-#                           en: Authorise
-enderio.gui.travelAccessable.private=Private
-#                                en: Private
-enderio.gui.travelAccessable.privateBlock1=Only
-#                                      en: Only
-enderio.gui.travelAccessable.privateBlock2=may change this blocks settings.
-#                                      en: may change this blocks settings.
-enderio.gui.travelAccessable.protected=Protected
-#                                  en: Protected
-enderio.gui.travelAccessable.public=Public
-#                               en: Public
-enderio.gui.travelAccessable.skipLocked=
-#                                   en: Skipped locked anchor, use targeted teleport.
-enderio.gui.travelAccessable.skipObstructed=
-#                                       en: Skipped obstructed anchor.
-enderio.gui.travelAccessable.skipPrivate=
-#                                    en: Skipped private anchor.
-enderio.gui.travelAccessable.unauthorised=You are not allowed to access this block.
-#                                     en: You are not allowed to access this block.
-enderio.gui.vacuum.header.chest=
-#                           en: Vacuum Chest
-enderio.gui.vacuum.header.filter=
-#                            en: Item Filter
-enderio.gui.vacuum.header.range=
-#                           en: Range
-enderio.gui.vacuum.range=
-#                    en: Suction Strength
-enderio.gui.void.mode.always.desc=
-#                             en: Void slot accepts all items
-enderio.gui.void.mode.always=
-#                        en: Always
-enderio.gui.void.mode.if_not_container.desc=
-#                                       en: Void slot accepts all items that are not fluid containers
-enderio.gui.void.mode.if_not_container=
-#                                  en: If Not Container
-enderio.gui.void.mode.never.desc=
-#                            en: Void slot does not accept items
-enderio.gui.void.mode.never=
-#                       en: Never
-enderio.gui.void.mode=
-#                 en: Void Mode
-enderio.gui.weather.requiredfluid=
-#                             en: Required Fluid: %s mB
-enderio.gui.weather.task.clear=
-#                          en: Clear Weather
-enderio.gui.weather.task.rain=
-#                         en: Rainy Weather
-enderio.gui.weather.task.storm=
-#                          en: Thunderstorm
-enderio.item.itemConduitFacade.tooltip.notpainted=
-#                                             en: Not Painted
-enderio.item.itemExistingItemFilter.filterNotUpdated=
-#                                                en: The snapshot already covers all items in the inventory
-enderio.item.itemExistingItemFilter.filterUpdated=
-#                                             en: New items have been added to the snapshot
-enderio.itemConduitFilterUpgrade.clearConfigMethod=조합창에 올려놓아 설정을 초기화할 수 있습니다.
+enderio.itemConduitFilterUpgrade.clearConfigMethod=???? ???? ??? ???? ? ????.
 #                                              en: %sPlace in crafting grid to clear
-enderio.itemConduitFilterUpgrade.clearConfigWarning=모든 필터 설정이 초기화됩니다!
+enderio.itemConduitFilterUpgrade.clearConfigWarning=?? ?? ??? ??????!
 #                                               en: %sThis will clear all stored filter settings!
-enderio.itemConduitFilterUpgrade.configured=설정
+enderio.itemConduitFilterUpgrade.configured=??
 #                                       en: %sConfigured
-enderio.itemConduitFilterUpgrade=아이템 컨두잇용 업그레이드
+enderio.itemConduitFilterUpgrade=??? ???? ?????
 #                            en: Upgrade for item conduits
-enderio.itemGasConduit.name=기체 컨두잇
-#                       en: Gas Conduit
-enderio.itemGasConduit.tooltip.detailed.line1=메탈러지 호환 기체 전송
-#                                         en: Transfers Mekanism-compatible gases
-enderio.itemGasConduit.tooltip.maxExtract=최대 추출량:
-#                                     en: Max Extract:
-enderio.itemGasConduit.tooltip.maxIo=최대 유량:
-#                                en: Max IO:
-enderio.itemItemConduit.name=Item Conduit
-#                        en: Item Conduit
-enderio.itemLiquidConduit.lockedType=액체 종류 제한
-#                                en: Fluid type locked to
-enderio.itemLiquidConduit.lockedWaila=
-#                                 en: Locked to
-enderio.itemLiquidConduit.name=액체 컨두잇
-#                          en: Fluid Conduit
-enderio.itemLiquidConduit.tooltip.detailed.line1=액체의 흐름은 중력을 따릅니다.
-#                                            en: Fluid flow respects gravity
-enderio.itemLiquidConduit.tooltip.detailed.line2=유량은 액체의 점성에 따라
-#                                            en: Flow rate dependent on fluid
-enderio.itemLiquidConduit.tooltip.detailed.line3=다를 수 있습니다.
-#                                            en: viscosity
-enderio.itemLiquidConduit.tooltip.maxExtract=최대 추출량:
-#                                        en: Max Extract:
-enderio.itemLiquidConduit.tooltip.maxIo=최대 유량:
-#                                   en: Max IO:
-enderio.itemLiquidConduit.unlockedType=액체 종류 제한 해제
-#                                  en: Fluid type unlocked
-enderio.itemLiquidConduitAdvanced.name=가압식 액체 컨두잇
-#                                  en: Pressurized Fluid Conduit
-enderio.itemLiquidConduitEnder.name=엔더식 액체 컨두잇
-#                               en: Ender Fluid Conduit
-enderio.itemLiquidConduitEnder.tooltip.detailed.line1=액체를 순간이동시킵니다.
-#                                                 en: Instant fluid teleportation
-enderio.itemLiquidConduitEnder.tooltip.detailed.line2=서로 다른 액체들을 하나의
-#                                                 en: allows multiple fluids to be
-enderio.itemLiquidConduitEnder.tooltip.detailed.line3=수송관만으로 수송할 수 있습니다.
-#                                                 en: transported on the same line
-enderio.itemMEConduit.channelsUsed=
-#                              en: {0,number} of {1,number} Channels
-enderio.itemMEConduit.name=ME 컨두잇
-#                      en: ME Conduit
-enderio.itemMEConduitDense.name=밀집된 ME 컨두잇
-#                           en: Dense ME Conduit
-enderio.itemOCConduit.name=
-#                      en: Network Conduit (OC)
-enderio.itemPowerConduit.name=에너지 컨두잇
-#                         en: Energy Conduit
-enderio.itemPowerConduitEnder.name=엔더식 에너지 컨두잇
-#                              en: Ender Energy Conduit
-enderio.itemPowerConduitEnhanced.name=고급 에너지 컨두잇
-#                                 en: Enhanced Energy Conduit
-enderio.itemRedstoneConduitInsulated.name=절연 레드스톤 컨두잇
-#                                     en: Redstone Conduit
-enderio.keybind.fovminus=
-#                    en: Camera: Zoom in (creative only)
-enderio.keybind.fovminusfast=
-#                        en: Camera: Zoom in fast (creative only)
-enderio.keybind.fovplus=
-#                   en: Camera: Zoom out (creative only)
-enderio.keybind.fovplusfast=
-#                       en: Camera: Zoom out fast (creative only)
-enderio.keybind.fovreset=
-#                    en: Camera: Reset Zoom (creative only)
-enderio.keybind.glidertoggle=
-#                        en: Glider/Elytra Toggle
-enderio.keybind.gogglesofrevealing=
-#                              en: Goggles of Revealing
-enderio.keybind.jump=
-#                en: Jump
-enderio.keybind.magnet=
-#                  en: Toggle Electromagnet
-enderio.keybind.nightvision=
-#                       en: Night Vision
-enderio.keybind.soundlocator=
-#                        en: Sound Locator
-enderio.keybind.speed=
-#                 en: Speed
-enderio.keybind.stepassist=
-#                      en: Step Assist
-enderio.keybind.top=
-#               en: Toggle The One Probe (Helmet Upgrade)
-enderio.keybind.yetawrenchmode=
-#                          en: Yeta Wrench Mode
-enderio.killerJoe.fuelTank=영양 증류액 저장고
-#                      en: Nutrient Tank
-enderio.killerJoe.giveXp.tooltip=경험치를 가져간다
-#                            en: Take XP
-enderio.killerJoe.giveXp10.tooltip=10레벨분의 경험치를 가져간다
-#                              en: Take 10 Levels of XP
-enderio.lightBlocker=
-#                en: Blocks Light
-enderio.lightEmitter=빛을 발합니다.
-#                en: Emits Light
-enderio.loot.capacitor.aa=
-#                     en: Hiding %s
-enderio.loot.capacitor.area=
-#                       en: Big %s
-enderio.loot.capacitor.baselevel.10=
-#                               en: %s Dud
-enderio.loot.capacitor.baselevel.15=
-#                               en: %s
-enderio.loot.capacitor.baselevel.25=
-#                               en: Enhanced %s
-enderio.loot.capacitor.baselevel.35=
-#                               en: Wonder %s
-enderio.loot.capacitor.baselevel.45=
-#                               en: Impossible %s
-enderio.loot.capacitor.buffer=
-#                         en: Insatiable %s
-enderio.loot.capacitor.cleancut=
-#                           en: Clean Cut %s
-enderio.loot.capacitor.crafting=
-#                           en: Crafty %s
-enderio.loot.capacitor.crushed=
-#                          en: Crushed %s
-enderio.loot.capacitor.entry.0=
-#                          en: An attached note describes this as "%s"
-enderio.loot.capacitor.entry.1=
-#                          en: You can decipher ancient runes that translate roughly as "%s". Odd...
-enderio.loot.capacitor.entry.2=
-#                          en: By the power of Enderskull, I have the %s!
-enderio.loot.capacitor.entry.3=
-#                          en: If you had to describe this, "%s" would be a good name.
-enderio.loot.capacitor.entry.4=
-#                          en: If you had to describe this, "%s" would be a bad name.
-enderio.loot.capacitor.entry.5=
-#                          en: This "%s" is the property of Randalf the Tinkerer. Unauthorized removal is unauthorized!
-enderio.loot.capacitor.entry.6=
-#                          en: This "%s" is the property of Randalf the Ex-Tinkerer. Unauthorized removal is welcome!
-enderio.loot.capacitor.entry.7=
-#                          en: Your "%s" can now be upgraded free of charge to "Capacitor 1". Press ok or abort to do so.
-enderio.loot.capacitor.entry.count=
-#                              en: 8
-enderio.loot.capacitor.green=
-#                        en: Planting %s
-enderio.loot.capacitor.intake=
-#                         en: Hungry %s
-enderio.loot.capacitor.level.10=
-#                           en: Failed %s
-enderio.loot.capacitor.level.15=
-#                           en: Simple %s
-enderio.loot.capacitor.level.25=
-#                           en: Nice %s
-enderio.loot.capacitor.level.30=
-#                           en: Good %s
-enderio.loot.capacitor.level.35=
-#                           en: Enhanced %s
-enderio.loot.capacitor.level.40=
-#                           en: Premium %s
-enderio.loot.capacitor.level.42=
-#                           en: Incredibly %s
-enderio.loot.capacitor.level.45=
-#                           en: Unstable %s
-enderio.loot.capacitor.mobby=
-#                        en: Villainous %s
-enderio.loot.capacitor.red=
-#                      en: Hot %s
-enderio.loot.capacitor.smelting=
-#                           en: Smelting %s
-enderio.loot.capacitor.tight=
-#                        en: Tight %s
-enderio.loot.capacitor.title.0=
-#                          en: Remarkable Capacitor
-enderio.loot.capacitor.title.10=
-#                           en: A Mystery wrapped in tin foil
-enderio.loot.capacitor.title.11=
-#                           en: Something wonderful
-enderio.loot.capacitor.title.12=
-#                           en: A Capacitor. Maybe
-enderio.loot.capacitor.title.13=
-#                           en: Heaven Cent
-enderio.loot.capacitor.title.14=
-#                           en: Don't turn it on, take it apart!
-enderio.loot.capacitor.title.1=
-#                          en: Unremarkable Capacitor
-enderio.loot.capacitor.title.2=
-#                          en: Found Capacitor
-enderio.loot.capacitor.title.3=
-#                          en: Lost Capacitor
-enderio.loot.capacitor.title.4=
-#                          en: Ancient Capacitor
-enderio.loot.capacitor.title.5=
-#                          en: Magic Capacitor
-enderio.loot.capacitor.title.6=
-#                          en: Capacitor of Holding
-enderio.loot.capacitor.title.7=
-#                          en: Capacitor of the Southern Winds
-enderio.loot.capacitor.title.8=
-#                          en: Capacitor of What is This Doing Here
-enderio.loot.capacitor.title.9=
-#                          en: Modified Power Holding Device
-enderio.loot.capacitor.title.count=
-#                              en: 15
-enderio.machine.tooltip.clearConfig=모든 정보가 초기화됨니다!
-#                               en: This will clear all stored info!
-enderio.machine.tooltip.configured=(설정됨)
+enderio.machine.tooltip.configured=(???)
 #                              en: %s (Configured)
-enderio.machine.tooltip.upgrade.tooltip.detailed.line1=기계의 에너지 저장량과
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=??? ??? ????
 #                                                  en: Increases energy storage and speed / range of machines
-enderio.machine.tooltip.upgrade=기계 업그레이드
+enderio.machine.tooltip.upgrade=?? ?????
 #                           en: Machine Upgrade
-enderio.maxSolorProduction=Max Output
-#                      en: Max Output
-enderio.nei.alloysmelter=
-#                    en: Alloy Smelter
-enderio.nei.enchanter=
-#                 en: Enchanter
-enderio.nei.sagmill.outputchance=
-#                            en: Chance: {0,choice,0#'<1'|0<{0,number}}%
-enderio.nei.sagmill=
-#               en: SAG Mill
-enderio.nei.slicensplice=
-#                    en: Slice'N'Splice
-enderio.nei.soulbinder=
-#                  en: Soul Binder
-enderio.nei.vat=
-#           en: Vat
-enderio.painter.tooltip.wasPainted=§oWhat did you think that would do?
-#                              en: §oWhat did you think that would do?
-enderio.power.maxOutput=Max Output
-#                   en: Max Output
-enderio.power.rf=RF
-#            en: RF
-enderio.power.tick=/t
-#              en: /t
-enderio.power.tmb=
-#             en: t/mB
-enderio.remoteinv.chat.error=
-#                        en: ERROR: Technical error, see log
-enderio.remoteinv.chat.invalidtarget=
-#                                en: ERROR: Target does not exist
-enderio.remoteinv.chat.invalidtargetworld=
-#                                     en: ERROR: Target in unaccessible dimension
-enderio.remoteinv.chat.notarget=
-#                           en: ERROR: No target
-enderio.remoteinv.chat.notloaded=
-#                            en: ERROR: Target is not loaded
-enderio.remoteinv.chat.outoffluid=
-#                             en: ERROR: Out of {FLUIDNAME}
-enderio.remoteinv.chat.outofpower=
-#                             en: ERROR: Out of power
-enderio.remoteinv.chat.outofrange=
-#                             en: ERROR: Out of range
-enderio.remoteinv.chat.set=
-#                      en: Target set
+enderio.power.format.of=
+#                   en: %s / %s �I
+enderio.power.format.pertick=
+#                        en: %s �I/t
+enderio.power.format=
+#                en: %s �I
+enderio.recipe.tooltip.clearConfig=
+#                              en: �c�oThis will clear all stored info!
 enderio.soulvial.blacklisted.denied=
-#                               en: Permission denied - this entity is blacklisted
+#                               en: Permission �cdenied�r - this entity is blacklisted
 enderio.soulvial.denied=
-#                   en: Permission denied
+#                   en: Permission �cdenied�r!
 enderio.soulvial.owned.denied=
-#                         en: Permission denied - only owners may pick up owned animals
+#                         en: Permission �cdenied�r - only owners may pick up owned animals
 enderio.soulvial.player.denied=
-#                          en: No! How would you feel if you had to play this game from inside a bottle?
-enderio.spawner.note.areaFull=
-#                         en: Too many mobs
-enderio.spawner.note.badSoul=
-#                        en: Bad soul, cannot create entity
-enderio.spawner.note.noLocationAtAll=
-#                                en: No viable space
-enderio.spawner.note.noLocationFound=
-#                                en: No space found
-enderio.spawner.note.noPlayer=
-#                         en: No player in range
-enderio.stirlingGenerator.burnRate=Burn Rate:
-#                              en: Burn Rate: %s%%
-enderio.stirlingGenerator.output=Generating:
-#                            en: Generating: %s
-enderio.stirlingGenerator.remaining=
-#                               en: Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
-enderio.stirlingGenerator.upgrades=
-#                              en: {0} gives {2}{1,number,#.#}x{3} efficiency
-enderio.stirlingGenerator.upgradeslot=
-#                                 en: Upgrade slot
-enderio.tank.tank=탱크
-#             en: Tank
-enderio.tile.blockPoweredSpawner.tooltip.none=없음
-#                                         en: None
-enderio.tooltip.anvilupgrades=
-#                         en: Anvil Upgrades:
-enderio.tooltip.burntime=
-#                    en: Burn Time: {0,number}
-enderio.tooltip.efficiency=효율
-#                      en: Efficiency
-enderio.tooltip.fluidStored=저장된 유체:
-#                       en: Fluid Stored
-enderio.tooltip.isBeaconBase=신호기에 사용 가능
-#                        en: Can be used as beacon base
-enderio.tooltip.meta=
-#                en: Meta:
-enderio.tooltip.none=없음
-#                en: None
-enderio.tooltip.oredict=
-#                   en: Ore Dictionary:
-enderio.tooltip.sunlightBlocked=
-#                           en: Sky Blocked!
-enderio.tooltip.uid=
-#               en: UID:
+#                          en: �cNo!$r How would you feel if you had to play this game from inside a bottle?
 enderio.top.action.header=
 #                     en: %s:
 enderio.top.action.none=
@@ -1256,226 +1420,28 @@ enderio.top.tank.header.output=
 #                          en: Output Tank: %s
 enderio.top.tank.header.storage=
 #                           en: %s
-enderio.trans.fluid=유체
-#               en: Fluid
-enderio.trans.item=Item
-#              en: Item
-enderio.trans.power=전력
-#               en: Power
-enderio.trans.rail=
-#              en: Rail
-enderio.trans.receiving=수신
-#                   en: Receiving
-enderio.trans.sending=송신
-#                 en: Sending
-enderio.trans.showChannels=채널을 보기 위해서는 앉으세요
-#                      en: <Shift to show channels>
-enderio.vat.inputTank=Input Tank
-#                 en: Input Tank
-enderio.vat.outputTank=Output Tank
-#                  en: Output Tank
-enderio.waila.config.hiddenfacades=
-#                              en: Sneaky Facades
-enderio.weatherObelisk.fuelTank=
-#                           en: Barometric Flux Tank
 enderio.wrench.permission.denied=
-#                            en: Permission denied
-enderio.zombieGenerator.fuelTank=영양 증류액 저장고
-#                            en: Nutrient Tank
-entity.ZombieVillager.name=
-#                      en: Zombie Villager
-entity.witherSkeleton.name=
-#                      en: Wither Skeleton
+#                            en: Permission �cdenied�r!
 fluid.cloud_seed=
 #            en: Cloud Seed
 fluid.cloud_seed_concentrated=
 #                         en: Concentrated Cloud Seed
-fluid.conductiveiron=
-#                en: Molten Conductive Iron
-fluid.darksteel=
-#           en: Molten Dark Steel
-fluid.electricalsteel=
-#                 en: Molten Electrical Steel
-fluid.ender=
-#       en: Liquidfied Ender Pearls
 fluid.ender_distillation=
 #                    en: Dew of the Void
-fluid.energeticalloy=
-#                en: Molten Energetic Alloy
-fluid.fire_water=화염수
+fluid.fire_water=???
 #            en: Fire Water
-fluid.glowstone=
-#           en: Glowgas
-fluid.hootch=독주
+fluid.hootch=??
 #        en: Hootch
 fluid.liquid_sunshine=
 #                 en: Liquid Sunshine
-fluid.nutrient_distillation=근처의 몹을 죽여줍니다.
+fluid.nutrient_distillation=??? ?? ?????.
 #                       en: Nutrient Distillation
-fluid.pulsatingiron=
-#               en: Molten Pulsating Iron
-fluid.redstone=
-#          en: Molten Redstone
-fluid.redstonealloy=
-#               en: Molten Redstone Alloy
-fluid.rocket_fuel=로켓 연료
+fluid.rocket_fuel=?? ??
 #             en: Rocket Fuel
-fluid.soularium=
-#           en: Molten Soularium
 fluid.vapor_of_levity=
 #                 en: Vapor of Levity
-fluid.vibrantalloy=
-#              en: Molten Vibrant Alloy
-fluid.xpjuice=액체 XP
+fluid.xpjuice=?? XP
 #         en: Liquid XP
-item.enderio.itemEnderface.name=엔더 얼굴
-#                           en: Enderface
-item.itemElectricLight.name=전등
-#                       en: Powered Light
-item.itemElectricLight.tooltip.detailed.line1=전력을 받으면
-#                                         en: Lights a large area when supplied with
-item.itemElectricLight.tooltip.detailed.line2=넓은 공간을 밝혀 줍니다.
-#                                         en: power and a redstone signal.
-item.itemElectricLightInverted.name=전등 (역신호)
-#                               en: Powered Light (Inverted)
-item.itemElectricLightInverted.tooltip.detailed.line1=전력을 받으면
-#                                                 en: Lights a large area when supplied with
-item.itemElectricLightInverted.tooltip.detailed.line2=넓은 공간을 밝혀 줍니다.
-#                                                 en: power.
-item.itemElectricLightInverted.tooltip.detailed.line3=레드스톤 신호로 끌 수 있습니다.
-#                                                 en: Turn off with a redstone signal.
-item.itemExistingItemFilter.name=사용중인 아이템 필터
-#                            en: Existing Item Filter
-item.itemExistingItemFilter.tooltip.basic.line1=아이템 컨두잇용 업그레이드
-#                                           en: Upgrade for item conduits
-item.itemExistingItemFilter.tooltip.detailed.line1=이미 인벤토리에 있는
-#                                              en: Selects only items already
-item.itemExistingItemFilter.tooltip.detailed.line2=아이템만을 설정합니다.
-#                                              en: in the inventory
-item.itemExistingItemFilter.tooltip.detailed.line3=
-#                                              en: Right click while sneaking
-item.itemExistingItemFilter.tooltip.detailed.line4=
-#                                              en: on an inventory to add the
-item.itemExistingItemFilter.tooltip.detailed.line5=
-#                                              en: content to the snapshot
-item.itemExtractSpeedDowngrade.name=
-#                               en: Item Conduit Speed Downgrade
-item.itemExtractSpeedDowngrade.tooltip.basic.line1=
-#                                              en: Downgrade for item conduits
-item.itemExtractSpeedDowngrade.tooltip.detailed.line1=
-#                                                 en: Reduces speed to 1
-item.itemExtractSpeedDowngrade.tooltip.detailed.line2=
-#                                                 en: item per extraction
-item.itemExtractSpeedUpgrade.name=아이템 컨두잇 속도 업그레이드
-#                             en: Item Conduit Speed Upgrade
-item.itemExtractSpeedUpgrade.tooltip.basic.line1=아이템 컨두잇용 업그레이드
-#                                            en: Upgrade for item conduits
-item.itemExtractSpeedUpgrade.tooltip.detailed.line1=한 번 추출될 때 추출되는 아이템 수를
-#                                               en: Increases speed by 4
-item.itemExtractSpeedUpgrade.tooltip.detailed.line2=업그레이드 1개당 4개씩 늘려줍니다.
-#                                               en: items per extraction
-item.itemExtractSpeedUpgrade.tooltip.detailed.line3=최대 15개까지 넣을 수 있습니다.
-#                                               en: Max upgrades is 15
-item.itemInventoryPanelUpgrade.name=
-#                               en: Remote Awareness Upgrade
-item.itemInventoryPanelUpgrade.tooltip.basic.line1=
-#                                              en: Inventory Panel Remote Awareness
-item.itemInventoryPanelUpgrade.tooltip.detailed.line1=
-#                                                 en: Function upgrade for item conduits
-item.itemInventoryPanelUpgrade.tooltip.detailed.line2=
-#                                                 en: Allows Inventory Panels attached
-item.itemInventoryPanelUpgrade.tooltip.detailed.line3=
-#                                                 en: to this network to see and extract
-item.itemInventoryPanelUpgrade.tooltip.detailed.line4=
-#                                                 en: items from this inventory independent
-item.itemInventoryPanelUpgrade.tooltip.detailed.line5=
-#                                                 en: of the conduit mode.
-item.itemInventoryPanelUpgrade.tooltip.detailed.line6=
-#                                                 en: (No need to set the conduit to extract)
-item.itemLight.name=등
-#               en: Light
-item.itemLight.tooltip.detailed.line1=레드스톤 신호를 받으면
-#                                 en: Emits light with a
-item.itemLight.tooltip.detailed.line2=빛을 발합니다.
-#                                 en: redstone signal.
-item.itemLightInverted.name=등 (역신호)
-#                       en: Light (Inverted)
-item.itemLightInverted.tooltip.detailed.line1=빛을 발합니다.
-#                                         en: Emits light, disable with
-item.itemLightInverted.tooltip.detailed.line2=레드스톤 신호로 끌 수 있습니다.
-#                                         en: a redstone signal.
-item.itemLocationPrintout.chat.addTarget=
-#                                    en: Added target
-item.itemLocationPrintout.chat.noPaper=
-#                                  en: No Paper in Inventory
-item.itemLocationPrintout.chat.setTarget=
-#                                    en: Target set to
-item.itemLocationPrintout.name=
-#                          en: Location Printout
-item.itemLocationPrintout.tooltip.detailed.line1=
-#                                            en: Created using the Coordinate Selector
-item.itemLocationPrintout.tooltip.detailed.line2=
-#                                            en: Used to add destinations to a Telepad
-item.itemModItemFilter.name=아이템 필터 모드
-#                       en: Mod Item Filter
-item.itemModItemFilter.tooltip.basic.line1=아이템 컨두잇용 업그레이드
-#                                      en: Upgrade for item conduits
-item.itemModItemFilter.tooltip.detailed.line1=특정한 모드의
-#                                         en: Selects only items for a specified
-item.itemModItemFilter.tooltip.detailed.line2=아이템만을 설정합니다.
-#                                         en: mod/s
-item.itemPowerItemFilter.name=
-#                         en: Chargeable Item Filter
-item.itemPowerItemFilter.tooltip.basic.line1=아이템 컨두잇용 업그레이드
-#                                        en: Upgrade for item conduits
-item.itemPowerItemFilter.tooltip.detailed.line1=
-#                                           en: Filters chargeable items based on
-item.itemPowerItemFilter.tooltip.detailed.line2=
-#                                           en: how much RF they have stored
-item.itemRemoteInvAccessadvanced.name=
-#                                 en: Advanced Inventory Panel Remote
-item.itemRemoteInvAccessadvanced.tooltip.detailed.line1=
-#                                                   en: Allows you to access an Inventory Panel from anywhere in the same dimension.
-item.itemRemoteInvAccessadvanced.tooltip.detailed.line2=
-#                                                   en: Crouch-Right-Click a panel to bind the remote to it.
-item.itemRemoteInvAccessadvanced.tooltip.detailed.line3=
-#                                                   en: Uses {FLUIDNAME} to open a connection and RF to keep it open.
-item.itemRemoteInvAccessbasic.name=
-#                              en: Inventory Panel Remote
-item.itemRemoteInvAccessbasic.tooltip.detailed.line1=
-#                                                en: Allows you to access an Inventory Panel from up to 5 chunks away.
-item.itemRemoteInvAccessbasic.tooltip.detailed.line2=
-#                                                en: Crouch-Right-Click a panel to bind the remote to it.
-item.itemRemoteInvAccessbasic.tooltip.detailed.line3=
-#                                                en: Uses {FLUIDNAME} to open a connection and RF to keep it open.
-item.itemRemoteInvAccessender.name=
-#                              en: Ender Inventory Panel Remote
-item.itemRemoteInvAccessender.tooltip.detailed.line1=
-#                                                en: Allows you to access an Inventory Panel from anywhere.
-item.itemRemoteInvAccessender.tooltip.detailed.line2=
-#                                                en: Crouch-Right-Click a panel to bind the remote to it.
-item.itemRemoteInvAccessender.tooltip.detailed.line3=
-#                                                en: Uses {FLUIDNAME} to open a connection and RF to keep it open.
-item.itemSpawnEggEnderIO.name=스폰
-#                         en: Spawn
-item.itemWirelessLight.name=무선 전등
-#                       en: Wireless Powered Light
-item.itemWirelessLight.tooltip.detailed.line1=전력을 받으면
-#                                         en: Lights a large area when supplied with
-item.itemWirelessLight.tooltip.detailed.line2=넓은 공간을 밝혀 줍니다.
-#                                         en: power and a redstone signal.
-item.itemWirelessLight.tooltip.detailed.line3=무선 충전기로부터 전력을 받을 수 있습니다.
-#                                         en: Can receive power from wireless chargers.
-item.itemWirelessLightInverted.name=무선 전등 (역신호)
-#                               en: Wireless Powered Light (Inverted)
-item.itemWirelessLightInverted.tooltip.detailed.line1=전력을 받으면
-#                                                 en: Lights a large area when supplied with
-item.itemWirelessLightInverted.tooltip.detailed.line2=넓은 공간을 밝혀 줍니다.
-#                                                 en: power.
-item.itemWirelessLightInverted.tooltip.detailed.line3=레드스톤 신호로 끌 수 있습니다.
-#                                                 en: Turn off with a redstone signal.
-item.itemWirelessLightInverted.tooltip.detailed.line4=무선 충전기로부터 전력을 받을 수 있습니다.
-#                                                 en: Can receive power from wireless chargers.
 item.item_alloy_ingot_conductive_iron.name=
 #                                      en: Conductive Iron Ingot
 item.item_alloy_ingot_dark_steel.name=
@@ -1506,19 +1472,19 @@ item.item_alloy_nugget_redstone_alloy.name=
 #                                      en: Redstone Alloy Nugget
 item.item_alloy_nugget_soularium.name=
 #                                 en: Soularium Nugget
-item.item_alloy_nugget_vibrant_alloy.name=진동성 조각
+item.item_alloy_nugget_vibrant_alloy.name=??? ??
 #                                     en: Vibrant Alloy Nugget
-item.item_basic_capacitor.activated.name=이중 축전지
+item.item_basic_capacitor.activated.name=?? ???
 #                                    en: Double-Layer Capacitor
-item.item_basic_capacitor.basic.name=기본 축전지
+item.item_basic_capacitor.basic.name=?? ???
 #                                en: Basic Capacitor
-item.item_basic_capacitor.ender.name=팔중 축전지
+item.item_basic_capacitor.ender.name=?? ???
 #                                en: Octadic Capacitor
-item.item_broken_spawner.name=부서진 스포너
+item.item_broken_spawner.name=??? ???
 #                         en: Broken Spawner
-item.item_broken_spawner.tooltip.detailed.line1=모루에서 전동 스포너와 합쳐
+item.item_broken_spawner.tooltip.detailed.line1=???? ?? ???? ??
 #                                           en: Combine with a Powered Spawner
-item.item_broken_spawner.tooltip.detailed.line2=몹 종류를 설정하세요.
+item.item_broken_spawner.tooltip.detailed.line2=? ??? ?????.
 #                                           en: in an Anvil to set spawn type
 item.item_cold_fire_igniter.chat.outoffluid=
 #                                       en: ERROR: Out of %s
@@ -1586,28 +1552,28 @@ item.item_dark_steel_armor.tooltip.levelcost.line2=
 #                                              en: %s%s  %s + %s levels
 item.item_dark_steel_armor.tooltip.line1=
 #                                    en: %sDiamond level protection when powered
-item.item_dark_steel_axe.name=암흑의 도끼
+item.item_dark_steel_axe.name=??? ??
 #                         en: Dark Axe
 item.item_dark_steel_axe.tooltip.effPowered=
 #                                       en: %sEfficiency when powered: %s
-item.item_dark_steel_axe.tooltip.multiHarvest=앉아서 사용하면 원목 여러 개를 채굴 가능합니다.
+item.item_dark_steel_axe.tooltip.multiHarvest=??? ???? ?? ?? ?? ?? ?????.
 #                                         en: Sneak to harvest multiple logs
-item.item_dark_steel_boots.name=암흑의 전투화
+item.item_dark_steel_boots.name=??? ???
 #                           en: Dark Boots
 item.item_dark_steel_boots.tooltip.line1=
 #                                    en: Fall damage negated when powered
 item.item_dark_steel_bow.name=
 #                         en: Dark Bow
-item.item_dark_steel_chestplate.name=암흑의 흉패
+item.item_dark_steel_chestplate.name=??? ??
 #                                en: Dark Plate
-item.item_dark_steel_helmet.name=암흑의 투구
+item.item_dark_steel_helmet.name=??? ??
 #                            en: Dark Helm
-item.item_dark_steel_leggings.name=암흑의 바지
+item.item_dark_steel_leggings.name=??? ??
 #                              en: Dark Leggings
-item.item_dark_steel_pickaxe.name=암흑의 곡괭이
+item.item_dark_steel_pickaxe.name=??? ???
 #                             en: Dark Pick
 item.item_dark_steel_pickaxe.tooltip.cost=
-#                                     en: %s (%s %s %s)
+#                                     en: %s     (cost %s)
 item.item_dark_steel_pickaxe.tooltip.effObs=
 #                                       en: %s+%s Efficiency breaking obsidian
 item.item_dark_steel_pickaxe.tooltip.effPowered=
@@ -1618,9 +1584,9 @@ item.item_dark_steel_shears.tooltip.effPowered=
 #                                          en: %sEfficiency when powered: %s
 item.item_dark_steel_shears.tooltip.multiHarvest=
 #                                            en: Shears multiple blocks/sheep when empowered
-item.item_dark_steel_sword.name=디 엔더
+item.item_dark_steel_sword.name=? ??
 #                           en: The Ender
-item.item_dark_steel_sword.tooltip.detailed.line1=몹의 머리와 엔더 진주의 드랍 확률이 높아집니다.
+item.item_dark_steel_sword.tooltip.detailed.line1=?? ??? ?? ??? ?? ??? ?????.
 #                                             en: Increased skull and ender pearl drops
 item.item_dark_steel_sword.tooltip.detailed.line2=
 #                                             en: When powered: Endermen can't teleport once hit, extra Damage and Speed
@@ -1654,7 +1620,7 @@ item.item_magnet.everywhere.tooltip.detailed.line3=
 #                                              en: Must be powered, active and in the
 item.item_magnet.everywhere.tooltip.detailed.line4=
 #                                              en: inventory (or a Baubles slot) to function
-item.item_magnet.name=전자석
+item.item_magnet.name=???
 #                 en: Electromagnet
 item.item_magnet.tooltip.detailed.line1=
 #                                   en: Pulls nearby item towards you
@@ -1662,21 +1628,21 @@ item.item_magnet.tooltip.detailed.line2=
 #                                   en: Shift-R-Click to enable / disable
 item.item_magnet.tooltip.detailed.line3=
 #                                   en: Must be powered, active and in the
-item.item_magnet.tooltip.detailed.line4=활성화된 상태로 핫바에 있어야 합니다.
+item.item_magnet.tooltip.detailed.line4=???? ??? ??? ??? ???.
 #                                   en: hot bar (or a Baubles slot) to function
-item.item_material.attractor_crystal.name=매혹적인 수정
+item.item_material.attractor_crystal.name=???? ??
 #                                     en: Enticing Crystal
-item.item_material.binder_composite.name=접합제용 혼합물
+item.item_material.binder_composite.name=???? ???
 #                                    en: Binder Composite
-item.item_material.chassi_parts.name=기계 부품
+item.item_material.chassi_parts.name=?? ??
 #                                en: Machine Parts
-item.item_material.conduit_binder.name=컨두잇 접합제
+item.item_material.conduit_binder.name=??? ???
 #                                  en: Conduit Binder
-item.item_material.dark_grinding_ball.name=흑강 공
+item.item_material.dark_grinding_ball.name=?? ?
 #                                      en: Dark Steel Ball
 item.item_material.dust_wheat.name=
 #                              en: Flour
-item.item_material.ender_crystal.name=엔더 수정
+item.item_material.ender_crystal.name=?? ??
 #                                 en: Ender Crystal
 item.item_material.ender_crystal_powder.name=
 #                                        en: Grains of the End
@@ -1698,7 +1664,7 @@ item.item_material.glider_wings.tooltip.detailed.line1=
 #                                                  en: Upgrade for Dark Steel chestplate
 item.item_material.ingot_enderium_base.name=
 #                                       en: Enderium Base
-item.item_material.machine_chassi.name=기계 틀
+item.item_material.machine_chassi.name=?? ?
 #                                  en: Machine Chassis
 item.item_material.nutritious_stick.name=
 #                                    en: Nutritious Stick
@@ -1708,47 +1674,47 @@ item.item_material.plantgreen.name=
 #                              en: Clippings and Trimmings
 item.item_material.powder_ardite.name=
 #                                 en: Ardite Powder
-item.item_material.powder_coal.name=석탄 분말
+item.item_material.powder_coal.name=?? ??
 #                               en: Coal Powder
 item.item_material.powder_cobalt.name=
 #                                 en: Cobalt Powder
-item.item_material.powder_copper.name=구리 분말
+item.item_material.powder_copper.name=?? ??
 #                                 en: Copper Powder
-item.item_material.powder_ender.name=엔더 분말
+item.item_material.powder_ender.name=?? ??
 #                                en: Ender Pearl Powder
-item.item_material.powder_gold.name=금 분말
+item.item_material.powder_gold.name=? ??
 #                               en: Gold Powder
 item.item_material.powder_infinity.name=
 #                                   en: Grains of Infinity
-item.item_material.powder_iron.name=철 분말
+item.item_material.powder_iron.name=? ??
 #                               en: Iron Powder
 item.item_material.powder_obsidian.name=
 #                                   en: Obsidian Powder
-item.item_material.powder_tin.name=주석 분말
+item.item_material.powder_tin.name=?? ??
 #                              en: Tin Powder
 item.item_material.precient_crystal.name=
 #                                    en: Precient Crystal
 item.item_material.precient_powder.name=
 #                                   en: Grains of Prescience
-item.item_material.pulsating_crystal.name=맥동성 수정
+item.item_material.pulsating_crystal.name=??? ??
 #                                     en: Pulsating Crystal
 item.item_material.pulsating_powder.name=
 #                                    en: Grains of Piezallity
-item.item_material.silicon.name=실리콘
+item.item_material.silicon.name=???
 #                           en: Silicon
-item.item_material.skull_ender_resonator.name=엔더 공명기
+item.item_material.skull_ender_resonator.name=?? ???
 #                                         en: Ender Resonator
 item.item_material.skull_sentient_ender.name=
 #                                        en: Sentient Ender
 item.item_material.skull_skeletal_contractor.name=
 #                                             en: Skeletal Contractor
-item.item_material.skull_zombie_controller.name=Z-논리 제어기
+item.item_material.skull_zombie_controller.name=Z-?? ???
 #                                           en: Z-Logic Controller
-item.item_material.skull_zombie_electrode.name=좀비 전극
+item.item_material.skull_zombie_electrode.name=?? ??
 #                                          en: Zombie Electrode
-item.item_material.skull_zombie_frankenstien.name=프랑켄 좀비
+item.item_material.skull_zombie_frankenstien.name=??? ??
 #                                             en: Frank'N'Zombie
-item.item_material.vibrant_crystal.name=진동성 수정
+item.item_material.vibrant_crystal.name=??? ??
 #                                   en: Vibrant Crystal
 item.item_material.vibrant_powder.name=
 #                                  en: Grains of Vibrancy
@@ -1773,10 +1739,10 @@ item.item_rod_of_return.tooltip.detailed.line2=
 item.item_rod_of_return.tooltip.detailed.line3=
 #                                          en: Requires RF and %s
 item.item_rod_of_return.tooltip.fluid=
-#                                 en: %s/%s mB
+#                                 en: %s
 item.item_rod_of_return.tooltip.power=
-#                                 en: %s/%s %s
-item.item_soul_vial.name=영혼 병
+#                                 en: %s
+item.item_soul_vial.name=?? ?
 #                    en: Soul Vial
 item.item_soul_vial.tooltip.color=
 #                             en: Color: %s
@@ -1792,19 +1758,19 @@ item.item_soul_vial.tooltip.health=
 #                              en: Health: %s
 item.item_travel_staff.chat.notEnoughPower=
 #                                      en: Not enough power
-item.item_travel_staff.name=여행자의 지팡이
+item.item_travel_staff.name=???? ???
 #                       en: Staff of Traveling
-item.item_travel_staff.tooltip.detailed.line1=손에 쥐면 여행자의 닻과 엔더 IO가
+item.item_travel_staff.tooltip.detailed.line1=?? ?? ???? ?? ?? IO?
 #                                         en: When held Travel Anchors and EnderIO
-item.item_travel_staff.tooltip.detailed.line2=눈에 보이게 되고,
+item.item_travel_staff.tooltip.detailed.line2=?? ??? ??,
 #                                         en: blocks become visible and can be
-item.item_travel_staff.tooltip.detailed.line3=우클릭으로 작동시킬 수 있습니다.
+item.item_travel_staff.tooltip.detailed.line3=????? ???? ? ????.
 #                                         en: activated by R-Click
-item.item_travel_staff.tooltip.detailed.line4=앉은 체로 우클릭하면
+item.item_travel_staff.tooltip.detailed.line4=?? ?? ?????
 #                                         en: Shift-R-Click will teleport the
-item.item_travel_staff.tooltip.detailed.line5=플레이어를 단거리 텔레포트시킵니다.
+item.item_travel_staff.tooltip.detailed.line5=????? ??? ????????.
 #                                         en: player a short distance
-item.item_xp_transfer.name=경험치 막대
+item.item_xp_transfer.name=??? ??
 #                      en: Experience Rod
 item.item_xp_transfer.tooltip.detailed.line1=R-Click on a fluid tank containing
 #                                        en: R-Click on a fluid tank containing
@@ -1814,453 +1780,37 @@ item.item_xp_transfer.tooltip.detailed.line3=Shift-R-Click to transfer levels to
 #                                        en: Shift-R-Click to transfer levels to
 item.item_xp_transfer.tooltip.detailed.line4=the tank
 #                                        en: the tank
-item.item_yeta_wrench.name=예타 렌치
+item.item_yeta_wrench.name=?? ??
 #                      en: Yeta Wrench
-item.item_yeta_wrench.tooltip.detailed.line1=손에 쥘 시 컨두잇 덮개가 투명해집니다.
+item.item_yeta_wrench.tooltip.detailed.line1=?? ? ? ??? ??? ??????.
 #                                        en: Hides conduit facades when held
-item.item_yeta_wrench.tooltip.detailed.line2=앉은 채로 우클릭해
+item.item_yeta_wrench.tooltip.detailed.line2=?? ?? ????
 #                                        en: Shift-R-Click to break machines
-item.item_yeta_wrench.tooltip.detailed.line3=기계와 컨두잇을 즉시 해체 가능합니다.
+item.item_yeta_wrench.tooltip.detailed.line3=??? ???? ?? ?? ?????.
 #                                        en: and conduits instantly
-item.item_yeta_wrench.tooltip.detailed.line4=앉은 채로 컨두잇에 좌클릭해
+item.item_yeta_wrench.tooltip.detailed.line4=?? ?? ???? ????
 #                                        en: Shift-L-Click on a conduit to
-item.item_yeta_wrench.tooltip.detailed.line5=컨두잇 설정 GUI를 열 수 있습니다.
+item.item_yeta_wrench.tooltip.detailed.line5=??? ?? GUI? ? ? ????.
 #                                        en: open conduit settings GUI
-item.item_yeta_wrench.tooltip.detailed.line6=앉은 채로 마우스 휠을 굴리거나 Y를 눌러
+item.item_yeta_wrench.tooltip.detailed.line6=?? ?? ??? ?? ???? Y? ??
 #                                        en: Use Shift-Mouse Wheel or '%s' to
-item.item_yeta_wrench.tooltip.detailed.line7=한 종류의 컨두잇만을 보이게 할 수 있습니다.
+item.item_yeta_wrench.tooltip.detailed.line7=? ??? ????? ??? ? ? ????.
 #                                        en: render a single conduit type
-itemGroup.enderio.invalid=
-#                     en: Invalid
-itemGroup.enderio.items=
-#                   en: Ender IO Items
-itemGroup.enderio.machines=
-#                      en: Ender IO Machines
-itemGroup.enderio.main=
-#                  en: Ender IO
-itemGroup.enderio.materials=
-#                       en: Ender IO Materials
-tile.blockAlloySmelter.name=합금 제련기
-#                       en: Alloy Smelter
-tile.blockAlloySmelter.tooltip.detailed.line1=엔더 IO의 합금들을
-#                                         en: Used to create EnderIO alloys
-tile.blockAlloySmelter.tooltip.detailed.line2=만들기 위한 제련기입니다.
-#                                         en: Can also be used as a powered
-tile.blockAlloySmelter.tooltip.detailed.line3=또한 전기 화로로도 사용 가능합니다.
-#                                         en: furnace
-tile.blockAlloySmelter.tooltip.detailed.line4=축전지를 넣어 작업속도를 높이고
-#                                         en: Upgrade with capacitors to increase
-tile.blockAlloySmelter.tooltip.detailed.line5=내부 전력 저장량을 늘릴 수 있습니다.
-#                                         en: speed and energy storage
-tile.blockAttractor.name=매혹의 오벨리스크
-#                    en: Attractor Obelisk
-tile.blockAttractor.tooltip.detailed.line1=몹을 가까이로 끌어당깁니다.
-#                                      en: Draws mobs towards it
-tile.blockAttractor.tooltip.detailed.line2=장치 안에 영혼을 넣어서
-#                                      en: Specify the mobs to effect
-tile.blockAttractor.tooltip.detailed.line3=그 영혼과 같은 몹을
-#                                      en: by placing their souls
-tile.blockAttractor.tooltip.detailed.line4=끌어당기도록 지시하세요.
-#                                      en: within the device
-tile.blockBuffer.creative.name=
-#                          en: Creative Buffer
-tile.blockBuffer.item.name=
-#                      en: Item Buffer
-tile.blockBuffer.omni.name=
-#                      en: Omni Buffer
-tile.blockBuffer.power.name=
-#                       en: Power Buffer
-tile.blockCapBank.activated.name=
-#                            en: Capacitor Bank
-tile.blockCapBank.creative.name=
-#                           en: Creative Capacitor Bank
-tile.blockCapBank.simple.name=
-#                         en: Basic Capacitor Bank
-tile.blockCapBank.tooltip.detailed.line1=
-#                                    en: Multi-block energy storage.
-tile.blockCapBank.tooltip.detailed.line2=
-#                                    en: Can charge RF powered items.
-tile.blockCapBank.tooltip.detailed.line3=
-#                                    en: Shift-R-Click on a face with an empty hand
-tile.blockCapBank.tooltip.detailed.line4=
-#                                    en: to change information display
-tile.blockCapBank.tooltip.hasItems=
-#                              en: {0,number,integer} {0,choice,1#item|1<items} in inventory
-tile.blockCapBank.tooltipPrefix=내용물:
-#                           en: Contains
-tile.blockCapBank.vibrant.name=
-#                          en: Vibrant Capacitor Bank
-tile.blockCapacitorBank.creative.name=크리에이티브 축전기
-#                                 en: Creative Capacitor Bank (Deprecated)
-tile.blockCapacitorBank.name=축전기
-#                        en: Capacitor Bank (Deprecated)
-tile.blockCapacitorBank.tooltip.detailed.line1=멀티블럭 에너지 저장고입니다.
-#                                          en: Convert to new block by placing
-tile.blockCapacitorBank.tooltip.detailed.line2=RF를 사용하는 아이템들을 충전할 수 있습니다.
-#                                          en: in a crafting grid
-tile.blockCapacitorBank.tooltipPrefix=내용물:
-#                                 en: Contains
-tile.blockCombustionGenerator.name=연소 발전기
-#                              en: Combustion Generator
-tile.blockCombustionGenerator.tooltip.detailed.line1=액체 연료를 연소시켜 전력을 만들어냅니다.
-#                                                en: Burns liquid fuel to generate power
-tile.blockCombustionGenerator.tooltip.detailed.line2=냉각제(예: 물)를 필요로 합니다.
-#                                                en: Requires a coolant (e.g. water)
-tile.blockCombustionGenerator.tooltip.detailed.line3=연료 종류에 따라 출력량이 달라집니다.
-#                                                en: Output dependent on fuel
-tile.blockConduitBundle.name=Conduit Connector
-#                        en: Conduit Connector
-tile.blockCrafter.name=조합기
-#                  en: Crafter
-tile.blockCrafter.tooltip.detailed.line1=전력을 소모하는 자동 조합대입니다.
-#                                    en: A powered auto-crafter
-tile.blockCrafter.tooltip.detailed.line2=조합 시마다 전력을 소모합니다.
-#                                    en: Consumes power per operation
-tile.blockCrafter.tooltip.detailed.line3=축전지를 넣어 작업속도를 높이고
-#                                    en: Can be upgraded to increase speed
-tile.blockCrafter.tooltip.detailed.line4=내부 전력 저장량을 늘릴 수 있습니다.
-#                                    en: and energy storage with capacitors
-tile.blockDialingDevice.name=
-#                        en: Dialing Device
-tile.blockDialingDevice.tooltip.detailed.line1=
-#                                          en: Place near a Telepad
-tile.blockDialingDevice.tooltip.detailed.line2=
-#                                          en: Stores and sets destinations.
-tile.blockEnchanter.name=마법 부여기
-#                    en: Enchanter
-tile.blockEnchanter.tooltip.detailed.line1=액체 경헙치로 아이템을 합치고
-#                                      en: Uses XP to combine items
-tile.blockEnchanter.tooltip.detailed.line2=마법이 부여된 책을 만들어냅니다.
-#                                      en: and a book and quill to
-tile.blockEnchanter.tooltip.detailed.line3=
-#                                      en: created enchanted books
-tile.blockEnderRail.name=엔더 레일
-#                    en: Ender Rail
-tile.blockEnderRail.tooltip.detailed.line1=차원 송수신기 위에 놓으면
-#                                      en: Teleports minecarts when placed
-tile.blockEnderRail.tooltip.detailed.line2=마인카트를 순간이동시킵니다.
-#                                      en: on a Dimensional Transceiver
-tile.blockEnderRail.tooltip.detailed.line3=차원 송수신기의 레일 탭에서
-#                                      en: Set destinations using the
-tile.blockEnderRail.tooltip.detailed.line4=목적지를 선택하시기 바랍니다.
-#                                      en: Transceiver's rail tab
-tile.blockEnderRail.tooltip.detailed.line5=앉은 채로 렌치로 우클릭해
-#                                      en: Set direction with a Shift-R-Click
-tile.blockEnderRail.tooltip.detailed.line6=방향을 바꾼 수 있습니다.
-#                                      en: of a wrench
-tile.blockExperienceObelisk.name=경험의 오벨리스크
-#                            en: Experience Obelisk
-tile.blockExperienceObelisk.tooltip.detailed.line1=유체 탱크 위에 설치할 시
-#                                              en: Stores Experience
-tile.blockExperienceObelisk.tooltip.detailed.line2=우클릭으로 저장된 경험치를 꺼낼 수 있습니다.
-#                                              en: Can output liquid XP to
-tile.blockExperienceObelisk.tooltip.detailed.line3=빈 손으로 앉아서 우클릭해
-#                                              en: adjacent tanks
-tile.blockFarmStation.name=농장 운영소
-#                      en: Farming Station
-tile.blockFarmStation.tooltip.detailed.line1=작물을 심고 수확합니다.
-#                                        en: Plants and harvests crops
-tile.blockFarmStation.tooltip.detailed.line2=작동하기 위하여 전력과
-#                                        en: Requires power and
-tile.blockFarmStation.tooltip.detailed.line3=도구(도끼, 괭이)를 요구합니다.
-#                                        en: appropriate tools (hoe, axe)
-tile.blockFarmStation.tooltip.detailed.line4=도구에 부여된 약탈/행운 마법은
-#                                        en: Looting / fortune on tools
-tile.blockFarmStation.tooltip.detailed.line5=수확 시 반형됩니다.
-#                                        en: applied when harvesting
-tile.blockFarmStation.tooltip.detailed.line6=축전지를 넣어 작업속도를 높이고
-#                                        en: Upgrade with capacitors to increase
-tile.blockFarmStation.tooltip.detailed.line7=전력 소모량을 늘릴 수 있습니다.
-#                                        en: range, upgrade also increases power use
-tile.blockGauge.name=
-#                en: RF Gauge
-tile.blockGauge.tooltip.detailed.line1=
-#                                  en: Displays RF levels of adjacent
-tile.blockGauge.tooltip.detailed.line2=
-#                                  en: blocks.
-tile.blockHyperCube.name=차원 송수신기 (삭제됨)
-#                    en: Dimensional Transceiver (Deprecated)
-tile.blockHyperCube.tooltip.detailed.line1=조합창에 올려서
-#                                      en: Convert to new model by placing
-tile.blockHyperCube.tooltip.detailed.line2=신제품으로 바꾸시기 바랍니다.
-#                                      en: in the crafting grid
-tile.blockInhibitorObelisk.name=
-#                           en: Inhibitor Obelisk
-tile.blockInhibitorObelisk.tooltip.detailed.line1=
-#                                             en: Prevents teleporting within
-tile.blockInhibitorObelisk.tooltip.detailed.line2=
-#                                             en: its area of effect
-tile.blockInventoryChest_big.name=
-#                             en: Big Inventory System Storage
-tile.blockInventoryChest_enormous.name=
-#                                  en: Enormous Inventory System Storage
-tile.blockInventoryChest_huge.name=
-#                              en: Huge Inventory System Storage
-tile.blockInventoryChest_large.name=
-#                               en: Large Inventory System Storage
-tile.blockInventoryChest_medium.name=
-#                                en: Medium Inventory System Storage
-tile.blockInventoryChest_small.name=
-#                               en: Small Inventory System Storage
-tile.blockInventoryChest_tiny.name=
-#                              en: Tiny Inventory System Storage
-tile.blockInventoryChest_warehouse.name=
-#                                   en: Inventory System Storage Warehouse
-tile.blockInventoryChest_warehouse13.name=
-#                                     en: Inventory System Storage Extended Warehouse
-tile.blockInventoryPanel.name=
-#                         en: Inventory Panel
-tile.blockInventoryPanel.tooltip.basic.line1=
-#                                        en: Remote access and crafting
-tile.blockInventoryPanel.tooltip.detailed.line1=
-#                                           en: Allows remote access to inventories via
-tile.blockInventoryPanel.tooltip.detailed.line2=
-#                                           en: Remote Awareness Upgrades in item conduits.
-tile.blockInventoryPanel.tooltip.detailed.line3=
-#                                           en: Uses Nutrient Distillation for power.
-tile.blockInventoryPanel.tooltip.detailed.line4=
-#                                           en: Offers a persistent crafting grid.
-tile.blockInventoryPanelSensor.name=
-#                               en: Inventory Sensor
-tile.blockInventoryPanelSensor.tooltip.detailed.line1=
-#                                                 en: Emits redstone signals based
-tile.blockInventoryPanelSensor.tooltip.detailed.line2=
-#                                                 en: on the number of an item available
-tile.blockInventoryPanelSensor.tooltip.detailed.line3=
-#                                                 en: in an Inventory Panel network
-tile.blockKillerJoe.name=킬러 조
-#                    en: Killer Joe
-tile.blockKillerJoe.tooltip.detailed.line1=검을 넣어주고
-#                                      en: Attacks nearby creatures when
-tile.blockKillerJoe.tooltip.detailed.line2=영양 증류액을 공급하면
-#                                      en: supplied with a sword and
-tile.blockKillerJoe.tooltip.detailed.line3=근처의 몹을 죽여줍니다.
-#                                      en: Nutrient Distillation
-tile.blockPainter.name=채색기
-#                  en: Painting Machine
-tile.blockPainter.tooltip.detailed.line1=다음과 같은 물체를 채색할 수 있습니다:
-#                                    en: Used to paint:
-tile.blockPainter.tooltip.detailed.line2=컨두잇 덮개, 계단, 울타리,
-#                                    en: Conduit Facades, Stairs, Fences, Gates,
-tile.blockPainter.tooltip.detailed.line3=울타리 문, 반 블럭, 조약돌 담장,
-#                                    en: Slabs, Cobblestone, Cobblestone Walls,
-tile.blockPainter.tooltip.detailed.line4=유리 틀, 발광석, 카펫,
-#                                    en: Glowstone, Redstone, Carpet, Pressure
-tile.blockPainter.tooltip.detailed.line5=흑강 감압판,
-#                                    en: Plates, Quite Clear Glass, Fused Quartz,
-tile.blockPainter.tooltip.detailed.line6=여행자의 닻
-#                                    en: Trapdoors, and most machines
-tile.blockPowerMonitor.name=전력 모니터
-#                       en: Power Monitor
-tile.blockPowerMonitor.tooltip.detailed.line1=이 기기는 전력 사용량과
-#                                         en: Displays details of power use and
-tile.blockPowerMonitor.tooltip.detailed.line2=저장량을 보여줍니다.
-#                                         en: storage
-tile.blockPowerMonitor.tooltip.detailed.line3=전력 저장량에 따라
-#                                         en: Can be used to emit redstone
-tile.blockPowerMonitor.tooltip.detailed.line4=레드스톤 신호를 방출하게도 할 수 있습니다.
-#                                         en: based on stored power levels
-tile.blockPowerMonitor.tooltip.detailed.line5=엔더 IO에 연결되어 있어야 합니다.
-#                                         en: Must be attached to an EnderIO
-tile.blockPowerMonitor.tooltip.detailed.line6=컨두잇
-#                                         en: conduit
-tile.blockPowerMonitorv2.name=
-#                         en: Graphical Power Monitor
-tile.blockPowerMonitorv2.tooltip.detailed.line1=
-#                                           en: Displays details of power use and
-tile.blockPowerMonitorv2.tooltip.detailed.line2=
-#                                           en: storage
-tile.blockPowerMonitorv2.tooltip.detailed.line3=
-#                                           en: Can be used to emit redstone
-tile.blockPowerMonitorv2.tooltip.detailed.line4=
-#                                           en: based on stored power levels
-tile.blockPowerMonitorv2.tooltip.detailed.line5=
-#                                           en: Must be attached to an EnderIO
-tile.blockPowerMonitorv2.tooltip.detailed.line6=
-#                                           en: conduit
-tile.blockPoweredSpawner.empty.tooltip.detailed.line1=모루를 사용해서
-#                                                 en: Combine with a broken
-tile.blockPoweredSpawner.empty.tooltip.detailed.line2=부서진 스포너와 합치세요.
-#                                                 en: spawner in an anvil
-tile.blockPoweredSpawner.name=전동 스포너
-#                         en: Powered Spawner
-tile.blockPoweredSpawner.tooltip.detailed.line1=전력을 공급해
-#                                           en: Supply with power to
-tile.blockPoweredSpawner.tooltip.detailed.line2=작동시키세요.
-#                                           en: activate
-tile.blockPoweredSpawner.tooltip.detailed.line3=축전지를 넣어 작업속도를 높이고
-#                                           en: Upgrade with capacitors to increase
-tile.blockPoweredSpawner.tooltip.detailed.line4=내부 전력 저장량을 늘릴 수 있습니다.
-#                                           en: speed and energy storage
-tile.blockPoweredSpawner.tooltip.empty=비어 있음
-#                                  en: Empty
-tile.blockReservoir.name=저수지
-#                    en: Reservoir
-tile.blockReservoir.tooltip.detailed.line1=2X2X1로 놓아 놓은 뒤
-#                                      en: When connected with other Reservoirs:
-tile.blockReservoir.tooltip.detailed.line2=물 두 양동이를 넣으면
-#                                      en: Add two buckets of water for
-tile.blockReservoir.tooltip.detailed.line3=무한 물이 됩니다.
-#                                      en: an infinite water source.
-tile.blockReservoir.tooltip.detailed.line4=초당 한 양동이의 물을 만들어냅니다.
-#                                      en: Produces one bucket per second
-tile.blockReservoir.tooltip.detailed.line5=렌치로 우클릭하면
-#                                      en: R-Click with a wrench to
-tile.blockReservoir.tooltip.detailed.line6=물을 자동적으로 방출합니다.
-#                                      en: enable auto-output
-tile.blockSagMill.name=반자동 분쇄기
-#                  en: SAG Mill
-tile.blockSagMill.tooltip.detailed.line1=광석과 기타 아이템들을 분쇄합니다.
-#                                    en: Grinds ore and other items
-tile.blockSagMill.tooltip.detailed.line2=제분용 공을 넣어 분쇄 결과물과
-#                                    en: Add grinding balls to increase output
-tile.blockSagMill.tooltip.detailed.line3=효율을 증가시킬 수 있습니다.
-#                                    en: and efficiency
-tile.blockSagMill.tooltip.detailed.line4=축전지를 넣어 작업속도를 높이고
-#                                    en: Upgrade with capacitors to increase
-tile.blockSagMill.tooltip.detailed.line5=내부 전력 저장량을 늘릴 수 있습니다.
-#                                    en: speed and energy storage
-tile.blockSagMill.tooltipPrefix=내용물:
-#                           en: Contains
-tile.blockSliceAndSplice.name=슬라이스&스플라이스
-#                         en: Slice'N'Splice
-tile.blockSliceAndSplice.tooltip.detailed.line1=머리를 이용해
-#                                           en: Slices heads and splices in
-tile.blockSliceAndSplice.tooltip.detailed.line2=온갖 유용한 것들을 만듭니다.
-#                                           en: all sorts of useful things
-tile.blockSolarPanel.advanced.name=고급 태양광 전지
-#                              en: Advanced Photovoltaic Cell
-tile.blockSolarPanel.name=태양광 전지
-#                     en: Photovoltaic Cell
-tile.blockSolarPanel.tooltip.common.line1=
-#                                     en: Solar Power!
-tile.blockSolarPanel.tooltip.detailed.line1=해가 비칠 때(낮, 맑은 날씨)
-#                                       en: Produces power during daylight hours
-tile.blockSolarPanel.tooltip.detailed.line2=전력을 생산해냅니다.
-#                                       en: Must have a clear line of sight to
-tile.blockSolarPanel.tooltip.detailed.line3=하늘까지 일직선으로 공간이 뚫려 있어야 합니다.
-#                                       en: the sky
-tile.blockSolarPanel.vibrant.name=
-#                             en: Vibrant Photovoltaic Cell
-tile.blockSoulBinder.name=영혼 구속기
-#                     en: Soul Binder
-tile.blockSoulBinder.tooltip.detailed.line1=전력을 소모하여
-#                                       en: Used to convert the type of
-tile.blockSoulBinder.tooltip.detailed.line2=부서진 스포너의 종류를 바꿉니다.
-#                                       en: a broken spawner
-tile.blockSpawnGuard.name=혐오의 오벨리스크
-#                     en: Aversion Obelisk
-tile.blockSpawnGuard.tooltip.detailed.line1=작동 범위 안에서
-#                                       en: Prevents mobs from spawning
-tile.blockSpawnGuard.tooltip.detailed.line2=설정된 몹의 스폰을 막습니다.
-#                                       en: within its area of effect
-tile.blockSpawnRelocator.name=
-#                         en: Relocator Obelisk
-tile.blockSpawnRelocator.tooltip.detailed.line1=
-#                                           en: Relocates mobs that spawn
-tile.blockSpawnRelocator.tooltip.detailed.line2=
-#                                           en: within its area of effect
-tile.blockStirlingGenerator.name=스털링식 화력 발전기
-#                            en: Stirling Generator
-tile.blockStirlingGenerator.tooltip.detailed.line1=고체 연료를 태와 전력을 만들어냅니다.
-#                                              en: Burns solid fuel to generate power
-tile.blockStirlingGenerator.tooltip.detailed.line2=축전기를 넣어 효율을 높이고
-#                                              en: Can be upgraded to increase output
-tile.blockStirlingGenerator.tooltip.detailed.line3=출력량을 증가시킬 수 있습니다.
-#                                              en: and efficiency with capacitors
-tile.blockTank.advanced.name=공압 유체 탱크
-#                        en: Pressurized Fluid Tank
-tile.blockTank.name=유체 탱크
-#               en: Fluid Tank
-tile.blockTank.tooltip.detailed.line1=휴대용 유체 탱크
-#                                 en: Portable fluid tank
-tile.blockTank.tooltip.detailed.line2=유체 저장고를 비우거나
-#                                 en: Can be used to empty and
-tile.blockTank.tooltip.detailed.line3=채울 때 쓸 수 있습니다.
-#                                 en: fill fluid containers
-tile.blockTelePad.name=
-#                  en: Telepad Block
-tile.blockTelePad.tooltip.detailed.line1=
-#                                    en: Uses power to teleport entities
-tile.blockTelePad.tooltip.detailed.line2=
-#                                    en: to a specific position and dimension.
-tile.blockTelePad.tooltip.detailed.line3=
-#                                    en: Must be placed in a 3x1x3 multiblock.
-tile.blockTransceiver.name=차원 송수신기
-#                      en: Dimensional Transceiver
-tile.blockTransceiver.tooltip.detailed.line1=아이템, 유체, 전력을
-#                                        en: Transports items, fluids and power
-tile.blockTransceiver.tooltip.detailed.line2=차원, 거리에 상관 없이
-#                                        en: wirelessly across any distance and
-tile.blockTransceiver.tooltip.detailed.line3=무선으로 이동시킵니다.
-#                                        en: between dimensions
-tile.blockTravelAnchor.name=여행자의 닻
-#                       en: Travel Anchor
-tile.blockTravelAnchor.tooltip.detailed.line1=근처에 있는 다른 여행자의 닻으로 텔레포트 가능합니다.
-#                                         en: Allows teleportation between anchors
-tile.blockTravelAnchor.tooltip.detailed.line2=한 개의 닻에 서서 다른 닻을 보고
-#                                         en: Stand on one Anchor, look at
-tile.blockTravelAnchor.tooltip.detailed.line3=점프하면 텔레포트됩니다.
-#                                         en: another and jump to travel
-tile.blockTravelAnchor.tooltip.detailed.line4=여행자의 지팡이로도
-#                                         en: Can also be used with the Staff
-tile.blockTravelAnchor.tooltip.detailed.line5=사용 가능합니다.
-#                                         en: of Travel
-tile.blockTravelAnchor.tooltip.detailed.line6=채색기에서 채색할 수 있습니다.
-#                                         en: Can be painted in the Painting Machine
-tile.blockVacuumChest.name=진공 상자
-#                      en: Vacuum Chest
-tile.blockVacuumChest.tooltip.detailed.line1=근처에 떨어진 아이템을 빨아들여
-#                                        en: Pulls nearby items
-tile.blockVacuumChest.tooltip.detailed.line2=자신에 인벤토리로 집어넣습니다.
-#                                        en: into its inventory
-tile.blockVat.name=엔더 양조기
-#              en: The Vat
-tile.blockVat.tooltip.detailed.line1=엔더 IO 유체들을 양조하기 위한 기계입니다.
-#                                en: Used to brew EnderIO fluids
-tile.blockWeatherObelisk.name=
-#                         en: Weather Obelisk
-tile.blockWeatherObelisk.tooltip.detailed.line1=
-#                                           en: Changes the current weather
-tile.blockWeatherObelisk.tooltip.detailed.line2=
-#                                           en: Requires a lot of power and
-tile.blockWeatherObelisk.tooltip.detailed.line3=
-#                                           en: a catalyst item
-tile.blockWirelessCharger.name=무선 충전기
-#                          en: Wireless Charger
-tile.blockWirelessCharger.tooltip.detailed.line1=근처에 있는 플레이어의 인벤토리에
-#                                            en: Charges items in nearby
-tile.blockWirelessCharger.tooltip.detailed.line2=있는 아이템들을 충전합니다.
-#                                            en: players inventories
-tile.blockXPVacuum.name=
-#                   en: XP Vacuum
-tile.blockXPVacuum.tooltip.detailed.line1=
-#                                     en: Pulls nearby XP orbs and pushes
-tile.blockXPVacuum.tooltip.detailed.line2=
-#                                     en: them into adjacent tanks/conduits.
-tile.blockXPVacuum.tooltip.detailed.line3=
-#                                     en: Needs to be activated with liquid XP.
-tile.blockZombieGenerator.name=좀비 발전기
-#                          en: Zombie Generator
-tile.blockZombieGenerator.tooltip.detailed.line1=영양 증류액을 사용해서
-#                                            en: Consumes Nutrient Distillation
-tile.blockZombieGenerator.tooltip.detailed.line2=전력을 만들어냅니다.
-#                                            en: to generate power
-tile.block_alloy.conductive_iron.name=전도성 철 블럭
+tile.block_alloy.conductive_iron.name=??? ? ??
 #                                 en: Conductive Iron Block
-tile.block_alloy.dark_steel.name=흑강 블럭
+tile.block_alloy.dark_steel.name=?? ??
 #                            en: Dark Steel Block
-tile.block_alloy.electrical_steel.name=전기강 블럭
+tile.block_alloy.electrical_steel.name=??? ??
 #                                  en: Electrical Steel Block
-tile.block_alloy.energetic_alloy.name=활동성 합금 블럭
+tile.block_alloy.energetic_alloy.name=??? ?? ??
 #                                 en: Energetic Alloy Block
 tile.block_alloy.name=
 #                 en: Alloy Block
 tile.block_alloy.pulsating_iron.name=
 #                                en: Pulsating Iron Block
-tile.block_alloy.redstone_alloy.name=레드스톤 합금 블럭
+tile.block_alloy.redstone_alloy.name=???? ?? ??
 #                                en: Redstone Alloy Block
-tile.block_alloy.soularium.name=소울라륨 블럭
+tile.block_alloy.soularium.name=???? ??
 #                           en: Soularium Block
 tile.block_alloy.vibrant_alloy.name=
 #                               en: Vibrant Alloy Block
@@ -2270,19 +1820,19 @@ tile.block_dark_fused_glass.name=
 #                            en: Dark Clear Glass
 tile.block_dark_fused_quartz.name=
 #                             en: Dark Fused Quartz
-tile.block_dark_iron_bars.name=검은 철 주괴
+tile.block_dark_iron_bars.name=?? ? ??
 #                          en: Dark Iron Bars
-tile.block_dark_steel_anvil.intact.name=흑강 모루
+tile.block_dark_steel_anvil.intact.name=?? ??
 #                                   en: Dark Steel Anvil
-tile.block_dark_steel_anvil.name=흑강 모루
+tile.block_dark_steel_anvil.name=?? ??
 #                            en: Dark Steel Anvil
-tile.block_dark_steel_anvil.slightlyDamaged.name=약간 손상된 흑강 모루
+tile.block_dark_steel_anvil.slightlyDamaged.name=?? ??? ?? ??
 #                                            en: Slightly Damaged Dark Steel Anvil
-tile.block_dark_steel_anvil.tooltip.common.line1=내구도가 높습니다.
+tile.block_dark_steel_anvil.tooltip.common.line1=???? ????.
 #                                            en: Damage Resistant
 tile.block_dark_steel_anvil.tooltip.detailed.line1=
 #                                              en: Lasts much longer than the vanilla anvil
-tile.block_dark_steel_anvil.veryDamaged.name=심하게 손상된 흑강 모루
+tile.block_dark_steel_anvil.veryDamaged.name=??? ??? ?? ??
 #                                        en: Very Damaged Dark Steel Anvil
 tile.block_dark_steel_ladder.name=
 #                             en: Dark Steel Ladder
@@ -2360,43 +1910,77 @@ tile.block_decoration2.type14.name=
 #                              en: Vacuum Chest (decoration block)
 tile.block_decoration2.type15.name=
 #                              en: Wireless Charger (decoration block)
+tile.block_decoration3.name=
+#                       en: Decoration Block
+tile.block_decoration3.type00.name=
+#                              en: XP Vacuum (decoration block)
+tile.block_decoration3.type01.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type02.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type03.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type04.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type05.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type06.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type07.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type08.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type09.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type10.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type11.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type12.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type13.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type14.name=
+#                              en: n/a (decoration block)
+tile.block_decoration3.type15.name=
+#                              en: n/a (decoration block)
 tile.block_detector_block.name=
 #                          en: Block Detector
 tile.block_detector_block_silent.name=
 #                                 en: Block Detector (Silent)
-tile.block_enderman_skull.base.name=엔더맨 머리
+tile.block_enderman_skull.base.name=??? ??
 #                               en: Enderman Head
-tile.block_enderman_skull.name=엔더맨 머리
+tile.block_enderman_skull.name=??? ??
 #                          en: Enderman Skull
-tile.block_enderman_skull.reanimated.name=부활한 엔더맨 머리
+tile.block_enderman_skull.reanimated.name=??? ??? ??
 #                                     en: Reanimated Enderman Head
 tile.block_enderman_skull.reanimated_tormented.name=
 #                                               en: Reanimated Tormented Enderman Head
-tile.block_enderman_skull.tormented.name=고문당한 엔더맨 머리
+tile.block_enderman_skull.tormented.name=???? ??? ??
 #                                    en: Tormented Enderman Head
-tile.block_enlightened_fused_glass.name=고급 투명한 유리
+tile.block_enlightened_fused_glass.name=?? ??? ??
 #                                   en: Enlightened Clear Glass
-tile.block_enlightened_fused_quartz.name=고급 재결정 석영
+tile.block_enlightened_fused_quartz.name=?? ??? ??
 #                                    en: Enlightened Fused Quartz
 tile.block_exit_rail.name=
 #                     en: Exit Rail
-tile.block_fused_glass.name=투명한 유리
+tile.block_fused_glass.name=??? ??
 #                       en: Quite Clear Glass
-tile.block_fused_quartz.name=재결정 석영
+tile.block_fused_quartz.name=??? ??
 #                        en: Fused Quartz
 tile.block_machine_base.name=
 #                        en: (technical block)
 tile.block_machine_io.name=
 #                      en: (technical block)
-tile.block_painted_carpet.name=채색된 카펫
+tile.block_painted_carpet.name=??? ??
 #                          en: Painted Carpet
 tile.block_painted_dark_steel_trapdoor.name=
 #                                       en: Painted Dark Steel Trapdoor
-tile.block_painted_double_slab.name=채색된 반 블럭
+tile.block_painted_double_slab.name=??? ? ??
 #                               en: Painted Slab
-tile.block_painted_fence.name=채색된 울타리
+tile.block_painted_fence.name=??? ???
 #                         en: Painted Fence
-tile.block_painted_fence_gate.name=채색된 울타리 문
+tile.block_painted_fence_gate.name=??? ??? ?
 #                              en: Painted Gate
 tile.block_painted_fused_quartz.name=
 #                                en: Painted Fused Quartz
@@ -2502,9 +2086,9 @@ tile.block_painted_redstone.name=
 #                            en: Painted Redstone
 tile.block_painted_redstone_solid.name=
 #                                  en: Painted Redstone
-tile.block_painted_slab.name=채색된 반 블럭
+tile.block_painted_slab.name=??? ? ??
 #                        en: Painted Slab
-tile.block_painted_stair.name=채색된 계단
+tile.block_painted_stair.name=??? ??
 #                         en: Painted Stairs
 tile.block_painted_stone.name=
 #                         en: Painted Cobblestone
@@ -2516,13 +2100,13 @@ tile.block_painted_stone_slab.name=
 #                              en: Painted Stone Slab
 tile.block_painted_stone_stair.name=
 #                               en: Painted Stone Stairs
-tile.block_painted_wall.name=채색된 담장
+tile.block_painted_wall.name=??? ??
 #                        en: Painted Wall
 tile.block_painted_wooden_trapdoor.name=
 #                                   en: Painted Wooden Trapdoor
-tile.block_reinforced_obsidian.name=강화 흑요석
+tile.block_reinforced_obsidian.name=?? ???
 #                               en: Reinforced Obsidian
-tile.block_reinforced_obsidian.tooltip.common.line1=위더에 내성을 가지고 있습니다.
+tile.block_reinforced_obsidian.tooltip.common.line1=??? ??? ??? ????.
 #                                               en: Wither Proof
 tile.block_self_resetting_lever10.name=
 #                                  en: Self-resetting Lever (10 seconds)
@@ -2540,17 +2124,17 @@ tile.fluid.cloud_seed_concentrated.name=
 #                                   en: Concentrated Cloud Seed
 tile.fluid.ender_distillation.name=
 #                              en: Dew of the Void
-tile.fluid.fire_water.name=화염수
+tile.fluid.fire_water.name=???
 #                      en: Fire Water
-tile.fluid.hootch.name=독주
+tile.fluid.hootch.name=??
 #                  en: Hootch
 tile.fluid.liquid_sunshine.name=
 #                           en: Liquid Sunshine
-tile.fluid.nutrient_distillation.name=근처의 몹을 죽여줍니다.
+tile.fluid.nutrient_distillation.name=??? ?? ?????.
 #                                 en: Nutrient Distillation
-tile.fluid.rocket_fuel.name=로켓 연료
+tile.fluid.rocket_fuel.name=?? ??
 #                       en: Rocket Fuel
-tile.fluid.xpjuice.name=액체 XP
+tile.fluid.xpjuice.name=?? XP
 #                   en: Liquid XP
 tile.vapor_of_levity.name=
 #                     en: Vapor of Levity
