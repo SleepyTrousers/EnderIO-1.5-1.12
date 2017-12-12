@@ -12,7 +12,7 @@
 #                             en: Crafter speed, area=all machines "area" attribute (e.g. farm),
 ;//display string for Skeleton(type=
 #                               en: =1)
-;enderio.blockConduitBundle=??? ??
+;enderio.blockConduitBundle=컨두잇 묶음
 #                       en: Conduit Bundle
 ;enderio.capbank.change=
 #                   en: I/O
@@ -52,9 +52,9 @@
 #                                          en: Crafter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
 ;enderio.config.capacitor.crafter_ticks=
 #                                   en: Crafter: Ticks per crafting operation (will be scaled by the used upgrade capacitor)
-;enderio.filterUpgradeAdvanced.name=?? ??? ??
+;enderio.filterUpgradeAdvanced.name=고급 아이템 필터
 #                               en: Advanced Item Filter
-;enderio.filterUpgradeBasic.name=?? ??? ??
+;enderio.filterUpgradeBasic.name=기본 아이템 필터
 #                            en: Basic Item Filter
 ;enderio.filterUpgradeLimited.name=
 #                              en: Counting Item Filter
@@ -186,7 +186,7 @@
 #                                       en: Strong Signal
 ;enderio.gui.disabled=Disabled
 #                 en: Disabled
-;enderio.gui.enabled=???
+;enderio.gui.enabled=활성화
 #                en: Enabled
 ;enderio.gui.inventorySensor.control1=
 #                                 en: Start when <
@@ -294,7 +294,7 @@
 #                                en: Buffering single items
 ;enderio.gui.machine.bufferingstacks=
 #                                en: Buffering item stacks
-;enderio.gui.machine.ioMode=?? : %s
+;enderio.gui.machine.ioMode=모드 : %s
 #                       en: Mode: %s
 ;enderio.gui.machine.percraft=
 #                         en: Per Craft
@@ -302,19 +302,19 @@
 #                              en: Receive Filter
 ;enderio.gui.machine.sendfilter=
 #                           en: Send Filter
-;enderio.gui.machine.side.down=??
+;enderio.gui.machine.side.down=아래
 #                          en: Down
-;enderio.gui.machine.side.east=?
+;enderio.gui.machine.side.east=동
 #                          en: East
-;enderio.gui.machine.side.north=?
+;enderio.gui.machine.side.north=북
 #                           en: North
-;enderio.gui.machine.side.south=?
+;enderio.gui.machine.side.south=남
 #                           en: South
-;enderio.gui.machine.side.up=?
+;enderio.gui.machine.side.up=위
 #                        en: Up
-;enderio.gui.machine.side.west=?
+;enderio.gui.machine.side.west=서
 #                          en: West
-;enderio.gui.machine.side=?? : %s
+;enderio.gui.machine.side=방향 : %s
 #                     en: Side: %s
 ;enderio.gui.mjReader.conduitBuffer=Internal Buffer
 #                               en: Internal Buffer
@@ -352,7 +352,7 @@
 #                              en: Per tick request range
 ;enderio.gui.powerMonitor.emit=Emit
 #                          en: Emit
-;enderio.gui.powerMonitor.engineControl=?? ??
+;enderio.gui.powerMonitor.engineControl=엔진 설정
 #                                   en: Engine Control
 ;enderio.gui.powerMonitor.engineSection1=Emit signal when storage less
 #                                    en: Emit signal when storage less
@@ -378,11 +378,11 @@
 #                                    en: No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
 ;enderio.gui.powerMonitor.of=of
 #                        en: of
-;enderio.gui.receive=??
+;enderio.gui.receive=수신
 #                en: Receive
-;enderio.gui.send=??
+;enderio.gui.send=발신
 #             en: Send
-;enderio.gui.sendReceive=?? & ??
+;enderio.gui.sendReceive=수신 & 발신
 #                    en: Send & Receive
 ;enderio.gui.travelAccessable.skipLocked=
 #                                    en: Skipped locked anchor, use targeted teleport.
@@ -406,59 +406,59 @@
 #                                                 en: The snapshot already covers all items in the inventory
 ;enderio.item.itemExistingItemFilter.filterUpdated=
 #                                              en: New items have been added to the snapshot
-;enderio.itemGasConduit.name=?? ???
+;enderio.itemGasConduit.name=기체 컨두잇
 #                        en: Gas Conduit
-;enderio.itemGasConduit.tooltip.detailed.line1=???? ?? ?? ??
+;enderio.itemGasConduit.tooltip.detailed.line1=메탈러지 호환 기체 전송
 #                                          en: Transfers Mekanism-compatible gases
-;enderio.itemGasConduit.tooltip.maxExtract=?? ???:
+;enderio.itemGasConduit.tooltip.maxExtract=최대 추출량:
 #                                      en: Max Extract:
-;enderio.itemGasConduit.tooltip.maxIo=?? ??:
+;enderio.itemGasConduit.tooltip.maxIo=최대 유량:
 #                                 en: Max IO:
 ;enderio.itemItemConduit.name=Item Conduit
 #                         en: Item Conduit
-;enderio.itemLiquidConduit.lockedType=?? ?? ??
+;enderio.itemLiquidConduit.lockedType=액체 종류 제한
 #                                 en: Fluid type locked to
 ;enderio.itemLiquidConduit.lockedWaila=
 #                                  en: Locked to
-;enderio.itemLiquidConduit.name=?? ???
+;enderio.itemLiquidConduit.name=액체 컨두잇
 #                           en: Fluid Conduit
-;enderio.itemLiquidConduit.tooltip.detailed.line1=??? ??? ??? ????.
+;enderio.itemLiquidConduit.tooltip.detailed.line1=액체의 흐름은 중력을 따릅니다.
 #                                             en: Fluid flow respects gravity
-;enderio.itemLiquidConduit.tooltip.detailed.line2=??? ??? ??? ??
+;enderio.itemLiquidConduit.tooltip.detailed.line2=유량은 액체의 점성에 따라
 #                                             en: Flow rate dependent on fluid
-;enderio.itemLiquidConduit.tooltip.detailed.line3=?? ? ????.
+;enderio.itemLiquidConduit.tooltip.detailed.line3=다를 수 있습니다.
 #                                             en: viscosity
-;enderio.itemLiquidConduit.tooltip.maxExtract=?? ???:
+;enderio.itemLiquidConduit.tooltip.maxExtract=최대 추출량:
 #                                         en: Max Extract:
-;enderio.itemLiquidConduit.tooltip.maxIo=?? ??:
+;enderio.itemLiquidConduit.tooltip.maxIo=최대 유량:
 #                                    en: Max IO:
-;enderio.itemLiquidConduit.unlockedType=?? ?? ?? ??
+;enderio.itemLiquidConduit.unlockedType=액체 종류 제한 해제
 #                                   en: Fluid type unlocked
-;enderio.itemLiquidConduitAdvanced.name=??? ?? ???
+;enderio.itemLiquidConduitAdvanced.name=가압식 액체 컨두잇
 #                                   en: Pressurized Fluid Conduit
-;enderio.itemLiquidConduitEnder.name=??? ?? ???
+;enderio.itemLiquidConduitEnder.name=엔더식 액체 컨두잇
 #                                en: Ender Fluid Conduit
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line1=??? ????????.
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line1=액체를 순간이동시킵니다.
 #                                                  en: Instant fluid teleportation
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line2=?? ?? ???? ???
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line2=서로 다른 액체들을 하나의
 #                                                  en: allows multiple fluids to be
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line3=?????? ??? ? ????.
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line3=수송관만으로 수송할 수 있습니다.
 #                                                  en: transported on the same line
 ;enderio.itemMEConduit.channelsUsed=
 #                               en: {0,number} of {1,number} Channels
-;enderio.itemMEConduit.name=ME ???
+;enderio.itemMEConduit.name=ME 컨두잇
 #                       en: ME Conduit
-;enderio.itemMEConduitDense.name=??? ME ???
+;enderio.itemMEConduitDense.name=밀집된 ME 컨두잇
 #                            en: Dense ME Conduit
 ;enderio.itemOCConduit.name=
 #                       en: Network Conduit (OC)
-;enderio.itemPowerConduit.name=??? ???
+;enderio.itemPowerConduit.name=에너지 컨두잇
 #                          en: Energy Conduit
-;enderio.itemPowerConduitEnder.name=??? ??? ???
+;enderio.itemPowerConduitEnder.name=엔더식 에너지 컨두잇
 #                               en: Ender Energy Conduit
-;enderio.itemPowerConduitEnhanced.name=?? ??? ???
+;enderio.itemPowerConduitEnhanced.name=고급 에너지 컨두잇
 #                                  en: Enhanced Energy Conduit
-;enderio.itemRedstoneConduitInsulated.name=?? ???? ???
+;enderio.itemRedstoneConduitInsulated.name=절연 레드스톤 컨두잇
 #                                      en: Redstone Conduit
 ;enderio.keybind.fovminus=
 #                     en: Camera: Zoom in (creative only)
@@ -604,8 +604,8 @@
 #                   en: Soul Binder
 ;enderio.nei.vat=
 #            en: Vat
-;enderio.painter.tooltip.wasPainted=�oWhat did you think that would do?
-#                               en: �oWhat did you think that would do?
+;enderio.painter.tooltip.wasPainted=§oWhat did you think that would do?
+#                               en: §oWhat did you think that would do?
 ;enderio.power.maxOutput=Max Output
 #                    en: Max Output
 ;enderio.remoteinv.chat.error=
@@ -636,19 +636,19 @@
 #                    en: Ore Dictionary:
 ;enderio.tooltip.uid=
 #                en: UID:
-;enderio.trans.fluid=??
+;enderio.trans.fluid=유체
 #                en: Fluid
 ;enderio.trans.item=Item
 #               en: Item
-;enderio.trans.power=??
+;enderio.trans.power=전력
 #                en: Power
 ;enderio.trans.rail=
 #               en: Rail
-;enderio.trans.receiving=??
+;enderio.trans.receiving=수신
 #                    en: Receiving
-;enderio.trans.sending=??
+;enderio.trans.sending=송신
 #                  en: Sending
-;enderio.trans.showChannels=??? ?? ???? ????
+;enderio.trans.showChannels=채널을 보기 위해서는 앉으세요
 #                       en: <Shift to show channels>
 ;enderio.waila.config.hiddenfacades=
 #                               en: Sneaky Facades
@@ -680,29 +680,29 @@
 #            en: Molten Soularium
 ;fluid.vibrantalloy=
 #               en: Molten Vibrant Alloy
-;item.enderio.itemEnderface.name=?? ??
+;item.enderio.itemEnderface.name=엔더 얼굴
 #                            en: Enderface
-;item.itemElectricLight.name=??
+;item.itemElectricLight.name=전등
 #                        en: Powered Light
-;item.itemElectricLight.tooltip.detailed.line1=??? ???
+;item.itemElectricLight.tooltip.detailed.line1=전력을 받으면
 #                                          en: Lights a large area when supplied with
-;item.itemElectricLight.tooltip.detailed.line2=?? ??? ?? ???.
+;item.itemElectricLight.tooltip.detailed.line2=넓은 공간을 밝혀 줍니다.
 #                                          en: power and a redstone signal.
-;item.itemElectricLightInverted.name=?? (???)
+;item.itemElectricLightInverted.name=전등 (역신호)
 #                                en: Powered Light (Inverted)
-;item.itemElectricLightInverted.tooltip.detailed.line1=??? ???
+;item.itemElectricLightInverted.tooltip.detailed.line1=전력을 받으면
 #                                                  en: Lights a large area when supplied with
-;item.itemElectricLightInverted.tooltip.detailed.line2=?? ??? ?? ???.
+;item.itemElectricLightInverted.tooltip.detailed.line2=넓은 공간을 밝혀 줍니다.
 #                                                  en: power.
-;item.itemElectricLightInverted.tooltip.detailed.line3=???? ??? ? ? ????.
+;item.itemElectricLightInverted.tooltip.detailed.line3=레드스톤 신호로 끌 수 있습니다.
 #                                                  en: Turn off with a redstone signal.
-;item.itemExistingItemFilter.name=???? ??? ??
+;item.itemExistingItemFilter.name=사용중인 아이템 필터
 #                             en: Existing Item Filter
-;item.itemExistingItemFilter.tooltip.basic.line1=??? ???? ?????
+;item.itemExistingItemFilter.tooltip.basic.line1=아이템 컨두잇용 업그레이드
 #                                            en: Upgrade for item conduits
-;item.itemExistingItemFilter.tooltip.detailed.line1=?? ????? ??
+;item.itemExistingItemFilter.tooltip.detailed.line1=이미 인벤토리에 있는
 #                                               en: Selects only items already
-;item.itemExistingItemFilter.tooltip.detailed.line2=????? ?????.
+;item.itemExistingItemFilter.tooltip.detailed.line2=아이템만을 설정합니다.
 #                                               en: in the inventory
 ;item.itemExistingItemFilter.tooltip.detailed.line3=
 #                                               en: Right click while sneaking
@@ -718,15 +718,15 @@
 #                                                  en: Reduces speed to 1
 ;item.itemExtractSpeedDowngrade.tooltip.detailed.line2=
 #                                                  en: item per extraction
-;item.itemExtractSpeedUpgrade.name=??? ??? ?? ?????
+;item.itemExtractSpeedUpgrade.name=아이템 컨두잇 속도 업그레이드
 #                              en: Item Conduit Speed Upgrade
-;item.itemExtractSpeedUpgrade.tooltip.basic.line1=??? ???? ?????
+;item.itemExtractSpeedUpgrade.tooltip.basic.line1=아이템 컨두잇용 업그레이드
 #                                             en: Upgrade for item conduits
-;item.itemExtractSpeedUpgrade.tooltip.detailed.line1=? ? ??? ? ???? ??? ??
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line1=한 번 추출될 때 추출되는 아이템 수를
 #                                                en: Increases speed by 4
-;item.itemExtractSpeedUpgrade.tooltip.detailed.line2=????? 1?? 4?? ?????.
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line2=업그레이드 1개당 4개씩 늘려줍니다.
 #                                                en: items per extraction
-;item.itemExtractSpeedUpgrade.tooltip.detailed.line3=?? 15??? ?? ? ????.
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line3=최대 15개까지 넣을 수 있습니다.
 #                                                en: Max upgrades is 15
 ;item.itemInventoryPanelUpgrade.name=
 #                                en: Remote Awareness Upgrade
@@ -744,29 +744,29 @@
 #                                                  en: of the conduit mode.
 ;item.itemInventoryPanelUpgrade.tooltip.detailed.line6=
 #                                                  en: (No need to set the conduit to extract)
-;item.itemLight.name=?
+;item.itemLight.name=등
 #                en: Light
-;item.itemLight.tooltip.detailed.line1=???? ??? ???
+;item.itemLight.tooltip.detailed.line1=레드스톤 신호를 받으면
 #                                  en: Emits light with a
-;item.itemLight.tooltip.detailed.line2=?? ????.
+;item.itemLight.tooltip.detailed.line2=빛을 발합니다.
 #                                  en: redstone signal.
-;item.itemLightInverted.name=? (???)
+;item.itemLightInverted.name=등 (역신호)
 #                        en: Light (Inverted)
-;item.itemLightInverted.tooltip.detailed.line1=?? ????.
+;item.itemLightInverted.tooltip.detailed.line1=빛을 발합니다.
 #                                          en: Emits light, disable with
-;item.itemLightInverted.tooltip.detailed.line2=???? ??? ? ? ????.
+;item.itemLightInverted.tooltip.detailed.line2=레드스톤 신호로 끌 수 있습니다.
 #                                          en: a redstone signal.
-;item.itemModItemFilter.name=??? ?? ??
+;item.itemModItemFilter.name=아이템 필터 모드
 #                        en: Mod Item Filter
-;item.itemModItemFilter.tooltip.basic.line1=??? ???? ?????
+;item.itemModItemFilter.tooltip.basic.line1=아이템 컨두잇용 업그레이드
 #                                       en: Upgrade for item conduits
-;item.itemModItemFilter.tooltip.detailed.line1=??? ???
+;item.itemModItemFilter.tooltip.detailed.line1=특정한 모드의
 #                                          en: Selects only items for a specified
-;item.itemModItemFilter.tooltip.detailed.line2=????? ?????.
+;item.itemModItemFilter.tooltip.detailed.line2=아이템만을 설정합니다.
 #                                          en: mod/s
 ;item.itemPowerItemFilter.name=
 #                          en: Chargeable Item Filter
-;item.itemPowerItemFilter.tooltip.basic.line1=??? ???? ?????
+;item.itemPowerItemFilter.tooltip.basic.line1=아이템 컨두잇용 업그레이드
 #                                         en: Upgrade for item conduits
 ;item.itemPowerItemFilter.tooltip.detailed.line1=
 #                                            en: Filters chargeable items based on
@@ -798,23 +798,23 @@
 #                                                 en: Uses {FLUIDNAME} to open a connection and RF to keep it open.
 ;item.itemSpawnEggEnderIO.name=
 #                          en: Spawn
-;item.itemWirelessLight.name=?? ??
+;item.itemWirelessLight.name=무선 전등
 #                        en: Wireless Powered Light
-;item.itemWirelessLight.tooltip.detailed.line1=??? ???
+;item.itemWirelessLight.tooltip.detailed.line1=전력을 받으면
 #                                          en: Lights a large area when supplied with
-;item.itemWirelessLight.tooltip.detailed.line2=?? ??? ?? ???.
+;item.itemWirelessLight.tooltip.detailed.line2=넓은 공간을 밝혀 줍니다.
 #                                          en: power and a redstone signal.
-;item.itemWirelessLight.tooltip.detailed.line3=?? ?????? ??? ?? ? ????.
+;item.itemWirelessLight.tooltip.detailed.line3=무선 충전기로부터 전력을 받을 수 있습니다.
 #                                          en: Can receive power from wireless chargers.
-;item.itemWirelessLightInverted.name=?? ?? (???)
+;item.itemWirelessLightInverted.name=무선 전등 (역신호)
 #                                en: Wireless Powered Light (Inverted)
-;item.itemWirelessLightInverted.tooltip.detailed.line1=??? ???
+;item.itemWirelessLightInverted.tooltip.detailed.line1=전력을 받으면
 #                                                  en: Lights a large area when supplied with
-;item.itemWirelessLightInverted.tooltip.detailed.line2=?? ??? ?? ???.
+;item.itemWirelessLightInverted.tooltip.detailed.line2=넓은 공간을 밝혀 줍니다.
 #                                                  en: power.
-;item.itemWirelessLightInverted.tooltip.detailed.line3=???? ??? ? ? ????.
+;item.itemWirelessLightInverted.tooltip.detailed.line3=레드스톤 신호로 끌 수 있습니다.
 #                                                  en: Turn off with a redstone signal.
-;item.itemWirelessLightInverted.tooltip.detailed.line4=?? ?????? ??? ?? ? ????.
+;item.itemWirelessLightInverted.tooltip.detailed.line4=무선 충전기로부터 전력을 받을 수 있습니다.
 #                                                  en: Can receive power from wireless chargers.
 ;itemGroup.enderio.invalid=
 #                      en: Invalid
@@ -826,15 +826,15 @@
 #                   en: Ender IO
 ;itemGroup.enderio.materials=
 #                        en: Ender IO Materials
-;tile.blockAttractor.name=??? ?????
+;tile.blockAttractor.name=매혹의 오벨리스크
 #                     en: Attractor Obelisk
-;tile.blockAttractor.tooltip.detailed.line1=?? ???? ??????.
+;tile.blockAttractor.tooltip.detailed.line1=몹을 가까이로 끌어당깁니다.
 #                                       en: Draws mobs towards it
-;tile.blockAttractor.tooltip.detailed.line2=?? ?? ??? ???
+;tile.blockAttractor.tooltip.detailed.line2=장치 안에 영혼을 넣어서
 #                                       en: Specify the mobs to effect
-;tile.blockAttractor.tooltip.detailed.line3=? ??? ?? ??
+;tile.blockAttractor.tooltip.detailed.line3=그 영혼과 같은 몹을
 #                                       en: by placing their souls
-;tile.blockAttractor.tooltip.detailed.line4=?????? ?????.
+;tile.blockAttractor.tooltip.detailed.line4=끌어당기도록 지시하세요.
 #                                       en: within the device
 ;tile.blockCapBank.activated.name=
 #                             en: Capacitor Bank
@@ -852,35 +852,35 @@
 #                                     en: to change information display
 ;tile.blockCapBank.tooltip.hasItems=
 #                               en: {0,number,integer} {0,choice,1#item|1<items} in inventory
-;tile.blockCapBank.tooltipPrefix=???:
+;tile.blockCapBank.tooltipPrefix=내용물:
 #                            en: Contains
 ;tile.blockCapBank.vibrant.name=
 #                           en: Vibrant Capacitor Bank
-;tile.blockCapacitorBank.creative.name=?????? ???
+;tile.blockCapacitorBank.creative.name=크리에이티브 축전기
 #                                  en: Creative Capacitor Bank (Deprecated)
-;tile.blockCapacitorBank.name=???
+;tile.blockCapacitorBank.name=축전기
 #                         en: Capacitor Bank (Deprecated)
-;tile.blockCapacitorBank.tooltip.detailed.line1=???? ??? ??????.
+;tile.blockCapacitorBank.tooltip.detailed.line1=멀티블럭 에너지 저장고입니다.
 #                                           en: Convert to new block by placing
-;tile.blockCapacitorBank.tooltip.detailed.line2=RF? ???? ????? ??? ? ????.
+;tile.blockCapacitorBank.tooltip.detailed.line2=RF를 사용하는 아이템들을 충전할 수 있습니다.
 #                                           en: in a crafting grid
-;tile.blockCapacitorBank.tooltipPrefix=???:
+;tile.blockCapacitorBank.tooltipPrefix=내용물:
 #                                  en: Contains
 ;tile.blockConduitBundle.name=Conduit Connector
 #                         en: Conduit Connector
-;tile.blockEnderRail.name=?? ??
+;tile.blockEnderRail.name=엔더 레일
 #                     en: Ender Rail
-;tile.blockEnderRail.tooltip.detailed.line1=?? ???? ?? ???
+;tile.blockEnderRail.tooltip.detailed.line1=차원 송수신기 위에 놓으면
 #                                       en: Teleports minecarts when placed
-;tile.blockEnderRail.tooltip.detailed.line2=????? ????????.
+;tile.blockEnderRail.tooltip.detailed.line2=마인카트를 순간이동시킵니다.
 #                                       en: on a Dimensional Transceiver
-;tile.blockEnderRail.tooltip.detailed.line3=?? ????? ?? ???
+;tile.blockEnderRail.tooltip.detailed.line3=차원 송수신기의 레일 탭에서
 #                                       en: Set destinations using the
-;tile.blockEnderRail.tooltip.detailed.line4=???? ????? ????.
+;tile.blockEnderRail.tooltip.detailed.line4=목적지를 선택하시기 바랍니다.
 #                                       en: Transceiver's rail tab
-;tile.blockEnderRail.tooltip.detailed.line5=?? ?? ??? ????
+;tile.blockEnderRail.tooltip.detailed.line5=앉은 채로 렌치로 우클릭해
 #                                       en: Set direction with a Shift-R-Click
-;tile.blockEnderRail.tooltip.detailed.line6=??? ?? ? ????.
+;tile.blockEnderRail.tooltip.detailed.line6=방향을 바꾼 수 있습니다.
 #                                       en: of a wrench
 ;tile.blockGauge.name=
 #                 en: RF Gauge
@@ -888,11 +888,11 @@
 #                                   en: Displays RF levels of adjacent
 ;tile.blockGauge.tooltip.detailed.line2=
 #                                   en: blocks.
-;tile.blockHyperCube.name=?? ???? (???)
+;tile.blockHyperCube.name=차원 송수신기 (삭제됨)
 #                     en: Dimensional Transceiver (Deprecated)
-;tile.blockHyperCube.tooltip.detailed.line1=???? ???
+;tile.blockHyperCube.tooltip.detailed.line1=조합창에 올려서
 #                                       en: Convert to new model by placing
-;tile.blockHyperCube.tooltip.detailed.line2=????? ???? ????.
+;tile.blockHyperCube.tooltip.detailed.line2=신제품으로 바꾸시기 바랍니다.
 #                                       en: in the crafting grid
 ;tile.blockInventoryChest_big.name=
 #                              en: Big Inventory System Storage
@@ -932,19 +932,19 @@
 #                                                  en: on the number of an item available
 ;tile.blockInventoryPanelSensor.tooltip.detailed.line3=
 #                                                  en: in an Inventory Panel network
-;tile.blockPainter.tooltip.detailed.line1=??? ?? ??? ??? ? ????:
+;tile.blockPainter.tooltip.detailed.line1=다음과 같은 물체를 채색할 수 있습니다:
 #                                     en: Used to paint:
-;tile.blockPainter.tooltip.detailed.line2=??? ??, ??, ???,
+;tile.blockPainter.tooltip.detailed.line2=컨두잇 덮개, 계단, 울타리,
 #                                     en: Conduit Facades, Stairs, Fences, Gates,
-;tile.blockPainter.tooltip.detailed.line3=??? ?, ? ??, ??? ??,
+;tile.blockPainter.tooltip.detailed.line3=울타리 문, 반 블럭, 조약돌 담장,
 #                                     en: Slabs, Cobblestone, Cobblestone Walls,
-;tile.blockPainter.tooltip.detailed.line4=?? ?, ???, ??,
+;tile.blockPainter.tooltip.detailed.line4=유리 틀, 발광석, 카펫,
 #                                     en: Glowstone, Redstone, Carpet, Pressure
-;tile.blockPainter.tooltip.detailed.line5=?? ???,
+;tile.blockPainter.tooltip.detailed.line5=흑강 감압판,
 #                                     en: Plates, Quite Clear Glass, Fused Quartz,
-;tile.blockPainter.tooltip.detailed.line6=???? ?
+;tile.blockPainter.tooltip.detailed.line6=여행자의 닻
 #                                     en: Trapdoors, and most machines
-;tile.blockPowerMonitor.name=?? ???
+;tile.blockPowerMonitor.name=전력 모니터
 #                        en: Power Monitor
 ;tile.blockPowerMonitor.tooltip.detailed.line1=
 #                                          en: Displays details of power use and
@@ -976,13 +976,13 @@ description.enchantment.enderio.soulBound=
 #                                     en: Prevents item from being lost on death
 enchantment.soulBound=
 #                 en: Soulbound
-enderio.block.tooltip.blastResistant=?? ??
+enderio.block.tooltip.blastResistant=폭발 저항
 #                                en: Blast Resistant
-enderio.block.tooltip.isBeaconBase=???? ?? ??
+enderio.block.tooltip.isBeaconBase=신호기에 사용 가능
 #                              en: Can be used as beacon base
 enderio.block.tooltip.lightBlocker=
 #                              en: Blocks Light
-enderio.block.tooltip.lightEmitter=?? ????.
+enderio.block.tooltip.lightEmitter=빛을 발합니다.
 #                              en: Emits Light
 enderio.color.black=
 #               en: Black
@@ -1028,8 +1028,8 @@ enderio.config.anchor.tooltip=Anchors away!
 #                         en: Anchors away!
 enderio.config.anchor=Anchor Settings
 #                 en: Anchor Settings
-enderio.config.darksteel.tooltip=It's not just regular steel, it's �odark�r�e steel.
-#                            en: It's not just regular steel, it's �odark�r�e steel.
+enderio.config.darksteel.tooltip=It's not just regular steel, it's §odark§r§e steel.
+#                            en: It's not just regular steel, it's §odark§r§e steel.
 enderio.config.darksteel=Dark Steel
 #                    en: Dark Steel
 enderio.config.efficiency.tooltip=Where do the numbers end?
@@ -1248,19 +1248,19 @@ enderio.entity_action.block_powered_spawner.action=
 #                                              en: Spawns
 enderio.entity_action.block_relocator_obelisk.action=
 #                                                en: Relocates
-enderio.farm.note.noAxe=?? ??
+enderio.farm.note.noAxe=도끼 필요
 #                   en: No Axe
-enderio.farm.note.noHoe=?? ??
+enderio.farm.note.noHoe=괭이 필요
 #                   en: No Hoe
-enderio.farm.note.noPower=?? ??
+enderio.farm.note.noPower=전력 부족
 #                     en: No Power
-enderio.farm.note.noSeeds=?? ??
+enderio.farm.note.noSeeds=씨앗 필요
 #                     en: No Seeds
 enderio.farm.note.noShears=
 #                      en: No Shears
 enderio.farm.note.noTreetap=
 #                       en: No Treetap
-enderio.farm.note.outputFull=???? ? ?
+enderio.farm.note.outputFull=인벤토리 꽉 참
 #                        en: Output Full
 enderio.fluid.millibucket.format.name=
 #                                 en: %s mB of %s
@@ -1272,13 +1272,13 @@ enderio.fluid.millibucket.format.tickper=
 #                                    en: %s t/mB
 enderio.fluid.millibucket.format=
 #                            en: %s mB
-enderio.fuel.tooltip.burnTime=?? ???? {0,number}
+enderio.fuel.tooltip.burnTime=연료 소모시간 {0,number}
 #                         en: burn time %s
 enderio.fuel.tooltip.generates=
 #                          en: Generates % at %s
-enderio.fuel.tooltip.heading=?? ????
+enderio.fuel.tooltip.heading=연료 세부사항
 #                        en: Fuel Details
-enderio.generic.tooltip.paintedWith=??? ??:
+enderio.generic.tooltip.paintedWith=채색된 블럭:
 #                               en: Painted with: %s
 enderio.generic.tooltip.unpainted=
 #                             en: Not painted
@@ -1300,13 +1300,13 @@ enderio.gui.conduit.ioMode.notSet=Default
 #                             en: Default
 enderio.gui.conduit.ioMode.output=Insert
 #                             en: Insert
-enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=??? ??
+enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=입출력 설정
 #                                                    en: Configure IO
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line2=
 #                                                    en: Shift click to reset all sides
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line3=
 #                                                    en: to their default setting
-enderio.gui.generic.ioMode.overlay.tooltip=??? ??
+enderio.gui.generic.ioMode.overlay.tooltip=입출력 설정
 #                                      en: Configure IO
 enderio.gui.generic.max=
 #                   en: Max: %s
@@ -1314,7 +1314,7 @@ enderio.gui.generic.progress=
 #                        en: Progress %s%%
 enderio.gui.machine.ioMode.disabled=Disabled
 #                               en: Disabled
-enderio.gui.machine.ioMode.none=??
+enderio.gui.machine.ioMode.none=없음
 #                           en: None
 enderio.gui.machine.ioMode.pull=Pull
 #                           en: Pull
@@ -1326,46 +1326,46 @@ enderio.gui.machine.ioMode.push=Push
 #                           en: Push
 enderio.gui.permission.denied=
 #                         en: Permission denied
-enderio.gui.tooltip.redstoneControlMode.ignore=??? ???
+enderio.gui.tooltip.redstoneControlMode.ignore=언제나 활성화
 #                                          en: Always active
-enderio.gui.tooltip.redstoneControlMode.never=????
+enderio.gui.tooltip.redstoneControlMode.never=비활성화
 #                                         en: Never active
-enderio.gui.tooltip.redstoneControlMode.off=??? ??? ???
+enderio.gui.tooltip.redstoneControlMode.off=신호가 없으면 활성화
 #                                       en: Active without signal
-enderio.gui.tooltip.redstoneControlMode.on=??? ??? ???
+enderio.gui.tooltip.redstoneControlMode.on=신호가 있으면 활성화
 #                                      en: Active with signal
-enderio.gui.tooltip.redstoneControlMode=???? ??
+enderio.gui.tooltip.redstoneControlMode=레드스톤 모드
 #                                   en: Redstone Mode
-enderio.itemConduitFilterUpgrade.clearConfigMethod=???? ???? ??? ???? ? ????.
+enderio.itemConduitFilterUpgrade.clearConfigMethod=조합창에 올려놓아 설정을 초기화할 수 있습니다.
 #                                              en: %sPlace in crafting grid to clear
-enderio.itemConduitFilterUpgrade.clearConfigWarning=?? ?? ??? ??????!
+enderio.itemConduitFilterUpgrade.clearConfigWarning=모든 필터 설정이 초기화됩니다!
 #                                               en: %sThis will clear all stored filter settings!
-enderio.itemConduitFilterUpgrade.configured=??
+enderio.itemConduitFilterUpgrade.configured=설정
 #                                       en: %sConfigured
-enderio.itemConduitFilterUpgrade=??? ???? ?????
+enderio.itemConduitFilterUpgrade=아이템 컨두잇용 업그레이드
 #                            en: Upgrade for item conduits
-enderio.machine.tooltip.configured=(???)
+enderio.machine.tooltip.configured=(설정됨)
 #                              en: %s (Configured)
-enderio.machine.tooltip.upgrade.tooltip.detailed.line1=??? ??? ????
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=기계의 에너지 저장량과
 #                                                  en: Increases energy storage and speed / range of machines
-enderio.machine.tooltip.upgrade=?? ?????
+enderio.machine.tooltip.upgrade=기계 업그레이드
 #                           en: Machine Upgrade
 enderio.power.format.of=
-#                   en: %s / %s �I
+#                   en: %s / %s µI
 enderio.power.format.pertick=
-#                        en: %s �I/t
+#                        en: %s µI/t
 enderio.power.format=
-#                en: %s �I
+#                en: %s µI
 enderio.recipe.tooltip.clearConfig=
-#                              en: �c�oThis will clear all stored info!
+#                              en: §c§oThis will clear all stored info!
 enderio.soulvial.blacklisted.denied=
-#                               en: Permission �cdenied�r - this entity is blacklisted
+#                               en: Permission §cdenied§r - this entity is blacklisted
 enderio.soulvial.denied=
-#                   en: Permission �cdenied�r!
+#                   en: Permission §cdenied§r!
 enderio.soulvial.owned.denied=
-#                         en: Permission �cdenied�r - only owners may pick up owned animals
+#                         en: Permission §cdenied§r - only owners may pick up owned animals
 enderio.soulvial.player.denied=
-#                          en: �cNo!$r How would you feel if you had to play this game from inside a bottle?
+#                          en: §cNo!$r How would you feel if you had to play this game from inside a bottle?
 enderio.top.action.header=
 #                     en: %s:
 enderio.top.action.none=
@@ -1421,26 +1421,26 @@ enderio.top.tank.header.output=
 enderio.top.tank.header.storage=
 #                           en: %s
 enderio.wrench.permission.denied=
-#                            en: Permission �cdenied�r!
+#                            en: Permission §cdenied§r!
 fluid.cloud_seed=
 #            en: Cloud Seed
 fluid.cloud_seed_concentrated=
 #                         en: Concentrated Cloud Seed
 fluid.ender_distillation=
 #                    en: Dew of the Void
-fluid.fire_water=???
+fluid.fire_water=화염수
 #            en: Fire Water
-fluid.hootch=??
+fluid.hootch=독주
 #        en: Hootch
 fluid.liquid_sunshine=
 #                 en: Liquid Sunshine
-fluid.nutrient_distillation=??? ?? ?????.
+fluid.nutrient_distillation=근처의 몹을 죽여줍니다.
 #                       en: Nutrient Distillation
-fluid.rocket_fuel=?? ??
+fluid.rocket_fuel=로켓 연료
 #             en: Rocket Fuel
 fluid.vapor_of_levity=
 #                 en: Vapor of Levity
-fluid.xpjuice=?? XP
+fluid.xpjuice=액체 XP
 #         en: Liquid XP
 item.item_alloy_ingot_conductive_iron.name=
 #                                      en: Conductive Iron Ingot
@@ -1472,19 +1472,19 @@ item.item_alloy_nugget_redstone_alloy.name=
 #                                      en: Redstone Alloy Nugget
 item.item_alloy_nugget_soularium.name=
 #                                 en: Soularium Nugget
-item.item_alloy_nugget_vibrant_alloy.name=??? ??
+item.item_alloy_nugget_vibrant_alloy.name=진동성 조각
 #                                     en: Vibrant Alloy Nugget
-item.item_basic_capacitor.activated.name=?? ???
+item.item_basic_capacitor.activated.name=이중 축전지
 #                                    en: Double-Layer Capacitor
-item.item_basic_capacitor.basic.name=?? ???
+item.item_basic_capacitor.basic.name=기본 축전지
 #                                en: Basic Capacitor
-item.item_basic_capacitor.ender.name=?? ???
+item.item_basic_capacitor.ender.name=팔중 축전지
 #                                en: Octadic Capacitor
-item.item_broken_spawner.name=??? ???
+item.item_broken_spawner.name=부서진 스포너
 #                         en: Broken Spawner
-item.item_broken_spawner.tooltip.detailed.line1=???? ?? ???? ??
+item.item_broken_spawner.tooltip.detailed.line1=모루에서 전동 스포너와 합쳐
 #                                           en: Combine with a Powered Spawner
-item.item_broken_spawner.tooltip.detailed.line2=? ??? ?????.
+item.item_broken_spawner.tooltip.detailed.line2=몹 종류를 설정하세요.
 #                                           en: in an Anvil to set spawn type
 item.item_cold_fire_igniter.chat.outoffluid=
 #                                       en: ERROR: Out of %s
@@ -1552,25 +1552,25 @@ item.item_dark_steel_armor.tooltip.levelcost.line2=
 #                                              en: %s%s  %s + %s levels
 item.item_dark_steel_armor.tooltip.line1=
 #                                    en: %sDiamond level protection when powered
-item.item_dark_steel_axe.name=??? ??
+item.item_dark_steel_axe.name=암흑의 도끼
 #                         en: Dark Axe
 item.item_dark_steel_axe.tooltip.effPowered=
 #                                       en: %sEfficiency when powered: %s
-item.item_dark_steel_axe.tooltip.multiHarvest=??? ???? ?? ?? ?? ?? ?????.
+item.item_dark_steel_axe.tooltip.multiHarvest=앉아서 사용하면 원목 여러 개를 채굴 가능합니다.
 #                                         en: Sneak to harvest multiple logs
-item.item_dark_steel_boots.name=??? ???
+item.item_dark_steel_boots.name=암흑의 전투화
 #                           en: Dark Boots
 item.item_dark_steel_boots.tooltip.line1=
 #                                    en: Fall damage negated when powered
 item.item_dark_steel_bow.name=
 #                         en: Dark Bow
-item.item_dark_steel_chestplate.name=??? ??
+item.item_dark_steel_chestplate.name=암흑의 흉패
 #                                en: Dark Plate
-item.item_dark_steel_helmet.name=??? ??
+item.item_dark_steel_helmet.name=암흑의 투구
 #                            en: Dark Helm
-item.item_dark_steel_leggings.name=??? ??
+item.item_dark_steel_leggings.name=암흑의 바지
 #                              en: Dark Leggings
-item.item_dark_steel_pickaxe.name=??? ???
+item.item_dark_steel_pickaxe.name=암흑의 곡괭이
 #                             en: Dark Pick
 item.item_dark_steel_pickaxe.tooltip.cost=
 #                                     en: %s     (cost %s)
@@ -1584,9 +1584,9 @@ item.item_dark_steel_shears.tooltip.effPowered=
 #                                          en: %sEfficiency when powered: %s
 item.item_dark_steel_shears.tooltip.multiHarvest=
 #                                            en: Shears multiple blocks/sheep when empowered
-item.item_dark_steel_sword.name=? ??
+item.item_dark_steel_sword.name=디 엔더
 #                           en: The Ender
-item.item_dark_steel_sword.tooltip.detailed.line1=?? ??? ?? ??? ?? ??? ?????.
+item.item_dark_steel_sword.tooltip.detailed.line1=몹의 머리와 엔더 진주의 드랍 확률이 높아집니다.
 #                                             en: Increased skull and ender pearl drops
 item.item_dark_steel_sword.tooltip.detailed.line2=
 #                                             en: When powered: Endermen can't teleport once hit, extra Damage and Speed
@@ -1620,7 +1620,7 @@ item.item_magnet.everywhere.tooltip.detailed.line3=
 #                                              en: Must be powered, active and in the
 item.item_magnet.everywhere.tooltip.detailed.line4=
 #                                              en: inventory (or a Baubles slot) to function
-item.item_magnet.name=???
+item.item_magnet.name=전자석
 #                 en: Electromagnet
 item.item_magnet.tooltip.detailed.line1=
 #                                   en: Pulls nearby item towards you
@@ -1628,21 +1628,21 @@ item.item_magnet.tooltip.detailed.line2=
 #                                   en: Shift-R-Click to enable / disable
 item.item_magnet.tooltip.detailed.line3=
 #                                   en: Must be powered, active and in the
-item.item_magnet.tooltip.detailed.line4=???? ??? ??? ??? ???.
+item.item_magnet.tooltip.detailed.line4=활성화된 상태로 핫바에 있어야 합니다.
 #                                   en: hot bar (or a Baubles slot) to function
-item.item_material.attractor_crystal.name=???? ??
+item.item_material.attractor_crystal.name=매혹적인 수정
 #                                     en: Enticing Crystal
-item.item_material.binder_composite.name=???? ???
+item.item_material.binder_composite.name=접합제용 혼합물
 #                                    en: Binder Composite
-item.item_material.chassi_parts.name=?? ??
+item.item_material.chassi_parts.name=기계 부품
 #                                en: Machine Parts
-item.item_material.conduit_binder.name=??? ???
+item.item_material.conduit_binder.name=컨두잇 접합제
 #                                  en: Conduit Binder
-item.item_material.dark_grinding_ball.name=?? ?
+item.item_material.dark_grinding_ball.name=흑강 공
 #                                      en: Dark Steel Ball
 item.item_material.dust_wheat.name=
 #                              en: Flour
-item.item_material.ender_crystal.name=?? ??
+item.item_material.ender_crystal.name=엔더 수정
 #                                 en: Ender Crystal
 item.item_material.ender_crystal_powder.name=
 #                                        en: Grains of the End
@@ -1664,7 +1664,7 @@ item.item_material.glider_wings.tooltip.detailed.line1=
 #                                                  en: Upgrade for Dark Steel chestplate
 item.item_material.ingot_enderium_base.name=
 #                                       en: Enderium Base
-item.item_material.machine_chassi.name=?? ?
+item.item_material.machine_chassi.name=기계 틀
 #                                  en: Machine Chassis
 item.item_material.nutritious_stick.name=
 #                                    en: Nutritious Stick
@@ -1674,47 +1674,47 @@ item.item_material.plantgreen.name=
 #                              en: Clippings and Trimmings
 item.item_material.powder_ardite.name=
 #                                 en: Ardite Powder
-item.item_material.powder_coal.name=?? ??
+item.item_material.powder_coal.name=석탄 분말
 #                               en: Coal Powder
 item.item_material.powder_cobalt.name=
 #                                 en: Cobalt Powder
-item.item_material.powder_copper.name=?? ??
+item.item_material.powder_copper.name=구리 분말
 #                                 en: Copper Powder
-item.item_material.powder_ender.name=?? ??
+item.item_material.powder_ender.name=엔더 분말
 #                                en: Ender Pearl Powder
-item.item_material.powder_gold.name=? ??
+item.item_material.powder_gold.name=금 분말
 #                               en: Gold Powder
 item.item_material.powder_infinity.name=
 #                                   en: Grains of Infinity
-item.item_material.powder_iron.name=? ??
+item.item_material.powder_iron.name=철 분말
 #                               en: Iron Powder
 item.item_material.powder_obsidian.name=
 #                                   en: Obsidian Powder
-item.item_material.powder_tin.name=?? ??
+item.item_material.powder_tin.name=주석 분말
 #                              en: Tin Powder
 item.item_material.precient_crystal.name=
 #                                    en: Precient Crystal
 item.item_material.precient_powder.name=
 #                                   en: Grains of Prescience
-item.item_material.pulsating_crystal.name=??? ??
+item.item_material.pulsating_crystal.name=맥동성 수정
 #                                     en: Pulsating Crystal
 item.item_material.pulsating_powder.name=
 #                                    en: Grains of Piezallity
-item.item_material.silicon.name=???
+item.item_material.silicon.name=실리콘
 #                           en: Silicon
-item.item_material.skull_ender_resonator.name=?? ???
+item.item_material.skull_ender_resonator.name=엔더 공명기
 #                                         en: Ender Resonator
 item.item_material.skull_sentient_ender.name=
 #                                        en: Sentient Ender
 item.item_material.skull_skeletal_contractor.name=
 #                                             en: Skeletal Contractor
-item.item_material.skull_zombie_controller.name=Z-?? ???
+item.item_material.skull_zombie_controller.name=Z-논리 제어기
 #                                           en: Z-Logic Controller
-item.item_material.skull_zombie_electrode.name=?? ??
+item.item_material.skull_zombie_electrode.name=좀비 전극
 #                                          en: Zombie Electrode
-item.item_material.skull_zombie_frankenstien.name=??? ??
+item.item_material.skull_zombie_frankenstien.name=프랑켄 좀비
 #                                             en: Frank'N'Zombie
-item.item_material.vibrant_crystal.name=??? ??
+item.item_material.vibrant_crystal.name=진동성 수정
 #                                   en: Vibrant Crystal
 item.item_material.vibrant_powder.name=
 #                                  en: Grains of Vibrancy
@@ -1742,7 +1742,7 @@ item.item_rod_of_return.tooltip.fluid=
 #                                 en: %s
 item.item_rod_of_return.tooltip.power=
 #                                 en: %s
-item.item_soul_vial.name=?? ?
+item.item_soul_vial.name=영혼 병
 #                    en: Soul Vial
 item.item_soul_vial.tooltip.color=
 #                             en: Color: %s
@@ -1758,19 +1758,19 @@ item.item_soul_vial.tooltip.health=
 #                              en: Health: %s
 item.item_travel_staff.chat.notEnoughPower=
 #                                      en: Not enough power
-item.item_travel_staff.name=???? ???
+item.item_travel_staff.name=여행자의 지팡이
 #                       en: Staff of Traveling
-item.item_travel_staff.tooltip.detailed.line1=?? ?? ???? ?? ?? IO?
+item.item_travel_staff.tooltip.detailed.line1=손에 쥐면 여행자의 닻과 엔더 IO가
 #                                         en: When held Travel Anchors and EnderIO
-item.item_travel_staff.tooltip.detailed.line2=?? ??? ??,
+item.item_travel_staff.tooltip.detailed.line2=눈에 보이게 되고,
 #                                         en: blocks become visible and can be
-item.item_travel_staff.tooltip.detailed.line3=????? ???? ? ????.
+item.item_travel_staff.tooltip.detailed.line3=우클릭으로 작동시킬 수 있습니다.
 #                                         en: activated by R-Click
-item.item_travel_staff.tooltip.detailed.line4=?? ?? ?????
+item.item_travel_staff.tooltip.detailed.line4=앉은 체로 우클릭하면
 #                                         en: Shift-R-Click will teleport the
-item.item_travel_staff.tooltip.detailed.line5=????? ??? ????????.
+item.item_travel_staff.tooltip.detailed.line5=플레이어를 단거리 텔레포트시킵니다.
 #                                         en: player a short distance
-item.item_xp_transfer.name=??? ??
+item.item_xp_transfer.name=경험치 막대
 #                      en: Experience Rod
 item.item_xp_transfer.tooltip.detailed.line1=R-Click on a fluid tank containing
 #                                        en: R-Click on a fluid tank containing
@@ -1780,37 +1780,37 @@ item.item_xp_transfer.tooltip.detailed.line3=Shift-R-Click to transfer levels to
 #                                        en: Shift-R-Click to transfer levels to
 item.item_xp_transfer.tooltip.detailed.line4=the tank
 #                                        en: the tank
-item.item_yeta_wrench.name=?? ??
+item.item_yeta_wrench.name=예타 렌치
 #                      en: Yeta Wrench
-item.item_yeta_wrench.tooltip.detailed.line1=?? ? ? ??? ??? ??????.
+item.item_yeta_wrench.tooltip.detailed.line1=손에 쥘 시 컨두잇 덮개가 투명해집니다.
 #                                        en: Hides conduit facades when held
-item.item_yeta_wrench.tooltip.detailed.line2=?? ?? ????
+item.item_yeta_wrench.tooltip.detailed.line2=앉은 채로 우클릭해
 #                                        en: Shift-R-Click to break machines
-item.item_yeta_wrench.tooltip.detailed.line3=??? ???? ?? ?? ?????.
+item.item_yeta_wrench.tooltip.detailed.line3=기계와 컨두잇을 즉시 해체 가능합니다.
 #                                        en: and conduits instantly
-item.item_yeta_wrench.tooltip.detailed.line4=?? ?? ???? ????
+item.item_yeta_wrench.tooltip.detailed.line4=앉은 채로 컨두잇에 좌클릭해
 #                                        en: Shift-L-Click on a conduit to
-item.item_yeta_wrench.tooltip.detailed.line5=??? ?? GUI? ? ? ????.
+item.item_yeta_wrench.tooltip.detailed.line5=컨두잇 설정 GUI를 열 수 있습니다.
 #                                        en: open conduit settings GUI
-item.item_yeta_wrench.tooltip.detailed.line6=?? ?? ??? ?? ???? Y? ??
+item.item_yeta_wrench.tooltip.detailed.line6=앉은 채로 마우스 휠을 굴리거나 Y를 눌러
 #                                        en: Use Shift-Mouse Wheel or '%s' to
-item.item_yeta_wrench.tooltip.detailed.line7=? ??? ????? ??? ? ? ????.
+item.item_yeta_wrench.tooltip.detailed.line7=한 종류의 컨두잇만을 보이게 할 수 있습니다.
 #                                        en: render a single conduit type
-tile.block_alloy.conductive_iron.name=??? ? ??
+tile.block_alloy.conductive_iron.name=전도성 철 블럭
 #                                 en: Conductive Iron Block
-tile.block_alloy.dark_steel.name=?? ??
+tile.block_alloy.dark_steel.name=흑강 블럭
 #                            en: Dark Steel Block
-tile.block_alloy.electrical_steel.name=??? ??
+tile.block_alloy.electrical_steel.name=전기강 블럭
 #                                  en: Electrical Steel Block
-tile.block_alloy.energetic_alloy.name=??? ?? ??
+tile.block_alloy.energetic_alloy.name=활동성 합금 블럭
 #                                 en: Energetic Alloy Block
 tile.block_alloy.name=
 #                 en: Alloy Block
 tile.block_alloy.pulsating_iron.name=
 #                                en: Pulsating Iron Block
-tile.block_alloy.redstone_alloy.name=???? ?? ??
+tile.block_alloy.redstone_alloy.name=레드스톤 합금 블럭
 #                                en: Redstone Alloy Block
-tile.block_alloy.soularium.name=???? ??
+tile.block_alloy.soularium.name=소울라륨 블럭
 #                           en: Soularium Block
 tile.block_alloy.vibrant_alloy.name=
 #                               en: Vibrant Alloy Block
@@ -1820,19 +1820,19 @@ tile.block_dark_fused_glass.name=
 #                            en: Dark Clear Glass
 tile.block_dark_fused_quartz.name=
 #                             en: Dark Fused Quartz
-tile.block_dark_iron_bars.name=?? ? ??
+tile.block_dark_iron_bars.name=검은 철 주괴
 #                          en: Dark Iron Bars
-tile.block_dark_steel_anvil.intact.name=?? ??
+tile.block_dark_steel_anvil.intact.name=흑강 모루
 #                                   en: Dark Steel Anvil
-tile.block_dark_steel_anvil.name=?? ??
+tile.block_dark_steel_anvil.name=흑강 모루
 #                            en: Dark Steel Anvil
-tile.block_dark_steel_anvil.slightlyDamaged.name=?? ??? ?? ??
+tile.block_dark_steel_anvil.slightlyDamaged.name=약간 손상된 흑강 모루
 #                                            en: Slightly Damaged Dark Steel Anvil
-tile.block_dark_steel_anvil.tooltip.common.line1=???? ????.
+tile.block_dark_steel_anvil.tooltip.common.line1=내구도가 높습니다.
 #                                            en: Damage Resistant
 tile.block_dark_steel_anvil.tooltip.detailed.line1=
 #                                              en: Lasts much longer than the vanilla anvil
-tile.block_dark_steel_anvil.veryDamaged.name=??? ??? ?? ??
+tile.block_dark_steel_anvil.veryDamaged.name=심하게 손상된 흑강 모루
 #                                        en: Very Damaged Dark Steel Anvil
 tile.block_dark_steel_ladder.name=
 #                             en: Dark Steel Ladder
@@ -1948,39 +1948,39 @@ tile.block_detector_block.name=
 #                          en: Block Detector
 tile.block_detector_block_silent.name=
 #                                 en: Block Detector (Silent)
-tile.block_enderman_skull.base.name=??? ??
+tile.block_enderman_skull.base.name=엔더맨 머리
 #                               en: Enderman Head
-tile.block_enderman_skull.name=??? ??
+tile.block_enderman_skull.name=엔더맨 머리
 #                          en: Enderman Skull
-tile.block_enderman_skull.reanimated.name=??? ??? ??
+tile.block_enderman_skull.reanimated.name=부활한 엔더맨 머리
 #                                     en: Reanimated Enderman Head
 tile.block_enderman_skull.reanimated_tormented.name=
 #                                               en: Reanimated Tormented Enderman Head
-tile.block_enderman_skull.tormented.name=???? ??? ??
+tile.block_enderman_skull.tormented.name=고문당한 엔더맨 머리
 #                                    en: Tormented Enderman Head
-tile.block_enlightened_fused_glass.name=?? ??? ??
+tile.block_enlightened_fused_glass.name=고급 투명한 유리
 #                                   en: Enlightened Clear Glass
-tile.block_enlightened_fused_quartz.name=?? ??? ??
+tile.block_enlightened_fused_quartz.name=고급 재결정 석영
 #                                    en: Enlightened Fused Quartz
 tile.block_exit_rail.name=
 #                     en: Exit Rail
-tile.block_fused_glass.name=??? ??
+tile.block_fused_glass.name=투명한 유리
 #                       en: Quite Clear Glass
-tile.block_fused_quartz.name=??? ??
+tile.block_fused_quartz.name=재결정 석영
 #                        en: Fused Quartz
 tile.block_machine_base.name=
 #                        en: (technical block)
 tile.block_machine_io.name=
 #                      en: (technical block)
-tile.block_painted_carpet.name=??? ??
+tile.block_painted_carpet.name=채색된 카펫
 #                          en: Painted Carpet
 tile.block_painted_dark_steel_trapdoor.name=
 #                                       en: Painted Dark Steel Trapdoor
-tile.block_painted_double_slab.name=??? ? ??
+tile.block_painted_double_slab.name=채색된 반 블럭
 #                               en: Painted Slab
-tile.block_painted_fence.name=??? ???
+tile.block_painted_fence.name=채색된 울타리
 #                         en: Painted Fence
-tile.block_painted_fence_gate.name=??? ??? ?
+tile.block_painted_fence_gate.name=채색된 울타리 문
 #                              en: Painted Gate
 tile.block_painted_fused_quartz.name=
 #                                en: Painted Fused Quartz
@@ -2086,9 +2086,9 @@ tile.block_painted_redstone.name=
 #                            en: Painted Redstone
 tile.block_painted_redstone_solid.name=
 #                                  en: Painted Redstone
-tile.block_painted_slab.name=??? ? ??
+tile.block_painted_slab.name=채색된 반 블럭
 #                        en: Painted Slab
-tile.block_painted_stair.name=??? ??
+tile.block_painted_stair.name=채색된 계단
 #                         en: Painted Stairs
 tile.block_painted_stone.name=
 #                         en: Painted Cobblestone
@@ -2100,13 +2100,13 @@ tile.block_painted_stone_slab.name=
 #                              en: Painted Stone Slab
 tile.block_painted_stone_stair.name=
 #                               en: Painted Stone Stairs
-tile.block_painted_wall.name=??? ??
+tile.block_painted_wall.name=채색된 담장
 #                        en: Painted Wall
 tile.block_painted_wooden_trapdoor.name=
 #                                   en: Painted Wooden Trapdoor
-tile.block_reinforced_obsidian.name=?? ???
+tile.block_reinforced_obsidian.name=강화 흑요석
 #                               en: Reinforced Obsidian
-tile.block_reinforced_obsidian.tooltip.common.line1=??? ??? ??? ????.
+tile.block_reinforced_obsidian.tooltip.common.line1=위더에 내성을 가지고 있습니다.
 #                                               en: Wither Proof
 tile.block_self_resetting_lever10.name=
 #                                  en: Self-resetting Lever (10 seconds)
@@ -2124,17 +2124,17 @@ tile.fluid.cloud_seed_concentrated.name=
 #                                   en: Concentrated Cloud Seed
 tile.fluid.ender_distillation.name=
 #                              en: Dew of the Void
-tile.fluid.fire_water.name=???
+tile.fluid.fire_water.name=화염수
 #                      en: Fire Water
-tile.fluid.hootch.name=??
+tile.fluid.hootch.name=독주
 #                  en: Hootch
 tile.fluid.liquid_sunshine.name=
 #                           en: Liquid Sunshine
-tile.fluid.nutrient_distillation.name=??? ?? ?????.
+tile.fluid.nutrient_distillation.name=근처의 몹을 죽여줍니다.
 #                                 en: Nutrient Distillation
-tile.fluid.rocket_fuel.name=?? ??
+tile.fluid.rocket_fuel.name=로켓 연료
 #                       en: Rocket Fuel
-tile.fluid.xpjuice.name=?? XP
+tile.fluid.xpjuice.name=액체 XP
 #                   en: Liquid XP
 tile.vapor_of_levity.name=
 #                     en: Vapor of Levity

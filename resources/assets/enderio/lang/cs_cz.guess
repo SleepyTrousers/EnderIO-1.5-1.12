@@ -12,7 +12,7 @@
 #                             en: Crafter speed, area=all machines "area" attribute (e.g. farm),
 ;//display string for Skeleton(type=
 #                               en: =1)
-;enderio.blockConduitBundle=Svazek vedení
+;enderio.blockConduitBundle=Svazek vedenÃ­
 #                       en: Conduit Bundle
 ;enderio.capbank.change=
 #                   en: I/O
@@ -22,15 +22,15 @@
 #                            en: Input
 ;enderio.capbank.iodisplay.loss=
 #                           en: Out
-;enderio.capbank.iodisplay.output=Vıstup
+;enderio.capbank.iodisplay.output=VÃ½stup
 #                             en: Output
 ;enderio.capbank.iodisplay.stable=
 #                             en: I/O
-;enderio.capbank.maxIO=Maximální I/O
+;enderio.capbank.maxIO=MaximÃ¡lnÃ­ I/O
 #                  en: Max I/O
-;enderio.capbank.maxIn=Maximální vstup
+;enderio.capbank.maxIn=MaximÃ¡lnÃ­ vstup
 #                  en: Max Input
-;enderio.capbank.maxOut=Maximální vıstuo
+;enderio.capbank.maxOut=MaximÃ¡lnÃ­ vÃ½stuo
 #                   en: Max Output
 ;enderio.category.darksteelarmor=
 #                            en: Dark Steel Armor
@@ -52,9 +52,9 @@
 #                                          en: Crafter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
 ;enderio.config.capacitor.crafter_ticks=
 #                                   en: Crafter: Ticks per crafting operation (will be scaled by the used upgrade capacitor)
-;enderio.filterUpgradeAdvanced.name=Pokro?ilı filtr p?edm?t?
+;enderio.filterUpgradeAdvanced.name=PokroÄilÃ½ filtr pÅ™edmÄ›tÅ¯
 #                               en: Advanced Item Filter
-;enderio.filterUpgradeBasic.name=B?nı filtr p?edm?t?
+;enderio.filterUpgradeBasic.name=BÄ›Å¾nÃ½ filtr pÅ™edmÄ›tÅ¯
 #                            en: Basic Item Filter
 ;enderio.filterUpgradeLimited.name=
 #                              en: Counting Item Filter
@@ -68,17 +68,17 @@
 #                  en: Available
 ;enderio.gui.capBank.inputMode=Vstup
 #                          en: Input
-;enderio.gui.capBank.inputRs=Vstupní ruditovı mód
+;enderio.gui.capBank.inputRs=VstupnÃ­ ruditovÃ½ mÃ³d
 #                        en: Input Redstone Mode
-;enderio.gui.capBank.maxInput=Maximální vstup
+;enderio.gui.capBank.maxInput=MaximÃ¡lnÃ­ vstup
 #                         en: Max Input
-;enderio.gui.capBank.maxIo=Maximální I/O
+;enderio.gui.capBank.maxIo=MaximÃ¡lnÃ­ I/O
 #                      en: Max I/O
-;enderio.gui.capBank.maxOutput=Maximální vıstuo
+;enderio.gui.capBank.maxOutput=MaximÃ¡lnÃ­ vÃ½stuo
 #                          en: Max Output
-;enderio.gui.capBank.outputMode=Vıstup
+;enderio.gui.capBank.outputMode=VÃ½stup
 #                           en: Output
-;enderio.gui.capBank.outputRs=Vıstupní ruditovı mód
+;enderio.gui.capBank.outputRs=VÃ½stupnÃ­ ruditovÃ½ mÃ³d
 #                         en: Output Redstone Mode
 ;enderio.gui.conduit.button.clear=
 #                             en: Clear
@@ -90,7 +90,7 @@
 #                                    en: Optional|If no snapshot is set,|the inventory content will|be used as filter
 ;enderio.gui.conduit.button.snap=
 #                            en: Snapshot
-;enderio.gui.conduit.fluid.autoExtract=Automatická extrakce
+;enderio.gui.conduit.fluid.autoExtract=AutomatickÃ¡ extrakce
 #                                  en: Auto Extract
 ;enderio.gui.conduit.fluid.blacklist=
 #                                en: Blacklist
@@ -98,13 +98,13 @@
 #                             en: Filter
 ;enderio.gui.conduit.fluid.whitelist=
 #                                en: Whitelist
-;enderio.gui.conduit.gas.autoExtract=Automatická extrakce
+;enderio.gui.conduit.gas.autoExtract=AutomatickÃ¡ extrakce
 #                                en: Auto Extract
-;enderio.gui.conduit.ioMode=Mód
+;enderio.gui.conduit.ioMode=MÃ³d
 #                       en: Mode
 ;enderio.gui.conduit.item.blacklist=
 #                               en: Blacklist
-;enderio.gui.conduit.item.channel=Kanál
+;enderio.gui.conduit.item.channel=KanÃ¡l
 #                             en: Channel
 ;enderio.gui.conduit.item.damage.damage_00_00=
 #                                         en: Not Damaged
@@ -138,27 +138,27 @@
 #                                    en: Ignore Meta Data
 ;enderio.gui.conduit.item.ignoreNBT=Ignorovat NBT Data
 #                               en: Ignore NBT Data
-;enderio.gui.conduit.item.insertionFilter=Vloit
+;enderio.gui.conduit.item.insertionFilter=VloÅ¾it
 #                                     en: Insert
 ;enderio.gui.conduit.item.matchMetaData=Shoda Meta Dat
 #                                   en: Match Meta Data
 ;enderio.gui.conduit.item.matchNBT=Shoda NBT Dat
 #                              en: Match NBT Data
-;enderio.gui.conduit.item.oreDicDisabled=Slovník rud zakázán
+;enderio.gui.conduit.item.oreDicDisabled=SlovnÃ­k rud zakÃ¡zÃ¡n
 #                                    en: Ore Dictionary Disabled
-;enderio.gui.conduit.item.oreDicEnabled=Slovník rud povolen
+;enderio.gui.conduit.item.oreDicEnabled=SlovnÃ­k rud povolen
 #                                   en: Ore Dictionary Enabled
 ;enderio.gui.conduit.item.priority=Priorita
 #                              en: Priority
-;enderio.gui.conduit.item.roundRobinDisabled=St?ídání zakázáno
+;enderio.gui.conduit.item.roundRobinDisabled=StÅ™Ã­dÃ¡nÃ­ zakÃ¡zÃ¡no
 #                                        en: Round Robin Disabled
-;enderio.gui.conduit.item.roundRobinEnabled=St?ídání povoleno
+;enderio.gui.conduit.item.roundRobinEnabled=StÅ™Ã­dÃ¡nÃ­ povoleno
 #                                       en: Round Robin Enabled
-;enderio.gui.conduit.item.selfFeedDisabled=Sebe-krmení zakázáno
+;enderio.gui.conduit.item.selfFeedDisabled=Sebe-krmenÃ­ zakÃ¡zÃ¡no
 #                                      en: Self Feed Disabled
-;enderio.gui.conduit.item.selfFeedEnabled=Sebe-krmení povoleno
+;enderio.gui.conduit.item.selfFeedEnabled=Sebe-krmenÃ­ povoleno
 #                                     en: Self Feed Enabled
-;enderio.gui.conduit.item.sigCol=Barva signálu
+;enderio.gui.conduit.item.sigCol=Barva signÃ¡lu
 #                            en: Signal Color
 ;enderio.gui.conduit.item.species.both=
 #                                  en: Match primary and secondary species
@@ -170,21 +170,21 @@
 #                                   en: Max upgrades is 15; Max downgrades is 1
 ;enderio.gui.conduit.item.speedupgrade=
 #                                  en: Insert Item Conduit Speed Upgrades/Downgrade
-;enderio.gui.conduit.item.stickyDisbaled=Lepkavı mód zakázán
+;enderio.gui.conduit.item.stickyDisbaled=LepkavÃ½ mÃ³d zakÃ¡zÃ¡n
 #                                    en: Sticky Mode Disabled
-;enderio.gui.conduit.item.stickyEnabled=Lepkavı mód povolen|Vybrané p?edm?ty budou pouze|odeslány do t?chto, nebo jinıch|lepkavıch vıstup?.
+;enderio.gui.conduit.item.stickyEnabled=LepkavÃ½ mÃ³d povolen|VybranÃ© pÅ™edmÄ›ty budou pouze|odeslÃ¡ny do tÄ›chto, nebo jinÃ½ch|lepkavÃ½ch vÃ½stupÅ¯.
 #                                   en: Sticky Mode Enabled|Selected items will only|be sent to this or other|Sticky outputs.
 ;enderio.gui.conduit.item.whitelist=
 #                               en: Whitelist
 ;enderio.gui.conduit.redstone.color=Barva
 #                               en: Color
-;enderio.gui.conduit.redstone.signalColor=Barva signálu
+;enderio.gui.conduit.redstone.signalColor=Barva signÃ¡lu
 #                                     en: Signal Color
 ;enderio.gui.conduit.redstone.signalStrengh.tooltip=
 #                                               en: Output a strong redstone signal
 ;enderio.gui.conduit.redstone.signalStrengh=
 #                                       en: Strong Signal
-;enderio.gui.disabled=Zakázáno
+;enderio.gui.disabled=ZakÃ¡zÃ¡no
 #                 en: Disabled
 ;enderio.gui.enabled=Povoleno
 #                en: Enabled
@@ -294,7 +294,7 @@
 #                                en: Buffering single items
 ;enderio.gui.machine.bufferingstacks=
 #                                en: Buffering item stacks
-;enderio.gui.machine.ioMode=Mód: %s
+;enderio.gui.machine.ioMode=MÃ³d: %s
 #                       en: Mode: %s
 ;enderio.gui.machine.percraft=
 #                         en: Per Craft
@@ -304,7 +304,7 @@
 #                           en: Send Filter
 ;enderio.gui.machine.side.down=Dolu
 #                          en: Down
-;enderio.gui.machine.side.east=Vıchod
+;enderio.gui.machine.side.east=VÃ½chod
 #                          en: East
 ;enderio.gui.machine.side.north=Sever
 #                           en: North
@@ -312,77 +312,77 @@
 #                           en: South
 ;enderio.gui.machine.side.up=Nahoru
 #                        en: Up
-;enderio.gui.machine.side.west=Západ
+;enderio.gui.machine.side.west=ZÃ¡pad
 #                          en: West
 ;enderio.gui.machine.side=Strana: %s
 #                     en: Side: %s
-;enderio.gui.mjReader.conduitBuffer=Vnit?ní vyrovnávací pam??
+;enderio.gui.mjReader.conduitBuffer=VnitÅ™nÃ­ vyrovnÃ¡vacÃ­ pamÄ›Å¥
 #                               en: Internal Buffer
-;enderio.gui.mjReader.connectionDir=p?ipojení na
+;enderio.gui.mjReader.connectionDir=pÅ™ipojenÃ­ na
 #                               en: connection to:
-;enderio.gui.mjReader.currentRequest=Aktuální poadavek
+;enderio.gui.mjReader.currentRequest=AktuÃ¡lnÃ­ poÅ¾adavek
 #                                en: Current request
-;enderio.gui.mjReader.extractedItem=P?edm?t
+;enderio.gui.mjReader.extractedItem=PÅ™edmÄ›t
 #                               en: Item
-;enderio.gui.mjReader.extractedItems=Extraktované p?edm?ty
+;enderio.gui.mjReader.extractedItems=ExtraktovanÃ© pÅ™edmÄ›ty
 #                                en: Extracted items
-;enderio.gui.mjReader.insertedInto=bude vloen do:
+;enderio.gui.mjReader.insertedInto=bude vloÅ¾en do:
 #                              en: will be inserted into:
-;enderio.gui.mjReader.itemHeading=Vedení p?edm?t?
+;enderio.gui.mjReader.itemHeading=VedenÃ­ pÅ™edmÄ›tÅ¯
 #                             en: Item Conduit
-;enderio.gui.mjReader.itemNoConnections=nemá ádné vn?jší p?ipojení
+;enderio.gui.mjReader.itemNoConnections=nemÃ¡ Å¾Ã¡dnÃ© vnÄ›jÅ¡Ã­ pÅ™ipojenÃ­
 #                                   en: has no external connections
-;enderio.gui.mjReader.networkHeading=Sí? energie
+;enderio.gui.mjReader.networkHeading=SÃ­Å¥ energie
 #                                en: Power Network
-;enderio.gui.mjReader.noItem=Nem?e p?ijmout
+;enderio.gui.mjReader.noItem=NemÅ¯Å¾e pÅ™ijmout
 #                        en: Can not receive
-;enderio.gui.mjReader.noItems=Nep?ijímá zádné p?edm?ty.
+;enderio.gui.mjReader.noItems=NepÅ™ijÃ­mÃ¡ zÃ¡dnÃ© pÅ™edmÄ›ty.
 #                         en: Receives no items.
-;enderio.gui.mjReader.noOutputs=nemá ádné vıstupy
+;enderio.gui.mjReader.noOutputs=nemÃ¡ Å¾Ã¡dnÃ© vÃ½stupy
 #                           en: has no valid outputs
-;enderio.gui.mjReader.noPowerFromSide=nem?e p?ijímat energii z této strany
+;enderio.gui.mjReader.noPowerFromSide=nemÅ¯Å¾e pÅ™ijÃ­mat energii z tÃ©to strany
 #                                 en: cannot receive power from this side
-;enderio.gui.mjReader.receiveItem1=M?e p?ijmout
+;enderio.gui.mjReader.receiveItem1=MÅ¯Å¾e pÅ™ijmout
 #                              en: Can receive
 ;enderio.gui.mjReader.receiveItem2=z:
 #                              en: from:
-;enderio.gui.mjReader.receiveItems=M?e p?ijmout p?edm?ty z:
+;enderio.gui.mjReader.receiveItems=MÅ¯Å¾e pÅ™ijmout pÅ™edmÄ›ty z:
 #                              en: Can receive items from:
-;enderio.gui.mjReader.requestRange=Poadovanı dosah za tik
+;enderio.gui.mjReader.requestRange=PoÅ¾adovanÃ½ dosah za tik
 #                              en: Per tick request range
-;enderio.gui.powerMonitor.emit=Vysílat
+;enderio.gui.powerMonitor.emit=VysÃ­lat
 #                          en: Emit
-;enderio.gui.powerMonitor.engineControl=Ovládání motoru
+;enderio.gui.powerMonitor.engineControl=OvlÃ¡dÃ¡nÃ­ motoru
 #                                   en: Engine Control
-;enderio.gui.powerMonitor.engineSection1=Vyšle signál kdy je úloišt? niší
+;enderio.gui.powerMonitor.engineSection1=VyÅ¡le signÃ¡l kdyÅ¾ je ÃºloÅ¾iÅ¡tÄ› niÅ¾Å¡Ã­
 #                                    en: Emit signal when storage less
-;enderio.gui.powerMonitor.engineSection2=ne
+;enderio.gui.powerMonitor.engineSection2=neÅ¾
 #                                    en: than
 ;enderio.gui.powerMonitor.engineSection3=% z kapacity.
 #                                    en: % full.
-;enderio.gui.powerMonitor.engineSection4=Zastaví kdy je úloišt? vyšší ne
+;enderio.gui.powerMonitor.engineSection4=ZastavÃ­ kdyÅ¾ je ÃºloÅ¾iÅ¡tÄ› vyÅ¡Å¡Ã­ neÅ¾
 #                                    en: Stop when storage greater than
-;enderio.gui.powerMonitor.engineSection5=nebo odpovídá
+;enderio.gui.powerMonitor.engineSection5=nebo odpovÃ­dÃ¡
 #                                    en: or equal to
-;enderio.gui.powerMonitor.monHeading1=Úloišt? vedení
+;enderio.gui.powerMonitor.monHeading1=ÃšloÅ¾iÅ¡tÄ› vedenÃ­
 #                                 en: Conduit Storage
-;enderio.gui.powerMonitor.monHeading2=Úloišt? banky kondenzátor?
+;enderio.gui.powerMonitor.monHeading2=ÃšloÅ¾iÅ¡tÄ› banky kondenzÃ¡torÅ¯
 #                                 en: Capacitor Bank Storage
-;enderio.gui.powerMonitor.monHeading3=Vyrovnávací pam?ti stroje
+;enderio.gui.powerMonitor.monHeading3=VyrovnÃ¡vacÃ­ pamÄ›ti stroje
 #                                 en: Machine Buffers
-;enderio.gui.powerMonitor.monHeading4=Pr?m?rnı vıstup za 5 sekund
+;enderio.gui.powerMonitor.monHeading4=PrÅ¯mÄ›rnÃ½ vÃ½stup za 5 sekund
 #                                 en: Average output over 5 seconds
-;enderio.gui.powerMonitor.monHeading5=Pr?m?rnı vstup za 5 sekund
+;enderio.gui.powerMonitor.monHeading5=PrÅ¯mÄ›rnÃ½ vstup za 5 sekund
 #                                 en: Average input over 5 seconds
 ;enderio.gui.powerMonitor.noNetworkError=
 #                                    en: No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
 ;enderio.gui.powerMonitor.of=
 #                        en: of
-;enderio.gui.receive=P?ijímat
+;enderio.gui.receive=PÅ™ijÃ­mat
 #                en: Receive
-;enderio.gui.send=Posílat
+;enderio.gui.send=PosÃ­lat
 #             en: Send
-;enderio.gui.sendReceive=Posílat & P?ijímat
+;enderio.gui.sendReceive=PosÃ­lat & PÅ™ijÃ­mat
 #                    en: Send & Receive
 ;enderio.gui.travelAccessable.skipLocked=
 #                                    en: Skipped locked anchor, use targeted teleport.
@@ -390,7 +390,7 @@
 #                                        en: Skipped obstructed anchor.
 ;enderio.gui.travelAccessable.skipPrivate=
 #                                     en: Skipped private anchor.
-;enderio.gui.travelAccessable.unauthorised=Nemáš p?ístup k tomuto bloku.
+;enderio.gui.travelAccessable.unauthorised=NemÃ¡Å¡ pÅ™Ã­stup k tomuto bloku.
 #                                      en: You are not allowed to access this block.
 ;enderio.gui.weather.requiredfluid=
 #                              en: Required Fluid: %s mB
@@ -406,43 +406,43 @@
 #                                                 en: The snapshot already covers all items in the inventory
 ;enderio.item.itemExistingItemFilter.filterUpdated=
 #                                              en: New items have been added to the snapshot
-;enderio.itemGasConduit.name=Plynové vedení
+;enderio.itemGasConduit.name=PlynovÃ© vedenÃ­
 #                        en: Gas Conduit
-;enderio.itemGasConduit.tooltip.detailed.line1=P?esouvá plyny kompatibilní s Mekanism módem
+;enderio.itemGasConduit.tooltip.detailed.line1=PÅ™esouvÃ¡ plyny kompatibilnÃ­ s Mekanism mÃ³dem
 #                                          en: Transfers Mekanism-compatible gases
-;enderio.itemGasConduit.tooltip.maxExtract=Maximální extrakce:
+;enderio.itemGasConduit.tooltip.maxExtract=MaximÃ¡lnÃ­ extrakce:
 #                                      en: Max Extract:
-;enderio.itemGasConduit.tooltip.maxIo=Maximální IO:
+;enderio.itemGasConduit.tooltip.maxIo=MaximÃ¡lnÃ­ IO:
 #                                 en: Max IO:
-;enderio.itemItemConduit.name=Vedení p?edm?t?
+;enderio.itemItemConduit.name=VedenÃ­ pÅ™edmÄ›tÅ¯
 #                         en: Item Conduit
 ;enderio.itemLiquidConduit.lockedType=Typ tekutiny uzamknut na
 #                                 en: Fluid type locked to
 ;enderio.itemLiquidConduit.lockedWaila=
 #                                  en: Locked to
-;enderio.itemLiquidConduit.name=Tekutinové vedení
+;enderio.itemLiquidConduit.name=TekutinovÃ© vedenÃ­
 #                           en: Fluid Conduit
-;enderio.itemLiquidConduit.tooltip.detailed.line1=Tekutina te?e podle zákon? gravitace
+;enderio.itemLiquidConduit.tooltip.detailed.line1=Tekutina teÄe podle zÃ¡konÅ¯ gravitace
 #                                             en: Fluid flow respects gravity
-;enderio.itemLiquidConduit.tooltip.detailed.line2=Rychlost toku závisí na viskozit?
+;enderio.itemLiquidConduit.tooltip.detailed.line2=Rychlost toku zÃ¡visÃ­ na viskozitÄ›
 #                                             en: Flow rate dependent on fluid
 ;enderio.itemLiquidConduit.tooltip.detailed.line3=tekutiny
 #                                             en: viscosity
-;enderio.itemLiquidConduit.tooltip.maxExtract=Maximální extrakce:
+;enderio.itemLiquidConduit.tooltip.maxExtract=MaximÃ¡lnÃ­ extrakce:
 #                                         en: Max Extract:
-;enderio.itemLiquidConduit.tooltip.maxIo=Maximální IO:
+;enderio.itemLiquidConduit.tooltip.maxIo=MaximÃ¡lnÃ­ IO:
 #                                    en: Max IO:
 ;enderio.itemLiquidConduit.unlockedType=Typ tekutiny uzamknut na
 #                                   en: Fluid type unlocked
-;enderio.itemLiquidConduitAdvanced.name=Natlakované tekutinové vedení
+;enderio.itemLiquidConduitAdvanced.name=NatlakovanÃ© tekutinovÃ© vedenÃ­
 #                                   en: Pressurized Fluid Conduit
-;enderio.itemLiquidConduitEnder.name=Enderové tekutinové vedení
+;enderio.itemLiquidConduitEnder.name=EnderovÃ© tekutinovÃ© vedenÃ­
 #                                en: Ender Fluid Conduit
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Okamitá tekutinová teleportace
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line1=OkamÅ¾itÃ¡ tekutinovÃ¡ teleportace
 #                                                  en: Instant fluid teleportation
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line2=umo?uje n?kolika tekutinám aby byli
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line2=umoÅ¾Åˆuje nÄ›kolika tekutinÃ¡m aby byli
 #                                                  en: allows multiple fluids to be
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line3=transportovány ve stejné lince
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line3=transportovÃ¡ny ve stejnÃ© lince
 #                                                  en: transported on the same line
 ;enderio.itemMEConduit.channelsUsed=
 #                               en: {0,number} of {1,number} Channels
@@ -452,13 +452,13 @@
 #                            en: Dense ME Conduit
 ;enderio.itemOCConduit.name=
 #                       en: Network Conduit (OC)
-;enderio.itemPowerConduit.name=Energetické vedení
+;enderio.itemPowerConduit.name=EnergetickÃ© vedenÃ­
 #                          en: Energy Conduit
-;enderio.itemPowerConduitEnder.name=Enderové energetické vedení
+;enderio.itemPowerConduitEnder.name=EnderovÃ© energetickÃ© vedenÃ­
 #                               en: Ender Energy Conduit
-;enderio.itemPowerConduitEnhanced.name=Vylepšené energetické vedení
+;enderio.itemPowerConduitEnhanced.name=VylepÅ¡enÃ© energetickÃ© vedenÃ­
 #                                  en: Enhanced Energy Conduit
-;enderio.itemRedstoneConduitInsulated.name=Odizolované ruditové vedení
+;enderio.itemRedstoneConduitInsulated.name=OdizolovanÃ© ruditovÃ© vedenÃ­
 #                                      en: Redstone Conduit
 ;enderio.keybind.fovminus=
 #                     en: Camera: Zoom in (creative only)
@@ -604,9 +604,9 @@
 #                   en: Soul Binder
 ;enderio.nei.vat=
 #            en: Vat
-;enderio.painter.tooltip.wasPainted=§oCo myslíš e by to mohlo d?lat ?
-#                               en: §oWhat did you think that would do?
-;enderio.power.maxOutput=Maximální vıstuo
+;enderio.painter.tooltip.wasPainted=Â§oCo myslÃ­Å¡ Å¾e by to mohlo dÄ›lat ?
+#                               en: Â§oWhat did you think that would do?
+;enderio.power.maxOutput=MaximÃ¡lnÃ­ vÃ½stuo
 #                    en: Max Output
 ;enderio.remoteinv.chat.error=
 #                         en: ERROR: Technical error, see log
@@ -638,17 +638,17 @@
 #                en: UID:
 ;enderio.trans.fluid=Tekutina
 #                en: Fluid
-;enderio.trans.item=P?edm?t
+;enderio.trans.item=PÅ™edmÄ›t
 #               en: Item
 ;enderio.trans.power=Energie
 #                en: Power
 ;enderio.trans.rail=
 #               en: Rail
-;enderio.trans.receiving=P?ijímám
+;enderio.trans.receiving=PÅ™ijÃ­mÃ¡m
 #                    en: Receiving
-;enderio.trans.sending=Odesílám
+;enderio.trans.sending=OdesÃ­lÃ¡m
 #                  en: Sending
-;enderio.trans.showChannels=<Zmá?kni Shift pro zobrazení kanál?>
+;enderio.trans.showChannels=<ZmÃ¡Äkni Shift pro zobrazenÃ­ kanÃ¡lÅ¯>
 #                       en: <Shift to show channels>
 ;enderio.waila.config.hiddenfacades=
 #                               en: Sneaky Facades
@@ -680,15 +680,15 @@
 #            en: Molten Soularium
 ;fluid.vibrantalloy=
 #               en: Molten Vibrant Alloy
-;item.enderio.itemEnderface.name=Enderová tvá?
+;item.enderio.itemEnderface.name=EnderovÃ¡ tvÃ¡Å™
 #                            en: Enderface
-;item.itemElectricLight.name=Napájené sv?tlo
+;item.itemElectricLight.name=NapÃ¡jenÃ© svÄ›tlo
 #                        en: Powered Light
 ;item.itemElectricLight.tooltip.detailed.line1=
 #                                          en: Lights a large area when supplied with
 ;item.itemElectricLight.tooltip.detailed.line2=
 #                                          en: power and a redstone signal.
-;item.itemElectricLightInverted.name=Napájené sv?tlo (Obrácené)
+;item.itemElectricLightInverted.name=NapÃ¡jenÃ© svÄ›tlo (ObrÃ¡cenÃ©)
 #                                en: Powered Light (Inverted)
 ;item.itemElectricLightInverted.tooltip.detailed.line1=
 #                                                  en: Lights a large area when supplied with
@@ -696,13 +696,13 @@
 #                                                  en: power.
 ;item.itemElectricLightInverted.tooltip.detailed.line3=
 #                                                  en: Turn off with a redstone signal.
-;item.itemExistingItemFilter.name=Existující filtr p?edm?t?
+;item.itemExistingItemFilter.name=ExistujÃ­cÃ­ filtr pÅ™edmÄ›tÅ¯
 #                             en: Existing Item Filter
-;item.itemExistingItemFilter.tooltip.basic.line1=Vylepšení pro p?edm?tové vedení
+;item.itemExistingItemFilter.tooltip.basic.line1=VylepÅ¡enÃ­ pro pÅ™edmÄ›tovÃ© vedenÃ­
 #                                            en: Upgrade for item conduits
-;item.itemExistingItemFilter.tooltip.detailed.line1=Vybírá pouze p?edm?ty, které jsou
+;item.itemExistingItemFilter.tooltip.detailed.line1=VybÃ­rÃ¡ pouze pÅ™edmÄ›ty, kterÃ© jsou
 #                                               en: Selects only items already
-;item.itemExistingItemFilter.tooltip.detailed.line2=u v inventá?i
+;item.itemExistingItemFilter.tooltip.detailed.line2=uÅ¾ v inventÃ¡Å™i
 #                                               en: in the inventory
 ;item.itemExistingItemFilter.tooltip.detailed.line3=
 #                                               en: Right click while sneaking
@@ -718,15 +718,15 @@
 #                                                  en: Reduces speed to 1
 ;item.itemExtractSpeedDowngrade.tooltip.detailed.line2=
 #                                                  en: item per extraction
-;item.itemExtractSpeedUpgrade.name=Vylepšení rychlosti p?edm?tového vedení
+;item.itemExtractSpeedUpgrade.name=VylepÅ¡enÃ­ rychlosti pÅ™edmÄ›tovÃ©ho vedenÃ­
 #                              en: Item Conduit Speed Upgrade
-;item.itemExtractSpeedUpgrade.tooltip.basic.line1=Vylepšení pro p?edm?tové vedení
+;item.itemExtractSpeedUpgrade.tooltip.basic.line1=VylepÅ¡enÃ­ pro pÅ™edmÄ›tovÃ© vedenÃ­
 #                                             en: Upgrade for item conduits
-;item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Zv?tší rychlost o 4
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line1=ZvÄ›tÅ¡Ã­ rychlost o 4
 #                                                en: Increases speed by 4
-;item.itemExtractSpeedUpgrade.tooltip.detailed.line2=p?edm?ty za extrakci
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line2=pÅ™edmÄ›ty za extrakci
 #                                                en: items per extraction
-;item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Maximální po?et vylepšení je 15
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line3=MaximÃ¡lnÃ­ poÄet vylepÅ¡enÃ­ je 15
 #                                                en: Max upgrades is 15
 ;item.itemInventoryPanelUpgrade.name=
 #                                en: Remote Awareness Upgrade
@@ -744,29 +744,29 @@
 #                                                  en: of the conduit mode.
 ;item.itemInventoryPanelUpgrade.tooltip.detailed.line6=
 #                                                  en: (No need to set the conduit to extract)
-;item.itemLight.name=Sv?tlo
+;item.itemLight.name=SvÄ›tlo
 #                en: Light
-;item.itemLight.tooltip.detailed.line1=Vysílá sv?tlo s
+;item.itemLight.tooltip.detailed.line1=VysÃ­lÃ¡ svÄ›tlo s
 #                                  en: Emits light with a
-;item.itemLight.tooltip.detailed.line2=ruditovım signálem
+;item.itemLight.tooltip.detailed.line2=ruditovÃ½m signÃ¡lem
 #                                  en: redstone signal.
-;item.itemLightInverted.name=Sv?tlo (Obrácené)
+;item.itemLightInverted.name=SvÄ›tlo (ObrÃ¡cenÃ©)
 #                        en: Light (Inverted)
-;item.itemLightInverted.tooltip.detailed.line1=Vysílá sv?tlo, vypne se s
+;item.itemLightInverted.tooltip.detailed.line1=VysÃ­lÃ¡ svÄ›tlo, vypne se s
 #                                          en: Emits light, disable with
-;item.itemLightInverted.tooltip.detailed.line2=ruditovım signálem
+;item.itemLightInverted.tooltip.detailed.line2=ruditovÃ½m signÃ¡lem
 #                                          en: a redstone signal.
-;item.itemModItemFilter.name=Módovı filtr p?edm?t?
+;item.itemModItemFilter.name=MÃ³dovÃ½ filtr pÅ™edmÄ›tÅ¯
 #                        en: Mod Item Filter
-;item.itemModItemFilter.tooltip.basic.line1=Vylepšení pro p?edm?tové vedení
+;item.itemModItemFilter.tooltip.basic.line1=VylepÅ¡enÃ­ pro pÅ™edmÄ›tovÃ© vedenÃ­
 #                                       en: Upgrade for item conduits
-;item.itemModItemFilter.tooltip.detailed.line1=Vybírá pouze p?edm?ty pro vybrané
+;item.itemModItemFilter.tooltip.detailed.line1=VybÃ­rÃ¡ pouze pÅ™edmÄ›ty pro vybranÃ©
 #                                          en: Selects only items for a specified
-;item.itemModItemFilter.tooltip.detailed.line2=mód/y
+;item.itemModItemFilter.tooltip.detailed.line2=mÃ³d/y
 #                                          en: mod/s
 ;item.itemPowerItemFilter.name=
 #                          en: Chargeable Item Filter
-;item.itemPowerItemFilter.tooltip.basic.line1=Vylepšení pro p?edm?tové vedení
+;item.itemPowerItemFilter.tooltip.basic.line1=VylepÅ¡enÃ­ pro pÅ™edmÄ›tovÃ© vedenÃ­
 #                                         en: Upgrade for item conduits
 ;item.itemPowerItemFilter.tooltip.detailed.line1=
 #                                            en: Filters chargeable items based on
@@ -826,15 +826,15 @@
 #                   en: Ender IO
 ;itemGroup.enderio.materials=
 #                        en: Ender IO Materials
-;tile.blockAttractor.name=Obeliskovı atraktor
+;tile.blockAttractor.name=ObeliskovÃ½ atraktor
 #                     en: Attractor Obelisk
-;tile.blockAttractor.tooltip.detailed.line1=P?itahuje k sob? monstra
+;tile.blockAttractor.tooltip.detailed.line1=PÅ™itahuje k sobÄ› monstra
 #                                       en: Draws mobs towards it
-;tile.blockAttractor.tooltip.detailed.line2=Ur?i p?íšery efektem
+;tile.blockAttractor.tooltip.detailed.line2=UrÄi pÅ™Ã­Å¡ery efektem
 #                                       en: Specify the mobs to effect
-;tile.blockAttractor.tooltip.detailed.line3=poloením jejich duší
+;tile.blockAttractor.tooltip.detailed.line3=poloÅ¾enÃ­m jejich duÅ¡Ã­
 #                                       en: by placing their souls
-;tile.blockAttractor.tooltip.detailed.line4=k za?ízení
+;tile.blockAttractor.tooltip.detailed.line4=k zaÅ™Ã­zenÃ­
 #                                       en: within the device
 ;tile.blockCapBank.activated.name=
 #                             en: Capacitor Bank
@@ -856,17 +856,17 @@
 #                            en: Contains
 ;tile.blockCapBank.vibrant.name=
 #                           en: Vibrant Capacitor Bank
-;tile.blockCapacitorBank.creative.name=Kreativní banka kondenzátor?
+;tile.blockCapacitorBank.creative.name=KreativnÃ­ banka kondenzÃ¡torÅ¯
 #                                  en: Creative Capacitor Bank (Deprecated)
-;tile.blockCapacitorBank.name=Banka kondenzátor? Bank
+;tile.blockCapacitorBank.name=Banka kondenzÃ¡torÅ¯ Bank
 #                         en: Capacitor Bank (Deprecated)
-;tile.blockCapacitorBank.tooltip.detailed.line1=Multi-blokové energetické úloišt?.
+;tile.blockCapacitorBank.tooltip.detailed.line1=Multi-blokovÃ© energetickÃ© ÃºloÅ¾iÅ¡tÄ›.
 #                                           en: Convert to new block by placing
-;tile.blockCapacitorBank.tooltip.detailed.line2=Umí nabít p?edm?ty, které vyuívají RF.
+;tile.blockCapacitorBank.tooltip.detailed.line2=UmÃ­ nabÃ­t pÅ™edmÄ›ty, kterÃ© vyuÅ¾Ã­vajÃ­ RF.
 #                                           en: in a crafting grid
 ;tile.blockCapacitorBank.tooltipPrefix=Obsahuje
 #                                  en: Contains
-;tile.blockConduitBundle.name=Konektor vedení
+;tile.blockConduitBundle.name=Konektor vedenÃ­
 #                         en: Conduit Connector
 ;tile.blockEnderRail.name=
 #                     en: Ender Rail
@@ -888,11 +888,11 @@
 #                                   en: Displays RF levels of adjacent
 ;tile.blockGauge.tooltip.detailed.line2=
 #                                   en: blocks.
-;tile.blockHyperCube.name=Dimenzionální vysíla? (Zastaralı)
+;tile.blockHyperCube.name=DimenzionÃ¡lnÃ­ vysÃ­laÄ (ZastaralÃ½)
 #                     en: Dimensional Transceiver (Deprecated)
-;tile.blockHyperCube.tooltip.detailed.line1=P?evede na novı model poloením
+;tile.blockHyperCube.tooltip.detailed.line1=PÅ™evede na novÃ½ model poloÅ¾enÃ­m
 #                                       en: Convert to new model by placing
-;tile.blockHyperCube.tooltip.detailed.line2=do vırobního ráme?ku
+;tile.blockHyperCube.tooltip.detailed.line2=do vÃ½robnÃ­ho rÃ¡meÄku
 #                                       en: in the crafting grid
 ;tile.blockInventoryChest_big.name=
 #                              en: Big Inventory System Storage
@@ -932,17 +932,17 @@
 #                                                  en: on the number of an item available
 ;tile.blockInventoryPanelSensor.tooltip.detailed.line3=
 #                                                  en: in an Inventory Panel network
-;tile.blockPainter.tooltip.detailed.line1=Pouito pro obarvení:
+;tile.blockPainter.tooltip.detailed.line1=PouÅ¾ito pro obarvenÃ­:
 #                                     en: Used to paint:
-;tile.blockPainter.tooltip.detailed.line2=Fasád vedení, schod?, plot?,
+;tile.blockPainter.tooltip.detailed.line2=FasÃ¡d vedenÃ­, schodÅ¯, plotÅ¯,
 #                                     en: Conduit Facades, Stairs, Fences, Gates,
-;tile.blockPainter.tooltip.detailed.line3=bran, p?lblok?, kamennıch zdí,
+;tile.blockPainter.tooltip.detailed.line3=bran, pÅ¯lblokÅ¯, kamennÃ½ch zdÃ­,
 #                                     en: Slabs, Cobblestone, Cobblestone Walls,
-;tile.blockPainter.tooltip.detailed.line4=sklen?nıch rám?, sv?tlitu, koberce,
+;tile.blockPainter.tooltip.detailed.line4=sklenÄ›nÃ½ch rÃ¡mÅ¯, svÄ›tlitu, koberce,
 #                                     en: Glowstone, Redstone, Carpet, Pressure
-;tile.blockPainter.tooltip.detailed.line5=nášlapnıch desek z tmavé oceli,
+;tile.blockPainter.tooltip.detailed.line5=nÃ¡Å¡lapnÃ½ch desek z tmavÃ© oceli,
 #                                     en: Plates, Quite Clear Glass, Fused Quartz,
-;tile.blockPainter.tooltip.detailed.line6=cestovních kotev
+;tile.blockPainter.tooltip.detailed.line6=cestovnÃ­ch kotev
 #                                     en: Trapdoors, and most machines
 ;tile.blockPowerMonitor.name=Monitor energie
 #                        en: Power Monitor
@@ -976,13 +976,13 @@ description.enchantment.enderio.soulBound=
 #                                     en: Prevents item from being lost on death
 enchantment.soulBound=
 #                 en: Soulbound
-enderio.block.tooltip.blastResistant=Vıbuchu odolné
+enderio.block.tooltip.blastResistant=VÃ½buchu odolnÃ©
 #                                en: Blast Resistant
-enderio.block.tooltip.isBeaconBase=M?e bıt pouito jako základ majáku
+enderio.block.tooltip.isBeaconBase=MÅ¯Å¾e bÃ½t pouÅ¾ito jako zÃ¡klad majÃ¡ku
 #                              en: Can be used as beacon base
 enderio.block.tooltip.lightBlocker=
 #                              en: Blocks Light
-enderio.block.tooltip.lightEmitter=Vysílá sv?tlo
+enderio.block.tooltip.lightEmitter=VysÃ­lÃ¡ svÄ›tlo
 #                              en: Emits Light
 enderio.color.black=
 #               en: Black
@@ -1016,67 +1016,67 @@ enderio.color.white=
 #               en: White
 enderio.color.yellow=
 #                en: Yellow
-enderio.config.advanced.tooltip=Pro ty, co nemají dost konfigurací.
+enderio.config.advanced.tooltip=Pro ty, co nemajÃ­ dost konfiguracÃ­.
 #                           en: For those who can't have enough configs.
-enderio.config.advanced=Pokro?ilé nastavení
+enderio.config.advanced=PokroÄilÃ© nastavenÃ­
 #                   en: Advanced Settings
-enderio.config.aesthetic.tooltip=Óoo, ááá, krásné.
+enderio.config.aesthetic.tooltip=Ã“oo, Ã¡Ã¡Ã¡, krÃ¡snÃ©.
 #                            en: Oooh, ahhh, pretty.
-enderio.config.aesthetic=Estetické nastavení
+enderio.config.aesthetic=EstetickÃ© nastavenÃ­
 #                    en: Aesthetic Settings
-enderio.config.anchor.tooltip=Pry? kotvy!
+enderio.config.anchor.tooltip=PryÄ kotvy!
 #                         en: Anchors away!
-enderio.config.anchor=Nastavení kotev
+enderio.config.anchor=NastavenÃ­ kotev
 #                 en: Anchor Settings
-enderio.config.darksteel.tooltip=Není to pouze oby?ejná ocel, je to §otmavá§r§e ocel.
-#                            en: It's not just regular steel, it's §odark§r§e steel.
-enderio.config.darksteel=Tmavá ocel
+enderio.config.darksteel.tooltip=NenÃ­ to pouze obyÄejnÃ¡ ocel, je to Â§otmavÃ¡Â§rÂ§e ocel.
+#                            en: It's not just regular steel, it's Â§odarkÂ§rÂ§e steel.
+enderio.config.darksteel=TmavÃ¡ ocel
 #                    en: Dark Steel
-enderio.config.efficiency.tooltip=Kde tyto ?ísla zkon?í?
+enderio.config.efficiency.tooltip=Kde tyto ÄÃ­sla zkonÄÃ­?
 #                             en: Where do the numbers end?
-enderio.config.efficiency=Nastavení efektivity
+enderio.config.efficiency=NastavenÃ­ efektivity
 #                     en: Efficiency Settings
-enderio.config.farm.tooltip="Obec je pro ivot!"
+enderio.config.farm.tooltip="Obec je pro Å¾ivot!"
 #                       en: "The commune is for life!"
-enderio.config.farm=Nastavení farem
+enderio.config.farm=NastavenÃ­ farem
 #               en: Farm Settings
-enderio.config.fluid.tooltip=?istá tekutá energie!
+enderio.config.fluid.tooltip=ÄŒistÃ¡ tekutÃ¡ energie!
 #                        en: Pure liquid energy!
-enderio.config.fluid=Nastavení tekutin
+enderio.config.fluid=NastavenÃ­ tekutin
 #                en: Fluid Settings
-enderio.config.item.tooltip=Pokud nechceš n?které mé úasné p?edm?ty :(
+enderio.config.item.tooltip=Pokud nechceÅ¡ nÄ›kterÃ© mÃ© ÃºÅ¾asnÃ© pÅ™edmÄ›ty :(
 #                       en: If you don't like some of my amazing items :(
-enderio.config.item=Povolování p?edm?t?
+enderio.config.item=PovolovÃ¡nÃ­ pÅ™edmÄ›tÅ¯
 #               en: Item Enabling
-enderio.config.magnet.tooltip=Jak fungují?
+enderio.config.magnet.tooltip=Jak fungujÃ­?
 #                         en: How do they work?
-enderio.config.magnet=Nastavení magnet?
+enderio.config.magnet=NastavenÃ­ magnetÅ¯
 #                 en: Magnet Settings
-enderio.config.personal.tooltip=Nemohu nikomu sb?lit, p?ísahám.
+enderio.config.personal.tooltip=Nemohu nikomu sbÄ›lit, pÅ™Ã­sahÃ¡m.
 #                           en: I won't tell anyone, I promise.
-enderio.config.personal=Osobní nastavení
+enderio.config.personal=OsobnÃ­ nastavenÃ­
 #                   en: Personal Settings
-enderio.config.power.tooltip=P?íliš mnoho ?ísel pro zm?nu...
+enderio.config.power.tooltip=PÅ™Ã­liÅ¡ mnoho ÄÃ­sel pro zmÄ›nu...
 #                        en: So many numbers to change...
-enderio.config.power=Nastavení energie
+enderio.config.power=NastavenÃ­ energie
 #                en: Power Settings
-enderio.config.recipe.tooltip=Nastavuje VŠECHNY v?ci!
+enderio.config.recipe.tooltip=Nastavuje VÅ ECHNY vÄ›ci!
 #                         en: Config ALL the things!
-enderio.config.recipe=Nastavení recept?
+enderio.config.recipe=NastavenÃ­ receptÅ¯
 #                 en: Recipe Settings
-enderio.config.spawner.tooltip=U jsem vy?erpal všechny vtipné nápov?dy.
+enderio.config.spawner.tooltip=UÅ¾ jsem vyÄerpal vÅ¡echny vtipnÃ© nÃ¡povÄ›dy.
 #                          en: I ran out of witty tooltips.
-enderio.config.spawner=Nastavení pohán?nıch spawner?
+enderio.config.spawner=NastavenÃ­ pohÃ¡nÄ›nÃ½ch spawnerÅ¯
 #                  en: PoweredSpawner Settings
-enderio.config.staff.tooltip=Bu? opatrnı s tímto nastavením, nebo teleportuješ pry? svou tvá?.
+enderio.config.staff.tooltip=BuÄ opatrnÃ½ s tÃ­mto nastavenÃ­m, nebo teleportujeÅ¡ pryÄ svou tvÃ¡Å™.
 #                        en: Be careful with that thing, you'll teleport your face off.
-enderio.config.staff=Nastavení ty?í
+enderio.config.staff=NastavenÃ­ tyÄÃ­
 #                en: Staff Settings
-enderio.config.title=Ender IO nastavení
+enderio.config.title=Ender IO nastavenÃ­
 #                en: Ender IO Configuration
 enderio.coolant.tooltip.degreesPerBucket=
 #                                    en: %s Deg per bucket
-enderio.coolant.tooltip.heading=Chladi?
+enderio.coolant.tooltip.heading=ChladiÄ
 #                           en: Coolant
 enderio.darksteel.upgrade.apiaristArmor.boots.name=
 #                                              en: Apiarist's Shoes
@@ -1102,51 +1102,51 @@ enderio.darksteel.upgrade.elytra.name=
 #                                 en: Elytra
 enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=
 #                                                   en: Enables Elytra flight
-enderio.darksteel.upgrade.empowered_four.name=Umocn?né IV
+enderio.darksteel.upgrade.empowered_four.name=UmocnÄ›nÃ© IV
 #                                         en: Empowered IV
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Síla: $P
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=SÃ­la: $P
 #                                                           en: Power: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% poškození absorbováno
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% poÅ¡kozenÃ­ absorbovÃ¡no
 #                                                           en: $D% damage absorbed
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=energií
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=energiÃ­
 #                                                           en: by power
-enderio.darksteel.upgrade.empowered_one.name=Umocn?né
+enderio.darksteel.upgrade.empowered_one.name=UmocnÄ›nÃ©
 #                                        en: Empowered
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Síla: $P
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=SÃ­la: $P
 #                                                          en: Power: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D% poškození absorbováno
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D% poÅ¡kozenÃ­ absorbovÃ¡no
 #                                                          en: $D% damage absorbed
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=energií
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=energiÃ­
 #                                                          en: by power
-enderio.darksteel.upgrade.empowered_three.name=Umocn?né III
+enderio.darksteel.upgrade.empowered_three.name=UmocnÄ›nÃ© III
 #                                          en: Empowered III
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Síla: $P
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=SÃ­la: $P
 #                                                            en: Power: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% poškození absorbováno
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% poÅ¡kozenÃ­ absorbovÃ¡no
 #                                                            en: $D% damage absorbed
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=energií
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=energiÃ­
 #                                                            en: by power
-enderio.darksteel.upgrade.empowered_two.name=Umocn?né II
+enderio.darksteel.upgrade.empowered_two.name=UmocnÄ›nÃ© II
 #                                        en: Empowered II
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Síla: $P
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=SÃ­la: $P
 #                                                          en: Power: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D% poškození absorbováno
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D% poÅ¡kozenÃ­ absorbovÃ¡no
 #                                                          en: $D% damage absorbed
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=energií
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=energiÃ­
 #                                                          en: by power
-enderio.darksteel.upgrade.glider.disabled=Kluzák zakázán
+enderio.darksteel.upgrade.glider.disabled=KluzÃ¡k zakÃ¡zÃ¡n
 #                                     en: Glider Disabled
-enderio.darksteel.upgrade.glider.enabled=Kluzák aktivní
+enderio.darksteel.upgrade.glider.enabled=KluzÃ¡k aktivnÃ­
 #                                    en: Glider Active
-enderio.darksteel.upgrade.glider.name=Kluzák
+enderio.darksteel.upgrade.glider.name=KluzÃ¡k
 #                                 en: Glider
-enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Povolí klouzání
+enderio.darksteel.upgrade.glider.tooltip.detailed.line1=PovolÃ­ klouzÃ¡nÃ­
 #                                                   en: Enables gliding
 enderio.darksteel.upgrade.gogglesOfRevealing.disabled=
 #                                                 en: Magic is hidden from plain sight
 enderio.darksteel.upgrade.gogglesOfRevealing.enabled=
 #                                                en: Magic is being revealed
-enderio.darksteel.upgrade.gogglesOfRevealing.name=Odhalení
+enderio.darksteel.upgrade.gogglesOfRevealing.name=OdhalenÃ­
 #                                             en: Revealing
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis sleva: 5%
 #                                                               en: Vis Discount: 5%
@@ -1156,29 +1156,29 @@ enderio.darksteel.upgrade.jump.enabled=
 #                                  en: Jump Enabled
 enderio.darksteel.upgrade.jump_one.name=Skok
 #                                   en: Jump
-enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Navıší vıšku kroku a skoku
+enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=NavÃ½Å¡Ã­ vÃ½Å¡ku kroku a skoku
 #                                                     en: Increases step and jump height
 enderio.darksteel.upgrade.jump_three.name=Skok III
 #                                     en: Jump III
-enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=Navıší vıšku kroku a skoku
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=NavÃ½Å¡Ã­ vÃ½Å¡ku kroku a skoku
 #                                                       en: Increases step and jump height
-enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=Umo?uje trojité skoky
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=UmoÅ¾Åˆuje trojitÃ© skoky
 #                                                       en: Allows triple jumps
 enderio.darksteel.upgrade.jump_two.name=Skok II
 #                                   en: Jump II
-enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Navıší vıšku kroku a skoku
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=NavÃ½Å¡Ã­ vÃ½Å¡ku kroku a skoku
 #                                                     en: Increases step and jump height
-enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Umo?uje dvojité skoky
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=UmoÅ¾Åˆuje dvojitÃ© skoky
 #                                                     en: Allows double jumps
 enderio.darksteel.upgrade.naturalistEye.name=
 #                                        en: Naturalist's Eye
 enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=
 #                                                          en: Shows pollinated tree leaves
-enderio.darksteel.upgrade.nightVision.disabled=No?ní vid?ní zakázáno
+enderio.darksteel.upgrade.nightVision.disabled=NoÄnÃ­ vidÄ›nÃ­ zakÃ¡zÃ¡no
 #                                          en: Night Vision Disabled
-enderio.darksteel.upgrade.nightVision.enabled=No?ní vid?ní povoleno
+enderio.darksteel.upgrade.nightVision.enabled=NoÄnÃ­ vidÄ›nÃ­ povoleno
 #                                         en: Night Vision Enabled
-enderio.darksteel.upgrade.nightVision.name=No?ní vid?ní
+enderio.darksteel.upgrade.nightVision.name=NoÄnÃ­ vidÄ›nÃ­
 #                                      en: Night Vision
 enderio.darksteel.upgrade.solar_one.name=
 #                                    en: Solar I
@@ -1192,51 +1192,51 @@ enderio.darksteel.upgrade.solar_two.name=
 #                                    en: Solar II
 enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=
 #                                                      en: Generates power from the sun.
-enderio.darksteel.upgrade.sound.disabled=Zvukovı lokátor zakázán
+enderio.darksteel.upgrade.sound.disabled=ZvukovÃ½ lokÃ¡tor zakÃ¡zÃ¡n
 #                                    en: Sound Locator Disabled
-enderio.darksteel.upgrade.sound.enabled=Zvukovı lokátor aktivní
+enderio.darksteel.upgrade.sound.enabled=ZvukovÃ½ lokÃ¡tor aktivnÃ­
 #                                   en: Sound Locator Active
-enderio.darksteel.upgrade.sound.name=Zvukovı lokátor
+enderio.darksteel.upgrade.sound.name=ZvukovÃ½ lokÃ¡tor
 #                                en: Sound Locator
-enderio.darksteel.upgrade.sound.tooltip.detailed.line1=Zobrazí lokaci
+enderio.darksteel.upgrade.sound.tooltip.detailed.line1=ZobrazÃ­ lokaci
 #                                                  en: Displays the location of
-enderio.darksteel.upgrade.sound.tooltip.detailed.line2=zvuk? poblí
+enderio.darksteel.upgrade.sound.tooltip.detailed.line2=zvukÅ¯ poblÃ­Å¾
 #                                                  en: nearby sounds
-enderio.darksteel.upgrade.speed.disabled=Rychlost zakázána
+enderio.darksteel.upgrade.speed.disabled=Rychlost zakÃ¡zÃ¡na
 #                                    en: Speed Disabled
-enderio.darksteel.upgrade.speed.enabled=Rychlost aktivní
+enderio.darksteel.upgrade.speed.enabled=Rychlost aktivnÃ­
 #                                   en: Speed Active
 enderio.darksteel.upgrade.speed_one.name=Rychlost
 #                                    en: Speed
-enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=Navıší rychlost ch?ze
+enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=NavÃ½Å¡Ã­ rychlost chÅ¯ze
 #                                                      en: Increases movement speed
 enderio.darksteel.upgrade.speed_three.name=Rychlost III
 #                                      en: Speed III
-enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=Navıší rychlost ch?ze
+enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=NavÃ½Å¡Ã­ rychlost chÅ¯ze
 #                                                        en: Increases movement speed
 enderio.darksteel.upgrade.speed_two.name=Rychlost II
 #                                    en: Speed II
-enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Navıší rychlost ch?ze
+enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=NavÃ½Å¡Ã­ rychlost chÅ¯ze
 #                                                      en: Increases movement speed
-enderio.darksteel.upgrade.spoon.name=Líce
+enderio.darksteel.upgrade.spoon.name=LÅ¾Ã­ce
 #                                en: Spoon
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Kdo pot?ebuje lopatu kdy
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Kdo potÅ™ebuje lopatu kdyÅ¾
 #                                                  en: Who needs a shovel when
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line2=máš líci
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line2=mÃ¡Å¡ lÅ¾Ã­ci
 #                                                  en: you have a spoon
-enderio.darksteel.upgrade.stepAssist.disabled=Kroková asistence zakázána
+enderio.darksteel.upgrade.stepAssist.disabled=KrokovÃ¡ asistence zakÃ¡zÃ¡na
 #                                         en: Step Assist Disabled
-enderio.darksteel.upgrade.stepAssist.enabled=Kroková asistence aktivní
+enderio.darksteel.upgrade.stepAssist.enabled=KrokovÃ¡ asistence aktivnÃ­
 #                                        en: Step Assist Active
 enderio.darksteel.upgrade.swim.name=Ploutve
 #                               en: Flippers
 enderio.darksteel.upgrade.top.name=
 #                              en: The One Probe
-enderio.darksteel.upgrade.travel.name=Cestování
+enderio.darksteel.upgrade.travel.name=CestovÃ¡nÃ­
 #                                 en: Travel
-enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Podr Shift a klikni pravım tla?ítkem pro teleportování
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=PodrÅ¾ Shift a klikni pravÃ½m tlaÄÃ­tkem pro teleportovÃ¡nÃ­
 #                                                   en: Hold shift and R-Click to teleport or
-enderio.darksteel.upgrade.travel.tooltip.detailed.line2=nebo aktivování cestovní kotvy nebo Ender IO
+enderio.darksteel.upgrade.travel.tooltip.detailed.line2=nebo aktivovÃ¡nÃ­ cestovnÃ­ kotvy nebo Ender IO
 #                                                   en: activate a travel anchor or Ender IO
 enderio.easteregg.piginabottle=
 #                          en: Bacon in a Bottle
@@ -1248,19 +1248,19 @@ enderio.entity_action.block_powered_spawner.action=
 #                                              en: Spawns
 enderio.entity_action.block_relocator_obelisk.action=
 #                                                en: Relocates
-enderio.farm.note.noAxe=Chybí sekera Axe
+enderio.farm.note.noAxe=ChybÃ­ sekera Axe
 #                   en: No Axe
-enderio.farm.note.noHoe=Chybí motyka
+enderio.farm.note.noHoe=ChybÃ­ motyka
 #                   en: No Hoe
-enderio.farm.note.noPower=Chybí energie
+enderio.farm.note.noPower=ChybÃ­ energie
 #                     en: No Power
-enderio.farm.note.noSeeds=Chybí semínka
+enderio.farm.note.noSeeds=ChybÃ­ semÃ­nka
 #                     en: No Seeds
 enderio.farm.note.noShears=
 #                      en: No Shears
 enderio.farm.note.noTreetap=
 #                       en: No Treetap
-enderio.farm.note.outputFull=Vıstup plnı
+enderio.farm.note.outputFull=VÃ½stup plnÃ½
 #                        en: Output Full
 enderio.fluid.millibucket.format.name=
 #                                 en: %s mB of %s
@@ -1272,7 +1272,7 @@ enderio.fluid.millibucket.format.tickper=
 #                                    en: %s t/mB
 enderio.fluid.millibucket.format=
 #                            en: %s mB
-enderio.fuel.tooltip.burnTime=spalovací ?as {0,number}
+enderio.fuel.tooltip.burnTime=spalovacÃ­ Äas {0,number}
 #                         en: burn time %s
 enderio.fuel.tooltip.generates=
 #                          en: Generates % at %s
@@ -1290,82 +1290,82 @@ enderio.grindingball.tooltip.line3=
 #                              en: %sBonus Output %s
 enderio.grindingball.tooltip.line4=
 #                              en: %sPower Reduction %s
-enderio.gui.conduit.ioMode.disabled=Zakázáno
+enderio.gui.conduit.ioMode.disabled=ZakÃ¡zÃ¡no
 #                               en: Disabled
-enderio.gui.conduit.ioMode.inOut=Dovnit? / Ven
+enderio.gui.conduit.ioMode.inOut=DovnitÅ™ / Ven
 #                            en: In / Out
 enderio.gui.conduit.ioMode.input=Vyjmout
 #                            en: Extract
-enderio.gui.conduit.ioMode.notSet=Vıchozí
+enderio.gui.conduit.ioMode.notSet=VÃ½chozÃ­
 #                             en: Default
-enderio.gui.conduit.ioMode.output=Vloit
+enderio.gui.conduit.ioMode.output=VloÅ¾it
 #                             en: Insert
-enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=Nastaví IO
+enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=NastavÃ­ IO
 #                                                    en: Configure IO
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line2=
 #                                                    en: Shift click to reset all sides
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line3=
 #                                                    en: to their default setting
-enderio.gui.generic.ioMode.overlay.tooltip=Nastaví IO
+enderio.gui.generic.ioMode.overlay.tooltip=NastavÃ­ IO
 #                                      en: Configure IO
 enderio.gui.generic.max=
 #                   en: Max: %s
 enderio.gui.generic.progress=
 #                        en: Progress %s%%
-enderio.gui.machine.ioMode.disabled=Zakázáno
+enderio.gui.machine.ioMode.disabled=ZakÃ¡zÃ¡no
 #                               en: Disabled
 enderio.gui.machine.ioMode.none=Nic
 #                           en: None
-enderio.gui.machine.ioMode.pull=Táhnout
+enderio.gui.machine.ioMode.pull=TÃ¡hnout
 #                           en: Pull
-enderio.gui.machine.ioMode.pullPush.colored=%sTla?it %s/ %sTáhnout
+enderio.gui.machine.ioMode.pullPush.colored=%sTlaÄit %s/ %sTÃ¡hnout
 #                                       en: %sPush %s/ %sPull
-enderio.gui.machine.ioMode.pullPush=Tla?it / Táhnout
+enderio.gui.machine.ioMode.pullPush=TlaÄit / TÃ¡hnout
 #                               en: Push / Pull
-enderio.gui.machine.ioMode.push=Tla?it
+enderio.gui.machine.ioMode.push=TlaÄit
 #                           en: Push
 enderio.gui.permission.denied=
 #                         en: Permission denied
-enderio.gui.tooltip.redstoneControlMode.ignore=Vdy aktivní
+enderio.gui.tooltip.redstoneControlMode.ignore=VÅ¾dy aktivnÃ­
 #                                          en: Always active
-enderio.gui.tooltip.redstoneControlMode.never=Nikdy aktivní
+enderio.gui.tooltip.redstoneControlMode.never=Nikdy aktivnÃ­
 #                                         en: Never active
-enderio.gui.tooltip.redstoneControlMode.off=Aktivní bez signálu
+enderio.gui.tooltip.redstoneControlMode.off=AktivnÃ­ bez signÃ¡lu
 #                                       en: Active without signal
-enderio.gui.tooltip.redstoneControlMode.on=Aktivní se signálem
+enderio.gui.tooltip.redstoneControlMode.on=AktivnÃ­ se signÃ¡lem
 #                                      en: Active with signal
-enderio.gui.tooltip.redstoneControlMode=Ruditovı mód
+enderio.gui.tooltip.redstoneControlMode=RuditovÃ½ mÃ³d
 #                                   en: Redstone Mode
-enderio.itemConduitFilterUpgrade.clearConfigMethod=Umísti do vırobního ráme?ku pro vymazání
+enderio.itemConduitFilterUpgrade.clearConfigMethod=UmÃ­sti do vÃ½robnÃ­ho rÃ¡meÄku pro vymazÃ¡nÃ­
 #                                              en: %sPlace in crafting grid to clear
-enderio.itemConduitFilterUpgrade.clearConfigWarning=Toto vymae všechny uloené nastavení filtr?!
+enderio.itemConduitFilterUpgrade.clearConfigWarning=Toto vymaÅ¾e vÅ¡echny uloÅ¾enÃ© nastavenÃ­ filtrÅ¯!
 #                                               en: %sThis will clear all stored filter settings!
-enderio.itemConduitFilterUpgrade.configured=Nastavené
+enderio.itemConduitFilterUpgrade.configured=NastavenÃ©
 #                                       en: %sConfigured
-enderio.itemConduitFilterUpgrade=Vylepšení pro p?edm?tové vedení
+enderio.itemConduitFilterUpgrade=VylepÅ¡enÃ­ pro pÅ™edmÄ›tovÃ© vedenÃ­
 #                            en: Upgrade for item conduits
 enderio.machine.tooltip.configured=(Nastaveno)
 #                              en: %s (Configured)
-enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Zvıší úloišt? energie a
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=ZvÃ½Å¡Ã­ ÃºloÅ¾iÅ¡tÄ› energie a
 #                                                  en: Increases energy storage and speed / range of machines
-enderio.machine.tooltip.upgrade=Vylepšení stroje
+enderio.machine.tooltip.upgrade=VylepÅ¡enÃ­ stroje
 #                           en: Machine Upgrade
 enderio.power.format.of=
-#                   en: %s / %s µI
+#                   en: %s / %s ÂµI
 enderio.power.format.pertick=
-#                        en: %s µI/t
+#                        en: %s ÂµI/t
 enderio.power.format=
-#                en: %s µI
+#                en: %s ÂµI
 enderio.recipe.tooltip.clearConfig=
-#                              en: §c§oThis will clear all stored info!
+#                              en: Â§cÂ§oThis will clear all stored info!
 enderio.soulvial.blacklisted.denied=
-#                               en: Permission §cdenied§r - this entity is blacklisted
+#                               en: Permission Â§cdeniedÂ§r - this entity is blacklisted
 enderio.soulvial.denied=
-#                   en: Permission §cdenied§r!
+#                   en: Permission Â§cdeniedÂ§r!
 enderio.soulvial.owned.denied=
-#                         en: Permission §cdenied§r - only owners may pick up owned animals
+#                         en: Permission Â§cdeniedÂ§r - only owners may pick up owned animals
 enderio.soulvial.player.denied=
-#                          en: §cNo!$r How would you feel if you had to play this game from inside a bottle?
+#                          en: Â§cNo!$r How would you feel if you had to play this game from inside a bottle?
 enderio.top.action.header=
 #                     en: %s:
 enderio.top.action.none=
@@ -1421,22 +1421,22 @@ enderio.top.tank.header.output=
 enderio.top.tank.header.storage=
 #                           en: %s
 enderio.wrench.permission.denied=
-#                            en: Permission §cdenied§r!
+#                            en: Permission Â§cdeniedÂ§r!
 fluid.cloud_seed=
 #            en: Cloud Seed
 fluid.cloud_seed_concentrated=
 #                         en: Concentrated Cloud Seed
 fluid.ender_distillation=
 #                    en: Dew of the Void
-fluid.fire_water=Ohnivá voda
+fluid.fire_water=OhnivÃ¡ voda
 #            en: Fire Water
-fluid.hootch=Driják
+fluid.hootch=DrijÃ¡k
 #        en: Hootch
 fluid.liquid_sunshine=
 #                 en: Liquid Sunshine
-fluid.nutrient_distillation=Destilovanımi ivinami
+fluid.nutrient_distillation=DestilovanÃ½mi Å¾ivinami
 #                       en: Nutrient Distillation
-fluid.rocket_fuel=Raketové palivo
+fluid.rocket_fuel=RaketovÃ© palivo
 #             en: Rocket Fuel
 fluid.vapor_of_levity=
 #                 en: Vapor of Levity
@@ -1472,19 +1472,19 @@ item.item_alloy_nugget_redstone_alloy.name=
 #                                      en: Redstone Alloy Nugget
 item.item_alloy_nugget_soularium.name=
 #                                 en: Soularium Nugget
-item.item_alloy_nugget_vibrant_alloy.name=Vibrující hrudka slitiny
+item.item_alloy_nugget_vibrant_alloy.name=VibrujÃ­cÃ­ hrudka slitiny
 #                                     en: Vibrant Alloy Nugget
-item.item_basic_capacitor.activated.name=Dvou-vrstvovı kondenzátor
+item.item_basic_capacitor.activated.name=Dvou-vrstvovÃ½ kondenzÃ¡tor
 #                                    en: Double-Layer Capacitor
-item.item_basic_capacitor.basic.name=B?nı kondenzátor
+item.item_basic_capacitor.basic.name=BÄ›Å¾nÃ½ kondenzÃ¡tor
 #                                en: Basic Capacitor
-item.item_basic_capacitor.ender.name=Osminkovı kondenzátor
+item.item_basic_capacitor.ender.name=OsminkovÃ½ kondenzÃ¡tor
 #                                en: Octadic Capacitor
-item.item_broken_spawner.name=Zni?enı spawner
+item.item_broken_spawner.name=ZniÄenÃ½ spawner
 #                         en: Broken Spawner
-item.item_broken_spawner.tooltip.detailed.line1=Zkombinuj s Pohán?nım spawnerem
+item.item_broken_spawner.tooltip.detailed.line1=Zkombinuj s PohÃ¡nÄ›nÃ½m spawnerem
 #                                           en: Combine with a Powered Spawner
-item.item_broken_spawner.tooltip.detailed.line2=v kovadlin? pro nastavení typu spawnování
+item.item_broken_spawner.tooltip.detailed.line2=v kovadlinÄ› pro nastavenÃ­ typu spawnovÃ¡nÃ­
 #                                           en: in an Anvil to set spawn type
 item.item_cold_fire_igniter.chat.outoffluid=
 #                                       en: ERROR: Out of %s
@@ -1518,19 +1518,19 @@ item.item_conduit_facade.transparent.name=
 #                                     en: Transparent Conduit Facade
 item.item_conduit_facade.transparent.tooltip.detailed.line1=
 #                                                       en: Transparent: Hides the conduits when painted with a non-solid block
-item.item_conduit_probe.name=Sonda vedení
+item.item_conduit_probe.name=Sonda vedenÃ­
 #                        en: Conduit Probe
-item.item_conduit_probe.tooltip.detailed.line1=V módu sondy klikni pravım tla?ítkem na vedení
+item.item_conduit_probe.tooltip.detailed.line1=V mÃ³du sondy klikni pravÃ½m tlaÄÃ­tkem na vedenÃ­
 #                                          en: In probe mode R-Click on a conduit
-item.item_conduit_probe.tooltip.detailed.line2=pro zobrazení informací o její síti
+item.item_conduit_probe.tooltip.detailed.line2=pro zobrazenÃ­ informacÃ­ o jejÃ­ sÃ­ti
 #                                          en: to display details about its network
-item.item_conduit_probe.tooltip.detailed.line3=V módu kopírovat/vloit klikni pravım tla?ítkem se Shiftem pro
+item.item_conduit_probe.tooltip.detailed.line3=V mÃ³du kopÃ­rovat/vloÅ¾it klikni pravÃ½m tlaÄÃ­tkem se Shiftem pro
 #                                          en: In copy/paste mode Shift-R-Click to
-item.item_conduit_probe.tooltip.detailed.line4=zkopírování nastavení p?ipojení svazk? vedení
+item.item_conduit_probe.tooltip.detailed.line4=zkopÃ­rovÃ¡nÃ­ nastavenÃ­ pÅ™ipojenÃ­ svazkÅ¯ vedenÃ­
 #                                          en: copy a conduit bundles connection settings
-item.item_conduit_probe.tooltip.detailed.line5=Poté klikni pravım tla?itkem pro jejich vloení
+item.item_conduit_probe.tooltip.detailed.line5=PotÃ© klikni pravÃ½m tlaÄitkem pro jejich vloÅ¾enÃ­
 #                                          en: R-Click to paste them
-item.item_conduit_probe.tooltip.detailed.line6=Pouij Shift+kole?ko myši nebo 'Y' pro zm?nu módu
+item.item_conduit_probe.tooltip.detailed.line6=PouÅ¾ij Shift+koleÄko myÅ¡i nebo 'Y' pro zmÄ›nu mÃ³du
 #                                          en: Use Shift-Mouse Wheel or 'Y' to change mode
 item.item_coord_selector.name=
 #                         en: Coordinate Selector
@@ -1552,25 +1552,25 @@ item.item_dark_steel_armor.tooltip.levelcost.line2=
 #                                              en: %s%s  %s + %s levels
 item.item_dark_steel_armor.tooltip.line1=
 #                                    en: %sDiamond level protection when powered
-item.item_dark_steel_axe.name=Tmavá sekera
+item.item_dark_steel_axe.name=TmavÃ¡ sekera
 #                         en: Dark Axe
 item.item_dark_steel_axe.tooltip.effPowered=
 #                                       en: %sEfficiency when powered: %s
-item.item_dark_steel_axe.tooltip.multiHarvest=Pli se pro sklizení více polen
+item.item_dark_steel_axe.tooltip.multiHarvest=PliÅ¾ se pro sklizenÃ­ vÃ­ce polen
 #                                         en: Sneak to harvest multiple logs
-item.item_dark_steel_boots.name=Tmavé boty
+item.item_dark_steel_boots.name=TmavÃ© boty
 #                           en: Dark Boots
 item.item_dark_steel_boots.tooltip.line1=
 #                                    en: Fall damage negated when powered
 item.item_dark_steel_bow.name=
 #                         en: Dark Bow
-item.item_dark_steel_chestplate.name=Tmavá košile
+item.item_dark_steel_chestplate.name=TmavÃ¡ koÅ¡ile
 #                                en: Dark Plate
-item.item_dark_steel_helmet.name=Tmavá helma
+item.item_dark_steel_helmet.name=TmavÃ¡ helma
 #                            en: Dark Helm
-item.item_dark_steel_leggings.name=Tmavé kalhoty
+item.item_dark_steel_leggings.name=TmavÃ© kalhoty
 #                              en: Dark Leggings
-item.item_dark_steel_pickaxe.name=Tmavı krumpá?
+item.item_dark_steel_pickaxe.name=TmavÃ½ krumpÃ¡Ä
 #                             en: Dark Pick
 item.item_dark_steel_pickaxe.tooltip.cost=
 #                                     en: %s     (cost %s)
@@ -1584,9 +1584,9 @@ item.item_dark_steel_shears.tooltip.effPowered=
 #                                          en: %sEfficiency when powered: %s
 item.item_dark_steel_shears.tooltip.multiHarvest=
 #                                            en: Shears multiple blocks/sheep when empowered
-item.item_dark_steel_sword.name=Tmavı me?
+item.item_dark_steel_sword.name=TmavÃ½ meÄ
 #                           en: The Ender
-item.item_dark_steel_sword.tooltip.detailed.line1=Navıšené pády lebek a perel z endu
+item.item_dark_steel_sword.tooltip.detailed.line1=NavÃ½Å¡enÃ© pÃ¡dy lebek a perel z endu
 #                                             en: Increased skull and ender pearl drops
 item.item_dark_steel_sword.tooltip.detailed.line2=
 #                                             en: When powered: Endermen can't teleport once hit, extra Damage and Speed
@@ -1628,21 +1628,21 @@ item.item_magnet.tooltip.detailed.line2=
 #                                   en: Shift-R-Click to enable / disable
 item.item_magnet.tooltip.detailed.line3=
 #                                   en: Must be powered, active and in the
-item.item_magnet.tooltip.detailed.line4=hot baru pro fungování
+item.item_magnet.tooltip.detailed.line4=hot baru pro fungovÃ¡nÃ­
 #                                   en: hot bar (or a Baubles slot) to function
-item.item_material.attractor_crystal.name=Lákavı krystal
+item.item_material.attractor_crystal.name=LÃ¡kavÃ½ krystal
 #                                     en: Enticing Crystal
-item.item_material.binder_composite.name=Sloení vaza?e
+item.item_material.binder_composite.name=SloÅ¾enÃ­ vazaÄe
 #                                    en: Binder Composite
 item.item_material.chassi_parts.name=Kousky stroje
 #                                en: Machine Parts
-item.item_material.conduit_binder.name=Vaza? vedení
+item.item_material.conduit_binder.name=VazaÄ vedenÃ­
 #                                  en: Conduit Binder
-item.item_material.dark_grinding_ball.name=Mí? z tmavé oceli
+item.item_material.dark_grinding_ball.name=MÃ­Ä z tmavÃ© oceli
 #                                      en: Dark Steel Ball
 item.item_material.dust_wheat.name=
 #                              en: Flour
-item.item_material.ender_crystal.name=Enderovı krystal
+item.item_material.ender_crystal.name=EnderovÃ½ krystal
 #                                 en: Ender Crystal
 item.item_material.ender_crystal_powder.name=
 #                                        en: Grains of the End
@@ -1656,9 +1656,9 @@ item.item_material.gear_vibrant.name=
 #                                en: Vibrant Bimetal Gear
 item.item_material.gear_wood.name=
 #                             en: Wooden Gear
-item.item_material.glider_wing.name=Kluzácké k?ídlo
+item.item_material.glider_wing.name=KluzÃ¡ckÃ© kÅ™Ã­dlo
 #                               en: Glider Wing
-item.item_material.glider_wings.name=Kluzácké k?ídla
+item.item_material.glider_wings.name=KluzÃ¡ckÃ© kÅ™Ã­dla
 #                                en: Glider Wings
 item.item_material.glider_wings.tooltip.detailed.line1=
 #                                                  en: Upgrade for Dark Steel chestplate
@@ -1674,33 +1674,33 @@ item.item_material.plantgreen.name=
 #                              en: Clippings and Trimmings
 item.item_material.powder_ardite.name=
 #                                 en: Ardite Powder
-item.item_material.powder_coal.name=Uhelnı prášek
+item.item_material.powder_coal.name=UhelnÃ½ prÃ¡Å¡ek
 #                               en: Coal Powder
 item.item_material.powder_cobalt.name=
 #                                 en: Cobalt Powder
-item.item_material.powder_copper.name=M?d?nı prášek
+item.item_material.powder_copper.name=MÄ›dÄ›nÃ½ prÃ¡Å¡ek
 #                                 en: Copper Powder
-item.item_material.powder_ender.name=Ender perlovı prášek
+item.item_material.powder_ender.name=Ender perlovÃ½ prÃ¡Å¡ek
 #                                en: Ender Pearl Powder
-item.item_material.powder_gold.name=Zlatı prášek
+item.item_material.powder_gold.name=ZlatÃ½ prÃ¡Å¡ek
 #                               en: Gold Powder
 item.item_material.powder_infinity.name=
 #                                   en: Grains of Infinity
-item.item_material.powder_iron.name=eleznı prášek
+item.item_material.powder_iron.name=Å½eleznÃ½ prÃ¡Å¡ek
 #                               en: Iron Powder
 item.item_material.powder_obsidian.name=
 #                                   en: Obsidian Powder
-item.item_material.powder_tin.name=Cínovı prášek
+item.item_material.powder_tin.name=CÃ­novÃ½ prÃ¡Å¡ek
 #                              en: Tin Powder
 item.item_material.precient_crystal.name=
 #                                    en: Precient Crystal
 item.item_material.precient_powder.name=
 #                                   en: Grains of Prescience
-item.item_material.pulsating_crystal.name=Pulzující krystal
+item.item_material.pulsating_crystal.name=PulzujÃ­cÃ­ krystal
 #                                     en: Pulsating Crystal
 item.item_material.pulsating_powder.name=
 #                                    en: Grains of Piezallity
-item.item_material.silicon.name=K?emík
+item.item_material.silicon.name=KÅ™emÃ­k
 #                           en: Silicon
 item.item_material.skull_ender_resonator.name=
 #                                         en: Ender Resonator
@@ -1708,13 +1708,13 @@ item.item_material.skull_sentient_ender.name=
 #                                        en: Sentient Ender
 item.item_material.skull_skeletal_contractor.name=
 #                                             en: Skeletal Contractor
-item.item_material.skull_zombie_controller.name=Zombie ovlada?
+item.item_material.skull_zombie_controller.name=Zombie ovladaÄ
 #                                           en: Z-Logic Controller
 item.item_material.skull_zombie_electrode.name=Zombie elektroda
 #                                          en: Zombie Electrode
 item.item_material.skull_zombie_frankenstien.name=Frankenstein
 #                                             en: Frank'N'Zombie
-item.item_material.vibrant_crystal.name=Vibrující krystal
+item.item_material.vibrant_crystal.name=VibrujÃ­cÃ­ krystal
 #                                   en: Vibrant Crystal
 item.item_material.vibrant_powder.name=
 #                                  en: Grains of Vibrancy
@@ -1742,13 +1742,13 @@ item.item_rod_of_return.tooltip.fluid=
 #                                 en: %s
 item.item_rod_of_return.tooltip.power=
 #                                 en: %s
-item.item_soul_vial.name=Lahvi?ka duší
+item.item_soul_vial.name=LahviÄka duÅ¡Ã­
 #                    en: Soul Vial
 item.item_soul_vial.tooltip.color=
 #                             en: Color: %s
 item.item_soul_vial.tooltip.detailed.line1=
 #                                      en: R-Click on a mob to capture its soul
-item.item_soul_vial.tooltip.detailed.line2=Klikni pravım tla?ítkem znovu pro její vypušt?ní
+item.item_soul_vial.tooltip.detailed.line2=Klikni pravÃ½m tlaÄÃ­tkem znovu pro jejÃ­ vypuÅ¡tÄ›nÃ­
 #                                      en: R-Click again to release it
 item.item_soul_vial.tooltip.empty=
 #                             en: Empty
@@ -1758,59 +1758,59 @@ item.item_soul_vial.tooltip.health=
 #                              en: Health: %s
 item.item_travel_staff.chat.notEnoughPower=
 #                                      en: Not enough power
-item.item_travel_staff.name=Ty? cestování
+item.item_travel_staff.name=TyÄ cestovÃ¡nÃ­
 #                       en: Staff of Traveling
-item.item_travel_staff.tooltip.detailed.line1=P?i drení cestovních kotev a EnderIO
+item.item_travel_staff.tooltip.detailed.line1=PÅ™i drÅ¾enÃ­ cestovnÃ­ch kotev a EnderIO
 #                                         en: When held Travel Anchors and EnderIO
-item.item_travel_staff.tooltip.detailed.line2=bloky za?nou bıt viditelné a mohou bıt
+item.item_travel_staff.tooltip.detailed.line2=bloky zaÄnou bÃ½t viditelnÃ© a mohou bÃ½t
 #                                         en: blocks become visible and can be
-item.item_travel_staff.tooltip.detailed.line3=aktivovány kliknutím pravám tla?ítkem
+item.item_travel_staff.tooltip.detailed.line3=aktivovÃ¡ny kliknutÃ­m pravÃ¡m tlaÄÃ­tkem
 #                                         en: activated by R-Click
-item.item_travel_staff.tooltip.detailed.line4=Klinutí pravám tla?ítkem se Shiftem teleportuje
+item.item_travel_staff.tooltip.detailed.line4=KlinutÃ­ pravÃ¡m tlaÄÃ­tkem se Shiftem teleportuje
 #                                         en: Shift-R-Click will teleport the
-item.item_travel_staff.tooltip.detailed.line5=hrá?e na krátkou vzdálenost
+item.item_travel_staff.tooltip.detailed.line5=hrÃ¡Äe na krÃ¡tkou vzdÃ¡lenost
 #                                         en: player a short distance
-item.item_xp_transfer.name=Ty? zkušeností
+item.item_xp_transfer.name=TyÄ zkuÅ¡enostÃ­
 #                      en: Experience Rod
-item.item_xp_transfer.tooltip.detailed.line1=Klikni pravım tla?ítkem na tekutinovou nádr
+item.item_xp_transfer.tooltip.detailed.line1=Klikni pravÃ½m tlaÄÃ­tkem na tekutinovou nÃ¡drÅ¾
 #                                        en: R-Click on a fluid tank containing
-item.item_xp_transfer.tooltip.detailed.line2=obsahující tekuté XP pro získání úrovní
+item.item_xp_transfer.tooltip.detailed.line2=obsahujÃ­cÃ­ tekutÃ© XP pro zÃ­skÃ¡nÃ­ ÃºrovnÃ­
 #                                        en: liquid XP to gain levels
-item.item_xp_transfer.tooltip.detailed.line3=Klikni pravım tla?ítkem se Shiftem pro
+item.item_xp_transfer.tooltip.detailed.line3=Klikni pravÃ½m tlaÄÃ­tkem se Shiftem pro
 #                                        en: Shift-R-Click to transfer levels to
-item.item_xp_transfer.tooltip.detailed.line4=p?enesení úrovní do nádre
+item.item_xp_transfer.tooltip.detailed.line4=pÅ™enesenÃ­ ÃºrovnÃ­ do nÃ¡drÅ¾e
 #                                        en: the tank
-item.item_yeta_wrench.name=Yeta klí?
+item.item_yeta_wrench.name=Yeta klÃ­Ä
 #                      en: Yeta Wrench
-item.item_yeta_wrench.tooltip.detailed.line1=P?i drení skryje fasády vedení
+item.item_yeta_wrench.tooltip.detailed.line1=PÅ™i drÅ¾enÃ­ skryje fasÃ¡dy vedenÃ­
 #                                        en: Hides conduit facades when held
-item.item_yeta_wrench.tooltip.detailed.line2=Klikni pravım tla?ítkem se Shiftem pro okamité
+item.item_yeta_wrench.tooltip.detailed.line2=Klikni pravÃ½m tlaÄÃ­tkem se Shiftem pro okamÅ¾itÃ©
 #                                        en: Shift-R-Click to break machines
-item.item_yeta_wrench.tooltip.detailed.line3=odmontování stroj? a vedení
+item.item_yeta_wrench.tooltip.detailed.line3=odmontovÃ¡nÃ­ strojÅ¯ a vedenÃ­
 #                                        en: and conduits instantly
-item.item_yeta_wrench.tooltip.detailed.line4=Klikni levım tla?ítkem se Shiftem na veení pro
+item.item_yeta_wrench.tooltip.detailed.line4=Klikni levÃ½m tlaÄÃ­tkem se Shiftem na veenÃ­ pro
 #                                        en: Shift-L-Click on a conduit to
-item.item_yeta_wrench.tooltip.detailed.line5=otev?ení nastavení GUI vedení
+item.item_yeta_wrench.tooltip.detailed.line5=otevÅ™enÃ­ nastavenÃ­ GUI vedenÃ­
 #                                        en: open conduit settings GUI
-item.item_yeta_wrench.tooltip.detailed.line6=Pouij Shift + kole?ko myši nebo 'Y' pro
+item.item_yeta_wrench.tooltip.detailed.line6=PouÅ¾ij Shift + koleÄko myÅ¡i nebo 'Y' pro
 #                                        en: Use Shift-Mouse Wheel or '%s' to
-item.item_yeta_wrench.tooltip.detailed.line7=vykreslení jednoho typu vedení
+item.item_yeta_wrench.tooltip.detailed.line7=vykreslenÃ­ jednoho typu vedenÃ­
 #                                        en: render a single conduit type
-tile.block_alloy.conductive_iron.name=Blok z vodivého eleza
+tile.block_alloy.conductive_iron.name=Blok z vodivÃ©ho Å¾eleza
 #                                 en: Conductive Iron Block
-tile.block_alloy.dark_steel.name=Blok z tmavé oceli
+tile.block_alloy.dark_steel.name=Blok z tmavÃ© oceli
 #                            en: Dark Steel Block
-tile.block_alloy.electrical_steel.name=Blok z elektrické oceli
+tile.block_alloy.electrical_steel.name=Blok z elektrickÃ© oceli
 #                                  en: Electrical Steel Block
-tile.block_alloy.energetic_alloy.name=Blok z energetické slitiny
+tile.block_alloy.energetic_alloy.name=Blok z energetickÃ© slitiny
 #                                 en: Energetic Alloy Block
 tile.block_alloy.name=
 #                 en: Alloy Block
 tile.block_alloy.pulsating_iron.name=
 #                                en: Pulsating Iron Block
-tile.block_alloy.redstone_alloy.name=Blok z ruditové slitiny
+tile.block_alloy.redstone_alloy.name=Blok z ruditovÃ© slitiny
 #                                en: Redstone Alloy Block
-tile.block_alloy.soularium.name=Blok ze soulária
+tile.block_alloy.soularium.name=Blok ze soulÃ¡ria
 #                           en: Soularium Block
 tile.block_alloy.vibrant_alloy.name=
 #                               en: Vibrant Alloy Block
@@ -1820,7 +1820,7 @@ tile.block_dark_fused_glass.name=
 #                            en: Dark Clear Glass
 tile.block_dark_fused_quartz.name=
 #                             en: Dark Fused Quartz
-tile.block_dark_iron_bars.name=Tmavé elezné cihli?ky
+tile.block_dark_iron_bars.name=TmavÃ© Å¾eleznÃ© cihliÄky
 #                          en: Dark Iron Bars
 tile.block_dark_steel_anvil.intact.name=
 #                                   en: Dark Steel Anvil
@@ -1952,35 +1952,35 @@ tile.block_enderman_skull.base.name=Hlava Endermana
 #                               en: Enderman Head
 tile.block_enderman_skull.name=Lebka Endermana
 #                          en: Enderman Skull
-tile.block_enderman_skull.reanimated.name=Oivená hlava Endermana
+tile.block_enderman_skull.reanimated.name=OÅ¾ivenÃ¡ hlava Endermana
 #                                     en: Reanimated Enderman Head
 tile.block_enderman_skull.reanimated_tormented.name=
 #                                               en: Reanimated Tormented Enderman Head
-tile.block_enderman_skull.tormented.name=Umu?ená hlava Endermana
+tile.block_enderman_skull.tormented.name=UmuÄenÃ¡ hlava Endermana
 #                                    en: Tormented Enderman Head
-tile.block_enlightened_fused_glass.name=Osvícené ?isté sklo
+tile.block_enlightened_fused_glass.name=OsvÃ­cenÃ© ÄistÃ© sklo
 #                                   en: Enlightened Clear Glass
-tile.block_enlightened_fused_quartz.name=Osvícenı tavenı k?emen
+tile.block_enlightened_fused_quartz.name=OsvÃ­cenÃ½ tavenÃ½ kÅ™emen
 #                                    en: Enlightened Fused Quartz
 tile.block_exit_rail.name=
 #                     en: Exit Rail
-tile.block_fused_glass.name=Pom?rn? ?isté sklo
+tile.block_fused_glass.name=PomÄ›rnÄ› ÄistÃ© sklo
 #                       en: Quite Clear Glass
-tile.block_fused_quartz.name=Tavenı k?emen
+tile.block_fused_quartz.name=TavenÃ½ kÅ™emen
 #                        en: Fused Quartz
 tile.block_machine_base.name=
 #                        en: (technical block)
 tile.block_machine_io.name=
 #                      en: (technical block)
-tile.block_painted_carpet.name=Obarvenı koberec
+tile.block_painted_carpet.name=ObarvenÃ½ koberec
 #                          en: Painted Carpet
 tile.block_painted_dark_steel_trapdoor.name=
 #                                       en: Painted Dark Steel Trapdoor
-tile.block_painted_double_slab.name=Obarvenı p?lblok
+tile.block_painted_double_slab.name=ObarvenÃ½ pÅ¯lblok
 #                               en: Painted Slab
-tile.block_painted_fence.name=Obarvenı plot
+tile.block_painted_fence.name=ObarvenÃ½ plot
 #                         en: Painted Fence
-tile.block_painted_fence_gate.name=Obarvená brána
+tile.block_painted_fence_gate.name=ObarvenÃ¡ brÃ¡na
 #                              en: Painted Gate
 tile.block_painted_fused_quartz.name=
 #                                en: Painted Fused Quartz
@@ -2086,9 +2086,9 @@ tile.block_painted_redstone.name=
 #                            en: Painted Redstone
 tile.block_painted_redstone_solid.name=
 #                                  en: Painted Redstone
-tile.block_painted_slab.name=Obarvenı p?lblok
+tile.block_painted_slab.name=ObarvenÃ½ pÅ¯lblok
 #                        en: Painted Slab
-tile.block_painted_stair.name=Obarvené schody
+tile.block_painted_stair.name=ObarvenÃ© schody
 #                         en: Painted Stairs
 tile.block_painted_stone.name=
 #                         en: Painted Cobblestone
@@ -2100,13 +2100,13 @@ tile.block_painted_stone_slab.name=
 #                              en: Painted Stone Slab
 tile.block_painted_stone_stair.name=
 #                               en: Painted Stone Stairs
-tile.block_painted_wall.name=Obarvená ze?
+tile.block_painted_wall.name=ObarvenÃ¡ zeÄ
 #                        en: Painted Wall
 tile.block_painted_wooden_trapdoor.name=
 #                                   en: Painted Wooden Trapdoor
-tile.block_reinforced_obsidian.name=Zesílenı obsidian
+tile.block_reinforced_obsidian.name=ZesÃ­lenÃ½ obsidian
 #                               en: Reinforced Obsidian
-tile.block_reinforced_obsidian.tooltip.common.line1=Odolnı Witherovi
+tile.block_reinforced_obsidian.tooltip.common.line1=OdolnÃ½ Witherovi
 #                                               en: Wither Proof
 tile.block_self_resetting_lever10.name=
 #                                  en: Self-resetting Lever (10 seconds)
@@ -2130,7 +2130,7 @@ tile.fluid.hootch.name=
 #                  en: Hootch
 tile.fluid.liquid_sunshine.name=
 #                           en: Liquid Sunshine
-tile.fluid.nutrient_distillation.name=Destilovanımi ivinami
+tile.fluid.nutrient_distillation.name=DestilovanÃ½mi Å¾ivinami
 #                                 en: Nutrient Distillation
 tile.fluid.rocket_fuel.name=
 #                       en: Rocket Fuel

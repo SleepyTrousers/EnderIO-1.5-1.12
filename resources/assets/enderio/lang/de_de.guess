@@ -12,7 +12,7 @@
 #                             en: Crafter speed, area=all machines "area" attribute (e.g. farm),
 ;//display string for Skeleton(type=
 #                               en: =1)
-;enderio.blockConduitBundle=Leitungsbündel
+;enderio.blockConduitBundle=LeitungsbÃ¼ndel
 #                       en: Conduit Bundle
 ;enderio.capbank.change=I/O
 #                   en: I/O
@@ -32,7 +32,7 @@
 #                  en: Max Input
 ;enderio.capbank.maxOut=Max. Ouput
 #                   en: Max Output
-;enderio.category.darksteelarmor=Dunkelstahlrüstung
+;enderio.category.darksteelarmor=DunkelstahlrÃ¼stung
 #                            en: Dark Steel Armor
 ;enderio.category.tools=Werkzeuge
 #                   en: Tools
@@ -64,7 +64,7 @@
 #                           en: mB/t
 ;enderio.gas.gasTick=Gas/t
 #                en: Gas/t
-;enderio.gui.available=Verfügbar
+;enderio.gui.available=VerfÃ¼gbar
 #                  en: Available
 ;enderio.gui.capBank.inputMode=Input
 #                          en: Input
@@ -80,7 +80,7 @@
 #                           en: Output
 ;enderio.gui.capBank.outputRs=Output-Redstone-Modus
 #                         en: Output Redstone Mode
-;enderio.gui.conduit.button.clear=Löschen
+;enderio.gui.conduit.button.clear=LÃ¶schen
 #                             en: Clear
 ;enderio.gui.conduit.button.merge=Verschmelzen
 #                             en: Merge
@@ -132,7 +132,7 @@
 #                                      en: Extract
 ;enderio.gui.conduit.item.filterupgrade=Item-Filter einsetzen
 #                                   en: Insert Item Filter
-;enderio.gui.conduit.item.functionupgrade.line1=Mögliche Funktions-Upgrades:
+;enderio.gui.conduit.item.functionupgrade.line1=MÃ¶gliche Funktions-Upgrades:
 #                                           en: Possible function upgrades:
 ;enderio.gui.conduit.item.ignoreMetaData=Ignoriere Metadaten
 #                                    en: Ignore Meta Data
@@ -148,15 +148,15 @@
 #                                    en: Ore Dictionary Disabled
 ;enderio.gui.conduit.item.oreDicEnabled=Ore Dictionary Aktiviert
 #                                   en: Ore Dictionary Enabled
-;enderio.gui.conduit.item.priority=Priorität
+;enderio.gui.conduit.item.priority=PrioritÃ¤t
 #                              en: Priority
 ;enderio.gui.conduit.item.roundRobinDisabled=Round-Robin Deaktiviert
 #                                        en: Round Robin Disabled
 ;enderio.gui.conduit.item.roundRobinEnabled=Round-Robin Aktiviert
 #                                       en: Round Robin Enabled
-;enderio.gui.conduit.item.selfFeedDisabled=Selbstfüttern Deaktiviert
+;enderio.gui.conduit.item.selfFeedDisabled=SelbstfÃ¼ttern Deaktiviert
 #                                      en: Self Feed Disabled
-;enderio.gui.conduit.item.selfFeedEnabled=Selbstfüttern Aktiviert
+;enderio.gui.conduit.item.selfFeedEnabled=SelbstfÃ¼ttern Aktiviert
 #                                     en: Self Feed Enabled
 ;enderio.gui.conduit.item.sigCol=Signalfarbe
 #                            en: Signal Color
@@ -172,7 +172,7 @@
 #                                  en: Insert Item Conduit Speed Upgrades/Downgrade
 ;enderio.gui.conduit.item.stickyDisbaled=Sticky Mode Deaktiviert
 #                                    en: Sticky Mode Disabled
-;enderio.gui.conduit.item.stickyEnabled=Sticky Mode Aktiviert|Ausgewählte Items werden nur|zu diesem oder anderen|Outputs mit Sticky Mode transportiert.
+;enderio.gui.conduit.item.stickyEnabled=Sticky Mode Aktiviert|AusgewÃ¤hlte Items werden nur|zu diesem oder anderen|Outputs mit Sticky Mode transportiert.
 #                                   en: Sticky Mode Enabled|Selected items will only|be sent to this or other|Sticky outputs.
 ;enderio.gui.conduit.item.whitelist=Whitelist
 #                               en: Whitelist
@@ -194,7 +194,7 @@
 #                                 en: Stop when >=
 ;enderio.gui.inventorypanel.header.crafting=Crafting
 #                                       en: Crafting grid
-;enderio.gui.inventorypanel.header.return=Rückgabe
+;enderio.gui.inventorypanel.header.return=RÃ¼ckgabe
 #                                     en: Return area
 ;enderio.gui.inventorypanel.header.storage=Speicher
 #                                      en: Storage area
@@ -208,17 +208,17 @@
 #                                               en: A maximum of 6 recipes can be stored.
 ;enderio.gui.inventorypanel.tooltip.addrecipe.line3=Links-Klick auf ein gespeichertes Rezept versucht
 #                                               en: Left clicking a stored recipe will try to put
-;enderio.gui.inventorypanel.tooltip.addrecipe.line4=Items für eine Fertigungsoperation in das Craftinggitter zu legen.
+;enderio.gui.inventorypanel.tooltip.addrecipe.line4=Items fÃ¼r eine Fertigungsoperation in das Craftinggitter zu legen.
 #                                               en: items for one crafting operation into the grid.
 ;enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift-Links-Klick versucht das Gitter
 #                                               en: Shift left clicking tries to fill the crafting
-;enderio.gui.inventorypanel.tooltip.addrecipe.line6=maximal zu füllen.
+;enderio.gui.inventorypanel.tooltip.addrecipe.line6=maximal zu fÃ¼llen.
 #                                               en: grid to the maximum.
 ;enderio.gui.inventorypanel.tooltip.addrecipe.line7=Rechts-Klick auf ein gespeichertes Rezept entfernt dieses.
 #                                               en: Right click a stored recipe to delete it.
 ;enderio.gui.inventorypanel.tooltip.clear.line1=Leere Craftinggitter
 #                                           en: Clear crafting grid
-;enderio.gui.inventorypanel.tooltip.clear.line2=Befördert alle Items zur Rückgabe
+;enderio.gui.inventorypanel.tooltip.clear.line2=BefÃ¶rdert alle Items zur RÃ¼ckgabe
 #                                           en: Moves all items to the return area
 ;enderio.gui.inventorypanel.tooltip.filterslot.line1=Filterslot
 #                                                en: Filter card slot
@@ -226,23 +226,23 @@
 #                                                en: Place configured item filters in
 ;enderio.gui.inventorypanel.tooltip.filterslot.line3=um zu bestimmen, welche Items angezeigt werden.
 #                                                en: here to select which items to show.
-;enderio.gui.inventorypanel.tooltip.fuelTank=Tank mit Nährbarem Destillat
+;enderio.gui.inventorypanel.tooltip.fuelTank=Tank mit NÃ¤hrbarem Destillat
 #                                        en: Nutrient Tank
 ;enderio.gui.inventorypanel.tooltip.itemsstored=Items gespeichert: %s
 #                                           en: Items Stored: %s
-;enderio.gui.inventorypanel.tooltip.refill.line1=Füllt das Craftinggitter auf
+;enderio.gui.inventorypanel.tooltip.refill.line1=FÃ¼llt das Craftinggitter auf
 #                                            en: Refills the crafting grid.
-;enderio.gui.inventorypanel.tooltip.refill.line2=Ein Normaler Klick füllt Items
+;enderio.gui.inventorypanel.tooltip.refill.line2=Ein Normaler Klick fÃ¼llt Items
 #                                            en: Click to place items
-;enderio.gui.inventorypanel.tooltip.refill.line3=für eine Fertigung, während
+;enderio.gui.inventorypanel.tooltip.refill.line3=fÃ¼r eine Fertigung, wÃ¤hrend
 #                                            en: for one crafting operation,
 ;enderio.gui.inventorypanel.tooltip.refill.line4=ein Shift-Klick versucht,
 #                                            en: shift click to place as
-;enderio.gui.inventorypanel.tooltip.refill.line5=das komplette Gitter zu füllen.
+;enderio.gui.inventorypanel.tooltip.refill.line5=das komplette Gitter zu fÃ¼llen.
 #                                            en: many items as possible.
-;enderio.gui.inventorypanel.tooltip.return.line1=Item-Rückgabe
+;enderio.gui.inventorypanel.tooltip.return.line1=Item-RÃ¼ckgabe
 #                                            en: Item return area
-;enderio.gui.inventorypanel.tooltip.return.line2=Hierbefindliche Items können durch eine
+;enderio.gui.inventorypanel.tooltip.return.line2=Hierbefindliche Items kÃ¶nnen durch eine
 #                                            en: Items placed here can be extracted
 ;enderio.gui.inventorypanel.tooltip.return.line3=Item-Leitung extrahiert werden, werden aber
 #                                            en: by an item conduit, but will not be
@@ -252,7 +252,7 @@
 #                                            en: Click to change into storage area.
 ;enderio.gui.inventorypanel.tooltip.sort.count_down.line1=Sortiere Items nach Menge
 #                                                     en: Sort items by their quantity
-;enderio.gui.inventorypanel.tooltip.sort.count_down.line2=Beginnend mit der größten Menge
+;enderio.gui.inventorypanel.tooltip.sort.count_down.line2=Beginnend mit der grÃ¶ÃŸten Menge
 #                                                     en: Starting with the highest quantity
 ;enderio.gui.inventorypanel.tooltip.sort.count_up.line1=Sortiere Items nach Menge
 #                                                   en: Sort items by their quantity
@@ -276,9 +276,9 @@
 #                                                  en: Starting at the end of the alphabet
 ;enderio.gui.inventorypanel.tooltip.storage.line1=Item-Speicher
 #                                             en: Item storage area
-;enderio.gui.inventorypanel.tooltip.storage.line2=Kleiner temprärer Item-Speicher
+;enderio.gui.inventorypanel.tooltip.storage.line2=Kleiner temprÃ¤rer Item-Speicher
 #                                             en: Small temporary item storage area.
-;enderio.gui.inventorypanel.tooltip.storage.line3=Klicke um zur Rückgabe zu wechseln
+;enderio.gui.inventorypanel.tooltip.storage.line3=Klicke um zur RÃ¼ckgabe zu wechseln
 #                                             en: Click to change into return area
 ;enderio.gui.inventorypanel.tooltip.sync.jei.line1=
 #                                              en: Text entered into filter field will be remembered.
@@ -308,7 +308,7 @@
 #                          en: East
 ;enderio.gui.machine.side.north=Nord
 #                           en: North
-;enderio.gui.machine.side.south=Süd
+;enderio.gui.machine.side.south=SÃ¼d
 #                           en: South
 ;enderio.gui.machine.side.up=Oben
 #                        en: Up
@@ -336,9 +336,9 @@
 #                                en: Power Network
 ;enderio.gui.mjReader.noItem=Kann nicht empfangen
 #                        en: Can not receive
-;enderio.gui.mjReader.noItems=Empfängt keine Items.
+;enderio.gui.mjReader.noItems=EmpfÃ¤ngt keine Items.
 #                         en: Receives no items.
-;enderio.gui.mjReader.noOutputs=hat keine gültigen Outputs
+;enderio.gui.mjReader.noOutputs=hat keine gÃ¼ltigen Outputs
 #                           en: has no valid outputs
 ;enderio.gui.mjReader.noPowerFromSide=kann keine Energie von dieser Seite empfangen
 #                                 en: cannot receive power from this side
@@ -370,11 +370,11 @@
 #                                 en: Capacitor Bank Storage
 ;enderio.gui.powerMonitor.monHeading3=Maschinenpuffer
 #                                 en: Machine Buffers
-;enderio.gui.powerMonitor.monHeading4=Durchschnitts-Output über 5 Sekunden
+;enderio.gui.powerMonitor.monHeading4=Durchschnitts-Output Ã¼ber 5 Sekunden
 #                                 en: Average output over 5 seconds
-;enderio.gui.powerMonitor.monHeading5=Durchschnitts-Input über 5 Sekunden
+;enderio.gui.powerMonitor.monHeading5=Durchschnitts-Input Ã¼ber 5 Sekunden
 #                                 en: Average input over 5 seconds
-;enderio.gui.powerMonitor.noNetworkError=Kein Leitungsnetzwerk verbunden. Der Energiemonitor muss mit einem Leitungsnetzwerk verbunden sein um Daten lesen zu können.
+;enderio.gui.powerMonitor.noNetworkError=Kein Leitungsnetzwerk verbunden. Der Energiemonitor muss mit einem Leitungsnetzwerk verbunden sein um Daten lesen zu kÃ¶nnen.
 #                                    en: No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
 ;enderio.gui.powerMonitor.of=von
 #                        en: of
@@ -384,11 +384,11 @@
 #             en: Send
 ;enderio.gui.sendReceive=Senden & Empfangen
 #                    en: Send & Receive
-;enderio.gui.travelAccessable.skipLocked=Überspringe abgeschlossene Anker, benutzte gezielten Teleport.
+;enderio.gui.travelAccessable.skipLocked=Ãœberspringe abgeschlossene Anker, benutzte gezielten Teleport.
 #                                    en: Skipped locked anchor, use targeted teleport.
-;enderio.gui.travelAccessable.skipObstructed=Überspringe versperrte Anker.
+;enderio.gui.travelAccessable.skipObstructed=Ãœberspringe versperrte Anker.
 #                                        en: Skipped obstructed anchor.
-;enderio.gui.travelAccessable.skipPrivate=Überspringe private Anker.
+;enderio.gui.travelAccessable.skipPrivate=Ãœberspringe private Anker.
 #                                     en: Skipped private anchor.
 ;enderio.gui.travelAccessable.unauthorised=Dir ist es nicht erlaubt, auf diesen Block zuzugreifen.
 #                                      en: You are not allowed to access this block.
@@ -402,9 +402,9 @@
 #                           en: Thunderstorm
 ;enderio.item.itemConduitFacade.tooltip.notpainted=Nicht bemalt
 #                                              en: Not Painted
-;enderio.item.itemExistingItemFilter.filterNotUpdated=Der Snapshot enthält bereits alle sich im Inventar befindlichen Items
+;enderio.item.itemExistingItemFilter.filterNotUpdated=Der Snapshot enthÃ¤lt bereits alle sich im Inventar befindlichen Items
 #                                                 en: The snapshot already covers all items in the inventory
-;enderio.item.itemExistingItemFilter.filterUpdated=Neue Items wurden dem Snapshot hinzugefügt
+;enderio.item.itemExistingItemFilter.filterUpdated=Neue Items wurden dem Snapshot hinzugefÃ¼gt
 #                                              en: New items have been added to the snapshot
 ;enderio.itemGasConduit.name=Gasleitung
 #                        en: Gas Conduit
@@ -420,7 +420,7 @@
 #                                 en: Fluid type locked to
 ;enderio.itemLiquidConduit.lockedWaila=Festgelegt auf
 #                                  en: Locked to
-;enderio.itemLiquidConduit.name=Flüssigkeitsleitung
+;enderio.itemLiquidConduit.name=FlÃ¼ssigkeitsleitung
 #                           en: Fluid Conduit
 ;enderio.itemLiquidConduit.tooltip.detailed.line1=
 #                                             en: Fluid flow respects gravity
@@ -434,17 +434,17 @@
 #                                    en: Max IO:
 ;enderio.itemLiquidConduit.unlockedType=
 #                                   en: Fluid type unlocked
-;enderio.itemLiquidConduitAdvanced.name=Flüssigkeitsdruckleitung
+;enderio.itemLiquidConduitAdvanced.name=FlÃ¼ssigkeitsdruckleitung
 #                                   en: Pressurized Fluid Conduit
-;enderio.itemLiquidConduitEnder.name=Ender-Flüssigkeitsleitung
+;enderio.itemLiquidConduitEnder.name=Ender-FlÃ¼ssigkeitsleitung
 #                                en: Ender Fluid Conduit
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Sofortiger Flüssigkeitsteleport
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Sofortiger FlÃ¼ssigkeitsteleport
 #                                                  en: Instant fluid teleportation
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line2=Ermöglicht es, verschiedene Flüssigkeiten
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line2=ErmÃ¶glicht es, verschiedene FlÃ¼ssigkeiten
 #                                                  en: allows multiple fluids to be
 ;enderio.itemLiquidConduitEnder.tooltip.detailed.line3=durch die selbe Leitung zu transportieren
 #                                                  en: transported on the same line
-;enderio.itemMEConduit.channelsUsed={0,number} von {1,number} Kanälen
+;enderio.itemMEConduit.channelsUsed={0,number} von {1,number} KanÃ¤len
 #                               en: {0,number} of {1,number} Channels
 ;enderio.itemMEConduit.name=
 #                       en: ME Conduit
@@ -472,7 +472,7 @@
 #                     en: Camera: Reset Zoom (creative only)
 ;enderio.keybind.glidertoggle=Gleiterschaltung
 #                         en: Glider/Elytra Toggle
-;enderio.keybind.gogglesofrevealing=Brille der Enthüllung
+;enderio.keybind.gogglesofrevealing=Brille der EnthÃ¼llung
 #                               en: Goggles of Revealing
 ;enderio.keybind.jump=Sprung
 #                 en: Jump
@@ -488,7 +488,7 @@
 #                       en: Step Assist
 ;enderio.keybind.top=
 #                en: Toggle The One Probe (Helmet Upgrade)
-;enderio.keybind.yetawrenchmode=Yeta-Schraubenschlüsselmodus
+;enderio.keybind.yetawrenchmode=Yeta-SchraubenschlÃ¼sselmodus
 #                           en: Yeta Wrench Mode
 ;enderio.loot.capacitor.aa=
 #                      en: Hiding %s
@@ -604,8 +604,8 @@
 #                   en: Soul Binder
 ;enderio.nei.vat=bottich
 #            en: Vat
-;enderio.painter.tooltip.wasPainted=§oWas denkst du, wird das wohl tun?
-#                               en: §oWhat did you think that would do?
+;enderio.painter.tooltip.wasPainted=Â§oWas denkst du, wird das wohl tun?
+#                               en: Â§oWhat did you think that would do?
 ;enderio.power.maxOutput=Max. Ouput
 #                    en: Max Output
 ;enderio.remoteinv.chat.error=
@@ -636,7 +636,7 @@
 #                    en: Ore Dictionary:
 ;enderio.tooltip.uid=UID:
 #                en: UID:
-;enderio.trans.fluid=Flüssigkeit
+;enderio.trans.fluid=FlÃ¼ssigkeit
 #                en: Fluid
 ;enderio.trans.item=Item
 #               en: Item
@@ -648,7 +648,7 @@
 #                    en: Receiving
 ;enderio.trans.sending=Senden
 #                  en: Sending
-;enderio.trans.showChannels=<Shift um Kanäle zu zeigen>
+;enderio.trans.showChannels=<Shift um KanÃ¤le zu zeigen>
 #                       en: <Shift to show channels>
 ;enderio.waila.config.hiddenfacades=Versteckte Fassaden
 #                               en: Sneaky Facades
@@ -698,9 +698,9 @@
 #                                                  en: Turn off with a redstone signal.
 ;item.itemExistingItemFilter.name=Existierende Items-Filter
 #                             en: Existing Item Filter
-;item.itemExistingItemFilter.tooltip.basic.line1=Upgrade für Item-Leitungen
+;item.itemExistingItemFilter.tooltip.basic.line1=Upgrade fÃ¼r Item-Leitungen
 #                                            en: Upgrade for item conduits
-;item.itemExistingItemFilter.tooltip.detailed.line1=Wählt nur Items, die bereits
+;item.itemExistingItemFilter.tooltip.detailed.line1=WÃ¤hlt nur Items, die bereits
 #                                               en: Selects only items already
 ;item.itemExistingItemFilter.tooltip.detailed.line2=im Inventar sind.
 #                                               en: in the inventory
@@ -708,11 +708,11 @@
 #                                               en: Right click while sneaking
 ;item.itemExistingItemFilter.tooltip.detailed.line4=ein Inventar um dessen Inhalt
 #                                               en: on an inventory to add the
-;item.itemExistingItemFilter.tooltip.detailed.line5=dem Snapshot hinzuzufügen.
+;item.itemExistingItemFilter.tooltip.detailed.line5=dem Snapshot hinzuzufÃ¼gen.
 #                                               en: content to the snapshot
 ;item.itemExtractSpeedDowngrade.name=Item-Leitungsgeschwindigkeits-Downgrade
 #                                en: Item Conduit Speed Downgrade
-;item.itemExtractSpeedDowngrade.tooltip.basic.line1=Downgrade für Item-Leitungen
+;item.itemExtractSpeedDowngrade.tooltip.basic.line1=Downgrade fÃ¼r Item-Leitungen
 #                                               en: Downgrade for item conduits
 ;item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Reduziert Geschwindigkeit auf 1
 #                                                  en: Reduces speed to 1
@@ -720,9 +720,9 @@
 #                                                  en: item per extraction
 ;item.itemExtractSpeedUpgrade.name=Item-Leitungsgeschwindigkeits-Upgrade
 #                              en: Item Conduit Speed Upgrade
-;item.itemExtractSpeedUpgrade.tooltip.basic.line1=Upgrade für Item-Leitungen
+;item.itemExtractSpeedUpgrade.tooltip.basic.line1=Upgrade fÃ¼r Item-Leitungen
 #                                             en: Upgrade for item conduits
-;item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Erhöht Geschwindigkeit um 4
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line1=ErhÃ¶ht Geschwindigkeit um 4
 #                                                en: Increases speed by 4
 ;item.itemExtractSpeedUpgrade.tooltip.detailed.line2=Items pro Extraktion
 #                                                en: items per extraction
@@ -732,13 +732,13 @@
 #                                en: Remote Awareness Upgrade
 ;item.itemInventoryPanelUpgrade.tooltip.basic.line1=Inventar-Panelbedienbarkeit
 #                                               en: Inventory Panel Remote Awareness
-;item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Funktions-Upgrade für Item-Leitungen
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Funktions-Upgrade fÃ¼r Item-Leitungen
 #                                                  en: Function upgrade for item conduits
 ;item.itemInventoryPanelUpgrade.tooltip.detailed.line2=Erlaubt Inventar-Panels des gleichen Netzwerks
 #                                                  en: Allows Inventory Panels attached
 ;item.itemInventoryPanelUpgrade.tooltip.detailed.line3=auf Items in diesem Inventar
 #                                                  en: to this network to see and extract
-;item.itemInventoryPanelUpgrade.tooltip.detailed.line4=unabhängig vom Leitungsmodus zuzugreifen.
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line4=unabhÃ¤ngig vom Leitungsmodus zuzugreifen.
 #                                                  en: items from this inventory independent
 ;item.itemInventoryPanelUpgrade.tooltip.detailed.line5=Leitungsmodus
 #                                                  en: of the conduit mode.
@@ -758,7 +758,7 @@
 #                                          en: a redstone signal.
 ;item.itemModItemFilter.name=Mod-Item-Filter
 #                        en: Mod Item Filter
-;item.itemModItemFilter.tooltip.basic.line1=Upgrade für Item-Leitungen
+;item.itemModItemFilter.tooltip.basic.line1=Upgrade fÃ¼r Item-Leitungen
 #                                       en: Upgrade for item conduits
 ;item.itemModItemFilter.tooltip.detailed.line1=Filtert Items, die aus den angegebenen
 #                                          en: Selects only items for a specified
@@ -766,7 +766,7 @@
 #                                          en: mod/s
 ;item.itemPowerItemFilter.name=Aufladbare-Items-Filter
 #                          en: Chargeable Item Filter
-;item.itemPowerItemFilter.tooltip.basic.line1=Upgrade für Item-Leitungen
+;item.itemPowerItemFilter.tooltip.basic.line1=Upgrade fÃ¼r Item-Leitungen
 #                                         en: Upgrade for item conduits
 ;item.itemPowerItemFilter.tooltip.detailed.line1=Filtert aufladbare Items basierend darauf
 #                                            en: Filters chargeable items based on
@@ -804,7 +804,7 @@
 #                                          en: Lights a large area when supplied with
 ;item.itemWirelessLight.tooltip.detailed.line2=Energie und einem Redstonesignal versorgt.
 #                                          en: power and a redstone signal.
-;item.itemWirelessLight.tooltip.detailed.line3=Kann Energie von Drahtlos-Ladegeräten empfangen.
+;item.itemWirelessLight.tooltip.detailed.line3=Kann Energie von Drahtlos-LadegerÃ¤ten empfangen.
 #                                          en: Can receive power from wireless chargers.
 ;item.itemWirelessLightInverted.name=Drahtlosgespeistes Licht (Invertiert)
 #                                en: Wireless Powered Light (Inverted)
@@ -814,7 +814,7 @@
 #                                                  en: power.
 ;item.itemWirelessLightInverted.tooltip.detailed.line3=Schalte mit einem Redstonesignal ab.
 #                                                  en: Turn off with a redstone signal.
-;item.itemWirelessLightInverted.tooltip.detailed.line4=Kann Energie von Drahtlos-Ladegeräten empfangen.
+;item.itemWirelessLightInverted.tooltip.detailed.line4=Kann Energie von Drahtlos-LadegerÃ¤ten empfangen.
 #                                                  en: Can receive power from wireless chargers.
 ;itemGroup.enderio.invalid=
 #                      en: Invalid
@@ -848,11 +848,11 @@
 #                                     en: Can charge RF powered items.
 ;tile.blockCapBank.tooltip.detailed.line3=Shift-Rechtsklick auf eine Seite mit einer
 #                                     en: Shift-R-Click on a face with an empty hand
-;tile.blockCapBank.tooltip.detailed.line4=leeren Hand um Informationsanzeige zu ändern.
+;tile.blockCapBank.tooltip.detailed.line4=leeren Hand um Informationsanzeige zu Ã¤ndern.
 #                                     en: to change information display
 ;tile.blockCapBank.tooltip.hasItems={0,number,integer} {0,choice,1#item|1<items} in Inventar
 #                               en: {0,number,integer} {0,choice,1#item|1<items} in inventory
-;tile.blockCapBank.tooltipPrefix=Enthält
+;tile.blockCapBank.tooltipPrefix=EnthÃ¤lt
 #                            en: Contains
 ;tile.blockCapBank.vibrant.name=Dynamische Kondensatorbank
 #                           en: Vibrant Capacitor Bank
@@ -864,7 +864,7 @@
 #                                           en: Convert to new block by placing
 ;tile.blockCapacitorBank.tooltip.detailed.line2=durch Platzieren in Fertigungsgitter.
 #                                           en: in a crafting grid
-;tile.blockCapacitorBank.tooltipPrefix=Enthält
+;tile.blockCapacitorBank.tooltipPrefix=EnthÃ¤lt
 #                                  en: Contains
 ;tile.blockConduitBundle.name=Leitungsverbinder
 #                         en: Conduit Connector
@@ -872,7 +872,7 @@
 #                     en: Ender Rail
 ;tile.blockEnderRail.tooltip.detailed.line1=Teleportiert Loren wenn platziert
 #                                       en: Teleports minecarts when placed
-;tile.blockEnderRail.tooltip.detailed.line2=auf einem Dimensionalen Sende-Empfänger
+;tile.blockEnderRail.tooltip.detailed.line2=auf einem Dimensionalen Sende-EmpfÃ¤nger
 #                                       en: on a Dimensional Transceiver
 ;tile.blockEnderRail.tooltip.detailed.line3=Setze das Ziel im
 #                                       en: Set destinations using the
@@ -880,7 +880,7 @@
 #                                       en: Transceiver's rail tab
 ;tile.blockEnderRail.tooltip.detailed.line5=Setze Richtung durch Shift-Rechtsklick
 #                                       en: Set direction with a Shift-R-Click
-;tile.blockEnderRail.tooltip.detailed.line6=mit einen Schraubenschlüssel
+;tile.blockEnderRail.tooltip.detailed.line6=mit einen SchraubenschlÃ¼ssel
 #                                       en: of a wrench
 ;tile.blockGauge.name=
 #                 en: RF Gauge
@@ -920,7 +920,7 @@
 #                                            en: Allows remote access to inventories via
 ;tile.blockInventoryPanel.tooltip.detailed.line2=Fernsteureungs-Upgrades in Item-Leitungen.
 #                                            en: Remote Awareness Upgrades in item conduits.
-;tile.blockInventoryPanel.tooltip.detailed.line3=Benötigt Nahrhaftes Destillat als Treibstoff.
+;tile.blockInventoryPanel.tooltip.detailed.line3=BenÃ¶tigt Nahrhaftes Destillat als Treibstoff.
 #                                            en: Uses Nutrient Distillation for power.
 ;tile.blockInventoryPanel.tooltip.detailed.line4=Bietet ein persistentes Fertigungsgitter
 #                                            en: Offers a persistent crafting grid.
@@ -934,9 +934,9 @@
 #                                                  en: in an Inventory Panel network
 ;tile.blockPainter.tooltip.detailed.line1=Verwendet, um folgendes zu bemalen:
 #                                     en: Used to paint:
-;tile.blockPainter.tooltip.detailed.line2=Leitungsverkleidungen, Treppen, Zäune,
+;tile.blockPainter.tooltip.detailed.line2=Leitungsverkleidungen, Treppen, ZÃ¤une,
 #                                     en: Conduit Facades, Stairs, Fences, Gates,
-;tile.blockPainter.tooltip.detailed.line3=Tore, Stufen, Bruchsteinwände,
+;tile.blockPainter.tooltip.detailed.line3=Tore, Stufen, BruchsteinwÃ¤nde,
 #                                     en: Slabs, Cobblestone, Cobblestone Walls,
 ;tile.blockPainter.tooltip.detailed.line4=Glasrahmen, Glowstone, Teppich,
 #                                     en: Glowstone, Redstone, Carpet, Pressure
@@ -1016,35 +1016,35 @@ enderio.color.white=
 #               en: White
 enderio.color.yellow=
 #                en: Yellow
-enderio.config.advanced.tooltip=Für diejenigen, die nicht genug Konfigs haben
+enderio.config.advanced.tooltip=FÃ¼r diejenigen, die nicht genug Konfigs haben
 #                           en: For those who can't have enough configs.
 enderio.config.advanced=Erweiterte Einstellungen
 #                   en: Advanced Settings
-enderio.config.aesthetic.tooltip=Oooh, ahh, hübsch!
+enderio.config.aesthetic.tooltip=Oooh, ahh, hÃ¼bsch!
 #                            en: Oooh, ahhh, pretty.
-enderio.config.aesthetic=Ästhetische Einstellungen
+enderio.config.aesthetic=Ã„sthetische Einstellungen
 #                    en: Aesthetic Settings
 enderio.config.anchor.tooltip=Anker los! Setzt die Segel!
 #                         en: Anchors away!
 enderio.config.anchor=Ankereinstellungen
 #                 en: Anchor Settings
-enderio.config.darksteel.tooltip=Es ist nicht nur gewöhnlicher Stahl, es ist §oDunkel§r§estahl.
-#                            en: It's not just regular steel, it's §odark§r§e steel.
+enderio.config.darksteel.tooltip=Es ist nicht nur gewÃ¶hnlicher Stahl, es ist Â§oDunkelÂ§rÂ§estahl.
+#                            en: It's not just regular steel, it's Â§odarkÂ§rÂ§e steel.
 enderio.config.darksteel=Dunkelstahl
 #                    en: Dark Steel
-enderio.config.efficiency.tooltip=Wo hören die Zahlen auf?
+enderio.config.efficiency.tooltip=Wo hÃ¶ren die Zahlen auf?
 #                             en: Where do the numbers end?
 enderio.config.efficiency=Effizienzeinstellungen
 #                     en: Efficiency Settings
-enderio.config.farm.tooltip=Die Kommune ist fürs Leben!
+enderio.config.farm.tooltip=Die Kommune ist fÃ¼rs Leben!
 #                       en: "The commune is for life!"
 enderio.config.farm=Ackerbaustationseinstellungen
 #               en: Farm Settings
-enderio.config.fluid.tooltip=Reine flüssige Energie
+enderio.config.fluid.tooltip=Reine flÃ¼ssige Energie
 #                        en: Pure liquid energy!
-enderio.config.fluid=Flüssigkeitseinstellungen
+enderio.config.fluid=FlÃ¼ssigkeitseinstellungen
 #                en: Fluid Settings
-enderio.config.item.tooltip=Wenn du welche von meinen großartigen Item nicht magst :(
+enderio.config.item.tooltip=Wenn du welche von meinen groÃŸartigen Item nicht magst :(
 #                       en: If you don't like some of my amazing items :(
 enderio.config.item=Item-Freischaltung
 #               en: Item Enabling
@@ -1052,11 +1052,11 @@ enderio.config.magnet.tooltip=Wie funktionieren die?
 #                         en: How do they work?
 enderio.config.magnet=Magneteinstellungen
 #                 en: Magnet Settings
-enderio.config.personal.tooltip=Ich verspreche, ich werde niemandem davon erzählen.
+enderio.config.personal.tooltip=Ich verspreche, ich werde niemandem davon erzÃ¤hlen.
 #                           en: I won't tell anyone, I promise.
-enderio.config.personal=Persönliche Einstellungen
+enderio.config.personal=PersÃ¶nliche Einstellungen
 #                   en: Personal Settings
-enderio.config.power.tooltip=So viele Zahlen zum Ändern...
+enderio.config.power.tooltip=So viele Zahlen zum Ã„ndern...
 #                        en: So many numbers to change...
 enderio.config.power=Energieeinstellungen
 #                en: Power Settings
@@ -1074,9 +1074,9 @@ enderio.config.staff=Stabeinstellungen
 #                en: Staff Settings
 enderio.config.title=Ender IO Konfiguration
 #                en: Ender IO Configuration
-enderio.coolant.tooltip.degreesPerBucket=° pro Eimer
+enderio.coolant.tooltip.degreesPerBucket=Â° pro Eimer
 #                                    en: %s Deg per bucket
-enderio.coolant.tooltip.heading=Kühlmittel
+enderio.coolant.tooltip.heading=KÃ¼hlmittel
 #                           en: Coolant
 enderio.darksteel.upgrade.apiaristArmor.boots.name=Imkerschuhe
 #                                              en: Apiarist's Shoes
@@ -1102,35 +1102,35 @@ enderio.darksteel.upgrade.elytra.name=
 #                                 en: Elytra
 enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=
 #                                                   en: Enables Elytra flight
-enderio.darksteel.upgrade.empowered_four.name=Verstärkt IV
+enderio.darksteel.upgrade.empowered_four.name=VerstÃ¤rkt IV
 #                                         en: Empowered IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Energie: $P
 #                                                           en: Power: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=Hälfte des Haltbarkeitsschadens
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=HÃ¤lfte des Haltbarkeitsschadens
 #                                                           en: $D% damage absorbed
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=von Energie absorbiert
 #                                                           en: by power
-enderio.darksteel.upgrade.empowered_one.name=Verstärkt
+enderio.darksteel.upgrade.empowered_one.name=VerstÃ¤rkt
 #                                        en: Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Energie: $P
 #                                                          en: Power: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=Hälfte des Haltbarkeitsschadens
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=HÃ¤lfte des Haltbarkeitsschadens
 #                                                          en: $D% damage absorbed
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=von Energie absorbiert
 #                                                          en: by power
-enderio.darksteel.upgrade.empowered_three.name=Verstärkt III
+enderio.darksteel.upgrade.empowered_three.name=VerstÃ¤rkt III
 #                                          en: Empowered III
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Energie: $P
 #                                                            en: Power: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=Hälfte des Haltbarkeitsschadens
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=HÃ¤lfte des Haltbarkeitsschadens
 #                                                            en: $D% damage absorbed
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=von Energie absorbiert
 #                                                            en: by power
-enderio.darksteel.upgrade.empowered_two.name=Verstärkt II
+enderio.darksteel.upgrade.empowered_two.name=VerstÃ¤rkt II
 #                                        en: Empowered II
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Energie: $P
 #                                                          en: Power: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=Hälfte des Haltbarkeitsschadens
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=HÃ¤lfte des Haltbarkeitsschadens
 #                                                          en: $D% damage absorbed
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=von Energie absorbiert
 #                                                          en: by power
@@ -1140,13 +1140,13 @@ enderio.darksteel.upgrade.glider.enabled=Gleiter Aktiv
 #                                    en: Glider Active
 enderio.darksteel.upgrade.glider.name=Gleiter
 #                                 en: Glider
-enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Ermöglicht Gleiten
+enderio.darksteel.upgrade.glider.tooltip.detailed.line1=ErmÃ¶glicht Gleiten
 #                                                   en: Enables gliding
 enderio.darksteel.upgrade.gogglesOfRevealing.disabled=Magie ist versteckt
 #                                                 en: Magic is hidden from plain sight
-enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Magie wird enthüllt
+enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Magie wird enthÃ¼llt
 #                                                en: Magic is being revealed
-enderio.darksteel.upgrade.gogglesOfRevealing.name=Brille der Enthüllung
+enderio.darksteel.upgrade.gogglesOfRevealing.name=Brille der EnthÃ¼llung
 #                                             en: Revealing
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount: 5%
 #                                                               en: Vis Discount: 5%
@@ -1156,23 +1156,23 @@ enderio.darksteel.upgrade.jump.enabled=Springen aktiviert
 #                                  en: Jump Enabled
 enderio.darksteel.upgrade.jump_one.name=Sprung
 #                                   en: Jump
-enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Erhöht Schreit- und Sprunghöhe
+enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=ErhÃ¶ht Schreit- und SprunghÃ¶he
 #                                                     en: Increases step and jump height
 enderio.darksteel.upgrade.jump_three.name=Springen III
 #                                     en: Jump III
-enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=Erhöht Schreit- und Sprunghöhe
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=ErhÃ¶ht Schreit- und SprunghÃ¶he
 #                                                       en: Increases step and jump height
-enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=Erlaubt Dreifachsprünge
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=Erlaubt DreifachsprÃ¼nge
 #                                                       en: Allows triple jumps
 enderio.darksteel.upgrade.jump_two.name=Springen II
 #                                   en: Jump II
-enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Erhöht Schreit- und Sprunghöhe
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=ErhÃ¶ht Schreit- und SprunghÃ¶he
 #                                                     en: Increases step and jump height
-enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Erlaubt Doppelsprünge
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Erlaubt DoppelsprÃ¼nge
 #                                                     en: Allows double jumps
 enderio.darksteel.upgrade.naturalistEye.name=Auge des Arboristen
 #                                        en: Naturalist's Eye
-enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Zeigt bestäubte Blätter
+enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Zeigt bestÃ¤ubte BlÃ¤tter
 #                                                          en: Shows pollinated tree leaves
 enderio.darksteel.upgrade.nightVision.disabled=Nachtsicht deaktiviert
 #                                          en: Night Vision Disabled
@@ -1200,7 +1200,7 @@ enderio.darksteel.upgrade.sound.name=Schalldetektor
 #                                en: Sound Locator
 enderio.darksteel.upgrade.sound.tooltip.detailed.line1=Zeigt die Position von
 #                                                  en: Displays the location of
-enderio.darksteel.upgrade.sound.tooltip.detailed.line2=nahen Geräuschquellen
+enderio.darksteel.upgrade.sound.tooltip.detailed.line2=nahen GerÃ¤uschquellen
 #                                                  en: nearby sounds
 enderio.darksteel.upgrade.speed.disabled=Schnelligkeit deaktiviert
 #                                    en: Speed Disabled
@@ -1208,21 +1208,21 @@ enderio.darksteel.upgrade.speed.enabled=Schnelligkeit aktiviert
 #                                   en: Speed Active
 enderio.darksteel.upgrade.speed_one.name=Schnelligkeit
 #                                    en: Speed
-enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=Erhöht Bewegungsgeschwindigkeit
+enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=ErhÃ¶ht Bewegungsgeschwindigkeit
 #                                                      en: Increases movement speed
 enderio.darksteel.upgrade.speed_three.name=Schnelligkeit III
 #                                      en: Speed III
-enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=Erhöht Bewegungsgeschwindigkeit
+enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=ErhÃ¶ht Bewegungsgeschwindigkeit
 #                                                        en: Increases movement speed
 enderio.darksteel.upgrade.speed_two.name=Schnelligkeit II
 #                                    en: Speed II
-enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Erhöht Bewegungsgeschwindigkeit
+enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=ErhÃ¶ht Bewegungsgeschwindigkeit
 #                                                      en: Increases movement speed
-enderio.darksteel.upgrade.spoon.name=Löffel
+enderio.darksteel.upgrade.spoon.name=LÃ¶ffel
 #                                en: Spoon
 enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Wozu braucht man eine Schaufel,
 #                                                  en: Who needs a shovel when
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line2=wenn man einen Löffel hat?
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line2=wenn man einen LÃ¶ffel hat?
 #                                                  en: you have a spoon
 enderio.darksteel.upgrade.stepAssist.disabled=Stufenhilfe deaktiviert
 #                                         en: Step Assist Disabled
@@ -1304,7 +1304,7 @@ enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=IO Konfigurieren
 #                                                    en: Configure IO
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line2=Shift-Klick um alle Seiten in den
 #                                                    en: Shift click to reset all sides
-enderio.gui.generic.ioMode.overlay.tooltip.visible.line3=Ausgangszustand zurückzusetzen
+enderio.gui.generic.ioMode.overlay.tooltip.visible.line3=Ausgangszustand zurÃ¼ckzusetzen
 #                                                    en: to their default setting
 enderio.gui.generic.ioMode.overlay.tooltip=IO Konfigurieren
 #                                      en: Configure IO
@@ -1336,36 +1336,36 @@ enderio.gui.tooltip.redstoneControlMode.on=Aktiv mit Signal.
 #                                      en: Active with signal
 enderio.gui.tooltip.redstoneControlMode=Redstone-Modus
 #                                   en: Redstone Mode
-enderio.itemConduitFilterUpgrade.clearConfigMethod=Platziere in Fertigungsgitter zum Löschen
+enderio.itemConduitFilterUpgrade.clearConfigMethod=Platziere in Fertigungsgitter zum LÃ¶schen
 #                                              en: %sPlace in crafting grid to clear
-enderio.itemConduitFilterUpgrade.clearConfigWarning=Dies löscht alle gespeicherten Filtereinstellungen
+enderio.itemConduitFilterUpgrade.clearConfigWarning=Dies lÃ¶scht alle gespeicherten Filtereinstellungen
 #                                               en: %sThis will clear all stored filter settings!
 enderio.itemConduitFilterUpgrade.configured=Konfiguriert
 #                                       en: %sConfigured
-enderio.itemConduitFilterUpgrade=Upgrade für Item-Leitungen
+enderio.itemConduitFilterUpgrade=Upgrade fÃ¼r Item-Leitungen
 #                            en: Upgrade for item conduits
 enderio.machine.tooltip.configured=(Konfiguriert)
 #                              en: %s (Configured)
-enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Erhöht Energiespeicher sowie
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=ErhÃ¶ht Energiespeicher sowie
 #                                                  en: Increases energy storage and speed / range of machines
 enderio.machine.tooltip.upgrade=Maschinen-Upgrade
 #                           en: Machine Upgrade
 enderio.power.format.of=
-#                   en: %s / %s µI
+#                   en: %s / %s ÂµI
 enderio.power.format.pertick=
-#                        en: %s µI/t
+#                        en: %s ÂµI/t
 enderio.power.format=
-#                en: %s µI
+#                en: %s ÂµI
 enderio.recipe.tooltip.clearConfig=
-#                              en: §c§oThis will clear all stored info!
+#                              en: Â§cÂ§oThis will clear all stored info!
 enderio.soulvial.blacklisted.denied=
-#                               en: Permission §cdenied§r - this entity is blacklisted
+#                               en: Permission Â§cdeniedÂ§r - this entity is blacklisted
 enderio.soulvial.denied=
-#                   en: Permission §cdenied§r!
+#                   en: Permission Â§cdeniedÂ§r!
 enderio.soulvial.owned.denied=
-#                         en: Permission §cdenied§r - only owners may pick up owned animals
+#                         en: Permission Â§cdeniedÂ§r - only owners may pick up owned animals
 enderio.soulvial.player.denied=
-#                          en: §cNo!$r How would you feel if you had to play this game from inside a bottle?
+#                          en: Â§cNo!$r How would you feel if you had to play this game from inside a bottle?
 enderio.top.action.header=
 #                     en: %s:
 enderio.top.action.none=
@@ -1421,7 +1421,7 @@ enderio.top.tank.header.output=
 enderio.top.tank.header.storage=
 #                           en: %s
 enderio.wrench.permission.denied=
-#                            en: Permission §cdenied§r!
+#                            en: Permission Â§cdeniedÂ§r!
 fluid.cloud_seed=
 #            en: Cloud Seed
 fluid.cloud_seed_concentrated=
@@ -1440,7 +1440,7 @@ fluid.rocket_fuel=Treibstoff
 #             en: Rocket Fuel
 fluid.vapor_of_levity=
 #                 en: Vapor of Levity
-fluid.xpjuice=Flüssige XP
+fluid.xpjuice=FlÃ¼ssige XP
 #         en: Liquid XP
 item.item_alloy_ingot_conductive_iron.name=
 #                                      en: Conductive Iron Ingot
@@ -1480,7 +1480,7 @@ item.item_basic_capacitor.basic.name=Basiskondensator
 #                                en: Basic Capacitor
 item.item_basic_capacitor.ender.name=Oktadischer Kondensator
 #                                en: Octadic Capacitor
-item.item_broken_spawner.name=Zerstörter Spawner
+item.item_broken_spawner.name=ZerstÃ¶rter Spawner
 #                         en: Broken Spawner
 item.item_broken_spawner.tooltip.detailed.line1=Kombiniere mit Energiebetriebenem Spawner
 #                                           en: Combine with a Powered Spawner
@@ -1522,11 +1522,11 @@ item.item_conduit_probe.name=Leitungssonde
 #                        en: Conduit Probe
 item.item_conduit_probe.tooltip.detailed.line1=Rechtsklicke auf eine Leitung, um
 #                                          en: In probe mode R-Click on a conduit
-item.item_conduit_probe.tooltip.detailed.line2=Details über ihr Netzwerk zu bekommen
+item.item_conduit_probe.tooltip.detailed.line2=Details Ã¼ber ihr Netzwerk zu bekommen
 #                                          en: to display details about its network
 item.item_conduit_probe.tooltip.detailed.line3=Im Copy&Paste-Modus: Shift-Rechts-Click um
 #                                          en: In copy/paste mode Shift-R-Click to
-item.item_conduit_probe.tooltip.detailed.line4=Leitungsbündel zu kopieren
+item.item_conduit_probe.tooltip.detailed.line4=LeitungsbÃ¼ndel zu kopieren
 #                                          en: copy a conduit bundles connection settings
 item.item_conduit_probe.tooltip.detailed.line5=Shift-rechtsklicke auf eine Leitung, um auf
 #                                          en: R-Click to paste them
@@ -1538,13 +1538,13 @@ item.item_coord_selector.tooltip.detailed.line1=Speichert die Koordinaten eines 
 #                                           en: Prints coordinates of a block.
 item.item_coord_selector.tooltip.detailed.line2=Rechts-Klick auf Block um den
 #                                           en: Right click at block to select
-item.item_coord_selector.tooltip.detailed.line3=den and der Seite anliegenden Block auszuwählen
+item.item_coord_selector.tooltip.detailed.line3=den and der Seite anliegenden Block auszuwÃ¤hlen
 #                                           en: the block adjacent on that side.
 item.item_coord_selector.tooltip.detailed.line4=Shift-Rechts-Klick auf einen Block um
 #                                           en: Shift right click at a block to
-item.item_coord_selector.tooltip.detailed.line5=den spezifischen Block auszuwählen
+item.item_coord_selector.tooltip.detailed.line5=den spezifischen Block auszuwÃ¤hlen
 #                                           en: select that specific block.
-item.item_coord_selector.tooltip.detailed.line6=Kann aus einer Entfernung auswählen
+item.item_coord_selector.tooltip.detailed.line6=Kann aus einer Entfernung auswÃ¤hlen
 #                                           en: Can select from a distance.
 item.item_dark_steel_armor.tooltip.levelcost.line1=
 #                                              en: %s%s:
@@ -1582,17 +1582,17 @@ item.item_dark_steel_shears.name=Dunkelschere
 #                            en: Dark Shears
 item.item_dark_steel_shears.tooltip.effPowered=
 #                                          en: %sEfficiency when powered: %s
-item.item_dark_steel_shears.tooltip.multiHarvest=Schert mehrere Blöcke/Schafe wenn verstärkt
+item.item_dark_steel_shears.tooltip.multiHarvest=Schert mehrere BlÃ¶cke/Schafe wenn verstÃ¤rkt
 #                                            en: Shears multiple blocks/sheep when empowered
 item.item_dark_steel_sword.name=Der Ender
 #                           en: The Ender
-item.item_dark_steel_sword.tooltip.detailed.line1=Erhöht Schädel- und Enderperlen-Drops.
+item.item_dark_steel_sword.tooltip.detailed.line1=ErhÃ¶ht SchÃ¤del- und Enderperlen-Drops.
 #                                             en: Increased skull and ender pearl drops
 item.item_dark_steel_sword.tooltip.detailed.line2=
 #                                             en: When powered: Endermen can't teleport once hit, extra Damage and Speed
 item.item_ender_food.enderios.name="Enderios"
 #                              en: "Enderios"
-item.item_ender_food.enderios.tooltip.common.line1=Teil eines ausgewogenen Frühstücks
+item.item_ender_food.enderios.tooltip.common.line1=Teil eines ausgewogenen FrÃ¼hstÃ¼cks
 #                                              en: Part of a balanced breakfast!
 item.item_ender_food.enderios.tooltip.detailed.line1=
 #                                                en: Not actually healthy. Contains 253g of sugar, 53g of fat, and 394g of ender dust.
@@ -1656,15 +1656,15 @@ item.item_material.gear_vibrant.name=
 #                                en: Vibrant Bimetal Gear
 item.item_material.gear_wood.name=
 #                             en: Wooden Gear
-item.item_material.glider_wing.name=Gleiterflügel
+item.item_material.glider_wing.name=GleiterflÃ¼gel
 #                               en: Glider Wing
-item.item_material.glider_wings.name=Gleiterflügelpaar
+item.item_material.glider_wings.name=GleiterflÃ¼gelpaar
 #                                en: Glider Wings
 item.item_material.glider_wings.tooltip.detailed.line1=
 #                                                  en: Upgrade for Dark Steel chestplate
 item.item_material.ingot_enderium_base.name=Enderium-Basis
 #                                       en: Enderium Base
-item.item_material.machine_chassi.name=Maschinenhülle
+item.item_material.machine_chassi.name=MaschinenhÃ¼lle
 #                                  en: Machine Chassis
 item.item_material.nutritious_stick.name=
 #                                    en: Nutritious Stick
@@ -1762,7 +1762,7 @@ item.item_travel_staff.name=Stab des Reisens
 #                       en: Staff of Traveling
 item.item_travel_staff.tooltip.detailed.line1=Wenn gehalten, werden Reiseanker und EnderIO-
 #                                         en: When held Travel Anchors and EnderIO
-item.item_travel_staff.tooltip.detailed.line2=Blöcke sichtbar und können via
+item.item_travel_staff.tooltip.detailed.line2=BlÃ¶cke sichtbar und kÃ¶nnen via
 #                                         en: blocks become visible and can be
 item.item_travel_staff.tooltip.detailed.line3=<r-click> aktiviert werden
 #                                         en: activated by R-Click
@@ -1774,13 +1774,13 @@ item.item_xp_transfer.name=Erfahrungsstab
 #                      en: Experience Rod
 item.item_xp_transfer.tooltip.detailed.line1=Rechts-Klicke auf einen Tank mit
 #                                        en: R-Click on a fluid tank containing
-item.item_xp_transfer.tooltip.detailed.line2=Flüssig-XP, um Level zu erlangen
+item.item_xp_transfer.tooltip.detailed.line2=FlÃ¼ssig-XP, um Level zu erlangen
 #                                        en: liquid XP to gain levels
 item.item_xp_transfer.tooltip.detailed.line3=Shift-Rechts-Klick um Level in den
 #                                        en: Shift-R-Click to transfer levels to
-item.item_xp_transfer.tooltip.detailed.line4=Tank zu befördern
+item.item_xp_transfer.tooltip.detailed.line4=Tank zu befÃ¶rdern
 #                                        en: the tank
-item.item_yeta_wrench.name=Yeta-Schraubenschlüssel
+item.item_yeta_wrench.name=Yeta-SchraubenschlÃ¼ssel
 #                      en: Yeta Wrench
 item.item_yeta_wrench.tooltip.detailed.line1=Versteckt Leitungsverkleidungen, wenn gehalten
 #                                        en: Hides conduit facades when held
@@ -1790,7 +1790,7 @@ item.item_yeta_wrench.tooltip.detailed.line3=sofort zu entfernen
 #                                        en: and conduits instantly
 item.item_yeta_wrench.tooltip.detailed.line4=Shift-Links-Click auf eine Leitung um
 #                                        en: Shift-L-Click on a conduit to
-item.item_yeta_wrench.tooltip.detailed.line5=Leitungseinstellungen zu öffnen
+item.item_yeta_wrench.tooltip.detailed.line5=Leitungseinstellungen zu Ã¶ffnen
 #                                        en: open conduit settings GUI
 item.item_yeta_wrench.tooltip.detailed.line6=Nutze Shift-Mausrad, um einen einzelnen
 #                                        en: Use Shift-Mouse Wheel or '%s' to
@@ -1826,13 +1826,13 @@ tile.block_dark_steel_anvil.intact.name=Dunkelstahlamboss
 #                                   en: Dark Steel Anvil
 tile.block_dark_steel_anvil.name=Dunkelstahlamboss
 #                            en: Dark Steel Anvil
-tile.block_dark_steel_anvil.slightlyDamaged.name=Leicht beschädigter Dunkelstahlamboss
+tile.block_dark_steel_anvil.slightlyDamaged.name=Leicht beschÃ¤digter Dunkelstahlamboss
 #                                            en: Slightly Damaged Dark Steel Anvil
-tile.block_dark_steel_anvil.tooltip.common.line1=Beschädigungsresistent
+tile.block_dark_steel_anvil.tooltip.common.line1=BeschÃ¤digungsresistent
 #                                            en: Damage Resistant
 tile.block_dark_steel_anvil.tooltip.detailed.line1=
 #                                              en: Lasts much longer than the vanilla anvil
-tile.block_dark_steel_anvil.veryDamaged.name=Stark beschädikter Dunkelstahlamboss
+tile.block_dark_steel_anvil.veryDamaged.name=Stark beschÃ¤dikter Dunkelstahlamboss
 #                                        en: Very Damaged Dark Steel Anvil
 tile.block_dark_steel_ladder.name=Dunkelstahlleiter
 #                             en: Dark Steel Ladder
@@ -1950,13 +1950,13 @@ tile.block_detector_block_silent.name=
 #                                 en: Block Detector (Silent)
 tile.block_enderman_skull.base.name=Enderman-Kopf
 #                               en: Enderman Head
-tile.block_enderman_skull.name=Enderman-Schädel
+tile.block_enderman_skull.name=Enderman-SchÃ¤del
 #                          en: Enderman Skull
 tile.block_enderman_skull.reanimated.name=Reanimierter Enderman-Kopf
 #                                     en: Reanimated Enderman Head
 tile.block_enderman_skull.reanimated_tormented.name=
 #                                               en: Reanimated Tormented Enderman Head
-tile.block_enderman_skull.tormented.name=Gequälter Enderman-Kopf
+tile.block_enderman_skull.tormented.name=GequÃ¤lter Enderman-Kopf
 #                                    en: Tormented Enderman Head
 tile.block_enlightened_fused_glass.name=Erleuchtetes Klares Glas
 #                                   en: Enlightened Clear Glass
@@ -2104,7 +2104,7 @@ tile.block_painted_wall.name=Bemalte Wand
 #                        en: Painted Wall
 tile.block_painted_wooden_trapdoor.name=
 #                                   en: Painted Wooden Trapdoor
-tile.block_reinforced_obsidian.name=Verstärktes Obsidian
+tile.block_reinforced_obsidian.name=VerstÃ¤rktes Obsidian
 #                               en: Reinforced Obsidian
 tile.block_reinforced_obsidian.tooltip.common.line1=Wither-fest
 #                                               en: Wither Proof
@@ -2134,7 +2134,7 @@ tile.fluid.nutrient_distillation.name=Nahrhaftem Destillat versorgt.
 #                                 en: Nutrient Distillation
 tile.fluid.rocket_fuel.name=Treibstoff
 #                       en: Rocket Fuel
-tile.fluid.xpjuice.name=Flüssige XP
+tile.fluid.xpjuice.name=FlÃ¼ssige XP
 #                   en: Liquid XP
 tile.vapor_of_levity.name=
 #                     en: Vapor of Levity

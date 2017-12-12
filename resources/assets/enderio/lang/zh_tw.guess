@@ -12,25 +12,25 @@
 #                             en: Crafter speed, area=all machines "area" attribute (e.g. farm),
 ;//display string for Skeleton(type=
 #                               en: =1)
-;enderio.blockConduitBundle=????
+;enderio.blockConduitBundle=導管接口
 #                       en: Conduit Bundle
 ;enderio.capbank.change=
 #                   en: I/O
 ;enderio.capbank.iodisplay.gain=
 #                           en: In
-;enderio.capbank.iodisplay.input=????
+;enderio.capbank.iodisplay.input=輸入模式
 #                            en: Input
 ;enderio.capbank.iodisplay.loss=
 #                           en: Out
-;enderio.capbank.iodisplay.output=????
+;enderio.capbank.iodisplay.output=輸出模式
 #                             en: Output
 ;enderio.capbank.iodisplay.stable=
 #                             en: I/O
-;enderio.capbank.maxIO=????
+;enderio.capbank.maxIO=最大流量
 #                  en: Max I/O
-;enderio.capbank.maxIn=????
+;enderio.capbank.maxIn=最大輸入
 #                  en: Max Input
-;enderio.capbank.maxOut=????
+;enderio.capbank.maxOut=最大輸出
 #                   en: Max Output
 ;enderio.category.darksteelarmor=
 #                            en: Dark Steel Armor
@@ -52,9 +52,9 @@
 #                                          en: Crafter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
 ;enderio.config.capacitor.crafter_ticks=
 #                                   en: Crafter: Ticks per crafting operation (will be scaled by the used upgrade capacitor)
-;enderio.filterUpgradeAdvanced.name=???????
+;enderio.filterUpgradeAdvanced.name=高級物品過濾器
 #                               en: Advanced Item Filter
-;enderio.filterUpgradeBasic.name=???????
+;enderio.filterUpgradeBasic.name=基礎物品過濾器
 #                            en: Basic Item Filter
 ;enderio.filterUpgradeLimited.name=
 #                              en: Counting Item Filter
@@ -66,19 +66,19 @@
 #                en: Gas/t
 ;enderio.gui.available=
 #                  en: Available
-;enderio.gui.capBank.inputMode=????
+;enderio.gui.capBank.inputMode=輸入模式
 #                          en: Input
-;enderio.gui.capBank.inputRs=??????
+;enderio.gui.capBank.inputRs=輸入紅石控制
 #                        en: Input Redstone Mode
-;enderio.gui.capBank.maxInput=????
+;enderio.gui.capBank.maxInput=最大輸入
 #                         en: Max Input
-;enderio.gui.capBank.maxIo=????
+;enderio.gui.capBank.maxIo=最大流量
 #                      en: Max I/O
-;enderio.gui.capBank.maxOutput=????
+;enderio.gui.capBank.maxOutput=最大輸出
 #                          en: Max Output
-;enderio.gui.capBank.outputMode=????
+;enderio.gui.capBank.outputMode=輸出模式
 #                           en: Output
-;enderio.gui.capBank.outputRs=??????
+;enderio.gui.capBank.outputRs=輸出紅石控制
 #                         en: Output Redstone Mode
 ;enderio.gui.conduit.button.clear=
 #                             en: Clear
@@ -90,21 +90,21 @@
 #                                    en: Optional|If no snapshot is set,|the inventory content will|be used as filter
 ;enderio.gui.conduit.button.snap=
 #                            en: Snapshot
-;enderio.gui.conduit.fluid.autoExtract=????
+;enderio.gui.conduit.fluid.autoExtract=自動提取
 #                                  en: Auto Extract
 ;enderio.gui.conduit.fluid.blacklist=
 #                                en: Blacklist
-;enderio.gui.conduit.fluid.filter=???
+;enderio.gui.conduit.fluid.filter=過濾器
 #                             en: Filter
 ;enderio.gui.conduit.fluid.whitelist=
 #                                en: Whitelist
-;enderio.gui.conduit.gas.autoExtract=????
+;enderio.gui.conduit.gas.autoExtract=自動提取
 #                                en: Auto Extract
-;enderio.gui.conduit.ioMode=??
+;enderio.gui.conduit.ioMode=模式
 #                       en: Mode
 ;enderio.gui.conduit.item.blacklist=
 #                               en: Blacklist
-;enderio.gui.conduit.item.channel=??
+;enderio.gui.conduit.item.channel=頻道
 #                             en: Channel
 ;enderio.gui.conduit.item.damage.damage_00_00=
 #                                         en: Not Damaged
@@ -128,37 +128,37 @@
 #                                       en: Can be Damaged
 ;enderio.gui.conduit.item.damage.disabled=
 #                                     en: Ignore Damage
-;enderio.gui.conduit.item.extractionFilter=??????
+;enderio.gui.conduit.item.extractionFilter=提取物品過濾
 #                                      en: Extract
 ;enderio.gui.conduit.item.filterupgrade=
 #                                   en: Insert Item Filter
 ;enderio.gui.conduit.item.functionupgrade.line1=
 #                                           en: Possible function upgrades:
-;enderio.gui.conduit.item.ignoreMetaData=??Meta??
+;enderio.gui.conduit.item.ignoreMetaData=忽略Meta數據
 #                                    en: Ignore Meta Data
-;enderio.gui.conduit.item.ignoreNBT=??NBT??
+;enderio.gui.conduit.item.ignoreNBT=忽略NBT數據
 #                               en: Ignore NBT Data
-;enderio.gui.conduit.item.insertionFilter=??????
+;enderio.gui.conduit.item.insertionFilter=加入物品過濾
 #                                     en: Insert
-;enderio.gui.conduit.item.matchMetaData=??Meta??
+;enderio.gui.conduit.item.matchMetaData=匹配Meta數據
 #                                   en: Match Meta Data
-;enderio.gui.conduit.item.matchNBT=??NBT??
+;enderio.gui.conduit.item.matchNBT=匹配NBT數據
 #                              en: Match NBT Data
-;enderio.gui.conduit.item.oreDicDisabled=??????
+;enderio.gui.conduit.item.oreDicDisabled=關閉礦石檢索
 #                                    en: Ore Dictionary Disabled
-;enderio.gui.conduit.item.oreDicEnabled=??????
+;enderio.gui.conduit.item.oreDicEnabled=開啟礦石檢索
 #                                   en: Ore Dictionary Enabled
-;enderio.gui.conduit.item.priority=???
+;enderio.gui.conduit.item.priority=優先級
 #                              en: Priority
-;enderio.gui.conduit.item.roundRobinDisabled=????
+;enderio.gui.conduit.item.roundRobinDisabled=循環停用
 #                                        en: Round Robin Disabled
-;enderio.gui.conduit.item.roundRobinEnabled=????
+;enderio.gui.conduit.item.roundRobinEnabled=循環啟用
 #                                       en: Round Robin Enabled
-;enderio.gui.conduit.item.selfFeedDisabled=?????
+;enderio.gui.conduit.item.selfFeedDisabled=自供給關閉
 #                                      en: Self Feed Disabled
-;enderio.gui.conduit.item.selfFeedEnabled=?????
+;enderio.gui.conduit.item.selfFeedEnabled=自供給開啟
 #                                     en: Self Feed Enabled
-;enderio.gui.conduit.item.sigCol=????
+;enderio.gui.conduit.item.sigCol=信號顏色
 #                            en: Signal Color
 ;enderio.gui.conduit.item.species.both=
 #                                  en: Match primary and secondary species
@@ -170,23 +170,23 @@
 #                                   en: Max upgrades is 15; Max downgrades is 1
 ;enderio.gui.conduit.item.speedupgrade=
 #                                  en: Insert Item Conduit Speed Upgrades/Downgrade
-;enderio.gui.conduit.item.stickyDisbaled=??????
+;enderio.gui.conduit.item.stickyDisbaled=粘滯模式關閉
 #                                    en: Sticky Mode Disabled
-;enderio.gui.conduit.item.stickyEnabled=??????.????????????????????.
+;enderio.gui.conduit.item.stickyEnabled=粘滯模式開啟.選定的物品只會被傳送到這個或別的粘滯輸出.
 #                                   en: Sticky Mode Enabled|Selected items will only|be sent to this or other|Sticky outputs.
 ;enderio.gui.conduit.item.whitelist=
 #                               en: Whitelist
-;enderio.gui.conduit.redstone.color=??
+;enderio.gui.conduit.redstone.color=顏色
 #                               en: Color
-;enderio.gui.conduit.redstone.signalColor=????
+;enderio.gui.conduit.redstone.signalColor=信號顏色
 #                                     en: Signal Color
-;enderio.gui.conduit.redstone.signalStrengh.tooltip=???????
+;enderio.gui.conduit.redstone.signalStrengh.tooltip=輸出強紅石信號
 #                                               en: Output a strong redstone signal
-;enderio.gui.conduit.redstone.signalStrengh=???
+;enderio.gui.conduit.redstone.signalStrengh=強信號
 #                                       en: Strong Signal
-;enderio.gui.disabled=??
+;enderio.gui.disabled=關閉
 #                 en: Disabled
-;enderio.gui.enabled=??
+;enderio.gui.enabled=啟用
 #                en: Enabled
 ;enderio.gui.inventorySensor.control1=
 #                                 en: Start when <
@@ -294,7 +294,7 @@
 #                                en: Buffering single items
 ;enderio.gui.machine.bufferingstacks=
 #                                en: Buffering item stacks
-;enderio.gui.machine.ioMode=??: %s
+;enderio.gui.machine.ioMode=模式: %s
 #                       en: Mode: %s
 ;enderio.gui.machine.percraft=
 #                         en: Per Craft
@@ -302,87 +302,87 @@
 #                              en: Receive Filter
 ;enderio.gui.machine.sendfilter=
 #                           en: Send Filter
-;enderio.gui.machine.side.down=?
+;enderio.gui.machine.side.down=下
 #                          en: Down
-;enderio.gui.machine.side.east=?
+;enderio.gui.machine.side.east=東
 #                          en: East
-;enderio.gui.machine.side.north=?
+;enderio.gui.machine.side.north=北
 #                           en: North
-;enderio.gui.machine.side.south=?
+;enderio.gui.machine.side.south=南
 #                           en: South
-;enderio.gui.machine.side.up=?
+;enderio.gui.machine.side.up=上
 #                        en: Up
-;enderio.gui.machine.side.west=?
+;enderio.gui.machine.side.west=西
 #                          en: West
-;enderio.gui.machine.side=??: %s
+;enderio.gui.machine.side=側面: %s
 #                     en: Side: %s
-;enderio.gui.mjReader.conduitBuffer=????
+;enderio.gui.mjReader.conduitBuffer=內部緩衝
 #                               en: Internal Buffer
-;enderio.gui.mjReader.connectionDir=???
+;enderio.gui.mjReader.connectionDir=連接到
 #                               en: connection to:
-;enderio.gui.mjReader.currentRequest=????
+;enderio.gui.mjReader.currentRequest=當前請求
 #                                en: Current request
-;enderio.gui.mjReader.extractedItem=??
+;enderio.gui.mjReader.extractedItem=物品
 #                               en: Item
-;enderio.gui.mjReader.extractedItems=?????
+;enderio.gui.mjReader.extractedItems=提取的物品
 #                                en: Extracted items
-;enderio.gui.mjReader.insertedInto=?????:
+;enderio.gui.mjReader.insertedInto=會被輸入于:
 #                              en: will be inserted into:
-;enderio.gui.mjReader.itemHeading=????
+;enderio.gui.mjReader.itemHeading=物品導管
 #                             en: Item Conduit
-;enderio.gui.mjReader.itemNoConnections=??????
+;enderio.gui.mjReader.itemNoConnections=沒有外部連接
 #                                   en: has no external connections
-;enderio.gui.mjReader.networkHeading=???
+;enderio.gui.mjReader.networkHeading=能量網
 #                                en: Power Network
-;enderio.gui.mjReader.noItem=????
+;enderio.gui.mjReader.noItem=無法接收
 #                        en: Can not receive
-;enderio.gui.mjReader.noItems=??????.
+;enderio.gui.mjReader.noItems=未接收到物品.
 #                         en: Receives no items.
-;enderio.gui.mjReader.noOutputs=???????
+;enderio.gui.mjReader.noOutputs=沒有合法的輸入
 #                           en: has no valid outputs
-;enderio.gui.mjReader.noPowerFromSide=??????????
+;enderio.gui.mjReader.noPowerFromSide=無法從這一面接收能量
 #                                 en: cannot receive power from this side
-;enderio.gui.mjReader.receiveItem1=????
+;enderio.gui.mjReader.receiveItem1=可以接收
 #                              en: Can receive
-;enderio.gui.mjReader.receiveItem2=?:
+;enderio.gui.mjReader.receiveItem2=從:
 #                              en: from:
-;enderio.gui.mjReader.receiveItems=???????:
+;enderio.gui.mjReader.receiveItems=合法的接收對象:
 #                              en: Can receive items from:
-;enderio.gui.mjReader.requestRange=??????
+;enderio.gui.mjReader.requestRange=每刻請求范圍
 #                              en: Per tick request range
-;enderio.gui.powerMonitor.emit=??
+;enderio.gui.powerMonitor.emit=發送
 #                          en: Emit
-;enderio.gui.powerMonitor.engineControl=????
+;enderio.gui.powerMonitor.engineControl=引擎控制
 #                                   en: Engine Control
-;enderio.gui.powerMonitor.engineSection1=??????:???
+;enderio.gui.powerMonitor.engineSection1=輸出信號條件:當存儲
 #                                    en: Emit signal when storage less
-;enderio.gui.powerMonitor.engineSection2=????
+;enderio.gui.powerMonitor.engineSection2=能量少於
 #                                    en: than
-;enderio.gui.powerMonitor.engineSection3=%?.
+;enderio.gui.powerMonitor.engineSection3=%時.
 #                                    en: % full.
-;enderio.gui.powerMonitor.engineSection4=????:?????
+;enderio.gui.powerMonitor.engineSection4=停止條件:當存儲能量
 #                                    en: Stop when storage greater than
-;enderio.gui.powerMonitor.engineSection5=????
+;enderio.gui.powerMonitor.engineSection5=多或等於
 #                                    en: or equal to
-;enderio.gui.powerMonitor.monHeading1=????
+;enderio.gui.powerMonitor.monHeading1=導管緩衝
 #                                 en: Conduit Storage
-;enderio.gui.powerMonitor.monHeading2=?????
+;enderio.gui.powerMonitor.monHeading2=儲能庫儲量
 #                                 en: Capacitor Bank Storage
-;enderio.gui.powerMonitor.monHeading3=????
+;enderio.gui.powerMonitor.monHeading3=機器緩衝
 #                                 en: Machine Buffers
-;enderio.gui.powerMonitor.monHeading4=5?????
+;enderio.gui.powerMonitor.monHeading4=5秒平均輸出
 #                                 en: Average output over 5 seconds
-;enderio.gui.powerMonitor.monHeading5=5?????
+;enderio.gui.powerMonitor.monHeading5=5秒平均輸入
 #                                 en: Average input over 5 seconds
 ;enderio.gui.powerMonitor.noNetworkError=
 #                                    en: No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
-;enderio.gui.powerMonitor.of=?
+;enderio.gui.powerMonitor.of=占
 #                        en: of
-;enderio.gui.receive=??
+;enderio.gui.receive=接收
 #                en: Receive
-;enderio.gui.send=??
+;enderio.gui.send=發送
 #             en: Send
-;enderio.gui.sendReceive=?????
+;enderio.gui.sendReceive=發送和接收
 #                    en: Send & Receive
 ;enderio.gui.travelAccessable.skipLocked=
 #                                    en: Skipped locked anchor, use targeted teleport.
@@ -390,7 +390,7 @@
 #                                        en: Skipped obstructed anchor.
 ;enderio.gui.travelAccessable.skipPrivate=
 #                                     en: Skipped private anchor.
-;enderio.gui.travelAccessable.unauthorised=???????????.
+;enderio.gui.travelAccessable.unauthorised=你沒有訪問該方塊的權限.
 #                                      en: You are not allowed to access this block.
 ;enderio.gui.weather.requiredfluid=
 #                              en: Required Fluid: %s mB
@@ -406,59 +406,59 @@
 #                                                 en: The snapshot already covers all items in the inventory
 ;enderio.item.itemExistingItemFilter.filterUpdated=
 #                                              en: New items have been added to the snapshot
-;enderio.itemGasConduit.name=????
+;enderio.itemGasConduit.name=氣體導管
 #                        en: Gas Conduit
-;enderio.itemGasConduit.tooltip.detailed.line1=????????????
+;enderio.itemGasConduit.tooltip.detailed.line1=傳送和通用機械兼容的氣體
 #                                          en: Transfers Mekanism-compatible gases
-;enderio.itemGasConduit.tooltip.maxExtract=????:
+;enderio.itemGasConduit.tooltip.maxExtract=最大提取:
 #                                      en: Max Extract:
-;enderio.itemGasConduit.tooltip.maxIo=??IO:
+;enderio.itemGasConduit.tooltip.maxIo=最大IO:
 #                                 en: Max IO:
-;enderio.itemItemConduit.name=????
+;enderio.itemItemConduit.name=物品導管
 #                         en: Item Conduit
-;enderio.itemLiquidConduit.lockedType=???????
+;enderio.itemLiquidConduit.lockedType=液體種類鎖定為
 #                                 en: Fluid type locked to
 ;enderio.itemLiquidConduit.lockedWaila=
 #                                  en: Locked to
-;enderio.itemLiquidConduit.name=????
+;enderio.itemLiquidConduit.name=液體導管
 #                           en: Fluid Conduit
-;enderio.itemLiquidConduit.tooltip.detailed.line1=?????????
+;enderio.itemLiquidConduit.tooltip.detailed.line1=流體流動受重力影響
 #                                             en: Fluid flow respects gravity
-;enderio.itemLiquidConduit.tooltip.detailed.line2=???????
+;enderio.itemLiquidConduit.tooltip.detailed.line2=流量取決于流體
 #                                             en: Flow rate dependent on fluid
-;enderio.itemLiquidConduit.tooltip.detailed.line3=??
+;enderio.itemLiquidConduit.tooltip.detailed.line3=黏性
 #                                             en: viscosity
-;enderio.itemLiquidConduit.tooltip.maxExtract=????:
+;enderio.itemLiquidConduit.tooltip.maxExtract=最大提取:
 #                                         en: Max Extract:
-;enderio.itemLiquidConduit.tooltip.maxIo=??IO:
+;enderio.itemLiquidConduit.tooltip.maxIo=最大IO:
 #                                    en: Max IO:
-;enderio.itemLiquidConduit.unlockedType=??????
+;enderio.itemLiquidConduit.unlockedType=液體種類解鎖
 #                                   en: Fluid type unlocked
-;enderio.itemLiquidConduitAdvanced.name=??????
+;enderio.itemLiquidConduitAdvanced.name=加壓液體導管
 #                                   en: Pressurized Fluid Conduit
-;enderio.itemLiquidConduitEnder.name=??????
+;enderio.itemLiquidConduitEnder.name=終界液體導管
 #                                en: Ender Fluid Conduit
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line1=?????????
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line1=流體即時遠距離傳送
 #                                                  en: Instant fluid teleportation
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line2=??????
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line2=允許多種液體
 #                                                  en: allows multiple fluids to be
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line3=?????
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line3=同時被傳送
 #                                                  en: transported on the same line
 ;enderio.itemMEConduit.channelsUsed=
 #                               en: {0,number} of {1,number} Channels
-;enderio.itemMEConduit.name=ME??
+;enderio.itemMEConduit.name=ME導管
 #                       en: ME Conduit
-;enderio.itemMEConduitDense.name=??ME??
+;enderio.itemMEConduitDense.name=緻密ME導管
 #                            en: Dense ME Conduit
 ;enderio.itemOCConduit.name=
 #                       en: Network Conduit (OC)
-;enderio.itemPowerConduit.name=????
+;enderio.itemPowerConduit.name=能量導管
 #                          en: Energy Conduit
-;enderio.itemPowerConduitEnder.name=??????
+;enderio.itemPowerConduitEnder.name=終界能量導管
 #                               en: Ender Energy Conduit
-;enderio.itemPowerConduitEnhanced.name=??????
+;enderio.itemPowerConduitEnhanced.name=強化能量導管
 #                                  en: Enhanced Energy Conduit
-;enderio.itemRedstoneConduitInsulated.name=??????
+;enderio.itemRedstoneConduitInsulated.name=絕緣紅石導管
 #                                      en: Redstone Conduit
 ;enderio.keybind.fovminus=
 #                     en: Camera: Zoom in (creative only)
@@ -604,9 +604,9 @@
 #                   en: Soul Binder
 ;enderio.nei.vat=
 #            en: Vat
-;enderio.painter.tooltip.wasPainted=�o??????????
-#                               en: �oWhat did you think that would do?
-;enderio.power.maxOutput=????
+;enderio.painter.tooltip.wasPainted=§o你認為這是干嘛用的?
+#                               en: §oWhat did you think that would do?
+;enderio.power.maxOutput=最大輸出
 #                    en: Max Output
 ;enderio.remoteinv.chat.error=
 #                         en: ERROR: Technical error, see log
@@ -636,19 +636,19 @@
 #                    en: Ore Dictionary:
 ;enderio.tooltip.uid=
 #                en: UID:
-;enderio.trans.fluid=??
+;enderio.trans.fluid=流體
 #                en: Fluid
-;enderio.trans.item=??
+;enderio.trans.item=物品
 #               en: Item
-;enderio.trans.power=??
+;enderio.trans.power=能量
 #                en: Power
-;enderio.trans.rail=?
+;enderio.trans.rail=軌
 #               en: Rail
 ;enderio.trans.receiving=
 #                    en: Receiving
-;enderio.trans.sending=??
+;enderio.trans.sending=發送
 #                  en: Sending
-;enderio.trans.showChannels=<??Shift????>
+;enderio.trans.showChannels=<按下Shift顯示頻道>
 #                       en: <Shift to show channels>
 ;enderio.waila.config.hiddenfacades=
 #                               en: Sneaky Facades
@@ -680,29 +680,29 @@
 #            en: Molten Soularium
 ;fluid.vibrantalloy=
 #               en: Molten Vibrant Alloy
-;item.enderio.itemEnderface.name=????
+;item.enderio.itemEnderface.name=終界面板
 #                            en: Enderface
-;item.itemElectricLight.name=??
+;item.itemElectricLight.name=電燈
 #                        en: Powered Light
-;item.itemElectricLight.tooltip.detailed.line1=??????
+;item.itemElectricLight.tooltip.detailed.line1=提供能量時可
 #                                          en: Lights a large area when supplied with
-;item.itemElectricLight.tooltip.detailed.line2=???????.
+;item.itemElectricLight.tooltip.detailed.line2=時照亮大片區域.
 #                                          en: power and a redstone signal.
-;item.itemElectricLightInverted.name=??(??)
+;item.itemElectricLightInverted.name=電燈(反相)
 #                                en: Powered Light (Inverted)
-;item.itemElectricLightInverted.tooltip.detailed.line1=??????
+;item.itemElectricLightInverted.tooltip.detailed.line1=提供能量時可
 #                                                  en: Lights a large area when supplied with
-;item.itemElectricLightInverted.tooltip.detailed.line2=??????.
+;item.itemElectricLightInverted.tooltip.detailed.line2=照亮大片區域.
 #                                                  en: power.
-;item.itemElectricLightInverted.tooltip.detailed.line3=????????
+;item.itemElectricLightInverted.tooltip.detailed.line3=有紅石信號時熄滅
 #                                                  en: Turn off with a redstone signal.
-;item.itemExistingItemFilter.name=???????
+;item.itemExistingItemFilter.name=現有物品過濾器
 #                             en: Existing Item Filter
-;item.itemExistingItemFilter.tooltip.basic.line1=??????????
+;item.itemExistingItemFilter.tooltip.basic.line1=給物品導管使用的升級
 #                                            en: Upgrade for item conduits
-;item.itemExistingItemFilter.tooltip.detailed.line1=????????
+;item.itemExistingItemFilter.tooltip.detailed.line1=篩選已在物品欄中
 #                                               en: Selects only items already
-;item.itemExistingItemFilter.tooltip.detailed.line2=???
+;item.itemExistingItemFilter.tooltip.detailed.line2=的物品
 #                                               en: in the inventory
 ;item.itemExistingItemFilter.tooltip.detailed.line3=
 #                                               en: Right click while sneaking
@@ -718,15 +718,15 @@
 #                                                  en: Reduces speed to 1
 ;item.itemExtractSpeedDowngrade.tooltip.detailed.line2=
 #                                                  en: item per extraction
-;item.itemExtractSpeedUpgrade.name=????????
+;item.itemExtractSpeedUpgrade.name=物品導管速度升級
 #                              en: Item Conduit Speed Upgrade
-;item.itemExtractSpeedUpgrade.tooltip.basic.line1=??????????
+;item.itemExtractSpeedUpgrade.tooltip.basic.line1=給物品導管使用的升級
 #                                             en: Upgrade for item conduits
-;item.itemExtractSpeedUpgrade.tooltip.detailed.line1=????
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line1=每次提取
 #                                                en: Increases speed by 4
-;item.itemExtractSpeedUpgrade.tooltip.detailed.line2=????4?
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line2=速度增加4組
 #                                                en: items per extraction
-;item.itemExtractSpeedUpgrade.tooltip.detailed.line3=??????15
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line3=最大升級數為15
 #                                                en: Max upgrades is 15
 ;item.itemInventoryPanelUpgrade.name=
 #                                en: Remote Awareness Upgrade
@@ -744,29 +744,29 @@
 #                                                  en: of the conduit mode.
 ;item.itemInventoryPanelUpgrade.tooltip.detailed.line6=
 #                                                  en: (No need to set the conduit to extract)
-;item.itemLight.name=?
+;item.itemLight.name=燈
 #                en: Light
-;item.itemLight.tooltip.detailed.line1=??????
+;item.itemLight.tooltip.detailed.line1=有紅石信號時
 #                                  en: Emits light with a
-;item.itemLight.tooltip.detailed.line2=?????
+;item.itemLight.tooltip.detailed.line2=能提供照明
 #                                  en: redstone signal.
-;item.itemLightInverted.name=?(??)
+;item.itemLightInverted.name=燈(反相)
 #                        en: Light (Inverted)
-;item.itemLightInverted.tooltip.detailed.line1=?????
+;item.itemLightInverted.tooltip.detailed.line1=能提供照明
 #                                          en: Emits light, disable with
-;item.itemLightInverted.tooltip.detailed.line2=????????
+;item.itemLightInverted.tooltip.detailed.line2=有紅石信號時熄滅
 #                                          en: a redstone signal.
-;item.itemModItemFilter.name=???????
+;item.itemModItemFilter.name=模組物品過濾器
 #                        en: Mod Item Filter
-;item.itemModItemFilter.tooltip.basic.line1=??????????
+;item.itemModItemFilter.tooltip.basic.line1=給物品導管使用的升級
 #                                       en: Upgrade for item conduits
-;item.itemModItemFilter.tooltip.detailed.line1=????????
+;item.itemModItemFilter.tooltip.detailed.line1=只篩選一個或幾個
 #                                          en: Selects only items for a specified
-;item.itemModItemFilter.tooltip.detailed.line2=??mod????
+;item.itemModItemFilter.tooltip.detailed.line2=特定mod里的物品
 #                                          en: mod/s
 ;item.itemPowerItemFilter.name=
 #                          en: Chargeable Item Filter
-;item.itemPowerItemFilter.tooltip.basic.line1=??????????
+;item.itemPowerItemFilter.tooltip.basic.line1=給物品導管使用的升級
 #                                         en: Upgrade for item conduits
 ;item.itemPowerItemFilter.tooltip.detailed.line1=
 #                                            en: Filters chargeable items based on
@@ -798,23 +798,23 @@
 #                                                 en: Uses {FLUIDNAME} to open a connection and RF to keep it open.
 ;item.itemSpawnEggEnderIO.name=
 #                          en: Spawn
-;item.itemWirelessLight.name=???
+;item.itemWirelessLight.name=無線燈
 #                        en: Wireless Powered Light
-;item.itemWirelessLight.tooltip.detailed.line1=??????
+;item.itemWirelessLight.tooltip.detailed.line1=提供能量時可
 #                                          en: Lights a large area when supplied with
-;item.itemWirelessLight.tooltip.detailed.line2=???????.
+;item.itemWirelessLight.tooltip.detailed.line2=時照亮大片區域.
 #                                          en: power and a redstone signal.
-;item.itemWirelessLight.tooltip.detailed.line3=???????????.
+;item.itemWirelessLight.tooltip.detailed.line3=可從無線充能器接收能量.
 #                                          en: Can receive power from wireless chargers.
-;item.itemWirelessLightInverted.name=???(??)
+;item.itemWirelessLightInverted.name=無線燈(反相)
 #                                en: Wireless Powered Light (Inverted)
-;item.itemWirelessLightInverted.tooltip.detailed.line1=??????
+;item.itemWirelessLightInverted.tooltip.detailed.line1=提供能量時可
 #                                                  en: Lights a large area when supplied with
-;item.itemWirelessLightInverted.tooltip.detailed.line2=??????.
+;item.itemWirelessLightInverted.tooltip.detailed.line2=照亮大片區域.
 #                                                  en: power.
-;item.itemWirelessLightInverted.tooltip.detailed.line3=????????
+;item.itemWirelessLightInverted.tooltip.detailed.line3=有紅石信號時熄滅
 #                                                  en: Turn off with a redstone signal.
-;item.itemWirelessLightInverted.tooltip.detailed.line4=???????????.
+;item.itemWirelessLightInverted.tooltip.detailed.line4=可從無線充能器接收能量.
 #                                                  en: Can receive power from wireless chargers.
 ;itemGroup.enderio.invalid=
 #                      en: Invalid
@@ -826,61 +826,61 @@
 #                   en: Ender IO
 ;itemGroup.enderio.materials=
 #                        en: Ender IO Materials
-;tile.blockAttractor.name=??????
+;tile.blockAttractor.name=生物誘引裝置
 #                     en: Attractor Obelisk
-;tile.blockAttractor.tooltip.detailed.line1=??????
+;tile.blockAttractor.tooltip.detailed.line1=將怪物引向它
 #                                       en: Draws mobs towards it
-;tile.blockAttractor.tooltip.detailed.line2=??????
+;tile.blockAttractor.tooltip.detailed.line2=將生物的靈魂
 #                                       en: Specify the mobs to effect
-;tile.blockAttractor.tooltip.detailed.line3=??????
+;tile.blockAttractor.tooltip.detailed.line3=裝瓶放入設備
 #                                       en: by placing their souls
-;tile.blockAttractor.tooltip.detailed.line4=???????
+;tile.blockAttractor.tooltip.detailed.line4=來指定吸引類型
 #                                       en: within the device
-;tile.blockCapBank.activated.name=?????
+;tile.blockCapBank.activated.name=電容儲能庫
 #                             en: Capacitor Bank
-;tile.blockCapBank.creative.name=?????????
+;tile.blockCapBank.creative.name=創造模式電容儲能庫
 #                            en: Creative Capacitor Bank
-;tile.blockCapBank.simple.name=???????
+;tile.blockCapBank.simple.name=基本電容儲能庫
 #                          en: Basic Capacitor Bank
-;tile.blockCapBank.tooltip.detailed.line1=???????.
+;tile.blockCapBank.tooltip.detailed.line1=多方塊能量存儲.
 #                                     en: Multi-block energy storage.
-;tile.blockCapBank.tooltip.detailed.line2=?????RF???????.
+;tile.blockCapBank.tooltip.detailed.line2=可以給使用RF能量的物品充能.
 #                                     en: Can charge RF powered items.
-;tile.blockCapBank.tooltip.detailed.line3=???? Shift-R
+;tile.blockCapBank.tooltip.detailed.line3=空手按下 Shift-R
 #                                     en: Shift-R-Click on a face with an empty hand
-;tile.blockCapBank.tooltip.detailed.line4=????????
+;tile.blockCapBank.tooltip.detailed.line4=可以顯示充能資訊
 #                                     en: to change information display
 ;tile.blockCapBank.tooltip.hasItems=
 #                               en: {0,number,integer} {0,choice,1#item|1<items} in inventory
-;tile.blockCapBank.tooltipPrefix=??
+;tile.blockCapBank.tooltipPrefix=包含
 #                            en: Contains
-;tile.blockCapBank.vibrant.name=????????
+;tile.blockCapBank.vibrant.name=充滿的電容儲能庫
 #                           en: Vibrant Capacitor Bank
-;tile.blockCapacitorBank.creative.name=?????????
+;tile.blockCapacitorBank.creative.name=創造模式電容儲能庫
 #                                  en: Creative Capacitor Bank (Deprecated)
-;tile.blockCapacitorBank.name=?????
+;tile.blockCapacitorBank.name=電容儲能庫
 #                         en: Capacitor Bank (Deprecated)
-;tile.blockCapacitorBank.tooltip.detailed.line1=???????.
+;tile.blockCapacitorBank.tooltip.detailed.line1=多方塊能量存儲.
 #                                           en: Convert to new block by placing
-;tile.blockCapacitorBank.tooltip.detailed.line2=?????RF???????.
+;tile.blockCapacitorBank.tooltip.detailed.line2=可以給使用RF能量的物品充能.
 #                                           en: in a crafting grid
-;tile.blockCapacitorBank.tooltipPrefix=??
+;tile.blockCapacitorBank.tooltipPrefix=包含
 #                                  en: Contains
-;tile.blockConduitBundle.name=????
+;tile.blockConduitBundle.name=導管接口
 #                         en: Conduit Connector
-;tile.blockEnderRail.name=????
+;tile.blockEnderRail.name=終界軌道
 #                     en: Ender Rail
-;tile.blockEnderRail.tooltip.detailed.line1=????????
+;tile.blockEnderRail.tooltip.detailed.line1=放置在空間傳送器
 #                                       en: Teleports minecarts when placed
-;tile.blockEnderRail.tooltip.detailed.line2=????????
+;tile.blockEnderRail.tooltip.detailed.line2=上時可以傳送礦車
 #                                       en: on a Dimensional Transceiver
-;tile.blockEnderRail.tooltip.detailed.line3=????????
+;tile.blockEnderRail.tooltip.detailed.line3=使用傳送器對應的
 #                                       en: Set destinations using the
-;tile.blockEnderRail.tooltip.detailed.line4=????????
+;tile.blockEnderRail.tooltip.detailed.line4=欄目來設定目的地
 #                                       en: Transceiver's rail tab
-;tile.blockEnderRail.tooltip.detailed.line5=???shift??
+;tile.blockEnderRail.tooltip.detailed.line5=用扳手shift右擊
 #                                       en: Set direction with a Shift-R-Click
-;tile.blockEnderRail.tooltip.detailed.line6=???????
+;tile.blockEnderRail.tooltip.detailed.line6=來設定它的方向
 #                                       en: of a wrench
 ;tile.blockGauge.name=
 #                 en: RF Gauge
@@ -888,11 +888,11 @@
 #                                   en: Displays RF levels of adjacent
 ;tile.blockGauge.tooltip.detailed.line2=
 #                                   en: blocks.
-;tile.blockHyperCube.name=?????(??)
+;tile.blockHyperCube.name=空間傳送器(棄用)
 #                     en: Dimensional Transceiver (Deprecated)
-;tile.blockHyperCube.tooltip.detailed.line1=?????
+;tile.blockHyperCube.tooltip.detailed.line1=放入合成欄
 #                                       en: Convert to new model by placing
-;tile.blockHyperCube.tooltip.detailed.line2=?????
+;tile.blockHyperCube.tooltip.detailed.line2=轉為新模型
 #                                       en: in the crafting grid
 ;tile.blockInventoryChest_big.name=
 #                              en: Big Inventory System Storage
@@ -932,19 +932,19 @@
 #                                                  en: on the number of an item available
 ;tile.blockInventoryPanelSensor.tooltip.detailed.line3=
 #                                                  en: in an Inventory Panel network
-;tile.blockPainter.tooltip.detailed.line1=????:
+;tile.blockPainter.tooltip.detailed.line1=用于粉刷:
 #                                     en: Used to paint:
-;tile.blockPainter.tooltip.detailed.line2=????, ??, ??,
+;tile.blockPainter.tooltip.detailed.line2=導管框架, 樓梯, 柵欄,
 #                                     en: Conduit Facades, Stairs, Fences, Gates,
-;tile.blockPainter.tooltip.detailed.line3=?, ??, ???,
+;tile.blockPainter.tooltip.detailed.line3=門, 臺階, 圓石墻,
 #                                     en: Slabs, Cobblestone, Cobblestone Walls,
-;tile.blockPainter.tooltip.detailed.line4=???, ??, ??
+;tile.blockPainter.tooltip.detailed.line4=玻璃框, 螢石, 地毯
 #                                     en: Glowstone, Redstone, Carpet, Pressure
-;tile.blockPainter.tooltip.detailed.line5=?????
+;tile.blockPainter.tooltip.detailed.line5=深色壓力板
 #                                     en: Plates, Quite Clear Glass, Fused Quartz,
-;tile.blockPainter.tooltip.detailed.line6=???
+;tile.blockPainter.tooltip.detailed.line6=旅行錨
 #                                     en: Trapdoors, and most machines
-;tile.blockPowerMonitor.name=?????
+;tile.blockPowerMonitor.name=能量監控器
 #                        en: Power Monitor
 ;tile.blockPowerMonitor.tooltip.detailed.line1=
 #                                          en: Displays details of power use and
@@ -976,13 +976,13 @@ description.enchantment.enderio.soulBound=
 #                                     en: Prevents item from being lost on death
 enchantment.soulBound=
 #                 en: Soulbound
-enderio.block.tooltip.blastResistant=??
+enderio.block.tooltip.blastResistant=防爆
 #                                en: Blast Resistant
-enderio.block.tooltip.isBeaconBase=?????????
+enderio.block.tooltip.isBeaconBase=可用于當作信標底座
 #                              en: Can be used as beacon base
 enderio.block.tooltip.lightBlocker=
 #                              en: Blocks Light
-enderio.block.tooltip.lightEmitter=??
+enderio.block.tooltip.lightEmitter=發光
 #                              en: Emits Light
 enderio.color.black=
 #               en: Black
@@ -1016,67 +1016,67 @@ enderio.color.white=
 #               en: White
 enderio.color.yellow=
 #                en: Yellow
-enderio.config.advanced.tooltip=???????????????.
+enderio.config.advanced.tooltip=為那些覺得設置不夠多的人而準備.
 #                           en: For those who can't have enough configs.
-enderio.config.advanced=????
+enderio.config.advanced=高級設置
 #                   en: Advanced Settings
-enderio.config.aesthetic.tooltip=?,??,??.
+enderio.config.aesthetic.tooltip=哦,啊哼,漂亮.
 #                            en: Oooh, ahhh, pretty.
-enderio.config.aesthetic=????
+enderio.config.aesthetic=外觀設置
 #                    en: Aesthetic Settings
 enderio.config.anchor.tooltip=Anchors away!
 #                         en: Anchors away!
-enderio.config.anchor=???
+enderio.config.anchor=錨設置
 #                 en: Anchor Settings
-enderio.config.darksteel.tooltip=????????, ??�o??�r�e ??.
-#                            en: It's not just regular steel, it's �odark�r�e steel.
-enderio.config.darksteel=??
+enderio.config.darksteel.tooltip=這不是一般的鋼鐵, 這是§o深色§r§e 鋼鐵.
+#                            en: It's not just regular steel, it's §odark§r§e steel.
+enderio.config.darksteel=玄鋼
 #                    en: Dark Steel
-enderio.config.efficiency.tooltip=??????????
+enderio.config.efficiency.tooltip=這些數字上限是多少?
 #                             en: Where do the numbers end?
-enderio.config.efficiency=????
+enderio.config.efficiency=效率設置
 #                     en: Efficiency Settings
-enderio.config.farm.tooltip="????!"
+enderio.config.farm.tooltip="公社萬歲!"
 #                       en: "The commune is for life!"
-enderio.config.farm=????
+enderio.config.farm=種植設置
 #               en: Farm Settings
-enderio.config.fluid.tooltip=???????!
+enderio.config.fluid.tooltip=純凈的液態能量!
 #                        en: Pure liquid energy!
-enderio.config.fluid=????
+enderio.config.fluid=流體設置
 #                en: Fluid Settings
-enderio.config.item.tooltip=??????????????? :(
+enderio.config.item.tooltip=如果你不喜歡我的一些驚奇的物品 :(
 #                       en: If you don't like some of my amazing items :(
-enderio.config.item=????
+enderio.config.item=物品賦權
 #               en: Item Enabling
-enderio.config.magnet.tooltip=???????
+enderio.config.magnet.tooltip=它們怎么運作?
 #                         en: How do they work?
-enderio.config.magnet=?????
+enderio.config.magnet=電磁鐵設置
 #                 en: Magnet Settings
-enderio.config.personal.tooltip=?????????, ???.
+enderio.config.personal.tooltip=我絕不會告訴任何人, 我發誓.
 #                           en: I won't tell anyone, I promise.
-enderio.config.personal=????
+enderio.config.personal=個人設置
 #                   en: Personal Settings
-enderio.config.power.tooltip=????????...
+enderio.config.power.tooltip=太多數字要修改了...
 #                        en: So many numbers to change...
-enderio.config.power=????
+enderio.config.power=能量設置
 #                en: Power Settings
-enderio.config.recipe.tooltip=??????!
+enderio.config.recipe.tooltip=配置所有東西!
 #                         en: Config ALL the things!
-enderio.config.recipe=????
+enderio.config.recipe=配方設置
 #                 en: Recipe Settings
-enderio.config.spawner.tooltip=????????????????.
+enderio.config.spawner.tooltip=我已經想不出什麼有趣的提示文本了.
 #                          en: I ran out of witty tooltips.
-enderio.config.spawner=???????
+enderio.config.spawner=電動刷怪籠設置
 #                  en: PoweredSpawner Settings
-enderio.config.staff.tooltip=???,???????.
+enderio.config.staff.tooltip=小心點,傳送時別撞到臉.
 #                        en: Be careful with that thing, you'll teleport your face off.
-enderio.config.staff=????
+enderio.config.staff=權杖設置
 #                en: Staff Settings
-enderio.config.title=????????
+enderio.config.title=終界接口配置文件
 #                en: Ender IO Configuration
 enderio.coolant.tooltip.degreesPerBucket=
 #                                    en: %s Deg per bucket
-enderio.coolant.tooltip.heading=???
+enderio.coolant.tooltip.heading=冷卻劑
 #                           en: Coolant
 enderio.darksteel.upgrade.apiaristArmor.boots.name=
 #                                              en: Apiarist's Shoes
@@ -1102,141 +1102,141 @@ enderio.darksteel.upgrade.elytra.name=
 #                                 en: Elytra
 enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=
 #                                                   en: Enables Elytra flight
-enderio.darksteel.upgrade.empowered_four.name=??IV
+enderio.darksteel.upgrade.empowered_four.name=注能IV
 #                                         en: Empowered IV
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=??: $P
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=能量: $P
 #                                                           en: Power: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=?????????
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=能量吸收抵消一半的
 #                                                           en: $D% damage absorbed
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=????
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=耐久損傷
 #                                                           en: by power
-enderio.darksteel.upgrade.empowered_one.name=??
+enderio.darksteel.upgrade.empowered_one.name=賦權
 #                                        en: Empowered
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=??: $P
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=能量: $P
 #                                                          en: Power: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=?????????
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=能量吸收抵消一半的
 #                                                          en: $D% damage absorbed
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=????
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=耐久損傷
 #                                                          en: by power
-enderio.darksteel.upgrade.empowered_three.name=??III
+enderio.darksteel.upgrade.empowered_three.name=注能III
 #                                          en: Empowered III
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=??: $P
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=能量: $P
 #                                                            en: Power: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=?????????
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=能量吸收抵消一半的
 #                                                            en: $D% damage absorbed
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=????
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=耐久損傷
 #                                                            en: by power
-enderio.darksteel.upgrade.empowered_two.name=??II
+enderio.darksteel.upgrade.empowered_two.name=注能II
 #                                        en: Empowered II
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=??: $P
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=能量: $P
 #                                                          en: Power: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=?????????
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=能量吸收抵消一半的
 #                                                          en: $D% damage absorbed
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=????
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=耐久損傷
 #                                                          en: by power
-enderio.darksteel.upgrade.glider.disabled=????
+enderio.darksteel.upgrade.glider.disabled=滑翔停用
 #                                     en: Glider Disabled
-enderio.darksteel.upgrade.glider.enabled=????
+enderio.darksteel.upgrade.glider.enabled=滑翔啟用
 #                                    en: Glider Active
-enderio.darksteel.upgrade.glider.name=??
+enderio.darksteel.upgrade.glider.name=滑翔
 #                                 en: Glider
-enderio.darksteel.upgrade.glider.tooltip.detailed.line1=????
+enderio.darksteel.upgrade.glider.tooltip.detailed.line1=啟用滑翔
 #                                                   en: Enables gliding
 enderio.darksteel.upgrade.gogglesOfRevealing.disabled=
 #                                                 en: Magic is hidden from plain sight
 enderio.darksteel.upgrade.gogglesOfRevealing.enabled=
 #                                                en: Magic is being revealed
-enderio.darksteel.upgrade.gogglesOfRevealing.name=??
+enderio.darksteel.upgrade.gogglesOfRevealing.name=揭示
 #                                             en: Revealing
-enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=????: 5%
+enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=要素減免: 5%
 #                                                               en: Vis Discount: 5%
 enderio.darksteel.upgrade.jump.disabled=
 #                                   en: Jump Disabled
 enderio.darksteel.upgrade.jump.enabled=
 #                                  en: Jump Enabled
-enderio.darksteel.upgrade.jump_one.name=??
+enderio.darksteel.upgrade.jump_one.name=跳躍
 #                                   en: Jump
-enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=?????????
+enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=增加步行與跳躍高度
 #                                                     en: Increases step and jump height
-enderio.darksteel.upgrade.jump_three.name=?? III
+enderio.darksteel.upgrade.jump_three.name=跳躍 III
 #                                     en: Jump III
-enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=?????????
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=增加步行與跳躍高度
 #                                                       en: Increases step and jump height
-enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=??????
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=允許三重跳躍
 #                                                       en: Allows triple jumps
-enderio.darksteel.upgrade.jump_two.name=?? II
+enderio.darksteel.upgrade.jump_two.name=跳躍 II
 #                                   en: Jump II
-enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=?????????
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=增加步行與跳躍高度
 #                                                     en: Increases step and jump height
-enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=??????
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=允許兩重跳躍
 #                                                     en: Allows double jumps
 enderio.darksteel.upgrade.naturalistEye.name=
 #                                        en: Naturalist's Eye
 enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=
 #                                                          en: Shows pollinated tree leaves
-enderio.darksteel.upgrade.nightVision.disabled=?????
+enderio.darksteel.upgrade.nightVision.disabled=夜視已停用
 #                                          en: Night Vision Disabled
-enderio.darksteel.upgrade.nightVision.enabled=?????
+enderio.darksteel.upgrade.nightVision.enabled=夜視已啟用
 #                                         en: Night Vision Enabled
-enderio.darksteel.upgrade.nightVision.name=??
+enderio.darksteel.upgrade.nightVision.name=夜視
 #                                      en: Night Vision
-enderio.darksteel.upgrade.solar_one.name=??? I
+enderio.darksteel.upgrade.solar_one.name=太陽能 I
 #                                    en: Solar I
-enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=?????????.
+enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=太陽能發電產生能源.
 #                                                      en: Generates power from the sun.
 enderio.darksteel.upgrade.solar_three.name=
 #                                      en: Solar III
 enderio.darksteel.upgrade.solar_three.tooltip.detailed.line1=
 #                                                        en: Generates power from the sun.
-enderio.darksteel.upgrade.solar_two.name=??? II
+enderio.darksteel.upgrade.solar_two.name=太陽能 II
 #                                    en: Solar II
-enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=?????????.
+enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=太陽能發電產生能源.
 #                                                      en: Generates power from the sun.
-enderio.darksteel.upgrade.sound.disabled=??????
+enderio.darksteel.upgrade.sound.disabled=聲波定位停用
 #                                    en: Sound Locator Disabled
-enderio.darksteel.upgrade.sound.enabled=??????
+enderio.darksteel.upgrade.sound.enabled=聲波定位啟用
 #                                   en: Sound Locator Active
-enderio.darksteel.upgrade.sound.name=????
+enderio.darksteel.upgrade.sound.name=聲波定位
 #                                en: Sound Locator
-enderio.darksteel.upgrade.sound.tooltip.detailed.line1=??????
+enderio.darksteel.upgrade.sound.tooltip.detailed.line1=顯示附近聲源
 #                                                  en: Displays the location of
-enderio.darksteel.upgrade.sound.tooltip.detailed.line2=???
+enderio.darksteel.upgrade.sound.tooltip.detailed.line2=的位置
 #                                                  en: nearby sounds
 enderio.darksteel.upgrade.speed.disabled=Speed Disabled
 #                                    en: Speed Disabled
 enderio.darksteel.upgrade.speed.enabled=Speed Active
 #                                   en: Speed Active
-enderio.darksteel.upgrade.speed_one.name=??
+enderio.darksteel.upgrade.speed_one.name=速度
 #                                    en: Speed
-enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=??????
+enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=增加移動速度
 #                                                      en: Increases movement speed
-enderio.darksteel.upgrade.speed_three.name=?? III
+enderio.darksteel.upgrade.speed_three.name=速度 III
 #                                      en: Speed III
-enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=??????
+enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=增加移動速度
 #                                                        en: Increases movement speed
-enderio.darksteel.upgrade.speed_two.name=?? II
+enderio.darksteel.upgrade.speed_two.name=速度 II
 #                                    en: Speed II
-enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=??????
+enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=增加移動速度
 #                                                      en: Increases movement speed
-enderio.darksteel.upgrade.spoon.name=??
+enderio.darksteel.upgrade.spoon.name=勺子
 #                                en: Spoon
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=????
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=有了勺子
 #                                                  en: Who needs a shovel when
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line2=?????
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line2=誰還要鏟子
 #                                                  en: you have a spoon
-enderio.darksteel.upgrade.stepAssist.disabled=??????
+enderio.darksteel.upgrade.stepAssist.disabled=關閉步行輔助
 #                                         en: Step Assist Disabled
-enderio.darksteel.upgrade.stepAssist.enabled=??????
+enderio.darksteel.upgrade.stepAssist.enabled=啟用步行輔助
 #                                        en: Step Assist Active
-enderio.darksteel.upgrade.swim.name=??
+enderio.darksteel.upgrade.swim.name=腳蹼
 #                               en: Flippers
 enderio.darksteel.upgrade.top.name=
 #                              en: The One Probe
-enderio.darksteel.upgrade.travel.name=??
+enderio.darksteel.upgrade.travel.name=旅行
 #                                 en: Travel
-enderio.darksteel.upgrade.travel.tooltip.detailed.line1=??shift??????
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=按住shift右擊來傳送或
 #                                                   en: Hold shift and R-Click to teleport or
-enderio.darksteel.upgrade.travel.tooltip.detailed.line2=??????????
+enderio.darksteel.upgrade.travel.tooltip.detailed.line2=啟用旅行錨和終界接口
 #                                                   en: activate a travel anchor or Ender IO
 enderio.easteregg.piginabottle=
 #                          en: Bacon in a Bottle
@@ -1248,19 +1248,19 @@ enderio.entity_action.block_powered_spawner.action=
 #                                              en: Spawns
 enderio.entity_action.block_relocator_obelisk.action=
 #                                                en: Relocates
-enderio.farm.note.noAxe=???
+enderio.farm.note.noAxe=無斧子
 #                   en: No Axe
-enderio.farm.note.noHoe=???
+enderio.farm.note.noHoe=無鋤頭
 #                   en: No Hoe
-enderio.farm.note.noPower=????
+enderio.farm.note.noPower=能量不足
 #                     en: No Power
-enderio.farm.note.noSeeds=???
+enderio.farm.note.noSeeds=無種子
 #                     en: No Seeds
 enderio.farm.note.noShears=
 #                      en: No Shears
 enderio.farm.note.noTreetap=
 #                       en: No Treetap
-enderio.farm.note.outputFull=????
+enderio.farm.note.outputFull=輸出已滿
 #                        en: Output Full
 enderio.fluid.millibucket.format.name=
 #                                 en: %s mB of %s
@@ -1272,13 +1272,13 @@ enderio.fluid.millibucket.format.tickper=
 #                                    en: %s t/mB
 enderio.fluid.millibucket.format=
 #                            en: %s mB
-enderio.fuel.tooltip.burnTime=???? {0,number}
+enderio.fuel.tooltip.burnTime=燃燒時間 {0,number}
 #                         en: burn time %s
 enderio.fuel.tooltip.generates=
 #                          en: Generates % at %s
-enderio.fuel.tooltip.heading=????
+enderio.fuel.tooltip.heading=燃料詳情
 #                        en: Fuel Details
-enderio.generic.tooltip.paintedWith=??:
+enderio.generic.tooltip.paintedWith=粉刷:
 #                               en: Painted with: %s
 enderio.generic.tooltip.unpainted=
 #                             en: Not painted
@@ -1290,82 +1290,82 @@ enderio.grindingball.tooltip.line3=
 #                              en: %sBonus Output %s
 enderio.grindingball.tooltip.line4=
 #                              en: %sPower Reduction %s
-enderio.gui.conduit.ioMode.disabled=??
+enderio.gui.conduit.ioMode.disabled=關閉
 #                               en: Disabled
-enderio.gui.conduit.ioMode.inOut=???/??
+enderio.gui.conduit.ioMode.inOut=輸入圖/輸出
 #                            en: In / Out
-enderio.gui.conduit.ioMode.input=??????
+enderio.gui.conduit.ioMode.input=提取物品過濾
 #                            en: Extract
-enderio.gui.conduit.ioMode.notSet=??
+enderio.gui.conduit.ioMode.notSet=預設
 #                             en: Default
-enderio.gui.conduit.ioMode.output=??????
+enderio.gui.conduit.ioMode.output=加入物品過濾
 #                             en: Insert
-enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=??IO
+enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=配置IO
 #                                                    en: Configure IO
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line2=
 #                                                    en: Shift click to reset all sides
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line3=
 #                                                    en: to their default setting
-enderio.gui.generic.ioMode.overlay.tooltip=??IO
+enderio.gui.generic.ioMode.overlay.tooltip=配置IO
 #                                      en: Configure IO
 enderio.gui.generic.max=
 #                   en: Max: %s
 enderio.gui.generic.progress=
 #                        en: Progress %s%%
-enderio.gui.machine.ioMode.disabled=??
+enderio.gui.machine.ioMode.disabled=關閉
 #                               en: Disabled
-enderio.gui.machine.ioMode.none=?
+enderio.gui.machine.ioMode.none=無
 #                           en: None
-enderio.gui.machine.ioMode.pull=?
+enderio.gui.machine.ioMode.pull=拉
 #                           en: Pull
-enderio.gui.machine.ioMode.pullPush.colored=%s? %s/ %s?
+enderio.gui.machine.ioMode.pullPush.colored=%s推 %s/ %s拉
 #                                       en: %sPush %s/ %sPull
-enderio.gui.machine.ioMode.pullPush=? / ?
+enderio.gui.machine.ioMode.pullPush=推 / 拉
 #                               en: Push / Pull
-enderio.gui.machine.ioMode.push=?
+enderio.gui.machine.ioMode.push=推
 #                           en: Push
 enderio.gui.permission.denied=
 #                         en: Permission denied
-enderio.gui.tooltip.redstoneControlMode.ignore=????
+enderio.gui.tooltip.redstoneControlMode.ignore=始終工作
 #                                          en: Always active
-enderio.gui.tooltip.redstoneControlMode.never=????
+enderio.gui.tooltip.redstoneControlMode.never=從不工作
 #                                         en: Never active
-enderio.gui.tooltip.redstoneControlMode.off=???????
+enderio.gui.tooltip.redstoneControlMode.off=收到信號不工作
 #                                       en: Active without signal
-enderio.gui.tooltip.redstoneControlMode.on=??????
+enderio.gui.tooltip.redstoneControlMode.on=收到信號工作
 #                                      en: Active with signal
-enderio.gui.tooltip.redstoneControlMode=????
+enderio.gui.tooltip.redstoneControlMode=紅石模式
 #                                   en: Redstone Mode
-enderio.itemConduitFilterUpgrade.clearConfigMethod=?????????
+enderio.itemConduitFilterUpgrade.clearConfigMethod=放到合成格里面清除
 #                                              en: %sPlace in crafting grid to clear
-enderio.itemConduitFilterUpgrade.clearConfigWarning=???????????!
+enderio.itemConduitFilterUpgrade.clearConfigWarning=這會清除所有存儲的數據!
 #                                               en: %sThis will clear all stored filter settings!
-enderio.itemConduitFilterUpgrade.configured=???
+enderio.itemConduitFilterUpgrade.configured=已配置
 #                                       en: %sConfigured
-enderio.itemConduitFilterUpgrade=??????????
+enderio.itemConduitFilterUpgrade=給物品導管使用的升級
 #                            en: Upgrade for item conduits
-enderio.machine.tooltip.configured=(???)
+enderio.machine.tooltip.configured=(已配置)
 #                              en: %s (Configured)
-enderio.machine.tooltip.upgrade.tooltip.detailed.line1=?????????
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=增加機器能量存儲與
 #                                                  en: Increases energy storage and speed / range of machines
-enderio.machine.tooltip.upgrade=????
+enderio.machine.tooltip.upgrade=機器升級
 #                           en: Machine Upgrade
 enderio.power.format.of=
-#                   en: %s / %s �I
+#                   en: %s / %s µI
 enderio.power.format.pertick=
-#                        en: %s �I/t
+#                        en: %s µI/t
 enderio.power.format=
-#                en: %s �I
+#                en: %s µI
 enderio.recipe.tooltip.clearConfig=
-#                              en: �c�oThis will clear all stored info!
+#                              en: §c§oThis will clear all stored info!
 enderio.soulvial.blacklisted.denied=
-#                               en: Permission �cdenied�r - this entity is blacklisted
+#                               en: Permission §cdenied§r - this entity is blacklisted
 enderio.soulvial.denied=
-#                   en: Permission �cdenied�r!
+#                   en: Permission §cdenied§r!
 enderio.soulvial.owned.denied=
-#                         en: Permission �cdenied�r - only owners may pick up owned animals
+#                         en: Permission §cdenied§r - only owners may pick up owned animals
 enderio.soulvial.player.denied=
-#                          en: �cNo!$r How would you feel if you had to play this game from inside a bottle?
+#                          en: §cNo!$r How would you feel if you had to play this game from inside a bottle?
 enderio.top.action.header=
 #                     en: %s:
 enderio.top.action.none=
@@ -1421,26 +1421,26 @@ enderio.top.tank.header.output=
 enderio.top.tank.header.storage=
 #                           en: %s
 enderio.wrench.permission.denied=
-#                            en: Permission �cdenied�r!
+#                            en: Permission §cdenied§r!
 fluid.cloud_seed=
 #            en: Cloud Seed
 fluid.cloud_seed_concentrated=
 #                         en: Concentrated Cloud Seed
 fluid.ender_distillation=
 #                    en: Dew of the Void
-fluid.fire_water=???
+fluid.fire_water=火焰水
 #            en: Fire Water
-fluid.hootch=??
+fluid.hootch=烈酒
 #        en: Hootch
 fluid.liquid_sunshine=
 #                 en: Liquid Sunshine
-fluid.nutrient_distillation=??????
+fluid.nutrient_distillation=擊附近的生物
 #                       en: Nutrient Distillation
-fluid.rocket_fuel=????
+fluid.rocket_fuel=火箭燃料
 #             en: Rocket Fuel
 fluid.vapor_of_levity=
 #                 en: Vapor of Levity
-fluid.xpjuice=??XP
+fluid.xpjuice=液態XP
 #         en: Liquid XP
 item.item_alloy_ingot_conductive_iron.name=
 #                                      en: Conductive Iron Ingot
@@ -1472,19 +1472,19 @@ item.item_alloy_nugget_redstone_alloy.name=
 #                                      en: Redstone Alloy Nugget
 item.item_alloy_nugget_soularium.name=
 #                                 en: Soularium Nugget
-item.item_alloy_nugget_vibrant_alloy.name=?????
+item.item_alloy_nugget_vibrant_alloy.name=脈沖合金粒
 #                                     en: Vibrant Alloy Nugget
-item.item_basic_capacitor.activated.name=????
+item.item_basic_capacitor.activated.name=雙層電容
 #                                    en: Double-Layer Capacitor
-item.item_basic_capacitor.basic.name=????
+item.item_basic_capacitor.basic.name=基礎電容
 #                                en: Basic Capacitor
-item.item_basic_capacitor.ender.name=????
+item.item_basic_capacitor.ender.name=八位電容
 #                                en: Octadic Capacitor
-item.item_broken_spawner.name=??????
+item.item_broken_spawner.name=破損的刷怪籠
 #                         en: Broken Spawner
-item.item_broken_spawner.tooltip.detailed.line1=?????????
+item.item_broken_spawner.tooltip.detailed.line1=與電動刷怪籠在鐵砧
 #                                           en: Combine with a Powered Spawner
-item.item_broken_spawner.tooltip.detailed.line2=?????????
+item.item_broken_spawner.tooltip.detailed.line2=里結合設置刷怪類型
 #                                           en: in an Anvil to set spawn type
 item.item_cold_fire_igniter.chat.outoffluid=
 #                                       en: ERROR: Out of %s
@@ -1518,19 +1518,19 @@ item.item_conduit_facade.transparent.name=
 #                                     en: Transparent Conduit Facade
 item.item_conduit_facade.transparent.tooltip.detailed.line1=
 #                                                       en: Transparent: Hides the conduits when painted with a non-solid block
-item.item_conduit_probe.name=?????
+item.item_conduit_probe.name=導管探測器
 #                        en: Conduit Probe
-item.item_conduit_probe.tooltip.detailed.line1=?????????
+item.item_conduit_probe.tooltip.detailed.line1=探測模式下右擊導管
 #                                          en: In probe mode R-Click on a conduit
-item.item_conduit_probe.tooltip.detailed.line2=????????
+item.item_conduit_probe.tooltip.detailed.line2=顯示其網絡的詳情
 #                                          en: to display details about its network
-item.item_conduit_probe.tooltip.detailed.line3=??/?????shift??
+item.item_conduit_probe.tooltip.detailed.line3=復制/粘貼模式下shift右擊
 #                                          en: In copy/paste mode Shift-R-Click to
-item.item_conduit_probe.tooltip.detailed.line4=?????????
+item.item_conduit_probe.tooltip.detailed.line4=復制導管的連接設置
 #                                          en: copy a conduit bundles connection settings
-item.item_conduit_probe.tooltip.detailed.line5=?????
+item.item_conduit_probe.tooltip.detailed.line5=右擊以粘貼
 #                                          en: R-Click to paste them
-item.item_conduit_probe.tooltip.detailed.line6=??shift??????Y?????
+item.item_conduit_probe.tooltip.detailed.line6=使用shift加鼠標滾輪或Y鍵切換模式
 #                                          en: Use Shift-Mouse Wheel or 'Y' to change mode
 item.item_coord_selector.name=
 #                         en: Coordinate Selector
@@ -1552,25 +1552,25 @@ item.item_dark_steel_armor.tooltip.levelcost.line2=
 #                                              en: %s%s  %s + %s levels
 item.item_dark_steel_armor.tooltip.line1=
 #                                    en: %sDiamond level protection when powered
-item.item_dark_steel_axe.name=???
+item.item_dark_steel_axe.name=玄鋼斧
 #                         en: Dark Axe
 item.item_dark_steel_axe.tooltip.effPowered=
 #                                       en: %sEfficiency when powered: %s
-item.item_dark_steel_axe.tooltip.multiHarvest=???????????
+item.item_dark_steel_axe.tooltip.multiHarvest=潛行時一次采集多個原木
 #                                         en: Sneak to harvest multiple logs
-item.item_dark_steel_boots.name=????
+item.item_dark_steel_boots.name=玄鋼靴子
 #                           en: Dark Boots
 item.item_dark_steel_boots.tooltip.line1=
 #                                    en: Fall damage negated when powered
 item.item_dark_steel_bow.name=
 #                         en: Dark Bow
-item.item_dark_steel_chestplate.name=????
+item.item_dark_steel_chestplate.name=玄鋼胸甲
 #                                en: Dark Plate
-item.item_dark_steel_helmet.name=????
+item.item_dark_steel_helmet.name=玄鋼頭盔
 #                            en: Dark Helm
-item.item_dark_steel_leggings.name=????
+item.item_dark_steel_leggings.name=玄鋼護腿
 #                              en: Dark Leggings
-item.item_dark_steel_pickaxe.name=???
+item.item_dark_steel_pickaxe.name=玄鋼鏟
 #                             en: Dark Pick
 item.item_dark_steel_pickaxe.tooltip.cost=
 #                                     en: %s     (cost %s)
@@ -1584,9 +1584,9 @@ item.item_dark_steel_shears.tooltip.effPowered=
 #                                          en: %sEfficiency when powered: %s
 item.item_dark_steel_shears.tooltip.multiHarvest=
 #                                            en: Shears multiple blocks/sheep when empowered
-item.item_dark_steel_sword.name=????
+item.item_dark_steel_sword.name=終結之劍
 #                           en: The Ender
-item.item_dark_steel_sword.tooltip.detailed.line1=????????????
+item.item_dark_steel_sword.tooltip.detailed.line1=增加頭顱與終界珍珠的掉落
 #                                             en: Increased skull and ender pearl drops
 item.item_dark_steel_sword.tooltip.detailed.line2=
 #                                             en: When powered: Endermen can't teleport once hit, extra Damage and Speed
@@ -1620,7 +1620,7 @@ item.item_magnet.everywhere.tooltip.detailed.line3=
 #                                              en: Must be powered, active and in the
 item.item_magnet.everywhere.tooltip.detailed.line4=
 #                                              en: inventory (or a Baubles slot) to function
-item.item_magnet.name=???
+item.item_magnet.name=電磁鐵
 #                 en: Electromagnet
 item.item_magnet.tooltip.detailed.line1=
 #                                   en: Pulls nearby item towards you
@@ -1628,21 +1628,21 @@ item.item_magnet.tooltip.detailed.line2=
 #                                   en: Shift-R-Click to enable / disable
 item.item_magnet.tooltip.detailed.line3=
 #                                   en: Must be powered, active and in the
-item.item_magnet.tooltip.detailed.line4=??????????
+item.item_magnet.tooltip.detailed.line4=并放在快捷欄才能起效
 #                                   en: hot bar (or a Baubles slot) to function
-item.item_material.attractor_crystal.name=????
+item.item_material.attractor_crystal.name=誘引晶體
 #                                     en: Enticing Crystal
-item.item_material.binder_composite.name=????
+item.item_material.binder_composite.name=粘合胚料
 #                                    en: Binder Composite
-item.item_material.chassi_parts.name=????
+item.item_material.chassi_parts.name=機器零件
 #                                en: Machine Parts
-item.item_material.conduit_binder.name=?????
+item.item_material.conduit_binder.name=導管粘合劑
 #                                  en: Conduit Binder
-item.item_material.dark_grinding_ball.name=????
+item.item_material.dark_grinding_ball.name=玄鐵鋼珠
 #                                      en: Dark Steel Ball
 item.item_material.dust_wheat.name=
 #                              en: Flour
-item.item_material.ender_crystal.name=????
+item.item_material.ender_crystal.name=終界晶體
 #                                 en: Ender Crystal
 item.item_material.ender_crystal_powder.name=
 #                                        en: Grains of the End
@@ -1656,15 +1656,15 @@ item.item_material.gear_vibrant.name=
 #                                en: Vibrant Bimetal Gear
 item.item_material.gear_wood.name=
 #                             en: Wooden Gear
-item.item_material.glider_wing.name=???
+item.item_material.glider_wing.name=滑翔翼
 #                               en: Glider Wing
-item.item_material.glider_wings.name=???
+item.item_material.glider_wings.name=滑翔翼
 #                                en: Glider Wings
 item.item_material.glider_wings.tooltip.detailed.line1=
 #                                                  en: Upgrade for Dark Steel chestplate
 item.item_material.ingot_enderium_base.name=Enderium Base
 #                                       en: Enderium Base
-item.item_material.machine_chassi.name=????
+item.item_material.machine_chassi.name=機器框架
 #                                  en: Machine Chassis
 item.item_material.nutritious_stick.name=
 #                                    en: Nutritious Stick
@@ -1674,47 +1674,47 @@ item.item_material.plantgreen.name=
 #                              en: Clippings and Trimmings
 item.item_material.powder_ardite.name=
 #                                 en: Ardite Powder
-item.item_material.powder_coal.name=??
+item.item_material.powder_coal.name=煤粉
 #                               en: Coal Powder
 item.item_material.powder_cobalt.name=
 #                                 en: Cobalt Powder
-item.item_material.powder_copper.name=??
+item.item_material.powder_copper.name=銅粉
 #                                 en: Copper Powder
-item.item_material.powder_ender.name=?????
+item.item_material.powder_ender.name=終界珍珠粉
 #                                en: Ender Pearl Powder
-item.item_material.powder_gold.name=??
+item.item_material.powder_gold.name=金粉
 #                               en: Gold Powder
 item.item_material.powder_infinity.name=
 #                                   en: Grains of Infinity
-item.item_material.powder_iron.name=??
+item.item_material.powder_iron.name=鐵粉
 #                               en: Iron Powder
 item.item_material.powder_obsidian.name=
 #                                   en: Obsidian Powder
-item.item_material.powder_tin.name=??
+item.item_material.powder_tin.name=錫粉
 #                              en: Tin Powder
 item.item_material.precient_crystal.name=
 #                                    en: Precient Crystal
 item.item_material.precient_powder.name=
 #                                   en: Grains of Prescience
-item.item_material.pulsating_crystal.name=????
+item.item_material.pulsating_crystal.name=脈沖晶體
 #                                     en: Pulsating Crystal
 item.item_material.pulsating_powder.name=
 #                                    en: Grains of Piezallity
-item.item_material.silicon.name=?
+item.item_material.silicon.name=硅
 #                           en: Silicon
-item.item_material.skull_ender_resonator.name=?????
+item.item_material.skull_ender_resonator.name=終界諧振器
 #                                         en: Ender Resonator
 item.item_material.skull_sentient_ender.name=
 #                                        en: Sentient Ender
 item.item_material.skull_skeletal_contractor.name=
 #                                             en: Skeletal Contractor
-item.item_material.skull_zombie_controller.name=Z-?????
+item.item_material.skull_zombie_controller.name=Z-邏輯控制器
 #                                           en: Z-Logic Controller
-item.item_material.skull_zombie_electrode.name=????
+item.item_material.skull_zombie_electrode.name=殭屍電極
 #                                          en: Zombie Electrode
-item.item_material.skull_zombie_frankenstien.name=????
+item.item_material.skull_zombie_frankenstien.name=人造殭屍
 #                                             en: Frank'N'Zombie
-item.item_material.vibrant_crystal.name=????
+item.item_material.vibrant_crystal.name=充能晶體
 #                                   en: Vibrant Crystal
 item.item_material.vibrant_powder.name=
 #                                  en: Grains of Vibrancy
@@ -1742,13 +1742,13 @@ item.item_rod_of_return.tooltip.fluid=
 #                                 en: %s
 item.item_rod_of_return.tooltip.power=
 #                                 en: %s
-item.item_soul_vial.name=???
+item.item_soul_vial.name=靈魂瓶
 #                    en: Soul Vial
 item.item_soul_vial.tooltip.color=
 #                             en: Color: %s
 item.item_soul_vial.tooltip.detailed.line1=
 #                                      en: R-Click on a mob to capture its soul
-item.item_soul_vial.tooltip.detailed.line2=???????
+item.item_soul_vial.tooltip.detailed.line2=再次右擊則釋放
 #                                      en: R-Click again to release it
 item.item_soul_vial.tooltip.empty=
 #                             en: Empty
@@ -1758,59 +1758,59 @@ item.item_soul_vial.tooltip.health=
 #                              en: Health: %s
 item.item_travel_staff.chat.notEnoughPower=
 #                                      en: Not enough power
-item.item_travel_staff.name=????
+item.item_travel_staff.name=旅行權杖
 #                       en: Staff of Traveling
-item.item_travel_staff.tooltip.detailed.line1=???????????
+item.item_travel_staff.tooltip.detailed.line1=手持旅行錨與終界接口時
 #                                         en: When held Travel Anchors and EnderIO
-item.item_travel_staff.tooltip.detailed.line2=??????,???
+item.item_travel_staff.tooltip.detailed.line2=可以透視錨點,并通過
 #                                         en: blocks become visible and can be
-item.item_travel_staff.tooltip.detailed.line3=<??>????
+item.item_travel_staff.tooltip.detailed.line3=<右擊>直接傳送
 #                                         en: activated by R-Click
-item.item_travel_staff.tooltip.detailed.line4=<shift><??>
+item.item_travel_staff.tooltip.detailed.line4=<shift><右擊>
 #                                         en: Shift-R-Click will teleport the
-item.item_travel_staff.tooltip.detailed.line5=????????
+item.item_travel_staff.tooltip.detailed.line5=可短距離傳送玩家
 #                                         en: player a short distance
-item.item_xp_transfer.name=???
+item.item_xp_transfer.name=經驗棒
 #                      en: Experience Rod
-item.item_xp_transfer.tooltip.detailed.line1=??????XP?
+item.item_xp_transfer.tooltip.detailed.line1=右擊裝有液態XP的
 #                                        en: R-Click on a fluid tank containing
-item.item_xp_transfer.tooltip.detailed.line2=???????
+item.item_xp_transfer.tooltip.detailed.line2=流體箱獲取經驗
 #                                        en: liquid XP to gain levels
-item.item_xp_transfer.tooltip.detailed.line3=Shift?????
+item.item_xp_transfer.tooltip.detailed.line3=Shift右擊將經驗
 #                                        en: Shift-R-Click to transfer levels to
-item.item_xp_transfer.tooltip.detailed.line4=????
+item.item_xp_transfer.tooltip.detailed.line4=灌入其中
 #                                        en: the tank
-item.item_yeta_wrench.name=????
+item.item_yeta_wrench.name=以太扳手
 #                      en: Yeta Wrench
-item.item_yeta_wrench.tooltip.detailed.line1=?????????
+item.item_yeta_wrench.tooltip.detailed.line1=手持時隱藏導管框架
 #                                        en: Hides conduit facades when held
-item.item_yeta_wrench.tooltip.detailed.line2=?????
+item.item_yeta_wrench.tooltip.detailed.line2=右擊可立即
 #                                        en: Shift-R-Click to break machines
-item.item_yeta_wrench.tooltip.detailed.line3=???????
+item.item_yeta_wrench.tooltip.detailed.line3=拆除機器與管道
 #                                        en: and conduits instantly
-item.item_yeta_wrench.tooltip.detailed.line4=Shift??????
+item.item_yeta_wrench.tooltip.detailed.line4=Shift左擊一個導管
 #                                        en: Shift-L-Click on a conduit to
-item.item_yeta_wrench.tooltip.detailed.line5=???????GUI
+item.item_yeta_wrench.tooltip.detailed.line5=可打開導管設置GUI
 #                                        en: open conduit settings GUI
-item.item_yeta_wrench.tooltip.detailed.line6=??Shift???????
+item.item_yeta_wrench.tooltip.detailed.line6=使用Shift鼠標滾輪或者按
 #                                        en: Use Shift-Mouse Wheel or '%s' to
-item.item_yeta_wrench.tooltip.detailed.line7='Y'??????????
+item.item_yeta_wrench.tooltip.detailed.line7='Y'鍵可渲染單種類型導管
 #                                        en: render a single conduit type
-tile.block_alloy.conductive_iron.name=????
+tile.block_alloy.conductive_iron.name=導電鐵塊
 #                                 en: Conductive Iron Block
-tile.block_alloy.dark_steel.name=???
+tile.block_alloy.dark_steel.name=玄鋼塊
 #                            en: Dark Steel Block
-tile.block_alloy.electrical_steel.name=???
+tile.block_alloy.electrical_steel.name=磁鋼塊
 #                                  en: Electrical Steel Block
-tile.block_alloy.energetic_alloy.name=?????
+tile.block_alloy.energetic_alloy.name=充能合金塊
 #                                 en: Energetic Alloy Block
 tile.block_alloy.name=
 #                 en: Alloy Block
 tile.block_alloy.pulsating_iron.name=
 #                                en: Pulsating Iron Block
-tile.block_alloy.redstone_alloy.name=?????
+tile.block_alloy.redstone_alloy.name=紅石合金塊
 #                                en: Redstone Alloy Block
-tile.block_alloy.soularium.name=???
+tile.block_alloy.soularium.name=魂金塊
 #                           en: Soularium Block
 tile.block_alloy.vibrant_alloy.name=
 #                               en: Vibrant Alloy Block
@@ -1820,23 +1820,23 @@ tile.block_dark_fused_glass.name=
 #                            en: Dark Clear Glass
 tile.block_dark_fused_quartz.name=
 #                             en: Dark Fused Quartz
-tile.block_dark_iron_bars.name=????
+tile.block_dark_iron_bars.name=玄鐵柵欄
 #                          en: Dark Iron Bars
-tile.block_dark_steel_anvil.intact.name=???
+tile.block_dark_steel_anvil.intact.name=玄鐵砧
 #                                   en: Dark Steel Anvil
-tile.block_dark_steel_anvil.name=???
+tile.block_dark_steel_anvil.name=玄鐵砧
 #                            en: Dark Steel Anvil
-tile.block_dark_steel_anvil.slightlyDamaged.name=????????
+tile.block_dark_steel_anvil.slightlyDamaged.name=輕微破損的玄鐵砧
 #                                            en: Slightly Damaged Dark Steel Anvil
-tile.block_dark_steel_anvil.tooltip.common.line1=????
+tile.block_dark_steel_anvil.tooltip.common.line1=經久耐用
 #                                            en: Damage Resistant
 tile.block_dark_steel_anvil.tooltip.detailed.line1=
 #                                              en: Lasts much longer than the vanilla anvil
-tile.block_dark_steel_anvil.veryDamaged.name=????????
+tile.block_dark_steel_anvil.veryDamaged.name=嚴重破損的玄鐵砧
 #                                        en: Very Damaged Dark Steel Anvil
-tile.block_dark_steel_ladder.name=????
+tile.block_dark_steel_ladder.name=玄鐵階梯
 #                             en: Dark Steel Ladder
-tile.block_dark_steel_ladder.tooltip.common.line1=??????
+tile.block_dark_steel_ladder.tooltip.common.line1=比普通階梯快
 #                                             en: Faster than regular ladders
 tile.block_dark_steel_trapdoor.name=
 #                               en: Dark Steel Trapdoor
@@ -1948,39 +1948,39 @@ tile.block_detector_block.name=
 #                          en: Block Detector
 tile.block_detector_block_silent.name=
 #                                 en: Block Detector (Silent)
-tile.block_enderman_skull.base.name=????
+tile.block_enderman_skull.base.name=終界人頭
 #                               en: Enderman Head
-tile.block_enderman_skull.name=?????
+tile.block_enderman_skull.name=終界人頭顱
 #                          en: Enderman Skull
-tile.block_enderman_skull.reanimated.name=??????
+tile.block_enderman_skull.reanimated.name=復蘇終界人頭
 #                                     en: Reanimated Enderman Head
 tile.block_enderman_skull.reanimated_tormented.name=
 #                                               en: Reanimated Tormented Enderman Head
-tile.block_enderman_skull.tormented.name=??????
+tile.block_enderman_skull.tormented.name=禁錮終界人頭
 #                                    en: Tormented Enderman Head
-tile.block_enlightened_fused_glass.name=??????
+tile.block_enlightened_fused_glass.name=螢光純凈玻璃
 #                                   en: Enlightened Clear Glass
-tile.block_enlightened_fused_quartz.name=??????
+tile.block_enlightened_fused_quartz.name=螢光石英玻璃
 #                                    en: Enlightened Fused Quartz
 tile.block_exit_rail.name=
 #                     en: Exit Rail
-tile.block_fused_glass.name=????
+tile.block_fused_glass.name=純凈玻璃
 #                       en: Quite Clear Glass
-tile.block_fused_quartz.name=????
+tile.block_fused_quartz.name=石英玻璃
 #                        en: Fused Quartz
 tile.block_machine_base.name=
 #                        en: (technical block)
 tile.block_machine_io.name=
 #                      en: (technical block)
-tile.block_painted_carpet.name=????
+tile.block_painted_carpet.name=粉刷地毯
 #                          en: Painted Carpet
 tile.block_painted_dark_steel_trapdoor.name=
 #                                       en: Painted Dark Steel Trapdoor
-tile.block_painted_double_slab.name=????
+tile.block_painted_double_slab.name=粉刷臺階
 #                               en: Painted Slab
-tile.block_painted_fence.name=????
+tile.block_painted_fence.name=粉刷柵欄
 #                         en: Painted Fence
-tile.block_painted_fence_gate.name=???
+tile.block_painted_fence_gate.name=粉刷門
 #                              en: Painted Gate
 tile.block_painted_fused_quartz.name=
 #                                en: Painted Fused Quartz
@@ -2086,9 +2086,9 @@ tile.block_painted_redstone.name=
 #                            en: Painted Redstone
 tile.block_painted_redstone_solid.name=
 #                                  en: Painted Redstone
-tile.block_painted_slab.name=????
+tile.block_painted_slab.name=粉刷臺階
 #                        en: Painted Slab
-tile.block_painted_stair.name=????
+tile.block_painted_stair.name=粉刷樓梯
 #                         en: Painted Stairs
 tile.block_painted_stone.name=
 #                         en: Painted Cobblestone
@@ -2100,11 +2100,11 @@ tile.block_painted_stone_slab.name=
 #                              en: Painted Stone Slab
 tile.block_painted_stone_stair.name=
 #                               en: Painted Stone Stairs
-tile.block_painted_wall.name=???
+tile.block_painted_wall.name=粉刷墻
 #                        en: Painted Wall
 tile.block_painted_wooden_trapdoor.name=
 #                                   en: Painted Wooden Trapdoor
-tile.block_reinforced_obsidian.name=?????
+tile.block_reinforced_obsidian.name=強化黑曜石
 #                               en: Reinforced Obsidian
 tile.block_reinforced_obsidian.tooltip.common.line1=
 #                                               en: Wither Proof
@@ -2124,17 +2124,17 @@ tile.fluid.cloud_seed_concentrated.name=
 #                                   en: Concentrated Cloud Seed
 tile.fluid.ender_distillation.name=
 #                              en: Dew of the Void
-tile.fluid.fire_water.name=???
+tile.fluid.fire_water.name=火焰水
 #                      en: Fire Water
-tile.fluid.hootch.name=??
+tile.fluid.hootch.name=烈酒
 #                  en: Hootch
 tile.fluid.liquid_sunshine.name=
 #                           en: Liquid Sunshine
-tile.fluid.nutrient_distillation.name=??????
+tile.fluid.nutrient_distillation.name=擊附近的生物
 #                                 en: Nutrient Distillation
-tile.fluid.rocket_fuel.name=????
+tile.fluid.rocket_fuel.name=火箭燃料
 #                       en: Rocket Fuel
-tile.fluid.xpjuice.name=??XP
+tile.fluid.xpjuice.name=液態XP
 #                   en: Liquid XP
 tile.vapor_of_levity.name=
 #                     en: Vapor of Levity

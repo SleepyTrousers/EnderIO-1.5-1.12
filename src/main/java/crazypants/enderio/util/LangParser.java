@@ -101,7 +101,6 @@ public class LangParser {
 
       result.remove("en_us");
 
-
       for (String lang : result.keySet()) {
         lines.clear();
         for (String key : result.get(lang).keySet()) {
@@ -114,7 +113,7 @@ public class LangParser {
         lines.add(2, "# Please wait until the en_us lang file has been completed before translating.");
         lines.add(3, "#");
         System.out.println("Writing guess file for " + lang + " with " + lines.size() + " lines");
-        FileUtils.writeLines(f3, lines);
+        FileUtils.writeLines(f3, "UTF-8", lines);
       }
 
     } catch (IOException e) {

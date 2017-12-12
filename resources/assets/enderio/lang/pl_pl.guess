@@ -12,7 +12,7 @@
 #                             en: Crafter speed, area=all machines "area" attribute (e.g. farm),
 ;//display string for Skeleton(type=
 #                               en: =1)
-;enderio.blockConduitBundle=Wi?zka przewod�w
+;enderio.blockConduitBundle=Wiązka przewodów
 #                       en: Conduit Bundle
 ;enderio.capbank.change=
 #                   en: I/O
@@ -28,9 +28,9 @@
 #                             en: I/O
 ;enderio.capbank.maxIO=Maksymalne wej./wyj.
 #                  en: Max I/O
-;enderio.capbank.maxIn=Wej?cie
+;enderio.capbank.maxIn=Wejście
 #                  en: Max Input
-;enderio.capbank.maxOut=Wyj?cie
+;enderio.capbank.maxOut=Wyjście
 #                   en: Max Output
 ;enderio.category.darksteelarmor=
 #                            en: Dark Steel Armor
@@ -68,17 +68,17 @@
 #                  en: Available
 ;enderio.gui.capBank.inputMode=
 #                          en: Input
-;enderio.gui.capBank.inputRs=W??cznik przyrostu energii
+;enderio.gui.capBank.inputRs=Włącznik przyrostu energii
 #                        en: Input Redstone Mode
-;enderio.gui.capBank.maxInput=Wej?cie
+;enderio.gui.capBank.maxInput=Wejście
 #                         en: Max Input
 ;enderio.gui.capBank.maxIo=Maksymalne wej./wyj.
 #                      en: Max I/O
-;enderio.gui.capBank.maxOutput=Wyj?cie
+;enderio.gui.capBank.maxOutput=Wyjście
 #                          en: Max Output
 ;enderio.gui.capBank.outputMode=
 #                           en: Output
-;enderio.gui.capBank.outputRs=W??cznik ubytku energii
+;enderio.gui.capBank.outputRs=Włącznik ubytku energii
 #                         en: Output Redstone Mode
 ;enderio.gui.conduit.button.clear=
 #                             en: Clear
@@ -104,7 +104,7 @@
 #                       en: Mode
 ;enderio.gui.conduit.item.blacklist=
 #                               en: Blacklist
-;enderio.gui.conduit.item.channel=Kana?
+;enderio.gui.conduit.item.channel=Kanał
 #                             en: Channel
 ;enderio.gui.conduit.item.damage.damage_00_00=
 #                                         en: Not Damaged
@@ -128,7 +128,7 @@
 #                                       en: Can be Damaged
 ;enderio.gui.conduit.item.damage.disabled=
 #                                     en: Ignore Damage
-;enderio.gui.conduit.item.extractionFilter=Filtr wyj?cia
+;enderio.gui.conduit.item.extractionFilter=Filtr wyjścia
 #                                      en: Extract
 ;enderio.gui.conduit.item.filterupgrade=
 #                                   en: Insert Item Filter
@@ -138,15 +138,15 @@
 #                                    en: Ignore Meta Data
 ;enderio.gui.conduit.item.ignoreNBT=Ignoruj dane NBT
 #                               en: Ignore NBT Data
-;enderio.gui.conduit.item.insertionFilter=Filtr wej?cia
+;enderio.gui.conduit.item.insertionFilter=Filtr wejścia
 #                                     en: Insert
 ;enderio.gui.conduit.item.matchMetaData=Dopasuj meta dane
 #                                   en: Match Meta Data
 ;enderio.gui.conduit.item.matchNBT=Dopasuj dane NBT
 #                              en: Match NBT Data
-;enderio.gui.conduit.item.oreDicDisabled=S?ownik rud wy??czony
+;enderio.gui.conduit.item.oreDicDisabled=Słownik rud wyłączony
 #                                    en: Ore Dictionary Disabled
-;enderio.gui.conduit.item.oreDicEnabled=S?ownik rud w??czony
+;enderio.gui.conduit.item.oreDicEnabled=Słownik rud włączony
 #                                   en: Ore Dictionary Enabled
 ;enderio.gui.conduit.item.priority=
 #                              en: Priority
@@ -154,11 +154,11 @@
 #                                        en: Round Robin Disabled
 ;enderio.gui.conduit.item.roundRobinEnabled=
 #                                       en: Round Robin Enabled
-;enderio.gui.conduit.item.selfFeedDisabled=P?tla wy??czona
+;enderio.gui.conduit.item.selfFeedDisabled=Pętla wyłączona
 #                                      en: Self Feed Disabled
-;enderio.gui.conduit.item.selfFeedEnabled=P?tla w??czona
+;enderio.gui.conduit.item.selfFeedEnabled=Pętla włączona
 #                                     en: Self Feed Enabled
-;enderio.gui.conduit.item.sigCol=Kolor sygna?u
+;enderio.gui.conduit.item.sigCol=Kolor sygnału
 #                            en: Signal Color
 ;enderio.gui.conduit.item.species.both=
 #                                  en: Match primary and secondary species
@@ -170,23 +170,23 @@
 #                                   en: Max upgrades is 15; Max downgrades is 1
 ;enderio.gui.conduit.item.speedupgrade=
 #                                  en: Insert Item Conduit Speed Upgrades/Downgrade
-;enderio.gui.conduit.item.stickyDisbaled=Lepki tryb wy??czony
+;enderio.gui.conduit.item.stickyDisbaled=Lepki tryb wyłączony
 #                                    en: Sticky Mode Disabled
-;enderio.gui.conduit.item.stickyEnabled=Lepki tryb w??czony|Ustawione przedmioty b?d?|lecie? tylko do przewod�w|z lepkim trybem.
+;enderio.gui.conduit.item.stickyEnabled=Lepki tryb włączony|Ustawione przedmioty będą|lecieć tylko do przewodów|z lepkim trybem.
 #                                   en: Sticky Mode Enabled|Selected items will only|be sent to this or other|Sticky outputs.
 ;enderio.gui.conduit.item.whitelist=
 #                               en: Whitelist
 ;enderio.gui.conduit.redstone.color=Kolor
 #                               en: Color
-;enderio.gui.conduit.redstone.signalColor=Kolor sygna?u
+;enderio.gui.conduit.redstone.signalColor=Kolor sygnału
 #                                     en: Signal Color
 ;enderio.gui.conduit.redstone.signalStrengh.tooltip=
 #                                               en: Output a strong redstone signal
 ;enderio.gui.conduit.redstone.signalStrengh=
 #                                       en: Strong Signal
-;enderio.gui.disabled=Wy??czony
+;enderio.gui.disabled=Wyłączony
 #                 en: Disabled
-;enderio.gui.enabled=W??czony
+;enderio.gui.enabled=Włączony
 #                en: Enabled
 ;enderio.gui.inventorySensor.control1=
 #                                 en: Start when <
@@ -316,53 +316,53 @@
 #                          en: West
 ;enderio.gui.machine.side=
 #                     en: Side: %s
-;enderio.gui.mjReader.conduitBuffer=Bufor wewn?trzny
+;enderio.gui.mjReader.conduitBuffer=Bufor wewnętrzny
 #                               en: Internal Buffer
-;enderio.gui.mjReader.connectionDir=po??czenie z
+;enderio.gui.mjReader.connectionDir=połączenie z
 #                               en: connection to:
-;enderio.gui.mjReader.currentRequest=Obecny pob�r
+;enderio.gui.mjReader.currentRequest=Obecny pobór
 #                                en: Current request
 ;enderio.gui.mjReader.extractedItem=Przedmiot
 #                               en: Item
-;enderio.gui.mjReader.extractedItems=Wyj?tymi rzeczami
+;enderio.gui.mjReader.extractedItems=Wyjętymi rzeczami
 #                                en: Extracted items
-;enderio.gui.mjReader.insertedInto=zostanie wys?any do:
+;enderio.gui.mjReader.insertedInto=zostanie wysłany do:
 #                              en: will be inserted into:
-;enderio.gui.mjReader.itemHeading=Przew�d przedmiot�w
+;enderio.gui.mjReader.itemHeading=Przewód przedmiotów
 #                             en: Item Conduit
-;enderio.gui.mjReader.itemNoConnections=nie ma zewn?trznego po??czenia
+;enderio.gui.mjReader.itemNoConnections=nie ma zewnętrznego połączenia
 #                                   en: has no external connections
-;enderio.gui.mjReader.networkHeading=Sie? energetyczna
+;enderio.gui.mjReader.networkHeading=Sieć energetyczna
 #                                en: Power Network
-;enderio.gui.mjReader.noItem=Nie mo?na przes?a?
+;enderio.gui.mjReader.noItem=Nie można przesłać
 #                        en: Can not receive
 ;enderio.gui.mjReader.noItems=Nie otrzymuje rzeczy.
 #                         en: Receives no items.
-;enderio.gui.mjReader.noOutputs=nie ma prawid?owego wyj?cia
+;enderio.gui.mjReader.noOutputs=nie ma prawidłowego wyjścia
 #                           en: has no valid outputs
-;enderio.gui.mjReader.noPowerFromSide=nie mo?na przesy?a? pr?du z tej strony
+;enderio.gui.mjReader.noPowerFromSide=nie można przesyłać prądu z tej strony
 #                                 en: cannot receive power from this side
 ;enderio.gui.mjReader.receiveItem1=Przyjmie
 #                              en: Can receive
 ;enderio.gui.mjReader.receiveItem2=z:
 #                              en: from:
-;enderio.gui.mjReader.receiveItems=Mo?e otrzyma? rzeczy z:
+;enderio.gui.mjReader.receiveItems=Może otrzymać rzeczy z:
 #                              en: Can receive items from:
-;enderio.gui.mjReader.requestRange=Szacowany pob�r na tick
+;enderio.gui.mjReader.requestRange=Szacowany pobór na tick
 #                              en: Per tick request range
 ;enderio.gui.powerMonitor.emit=Emituj
 #                          en: Emit
-;enderio.gui.powerMonitor.engineControl=Kontroluj energi?
+;enderio.gui.powerMonitor.engineControl=Kontroluj energię
 #                                   en: Engine Control
-;enderio.gui.powerMonitor.engineSection1=Emituj sygna?, gdy jest mniej energii
+;enderio.gui.powerMonitor.engineSection1=Emituj sygnał, gdy jest mniej energii
 #                                    en: Emit signal when storage less
-;enderio.gui.powerMonitor.engineSection2=ni?
+;enderio.gui.powerMonitor.engineSection2=niż
 #                                    en: than
-;enderio.gui.powerMonitor.engineSection3=% ca?o?ci.
+;enderio.gui.powerMonitor.engineSection3=% całości.
 #                                    en: % full.
-;enderio.gui.powerMonitor.engineSection4=Przesta?, gdy jest wi?cej lub
+;enderio.gui.powerMonitor.engineSection4=Przestań, gdy jest więcej lub
 #                                    en: Stop when storage greater than
-;enderio.gui.powerMonitor.engineSection5=r�wno
+;enderio.gui.powerMonitor.engineSection5=równo
 #                                    en: or equal to
 ;enderio.gui.powerMonitor.monHeading1=Energia w przewodach:
 #                                 en: Conduit Storage
@@ -370,9 +370,9 @@
 #                                 en: Capacitor Bank Storage
 ;enderio.gui.powerMonitor.monHeading3=Energia w maszynach:
 #                                 en: Machine Buffers
-;enderio.gui.powerMonitor.monHeading4=?redni ubytek w ci?gu 5 sekund:
+;enderio.gui.powerMonitor.monHeading4=Średni ubytek w ciągu 5 sekund:
 #                                 en: Average output over 5 seconds
-;enderio.gui.powerMonitor.monHeading5=?redni przyrost w ci?gu 5 sekund:
+;enderio.gui.powerMonitor.monHeading5=Średni przyrost w ciągu 5 sekund:
 #                                 en: Average input over 5 seconds
 ;enderio.gui.powerMonitor.noNetworkError=
 #                                    en: No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
@@ -380,9 +380,9 @@
 #                        en: of
 ;enderio.gui.receive=Odbieraj
 #                en: Receive
-;enderio.gui.send=Wysy?aj
+;enderio.gui.send=Wysyłaj
 #             en: Send
-;enderio.gui.sendReceive=Wysy?aj i odbieraj
+;enderio.gui.sendReceive=Wysyłaj i odbieraj
 #                    en: Send & Receive
 ;enderio.gui.travelAccessable.skipLocked=
 #                                    en: Skipped locked anchor, use targeted teleport.
@@ -390,7 +390,7 @@
 #                                        en: Skipped obstructed anchor.
 ;enderio.gui.travelAccessable.skipPrivate=
 #                                     en: Skipped private anchor.
-;enderio.gui.travelAccessable.unauthorised=Nie masz dost?pu do tego bloku.
+;enderio.gui.travelAccessable.unauthorised=Nie masz dostępu do tego bloku.
 #                                      en: You are not allowed to access this block.
 ;enderio.gui.weather.requiredfluid=
 #                              en: Required Fluid: %s mB
@@ -414,13 +414,13 @@
 #                                      en: Max Extract:
 ;enderio.itemGasConduit.tooltip.maxIo=
 #                                 en: Max IO:
-;enderio.itemItemConduit.name=Przew�d przedmiot�w
+;enderio.itemItemConduit.name=Przewód przedmiotów
 #                         en: Item Conduit
 ;enderio.itemLiquidConduit.lockedType=Ustawiona ciecz:
 #                                 en: Fluid type locked to
 ;enderio.itemLiquidConduit.lockedWaila=
 #                                  en: Locked to
-;enderio.itemLiquidConduit.name=Przew�d cieczy
+;enderio.itemLiquidConduit.name=Przewód cieczy
 #                           en: Fluid Conduit
 ;enderio.itemLiquidConduit.tooltip.detailed.line1=
 #                                             en: Fluid flow respects gravity
@@ -434,7 +434,7 @@
 #                                    en: Max IO:
 ;enderio.itemLiquidConduit.unlockedType=Odblokowana ciecz:
 #                                   en: Fluid type unlocked
-;enderio.itemLiquidConduitAdvanced.name=Przew�d cieczy z wysokim ci?nieniem
+;enderio.itemLiquidConduitAdvanced.name=Przewód cieczy z wysokim ciśnieniem
 #                                   en: Pressurized Fluid Conduit
 ;enderio.itemLiquidConduitEnder.name=
 #                                en: Ender Fluid Conduit
@@ -452,13 +452,13 @@
 #                            en: Dense ME Conduit
 ;enderio.itemOCConduit.name=
 #                       en: Network Conduit (OC)
-;enderio.itemPowerConduit.name=Przew�d energetyczny
+;enderio.itemPowerConduit.name=Przewód energetyczny
 #                          en: Energy Conduit
-;enderio.itemPowerConduitEnder.name=Przew�d energetyczny Endera
+;enderio.itemPowerConduitEnder.name=Przewód energetyczny Endera
 #                               en: Ender Energy Conduit
-;enderio.itemPowerConduitEnhanced.name=Ulepszony przew�d energetyczny
+;enderio.itemPowerConduitEnhanced.name=Ulepszony przewód energetyczny
 #                                  en: Enhanced Energy Conduit
-;enderio.itemRedstoneConduitInsulated.name=Zaizolowany przew�d z czerwonego kamienia
+;enderio.itemRedstoneConduitInsulated.name=Zaizolowany przewód z czerwonego kamienia
 #                                      en: Redstone Conduit
 ;enderio.keybind.fovminus=
 #                     en: Camera: Zoom in (creative only)
@@ -605,8 +605,8 @@
 ;enderio.nei.vat=
 #            en: Vat
 ;enderio.painter.tooltip.wasPainted=
-#                               en: �oWhat did you think that would do?
-;enderio.power.maxOutput=Wyj?cie
+#                               en: §oWhat did you think that would do?
+;enderio.power.maxOutput=Wyjście
 #                    en: Max Output
 ;enderio.remoteinv.chat.error=
 #                         en: ERROR: Technical error, see log
@@ -988,7 +988,7 @@ enderio.color.black=Czarny
 #               en: Black
 enderio.color.blue=Niebieski
 #              en: Blue
-enderio.color.brown=Br?zowy
+enderio.color.brown=Brązowy
 #               en: Brown
 enderio.color.cyan=Cyjan
 #              en: Cyan
@@ -1002,9 +1002,9 @@ enderio.color.lime=Limonka
 #              en: Lime
 enderio.color.magenta=Magenta
 #                 en: Magenta
-enderio.color.orange=Pomara?czowy
+enderio.color.orange=Pomarańczowy
 #                en: Orange
-enderio.color.pink=R�?owy
+enderio.color.pink=Różowy
 #              en: Pink
 enderio.color.purple=Purpurowy
 #                en: Purple
@@ -1012,9 +1012,9 @@ enderio.color.red=Czerwony
 #             en: Red
 enderio.color.silver=
 #                en: Light Gray
-enderio.color.white=Bia?y
+enderio.color.white=Biały
 #               en: White
-enderio.color.yellow=?�?ty
+enderio.color.yellow=Żółty
 #                en: Yellow
 enderio.config.advanced.tooltip=
 #                           en: For those who can't have enough configs.
@@ -1029,7 +1029,7 @@ enderio.config.anchor.tooltip=
 enderio.config.anchor=
 #                 en: Anchor Settings
 enderio.config.darksteel.tooltip=
-#                            en: It's not just regular steel, it's �odark�r�e steel.
+#                            en: It's not just regular steel, it's §odark§r§e steel.
 enderio.config.darksteel=
 #                    en: Dark Steel
 enderio.config.efficiency.tooltip=
@@ -1290,15 +1290,15 @@ enderio.grindingball.tooltip.line3=
 #                              en: %sBonus Output %s
 enderio.grindingball.tooltip.line4=
 #                              en: %sPower Reduction %s
-enderio.gui.conduit.ioMode.disabled=Wy??czony
+enderio.gui.conduit.ioMode.disabled=Wyłączony
 #                               en: Disabled
 enderio.gui.conduit.ioMode.inOut=Wej./Wyj.
 #                            en: In / Out
-enderio.gui.conduit.ioMode.input=Filtr wyj?cia
+enderio.gui.conduit.ioMode.input=Filtr wyjścia
 #                            en: Extract
-enderio.gui.conduit.ioMode.notSet=Domy?lny
+enderio.gui.conduit.ioMode.notSet=Domyślny
 #                             en: Default
-enderio.gui.conduit.ioMode.output=Filtr wej?cia
+enderio.gui.conduit.ioMode.output=Filtr wejścia
 #                             en: Insert
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=
 #                                                    en: Configure IO
@@ -1312,7 +1312,7 @@ enderio.gui.generic.max=
 #                   en: Max: %s
 enderio.gui.generic.progress=
 #                        en: Progress %s%%
-enderio.gui.machine.ioMode.disabled=Wy??czony
+enderio.gui.machine.ioMode.disabled=Wyłączony
 #                               en: Disabled
 enderio.gui.machine.ioMode.none=
 #                           en: None
@@ -1326,15 +1326,15 @@ enderio.gui.machine.ioMode.push=
 #                           en: Push
 enderio.gui.permission.denied=
 #                         en: Permission denied
-enderio.gui.tooltip.redstoneControlMode.ignore=W??czony
+enderio.gui.tooltip.redstoneControlMode.ignore=Włączony
 #                                          en: Always active
-enderio.gui.tooltip.redstoneControlMode.never=Wy??czony
+enderio.gui.tooltip.redstoneControlMode.never=Wyłączony
 #                                         en: Never active
-enderio.gui.tooltip.redstoneControlMode.off=W??czony bez sygna?u
+enderio.gui.tooltip.redstoneControlMode.off=Włączony bez sygnału
 #                                       en: Active without signal
-enderio.gui.tooltip.redstoneControlMode.on=W??czony z sygna?em
+enderio.gui.tooltip.redstoneControlMode.on=Włączony z sygnałem
 #                                      en: Active with signal
-enderio.gui.tooltip.redstoneControlMode=Tryb w??cznika
+enderio.gui.tooltip.redstoneControlMode=Tryb włącznika
 #                                   en: Redstone Mode
 enderio.itemConduitFilterUpgrade.clearConfigMethod=
 #                                              en: %sPlace in crafting grid to clear
@@ -1351,21 +1351,21 @@ enderio.machine.tooltip.upgrade.tooltip.detailed.line1=
 enderio.machine.tooltip.upgrade=
 #                           en: Machine Upgrade
 enderio.power.format.of=
-#                   en: %s / %s �I
+#                   en: %s / %s µI
 enderio.power.format.pertick=
-#                        en: %s �I/t
+#                        en: %s µI/t
 enderio.power.format=
-#                en: %s �I
+#                en: %s µI
 enderio.recipe.tooltip.clearConfig=
-#                              en: �c�oThis will clear all stored info!
+#                              en: §c§oThis will clear all stored info!
 enderio.soulvial.blacklisted.denied=
-#                               en: Permission �cdenied�r - this entity is blacklisted
+#                               en: Permission §cdenied§r - this entity is blacklisted
 enderio.soulvial.denied=
-#                   en: Permission �cdenied�r!
+#                   en: Permission §cdenied§r!
 enderio.soulvial.owned.denied=
-#                         en: Permission �cdenied�r - only owners may pick up owned animals
+#                         en: Permission §cdenied§r - only owners may pick up owned animals
 enderio.soulvial.player.denied=
-#                          en: �cNo!$r How would you feel if you had to play this game from inside a bottle?
+#                          en: §cNo!$r How would you feel if you had to play this game from inside a bottle?
 enderio.top.action.header=
 #                     en: %s:
 enderio.top.action.none=
@@ -1421,7 +1421,7 @@ enderio.top.tank.header.output=
 enderio.top.tank.header.storage=
 #                           en: %s
 enderio.wrench.permission.denied=
-#                            en: Permission �cdenied�r!
+#                            en: Permission §cdenied§r!
 fluid.cloud_seed=
 #            en: Cloud Seed
 fluid.cloud_seed_concentrated=
@@ -1472,13 +1472,13 @@ item.item_alloy_nugget_redstone_alloy.name=
 #                                      en: Redstone Alloy Nugget
 item.item_alloy_nugget_soularium.name=
 #                                 en: Soularium Nugget
-item.item_alloy_nugget_vibrant_alloy.name=Bry?ka wibracyjnego stopu
+item.item_alloy_nugget_vibrant_alloy.name=Bryłka wibracyjnego stopu
 #                                     en: Vibrant Alloy Nugget
 item.item_basic_capacitor.activated.name=Dwuwarstwowy kondensator
 #                                    en: Double-Layer Capacitor
 item.item_basic_capacitor.basic.name=Kondensator
 #                                en: Basic Capacitor
-item.item_basic_capacitor.ender.name=O?miowarstwowy kondensator
+item.item_basic_capacitor.ender.name=Ośmiowarstwowy kondensator
 #                                en: Octadic Capacitor
 item.item_broken_spawner.name=
 #                         en: Broken Spawner
@@ -1634,9 +1634,9 @@ item.item_material.attractor_crystal.name=
 #                                     en: Enticing Crystal
 item.item_material.binder_composite.name=Kompozyt izolatora
 #                                    en: Binder Composite
-item.item_material.chassi_parts.name=Cz??ci maszyny
+item.item_material.chassi_parts.name=Części maszyny
 #                                en: Machine Parts
-item.item_material.conduit_binder.name=Izolator przewod�w
+item.item_material.conduit_binder.name=Izolator przewodów
 #                                  en: Conduit Binder
 item.item_material.dark_grinding_ball.name=
 #                                      en: Dark Steel Ball
@@ -1674,19 +1674,19 @@ item.item_material.plantgreen.name=
 #                              en: Clippings and Trimmings
 item.item_material.powder_ardite.name=
 #                                 en: Ardite Powder
-item.item_material.powder_coal.name=Sproszkowany w?giel
+item.item_material.powder_coal.name=Sproszkowany węgiel
 #                               en: Coal Powder
 item.item_material.powder_cobalt.name=
 #                                 en: Cobalt Powder
-item.item_material.powder_copper.name=Sproszkowana mied?
+item.item_material.powder_copper.name=Sproszkowana miedź
 #                                 en: Copper Powder
-item.item_material.powder_ender.name=Sproszkowana per?a kresu
+item.item_material.powder_ender.name=Sproszkowana perła kresu
 #                                en: Ender Pearl Powder
-item.item_material.powder_gold.name=Sproszkowane z?oto
+item.item_material.powder_gold.name=Sproszkowane złoto
 #                               en: Gold Powder
 item.item_material.powder_infinity.name=
 #                                   en: Grains of Infinity
-item.item_material.powder_iron.name=Sproszkowane ?elazo
+item.item_material.powder_iron.name=Sproszkowane żelazo
 #                               en: Iron Powder
 item.item_material.powder_obsidian.name=
 #                                   en: Obsidian Powder
@@ -1696,7 +1696,7 @@ item.item_material.precient_crystal.name=
 #                                    en: Precient Crystal
 item.item_material.precient_powder.name=
 #                                   en: Grains of Prescience
-item.item_material.pulsating_crystal.name=Kryszta? pulsacyjny
+item.item_material.pulsating_crystal.name=Kryształ pulsacyjny
 #                                     en: Pulsating Crystal
 item.item_material.pulsating_powder.name=
 #                                    en: Grains of Piezallity
@@ -1714,7 +1714,7 @@ item.item_material.skull_zombie_electrode.name=
 #                                          en: Zombie Electrode
 item.item_material.skull_zombie_frankenstien.name=
 #                                             en: Frank'N'Zombie
-item.item_material.vibrant_crystal.name=Kryszta? wibracyjny
+item.item_material.vibrant_crystal.name=Kryształ wibracyjny
 #                                   en: Vibrant Crystal
 item.item_material.vibrant_powder.name=
 #                                  en: Grains of Vibrancy
@@ -1964,7 +1964,7 @@ tile.block_enlightened_fused_quartz.name=
 #                                    en: Enlightened Fused Quartz
 tile.block_exit_rail.name=
 #                     en: Exit Rail
-tile.block_fused_glass.name=Skondensowane szk?o
+tile.block_fused_glass.name=Skondensowane szkło
 #                       en: Quite Clear Glass
 tile.block_fused_quartz.name=Skondensowany kwarc
 #                        en: Fused Quartz
