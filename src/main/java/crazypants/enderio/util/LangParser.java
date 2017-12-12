@@ -80,7 +80,27 @@ public class LangParser {
         }
       }
 
+      for (File file : new File("./resources/assets/enderio/lang/").listFiles()) {
+        if (file.getName().endsWith(".lang")) {
+          String lang = file.getName().replaceAll("\\..*$", "").toLowerCase(Locale.ENGLISH);
+
+          if (!result.containsKey(lang)) {
+            result.put(lang, new HashMap<>());
+          }
+          for (String line : FileUtils.readLines(file, "UTF-8")) {
+            line = line.trim();
+            if (!line.startsWith("/") && !line.startsWith("#") && !line.startsWith("#") && line.contains("=")) {
+              String[] split = line.split("=", 2);
+              String key = split[0].trim();
+              result.get(lang).remove(key);
+            }
+          }
+
+        }
+      }
+
       result.remove("en_us");
+
 
       for (String lang : result.keySet()) {
         lines.clear();
@@ -93,6 +113,7 @@ public class LangParser {
         lines.add(1, "#");
         lines.add(2, "# Please wait until the en_us lang file has been completed before translating.");
         lines.add(3, "#");
+        System.out.println("Writing guess file for " + lang + " with " + lines.size() + " lines");
         FileUtils.writeLines(f3, lines);
       }
 
