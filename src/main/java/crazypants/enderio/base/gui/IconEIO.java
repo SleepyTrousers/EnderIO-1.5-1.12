@@ -3,12 +3,11 @@ package crazypants.enderio.base.gui;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.api.client.render.IWidgetMap;
 
 import crazypants.enderio.base.EnderIO;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 public enum IconEIO implements IWidgetIcon {
@@ -93,6 +92,8 @@ public enum IconEIO implements IWidgetIcon {
   FILTER_DAMAGE_NOT(144, 160),
   FILTER_DAMAGE_OFF(160, 160),
 
+  TRASHCAN(176, 160),
+
   FILTER_SPECIES_BOTH(80, 208),
   FILTER_SPECIES_PRIMARY(96, 208),
   FILTER_SPECIES_SECONDARY(112, 208),
@@ -147,7 +148,7 @@ public enum IconEIO implements IWidgetIcon {
   SORT_SIZE_DOWN(224, 240, SORT_DIR_DOWN),
   SORT_SIZE_UP(224, 240, SORT_DIR_UP),
   SORT_MOD_DOWN(240, 240, SORT_DIR_DOWN),
-  SORT_MOD_UP(240, 240, SORT_DIR_UP), 
+  SORT_MOD_UP(240, 240, SORT_DIR_UP),
 
   SHOW_RANGE(144, 176),
   HIDE_RANGE(160, 176),
@@ -169,9 +170,8 @@ public enum IconEIO implements IWidgetIcon {
 
   public static final @Nonnull IWidgetMap map = new IWidgetMap.WidgetMapImpl(TEX_SIZE, TEXTURE) {
     @Override
-    public void render(@Nonnull IWidgetIcon widget, double x, double y, double width, double height, double zLevel, boolean doDraw,
-        boolean flipY) {
-      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    public void render(@Nonnull IWidgetIcon widget, double x, double y, double width, double height, double zLevel, boolean doDraw, boolean flipY) {
+      GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       super.render(widget, x, y, width, height, zLevel, doDraw, flipY);
     }
   };
