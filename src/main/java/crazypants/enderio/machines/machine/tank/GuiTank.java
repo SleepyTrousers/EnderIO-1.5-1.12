@@ -6,18 +6,16 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 
-import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
@@ -93,7 +91,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
@@ -103,12 +101,10 @@ public class GuiTank extends GuiMachineBase<TileTank> {
     if (getTileEntity().canVoidItems()) {
       Slot slot = inventorySlots.inventorySlots.get(2);
       drawTexturedModalRect(sx + slot.xPos - 1, sy + slot.yPos - 1, xSize, 0, 18, 18);
-      IconEIO.map.render(IconEIO.MINUS, sx + slot.xPos, sy + slot.yPos, true);
     }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
-    RenderUtil.bindBlockTexture();
     RenderUtil.renderGuiTank(getTileEntity().tank, guiLeft + 80, guiTop + 21, zLevel, 16, 47);
   }
 }

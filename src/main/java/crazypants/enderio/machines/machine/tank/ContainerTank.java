@@ -9,11 +9,16 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerTank extends AbstractMachineContainer<TileTank> {
 
@@ -48,6 +53,19 @@ public class ContainerTank extends AbstractMachineContainer<TileTank> {
       public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return getInv().isItemValidForSlot(2, itemStack);
       }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public @Nonnull ResourceLocation getBackgroundLocation() {
+        return IconEIO.TRASHCAN.getMap().getTexture();
+      }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public @Nonnull TextureAtlasSprite getBackgroundSprite() {
+        return IconEIO.TRASHCAN.getAsTextureAtlasSprite();
+      }
+
     });
     addSlotToContainer(outEmpty = new Slot(getInv(), 3, 44, 52) {
       @Override
