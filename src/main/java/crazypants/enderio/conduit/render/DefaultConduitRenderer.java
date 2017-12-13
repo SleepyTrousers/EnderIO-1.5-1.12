@@ -13,6 +13,7 @@ import com.enderio.core.common.vecmath.Vertex;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitRenderer;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -20,6 +21,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -31,7 +33,7 @@ import static net.minecraft.util.EnumFacing.SOUTH;
 import static net.minecraft.util.EnumFacing.UP;
 import static net.minecraft.util.EnumFacing.WEST;
 
-public abstract class DefaultConduitRenderer implements ConduitRenderer {
+public abstract class DefaultConduitRenderer implements IConduitRenderer {
 
   static final Vector3d[] verts = new Vector3d[8];
 
@@ -55,7 +57,8 @@ public abstract class DefaultConduitRenderer implements ConduitRenderer {
   // ------------ Static Model ---------------------------------------------
 
   @Override
-  public void addBakedQuads(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle bundle, IConduit conduit, float brightness, BlockRenderLayer layer, List<BakedQuad> quads) {
+  public void addBakedQuads(TileEntitySpecialRenderer conduitBundleRenderer, IConduitBundle bundle, IConduit conduit, float brightness, BlockRenderLayer layer,
+      List<BakedQuad> quads) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
@@ -139,7 +142,8 @@ public abstract class DefaultConduitRenderer implements ConduitRenderer {
   // ------------ Dynamic ---------------------------------------------
 
   @Override
-  public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
+  public void renderDynamicEntity(TileEntitySpecialRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z,
+      float partialTick,
       float worldLight) {
         
     Collection<CollidableComponent> components = conduit.getCollidableComponents();

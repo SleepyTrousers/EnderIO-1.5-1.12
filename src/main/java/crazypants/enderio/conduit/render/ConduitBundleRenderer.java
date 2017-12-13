@@ -7,15 +7,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitRenderer;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
@@ -34,6 +36,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fml.relauncher.Side;
@@ -42,7 +45,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduitBundle> {
 
-  private final List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
+  private final List<IConduitRenderer> conduitRenderers = new ArrayList<IConduitRenderer>();
   private final DefaultConduitRenderer dcr = new DefaultConduitRenderer() {
     @Override
     public void initIcons() {
@@ -52,14 +55,14 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
   public ConduitBundleRenderer() {    
   }
   
-  public void registerRenderer(ConduitRenderer renderer) {
+  public void registerRenderer(IConduitRenderer renderer) {
     conduitRenderers.add(renderer);
   }
 
   // TESR rendering
 
   @Override
-  public void renderTileEntityAt(TileConduitBundle te, double x, double y, double z, float partialTick, int b) {
+  public void renderTileEntityAt(@Nonnull TileConduitBundle te, double x, double y, double z, float partialTick, int b) {
     
 
     IConduitBundle bundle = te;
@@ -71,12 +74,12 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     boolean hasDynamic = false;
     for (IConduit con : bundle.getConduits()) {
       if (YetaUtil.renderConduit(player, con)) {
-        ConduitRenderer renderer = getRendererForConduit(con);
+        IConduitRenderer renderer = getRendererForConduit(con);
         if (renderer.isDynamic()) {
           if (!hasDynamic) {
             hasDynamic = true;
-            BlockCoord loc = bundle.getLocation();
-            brightness = bundle.getEntity().getWorld().getLightFor(EnumSkyBlock.SKY, loc.getBlockPos());
+            BlockPos loc = bundle.getLocation();
+            brightness = bundle.getEntity().getWorld().getLightFor(EnumSkyBlock.SKY, loc);
 
             RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());            
             RenderUtil.bindBlockTexture();
@@ -122,7 +125,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     if (!Config.updateLightingWhenHidingFacades && bundle.hasFacade()) {
       brightness = 15 << 20 | 15 << 4;
     } else {
-      brightness = bundle.getEntity().getWorld().getLightFor(EnumSkyBlock.SKY, bundle.getLocation().getBlockPos());
+      brightness = bundle.getEntity().getWorld().getLightFor(EnumSkyBlock.SKY, bundle.getLocation());
     }
     
     // TODO: check if this is the client thread, if not, make a copy of the bundle and its conduits in a thread-safe way
@@ -144,7 +147,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     for (IConduit con : bundle.getConduits().toArray(new IConduit[0])) {
 
       if (state.getYetaDisplayMode().renderConduit(con)) {
-        ConduitRenderer renderer = getRendererForConduit(con);
+        IConduitRenderer renderer = getRendererForConduit(con);
         renderer.addBakedQuads(this, bundle, con, brightness, layer, quads);
         if (layer != null) {
           Set<EnumFacing> extCons = con.getExternalConnections();
@@ -164,7 +167,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
       }
     }
 
-    // Internal conectors between conduits
+    // Internal connectors between conduits
     List<CollidableComponent> connectors = bundle.getConnectors();
     for (CollidableComponent component : connectors) {
       if (component != null) {
@@ -177,7 +180,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
             }
           }
 
-          IConduit conduit = bundle.getConduit(component.conduitType);
+          // TODO Make an actual check before assuming a default render
+          IConduit.WithDefaultRendering conduit = (IConduit.WithDefaultRendering) bundle.getConduit(component.conduitType);
           if (conduit != null) {
             if (state.getYetaDisplayMode().renderConduit(component.conduitType)) {
               TextureAtlasSprite tex = conduit.getTextureForState(component);
@@ -235,8 +239,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
   }
 
-  public ConduitRenderer getRendererForConduit(IConduit conduit) {
-    for (ConduitRenderer renderer : conduitRenderers) {
+  public IConduitRenderer getRendererForConduit(IConduit conduit) {
+    for (IConduitRenderer renderer : conduitRenderers) {
       if (renderer.isRendererForConduit(conduit)) {
         return renderer;
       }

@@ -1,8 +1,8 @@
 package crazypants.enderio.conduit.gui;
 
-import static crazypants.enderio.base.ModObject.itemBasicFilterUpgrade;
-import static crazypants.enderio.base.ModObject.itemExtractSpeedUpgrade;
-import static crazypants.enderio.base.ModObject.itemFunctionUpgrade;
+import static crazypants.enderio.base.init.ModObject.itemBasicFilterUpgrade;
+import static crazypants.enderio.base.init.ModObject.itemExtractSpeedUpgrade;
+import static crazypants.enderio.base.init.ModObject.itemFunctionUpgrade;
 
 import java.awt.Point;
 import java.util.ArrayList;
