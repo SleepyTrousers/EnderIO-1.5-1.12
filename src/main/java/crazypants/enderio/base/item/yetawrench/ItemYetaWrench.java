@@ -20,7 +20,7 @@ import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.KeyTracker;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.interfaces.IYetaAwareBlock;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.paint.IPaintable.IBlockPaintableBlock;
 import net.minecraft.block.Block;
@@ -90,7 +90,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     } else if (block instanceof IBlockPaintableBlock && !player.isSneaking() && !YetaUtil.shouldHeldItemHideFacades(player)) {
       IBlockState paintSource = ((IBlockPaintableBlock) block).getPaintSource(blockState, world, pos);
       if (paintSource != null) {
-        final IBlockState rotatedPaintSource = PainterUtil2.rotate(paintSource);
+        final IBlockState rotatedPaintSource = PaintUtil.rotate(paintSource);
         if (rotatedPaintSource != paintSource) {
           ((IBlockPaintableBlock) block).setPaintSource(blockState, world, pos, rotatedPaintSource);
         }

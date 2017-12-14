@@ -10,7 +10,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
@@ -88,7 +88,7 @@ public abstract class TileEntityEio extends TileEntityBase {
   public void readFromItemStack(@Nonnull ItemStack stack) {
     NBTTagCompound tagCompound = NbtValue.getRoot(stack);
     readCustomNBT(NBTAction.ITEM, tagCompound);
-    IBlockState stackPaint = PainterUtil2.getSourceBlock(stack);
+    IBlockState stackPaint = PaintUtil.getSourceBlock(stack);
     if (stackPaint != null) {
       paintSource = stackPaint;
     }
@@ -99,7 +99,7 @@ public abstract class TileEntityEio extends TileEntityBase {
     writeCustomNBT(NBTAction.ITEM, tagCompound);
     stack.setStackDisplayName(Lang.MACHINE_CONFIGURED.get(stack.getDisplayName()));
     if (paintSource != null) {
-      PainterUtil2.setSourceBlock(stack, paintSource);
+      PaintUtil.setSourceBlock(stack, paintSource);
     }
   }
 

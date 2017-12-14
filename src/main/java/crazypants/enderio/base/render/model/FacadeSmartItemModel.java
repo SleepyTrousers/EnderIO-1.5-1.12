@@ -11,7 +11,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.property.EnumRenderPart;
 import crazypants.enderio.base.render.util.ItemQuadCollector;
@@ -83,7 +83,7 @@ public class FacadeSmartItemModel implements IPerspectiveAwareModel {
       }
 
       if (!YetaUtil.shouldHeldItemHideFacadesClient()) {
-        IBlockState paintSource = PainterUtil2.getSourceBlock(stack);
+        IBlockState paintSource = PaintUtil.getSourceBlock(stack);
         if (paintSource != null) {
           ItemQuadCollector quads = new ItemQuadCollector();
           quads.addItemBlockState(paintSource, Prep.getEmpty());

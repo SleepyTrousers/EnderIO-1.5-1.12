@@ -30,6 +30,4 @@ public final class RenderMappers {
 
   public static final @Nonnull MachineRenderMapper SOUL_MAPPER = new MachineRenderMapper(EnumRenderPart.SOUL);
 
-  public static final @Nonnull MachineRenderMapper TELEPAD_MAPPER = null; // TODO
-
 }

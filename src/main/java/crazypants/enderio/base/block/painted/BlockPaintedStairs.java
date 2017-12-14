@@ -7,14 +7,13 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.paint.render.PaintRegistry;
 import crazypants.enderio.base.paint.render.UVLock;
@@ -108,7 +107,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   @Override
   public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
       @Nonnull ItemStack stack) {
-    setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
+    setPaintSource(state, world, pos, PaintUtil.getSourceBlock(stack));
     if (!world.isRemote) {
       world.notifyBlockUpdate(pos, state, state, 3);
     }
@@ -133,7 +132,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   public @Nonnull List<ItemStack> getDrops(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
     List<ItemStack> drops = super.getDrops(world, pos, state, fortune);
     for (ItemStack drop : drops) {
-      PainterUtil2.setSourceBlock(NullHelper.notnullM(drop, "null stack from getDrops()"), getPaintSource(state, world, pos));
+      PaintUtil.setSourceBlock(NullHelper.notnullM(drop, "null stack from getDrops()"), getPaintSource(state, world, pos));
     }
     return drops;
   }
@@ -142,35 +141,8 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   public @Nonnull ItemStack getPickBlock(@Nonnull IBlockState bs, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
       @Nonnull EntityPlayer player) {
     final ItemStack pickBlock = super.getPickBlock(bs, target, world, pos, player);
-    PainterUtil2.setSourceBlock(pickBlock, getPaintSource(bs, world, pos));
+    PaintUtil.setSourceBlock(pickBlock, getPaintSource(bs, world, pos));
     return pickBlock;
-  }
-
-  @Override
-  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
-    TileEntity te = world.getTileEntity(pos);
-    if (te instanceof IPaintable.IPaintableTileEntity) {
-      ((IPaintableTileEntity) te).setPaintSource(paintSource);
-    }
-  }
-
-  @Override
-  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
-    PainterUtil2.setSourceBlock(stack, paintSource);
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
-    if (te instanceof IPaintable.IPaintableTileEntity) {
-      return ((IPaintableTileEntity) te).getPaintSource();
-    }
-    return null;
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
-    return PainterUtil2.getSourceBlock(stack);
   }
 
   @Override
@@ -304,7 +276,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
       @Nonnull QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
-    if (blockLayer == null || PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {
+    if (blockLayer == null || PaintUtil.canRenderInLayer(paintSource, blockLayer)) {
       quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource), paintSource, MathHelper.getPositionRandom(pos));
     }
     return null;

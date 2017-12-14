@@ -3,9 +3,12 @@ package crazypants.enderio.base.paint;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.BlockEnder;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.Optional.Interface;
@@ -20,7 +23,12 @@ public interface IPaintable {
    * (Re-)Paints a block that exists in the world. It's the caller's responsibility to check that the paint source is valid and appropriate, and to trigger a
    * world re-render.
    */
-  void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource);
+  default void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
+    IPaintable.IPaintableTileEntity te = BlockEnder.getAnyTileEntity(world, pos, IPaintable.IPaintableTileEntity.class);
+    if (te != null) {
+      te.setPaintSource(paintSource);
+    }
+  }
 
   /**
    * (Re-)Paints an item stack. It's the caller's responsibility to check that the paint source is valid and appropriate.
@@ -28,13 +36,20 @@ public interface IPaintable {
    * The given block is the block of the item in the stack. It is given to save the method the effort to get it out of the stack when the caller already had to
    * do it.
    */
-  void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource);
+  default void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
+    PaintUtil.setSourceBlock(stack, paintSource);
+  }
 
   /**
    * Gets the paint source from a block that exists in the world. Will return null if the block is not painted.
    */
-  @Nullable
-  IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos);
+  default @Nullable IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    IPaintable.IPaintableTileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos, IPaintable.IPaintableTileEntity.class);
+    if (te != null) {
+      return te.getPaintSource();
+    }
+    return null;
+  }
 
   /**
    * Gets the paint source from an item stack. Will return null if the item stack is not painted.
@@ -42,8 +57,9 @@ public interface IPaintable {
    * The given block is the block of the item in the stack. It is given to save the method the effort to get it out of the stack when the caller already had to
    * do it.
    */
-  @Nullable
-  IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack);
+  default @Nullable IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
+    return PaintUtil.getSourceBlock(stack);
+  }
 
   /**
    * A block that can be painted with a texture. It keeps its model, but applies the texture from the paint source to it.
@@ -54,6 +70,14 @@ public interface IPaintable {
 
   @Interface(iface = "team.chisel.ctm.api.IFacade", modid = "ctm-api")
   public static interface IBlockPaintableBlock extends IPaintable, team.chisel.ctm.api.IFacade {
+
+    @Override
+    @Nonnull
+    default IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
+      final IBlockState blockState = world.getBlockState(pos);
+      IBlockState paintSource = getPaintSource(blockState, world, pos);
+      return paintSource != null ? paintSource : blockState;
+    }
 
   }
 

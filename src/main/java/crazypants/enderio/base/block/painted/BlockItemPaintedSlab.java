@@ -2,7 +2,7 @@ package crazypants.enderio.base.block.painted;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -93,7 +93,7 @@ public class BlockItemPaintedSlab extends ItemBlock {
       BlockSlab.EnumBlockHalf blockslab$enumblockhalf = iblockstate.getValue(BlockSlab.HALF);
       IBlockState iblockstate1 = this.doubleSlab.getDefaultState();
       IBlockState paintSource = singleSlab.getPaintSource(iblockstate, worldIn, pos);
-      IBlockState paintSource1 = PainterUtil2.getSourceBlock(stack);
+      IBlockState paintSource1 = PaintUtil.getSourceBlock(stack);
 
       final AxisAlignedBB collisionBoundingBox = iblockstate1.getCollisionBoundingBox(worldIn, pos);
       if ((collisionBoundingBox == null || worldIn.checkNoEntityCollision(collisionBoundingBox)) && worldIn.setBlockState(pos, iblockstate1, 3)) {

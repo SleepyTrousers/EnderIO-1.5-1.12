@@ -39,7 +39,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetectorUpgrade
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.base.paint.PainterUtil2.IWithPaintName;
+import crazypants.enderio.base.paint.PaintUtil.IWithPaintName;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.HelmetPainterTemplate;
 import crazypants.enderio.base.render.IHasPlayerRenderer;

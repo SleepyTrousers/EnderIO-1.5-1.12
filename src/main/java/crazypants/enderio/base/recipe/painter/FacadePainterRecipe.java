@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.base.paint.PaintTooltipUtil;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
@@ -29,18 +29,18 @@ public class FacadePainterRecipe extends AbstractPainterTemplate<ItemConduitFaca
     if (Prep.isInvalid(target) || Prep.isInvalid(paintSource)) {
       return new ResultStack[0];
     }
-    Block paintBlock = PainterUtil2.getBlockFromItem(paintSource);
+    Block paintBlock = PaintUtil.getBlockFromItem(paintSource);
     if (paintBlock == null) {
       return new ResultStack[0];
     }
-    IBlockState paintState = PainterUtil2.Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(paintSource, paintBlock);
+    IBlockState paintState = PaintUtil.Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(paintSource, paintBlock);
     if (paintState == null) {
       return new ResultStack[0];
     }
 
     ItemStack result = target.copy();
     result.setCount(1);
-    PainterUtil2.setSourceBlock(result, paintState);
+    PaintUtil.setSourceBlock(result, paintState);
 
     return new ResultStack[] { new ResultStack(result) };
   }

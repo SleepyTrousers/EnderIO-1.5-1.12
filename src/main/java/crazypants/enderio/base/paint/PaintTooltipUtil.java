@@ -66,13 +66,13 @@ public class PaintTooltipUtil {
     if (Prep.isInvalid(stack)) {
       return false;
     }
-    return PainterUtil2.isPainted(stack) || Block.getBlockFromItem(stack.getItem()) instanceof IPaintable || paintables.contains(stack);
+    return PaintUtil.isPainted(stack) || Block.getBlockFromItem(stack.getItem()) instanceof IPaintable || paintables.contains(stack);
   }
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void addTooltip(@Nonnull ItemTooltipEvent evt) {
     if (isPaintable(evt.getItemStack())) {
-      evt.getToolTip().add(PainterUtil2.getTooltTipText(evt.getItemStack()));
+      evt.getToolTip().add(PaintUtil.getTooltTipText(evt.getItemStack()));
     }
   }
 

@@ -27,7 +27,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import static crazypants.enderio.util.NbtValue.BLOCKSTATE;
 
-public class PainterUtil2 {
+public class PaintUtil {
 
   public static boolean isValid(@Nonnull ItemStack paintSource, Block target) {
     boolean solidPaint = false;

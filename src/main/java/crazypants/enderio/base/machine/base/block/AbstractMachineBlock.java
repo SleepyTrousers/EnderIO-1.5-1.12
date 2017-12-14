@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.BlockEio;
@@ -16,7 +15,6 @@ import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.paint.PainterUtil2;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
@@ -238,45 +236,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   // ///////////////////////////////////////////////////////////////////////
   // PAINT START
   // ///////////////////////////////////////////////////////////////////////
-
-  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
-    NullHelper.notnull(world, "Hey, how should I get you a block state without a world or position?");
-    NullHelper.notnull(pos, "Hey, how should I get you a block state without a world or position?");
-    IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
-    return paintSource != null ? paintSource : NullHelper.notnullM(world.getBlockState(pos), "world.getBlockState(pos)");
-  }
-
-  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
-    if (this instanceof IPaintable) {
-      T te = getTileEntity(world, pos);
-      if (te instanceof IPaintable.IPaintableTileEntity) {
-        ((IPaintable.IPaintableTileEntity) te).setPaintSource(paintSource);
-      }
-    }
-  }
-
-  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
-    if (this instanceof IPaintable) {
-      PainterUtil2.setSourceBlock(stack, paintSource);
-    }
-  }
-
-  public @Nullable IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    if (this instanceof IPaintable) {
-      T te = getTileEntitySafe(world, pos);
-      if (te instanceof IPaintable.IPaintableTileEntity) {
-        return ((IPaintable.IPaintableTileEntity) te).getPaintSource();
-      }
-    }
-    return null;
-  }
-
-  public @Nullable IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
-    if (this instanceof IPaintable) {
-      return PainterUtil2.getSourceBlock(stack);
-    }
-    return null;
-  }
 
   @Override
   public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {

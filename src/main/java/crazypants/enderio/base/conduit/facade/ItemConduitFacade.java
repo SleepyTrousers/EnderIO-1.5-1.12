@@ -14,7 +14,7 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.FacadePainterRecipe;
 import crazypants.enderio.base.registry.Registry;
@@ -81,11 +81,11 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
 
       BlockPos placeAt = pos.offset(side);
 
-      if (player.canPlayerEdit(placeAt, side, stack) && PainterUtil2.getSourceBlock(stack) != null) {
+      if (player.canPlayerEdit(placeAt, side, stack) && PaintUtil.getSourceBlock(stack) != null) {
         if (world.isAirBlock(placeAt)) {
           world.setBlockState(placeAt, conduitBlock.getDefaultState());
           IConduitBundle bundle = NullHelper.notnullM((IConduitBundle) world.getTileEntity(placeAt), "placing block yielded no tileentity");
-          IBlockState bs = PainterUtil2.getSourceBlock(stack);
+          IBlockState bs = PaintUtil.getSourceBlock(stack);
           bundle.setFacadeType(EnumFacadeType.values()[stack.getItemDamage()]);
           bundle.setPaintSource(bs);
           ConduitUtil.playPlaceSound(bs.getBlock().getSoundType(), world, pos.getX(), pos.getY(), pos.getZ());

@@ -26,7 +26,7 @@ public class PaintSourceValidator {
     if (Prep.isInvalid(paintSource)) {
       return false;
     }
-    Block block = PainterUtil2.getBlockFromItem(paintSource);
+    Block block = PaintUtil.getBlockFromItem(paintSource);
     if (block == null) {
       return false;
     }

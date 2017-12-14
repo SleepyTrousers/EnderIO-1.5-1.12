@@ -3,18 +3,16 @@ package crazypants.enderio.base.material.glass;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.block.painted.TileEntityPaintedBlock;
 import crazypants.enderio.base.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
+import crazypants.enderio.base.block.painted.TileEntityPaintedBlock;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -133,7 +131,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   @Override
   public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
       @Nonnull ItemStack stack) {
-    setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
+    setPaintSource(state, world, pos, PaintUtil.getSourceBlock(stack));
     if (!world.isRemote) {
       IBlockState bs = world.getBlockState(pos);
       world.notifyBlockUpdate(pos, bs, bs, 3);
@@ -145,7 +143,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
     List<ItemStack> drops = super.getDrops(world, pos, state, fortune);
     for (ItemStack drop : drops) {
       if (drop != null) {
-        PainterUtil2.setSourceBlock(drop, getPaintSource(state, world, pos));
+        PaintUtil.setSourceBlock(drop, getPaintSource(state, world, pos));
       }
     }
     return drops;
@@ -155,42 +153,8 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   public @Nonnull ItemStack getPickBlock(@Nonnull IBlockState bs, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
       @Nonnull EntityPlayer player) {
     final ItemStack pickBlock = super.getPickBlock(bs, target, world, pos, player);
-    PainterUtil2.setSourceBlock(pickBlock, getPaintSource(world.getBlockState(pos), world, pos));
+    PaintUtil.setSourceBlock(pickBlock, getPaintSource(world.getBlockState(pos), world, pos));
     return pickBlock;
-  }
-
-  @Override
-  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
-    TileEntity te = world.getTileEntity(pos);
-    if (te instanceof IPaintable.IPaintableTileEntity) {
-      ((IPaintableTileEntity) te).setPaintSource(paintSource);
-    }
-  }
-
-  @Override
-  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
-    PainterUtil2.setSourceBlock(stack, paintSource);
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
-    if (te instanceof IPaintable.IPaintableTileEntity) {
-      return ((IPaintableTileEntity) te).getPaintSource();
-    }
-    return null;
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
-    return PainterUtil2.getSourceBlock(stack);
-  }
-
-  @SuppressWarnings("null")
-  @Override
-  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
-    IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
-    return paintSource != null ? paintSource : world.getBlockState(pos);
   }
 
   @Override

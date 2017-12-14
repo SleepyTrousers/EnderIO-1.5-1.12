@@ -18,7 +18,7 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.paint.render.PaintRegistry;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -220,7 +220,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   public void onBlockPlacedBy(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase placer,
       @Nonnull ItemStack stack) {
     setTypeFromMeta(worldIn, pos, stack.getMetadata());
-    setPaintSource(state, worldIn, pos, PainterUtil2.getSourceBlock(stack));
+    setPaintSource(state, worldIn, pos, PaintUtil.getSourceBlock(stack));
     setRotation(worldIn, pos, EnumFacing.fromAngle(placer.rotationYaw));
     setMobType(worldIn, pos, CapturedMob.create(stack));
     if (!worldIn.isRemote) {
@@ -258,7 +258,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
     CapturedMob mobType = getMobType(world, pos);
     ItemStack drop = mobType != null ? mobType.toStack(Item.getItemFromBlock(this), getMetaForStack(world, pos), 1)
         : new ItemStack(Item.getItemFromBlock(this), 1, getMetaForStack(world, pos));
-    PainterUtil2.setSourceBlock(drop, getPaintSource(world.getBlockState(pos), world, pos));
+    PaintUtil.setSourceBlock(drop, getPaintSource(world.getBlockState(pos), world, pos));
     return drop;
   }
 
@@ -283,9 +283,9 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   @Override
   public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
     if (defaultPaints.get(EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()).ordinal()) == paintSource) {
-      PainterUtil2.setSourceBlock(stack, null);
+      PaintUtil.setSourceBlock(stack, null);
     } else {
-      PainterUtil2.setSourceBlock(stack, paintSource);
+      PaintUtil.setSourceBlock(stack, paintSource);
     }
   }
 
@@ -303,7 +303,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
 
   @Override
   public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
-    IBlockState paintSource = PainterUtil2.getSourceBlock(stack);
+    IBlockState paintSource = PaintUtil.getSourceBlock(stack);
     return paintSource != null ? paintSource : defaultPaints.get(EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()).ordinal());
   }
 
@@ -484,7 +484,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nullable BlockRenderLayer blockLayer, @Nonnull QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
-    if ((blockLayer == null || PainterUtil2.canRenderInLayer(paintSource, blockLayer))
+    if ((blockLayer == null || PaintUtil.canRenderInLayer(paintSource, blockLayer))
         && (paintSource == null || paintSource.getBlock() != blockFusedQuartz.getBlock())) {
       quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource, getRotation(world, pos)), paintSource, MathHelper.getPositionRandom(pos));
     }

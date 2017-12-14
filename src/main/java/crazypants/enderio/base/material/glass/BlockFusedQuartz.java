@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.paint.PainterUtil2.IWithPaintName;
+import crazypants.enderio.base.paint.PaintUtil.IWithPaintName;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.ITintedBlock;
 import crazypants.enderio.base.render.ITintedItem;

@@ -29,7 +29,7 @@ import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode.IconHolder;
 import crazypants.enderio.base.machine.task.ContinuousTask;
 import crazypants.enderio.base.paint.IPaintable.IPaintableTileEntity;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.power.EnergyTank;
 import crazypants.enderio.base.power.ILegacyPoweredTile;
 import crazypants.enderio.base.power.IPowerStorage;
@@ -162,9 +162,9 @@ class TOPData {
     }
 
     if (tileEntity instanceof IPaintableTileEntity) {
-      paint1 = PainterUtil2.getPaintAsStack(((IPaintableTileEntity) tileEntity).getPaintSource());
+      paint1 = PaintUtil.getPaintAsStack(((IPaintableTileEntity) tileEntity).getPaintSource());
       if (tileEntity instanceof TileEntityTwicePaintedBlock) {
-        paint2 = PainterUtil2.getPaintAsStack(((TileEntityTwicePaintedBlock) tileEntity).getPaintSource2());
+        paint2 = PaintUtil.getPaintAsStack(((TileEntityTwicePaintedBlock) tileEntity).getPaintSource2());
       }
       isPainted = Prep.isValid(paint1) || Prep.isValid(paint2);
     }

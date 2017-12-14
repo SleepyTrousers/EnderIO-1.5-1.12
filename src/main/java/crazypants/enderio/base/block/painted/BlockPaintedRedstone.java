@@ -5,13 +5,12 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.paint.render.PaintRegistry;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -20,7 +19,6 @@ import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.util.Prep;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockCompressedPowered;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -129,7 +127,7 @@ public abstract class BlockPaintedRedstone extends BlockCompressedPowered
   public @Nonnull List<ItemStack> getDrops(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
     List<ItemStack> drops = super.getDrops(world, pos, state, fortune);
     for (ItemStack drop : drops) {
-      PainterUtil2.setSourceBlock(NullHelper.notnullM(drop, "null stack from getDrops()"), getPaintSource(state, world, pos));
+      PaintUtil.setSourceBlock(NullHelper.notnullM(drop, "null stack from getDrops()"), getPaintSource(state, world, pos));
     }
     return drops;
   }
@@ -142,7 +140,7 @@ public abstract class BlockPaintedRedstone extends BlockCompressedPowered
   @Override
   public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
       @Nonnull ItemStack stack) {
-    setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
+    setPaintSource(state, world, pos, PaintUtil.getSourceBlock(stack));
     if (!world.isRemote) {
       world.notifyBlockUpdate(pos, state, state, 3);
     }
@@ -152,35 +150,8 @@ public abstract class BlockPaintedRedstone extends BlockCompressedPowered
   public @Nonnull ItemStack getPickBlock(@Nonnull IBlockState state, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
       @Nonnull EntityPlayer player) {
     final ItemStack pickBlock = super.getPickBlock(state, target, world, pos, player);
-    PainterUtil2.setSourceBlock(pickBlock, getPaintSource(state, world, pos));
+    PaintUtil.setSourceBlock(pickBlock, getPaintSource(state, world, pos));
     return pickBlock;
-  }
-
-  @Override
-  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
-    TileEntity te = world.getTileEntity(pos);
-    if (te instanceof IPaintable.IPaintableTileEntity) {
-      ((IPaintableTileEntity) te).setPaintSource(paintSource);
-    }
-  }
-
-  @Override
-  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
-    PainterUtil2.setSourceBlock(stack, paintSource);
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
-    if (te instanceof IPaintable.IPaintableTileEntity) {
-      return ((IPaintableTileEntity) te).getPaintSource();
-    }
-    return null;
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
-    return PainterUtil2.getSourceBlock(stack);
   }
 
   @Override
@@ -189,12 +160,6 @@ public abstract class BlockPaintedRedstone extends BlockCompressedPowered
     blockStateWrapper.addCacheKey(0);
     blockStateWrapper.bakeModel();
     return blockStateWrapper;
-  }
-
-  @Override
-  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
-    IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
-    return paintSource != null ? paintSource : world.getBlockState(pos);
   }
 
   @Override

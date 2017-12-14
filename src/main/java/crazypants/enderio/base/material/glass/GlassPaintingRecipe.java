@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.recipe.painter.BasicPainterTemplate;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
@@ -41,7 +41,7 @@ public class GlassPaintingRecipe extends BasicPainterTemplate<BlockPaintedFusedQ
       return Prep.getEmpty();
     }
 
-    Block paintBlock = PainterUtil2.getBlockFromItem(paintSource);
+    Block paintBlock = PaintUtil.getBlockFromItem(paintSource);
     Block targetBlock = Block.getBlockFromItem(target.getItem());
     if (paintBlock == null || targetBlock == Blocks.AIR) {
       return Prep.getEmpty();

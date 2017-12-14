@@ -7,7 +7,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PaintTooltipUtil;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
@@ -35,7 +35,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
 
   @Override
   public boolean isRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
-    return isValidTarget(target) && PainterUtil2.isValid(paintSource, getTargetBlock(target));
+    return isValidTarget(target) && PaintUtil.isValid(paintSource, getTargetBlock(target));
   }
 
   @Override
@@ -44,9 +44,9 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
       return isValidTarget(target);
     }
     if (Prep.isInvalid(target)) {
-      return PainterUtil2.isValid(paintSource, getTargetBlock(Prep.getEmpty()));
+      return PaintUtil.isValid(paintSource, getTargetBlock(Prep.getEmpty()));
     }
-    return isValidTarget(target) && PainterUtil2.isValid(paintSource, getTargetBlock(target));
+    return isValidTarget(target) && PaintUtil.isValid(paintSource, getTargetBlock(target));
   }
 
   @Override
@@ -55,11 +55,11 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
     if (Prep.isInvalid(target) || Prep.isInvalid(paintSource) || targetBlock == null) {
       return new ResultStack[0];
     }
-    Block paintBlock = PainterUtil2.getBlockFromItem(paintSource);
+    Block paintBlock = PaintUtil.getBlockFromItem(paintSource);
     if (paintBlock == null) {
       return new ResultStack[0];
     }
-    IBlockState paintState = PainterUtil2.Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(paintSource, paintBlock);
+    IBlockState paintState = PaintUtil.Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(paintSource, paintBlock);
     if (paintState == null) {
       return new ResultStack[0];
     }
@@ -74,11 +74,11 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
     } else if (result.getItem() == target.getItem() && target.hasTagCompound()) {
       result.setTagCompound(NullHelper.notnullM(target.getTagCompound(), "ItemStack.getTagCompound() after .hasTagCompound()").copy());
 
-      Block realresult = PainterUtil2.getBlockFromItem(result);
+      Block realresult = PaintUtil.getBlockFromItem(result);
       if (realresult instanceof IPaintable) {
         ((IPaintable) realresult).setPaintSource(realresult, result, null);
       } else {
-        PainterUtil2.setSourceBlock(result, null);
+        PaintUtil.setSourceBlock(result, null);
       }
     }
     return new ResultStack[] { new ResultStack(result) };
@@ -99,7 +99,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
       return isValidTarget(input.item);
     }
     if (input.slotNumber == 1) {
-      return PainterUtil2.isValid(input.item, resultBlock);
+      return PaintUtil.isValid(input.item, resultBlock);
     }
     return false;
   }
@@ -113,7 +113,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
       return Prep.getEmpty();
     }
 
-    Block paintBlock = PainterUtil2.getBlockFromItem(paintSource);
+    Block paintBlock = PaintUtil.getBlockFromItem(paintSource);
     Block targetBlock = Block.getBlockFromItem(target.getItem());
     if (paintBlock == null || targetBlock == Blocks.AIR) {
       return Prep.getEmpty();
