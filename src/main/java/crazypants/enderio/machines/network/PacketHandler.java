@@ -18,6 +18,8 @@ import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machines.machine.killera.PacketSwing;
 import crazypants.enderio.machines.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.machines.machine.sagmill.PacketGrindingBall;
+import crazypants.enderio.machines.machine.tank.PacketTankFluid;
+import crazypants.enderio.machines.machine.tank.PacketTankVoidMode;
 import crazypants.enderio.machines.machine.wireless.PacketStoredEnergy;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
@@ -55,7 +57,7 @@ public class PacketHandler {
   }
 
   public static void init(FMLInitializationEvent event) {
-    INSTANCE.registerMessage(new PacketConfigSyncNewHandler(Config.F), PacketConfigSyncNew.class, PacketHandler.nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(new PacketConfigSyncNewHandler(Config.F), PacketConfigSyncNew.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketBurnTime.class, PacketBurnTime.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketCombustionTank.class, PacketCombustionTank.class, nextID(), Side.CLIENT);
@@ -69,6 +71,8 @@ public class PacketHandler {
     PacketHandler.INSTANCE.registerMessage(PacketObeliskFx.class, PacketObeliskFx.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketGrindingBall.class, PacketGrindingBall.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketStoredEnergy.class, PacketStoredEnergy.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketTankFluid.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketTankVoidMode.class, PacketTankVoidMode.class, PacketHandler.nextID(), Side.SERVER);
 
   }
 

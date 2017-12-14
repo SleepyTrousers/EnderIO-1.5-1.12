@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.tank;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
 
@@ -18,14 +20,9 @@ public class PacketTankFluid extends MessageTileEntity<TileTank> implements IMes
   public PacketTankFluid() {
   }
 
-  public PacketTankFluid(TileTank tile) {
+  public PacketTankFluid(@Nonnull TileTank tile) {
     super(tile);
-    nbtRoot = new NBTTagCompound();
-    if(tile.tank.getFluidAmount() > 0) {
-      NBTTagCompound tankRoot = new NBTTagCompound();
-      tile.tank.writeToNBT(tankRoot);
-      nbtRoot.setTag("tank", tankRoot);
-    }
+    nbtRoot = tile.tank.writeToNBT(new NBTTagCompound());
   }
 
   @Override
@@ -44,14 +41,8 @@ public class PacketTankFluid extends MessageTileEntity<TileTank> implements IMes
   public IMessage onMessage(PacketTankFluid message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     TileTank tile = message.getTileEntity(player.world);
-    if(tile == null) {
-      return null;
-    }
-    if(message.nbtRoot.hasKey("tank")) {
-      NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("tank");
-      tile.tank.readFromNBT(tankRoot);
-    } else {
-      tile.tank.setFluid(null);
+    if (tile != null) {
+      tile.tank.readFromNBT(message.nbtRoot);
     }
     return null;
   }

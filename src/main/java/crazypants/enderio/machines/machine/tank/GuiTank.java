@@ -90,7 +90,6 @@ public class GuiTank extends GuiMachineBase<TileTank> {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;

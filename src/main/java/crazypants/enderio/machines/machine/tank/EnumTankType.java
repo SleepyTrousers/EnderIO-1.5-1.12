@@ -8,6 +8,7 @@ import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.fluid.ItemTankHelper;
 import crazypants.enderio.machines.config.config.TankConfig;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.item.ItemStack;
@@ -57,6 +58,20 @@ public enum EnumTankType implements IStringSerializable {
 
   public @Nonnull String getSuffix() {
     return suffix;
+  }
+
+  static void saveTank(ItemStack stack, SmartTank tank) {
+    ItemTankHelper.setTank(stack, tank);
+  }
+
+  static SmartTank loadTank(ItemStack stack) {
+    if (stack.hasTagCompound()) {
+      SmartTank tank = ItemTankHelper.getTank(stack);
+      if (tank != null) {
+        return tank;
+      }
+    }
+    return getType(stack).getTank();
   }
 
 }

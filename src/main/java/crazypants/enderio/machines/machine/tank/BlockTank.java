@@ -12,7 +12,6 @@ import com.enderio.core.common.BlockEnder;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
@@ -46,8 +45,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank>
     implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
   public static BlockTank create(@Nonnull IModObject modObject) {
-    PacketHandler.INSTANCE.registerMessage(PacketTankFluid.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketTankVoidMode.class, PacketTankVoidMode.class, PacketHandler.nextID(), Side.SERVER);
     BlockTank res = new BlockTank(modObject);
     res.init();
     return res;

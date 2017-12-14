@@ -7,9 +7,10 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.fluid.SmartTank;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.fluid.ItemTankHelper;
 import crazypants.enderio.base.lang.LangFluid;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -18,14 +19,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -51,10 +46,12 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull Item par1, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    ItemStack stack = new ItemStack(this, 1, 0);
-    par3List.add(stack);
-    stack = new ItemStack(this, 1, 1);
-    par3List.add(stack);
+    NNList.of(EnumTankType.class).apply(new Callback<EnumTankType>() {
+      @Override
+      public void apply(@Nonnull EnumTankType e) {
+        par3List.add(new ItemStack(BlockItemTank.this, 1, EnumTankType.getMeta(e)));
+      }
+    });
   }
 
   @Override
@@ -64,7 +61,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
 
   @Override
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    SmartTank tank = loadTank(itemstack);
+    SmartTank tank = EnumTankType.loadTank(itemstack);
     if (!tank.isEmpty()) {
       list.add(LangFluid.MB(tank.getFluid(), tank.getCapacity()));
     }
@@ -75,90 +72,9 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
     ((IAdvancedTooltipProvider) block).addDetailedEntries(itemstack, entityplayer, list, flag);
   }
 
-  private SmartTank loadTank(ItemStack stack) {
-    if (stack.hasTagCompound()) {
-      SmartTank tank = ItemTankHelper.getTank(stack);
-      if (tank != null) {
-        return tank;
-      }
-    }
-    return EnumTankType.getType(stack).getTank();
-  }
-
-  private void saveTank(ItemStack stack, SmartTank tank) {
-    if (!stack.hasTagCompound()) {
-      stack.setTagCompound(new NBTTagCompound());
-    }
-    ItemTankHelper.setTank(stack, tank);
-  }
-
   @Override
   public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
-    return new CapabilityProvider(stack);
+    return new TankItemFluidCapability(stack);
   }
 
-  private class CapabilityProvider implements IFluidHandlerItem, ICapabilityProvider {
-    protected final @Nonnull ItemStack container;
-
-    private CapabilityProvider(@Nonnull ItemStack container) {
-      this.container = container;
-    }
-
-    @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T) this : null;
-    }
-
-    @Override
-    public IFluidTankProperties[] getTankProperties() {
-      return loadTank(container).getTankProperties();
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-      if (container.getCount() != 1) {
-        return 0;
-      }
-      SmartTank tank = loadTank(container);
-      int ret = tank.fill(resource, doFill);
-      saveTank(container, tank);
-      return ret;
-    }
-
-    @Override
-    @Nullable
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
-      if (container.getCount() != 1) {
-        return null;
-      }
-      SmartTank tank = loadTank(container);
-      FluidStack ret = tank.drain(resource, doDrain);
-      saveTank(container, tank);
-      return ret;
-    }
-
-    @Override
-    @Nullable
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-      if (container.getCount() != 1) {
-        return null;
-      }
-      SmartTank tank = loadTank(container);
-      FluidStack ret = tank.drain(maxDrain, doDrain);
-      saveTank(container, tank);
-      return ret;
-    }
-
-    @Override
-    public @Nonnull ItemStack getContainer() {
-      return container;
-    }
-
-  }
 }

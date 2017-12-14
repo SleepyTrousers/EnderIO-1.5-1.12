@@ -14,21 +14,18 @@ import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerTank extends AbstractMachineContainer<TileTank> {
 
-  static private final Things slotItems = new Things().add(Items.WATER_BUCKET).add(Items.LAVA_BUCKET).add(Fluids.NUTRIENT_DISTILLATION.getBucket())
-      .add(Fluids.HOOTCH.getBucket()).add(Fluids.ROCKET_FUEL.getBucket()).add(Fluids.FIRE_WATER.getBucket());
+  static private final Things slotItemsFull = new Things().addAll(Fluids.getAllBuckets());
+  static private final Things slotItemsEmpty = new Things().add(Items.BUCKET);
   static private final Things mendables = new Things("minecraft:iron_shovel", "minecraft:iron_pickaxe", "minecraft:iron_axe", "minecraft:iron_sword",
       "minecraft:iron_hoe", "minecraft:iron_helmet", "minecraft:iron_chestplate", "minecraft:iron_leggings", "minecraft:iron_boots", "minecraft:bow");
 
-  // only used on client where there can only be one GUI open at any given time
-  private static Slot inFull, inEmpty, outEmpty, outFull;
+  private static final int inFull = 0, inEmpty = 1, trashcan = 2, outEmpty = 3, outFull = 4;
 
   public ContainerTank(@Nonnull InventoryPlayer playerInv, @Nonnull TileTank te) {
     super(playerInv, te);
@@ -36,23 +33,9 @@ public class ContainerTank extends AbstractMachineContainer<TileTank> {
 
   @Override
   protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
-    addSlotToContainer(inFull = new Slot(getInv(), 0, 44, 21) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack itemStack) {
-        return getInv().isItemValidForSlot(0, itemStack);
-      }
-    });
-    addSlotToContainer(inEmpty = new Slot(getInv(), 1, 116, 21) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack itemStack) {
-        return getInv().isItemValidForSlot(1, itemStack);
-      }
-    });
-    addSlotToContainer(new Slot(getInv(), 2, 10000, 10000) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack itemStack) {
-        return getInv().isItemValidForSlot(2, itemStack);
-      }
+    addSlotToContainer(new InventorySlot(getInv(), inFull, 44, 21));
+    addSlotToContainer(new InventorySlot(getInv(), inEmpty, 116, 21));
+    addSlotToContainer(new InventorySlot(getInv(), trashcan, 10000, 10000) {
 
       @Override
       @SideOnly(Side.CLIENT)
@@ -67,29 +50,19 @@ public class ContainerTank extends AbstractMachineContainer<TileTank> {
       }
 
     });
-    addSlotToContainer(outEmpty = new Slot(getInv(), 3, 44, 52) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack itemStack) {
-        return getInv().isItemValidForSlot(3, itemStack);
-      }
-    });
-    addSlotToContainer(outFull = new Slot(getInv(), 4, 116, 52) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack itemStack) {
-        return getInv().isItemValidForSlot(4, itemStack);
-      }
-    });
+    addSlotToContainer(new InventorySlot(getInv(), outEmpty, 44, 52));
+    addSlotToContainer(new InventorySlot(getInv(), outFull, 116, 52));
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(slotItems.getItemStacks(), inFull));
-    if (getTe().tank.isEmpty() || getTe().tank.getFluid().getFluid() != Fluids.XP_JUICE.getFluid()) {
-      slots.add(new GhostBackgroundItemSlot(Items.BUCKET, inEmpty));
+    slots.add(new GhostBackgroundItemSlot(slotItemsFull.getItemStacks(), getSlotFromInventory(inFull)));
+    if (getTe().tank.isEmpty() || !getTe().tank.hasFluid(Fluids.XP_JUICE.getFluid())) {
+      slots.add(new GhostBackgroundItemSlot(slotItemsEmpty.getItemStacks(), getSlotFromInventory(inEmpty)));
     } else {
-      slots.add(new GhostBackgroundItemSlot(mendables.getItemStacks(), inEmpty));
+      slots.add(new GhostBackgroundItemSlot(mendables.getItemStacks(), getSlotFromInventory(inEmpty)));
     }
-    slots.add(new GhostBackgroundItemSlot(Items.BUCKET, outEmpty));
-    slots.add(new GhostBackgroundItemSlot(slotItems.getItemStacks(), outFull));
+    slots.add(new GhostBackgroundItemSlot(slotItemsEmpty.getItemStacks(), getSlotFromInventory(outEmpty)));
+    slots.add(new GhostBackgroundItemSlot(slotItemsFull.getItemStacks(), getSlotFromInventory(outFull)));
   }
 
 }
