@@ -7,8 +7,6 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
@@ -20,10 +18,11 @@ import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.machine.modes.IoMode;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
 import crazypants.enderio.machines.lang.Lang;
+import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -110,7 +109,7 @@ public class GuiVat extends GuiInventoryMachineBase<TileVat> {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     TileVat vat = getTileEntity();
@@ -184,16 +183,16 @@ public class GuiVat extends GuiInventoryMachineBase<TileVat> {
     int x = guiLeft + 76;
     int y = guiTop + 34;
 
-    GL11.glEnable(GL11.GL_BLEND);
-    GL11.glColor4f(1, 1, 1, 0.75f * (1f - progress));
+    GlStateManager.enableBlend();
+    GlStateManager.color(1, 1, 1, 0.75f * (1f - progress));
     drawTexturedModalRect(x, y, inputIcon, 26, 28);
 
-    GL11.glColor4f(1, 1, 1, 0.75f * progress);
+    GlStateManager.color(1, 1, 1, 0.75f * progress);
     drawTexturedModalRect(x, y, outputIcon, 26, 28);
 
-    GL11.glDisable(GL11.GL_BLEND);
+    GlStateManager.disableBlend();
 
-    GL11.glColor4f(1, 1, 1, 1);
+    GlStateManager.color(1, 1, 1, 1);
     bindGuiTexture();
     drawTexturedModalRect(x, y, 0, 256 - 28, 26, 28);
   }

@@ -21,6 +21,9 @@ import crazypants.enderio.machines.machine.sagmill.PacketGrindingBall;
 import crazypants.enderio.machines.machine.tank.PacketTankFluid;
 import crazypants.enderio.machines.machine.tank.PacketTankVoidMode;
 import crazypants.enderio.machines.machine.vacuum.PacketVaccumChest;
+import crazypants.enderio.machines.machine.vat.PacketDumpTank;
+import crazypants.enderio.machines.machine.vat.PacketTanks;
+import crazypants.enderio.machines.machine.vat.PacketVatProgress;
 import crazypants.enderio.machines.machine.wireless.PacketStoredEnergy;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
@@ -75,6 +78,9 @@ public class PacketHandler {
     PacketHandler.INSTANCE.registerMessage(PacketTankFluid.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketTankVoidMode.class, PacketTankVoidMode.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketVaccumChest.Handler.class, PacketVaccumChest.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketTanks.class, PacketTanks.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketVatProgress.class, PacketVatProgress.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketDumpTank.class, PacketDumpTank.class, PacketHandler.nextID(), Side.SERVER);
 
   }
 

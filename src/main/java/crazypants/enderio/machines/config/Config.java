@@ -17,6 +17,7 @@ import crazypants.enderio.machines.config.config.SoulBinderConfig;
 import crazypants.enderio.machines.config.config.SpawnerConfig;
 import crazypants.enderio.machines.config.config.TankConfig;
 import crazypants.enderio.machines.config.config.VacuumConfig;
+import crazypants.enderio.machines.config.config.VatConfig;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
 import crazypants.enderio.machines.network.PacketHandler;
 
@@ -58,5 +59,6 @@ public final class Config {
     VacuumConfig.F.getClass();
     ZombieGenConfig.F.getClass();
     TankConfig.F.getClass();
+    VatConfig.F.getClass();
   }
 }

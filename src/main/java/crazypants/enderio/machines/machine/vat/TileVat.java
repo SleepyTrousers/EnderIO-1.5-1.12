@@ -15,12 +15,13 @@ import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
+import crazypants.enderio.machines.config.config.VatConfig;
+import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -38,12 +39,10 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_USE;
 @Storable
 public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
-  public static final int BUCKET_VOLUME = 1000;
-
   @Store
-  final @Nonnull SmartTank inputTank = new SmartTank(BUCKET_VOLUME * 8);
+  final @Nonnull SmartTank inputTank = new SmartTank(VatConfig.vatInputTankSize.get());
   @Store
-  final @Nonnull SmartTank outputTank = new SmartTank(BUCKET_VOLUME * 8);
+  final @Nonnull SmartTank outputTank = new SmartTank(VatConfig.vatOutputTankSize.get());
 
   private static int IO_MB_TICK = 100;
 
@@ -124,8 +123,12 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
 
   @Override
   protected boolean canInsertResultFluid(@Nonnull ResultStack fluid) {
-    int res = outputTank.fillInternal(fluid.fluid, false);
-    return res >= fluid.fluid.amount;
+    final FluidStack fluid2 = fluid.fluid;
+    if (fluid2 != null) {
+      return outputTank.fillInternal(fluid2, false) >= fluid2.amount;
+    } else {
+      return false;
+    }
   }
 
   @Override
@@ -133,7 +136,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
     MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots() + 1];
     int fromSlot = slotDefinition.minInputSlot;
     for (int i = 0; i < res.length - 1; i++) {
-      res[i] = new MachineRecipeInput(fromSlot, inventory[fromSlot]);
+      res[i] = new MachineRecipeInput(fromSlot, getStackInSlot(fromSlot));
       fromSlot++;
     }
 

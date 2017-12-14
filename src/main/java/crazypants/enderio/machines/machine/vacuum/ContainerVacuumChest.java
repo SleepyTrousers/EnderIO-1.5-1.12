@@ -10,17 +10,16 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.Type;
+import com.enderio.core.common.inventory.EnderSlot;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.filter.items.BasicFilterTypes;
-
-import com.enderio.core.common.inventory.EnderSlot;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
 public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, TileVacuumChest> {
 
-  private @Nonnull Slot filterSlot;
+  private Slot filterSlot;
   private Runnable filterChangedCB;
 
   public ContainerVacuumChest(@Nonnull InventoryPlayer inventory, final @Nonnull TileVacuumChest te) {
@@ -46,7 +45,7 @@ public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, Tile
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(BasicFilterTypes.filterUpgradeBasic.getStack(), filterSlot));
+    slots.add(new GhostBackgroundItemSlot(BasicFilterTypes.filterUpgradeBasic.getStack(), NullHelper.notnull(filterSlot, "slot awol")));
   }
 
   @Override
