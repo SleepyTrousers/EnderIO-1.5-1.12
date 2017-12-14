@@ -1363,6 +1363,7 @@ public final class Config {
         "If true, the item count will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
 
     CapacitorKey.processConfig(config);
+    BaseConfig.load();
     BaseConfig.F.setConfig(config);
   }
 

@@ -3,6 +3,7 @@ package crazypants.enderio.base.config;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,7 +26,7 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnection
 
 public class ValueFactory {
 
-  protected final @Nonnull ThreadedNetworkWrapper network;
+  protected final @Nonnull Supplier<ThreadedNetworkWrapper> network;
   protected Configuration config = null;
   protected boolean inInit = false;
   protected Map<String, Object> serverConfig = null;
@@ -33,7 +34,7 @@ public class ValueFactory {
   protected final @Nonnull NNList<AbstractValue<?>> syncValues = new NNList<>();
   protected final @Nonnull NNList<AbstractValue<?>> preloadValues = new NNList<>();
 
-  public ValueFactory(@Nonnull ThreadedNetworkWrapper network) {
+  public ValueFactory(@Nonnull Supplier<ThreadedNetworkWrapper> network) {
     MinecraftForge.EVENT_BUS.register(this);
     this.network = network;
   }
@@ -223,7 +224,7 @@ public class ValueFactory {
 
   @SubscribeEvent
   public void onPlayerLoggon(final PlayerLoggedInEvent evt) {
-    network.sendTo(new PacketConfigSyncNew(this), (EntityPlayerMP) evt.player);
+    network.get().sendTo(new PacketConfigSyncNew(this), (EntityPlayerMP) evt.player);
     Log.info("Sent config to player " + evt.player.getDisplayNameString());
   }
 
