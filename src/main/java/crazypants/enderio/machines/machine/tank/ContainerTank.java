@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerTank extends AbstractMachineContainer<TileTank> {
 
-  static private final Things slotItemsFull = new Things().addAll(Fluids.getAllBuckets());
+  static private final Things slotItemsFull = new Things().add(Fluids.getAllBuckets());
   static private final Things slotItemsEmpty = new Things().add(Items.BUCKET);
   static private final Things mendables = new Things("minecraft:iron_shovel", "minecraft:iron_pickaxe", "minecraft:iron_axe", "minecraft:iron_sword",
       "minecraft:iron_hoe", "minecraft:iron_helmet", "minecraft:iron_chestplate", "minecraft:iron_leggings", "minecraft:iron_boots", "minecraft:bow");
