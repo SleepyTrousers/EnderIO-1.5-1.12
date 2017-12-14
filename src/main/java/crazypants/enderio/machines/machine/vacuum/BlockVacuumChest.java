@@ -9,9 +9,7 @@ import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.paint.PainterUtil2;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -32,7 +30,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +43,6 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
     IRedstoneConnectable, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
 
   public static BlockVacuumChest create(@Nonnull IModObject modObject) {
-    PacketHandler.INSTANCE.registerMessage(PacketVaccumChest.Handler.class, PacketVaccumChest.class, PacketHandler.nextID(), Side.SERVER);
     BlockVacuumChest res = new BlockVacuumChest(modObject);
     res.init();
     return res;
@@ -153,9 +149,9 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
   public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase placer,
       @Nonnull ItemStack stack) {
     if (!world.isRemote) {
-      TileEntity te = world.getTileEntity(pos);
-      if (te instanceof TileVacuumChest) {
-        ((TileVacuumChest) te).readFromItemStack(stack);
+      TileVacuumChest te = getTileEntity(world, pos);
+      if (te != null) {
+        te.readFromItemStack(stack);
         world.notifyBlockUpdate(pos, state, state, 3);
       }
     }
@@ -201,40 +197,6 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
   // ///////////////////////////////////////////////////////////////////////
   // PAINT START
   // ///////////////////////////////////////////////////////////////////////
-
-  @SuppressWarnings("null")
-  @Override
-  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
-    IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
-    return paintSource != null ? paintSource : world.getBlockState(pos);
-  }
-
-  @Override
-  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
-    TileVacuumChest te = getTileEntity(world, pos);
-    if (te != null) {
-      te.setPaintSource(paintSource);
-    }
-  }
-
-  @Override
-  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
-    PainterUtil2.setSourceBlock(stack, paintSource);
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    TileVacuumChest te = getTileEntitySafe(world, pos);
-    if (te != null) {
-      return te.getPaintSource();
-    }
-    return null;
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
-    return PainterUtil2.getSourceBlock(stack);
-  }
 
   @Override
   public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {

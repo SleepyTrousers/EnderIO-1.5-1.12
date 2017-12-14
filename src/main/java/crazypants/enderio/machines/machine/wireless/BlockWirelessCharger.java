@@ -8,7 +8,7 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -20,7 +20,6 @@ import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.util.ClientUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -28,7 +27,6 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -133,7 +131,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
     TileWirelessCharger te = getTileEntity(world, pos);
     if (te != null) {
       te.readFromItemStack(stack);
-      te.setPaintSource(PainterUtil2.getSourceBlock(stack));
+      te.setPaintSource(PaintUtil.getSourceBlock(stack));
     }
   }
 
@@ -142,45 +140,12 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
     if (te != null) {
       te.writeToItemStack(drop);
     }
-    PainterUtil2.setSourceBlock(drop, getPaintSource(world.getBlockState(pos), world, pos));
+    PaintUtil.setSourceBlock(drop, getPaintSource(world.getBlockState(pos), world, pos));
   }
 
   // ///////////////////////////////////////////////////////////////////////
   // PAINT START
   // ///////////////////////////////////////////////////////////////////////
-
-  @Override
-  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
-    IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
-    return paintSource != null ? paintSource : world.getBlockState(pos);
-  }
-
-  @Override
-  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
-    TileWirelessCharger te = getTileEntity(world, pos);
-    if (te != null) {
-      te.setPaintSource(paintSource);
-    }
-  }
-
-  @Override
-  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
-    PainterUtil2.setSourceBlock(stack, paintSource);
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    TileWirelessCharger te = getTileEntitySafe(world, pos);
-    if (te != null) {
-      return te.getPaintSource();
-    }
-    return null;
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
-    return PainterUtil2.getSourceBlock(stack);
-  }
 
   @Override
   public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {

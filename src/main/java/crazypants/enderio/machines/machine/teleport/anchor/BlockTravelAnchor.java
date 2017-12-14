@@ -14,7 +14,7 @@ import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -34,7 +34,6 @@ import crazypants.enderio.machines.machine.teleport.GuiTravelAuth;
 import crazypants.enderio.machines.machine.teleport.packet.PacketDrainStaff;
 import crazypants.enderio.machines.machine.teleport.telepad.render.TelePadRenderMapper;
 import crazypants.enderio.util.ClientUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -162,7 +161,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
       if (te instanceof TileTravelAnchor) {
         TileTravelAnchor ta = (TileTravelAnchor) te;
         ta.setPlacedBy((EntityPlayer) entity);
-        IBlockState bs = PainterUtil2.getSourceBlock(stack);
+        IBlockState bs = PaintUtil.getSourceBlock(stack);
         ta.setPaintSource(bs);
         te.getWorld().notifyBlockUpdate(pos, state, state, 3);
       }
@@ -220,7 +219,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   @Override
   protected void processDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable TileTravelAnchor anchor, @Nonnull ItemStack drop) {
-    PainterUtil2.setSourceBlock(drop, getPaintSource(getDefaultState(), world, pos));
+    PaintUtil.setSourceBlock(drop, getPaintSource(getDefaultState(), world, pos));
   }
 
   @Override
@@ -241,39 +240,6 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   // ///////////////////////////////////////////////////////////////////////
   // PAINT START
   // ///////////////////////////////////////////////////////////////////////
-
-  @Override
-  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
-    IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
-    return paintSource != null ? paintSource : world.getBlockState(pos);
-  }
-
-  @Override
-  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
-    T te = getTileEntity(world, pos);
-    if (te != null) {
-      ((IPaintable.IPaintableTileEntity) te).setPaintSource(paintSource);
-    }
-  }
-
-  @Override
-  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
-    PainterUtil2.setSourceBlock(stack, paintSource);
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    T te = getTileEntitySafe(world, pos);
-    if (te != null) {
-      return ((IPaintable.IPaintableTileEntity) te).getPaintSource();
-    }
-    return null;
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
-    return PainterUtil2.getSourceBlock(stack);
-  }
 
   @Override
   public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {
