@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.fluid.BlockFluidEnder;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
@@ -168,11 +169,33 @@ public enum Fluids {
   }
 
   public @Nonnull ItemStack getBucket() {
+    return getBucket(getFluid());
+  }
+
+  public static @Nonnull ItemStack getBucket(@Nonnull Fluid fluid) {
     final UniversalBucket universalBucket = ForgeModContainer.getInstance().universalBucket;
     if (universalBucket == null) {
       throw new NullPointerException("Forge Universal Bucket is missing");
     }
-    return UniversalBucket.getFilledBucket(universalBucket, getFluid());
+    return UniversalBucket.getFilledBucket(universalBucket, fluid);
+  }
+
+  public static @Nonnull NNList<ItemStack> getBuckets() {
+    NNList<ItemStack> result = new NNList<>();
+    for (Fluids fluid : values()) {
+      if (FluidRegistry.getBucketFluids().contains(fluid.getFluid())) {
+        result.add(getBucket(fluid.getFluid()));
+      }
+    }
+    return result;
+  }
+
+  public static @Nonnull NNList<ItemStack> getAllBuckets() {
+    NNList<ItemStack> result = new NNList<>();
+    for (Fluid fluid : FluidRegistry.getBucketFluids()) {
+      result.add(getBucket(NullHelper.notnullF(fluid, "FluidRegistry.getBucketFluids() has null fluid")));
+    }
+    return result;
   }
 
   @SubscribeEvent(priority = EventPriority.HIGH)
