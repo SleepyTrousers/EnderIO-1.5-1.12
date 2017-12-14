@@ -34,7 +34,7 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.conduitprobe.ItemConduitProbe;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
@@ -333,7 +333,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
           bundle.getFacadeType();
           // use the facade
           ret = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, EnumFacadeType.getMetaFromType(bundle.getFacadeType()));
-          PainterUtil2.setSourceBlock(ret, bundle.getPaintSource());
+          PaintUtil.setSourceBlock(ret, bundle.getPaintSource());
         }
       }
     }
@@ -538,7 +538,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     if (YetaUtil.isSolidFacadeRendered(te, player)) {
       breakBlock = false;
       ItemStack fac = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, EnumFacadeType.getMetaFromType(te.getFacadeType()));
-      PainterUtil2.setSourceBlock(fac, te.getPaintSource());
+      PaintUtil.setSourceBlock(fac, te.getPaintSource());
       drop.add(fac);
 
       ConduitUtil.playBreakSound(te.getPaintSource().getBlock().getSoundType(), world, pos.getX(), pos.getY(), pos.getZ());
@@ -807,7 +807,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       return false;
     }
 
-    IBlockState facadeID = PainterUtil2.getSourceBlock(player.getHeldItem(hand));
+    IBlockState facadeID = PaintUtil.getSourceBlock(player.getHeldItem(hand));
     if (facadeID == null) {
       return false;
     }
@@ -820,7 +820,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       }
       if (!world.isRemote && !player.capabilities.isCreativeMode) {
         ItemStack drop = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, EnumFacadeType.getMetaFromType(bundle.getFacadeType()));
-        PainterUtil2.setSourceBlock(drop, bundle.getPaintSource());
+        PaintUtil.setSourceBlock(drop, bundle.getPaintSource());
         if (!player.inventory.addItemStackToInventory(drop)) {
           ItemUtil.spawnItemInWorldWithRandomMotion(world, drop, pos, hitX, hitY, hitZ, 1.2f);
         }
@@ -1111,40 +1111,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   // PAINT
-
-  @Override
-  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
-    TileEntity te = world.getTileEntity(pos);
-    if (te instanceof IPaintable.IPaintableTileEntity) {
-      ((IPaintableTileEntity) te).setPaintSource(paintSource);
-    }
-  }
-
-  @Override
-  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
-    PainterUtil2.setSourceBlock(stack, paintSource);
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    TileEntity te = getTileEntitySafe(world, pos);
-    if (te instanceof IPaintable.IPaintableTileEntity) {
-      return ((IPaintableTileEntity) te).getPaintSource();
-    }
-    return null;
-  }
-
-  @Override
-  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
-    return PainterUtil2.getSourceBlock(stack);
-  }
-
-  @SuppressWarnings("null")
-  @Override
-  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
-    IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
-    return paintSource != null ? paintSource : world.getBlockState(pos);
-  }
 
   @Override
   public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {

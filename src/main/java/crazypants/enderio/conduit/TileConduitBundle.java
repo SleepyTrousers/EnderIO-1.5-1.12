@@ -36,7 +36,7 @@ import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.geom.Offsets;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.paint.PainterUtil2;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
@@ -124,7 +124,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
     nbtRoot.setTag("conduits", conduitTags);
     if(facade != null) {
-      PainterUtil2.writeNbt(nbtRoot, facade);
+      PaintUtil.writeNbt(nbtRoot, facade);
       nbtRoot.setString("facadeType", facadeType.name());
     }
     
@@ -150,7 +150,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
         }
       }
     }
-    facade = PainterUtil2.readNbt(nbtRoot);
+    facade = PaintUtil.readNbt(nbtRoot);
     if (facade != null) {
       if (nbtRoot.hasKey("facadeType")) { // backwards compat, never true in freshly placed bundles
         facadeType = EnumFacadeType.valueOf(nbtRoot.getString("facadeType"));
