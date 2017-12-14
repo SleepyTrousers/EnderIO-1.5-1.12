@@ -21,7 +21,10 @@ import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.sound.SoundHelper;
+import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.base.xp.XpUtil;
+import crazypants.enderio.machines.config.config.TankConfig;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -30,6 +33,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -192,16 +196,20 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     if (!shouldDoWorkThisTick(20)) {
       return false;
     }
-    if (inventory[2] != null && canVoidItems()) {
-      inventory[2] = null;
+    if (Prep.isValid(getStackInSlot(2)) && canVoidItems()) {
+      getStackInSlot(2).shrink(1);
+      if (TankConfig.tankSmeltTrashIntoLava.get() && !tank.isFull() && tank.hasFluid(FluidRegistry.LAVA)) {
+        tank.addFluidAmount(world.rand.nextInt(10) + 1);
+      }
+      SoundHelper.playSound(world, pos, SoundHelper.BLOCK_CENTER, SoundRegistry.ITEM_BURN, 0.4F, 2.0F + world.rand.nextFloat() * 0.4F);
       markDirty();
     }
     return drainFullContainer() || fillEmptyContainer() || mendItem();
   }
 
   private boolean canBeMended(ItemStack stack) {
-    return stack != null && stack.isItemDamaged() && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0 && !tank.isEmpty()
-        && tank.getFluid().getFluid() == Fluids.XP_JUICE.getFluid();
+    return stack != null && stack.isItemDamaged() && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0
+        && tank.hasFluid(Fluids.XP_JUICE.getFluid());
   }
 
   private boolean mendItem() {

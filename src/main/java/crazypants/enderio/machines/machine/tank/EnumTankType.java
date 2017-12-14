@@ -7,22 +7,24 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.machines.config.config.TankConfig;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 
 public enum EnumTankType implements IStringSerializable {
 
-  NORMAL(16000, false, ""),
-  ADVANCED(32000, true, ".advanced");
+  NORMAL(TankConfig.tankSizeNormal, false, ""),
+  ADVANCED(TankConfig.tankSizeAdvanced, true, ".advanced");
 
   public static final @Nonnull PropertyEnum<EnumTankType> KIND = PropertyEnum.<EnumTankType> create("kind", EnumTankType.class);
 
-  private final int size;
+  private final IValue<Integer> size;
   private final boolean explosionResistant;
   private final @Nonnull String suffix;
 
-  private EnumTankType(int size, boolean explosionResistant, @Nonnull String suffix) {
+  private EnumTankType(IValue<Integer> size, boolean explosionResistant, @Nonnull String suffix) {
     this.size = size;
     this.explosionResistant = explosionResistant;
     this.suffix = suffix;
@@ -46,7 +48,7 @@ public enum EnumTankType implements IStringSerializable {
   }
 
   public @Nonnull SmartTank getTank() {
-    return new SmartTank(size);
+    return new SmartTank(size.get());
   }
 
   public boolean isExplosionResistant() {
