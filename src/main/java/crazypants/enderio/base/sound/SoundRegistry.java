@@ -22,6 +22,7 @@ public enum SoundRegistry implements IModSound {
   TELEPAD(SoundCategory.BLOCKS, "telepad.teleport"),
   TRAVEL_SOURCE_BLOCK(SoundCategory.BLOCKS, new ResourceLocation("entity.endermen.teleport")),
   TRAVEL_SOURCE_ITEM(SoundCategory.PLAYERS, new ResourceLocation("entity.endermen.teleport")),
+  ITEM_BURN(SoundCategory.BLOCKS, new ResourceLocation("entity.generic.burn")),
 
   ;
 
