@@ -1,12 +1,15 @@
 package crazypants.enderio.machines.config;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.base.config.ValueFactory;
 import crazypants.enderio.base.config.ValueFactory.IValue;
-import crazypants.enderio.base.config.config.ChargerConfig;
 import crazypants.enderio.machines.config.config.ClientConfig;
 import crazypants.enderio.machines.config.config.KillerJoeConfig;
 import crazypants.enderio.machines.config.config.SolarConfig;
@@ -22,7 +25,12 @@ public final class Config {
 
   public static final Section sectionCapacitor = new Section("", "capacitor");
 
-  public static final ValueFactory F = new ValueFactory(PacketHandler.INSTANCE);
+  public static final ValueFactory F = new ValueFactory(new Supplier<ThreadedNetworkWrapper>() {
+    @Override
+    public ThreadedNetworkWrapper get() {
+      return PacketHandler.INSTANCE;
+    }
+  });
 
   public static final IValue<Boolean> registerRecipes = new IValue<Boolean>() {
     @Override
@@ -40,9 +48,8 @@ public final class Config {
 
   //
 
-  static {
+  public static void load() {
     // force sub-configs to be classloaded with the main config
-    ChargerConfig.F.getClass();
     ClientConfig.F.getClass();
     KillerJoeConfig.F.getClass();
     SolarConfig.F.getClass();

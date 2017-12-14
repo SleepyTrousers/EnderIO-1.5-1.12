@@ -90,6 +90,7 @@ public class ConfigHandler {
   }
 
   private static void processConfig() {
+    Config.load();
     Config.F.setConfig(config);
 
     CapacitorKey.processConfig(config);
