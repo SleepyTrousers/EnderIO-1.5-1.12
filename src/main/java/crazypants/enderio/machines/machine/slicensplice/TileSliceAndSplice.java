@@ -57,11 +57,11 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   }
 
   private @Nonnull ItemStack getAxe() {
-    return inventory[axeIndex];
+    return getStackInSlot(axeIndex);
   }
 
   private @Nonnull ItemStack getShears() {
-    return inventory[shearsIndex];
+    return getStackInSlot(shearsIndex);
   }
 
   @Override
@@ -98,11 +98,13 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
     if (Prep.isValid(tool) && tool.isItemStackDamageable()) {
       tool.damageItem(1, getFakePlayer());
       if (tool.getItemDamage() >= tool.getMaxDamage()) {
-        inventory[toolIndex] = Prep.getEmpty();
+        tool.shrink(1);
       }
+      markDirty();
     }
   }
 
+  @SuppressWarnings("null")
   private @Nonnull EntityLivingBase getFakePlayer() {
     if (fakePlayer == null) {
       fakePlayer = FakePlayerFactory
@@ -116,7 +118,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
     MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots() - 2];
     int fromSlot = slotDefinition.minInputSlot;
     for (int i = 0; i < res.length; i++) {
-      res[i] = new MachineRecipeInput(fromSlot, inventory[fromSlot]);
+      res[i] = new MachineRecipeInput(fromSlot, getStackInSlot(fromSlot));
       fromSlot++;
     }
     return res;
@@ -137,7 +139,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
       return itemstack.getItem() instanceof ItemShears;
     }
 
-    ItemStack currentStackInSlot = inventory[slot];
+    ItemStack currentStackInSlot = getStackInSlot(slot);
     if (Prep.isValid(currentStackInSlot)) {
       return currentStackInSlot.isItemEqual(itemstack);
     }
@@ -145,7 +147,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
     int numSlotsFilled = 0;
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
       if (i >= 0 && i < inventory.length && i != axeIndex && i != shearsIndex) {
-        if (Prep.isValid(inventory[i]) && inventory[i].getCount() > 0) {
+        if (Prep.isValid(getStackInSlot(i))) {
           numSlotsFilled++;
         }
       }
@@ -158,7 +160,6 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   }
 
   private boolean isValidInputForAlloyRecipe(int slot, ItemStack itemstack, int numSlotsFilled, List<IMachineRecipe> recipes) {
-
     ItemStack[] resultInv = new ItemStack[slotDefinition.getNumInputSlots()];
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
       if (i >= 0 && i < inventory.length && i != axeIndex && i != shearsIndex) {

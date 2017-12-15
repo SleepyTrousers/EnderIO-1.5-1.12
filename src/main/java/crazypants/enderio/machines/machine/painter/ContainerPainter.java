@@ -3,9 +3,8 @@ package crazypants.enderio.machines.machine.painter;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.machines.machine.tank.InventorySlot;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class ContainerPainter extends AbstractMachineContainer<TileEntityPainter> {
 
@@ -21,24 +20,9 @@ public class ContainerPainter extends AbstractMachineContainer<TileEntityPainter
 
   @Override
   protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
-    addSlotToContainer(new Slot(getInv(), 0, 67, 34) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack itemStack) {
-        return getInv().isItemValidForSlot(0, itemStack);
-      }
-    });
-    addSlotToContainer(new Slot(getInv(), 1, 38, 34) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack itemStack) {
-        return getInv().isItemValidForSlot(1, itemStack);
-      }
-    });
-    addSlotToContainer(new Slot(getInv(), 2, 121, 34) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack par1ItemStack) {
-        return false;
-      }
-    });
+    addSlotToContainer(new InventorySlot(getInv(), 0, 67, 34));
+    addSlotToContainer(new InventorySlot(getInv(), 1, 38, 34));
+    addSlotToContainer(new InventorySlot(getInv(), 2, 121, 34));
   }
 
 }

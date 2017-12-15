@@ -9,7 +9,6 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.EveryPaintableRecipe;
 import crazypants.enderio.base.render.IBlockStateWrapper;
-import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -36,8 +35,8 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> implem
   @Override
   protected void init() {
     super.init();
-    MachineRecipeRegistry.instance.enableRecipeSorting(MachineObject.block_painter.getUnlocalisedName());
-    MachineRecipeRegistry.instance.registerRecipe(MachineObject.block_painter.getUnlocalisedName(), new EveryPaintableRecipe());
+    MachineRecipeRegistry.instance.enableRecipeSorting(MachineRecipeRegistry.PAINTER);
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new EveryPaintableRecipe());
   }
 
   @Override

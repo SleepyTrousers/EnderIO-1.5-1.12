@@ -51,9 +51,9 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
   public static int NUM_INVENTORY_SLOT = 4 * 9;
 
   static private final Things slotItems1 = new Things().add(Items.WOODEN_AXE).add(Items.STONE_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE)
-      .add(Items.DIAMOND_AXE).add(ModObject.itemDarkSteelAxe.getItem());
+      .add(Items.DIAMOND_AXE).add(ModObject.itemDarkSteelAxe);
   static private final Things slotItems2 = new Things().add(Items.SHEARS).add(Items.SHEARS).add(Items.SHEARS).add(Items.SHEARS)
-      .add(ModObject.itemDarkSteelShears.getItem());
+      .add(ModObject.itemDarkSteelShears);
 
   public static final Point[] INPUT_SLOTS = new Point[] { new Point(44, 40), new Point(62, 40), new Point(80, 40), new Point(44, 58), new Point(62, 58),
       new Point(80, 58), new Point(54, 16), new Point(72, 16) };

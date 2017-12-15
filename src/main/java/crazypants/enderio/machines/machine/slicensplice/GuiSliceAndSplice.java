@@ -2,10 +2,9 @@ package crazypants.enderio.machines.machine.slicensplice;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiSliceAndSplice extends GuiInventoryMachineBase<TileSliceAndSplice> {
@@ -26,7 +25,7 @@ public class GuiSliceAndSplice extends GuiInventoryMachineBase<TileSliceAndSplic
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int k = guiLeft;
     int l = guiTop;
