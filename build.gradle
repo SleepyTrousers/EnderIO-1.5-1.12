@@ -114,10 +114,10 @@ processResources {
 }
 
 compileJava.doFirst {
-    String modFile = 'build/sources/main/java/crazypants/enderio/machine/EnderIOMachines.java'
+    String modFile = 'build/sources/main/java/crazypants/enderio/machines/EnderIOMachines.java'
     File modFileFile = new File(projectDir, modFile) 
     String contents = modFileFile.getText('UTF-8')
-    contents = contents.replaceAll('dependencies = ".*", guiFactory', 'dependencies = "' + project.ext.dependencies + '", guiFactory')
+    contents = contents.replaceAll('dependencies = ".*?"', 'dependencies = "' + project.ext.dependencies + '"')
     modFileFile.write(contents, 'UTF-8')
     
     // This is needed because the classpath contains the dependencies before the api sourceSet. Which is not very nice.
