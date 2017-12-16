@@ -717,6 +717,68 @@ enderio.soulvial.blacklisted.denied=Permission §cdenied§r - this entity is bla
 // There's a 1% change that a soul vial containing a pig is named this:
 enderio.easteregg.piginabottle=Bacon in a Bottle
 
+## Names for random capacitors. These are layered ("level"+"type")xN "baselevel", e.g.
+## "Failed Smelting Simple Hungry Nice Insatiable Impossible Capacitor"
+
+# Types. intake=all machines max power input, buffer=all
+# machines buffer size
+enderio.loot.capacitor.intake=Hungry %s
+enderio.loot.capacitor.buffer=Insatiable %s
+
+# Names for capacitor levels, the number is the upper boundary of the range (e.g. "25" is used for capacitors level 1.51 to 2.5)
+# This is the general level of the capacitor
+enderio.loot.capacitor.baselevel.10=%s Dud
+enderio.loot.capacitor.baselevel.15=%s
+enderio.loot.capacitor.baselevel.25=Enhanced %s
+enderio.loot.capacitor.baselevel.35=Wonder %s
+enderio.loot.capacitor.baselevel.45=Impossible %s
+enderio.loot.capacitor.name=Capacitor
+
+# As above but for the special attribute
+enderio.loot.capacitor.level.10=Failed %s
+enderio.loot.capacitor.level.15=Simple %s
+enderio.loot.capacitor.level.25=Nice %s
+enderio.loot.capacitor.level.30=Good %s
+enderio.loot.capacitor.level.35=Enhanced %s
+enderio.loot.capacitor.level.40=Premium %s
+enderio.loot.capacitor.level.42=Incredibly %s 
+enderio.loot.capacitor.level.45=Unstable %s
+
+enderio.loot.capacitor.entry.count=9
+enderio.loot.capacitor.entry.0=An attached note describes this as "%s"
+enderio.loot.capacitor.entry.1=You can decipher ancient runes that translate roughly as "%s". Odd...
+enderio.loot.capacitor.entry.2=By the power of Enderskull, I have the %s!
+enderio.loot.capacitor.entry.3=If you had to describe this, "%s" would be a good name.
+enderio.loot.capacitor.entry.4=If you had to describe this, "%s" would be a bad name.
+enderio.loot.capacitor.entry.5=This "%s" is the property of Randalf the Tinkerer. Unauthorized removal is unauthorized!
+enderio.loot.capacitor.entry.6=This "%s" is the property of Randalf the Ex-Tinkerer. Unauthorized removal is welcome!
+enderio.loot.capacitor.entry.7=Your "%s" can now be upgraded free of charge to "Capacitor 1". Press ok or abort to do so.
+enderio.loot.capacitor.entry.8=Put this "%s" into different machines to find out what it does. Or ask aunt Google.
+
+enderio.loot.capacitor.title.count=22
+enderio.loot.capacitor.title.0=Remarkable Capacitor
+enderio.loot.capacitor.title.1=Unremarkable Capacitor
+enderio.loot.capacitor.title.2=Found Capacitor
+enderio.loot.capacitor.title.3=Lost Capacitor
+enderio.loot.capacitor.title.4=Ancient Capacitor
+enderio.loot.capacitor.title.5=Magic Capacitor
+enderio.loot.capacitor.title.6=Capacitor of Holding
+enderio.loot.capacitor.title.7=Capacitor of the Southern Winds
+enderio.loot.capacitor.title.8=Capacitor of What is This Doing Here
+enderio.loot.capacitor.title.9=Modified Power Holding Device
+enderio.loot.capacitor.title.10=A Mystery wrapped in tin foil
+enderio.loot.capacitor.title.11=Something wonderful
+enderio.loot.capacitor.title.12=A Capacitor. Maybe
+enderio.loot.capacitor.title.13=Heaven Cent
+enderio.loot.capacitor.title.14=Don't turn it on, take it apart!
+enderio.loot.capacitor.title.15=Not blue. Not a box.
+enderio.loot.capacitor.title.16=Shocking Contraption
+enderio.loot.capacitor.title.17=Technomagical Marvel
+enderio.loot.capacitor.title.18=Unnamed Thing
+enderio.loot.capacitor.title.19=Thing
+enderio.loot.capacitor.title.20=Something
+enderio.loot.capacitor.title.21=Nothing
+
 
 // These keys have not (yet) been confirmed in 1.11
 ;
@@ -1230,70 +1292,6 @@ enderio.easteregg.piginabottle=Bacon in a Bottle
 ;enderio.config.capacitor.crafter_ticks=Crafter: Ticks per crafting operation (will be scaled by the used upgrade capacitor)
 ;
 ;
-;## Names for random capacitors. These are layered ("level"+"type")xN "baselevel", e.g.
-;## "Failed Smelting Simple Hungry Nice Insatiable Impossible Capacitor"
-;
-;# Types. smelting=Alloy Smelter Speed, intake=all machines max power input, buffer=all
-;# machines buffer size, crafting=Crafter speed, area=all machines "area" attribute (e.g. farm),
-;# green=Farming Station area, red=Stirling Generator power generation, mobby=spawner speedup,
-;# crushed=sag mill speed, cleancut=slice'n'splice speed, tight=soul binder speed, aa=painter
-;enderio.loot.capacitor.smelting=Smelting %s
-;enderio.loot.capacitor.intake=Hungry %s
-;enderio.loot.capacitor.buffer=Insatiable %s
-;enderio.loot.capacitor.crafting=Crafty %s
-;enderio.loot.capacitor.area=Big %s
-;enderio.loot.capacitor.green=Planting %s
-;enderio.loot.capacitor.red=Hot %s
-;enderio.loot.capacitor.mobby=Villainous %s
-;enderio.loot.capacitor.crushed=Crushed %s
-;enderio.loot.capacitor.cleancut=Clean Cut %s
-;enderio.loot.capacitor.tight=Tight %s
-;enderio.loot.capacitor.aa=Hiding %s
-;
-;# Names for capacitor levels, the number is the upper boundary of the range (e.g. "25" is used for capacitors level 1.51 to 2.5)
-;# This is the general level of the capacitor
-;enderio.loot.capacitor.baselevel.10=%s Dud
-;enderio.loot.capacitor.baselevel.15=%s
-;enderio.loot.capacitor.baselevel.25=Enhanced %s
-;enderio.loot.capacitor.baselevel.35=Wonder %s
-;enderio.loot.capacitor.baselevel.45=Impossible %s
-;
-;# As above but for the special attribute
-;enderio.loot.capacitor.level.10=Failed %s
-;enderio.loot.capacitor.level.15=Simple %s
-;enderio.loot.capacitor.level.25=Nice %s
-;enderio.loot.capacitor.level.30=Good %s
-;enderio.loot.capacitor.level.35=Enhanced %s
-;enderio.loot.capacitor.level.40=Premium %s
-;enderio.loot.capacitor.level.42=Incredibly %s 
-;enderio.loot.capacitor.level.45=Unstable %s
-;
-;enderio.loot.capacitor.entry.count=8
-;enderio.loot.capacitor.entry.0=An attached note describes this as "%s"
-;enderio.loot.capacitor.entry.1=You can decipher ancient runes that translate roughly as "%s". Odd...
-;enderio.loot.capacitor.entry.2=By the power of Enderskull, I have the %s!
-;enderio.loot.capacitor.entry.3=If you had to describe this, "%s" would be a good name.
-;enderio.loot.capacitor.entry.4=If you had to describe this, "%s" would be a bad name.
-;enderio.loot.capacitor.entry.5=This "%s" is the property of Randalf the Tinkerer. Unauthorized removal is unauthorized!
-;enderio.loot.capacitor.entry.6=This "%s" is the property of Randalf the Ex-Tinkerer. Unauthorized removal is welcome!
-;enderio.loot.capacitor.entry.7=Your "%s" can now be upgraded free of charge to "Capacitor 1". Press ok or abort to do so.
-;
-;enderio.loot.capacitor.title.count=15
-;enderio.loot.capacitor.title.0=Remarkable Capacitor
-;enderio.loot.capacitor.title.1=Unremarkable Capacitor
-;enderio.loot.capacitor.title.2=Found Capacitor
-;enderio.loot.capacitor.title.3=Lost Capacitor
-;enderio.loot.capacitor.title.4=Ancient Capacitor
-;enderio.loot.capacitor.title.5=Magic Capacitor
-;enderio.loot.capacitor.title.6=Capacitor of Holding
-;enderio.loot.capacitor.title.7=Capacitor of the Southern Winds
-;enderio.loot.capacitor.title.8=Capacitor of What is This Doing Here
-;enderio.loot.capacitor.title.9=Modified Power Holding Device
-;enderio.loot.capacitor.title.10=A Mystery wrapped in tin foil
-;enderio.loot.capacitor.title.11=Something wonderful
-;enderio.loot.capacitor.title.12=A Capacitor. Maybe
-;enderio.loot.capacitor.title.13=Heaven Cent
-;enderio.loot.capacitor.title.14=Don't turn it on, take it apart!
 ;
 ;
 ;enderio.remoteinv.chat.set=Target set

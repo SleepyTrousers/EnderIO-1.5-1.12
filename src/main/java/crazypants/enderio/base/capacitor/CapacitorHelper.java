@@ -11,6 +11,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagString;
 
 public class CapacitorHelper {
 
@@ -50,15 +52,15 @@ public class CapacitorHelper {
     if (nbtRoot == null) {
       return null;
     }
-    if (!nbtRoot.hasKey("eiocap", 10)) {
+    if (!nbtRoot.hasKey("eiocap", (new NBTTagFloat(0)).getId())) {
       return null;
     }
     final NBTTagCompound nbtTag = nbtRoot.getCompoundTag("eiocap");
-    if (!nbtTag.hasKey("level", 99)) {
+    if (!nbtTag.hasKey("level", (new NBTTagString()).getId())) {
       return null;
     }
-    final int capLevel = nbtTag.getInteger("level");
-    if (capLevel <= 0 || capLevel > 99) {
+    final float capLevel = nbtTag.getFloat("level");
+    if (capLevel < 0 || capLevel >= 10) {
       return null;
     }
     return new NBTCapacitorData(stack.getItem().getUnlocalizedName(stack), capLevel, nbtTag);
@@ -71,7 +73,7 @@ public class CapacitorHelper {
     TYPE;
   }
 
-  public static @Nonnull ItemStack addCapData(@Nonnull ItemStack stack, @Nonnull SetType setType, @Nullable CapacitorKey key, float value) {
+  public static @Nonnull ItemStack addCapData(@Nonnull ItemStack stack, @Nonnull SetType setType, @Nullable ICapacitorKey key, float value) {
     NBTTagCompound root = stack.getTagCompound();
     if (root == null) {
       root = new NBTTagCompound();
@@ -90,13 +92,14 @@ public class CapacitorHelper {
   private static void addCapData(@Nonnull NBTTagCompound tag, @Nonnull SetType setType, float value) {
     switch (setType) {
     case LEVEL:
-      tag.setInteger("level", (int) value);
+      tag.setFloat("level", value);
+      break;
     default:
       throw new IllegalArgumentException();
     }
   }
 
-  private static void addCapData(@Nonnull NBTTagCompound tag, @Nonnull SetType setType, @Nonnull CapacitorKey key, float value) {
+  private static void addCapData(@Nonnull NBTTagCompound tag, @Nonnull SetType setType, @Nonnull ICapacitorKey key, float value) {
     switch (setType) {
     case NAME:
       tag.setFloat(key.getName(), value);
@@ -127,12 +130,12 @@ public class CapacitorHelper {
     return result;
   }
 
-  public static int getCapLevelRaw(@Nonnull ItemStack stack) {
+  public static float getCapLevelRaw(@Nonnull ItemStack stack) {
     NBTTagCompound tag = stack.getSubCompound("eiocap");
     if (tag == null) {
       return 1;
     }
-    return tag.getInteger("level");
+    return tag.getFloat("level");
   }
 
 }

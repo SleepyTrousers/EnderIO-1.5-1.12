@@ -14,11 +14,6 @@ public enum DefaultCapacitorData implements ICapacitorData {
   public static final @Nonnull ICapacitorData NONE = new ICapacitorData() {
 
     @Override
-    public int getBaseLevel() {
-      return 0;
-    }
-
-    @Override
     public float getUnscaledValue(@Nonnull ICapacitorKey key) {
       return 0;
     }
@@ -57,11 +52,6 @@ public enum DefaultCapacitorData implements ICapacitorData {
 
   @Override
   public float getUnscaledValue(@Nonnull ICapacitorKey key) {
-    return baselevel;
-  }
-
-  @Override
-  public int getBaseLevel() {
     return baselevel;
   }
 

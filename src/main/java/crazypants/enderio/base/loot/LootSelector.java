@@ -49,7 +49,7 @@ public class LootSelector extends LootFunction {
       keys.put(randomKey, randomLevel);
     }
 
-    String name = buildBaseName(EnderIO.lang.localize("itemBasicCapacitor.name"), baselevel);
+    String name = buildBaseName(EnderIO.lang.localize("loot.capacitor.name"), baselevel);
     stack = CapacitorHelper.addCapData(stack, SetType.LEVEL, null, baselevel);
 
     for (Entry<WeightedUpgrade, Float> entry : keys.entrySet()) {

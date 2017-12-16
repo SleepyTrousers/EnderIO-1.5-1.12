@@ -83,14 +83,14 @@ public class AnvilCapacitorRecipe {
       }
     }
 
-    int baselevel = Math.max(CapacitorHelper.getCapLevelRaw(left), CapacitorHelper.getCapLevelRaw(right));
+    float baselevel = Math.max(CapacitorHelper.getCapLevelRaw(left), CapacitorHelper.getCapLevelRaw(right));
     if (baselevel < 5 && rand.nextFloat() < .5f) {
       baselevel++;
     }
 
     ItemStack stack = left.copy();
 
-    String name = LootSelector.buildBaseName(EnderIO.lang.localize("itemBasicCapacitor.name"), baselevel);
+    String name = LootSelector.buildBaseName(EnderIO.lang.localize("loot.capacitor.name"), baselevel);
     stack = CapacitorHelper.addCapData(stack, SetType.LEVEL, null, baselevel);
 
     for (Entry<WeightedUpgrade, Float> entry : result.entrySet()) {
@@ -101,7 +101,7 @@ public class AnvilCapacitorRecipe {
     NbtValue.CAPNAME.setString(stack, name);
 
     evt.setOutput(stack);
-    evt.setCost(baselevel * baselevel);
+    evt.setCost((int) (baselevel * baselevel));
   }
 
   static private float combine(Random rand, Pair<Float, Float> pair) {

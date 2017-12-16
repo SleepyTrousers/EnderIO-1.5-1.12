@@ -8,12 +8,12 @@ import net.minecraft.nbt.NBTTagCompound;
 public class NBTCapacitorData implements ICapacitorData {
 
   private final @Nonnull String unlocalizedName;
-  private final int baselevel;
+  private final float defaultlevel;
   private final @Nonnull NBTTagCompound tag;
 
-  public NBTCapacitorData(@Nonnull String unlocalizedName, int baselevel, @Nonnull NBTTagCompound tag) {
+  public NBTCapacitorData(@Nonnull String unlocalizedName, float defaultlevel, @Nonnull NBTTagCompound tag) {
     this.unlocalizedName = unlocalizedName;
-    this.baselevel = baselevel;
+    this.defaultlevel = defaultlevel;
     this.tag = tag;
   }
 
@@ -36,17 +36,12 @@ public class NBTCapacitorData implements ICapacitorData {
     if (tag.hasKey(key.getValueType().getName(), 99)) {
       return tag.getFloat(key.getValueType().getName());
     }
-    return baselevel;
+    return defaultlevel;
   }
 
   @Override
   public @Nonnull String getLocalizedName() {
     return EnderIO.lang.localizeExact(unlocalizedName + ".name");
-  }
-
-  @Override
-  public int getBaseLevel() {
-    return baselevel;
   }
 
 }

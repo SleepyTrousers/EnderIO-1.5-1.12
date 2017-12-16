@@ -5,36 +5,29 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.capacitor.CapacitorHelper.SetType;
+import crazypants.enderio.base.capacitor.CapacitorKey;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
 import net.minecraft.util.WeightedRandom;
 
 public class WeightedUpgrade {
   static {
-    registerWeightedUpgrade(new WeightedUpgrade(SetType.TYPE, CapacitorKey.LEGACY_ENERGY_INTAKE, "intake"), 20);
-    registerWeightedUpgrade(new WeightedUpgrade(SetType.TYPE, CapacitorKey.LEGACY_ENERGY_BUFFER, "buffer"), 20);
-    // TODO 1.11 put into machine sub-mod
-    // new WeightedUpgrade(SetType.NAME, CapacitorKey.ALLOY_SMELTER_POWER_USE, "smelting", 10);
-    // new WeightedUpgrade(SetType.NAME, CapacitorKey.CRAFTER_TICKS, "crafting", 10);
-    // new WeightedUpgrade(SetType.TYPE, CapacitorKey.ATTRACTOR_RANGE, "area", 5);
-    // new WeightedUpgrade(SetType.NAME, CapacitorKey.FARM_BONUS_SIZE, "green", 10);
-    // new WeightedUpgrade(SetType.NAME, CapacitorKey.STIRLING_POWER_GEN, "red", 10);
-    // new WeightedUpgrade(SetType.NAME, CapacitorKey.SPAWNER_SPEEDUP, "mobby", 5);
-    // new WeightedUpgrade(SetType.NAME, CapacitorKey.SAG_MILL_POWER_USE, "crushed", 15);
-    // new WeightedUpgrade(SetType.NAME, CapacitorKey.SLICE_POWER_USE, "cleancut", 5);
-    // new WeightedUpgrade(SetType.NAME, CapacitorKey.SOUL_BINDER_POWER_USE, "tight", 5);
-    // new WeightedUpgrade(SetType.NAME, CapacitorKey.PAINTER_POWER_USE, "aa", 10);
-
+    registerWeightedUpgrade(SetType.TYPE, CapacitorKey.LEGACY_ENERGY_INTAKE, "intake", 20);
+    registerWeightedUpgrade(SetType.TYPE, CapacitorKey.LEGACY_ENERGY_BUFFER, "buffer", 20);
   }
 
   public final @Nonnull SetType setType;
-  public final @Nonnull CapacitorKey capacitorKey;
+  public final @Nonnull ICapacitorKey capacitorKey;
   public final @Nonnull String langKey;
 
-  private WeightedUpgrade(@Nonnull SetType setType, @Nonnull CapacitorKey capacitorKey, @Nonnull String langKey) {
+  private WeightedUpgrade(@Nonnull SetType setType, @Nonnull ICapacitorKey capacitorKey, @Nonnull String langKey) {
     this.setType = setType;
     this.capacitorKey = capacitorKey;
     this.langKey = "loot.capacitor." + langKey;
+  }
+
+  public static void registerWeightedUpgrade(@Nonnull SetType setType, @Nonnull ICapacitorKey capacitorKey, @Nonnull String langKey, int weight) {
+    registerWeightedUpgrade(new WeightedUpgrade(setType, capacitorKey, langKey), weight);
   }
 
   public static void registerWeightedUpgrade(@Nonnull WeightedUpgrade upgrade, int weight) {

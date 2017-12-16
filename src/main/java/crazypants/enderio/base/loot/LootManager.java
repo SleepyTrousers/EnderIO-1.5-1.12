@@ -8,6 +8,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.material.alloy.Alloy;
+import crazypants.enderio.base.material.material.Material;
 import crazypants.enderio.util.CapturedMob;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -32,7 +33,6 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import static crazypants.enderio.base.init.ModObject.itemAlloyIngot;
 import static crazypants.enderio.base.init.ModObject.itemBasicCapacitor;
 import static crazypants.enderio.base.init.ModObject.itemConduitProbe;
 import static crazypants.enderio.base.init.ModObject.itemTravelStaff;
@@ -60,22 +60,24 @@ public class LootManager {
 
     if (evt.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON)) {
 
-      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.DARK_STEEL.ordinal(), 1, 3, 0.25F));
+      lp.addEntry(createLootEntry(Alloy.DARK_STEEL.getStackIngot(), 1, 3, 0.25F));
       lp.addEntry(createLootEntry(itemConduitProbe.getItemNN(), 0.10F));
       lp.addEntry(createLootEntry(Items.QUARTZ, 3, 16, 0.25F));
       lp.addEntry(createLootEntry(Items.NETHER_WART, 1, 4, 0.20F));
       lp.addEntry(createLootEntry(Items.ENDER_PEARL, 1, 2, 0.30F));
       lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 0.1F));
       lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBoots.getItemNN(), 0.1F));
+      lp.addEntry(createLootEntry(Material.GEAR_WOOD.getStack(), 1, 2, 0.5F));
       lp.addEntry(createLootCapacitor(0.15F));
       lp.addEntry(createLootCapacitor(0.15F));
       lp.addEntry(createLootCapacitor(0.15F));
 
     } else if (evt.getName().equals(LootTableList.CHESTS_ABANDONED_MINESHAFT)) {
 
-      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.DARK_STEEL.ordinal(), 1, 3, 0.05F));
+      lp.addEntry(createLootEntry(Alloy.DARK_STEEL.getStackIngot(), 1, 3, 0.05F));
       lp.addEntry(createLootEntry(Items.ENDER_PEARL, 1, 2, 0.10F));
       lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 0.2F));
+      lp.addEntry(createLootEntry(Material.GEAR_WOOD.getStack(), 1, 2, 0.5F));
       lp.addEntry(createLootCapacitor(0.15F));
       lp.addEntry(createLootCapacitor(0.05F));
       lp.addEntry(createLootEntry(ModObject.blockExitRail.getItemNN(), 1, 2, 0.15F));
@@ -83,6 +85,7 @@ public class LootManager {
     } else if (evt.getName().equals(LootTableList.CHESTS_NETHER_BRIDGE)) {
 
       lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBoots.getItemNN(), 0.1F));
+      lp.addEntry(createLootEntry(Material.GEAR_IRON.getStack(), 1, 2, 0.5F));
       lp.addEntry(createLootCapacitor(0.15F));
 
     } else if (evt.getName().equals(LootTableList.CHESTS_IGLOO_CHEST)) {
@@ -104,11 +107,16 @@ public class LootManager {
 
     } else if (evt.getName().equals(LootTableList.CHESTS_VILLAGE_BLACKSMITH)) {
 
-      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.ELECTRICAL_STEEL.ordinal(), 2, 6, 0.20F));
-      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.REDSTONE_ALLOY.ordinal(), 3, 6, 0.35F));
-      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.DARK_STEEL.ordinal(), 3, 6, 0.35F));
-      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.PULSATING_IRON.ordinal(), 1, 2, 0.3F));
-      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.VIBRANT_ALLOY.ordinal(), 1, 2, 0.2F));
+      lp.addEntry(createLootEntry(Alloy.ELECTRICAL_STEEL.getStackIngot(), 2, 6, 0.20F));
+      lp.addEntry(createLootEntry(Alloy.REDSTONE_ALLOY.getStackIngot(), 3, 6, 0.35F));
+      lp.addEntry(createLootEntry(Alloy.DARK_STEEL.getStackIngot(), 3, 6, 0.35F));
+      lp.addEntry(createLootEntry(Alloy.PULSATING_IRON.getStackIngot(), 1, 2, 0.3F));
+      lp.addEntry(createLootEntry(Alloy.VIBRANT_ALLOY.getStackIngot(), 1, 2, 0.2F));
+      lp.addEntry(createLootEntry(Material.GEAR_WOOD.getStack(), 1, 2, 0.5F));
+      lp.addEntry(createLootEntry(Material.GEAR_STONE.getStack(), 1, 2, 0.4F));
+      lp.addEntry(createLootEntry(Material.GEAR_IRON.getStack(), 1, 2, 0.25F));
+      lp.addEntry(createLootEntry(Material.GEAR_ENERGIZED.getStack(), 1, 2, 0.125F));
+      lp.addEntry(createLootEntry(Material.GEAR_VIBRANT.getStack(), 1, 2, 0.0625F));
       lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 1, 1, 0.25F));
       lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBoots.getItemNN(), 1, 1, 0.25F));
       lp.addEntry(createLootCapacitor(0.1F));
@@ -116,6 +124,7 @@ public class LootManager {
     } else if (evt.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID)) {
 
       lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 0.2F));
+      lp.addEntry(createLootEntry(Material.GEAR_VIBRANT.getStack(), 1, 2, 0.0625F));
       lp.addEntry(createLootEntry(itemTravelStaff.getItemNN(), 0.1F));
       lp.addEntry(createLootCapacitor(25));
 
@@ -130,13 +139,13 @@ public class LootManager {
 
       lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBow.getItemNN(), 1, 1, 0.25F));
       lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelAxe.getItemNN(), 1, 1, 0.25F));
+      lp.addEntry(createLootEntry(Material.GEAR_STONE.getStack(), 1, 2, 0.4F));
       lp.addEntry(createLootCapacitor(0.25F));
       lp.addEntry(createLootEntry(itemTravelStaff.getItemNN(), 1, 1, 0.1F));
 
-      // TODO 1.11 move to sub-mod
-      // if (ModObject.itemSpeciesItemFilter.getItem() != null) {
-      // lp.addEntry(createLootEntry(ModObject.itemSpeciesItemFilter.getItemNN(), 1, 1, 0.5F));
-      // }
+      if (ModObject.itemSpeciesItemFilter.getItem() != null) {
+        lp.addEntry(createLootEntry(ModObject.itemSpeciesItemFilter.getItemNN(), 1, 1, 0.5F));
+      }
 
     } else if (evt.getName().equals(LootTableList.CHESTS_END_CITY_TREASURE)) {
 
@@ -147,6 +156,8 @@ public class LootManager {
                 new LootCondition[] { new RandomChance(.2F) }, "ShulkerSoulVial"));
       }
       lp.addEntry(createLootEntry(ModObject.itemSoulVial.getItemNN(), 1, 3, 0.5F));
+      lp.addEntry(createLootEntry(Material.GEAR_ENERGIZED.getStack(), 1, 2, 0.125F));
+      lp.addEntry(createLootEntry(Material.GEAR_VIBRANT.getStack(), 1, 2, 0.125F));
       lp.addEntry(createLootCapacitor(0.05F));
       lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBow.getItemNN(), 1, 1, 0.25F));
 
@@ -175,6 +186,13 @@ public class LootManager {
       return new LootEntryItem(item, 1, 1, new LootFunction[] { setCount(minStackSize, maxStackSize), setMetadata(meta) }, chanceCond,
           registryName.toString() + ":" + meta);
     }
+  }
+
+  private @Nonnull LootEntry createLootEntry(@Nonnull ItemStack stack, int minStackSize, int maxStackSize, float chance) {
+    LootCondition[] chanceCond = new LootCondition[] { new RandomChance(chance) };
+    final ResourceLocation registryName = NullHelper.notnull(stack.getItem().getRegistryName(), "found unregistered item");
+    return new LootEntryItem(stack.getItem(), 1, 1, new LootFunction[] { setCount(minStackSize, maxStackSize), setMetadata(stack.getMetadata()) }, chanceCond,
+        registryName.toString() + ":" + stack.getMetadata());
   }
 
   private @Nonnull LootEntry createDarkSteelLootEntry(@Nonnull Item item, float chance) {
