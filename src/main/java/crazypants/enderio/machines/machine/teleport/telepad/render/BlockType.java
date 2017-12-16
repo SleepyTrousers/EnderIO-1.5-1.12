@@ -14,7 +14,7 @@ import net.minecraft.util.math.Vec3i;
 public enum BlockType implements IStringSerializable {
 
   SINGLE(null),
-  MASTER(new BlockPos(0,0,0)),
+  MASTER(new BlockPos(0, 0, 0)),
   N(reverseOffsetFor(EnumFacing.NORTH)),
   NE(reverseOffsetFor(EnumFacing.NORTH, EnumFacing.EAST)),
   E(reverseOffsetFor(EnumFacing.EAST)),
@@ -25,44 +25,46 @@ public enum BlockType implements IStringSerializable {
   NW(reverseOffsetFor(EnumFacing.NORTH, EnumFacing.WEST));
 
   private final BlockPos offsetToMaster;
-  
+
   private BlockType(BlockPos offsetToMaster) {
     this.offsetToMaster = offsetToMaster;
   }
-  
+
   public BlockPos getOffsetToMaster() {
     return offsetToMaster;
   }
-  
-  public Vec3i getOffsetFromMaster() {
+
+  public @Nonnull Vec3i getOffsetFromMaster() {
+    if (offsetToMaster == null) {
+      return new Vec3i(0, 0, 0);
+    }
     return new BlockPos(-offsetToMaster.getX(), -offsetToMaster.getY(), -offsetToMaster.getZ());
   }
 
-  public BlockPos getLocationOfMaster(BlockPos loc) {
-    if(offsetToMaster == null) {
+  public BlockPos getLocationOfMaster(@Nonnull BlockPos loc) {
+    if (offsetToMaster == null) {
       return null;
     }
     return loc.add(offsetToMaster.getX(), offsetToMaster.getY(), offsetToMaster.getZ());
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return NullHelper.notnullJ(name().toLowerCase(Locale.US), "toLowerCase returned null!");
   }
-  
+
   private static BlockPos reverseOffsetFor(EnumFacing... dirs) {
     BlockPos res = new BlockPos(0, 0, 0);
-    for(EnumFacing dir : dirs) {      
+    for (EnumFacing dir : dirs) {
       res = res.offset(dir.getOpposite());
     }
     return res;
   }
 
-  @Nonnull
-  public static BlockType getType(int meta) {
-    if(meta < 0 || meta >= values().length) {
+  public static @Nonnull BlockType getType(int meta) {
+    if (meta < 0 || meta >= values().length) {
       return BlockType.SINGLE;
     }
-    return NullHelper.notnullJ(values()[meta], "BlockType value is null!");    
+    return NullHelper.notnullJ(values()[meta], "BlockType value is null!");
   }
 }

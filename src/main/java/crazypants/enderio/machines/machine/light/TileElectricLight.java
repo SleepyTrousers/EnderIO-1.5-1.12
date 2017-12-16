@@ -44,15 +44,6 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
   private boolean lastActive = false;
 
-  @Store
-  private boolean isInvereted;
-
-  @Store
-  private boolean isWireless;
-
-  @Store
-  private boolean requiresPower = true;
-
   private WirelessChargedLocation chargedLocation;
 
   @Store
@@ -87,32 +78,22 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
     this.face = face;
   }
 
-  public void setInverted(boolean inverted) {
-    isInvereted = inverted;
+  private transient LightType lighttype = null;
+
+  public @Nonnull LightType getLightType() {
+    return lighttype != null ? lighttype : (lighttype = world.getBlockState(getPos()).getValue(BlockElectricLight.TYPE));
   }
 
-  public void setRequiresPower(boolean isPowered) {
-    requiresPower = isPowered;
+  public boolean requiresPower() {
+    return getLightType().isPowered();
   }
 
-  public boolean isRequiresPower() {
-    return requiresPower;
-  }
-
-  public void setInvereted(boolean isInvereted) {
-    this.isInvereted = isInvereted;
-  }
-
-  public boolean isInvereted() {
-    return isInvereted;
-  }
-
-  public void setWireless(boolean wireless) {
-    this.isWireless = wireless;
+  public boolean isInverted() {
+    return getLightType().isInverted();
   }
 
   public boolean isWireless() {
-    return isWireless;
+    return getLightType().isWireless();
   }
 
   @Override
@@ -122,8 +103,8 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
       return;
     }
 
-    boolean isActivated = init ? world.isBlockPowered(pos) ^ isInvereted : lastActive;
-    if (requiresPower) {
+    boolean isActivated = init ? world.isBlockPowered(pos) ^ isInverted() : lastActive;
+    if (requiresPower()) {
       if (isActivated) {
         if (!hasPower()) {
           isActivated = false;
@@ -143,7 +124,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
       bs = bs.withProperty(BlockElectricLight.ACTIVE, isActivated);
       world.setBlockState(pos, bs, 2);
 
-      if (requiresPower) {
+      if (requiresPower()) {
         for (BlockPos ln : lightNodes) {
           if (ln != null) {
             bs = world.getBlockState(ln);
@@ -163,7 +144,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
     }
 
-    if (isWireless) {
+    if (isWireless()) {
       if (chargedLocation == null) {
         chargedLocation = new WirelessChargedLocation(this);
       }
@@ -178,7 +159,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
   }
 
   public void onBlockRemoved() {
-    if (!requiresPower) {
+    if (!requiresPower()) {
       return;
     }
     updatingLightNodes = true;
@@ -193,9 +174,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
     Set<BlockPos> before;
     if (lightNodes != null && !lightNodes.isEmpty()) {
       before = new HashSet<BlockPos>(lightNodes.size());
-      for (BlockPos node : lightNodes) {
-        before.add(node);
-      }
+      before.addAll(lightNodes);
     } else {
       before = Collections.emptySet();
     }
@@ -236,8 +215,8 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
         lightNodes.clear();
 
         for (BlockPos entry : after) {
-          if (!before.contains(entry)) {
-            world.setBlockState(entry, block_light_node.getBlock().getDefaultState(), 3);
+          if (!before.contains(entry) && entry != null) {
+            world.setBlockState(entry, block_light_node.getBlockNN().getDefaultState(), 3);
             TileEntity te = world.getTileEntity(entry);
             if (te instanceof TileLightNode) {
               ((TileLightNode) te).setParentPos(getPos());
@@ -248,9 +227,9 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
           }
         }
         for (BlockPos entry : before) {
-          if (!after.contains(entry)) {
+          if (!after.contains(entry) && entry != null) {
             TileEntity te = world.getTileEntity(entry);
-            if ((te instanceof TileLightNode) && (((TileLightNode) te).parent == null || ((TileLightNode) te).parent.equals(getPos()))) {
+            if ((te instanceof TileLightNode) && (((TileLightNode) te).getParentPos().equals(getPos()))) {
               world.setBlockToAir(entry);
             }
           }
@@ -288,7 +267,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
   private void addNodeInDirection(Vector3d offset, Set<BlockPos> result) {
     boolean isAir = isAir(offset);
-    boolean isTransp = isTranparent(offset);
+    boolean isTransp = isTransparent(offset);
     if (isAir || isTransp) {
       offset.scale(2);
       if (isAir(offset)) {
@@ -308,7 +287,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
   private void clearLightNodes() {
     if (lightNodes != null) {
       for (BlockPos ln : lightNodes) {
-        if (world.getBlockState(ln).getBlock() == block_light_node.getBlock()) {
+        if (ln != null && world.getBlockState(ln).getBlock() == block_light_node.getBlock()) {
           world.setBlockToAir(ln);
         }
       }
@@ -323,7 +302,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
     if (isLightNode(offset)) {
       TileLightNode te = (TileLightNode) world.getTileEntity(new BlockPos(x, y, z));
-      if (te != null && te.parent != null && !getPos().equals(te.parent)) {
+      if (te != null && !getPos().equals(te.getParentPos())) {
         // its somebody else's so leave it alone
         return;
       }
@@ -331,17 +310,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
     result.add(new BlockPos(x, y, z));
   }
 
-  private boolean isRailcraftException(Block id) {
-    String className = id.getClass().getName();
-    return className.equals("mods.railcraft.common.blocks.machine.BlockMachine");
-  }
-
-  private boolean isTranparent(Vector3d offset) {
-    Block id = world.getBlockState(new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ() + (int) offset.z))
-        .getBlock();
-    if (isRailcraftException(id)) {
-      return false;
-    }
+  private boolean isTransparent(Vector3d offset) {
     return world.getBlockLightOpacity(new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ() + (int) offset.z)) == 0;
   }
 
@@ -358,7 +327,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
   @Override
   public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-    if (!requiresPower) {
+    if (!requiresPower()) {
       return 0;
     }
     if (energyStoredRF == 0) {
@@ -369,12 +338,12 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
   @Override
   public boolean canConnectEnergy(@Nonnull EnumFacing from) {
-    return requiresPower;
+    return requiresPower();
   }
 
   @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {
-    if (!requiresPower) {
+    if (!requiresPower()) {
       return 0;
     }
     return LEGACY_ENERGY_INTAKE.get(DefaultCapacitorData.BASIC_CAPACITOR);
@@ -382,7 +351,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
   @Override
   public int getEnergyStored() {
-    if (!requiresPower) {
+    if (!requiresPower()) {
       return 0;
     }
     return energyStoredRF;
@@ -390,7 +359,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
   @Override
   public int getMaxEnergyStored() {
-    if (!requiresPower) {
+    if (!requiresPower()) {
       return 0;
     }
     return 100;
@@ -403,11 +372,12 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
   @Override
   public boolean displayPower() {
-    return isRequiresPower();
+    return requiresPower();
   }
 
   @Override
   public @Nonnull BlockPos getLocation() {
     return pos;
   }
+
 }

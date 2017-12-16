@@ -3,9 +3,10 @@ package crazypants.enderio.machines.machine.light;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.BlockEio;
-import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.base.init.IModObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -26,16 +27,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockLightNode extends BlockEio<TileLightNode> {
 
-  public static BlockLightNode create() {
-    BlockLightNode result = new BlockLightNode();
+  public static BlockLightNode create(@Nonnull IModObject modObject) {
+    BlockLightNode result = new BlockLightNode(modObject);
     result.init();
     return result;
   }
 
   public static final @Nonnull PropertyBool ACTIVE = PropertyBool.create("active");
 
-  public BlockLightNode() {
-    super(MachineObject.block_light_node, TileLightNode.class, Material.AIR);
+  public BlockLightNode(@Nonnull IModObject modObject) {
+    super(modObject, TileLightNode.class, Material.AIR);
     setCreativeTab(null);
     setTickRandomly(true);
     setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
@@ -83,7 +84,6 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
 
   @Override
   public AxisAlignedBB getCollisionBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
-
     return null;
   }
 
@@ -132,7 +132,7 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (tab != null) {
       super.getSubBlocks(itemIn, tab, list);
     }

@@ -1,5 +1,8 @@
 package crazypants.enderio.machines.machine.light;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import crazypants.enderio.base.TileEntityEio;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -12,10 +15,10 @@ import static crazypants.enderio.machines.init.MachineObject.block_electric_ligh
 public class TileLightNode extends TileEntityEio {
 
   @Store
-  BlockPos parent;
+  private @Nonnull BlockPos parent = BlockPos.ORIGIN;
 
-  public TileElectricLight getParent() {
-    if (parent == null) {
+  public @Nullable TileElectricLight getParent() {
+    if (parent == BlockPos.ORIGIN) { // yes, identity check. Could be a real parent at 0,0,0 instead
       return null;
     }
     TileEntity te = world.getTileEntity(parent);
@@ -26,7 +29,7 @@ public class TileLightNode extends TileEntityEio {
   }
 
   public void checkParent() {
-    if (hasWorld() && parent != null && world.isBlockLoaded(parent)) {
+    if (hasWorld() && parent != BlockPos.ORIGIN && world.isBlockLoaded(parent)) {
       if (world.getBlockState(parent).getBlock() != block_electric_light.getBlock()) {
         world.setBlockToAir(pos);
       }
@@ -54,6 +57,10 @@ public class TileLightNode extends TileEntityEio {
 
   public void setParentPos(BlockPos pos) {
     parent = pos.toImmutable();
+  }
+
+  public @Nonnull BlockPos getParentPos() {
+    return parent;
   }
 
 }

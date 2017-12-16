@@ -8,7 +8,6 @@ import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyBool;
@@ -38,14 +37,14 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   public static final @Nonnull PropertyBool ACTIVE = PropertyBool.create("active");
   public static final @Nonnull PropertyEnum<EnumFacing> FACING = PropertyEnum.<EnumFacing> create("face", EnumFacing.class);
 
-  public static BlockElectricLight create() {
-    BlockElectricLight result = new BlockElectricLight();
+  public static BlockElectricLight create(@Nonnull IModObject modObject) {
+    BlockElectricLight result = new BlockElectricLight(modObject);
     result.init();
     return result;
   }
 
-  public BlockElectricLight() {
-    super(MachineObject.block_electric_light, TileElectricLight.class);
+  public BlockElectricLight(@Nonnull IModObject modObject) {
+    super(modObject, TileElectricLight.class);
     setLightOpacity(0);
     setDefaultState(blockState.getBaseState().withProperty(TYPE, LightType.ELECTRIC).withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
   }
@@ -97,7 +96,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
 
   @Override
   public ItemBlock createBlockItem(@Nonnull IModObject mo) {
-    return new BlockItemElectricLight(this, mo.getUnlocalisedName());
+    return mo.apply(new BlockItemElectricLight(this));
   }
 
   @Override
@@ -129,7 +128,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
 
   @Override
   public int damageDropped(@Nonnull IBlockState state) {
-    return state.getValue(TYPE).ordinal();
+    return state.getValue(TYPE).getMetadata();
   }
 
   @Override

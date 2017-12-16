@@ -16,33 +16,29 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockItemElectricLight extends ItemBlock implements IResourceTooltipProvider {
 
-  public BlockItemElectricLight(Block block, String name) {
+  public BlockItemElectricLight(Block block) {
     super(block);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
     setHasSubtypes(true);
     setMaxDamage(0);
-    setRegistryName(name);
   }
 
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack par1ItemStack) {
-    int meta = par1ItemStack.getItemDamage();
-    meta = MathHelper.clamp(meta, 0, LightType.values().length - 1);
-    return LightType.values()[meta].unlocName;
+    return getUnlocalizedName() + LightType.fromMetadata(par1ItemStack.getMetadata()).getUnlocalizedSuffix();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull Item par1, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     for (LightType type : LightType.values()) {
-      par3List.add(new ItemStack(this, 1, type.ordinal()));
+      par3List.add(new ItemStack(this, 1, type.getMetadata()));
     }
   }
 
@@ -68,9 +64,6 @@ public class BlockItemElectricLight extends ItemBlock implements IResourceToolti
       if (te instanceof TileElectricLight) {
         TileElectricLight el = ((TileElectricLight) te);
         el.setFace(onFace.getOpposite());
-        el.setInverted(type.isInverted);
-        el.setRequiresPower(type.isPowered);
-        el.setWireless(type.isWireless);
       }
     }
     return true;
