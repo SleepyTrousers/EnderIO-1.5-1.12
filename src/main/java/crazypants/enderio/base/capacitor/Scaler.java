@@ -97,7 +97,7 @@ public interface Scaler {
       }
     }),
     OCTADIC_1_8(new IndexedScaler(.5f, 0, .5f, 1, 3, 2, 4, 8, 10, 16)),
-    POWER(new IndexedScaler(1f, 0, 1, 3, 5, 8, 10)),
+    POWER(new IndexedScaler(1f, 0, 1, 3, 5, 8, 13)),
     SPEED(new IndexedScaler(1f, 100, 20, 10, 2, 1)),
     POWER10(new IndexedScaler(1f, 0, 1, 2, 10, 20)),
     RANGE(new IndexedScaler(1f, 0, 4, 6, 10)),
