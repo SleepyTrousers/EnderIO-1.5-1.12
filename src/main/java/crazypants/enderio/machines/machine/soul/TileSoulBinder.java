@@ -28,6 +28,7 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -36,6 +37,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_SOUND_PITCH;
 
 @Storable
 public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveExperience, ITankAccess, IPaintable.IPaintableTileEntity {
@@ -252,22 +254,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
 
   @Override
   public float getPitch() {
-    float pitch;
-    switch (getCapacitorData().getBaseLevel()) {
-    case 1:
-      pitch = 0.80f;
-      break;
-    case 2:
-      pitch = 0.85f;
-      break;
-    case 3:
-      pitch = 0.90f;
-      break;
-    default:
-      pitch = 1.00f;
-      break;
-    }
-    return pitch + random.nextFloat() * 0.08f - 0.04f;
+    return MathHelper.clamp(0.75f + SOUL_BINDER_SOUND_PITCH.get(getCapacitorData()) * 0.05f + random.nextFloat() * 0.08f - 0.04f, 0.70f, 1.05f);
   }
 
   private SmartTankFluidHandler smartTankFluidHandler;

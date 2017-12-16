@@ -294,3 +294,18 @@ tile.block_vat.tooltip.detailed.line1=Used to brew EnderIO fluids
 tile.block_wireless_charger.name=Wireless Charger
 tile.block_wireless_charger.tooltip.detailed.line1=Charges items in nearby
 tile.block_wireless_charger.tooltip.detailed.line2=players inventories
+
+# Types. smelting=Alloy Smelter Speed,
+# area=all machines "area" attribute (e.g. farm),
+# green=Farming Station area, red=Stirling Generator power generation, mobby=spawner speedup,
+# crushed=sag mill speed, cleancut=slice'n'splice speed, tight=soul binder speed, aa=painter
+enderio.loot.capacitor.smelting=Smelting %s
+enderio.loot.capacitor.area=Big %s
+enderio.loot.capacitor.green=Planting %s
+enderio.loot.capacitor.red=Hot %s
+enderio.loot.capacitor.mobby=Villainous %s
+enderio.loot.capacitor.crushed=Crushed %s
+enderio.loot.capacitor.cleancut=Clean Cut %s
+enderio.loot.capacitor.tight=Tight %s
+enderio.loot.capacitor.aa=Hiding %s
+

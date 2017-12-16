@@ -5,11 +5,13 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.base.capacitor.CapacitorHelper.SetType;
 import crazypants.enderio.base.capacitor.CapacitorKeyHelper;
 import crazypants.enderio.base.capacitor.CapacitorKeyType;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.Scaler;
 import crazypants.enderio.base.config.Config.Section;
+import crazypants.enderio.base.loot.WeightedUpgrade;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraftforge.common.config.Configuration;
@@ -97,6 +99,7 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   SOUL_BINDER_POWER_INTAKE(MachineObject.block_soul_binder, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.QUADRATIC, 1000),
   SOUL_BINDER_POWER_BUFFER(MachineObject.block_soul_binder, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
   SOUL_BINDER_POWER_USE(MachineObject.block_soul_binder, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 500),
+  SOUL_BINDER_SOUND_PITCH(MachineObject.block_soul_binder, CapacitorKeyType.AMOUNT, Scaler.Factory.IDENTITY, 1),
 
   SPAWNER_POWER_INTAKE(MachineObject.block_powered_spawner, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.SPAWNER, 200),
   SPAWNER_POWER_BUFFER(MachineObject.block_powered_spawner, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
@@ -203,6 +206,18 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
 
   public static void processConfig(Configuration config) {
     CapacitorKeyHelper.processConfig(config, values());
+  }
+
+  static {
+    WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, ALLOY_SMELTER_POWER_USE, "smelting", 10);
+    WeightedUpgrade.registerWeightedUpgrade(SetType.TYPE, ATTRACTOR_RANGE, "area", 5);
+    WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, FARM_BONUS_SIZE, "green", 10);
+    WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, STIRLING_POWER_GEN, "red", 10);
+    WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, SPAWNER_SPEEDUP, "mobby", 5);
+    WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, SAG_MILL_POWER_USE, "crushed", 15);
+    WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, SLICE_POWER_USE, "cleancut", 5);
+    WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, SOUL_BINDER_POWER_USE, "tight", 5);
+    WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, PAINTER_POWER_USE, "aa", 10);
   }
 
 }
