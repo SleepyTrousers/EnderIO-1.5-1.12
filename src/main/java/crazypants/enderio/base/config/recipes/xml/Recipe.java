@@ -119,33 +119,37 @@ public class Recipe extends AbstractConditional {
 
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
-    if ("crafting".equals(name)) {
-      if (craftings == null) {
-        craftings = new ArrayList<AbstractConditional>();
+    try {
+      if ("crafting".equals(name)) {
+        if (craftings == null) {
+          craftings = new ArrayList<AbstractConditional>();
+        }
+        craftings.add(factory.read(new Crafting(), startElement));
+        return true;
       }
-      craftings.add(factory.read(new Crafting(), startElement));
-      return true;
-    }
-    if ("smelting".equals(name)) {
-      if (craftings == null) {
-        craftings = new ArrayList<AbstractConditional>();
+      if ("smelting".equals(name)) {
+        if (craftings == null) {
+          craftings = new ArrayList<AbstractConditional>();
+        }
+        craftings.add(factory.read(new Smelting(), startElement));
+        return true;
       }
-      craftings.add(factory.read(new Smelting(), startElement));
-      return true;
-    }
-    if ("casting".equals(name)) {
-      if (craftings == null) {
-        craftings = new ArrayList<AbstractConditional>();
+      if ("casting".equals(name)) {
+        if (craftings == null) {
+          craftings = new ArrayList<AbstractConditional>();
+        }
+        craftings.add(factory.read(new Casting(), startElement));
+        return true;
       }
-      craftings.add(factory.read(new Casting(), startElement));
-      return true;
-    }
-    if ("enchanting".equals(name)) {
-      if (craftings == null) {
-        craftings = new ArrayList<AbstractConditional>();
+      if ("enchanting".equals(name)) {
+        if (craftings == null) {
+          craftings = new ArrayList<AbstractConditional>();
+        }
+        craftings.add(factory.read(new Enchanting(), startElement));
+        return true;
       }
-      craftings.add(factory.read(new Enchanting(), startElement));
-      return true;
+    } catch (InvalidRecipeConfigException e) {
+      throw new InvalidRecipeConfigException(e, "in recipe '" + getName() + "'");
     }
 
     return super.setElement(factory, name, startElement);
