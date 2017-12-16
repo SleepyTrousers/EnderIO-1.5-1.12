@@ -12,7 +12,6 @@ import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagFloat;
-import net.minecraft.nbt.NBTTagString;
 
 public class CapacitorHelper {
 
@@ -52,11 +51,11 @@ public class CapacitorHelper {
     if (nbtRoot == null) {
       return null;
     }
-    if (!nbtRoot.hasKey("eiocap", (new NBTTagFloat(0)).getId())) {
+    if (!nbtRoot.hasKey("eiocap", (new NBTTagCompound()).getId())) {
       return null;
     }
     final NBTTagCompound nbtTag = nbtRoot.getCompoundTag("eiocap");
-    if (!nbtTag.hasKey("level", (new NBTTagString()).getId())) {
+    if (!nbtTag.hasKey("level", (new NBTTagFloat(0)).getId())) {
       return null;
     }
     final float capLevel = nbtTag.getFloat("level");
@@ -123,7 +122,7 @@ public class CapacitorHelper {
     }
     List<Pair<String, Float>> result = new ArrayList<Pair<String, Float>>();
     for (String key : tag.getKeySet()) {
-      if (key != null && tag.hasKey(key, 5)) {
+      if (key != null && !"level".equals(key) && tag.hasKey(key, (new NBTTagFloat(0)).getId())) {
         result.add(Pair.of(key, tag.getFloat(key)));
       }
     }

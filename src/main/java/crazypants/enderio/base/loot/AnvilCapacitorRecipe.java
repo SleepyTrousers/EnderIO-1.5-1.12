@@ -34,7 +34,7 @@ public class AnvilCapacitorRecipe {
     ItemStack right = evt.getRight();
 
     if (Prep.isInvalid(left) || Prep.isInvalid(right) || left.getItem() != itemBasicCapacitor.getItem() || right.getItem() != itemBasicCapacitor.getItem()
-        || left.getMetadata() != 3 || right.getMetadata() != 3) {
+        || left.getMetadata() != 3 || right.getMetadata() != 3 || left.getCount() > right.getCount()) {
       return;
     }
 
@@ -101,7 +101,8 @@ public class AnvilCapacitorRecipe {
     NbtValue.CAPNAME.setString(stack, name);
 
     evt.setOutput(stack);
-    evt.setCost((int) (baselevel * baselevel));
+    evt.setMaterialCost(stack.getCount());
+    evt.setCost((int) (baselevel * baselevel) * stack.getCount());
   }
 
   static private float combine(Random rand, Pair<Float, Float> pair) {
@@ -114,7 +115,7 @@ public class AnvilCapacitorRecipe {
   static private float combine(Random rand, float a, float b) {
     float min = a < b ? a : b;
     float center = a < b ? b : a;
-    float offsetLow = center - min;
+    float offsetLow = Math.max(center - min, 0.1f);
     float max = Math.min(center + offsetLow, 4.75f);
     float offsetHigh = max - center;
 
