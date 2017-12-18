@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.recipe.IRecipe;
+import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.util.Prep;
 import mezz.jei.api.ingredients.IIngredients;
@@ -15,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeWrapper extends BlankRecipeWrapper {
 
-  private final IRecipe recipe;
+  protected final IRecipe recipe;
 
   public RecipeWrapper(IRecipe recipe) {
     this.recipe = recipe;
@@ -60,4 +61,7 @@ public class RecipeWrapper extends BlankRecipeWrapper {
     return recipe;
   }
 
+  public RecipeBonusType getBonusType() {
+    return recipe.getBonusType();
+  }
 }

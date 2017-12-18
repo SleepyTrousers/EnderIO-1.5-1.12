@@ -9,6 +9,7 @@ import crazypants.enderio.base.EnderIO;
 import static crazypants.enderio.base.lang.Lang.POWER;
 import static crazypants.enderio.base.lang.Lang.POWER_OF;
 import static crazypants.enderio.base.lang.Lang.POWER_PERTICK;
+import static crazypants.enderio.base.lang.Lang.POWER_SYMBOL;
 
 public final class LangPower {
 
@@ -48,6 +49,10 @@ public final class LangPower {
 
   public static @Nonnull String RF(float amount) {
     return POWER.get(format(amount));
+  }
+
+  public static @Nonnull String RF() {
+    return POWER_SYMBOL.get();
   }
 
   public static @Nonnull String format(long amount) {

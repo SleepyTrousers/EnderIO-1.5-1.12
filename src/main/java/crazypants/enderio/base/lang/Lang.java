@@ -63,6 +63,7 @@ public enum Lang implements ILang {
   CONDUIT_FILTER_CLEAR_WARNING("itemConduitFilterUpgrade.clearConfigWarning"),
   CONDUIT_FILTER_UPDATED("item.itemExistingItemFilter.filterUpdated"),
   CONDUIT_FILTER_NOTUPDATED("item.itemExistingItemFilter.filterNotUpdated"),
+  POWER_SYMBOL(".power.symbol"),
   POWER(".power.format"),
   POWER_OF(".power.format.of"),
   POWER_PERTICK(".power.format.pertick"),

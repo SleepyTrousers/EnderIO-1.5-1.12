@@ -464,6 +464,7 @@ enderio.farm.note.noShears=No Shears
 enderio.farm.note.noTreetap=No Treetap
 enderio.farm.note.noPower=No Power
 
+enderio.power.symbol=µI
 enderio.power.format=%s µI
 enderio.power.format.of=%s / %s µI
 enderio.power.format.pertick=%s µI/t
@@ -1271,7 +1272,6 @@ enderio.loot.capacitor.title.21=Nothing
 ;enderio.nei.alloysmelter=Alloy Smelter
 ;enderio.nei.enchanter=Enchanter
 ;enderio.nei.sagmill=SAG Mill
-;enderio.nei.sagmill.outputchance=Chance: {0,choice,0#'<1'|0<{0,number}}%
 ;enderio.nei.slicensplice=Slice'N'Splice
 ;enderio.nei.soulbinder=Soul Binder
 ;enderio.nei.vat=Vat

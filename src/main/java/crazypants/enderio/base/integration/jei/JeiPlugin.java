@@ -7,6 +7,9 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
+import crazypants.enderio.base.integration.jei.energy.EnergyIngredientHelper;
+import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.material.material.Material;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
@@ -15,6 +18,7 @@ import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.ingredients.IModIngredientRegistration;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapelessRecipes;
@@ -37,18 +41,7 @@ public class JeiPlugin extends BlankModPlugin {
     IJeiHelpers jeiHelpers = registry.getJeiHelpers();
     IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-    // AlloyRecipeCategory.register(registry, guiHelper);
-    // SagMillRecipeCategory.register(registry, guiHelper);
-    // EnchanterRecipeCategory.register(registry, guiHelper);
-    // SliceAndSpliceRecipeCategory.register(registry, guiHelper);
-    // SoulBinderRecipeCategory.register(registry, guiHelper);
-    // PainterRecipeCategory.register(registry, jeiHelpers);
-    // VatRecipeCategory.register(registry, guiHelper);
     DarkSteelUpgradeRecipeCategory.register(registry, guiHelper);
-    // TankRecipeCategory.register(registry, guiHelper);
-    // CombustionRecipeCategory.register(registry, guiHelper);
-    // CrafterRecipeTransferHandler.register(registry);
-    // InventoryPanelRecipeTransferHandler.register(registry);
 
     registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
 
@@ -58,16 +51,6 @@ public class JeiPlugin extends BlankModPlugin {
     inputs.add(Fluids.NUTRIENT_DISTILLATION.getBucket());
     ShapelessRecipes res = new ShapelessRecipes(new ItemStack(itemMaterial.getItemNN(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
     registry.addRecipes(Collections.singletonList(res));
-
-    // ItemStack tank = new ItemStack(blockTank.getBlockNN());
-    // IFluidHandler cap = NullHelper.notnull(FluidUtil.getFluidHandlerCapability(tank), "internal error---fluid cap awol");
-    // cap.fill(new FluidStack(Fluids.fluidNutrientDistillation, 8 * Fluid.BUCKET_VOLUME), true);
-    // inputs = new ArrayList<ItemStack>();
-    // inputs.add(new ItemStack(Items.STICK));
-    // inputs.add(tank);
-    // res = new ShapelessRecipes(new ItemStack(itemMaterial.getItemNN(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
-    // registry.addRecipes(Collections.singletonList(res));
-
   }
 
   @Override
@@ -82,6 +65,12 @@ public class JeiPlugin extends BlankModPlugin {
 
   public static @Nonnull String getFilterText() {
     return jeiRuntime.getItemListOverlay().getFilterText();
+  }
+
+  @Override
+  public void registerIngredients(@Nonnull IModIngredientRegistration ingredientRegistration) {
+    ingredientRegistration.register(EnergyIngredient.class, Collections.singletonList(new EnergyIngredient()), new EnergyIngredientHelper(),
+        EnergyIngredientRenderer.INSTANCE);
   }
 
 }
