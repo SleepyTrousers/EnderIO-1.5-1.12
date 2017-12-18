@@ -309,3 +309,5 @@ enderio.loot.capacitor.cleancut=Clean Cut %s
 enderio.loot.capacitor.tight=Tight %s
 enderio.loot.capacitor.aa=Hiding %s
 
+enderio.jei.sagmill.outputchance=Chance: {0,choice,0#'<1'|0<{0,number}}%
+

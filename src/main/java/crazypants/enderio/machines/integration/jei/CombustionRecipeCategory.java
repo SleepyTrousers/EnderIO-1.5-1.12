@@ -14,8 +14,9 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.IFluidCoolant;
 import crazypants.enderio.base.fluid.IFluidFuel;
+import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
+import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.lang.LangFluid;
-import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.generator.combustion.CombustionMath;
@@ -25,6 +26,7 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiIngredient;
+import mezz.jei.api.gui.IGuiIngredientGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
@@ -61,19 +63,20 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
       ingredients.setInputs(FluidStack.class, Arrays.asList(fluidCoolant, fluidFuel));
+      ingredients.setOutput(EnergyIngredient.class, new EnergyIngredient(math.getEnergyPerTick(), true));
     }
 
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
       FontRenderer fr = minecraft.fontRenderer;
 
-      String txt = Lang.GUI_COMBGEN_OUTPUT.get(LangPower.RFt(math.getEnergyPerTick()));
+      String txt = Lang.GUI_COMBGEN_OUTPUT.get("");
       int sw = fr.getStringWidth(txt);
-      fr.drawStringWithShadow(txt, 176 / 2 - sw / 2 - xOff, fr.FONT_HEIGHT / 2, ColorUtil.getRGB(Color.WHITE));
+      fr.drawStringWithShadow(txt, 37 - xOff, 10 - yOff, ColorUtil.getRGB(Color.WHITE));
 
       int y = 21 - yOff - 2;
       int x = 114 - xOff;
-      txt = LangFluid.tMB( math.getTicksPerCoolant() );
+      txt = LangFluid.tMB(math.getTicksPerCoolant());
       sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
 
@@ -159,6 +162,11 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     fluidStacks.init(1, true, 48 - xOff, 21 - yOff, 15, 47, 1000, false, null);
 
     fluidStacks.set(ingredients);
+
+    IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
+    group.init(2, false, EnergyIngredientRenderer.INSTANCE, 54 + 47 - xOff, 9 - yOff, 40, 10, 0, 0);
+    group.set(ingredients);
+
   }
 
 }

@@ -16,6 +16,7 @@ import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.soul.ContainerSoulBinder;
 import crazypants.enderio.machines.machine.soul.GuiSoulBinder;
 import crazypants.enderio.util.CapturedMob;
+import crazypants.enderio.util.Prep;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -119,8 +120,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
 
   @Override
   public @Nonnull String getTitle() {
-    String localizedName = block_soul_binder.getBlock().getLocalizedName();
-    return localizedName != null ? localizedName : "ERROR";
+    return block_soul_binder.getBlockNN().getLocalizedName();
   }
 
   @Override
@@ -155,7 +155,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
     }
     guiItemStacks.set(0, soulStacks);
 
-    if (inputStack != null) {
+    if (Prep.isValid(inputStack)) {
       guiItemStacks.set(1, inputStack);
     }
 

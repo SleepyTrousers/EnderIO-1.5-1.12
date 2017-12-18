@@ -167,10 +167,9 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
     return UID;
   }
 
-  @SuppressWarnings("null")
   @Override
   public @Nonnull String getTitle() {
-    return block_vat.getBlock().getLocalizedName();
+    return block_vat.getBlockNN().getLocalizedName();
   }
 
   @Override
