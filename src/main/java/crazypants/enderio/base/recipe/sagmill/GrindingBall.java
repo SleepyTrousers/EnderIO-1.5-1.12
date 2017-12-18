@@ -67,12 +67,12 @@ public class GrindingBall extends RecipeInput implements IGrindingMultiplier {
   }
 
   @Override
-  public int getDurationMJ() {
+  public int getDurability() {
     return durationMJ;
   }
 
   @Override
-  public void setDurationMJ(int durationMJ) {
+  public void setDurability(int durationMJ) {
     this.durationMJ = durationMJ;
   }
 

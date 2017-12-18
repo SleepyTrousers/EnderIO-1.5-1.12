@@ -6,6 +6,7 @@ import crazypants.enderio.base.recipe.AbstractMachineRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeBonusType;
 
 public class SagMillMachineRecipe extends AbstractMachineRecipe {
 
@@ -27,6 +28,19 @@ public class SagMillMachineRecipe extends AbstractMachineRecipe {
   @Override
   public @Nonnull String getMachineName() {
     return MachineRecipeRegistry.SAGMILL;
+  }
+
+  @Override
+  public @Nonnull RecipeBonusType getBonusType(@Nonnull MachineRecipeInput... inputs) {
+    if (inputs.length <= 0) {
+      return RecipeBonusType.NONE;
+    }
+    IRecipe recipe = getRecipeForInputs(inputs);
+    if (recipe == null) {
+      return RecipeBonusType.NONE;
+    } else {
+      return recipe.getBonusType().withoutMultiply(SagMillRecipeManager.getInstance().isExcludedFromBallBonus(inputs));
+    }
   }
 
 }

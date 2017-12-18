@@ -66,12 +66,12 @@ public class GrindingMultiplierNBT implements IGrindingMultiplier, IHandler<IGri
   }
 
   @Override
-  public int getDurationMJ() {
+  public int getDurability() {
     return durationMJ;
   }
 
   @Override
-  public void setDurationMJ(int durationMJ) {
+  public void setDurability(int durationMJ) {
     this.durationMJ = durationMJ;
   }
 
@@ -90,7 +90,7 @@ public class GrindingMultiplierNBT implements IGrindingMultiplier, IHandler<IGri
     tag.setFloat(CM, object.getChanceMultiplier());
     tag.setFloat(PM, object.getPowerMultiplier());
     tag.setFloat(GM, object.getGrindingMultiplier());
-    tag.setInteger(DMJ, object.getDurationMJ());
+    tag.setInteger(DMJ, object.getDurability());
     nbt.setTag(name, tag);
     return true;
   }

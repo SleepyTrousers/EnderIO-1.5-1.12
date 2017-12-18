@@ -38,7 +38,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
   protected int ticksSinceCheckedRecipe = 0;
   protected boolean startFailed = false;
-  protected float nextChance = Float.NaN;
+  protected float nextRand = Float.NaN;
 
   protected AbstractPoweredTaskEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
       @Nonnull ICapacitorKey maxEnergyUsed) {
@@ -105,17 +105,17 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
     // Get a new chance when we don't have one yet
     // If a recipe could not be started we will try with the same chance next time
-    if (Float.isNaN(nextChance)) {
-      nextChance = random.nextFloat();
+    if (Float.isNaN(nextRand)) {
+      nextRand = random.nextFloat();
     }
 
     // Then see if we need to start a new one
-    IMachineRecipe nextRecipe = canStartNextTask(nextChance);
+    IMachineRecipe nextRecipe = canStartNextTask(nextRand);
     if (nextRecipe != null) {
-      boolean started = startNextTask(nextRecipe, nextChance);
+      boolean started = startNextTask(nextRecipe, nextRand);
       if (started) {
         // this chance value has been used up
-        nextChance = Float.NaN;
+        nextRand = Float.NaN;
       }
       startFailed = !started;
     } else {
@@ -275,13 +275,13 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     return cachedNextRecipe;
   }
 
-  protected IMachineRecipe canStartNextTask(float chance) {
+  protected IMachineRecipe canStartNextTask(float nextRandIn) {
     IMachineRecipe nextRecipe = getNextRecipe();
     if (nextRecipe == null) {
       return null; // no template
     }
     // make sure we have room for the next output
-    return canInsertResult(chance, nextRecipe) ? nextRecipe : null;
+    return canInsertResult(nextRandIn, nextRecipe) ? nextRecipe : null;
   }
 
   protected boolean canInsertResult(float chance, @Nonnull IMachineRecipe nextRecipe) {
@@ -345,10 +345,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     return Math.min(itemStack.getMaxStackSize() - itemStack.getCount(), result.getCount());
   }
 
-  protected boolean startNextTask(@Nonnull IMachineRecipe nextRecipe, float chance) {
+  protected boolean startNextTask(@Nonnull IMachineRecipe nextRecipe, float nextRandIn) {
     if (hasPower() && nextRecipe.isRecipe(getRecipeInputs())) {
       // then get our recipe and take away the source items
-      currentTask = createTask(nextRecipe, chance);
+      currentTask = createTask(nextRecipe, nextRandIn);
       List<MachineRecipeInput> consumed = nextRecipe.getQuantitiesConsumed(getRecipeInputs());
       for (MachineRecipeInput item : consumed) {
         if (item != null) {

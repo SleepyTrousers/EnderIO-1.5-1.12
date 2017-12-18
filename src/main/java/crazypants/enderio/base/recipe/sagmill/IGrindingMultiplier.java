@@ -2,9 +2,15 @@ package crazypants.enderio.base.recipe.sagmill;
 
 public interface IGrindingMultiplier {
 
-  void setDurationMJ(int durationMJ);
+  /**
+   * Sets the durability of the ball in energy units.
+   */
+  void setDurability(int durability);
 
-  int getDurationMJ();
+  /**
+   * Gets the durability of the ball in energy units
+   */
+  int getDurability();
 
   void setGrindingMultiplier(float grindingMultiplier);
 

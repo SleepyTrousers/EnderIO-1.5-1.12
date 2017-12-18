@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -33,7 +32,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     if (recipe == null) {
       return RecipeBonusType.NONE;
     } else {
-      return recipe.getBonusType().withoutMultiply(SagMillRecipeManager.getInstance().isExcludedFromBallBonus(inputs));
+      return recipe.getBonusType();
     }
   }
 
