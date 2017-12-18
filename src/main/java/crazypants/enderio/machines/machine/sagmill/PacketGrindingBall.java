@@ -21,8 +21,8 @@ public class PacketGrindingBall extends MessageTileEntity<TileSagMill> implement
 
   public PacketGrindingBall(@Nonnull TileSagMill ent) {
     super(ent);
-    currGbUse = ent.currGbUse;
-    maxGbUse = ent.gb == null ? 0 : ent.gb.getDurationMJ();
+    currGbUse = ent.grindingBallDurabilityUsed;
+    maxGbUse = ent.grindingBall == null ? 0 : ent.grindingBall.getDurability();
   }
 
   @Override
@@ -44,8 +44,8 @@ public class PacketGrindingBall extends MessageTileEntity<TileSagMill> implement
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     TileSagMill te = message.getTileEntity(player.world);
     if (te != null) {
-      te.currGbUse = message.currGbUse;
-      te.maxGbUse = message.maxGbUse;
+      te.grindingBallDurabilityUsed = message.currGbUse;
+      te.grindingBallDurabilityMax = message.maxGbUse;
     }
     return null;
   }

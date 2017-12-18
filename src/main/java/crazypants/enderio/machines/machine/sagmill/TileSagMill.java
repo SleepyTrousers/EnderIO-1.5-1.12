@@ -10,7 +10,6 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
-import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.base.recipe.sagmill.IGrindingMultiplier;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.machines.network.PacketHandler;
@@ -18,6 +17,7 @@ import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_INTAKE;
@@ -27,14 +27,13 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_
 public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   @Store
-  protected IGrindingMultiplier gb;
+  protected IGrindingMultiplier grindingBall;
   @Store
-  protected int currGbUse = 0;
+  protected int grindingBallDurabilityUsed = 0;
   @Store
-  protected int maxGbUse = 0;
+  protected int grindingBallDurabilityMax = 0;
   @Store
   protected int lastSendGbScaled = 0;
-  private boolean useGrindingBall;
 
   public TileSagMill() {
     super(new SlotDefinition(2, 4), SAG_MILL_POWER_INTAKE, SAG_MILL_POWER_BUFFER, SAG_MILL_POWER_USE);
@@ -51,42 +50,44 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   }
 
   public int getBallDurationScaled(int scale) {
-    return (maxGbUse > 0) ? (int) (scale * (1 - ((float) currGbUse / (float) maxGbUse))) : 0;
+    return MathHelper
+        .clamp((grindingBallDurabilityMax > 0) ? (int) (scale * (1 - ((float) grindingBallDurabilityUsed / (float) grindingBallDurabilityMax))) : 0, 0, scale);
   }
 
   @Override
   protected int usePower(int wantToUse) {
     int res = super.usePower(wantToUse);
-    boolean sendGB = false;
 
-    if (gb != null && useGrindingBall) {
-      currGbUse += res;
-
-      if (currGbUse >= gb.getDurationMJ()) {
-        currGbUse = 0;
-        maxGbUse = 0;
-        gb = null;
-        sendGB = true;
-      } else {
-        int newScaled = getBallDurationScaled(16);
-        if (newScaled != lastSendGbScaled) {
+    if (currentTask != null && currentTask.getBonusType().useBalls()) {
+      boolean sendGB = false;
+      if (grindingBall != null) {
+        grindingBallDurabilityUsed += res;
+        if (grindingBallDurabilityUsed >= grindingBallDurabilityMax) {
+          grindingBallDurabilityUsed -= grindingBallDurabilityMax;
+          grindingBallDurabilityMax = 0;
+          grindingBall = null;
           sendGB = true;
+        } else {
+          int newScaled = getBallDurationScaled(16);
+          if (newScaled != lastSendGbScaled) {
+            sendGB = true;
+          }
         }
       }
-    }
-    if (gb == null) {
-      gb = SagMillRecipeManager.getInstance().getGrindballFromStack(getStackInSlot(1));
-      if (gb != null) {
-        maxGbUse = gb.getDurationMJ();
-        decrStackSize(1, 1);
-        markDirty();
-        sendGB = false; // the tile update will also sync the grinding ball
+      if (grindingBall == null) {
+        final ItemStack ballInSlot = getStackInSlot(1);
+        grindingBall = SagMillRecipeManager.getInstance().getGrindballFromStack(ballInSlot);
+        if (grindingBall != null) {
+          grindingBallDurabilityMax = grindingBall.getDurability();
+          ballInSlot.shrink(1);
+          markDirty();
+          sendGB = false; // the tile update will also sync the grinding ball
+        }
+      }
+      if (sendGB) {
+        PacketHandler.sendToAllAround(new PacketGrindingBall(this), this);
         lastSendGbScaled = getBallDurationScaled(16);
       }
-    }
-    if (sendGB) {
-      PacketHandler.sendToAllAround(new PacketGrindingBall(this), this);
-      lastSendGbScaled = getBallDurationScaled(16);
     }
     return res;
   }
@@ -94,39 +95,29 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   @Override
   protected void taskComplete() {
     IPoweredTask ct = currentTask;
-    super.taskComplete();
+    super.taskComplete(); // nulls currentTask
     // run it again if the ball says so
-    if (gb != null && useGrindingBall && ct != null) {
-      if (ct.getBonusType() == RecipeBonusType.MULTIPLY_OUTPUT) {
-        float chance = random.nextFloat();
-        float mul = gb.getGrindingMultiplier() - 1;
-        while (mul > 0) {
-          if (chance <= mul) {
-            currentTask = ct;
-            super.taskComplete();
-          }
-          mul--;
+    if (grindingBall != null && ct != null && ct.getBonusType().doMultiply()) {
+      float chance = random.nextFloat();
+      float mul = grindingBall.getGrindingMultiplier() - 1;
+      while (mul > 0) {
+        if (chance <= mul) {
+          currentTask = ct;
+          super.taskComplete();
         }
+        mul--;
       }
     }
   }
 
   @Override
-  protected IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, float chance) {
-    PoweredTask res;
-    useGrindingBall = false;
-    if (gb != null) {
-      useGrindingBall = !SagMillRecipeManager.getInstance().isExcludedFromBallBonus(getRecipeInputs());
-      if (useGrindingBall) {
-        res = new PoweredTask(nextRecipe, chance / gb.getChanceMultiplier(), getRecipeInputs());
-        res.setRequiredEnergy(res.getRequiredEnergy() * gb.getPowerMultiplier());
-      } else {
-        res = new PoweredTask(nextRecipe, chance, getRecipeInputs());
-      }
-    } else {
-      res = new PoweredTask(nextRecipe, chance, getRecipeInputs());
+  protected IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, float nextRandIn) {
+    if (grindingBall != null && nextRecipe.getBonusType(getRecipeInputs()).doChances()) {
+      PoweredTask res = new PoweredTask(nextRecipe, nextRandIn / grindingBall.getChanceMultiplier(), getRecipeInputs());
+      res.setRequiredEnergy(res.getRequiredEnergy() * grindingBall.getPowerMultiplier());
+      return res;
     }
-    return res;
+    return new PoweredTask(nextRecipe, nextRandIn, getRecipeInputs());
   }
 
   @Override
