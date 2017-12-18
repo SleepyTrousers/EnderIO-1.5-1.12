@@ -534,7 +534,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
 
     boolean breakBlock = true;
-    NNList<ItemStack> drop = new NNList<>(ItemStack.EMPTY);
+    NNList<ItemStack> drop = new NNList<>();
     if (YetaUtil.isSolidFacadeRendered(te, player)) {
       breakBlock = false;
       ItemStack fac = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, EnumFacadeType.getMetaFromType(te.getFacadeType()));
@@ -789,8 +789,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         bundle.addConduit(equipped.createConduit(stack, player));
         ConduitUtil.playBreakSound(SoundType.METAL, world, x, y, z);
         if (!player.capabilities.isCreativeMode) {
-          ItemStack held = player.getHeldItem(hand);
-          held.setCount(held.getCount() - 1);
+          player.getHeldItem(hand).shrink(1);
         }
       }
       return true;
@@ -832,7 +831,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       ConduitUtil.playPlaceSound(facadeID.getBlock().getSoundType(), world, pos.getX(), pos.getY(), pos.getZ());
     }
     if (!player.capabilities.isCreativeMode) {
-      stack.setCount(stack.getCount() - 1);
+      stack.shrink(1);
     }
     IBlockState bs = world.getBlockState(pos);
     world.notifyBlockUpdate(pos, bs, bs, 3);

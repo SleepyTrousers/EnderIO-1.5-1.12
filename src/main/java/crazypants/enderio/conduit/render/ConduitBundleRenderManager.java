@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.render;
 
+import crazypants.enderio.base.conduit.IConduitRenderer;
 import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry.ConduitInfo;
@@ -32,7 +33,7 @@ public class ConduitBundleRenderManager {
 
   public void init(FMLPostInitializationEvent event) {
     for (ConduitInfo conduitInfo : ConduitRegistry.getAll()) {
-      for (ConduitRenderer renderer : conduitInfo.getRenderers()) {
+      for (IConduitRenderer renderer : conduitInfo.getRenderers()) {
         renderer.initIcons();
         cbr.registerRenderer(renderer);
       }

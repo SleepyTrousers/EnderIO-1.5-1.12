@@ -2,6 +2,8 @@ package crazypants.enderio.conduit.gui;
 
 import java.awt.Color;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.MultiIconButton;
@@ -49,7 +51,7 @@ public class BaseSettingsPanel implements ITabPanel {
 
     modeLabel = EnderIO.lang.localize("gui.conduit.ioMode");
 
-    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     int x = gap * 3 + fr.getStringWidth(modeLabel);
     int y = 8;// + fr.FONT_HEIGHT;
 
@@ -99,12 +101,13 @@ public class BaseSettingsPanel implements ITabPanel {
   }
 
   @Override
+  @Nonnull
   public IWidgetIcon getIcon() {
     return icon;
   }
 
   @Override
-  public void actionPerformed(GuiButton guiButton) {
+  public void actionPerformed(@Nonnull GuiButton guiButton) {
     if(guiButton.id == PREV_MODE_B) {
       con.setConnectionMode(gui.getDir(), con.getPreviousConnectionMode(gui.getDir()));
       PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));

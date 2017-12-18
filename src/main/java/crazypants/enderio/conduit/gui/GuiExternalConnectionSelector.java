@@ -1,7 +1,5 @@
 package crazypants.enderio.conduit.gui;
 
-import static crazypants.enderio.base.ModObject.blockConduitBundle;
-
 import java.awt.Color;
 import java.awt.Point;
 import java.io.IOException;
@@ -32,6 +30,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+
+import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
 
@@ -99,7 +99,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     if (!world.isAirBlock(blockPos)) {
       IBlockState bs = world.getBlockState(blockPos);
       Block b = bs.getBlock();
-      if (b != null && b != blockConduitBundle.getBlock()) {
+      if (b != null && b != block_conduit_bundle.getBlock()) {
         try {// TODO: This seems wrong. pickBlock?
           Item item = b.getItemDropped(bs.getActualState(world, blockPos), world.rand, 0);
           if (item != null) {
@@ -137,7 +137,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
 
     drawDefaultBackground();
 
-    int scale = fontRendererObj.getUnicodeFlag() ? 1 : 2;
+    int scale = fontRenderer.getUnicodeFlag() ? 1 : 2;
 
     for (EnumFacing dir : EnumFacing.VALUES) {
       if (stacks.containsKey(dir)) {
@@ -151,12 +151,12 @@ public class GuiExternalConnectionSelector extends GuiScreen {
         if (blockName == null) {
           continue;
         }
-        int textWidth = fontRendererObj.getStringWidth(blockName) / scale;
+        int textWidth = fontRenderer.getStringWidth(blockName) / scale;
         Point p = textPositions.get(dir);
 
         GL11.glPushMatrix();
         GL11.glScalef(1f / scale, 1f / scale, 1f / scale);
-        drawString(fontRendererObj, blockName, scale * (p.x + BUTTON_WIDTH / 2 - textWidth / 2), scale * p.y, ColorUtil.getARGB(Color.gray));
+        drawString(fontRenderer, blockName, scale * (p.x + BUTTON_WIDTH / 2 - textWidth / 2), scale * p.y, ColorUtil.getARGB(Color.gray));
         GL11.glPopMatrix();
       }
     }
@@ -164,16 +164,16 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     super.drawScreen(par1, par2, par3);
 
     String txt = "Select Connection to Adjust";
-    int x = width / 2 - (fontRendererObj.getStringWidth(txt) / 2);
+    int x = width / 2 - (fontRenderer.getStringWidth(txt) / 2);
     int y = height / 2 - BUTTON_HEIGHT * 3 - 5;
 
-    drawString(fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
+    drawString(fontRenderer, txt, x, y, ColorUtil.getARGB(Color.white));
 
     if (Minecraft.getMinecraft().player.getName().contains("direwolf20") && ((EnderIO.proxy.getTickCount() / 16) & 1) == 1) {
       txt = "You can also right-click the connector directly";
-      x = width / 2 - (fontRendererObj.getStringWidth(txt) / 2);
+      x = width / 2 - (fontRenderer.getStringWidth(txt) / 2);
       y = height / 2 + BUTTON_HEIGHT * 3 - 5;
-      drawString(fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
+      drawString(fontRenderer, txt, x, y, ColorUtil.getARGB(Color.white));
     }
 
     RenderHelper.enableGUIStandardItemLighting();

@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.google.common.collect.Maps;
 
-import crazypants.enderio.base.ModObject;
+import crazypants.enderio.conduit.init.ConduitObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +18,7 @@ public class ConduitBundleStateMapper extends StateMapperBase {
 
   public static void create() {
     ConduitBundleStateMapper mapper = new ConduitBundleStateMapper();
-    ModelLoader.setCustomStateMapper(ModObject.blockConduitBundle.getBlock(), mapper);
+    ModelLoader.setCustomStateMapper(ConduitObject.block_conduit_bundle.getBlock(), mapper);
   }
 
   @Override

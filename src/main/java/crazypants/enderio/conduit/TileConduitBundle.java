@@ -1,8 +1,5 @@
 package crazypants.enderio.conduit;
 
-import static crazypants.enderio.base.ModObject.blockConduitBundle;
-import static crazypants.enderio.base.config.Config.transparentFacadesLetThroughBeaconBeam;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -15,7 +12,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.BlockCoord;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.util.AECableType;
@@ -63,10 +59,14 @@ import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.base.config.Config.transparentFacadesLetThroughBeaconBeam;
+import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
+
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent {
 
   public static final short NBT_VERSION = 1;
 
+  // TODO Fix duct-tape
   private final List<IConduit> conduits = new CopyOnWriteArrayList<IConduit>(); // <- duct-tape fix
 
   private IBlockState facade = null;
@@ -92,7 +92,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   Object covers;
   
   public TileConduitBundle() {
-    this.blockType = blockConduitBundle.getBlock();
+    this.blockType = block_conduit_bundle.getBlock();
   }
 
   @Override
@@ -242,43 +242,43 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @Override
   public void onChunkUnload() {
     for (IConduit conduit : conduits) {
-      conduit.onChunkUnload(world);
+      conduit.onChunkUnload();
     }
   }
 
   @Override
   public void doUpdate() {
-    getWorld().theProfiler.startSection("conduitBundle");
-    getWorld().theProfiler.startSection("tick");
+    getWorld().profiler.startSection("conduitBundle");
+    getWorld().profiler.startSection("tick");
 
     for (IConduit conduit : conduits) {
-      getWorld().theProfiler.startSection(conduit.getClass().toString());
+      getWorld().profiler.startSection(conduit.getClass().toString());
       conduit.updateEntity(world);
-      getWorld().theProfiler.endSection();
+      getWorld().profiler.endSection();
     }
 
     if(conduitsDirty) {
-      getWorld().theProfiler.startSection("neigborUpdate");
+      getWorld().profiler.startSection("neigborUpdate");
       doConduitsDirty();
-      getWorld().theProfiler.endSection();
+      getWorld().profiler.endSection();
     }
-    getWorld().theProfiler.endSection();
+    getWorld().profiler.endSection();
 
     //client side only, check for changes in rendering of the bundle
     if(world.isRemote) {
-      getWorld().theProfiler.startSection("clientTick");
+      getWorld().profiler.startSection("clientTick");
       updateEntityClient();
-      getWorld().theProfiler.endSection();
+      getWorld().profiler.endSection();
     }
 
-    getWorld().theProfiler.endSection();
+    getWorld().profiler.endSection();
   }
 
   private void doConduitsDirty() {
     if(!world.isRemote) {
       IBlockState bs = world.getBlockState(pos);
       world.notifyBlockUpdate(pos, bs, bs, 3);
-      world.notifyNeighborsOfStateChange(pos, getBlockType());
+      world.neighborChanged(pos, getBlockType(), pos);
       markDirty();
     } else {
       geometryChanged(); // Q&D
@@ -340,7 +340,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public void onNeighborChange(IBlockAccess world, BlockPos posIn, BlockPos neighbor) {
     boolean needsUpdate = false;
     for (IConduit conduit : conduits) {
-      needsUpdate |= conduit.onNeighborChange(world, posIn, neighbor);
+      needsUpdate |= conduit.onNeighborChange(neighbor);
     }
     if(needsUpdate) {
       dirty();
@@ -348,6 +348,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   @Override
+  @Nonnull
   public TileConduitBundle getEntity() {
     return this;
   }
@@ -658,6 +659,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     return result;
   }
 
+  // TODO Find a way to separate conduit types
   // ------------ Power -----------------------------
 
 
@@ -678,7 +680,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
     return false;
   }
-
+  
   @Override
   public int getMaxEnergyStored(EnumFacing from) {
     IPowerConduit pc = getConduit(IPowerConduit.class);
@@ -779,11 +781,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @Override
   public boolean displayPower() {
     return false;
-  }
-
-  @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(getPos());
   }
 
   @Override

@@ -39,7 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
 
-public abstract class AbstractConduit implements IConduit, IConduit.WithDefaultRendering {
+public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
 
   protected final Set<EnumFacing> conduitConnections = EnumSet.noneOf(EnumFacing.class);
 
@@ -144,7 +144,7 @@ public abstract class AbstractConduit implements IConduit, IConduit.WithDefaultR
   @Nonnull
   public NNList<ItemStack> getDrops() {
     // return Collections.singletonList(createItem());
-    return new NNList<ItemStack>(1, ItemStack.EMPTY);
+    return new NNList<ItemStack>(createItem());
   }
 
   @Override
