@@ -13,6 +13,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -60,8 +61,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -423,7 +423,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
     return new CompoundCapabilityProvider(new FluidCapabilityProvider(stack), new ItemPowerCapabilityBackend(stack));
   }
 
-  private class FluidCapabilityProvider implements IFluidHandler, ICapabilityProvider {
+  private class FluidCapabilityProvider implements IFluidHandlerItem, ICapabilityProvider {
     protected final @Nonnull ItemStack container;
 
     private FluidCapabilityProvider(@Nonnull ItemStack container) {
@@ -432,13 +432,13 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+      return capability == FluidUtil.getFluidItemCapability();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T) this : null;
+      return capability == FluidUtil.getFluidItemCapability() ? (T) this : null;
     }
 
     @Override
@@ -493,6 +493,12 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
     @Nullable
     public FluidStack drain(int maxDrain, boolean doDrain) {
       return null;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getContainer() {
+      return container;
     }
   }
 

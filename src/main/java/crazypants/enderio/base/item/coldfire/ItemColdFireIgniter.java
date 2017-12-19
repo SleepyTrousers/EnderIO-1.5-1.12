@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIOTab;
@@ -35,8 +36,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -130,7 +130,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
     return new CapabilityProvider(stack);
   }
 
-  private class CapabilityProvider implements IFluidHandler, ICapabilityProvider {
+  private class CapabilityProvider implements ICapabilityProvider, IFluidHandlerItem {
     protected final @Nonnull ItemStack container;
 
     private CapabilityProvider(@Nonnull ItemStack container) {
@@ -139,14 +139,14 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+      return capability == FluidUtil.getFluidItemCapability();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-      if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
+      if (capability == FluidUtil.getFluidItemCapability()) {
+        return FluidUtil.getFluidItemCapability().cast(this);
       }
       return null;
     }
@@ -202,6 +202,12 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
     @Nullable
     public FluidStack drain(int maxDrain, boolean doDrain) {
       return null;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getContainer() {
+      return container;
     }
   }
 
