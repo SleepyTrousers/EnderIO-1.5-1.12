@@ -1,5 +1,7 @@
 package crazypants.enderio.base.init;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -172,9 +174,10 @@ public class ModObjectRegistry {
 
   private static RuntimeException throwCreationError(@Nonnull IModObject.Registerable mo, @Nonnull String blockMethodName, @Nullable Object ex) {
     String str = "ModObject:create: Could not create instance for " + mo.getClazz() + " using method " + blockMethodName;
-    Log.error(str + (ex instanceof Exception ? " Exception: " : " Object: ") + Objects.toString(ex));
-    if (ex instanceof Exception) {
-      throw new RuntimeException(str, (Exception) ex);
+    Log.error(str + (ex instanceof Throwable ? " Exception: " : " Object: ") + Objects.toString(ex));
+    if (ex instanceof Throwable) {
+      disectClass(mo);
+      throw new RuntimeException(str, (Throwable) ex);
     } else {
       throw new RuntimeException(str);
     }
@@ -184,16 +187,25 @@ public class ModObjectRegistry {
     Object obj;
     try {
       obj = mo.getClazz().getDeclaredMethod(methodName, new Class<?>[] { IModObject.class }).invoke(null, new Object[] { mo });
-    } catch (NoSuchMethodException e) {
-      try {
-        obj = mo.getClazz().getDeclaredMethod(methodName).invoke(null);
-      } catch (Exception e2) {
-        throw throwCreationError(mo, methodName, e2);
-      }
-    } catch (Exception e) {
+    } catch (Exception | Error e) {
       throw throwCreationError(mo, methodName, e);
     }
     return obj;
+  }
+
+  private static void disectClass(IModObject.Registerable mo) {
+    try {
+      Log.debug("Modobject class is " + mo.getClazz());
+      Method[] declaredMethods = mo.getClazz().getDeclaredMethods();
+      for (Method method : declaredMethods) {
+        Log.debug("  with method " + method);
+        Annotation[] declaredAnnotations = method.getDeclaredAnnotations();
+        for (Annotation annotation : declaredAnnotations) {
+          Log.debug("    with annotation " + annotation);
+        }
+      }
+    } catch (Exception | Error e) {
+    }
   }
 
   private static void createBlock(@Nonnull IModObject.Registerable mo, @Nonnull String blockMethodName, @Nonnull Register<Block> event) {
