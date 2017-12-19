@@ -20,7 +20,7 @@ import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.gui.FontRenderer;

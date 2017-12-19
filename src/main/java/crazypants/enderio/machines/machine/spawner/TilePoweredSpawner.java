@@ -16,7 +16,7 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.base.machine.task.PoweredTask;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -469,7 +469,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   private void sendNotification() {
     sendNotification = false;
-    PacketHandler.INSTANCE.sendToAll(new PacketUpdateNotification(this, getNotification()));
+    PacketHandler.INSTANCE.sendToAll(new PacketSpawnerUpdateNotification(this, getNotification()));
   }
 
   @Override

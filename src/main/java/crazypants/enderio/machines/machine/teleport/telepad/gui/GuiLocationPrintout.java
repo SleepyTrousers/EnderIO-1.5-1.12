@@ -17,7 +17,7 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.item.coordselector.PacketUpdateLocationPrintout;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
