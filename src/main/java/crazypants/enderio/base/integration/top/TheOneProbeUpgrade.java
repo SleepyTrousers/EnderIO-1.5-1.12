@@ -19,10 +19,10 @@ public class TheOneProbeUpgrade extends AbstractUpgrade {
   public static final @Nonnull String PROBETAG = "theoneprobe";
 
   public static final @Nonnull TheOneProbeUpgrade INSTANCE = new TheOneProbeUpgrade();
-  
+
   @ItemStackHolder("theoneprobe:probe")
   public static ItemStack probe = null;
-  
+
   public static TheOneProbeUpgrade loadFromItem(@Nonnull ItemStack stack) {
     final NBTTagCompound tagCompound = stack.getTagCompound();
     if (tagCompound == null) {
@@ -33,30 +33,23 @@ public class TheOneProbeUpgrade extends AbstractUpgrade {
     }
     return new TheOneProbeUpgrade((NBTTagCompound) tagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
-  
+
   @Override
   public @Nonnull ItemStack getUpgradeItem() {
     return NullHelper.first(probe, Prep.getEmpty());
   }
 
   public TheOneProbeUpgrade(@Nonnull NBTTagCompound tag) {
-    super(UPGRADE_NAME, tag);    
+    super(UPGRADE_NAME, tag);
   }
 
   public TheOneProbeUpgrade() {
     super(UPGRADE_NAME, "enderio.darksteel.upgrade.top", Prep.getEmpty(), Config.darkSteelTOPCost);
-  }  
-  
+  }
+
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack) {
-    if (probe == null || stack.getItem() != ModObject.itemDarkSteelHelmet.getItem()) {
-      return false;
-    }
-    TheOneProbeUpgrade up = loadFromItem(stack);
-    if(up == null) {
-      return true;
-    }
-    return false;
+    return isAvailable() && stack.getItem() == ModObject.itemDarkSteelHelmet.getItem() && loadFromItem(stack) == null;
   }
 
   @Override
@@ -70,7 +63,7 @@ public class TheOneProbeUpgrade extends AbstractUpgrade {
   }
 
   public boolean isAvailable() {
-    return probe != null;
+    return probe != null && Prep.isValid(probe);
   }
 
 }
