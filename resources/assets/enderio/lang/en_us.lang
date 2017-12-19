@@ -132,8 +132,8 @@ tile.block_crafter.tooltip.detailed.line4=and energy storage with capacitors
 
 tile.block_enchanter.name=Enchanter
 tile.block_enchanter.tooltip.detailed.line1=Uses XP to combine items
-tile.block_enchanter.tooltip.detailed.line2=and a book and quill to
-tile.block_enchanter.tooltip.detailed.line3=created enchanted books
+tile.block_enchanter.tooltip.detailed.line2=and a §6book and quill§r to
+tile.block_enchanter.tooltip.detailed.line3=create enchanted books
 
 tile.block_farm_station.name=Farming Station
 tile.block_farm_station.tooltip.detailed.line1=Plants and harvests crops
