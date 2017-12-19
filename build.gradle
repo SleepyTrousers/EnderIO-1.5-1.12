@@ -135,7 +135,7 @@ processResources {
 }
 
 compileJava.doFirst {
-    String modFile = 'build/sources/main/java/crazypants/enderio/EnderIO.java'
+    String modFile = 'build/sources/main/java/crazypants/enderio/base/EnderIO.java'
     File modFileFile = new File(projectDir, modFile) 
     String contents = modFileFile.getText('UTF-8')
     contents = contents.replaceAll('dependencies = ".*", guiFactory', 'dependencies = "' + project.ext.dependencies + '", guiFactory')
