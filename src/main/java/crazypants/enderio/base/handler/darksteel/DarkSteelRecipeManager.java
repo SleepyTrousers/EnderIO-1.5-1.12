@@ -226,7 +226,7 @@ public class DarkSteelRecipeManager {
         if (upgrade.canAddToItem(stack)) {
           ItemStack newStack = stack.copy();
           upgrade.writeToItem(newStack);
-          String id = newStack.getItem() + getUpgradesAsString(newStack);
+          String id = newStack.getItem() + getUpgradesAsString(stack) + ":" + getUpgradesAsString(newStack);
           if (!seen.contains(id)) {
             seen.add(id);
             list.add(new UpgradePath(stack, upgrade.getUpgradeItem(), newStack));

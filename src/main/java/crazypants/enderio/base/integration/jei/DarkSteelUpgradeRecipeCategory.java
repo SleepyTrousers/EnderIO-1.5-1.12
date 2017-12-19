@@ -1,7 +1,7 @@
 package crazypants.enderio.base.integration.jei;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +10,10 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
+import com.google.common.collect.Lists;
+
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager.UpgradePath;
@@ -17,50 +21,19 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.ISubtypeRegistry.ISubtypeInterpreter;
-import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.gui.IGuiIngredient;
-import mezz.jei.api.gui.IGuiItemStackGroup;
-import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.ContainerRepair;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import static crazypants.enderio.base.init.ModObject.blockDarkSteelAnvil;
 
-public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkSteelUpgradeRecipeCategory.DarkSteelUpgradeRecipeWrapper> {
-
-  public static final @Nonnull String UID = "DarkSteelUpgrade";
-
-  // ------------ Recipes
-
-  public static class DarkSteelUpgradeRecipeWrapper extends BlankRecipeWrapper {
-
-    private final UpgradePath stacks;
-
-    public DarkSteelUpgradeRecipeWrapper(UpgradePath rec) {
-      this.stacks = rec;
-    }
-
-    @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-    }
-
-    public void setInfoData(Map<Integer, ? extends IGuiIngredient<ItemStack>> ings) {
-    }
-
-    @Override
-    public void getIngredients(@Nonnull IIngredients ingredients) {
-      ingredients.setInputs(ItemStack.class, Arrays.asList(stacks.getInput(), stacks.getUpgrade()));
-      ingredients.setOutput(ItemStack.class, stacks.getOutput());
-    }
-
-  } // -------------------------------------
+public class DarkSteelUpgradeRecipeCategory {
 
   private static final List<UpgradePath> allRecipes = DarkSteelRecipeManager.getAllRecipes(ItemHelper.getValidItems());
 
@@ -76,68 +49,80 @@ public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkStee
         subtypeRegistry.registerSubtypeInterpreter(item, dsusi);
       }
     }
-
-    Log.info(String.format("DarkSteelUpgradeRecipeCategory: Added %d dark steel upgrade subtypes to JEI.", allRecipes.size()));
   }
 
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+    long start = System.nanoTime();
 
-    registry.addRecipeCategories(new DarkSteelUpgradeRecipeCategory(guiHelper));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(Blocks.ANVIL), DarkSteelUpgradeRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(blockDarkSteelAnvil.getBlockNN()), DarkSteelUpgradeRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(blockDarkSteelAnvil.getBlockNN()), VanillaRecipeCategoryUid.ANVIL);
 
-    List<DarkSteelUpgradeRecipeWrapper> result = new ArrayList<DarkSteelUpgradeRecipeWrapper>();
+    NNList<ItemStack> blacklist = new NNList<>();
     for (UpgradePath rec : allRecipes) {
-      result.add(new DarkSteelUpgradeRecipeWrapper(rec));
+      rec.getOutput().getItem().getSubItems(rec.getOutput().getItem(), getCreativeTab(rec), blacklist);
     }
-    registry.addRecipes(result, DarkSteelUpgradeRecipeCategory.UID);
 
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerRepair.class, DarkSteelUpgradeRecipeCategory.UID, 0, 2, 3, 4 * 9);
+    NNList<ItemStack> seen = new NNList<>();
+    for (UpgradePath rec : allRecipes) {
+      if (!inList(blacklist, rec.getOutput()) && !inList(seen, rec.getOutput())) {
+        seen.add(rec.getOutput());
+      }
+    }
 
-    Log.info(String.format("DarkSteelUpgradeRecipeCategory: Added %d dark steel upgrade recipes to JEI.", allRecipes.size()));
-  }
+    int enchantmentRecipes = registerBookEnchantmentRecipes(registry, seen);
 
-  // ------------ Category
+    for (UpgradePath rec : allRecipes) {
+      registry.addAnvilRecipe(rec.getInput(), Collections.singletonList(rec.getUpgrade()), Collections.singletonList(rec.getOutput()));
+    }
 
-  // Offsets from full size gui, makes it much easier to get the location
-  // correct
-  private int xOff = 15;
-  private int yOff = 40;
-
-  @Nonnull
-  private final IDrawable background;
-
-  public DarkSteelUpgradeRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = new ResourceLocation("textures/gui/container/anvil.png");
-    background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 146, 24);
-  }
-
-  @Override
-  public @Nonnull String getUid() {
-    return UID;
+    Log.info(String.format(
+        "DarkSteelUpgradeRecipeCategory: Added %d dark steel upgrade recipes and %d enchantment recipes for upgradable items to JEI in %.3f seconds.",
+        allRecipes.size(), enchantmentRecipes, (System.nanoTime() - start) / 1000000000d));
   }
 
   @SuppressWarnings("null")
-  @Override
-  public @Nonnull String getTitle() {
-    return Blocks.ANVIL.getLocalizedName();
+  private static @Nonnull CreativeTabs getCreativeTab(UpgradePath rec) {
+    return rec.getOutput().getItem().getCreativeTab();
   }
 
-  @Override
-  public @Nonnull IDrawable getBackground() {
-    return background;
+  private static int registerBookEnchantmentRecipes(@Nonnull IModRegistry registry, @Nonnull NNList<ItemStack> ingredients) {
+    int count = 0;
+    List<Enchantment> enchantments = ForgeRegistries.ENCHANTMENTS.getValues();
+    for (ItemStack ingredient : ingredients) {
+      if (ingredient.isItemEnchantable()) {
+        for (Enchantment enchantment : enchantments) {
+          if (enchantment.canApply(ingredient)) {
+            Item item = ingredient.getItem();
+            List<ItemStack> perLevelBooks = Lists.newArrayList();
+            List<ItemStack> perLevelOutputs = Lists.newArrayList();
+            for (int level = 1; level <= enchantment.getMaxLevel(); level++) {
+              Map<Enchantment, Integer> enchMap = Collections.singletonMap(enchantment, level);
+              ItemStack bookEnchant = new ItemStack(Items.ENCHANTED_BOOK);
+              EnchantmentHelper.setEnchantments(enchMap, bookEnchant);
+              if (item.isBookEnchantable(ingredient, bookEnchant)) {
+                perLevelBooks.add(bookEnchant);
+                ItemStack withEnchant = ingredient.copy();
+                EnchantmentHelper.setEnchantments(enchMap, withEnchant);
+                perLevelOutputs.add(withEnchant);
+              }
+            }
+            if (!perLevelBooks.isEmpty() && !perLevelOutputs.isEmpty()) {
+              registry.addAnvilRecipe(ingredient, perLevelBooks, perLevelOutputs);
+              count++;
+            }
+          }
+        }
+      }
+    }
+    return count;
   }
 
-  @SuppressWarnings("null")
-  @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull DarkSteelUpgradeRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
-    IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-
-    guiItemStacks.init(0, true, 27 - xOff - 1, 47 - yOff - 1);
-    guiItemStacks.init(1, true, 76 - xOff - 1, 47 - yOff - 1);
-    guiItemStacks.init(2, false, 134 - xOff - 1, 47 - yOff - 1);
-
-    guiItemStacks.set(ingredients);
+  private static boolean inList(@Nonnull NNList<ItemStack> list, @Nonnull ItemStack stack) {
+    for (NNIterator<ItemStack> itr = list.fastIterator(); itr.hasNext();) {
+      if (ItemStack.areItemStacksEqual(itr.next(), stack)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public static class DarkSteelUpgradeSubtypeInterpreter implements ISubtypeInterpreter {
@@ -145,7 +130,25 @@ public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkStee
     @Override
     @Nullable
     public String getSubtypeInfo(@Nonnull ItemStack itemStack) {
-      return DarkSteelRecipeManager.instance.getUpgradesAsString(itemStack);
+      String result = DarkSteelRecipeManager.instance.getUpgradesAsString(itemStack);
+      Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemStack);
+      final List<Enchantment> keyList = new NNList<>(enchantments.keySet());
+      keyList.sort(new Comparator<Enchantment>() {
+        @Override
+        public int compare(Enchantment o1, Enchantment o2) {
+          return safeString(o1).compareTo(safeString(o2));
+        }
+
+      });
+      for (Enchantment enchantment : keyList) {
+        result += "/" + safeString(enchantment);
+      }
+      return result;
+    }
+
+    private @Nonnull String safeString(Enchantment enchantment) {
+      final ResourceLocation registryName = enchantment.getRegistryName();
+      return registryName != null ? registryName.toString() : "";
     }
 
   }
