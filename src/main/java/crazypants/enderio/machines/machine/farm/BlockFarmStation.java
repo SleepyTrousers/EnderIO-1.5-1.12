@@ -16,7 +16,6 @@ import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.IOMode;
-import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,14 +35,14 @@ import net.minecraftforge.server.permission.PermissionAPI;
 public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
-  public static BlockFarmStation create() {
-    BlockFarmStation result = new BlockFarmStation();
+  public static BlockFarmStation create(@Nonnull IModObject modObject) {
+    BlockFarmStation result = new BlockFarmStation(modObject);
     result.init();
     return result;
   }
 
-  protected BlockFarmStation() {
-    super(MachineObject.block_farm_station, TileFarmStation.class);
+  protected BlockFarmStation(@Nonnull IModObject modObject) {
+    super(modObject, TileFarmStation.class);
   }
 
   @Override

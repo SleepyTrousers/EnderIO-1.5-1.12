@@ -25,7 +25,6 @@ import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.ContainerTravelAccessable;
 import crazypants.enderio.machines.machine.teleport.ContainerTravelAuth;
@@ -61,21 +60,17 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   protected static final int GUI_ID_TRAVEL_ACCESSABLE = 0;
 
-  public static BlockTravelAnchor<TileTravelAnchor> create() {
+  public static BlockTravelAnchor<TileTravelAnchor> create(@Nonnull IModObject modObject) {
     PacketHandler.INSTANCE.registerMessage(PacketDrainStaff.class, PacketDrainStaff.class, PacketHandler.nextID(), Side.SERVER);
 
-    BlockTravelAnchor<TileTravelAnchor> result = new BlockTravelAnchor<TileTravelAnchor>(TileTravelAnchor.class);
+    BlockTravelAnchor<TileTravelAnchor> result = new BlockTravelAnchor<TileTravelAnchor>(modObject, TileTravelAnchor.class);
     result.init();
     return result;
   }
 
-  private BlockTravelAnchor(Class<T> clz) {
-    super(MachineObject.block_travel_anchor, clz);
-    initDefaultState();
-  }
-
   protected BlockTravelAnchor(@Nonnull IModObject mo, Class<T> teClass) {
     super(mo, teClass);
+    initDefaultState();
   }
 
   protected void initDefaultState() {

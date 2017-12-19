@@ -10,7 +10,6 @@ import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.IHaveRenderers;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.ContainerDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.GuiDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetList;
@@ -35,20 +34,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockDialingDevice extends BlockEio<TileDialingDevice>
     implements IEioGuiHandler.WithPos, ITileEntityProvider, IResourceTooltipProvider, IHaveRenderers {
 
-  public static BlockDialingDevice create() {
+  public static BlockDialingDevice create(@Nonnull IModObject modObject) {
 
     PacketHandler.INSTANCE.registerMessage(PacketTargetList.class, PacketTargetList.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketTargetList.class, PacketTargetList.class, PacketHandler.nextID(), Side.CLIENT);
 
-    BlockDialingDevice ret = new BlockDialingDevice();
+    BlockDialingDevice ret = new BlockDialingDevice(modObject);
     ret.init();
     return ret;
   }
 
   public static final @Nonnull PropertyEnum<DialerFacing> FACING = PropertyEnum.create("facing", DialerFacing.class);
 
-  public BlockDialingDevice() {
-    super(MachineObject.block_dialing_device, TileDialingDevice.class);
+  public BlockDialingDevice(@Nonnull IModObject modObject) {
+    super(modObject, TileDialingDevice.class);
     setLightOpacity(255);
     useNeighborBrightness = true;
     setDefaultState(blockState.getBaseState().withProperty(FACING, DialerFacing.UP_TONORTH));

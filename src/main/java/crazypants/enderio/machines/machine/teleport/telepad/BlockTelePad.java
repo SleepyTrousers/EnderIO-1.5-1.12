@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.teleport.ITelePad;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -11,7 +12,6 @@ import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.teleport.ContainerTravelAccessable;
 import crazypants.enderio.machines.machine.teleport.ContainerTravelAuth;
 import crazypants.enderio.machines.machine.teleport.GuiTravelAuth;
@@ -54,7 +54,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   public static final int GUI_ID_TELEPAD_TRAVEL = 1;
 
   @SuppressWarnings("rawtypes")
-  public static BlockTravelAnchor create() {
+  public static BlockTravelAnchor create(@Nonnull IModObject modObject) {
 
     PacketHandler.INSTANCE.registerMessage(PacketOpenServerGui.class, PacketOpenServerGui.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketSetTarget.class, PacketSetTarget.class, PacketHandler.nextID(), Side.SERVER);
@@ -65,7 +65,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
 
     // PacketFluidLevel
 
-    BlockTelePad ret = new BlockTelePad();
+    BlockTelePad ret = new BlockTelePad(modObject);
     ret.init();
     return ret;
   }
@@ -73,11 +73,15 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   @Nonnull
   public static final PropertyEnum<BlockType> BLOCK_TYPE = PropertyEnum.<BlockType> create("blocktype", BlockType.class);
 
-  public BlockTelePad() {
-    super(MachineObject.block_tele_pad, TileTelePad.class);
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BLOCK_TYPE, BlockType.SINGLE));
+  public BlockTelePad(@Nonnull IModObject modObject) {
+    super(modObject, TileTelePad.class);
     setLightOpacity(255);
     useNeighborBrightness = true;
+  }
+
+  @Override
+  protected void initDefaultState() {
+    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BLOCK_TYPE, BlockType.SINGLE));
   }
 
   @Override

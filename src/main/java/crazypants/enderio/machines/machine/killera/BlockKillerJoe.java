@@ -15,7 +15,6 @@ import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.machines.config.Config;
-import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -54,15 +53,15 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   @Nonnull
   public static final AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
 
-  public static BlockKillerJoe create() {
-    BlockKillerJoe res = new BlockKillerJoe();
+  public static BlockKillerJoe create(@Nonnull IModObject modObject) {
+    BlockKillerJoe res = new BlockKillerJoe(modObject);
     MinecraftForge.EVENT_BUS.register(res);
     res.init();
     return res;
   }
 
-  protected BlockKillerJoe() {
-    super(MachineObject.block_killer_joe, TileKillerJoe.class, new Material(MapColor.IRON) {
+  protected BlockKillerJoe(@Nonnull IModObject modObject) {
+    super(modObject, TileKillerJoe.class, new Material(MapColor.IRON) {
 
       @Override
       public boolean isOpaque() {

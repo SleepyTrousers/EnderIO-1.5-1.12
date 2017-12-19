@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
@@ -15,7 +16,6 @@ import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.machines.config.config.ClientConfig;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.killera.KillerJoeRenderMapper;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -42,14 +42,14 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   private static final double px = 1d / 16d;
   public static final @Nonnull AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
 
-  public static BlockZombieGenerator create() {
-    BlockZombieGenerator gen = new BlockZombieGenerator();
+  public static BlockZombieGenerator create(@Nonnull IModObject modObject) {
+    BlockZombieGenerator gen = new BlockZombieGenerator(modObject);
     gen.init();
     return gen;
   }
 
-  protected BlockZombieGenerator() {
-    super(MachineObject.block_zombie_generator, TileZombieGenerator.class, new Material(MapColor.IRON) {
+  protected BlockZombieGenerator(@Nonnull IModObject modObject) {
+    super(modObject, TileZombieGenerator.class, new Material(MapColor.IRON) {
 
       @Override
       public boolean isOpaque() {

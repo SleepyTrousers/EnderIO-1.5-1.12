@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.render.RenderMappers;
@@ -21,7 +22,6 @@ import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.transceiver.Channel;
 import crazypants.enderio.base.transceiver.ConnectionHandler;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machines.machine.transceiver.gui.GuiTransceiver;
 import crazypants.enderio.machines.machine.transceiver.render.TransceiverRenderer;
@@ -42,7 +42,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
-  public static BlockTransceiver create() {
+  public static BlockTransceiver create(@Nonnull IModObject modObject) {
     PacketHandler.INSTANCE.registerMessage(PacketSendRecieveChannel.class, PacketSendRecieveChannel.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketSendRecieveChannelList.class, PacketSendRecieveChannelList.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketItemFilter.class, PacketItemFilter.class, PacketHandler.nextID(), Side.SERVER);
@@ -50,15 +50,15 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
     ConnectionHandler ch = new ConnectionHandler();
     MinecraftForge.EVENT_BUS.register(ch);
 
-    BlockTransceiver res = new BlockTransceiver();
+    BlockTransceiver res = new BlockTransceiver(modObject);
     res.init();
     return res;
   }
 
   private TextureSupplier portalIcon = TextureRegistry.registerTexture("blocks/ender_still");
 
-  private BlockTransceiver() {
-    super(MachineObject.block_transceiver, TileTransceiver.class);
+  private BlockTransceiver(@Nonnull IModObject modObject) {
+    super(modObject, TileTransceiver.class);
   }
 
   @SideOnly(Side.CLIENT)
