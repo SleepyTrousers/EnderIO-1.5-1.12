@@ -17,7 +17,7 @@ import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machines.machine.transceiver.PacketItemFilter;
 import crazypants.enderio.base.machines.machine.transceiver.TileTransceiver;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 

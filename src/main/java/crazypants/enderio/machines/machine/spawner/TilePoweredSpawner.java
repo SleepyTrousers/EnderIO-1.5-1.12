@@ -1,5 +1,12 @@
 package crazypants.enderio.machines.machine.spawner;
 
+y;
+
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_SPEE
+
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -16,7 +23,7 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.base.machine.task.PoweredTask;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -42,12 +49,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_POWER_USE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_SPEEDUP;
+import net.minecraftforge.fml.relauncher.SideODUP;
 
 @Storable
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged, EntityAction.Implementer {
@@ -469,7 +471,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   private void sendNotification() {
     sendNotification = false;
-    PacketHandler.INSTANCE.sendToAll(new PacketUpdateNotification(this, getNotification()));
+    PacketHandler.INSTANCE.sendToAll(new PacketSpawnerUpdateNotification(this, getNotification()));
   }
 
   @Override

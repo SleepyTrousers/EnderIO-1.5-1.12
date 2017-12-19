@@ -11,7 +11,7 @@ import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.base.xp.ExperienceContainer;
 import crazypants.enderio.base.xp.IHaveExperience;
 import crazypants.enderio.base.xp.PacketExperienceContainer;

@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.vacuum;
 
+import static crazypants.enderio.base.machine.gui.GuiMachineBase.BUTTON_SIZE;
+
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.List;
@@ -20,15 +22,13 @@ import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machines.lang.Lang;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-
-import static crazypants.enderio.base.machine.gui.GuiMachineBase.BUTTON_SIZE;
 
 public class GuiVacuumChest extends GuiContainerBaseEIO {
 

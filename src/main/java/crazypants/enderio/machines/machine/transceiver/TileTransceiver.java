@@ -1,5 +1,11 @@
 package crazypants.enderio.machines.machine.transceiver;
 
+s;
+
+import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POWER_
+
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
@@ -21,7 +27,7 @@ import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.task.ContinuousTask;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerDistributor;
@@ -45,11 +51,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-
-import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POWER_USE;
+import net.minecraftforge.fluids.capability.IFluidTankPropertUSE;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
 

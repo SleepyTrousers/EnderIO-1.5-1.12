@@ -17,7 +17,7 @@ import com.google.common.base.Predicates;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.base.transceiver.Channel;
 import crazypants.enderio.base.transceiver.ChannelType;
 import crazypants.enderio.base.transceiver.ClientChannelRegister;

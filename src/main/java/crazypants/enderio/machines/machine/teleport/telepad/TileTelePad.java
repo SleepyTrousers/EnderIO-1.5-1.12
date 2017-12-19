@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.teleport.telepad;
 
+import static crazypants.enderio.base.init.ModObject.itemLocationPrintout;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
@@ -29,7 +31,6 @@ import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.PacketLegacyPowerStorage;
 import crazypants.enderio.base.machine.sound.MachineSound;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.teleport.TeleportUtil;
 import crazypants.enderio.machines.init.MachineObject;
@@ -40,6 +41,7 @@ import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarg
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTeleport;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTeleportTrigger;
 import crazypants.enderio.machines.machine.teleport.telepad.render.BlockType;
+import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
 import net.minecraft.entity.Entity;
@@ -63,8 +65,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-
-import static crazypants.enderio.base.init.ModObject.itemLocationPrintout;
 
 public class TileTelePad extends TileTravelAnchor
     implements ILegacyPowerReceiver, ITelePad, IProgressTile, IItemHandlerModifiable, ITankAccess.IExtendedTankAccess {

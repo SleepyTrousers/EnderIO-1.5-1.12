@@ -1,5 +1,11 @@
 package crazypants.enderio.machines.machine.obelisk.weather;
 
+y;
+
+import static crazypants.enderio.machines.capacitor.CapacitorKey.WEATHER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.WEATHER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.WEATHER_POWER_
+
 import java.awt.Color;
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +22,7 @@ import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -37,11 +43,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.machines.capacitor.CapacitorKey.WEATHER_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.WEATHER_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.WEATHER_POWER_USE;
+import net.minecraftforge.fml.relauncher.SideOUSE;
 
 @Storable
 public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, ITankAccess.IExtendedTankAccess {
