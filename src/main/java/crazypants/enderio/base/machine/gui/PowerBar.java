@@ -13,12 +13,16 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredMachineEntity;
 import info.loenwind.scheduler.Celeb;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawingElement {
 
@@ -37,8 +41,12 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
         }
         text.add(lang.get(frame));
       }
-      text.add(getPowerOutputLabel(LangPower.RFt(machine.getPowerUsePerTick())));
-      text.add(LangPower.RF(machine.getEnergyStored(), machine.getMaxEnergyStored()));
+      if (machine.getCapacitorData() == DefaultCapacitorData.NONE) {
+        text.addAll(Lang.GUI_NOCAP.getLines());
+      } else {
+        text.add(getPowerOutputLabel(LangPower.RFt(machine.getPowerUsePerTick())));
+        text.add(LangPower.RF(machine.getEnergyStored(), machine.getMaxEnergyStored()));
+      }
     }
   }
 
@@ -83,45 +91,88 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
   }
 
   @Override
-  public void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-      GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-      RenderUtil.bindTexture(EnderIO.DOMAIN + ":textures/gui/overlay.png");
-      GlStateManager.enableBlend();
-      int guiX0 = owner.getGuiLeft();
-      int guiY0 = owner.getGuiTop();
+  public void drawGuiContainerBackgroundLayer(float partialTicks, int par2, int par3) {
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    RenderUtil.bindTexture(EnderIO.DOMAIN + ":textures/gui/overlay.png");
+    GlStateManager.enableBlend();
+    int guiX0 = owner.getGuiLeft();
+    int guiY0 = owner.getGuiTop();
+
+    if (machine.getCapacitorData() == DefaultCapacitorData.NONE) {
+      paintCapacitorError(partialTicks, guiX0, guiY0);
+      if (Celeb.C24.isOn()) {
+        paintC24Overlay(guiX0, guiY0);
+      }
+    } else {
+      paintPowerBar(guiX0, guiY0);
+    }
+
+    owner.bindGuiTexture();
+    GlStateManager.disableBlend();
+  }
+
+  private void paintC24Overlay(int guiX0, int guiY0) {
+    final int drawX = guiX0 + x;
+    final int barWidth = width;
+    final int fullBarHeight = height;
+    final int drawYfullBar = guiY0 + (y + height) - fullBarHeight;
+    final int c24Frame = (int) ((EnderIO.proxy.getTickCount() / 3) % 25);
+    final int drawUc24 = c24Frame * 10;
+    final int drawVc24 = 0;
+    owner.drawTexturedModalRect(drawX, drawYfullBar, drawUc24, drawVc24, barWidth, fullBarHeight);
+  }
+
+  private void paintPowerBar(int guiX0, int guiY0) {
+    final int drawX = guiX0 + x;
+    final int barWidth = width;
 
     final int barHeight = machine.getEnergyStoredScaled(height);
-    final int barWidth = width;
-      int barFrame = (int) ((EnderIO.proxy.getTickCount() / 3) % 20);
-      if (barFrame > 10) {
-        barFrame = 20 - barFrame;
-      }
-    final int drawX = guiX0 + x;
+    int barFrame = (int) ((EnderIO.proxy.getTickCount() / 3) % 20);
+    if (barFrame > 10) {
+      barFrame = 20 - barFrame;
+    }
     final int yOffset = (y + height) - barHeight;
-      final int drawY = guiY0 + yOffset;
-      final int drawU = barFrame * 10;
-      final int drawV = 128;
-      owner.drawTexturedModalRect(drawX, drawY, drawU, drawV, barWidth, barHeight);
+    final int drawY = guiY0 + yOffset;
+    final int drawU = barFrame * 10;
+    final int drawV = 128;
+    owner.drawTexturedModalRect(drawX, drawY, drawU, drawV, barWidth, barHeight);
 
-      final int overlayFrame = (int) ((EnderIO.proxy.getTickCount()) % 128);
-      int drawUoverlay = 128;
-      int drawVoverlay = 128 + overlayFrame;
-      if (drawVoverlay + barHeight > 255) {
-        drawUoverlay += 10;
-        drawVoverlay -= 64;
-      }
-      owner.drawTexturedModalRect(drawX, drawY, drawUoverlay, drawVoverlay, barWidth, barHeight);
+    final int overlayFrame = (int) ((EnderIO.proxy.getTickCount()) % 128);
+    int drawUoverlay = 128;
+    int drawVoverlay = 128 + overlayFrame;
+    if (drawVoverlay + barHeight > 255) {
+      drawUoverlay += 10;
+      drawVoverlay -= 64;
+    }
+    owner.drawTexturedModalRect(drawX, drawY, drawUoverlay, drawVoverlay, barWidth, barHeight);
+  }
 
-      if (Celeb.C24.isOn()) {
-      final int fullBarHeight = height;
-      final int drawYfullBar = guiY0 + (y + height) - fullBarHeight;
-        final int c24Frame = (int) ((EnderIO.proxy.getTickCount() / 3) % 25);
-        final int drawUc24 = c24Frame * 10;
-        final int drawVc24 = 0;
-        owner.drawTexturedModalRect(drawX, drawYfullBar, drawUc24, drawVc24, barWidth, fullBarHeight);
-      }
-      owner.bindGuiTexture();
-      GlStateManager.disableBlend();
+  private void paintCapacitorError(float partialTicks, int guiX0, int guiY0) {
+    final int drawX = guiX0 + x;
+    final int drawY = guiY0 + y;
+
+    final int barWidth = width;
+    final int barHeight = height;
+
+    final int textureHeight = 20;
+
+    final int overlayFrame = 4; // (int) ((EnderIO.proxy.getTickCount() >>> 1) % 5);
+    final int drawUoverlay = 160 + overlayFrame * 10;
+    final int drawVoverlay = 128;
+
+    final int barY = drawY + barHeight - textureHeight;
+
+    owner.drawTexturedModalRect(drawX, barY, drawUoverlay, drawVoverlay, barWidth, textureHeight);
+
+    int stackX = drawX + barWidth / 2 - 16 / 2; // 16 = itemStack width
+    int stackY = drawY + barHeight - textureHeight - 6;
+    
+    GlStateManager.pushMatrix();
+    float f1 = MathHelper.sin((EnderIO.proxy.getTickCount() + partialTicks) / 10.0F) * 4F;
+    GlStateManager.translate(.5, f1, 0);
+
+    owner.drawFakeItemStack(stackX, stackY, new ItemStack(ModObject.itemBasicCapacitor.getItemNN()));
+    GlStateManager.popMatrix();
   }
 
   private static final List<String> lang = Arrays.asList(new String[] { "Krismasi Njema", "UKhisimusi omuhle", "Moni Wa Chikondwelero Cha Kristmasi",

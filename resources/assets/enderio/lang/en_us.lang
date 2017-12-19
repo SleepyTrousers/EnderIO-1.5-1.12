@@ -664,6 +664,10 @@ enderio.gui.generic.ioMode.overlay.tooltip=Configure IO
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=Configure IO
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line2=Shift click to reset all sides
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line3=to their default setting
+enderio.gui.generic.nocap.line1=§3Capacitor missing
+enderio.gui.generic.nocap.line2=Insert any capacitor so
+enderio.gui.generic.nocap.line3=this machine can work!
+
 
 // consumed by EntityAction
 enderio.entity_action.block_attractor_obelisk.action=Attracts
