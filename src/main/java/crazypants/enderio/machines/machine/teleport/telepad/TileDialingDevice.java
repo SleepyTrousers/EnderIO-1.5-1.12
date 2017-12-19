@@ -12,7 +12,7 @@ import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.item.coordselector.TelepadTarget.TelepadTargetArrayListHandler;
 import crazypants.enderio.base.machine.baselegacy.PacketLegacyPowerStorage;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetList;
 import info.loenwind.autosave.annotations.Store;

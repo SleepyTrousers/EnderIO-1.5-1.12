@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -26,9 +25,6 @@ public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk
   public static BlockWeatherObelisk create(@Nonnull IModObject modObject) {
     BlockWeatherObelisk ret = new BlockWeatherObelisk(modObject);
     ret.init();
-    PacketHandler.INSTANCE.registerMessage(PacketActivateWeather.class, PacketActivateWeather.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketActivateWeather.class, PacketActivateWeather.class, PacketHandler.nextID(), Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketWeatherTank.class, PacketWeatherTank.class, PacketHandler.nextID(), Side.CLIENT);
 
     EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.DOMAIN, "weather_rocket"), EntityWeatherRocket.class, "weather_rocket", 33, EnderIO.instance,
         64, 3, false); // TODO Check if Forge has a registry for this

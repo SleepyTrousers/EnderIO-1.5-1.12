@@ -10,7 +10,7 @@ import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.machines.machine.teleport.telepad.TileDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetList;
 import net.minecraft.client.Minecraft;

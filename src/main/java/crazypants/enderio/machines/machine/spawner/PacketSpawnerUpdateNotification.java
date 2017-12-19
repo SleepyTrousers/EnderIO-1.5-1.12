@@ -11,14 +11,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketUpdateNotification extends MessageTileEntity<TilePoweredSpawner> implements IMessageHandler<PacketUpdateNotification, IMessage> {
+public class PacketSpawnerUpdateNotification extends MessageTileEntity<TilePoweredSpawner> implements IMessageHandler<PacketSpawnerUpdateNotification, IMessage> {
 
   private Set<SpawnerNotification> notification;
 
-  public PacketUpdateNotification() {
+  public PacketSpawnerUpdateNotification() {
   }
 
-  public PacketUpdateNotification(TilePoweredSpawner tile, Set<SpawnerNotification> notification) {
+  public PacketSpawnerUpdateNotification(TilePoweredSpawner tile, Set<SpawnerNotification> notification) {
     super(tile);
     this.notification = notification;
   }
@@ -43,7 +43,7 @@ public class PacketUpdateNotification extends MessageTileEntity<TilePoweredSpawn
   }
 
   @Override
-  public IMessage onMessage(PacketUpdateNotification message, MessageContext ctx) {
+  public IMessage onMessage(PacketSpawnerUpdateNotification message, MessageContext ctx) {
     TilePoweredSpawner te = message.getTileEntity(EnderIO.proxy.getClientWorld());
     if (te != null) {
       te.replaceNotification(message.notification);

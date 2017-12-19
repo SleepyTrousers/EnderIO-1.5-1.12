@@ -15,7 +15,6 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.spawner.DummyRecipe;
@@ -61,8 +60,6 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   public static BlockPoweredSpawner create(@Nonnull IModObject modObject) {
     MachineRecipeRegistry.instance.registerRecipe(MachineObject.block_powered_spawner.getUnlocalisedName(), new DummyRecipe());
-
-    PacketHandler.INSTANCE.registerMessage(PacketUpdateNotification.class, PacketUpdateNotification.class, PacketHandler.nextID(), Side.CLIENT);
 
     // Ensure costs are loaded at startup
     PoweredSpawnerConfig.getInstance();
