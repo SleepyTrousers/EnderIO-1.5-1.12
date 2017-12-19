@@ -4,13 +4,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.fluid.SmartTank;
+import com.enderio.core.common.util.FluidUtil;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
@@ -23,13 +23,13 @@ class TankItemFluidCapability implements IFluidHandlerItem, ICapabilityProvider 
 
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    return capability == FluidUtil.getFluidItemCapability();
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T) this : null;
+    return capability == FluidUtil.getFluidItemCapability() ? (T) this : null;
   }
 
   @Override
