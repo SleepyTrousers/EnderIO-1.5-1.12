@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.spawner;
 
+import static crazypants.enderio.machines.init.MachineObject.block_powered_spawner;
+
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -15,7 +17,6 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.spawner.DummyRecipe;
@@ -52,8 +53,6 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.machines.init.MachineObject.block_powered_spawner;
-
 public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner>
     implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
@@ -61,8 +60,6 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   public static BlockPoweredSpawner create(@Nonnull IModObject modObject) {
     MachineRecipeRegistry.instance.registerRecipe(MachineObject.block_powered_spawner.getUnlocalisedName(), new DummyRecipe());
-
-    PacketHandler.INSTANCE.registerMessage(PacketUpdateNotification.class, PacketUpdateNotification.class, PacketHandler.nextID(), Side.CLIENT);
 
     // Ensure costs are loaded at startup
     PoweredSpawnerConfig.getInstance();

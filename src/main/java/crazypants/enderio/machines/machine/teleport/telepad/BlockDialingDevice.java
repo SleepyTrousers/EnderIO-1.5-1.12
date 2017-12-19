@@ -8,11 +8,9 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.ContainerDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.GuiDialingDevice;
-import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetList;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.PropertyEnum;
@@ -35,9 +33,6 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice>
     implements IEioGuiHandler.WithPos, ITileEntityProvider, IResourceTooltipProvider, IHaveRenderers {
 
   public static BlockDialingDevice create(@Nonnull IModObject modObject) {
-
-    PacketHandler.INSTANCE.registerMessage(PacketTargetList.class, PacketTargetList.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketTargetList.class, PacketTargetList.class, PacketHandler.nextID(), Side.CLIENT);
 
     BlockDialingDevice ret = new BlockDialingDevice(modObject);
     ret.init();

@@ -12,7 +12,6 @@ import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
@@ -30,7 +29,6 @@ import crazypants.enderio.machines.machine.teleport.ContainerTravelAccessable;
 import crazypants.enderio.machines.machine.teleport.ContainerTravelAuth;
 import crazypants.enderio.machines.machine.teleport.GuiTravelAccessable;
 import crazypants.enderio.machines.machine.teleport.GuiTravelAuth;
-import crazypants.enderio.machines.machine.teleport.packet.PacketDrainStaff;
 import crazypants.enderio.machines.machine.teleport.telepad.render.TelePadRenderMapper;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.ITileEntityProvider;
@@ -61,8 +59,6 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   protected static final int GUI_ID_TRAVEL_ACCESSABLE = 0;
 
   public static BlockTravelAnchor<TileTravelAnchor> create(@Nonnull IModObject modObject) {
-    PacketHandler.INSTANCE.registerMessage(PacketDrainStaff.class, PacketDrainStaff.class, PacketHandler.nextID(), Side.SERVER);
-
     BlockTravelAnchor<TileTravelAnchor> result = new BlockTravelAnchor<TileTravelAnchor>(modObject, TileTravelAnchor.class);
     result.init();
     return result;

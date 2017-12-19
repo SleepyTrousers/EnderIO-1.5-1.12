@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
@@ -19,11 +18,6 @@ import crazypants.enderio.machines.machine.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.ContainerTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.GuiAugmentedTravelAccessible;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.GuiTelePad;
-import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketFluidLevel;
-import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketOpenServerGui;
-import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
-import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTeleport;
-import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTeleportTrigger;
 import crazypants.enderio.machines.machine.teleport.telepad.render.BlockType;
 import crazypants.enderio.machines.machine.teleport.telepad.render.TelePadRenderMapper;
 import crazypants.enderio.machines.machine.teleport.telepad.render.TelePadSpecialRenderer;
@@ -55,13 +49,6 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
 
   @SuppressWarnings("rawtypes")
   public static BlockTravelAnchor create(@Nonnull IModObject modObject) {
-
-    PacketHandler.INSTANCE.registerMessage(PacketOpenServerGui.class, PacketOpenServerGui.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketSetTarget.class, PacketSetTarget.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketSetTarget.class, PacketSetTarget.class, PacketHandler.nextID(), Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketTeleportTrigger.class, PacketTeleportTrigger.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketTeleport.class, PacketTeleport.class, PacketHandler.nextID(), Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketFluidLevel.class, PacketFluidLevel.class, PacketHandler.nextID(), Side.CLIENT);
 
     // PacketFluidLevel
 

@@ -3,12 +3,12 @@ package crazypants.enderio.machines.machine.teleport.telepad.gui;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.GuiTravelAccessable;
 import crazypants.enderio.machines.machine.teleport.telepad.BlockTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketOpenServerGui;
+import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
 

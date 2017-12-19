@@ -17,9 +17,22 @@ import crazypants.enderio.machines.machine.generator.stirling.PacketBurnTime;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machines.machine.killera.PacketSwing;
 import crazypants.enderio.machines.machine.obelisk.PacketObeliskFx;
+import crazypants.enderio.machines.machine.obelisk.weather.PacketActivateWeather;
+import crazypants.enderio.machines.machine.obelisk.weather.PacketWeatherTank;
 import crazypants.enderio.machines.machine.sagmill.PacketGrindingBall;
+import crazypants.enderio.machines.machine.spawner.PacketSpawnerUpdateNotification;
 import crazypants.enderio.machines.machine.tank.PacketTankFluid;
 import crazypants.enderio.machines.machine.tank.PacketTankVoidMode;
+import crazypants.enderio.machines.machine.teleport.packet.PacketDrainStaff;
+import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketFluidLevel;
+import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketOpenServerGui;
+import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
+import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetList;
+import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTeleport;
+import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTeleportTrigger;
+import crazypants.enderio.machines.machine.transceiver.PacketItemFilter;
+import crazypants.enderio.machines.machine.transceiver.PacketSendRecieveChannel;
+import crazypants.enderio.machines.machine.transceiver.PacketSendRecieveChannelList;
 import crazypants.enderio.machines.machine.vacuum.PacketVaccumChest;
 import crazypants.enderio.machines.machine.vat.PacketDumpTank;
 import crazypants.enderio.machines.machine.vat.PacketTanks;
@@ -81,6 +94,22 @@ public class PacketHandler {
     PacketHandler.INSTANCE.registerMessage(PacketTanks.class, PacketTanks.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketVatProgress.class, PacketVatProgress.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketDumpTank.class, PacketDumpTank.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketActivateWeather.class, PacketActivateWeather.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketActivateWeather.class, PacketActivateWeather.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketWeatherTank.class, PacketWeatherTank.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketSpawnerUpdateNotification.class, PacketSpawnerUpdateNotification.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketDrainStaff.class, PacketDrainStaff.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketTargetList.class, PacketTargetList.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketTargetList.class, PacketTargetList.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketOpenServerGui.class, PacketOpenServerGui.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketSetTarget.class, PacketSetTarget.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketSetTarget.class, PacketSetTarget.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketTeleportTrigger.class, PacketTeleportTrigger.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketTeleport.class, PacketTeleport.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketFluidLevel.class, PacketFluidLevel.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketSendRecieveChannel.class, PacketSendRecieveChannel.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketSendRecieveChannelList.class, PacketSendRecieveChannelList.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketItemFilter.class, PacketItemFilter.class, PacketHandler.nextID(), Side.SERVER);
 
   }
 

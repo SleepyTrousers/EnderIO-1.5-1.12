@@ -1,5 +1,11 @@
 package crazypants.enderio.machines.integration.jei;
 
+import static crazypants.enderio.machines.init.MachineObject.block_slice_and_splice;
+import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.NUM_RECIPE_SLOT;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +18,6 @@ import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice;
 import crazypants.enderio.machines.machine.slicensplice.GuiSliceAndSplice;
-import crazypants.enderio.machines.machine.slicensplice.SliceAndSpliceRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -27,12 +32,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import static crazypants.enderio.machines.init.MachineObject.block_slice_and_splice;
-import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.NUM_RECIPE_SLOT;
 
 public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSpliceRecipeCategory.SliceAndSpliceRecipe> {
 
@@ -53,7 +52,8 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
     registry.addRecipeClickArea(GuiSliceAndSplice.class, 155, 42, 16, 16, SliceAndSpliceRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_slice_and_splice.getBlockNN()), SliceAndSpliceRecipeCategory.UID);
 
-    registry.addRecipes(SliceAndSpliceRecipeManager.getInstance().getRecipes(), UID);
+    // TODO
+    // registry.addRecipes(SliceAndSpliceRecipeManager.getInstance().getRecipes(), UID);
 
     registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerSliceAndSplice.class, SliceAndSpliceRecipeCategory.UID, FIRST_RECIPE_SLOT,
         NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
