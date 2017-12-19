@@ -193,7 +193,7 @@ public class ValueFactory {
     protected abstract DataTypes getDataType();
   }
 
-  protected final void read(final ByteBuf buf) {
+  protected final synchronized void read(final ByteBuf buf) {
     Map<String, Object> result = new HashMap<>();
     boolean reading = true;
     while (reading) {

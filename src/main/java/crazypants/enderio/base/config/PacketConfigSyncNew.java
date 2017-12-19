@@ -42,6 +42,9 @@ public class PacketConfigSyncNew implements IMessage {
       if (!Minecraft.getMinecraft().isIntegratedServerRunning()) {
         factory.read(message.bufferCopy);
       }
+      if (message.bufferCopy != null) {
+        message.bufferCopy.release();
+      }
       return null;
     }
     
