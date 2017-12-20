@@ -33,6 +33,7 @@ public class JeiPlugin extends BlankModPlugin {
   @Override
   public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry) {
     DarkSteelUpgradeRecipeCategory.registerSubtypes(subtypeRegistry);
+    MobContainerSubtypeInterpreter.registerSubtypes(subtypeRegistry);
   }
 
   @Override

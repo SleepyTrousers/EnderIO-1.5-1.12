@@ -378,6 +378,10 @@ public class CapturedMob { // TODO: DONE111
     return entity != null && getEntityName().equals(EntityList.getKey(entity));
   }
 
+  public boolean isSameType(CapturedMob other) {
+    return other != null && getEntityName().equals(other.getEntityName());
+  }
+
   @Override
   public String toString() {
     return "CapturedMob [" + "entityId=" + entityId + ", " + (customName != null ? "customName=" + customName + ", " : "")
