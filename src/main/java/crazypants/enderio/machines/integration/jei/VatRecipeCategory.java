@@ -1,19 +1,16 @@
 package crazypants.enderio.machines.integration.jei;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.client.render.RenderUtil;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.integration.jei.RecipeWrapper;
-import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
+import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.IRecipe;
-import crazypants.enderio.base.recipe.RecipeInput;
+import crazypants.enderio.base.recipe.vat.VatRecipe;
+import crazypants.enderio.base.recipe.vat.VatRecipe.RecipeMatch;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
 import crazypants.enderio.machines.machine.vat.ContainerVat;
 import crazypants.enderio.machines.machine.vat.GuiVat;
@@ -21,7 +18,8 @@ import crazypants.enderio.util.Prep;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.gui.IGuiIngredient;
+import mezz.jei.api.gui.IGuiFluidStackGroup;
+import mezz.jei.api.gui.IGuiIngredientGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
@@ -46,101 +44,56 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
   private static final int xOff = 24;
   private static final int yOff = 9;
 
+  private Rectangle inTankBounds = new Rectangle(30 - xOff, 12 - yOff, 15, 47);
+  private Rectangle outTankBounds = new Rectangle(132 - xOff, 12 - yOff, 15, 47);
+
   // ------------ Recipes
 
   public static class VatRecipeWrapper extends RecipeWrapper {
 
-    private Rectangle inTankBounds = new Rectangle(30 - xOff, 12 - yOff, 15, 47);
-    private Rectangle outTankBounds = new Rectangle(132 - xOff, 12 - yOff, 15, 47);
+    private IRecipeLayout currentLayout;
 
-    Map<Integer, ? extends IGuiIngredient<ItemStack>> currentIngredients;
-    private final FluidStack inputFl;
-    private final FluidStack outputFl;
-
+    @SuppressWarnings("null")
     public VatRecipeWrapper(IRecipe rec) {
       super(rec);
-      FluidStack fl = null;
-      for (RecipeInput ri : rec.getInputs()) {
-        if (ri.isFluid()) {
-          fl = ri.getFluidInput();
-          break;
-        }
-      }
-      inputFl = fl;
-      outputFl = rec.getOutputs()[0].getFluidOutput();
-
-    }
-
-    @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-      if (currentIngredients == null || inputFl == null || outputFl == null) {
-        return;
-      }
-
-      String str = getTextForSlot(0);
-      if (str != null) {
-        minecraft.fontRenderer.drawString(str, 54 - xOff, 31 - yOff, 0x808080);
-      }
-      str = getTextForSlot(1);
-      if (str != null) {
-        minecraft.fontRenderer.drawString(str, 104 - xOff, 31 - yOff, 0x808080);
-      }
-
-      RenderUtil.renderGuiTank(inputFl, inputFl.amount, inputFl.amount, inTankBounds.x, inTankBounds.y, 0, inTankBounds.width, inTankBounds.height);
-      RenderUtil.renderGuiTank(outputFl, outputFl.amount, outputFl.amount, outTankBounds.x, outTankBounds.y, 0, outTankBounds.width, outTankBounds.height);
-
-      IRecipe rec = getRecipe();
-      String energyString = LangPower.RF(rec.getEnergyRequired());
-      minecraft.fontRenderer.drawString(energyString, 76, 58, 0x808080, false);
-
-    }
-
-    private String getTextForSlot(int forSlot) {
-      IGuiIngredient<ItemStack> ging = currentIngredients.get(forSlot);
-      ItemStack stack = ging.getDisplayedIngredient();
-
-      if (stack == null) {
-        return null;
-      }
-      float mult = VatRecipeManager.getInstance().getMultiplierForInput(inputFl.getFluid(), stack, outputFl.getFluid());
-      String str = "x" + mult;
-      return str;
-    }
-
-    public void setInfoData(Map<Integer, ? extends IGuiIngredient<ItemStack>> ings) {
-      currentIngredients = ings;
     }
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-      // TODO is this necessary?
-      ingredients.setInput(FluidStack.class, inputFl);
+      super.getIngredients(ingredients);
+      ingredients.setInput(EnergyIngredient.class, new EnergyIngredient(recipe.getEnergyRequired()));
+    }
+
+    public void setCurrentLayout(IRecipeLayout currentLayout) {
+      this.currentLayout = currentLayout;
     }
 
     @Override
-    public @Nonnull List<String> getTooltipStrings(int mouseX, int mouseY) {
-      List<String> res = new ArrayList<String>(2);
-      if (inTankBounds.contains(mouseX, mouseY)) {
-        res.add(inputFl.getLocalizedName());
-      } else if (outTankBounds.contains(mouseX, mouseY)) {
-        res.add(outputFl.getLocalizedName());
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+      // This is early everytime the recipe is drawn, so re-calc based on the active items here
+      if (currentLayout != null) {
+        final IGuiItemStackGroup guiItemStacks = currentLayout.getItemStacks();
+        final IGuiFluidStackGroup fluidStacks = currentLayout.getFluidStacks();
+        final ItemStack in0stack = guiItemStacks.getGuiIngredients().get(0).getDisplayedIngredient();
+        final ItemStack in1Stack = guiItemStacks.getGuiIngredients().get(1).getDisplayedIngredient();
+        final FluidStack fluidIn = fluidStacks.getGuiIngredients().get(2).getDisplayedIngredient();
+        if (in0stack != null && fluidIn != null) {
+          final RecipeMatch match = ((VatRecipe) recipe).matchRecipe(fluidIn, in0stack, in1Stack != null ? in1Stack : Prep.getEmpty());
+          if (match != null) {
+            fluidStacks.set(2, match.in);
+            fluidStacks.set(3, match.out);
+            minecraft.fontRenderer.drawString("x" + match.r0.getMulitplier(), 54 - xOff, 31 - yOff, 0x808080);
+            minecraft.fontRenderer.drawString("x" + match.r1.getMulitplier(), 104 - xOff, 31 - yOff, 0x808080);
+          }
+        }
       }
-      return res;
     }
 
   }
 
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
-
     registry.addRecipeCategories(new VatRecipeCategory(guiHelper));
     registry.handleRecipes(IRecipe.class, VatRecipeWrapper::new, VatRecipeCategory.UID);
-    // // TODO what was the purpose of this?
-    // @Override
-    // public boolean isRecipeValid(@Nonnull VatRecipeWrapper recipe) {
-    // return recipe.isValid();
-    // }
-    //
-    // });
     registry.addRecipeClickArea(GuiVat.class, 155, 42, 16, 16, VatRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_vat.getBlockNN()), VatRecipeCategory.UID);
 
@@ -154,8 +107,6 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
 
   @Nonnull
   private final IDrawable background;
-
-  private VatRecipeWrapper currentRecipe;
 
   public VatRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("vat");
@@ -179,43 +130,22 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
 
   @Override
   public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull VatRecipeCategory.VatRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
+    recipeWrapper.setCurrentLayout(recipeLayout);
 
-    currentRecipe = recipeWrapper;
-
-    IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-
-    Map<Integer, ? extends IGuiIngredient<ItemStack>> ings = guiItemStacks.getGuiIngredients();
-    currentRecipe.setInfoData(ings);
+    final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
     guiItemStacks.init(0, true, 55 - xOff, 11 - yOff);
     guiItemStacks.init(1, true, 104 - xOff, 11 - yOff);
+    guiItemStacks.set(ingredients);
 
-    ArrayList<ItemStack> inputsOne = new ArrayList<ItemStack>();
-    ArrayList<ItemStack> inputsTwo = new ArrayList<ItemStack>();
-    for (RecipeInput input : currentRecipe.getRecipe().getInputs()) {
-      if (Prep.isValid(input.getInput())) {
-        List<ItemStack> equivs = getInputStacks(input);
-        if (input.getSlotNumber() == 0) {
-          inputsOne.addAll(equivs);
-        } else if (input.getSlotNumber() == 1) {
-          inputsTwo.addAll(equivs);
-        }
-      }
-    }
-    guiItemStacks.set(0, inputsOne);
-    guiItemStacks.set(1, inputsTwo);
-  }
+    final IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
+    fluidStacks.init(2, true, inTankBounds.x, inTankBounds.y, inTankBounds.width, inTankBounds.height, 8000, false, null);
+    fluidStacks.init(3, false, outTankBounds.x, outTankBounds.y, outTankBounds.width, outTankBounds.height, 8000, false, null);
+    fluidStacks.set(ingredients);
 
-  private List<ItemStack> getInputStacks(RecipeInput input) {
-    List<ItemStack> result = new ArrayList<ItemStack>();
-    result.add(input.getInput());
-    ItemStack[] eq = input.getEquivelentInputs();
-    if (eq != null) {
-      for (ItemStack st : eq) {
-        result.add(st);
-      }
-    }
-    return result;
+    IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
+    group.init(4, true, EnergyIngredientRenderer.INSTANCE, 76, 58, 50, 10, 0, 0);
+    group.set(ingredients);
   }
 
 }
