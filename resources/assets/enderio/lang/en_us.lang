@@ -1,3 +1,5 @@
+itemGroup.enderio.machines=EnderIO Machines
+
 enderio.gui.combustion_generator.output=Generating: %s
 enderio.gui.combustion_generator.coolantTank.empty=Coolant
 enderio.gui.combustion_generator.coolantTank=Coolant: %s
@@ -118,6 +120,8 @@ tile.block_alloy_smelter.tooltip.detailed.line3=furnace
 tile.block_alloy_smelter.tooltip.detailed.line4=Upgrade with capacitors to increase
 tile.block_alloy_smelter.tooltip.detailed.line5=speed and energy storage
 
+tile.block_simple_alloy_smelter.name=Simple Alloy Smelter
+tile.block_simple_alloy_smelter.tooltip.detailed.line1=Used to create EnderIO alloys
 
 tile.block_buffer.item.name=Item Buffer
 tile.block_buffer.power.name=Power Buffer
@@ -144,12 +148,30 @@ tile.block_farm_station.tooltip.detailed.line5=applied when harvesting
 tile.block_farm_station.tooltip.detailed.line6=Upgrade with capacitors to increase
 tile.block_farm_station.tooltip.detailed.line7=range, upgrade also increases power use
 
+;lights
+
+tile.block_electric_light.electric.name=Electric Light
+
+tile.block_electric_light.electric.inverted.name=Electric Light (Inverted)
+
+tile.block_electric_light.name=Light
+
+tile.block_electric_light.inverted.name=Light (Inverted)
+
+tile.block_electric_light.wireless.name=Wireless Light
+
+tile.block_electric_light.wireless.inverted.name=Wireless Light (Inverted)
+
 ;generators
+
+tile.block_enhanced_combustion_generator.name=Enhanced Combustion Generator
 
 tile.block_combustion_generator.name=Combustion Generator
 tile.block_combustion_generator.tooltip.detailed.line1=Burns liquid fuel to generate power
 tile.block_combustion_generator.tooltip.detailed.line2=Requires a coolant (e.g. water)
 tile.block_combustion_generator.tooltip.detailed.line3=Output dependent on fuel
+
+tile.block_simple_stirling_generator.name=Simple Stirling Generator
 
 tile.block_stirling_generator.name=Stirling Generator
 tile.block_stirling_generator.tooltip.detailed.line1=Burns solid fuel to generate power
