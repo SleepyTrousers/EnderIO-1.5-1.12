@@ -9,7 +9,11 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.xp.XpUtil;
+import crazypants.enderio.machines.machine.tank.ContainerTank;
 import crazypants.enderio.machines.machine.tank.GuiTank;
+import crazypants.enderio.machines.machine.tank.TileTank;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -21,6 +25,9 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
@@ -97,9 +104,6 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
         // Log.debug("Draining a " + stack + " gives " + fluidString(drain) + " and " + drainedStack);
         if (drain != null && drain.amount > 0) {
           // filled container
-          if (drainedStack.getCount() <= 0) {
-            drainedStack = ItemStack.EMPTY;
-          }
           result.add(new TankRecipeWrapper(null, drain, stack.copy(), drainedStack));
         } else {
           // empty container
@@ -119,10 +123,37 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
       }
     }
 
+    // add mending recipes
+    Map<Enchantment, Integer> enchMap = Collections.singletonMap(Enchantments.MENDING, 1);
+    final int maxMendable = TileTank.xpToDurability(XpUtil.liquidToExperience(16000));
+    for (ItemStack stack : validItems) {
+      if (stack.isItemStackDamageable()) {
+        ItemStack enchantedStack;
+        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0) {
+          enchantedStack = stack.copy();
+        } else if (Enchantments.MENDING.canApply(stack)) {
+          enchantedStack = stack.copy();
+          EnchantmentHelper.setEnchantments(enchMap, enchantedStack);
+        } else {
+          continue;
+        }
+
+        ItemStack damagedStack = enchantedStack.copy();
+        damagedStack.setItemDamage((damagedStack.getMaxDamage() * 3) / 4);
+        int damageMendable = Math.min(maxMendable, damagedStack.getItemDamage());
+        enchantedStack.setItemDamage(damagedStack.getItemDamage() - damageMendable);
+
+        if (damagedStack.getItemDamage() != enchantedStack.getItemDamage()) {
+          result.add(new TankRecipeWrapper(new FluidStack(Fluids.XP_JUICE.getFluid(), XpUtil.experienceToLiquid(TileTank.durabilityToXp(damageMendable))), null,
+              damagedStack, enchantedStack));
+        }
+      }
+    }
+
     long end = System.nanoTime();
     registry.addRecipes(result, UID);
 
-    // registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerTank.class, TankRecipeCategory.UID, 0, 2, 3, 4 * 9);
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerTank.class, TankRecipeCategory.UID, 0, 2, 3, 4 * 9);
 
     Log.info(String.format("TankRecipeCategory: Added %d tank recipes to JEI in %.3f seconds.", result.size(), (end - start) / 1000000000d));
   }

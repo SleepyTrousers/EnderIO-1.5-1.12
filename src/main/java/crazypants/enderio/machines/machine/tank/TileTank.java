@@ -227,11 +227,11 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     return true;
   }
 
-  private int durabilityToXp(int durability) {
+  public static int durabilityToXp(int durability) {
     return durability / 2;
   }
 
-  private int xpToDurability(int xp) {
+  public static int xpToDurability(int xp) {
     return xp * 2;
   }
 
