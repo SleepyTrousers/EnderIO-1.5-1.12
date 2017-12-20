@@ -14,6 +14,7 @@ import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.base.recipe.RecipeInput;
 import crazypants.enderio.base.recipe.RecipeOutput;
+import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -22,7 +23,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class VatRecipe implements IRecipe {
 
   protected final @Nonnull NNList<ItemStack> inputStacks;
-  private final @Nonnull List<List<ItemStack>> inputStackAlternatives;
+  private final @Nonnull NNList<List<ItemStack>> inputStackAlternatives;
   protected final boolean valid;
 
   protected final @Nonnull Table<RecipeInput, RecipeInput, FluidStack> inputFluidStacks = HashBasedTable.create();
@@ -39,6 +40,7 @@ public class VatRecipe implements IRecipe {
     inputs = recipe.getInputs();
     inputStackAlternatives = recipe.getInputStackAlternatives();
 
+    Log.info("foo");
     for (RecipeOutput recipeOutput : recipe.getOutputs()) {
       final FluidStack fluidOutput = recipeOutput.getFluidOutput();
       if (recipeOutput.isFluid() && fluidOutput != null) {
@@ -168,9 +170,9 @@ public class VatRecipe implements IRecipe {
     return false;
   }
 
-  private static class RecipeMatch {
-    RecipeInput r0, r1;
-    FluidStack in, out;
+  public static class RecipeMatch {
+    public RecipeInput r0, r1;
+    public FluidStack in, out;
 
     void setRecipeInput(RecipeInput r) {
       if (r != null) {
@@ -208,6 +210,22 @@ public class VatRecipe implements IRecipe {
     }
   }
 
+  public RecipeMatch matchRecipe(@Nonnull FluidStack inputFluid, @Nonnull ItemStack in0, @Nonnull ItemStack in1) {
+    if (!isValid() || (requiredItems == 1) != Prep.isInvalid(in1)) {
+      return null;
+    }
+    RecipeMatch m = new RecipeMatch();
+    m.setRecipeInput(getRecipeInput(0, in0));
+    if (requiredItems == 1) {
+      m.r1 = m.r0;
+    } else {
+      m.setRecipeInput(getRecipeInput(1, in1));
+    }
+    m.in = inputFluidStacks.get(m.r0, m.r1);
+    m.out = outputFluidStacks.get(m.r0, m.r1);
+    return m;
+  }
+
   @Override
   public boolean isInputForRecipe(MachineRecipeInput... recipeInputs) {
     RecipeMatch m = matchRecipe(recipeInputs);
@@ -216,6 +234,11 @@ public class VatRecipe implements IRecipe {
 
   @Override
   public NNList<FluidStack> getInputFluidStacks() {
+    for (RecipeInput r2 : inputs) {
+      if (r2.isFluid()) {
+        return new NNList<>(r2.getFluidInput().copy());
+      }
+    }
     return NNList.emptyList();
   }
 
@@ -258,7 +281,7 @@ public class VatRecipe implements IRecipe {
   }
 
   @Override
-  public @Nonnull List<List<ItemStack>> getInputStackAlternatives() {
+  public @Nonnull NNList<List<ItemStack>> getInputStackAlternatives() {
     return inputStackAlternatives;
   }
 

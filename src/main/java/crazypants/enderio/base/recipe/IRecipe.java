@@ -36,7 +36,7 @@ public interface IRecipe {
   boolean isValidInput(@Nonnull FluidStack fluid);
 
   @Nonnull
-  List<List<ItemStack>> getInputStackAlternatives();
+  NNList<List<ItemStack>> getInputStackAlternatives();
 
   boolean isSynthetic();
 

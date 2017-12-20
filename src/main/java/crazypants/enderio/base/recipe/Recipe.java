@@ -128,35 +128,42 @@ public class Recipe implements IRecipe {
 
   @Override
   public @Nonnull NNList<ItemStack> getInputStacks() {
-    NNList<ItemStack> res = new NNList<ItemStack>();
+    NNList<ItemStack> res = new NNList<>();
     for (int i = 0; i < inputs.length; i++) {
       RecipeInput in = inputs[i];
-      if (in != null && Prep.isValid(in.getInput())) {
-        res.add(in.getInput());
+      if (in != null && !in.isFluid()) {
+        final int slotNumber = in.getSlotNumber() >= 0 ? in.getSlotNumber() : i;
+        while (res.size() <= slotNumber) {
+          res.add(Prep.getEmpty());
+        }
+        ItemStack input = in.getInput();
+        if (Prep.isValid(input)) {
+          res.set(slotNumber, input);
+        }
       }
     }
     return res;
   }
 
   @Override
-  public @Nonnull List<List<ItemStack>> getInputStackAlternatives() {
-    NNList<List<ItemStack>> res = new NNList<List<ItemStack>>();
+  public @Nonnull NNList<List<ItemStack>> getInputStackAlternatives() {
+    NNList<List<ItemStack>> res = new NNList<>();
     for (int i = 0; i < inputs.length; i++) {
       RecipeInput in = inputs[i];
-      if (in != null) {
+      if (in != null && !in.isFluid()) {
+        final int slotNumber = in.getSlotNumber() >= 0 ? in.getSlotNumber() : i;
+        while (res.size() <= slotNumber) {
+          res.add(new NNList<>());
+        }
         ItemStack[] equivelentInputs = in.getEquivelentInputs();
         if (equivelentInputs != null && equivelentInputs.length != 0) {
-          res.add(new NNList<>(equivelentInputs));
+          ((NNList<ItemStack>) res.get(slotNumber)).addAll(equivelentInputs);
         } else {
           ItemStack input = in.getInput();
           if (Prep.isValid(input)) {
-            res.add(new NNList<>(input));
-          } else {
-            res.add(NNList.<ItemStack> emptyList());
+            ((NNList<ItemStack>) res.get(slotNumber)).add(input);
           }
         }
-      } else {
-        res.add(NNList.<ItemStack> emptyList());
       }
     }
     return res;
