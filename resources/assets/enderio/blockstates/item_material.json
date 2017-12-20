@@ -235,6 +235,16 @@
         "textures": {
           "layer0": "enderio:items/item_material_gear_wood"
         }
+      },
+      "organic_green_dye": {
+        "textures": {
+          "layer0": "enderio:items/item_material_organic_green_dye"
+        }
+      },
+      "organic_brown_dye": {
+        "textures": {
+          "layer0": "enderio:items/item_material_organic_brown_dye"
+        }
       }
     }
   }

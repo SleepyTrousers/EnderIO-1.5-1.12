@@ -69,7 +69,10 @@ public enum Material {
   FRANKEN_ZOMBIE("skullZombieFrankenstien", "skullZombieFrankenstein", true),
   ENDER_RESONATOR("skullEnderResonator", "skullEnderResonator"),
   SENTIENT_ENDER("skullSentientEnder", "skullSentientEnder", true),
-  SKELETAL_CONTRACTOR("skullSkeletalContractor", "skullSkeletalContractor");
+  SKELETAL_CONTRACTOR("skullSkeletalContractor", "skullSkeletalContractor"),
+
+  DYE_GREEN("organic_green_dye", "dyeGreen"),
+  DYE_BROWN("organic_brown_dye", "dyeBrown"),
 
   ;
 

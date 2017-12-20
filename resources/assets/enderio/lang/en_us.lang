@@ -168,6 +168,12 @@ item.item_material.skull_zombie_frankenstien.name=Frank'N'Zombie
 item.item_material.vibrant_crystal.name=Vibrant Crystal
 item.item_material.vibrant_powder.name=Grains of Vibrancy
 item.item_material.weather_crystal.name=Weather Crystal
+item.item_material.organic_green_dye.name=Organic Green Dye
+item.item_material.organic_green_dye.tooltip.detailed.line1=Industrially processed plant matter with a "natural" washed-out color.
+item.item_material.organic_green_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with plenty of water and seek medical advice.
+item.item_material.organic_brown_dye.name=Organic Brown Dye
+item.item_material.organic_brown_dye.tooltip.detailed.line1=Industrially processed plant matter with a "natural" washed-out color.
+item.item_material.organic_brown_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with plenty of water and seek medical advice.
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad

@@ -3,6 +3,7 @@ package crazypants.enderio.base.material.material;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
@@ -18,7 +19,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemMaterial extends Item implements IHaveRenderers {
+public class ItemMaterial extends Item implements IHaveRenderers, IResourceTooltipProvider {
 
   public static ItemMaterial create(@Nonnull IModObject modObject) {
     return new ItemMaterial(modObject);
@@ -64,6 +65,12 @@ public class ItemMaterial extends Item implements IHaveRenderers {
   @SideOnly(Side.CLIENT)
   public boolean hasEffect(@Nonnull ItemStack stack) {
     return Material.getTypeFromMeta(stack.getItemDamage()).hasEffect;
+  }
+
+  @Override
+  @Nonnull
+  public String getUnlocalizedNameForTooltip(@Nonnull ItemStack stack) {
+    return getUnlocalizedName(stack);
   }
 
 }

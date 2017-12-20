@@ -64,10 +64,6 @@ public class MaterialRecipes {
     OreDictionary.registerOre("blockGlassColorless", new ItemStack(FusedQuartzType.FUSED_GLASS.getBlock(), 1, EnumDyeColor.WHITE.getMetadata()));
     OreDictionary.registerOre("blockGlassHardened", new ItemStack(FusedQuartzType.FUSED_QUARTZ.getBlock(), 1, OreDictionary.WILDCARD_VALUE));
 
-    // Forge names. Slightly different from vanilla names...
-    String[] dyes = { "Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "LightGray", "Gray", "Pink", "Lime", "Yellow", "LightBlue", "Magenta",
-        "Orange", "White" };
-
     for (int i = 0; i < dyes.length; i++) {
       OreDictionary.registerOre("blockGlass" + dyes[i], new ItemStack(FusedQuartzType.FUSED_GLASS.getBlock(), 1, EnumDyeColor.byDyeDamage(i).getMetadata()));
       OreDictionary.registerOre("blockGlassHardened" + dyes[i],
@@ -84,6 +80,11 @@ public class MaterialRecipes {
 
   }
 
+  // Forge names. Slightly different from vanilla names...
+  static String[] dyes = { "Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "LightGray", "Gray", "Pink", "Lime", "Yellow", "LightBlue", "Magenta",
+      "Orange", "White" };
+
+
   public static void addRecipes() {
 
     for (Alloy alloy : Alloy.values()) {
@@ -97,7 +98,7 @@ public class MaterialRecipes {
     for (EnumDyeColor color : EnumDyeColor.values()) {
       for (FusedQuartzType type : FusedQuartzType.values()) {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G', type.getOreDictName(),
-            'C', new ItemStack(Items.DYE, 1, color.getDyeDamage())));
+            'C', "dye" + dyes[color.getDyeDamage()]));
       }
     }
 
