@@ -1,14 +1,17 @@
 package crazypants.enderio.machines.integration.jei;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
+import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.soul.ISoulBinderRecipe;
 import crazypants.enderio.base.recipe.soul.SoulBinderTunedPressurePlateRecipe;
@@ -22,11 +25,14 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableStatic;
+import mezz.jei.api.gui.IGuiIngredientGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IFocus;
+import mezz.jei.api.recipe.IFocus.Mode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
@@ -60,25 +66,60 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-      ingredients.setInputs(ItemStack.class, Arrays.asList(new ItemStack(itemSoulVial.getItemNN()), recipe.getInputStack()));
-      ingredients.setOutputs(ItemStack.class, Arrays.asList(recipe.getOutputStack(), new ItemStack(itemSoulVial.getItemNN())));
+
+      final ItemStack outputStack = recipe.getOutputStack();
+      final List<ResourceLocation> supportedSouls = recipe.getSupportedSouls();
+      final ItemStack inputStack = recipe.getInputStack();
+      final List<ItemStack> inputItemList = new NNList<>();
+
+      if (Prep.isValid(inputStack)) {
+        inputItemList.add(inputStack);
+        if (itemBrokenSpawner.getItem() == inputStack.getItem()) {
+          // a Broken Spawner on the input side always means "any kind of", so put any kind of broken spawner into the input list. Skip the same type as the
+          // output, that would be a wasteful NOP recipe
+          CapturedMob resultMob = CapturedMob.create(outputStack);
+          for (CapturedMob soul : CapturedMob.getAllSouls()) {
+            if (resultMob == null || !resultMob.isSameType(soul)) {
+              inputItemList.add(soul.toStack(itemBrokenSpawner.getItemNN(), 0, 1));
+            }
+          }
+        }
+      }
+
+      List<CapturedMob> souls = CapturedMob.getSouls(supportedSouls);
+      final List<ItemStack> soulStacks = new ArrayList<ItemStack>();
+      for (CapturedMob soul : souls) {
+        soulStacks.add(soul.toStack(itemSoulVial.getItemNN(), 1, 1));
+      }
+
+      ingredients.setInputLists(ItemStack.class, new NNList<List<ItemStack>>(soulStacks, inputItemList));
+
+      if (itemBrokenSpawner.getItem() == outputStack.getItem() || recipe instanceof SoulBinderTunedPressurePlateRecipe) {
+        // these recipes take any kind of mob. make it so that any type is in the input list
+        List<ItemStack> outputs = new ArrayList<ItemStack>();
+        for (CapturedMob soul : souls) {
+          outputs.add(soul.toStack(outputStack.getItem(), outputStack.getMetadata(), 1));
+        }
+        ingredients.setOutputLists(ItemStack.class, new NNList<List<ItemStack>>(Collections.singletonList(new ItemStack(itemSoulVial.getItemNN())), outputs));
+      } else {
+        ingredients.setOutputLists(ItemStack.class,
+            new NNList<List<ItemStack>>(Collections.singletonList(new ItemStack(itemSoulVial.getItemNN())), Collections.singletonList(outputStack)));
+      }
+
+      ingredients.setInput(EnergyIngredient.class, new EnergyIngredient(recipe.getEnergyRequired()));
     }
 
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-
       int cost = recipe.getExperienceLevelsRequired();
       String str = Lang.GUI_VANILLA_REPAIR_COST.get(cost);
-      minecraft.fontRenderer.drawString(str, 6, 26, 0x80FF20);
-
-      String energyString = LangPower.RF(recipe.getEnergyRequired());
-      minecraft.fontRenderer.drawString(energyString, 6, 36, 0x808080, false);
+      minecraft.fontRenderer.drawString(str, 6, 26, 0x80FF20, true);
       GlStateManager.color(1, 1, 1, 1);
     }
   }
 
+  @SuppressWarnings("null")
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
-
     registry.addRecipeCategories(new SoulBinderRecipeCategory(guiHelper));
     registry.handleRecipes(ISoulBinderRecipe.class, SoulBinderRecipeWrapper::new, SoulBinderRecipeCategory.UID);
     registry.addRecipeClickArea(GuiSoulBinder.class, 155, 42, 16, 16, SoulBinderRecipeCategory.UID);
@@ -103,10 +144,8 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
   @Nonnull
   protected final IDrawableAnimated arror;
 
-  private SoulBinderRecipeWrapper currentRecipe;
-
   public SoulBinderRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("soulFuser");
+    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("soul_fuser");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 120, 50);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 177, 14, 22, 16);
@@ -136,40 +175,50 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
   @Override
   public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SoulBinderRecipeCategory.SoulBinderRecipeWrapper recipeWrapper,
       @Nonnull IIngredients ingredients) {
-    currentRecipe = recipeWrapper;
 
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
     guiItemStacks.init(0, true, 37 - xOff, 33 - yOff);
     guiItemStacks.init(1, true, 58 - xOff, 33 - yOff);
     guiItemStacks.init(2, false, 111 - xOff, 33 - yOff);
     guiItemStacks.init(3, false, 133 - xOff, 33 - yOff);
+    guiItemStacks.set(ingredients);
 
-    final ItemStack outputStack = currentRecipe.recipe.getOutputStack();
-    final List<ResourceLocation> supportedSouls = currentRecipe.recipe.getSupportedSouls();
-    final ItemStack inputStack = currentRecipe.recipe.getInputStack();
-
-    List<CapturedMob> souls = CapturedMob.getSouls(supportedSouls);
-    final List<ItemStack> soulStacks = new ArrayList<ItemStack>();
-    for (CapturedMob soul : souls) {
-      soulStacks.add(soul.toStack(itemSoulVial.getItemNN(), 1, 1));
-    }
-    guiItemStacks.set(0, soulStacks);
-
-    if (Prep.isValid(inputStack)) {
-      guiItemStacks.set(1, inputStack);
-    }
-
-    if (itemBrokenSpawner.getItem() == outputStack.getItem() || currentRecipe.recipe instanceof SoulBinderTunedPressurePlateRecipe) {
-      List<ItemStack> outputs = new ArrayList<ItemStack>();
-      for (CapturedMob soul : souls) {
-        outputs.add(soul.toStack(outputStack.getItem(), outputStack.getMetadata(), 1));
+    IFocus<?> focus = recipeLayout.getFocus();
+    if (focus != null && focus.getMode() == Mode.INPUT && focus.getValue() instanceof ItemStack
+        && ((ItemStack) focus.getValue()).getItem() == itemSoulVial.getItemNN() && CapturedMob.containsSoul(((ItemStack) focus.getValue()))
+        && ingredients.getOutputs(ItemStack.class).get(1).size() > 1) {
+      // we are focused on a filled soul vial on the input side and the output has a list
+      final CapturedMob vialMob = CapturedMob.create(((ItemStack) focus.getValue()));
+      if (vialMob != null) {
+        List<ItemStack> newOutputs = new ArrayList<>();
+        for (ItemStack output : ingredients.getOutputs(ItemStack.class).get(1)) {
+          if (output != null && vialMob.isSameType(CapturedMob.create(output))) {
+            newOutputs.add(output);
+          }
+        }
+        guiItemStacks.set(3, newOutputs);
       }
-      guiItemStacks.set(2, outputs);
-    } else {
-      guiItemStacks.set(2, outputStack);
     }
 
-    guiItemStacks.set(3, new ItemStack(itemSoulVial.getItemNN()));
+    if (focus != null && focus.getMode() == Mode.OUTPUT && focus.getValue() instanceof ItemStack && CapturedMob.containsSoul(((ItemStack) focus.getValue()))
+        && ingredients.getInputs(ItemStack.class).get(0).size() > 1 && ingredients.getOutputs(ItemStack.class).get(1).size() > 1) {
+      // we are focused on a output item and the both sides have a list
+      final CapturedMob resultMob = CapturedMob.create(((ItemStack) focus.getValue()));
+      if (resultMob != null) {
+        List<ItemStack> newInputs = new ArrayList<>();
+        for (ItemStack input : ingredients.getInputs(ItemStack.class).get(0)) {
+          if (input != null && resultMob.isSameType(CapturedMob.create(input))) {
+            newInputs.add(input);
+          }
+        }
+        guiItemStacks.set(0, newInputs);
+        guiItemStacks.set(3, ((ItemStack) focus.getValue()));
+      }
+    }
+
+    IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
+    group.init(xOff, true, EnergyIngredientRenderer.INSTANCE, 5, 35, 60, 10, 0, 0);
+    group.set(ingredients);
   }
 
 }

@@ -8,7 +8,7 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.power.AbstractPoweredBlockItem;
 import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
-import crazypants.enderio.base.render.util.PowerBarOverlayRenderHelper;
+import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
