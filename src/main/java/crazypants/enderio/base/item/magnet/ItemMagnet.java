@@ -18,7 +18,7 @@ import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.power.AbstractPoweredItem;
 import crazypants.enderio.base.render.IHasPlayerRenderer;
-import crazypants.enderio.base.render.util.PowerBarOverlayRenderHelper;
+import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;

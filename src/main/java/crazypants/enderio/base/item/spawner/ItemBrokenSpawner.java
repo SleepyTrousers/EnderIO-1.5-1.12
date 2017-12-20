@@ -5,9 +5,11 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.render.itemoverlay.MobNameOverlayRenderHelper;
 import crazypants.enderio.util.CapturedMob;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBrokenSpawner extends Item {
+public class ItemBrokenSpawner extends Item implements IOverlayRenderAware {
 
   private static final ResourceLocation[] CREATIVE_TYPES = new ResourceLocation[] { new ResourceLocation("minecraft", "chicken"),
       new ResourceLocation("minecraft", "llama"), new ResourceLocation("minecraft", "vex"), new ResourceLocation("minecraft", "zombie"),
@@ -65,6 +67,11 @@ public class ItemBrokenSpawner extends Item {
     } else {
       SpecialTooltipHandler.addDetailedTooltipFromResources(par3List, par1ItemStack);
     }
+  }
+
+  @Override
+  public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
+    MobNameOverlayRenderHelper.doItemOverlayIntoGUI(stack, xPosition, yPosition);
   }
 
 }

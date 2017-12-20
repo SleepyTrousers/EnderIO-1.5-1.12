@@ -1,4 +1,4 @@
-package crazypants.enderio.base.render.util;
+package crazypants.enderio.base.render.itemoverlay;
 
 import javax.annotation.Nonnull;
 

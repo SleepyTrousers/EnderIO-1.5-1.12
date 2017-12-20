@@ -32,7 +32,7 @@ import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.power.AbstractPoweredItem;
 import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
-import crazypants.enderio.base.render.util.PowerBarOverlayRenderHelper;
+import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TeleportUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;

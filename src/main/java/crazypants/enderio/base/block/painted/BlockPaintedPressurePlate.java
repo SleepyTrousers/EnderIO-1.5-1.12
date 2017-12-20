@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.BlockEnder;
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIOTab;
@@ -27,6 +28,7 @@ import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.ICacheKey;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
+import crazypants.enderio.base.render.itemoverlay.MobNameOverlayRenderHelper;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderPart;
 import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
@@ -445,7 +447,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
     }
   }
 
-  public static class BlockItemPaintedPressurePlate extends BlockItemPaintedBlock {
+  public static class BlockItemPaintedPressurePlate extends BlockItemPaintedBlock implements IOverlayRenderAware {
 
     public BlockItemPaintedPressurePlate(@Nonnull BlockPaintedPressurePlate block) {
       super(block);
@@ -464,6 +466,11 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
       if (capturedMob != null) {
         tooltip.add(Lang.PRESSURE_PLATE_TUNED.get(capturedMob.getDisplayName()));
       }
+    }
+
+    @Override
+    public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
+      MobNameOverlayRenderHelper.doItemOverlayIntoGUI(stack, xPosition, yPosition);
     }
 
   }
