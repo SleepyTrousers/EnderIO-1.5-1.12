@@ -65,8 +65,6 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagRecipe> implem
   @Nonnull
   protected final IDrawableAnimated arrow;
 
-  private SagRecipe currentRecipe;
-
   private final TooltipHandlerGrinding ballsTT = new TooltipHandlerGrinding();
 
   public SagMillRecipeCategory(IGuiHelper guiHelper) {
@@ -99,8 +97,6 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagRecipe> implem
 
   @Override
   public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SagRecipe recipeWrapper, @Nonnull IIngredients ingredients) {
-    currentRecipe = recipeWrapper;
-
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
     guiItemStacks.addTooltipCallback(this);
     IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
@@ -113,31 +109,41 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagRecipe> implem
     guiItemStacks.init(5, true, 121 - xOff, 22 - yOff);
     group.init(6, true, EnergyIngredientRenderer.INSTANCE, 134 - xOff, 58 - yOff, 60, 10, 0, 0);
 
+    guiItemStacks.addTooltipCallback(new ITooltipCallback<ItemStack>() {
+      @Override
+      public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, @Nonnull List<String> tooltip) {
+        switch (slotIndex) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+          if (slotIndex <= recipeWrapper.getRecipe().getOutputs().length) {
+            RecipeOutput output = recipeWrapper.getRecipe().getOutputs()[slotIndex - 1];
+            float chance = output.getChance();
+            if (chance > 0 && chance < 1) {
+              int chanceInt = (int) (chance * 100);
+              Object[] objects = { chanceInt };
+              tooltip.add(TextFormatting.GRAY + MessageFormat.format(Lang.JEI_SAGMILL_CHANCE.get(), objects));
+            }
+          }
+          return;
+        case 5:
+          if (ballsTT.shouldHandleItem(ingredient)) {
+            ballsTT.addDetailedEntries(ingredient, Minecraft.getMinecraft().player, tooltip, true);
+          }
+          return;
+        default:
+          return;
+        }
+      }
+    });
+
     guiItemStacks.set(ingredients);
     group.set(ingredients);
   }
 
   @Override
   public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, @Nonnull List<String> tooltip) {
-    if (slotIndex == 0) {
-      return;
-    }
-    if (slotIndex == 5) {
-      if (ballsTT.shouldHandleItem(ingredient)) {
-        ballsTT.addDetailedEntries(ingredient, Minecraft.getMinecraft().player, tooltip, true);
-      }
-      return;
-    }
-    if (slotIndex - 1 >= currentRecipe.getRecipe().getOutputs().length) {
-      return;
-    }
-    RecipeOutput output = currentRecipe.getRecipe().getOutputs()[slotIndex - 1];
-    float chance = output.getChance();
-    if (chance > 0 && chance < 1) {
-      int chanceInt = (int) (chance * 100);
-      Object[] objects = { chanceInt };
-      tooltip.add(TextFormatting.GRAY + MessageFormat.format(Lang.JEI_SAGMILL_CHANCE.get(), objects));
-    }
   }
 
 }
