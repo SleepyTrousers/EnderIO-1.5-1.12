@@ -218,6 +218,7 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
     WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, SLICE_POWER_USE, "cleancut", 5);
     WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, SOUL_BINDER_POWER_USE, "tight", 5);
     WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, PAINTER_POWER_USE, "aa", 10);
+    WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, VAT_POWER_USE, "wet", 8);
   }
 
 }
