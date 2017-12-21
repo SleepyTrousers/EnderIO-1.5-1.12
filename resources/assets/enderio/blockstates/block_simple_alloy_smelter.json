@@ -2,8 +2,8 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle":"enderio:blocks/alloy_smelter_front",
-            "front":"enderio:blocks/alloy_smelter_front",
+            "particle":"enderio:blocks/alloy_smelter_simple_front",
+            "front":"enderio:blocks/alloy_smelter_simple_front",
             "fronton":"enderio:blocks/alloy_smelter_front_on_simple"
         }
     },
