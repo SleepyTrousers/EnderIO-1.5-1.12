@@ -5,8 +5,10 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import net.minecraft.client.gui.GuiScreen;
@@ -29,7 +31,19 @@ public class BlockAlloySmelter<T extends TileAlloySmelter> extends AbstractMachi
   }
 
   public static BlockAlloySmelter<TileAlloySmelter.Simple> create_simple(@Nonnull IModObject modObject) {
-    BlockAlloySmelter<TileAlloySmelter.Simple> res = new BlockAlloySmelter<TileAlloySmelter.Simple>(modObject, TileAlloySmelter.Simple.class);
+    BlockAlloySmelter<TileAlloySmelter.Simple> res = new BlockAlloySmelter<TileAlloySmelter.Simple>(modObject, TileAlloySmelter.Simple.class) {
+      @Override
+      @SideOnly(Side.CLIENT)
+      public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+    };
     res.init();
     return res;
   }
