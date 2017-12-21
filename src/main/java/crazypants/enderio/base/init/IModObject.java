@@ -83,7 +83,7 @@ public interface IModObject extends IProducer {
    */
   public static interface WithBlockItem {
 
-    default Item createBlockItem(@Nonnull IModObject modObject) {
+    default @Nullable Item createBlockItem(@Nonnull IModObject modObject) {
       return modObject.apply(new ItemBlock((Block) this));
     };
 
