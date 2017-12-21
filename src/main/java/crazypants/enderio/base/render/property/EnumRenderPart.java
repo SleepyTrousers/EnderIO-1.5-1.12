@@ -25,7 +25,11 @@ public enum EnumRenderPart implements IStringSerializable {
   SOUL_FRAME(true),
   SOUL_FRAME_SOUTH(SOUL_FRAME),
   SOUL_FRAME_WEST(SOUL_FRAME),
-  SOUL_FRAME_EAST(SOUL_FRAME);
+  SOUL_FRAME_EAST(SOUL_FRAME),
+  SIMPLE_BODY(true),
+  SIMPLE_BODY_SOUTH(BODY),
+  SIMPLE_BODY_WEST(BODY),
+  SIMPLE_BODY_EAST(BODY);
 
   public static final @Nonnull PropertyEnum<EnumRenderPart> SUB = PropertyEnum.<EnumRenderPart> create("sub", EnumRenderPart.class);
 
