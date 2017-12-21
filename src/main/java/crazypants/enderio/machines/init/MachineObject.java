@@ -61,6 +61,7 @@ public enum MachineObject implements IModObject.Registerable {
   block_farm_station(BlockFarmStation.class),
   block_combustion_generator(BlockCombustionGenerator.class),
   block_enhanced_combustion_generator(BlockCombustionGenerator.class, "create_enhanced"),
+  block_enhanced_combustion_generator_top(BlockCombustionGenerator.class, "create_extension"),
   block_simple_stirling_generator(BlockStirlingGenerator.class, "create_simple"),
   block_stirling_generator(BlockStirlingGenerator.class),
   block_zombie_generator(BlockZombieGenerator.class),

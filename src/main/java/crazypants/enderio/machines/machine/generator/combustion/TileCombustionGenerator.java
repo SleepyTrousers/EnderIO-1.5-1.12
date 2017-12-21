@@ -21,6 +21,7 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.PowerDistributor;
+import crazypants.enderio.machines.config.config.CombustionGenConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.machines.network.PacketHandler;
@@ -56,8 +57,14 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
 
     @Override
     protected float getMachineQuality() {
-      return 1.5f; // TODO config
+      return CombustionGenConfig.enahancedCombGenQuality.get();
     }
+
+    @Override
+    public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
+      return (faceHit != EnumFacing.UP || mode == IoMode.NONE) && super.supportsMode(faceHit, mode);
+    }
+
   }
 
   @Store
@@ -100,8 +107,8 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   protected TileCombustionGenerator(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
       @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
-    coolantTank = new CoolantTank(Math.round(Fluid.BUCKET_VOLUME * 5 * getMachineQuality()));
-    fuelTank = new FuelTank(Math.round(Fluid.BUCKET_VOLUME * 5 * getMachineQuality()));
+    coolantTank = new CoolantTank(Math.round(CombustionGenConfig.combGenTankSize.get() * getMachineQuality()));
+    fuelTank = new FuelTank(Math.round(CombustionGenConfig.combGenTankSize.get() * getMachineQuality()));
     coolantTank.setTileEntity(this);
     coolantTank.setCanDrain(false);
     fuelTank.setTileEntity(this);
