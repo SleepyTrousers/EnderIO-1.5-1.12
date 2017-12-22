@@ -10,14 +10,9 @@ import crazypants.enderio.base.power.AbstractPoweredBlockItem;
 import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -44,25 +39,6 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
 
   private static BufferType getType(ItemStack stack) {
     return BufferType.getTypeFromMeta(stack.getItemDamage());
-  }
-
-  @Override
-  public boolean placeBlockAt(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side,
-      float hitX, float hitY, float hitZ, @Nonnull IBlockState newState) {
-    super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
-
-    if (newState.getBlock() == block) {
-      TileEntity te = world.getTileEntity(pos);
-      if (te instanceof TileBuffer) {
-        TileBuffer buffer = ((TileBuffer) te);
-        BufferType t = newState.getValue(BufferType.TYPE);
-        buffer.setHasInventory(t.hasInventory);
-        buffer.setHasPower(t.hasPower);
-        buffer.setCreative(t.isCreative);
-        buffer.markDirty();
-      }
-    }
-    return true;
   }
 
   @Override

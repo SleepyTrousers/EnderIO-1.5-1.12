@@ -19,7 +19,7 @@ public abstract class AbstractGeneratorEntity extends AbstractPoweredMachineEnti
   }
 
   public int getPowerLossPerTick() {
-    return maxEnergyRecieved.get(capacitorData);
+    return maxEnergyRecieved.get(getCapacitorData());
   }
 
 }

@@ -3,9 +3,6 @@ package crazypants.enderio.machines.machine.buffer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
-
-import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -26,27 +23,25 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_US
 
 public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
 
-  @Store({ NBTAction.SYNC, NBTAction.SAVE })
-  private boolean hasPower;
-  @Store({ NBTAction.SYNC, NBTAction.SAVE })
-  private boolean hasInventory;
-  @Store({ NBTAction.SYNC, NBTAction.SAVE })
-  private boolean isCreative;
-
-  private PowerDistributor dist;
-
+  private final @Nonnull BufferType type;
+  private transient PowerDistributor dist;
   @Store
-  private int maxOut = BUFFER_POWER_INTAKE.get(DefaultCapacitorData.BASIC_CAPACITOR);
+  private int maxOut;
   @Store
-  private int maxIn = maxOut;
+  private int maxIn;
 
-  public TileBuffer() {
-    super(new SlotDefinition(9), BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, BUFFER_POWER_USE);
+  public TileBuffer(@Nonnull BufferType type) {
+    super(new SlotDefinition(type.hasInventory ? 9 : 0), BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, BUFFER_POWER_USE);
+    this.type = type;
+    if (type.isCreative) {
+      setEnergyStored(getMaxEnergyStored() / 2);
+    }
+    maxOut = maxIn = maxEnergyRecieved.get(getCapacitorData());
   }
 
   @Override
   public @Nonnull String getMachineName() {
-    return BufferType.get(this).getUnlocalizedName();
+    return type.getUnlocalizedName();
   }
 
   @Override
@@ -93,12 +88,12 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   @Override
   public void writeToItemStack(@Nonnull ItemStack stack) {
     super.writeToItemStack(stack);
-    stack.setItemDamage(BufferType.get(this).ordinal());
+    stack.setItemDamage(type.ordinal());
   }
 
   @Override
   public boolean canInsertItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
-    return hasInventory && super.canInsertItem(slot, itemstack, side);
+    return hasInventory() && super.canInsertItem(slot, itemstack, side);
   }
 
   @Override
@@ -108,7 +103,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
 
   @Override
   public boolean canConnectEnergy(@Nonnull EnumFacing from) {
-    return hasPower;
+    return hasPower();
   }
 
   @Override
@@ -140,7 +135,6 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
 
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {
-
     if (dir == null || !shouldDoWorkThisTick(20)) {
       return false;
     }
@@ -160,36 +154,21 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   }
 
   public boolean hasInventory() {
-    return hasInventory;
-  }
-
-  public void setHasInventory(boolean hasInventory) {
-    this.hasInventory = hasInventory;
+    return type.hasInventory;
   }
 
   @Override
   public boolean hasPower() {
-    return hasPower;
+    return type.hasPower;
+  }
+
+  public boolean isCreative() {
+    return type.isCreative;
   }
 
   @Override
   public boolean displayPower() {
-    return hasPower;
-  }
-
-  public void setHasPower(boolean hasPower) {
-    this.hasPower = hasPower;
-  }
-
-  public boolean isCreative() {
-    return isCreative;
-  }
-
-  public void setCreative(boolean isCreative) {
-    this.isCreative = isCreative;
-    if (isCreative) {
-      this.setEnergyStored(getMaxEnergyStored() / 2);
-    }
+    return hasPower();
   }
 
   public void setIO(int in, int out) {
@@ -208,14 +187,14 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
 
   @Override
   public int getMaxEnergyStored() {
-    return hasPower ? super.getMaxEnergyStored() : 0;
+    return hasPower() ? super.getMaxEnergyStored() : 0;
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityEnergy.ENERGY) {
-      return hasPower ? (T) new InternalRecieverTileWrapper(this, facingIn) : null;
+      return hasPower() ? (T) new InternalRecieverTileWrapper(this, facingIn) : null;
     }
     return super.getCapability(capability, facingIn);
   }

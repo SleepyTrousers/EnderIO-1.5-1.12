@@ -23,7 +23,6 @@ import net.minecraft.inventory.Slot;
 
 public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
 
-  private static final @Nonnull String TEXTURE_SIMPLE = "buffer";
   private static final @Nonnull String TEXTURE_FULL = "buffer_full";
 
   private TextFieldEnder maxInput;
@@ -34,12 +33,12 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
   private final boolean hasInventory, hasPower;
 
   public GuiBuffer(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileBuffer te) {
-    super(te, new ContainerBuffer(par1InventoryPlayer, te), TEXTURE_SIMPLE, TEXTURE_FULL);
+    super(te, new ContainerBuffer(par1InventoryPlayer, te), TEXTURE_FULL);
     hasInventory = te.hasInventory();
     hasPower = te.hasPower();
 
-    redstoneButton.setPosition(isFull() ? 153 : 120, 14);
-    configB.setPosition(isFull() ? 153 : 120, 32);
+    redstoneButton.setPosition(153, 14);
+    configB.setPosition(153, 32);
 
     if (hasPower) {
       int x = (isFull() ? 20 : 58);
@@ -116,7 +115,7 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
 
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-    bindGuiTexture(isFull() ? 1 : 0);
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 

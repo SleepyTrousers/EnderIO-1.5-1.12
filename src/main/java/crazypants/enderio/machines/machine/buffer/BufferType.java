@@ -30,10 +30,6 @@ public enum BufferType implements IStringSerializable {
     this.isCreative = isCreative;
   }
 
-  public static @Nonnull BufferType get(TileBuffer buffer) {
-    return !buffer.hasPower() ? ITEM : !buffer.hasInventory() ? POWER : !buffer.isCreative() ? OMNI : CREATIVE;
-  }
-
   public static final @Nonnull PropertyEnum<BufferType> TYPE = NullHelper.notnullM(PropertyEnum.<BufferType> create("type", BufferType.class),
       "PropertyEnum.create()");
 
