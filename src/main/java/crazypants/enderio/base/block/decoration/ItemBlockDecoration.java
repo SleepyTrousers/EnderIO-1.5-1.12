@@ -32,12 +32,12 @@ public class ItemBlockDecoration extends ItemBlock implements IOverlayRenderAwar
 
   @SideOnly(Side.CLIENT)
   public static void doItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
-    FontRenderer fr = Minecraft.getMinecraft().getRenderManager().getFontRenderer();
+    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     GlStateManager.disableLighting();
     GlStateManager.disableDepth();
     GlStateManager.disableBlend();
-    fr.drawStringWithShadow("\"", xPosition, yPosition, 16777215);
-    fr.drawStringWithShadow("\"", xPosition + 19 - 2 - fr.getStringWidth("\""), yPosition, 16777215);
+    fr.drawStringWithShadow("\"", xPosition, yPosition, 0xFFFFFF);
+    fr.drawStringWithShadow("\"", xPosition + 19 - 2 - fr.getStringWidth("\""), yPosition, 0xFFFFFF);
     GlStateManager.enableLighting();
     GlStateManager.enableDepth();
     GlStateManager.enableBlend();
