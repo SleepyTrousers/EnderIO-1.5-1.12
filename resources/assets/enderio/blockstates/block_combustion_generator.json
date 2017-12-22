@@ -5,7 +5,7 @@
             "particle":"enderio:blocks/combustion_gen_front",
 				    "frontonoff": "enderio:blocks/combustion_gen_front",
 				    "front": "enderio:blocks/combustion_gen_front",
-				    "side": "enderio:blocks/machine_template",
+				    "side": "enderio:blocks/block_machine_bottom",
 				    "top": "enderio:blocks/combustion_gen_top"
         }
     },

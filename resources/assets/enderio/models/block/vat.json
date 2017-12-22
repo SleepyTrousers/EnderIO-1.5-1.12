@@ -1,9 +1,9 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "particle": "enderio:blocks/machine_bottom",
+        "particle": "enderio:blocks/block_machine_bottom",
         "0": "enderio:blocks/vat/base",
-        "1": "enderio:blocks/machine_bottom",
+        "1": "enderio:blocks/block_machine_bottom",
         "2": "enderio:blocks/vat/tank_top_front",
         "3": "enderio:blocks/vat/tank_side",
         "4": "enderio:blocks/vat/other_bits"

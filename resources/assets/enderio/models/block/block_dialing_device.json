@@ -2,7 +2,7 @@
     "parent": "enderio:block/transform/block",
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "0": "enderio:blocks/machine_bottom",
+        "0": "enderio:blocks/block_machine_bottom",
         "1": "enderio:blocks/block_dark_steel_pressure_plate",
         "2": "enderio:blocks/block_dialing_device_button"
     },

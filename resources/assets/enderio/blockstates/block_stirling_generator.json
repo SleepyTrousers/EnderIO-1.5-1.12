@@ -2,9 +2,9 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle":"enderio:blocks/stirling_gen_front_off",
-            "front":"enderio:blocks/stirling_gen_front_off",
-            "fronton":"enderio:blocks/stirling_gen_front_on"
+            "particle":"enderio:blocks/block_stirling_gen_front_off",
+            "front":"enderio:blocks/block_stirling_gen_front_off",
+            "fronton":"enderio:blocks/block_stirling_gen_front_on"
         }
     },
     "variants":{

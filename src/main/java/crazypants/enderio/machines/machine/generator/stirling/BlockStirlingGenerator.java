@@ -7,8 +7,10 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.IRenderMapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,7 +33,20 @@ public class BlockStirlingGenerator<T extends TileStirlingGenerator> extends Abs
   }
 
   public static BlockStirlingGenerator<TileStirlingGenerator.Simple> create_simple(@Nonnull IModObject modObject) {
-    BlockStirlingGenerator<TileStirlingGenerator.Simple> gen = new BlockStirlingGenerator<>(modObject, TileStirlingGenerator.Simple.class);
+    BlockStirlingGenerator<TileStirlingGenerator.Simple> gen = new BlockStirlingGenerator<TileStirlingGenerator.Simple>(modObject,
+        TileStirlingGenerator.Simple.class) {
+      @Override
+      @SideOnly(Side.CLIENT)
+      public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+    };
     gen.init();
     return gen;
   }

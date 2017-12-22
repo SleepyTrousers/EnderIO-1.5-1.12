@@ -5,7 +5,7 @@
             "particle":"enderio:blocks/block_xp_vacuum",
             "all": "enderio:blocks/block_xp_vacuum_on",
 		    "body": "enderio:blocks/block_travel_anchor_body",
-		    "core": "enderio:blocks/xpjuicestill",
+		    "core": "enderio:blocks/fluid_xpjuice_still",
 		    "inner": "enderio:blocks/block_travel_anchor_inner"
         }
     },

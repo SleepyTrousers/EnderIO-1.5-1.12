@@ -2,10 +2,10 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle": "enderio:blocks/machine_bottom",    
+            "particle": "enderio:blocks/block_machine_bottom",    
             "side": "enderio:blocks/block_tank",
-            "top": "enderio:blocks/machine_top",
-            "bottom": "enderio:blocks/machine_bottom",
+            "top": "enderio:blocks/block_machine_top",
+            "bottom": "enderio:blocks/block_machine_bottom",
             "glass":"enderio:blocks/telepad/glass"
         }
     },

@@ -2,10 +2,10 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "0": "enderio:blocks/machine_bottom",
+            "0": "enderio:blocks/block_machine_bottom",
             "1": "enderio:blocks/block_dark_steel_pressure_plate",
             "2": "enderio:blocks/block_dark_steel_pressure_plate",
-            "particle": "enderio:blocks/machine_bottom"
+            "particle": "enderio:blocks/block_machine_bottom"
         }
     },
     "variants":{

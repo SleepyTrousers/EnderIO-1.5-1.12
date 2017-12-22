@@ -2,9 +2,9 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle":"enderio:blocks/machine_bottom",
-            "front":"enderio:blocks/crusher_front",
-            "fronton":"enderio:blocks/crusher_front_on"
+            "particle":"enderio:blocks/block_sagmill_front",
+            "front":"enderio:blocks/block_sagmill_front",
+            "fronton":"enderio:blocks/block_sagmill_front_on"
         }
     },
     "variants":{

@@ -170,7 +170,7 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
 
   @Override
   public boolean canPlaceBlockAt(@Nonnull World world, @Nonnull BlockPos pos) {
-    return super.canPlaceBlockAt(world, pos) && (!isEnhanced || (pos.getY() <= 255 && super.canPlaceBlockAt(world, pos.up())));
+    return super.canPlaceBlockAt(world, pos) && (!isEnhanced || (pos.getY() < 255 && super.canPlaceBlockAt(world, pos.up())));
   }
 
   @Override
@@ -189,7 +189,8 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
         if (super.canPlaceBlockAt(world, pos.up())) {
           world.setBlockState(pos.up(), MachineObject.block_enhanced_combustion_generator_top.getBlockNN().getDefaultState());
         } else {
-          world.createExplosion(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 5, false);
+          // impossible error state a.k.a. someone ripped the machine apart. And what do combustion engines that are ripped apart do? They combust. Violently.
+          world.createExplosion(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 3f, true); // 3 == normal Creeper
         }
       }
     }

@@ -3,7 +3,7 @@
   "defaults": {
     "model": "enderio:block_dialing_device",
       "textures": {
-        "particle": "enderio:blocks/machine_bottom"
+        "particle": "enderio:blocks/block_machine_bottom"
       }
     },
 	"variants": {

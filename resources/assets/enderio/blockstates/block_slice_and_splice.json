@@ -3,8 +3,8 @@
     "defaults":{
         "textures":{
             "particle":"enderio:blocks/block_soul_machine_bottom",
-            "front":"enderio:blocks/slice_and_splice_front",
-            "fronton":"enderio:blocks/slice_and_splice_front_on"
+            "front":"enderio:blocks/block_slice_and_splice_front",
+            "fronton":"enderio:blocks/block_slice_and_splice_front_on"
         }
     },
     "variants":{
