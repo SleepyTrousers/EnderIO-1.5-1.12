@@ -29,7 +29,7 @@ public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachine
     if (isSideDisabled(dir)) {
       return 0;
     }
-    return maxEnergyRecieved.get(capacitorData);
+    return maxEnergyRecieved.get(getCapacitorData());
   }
 
 }

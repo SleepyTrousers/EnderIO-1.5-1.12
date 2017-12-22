@@ -22,7 +22,7 @@ import net.minecraft.util.math.MathHelper;
 public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMachineEntity implements ILegacyPoweredTile {
 
   // Power
-  protected @Nonnull ICapacitorData capacitorData = DefaultCapacitorData.NONE;
+  private @Nonnull ICapacitorData capacitorData = DefaultCapacitorData.NONE;
   protected final @Nonnull ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
 
   @Store({ NBTAction.SAVE, NBTAction.SYNC, NBTAction.UPDATE })
@@ -68,7 +68,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
 
   @Override
   public int getMaxEnergyStored() {
-    return maxEnergyStored.get(capacitorData);
+    return maxEnergyStored.get(getCapacitorData());
   }
 
   @Override
@@ -93,7 +93,11 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   }
 
   public @Nonnull ICapacitorData getCapacitorData() {
+    if (slotDefinition.getNumUpgradeSlots() <= 0) {
+      return DefaultCapacitorData.BASIC_CAPACITOR;
+    } else {
     return capacitorData;
+  }
   }
 
   public int getEnergyStoredScaled(int scale) {
@@ -109,7 +113,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   }
 
   public int getPowerUsePerTick() {
-    return maxEnergyUsed.get(capacitorData);
+    return maxEnergyUsed.get(getCapacitorData());
   }
 
   @Override
