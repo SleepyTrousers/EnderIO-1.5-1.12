@@ -287,8 +287,8 @@ tile.block_decoration2.type15.name=Wireless Charger (decoration block)
 
 tile.block_decoration3.name=Decoration Block
 tile.block_decoration3.type00.name=XP Vacuum (decoration block)
-tile.block_decoration3.type01.name=n/a (decoration block)
-tile.block_decoration3.type02.name=n/a (decoration block)
+tile.block_decoration3.type01.name=Simple Alloy Smelter (decoration block)
+tile.block_decoration3.type02.name=Simple Stirling Generator (decoration block)
 tile.block_decoration3.type03.name=n/a (decoration block)
 tile.block_decoration3.type04.name=n/a (decoration block)
 tile.block_decoration3.type05.name=n/a (decoration block)

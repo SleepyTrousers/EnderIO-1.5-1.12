@@ -739,7 +739,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Deco Block 2/0" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:block_decoration1:1"/><item name="minecraft:furnace"/>
+        <item name="enderio:block_decoration1:1"/><item name="minecraft:furnace"/><item name="minecraft:furnace"/>
       </shapeless>
       <output name="enderio:block_decoration2:0" amount="1"/>
     </crafting>
@@ -829,7 +829,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Deco Block 2/10" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:block_decoration1:1"/><item name="GEAR_IRON"/>
+        <item name="enderio:block_decoration1:1"/><item name="GEAR_ENERGIZED"/>
       </shapeless>
       <output name="enderio:block_decoration2:10" amount="1"/>
     </crafting>
@@ -877,6 +877,33 @@ XML editor will display that as tooltips when editing this file.
         <item name="enderio:block_decoration1:1"/><item name="CAPACITOR1"/>
       </shapeless>
       <output name="enderio:block_decoration2:15" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 3/0" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_decoration1:1"/><item name="minecraft:bucket"/>
+      </shapeless>
+      <output name="enderio:block_decoration3:0" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 3/1" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_decoration1:1"/><item name="minecraft:furnace"/>
+      </shapeless>
+      <output name="enderio:block_decoration3:1" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 3/2" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_decoration1:1"/><item name="GEAR_IRON"/>
+      </shapeless>
+      <output name="enderio:block_decoration3:2" amount="1"/>
     </crafting>
   </recipe>
 
