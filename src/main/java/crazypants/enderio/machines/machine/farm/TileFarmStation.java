@@ -478,7 +478,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
         boolean done = false;
         if (harvest.getHarvestedBlocks() != null && !harvest.getHarvestedBlocks().isEmpty()) {
           PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-          PacketHandler.sendToAllAround(pkt, this, 64);
+          PacketHandler.sendToAllAround(pkt, this);
           done = true;
         }
         if (harvest.getDrops() != null) {
@@ -509,7 +509,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarme
         startUsingItem(inventory[minFirtSlot]);
         if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, world, bc)) {
           inventory[minFirtSlot] = endUsingItem(false).get(0); // FIXME ???
-          PacketHandler.sendToAllAround(new PacketFarmAction(bc), this, 64);
+          PacketHandler.sendToAllAround(new PacketFarmAction(bc), this);
           if (Prep.isValid(inventory[minFirtSlot]) && inventory[minFirtSlot].getCount() == 0) {
             inventory[minFirtSlot] = Prep.getEmpty(); // TODO 1.11 remove
           }

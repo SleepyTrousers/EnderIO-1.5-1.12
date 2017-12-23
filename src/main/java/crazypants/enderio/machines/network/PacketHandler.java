@@ -40,9 +40,7 @@ import crazypants.enderio.machines.machine.vat.PacketVatProgress;
 import crazypants.enderio.machines.machine.wireless.PacketStoredEnergy;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -56,13 +54,8 @@ public class PacketHandler {
     return ID++;
   }
 
-  public static void sendToAllAround(@Nonnull IMessage message, @Nonnull TileEntity te, int range) {
-    BlockPos p = te.getPos();
-    INSTANCE.sendToAllAround(message, new TargetPoint(te.getWorld().provider.getDimension(), p.getX(), p.getY(), p.getZ(), range));
-  }
-
-  public static void sendToAllAround(@Nonnull IMessage message, @Nonnull TileEntity te) {
-    sendToAllAround(message, te, 64);
+  public static void sendToAllAround(IMessage message, TileEntity te) {
+    INSTANCE.sendToAllAround(message, te);
   }
 
   public static void sendTo(@Nonnull IMessage message, EntityPlayerMP player) {

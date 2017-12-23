@@ -21,7 +21,6 @@ import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.task.ContinuousTask;
-import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerDistributor;
@@ -30,6 +29,7 @@ import crazypants.enderio.base.transceiver.Channel;
 import crazypants.enderio.base.transceiver.ChannelList;
 import crazypants.enderio.base.transceiver.ChannelType;
 import crazypants.enderio.base.transceiver.ServerChannelRegister;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
@@ -123,11 +123,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
 
     if (!world.isRemote) {
       if (sendChannelsDirty) {
-        PacketHandler.sendToAllAround(new PacketSendRecieveChannelList(this, true), this, 256);
+        PacketHandler.sendToAllAround(new PacketSendRecieveChannelList(this, true), this);
         sendChannelsDirty = false;
       }
       if (recieveChannelsDirty) {
-        PacketHandler.sendToAllAround(new PacketSendRecieveChannelList(this, false), this, 256);
+        PacketHandler.sendToAllAround(new PacketSendRecieveChannelList(this, false), this);
         recieveChannelsDirty = false;
       }
     }
