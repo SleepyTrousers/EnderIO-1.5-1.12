@@ -20,5 +20,8 @@ public final class InfinityConfig {
       .setRange(1, 1000).sync();
   public static final IValue<Boolean> infinityInAllDimensions = F.make("infinityInAllDimensions", false, //
       "Should making Infinity Powder be allowed in all dimensions? If not, it'll only work in the overworld.");
+  public static final IValue<Boolean> infinityCraftingEnabled = F.make("infinityCraftingEnabled", true, //
+          "Should making Infinity Powder by lighting bedrock on fire be enabled? Please note that you need to provide an alternative way of crafting it if you disabled this.")
+      .sync();
 
 }

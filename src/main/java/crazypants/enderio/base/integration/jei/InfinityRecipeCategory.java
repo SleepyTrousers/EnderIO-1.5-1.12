@@ -49,7 +49,9 @@ public class InfinityRecipeCategory extends BlankRecipeCategory<InfinityRecipeCa
 
     long start = System.nanoTime();
     List<InfinityRecipeWrapper> result = new ArrayList<InfinityRecipeWrapper>();
-    result.add(new InfinityRecipeWrapper());
+    if (InfinityConfig.infinityCraftingEnabled.get()) {
+      result.add(new InfinityRecipeWrapper());
+    }
     long end = System.nanoTime();
     registry.addRecipes(result, UUID);
 
@@ -107,7 +109,7 @@ public class InfinityRecipeCategory extends BlankRecipeCategory<InfinityRecipeCa
     bsr.drawScreen(x, y, w, h);
     GlStateManager.popMatrix();
 
-    final String text = "<" + InfinityConfig.infinityDropChance.get() + "%";
+    final String text = "<" + (int) (InfinityConfig.infinityDropChance.get() * 100) + "%";
     int stringWidth = minecraft.fontRenderer.getStringWidth(text);
     minecraft.fontRenderer.drawString(text, 59 - stringWidth / 2, 36, 0xFFFFFF, false);
   }

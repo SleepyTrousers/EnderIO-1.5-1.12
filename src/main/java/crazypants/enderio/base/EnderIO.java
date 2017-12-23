@@ -38,7 +38,6 @@ import crazypants.enderio.base.item.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.base.loot.Loot;
 import crazypants.enderio.base.loot.LootManager;
 import crazypants.enderio.base.material.OreDictionaryPreferences;
-import crazypants.enderio.base.material.material.MaterialCraftingHandler;
 import crazypants.enderio.base.material.recipes.MaterialRecipes;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintSourceValidator;
@@ -144,8 +143,6 @@ public class EnderIO implements IEnderIOAddon {
     GuiHelper.init(event);
 
     MaterialRecipes.init(event);
-
-    MaterialCraftingHandler.init(event);
 
     // Register the enchants
     Enchantments.init(event);
