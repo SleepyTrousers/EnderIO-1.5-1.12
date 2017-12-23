@@ -12,6 +12,13 @@ import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
+import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_LOSS;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_LOSS;
+
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.IFluidCoolant;
@@ -39,20 +46,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_GEN;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_LOSS;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_GEN;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_LOSS;
-
 @Storable
 public class TileCombustionGenerator extends AbstractGeneratorEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
   public static class Enhanced extends TileCombustionGenerator {
 
     public Enhanced() {
-      super(new SlotDefinition(-1, -1, -1, -1, -1, -1), ENHANCED_COMBUSTION_POWER_LOSS, ENHANCED_COMBUSTION_POWER_BUFFER, ENHANCED_COMBUSTION_POWER_GEN);
+      super(new SlotDefinition(0, 0, 1), ENHANCED_COMBUSTION_POWER_LOSS, ENHANCED_COMBUSTION_POWER_BUFFER, ENHANCED_COMBUSTION_POWER_GEN);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   }
 
   public TileCombustionGenerator() {
-    this(new SlotDefinition(-1, -1, -1, -1, -1, -1), COMBUSTION_POWER_LOSS, COMBUSTION_POWER_BUFFER, COMBUSTION_POWER_GEN);
+    this(new SlotDefinition(0, 0, 1), COMBUSTION_POWER_LOSS, COMBUSTION_POWER_BUFFER, COMBUSTION_POWER_GEN);
   }
 
   protected TileCombustionGenerator(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
