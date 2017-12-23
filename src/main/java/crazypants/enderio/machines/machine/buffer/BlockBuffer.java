@@ -74,7 +74,17 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
 
   @Override
   public @Nonnull TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
-    return new TileBuffer(state.getValue(BufferType.TYPE));
+    switch (state.getValue(BufferType.TYPE)) {
+    case CREATIVE:
+      return new TileBuffer.TileBufferCreative();
+    case OMNI:
+      return new TileBuffer.TileBufferOmni();
+    case POWER:
+      return new TileBuffer.TileBufferPower();
+    case ITEM:
+    default:
+      return new TileBuffer.TileBufferItem();
+    }
   }
 
   @Override

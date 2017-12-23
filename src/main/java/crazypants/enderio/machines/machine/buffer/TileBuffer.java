@@ -10,6 +10,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerDistributor;
 import crazypants.enderio.base.power.forge.InternalRecieverTileWrapper;
+import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -21,7 +22,36 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_BU
 import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_USE;
 
-public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
+@Storable
+public abstract class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
+
+  @Storable
+  public static class TileBufferItem extends TileBuffer {
+    public TileBufferItem() {
+      super(new SlotDefinition(9), BufferType.ITEM);
+    }
+  }
+
+  @Storable
+  public static class TileBufferPower extends TileBuffer {
+    public TileBufferPower() {
+      super(new SlotDefinition(0), BufferType.POWER);
+    }
+  }
+
+  @Storable
+  public static class TileBufferOmni extends TileBuffer {
+    public TileBufferOmni() {
+      super(new SlotDefinition(9), BufferType.OMNI);
+    }
+  }
+
+  @Storable
+  public static class TileBufferCreative extends TileBuffer {
+    public TileBufferCreative() {
+      super(new SlotDefinition(9), BufferType.CREATIVE);
+    }
+  }
 
   private final @Nonnull BufferType type;
   private transient PowerDistributor dist;
@@ -30,8 +60,8 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   @Store
   private int maxIn;
 
-  public TileBuffer(@Nonnull BufferType type) {
-    super(new SlotDefinition(type.hasInventory ? 9 : 0), BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, BUFFER_POWER_USE);
+  public TileBuffer(@Nonnull SlotDefinition slotDefinition, @Nonnull BufferType type) {
+    super(slotDefinition, BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, BUFFER_POWER_USE);
     this.type = type;
     if (type.isCreative) {
       setEnergyStored(getMaxEnergyStored() / 2);
@@ -41,7 +71,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
 
   @Override
   public @Nonnull String getMachineName() {
-    return type.getUnlocalizedName();
+    return getType().getUnlocalizedName();
   }
 
   @Override
@@ -88,7 +118,15 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   @Override
   public void writeToItemStack(@Nonnull ItemStack stack) {
     super.writeToItemStack(stack);
-    stack.setItemDamage(type.ordinal());
+    stack.setItemDamage(getType().ordinal());
+  }
+
+  @Override
+  public void readFromItemStack(@Nonnull ItemStack stack) {
+    super.readFromItemStack(stack);
+    if (type.isCreative) {
+      setEnergyStored(getMaxEnergyStored() / 2);
+    }
   }
 
   @Override
@@ -154,16 +192,16 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   }
 
   public boolean hasInventory() {
-    return type.hasInventory;
+    return getType().hasInventory;
   }
 
   @Override
   public boolean hasPower() {
-    return type.hasPower;
+    return getType().hasPower;
   }
 
   public boolean isCreative() {
-    return type.isCreative;
+    return getType().isCreative;
   }
 
   @Override
@@ -197,6 +235,10 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
       return hasPower() ? (T) new InternalRecieverTileWrapper(this, facingIn) : null;
     }
     return super.getCapability(capability, facingIn);
+  }
+
+  private BufferType getType() {
+    return type;
   }
 
 }

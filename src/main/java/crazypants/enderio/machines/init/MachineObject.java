@@ -1,8 +1,11 @@
 package crazypants.enderio.machines.init;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
@@ -11,6 +14,7 @@ import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machines.machine.buffer.BlockBuffer;
+import crazypants.enderio.machines.machine.buffer.TileBuffer;
 import crazypants.enderio.machines.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machines.machine.farm.BlockFarmStation;
 import crazypants.enderio.machines.machine.generator.combustion.BlockCombustionGenerator;
@@ -55,7 +59,8 @@ public enum MachineObject implements IModObject.Registerable {
 
   block_simple_alloy_smelter(BlockAlloySmelter.class, "create_simple"),
   block_alloy_smelter(BlockAlloySmelter.class),
-  block_buffer(BlockBuffer.class),
+  block_buffer(BlockBuffer.class, TileBuffer.TileBufferItem.class, TileBuffer.TileBufferPower.class, TileBuffer.TileBufferOmni.class,
+      TileBuffer.TileBufferCreative.class),
   // blockCapBank(BlockCapBank.class),
   block_enchanter(BlockEnchanter.class),
   block_farm_station(BlockFarmStation.class),
@@ -94,8 +99,7 @@ public enum MachineObject implements IModObject.Registerable {
 
   block_travel_anchor(BlockTravelAnchor.class),
   block_tele_pad(BlockTelePad.class),
-  block_dialing_device(BlockDialingDevice.class),
-  ;
+  block_dialing_device(BlockDialingDevice.class),;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
@@ -109,25 +113,15 @@ public enum MachineObject implements IModObject.Registerable {
 
   protected final @Nonnull Class<?> clazz;
   protected final @Nullable String blockMethodName, itemMethodName;
-  protected final @Nullable Class<? extends TileEntity> teClazz;
+  protected final @Nullable List<Class<? extends TileEntity>> teClazzes;
 
-  private MachineObject(@Nonnull Class<?> clazz) {
-    this(clazz, "create", (Class<? extends TileEntity>) null);
-  }
-
-  private MachineObject(@Nonnull Class<?> clazz, Class<? extends TileEntity> teClazz) {
+  @SafeVarargs
+  private MachineObject(@Nonnull Class<?> clazz, Class<? extends TileEntity>... teClazz) {
     this(clazz, "create", teClazz);
   }
 
-  private MachineObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
-    this(clazz, methodName, (Class<? extends TileEntity>) null);
-  }
-
-  private MachineObject(@Nonnull Class<?> clazz, @Nonnull String blockMethodName, @Nonnull String itemMethodName) {
-    this(clazz, blockMethodName, itemMethodName, null);
-  }
-
-  private MachineObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity> teClazz) {
+  @SafeVarargs
+  private MachineObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity>... teClazz) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     if (Block.class.isAssignableFrom(clazz)) {
@@ -139,15 +133,16 @@ public enum MachineObject implements IModObject.Registerable {
     } else {
       throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
     }
-    this.teClazz = teClazz;
+    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
   }
 
-  private MachineObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity> teClazz) {
+  @SafeVarargs
+  private MachineObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity>... teClazz) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
     this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    this.teClazz = teClazz;
+    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
   }
 
   @Override
@@ -191,8 +186,8 @@ public enum MachineObject implements IModObject.Registerable {
 
   @Nullable
   @Override
-  public Class<? extends TileEntity> getTileClass() {
-    return teClazz;
+  public final List<Class<? extends TileEntity>> getTileClass() {
+    return teClazzes;
   }
 
   @Override
