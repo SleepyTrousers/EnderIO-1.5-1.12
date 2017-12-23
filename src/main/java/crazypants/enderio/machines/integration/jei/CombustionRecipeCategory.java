@@ -119,7 +119,8 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     long end = System.nanoTime();
     registry.addRecipes(result, UID);
 
-    Log.info(String.format("TankRecipeCategory: Added %d combustion generator recipes to JEI in %.3f seconds.", result.size(), (end - start) / 1000000000d));
+    Log.info(
+        String.format("CombustionRecipeCategory: Added %d combustion generator recipes to JEI in %.3f seconds.", result.size(), (end - start) / 1000000000d));
   }
 
   // ------------ Category
