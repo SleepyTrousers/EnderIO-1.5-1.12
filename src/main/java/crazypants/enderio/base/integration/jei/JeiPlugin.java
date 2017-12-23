@@ -44,6 +44,7 @@ public class JeiPlugin extends BlankModPlugin {
 
     DarkSteelUpgradeRecipeCategory.register(registry, guiHelper);
     DescriptionRecipeCategory.register(registry);
+    InfinityRecipeCategory.register(registry, guiHelper);
 
     registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
 
