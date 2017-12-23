@@ -44,7 +44,7 @@ class GuiHandler implements IGuiHandler {
     IEioGuiHandler handler = mo.getBlock() instanceof IEioGuiHandler ? (IEioGuiHandler) mo.getBlock()
         : mo.getItem() instanceof IEioGuiHandler ? (IEioGuiHandler) mo.getItem() : null;
     if (handler != null) {
-      Log.debug("Opening GUI for ", mo, ": isServer=", server, " is=", id, " player=", player, " world=", world, " pos=", pos, " facing=", facing, " param1=",
+      Log.debug("Opening GUI for ", mo, ": isServer=", server, " id=", id, " player=", player, " world=", world, " pos=", pos, " facing=", facing, " param1=",
           param1, " param2=", param2, " param3=", param3);
       final Object guiElement = handler.getGuiElement(server, player, world, pos, facing, param1, param2, param3);
       if (guiElement instanceof IRemoteExec) {

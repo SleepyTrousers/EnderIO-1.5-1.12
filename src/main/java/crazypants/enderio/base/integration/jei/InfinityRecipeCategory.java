@@ -11,6 +11,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.config.InfinityConfig;
 import crazypants.enderio.base.gui.BlockSceneRenderer;
 import crazypants.enderio.base.material.material.Material;
 import mezz.jei.api.IGuiHelper;
@@ -106,8 +107,9 @@ public class InfinityRecipeCategory extends BlankRecipeCategory<InfinityRecipeCa
     bsr.drawScreen(x, y, w, h);
     GlStateManager.popMatrix();
 
-    int stringWidth = minecraft.fontRenderer.getStringWidth("50%"); // TODO config value
-    minecraft.fontRenderer.drawString("50%", 59 - stringWidth / 2, 36, 0xFFFFFF, false);
+    final String text = "<" + InfinityConfig.infinityDropChance.get() + "%";
+    int stringWidth = minecraft.fontRenderer.getStringWidth(text);
+    minecraft.fontRenderer.drawString(text, 59 - stringWidth / 2, 36, 0xFFFFFF, false);
   }
 
 }

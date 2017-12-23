@@ -7,6 +7,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.config.config.InfinityConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.init.Blocks;
@@ -32,33 +33,38 @@ public class MaterialCraftingHandler {
 
   private static Map<BlockPos, Long> fires = new HashMap<>();
 
-  // TODO: config values for spawn chance, stack size, fire time
-
   @SubscribeEvent
   public static void on(NeighborNotifyEvent event) {
     final World world = event.getWorld();
+    BlockPos posIdx = event.getPos();
     if (world.provider.getDimension() != 0) {
-      return;
-    }
-    final BlockPos pos = event.getPos();
-    final long worldTime = world.getTotalWorldTime();
-    if (fires.containsKey(pos)) {
-      if (world.isAirBlock(pos) && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK && worldTime > fires.get(pos) && RANDOM.nextFloat() <= .5f) {
-        Block.spawnAsEntity(world, pos, Material.POWDER_INFINITY.getStack());
-        world.playSound(null, pos, SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, SoundCategory.BLOCKS, 1.0F, RANDOM.nextFloat() * 0.4F + 0.8F);
+      if (InfinityConfig.infinityInAllDimensions.get()) {
+        posIdx = posIdx.up(world.provider.getDimension() * 256);
+      } else {
+        return;
       }
-      fires.remove(pos);
+    }
+    BlockPos pos = event.getPos();
+    final long worldTime = world.getTotalWorldTime();
+    if (fires.containsKey(posIdx)) {
+      if (world.isAirBlock(pos) && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK && worldTime > fires.get(posIdx)
+          && RANDOM.nextFloat() <= InfinityConfig.infinityDropChance.get()) {
+        Block.spawnAsEntity(world, pos, Material.POWDER_INFINITY.getStack(InfinityConfig.infinityStackSize.get()));
+        if (InfinityConfig.infinityMakesSound.get()) {
+          world.playSound(null, pos, SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, SoundCategory.BLOCKS, 1.0F, RANDOM.nextFloat() * 0.4F + 0.8F);
+        }
+      }
+      fires.remove(posIdx);
     } else if (event.getState().getBlock() instanceof BlockFire && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK) {
       if (fires.size() > 100) {
         Iterator<Long> iterator = fires.values().iterator();
         while (iterator.hasNext()) {
-          Long entry = iterator.next();
-          if (entry < worldTime - 30 * 10) {
+          if (iterator.next() < worldTime || fires.size() > 500) {
             iterator.remove();
           }
         }
       }
-      fires.put(pos, worldTime + 260); // 13s. avg is 230 (11.5s)
+      fires.put(posIdx, worldTime + InfinityConfig.infinityMinAge.get());
     }
   }
 
