@@ -62,7 +62,7 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
 
     });
 
-    addDrawingElement(new PowerBar<>(te, this, 10, 13, 60));
+    addDrawingElement(new PowerBar<>(te, this, 15, 14, 42));
   }
 
   @Override
