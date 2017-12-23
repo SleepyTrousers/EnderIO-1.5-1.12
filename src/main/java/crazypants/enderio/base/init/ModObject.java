@@ -1,8 +1,11 @@
 package crazypants.enderio.base.init;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
@@ -180,7 +183,7 @@ public enum ModObject implements IModObject.Registerable {
 
   protected final @Nonnull Class<?> clazz;
   protected final @Nullable String blockMethodName, itemMethodName;
-  protected final @Nullable Class<? extends TileEntity> teClazz;
+  protected final @Nullable List<Class<? extends TileEntity>> teClazzes;
 
   /*
    * A modObject can be defined in a couple of different ways.
@@ -203,23 +206,13 @@ public enum ModObject implements IModObject.Registerable {
    * together with the ModObject enum, which can cause weird errors. Implement the IModObject lifecycle interfaces on the block/item instead.
    */
 
-  private ModObject(@Nonnull Class<?> clazz) {
-    this(clazz, "create", (Class<? extends TileEntity>) null);
-  }
-
-  private ModObject(@Nonnull Class<?> clazz, Class<? extends TileEntity> teClazz) {
+  @SafeVarargs
+  private ModObject(@Nonnull Class<?> clazz, Class<? extends TileEntity>... teClazz) {
     this(clazz, "create", teClazz);
   }
 
-  private ModObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
-    this(clazz, methodName, (Class<? extends TileEntity>) null);
-  }
-
-  private ModObject(@Nonnull Class<?> clazz, @Nonnull String blockMethodName, @Nonnull String itemMethodName) {
-    this(clazz, blockMethodName, itemMethodName, null);
-  }
-
-  private ModObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity> teClazz) {
+  @SafeVarargs
+  private ModObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity>... teClazz) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     if (Block.class.isAssignableFrom(clazz)) {
@@ -231,16 +224,18 @@ public enum ModObject implements IModObject.Registerable {
     } else {
       throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
     }
-    this.teClazz = teClazz;
+    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
   }
 
-  private ModObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity> teClazz) {
+  @SafeVarargs
+  private ModObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity>... teClazz) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
     this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    this.teClazz = teClazz;
+    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
   }
+
 
   @Override
   public final @Nonnull String getUnlocalisedName() {
@@ -259,8 +254,8 @@ public enum ModObject implements IModObject.Registerable {
 
   @Nullable
   @Override
-  public final Class<? extends TileEntity> getTileClass() {
-    return teClazz;
+  public final List<Class<? extends TileEntity>> getTileClass() {
+    return teClazzes;
   }
 
   @Override

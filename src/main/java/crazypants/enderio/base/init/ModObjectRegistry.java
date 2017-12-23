@@ -142,18 +142,25 @@ public class ModObjectRegistry {
     Map<Class<? extends TileEntity>, List<String>> clazzes = new HashMap<Class<? extends TileEntity>, List<String>>();
 
     for (IModObject elem : objects) {
-      Class<? extends TileEntity> teClazz = (elem instanceof IModObject.Registerable) ? ((IModObject.Registerable) elem).getTileClass() : null;
-      if (teClazz == null) {
+      List<Class<? extends TileEntity>> teClazzes = (elem instanceof IModObject.Registerable) ? ((IModObject.Registerable) elem).getTileClass() : null;
+      if (teClazzes == null || teClazzes.isEmpty()) {
         final Block block = elem.getBlock();
         if (block instanceof BlockEnder) {
-          teClazz = ((BlockEnder<?>) block).getTeClass();
+          Class<? extends TileEntity> teClazz = ((BlockEnder<?>) block).getTeClass();
+          if (teClazz != null) {
+            teClazzes = new NNList<Class<? extends TileEntity>>(teClazz);
+          }
         }
       }
-      if (teClazz != null) {
-        if (!clazzes.containsKey(teClazz)) {
-          clazzes.put(teClazz, new ArrayList<String>());
+      if (teClazzes != null && !teClazzes.isEmpty()) {
+        int i = 0;
+        for (Class<? extends TileEntity> teClazz : teClazzes) {
+          if (!clazzes.containsKey(teClazz)) {
+            clazzes.put(teClazz, new ArrayList<String>());
+          }
+          clazzes.get(teClazz).add(elem.getUnlocalisedName() + "_tileentity" + (i == 0 ? "" : i));
+          i++;
         }
-        clazzes.get(teClazz).add(elem.getUnlocalisedName() + "_tileentity");
       }
     }
 
