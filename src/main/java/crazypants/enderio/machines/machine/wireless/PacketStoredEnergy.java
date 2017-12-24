@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketStoredEnergy extends MessageTileEntity<TileWirelessCharger> implements IMessage, IMessageHandler<PacketStoredEnergy, IMessage> {
+public class PacketStoredEnergy extends MessageTileEntity<TileWirelessCharger> implements IMessage {
 
   private int storedEnergy;
 
@@ -36,18 +36,21 @@ public class PacketStoredEnergy extends MessageTileEntity<TileWirelessCharger> i
     storedEnergy = buf.readInt();
   }
 
-  @Override
-  public IMessage onMessage(PacketStoredEnergy message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileWirelessCharger te = message.getTileEntity(player.world);
-    if (te != null) {
-      boolean doRender = (te.storedEnergyRF > 0) != (message.storedEnergy > 0);
-      te.storedEnergyRF = message.storedEnergy;
-      if (doRender) {
-        te.onAfterDataPacket();
+  public static class Handler implements IMessageHandler<PacketStoredEnergy, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketStoredEnergy message, MessageContext ctx) {
+      EntityPlayer player = EnderIO.proxy.getClientPlayer();
+      TileWirelessCharger te = message.getTileEntity(player.world);
+      if (te != null) {
+        boolean doRender = (te.storedEnergyRF > 0) != (message.storedEnergy > 0);
+        te.storedEnergyRF = message.storedEnergy;
+        if (doRender) {
+          te.onAfterDataPacket();
+        }
       }
+      return null;
     }
-    return null;
   }
 
 }

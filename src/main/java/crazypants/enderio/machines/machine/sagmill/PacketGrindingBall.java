@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketGrindingBall extends MessageTileEntity<TileSagMill> implements IMessage, IMessageHandler<PacketGrindingBall, IMessage> {
+public class PacketGrindingBall extends MessageTileEntity<TileSagMill> implements IMessage {
 
   int currGbUse;
   int maxGbUse;
@@ -39,15 +39,18 @@ public class PacketGrindingBall extends MessageTileEntity<TileSagMill> implement
     maxGbUse = buf.readInt();
   }
 
-  @Override
-  public IMessage onMessage(PacketGrindingBall message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileSagMill te = message.getTileEntity(player.world);
-    if (te != null) {
-      te.grindingBallDurabilityUsed = message.currGbUse;
-      te.grindingBallDurabilityMax = message.maxGbUse;
+  public static class Handler implements IMessageHandler<PacketGrindingBall, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketGrindingBall message, MessageContext ctx) {
+      EntityPlayer player = EnderIO.proxy.getClientPlayer();
+      TileSagMill te = message.getTileEntity(player.world);
+      if (te != null) {
+        te.grindingBallDurabilityUsed = message.currGbUse;
+        te.grindingBallDurabilityMax = message.maxGbUse;
+      }
+      return null;
     }
-    return null;
   }
 
 }

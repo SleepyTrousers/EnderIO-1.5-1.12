@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.farm;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import io.netty.buffer.ByteBuf;
@@ -7,14 +9,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketFarmLockedSlot extends MessageTileEntity<TileFarmStation> implements IMessageHandler<PacketFarmLockedSlot, IMessage> {
+public class PacketFarmLockedSlot extends MessageTileEntity<TileFarmStation> {
 
   public PacketFarmLockedSlot() {
   }
 
   private int buttonID;
 
-  public PacketFarmLockedSlot(TileFarmStation tile, int buttonID) {
+  public PacketFarmLockedSlot(@Nonnull TileFarmStation tile, int buttonID) {
     super(tile);
     this.buttonID = buttonID;
   }
@@ -31,13 +33,16 @@ public class PacketFarmLockedSlot extends MessageTileEntity<TileFarmStation> imp
     buttonID = buf.readInt();
   }
 
-  @Override
-  public IMessage onMessage(PacketFarmLockedSlot message, MessageContext ctx) {
-    TileFarmStation te = message.getTileEntity(message.getWorld(ctx));
-    if (te != null) {
-      te.toggleLockedState(message.buttonID);
+  public static class Handler implements IMessageHandler<PacketFarmLockedSlot, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketFarmLockedSlot message, MessageContext ctx) {
+      TileFarmStation te = message.getTileEntity(message.getWorld(ctx));
+      if (te != null) {
+        te.toggleLockedState(message.buttonID);
+      }
+      return null;
     }
-    return null;
   }
 
 }

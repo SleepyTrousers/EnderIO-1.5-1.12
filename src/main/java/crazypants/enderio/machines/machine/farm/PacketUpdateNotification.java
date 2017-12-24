@@ -3,6 +3,8 @@ package crazypants.enderio.machines.machine.farm;
 import java.util.EnumSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
@@ -12,14 +14,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketUpdateNotification extends MessageTileEntity<TileFarmStation> implements IMessageHandler<PacketUpdateNotification, IMessage> {
+public class PacketUpdateNotification extends MessageTileEntity<TileFarmStation> {
 
   private Set<FarmNotification> notification;
 
   public PacketUpdateNotification() {
   }
 
-  public PacketUpdateNotification(TileFarmStation tile, Set<FarmNotification> notification) {
+  public PacketUpdateNotification(@Nonnull TileFarmStation tile, @Nonnull Set<FarmNotification> notification) {
     super(tile);
     this.notification = notification;
   }
@@ -43,13 +45,16 @@ public class PacketUpdateNotification extends MessageTileEntity<TileFarmStation>
     }
   }
 
-  @Override
-  public IMessage onMessage(PacketUpdateNotification message, MessageContext ctx) {
-    TileFarmStation te = message.getTileEntity(EnderIO.proxy.getClientWorld());
-    if (te != null) {
-      te.notification = message.notification;
+  public static class Handler implements IMessageHandler<PacketUpdateNotification, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketUpdateNotification message, MessageContext ctx) {
+      TileFarmStation te = message.getTileEntity(EnderIO.proxy.getClientWorld());
+      if (te != null) {
+        te.notification = message.notification;
+      }
+      return null;
     }
-    return null;
   }
 
 }

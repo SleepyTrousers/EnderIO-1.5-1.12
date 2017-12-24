@@ -13,19 +13,19 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSetTarget extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketSetTarget, IMessage> {
+public class PacketSetTarget extends MessageTileEntity<TileEntity> {
 
   public PacketSetTarget() {
     super();
   }
-  
+
   private TelepadTarget target;
-  
+
   public PacketSetTarget(TileTelePad te, TelepadTarget target) {
-    super(te.getTileEntity());    
+    super(te.getTileEntity());
     this.target = target;
   }
-  
+
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
@@ -34,21 +34,24 @@ public class PacketSetTarget extends MessageTileEntity<TileEntity> implements IM
     ByteBufUtils.writeTag(buf, nbt);
 
   }
-  
+
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     NBTTagCompound nbt = ByteBufUtils.readTag(buf);
     target = TelepadTarget.readFromNBT(nbt);
   }
-  
-  @Override
-  public IMessage onMessage(PacketSetTarget message, MessageContext ctx) {
-    TileEntity te = message.getTileEntity(ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx));
-    if(te instanceof TileTelePad) {
-      TileTelePad tp = (TileTelePad)te;      
-      tp.setTarget(message.target); 
+
+  public static class Handler implements IMessageHandler<PacketSetTarget, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketSetTarget message, MessageContext ctx) {
+      TileEntity te = message.getTileEntity(ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx));
+      if (te instanceof TileTelePad) {
+        TileTelePad tp = (TileTelePad) te;
+        tp.setTarget(message.target);
+      }
+      return null;
     }
-    return null;
   }
 }

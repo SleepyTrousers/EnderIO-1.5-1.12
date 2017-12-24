@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketObeliskFx implements IMessage, IMessageHandler<PacketObeliskFx, IMessage> {
+public class PacketObeliskFx implements IMessage {
 
   private double posX, posY, posZ;
   private List<EnumParticleTypes> particles;
@@ -59,11 +59,14 @@ public class PacketObeliskFx implements IMessage, IMessageHandler<PacketObeliskF
     }
   }
 
-  @Override
-  public IMessage onMessage(PacketObeliskFx message, MessageContext ctx) {
-    for (EnumParticleTypes particle : message.particles) {
-      ClientUtil.spawnParcticles(message.posX, message.posY, message.posZ, 5, particle);
+  public static class Handler implements IMessageHandler<PacketObeliskFx, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketObeliskFx message, MessageContext ctx) {
+      for (EnumParticleTypes particle : message.particles) {
+        ClientUtil.spawnParcticles(message.posX, message.posY, message.posZ, 5, particle);
+      }
+      return null;
     }
-    return null;
   }
 }

@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketCombustionTank extends MessageTileEntity<TileCombustionGenerator> implements IMessageHandler<PacketCombustionTank, IMessage> {
+public class PacketCombustionTank extends MessageTileEntity<TileCombustionGenerator> {
 
   public NBTTagCompound nbtRoot;
 
@@ -46,24 +46,26 @@ public class PacketCombustionTank extends MessageTileEntity<TileCombustionGenera
     nbtRoot = NetworkUtil.readNBTTagCompound(buf);
   }
 
-  @Override
-  public IMessage onMessage(PacketCombustionTank message, MessageContext ctx) {
-    TileCombustionGenerator tile = message.getTileEntity(EnderIO.proxy.getClientWorld());
-    if (tile != null) {
-      if (message.nbtRoot.hasKey("coolantTank")) {
-        NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("coolantTank");
-        tile.getCoolantTank().readFromNBT(tankRoot);
-      } else {
-        tile.getCoolantTank().setFluid(null);
-      }
-      if (message.nbtRoot.hasKey("fuelTank")) {
-        NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("fuelTank");
-        tile.getFuelTank().readFromNBT(tankRoot);
-      } else {
-        tile.getFuelTank().setFluid(null);
-      }
-    }
-    return null;
-  }
+  public static class Handler implements IMessageHandler<PacketCombustionTank, IMessage> {
 
+    @Override
+    public IMessage onMessage(PacketCombustionTank message, MessageContext ctx) {
+      TileCombustionGenerator tile = message.getTileEntity(EnderIO.proxy.getClientWorld());
+      if (tile != null) {
+        if (message.nbtRoot.hasKey("coolantTank")) {
+          NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("coolantTank");
+          tile.getCoolantTank().readFromNBT(tankRoot);
+        } else {
+          tile.getCoolantTank().setFluid(null);
+        }
+        if (message.nbtRoot.hasKey("fuelTank")) {
+          NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("fuelTank");
+          tile.getFuelTank().readFromNBT(tankRoot);
+        } else {
+          tile.getFuelTank().setFluid(null);
+        }
+      }
+      return null;
+    }
+  }
 }

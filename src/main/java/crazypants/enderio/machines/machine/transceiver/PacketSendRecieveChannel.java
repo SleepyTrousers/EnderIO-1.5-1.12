@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.transceiver;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
 
@@ -11,7 +13,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSendRecieveChannel extends MessageTileEntity<TileTransceiver> implements IMessageHandler<PacketSendRecieveChannel, IMessage> {
+public class PacketSendRecieveChannel extends MessageTileEntity<TileTransceiver> {
 
   private boolean isSend;
   private boolean isAdd;
@@ -20,7 +22,7 @@ public class PacketSendRecieveChannel extends MessageTileEntity<TileTransceiver>
   public PacketSendRecieveChannel() {
   }
 
-  public PacketSendRecieveChannel(TileTransceiver te, boolean isSend, boolean isAdd, Channel channel) {
+  public PacketSendRecieveChannel(@Nonnull TileTransceiver te, boolean isSend, boolean isAdd, Channel channel) {
     super(te);
     this.isSend = isSend;
     this.isAdd = isAdd;
@@ -46,26 +48,29 @@ public class PacketSendRecieveChannel extends MessageTileEntity<TileTransceiver>
     channel = Channel.readFromNBT(tag);
   }
 
-  @Override
-  public IMessage onMessage(PacketSendRecieveChannel message, MessageContext ctx) {
-    EntityPlayer player = ctx.getServerHandler().player;
-    TileTransceiver tile = message.getTileEntity(player.world);
-    if (tile != null && message.channel != null) {
-      if (message.isSend) {
-        if (message.isAdd) {
-          tile.addSendChanel(message.channel);
+  public static class Handler implements IMessageHandler<PacketSendRecieveChannel, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketSendRecieveChannel message, MessageContext ctx) {
+      EntityPlayer player = ctx.getServerHandler().player;
+      TileTransceiver tile = message.getTileEntity(player.world);
+      if (tile != null && message.channel != null) {
+        if (message.isSend) {
+          if (message.isAdd) {
+            tile.addSendChanel(message.channel);
+          } else {
+            tile.removeSendChanel(message.channel);
+          }
         } else {
-          tile.removeSendChanel(message.channel);
-        }
-      } else {
-        if (message.isAdd) {
-          tile.addRecieveChanel(message.channel);
-        } else {
-          tile.removeRecieveChanel(message.channel);
+          if (message.isAdd) {
+            tile.addRecieveChanel(message.channel);
+          } else {
+            tile.removeRecieveChanel(message.channel);
+          }
         }
       }
+      return null;
     }
-    return null;
   }
 
 }

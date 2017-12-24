@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketOpenServerGui extends MessageTileEntity<TileTelePad> implements IMessageHandler<PacketOpenServerGui, IMessage> {
+public class PacketOpenServerGui extends MessageTileEntity<TileTelePad> {
 
   public PacketOpenServerGui() {
   }
@@ -39,18 +39,21 @@ public class PacketOpenServerGui extends MessageTileEntity<TileTelePad> implemen
     this.id = buf.readInt();
   }
 
-  @Override
-  public IMessage onMessage(PacketOpenServerGui message, MessageContext ctx) {
-    EntityPlayer player = ctx.getServerHandler().player;
-    World world = message.getWorld(ctx);
-    TileTelePad te = message.getTileEntity(world);
-    if (te != null) {
-      if (message.id == BlockTelePad.GUI_ID_TELEPAD_TRAVEL && !te.canUiBeAccessed(player)) {
-        BlockTravelAnchor.sendPrivateChatMessage(player, te.getOwner());
-      } else {
-        MachineObject.block_tele_pad.openGui(world, te.getPos(), player, null, message.id);
+  public static class Handler implements IMessageHandler<PacketOpenServerGui, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketOpenServerGui message, MessageContext ctx) {
+      EntityPlayer player = ctx.getServerHandler().player;
+      World world = message.getWorld(ctx);
+      TileTelePad te = message.getTileEntity(world);
+      if (te != null) {
+        if (message.id == BlockTelePad.GUI_ID_TELEPAD_TRAVEL && !te.canUiBeAccessed(player)) {
+          BlockTravelAnchor.sendPrivateChatMessage(player, te.getOwner());
+        } else {
+          MachineObject.block_tele_pad.openGui(world, te.getPos(), player, null, message.id);
+        }
       }
+      return null;
     }
-    return null;
   }
 }

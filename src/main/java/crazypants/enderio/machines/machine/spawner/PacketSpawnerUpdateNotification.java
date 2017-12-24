@@ -3,6 +3,8 @@ package crazypants.enderio.machines.machine.spawner;
 import java.util.EnumSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
@@ -11,14 +13,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSpawnerUpdateNotification extends MessageTileEntity<TilePoweredSpawner> implements IMessageHandler<PacketSpawnerUpdateNotification, IMessage> {
+public class PacketSpawnerUpdateNotification extends MessageTileEntity<TilePoweredSpawner> {
 
   private Set<SpawnerNotification> notification;
 
   public PacketSpawnerUpdateNotification() {
   }
 
-  public PacketSpawnerUpdateNotification(TilePoweredSpawner tile, Set<SpawnerNotification> notification) {
+  public PacketSpawnerUpdateNotification(@Nonnull TilePoweredSpawner tile, @Nonnull Set<SpawnerNotification> notification) {
     super(tile);
     this.notification = notification;
   }
@@ -42,12 +44,15 @@ public class PacketSpawnerUpdateNotification extends MessageTileEntity<TilePower
     }
   }
 
-  @Override
-  public IMessage onMessage(PacketSpawnerUpdateNotification message, MessageContext ctx) {
-    TilePoweredSpawner te = message.getTileEntity(EnderIO.proxy.getClientWorld());
-    if (te != null) {
-      te.replaceNotification(message.notification);
+  public static class Handler implements IMessageHandler<PacketSpawnerUpdateNotification, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketSpawnerUpdateNotification message, MessageContext ctx) {
+      TilePoweredSpawner te = message.getTileEntity(EnderIO.proxy.getClientWorld());
+      if (te != null) {
+        te.replaceNotification(message.notification);
+      }
+      return null;
     }
-    return null;
   }
 }

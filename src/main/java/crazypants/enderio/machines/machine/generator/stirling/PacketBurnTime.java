@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.generator.stirling;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
@@ -9,9 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import javax.annotation.Nonnull;
-
-public class PacketBurnTime extends MessageTileEntity<TileStirlingGenerator> implements IMessageHandler<PacketBurnTime, IMessage> {
+public class PacketBurnTime extends MessageTileEntity<TileStirlingGenerator> {
 
   public int burnTime;
   public int totalBurnTime;
@@ -43,18 +43,20 @@ public class PacketBurnTime extends MessageTileEntity<TileStirlingGenerator> imp
     isLavaFired = buf.readBoolean();
   }
 
-  @Override
-  public IMessage onMessage(PacketBurnTime message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    if (player != null) {
-      TileStirlingGenerator tile = message.getTileEntity(player.world);
-      if (tile != null) {
-        tile.burnTime = message.burnTime;
-        tile.totalBurnTime = message.totalBurnTime;
-        tile.isLavaFired = message.isLavaFired;
-      }
-    }
-    return null;
-  }
+  public static class Handler implements IMessageHandler<PacketBurnTime, IMessage> {
 
+    @Override
+    public IMessage onMessage(PacketBurnTime message, MessageContext ctx) {
+      EntityPlayer player = EnderIO.proxy.getClientPlayer();
+      if (player != null) {
+        TileStirlingGenerator tile = message.getTileEntity(player.world);
+        if (tile != null) {
+          tile.burnTime = message.burnTime;
+          tile.totalBurnTime = message.totalBurnTime;
+          tile.isLavaFired = message.isLavaFired;
+        }
+      }
+      return null;
+    }
+  }
 }

@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessageHandler<PacketDumpTank, IMessage> {
+public class PacketDumpTank extends MessageTileEntity<TileVat> {
 
   private int tank;
 
@@ -36,34 +36,37 @@ public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessa
     tank = buf.readByte();
   }
 
-  @Override
-  public IMessage onMessage(PacketDumpTank message, MessageContext ctx) {
-    TileVat te = message.getTileEntity(ctx.getServerHandler().player.world);
-    if (te != null) {
-      if (message.tank == 2) {
-        te.outputTank.setFluid(null);
-      } else {
-        if (te.inputTank.isEmpty()) {
-          // NOP
-        } else if (te.isActive()) {
-          ctx.getServerHandler().player.sendMessage(Lang.GUI_VAT_DUMP_ACTIVE.toChatServer());
-        } else if (te.outputTank.isEmpty()) {
-          te.outputTank.setFluid(te.inputTank.getFluid());
-          te.inputTank.setFluid(null);
+  public static class Handler implements IMessageHandler<PacketDumpTank, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketDumpTank message, MessageContext ctx) {
+      TileVat te = message.getTileEntity(ctx.getServerHandler().player.world);
+      if (te != null) {
+        if (message.tank == 2) {
+          te.outputTank.setFluid(null);
         } else {
-          final FluidStack fluidInOutput = te.outputTank.getFluid();
-          if (fluidInOutput != null && fluidInOutput.isFluidEqual(te.inputTank.getFluid()) && !te.outputTank.isFull()) {
-            FluidStack drain = te.inputTank.drainInternal(te.outputTank.getAvailableSpace(), true);
-            te.outputTank.fill(drain, true);
+          if (te.inputTank.isEmpty()) {
+            // NOP
+          } else if (te.isActive()) {
+            ctx.getServerHandler().player.sendMessage(Lang.GUI_VAT_DUMP_ACTIVE.toChatServer());
+          } else if (te.outputTank.isEmpty()) {
+            te.outputTank.setFluid(te.inputTank.getFluid());
+            te.inputTank.setFluid(null);
           } else {
-            ctx.getServerHandler().player.sendMessage(Lang.GUI_VAT_DUMP_FAIL.toChatServer());
+            final FluidStack fluidInOutput = te.outputTank.getFluid();
+            if (fluidInOutput != null && fluidInOutput.isFluidEqual(te.inputTank.getFluid()) && !te.outputTank.isFull()) {
+              FluidStack drain = te.inputTank.drainInternal(te.outputTank.getAvailableSpace(), true);
+              te.outputTank.fill(drain, true);
+            } else {
+              ctx.getServerHandler().player.sendMessage(Lang.GUI_VAT_DUMP_FAIL.toChatServer());
+            }
           }
         }
+        te.markDirty();
+        return new PacketTanks(te);
       }
-      te.markDirty();
-      return new PacketTanks(te);
+      return null;
     }
-    return null;
-  }
 
+  }
 }

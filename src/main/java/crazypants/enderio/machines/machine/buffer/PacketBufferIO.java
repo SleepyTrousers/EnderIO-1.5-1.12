@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMessageHandler<PacketBufferIO, IMessage> {
+public class PacketBufferIO extends MessageTileEntity<TileBuffer> {
 
   public PacketBufferIO() {
   }
@@ -37,13 +37,16 @@ public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMe
     buf.writeInt(this.out);
   }
 
-  @Override
-  public IMessage onMessage(PacketBufferIO message, MessageContext ctx) {
-    TileBuffer buf = message.getTileEntity(getWorld(ctx));
-    if (buf != null) {
-      buf.setIO(message.in, message.out);
+  public static class Handler implements IMessageHandler<PacketBufferIO, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketBufferIO message, MessageContext ctx) {
+      TileBuffer buf = message.getTileEntity(message.getWorld(ctx));
+      if (buf != null) {
+        buf.setIO(message.in, message.out);
+      }
+      return null;
     }
-    return null;
   }
 
 }

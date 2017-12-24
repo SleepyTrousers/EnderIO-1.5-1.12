@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketItemFilter extends MessageTileEntity<TileTransceiver> implements IMessageHandler<PacketItemFilter, IMessage> {
+public class PacketItemFilter extends MessageTileEntity<TileTransceiver> {
 
   private boolean isSend;
   private ItemFilter filter;
@@ -47,17 +47,20 @@ public class PacketItemFilter extends MessageTileEntity<TileTransceiver> impleme
     filter.readFromNBT(tag);
   }
 
-  @Override
-  public IMessage onMessage(PacketItemFilter message, MessageContext ctx) {
-    EntityPlayer player = ctx.getServerHandler().player;
-    TileTransceiver tile = message.getTileEntity(player.world);
-    if (tile != null && message.filter != null) {
-      if (message.isSend) {
-        tile.setSendItemFilter(message.filter);
-      } else {
-        tile.setRecieveItemFilter(message.filter);
+  public static class Handler implements IMessageHandler<PacketItemFilter, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketItemFilter message, MessageContext ctx) {
+      EntityPlayer player = ctx.getServerHandler().player;
+      TileTransceiver tile = message.getTileEntity(player.world);
+      if (tile != null && message.filter != null) {
+        if (message.isSend) {
+          tile.setSendItemFilter(message.filter);
+        } else {
+          tile.setRecieveItemFilter(message.filter);
+        }
       }
+      return null;
     }
-    return null;
   }
 }

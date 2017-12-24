@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketVatProgress extends MessageTileEntity<TileVat> implements IMessageHandler<PacketVatProgress, IMessage> {
+public class PacketVatProgress extends MessageTileEntity<TileVat> {
 
   private float progress = 0;
 
@@ -79,25 +79,28 @@ public class PacketVatProgress extends MessageTileEntity<TileVat> implements IMe
     }
   }
 
-  @Override
-  public IMessage onMessage(PacketVatProgress message, MessageContext ctx) {
-    TileVat tile = message.getTileEntity(EnderIO.proxy.getClientWorld());
-    if (tile != null) {
-      tile.currentTaskInputFluid = null;
-      tile.currentTaskOutputFluid = null;
-      if (message.progress < 0) {
-        tile.setClientTask(null);
-      } else {
-        tile.setClientTask(new PoweredTaskProgress(message.progress));
-        if (message.inputFluidId != null) {
-          tile.currentTaskInputFluid = FluidRegistry.getFluid(message.inputFluidId);
-        }
-        if (message.outputFluidId != null) {
-          tile.currentTaskOutputFluid = FluidRegistry.getFluid(message.outputFluidId);
+  public static class Handler implements IMessageHandler<PacketVatProgress, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketVatProgress message, MessageContext ctx) {
+      TileVat tile = message.getTileEntity(EnderIO.proxy.getClientWorld());
+      if (tile != null) {
+        tile.currentTaskInputFluid = null;
+        tile.currentTaskOutputFluid = null;
+        if (message.progress < 0) {
+          tile.setClientTask(null);
+        } else {
+          tile.setClientTask(new PoweredTaskProgress(message.progress));
+          if (message.inputFluidId != null) {
+            tile.currentTaskInputFluid = FluidRegistry.getFluid(message.inputFluidId);
+          }
+          if (message.outputFluidId != null) {
+            tile.currentTaskOutputFluid = FluidRegistry.getFluid(message.outputFluidId);
+          }
         }
       }
+      return null;
     }
-    return null;
   }
 
 }

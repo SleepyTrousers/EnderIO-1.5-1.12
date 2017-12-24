@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketTanks extends MessageTileEntity<TileVat> implements IMessageHandler<PacketTanks, IMessage> {
+public class PacketTanks extends MessageTileEntity<TileVat> {
 
   private NBTTagCompound nbtRoot;
 
@@ -47,25 +47,27 @@ public class PacketTanks extends MessageTileEntity<TileVat> implements IMessageH
     nbtRoot = NetworkUtil.readNBTTagCompound(buf);
   }
 
-  @Override
-  public IMessage onMessage(PacketTanks message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileVat tile = message.getTileEntity(player.world);
-    if (tile != null) {
-      if (message.nbtRoot.hasKey("inputTank")) {
-        NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("inputTank");
-        tile.inputTank.readFromNBT(tankRoot);
-      } else {
-        tile.inputTank.setFluid(null);
-      }
-      if (message.nbtRoot.hasKey("outputTank")) {
-        NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("outputTank");
-        tile.outputTank.readFromNBT(tankRoot);
-      } else {
-        tile.outputTank.setFluid(null);
-      }
-    }
-    return null;
-  }
+  public static class Handler implements IMessageHandler<PacketTanks, IMessage> {
 
+    @Override
+    public IMessage onMessage(PacketTanks message, MessageContext ctx) {
+      EntityPlayer player = EnderIO.proxy.getClientPlayer();
+      TileVat tile = message.getTileEntity(player.world);
+      if (tile != null) {
+        if (message.nbtRoot.hasKey("inputTank")) {
+          NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("inputTank");
+          tile.inputTank.readFromNBT(tankRoot);
+        } else {
+          tile.inputTank.setFluid(null);
+        }
+        if (message.nbtRoot.hasKey("outputTank")) {
+          NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("outputTank");
+          tile.outputTank.readFromNBT(tankRoot);
+        } else {
+          tile.outputTank.setFluid(null);
+        }
+      }
+      return null;
+    }
+  }
 }

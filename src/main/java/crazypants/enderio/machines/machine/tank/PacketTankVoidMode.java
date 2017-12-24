@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketTankVoidMode extends MessageTileEntity<TileTank> implements IMessageHandler<PacketTankVoidMode, IMessage> {
+public class PacketTankVoidMode extends MessageTileEntity<TileTank> {
 
   public PacketTankVoidMode() {
   }
@@ -35,12 +35,15 @@ public class PacketTankVoidMode extends MessageTileEntity<TileTank> implements I
     mode = NullHelper.first(VoidMode.values()[MathHelper.clamp(buf.readByte(), 0, VoidMode.values().length - 1)], mode);
   }
 
-  @Override
-  public IMessage onMessage(PacketTankVoidMode message, MessageContext ctx) {
-    TileTank te = message.getTileEntity(ctx.getServerHandler().player.world);
-    if (te != null) {
-      te.setVoidMode(message.mode);
+  public static class Handler implements IMessageHandler<PacketTankVoidMode, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketTankVoidMode message, MessageContext ctx) {
+      TileTank te = message.getTileEntity(ctx.getServerHandler().player.world);
+      if (te != null) {
+        te.setVoidMode(message.mode);
+      }
+      return null;
     }
-    return null;
   }
 }

@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketWeatherTank extends MessageTileEntity<TileWeatherObelisk> implements IMessageHandler<PacketWeatherTank, IMessage> {
+public class PacketWeatherTank extends MessageTileEntity<TileWeatherObelisk> {
 
   private NBTTagCompound tag;
 
@@ -35,13 +35,16 @@ public class PacketWeatherTank extends MessageTileEntity<TileWeatherObelisk> imp
     tag = ByteBufUtils.readTag(buf);
   }
 
-  @Override
-  public IMessage onMessage(PacketWeatherTank message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileWeatherObelisk tile = message.getTileEntity(player.world);
-    if (tile != null) {
-      tile.getInputTank().readFromNBT(message.tag);
+  public static class Handler implements IMessageHandler<PacketWeatherTank, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketWeatherTank message, MessageContext ctx) {
+      EntityPlayer player = EnderIO.proxy.getClientPlayer();
+      TileWeatherObelisk tile = message.getTileEntity(player.world);
+      if (tile != null) {
+        tile.getInputTank().readFromNBT(message.tag);
+      }
+      return null;
     }
-    return null;
   }
 }

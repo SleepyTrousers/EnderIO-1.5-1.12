@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketNutrientTank extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketNutrientTank, IMessage> {
+public class PacketNutrientTank extends MessageTileEntity<TileEntity> {
 
   private int amount;
 
@@ -36,13 +36,16 @@ public class PacketNutrientTank extends MessageTileEntity<TileEntity> implements
     amount = buf.readInt();
   }
 
-  @Override
-  public IMessage onMessage(PacketNutrientTank message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity tile = message.getTileEntity(player.world);
-    if (tile instanceof IHasNutrientTank) {
-      ((IHasNutrientTank) tile).getNutrientTank().setFluidAmount(message.amount);
+  public static class Handler implements IMessageHandler<PacketNutrientTank, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketNutrientTank message, MessageContext ctx) {
+      EntityPlayer player = EnderIO.proxy.getClientPlayer();
+      TileEntity tile = message.getTileEntity(player.world);
+      if (tile instanceof IHasNutrientTank) {
+        ((IHasNutrientTank) tile).getNutrientTank().setFluidAmount(message.amount);
+      }
+      return null;
     }
-    return null;
   }
 }
