@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.inventory.Callback;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.Type;
@@ -76,6 +77,8 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
   private int range = VacuumConfig.vacuumChestRange.get();
   @Store
   private ItemFilter filter;
+  @Store({ NBTAction.SYNC, NBTAction.UPDATE })
+  private boolean clientActive;
 
   public TileVacuumChest() {
     for (int i = 0; i < ITEM_SLOTS; i++) {
@@ -89,7 +92,15 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
 
   @Override
   public boolean isActive() {
-    return redstoneCheckPassed && !isFull();
+    if (world.isRemote) {
+      return clientActive;
+    }
+    final boolean active = redstoneCheckPassed && !isFull();
+    if (active != clientActive) {
+      clientActive = active;
+      markDirty();
+    }
+    return active;
   }
 
   @Override
@@ -103,6 +114,9 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
   @Override
   protected void updateEntityClient() {
     YetaUtil.refresh(this);
+    if (isActive()) {
+      doHoover();
+    }
   }
 
   private List<EntityItem> selectEntitiesWithinAABB(World worldIn, AxisAlignedBB bb) {
