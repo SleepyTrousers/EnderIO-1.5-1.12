@@ -1,6 +1,7 @@
 package info.loenwind.scheduler;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
@@ -20,12 +21,12 @@ public class Celeb implements Event {
 
   private boolean on = false;
 
-  private final Calendar start;
-  private final Calendar end;
+  private final Calendar start = Calendar.getInstance(Locale.getDefault());
+  private final Calendar end = Calendar.getInstance(Locale.getDefault());
 
   private Celeb(int year0, int month0, int date0, int hourOfDay0, int minute0, int year1, int month1, int date1, int hourOfDay1, int minute1) {
-    start = new Calendar.Builder().setDate(year0, month0, date0).setTimeOfDay(hourOfDay0, minute0, 0).build();
-    end = new Calendar.Builder().setDate(year1, month1, date1).setTimeOfDay(hourOfDay1, minute1, 0).build();
+    start.set(year0, month0 - 1, date0, hourOfDay0, minute0, 0);
+    end.set(year1, month1 - 1, date1, hourOfDay1, minute1, 0);
   }
 
   @Override

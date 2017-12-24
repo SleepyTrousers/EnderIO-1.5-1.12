@@ -101,10 +101,10 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     if (machine.getCapacitorData() == DefaultCapacitorData.NONE) {
       paintCapacitorError(partialTicks, guiX0, guiY0);
     } else {
+      paintPowerBar(guiX0, guiY0);
       if (Celeb.C24.isOn()) {
         paintC24Overlay(guiX0, guiY0);
       }
-      paintPowerBar(guiX0, guiY0);
     }
 
     owner.bindGuiTexture();
