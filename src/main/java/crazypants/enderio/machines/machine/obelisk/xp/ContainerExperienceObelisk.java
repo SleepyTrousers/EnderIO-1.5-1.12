@@ -50,14 +50,14 @@ public class ContainerExperienceObelisk extends Container implements IRemoteExec
       } else {
         inv.getContainer().drainPlayerXpToReachPlayerLevel(message.getPlayer(), message.getInt(0));
       }
-      break;
+      return new PacketExperienceContainer(inv);
     case REM_XP:
       if (message.getPlayer().capabilities.isCreativeMode) {
         inv.getContainer().addExperience(XpUtil.getExperienceForLevel(message.getInt(0)));
       } else {
         inv.getContainer().drainPlayerXpToReachContainerLevel(message.getPlayer(), message.getInt(0));
       }
-      break;
+      return new PacketExperienceContainer(inv);
     default:
       break;
     }
