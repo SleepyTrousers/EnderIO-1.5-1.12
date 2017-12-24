@@ -32,6 +32,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
+import net.minecraftforge.fml.server.FMLServerHandler;
 
 public class CommonProxy {
 
@@ -59,6 +60,12 @@ public class CommonProxy {
   
   public void init(@Nonnull FMLPreInitializationEvent event) {
     TOPUtil.create();
+    if (isDedicatedServer()) {
+      if (!FMLServerHandler.instance().getServer().isServerInOnlineMode() && System.getProperty("INDEV") == null) {
+        Log.warn("@Devs: See github for dev env setup; set INDEV if needed.");
+        throw new PiracyException("Offline mode for dedicated servers is NOT supported by Ender IO.");
+      }
+    }
   }
   
   public void init(@Nonnull FMLInitializationEvent event) {
@@ -110,6 +117,16 @@ public class CommonProxy {
   }
 
   protected void onClientTick() {
+  }
+
+  public static class PiracyException extends RuntimeException {
+    private static final long serialVersionUID = -7513113635682398315L;
+
+    public PiracyException(String message) {
+      super(message);
+      setStackTrace(new StackTraceElement[0]);
+    }
+
   }
 
   public final class TickTimer {

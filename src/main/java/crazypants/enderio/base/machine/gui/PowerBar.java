@@ -35,11 +35,12 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     protected void updateText() {
       text.clear();
       if (Celeb.C24.isOn()) {
-        int frame = (int) ((EnderIO.proxy.getTickCount() / 30) % (lang.size() - 1));
-        if (frame == 0) {
+        final long currentTick = EnderIO.proxy.getTickCount() / 30;
+        if (langLastTick != currentTick) {
+          langLastTick = currentTick;
           Collections.shuffle(lang);
         }
-        text.add(lang.get(frame));
+        text.add(lang.get(0));
       }
       if (machine.getCapacitorData() == DefaultCapacitorData.NONE) {
         text.addAll(Lang.GUI_NOCAP.getLines());
@@ -175,6 +176,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     GlStateManager.popMatrix();
   }
 
+  private static long langLastTick = 0;
   private static final List<String> lang = Arrays.asList(new String[] { "Krismasi Njema", "UKhisimusi omuhle", "Moni Wa Chikondwelero Cha Kristmasi",
       "\u06A9\u0631\u0633\u0645\u0633 \u0645\u0628\u0627\u0631\u06A9", "G\u00EBzuar Krishtlindjen",
       "\u0639\u064A\u062F \u0645\u064A\u0644\u0627\u062F \u0645\u062C\u064A\u062F",
