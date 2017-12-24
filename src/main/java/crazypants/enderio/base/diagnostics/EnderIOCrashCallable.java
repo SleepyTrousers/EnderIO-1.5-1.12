@@ -41,17 +41,18 @@ public class EnderIOCrashCallable implements ICrashCallable {
       if (apiVersionString == null) {
         apiVersionString = "";
       }
-      if ("appliedenergistics2|API".equals(modContainer.getModId())) {
-        if ("rv1".equals(apiVersionString) || "rv2".equals(apiVersionString) || "rv3".equals(apiVersionString)) {
-          result.add(" * An unsupportted old AE2 API is installed (" + apiVersionString + " from "
-              + modContainer.getSource().getName() + ").");
-          result.add("   Ender IO was build against API version rv4 and will NOT work with older versions.");
-        } else if (!"rv4".equals(apiVersionString)) {
-          result.add(" * An unknown AE2 API is installed (" + apiVersionString + " from "
-              + modContainer.getSource().getName() + ").");
-          result.add("   Ender IO was build against API version rv4 and may or may not work with a newer version.");
-        }
-      } else if (modContainer.getModId() != null && modContainer.getModId().startsWith("EnderIOAPI")) {
+      // if ("appliedenergistics2|API".equals(modContainer.getModId())) {
+      // if ("rv1".equals(apiVersionString) || "rv2".equals(apiVersionString) || "rv3".equals(apiVersionString)) {
+      // result.add(" * An unsupportted old AE2 API is installed (" + apiVersionString + " from "
+      // + modContainer.getSource().getName() + ").");
+      // result.add(" Ender IO was build against API version rv4 and will NOT work with older versions.");
+      // } else if (!"rv4".equals(apiVersionString)) {
+      // result.add(" * An unknown AE2 API is installed (" + apiVersionString + " from "
+      // + modContainer.getSource().getName() + ").");
+      // result.add(" Ender IO was build against API version rv4 and may or may not work with a newer version.");
+      // }
+      // } else
+      if (modContainer.getModId() != null && modContainer.getModId().startsWith("EnderIOAPI")) {
         if (!EnderIOAPIProps.VERSION.equals(apiVersionString)) {
           result.add(" * Another mod is shipping a version of our API that doesn't match our version (" + apiVersionString
               + " from " + modContainer.getSource().getName() + "). That may not actually work.");
