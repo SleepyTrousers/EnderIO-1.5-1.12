@@ -180,7 +180,9 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
 
   private void drawPowerBg(int sx, int sy) {
     drawTexturedModalRect(sx + 14, sy + 12, xSize + 10, 0, 12, 44);
-    drawTexturedModalRect(sx + 11, sy + 59, xSize, 54, 19, 19);
+    if (!getTileEntity().isCreative()) {
+      drawTexturedModalRect(sx + 11, sy + 59, xSize, 54, 19, 19);
+    }
   }
 
   private void drawSlotBg(int sx, int sy) {
