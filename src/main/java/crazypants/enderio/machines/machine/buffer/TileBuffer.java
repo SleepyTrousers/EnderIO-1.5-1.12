@@ -3,10 +3,7 @@ package crazypants.enderio.machines.machine.buffer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_USE;
-
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -21,6 +18,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+
+import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_USE;
 
 @Storable
 public abstract class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
@@ -63,10 +64,27 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
   public TileBuffer(@Nonnull SlotDefinition slotDefinition, @Nonnull BufferType type) {
     super(slotDefinition, BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, BUFFER_POWER_USE);
     this.type = type;
+  }
+
+  protected void initMaxIO() {
     if (type.isCreative) {
       setEnergyStored(getMaxEnergyStored() / 2);
     }
-    maxOut = maxIn = maxEnergyRecieved.get(getCapacitorData());
+    if (getCapacitorData() != DefaultCapacitorData.NONE || maxOut < 0 || maxIn < 0) {
+      final int max = maxEnergyRecieved.get(getCapacitorData());
+      if (maxOut <= 0 && maxIn <= 0) {
+        maxOut = maxIn = max;
+      } else {
+        maxIn = MathHelper.clamp(maxIn, 0, max);
+        maxOut = MathHelper.clamp(maxOut, 0, max);
+      }
+    }
+  }
+
+  @Override
+  public void onCapacitorDataChange() {
+    super.onCapacitorDataChange();
+    initMaxIO();
   }
 
   @Override
@@ -127,6 +145,7 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
     if (type.isCreative) {
       setEnergyStored(getMaxEnergyStored() / 2);
     }
+    initMaxIO();
   }
 
   @Override
@@ -146,7 +165,7 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
 
   @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {
-    return maxIn;
+    return getMaxInput();
   }
 
   @Override
@@ -210,17 +229,20 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
   }
 
   public void setIO(int in, int out) {
-    this.maxIn = MathHelper.clamp(in, 0, maxEnergyRecieved.get(getCapacitorData()));
-    this.maxOut = MathHelper.clamp(out, 0, maxEnergyRecieved.get(getCapacitorData()));
+    if (getCapacitorData() != DefaultCapacitorData.NONE) {
+      this.maxIn = in;
+      this.maxOut = out;
+      initMaxIO();
+    }
     markDirty();
   }
 
   public int getMaxInput() {
-    return maxIn;
+    return getCapacitorData() == DefaultCapacitorData.NONE ? 0 : maxIn;
   }
 
   public int getMaxOutput() {
-    return maxOut;
+    return getCapacitorData() == DefaultCapacitorData.NONE ? 0 : maxOut;
   }
 
   @Override

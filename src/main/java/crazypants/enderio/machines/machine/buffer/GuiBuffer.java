@@ -50,7 +50,7 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
 
       textFields.add(maxInput);
       textFields.add(maxOutput);
-      addDrawingElement(new PowerBar<>(te, this, 15, 14, 42));
+      addDrawingElement(new PowerBar<>(te, this, 15, 13, 42));
     }
   }
 
