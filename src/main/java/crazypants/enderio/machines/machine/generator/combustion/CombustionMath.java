@@ -19,26 +19,26 @@ public class CombustionMath {
   private final int ticksPerFuel;
   private final int energyPerTick;
 
-  public CombustionMath(@Nullable IFluidCoolant coolant, @Nullable IFluidFuel fuel, float machineQuality) {
-    if (coolant == null || fuel == null) {
+  public CombustionMath(@Nullable IFluidCoolant coolant, @Nullable IFluidFuel fuel, float capQuality, float machineQuality) {
+    if (coolant == null || fuel == null || capQuality == 0 || machineQuality == 0) {
       ticksPerCoolant = ticksPerFuel = energyPerTick = 0;
     } else {
-      energyPerTick = Math.round(fuel.getPowerPerCycle() * machineQuality);
+      energyPerTick = Math.round(fuel.getPowerPerCycle() * capQuality * machineQuality);
 
       float cooling = coolant.getDegreesCoolingPerMB(100);
-      double toCool = 1d / (HEAT_PER_RF * energyPerTick * machineQuality);
+      double toCool = 1d / (HEAT_PER_RF * energyPerTick * capQuality * machineQuality);
       ticksPerCoolant = (int) Math.round(toCool / (cooling * 1000));
 
-      ticksPerFuel = fuel.getTotalBurningTime() / 1000;
+      ticksPerFuel = (int) (fuel.getTotalBurningTime() / capQuality / 1000);
     }
   }
 
-  public CombustionMath(@Nonnull SmartTank coolant, @Nonnull SmartTank fuel, float machineQuality) {
-    this(coolant.getFluid(), fuel.getFluid(), machineQuality);
+  public CombustionMath(@Nonnull SmartTank coolant, @Nonnull SmartTank fuel, float capQuality, float machineQuality) {
+    this(coolant.getFluid(), fuel.getFluid(), capQuality, machineQuality);
   }
 
-  public CombustionMath(@Nullable FluidStack coolantFluid, @Nullable FluidStack fuelFluid, float machineQuality) {
-    this(toCoolant(coolantFluid), toFuel(fuelFluid), machineQuality);
+  public CombustionMath(@Nullable FluidStack coolantFluid, @Nullable FluidStack fuelFluid, float capQuality, float machineQuality) {
+    this(toCoolant(coolantFluid), toFuel(fuelFluid), capQuality, machineQuality);
   }
 
   public static IFluidFuel toFuel(@Nonnull SmartTank fuelTank) {

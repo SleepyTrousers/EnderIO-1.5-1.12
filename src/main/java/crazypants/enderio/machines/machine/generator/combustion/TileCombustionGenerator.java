@@ -12,13 +12,6 @@ import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
-import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_GEN;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_LOSS;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_GEN;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_LOSS;
-
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.IFluidCoolant;
@@ -45,6 +38,13 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+
+import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_LOSS;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_LOSS;
 
 @Storable
 public class TileCombustionGenerator extends AbstractGeneratorEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
@@ -291,7 +291,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
     if (curCoolant == null) {
       curCoolant = CombustionMath.toCoolant(getCoolantTank());
     }
-    return new CombustionMath(curCoolant, curFuel, getMachineQuality());
+    return new CombustionMath(curCoolant, curFuel, maxEnergyUsed.getFloat(getCapacitorData()), getMachineQuality());
   }
 
   public int getGeneratedLastTick() {

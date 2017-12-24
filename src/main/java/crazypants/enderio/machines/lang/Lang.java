@@ -92,6 +92,7 @@ public enum Lang implements ILang {
   GUI_VANILLA_REPAIR_COST("container.repair.cost"), // vanilla key
   GUI_TELEPAD_MAX(".gui.telepad.max"),
   JEI_SAGMILL_CHANCE(".jei.sagmill.outputchance"),
+  JEI_COMBGEN_RANGE(".jei.combustion_generator.range"),
 
   ;
 

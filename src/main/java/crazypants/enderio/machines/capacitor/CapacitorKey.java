@@ -41,11 +41,11 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
 
   COMBUSTION_POWER_LOSS(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 0),
   COMBUSTION_POWER_BUFFER(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  COMBUSTION_POWER_GEN(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.POWER, 20),
+  COMBUSTION_POWER_GEN(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.CHEMICAL, 1),
 
   ENHANCED_COMBUSTION_POWER_LOSS(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 0),
   ENHANCED_COMBUSTION_POWER_BUFFER(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 200000),
-  ENHANCED_COMBUSTION_POWER_GEN(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.POWER, 20),
+  ENHANCED_COMBUSTION_POWER_GEN(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.CHEMICAL, 1),
 
   STIRLING_POWER_LOSS(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 0),
   STIRLING_POWER_BUFFER(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
@@ -219,6 +219,8 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
     WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, SOUL_BINDER_POWER_USE, "tight", 5);
     WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, PAINTER_POWER_USE, "aa", 10);
     WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, VAT_POWER_USE, "wet", 8);
+    WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, COMBUSTION_POWER_GEN, "kaboom", 20);
+    WeightedUpgrade.registerWeightedUpgrade(SetType.NAME, ENHANCED_COMBUSTION_POWER_GEN, "fatman", 10);
   }
 
 }

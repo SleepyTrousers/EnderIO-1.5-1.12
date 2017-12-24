@@ -9,14 +9,18 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.fluid.IFluidCoolant;
 import crazypants.enderio.base.fluid.IFluidFuel;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.lang.LangFluid;
+import crazypants.enderio.machines.capacitor.CapacitorKey;
+import crazypants.enderio.machines.config.config.CombustionGenConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.generator.combustion.CombustionMath;
@@ -49,12 +53,13 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
   public static class CombustionRecipeWrapper extends BlankRecipeWrapper {
 
     private final FluidStack fluidCoolant, fluidFuel;
-    private final CombustionMath math;
+    private final CombustionMath mathMin, mathMax;
 
-    private CombustionRecipeWrapper(FluidStack fluidCoolant, FluidStack fluidFuel, CombustionMath math) {
+    private CombustionRecipeWrapper(FluidStack fluidCoolant, FluidStack fluidFuel, CombustionMath mathMin, CombustionMath mathMax) {
       this.fluidCoolant = fluidCoolant;
       this.fluidFuel = fluidFuel;
-      this.math = math;
+      this.mathMin = mathMin;
+      this.mathMax = mathMax;
     }
 
     public void setInfoData(Map<Integer, ? extends IGuiIngredient<ItemStack>> ings) {
@@ -63,7 +68,8 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
       ingredients.setInputs(FluidStack.class, Arrays.asList(fluidCoolant, fluidFuel));
-      ingredients.setOutput(EnergyIngredient.class, new EnergyIngredient(math.getEnergyPerTick(), true));
+      ingredients.setOutputs(EnergyIngredient.class,
+          new NNList<>(new EnergyIngredient(mathMin.getEnergyPerTick(), true), new EnergyIngredient(mathMax.getEnergyPerTick(), true)));
     }
 
     @Override
@@ -72,20 +78,31 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
 
       String txt = Lang.GUI_COMBGEN_OUTPUT.get("");
       int sw = fr.getStringWidth(txt);
-      fr.drawStringWithShadow(txt, 37 - xOff, 10 - yOff, ColorUtil.getRGB(Color.WHITE));
+      fr.drawStringWithShadow(txt, 89 - sw / 2 - xOff, 0 - yOff, ColorUtil.getRGB(Color.WHITE));
+      txt = "-";
+      sw = fr.getStringWidth(txt);
+      fr.drawStringWithShadow("-", 89 - sw / 2 - xOff, 10 - yOff, ColorUtil.getRGB(Color.WHITE));
 
       int y = 21 - yOff - 2;
       int x = 114 - xOff;
-      txt = LangFluid.tMB(math.getTicksPerCoolant());
+      txt = mathMax.getTicksPerCoolant() + "-" + LangFluid.tMB(mathMin.getTicksPerCoolant());
       sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
 
       x = 48 - xOff;
-      txt = LangFluid.tMB(math.getTicksPerFuel());
+      txt = mathMax.getTicksPerFuel() + "-" + LangFluid.tMB(mathMin.getTicksPerFuel());
       sw = fr.getStringWidth(txt);
       fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
 
       GlStateManager.color(1, 1, 1, 1);
+    }
+
+    @Override
+    public @Nonnull List<String> getTooltipStrings(int mouseX, int mouseY) {
+      if (mouseY < (20 - yOff) || mouseY > (21 - yOff + 47 + 1)) {
+        return Lang.JEI_COMBGEN_RANGE.getLines();
+      }
+      return super.getTooltipStrings(mouseX, mouseY);
     }
 
   } // -------------------------------------
@@ -94,6 +111,7 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
 
     registry.addRecipeCategories(new CombustionRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_combustion_generator.getBlockNN(), 1, 0), CombustionRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_enhanced_combustion_generator.getBlockNN(), 1, 0), CombustionRecipeCategory.UID);
     registry.addRecipeClickArea(GuiCombustionGenerator.class, 155, 42, 16, 16, CombustionRecipeCategory.UID);
 
     long start = System.nanoTime();
@@ -108,9 +126,10 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
         for (Fluid fluid2 : fluids.values()) {
           IFluidFuel fuel = CombustionMath.toFuel(fluid2);
           if (fuel != null) {
-            CombustionMath math = new CombustionMath(coolant, fuel, 1f);
-            result.add(new CombustionRecipeWrapper(new FluidStack(fluid1, 1000), new FluidStack(fluid2, 1000), math));
-            // TODO: enhanced one
+            CombustionMath mathMin = new CombustionMath(coolant, fuel, CapacitorKey.COMBUSTION_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR), 1f);
+            CombustionMath mathmax = new CombustionMath(coolant, fuel, CapacitorKey.COMBUSTION_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR),
+                CombustionGenConfig.enahancedCombGenQuality.get());
+            result.add(new CombustionRecipeWrapper(new FluidStack(fluid1, 1000), new FluidStack(fluid2, 1000), mathMin, mathmax));
           }
         }
       }
@@ -127,9 +146,9 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
 
   // Offsets from full size gui, makes it much easier to get the location
   // correct
-  static int xOff = 25;
+  static int xOff = 25 + 3;
   static int yOff = 7;
-  static int xSize = 136;
+  static int xSize = 136 - 3;
 
   @Nonnull
   private final IDrawable background;
@@ -165,7 +184,8 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     fluidStacks.set(ingredients);
 
     IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
-    group.init(2, false, EnergyIngredientRenderer.INSTANCE, 54 + 47 - xOff, 9 - yOff, 40, 10, 0, 0);
+    group.init(2, false, EnergyIngredientRenderer.INSTANCE, 37 - xOff, 9 - yOff, 40, 10, 0, 0);
+    group.init(3, false, EnergyIngredientRenderer.INSTANCE, 54 + 47 - xOff, 9 - yOff, 40, 10, 0, 0);
     group.set(ingredients);
 
   }
