@@ -41,7 +41,7 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
     configB.setPosition(153, 32);
 
     if (hasPower) {
-      int x = (isFull() ? 20 : 58);
+      int x = (isFull() ? 32 : 58);
       int y = guiTop + 27;
 
       maxInput = new TextFieldEnder(getFontRenderer(), x, y, 60, 12);
@@ -50,7 +50,7 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
 
       textFields.add(maxInput);
       textFields.add(maxOutput);
-      addDrawingElement(new PowerBar<>(te, this, isFull() ? 6 : 44, 15, 52));
+      addDrawingElement(new PowerBar<>(te, this, 15, 14, 42));
     }
   }
 
@@ -137,7 +137,7 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
     getFontRenderer().drawStringWithShadow(invName, sx + (xSize / 2) - (getFontRenderer().getStringWidth(invName) / 2), sy + 4, 0xFFFFFF);
 
     if (hasPower) {
-      sx += isFull() ? 19 : 57;
+      sx += isFull() ? 31 : 57;
       sy += 17;
 
       getFontRenderer().drawStringWithShadow(Lang.GUI_BUFFER_IN.get(), sx, sy, 0xFFFFFF);
@@ -179,7 +179,8 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
   }
 
   private void drawPowerBg(int sx, int sy) {
-    drawTexturedModalRect(sx + (isFull() ? 5 : 43), sy + 14, xSize + 10, 0, 12, 54);
+    drawTexturedModalRect(sx + 14, sy + 12, xSize + 10, 0, 12, 44);
+    drawTexturedModalRect(sx + 11, sy + 59, xSize, 54, 19, 19);
   }
 
   private void drawSlotBg(int sx, int sy) {
