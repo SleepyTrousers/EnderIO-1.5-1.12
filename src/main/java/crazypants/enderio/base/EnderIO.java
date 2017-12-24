@@ -34,7 +34,6 @@ import crazypants.enderio.base.integration.te.TEUtil;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradePowerAdapter;
 import crazypants.enderio.base.item.spawner.BrokenSpawnerHandler;
-import crazypants.enderio.base.item.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.base.loot.Loot;
 import crazypants.enderio.base.loot.LootManager;
 import crazypants.enderio.base.material.OreDictionaryPreferences;
@@ -43,6 +42,7 @@ import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintSourceValidator;
 import crazypants.enderio.base.power.CapInjectHandler;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
+import crazypants.enderio.base.recipe.poweredspawner.PoweredSpawnerRecipeRegistry;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
@@ -120,8 +120,6 @@ public class EnderIO implements IEnderIOAddon {
     Loot.init(event);
 
     BrokenSpawnerHandler.init(event);
-
-    PoweredSpawnerConfig.init(event);
 
     BRProxy.init(event);
 
@@ -238,7 +236,7 @@ public class EnderIO implements IEnderIOAddon {
           } else if (IMC.SOUL_VIAL_UNSPAWNABLELIST.equals(key)) {
             CapturedMob.addToUnspawnableList(value);
           } else if (IMC.POWERED_SPAWNER_BLACKLIST_ADD.equals(key)) {
-            PoweredSpawnerConfig.getInstance().addToBlacklist(value);
+            PoweredSpawnerRecipeRegistry.getInstance().addToBlacklist(value);
           }
         } else if (msg.isNBTMessage()) {
           final NBTTagCompound nbtValue = msg.getNBTValue();
@@ -248,7 +246,7 @@ public class EnderIO implements IEnderIOAddon {
           if (IMC.SOUL_BINDER_RECIPE.equals(key)) {
             SoulBinderRecipeManager.getInstance().addRecipeFromNBT(nbtValue);
           } else if (IMC.POWERED_SPAWNER_COST_MULTIPLIER.equals(key)) {
-            PoweredSpawnerConfig.getInstance().addEntityCostFromNBT(nbtValue);
+            PoweredSpawnerRecipeRegistry.getInstance().addEntityCostFromNBT(nbtValue);
           } else if (IMC.FLUID_FUEL_ADD.equals(key)) {
             FluidFuelRegister.instance.addFuel(nbtValue);
           } else if (IMC.FLUID_COOLANT_ADD.equals(key)) {

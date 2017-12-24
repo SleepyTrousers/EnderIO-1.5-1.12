@@ -2,9 +2,9 @@ package crazypants.enderio.api;
 
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.item.soulvial.ItemSoulVial;
-import crazypants.enderio.base.item.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.base.paint.PaintSourceValidator;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
+import crazypants.enderio.base.recipe.poweredspawner.PoweredSpawnerRecipeRegistry;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
@@ -62,14 +62,14 @@ public final class IMC {
   public static final String PAINTER_BLACKLIST_ADD = "painter:blacklist:add";
 
   /**
-   * Key for a string message to add an entity to the Powered Spawner blacklist. Calls {@link PoweredSpawnerConfig#addToBlacklist(String)} with the string value
+   * Key for a string message to add an entity to the Powered Spawner blacklist. Calls {@link PoweredSpawnerRecipeRegistry#addToBlacklist(String)} with the string value
    * of the message.
    */
   public static final String POWERED_SPAWNER_BLACKLIST_ADD = "poweredSpawner:blacklist:add";
 
   /**
    * Key for an NBT message to specify a cost multiplier for spawning an entity in the Powered Spawner. Calls
-   * {@link PoweredSpawnerConfig#addEntityCostFromNBT(net.minecraft.nbt.NBTTagCompound)} with the NBT value of the message.
+   * {@link PoweredSpawnerRecipeRegistry#addEntityCostFromNBT(net.minecraft.nbt.NBTTagCompound)} with the NBT value of the message.
    */
   public static final String POWERED_SPAWNER_COST_MULTIPLIER = "poweredSpawner:costMultiplier";
 

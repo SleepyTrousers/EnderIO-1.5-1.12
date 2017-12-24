@@ -293,12 +293,12 @@
                           <complexType>
                             <attribute use="required" name="name" type="string"></attribute>
                             <attribute name="amount" use="optional">
-                                                        <simpleType>
-                                                          <restriction base="float">
-                                                            <minExclusive value="0"></minExclusive>
-                                                          </restriction>
-                                                        </simpleType>
-                                                      </attribute>
+                              <simpleType>
+                                <restriction base="float">
+                                  <minExclusive value="0"></minExclusive>
+                                </restriction>
+                              </simpleType>
+                            </attribute>
                           </complexType>
                         </element>
                         <element minOccurs="1" maxOccurs="unbounded" name="output">
@@ -381,12 +381,17 @@
                       </attribute>
                       <attribute name="tinkers" type="boolean" use="optional">
                         <annotation>
-                          <documentation>If set to true, the recipe will be registered for the Tinkers' Smeltery. For this to work, the output item must already be registered with Tinkers to smelt into a fluid.</documentation>
-                        </annotation></attribute>
+                          <documentation>
+                            If set to true, the recipe will be registered for the Tinkers' Smeltery. For this to work, the output
+                            item must already be registered with Tinkers to smelt into a fluid.
+                          </documentation>
+                        </annotation>
+                      </attribute>
                       <attribute name="vanilla" type="boolean" use="optional">
                         <annotation>
                           <documentation>If set to true, the recipe will be registered for the Vanilla Furnace.</documentation>
-                        </annotation></attribute>
+                        </annotation>
+                      </attribute>
                     </complexType>
                   </element>
                   <element name="casting" minOccurs="1" maxOccurs="unbounded">
@@ -430,43 +435,49 @@
                           </complexType>
                         </element>
                         <element minOccurs="1" maxOccurs="1" name="input">
-                                                    <annotation>
-                                                      <documentation>Items that represent the fluid (type and amount) that needs to be put into the cast.</documentation>
-                                                    </annotation>
-                                                    <complexType>
-                                                      <attribute use="required" name="name" type="string"></attribute>
-                                                      <attribute name="amount" use="optional">
-                                                            <annotation>
-                                                              <documentation>Only valid for Tinkers recipe.
+                          <annotation>
+                            <documentation>
+                              Items that represent the fluid (type and amount) that needs to be put into the cast.
+                            </documentation>
+                          </annotation>
+                          <complexType>
+                            <attribute use="required" name="name" type="string"></attribute>
+                            <attribute name="amount" use="optional">
+                              <annotation>
+                                <documentation>
+                                  Only valid for Tinkers recipe.
 
-Number of input items needed for the output. Note that this is applied to the amount of fluid, not the number of items to smelt.</documentation>
-                                                            </annotation>
-                                                            <simpleType>
-                                                          <restriction base="float">
-                                                            <minExclusive value="0"></minExclusive>
-                                                          </restriction>
-                                                        </simpleType>
-                                                      </attribute>
-                                                    </complexType>
+                                  Number of input items needed for the output. Note that this is applied to the amount of fluid, not
+                                  the number of items to smelt.
+                                </documentation>
+                              </annotation>
+                              <simpleType>
+                                <restriction base="float">
+                                  <minExclusive value="0"></minExclusive>
+                                </restriction>
+                              </simpleType>
+                            </attribute>
+                          </complexType>
                         </element>
                         <element minOccurs="0" maxOccurs="1" name="cast">
-                                                    <annotation>
-                                                      <documentation>The Tinkers cast to use.</documentation>
-                                                    </annotation>
-                                                    <complexType>
+                          <annotation>
+                            <documentation>The Tinkers cast to use.</documentation>
+                          </annotation>
+                          <complexType>
                             <attribute use="required" name="name" type="string"></attribute>
                           </complexType>
                         </element>
                         <element minOccurs="1" maxOccurs="1" name="output">
-                                                    <annotation>
-                                                      <documentation>The result of the casting process.</documentation>
-                                                    </annotation>
-                                                    <complexType>
+                          <annotation>
+                            <documentation>The result of the casting process.</documentation>
+                          </annotation>
+                          <complexType>
                             <attribute use="required" name="name" type="string"></attribute>
                           </complexType>
                         </element>
                       </sequence>
-                    </complexType></element>
+                    </complexType>
+                  </element>
                   <element name="enchanting" minOccurs="1" maxOccurs="unbounded">
                     <annotation>
                       <documentation>Enchantment recipes used in the Enchanter.</documentation>
@@ -532,7 +543,7 @@ Number of input items needed for the output. Note that this is applied to the am
                             </attribute>
                           </complexType>
                         </element>
-                                                <element minOccurs="1" maxOccurs="1" name="enchantment">
+                        <element minOccurs="1" maxOccurs="1" name="enchantment">
                           <annotation>
                             <documentation>Enchantment to produce.</documentation>
                           </annotation>
@@ -551,10 +562,78 @@ Number of input items needed for the output. Note that this is applied to the am
                               </simpleType>
                             </attribute>
                           </complexType>
-                                                </element>
+                        </element>
+
+
                       </sequence>
                     </complexType>
                   </element>
+                  <element name="spawn" maxOccurs="unbounded" minOccurs="1"><complexType>
+                  <annotation>
+                      <documentation>Spawn recipes to be used in the powered spawner.</documentation>
+                    </annotation>
+                  <sequence>
+                        <element minOccurs="0" maxOccurs="unbounded" name="config">
+                          <annotation>
+                            <documentation>
+                              Restricts this variant to only be used if the given config value has the given value.
+                            </documentation>
+                          </annotation>
+                          <complexType>
+                            <attribute use="required" name="section" type="string"></attribute>
+                            <attribute use="required" name="name" type="string"></attribute>
+                            <attribute use="optional" name="value" type="boolean"></attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                          <annotation>
+                            <documentation>
+                              Restricts this variant to only be used if the given game element can (not) be found in the game.
+                            </documentation>
+                          </annotation>
+                          <complexType>
+                            <attribute use="required" name="item" type="string"></attribute>
+                            <attribute use="optional" name="reverse" type="boolean"></attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="0" maxOccurs="unbounded" name="level">
+                          <annotation>
+                            <documentation>
+                              Restricts this variant to only be used if the recipe level is within the given bounds.
+                            </documentation>
+                          </annotation>
+                          <complexType>
+                            <attribute use="optional" name="minlevel" type="int"></attribute>
+                            <attribute use="optional" name="maxlevel" type="int"></attribute>
+                          </complexType>
+                        </element>
+                        
+                        <element minOccurs="1" maxOccurs="unbounded" name="entity">
+                          <annotation>
+                            <documentation>When this item is used in the Enchanter it will give this recipe.</documentation>
+                          </annotation>
+                          <complexType>
+                            <attribute use="required" name="name" type="string"></attribute>
+                            <attribute name="costMultiplier" default="1">
+                              <annotation>
+                                <documentation>
+                                  The cost of the recipe will be multiplied with this value. Defaults to 1.
+                                </documentation>
+                              </annotation>
+                              <simpleType>
+                                <restriction base="double">
+                                  <minExclusive value="0"></minExclusive>
+                                </restriction>
+                              </simpleType>
+                            </attribute>
+                            <attribute name="disabled" type="boolean" use="optional" default="false">
+                              <annotation>
+                                <documentation>Entities that are disabled cannot be spawned by powered spawners.</documentation>
+                              </annotation></attribute>
+                          </complexType>
+                        </element>
+                      </sequence>
+                  </complexType></element>
                 </choice>
               </sequence>
               <attribute use="optional" name="required" type="boolean">

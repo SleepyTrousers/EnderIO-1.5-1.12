@@ -3,6 +3,7 @@ package crazypants.enderio.base.config.recipes.xml;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
@@ -18,7 +19,7 @@ public class Recipe extends AbstractConditional {
 
   private boolean disabled;
 
-  private List<AbstractConditional> craftings;
+  private final @Nonnull List<AbstractConditional> craftings = new ArrayList<AbstractConditional>();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -27,7 +28,7 @@ public class Recipe extends AbstractConditional {
     }
     try {
       super.readResolve();
-      if (craftings == null || craftings.isEmpty()) {
+      if (craftings.isEmpty()) {
         throw new InvalidRecipeConfigException("No <crafting>s or <smelting>s");
       }
     } catch (InvalidRecipeConfigException e) {
@@ -78,14 +79,12 @@ public class Recipe extends AbstractConditional {
   public void register() {
     if (!disabled && valid && active) {
       Log.debug("Registering XML recipe '" + getName() + "'");
-      if (craftings != null) {
         for (AbstractConditional crafting : craftings) {
           if (crafting.isValid() && crafting.isActive()) {
             crafting.register();
             return;
           }
         }
-      }
     } else {
       Log.debug("Skipping XML recipe '" + getName() + "' (valid=" + valid + ", active=" + active + ", required=" + required + ", disabled=" + disabled + ")");
     }
@@ -121,31 +120,23 @@ public class Recipe extends AbstractConditional {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     try {
       if ("crafting".equals(name)) {
-        if (craftings == null) {
-          craftings = new ArrayList<AbstractConditional>();
-        }
         craftings.add(factory.read(new Crafting(), startElement));
         return true;
       }
       if ("smelting".equals(name)) {
-        if (craftings == null) {
-          craftings = new ArrayList<AbstractConditional>();
-        }
         craftings.add(factory.read(new Smelting(), startElement));
         return true;
       }
       if ("casting".equals(name)) {
-        if (craftings == null) {
-          craftings = new ArrayList<AbstractConditional>();
-        }
         craftings.add(factory.read(new Casting(), startElement));
         return true;
       }
       if ("enchanting".equals(name)) {
-        if (craftings == null) {
-          craftings = new ArrayList<AbstractConditional>();
-        }
         craftings.add(factory.read(new Enchanting(), startElement));
+        return true;
+      }
+      if ("spawn".equals(name)) {
+        craftings.add(factory.read(new Spawn(), startElement));
         return true;
       }
     } catch (InvalidRecipeConfigException e) {

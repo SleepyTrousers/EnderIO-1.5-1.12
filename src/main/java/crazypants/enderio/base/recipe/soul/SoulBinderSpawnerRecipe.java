@@ -4,9 +4,11 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.item.spawner.BrokenSpawnerHandler;
+import crazypants.enderio.base.recipe.poweredspawner.PoweredSpawnerRecipeRegistry;
 import crazypants.enderio.util.CapturedMob;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -43,7 +45,13 @@ public class SoulBinderSpawnerRecipe extends AbstractSoulBinderRecipe {
 
   @Override
   public @Nonnull NNList<ResourceLocation> getSupportedSouls() {
-    return EntityUtil.getAllRegisteredMobNames();
+    final NNList<ResourceLocation> allRegisteredMobNames = EntityUtil.getAllRegisteredMobNames();
+    for (NNIterator<ResourceLocation> iterator = allRegisteredMobNames.iterator(); iterator.hasNext();) {
+      if (PoweredSpawnerRecipeRegistry.getInstance().isBlackListed(iterator.next())) {
+        iterator.remove();
+      }
+    }
+    return allRegisteredMobNames;
   }
 
 }
