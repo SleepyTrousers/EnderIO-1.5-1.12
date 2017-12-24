@@ -47,6 +47,9 @@ enderio.gui.xp_obelisk.button.retrieve.10.line1=Retrieve 10
 enderio.gui.xp_obelisk.button.retrieve.10.line2=player XP levels
 enderio.gui.xp_obelisk.button.retrieve.all.line1=Retrieve all
 enderio.gui.xp_obelisk.button.retrieve.all.line2=player XP levels
+enderio.gui.xp_obelisk.button.retrieve.all.line3=§aGets you to level %d
+enderio.gui.xp_obelisk.button.retrieve.empty=§4XP Obelisk is empty
+enderio.gui.xp_obelisk.button.store.empty=§4You don't have any XP
 
 enderio.block_solar_panel.tooltip.maxoutput=Max Output: %s
 

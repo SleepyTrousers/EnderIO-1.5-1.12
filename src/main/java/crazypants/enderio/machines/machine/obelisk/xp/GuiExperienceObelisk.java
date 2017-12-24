@@ -5,11 +5,13 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
 
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.xp.ExperienceBarRenderer;
+import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -40,41 +42,131 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
 
     x = startX;
     y = 20;
-    p = new IconButton(this, 800, x, y, IconEIO.SINGLE_PLUS);
+    p = new IconButton(this, 800, x, y, IconEIO.SINGLE_PLUS) {
+      @Override
+      public boolean isEnabled() {
+        return super.isEnabled() && XpUtil.getPlayerXP(Minecraft.getMinecraft().player) >= XpUtil.getExperienceForLevel(1);
+      }
+    };
     p.setSize(bw, bw);
     p.setIconMargin(2, 2);
-    p.setToolTip(Lang.GUI_XP_STORE_1_1.get(), Lang.GUI_XP_STORE_1_2.get());
+    p.setToolTip(new GuiToolTip(p.getBounds(), Lang.GUI_XP_STORE_1_1.get(), Lang.GUI_XP_STORE_1_2.get()) {
+      @Override
+      protected void updateText() {
+        if (text.size() == 3) {
+          text.remove(2);
+        }
+        if (XpUtil.getPlayerXP(Minecraft.getMinecraft().player) <= 0) {
+          text.add(Lang.GUI_XP_STORE_EMPTY.get());
+        }
+      };
+    });
 
     x += spacing + bw;
-    pp = new IconButton(this, 801, x, y, IconEIO.DOUBLE_PLUS);
+    pp = new IconButton(this, 801, x, y, IconEIO.DOUBLE_PLUS) {
+      @Override
+      public boolean isEnabled() {
+        return super.isEnabled() && XpUtil.getPlayerXP(Minecraft.getMinecraft().player) >= XpUtil.getExperienceForLevel(10);
+      }
+    };
     pp.setSize(bw, bw);
     pp.setIconMargin(2, 2);
-    pp.setToolTip(Lang.GUI_XP_STORE_10_1.get(), Lang.GUI_XP_STORE_10_2.get());
+    pp.setToolTip(new GuiToolTip(pp.getBounds(), Lang.GUI_XP_STORE_10_1.get(), Lang.GUI_XP_STORE_10_2.get()) {
+      @Override
+      protected void updateText() {
+        if (text.size() == 3) {
+          text.remove(2);
+        }
+        if (XpUtil.getPlayerXP(Minecraft.getMinecraft().player) <= 0) {
+          text.add(Lang.GUI_XP_STORE_EMPTY.get());
+        }
+      };
+    });
 
     x += spacing + bw;
-    ppp = new IconButton(this, 802, x, y, IconEIO.TRIPLE_PLUS);
+    ppp = new IconButton(this, 802, x, y, IconEIO.TRIPLE_PLUS) {
+      @Override
+      public boolean isEnabled() {
+        return super.isEnabled() && XpUtil.getPlayerXP(Minecraft.getMinecraft().player) > 0;
+      }
+    };
     ppp.setSize(bw, bw);
     ppp.setIconMargin(2, 2);
-    ppp.setToolTip(Lang.GUI_XP_STORE_ALL_1.get(), Lang.GUI_XP_STORE_ALL_2.get());
+    ppp.setToolTip(new GuiToolTip(ppp.getBounds(), Lang.GUI_XP_STORE_ALL_1.get(), Lang.GUI_XP_STORE_ALL_2.get()) {
+      @Override
+      protected void updateText() {
+        if (text.size() == 3) {
+          text.remove(2);
+        }
+        if (XpUtil.getPlayerXP(Minecraft.getMinecraft().player) <= 0) {
+          text.add(Lang.GUI_XP_STORE_EMPTY.get());
+        }
+      };
+    });
 
     x = startX;
     y = 75;
-    m = new IconButton(this, 803, x, y, IconEIO.SINGLE_MINUS);
+    m = new IconButton(this, 803, x, y, IconEIO.SINGLE_MINUS) {
+      @Override
+      public boolean isEnabled() {
+        return super.isEnabled() && getTileEntity().getContainer().getExperienceTotal() >= XpUtil.getExperienceForLevel(1);
+      }
+    };
     m.setSize(bw, bw);
     m.setIconMargin(2, 2);
-    m.setToolTip(Lang.GUI_XP_RETR_1_1.get(), Lang.GUI_XP_RETR_1_2.get());
+    m.setToolTip(new GuiToolTip(m.getBounds(), Lang.GUI_XP_RETR_1_1.get(), Lang.GUI_XP_RETR_1_2.get()) {
+      @Override
+      protected void updateText() {
+        if (text.size() == 3) {
+          text.remove(2);
+        }
+        if (getTileEntity().getContainer().getExperienceTotal() <= 0) {
+          text.add(Lang.GUI_XP_RETR_EMPTY.get());
+        }
+      };
+    });
 
     x += spacing + bw;
-    mm = new IconButton(this, 804, x, y, IconEIO.DOUBLE_MINUS);
+    mm = new IconButton(this, 804, x, y, IconEIO.DOUBLE_MINUS) {
+      @Override
+      public boolean isEnabled() {
+        return super.isEnabled() && getTileEntity().getContainer().getExperienceTotal() >= XpUtil.getExperienceForLevel(10);
+      }
+    };
     mm.setSize(bw, bw);
     mm.setIconMargin(2, 2);
-    mm.setToolTip(Lang.GUI_XP_RETR_10_1.get(), Lang.GUI_XP_RETR_10_2.get());
+    mm.setToolTip(new GuiToolTip(mm.getBounds(), Lang.GUI_XP_RETR_10_1.get(), Lang.GUI_XP_RETR_10_2.get()) {
+      @Override
+      protected void updateText() {
+        if (text.size() == 3) {
+          text.remove(2);
+        }
+        if (getTileEntity().getContainer().getExperienceTotal() <= 0) {
+          text.add(Lang.GUI_XP_RETR_EMPTY.get());
+        }
+      };
+    });
 
     x += spacing + bw;
-    mmm = new IconButton(this, 805, x, y, IconEIO.TRIPLE_MINUS);
+    mmm = new IconButton(this, 805, x, y, IconEIO.TRIPLE_MINUS) {
+      @Override
+      public boolean isEnabled() {
+        return super.isEnabled() && getTileEntity().getContainer().getExperienceTotal() > 0;
+      }
+    };
     mmm.setSize(bw, bw);
     mmm.setIconMargin(2, 2);
-    mmm.setToolTip(Lang.GUI_XP_RETR_ALL_1.get(), Lang.GUI_XP_RETR_ALL_2.get());
+    mmm.setToolTip(new GuiToolTip(mmm.getBounds(), Lang.GUI_XP_RETR_ALL_1.get(), Lang.GUI_XP_RETR_ALL_2.get(), "") {
+      @Override
+      protected void updateText() {
+        if (getTileEntity().getContainer().getExperienceTotal() <= 0) {
+          text.set(2, Lang.GUI_XP_RETR_EMPTY.get());
+        } else {
+          text.set(2, Lang.GUI_XP_RETR_ALL_3
+              .get(XpUtil.getLevelForExperience(getTileEntity().getContainer().getExperienceTotal() + XpUtil.getPlayerXP(Minecraft.getMinecraft().player))));
+        }
+      }
+    });
   }
 
   @Override
@@ -135,8 +227,6 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
-
-
 
   @Override
   protected boolean showRecipeButton() {
