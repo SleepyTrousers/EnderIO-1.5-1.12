@@ -3,6 +3,10 @@ package crazypants.enderio.machines.machine.buffer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_USE;
+
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -18,10 +22,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
-import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_USE;
-
 @Storable
 public abstract class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
 
@@ -35,14 +35,14 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
   @Storable
   public static class TileBufferPower extends TileBuffer {
     public TileBufferPower() {
-      super(new SlotDefinition(0), BufferType.POWER);
+      super(new SlotDefinition(0, 0, 1), BufferType.POWER);
     }
   }
 
   @Storable
   public static class TileBufferOmni extends TileBuffer {
     public TileBufferOmni() {
-      super(new SlotDefinition(9), BufferType.OMNI);
+      super(new SlotDefinition(9, 0, 1), BufferType.OMNI);
     }
   }
 
