@@ -6,10 +6,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 /**
- * Syncs some configs that are only used clientside, but must use the serverside
- * value for balance purposes.
+ * Syncs some configs that are only used clientside, but must use the serverside value for balance purposes.
  */
-public class PacketConfigSync implements IMessage, IMessageHandler<PacketConfigSync, IMessage> {
+public class PacketConfigSync implements IMessage {
 
   @Override
   public void toBytes(ByteBuf buf) {
@@ -23,7 +22,7 @@ public class PacketConfigSync implements IMessage, IMessageHandler<PacketConfigS
     buf.writeFloat(Config.travelStaffPowerPerBlockRF);
     buf.writeBoolean(Config.telepadLockCoords);
     buf.writeBoolean(Config.telepadLockDimension);
-    buf.writeInt(Config.darkSteelAnvilMaxLevel);   
+    buf.writeInt(Config.darkSteelAnvilMaxLevel);
   }
 
   @Override
@@ -41,8 +40,13 @@ public class PacketConfigSync implements IMessage, IMessageHandler<PacketConfigS
     Config.darkSteelAnvilMaxLevel = data.readInt();
   }
 
-  @Override
-  public IMessage onMessage(PacketConfigSync message, MessageContext ctx) {
-    return null;
+  public static class Handler implements IMessageHandler<PacketConfigSync, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketConfigSync message, MessageContext ctx) {
+      return null;
+    }
+
   }
+
 }

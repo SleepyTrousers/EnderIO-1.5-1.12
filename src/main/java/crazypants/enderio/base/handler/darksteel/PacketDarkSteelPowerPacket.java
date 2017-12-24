@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketDarkSteelPowerPacket implements IMessage, IMessageHandler<PacketDarkSteelPowerPacket, IMessage> {
+public class PacketDarkSteelPowerPacket implements IMessage {
 
   private int powerUse;
   private EntityEquipmentSlot armorType;
@@ -22,7 +22,7 @@ public class PacketDarkSteelPowerPacket implements IMessage, IMessageHandler<Pac
   @Override
   public void toBytes(ByteBuf buffer) {
     buffer.writeInt(powerUse);
-    buffer.writeShort((short)armorType.ordinal());
+    buffer.writeShort((short) armorType.ordinal());
   }
 
   @Override
@@ -31,11 +31,13 @@ public class PacketDarkSteelPowerPacket implements IMessage, IMessageHandler<Pac
     armorType = EntityEquipmentSlot.values()[buffer.readShort()];
   }
 
-  @Override
-  public IMessage onMessage(PacketDarkSteelPowerPacket message, MessageContext ctx) {
-    DarkSteelController.instance.usePlayerEnergy(ctx.getServerHandler().player, message.armorType, message.powerUse);
-    ctx.getServerHandler().player.fallDistance = 0;
-    return null;
-  }
+  public static class Handler implements IMessageHandler<PacketDarkSteelPowerPacket, IMessage> {
 
+    @Override
+    public IMessage onMessage(PacketDarkSteelPowerPacket message, MessageContext ctx) {
+      DarkSteelController.instance.usePlayerEnergy(ctx.getServerHandler().player, message.armorType, message.powerUse);
+      ctx.getServerHandler().player.fallDistance = 0;
+      return null;
+    }
+  }
 }

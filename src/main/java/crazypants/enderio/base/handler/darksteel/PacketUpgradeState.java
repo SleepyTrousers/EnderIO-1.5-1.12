@@ -8,19 +8,19 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgradeState, IMessage> {
+public class PacketUpgradeState implements IMessage {
 
   public enum Type {
     GLIDE,
     SPEED,
-    STEP_ASSIST, 
+    STEP_ASSIST,
     JUMP,
     ELYTRA
   }
-  
-  public PacketUpgradeState() {    
+
+  public PacketUpgradeState() {
   }
-  
+
   private boolean isActive;
   private Type type;
   private int entityID;
@@ -41,7 +41,7 @@ public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgra
     buf.writeBoolean(isActive);
     buf.writeInt(entityID);
   }
-  
+
   @Override
   public void fromBytes(ByteBuf buf) {
     type = Type.values()[buf.readShort()];
@@ -49,16 +49,20 @@ public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgra
     entityID = buf.readInt();
   }
 
-  @Override
-  public IMessage onMessage(PacketUpgradeState message, MessageContext ctx) {
-    EntityPlayer player = (EntityPlayer) (ctx.side.isClient() ? EnderIO.proxy.getClientWorld().getEntityByID(message.entityID) : ctx.getServerHandler().player);
-    if (player != null) {
-      DarkSteelController.instance.setActive(player, message.type, message.isActive);
-      if (ctx.side.isServer()) {
-        message.entityID = player.getEntityId();
-        PacketHandler.INSTANCE.sendToDimension(message, player.world.provider.getDimension());
+  public static class Handler implements IMessageHandler<PacketUpgradeState, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketUpgradeState message, MessageContext ctx) {
+      EntityPlayer player = (EntityPlayer) (ctx.side.isClient() ? EnderIO.proxy.getClientWorld().getEntityByID(message.entityID)
+          : ctx.getServerHandler().player);
+      if (player != null) {
+        DarkSteelController.instance.setActive(player, message.type, message.isActive);
+        if (ctx.side.isServer()) {
+          message.entityID = player.getEntityId();
+          PacketHandler.INSTANCE.sendToDimension(message, player.world.provider.getDimension());
+        }
       }
+      return null;
     }
-    return null;
   }
 }

@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketExperienceContainer extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketExperienceContainer, IMessage> {
+public class PacketExperienceContainer extends MessageTileEntity<TileEntity> {
   private @Nonnull ExperienceContainer xpCon;
 
   public PacketExperienceContainer() {
@@ -37,15 +37,19 @@ public class PacketExperienceContainer extends MessageTileEntity<TileEntity> imp
     xpCon.fromBytes(buf);
   }
 
-  @Override
-  public IMessage onMessage(PacketExperienceContainer message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity tile = message.getTileEntity(player.world);
-    if (tile instanceof IHaveExperience) {
-      IHaveExperience xpTile = (IHaveExperience) tile;
-      xpTile.getContainer().set(message.xpCon);
+  public static class Handler implements IMessageHandler<PacketExperienceContainer, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketExperienceContainer message, MessageContext ctx) {
+      EntityPlayer player = EnderIO.proxy.getClientPlayer();
+      TileEntity tile = message.getTileEntity(player.world);
+      if (tile instanceof IHaveExperience) {
+        IHaveExperience xpTile = (IHaveExperience) tile;
+        xpTile.getContainer().set(message.xpCon);
+      }
+      return null;
     }
-    return null;
+
   }
 
 }

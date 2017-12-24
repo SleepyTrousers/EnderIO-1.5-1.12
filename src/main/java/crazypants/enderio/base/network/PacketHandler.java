@@ -5,6 +5,10 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.PacketConfigSync;
+import crazypants.enderio.base.config.PacketConfigSyncNew;
+import crazypants.enderio.base.config.PacketConfigSyncNew.PacketConfigSyncNewHandler;
+import crazypants.enderio.base.config.config.BaseConfig;
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelPowerPacket;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe;
@@ -49,25 +53,26 @@ public class PacketHandler {
   public static void init(FMLInitializationEvent event) {
     INSTANCE.registerMessage(PacketRedstoneMode.Handler.class, PacketRedstoneMode.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(GuiPacket.Handler.class, GuiPacket.class, nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketExperienceContainer.class, PacketExperienceContainer.class, nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketExperienceContainer.Handler.class, PacketExperienceContainer.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketConduitProbe.Handler.class, PacketConduitProbe.class, nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketConduitProbeMode.class, PacketConduitProbeMode.class, nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketConduitProbeMode.Handler.class, PacketConduitProbeMode.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(YetaWrenchPacketProcessor.Handler.class, YetaWrenchPacketProcessor.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketXpTransferEffects.Handler.class, PacketXpTransferEffects.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketTravelEvent.Handler.class, PacketTravelEvent.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketAddRemoveChannel.Handler.class, PacketAddRemoveChannel.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketAddRemoveChannel.Handler.class, PacketAddRemoveChannel.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketChannelList.Handler.class, PacketChannelList.class, nextID(), Side.CLIENT);
-    INSTANCE.registerMessage(PacketDarkSteelPowerPacket.class, PacketDarkSteelPowerPacket.class, nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketDarkSteelPowerPacket.Handler.class, PacketDarkSteelPowerPacket.class, nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketUpgradeState.Handler.class, PacketUpgradeState.class, nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketUpgradeState.Handler.class, PacketUpgradeState.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketDrainStaff.Handler.class, PacketDrainStaff.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketIoMode.Handler.class, PacketIoMode.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketLegacyPowerStorage.Handler.class, PacketLegacyPowerStorage.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketMagnetState.Handler.class, PacketMagnetState.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketOpenAuthGui.Handler.class, PacketOpenAuthGui.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketUpdateLocationPrintout.Handler.class, PacketUpdateLocationPrintout.class, nextID(), Side.SERVER);
-    // INSTANCE.registerMessage(new PacketConfigSyncNewHandler(Config.F), PacketConfigSyncNew.class, PacketHandler.nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(new PacketConfigSyncNewHandler(BaseConfig.F), PacketConfigSyncNew.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketConfigSync.Handler.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
 
   }
 
