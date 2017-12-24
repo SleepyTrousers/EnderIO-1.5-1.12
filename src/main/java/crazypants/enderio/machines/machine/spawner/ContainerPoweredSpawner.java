@@ -11,6 +11,7 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.network.IRemoteExec;
+import crazypants.enderio.machines.machine.tank.InventorySlot;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -27,12 +28,7 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
 
   @Override
   protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
-    slotInput = addSlotToContainer(new Slot(getInv(), 0, 54, 42) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack itemStack) {
-        return getInv().isItemValidForSlot(0, itemStack);
-      }
-    });
+    slotInput = addSlotToContainer(new InventorySlot(getInv(), 0, 54, 42));
     slotOutput = addSlotToContainer(new Slot(getInv(), 1, 105, 42) {
       @Override
       public boolean isItemValid(@Nonnull ItemStack itemStack) {
@@ -42,7 +38,7 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    final GhostBackgroundItemSlot ghostBackgroundItemSlot = new GhostBackgroundItemSlot(ModObject.itemSoulVial.getItemNN(), slotInput);
+    final GhostBackgroundItemSlot ghostBackgroundItemSlot = new GhostBackgroundItemSlot(ModObject.itemSoulVial.getItemNN(), getSlotFromInventory(0));
     ghostBackgroundItemSlot.y = 42;
     slots.add(ghostBackgroundItemSlot);
   }
@@ -56,7 +52,7 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
   public IMessage networkExec(int id, GuiPacket message) {
     switch (id) {
     case 0:
-      // getInv().setSpawnMode(message.getBoolean(0)); TODO Implement
+      getTe().setSpawnMode(message.getBoolean(0));
       break;
     default:
       break;

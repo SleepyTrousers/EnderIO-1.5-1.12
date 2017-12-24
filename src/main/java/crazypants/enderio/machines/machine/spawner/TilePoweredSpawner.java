@@ -16,14 +16,15 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.base.machine.task.PoweredTask;
-import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.poweredspawner.PoweredSpawnerRecipeRegistry;
 import crazypants.enderio.base.recipe.spawner.DummyRecipe;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
 import crazypants.enderio.machines.config.config.SpawnerConfig;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -57,7 +58,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   @Store
   private boolean isSpawnMode = true;
 
-  private final Set<SpawnerNotification> notification = EnumSet.noneOf(SpawnerNotification.class);
+  private final @Nonnull Set<SpawnerNotification> notification = EnumSet.noneOf(SpawnerNotification.class);
   private boolean sendNotification = false;
 
   public TilePoweredSpawner() {
@@ -112,12 +113,12 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   public int getPowerUsePerTick() {
-    return (int) (super.getPowerUsePerTick() * PoweredSpawnerConfig.getInstance().getCostMultiplierFor(getEntityName()));
+    return (int) (super.getPowerUsePerTick() * PoweredSpawnerRecipeRegistry.getInstance().getCostMultiplierFor(getEntityName()));
   }
 
   @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {
-    return (int) (super.getMaxEnergyRecieved(dir) * PoweredSpawnerConfig.getInstance().getCostMultiplierFor(getEntityName()));
+    return (int) (super.getMaxEnergyRecieved(dir) * PoweredSpawnerRecipeRegistry.getInstance().getCostMultiplierFor(getEntityName()));
   }
 
   @Override
@@ -382,7 +383,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     return showingRange;
   }
 
-  private final static Vector4f color = new Vector4f(.94f, .11f, .11f, .4f);
+  private final static @Nonnull Vector4f color = new Vector4f(.94f, .11f, .11f, .4f);
 
   @SideOnly(Side.CLIENT)
   public void setShowRange(boolean showRange) {
@@ -410,14 +411,12 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
           Entity ent = capturedMob.getEntity(world, false);
           if (ent != null) {
             int height = Math.max((int) Math.ceil(ent.height) - 1, 0);
-            bounds = bounds.setMaxY(bounds.maxY + height);
+            return bounds = bounds.setMaxY(bounds.maxY + height);
           }
         }
       }
-      return bounds;
-    } else {
-      return new BoundingBox(getPos());
     }
+    return new BoundingBox(getPos());
   }
 
   public int getRange() {
@@ -463,7 +462,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     return getNotification().contains(note);
   }
 
-  public Set<SpawnerNotification> getNotification() {
+  public @Nonnull Set<SpawnerNotification> getNotification() {
     return notification;
   }
 

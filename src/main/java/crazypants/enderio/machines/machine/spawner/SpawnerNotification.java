@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.spawner;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machines.EnderIOMachines;
 
 public enum SpawnerNotification {
@@ -16,7 +18,7 @@ public enum SpawnerNotification {
     this.langStr = langStr;
   }
 
-  public String getDisplayString() {
+  public @Nonnull String getDisplayString() {
     return EnderIOMachines.lang.localize("block_powered_spawner.note." + langStr);
   }
 

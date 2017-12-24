@@ -17,6 +17,7 @@ import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.poweredspawner.PoweredSpawnerRecipeRegistry;
 import crazypants.enderio.base.recipe.spawner.DummyRecipe;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
@@ -60,9 +61,6 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   public static BlockPoweredSpawner create(@Nonnull IModObject modObject) {
     MachineRecipeRegistry.instance.registerRecipe(MachineObject.block_powered_spawner.getUnlocalisedName(), new DummyRecipe());
-
-    // Ensure costs are loaded at startup
-    PoweredSpawnerConfig.getInstance();
 
     BlockPoweredSpawner res = new BlockPoweredSpawner(modObject);
     MinecraftForge.EVENT_BUS.register(res);
@@ -128,7 +126,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   }
 
   public static boolean isBlackListed(ResourceLocation entityId) {
-    return PoweredSpawnerConfig.getInstance().isBlackListed(entityId);
+    return PoweredSpawnerRecipeRegistry.getInstance().isBlackListed(entityId);
   }
 
   @Override

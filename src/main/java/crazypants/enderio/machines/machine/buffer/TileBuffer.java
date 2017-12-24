@@ -78,7 +78,7 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
       markDirty();
     }
     if (getCapacitorData() != DefaultCapacitorData.NONE || maxOut < 0 || maxIn < 0) {
-      final int max = maxEnergyRecieved.get(getCapacitorData());
+      final int max = getMaxIO();
       if (maxOutIsMax == maxOut && maxOutIsMax != max) {
         // on the last check, the value was on the max and now the max has changed...keep the value on the max
         maxOut = max;
@@ -92,6 +92,10 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
       maxInIsMax = maxIn == max ? max : -9999;
       markDirty();
     }
+  }
+
+  public int getMaxIO() {
+    return maxEnergyRecieved.get(getCapacitorData());
   }
 
   @Override

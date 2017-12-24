@@ -50,7 +50,12 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
 
       textFields.add(maxInput);
       textFields.add(maxOutput);
-      addDrawingElement(new PowerBar<>(te, this, 15, 13, 42));
+      addDrawingElement(new PowerBar<TileBuffer>(te, this, 15, 13, 42) {
+        @Override
+        protected String getPowerOutputLabel(@Nonnull String rft) {
+          return Lang.GUI_BUFFER_MAXIO.get(LangPower.RFt(getTileEntity().getMaxIO()));
+        }
+      });
     }
   }
 

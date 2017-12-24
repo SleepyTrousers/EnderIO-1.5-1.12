@@ -22,6 +22,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiPoweredSpawner extends GuiInventoryMachineBase<TilePoweredSpawner> {
 
@@ -32,7 +33,7 @@ public class GuiPoweredSpawner extends GuiInventoryMachineBase<TilePoweredSpawne
   private final @Nonnull ToggleButton showRangeB;
 
   public GuiPoweredSpawner(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TilePoweredSpawner te) {
-    super(te, new ContainerPoweredSpawner(par1InventoryPlayer, te), "powered_spawner");
+    super(te, new ContainerPoweredSpawner(par1InventoryPlayer, te), "powered_spawner_spawn", "powered_spawner_capture");
 
     modeB = MultiIconButton.createRightArrowButton(this, 8888, 115, 10);
     modeB.setSize(10, 16);
@@ -98,21 +99,26 @@ public class GuiPoweredSpawner extends GuiInventoryMachineBase<TilePoweredSpawne
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-
     GlStateManager.color(1, 1, 1);
-    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
-    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
-
-    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-
-    TilePoweredSpawner spawner = getTileEntity();
-    boolean spawnMode = spawner.isSpawnMode();
-
+    boolean spawnMode = getTileEntity().isSpawnMode();
     if (spawnMode != wasSpawnMode) {
       updateSpawnMode(spawnMode);
+    }
+
+    bindGuiTexture(spawnMode ? 0 : 1);
+    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
+
+    if (shouldRenderProgress()) {
+      if (spawnMode) {
+        int scaled = getProgressScaled(14) + 1;
+        drawTexturedModalRect(sx + 81, sy + 34 + 14 - scaled + 3, 176, 14 - scaled, 14, scaled);
+      } else {
+        int scaled = getProgressScaled(24);
+        drawTexturedModalRect(sx + 76, sy + 43, 176, 14, scaled + 1, 16);
+      }
     }
 
     FontRenderer fr = getFontRenderer();
@@ -120,21 +126,14 @@ public class GuiPoweredSpawner extends GuiInventoryMachineBase<TilePoweredSpawne
     int y = sy + fr.FONT_HEIGHT + 6;
     fr.drawStringWithShadow(header, x, y, ColorUtil.getRGB(Color.WHITE));
 
+    String name = "§o" + (getTileEntity().getEntity() != null ? getTileEntity().getEntity().getDisplayName() : "");
+    x = sx + xSize / 2 - fr.getStringWidth(name) / 2;
+    y = sy + 43 + 16 + 2;
+    fr.drawStringWithShadow(name, x, y, ColorUtil.getRGB(Color.WHITE));
     GlStateManager.color(1, 1, 1);
-    bindGuiTexture();
-    if (spawnMode) {
-      drawTexturedModalRect(sx + 80, sy + 34, 207, 0, 17, 15);
-      if (shouldRenderProgress()) {
-        int scaled = getProgressScaled(14) + 1;
-        drawTexturedModalRect(sx + 81, sy + 34 + 14 - scaled, 176, 14 - scaled, 14, scaled);
-      }
-    } else {
-      drawTexturedModalRect(sx + 52, sy + 40, 52, 170, 72, 21);
-      if (shouldRenderProgress()) {
-        int scaled = getProgressScaled(24);
-        drawTexturedModalRect(sx + 76, sy + 43, 176, 14, scaled + 1, 16);
-      }
-    }
+    bindGuiTexture(spawnMode ? 0 : 1);
+
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
   @Override
@@ -142,4 +141,8 @@ public class GuiPoweredSpawner extends GuiInventoryMachineBase<TilePoweredSpawne
     return false;
   }
 
+  @Override
+  protected @Nonnull ResourceLocation getGuiTexture() {
+    return super.getGuiTexture(getTileEntity().isSpawnMode() ? 0 : 1);
+  }
 }
