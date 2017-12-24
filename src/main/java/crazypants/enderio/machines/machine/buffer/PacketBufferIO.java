@@ -39,7 +39,7 @@ public class PacketBufferIO extends MessageTileEntity<TileBuffer> implements IMe
 
   @Override
   public IMessage onMessage(PacketBufferIO message, MessageContext ctx) {
-    TileBuffer buf = getTileEntity(getWorld(ctx));
+    TileBuffer buf = message.getTileEntity(getWorld(ctx));
     if (buf != null) {
       buf.setIO(message.in, message.out);
     }

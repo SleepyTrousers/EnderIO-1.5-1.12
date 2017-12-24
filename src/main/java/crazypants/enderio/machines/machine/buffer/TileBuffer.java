@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -22,6 +23,9 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.CREATIVE_BUFFER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.CREATIVE_BUFFER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.CREATIVE_BUFFER_POWER_USE;
 
 @Storable
 public abstract class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
@@ -29,28 +33,28 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
   @Storable
   public static class TileBufferItem extends TileBuffer {
     public TileBufferItem() {
-      super(new SlotDefinition(9), BufferType.ITEM);
+      super(new SlotDefinition(9), BufferType.ITEM, BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, BUFFER_POWER_USE);
     }
   }
 
   @Storable
   public static class TileBufferPower extends TileBuffer {
     public TileBufferPower() {
-      super(new SlotDefinition(0, 0, 1), BufferType.POWER);
+      super(new SlotDefinition(0, 0, 1), BufferType.POWER, BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, BUFFER_POWER_USE);
     }
   }
 
   @Storable
   public static class TileBufferOmni extends TileBuffer {
     public TileBufferOmni() {
-      super(new SlotDefinition(9, 0, 1), BufferType.OMNI);
+      super(new SlotDefinition(9, 0, 1), BufferType.OMNI, BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, BUFFER_POWER_USE);
     }
   }
 
   @Storable
   public static class TileBufferCreative extends TileBuffer {
     public TileBufferCreative() {
-      super(new SlotDefinition(9), BufferType.CREATIVE);
+      super(new SlotDefinition(9), BufferType.CREATIVE, CREATIVE_BUFFER_POWER_INTAKE, CREATIVE_BUFFER_POWER_BUFFER, CREATIVE_BUFFER_POWER_USE);
     }
   }
 
@@ -60,31 +64,40 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
   private int maxOut;
   @Store
   private int maxIn;
+  private int maxOutIsMax = 0, maxInIsMax = 0;
 
-  public TileBuffer(@Nonnull SlotDefinition slotDefinition, @Nonnull BufferType type) {
-    super(slotDefinition, BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, BUFFER_POWER_USE);
+  public TileBuffer(@Nonnull SlotDefinition slotDefinition, @Nonnull BufferType type, @Nonnull ICapacitorKey maxEnergyRecieved,
+      @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
+    super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
     this.type = type;
   }
 
   protected void initMaxIO() {
     if (type.isCreative) {
       setEnergyStored(getMaxEnergyStored() / 2);
+      markDirty();
     }
     if (getCapacitorData() != DefaultCapacitorData.NONE || maxOut < 0 || maxIn < 0) {
       final int max = maxEnergyRecieved.get(getCapacitorData());
-      if (maxOut <= 0 && maxIn <= 0) {
-        maxOut = maxIn = max;
-      } else {
-        maxIn = MathHelper.clamp(maxIn, 0, max);
-        maxOut = MathHelper.clamp(maxOut, 0, max);
+      if (maxOutIsMax == maxOut && maxOutIsMax != max) {
+        // on the last check, the value was on the max and now the max has changed...keep the value on the max
+        maxOut = max;
       }
+      if (maxInIsMax == maxIn && maxInIsMax != max) {
+        maxIn = max;
+      }
+      maxIn = MathHelper.clamp(maxIn, 0, max);
+      maxOut = MathHelper.clamp(maxOut, 0, max);
+      maxOutIsMax = maxOut == max ? max : -9999;
+      maxInIsMax = maxIn == max ? max : -9999;
+      markDirty();
     }
   }
 
   @Override
   public void onCapacitorDataChange() {
-    super.onCapacitorDataChange();
     initMaxIO();
+    super.onCapacitorDataChange();
   }
 
   @Override

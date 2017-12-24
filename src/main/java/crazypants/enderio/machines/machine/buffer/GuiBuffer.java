@@ -28,7 +28,7 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
   private TextFieldEnder maxInput;
   private TextFieldEnder maxOutput;
 
-  private int lastInput, lastOutput;
+  private int lastInput, lastOutput, lastInputTe, lastOutputTe;
 
   private final boolean hasInventory, hasPower;
 
@@ -79,25 +79,30 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
   }
 
   private void updateInputOutput() {
+    boolean changed = false;
     int input = PowerDisplayUtil.parsePower(maxInput);
-    setMaxInput(input);
+    if (input != lastInput) {
+      lastInput = input;
+      changed = true;
+    }
     int output = PowerDisplayUtil.parsePower(maxOutput);
-    setMaxOutput(output);
-    sendUpdateToServer();
-  }
-
-  private void setMaxOutput(int output) {
     if (output != lastOutput) {
       lastOutput = output;
-      maxOutput.setText(LangPower.format(output));
+      changed = true;
+    }
+    if (changed) {
+      sendUpdateToServer(); // also sets local te
+      maxInput.setText(LangPower.format(getTileEntity().getMaxInput()));
+      maxOutput.setText(LangPower.format(getTileEntity().getMaxOutput()));
     }
   }
 
-  private void setMaxInput(int input) {
-    if (input != lastInput) {
-      lastInput = input;
-      maxInput.setText(LangPower.format(input));
-      sendUpdateToServer();
+  private void checkForTeChanges() {
+    if (getTileEntity().getMaxInput() != lastInputTe) {
+      maxInput.setText(LangPower.format(lastInputTe = getTileEntity().getMaxInput()));
+    }
+    if (getTileEntity().getMaxOutput() != lastOutputTe) {
+      maxOutput.setText(LangPower.format(lastOutputTe = getTileEntity().getMaxOutput()));
     }
   }
 
@@ -112,6 +117,7 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+    checkForTeChanges();
 
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
