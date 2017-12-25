@@ -67,6 +67,10 @@ public interface IHandler<T> {
   /**
    * Reads an object from a NBT structure
    * 
+   * FIXME: This method will not be called if the saved value was null. It *will* be called if there is no saved value, e.g. because the data is read from a
+   * fresh itemstack. Creating an empty object in this case could be problematic, as the owner may not expect an empty object. This case needs to be handled
+   * better.
+   * 
    * @param registry
    *          The handler registry to use
    * @param phase

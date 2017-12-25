@@ -63,7 +63,12 @@ public class ItemFilter implements IInventory, IItemFilter {
         @Nullable ItemFilter object)
         throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
       if (object == null) {
-        object = new ItemFilter();
+        // Note: This will be called with no nbt when a fresh itemstack is placed---output should be null!
+        if (nbt.hasKey(name)) {
+          object = new ItemFilter();
+        } else {
+          return object;
+        }
       }
       object.readFromNBT(nbt.getCompoundTag(name));
       return object;
