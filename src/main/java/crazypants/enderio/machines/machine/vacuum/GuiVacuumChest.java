@@ -20,8 +20,8 @@ import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
-import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.machines.lang.Lang;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -195,7 +195,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
-    if (te.getItemFilter() != null) {
+    if (te.hasItemFilter()) {
       drawTexturedModalRect(sx + FILTER_LEFT, sy + FILTER_TOP, 0, 238, TileVacuumChest.FILTER_SLOTS * 18, 18);
     }
 

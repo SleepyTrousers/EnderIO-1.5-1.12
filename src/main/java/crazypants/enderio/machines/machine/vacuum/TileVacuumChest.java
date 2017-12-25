@@ -61,7 +61,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
         FilterRegistry.writeFilterToStack(filter, oldStack);
       }
       IItemFilter newFilter = FilterRegistry.getFilterForUpgrade(newStack);
-      if (newFilter == null || newFilter instanceof ItemFilter) {
+      if (newFilter == null || newFilter instanceof ItemFilter) { // TODO this only works with basic filters, update here for more filters
         filter = (ItemFilter) newFilter;
         updateBlock();
       }
