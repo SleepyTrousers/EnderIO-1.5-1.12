@@ -62,7 +62,12 @@ public class GuiCombustionGenerator<T extends TileCombustionGenerator> extends G
 
     });
 
-    addDrawingElement(new PowerBar<>(te, this, 15, 14, 42));
+    addDrawingElement(new PowerBar<TileCombustionGenerator>(te, this, 15, 14, 42) {
+      @Override
+      protected String getPowerOutputLabel(@Nonnull String rft) {
+        return super.getPowerOutputLabel(LangPower.RFt(getTileEntity().getMath().getEnergyPerTick()));
+      }
+    });
   }
 
   @Override
