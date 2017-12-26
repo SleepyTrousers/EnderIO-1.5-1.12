@@ -53,6 +53,12 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
     addDrawingElement(new PowerBar<>(te, this));
   }
 
+  @Override
+  public void initGui() {
+    super.initGui();
+    ((ContainerStirlingGenerator<?>) inventorySlots).addGhostslots(getGhostSlotHandler().getGhostSlots());
+  }
+
   private static float getFactor(@Nonnull ICapacitorData upgrade) {
     return TileStirlingGenerator.getEnergyMultiplier(upgrade) * TileStirlingGenerator.getBurnTimeMultiplier(upgrade);
   }
