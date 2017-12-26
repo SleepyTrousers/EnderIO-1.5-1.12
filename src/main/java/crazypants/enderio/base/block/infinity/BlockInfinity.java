@@ -305,10 +305,8 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
   protected void spawn(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull String enitytype) {
     CapturedMob capturedMob = CapturedMob.create(new ResourceLocation("minecraft", enitytype));
     if (capturedMob != null) {
-      Entity ent = capturedMob.getEntity(world, pos, world.getDifficultyForLocation(pos), false);
-      if (ent != null) {
-        world.spawnEntity(ent);
-        world.playEvent(2004, pos, 0);
+      if (!capturedMob.spawn(world, pos, EnumFacing.DOWN, false)) {
+        capturedMob.spawn(world, pos.down(), EnumFacing.DOWN, false);
       }
     }
   }
