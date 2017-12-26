@@ -5,6 +5,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import static crazypants.enderio.machines.init.MachineObject.block_slice_and_splice;
+import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.NUM_RECIPE_SLOT;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.jei.RecipeWrapper;
@@ -27,12 +33,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import static crazypants.enderio.machines.init.MachineObject.block_slice_and_splice;
-import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.NUM_RECIPE_SLOT;
 
 public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSpliceRecipeCategory.SliceAndSpliceRecipe> {
 
@@ -74,7 +74,7 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
   private SliceAndSpliceRecipe currentRecipe;
 
   public SliceAndSpliceRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("sliceAndSplice");
+    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("slice_and_splice");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 125, 70);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 177, 14, 22, 16);

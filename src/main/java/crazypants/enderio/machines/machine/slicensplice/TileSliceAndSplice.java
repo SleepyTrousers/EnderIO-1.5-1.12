@@ -4,6 +4,11 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import static crazypants.enderio.base.config.Config.slicenspliceToolDamageChance;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_USE;
+
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.paint.IPaintable;
@@ -22,11 +27,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import static crazypants.enderio.base.config.Config.slicenspliceToolDamageChance;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_USE;
-
 @Storable
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
@@ -35,7 +35,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   private EntityLivingBase fakePlayer;
 
   public TileSliceAndSplice() {
-    super(new SlotDefinition(8, 1), SLICE_POWER_INTAKE, SLICE_POWER_BUFFER, SLICE_POWER_USE);
+    super(new SlotDefinition(8, 1, 1), SLICE_POWER_INTAKE, SLICE_POWER_BUFFER, SLICE_POWER_USE);
   }
 
   @Override
@@ -153,9 +153,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
       }
     }
     List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
-    if (numSlotsFilled == 0 && !recipes.isEmpty()) {
-      return true;
-    }
+
     return isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
   }
 
@@ -173,16 +171,24 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
 
     for (IMachineRecipe recipe : recipes) {
       if (recipe instanceof ManyToOneMachineRecipe) {
-        RECIPE: for (IManyToOneRecipe oneRecipe : ((ManyToOneMachineRecipe) recipe).getRecipesThatHaveTheseAsValidRecipeComponents(resultInv)) {
-          for (int i = 0; i < resultInv.length; i++) {
-            if (resultInv[i] != null) {
-              for (RecipeInput ri : oneRecipe.getInputs()) {
-                if (ri.getSlotNumber() == i && !ri.isInput(resultInv[i])) {
-                  continue RECIPE;
-                }
-              }
+        for (IManyToOneRecipe oneRecipe : ((ManyToOneMachineRecipe) recipe).getRecipesThatHaveTheseAsValidRecipeComponents(resultInv)) {
+          boolean valid = true;
+          for (int i = 0; valid && i < resultInv.length; i++) {
+            // skip Tool slots and empty slots
+            if (resultInv[i] == null || resultInv[i].isEmpty())
+              continue;
+            // check if the current item set is valid for this recipe
+            for (RecipeInput ri : oneRecipe.getInputs()) {
+              if (ri.getSlotNumber() != i)
+                continue;
+              if (!ri.isInput(resultInv[i]))
+                valid = false;
+              break;
             }
           }
+          // Invalid, check the next recipe
+          if (!valid)
+            continue;
           return true;
         }
       }
