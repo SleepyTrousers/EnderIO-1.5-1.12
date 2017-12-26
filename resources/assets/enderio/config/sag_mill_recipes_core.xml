@@ -275,7 +275,16 @@
         <itemStack oreDictionary="dustBedrock" />
       </output>
     </recipe>
-    
+
+    <recipe name="InfinityDust" energyCost="5000" bonusType="chance_only" >
+      <input>
+        <itemStack oreDictionary="dustBedrock" />
+      </input>
+      <output>
+        <itemStack modID="enderio" itemName="block_infinity_fog" chance="0.5" />
+      </output>
+    </recipe>
+
   </recipeGroup>
 
   <recipeGroup name="Vanilla" >

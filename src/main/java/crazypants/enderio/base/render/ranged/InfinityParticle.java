@@ -17,35 +17,25 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class MarkerParticle extends Particle {
+public class InfinityParticle extends Particle {
 
-  private final @Nonnull Vector4f color;
-  private final @Nonnull BlockPos pos;
-  private int tolive, maxage;
+  private static final int INIT_TIME = 25;
+  private static final int FADE_TIME = 5;
+  private static final int AGE_LIMIT = 40;
 
-  public MarkerParticle(@Nonnull World world, @Nonnull BlockPos pos) {
-    this(world, pos, new Vector4f(1, 1, 1, 0.4f));
+  public InfinityParticle(@Nonnull World world, @Nonnull BlockPos location, @Nonnull Vector4f offset) {
+    this(world, location, new Vector4f(0, 0, 0, 0.4f), offset);
   }
 
-  public MarkerParticle(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Vector4f color) {
-    this(world, pos, color, 34);
-  }
-
-  public MarkerParticle(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Vector4f color, int maxage) {
-    super(world, pos.getX(), pos.getY(), pos.getZ());
-    this.pos = pos;
-    this.color = color;
-    this.tolive = this.maxage = maxage;
-  }
-
-  @Override
-  public void onUpdate() {
-    tolive--;
-  }
-
-  @Override
-  public boolean isAlive() {
-    return tolive > 0;
+  public InfinityParticle(@Nonnull World world, @Nonnull BlockPos location, @Nonnull Vector4f color, @Nonnull Vector4f offset) {
+    super(world, location.getX(), location.getY(), location.getZ());
+    setRBGColorF(color.x, color.y, color.z);
+    setAlphaF(color.w);
+    setSize(offset.w, offset.w);
+    setPosition(location.getX() + .5f, location.getY() + .5f - height / 2f, location.getZ() + .5f);
+    move(offset.x - .5f, offset.y - .5f, offset.z - .5f);
+    setMaxAge(AGE_LIMIT);
+    particleAge = -rand.nextInt(10);
   }
 
   @Override
@@ -57,7 +47,7 @@ public class MarkerParticle extends Particle {
   public void renderParticle(@Nonnull VertexBuffer worldRendererIn, @Nonnull Entity entityIn, float partialTicks, float rotationX, float rotationZ,
       float rotationYZ, float rotationXY, float rotationXZ) {
 
-    if (!isAlive()) {
+    if (particleAge < 0) {
       return;
     }
 
@@ -71,15 +61,14 @@ public class MarkerParticle extends Particle {
     RenderUtil.bindBlockTexture();
     GlStateManager.depthMask(false);
 
+    float scale = Math.min((particleAge + partialTicks) / INIT_TIME, 1);
+    float fade = particleAge < FADE_TIME ? 1f : ((particleMaxAge - particleAge) / (float) (particleMaxAge - FADE_TIME));
+
     GlStateManager.translate(-interpPosX, -interpPosY, -interpPosZ);
 
-    float fade = tolive / (float) maxage;
+    GlStateManager.color(getRedColorF(), getGreenColorF(), getBlueColorF(), particleAlpha * fade);
 
-    GlStateManager.translate(-interpPosX, -interpPosY, -interpPosZ);
-
-    GlStateManager.color(color.x, color.y, color.z, color.w * fade);
-
-    RenderUtil.renderBoundingBox(new BoundingBox(pos).expand(0.01, 0.01, 0.01), IconUtil.instance.whiteTexture);
+    RenderUtil.renderBoundingBox((new BoundingBox(getBoundingBox())).scale(scale), IconUtil.instance.whiteTexture);
 
     GlStateManager.depthMask(true);
     GlStateManager.disableBlend();

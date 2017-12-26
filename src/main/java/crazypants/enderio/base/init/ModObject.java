@@ -18,6 +18,7 @@ import crazypants.enderio.base.block.darksteel.trapdoor.BlockDarkSteelTrapDoor;
 import crazypants.enderio.base.block.decoration.BlockDecoration;
 import crazypants.enderio.base.block.decoration.BlockDecorationFacing;
 import crazypants.enderio.base.block.detector.BlockDetector;
+import crazypants.enderio.base.block.infinity.BlockInfinity;
 import crazypants.enderio.base.block.lever.BlockSelfResettingLever;
 import crazypants.enderio.base.block.painted.BlockPaintedCarpet;
 import crazypants.enderio.base.block.painted.BlockPaintedFence;
@@ -77,6 +78,7 @@ public enum ModObject implements IModObject.Registerable {
 
   block_machine_io(BlockMachineIO.class),
   block_machine_base(BlockMachineBase.class),
+  block_infinity_fog(BlockInfinity.class),
 
   // Enderface
   itemEnderface(ItemEnderface.class),

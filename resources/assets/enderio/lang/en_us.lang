@@ -218,6 +218,12 @@ item.item_yeta_wrench.tooltip.detailed.line5=open conduit settings GUI
 item.item_yeta_wrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or '%s' to
 item.item_yeta_wrench.tooltip.detailed.line7=render a single conduit type
 
+tile.block_infinity_fog.name=Infinity Dust
+tile.block_infinity_fog.tooltip.common.line1=§4§oDangerous
+tile.block_infinity_fog.tooltip.detailed.line1=When Grains of Infinity are ground to a very fine dust, the dust starts to develop properties of the infinite bedrock it was made from.
+tile.block_infinity_fog.tooltip.detailed.line2=Released into the air it forms a volatile dust cloud. Touching it is unhealthy at the least. And when the dust settles, it may leave some nasty things behind.
+tile.block_infinity_fog.tooltip.detailed.line3=§6Has a chance of spawning §lEndermen§r§6 and other monsters.
+
 tile.block_alloy.name=Alloy Block
 tile.block_alloy.conductive_iron.name=Conductive Iron Block
 tile.block_alloy.dark_steel.name=Dark Steel Block
