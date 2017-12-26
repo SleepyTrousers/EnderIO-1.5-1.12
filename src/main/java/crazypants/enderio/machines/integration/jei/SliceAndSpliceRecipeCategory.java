@@ -5,16 +5,11 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.machines.init.MachineObject.block_slice_and_splice;
-import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.NUM_RECIPE_SLOT;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.jei.RecipeWrapper;
-import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
+import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice;
@@ -24,15 +19,21 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableStatic;
+import mezz.jei.api.gui.IGuiIngredientGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import static crazypants.enderio.machines.init.MachineObject.block_slice_and_splice;
+import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice.NUM_RECIPE_SLOT;
 
 public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSpliceRecipeCategory.SliceAndSpliceRecipe> {
 
@@ -43,6 +44,12 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
   public static class SliceAndSpliceRecipe extends RecipeWrapper {
     public SliceAndSpliceRecipe(IRecipe recipe) {
       super(recipe);
+    }
+
+    @Override
+    public void getIngredients(@Nonnull IIngredients ingredients) {
+      super.getIngredients(ingredients);
+      ingredients.setInput(EnergyIngredient.class, new EnergyIngredient(recipe.getEnergyRequired()));
     }
   }
 
@@ -69,16 +76,14 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
   private final IDrawable background;
 
   @Nonnull
-  protected final IDrawableAnimated arror;
-
-  private SliceAndSpliceRecipe currentRecipe;
+  protected final IDrawableAnimated arrow;
 
   public SliceAndSpliceRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("slice_and_splice");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 125, 70);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 177, 14, 22, 16);
-    arror = guiHelper.createAnimatedDrawable(flameDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
+    arrow = guiHelper.createAnimatedDrawable(flameDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
   }
 
   @Override
@@ -98,20 +103,12 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
 
   @Override
   public void drawExtras(@Nonnull Minecraft minecraft) {
-    if (currentRecipe == null) {
-      return;
-    }
-    String energyString = LangPower.RF(currentRecipe.getEnergyRequired());
-    minecraft.fontRenderer.drawString(energyString, 108 - xOff, 72 - yOff, 0x808080, false);
-    GlStateManager.color(1, 1, 1, 1);
-
-    arror.draw(minecraft, 104 - xOff, 49 - yOff);
+    arrow.draw(minecraft, 104 - xOff, 49 - yOff);
   }
 
   @Override
   public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SliceAndSpliceRecipeCategory.SliceAndSpliceRecipe recipeWrapper,
       @Nonnull IIngredients ingredients) {
-    currentRecipe = recipeWrapper;
 
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
@@ -140,6 +137,10 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
     if (!output.isEmpty()) {
       guiItemStacks.set(8, output);
     }
+
+    IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
+    group.init(9, true, EnergyIngredientRenderer.INSTANCE, 108 - xOff - 1, 72 - yOff - 1, 50, 10, 0, 0);
+    group.set(ingredients);
   }
 
   private @Nonnull List<ItemStack> getAxes() {
