@@ -67,9 +67,10 @@ public class Recipe implements IRecipe {
             }
             iterator = null;
           }
-          if (iterator != null) {
-            return false;
-          }
+        }
+        if (iterator != null) {
+          // extra input found
+          return false;
         }
       }
     }
@@ -86,10 +87,10 @@ public class Recipe implements IRecipe {
             }
             iterator = null;
           }
-          // The order matters in shaped recipes
-          if (iterator != null && required.getSlotNumber() >= 0) {
-            return false;
-          }
+        }
+        if (iterator != null) {
+          // extra input found
+          return false;
         }
       }
     }
