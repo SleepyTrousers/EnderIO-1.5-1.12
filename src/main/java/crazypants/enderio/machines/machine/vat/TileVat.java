@@ -10,10 +10,7 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
-
-import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_USE;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
@@ -26,6 +23,7 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
 import crazypants.enderio.machines.config.config.VatConfig;
 import crazypants.enderio.machines.network.PacketHandler;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -35,6 +33,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_USE;
 
 @Storable
 public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
@@ -68,8 +70,23 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   @Override
   public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     MachineRecipeInput[] inputs = getRecipeInputs();
-    inputs[i] = new MachineRecipeInput(i, itemstack);
-    return VatRecipeManager.getInstance().isValidInput(inputs);
+    MachineRecipeInput recipeInput = new MachineRecipeInput(i, itemstack);
+    for (int j = 0; j < inputs.length; j++) {
+      if (inputs[j].slotNumber == i) {
+        inputs[j] = recipeInput;
+        return VatRecipeManager.getInstance().isValidInput(inputs);
+      }
+    }
+    if (inputs.length == 0) {
+      return VatRecipeManager.getInstance().isValidInput(recipeInput);
+    } else if (inputs.length == 1) {
+      return VatRecipeManager.getInstance().isValidInput(inputs[0], recipeInput);
+    } else if (inputs.length == 2) {
+      return VatRecipeManager.getInstance().isValidInput(inputs[0], inputs[1], recipeInput);
+    } else {
+      // all 3 slots filled, but none of them is the slot to be inserted into?
+      return false;
+    }
   }
 
   @Override
@@ -133,16 +150,17 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
 
   @Override
   protected @Nonnull MachineRecipeInput[] getRecipeInputs() {
-    MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots() + 1];
-    int fromSlot = slotDefinition.minInputSlot;
-    for (int i = 0; i < res.length - 1; i++) {
-      res[i] = new MachineRecipeInput(fromSlot, getStackInSlot(fromSlot));
-      fromSlot++;
+    NNList<MachineRecipeInput> res = new NNList<>();
+    for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot; slot++) {
+      final ItemStack item = getStackInSlot(slot);
+      if (Prep.isValid(item)) {
+        res.add(new MachineRecipeInput(slot, item));
+      }
     }
-
-    res[res.length - 1] = new MachineRecipeInput(0, inputTank.getFluid());
-
-    return res;
+    if (!inputTank.isEmpty()) {
+      res.add(new MachineRecipeInput(0, inputTank.getFluid()));
+    }
+    return res.toArray(new MachineRecipeInput[res.size()]);
   }
 
   @Override

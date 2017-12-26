@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.paint.IPaintable;
@@ -120,13 +122,14 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   protected @Nonnull MachineRecipeInput[] getRecipeInputs() {
-    MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots() - 2];
-    int fromSlot = slotDefinition.minInputSlot;
-    for (int i = 0; i < res.length; i++) {
-      res[i] = new MachineRecipeInput(fromSlot, getStackInSlot(fromSlot));
-      fromSlot++;
+    NNList<MachineRecipeInput> res = new NNList<>();
+    for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot - 2; slot++) {
+      final ItemStack item = getStackInSlot(slot);
+      if (Prep.isValid(item)) {
+        res.add(new MachineRecipeInput(slot, item));
+      }
     }
-    return res;
+    return res.toArray(new MachineRecipeInput[res.size()]);
   }
 
   @Override
