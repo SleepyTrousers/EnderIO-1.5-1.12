@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.NBTAction;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
@@ -254,18 +255,14 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   }
 
   protected @Nonnull MachineRecipeInput[] getRecipeInputs() {
-    MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots()];
-    int fromSlot = slotDefinition.minInputSlot;
-    for (int i = 0; i < res.length; i++) {
-      final ItemStack item = inventory[fromSlot];
-      if (item != null) {
-        res[i] = new MachineRecipeInput(fromSlot, item);
-      } else {
-        res[i] = new MachineRecipeInput(fromSlot, Prep.getEmpty());
+    NNList<MachineRecipeInput> res = new NNList<>();
+    for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot; slot++) {
+      final ItemStack item = getStackInSlot(slot);
+      if (Prep.isValid(item)) {
+        res.add(new MachineRecipeInput(slot, item));
       }
-      fromSlot++;
     }
-    return res;
+    return res.toArray(new MachineRecipeInput[res.size()]);
   }
 
   protected @Nullable IMachineRecipe getNextRecipe() {

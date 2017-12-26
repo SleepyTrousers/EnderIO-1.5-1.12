@@ -110,7 +110,7 @@ public class VatRecipeManager {
     return false;
   }
 
-  public boolean isValidInput(@Nonnull MachineRecipeInput[] inputs) {
+  public boolean isValidInput(@Nonnull MachineRecipeInput... inputs) {
     for (IRecipe recipe : recipes) {
       boolean allValid = true;
       for (MachineRecipeInput input : inputs) {
