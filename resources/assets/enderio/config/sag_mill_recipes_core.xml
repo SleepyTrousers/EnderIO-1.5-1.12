@@ -276,7 +276,7 @@
       </output>
     </recipe>
 
-    <recipe name="InfinityDust" energyCost="5000" bonusType="chance_only" >
+    <recipe name="InfinityDust" energyCost="30000" bonusType="chance_only" >
       <input>
         <itemStack oreDictionary="dustBedrock" />
       </input>
