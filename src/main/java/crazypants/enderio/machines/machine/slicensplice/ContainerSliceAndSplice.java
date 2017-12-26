@@ -77,6 +77,11 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
       public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
         return false;
       }
+
+      @Override
+      public int getSlotStackLimit() {
+        return getTe().getInventoryStackLimit(getSlotIndex());
+      }
     });
 
   }

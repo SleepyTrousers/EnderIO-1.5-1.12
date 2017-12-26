@@ -4,11 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.base.config.Config.slicenspliceToolDamageChance;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_USE;
-
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.paint.IPaintable;
@@ -26,6 +21,11 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+
+import static crazypants.enderio.base.config.Config.slicenspliceToolDamageChance;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_USE;
 
 @Storable
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -46,6 +46,11 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   @Override
   public int getInventoryStackLimit() {
     return 1;
+  }
+
+  @Override
+  public int getInventoryStackLimit(int slot) {
+    return slot == getSlotDefinition().getMinOutputSlot() ? 64 : 1;
   }
 
   @Override
