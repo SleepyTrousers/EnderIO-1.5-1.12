@@ -2,6 +2,7 @@ package crazypants.enderio.base.recipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -55,32 +56,47 @@ public class Recipe implements IRecipe {
     }
     
     for (MachineRecipeInput input : machineInputs) {
-      if (input != null && (input.fluid != null || Prep.isValid(input.item))) {
-        RecipeInput required = null;        
-        for(int i=0;i<requiredInputs.size() && required == null;i++) {
-          RecipeInput tst = requiredInputs.get(i);
-          if (tst.isInput(input.item) || tst.isInput(input.fluid)) {
-             required = tst;
+      if (input != null && input.isFluid()) {
+        Iterator<RecipeInput> iterator = requiredInputs.iterator();
+        while (iterator != null && iterator.hasNext()) {
+          RecipeInput required = iterator.next();
+          if (required.isInput(input.fluid)) {
+            required.getFluidInput().amount -= input.fluid.amount;
+            if (required.getFluidInput().amount <= 0) {
+              iterator.remove();
+            }
+            iterator = null;
           }
-        }        
-        if(required == null) {
-          return false;
+          if (iterator != null) {
+            return false;
+          }
         }
-        //reduce the required input quantity by the available amount
-        if(input.isFluid()) {
-          required.getFluidInput().amount -= input.fluid.amount;
-        } else {
-          required.getInput().shrink(input.item.getCount());
-        }        
       }
     }
-    
-    for(RecipeInput required : requiredInputs) {
-      if(required.isFluid() && required.getFluidInput().amount > 0) {
-        return false;
-      } else if (!required.isFluid() && Prep.isValid(required.getInput())) {
-        return false;
+
+    for (MachineRecipeInput input : machineInputs) {
+      if (input != null && !input.isFluid()) {
+        Iterator<RecipeInput> iterator = requiredInputs.iterator();
+        while (iterator != null && iterator.hasNext()) {
+          RecipeInput required = iterator.next();
+          if (required.isInput(input.item)) {
+            required.getInput().shrink(input.item.getCount());
+            if (Prep.isInvalid(required.getInput())) {
+              iterator.remove();
+            }
+            iterator = null;
+          }
+          // The order matters in shaped recipes
+          if (iterator != null && required.getSlotNumber() >= 0) {
+            return false;
+          }
+        }
       }
+    }
+
+    if (!requiredInputs.isEmpty()) {
+      // unsatisfied inputs remaining
+      return false;
     }
     return true;
   }
