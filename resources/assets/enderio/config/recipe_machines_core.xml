@@ -527,7 +527,7 @@ XML editor will display that as tooltips when editing this file.
       <grid size="3x3">
         <item /><item name="enderio:item_xp_transfer" /><item />
         <item name="ENERGETIC_ALLOY" /><item name="GEAR_IRON" /><item name="ENERGETIC_ALLOY" />
-        <item name="SOULARIUM" /><item name="CHASSIS" /><item name="SOULARIUM" />
+        <item name="SOULARIUM" /><item name="enderio:block_tank:0" /><item name="SOULARIUM" />
       </grid>
       <output name="enderio:block_experience_obelisk" />
     </crafting>
