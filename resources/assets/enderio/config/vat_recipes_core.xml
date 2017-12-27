@@ -85,6 +85,7 @@
         <itemStack modID="minecraft" itemName="potato" slot="0" multiplier="4" />
         <itemStack modID="minecraft" itemName="apple" slot="0" multiplier="3.5" />
         <itemStack modID="minecraft" itemName="wheat" slot="0" multiplier="3" />
+        <itemStack oreDictionary="dustWheat" slot="0" multiplier="3" />
         <itemStack modID="minecraft" itemName="wheat_seeds" slot="0" multiplier="2" />
         <itemStack modID="minecraft" itemName="pumpkin_seeds" slot="0" multiplier="1.6" />
         <itemStack modID="minecraft" itemName="melon_seeds" slot="0" multiplier="1.6" />
