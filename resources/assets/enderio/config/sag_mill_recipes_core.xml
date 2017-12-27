@@ -103,7 +103,7 @@
                         output set and a 14% chance for a forth copy.
   - chanceMultiplier:   The chances for the different outputs of the recipe are multiplied with this. e.g. if a recipe specifies
                         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" /> a chanceMultiplier of "3.14" would
-                        make it a 47.1% chance of getting one cobblestone. Results of more than 100% do no give multiples.
+                        make it a 47.1% chance of getting one cobblestone. Results of more than 100% do not give multiples.
   - powerMultiplier:    The "energyCost" of the recipe is multiplied with this.
   - durationRF:         This specifies how long one grinding ball will last before it is used up. The unit is the amount of
                         power used by the SAG Mill.
