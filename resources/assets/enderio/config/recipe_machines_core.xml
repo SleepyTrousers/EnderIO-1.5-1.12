@@ -237,6 +237,27 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Alloy Smelter, Upgrade" required="true">
+    <crafting>
+      <level maxlevel="2" />
+      <grid size="3x3">
+        <item /><item name="enderio:block_simple_alloy_smelter" /><item />
+        <item /><item name="CHASSIS" /><item />
+        <item name="GEAR_ENERGIZED" /><item /><item name="GEAR_ENERGIZED" />
+      </grid>
+      <output name="enderio:block_alloy_smelter" />
+    </crafting>
+    <crafting>
+      <level minlevel="3" />
+      <grid size="3x3">
+        <item name="blockIron" /><item name="enderio:block_simple_alloy_smelter" /><item name="blockIron" />
+        <item /><item name="CHASSIS" /><item />
+        <item name="GEAR_ENERGIZED" /><item /><item name="GEAR_ENERGIZED" />
+      </grid>
+      <output name="enderio:block_alloy_smelter" />
+    </crafting>
+  </recipe>
+
   <recipe name="The Vat" required="true">
     <crafting>
       <grid size="3x3">
