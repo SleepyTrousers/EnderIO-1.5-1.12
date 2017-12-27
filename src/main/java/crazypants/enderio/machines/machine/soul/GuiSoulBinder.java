@@ -13,7 +13,6 @@ import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.xp.ExperienceBarRenderer;
 import crazypants.enderio.base.xp.XpUtil;
-import crazypants.enderio.machines.machine.obelisk.xp.ContainerExperienceObelisk;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -50,7 +49,7 @@ public class GuiSoulBinder extends GuiInventoryMachineBase<TileSoulBinder> {
     if (b.id == PLAYER_XP_ID) {
       int xp = XpUtil.getPlayerXP(Minecraft.getMinecraft().player);
       if (xp > 0 || Minecraft.getMinecraft().player.capabilities.isCreativeMode) {
-        GuiPacket.send(this, ContainerExperienceObelisk.ADD_XP, getTileEntity().getCurrentlyRequiredLevel());
+        GuiPacket.send(this, ContainerSoulBinder.ADD_XP, getTileEntity().getCurrentlyRequiredLevel());
         SoundUtil.playClientSoundFX(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, getTileEntity());
       }
     }
