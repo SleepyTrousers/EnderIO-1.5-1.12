@@ -874,7 +874,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Deco Block 2/15" required="true">
     <crafting>
       <shapeless>
-        <item name="enderio:block_decoration1:1"/><item name="CAPACITOR1"/>
+        <item name="enderio:block_decoration1:1"/><item name="CAPACITOR1"/><item name="CAPACITOR1"/>
       </shapeless>
       <output name="enderio:block_decoration2:15" amount="1"/>
     </crafting>
@@ -904,6 +904,15 @@ XML editor will display that as tooltips when editing this file.
         <item name="enderio:block_decoration1:1"/><item name="GEAR_IRON"/>
       </shapeless>
       <output name="enderio:block_decoration3:2" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 3/3" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_decoration1:1"/><item name="CAPACITOR1"/>
+      </shapeless>
+      <output name="enderio:block_decoration3:3" amount="1"/>
     </crafting>
   </recipe>
 
