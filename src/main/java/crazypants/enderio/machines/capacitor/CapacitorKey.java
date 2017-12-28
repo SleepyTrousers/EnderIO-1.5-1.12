@@ -118,6 +118,10 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   VAT_POWER_BUFFER(MachineObject.block_vat, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
   VAT_POWER_USE(MachineObject.block_vat, CapacitorKeyType.ENERGY_USE, Scaler.Factory.CHEMICAL, 20),
 
+  WIRED_POWER_INTAKE(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 1000),
+  WIRED_POWER_BUFFER(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  WIRED_POWER_OUTPUT(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 500),
+
   WIRELESS_POWER_INTAKE(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 10000),
   WIRELESS_POWER_BUFFER(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 200000),
   WIRELESS_POWER_OUTPUT(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10000),

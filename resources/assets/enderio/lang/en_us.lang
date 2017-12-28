@@ -292,13 +292,6 @@ tile.block_dialing_device.tooltip.detailed.line1=Place near a Telepad
 tile.block_dialing_device.tooltip.detailed.line2=Stores and sets destinations.
 
 
-item.itemLocationPrintout.name=Location Printout
-item.itemLocationPrintout.tooltip.detailed.line1=Created using the Coordinate Selector
-item.itemLocationPrintout.tooltip.detailed.line2=Used to add destinations to a Telepad
-item.itemLocationPrintout.chat.setTarget=Target set to
-item.itemLocationPrintout.chat.addTarget=Added target
-item.itemLocationPrintout.chat.noPaper=No Paper in Inventory
-
 tile.block_transceiver.name=Dimensional Transceiver
 tile.block_transceiver.tooltip.detailed.line1=Transports items, fluids and power
 tile.block_transceiver.tooltip.detailed.line2=wirelessly across any distance and
@@ -316,6 +309,9 @@ tile.block_xp_vacuum.tooltip.detailed.line3=Needs to be activated with liquid XP
 
 tile.block_vat.name=The Vat
 tile.block_vat.tooltip.detailed.line1=Used to brew EnderIO fluids
+
+tile.block_wired_charger.name=Wired Charger
+tile.block_wired_charger.tooltip.detailed.line1=Charges items with µI
 
 tile.block_wireless_charger.name=Wireless Charger
 tile.block_wireless_charger.tooltip.detailed.line1=Charges items in nearby

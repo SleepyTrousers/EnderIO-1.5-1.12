@@ -45,7 +45,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Stirling Generator, Upgrade" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x3">
         <item /><item name="enderio:block_simple_stirling_generator" /><item />
         <item /><item name="CHASSIS" /><item />
@@ -78,7 +78,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Enhanced Combustion Generator, Upgrade" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x2">
         <item name="EnderIO:block_tank:1" /><item name="enderio:block_combustion_generator" /><item name="EnderIO:block_tank:1" />
         <item name="GEAR_VIBRANT" /><item /><item name="GEAR_VIBRANT" />
@@ -106,6 +106,17 @@ XML editor will display that as tooltips when editing this file.
         <item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" />
       </grid>
       <output name="enderio:block_killer_joe" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wired Charger" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:block_wired_charger" />
     </crafting>
   </recipe>
 
@@ -238,7 +249,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Alloy Smelter, Upgrade" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <level maxlevel="2" />
       <grid size="3x3">
         <item /><item name="enderio:block_simple_alloy_smelter" /><item />
@@ -247,7 +258,7 @@ XML editor will display that as tooltips when editing this file.
       </grid>
       <output name="enderio:block_alloy_smelter" />
     </crafting>
-    <crafting>
+    <crafting upgrade="true">
       <level minlevel="3" />
       <grid size="3x3">
         <item name="blockIron" /><item name="enderio:block_simple_alloy_smelter" /><item name="blockIron" />
