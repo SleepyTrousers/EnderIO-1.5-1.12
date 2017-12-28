@@ -40,7 +40,6 @@ public class VatRecipe implements IRecipe {
     inputs = recipe.getInputs();
     inputStackAlternatives = recipe.getInputStackAlternatives();
 
-    Log.info("foo");
     for (RecipeOutput recipeOutput : recipe.getOutputs()) {
       final FluidStack fluidOutput = recipeOutput.getFluidOutput();
       if (recipeOutput.isFluid() && fluidOutput != null) {

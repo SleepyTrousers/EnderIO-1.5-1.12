@@ -241,7 +241,7 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
   }
 
   protected void spawnResult(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rnd) {
-    if (rnd.nextFloat() < .13f && Celeb.C24.isOn()) {
+    if (Celeb.C24.isOn() && rnd.nextFloat() < .13f) {
       spawn(world, pos, "snowman");
     }
     if (rnd.nextFloat() < .10f) {

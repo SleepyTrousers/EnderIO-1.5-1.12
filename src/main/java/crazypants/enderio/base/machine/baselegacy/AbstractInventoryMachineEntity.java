@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.capability.ItemTools;
-import crazypants.enderio.base.capability.LegacyMachineWrapper;
 import crazypants.enderio.base.capability.ItemTools.MoveResult;
+import crazypants.enderio.base.capability.LegacyMachineWrapper;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.util.Prep;
@@ -180,15 +180,11 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   }
 
   public void setInventorySlotContents(int slot, @Nonnull ItemStack contents) {
-    if (Prep.isInvalid(contents)) {
-      inventory[slot] = Prep.getEmpty();
-    } else {
-      inventory[slot] = contents.copy();
-      if (inventory[slot].getCount() > getInventoryStackLimit(slot)) {
-        inventory[slot].setCount(getInventoryStackLimit(slot));
-        contents.shrink(getInventoryStackLimit(slot));
-        Block.spawnAsEntity(world, pos, contents);
-      }
+    inventory[slot] = contents.copy();
+    if (inventory[slot].getCount() > getInventoryStackLimit(slot)) {
+      inventory[slot].setCount(getInventoryStackLimit(slot));
+      contents.shrink(getInventoryStackLimit(slot));
+      Block.spawnAsEntity(world, pos, contents);
     }
     markDirty();
   }
