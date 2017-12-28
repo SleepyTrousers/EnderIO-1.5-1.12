@@ -42,11 +42,11 @@ public class GuiWiredCharger extends GuiInventoryMachineBase<TileWiredCharger> {
       drawTexturedModalRect(sx + 81, sy + 17, 176, 0, 14, 1 + scaled);
     }
 
-    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-
     String invName = EnderIOMachines.lang.localizeExact(getTileEntity().getMachineName() + ".name");
     getFontRenderer().drawStringWithShadow(invName, sx + (xSize / 2) - (getFontRenderer().getStringWidth(invName) / 2), sy + 4, 0xFFFFFF);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
 }
