@@ -69,10 +69,14 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
 
   @Override
   public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
-    MachineRecipeInput[] inputs = getRecipeInputs();
     MachineRecipeInput recipeInput = new MachineRecipeInput(i, itemstack);
+    return isMachineRecipeInputValid(recipeInput);
+  }
+
+  protected boolean isMachineRecipeInputValid(@Nonnull MachineRecipeInput recipeInput) {
+    MachineRecipeInput[] inputs = getRecipeInputs();
     for (int j = 0; j < inputs.length; j++) {
-      if (inputs[j].slotNumber == i) {
+      if (inputs[j].slotNumber == recipeInput.slotNumber) {
         inputs[j] = recipeInput;
         return VatRecipeManager.getInstance().isValidInput(inputs);
       }
@@ -184,13 +188,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    MachineRecipeInput[] inputs = getRecipeInputs();
-    inputs[inputs.length - 1] = new MachineRecipeInput(0, forFluidType);
-    if (VatRecipeManager.getInstance().isValidInput(inputs)) {
-      return inputTank;
-    } else {
-      return null;
-    }
+    MachineRecipeInput recipeInput = new MachineRecipeInput(0, forFluidType);
+    return isMachineRecipeInputValid(recipeInput) ? inputTank : null;
   }
 
   @Override
