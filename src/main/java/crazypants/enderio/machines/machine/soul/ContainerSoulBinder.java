@@ -12,6 +12,7 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.network.IRemoteExec;
+import crazypants.enderio.base.xp.PacketExperienceContainer;
 import crazypants.enderio.base.xp.XpUtil;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -90,8 +91,10 @@ public class ContainerSoulBinder extends AbstractMachineContainer<TileSoulBinder
     if (id == ADD_XP) {
       if (message.getPlayer().capabilities.isCreativeMode) {
         getTe().getContainer().addExperience(XpUtil.getExperienceForLevel(message.getInt(0)));
+        return new PacketExperienceContainer(getTe());
       } else {
         getTe().getContainer().drainPlayerXpToReachContainerLevel(message.getPlayer(), message.getInt(0));
+        return new PacketExperienceContainer(getTe());
       }
     }
     return null;
