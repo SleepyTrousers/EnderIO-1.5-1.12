@@ -12,7 +12,7 @@ import crazypants.enderio.base.recipe.enchanter.EnchanterRecipe;
 
 public class Enchanting extends AbstractConditional {
 
-  private IntItem input;
+  private ItemIntegerAmount input;
   private Enchantment enchantment;
 
   @Override
@@ -59,7 +59,7 @@ public class Enchanting extends AbstractConditional {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("input".equals(name)) {
       if (input == null) {
-        input = factory.read(new IntItem(), startElement);
+        input = factory.read(new ItemIntegerAmount(), startElement);
         return true;
       }
     }

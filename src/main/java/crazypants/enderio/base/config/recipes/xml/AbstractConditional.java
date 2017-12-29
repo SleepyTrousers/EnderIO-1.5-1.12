@@ -12,11 +12,11 @@ import crazypants.enderio.base.config.recipes.StaxFactory;
 
 public abstract class AbstractConditional implements RecipeGameRecipe {
 
-  private Level level;
+  private ConditionLevel level;
 
-  private List<ConfigReference> configReferences;
+  private List<ConditionConfig> configReferences;
 
-  private List<Dependency> dependencies;
+  private List<ConditionDependency> dependencies;
 
   protected transient boolean valid;
   protected transient boolean active;
@@ -25,7 +25,7 @@ public abstract class AbstractConditional implements RecipeGameRecipe {
   public Object readResolve() throws InvalidRecipeConfigException {
     active = true;
     if (configReferences != null) {
-      for (ConfigReference configReference : configReferences) {
+      for (ConditionConfig configReference : configReferences) {
         if (!configReference.isValid()) {
           active = false;
         }
@@ -37,7 +37,7 @@ public abstract class AbstractConditional implements RecipeGameRecipe {
       }
     }
     if (dependencies != null) {
-      for (Dependency dependency : dependencies) {
+      for (ConditionDependency dependency : dependencies) {
         if (!dependency.isValid()) {
           active = false;
         }
@@ -65,22 +65,22 @@ public abstract class AbstractConditional implements RecipeGameRecipe {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("level".equals(name)) {
       if (level == null) {
-        level = factory.read(new Level(), startElement);
+        level = factory.read(new ConditionLevel(), startElement);
         return true;
       }
     }
     if ("config".equals(name)) {
       if (configReferences == null) {
-        configReferences = new ArrayList<ConfigReference>();
+        configReferences = new ArrayList<ConditionConfig>();
       }
-      configReferences.add(factory.read(new ConfigReference(), startElement));
+      configReferences.add(factory.read(new ConditionConfig(), startElement));
       return true;
     }
     if ("dependency".equals(name)) {
       if (dependencies == null) {
-        dependencies = new ArrayList<Dependency>();
+        dependencies = new ArrayList<ConditionDependency>();
       }
-      dependencies.add(factory.read(new Dependency(), startElement));
+      dependencies.add(factory.read(new ConditionDependency(), startElement));
       return true;
     }
 

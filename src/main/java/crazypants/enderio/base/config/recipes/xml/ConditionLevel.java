@@ -3,45 +3,45 @@ package crazypants.enderio.base.config.recipes.xml;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 
-public class Dependency implements RecipeConfigElement {
+public class ConditionLevel implements RecipeConfigElement {
 
-  private String itemString;
-  private boolean reverse;
+  private Integer minlevel;
 
-  private transient OptionalItem item;
+  private Integer maxlevel;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
-    try {
-      if (itemString == null || itemString.trim().isEmpty()) {
-        throw new InvalidRecipeConfigException("Missing item");
-      }
-      item = new OptionalItem();
-      item.setName(itemString);
-      item.readResolve();
-    } catch (InvalidRecipeConfigException e) {
-      throw new InvalidRecipeConfigException(e, "in <dependency>");
+    if (minlevel == null) {
+      minlevel = 0;
+    } else if (minlevel < 0) {
+      throw new InvalidRecipeConfigException("Invalid negative 'minlevel' in <level>");
+    }
+    if (maxlevel == null) {
+      maxlevel = Integer.MAX_VALUE;
+    } else if (maxlevel < 0) {
+      throw new InvalidRecipeConfigException("Invalid negative 'maxlevel' in <level>");
     }
     return this;
   }
 
   @Override
   public boolean isValid() {
-    return item.isValid() != reverse;
+    return Config.recipeLevel >= minlevel && Config.recipeLevel <= maxlevel;
   }
 
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
-    if ("item".equals(name)) {
-      this.itemString = value;
+    if ("minlevel".equals(name)) {
+      this.minlevel = Integer.valueOf(value);
       return true;
     }
-    if ("reverse".equals(name)) {
-      this.reverse = Boolean.parseBoolean(value);
+    if ("maxlevel".equals(name)) {
+      this.maxlevel = Integer.valueOf(value);
       return true;
     }
 

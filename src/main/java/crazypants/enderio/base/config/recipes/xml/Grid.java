@@ -14,7 +14,7 @@ public class Grid implements RecipeConfigElement {
 
   private String size;
 
-  private List<OptionalItem> items;
+  private List<ItemOptional> items;
 
   private transient int width;
   private transient int height;
@@ -52,7 +52,7 @@ public class Grid implements RecipeConfigElement {
         throw new InvalidRecipeConfigException("Too many items (required=" + (width * height) + ", provided=" + items.size() + ")");
       }
       valid = true;
-      for (OptionalItem item : items) {
+      for (ItemOptional item : items) {
         valid = valid && item.isValid();
       }
     } catch (InvalidRecipeConfigException e) {
@@ -64,7 +64,7 @@ public class Grid implements RecipeConfigElement {
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
     boolean hasAtLeastOneItem = false;
-    for (OptionalItem item : items) {
+    for (ItemOptional item : items) {
       item.enforceValidity();
       hasAtLeastOneItem = hasAtLeastOneItem || item.getRecipeObject() != null;
     }
@@ -118,9 +118,9 @@ public class Grid implements RecipeConfigElement {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("item".equals(name)) {
       if (items == null) {
-        items = new ArrayList<OptionalItem>();
+        items = new ArrayList<ItemOptional>();
       }
-      items.add(factory.read(new OptionalItem(), startElement));
+      items.add(factory.read(new ItemOptional(), startElement));
       return true;
     }
 

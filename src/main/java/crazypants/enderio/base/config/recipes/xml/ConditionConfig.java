@@ -10,7 +10,7 @@ import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 
-public class ConfigReference implements RecipeConfigElement {
+public class ConditionConfig implements RecipeConfigElement {
 
   private String section;
   private String name;

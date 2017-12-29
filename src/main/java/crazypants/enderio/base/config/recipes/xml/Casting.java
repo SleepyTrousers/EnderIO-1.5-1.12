@@ -9,7 +9,7 @@ import crazypants.enderio.base.integration.tic.TicProxy;
 
 public class Casting extends AbstractCrafting {
 
-  private FloatItem input;
+  private ItemFloatAmount input;
   private Item cast;
 
   @Override
@@ -59,7 +59,7 @@ public class Casting extends AbstractCrafting {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("input".equals(name)) {
       if (input == null) {
-        input = factory.read(new FloatItem(), startElement);
+        input = factory.read(new ItemFloatAmount(), startElement);
         return true;
       }
     }

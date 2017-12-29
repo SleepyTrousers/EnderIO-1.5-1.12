@@ -15,7 +15,7 @@ import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 
-public class OptionalItem implements RecipeConfigElement {
+public class ItemOptional implements RecipeConfigElement {
 
   protected String name;
   protected transient @Nonnull ItemStack stack = Prep.getEmpty();

@@ -17,7 +17,7 @@ public class Alloying extends AbstractCrafting {
 
   private Float exp;
   private int energy;
-  private final @Nonnull NNList<IntItem> input = new NNList<>();
+  private final @Nonnull NNList<ItemIntegerAmount> input = new NNList<>();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -43,7 +43,7 @@ public class Alloying extends AbstractCrafting {
         throw new InvalidRecipeConfigException("Invalid negative value for 'energy'");
       }
 
-      for (NNIterator<IntItem> itr = input.fastIterator(); valid && itr.hasNext();) {
+      for (NNIterator<ItemIntegerAmount> itr = input.fastIterator(); valid && itr.hasNext();) {
         valid = valid && itr.next().isValid();
       }
 
@@ -56,7 +56,7 @@ public class Alloying extends AbstractCrafting {
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
     super.enforceValidity();
-    for (NNIterator<IntItem> itr = input.fastIterator(); itr.hasNext();) {
+    for (NNIterator<ItemIntegerAmount> itr = input.fastIterator(); itr.hasNext();) {
       itr.next().enforceValidity();
     }
   }
@@ -65,8 +65,8 @@ public class Alloying extends AbstractCrafting {
   public void register() {
     if (isValid() && isActive()) {
       NNList<IRecipeInput> inputStacks = new NNList<>();
-      for (NNIterator<IntItem> itr = input.fastIterator(); itr.hasNext();) {
-        final IntItem item = itr.next();
+      for (NNIterator<ItemIntegerAmount> itr = input.fastIterator(); itr.hasNext();) {
+        final ItemIntegerAmount item = itr.next();
         inputStacks.add(new ThingsRecipeInput(item.getThing()).setCount(item.getAmount()));
       }
       AlloyRecipeManager.getInstance().addRecipe(inputStacks, getOutput().getItemStack(), energy, exp);
@@ -90,7 +90,7 @@ public class Alloying extends AbstractCrafting {
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("input".equals(name)) {
-      input.add(factory.read(new IntItem(), startElement));
+      input.add(factory.read(new ItemIntegerAmount(), startElement));
       return true;
     }
 

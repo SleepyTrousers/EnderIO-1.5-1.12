@@ -15,7 +15,7 @@ public class Smelting extends AbstractCrafting {
   private boolean tinkers = false;
   private boolean vanilla = true;
 
-  private FloatItem input;
+  private ItemFloatAmount input;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -91,7 +91,7 @@ public class Smelting extends AbstractCrafting {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("input".equals(name)) {
       if (input == null) {
-        input = factory.read(new FloatItem(), startElement);
+        input = factory.read(new ItemFloatAmount(), startElement);
         return true;
       }
     }

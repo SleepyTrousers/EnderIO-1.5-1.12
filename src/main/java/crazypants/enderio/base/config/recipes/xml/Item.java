@@ -2,7 +2,7 @@ package crazypants.enderio.base.config.recipes.xml;
 
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 
-public class Item extends OptionalItem {
+public class Item extends ItemOptional {
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
