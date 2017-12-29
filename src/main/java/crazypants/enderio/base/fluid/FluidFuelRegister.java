@@ -63,9 +63,6 @@ public class FluidFuelRegister implements IFluidRegister {
 
   @Override
   public void addCoolant(@Nonnull Fluid fluid, float degreesCoolingPerMB) {
-    if (coolants.get(fluid.getName()) != null) {
-      return;
-    }
     coolants.put(fluid.getName(), new CoolantImpl(fluid, degreesCoolingPerMB));
     for (IFluidRegister reg : otherRegisters) {
       reg.addCoolant(fluid, degreesCoolingPerMB);
@@ -118,9 +115,6 @@ public class FluidFuelRegister implements IFluidRegister {
 
   @Override
   public void addFuel(@Nonnull Fluid fluid, int powerPerCycleRF, int totalBurnTime) {
-    if (fuels.get(fluid.getName()) != null) {
-      return;
-    }
     fuels.put(fluid.getName(), new FuelImpl(fluid, powerPerCycleRF, totalBurnTime));
     for (IFluidRegister reg : otherRegisters) {
       reg.addFuel(fluid, powerPerCycleRF, totalBurnTime);
