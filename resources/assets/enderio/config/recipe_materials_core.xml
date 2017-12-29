@@ -154,7 +154,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
       </grid>
-      <output name="DARK_GRINDING_BALL" amount="5"/>
+      <output name="DARK_GRINDING_BALL" amount="25"/>
     </crafting>
     <crafting>
       <level minlevel="2" maxlevel="2"/>
@@ -163,7 +163,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
         <item/><item name="DARK_STEEL"/><item/>
       </grid>
-      <output name="DARK_GRINDING_BALL" amount="5"/>
+      <output name="DARK_GRINDING_BALL" amount="25"/>
     </crafting>
     <crafting>
       <level minlevel="3"/>
@@ -172,7 +172,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="DARK_STEEL"/><item/><item name="DARK_STEEL"/>
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
       </grid>
-      <output name="DARK_GRINDING_BALL" amount="5"/>
+      <output name="DARK_GRINDING_BALL" amount="25"/>
     </crafting>
   </recipe>
 
@@ -180,19 +180,19 @@ XML editor will display that as tooltips when editing this file.
   <dependency item="tconstruct:cast_custom:2"/>
     <casting>
       <level maxlevel="1"/>
-      <input name="DARK_STEEL" amount="0.8"/>
+      <input name="DARK_STEEL" amount="0.16"/>
       <cast name="tconstruct:cast_custom:2"/>
       <output name="DARK_GRINDING_BALL"/>
     </casting>
     <casting>
       <level minlevel="2" maxlevel="2"/>
-      <input name="DARK_STEEL" amount="1"/>
+      <input name="DARK_STEEL" amount="0.2"/>
       <cast name="tconstruct:cast_custom:2"/>
       <output name="DARK_GRINDING_BALL"/>
     </casting>
     <casting>
       <level minlevel="3"/>
-      <input name="DARK_STEEL" amount="1.6"/>
+      <input name="DARK_STEEL" amount="0.32"/>
       <cast name="tconstruct:cast_custom:2"/>
       <output name="DARK_GRINDING_BALL"/>
     </casting>

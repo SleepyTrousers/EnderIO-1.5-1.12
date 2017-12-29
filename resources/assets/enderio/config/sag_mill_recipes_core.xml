@@ -3488,7 +3488,10 @@
     <grindingBall id="Flint" grindingMultiplier="1.2" chanceMultiplier="1.25" powerMultiplier="0.85" durationRF="24000" >
       <itemStack oreDictionary="itemFlint" />
     </grindingBall>
-    <grindingBall id="DarkSteelBall" grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.7" durationRF="100000" >
+    <grindingBall id="Diamond" grindingMultiplier="1.75" chanceMultiplier="1.1" powerMultiplier="1.25" durationRF="200000" >
+      <itemStack oreDictionary="gemDiamond" />
+    </grindingBall>
+    <grindingBall id="DarkSteelBall" grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.7" durationRF="250000" >
       <itemStack oreDictionary="itemDarkGrindingBall" />
     </grindingBall>
   </grindingBalls>
