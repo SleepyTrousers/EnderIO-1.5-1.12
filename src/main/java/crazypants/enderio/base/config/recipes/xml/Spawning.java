@@ -11,7 +11,7 @@ import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
 
-public class Spawn extends AbstractConditional {
+public class Spawning extends AbstractConditional {
 
   private final List<Entity> entities = new NNList<>();
 
@@ -29,7 +29,7 @@ public class Spawn extends AbstractConditional {
       }
 
     } catch (InvalidRecipeConfigException e) {
-      throw new InvalidRecipeConfigException(e, "in <spawn>");
+      throw new InvalidRecipeConfigException(e, "in <spawning>");
     }
     return this;
   }

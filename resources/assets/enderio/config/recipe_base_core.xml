@@ -362,7 +362,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Spawner, defaults" required="true">
-    <spawn>
+    <spawning>
       <!-- This will print out all available mobs: 
       <entity name="minecraft:herobrine" costMultiplier="1" disabled="false"/>
       -->
@@ -414,11 +414,11 @@ XML editor will display that as tooltips when editing this file.
       <entity name="minecraft:zombie_pigman"       costMultiplier="5.0" disabled="false"/> <!-- Zombie Pigman -->
       <entity name="minecraft:zombie_villager"     costMultiplier="2.5" disabled="false"/> <!-- Zombie Villager -->
       <!-- Note: All unconfigured mobs will have a costMultiplier of 1.0 -->
-    </spawn>
+    </spawning>
   </recipe>
 
   <recipe name="Spawner, Ender Zoo" required="false">
-    <spawn>
+    <spawning>
       <entity name="enderzoo:concussioncreeper"    costMultiplier="1.5" disabled="false"/>
       <entity name="enderzoo:direslime"            costMultiplier="0.9" disabled="false"/>
       <entity name="enderzoo:direwolf"             costMultiplier="1.5" disabled="false"/>
@@ -428,7 +428,7 @@ XML editor will display that as tooltips when editing this file.
       <entity name="enderzoo:owl"                  costMultiplier="1.0" disabled="false"/>
       <entity name="enderzoo:withercat"            costMultiplier="1.0" disabled="false"/>
       <entity name="enderzoo:witherwitch"          costMultiplier="3.0" disabled="false"/>
-    </spawn>
+    </spawning>
   </recipe>
 
 </enderio:recipes>

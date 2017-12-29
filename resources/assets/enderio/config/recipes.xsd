@@ -568,7 +568,7 @@
                       </sequence>
                     </complexType>
                   </element>
-                  <element name="spawn" maxOccurs="unbounded" minOccurs="1"><complexType>
+                  <element name="spawning" maxOccurs="unbounded" minOccurs="1"><complexType>
                   <annotation>
                       <documentation>Spawn recipes to be used in the powered spawner.</documentation>
                     </annotation>

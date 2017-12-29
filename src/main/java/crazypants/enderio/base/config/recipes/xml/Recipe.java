@@ -135,8 +135,8 @@ public class Recipe extends AbstractConditional {
         craftings.add(factory.read(new Enchanting(), startElement));
         return true;
       }
-      if ("spawn".equals(name)) {
-        craftings.add(factory.read(new Spawn(), startElement));
+      if ("spawning".equals(name)) {
+        craftings.add(factory.read(new Spawning(), startElement));
         return true;
       }
     } catch (InvalidRecipeConfigException e) {
