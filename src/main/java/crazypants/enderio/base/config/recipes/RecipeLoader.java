@@ -8,6 +8,8 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.io.IOUtils;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config;
@@ -47,7 +49,7 @@ public class RecipeLoader {
           recipeError(filename, "File is empty or invalid");
         }
       } catch (InvalidRecipeConfigException e) {
-        recipeError(filename, e.getMessage());
+        recipeError(NullHelper.first(e.getFilename(), filename), e.getMessage());
       } catch (IOException e) {
         Log.error("IO error while reading file:");
         e.printStackTrace();
@@ -61,6 +63,7 @@ public class RecipeLoader {
   }
 
   private static void recipeError(String filename, String message) {
+    String fileref = filename.startsWith("recipe_") ? filename : "recipe_" + filename + "_core.xml or recipe_" + filename + "_user.xml";
     EnderIO.proxy.stopWithErrorScreen( //
         "=======================================================================", //
         "== ENDER IO FATAL ERROR ==", //
@@ -70,7 +73,7 @@ public class RecipeLoader {
         "things to vanilla items or the Ore Dictionary.", //
         "=======================================================================", //
         "== Bad file ==", //
-        "recipe_" + filename + "_core.xml or recipe_" + filename + "_user.xml", //
+        fileref, //
         "=======================================================================", //
         "== Error Message ==", //
         message, //

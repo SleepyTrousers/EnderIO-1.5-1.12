@@ -72,8 +72,10 @@ public class RecipeFactory {
       } catch (XMLStreamException e) {
         printContentsOnError(getResource(coreRL), coreRL.toString());
         throw e;
+      } catch (InvalidRecipeConfigException irce) {
+        irce.setFilename(fileName + "_core.xml");
+        throw irce;
       }
-
     }
 
     if (userFL.exists()) {
@@ -83,6 +85,9 @@ public class RecipeFactory {
         } catch (XMLStreamException e) {
           printContentsOnError(new FileInputStream(userFL), userFL.toString());
           throw e;
+        } catch (InvalidRecipeConfigException irce) {
+          irce.setFilename(fileName + "_user.xml");
+          throw irce;
         }
       }
     } else {

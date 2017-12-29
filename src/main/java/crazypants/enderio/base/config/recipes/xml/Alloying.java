@@ -43,7 +43,7 @@ public class Alloying extends AbstractCrafting {
         throw new InvalidRecipeConfigException("Invalid negative value for 'energy'");
       }
 
-      for (NNIterator<IntItem> itr = input.fastIterator(); itr.hasNext();) {
+      for (NNIterator<IntItem> itr = input.fastIterator(); valid && itr.hasNext();) {
         valid = valid && itr.next().isValid();
       }
 
@@ -66,7 +66,8 @@ public class Alloying extends AbstractCrafting {
     if (isValid() && isActive()) {
       NNList<IRecipeInput> inputStacks = new NNList<>();
       for (NNIterator<IntItem> itr = input.fastIterator(); itr.hasNext();) {
-        inputStacks.add(new ThingsRecipeInput(itr.next().getThing()));
+        final IntItem item = itr.next();
+        inputStacks.add(new ThingsRecipeInput(item.getThing()).setCount(item.getAmount()));
       }
       AlloyRecipeManager.getInstance().addRecipe(inputStacks, getOutput().getItemStack(), energy, exp);
     }

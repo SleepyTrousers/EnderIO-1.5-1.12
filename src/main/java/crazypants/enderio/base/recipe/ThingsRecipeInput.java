@@ -2,14 +2,20 @@ package crazypants.enderio.base.recipe;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class ThingsRecipeInput implements IRecipeInput {
 
   private final @Nonnull Things things;
+  /**
+   * A stack to represent this input in situations where a single stack is needed. It also holds the stackSize for the input. Callers may modify this stack's
+   * size to keep track of things (obviously they need to copy this object first).
+   */
   private final @Nonnull ItemStack leadStack;
   private final int slot;
   private final float multiplier;
@@ -24,14 +30,19 @@ public class ThingsRecipeInput implements IRecipeInput {
 
   public ThingsRecipeInput(@Nonnull Things things, int slot, float multiplier) {
     this.things = things;
-    this.leadStack = things.getItemStacks().get(0).copy();
+    final NNList<ItemStack> stacks = things.getItemStacks();
+    this.leadStack = stacks.isEmpty() ? Prep.getEmpty() : stacks.get(0).copy();
     this.slot = slot;
     this.multiplier = multiplier;
   }
 
+  public @Nonnull ThingsRecipeInput setCount(int count) {
+    leadStack.setCount(count);
+    return this;
+  }
+
   @Override
-  @Nonnull
-  public ThingsRecipeInput copy() {
+  public @Nonnull ThingsRecipeInput copy() {
     return new ThingsRecipeInput(things, slot, multiplier);
   }
 
@@ -41,8 +52,7 @@ public class ThingsRecipeInput implements IRecipeInput {
   }
 
   @Override
-  @Nonnull
-  public ItemStack getInput() {
+  public @Nonnull ItemStack getInput() {
     return leadStack;
   }
 
@@ -73,12 +83,12 @@ public class ThingsRecipeInput implements IRecipeInput {
 
   @Override
   public ItemStack[] getEquivelentInputs() {
-    return things.getItemStacks().toArray(new ItemStack[0]);
+    return things.getItemStacksRaw().toArray(new ItemStack[0]);
   }
 
   @Override
   public boolean isValid() {
-    return !things.isEmpty();
+    return Prep.isValid(leadStack);
   }
 
 }
