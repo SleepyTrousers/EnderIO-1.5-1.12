@@ -451,7 +451,7 @@ public final class BlockFluidEio {
     @Override
     public void onEntityCollidedWithBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Entity entity) {
       if (!world.isRemote && entity.timeUntilPortal == 0) {
-        RandomTeleportUtil.teleportEntity(world, entity);
+        RandomTeleportUtil.teleportEntity(world, entity, false);
       }
       super.onEntityCollidedWithBlock(world, pos, state, entity);
     }

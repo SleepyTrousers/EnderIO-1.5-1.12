@@ -4,26 +4,24 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.sound.SoundRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEndermite;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
 public class RandomTeleportUtil {
 
   private static final Random rand = new Random();
-  private static final ResourceLocation SOUND = new ResourceLocation("entity.endermen.teleport");
 
   private RandomTeleportUtil() {
   }
 
-  public static void teleportEntity(@Nonnull World world, @Nonnull Entity entity) {
+  public static void teleportEntity(@Nonnull World world, @Nonnull Entity entity, boolean isItem) {
     double origX = entity.posX, origY = entity.posY, origZ = entity.posZ;
     for (int i = 0; i < 5; i++) {
       double targetX = origX + rand.nextGaussian() * 16f;
@@ -33,11 +31,9 @@ public class RandomTeleportUtil {
       }
       double targetZ = origZ + rand.nextGaussian() * 16f;
       if (isClear(world, entity, targetX, targetY, targetZ) && doTeleport(world, entity, targetX, targetY, targetZ)) {
-        final SoundEvent sound = SoundEvent.REGISTRY.getObject(SOUND);
-        if (sound != null) {
-          world.playSound(null, origX, origY, origZ, sound, SoundCategory.BLOCKS, 1, 1);
-          world.playSound(null, targetX, targetY, targetZ, sound, SoundCategory.BLOCKS, 1, 1);
-        }
+        final SoundRegistry sound = isItem ? SoundRegistry.TRAVEL_SOURCE_ITEM : SoundRegistry.TRAVEL_SOURCE_BLOCK;
+        world.playSound(null, origX, origY, origZ, sound.getSoundEvent(), sound.getSoundCategory(), 1, 1);
+        world.playSound(null, targetX, targetY, targetZ, sound.getSoundEvent(), sound.getSoundCategory(), 1, 1);
         entity.timeUntilPortal = 5;
         return;
       }
@@ -80,7 +76,7 @@ public class RandomTeleportUtil {
       damage = 1f;
     }
     EnderTeleportEvent event = new EnderTeleportEvent(entity, targetX, targetY, targetZ, damage);
-    if (!net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event)) {
+    if (!MinecraftForge.EVENT_BUS.post(event)) {
       if (rand.nextFloat() < 0.15F && world.getGameRules().getBoolean("doMobSpawning")) {
         EntityEndermite entityendermite = new EntityEndermite(world);
         entityendermite.setSpawnedByPlayer(true);
