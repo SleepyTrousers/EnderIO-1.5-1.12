@@ -43,7 +43,7 @@ public class ThingsRecipeInput implements IRecipeInput {
 
   @Override
   public @Nonnull ThingsRecipeInput copy() {
-    return new ThingsRecipeInput(things, slot, multiplier);
+    return new ThingsRecipeInput(things, slot, multiplier).setCount(leadStack.getCount());
   }
 
   @Override
@@ -83,7 +83,12 @@ public class ThingsRecipeInput implements IRecipeInput {
 
   @Override
   public ItemStack[] getEquivelentInputs() {
-    return things.getItemStacksRaw().toArray(new ItemStack[0]);
+    final ItemStack[] result = things.getItemStacksRaw().toArray(new ItemStack[0]);
+    for (int i = 0; i < result.length; i++) {
+      result[i] = result[i].copy();
+      result[i].setCount(leadStack.getCount());
+    }
+    return result;
   }
 
   @Override
