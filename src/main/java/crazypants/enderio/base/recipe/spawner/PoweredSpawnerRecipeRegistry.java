@@ -1,4 +1,4 @@
-package crazypants.enderio.base.recipe.poweredspawner;
+package crazypants.enderio.base.recipe.spawner;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -11,7 +11,7 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.SpawnerConfig;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.recipe.poweredspawner.PoweredSpawnerRecipeRegistry;
+import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.BlockMobSpawner;

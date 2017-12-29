@@ -9,7 +9,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
-import crazypants.enderio.base.recipe.poweredspawner.PoweredSpawnerRecipeRegistry;
+import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
 
 public class Spawn extends AbstractConditional {
 

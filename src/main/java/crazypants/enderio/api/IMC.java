@@ -4,9 +4,9 @@ import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.item.soulvial.ItemSoulVial;
 import crazypants.enderio.base.paint.PaintSourceValidator;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
-import crazypants.enderio.base.recipe.poweredspawner.PoweredSpawnerRecipeRegistry;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
+import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
 import crazypants.enderio.base.teleport.TravelController;
 

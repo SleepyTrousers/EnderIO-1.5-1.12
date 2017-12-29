@@ -8,7 +8,7 @@ import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.item.spawner.BrokenSpawnerHandler;
-import crazypants.enderio.base.recipe.poweredspawner.PoweredSpawnerRecipeRegistry;
+import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
 import crazypants.enderio.util.CapturedMob;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
