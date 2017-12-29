@@ -54,6 +54,8 @@ enderio.gui.xp_obelisk.button.store.empty=§4You don't have any XP
 
 enderio.block_solar_panel.tooltip.maxoutput=Max Output: %s
 
+enderio.gui.soul_binder.useplayerxp=Use Player XP
+
 enderio.block_powered_spawner.tooltip.empty=Empty
 enderio.gui.powered_spawner.capture=Capture
 enderio.gui.powered_spawner.spawn=Spawn

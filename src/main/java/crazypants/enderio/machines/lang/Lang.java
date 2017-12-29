@@ -49,6 +49,7 @@ public enum Lang implements ILang {
   GUI_XP_RETR_ALL_2(".gui.xp_obelisk.button.retrieve.all.line2"),
   GUI_XP_RETR_ALL_3(".gui.xp_obelisk.button.retrieve.all.line3"),
   SOLAR_MAXOUTPUT(".block_solar_panel.tooltip.maxoutput"),
+  GUI_SOUL_USEPLAYERXP(".gui.soul_binder.useplayerxp"),
   SPAWNER_EMPTY(".block_powered_spawner.tooltip.empty"),
   GUI_SPAWNER_CAPTURE(".gui.powered_spawner.capture"),
   GUI_SPAWNER_SPAWN(".gui.powered_spawner.spawn"),
