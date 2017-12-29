@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.integration.jei.RecipeWrapper;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.recipe.IManyToOneRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter;
@@ -55,7 +56,11 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_simple_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID);
 
     List<IRecipe> result = new ArrayList<IRecipe>();
-    result.addAll(AlloyRecipeManager.getInstance().getRecipes());
+    for (IManyToOneRecipe rec : AlloyRecipeManager.getInstance().getRecipes()) {
+      if (!rec.isSynthetic()) {
+        result.add(rec);
+      }
+    }
     result.addAll(AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes());
     registry.addRecipes(result, UID);
 
