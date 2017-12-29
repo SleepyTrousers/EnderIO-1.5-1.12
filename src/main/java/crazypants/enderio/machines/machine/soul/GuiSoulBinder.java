@@ -13,7 +13,7 @@ import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.xp.ExperienceBarRenderer;
 import crazypants.enderio.base.xp.XpUtil;
-import crazypants.enderio.machines.machine.obelisk.xp.ContainerExperienceObelisk;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -30,7 +30,7 @@ public class GuiSoulBinder extends GuiInventoryMachineBase<TileSoulBinder> {
     super(te, new ContainerSoulBinder(par1InventoryPlayer, te), "soul_fuser");
     usePlayerXP = new IconButton(this, PLAYER_XP_ID, 125, 57, IconEIO.XP);
     usePlayerXP.visible = false;
-    usePlayerXP.setToolTip("Use Player XP"); // FIXME: Lang
+    usePlayerXP.setToolTip(Lang.GUI_SOUL_USEPLAYERXP.get());
 
     addProgressTooltip(80, 34, 24, 16);
 
@@ -50,7 +50,7 @@ public class GuiSoulBinder extends GuiInventoryMachineBase<TileSoulBinder> {
     if (b.id == PLAYER_XP_ID) {
       int xp = XpUtil.getPlayerXP(Minecraft.getMinecraft().player);
       if (xp > 0 || Minecraft.getMinecraft().player.capabilities.isCreativeMode) {
-        GuiPacket.send(this, ContainerExperienceObelisk.ADD_XP, getTileEntity().getCurrentlyRequiredLevel());
+        GuiPacket.send(this, ContainerSoulBinder.ADD_XP, getTileEntity().getCurrentlyRequiredLevel());
         SoundUtil.playClientSoundFX(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, getTileEntity());
       }
     }
