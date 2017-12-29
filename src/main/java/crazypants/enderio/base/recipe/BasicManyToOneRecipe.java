@@ -31,11 +31,11 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   @Override
   public boolean isValidRecipeComponents(ItemStack... items) {
 
-    NNList<RecipeInput> inputs = new NNList<RecipeInput>(recipe.getInputs());
+    NNList<IRecipeInput> inputs = new NNList<>(recipe.getInputs());
     for (ItemStack is : items) {
       if (is != null && Prep.isValid(is)) {
-        RecipeInput remove = null;
-        for (RecipeInput ri : inputs) {
+        IRecipeInput remove = null;
+        for (IRecipeInput ri : inputs) {
           if (ri.isInput(is)) {
             remove = ri;
             break;
@@ -103,7 +103,7 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   }
 
   @Override
-  public @Nonnull RecipeInput[] getInputs() {
+  public @Nonnull IRecipeInput[] getInputs() {
     return recipe.getInputs();
   }
 
@@ -116,7 +116,7 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
     if (Prep.isInvalid(input)) {
       return null;
     }
-    for (RecipeInput ri : recipe.getInputs()) {
+    for (IRecipeInput ri : recipe.getInputs()) {
       if (ri.isInput(input)) {
         return ri.getInput();
       }

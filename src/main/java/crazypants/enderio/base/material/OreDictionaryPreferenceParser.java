@@ -16,9 +16,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.RecipeConfig;
 import crazypants.enderio.base.recipe.RecipeConfigParser;
-import crazypants.enderio.base.recipe.RecipeInput;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -111,7 +111,7 @@ public final class OreDictionaryPreferenceParser extends DefaultHandler {
       return;
     }
     if (ELEMENT_STACK.equals(localName) && oreDictName != null && Prep.isInvalid(prefStack)) {
-      RecipeInput ri = RecipeConfigParser.getItemStack(attributes);
+      IRecipeInput ri = RecipeConfigParser.getItemStack(attributes);
       if (ri != null && Prep.isValid(ri.getInput())) {
         prefStack = ri.getInput();
       }

@@ -87,7 +87,7 @@ public class OreDictionaryRecipeInput extends RecipeInput {
   }
 
   @Override
-  public @Nonnull RecipeInput copy() {
+  public @Nonnull OreDictionaryRecipeInput copy() {
     return new OreDictionaryRecipeInput(this);
   }
 

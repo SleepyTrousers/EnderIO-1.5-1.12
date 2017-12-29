@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class RecipeInput {
+public class RecipeInput implements IRecipeInput {
 
   private final int slot;
   private final @Nonnull ItemStack input;
@@ -53,30 +53,37 @@ public class RecipeInput {
     slot = copyFrom.slot;
   }
 
+  @Override
   public @Nonnull RecipeInput copy() {
     return new RecipeInput(this);
   }
 
+  @Override
   public boolean isFluid() {
     return fluid != null;
   }
 
+  @Override
   public @Nonnull ItemStack getInput() {
     return input;
   }
 
+  @Override
   public FluidStack getFluidInput() {
     return fluid;
   }
 
+  @Override
   public float getMulitplier() {
     return multiplier;
   }
 
+  @Override
   public int getSlotNumber() {
     return slot;
   }
 
+  @Override
   public boolean isInput(@Nonnull ItemStack test) {
     if (Prep.isInvalid(test) || Prep.isInvalid(input)) {
       return false;
@@ -88,6 +95,7 @@ public class RecipeInput {
     return test.getItem() == input.getItem();
   }
 
+  @Override
   public boolean isInput(FluidStack test) {
     if (test == null || fluid == null) {
       return false;
@@ -95,6 +103,7 @@ public class RecipeInput {
     return test.isFluidEqual(fluid);
   }
 
+  @Override
   public ItemStack[] getEquivelentInputs() {
     if (Prep.isInvalid(input)) {
       return null;
@@ -115,6 +124,7 @@ public class RecipeInput {
     return "RecipeInput invalid";
   }
 
+  @Override
   public boolean isValid() {
     if (isFluid()) {
       return fluid != null && fluid.getFluid() != null;

@@ -319,7 +319,7 @@ public class RecipeConfig {
     public @Nonnull NNList<Recipe> createRecipes(boolean isRecipePerInput) {
 
       RecipeOutput[] outputArr = outputs.toArray(new RecipeOutput[0]);
-      RecipeInput[] inputArr = inputs.toArray(new RecipeInput[0]);
+      IRecipeInput[] inputArr = inputs.toArray(new IRecipeInput[0]);
       NNList<Recipe> result = new NNList<Recipe>();
       if (isRecipePerInput) {
         for (RecipeInput input : inputs) {

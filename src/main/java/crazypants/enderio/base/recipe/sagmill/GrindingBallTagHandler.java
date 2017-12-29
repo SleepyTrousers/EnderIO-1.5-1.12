@@ -10,8 +10,8 @@ import org.xml.sax.SAXException;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.recipe.CustomTagHandler;
+import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.RecipeConfigParser;
-import crazypants.enderio.base.recipe.RecipeInput;
 
 public class GrindingBallTagHandler implements CustomTagHandler {
 
@@ -68,7 +68,7 @@ public class GrindingBallTagHandler implements CustomTagHandler {
       return true;
     }
     if (processStack && RecipeConfigParser.ELEMENT_ITEM_STACK.equals(localName)) {
-      RecipeInput ri = RecipeConfigParser.getItemStack(attributes);
+      IRecipeInput ri = RecipeConfigParser.getItemStack(attributes);
       if (ri != null) {
         GrindingBall gb = new GrindingBall(ri, gm, cm, pm, drf);
         balls.put(id, gb);

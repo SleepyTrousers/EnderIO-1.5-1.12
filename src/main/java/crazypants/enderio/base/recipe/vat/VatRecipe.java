@@ -10,9 +10,9 @@ import com.google.common.collect.Table;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.recipe.IRecipe;
+import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.RecipeBonusType;
-import crazypants.enderio.base.recipe.RecipeInput;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
@@ -26,10 +26,10 @@ public class VatRecipe implements IRecipe {
   private final @Nonnull NNList<List<ItemStack>> inputStackAlternatives;
   protected final boolean valid;
 
-  protected final @Nonnull Table<RecipeInput, RecipeInput, FluidStack> inputFluidStacks = HashBasedTable.create();
-  protected final @Nonnull Table<RecipeInput, RecipeInput, FluidStack> outputFluidStacks = HashBasedTable.create();
+  protected final @Nonnull Table<IRecipeInput, IRecipeInput, FluidStack> inputFluidStacks = HashBasedTable.create();
+  protected final @Nonnull Table<IRecipeInput, IRecipeInput, FluidStack> outputFluidStacks = HashBasedTable.create();
 
-  protected final @Nonnull RecipeInput[] inputs;
+  protected final @Nonnull IRecipeInput[] inputs;
   protected final @Nonnull RecipeOutput[] output;
   protected final int energyRequired;
   private int requiredItems;
@@ -54,18 +54,18 @@ public class VatRecipe implements IRecipe {
     } else {
 
       requiredItems = 1;
-      for (RecipeInput ri : inputs) {
+      for (IRecipeInput ri : inputs) {
         if (!ri.isFluid() && ri.getSlotNumber() == 1) {
           requiredItems = 2;
         }
       }
 
       if (requiredItems == 2) {
-        for (RecipeInput r0 : inputs) {
+        for (IRecipeInput r0 : inputs) {
           if (!r0.isFluid() && r0.getSlotNumber() == 0) {
-            for (RecipeInput r1 : inputs) {
+            for (IRecipeInput r1 : inputs) {
               if (!r1.isFluid() && r1.getSlotNumber() == 1) {
-                for (RecipeInput r2 : inputs) {
+                for (IRecipeInput r2 : inputs) {
                   if (r2.isFluid()) {
                     float im = r0.getMulitplier() * r1.getMulitplier();
                     inputFluidStack = r2.getFluidInput().copy();
@@ -82,9 +82,9 @@ public class VatRecipe implements IRecipe {
           }
         }
       } else {
-        for (RecipeInput r0 : inputs) {
+        for (IRecipeInput r0 : inputs) {
           if (!r0.isFluid()) {
-            for (RecipeInput r2 : inputs) {
+            for (IRecipeInput r2 : inputs) {
               if (r2.isFluid()) {
                 float im = r0.getMulitplier();
                 inputFluidStack = r2.getFluidInput().copy();
@@ -128,7 +128,7 @@ public class VatRecipe implements IRecipe {
   }
 
   @Override
-  public @Nonnull RecipeInput[] getInputs() {
+  public @Nonnull IRecipeInput[] getInputs() {
     return inputs;
   }
 
@@ -142,11 +142,11 @@ public class VatRecipe implements IRecipe {
     return RecipeBonusType.NONE;
   }
 
-  private RecipeInput getRecipeInput(int slot, ItemStack item) {
+  private IRecipeInput getRecipeInput(int slot, ItemStack item) {
     if (item == null) {
       return null;
     }
-    for (RecipeInput ri : inputs) {
+    for (IRecipeInput ri : inputs) {
       if (ri.getSlotNumber() == slot && ri.isInput(item)) {
         return ri;
       }
@@ -161,7 +161,7 @@ public class VatRecipe implements IRecipe {
 
   @Override
   public boolean isValidInput(@Nonnull FluidStack item) {
-    for (RecipeInput ri : inputs) {
+    for (IRecipeInput ri : inputs) {
       if (item.getFluid() != null && item.isFluidEqual(ri.getFluidInput())) {
         return true;
       }
@@ -170,10 +170,10 @@ public class VatRecipe implements IRecipe {
   }
 
   public static class RecipeMatch {
-    public RecipeInput r0, r1;
+    public IRecipeInput r0, r1;
     public FluidStack in, out;
 
-    void setRecipeInput(RecipeInput r) {
+    void setRecipeInput(IRecipeInput r) {
       if (r != null) {
         if (r.getSlotNumber() == 0) {
           r0 = r;
@@ -233,7 +233,7 @@ public class VatRecipe implements IRecipe {
 
   @Override
   public NNList<FluidStack> getInputFluidStacks() {
-    for (RecipeInput r2 : inputs) {
+    for (IRecipeInput r2 : inputs) {
       if (r2.isFluid()) {
         return new NNList<>(r2.getFluidInput().copy());
       }
@@ -242,7 +242,7 @@ public class VatRecipe implements IRecipe {
   }
 
   public float getMultiplierForInput(FluidStack item) {
-    for (RecipeInput input : inputs) {
+    for (IRecipeInput input : inputs) {
       if (input.isInput(item)) {
         return input.getMulitplier();
       }
@@ -271,7 +271,7 @@ public class VatRecipe implements IRecipe {
   }
 
   public int getNumConsumed(ItemStack item) {
-    for (RecipeInput input : inputs) {
+    for (IRecipeInput input : inputs) {
       if (item != null && input.isInput(item)) {
         return input.getInput().getCount();
       }

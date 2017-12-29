@@ -19,7 +19,7 @@ public interface IRecipe {
   RecipeOutput[] getOutputs();
 
   @Nonnull
-  RecipeInput[] getInputs();
+  IRecipeInput[] getInputs();
 
   @Nonnull
   NNList<ItemStack> getInputStacks();

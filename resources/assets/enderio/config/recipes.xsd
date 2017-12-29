@@ -14,7 +14,7 @@
               <sequence>
                 <element minOccurs="0" maxOccurs="unbounded" name="config">
                                     <annotation>
-                                      <documentation>Restricts this alias to only be used if thegiven config value has the given value.</documentation>
+                                      <documentation>Restricts this alias to only be used if the given config value has the given value.</documentation>
                                     </annotation>
                                     <complexType>
                     <attribute use="required" name="section" type="string"></attribute>
@@ -467,7 +467,7 @@
                             <attribute use="required" name="name" type="string"></attribute>
                           </complexType>
                         </element>
-                        <element minOccurs="1" maxOccurs="1" name="output">
+                        <element minOccurs="1" maxOccurs="unbounded" name="output">
                           <annotation>
                             <documentation>The result of the casting process.</documentation>
                           </annotation>
@@ -634,6 +634,147 @@
                         </element>
                       </sequence>
                   </complexType></element>
+                  <element minOccurs="1" maxOccurs="unbounded" name="alloying">
+                    <annotation>
+                      <documentation>Alloying variants are crafted in an alloy smelter.</documentation>
+                    </annotation>
+                    <complexType>
+                      <sequence>
+                        <element minOccurs="0" maxOccurs="unbounded" name="config">
+                          <annotation>
+                            <documentation>
+                              Restricts this variant to only be used if the given config value has the given value.
+                            </documentation>
+                          </annotation>
+                          <complexType>
+                            <attribute use="required" name="section" type="string"></attribute>
+                            <attribute use="required" name="name" type="string"></attribute>
+                            <attribute use="optional" name="value" type="boolean"></attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                          <annotation>
+                            <documentation>
+                              Restricts this variant to only be used if the given game element can (not) be found in the game.
+                            </documentation>
+                          </annotation>
+                          <complexType>
+                            <attribute use="required" name="item" type="string"></attribute>
+                            <attribute use="optional" name="reverse" type="boolean"></attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="0" maxOccurs="unbounded" name="level">
+                          <annotation>
+                            <documentation>
+                              Restricts this variant to only be used if the recipe level is within the given bounds.
+                            </documentation>
+                          </annotation>
+                          <complexType>
+                            <attribute use="optional" name="minlevel" type="int"></attribute>
+                            <attribute use="optional" name="maxlevel" type="int"></attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="1" maxOccurs="3" name="input">
+                          <complexType>
+                            <attribute use="required" name="name" type="string"></attribute>                            <attribute name="amount" use="optional">
+                              <annotation>
+                                <documentation>
+                                  Number of input items needed.
+                                </documentation>
+                              </annotation>
+                              <simpleType>
+                                <restriction base="int">
+                                  <maxInclusive value="64"></maxInclusive>
+                                  <minInclusive value="1"></minInclusive>
+                                </restriction>
+                              </simpleType>
+                            </attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="1" maxOccurs="unbounded" name="output">
+                          <annotation>
+                            <documentation>The result of the alloying.</documentation>
+                          </annotation>
+                          <complexType>
+                            <sequence>
+                              <element minOccurs="0" maxOccurs="unbounded" name="config">
+                                <annotation>
+                                  <documentation>
+                                    Restricts this output to only be used if the given config value has the given value.
+                                  </documentation>
+                                </annotation>
+                                <complexType>
+                                  <attribute use="required" name="section" type="string"></attribute>
+                                  <attribute use="required" name="name" type="string"></attribute>
+                                  <attribute use="optional" name="value" type="boolean"></attribute>
+                                </complexType>
+                              </element>
+                              <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                                <annotation>
+                                  <documentation>
+                                    Restricts this output to only be used if the given game element can (not) be found in the game.
+                                  </documentation>
+                                </annotation>
+                                <complexType>
+                                  <attribute use="required" name="item" type="string"></attribute>
+                                  <attribute use="optional" name="reverse" type="boolean"></attribute>
+                                </complexType>
+                              </element>
+                              <element minOccurs="0" maxOccurs="unbounded" name="level">
+                                <annotation>
+                                  <documentation>
+                                    Restricts this output to only be used if the recipe level is within the given bounds.
+                                  </documentation>
+                                </annotation>
+                                <complexType>
+                                  <attribute use="optional" name="minlevel" type="int"></attribute>
+                                  <attribute use="optional" name="maxlevel" type="int"></attribute>
+                                </complexType>
+                              </element>
+                            </sequence>
+                            <attribute use="required" name="name" type="string"></attribute>
+                            <attribute use="optional" name="amount">
+                              <simpleType>
+                                <annotation>
+                                  <documentation>The number of items to smelt into.</documentation>
+                                </annotation>
+                                <restriction base="int">
+
+                                  <maxInclusive value="64"></maxInclusive>
+
+                                  <minInclusive value="1"></minInclusive>
+                                </restriction>
+                              </simpleType>
+                            </attribute>
+                          </complexType>
+                        </element>
+                      </sequence>
+                      <attribute use="optional" name="exp">
+                        <annotation>
+                          <documentation>
+                            The chance to get 1 EXP from the smelting one recipe.
+                            The number must be between 0.0 (for no EXP) and 1.0 for a 100% chance.
+                          </documentation>
+                        </annotation>
+                        <simpleType>
+                          <restriction base="float">
+                            <minInclusive value="0"></minInclusive>
+                            <maxInclusive value="1"></maxInclusive>
+                          </restriction>
+                        </simpleType>
+                      </attribute>
+                                            <attribute name="energy" use="optional">
+                                                <annotation>
+                                                  <documentation>The amount of energy running this recipe takes.</documentation>
+                                                </annotation>
+                                                <simpleType>
+                                <restriction base="float">
+                                  <minExclusive value="0"></minExclusive>
+                                </restriction>
+                              </simpleType>
+                            </attribute>
+                                        </complexType>
+                  </element>
                 </choice>
               </sequence>
               <attribute use="optional" name="required" type="boolean">

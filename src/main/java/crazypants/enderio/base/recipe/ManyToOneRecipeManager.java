@@ -81,58 +81,62 @@ public class ManyToOneRecipeManager {
     List<Recipe> newRecipes = config.getRecipes(false);
     Log.info("Found " + newRecipes.size() + " valid " + managerName + " recipes in config.");
     for (Recipe rec : newRecipes) {
-      if (rec == null) {
-        Log.warn("Invalid null recipe found for " + managerName);
-      } else if (Config.createSyntheticRecipes //
-          && rec.getInputs().length == 1 && !rec.getInputs()[0].isFluid()
-          && rec.getInputs()[0].getInput().getCount() <= (rec.getInputs()[0].getInput().getMaxStackSize() / 3)
-          && rec.getOutputs().length == 1 && !rec.getOutputs()[0].isFluid() //
-          && rec.getOutputs()[0].getOutput().getCount() <= (rec.getOutputs()[0].getOutput().getMaxStackSize() / 3)) {
-
-        IRecipe dupe = getRecipeForInputs(rec.getInputStacks());
-        if (dupe != null) {
-          // do it here because we will add "dupes" and the check need to be
-          // done on the supplied recipe---which is added last
-          Log.warn("The supplied recipe " + rec + " for " + managerName + " may be a duplicate to: " + dupe);
-        }
-
-        int er = rec.getEnergyRequired();
-        RecipeBonusType bns = rec.getBonusType();
-        RecipeOutput out = rec.getOutputs()[0];
-        RecipeInput in = rec.getInputs()[0];
-
-        RecipeInput in2 = in.copy();
-        in2.getInput().grow(in2.getInput().getCount());
-        RecipeOutput out2 = new RecipeOutput(out.getOutput(), out.getChance(), out.getExperiance());
-        out2.getOutput().grow(out2.getOutput().getCount());
-
-        RecipeInput in3 = in.copy();
-        in3.getInput().grow(in3.getInput().getCount());
-        in3.getInput().grow(in3.getInput().getCount());
-        RecipeOutput out3 = new RecipeOutput(out.getOutput(), out.getChance(), out.getExperiance());
-        out3.getOutput().grow(out3.getOutput().getCount());
-        out3.getOutput().grow(out3.getOutput().getCount());
-
-        recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new RecipeInput[] { in.copy(), in.copy(), in.copy() })).setSynthetic());
-        recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new RecipeInput[] { in.copy(), in2.copy() })).setSynthetic());
-        recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new RecipeInput[] { in2.copy(), in.copy() })).setSynthetic());
-        recipes.add(new BasicManyToOneRecipe(new Recipe(out2, er * 2, bns, new RecipeInput[] { in.copy(), in.copy() })).setSynthetic());
-        recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new RecipeInput[] { in3.copy() })).setSynthetic());
-        recipes.add(new BasicManyToOneRecipe(new Recipe(out2, er * 2, bns, new RecipeInput[] { in2.copy() })).setSynthetic());
-        recipes.add(new BasicManyToOneRecipe(rec));
-        Log.info("Created 6 synthetic recipes for " + in.getInput() + " => " + out.getOutput());
-      } else {
-        addRecipe(new BasicManyToOneRecipe(rec));
-        if (managerName.equals("Alloy Smelter") && rec.getInputs().length >= 2) {
-          ItemStack[] ins = new ItemStack[rec.getInputs().length];
-          for (int i = 0; i < rec.getInputs().length; i++) {
-            ins[i] = rec.getInputs()[i].getInput();
-          }
-          TicProxy.registerAlloyRecipe(rec.getOutputs()[0].getOutput(), ins);
-        }
-      }
+      addRecipe(rec);
     }
     Log.info("Finished processing " + managerName + " recipes. " + recipes.size() + " recipes avaliable.");
+  }
+
+  public void addRecipe(Recipe rec) {
+    if (rec == null) {
+      Log.warn("Invalid null recipe found for " + managerName);
+    } else if (Config.createSyntheticRecipes //
+        && rec.getInputs().length == 1 && !rec.getInputs()[0].isFluid()
+        && rec.getInputs()[0].getInput().getCount() <= (rec.getInputs()[0].getInput().getMaxStackSize() / 3)
+        && rec.getOutputs().length == 1 && !rec.getOutputs()[0].isFluid() //
+        && rec.getOutputs()[0].getOutput().getCount() <= (rec.getOutputs()[0].getOutput().getMaxStackSize() / 3)) {
+
+      IRecipe dupe = getRecipeForInputs(rec.getInputStacks());
+      if (dupe != null) {
+        // do it here because we will add "dupes" and the check need to be
+        // done on the supplied recipe---which is added last
+        Log.warn("The supplied recipe " + rec + " for " + managerName + " may be a duplicate to: " + dupe);
+      }
+
+      int er = rec.getEnergyRequired();
+      RecipeBonusType bns = rec.getBonusType();
+      RecipeOutput out = rec.getOutputs()[0];
+      IRecipeInput in = rec.getInputs()[0];
+
+      IRecipeInput in2 = in.copy();
+      in2.getInput().grow(in2.getInput().getCount());
+      RecipeOutput out2 = new RecipeOutput(out.getOutput(), out.getChance(), out.getExperiance());
+      out2.getOutput().grow(out2.getOutput().getCount());
+
+      IRecipeInput in3 = in.copy();
+      in3.getInput().grow(in3.getInput().getCount());
+      in3.getInput().grow(in3.getInput().getCount());
+      RecipeOutput out3 = new RecipeOutput(out.getOutput(), out.getChance(), out.getExperiance());
+      out3.getOutput().grow(out3.getOutput().getCount());
+      out3.getOutput().grow(out3.getOutput().getCount());
+
+      recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new IRecipeInput[] { in.copy(), in.copy(), in.copy() })).setSynthetic());
+      recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new IRecipeInput[] { in.copy(), in2.copy() })).setSynthetic());
+      recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new IRecipeInput[] { in2.copy(), in.copy() })).setSynthetic());
+      recipes.add(new BasicManyToOneRecipe(new Recipe(out2, er * 2, bns, new IRecipeInput[] { in.copy(), in.copy() })).setSynthetic());
+      recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new IRecipeInput[] { in3.copy() })).setSynthetic());
+      recipes.add(new BasicManyToOneRecipe(new Recipe(out2, er * 2, bns, new IRecipeInput[] { in2.copy() })).setSynthetic());
+      recipes.add(new BasicManyToOneRecipe(rec));
+      Log.info("Created 6 synthetic recipes for " + in.getInput() + " => " + out.getOutput());
+    } else {
+      addRecipe(new BasicManyToOneRecipe(rec));
+      if (managerName.equals("Alloy Smelter") && rec.getInputs().length >= 2) {
+        ItemStack[] ins = new ItemStack[rec.getInputs().length];
+        for (int i = 0; i < rec.getInputs().length; i++) {
+          ins[i] = rec.getInputs()[i].getInput();
+        }
+        TicProxy.registerAlloyRecipe(rec.getOutputs()[0].getOutput(), ins);
+      }
+    }
   }
 
   public void addRecipe(@Nonnull IManyToOneRecipe recipe) {
@@ -167,7 +171,7 @@ public class ManyToOneRecipeManager {
       return false;
     }
     for (IManyToOneRecipe recipe : recipes) {
-      for (RecipeInput ri : recipe.getInputs()) {
+      for (IRecipeInput ri : recipe.getInputs()) {
         if(ri.isInput(input.item) && (ri.getSlotNumber() == -1 || input.slotNumber == ri.getSlotNumber())) {
           return true;
         }

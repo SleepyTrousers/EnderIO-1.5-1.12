@@ -345,7 +345,7 @@ public class RecipeConfigParser extends DefaultHandler {
   }
 
   private void addOutputStack(Attributes attributes) {
-    RecipeInput stack = getItemStack(attributes);
+    IRecipeInput stack = getItemStack(attributes);
     if(stack == null) {
       return;
     }
@@ -365,7 +365,7 @@ public class RecipeConfigParser extends DefaultHandler {
   }
 
   private void addOutputFluidStack(Attributes attributes) {
-    RecipeInput stack = getFluidStack(attributes);
+    IRecipeInput stack = getFluidStack(attributes);
     if(stack == null) {
       return;
     }

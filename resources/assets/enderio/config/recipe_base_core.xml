@@ -431,4 +431,13 @@ XML editor will display that as tooltips when editing this file.
     </spawning>
   </recipe>
 
+  <recipe name="Electrical Steel" required="true">
+    <alloying energy="10000" exp="0.5">
+      <input name="ingotIron"/>
+      <input name="dustCoal"/>
+      <input name="itemSilicon"/>
+      <output name="ingotElectricalSteel"/>
+    </alloying>
+  </recipe>
+
 </enderio:recipes>

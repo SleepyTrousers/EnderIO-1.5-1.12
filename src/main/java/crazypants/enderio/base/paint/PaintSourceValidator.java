@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.RecipeInput;
 import crazypants.enderio.util.Prep;
 
@@ -66,11 +67,11 @@ public class PaintSourceValidator {
     blacklist.add(input);
   }
 
-  public void removeFromWhitelist(RecipeInput input) {
+  public void removeFromWhitelist(IRecipeInput input) {
     removeFromList(input, whitelist);
   }
 
-  public void removeFromBlackList(RecipeInput input) {
+  public void removeFromBlackList(IRecipeInput input) {
     removeFromList(input, blacklist);
   }
 
@@ -78,7 +79,7 @@ public class PaintSourceValidator {
     if (Prep.isInvalid(paintSource)) {
       return false;
     }
-    for (RecipeInput ri : list) {
+    for (IRecipeInput ri : list) {
       if(ri != null && ri.isInput(paintSource)) {
         return true;
       }
@@ -86,13 +87,13 @@ public class PaintSourceValidator {
     return false;
   }
 
-  protected void removeFromList(RecipeInput input, List<RecipeInput> list) {
+  protected void removeFromList(IRecipeInput input, List<RecipeInput> list) {
     ItemStack inStack = input.getInput();
     if (Prep.isInvalid(inStack)) {
       return;
     }
-    RecipeInput toRemove = null;
-    for (RecipeInput in : list) {
+    IRecipeInput toRemove = null;
+    for (IRecipeInput in : list) {
       if(ItemUtil.areStacksEqual(inStack, in.getInput())) {
         toRemove = in;
         break;

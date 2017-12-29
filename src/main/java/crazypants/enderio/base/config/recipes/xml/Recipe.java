@@ -139,6 +139,10 @@ public class Recipe extends AbstractConditional {
         craftings.add(factory.read(new Spawning(), startElement));
         return true;
       }
+      if ("alloying".equals(name)) {
+        craftings.add(factory.read(new Alloying(), startElement));
+        return true;
+      }
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in recipe '" + getName() + "'");
     }

@@ -21,7 +21,7 @@ public class OptionalItem implements RecipeConfigElement {
   protected transient @Nonnull ItemStack stack = Prep.getEmpty();
   protected transient Object recipeObject;
   protected transient boolean nullItem;
-  protected transient Things thing;
+  protected transient final @Nonnull Things thing = new Things();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -31,7 +31,7 @@ public class OptionalItem implements RecipeConfigElement {
       nullItem = true;
       return this;
     }
-    thing = new Things(name);
+    thing.add(name);
     NNList<ItemStack> itemStacks = thing.getItemStacksRaw();
     stack = itemStacks.isEmpty() ? Prep.getEmpty() : itemStacks.get(0);
     List<Object> recipeObjects = thing.getRecipeObjects();
@@ -86,7 +86,7 @@ public class OptionalItem implements RecipeConfigElement {
     return false;
   }
 
-  public Things getThing() {
+  public @Nonnull Things getThing() {
     return thing;
   }
 

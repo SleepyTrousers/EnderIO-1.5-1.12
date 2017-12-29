@@ -50,15 +50,15 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
       availableInputs[i] = available.copy();
       ++i;
     }
-    RecipeInput[] requiredIngredients = new RecipeInput[recipe.getInputs().length];
+    IRecipeInput[] requiredIngredients = new IRecipeInput[recipe.getInputs().length];
     i = 0;
-    for (RecipeInput ri : recipe.getInputs()) {
+    for (IRecipeInput ri : recipe.getInputs()) {
       requiredIngredients[i] = ri.copy();
       ++i;
     }
 
     // For each input required by the recipe got through the available machine inputs and consume them
-    for (RecipeInput required : requiredIngredients) {
+    for (IRecipeInput required : requiredIngredients) {
       for (MachineRecipeInput available : availableInputs) {
         if (required != null && available != null && isValid(available)) {
           if (consume(required, available, result)) {
@@ -70,7 +70,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     return result;
   }
 
-  protected boolean consume(@Nonnull RecipeInput required, @Nonnull MachineRecipeInput available, @Nonnull List<MachineRecipeInput> consumedInputs) {
+  protected boolean consume(@Nonnull IRecipeInput required, @Nonnull MachineRecipeInput available, @Nonnull List<MachineRecipeInput> consumedInputs) {
 
     if (required.isInput(available.fluid)) {
       consumedInputs.add(new MachineRecipeInput(available.slotNumber, required.getFluidInput().copy()));

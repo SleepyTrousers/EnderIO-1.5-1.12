@@ -38,7 +38,7 @@ public class Enchanting extends AbstractConditional {
   public void enforceValidity() throws InvalidRecipeConfigException {
     input.enforceValidity();
     enchantment.enforceValidity();
-    if (input.getThing() == null || enchantment.getEnchantment() == null) {
+    if (input.getThing().isEmpty() || enchantment.getEnchantment() == null) {
       throw new InvalidRecipeConfigException("Valid child elements are invalid in <enchanting>");
     }
   }
@@ -48,7 +48,7 @@ public class Enchanting extends AbstractConditional {
     if (isValid() && isActive()) {
       final Things thing = input.getThing();
       final net.minecraft.enchantment.Enchantment enchantment2 = enchantment.getEnchantment();
-      if (thing != null && enchantment2 != null) {
+      if (!thing.isEmpty() && enchantment2 != null) {
         EnchanterRecipe recipe = new EnchanterRecipe(thing, input.getAmount(), enchantment2, enchantment.getCostMultiplier());
         MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.ENCHANTER, recipe);
       }

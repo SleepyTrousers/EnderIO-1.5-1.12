@@ -13,6 +13,7 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.material.OreDictionaryPreferences;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
+import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.Recipe;
@@ -95,7 +96,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   private boolean isExcluded(@Nonnull ItemStack item) {
-    for (RecipeInput ri : excludes) {
+    for (IRecipeInput ri : excludes) {
       if (ri != null && ri.isInput(item)) {
         return true;
       }

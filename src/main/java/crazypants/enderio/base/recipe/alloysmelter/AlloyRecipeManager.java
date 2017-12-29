@@ -8,13 +8,20 @@ import javax.annotation.Nonnull;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.recipe.CustomTagHandler;
+import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.base.recipe.ManyToOneRecipeManager;
+import crazypants.enderio.base.recipe.Recipe;
+import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.base.recipe.RecipeConfigParser;
 import crazypants.enderio.base.recipe.RecipeInput;
+import crazypants.enderio.base.recipe.RecipeOutput;
+import net.minecraft.item.ItemStack;
 
 public class AlloyRecipeManager extends ManyToOneRecipeManager {
 
@@ -111,6 +118,11 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
       }
     }
 
+  }
+
+  public void addRecipe(@Nonnull NNList<IRecipeInput> input, @Nonnull ItemStack output, int energyCost, float xpChance) {
+    RecipeOutput recipeOutput = new RecipeOutput(output, 1, xpChance);
+    addRecipe(new Recipe(recipeOutput, energyCost, RecipeBonusType.NONE, input.toArray(new IRecipeInput[input.size()])));
   }
 
 }

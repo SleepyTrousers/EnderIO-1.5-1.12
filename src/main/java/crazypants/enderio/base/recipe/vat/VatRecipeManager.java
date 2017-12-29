@@ -9,12 +9,12 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.recipe.IRecipe;
+import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.Recipe;
 import crazypants.enderio.base.recipe.RecipeConfig;
 import crazypants.enderio.base.recipe.RecipeConfigParser;
-import crazypants.enderio.base.recipe.RecipeInput;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
@@ -134,12 +134,12 @@ public class VatRecipeManager {
     if (Prep.isValid(input) || output != null) {
       for (IRecipe recipe : recipes) {
         RecipeOutput out = recipe.getOutputs()[0];
-        RecipeInput in = recipe.getInputs()[recipe.getInputs().length - 1];
+        IRecipeInput in = recipe.getInputs()[recipe.getInputs().length - 1];
 
         final FluidStack fluidOutput = out.getFluidOutput();
         if ((inputFluid == null || FluidUtil.areFluidsTheSame(in.getFluidInput().getFluid(), inputFluid)
             && (output == null || (fluidOutput != null && FluidUtil.areFluidsTheSame(fluidOutput.getFluid(), output))))) {
-          for (RecipeInput ri : recipe.getInputs()) {
+          for (IRecipeInput ri : recipe.getInputs()) {
             if (ri.isInput(input)) {
               return ri.getMulitplier();
             }
@@ -151,7 +151,7 @@ public class VatRecipeManager {
     // (after all, the item IS in the input slot)
     float found = -1f;
     for (IRecipe recipe : recipes) {
-      for (RecipeInput ri : recipe.getInputs()) {
+      for (IRecipeInput ri : recipe.getInputs()) {
         if (ri.isInput(input)) {
           if (found < 0f || found > ri.getMulitplier()) {
             found = ri.getMulitplier();

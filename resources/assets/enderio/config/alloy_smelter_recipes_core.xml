@@ -62,16 +62,6 @@
 <AlloySmelterRecipes>
 
   <recipeGroup name="enderio" > <!-- Required for EnderIO to function correctly. -->
-    <recipe name="Electrical Steel" energyCost="10000" >
-      <input>
-        <itemStack oreDictionary="ingotIron" />
-        <itemStack oreDictionary="dustCoal" />
-        <itemStack oreDictionary="itemSilicon" />
-      </input>
-      <output>
-        <itemStack oreDictionary="ingotElectricalSteel" exp="0.5" />
-      </output>
-    </recipe>
     <recipe name="Energetic Alloy" energyCost="10000" >
       <input>
         <itemStack oreDictionary="dustRedstone" />
