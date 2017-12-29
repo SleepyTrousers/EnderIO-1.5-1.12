@@ -11,10 +11,10 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IManyToOneRecipe;
+import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.ManyToOneMachineRecipe;
-import crazypants.enderio.base.recipe.RecipeInput;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
@@ -186,7 +186,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
             if (resultInv[i] == null || resultInv[i].isEmpty())
               continue;
             // check if the current item set is valid for this recipe
-            for (RecipeInput ri : oneRecipe.getInputs()) {
+            for (IRecipeInput ri : oneRecipe.getInputs()) {
               if (ri.getSlotNumber() != i)
                 continue;
               if (!ri.isInput(resultInv[i]))
