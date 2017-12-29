@@ -45,7 +45,10 @@ public class Spawn extends AbstractConditional {
   public void register() {
     if (isValid() && isActive()) {
       for (Entity entity : entities) {
-        if (entity.isDisabled()) {
+        if (entity.isDefault()) {
+          PoweredSpawnerRecipeRegistry.getInstance().setDefaultCostMultiplier(entity.getCostMultiplier());
+          PoweredSpawnerRecipeRegistry.getInstance().setAllowUnconfiguredMobs(entity.isDisabled());
+        } else if (entity.isDisabled()) {
           PoweredSpawnerRecipeRegistry.getInstance().addToBlacklist(entity.getMob().getEntityName());
         } else {
           PoweredSpawnerRecipeRegistry.getInstance().addEntityCost(entity.getMob().getEntityName(), entity.getCostMultiplier());

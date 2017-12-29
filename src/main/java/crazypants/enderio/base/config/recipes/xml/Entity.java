@@ -16,6 +16,7 @@ public class Entity implements RecipeConfigElement {
   protected transient CapturedMob mob = null;
   private double costMultiplier = 1;
   private boolean disabled = false;
+  private boolean isDefault = false;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -23,9 +24,13 @@ public class Entity implements RecipeConfigElement {
       mob = null;
       return this;
     }
-    mob = CapturedMob.create(new ResourceLocation(name.trim()));
-    if (mob == null) {
-      Log.warn("Could not find an entity for '" + name + "'");
+    if (name.trim().equals("*")) {
+      isDefault = true;
+    } else {
+      mob = CapturedMob.create(new ResourceLocation(name.trim()));
+      if (mob == null) {
+        Log.warn("Could not find an entity for '" + name + "'");
+      }
     }
     return this;
   }
@@ -46,7 +51,7 @@ public class Entity implements RecipeConfigElement {
 
   @Override
   public boolean isValid() {
-    return mob != null;
+    return isDefault || mob != null;
   }
 
   @Override
@@ -86,6 +91,10 @@ public class Entity implements RecipeConfigElement {
 
   public boolean isDisabled() {
     return disabled;
+  }
+
+  public boolean isDefault() {
+    return isDefault;
   }
 
 }

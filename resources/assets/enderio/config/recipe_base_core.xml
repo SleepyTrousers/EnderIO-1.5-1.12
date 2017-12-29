@@ -364,8 +364,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Spawner, defaults" required="true">
     <spawn>
       <!-- This will print out all available mobs: 
-      <entity name="*" costMultiplier="1" disabled="false"/>
+      <entity name="minecraft:herobrine" costMultiplier="1" disabled="false"/>
       -->
+      <entity name="*"                             costMultiplier="1.0" disabled="false"/> <!-- default -->
       <entity name="minecraft:bat"                 costMultiplier="0.5" disabled="false"/> <!-- Bat -->
       <entity name="minecraft:blaze"               costMultiplier="5.0" disabled="false"/> <!-- Blaze -->
       <entity name="minecraft:cave_spider"         costMultiplier="1.0" disabled="false"/> <!-- Cave Spider -->
