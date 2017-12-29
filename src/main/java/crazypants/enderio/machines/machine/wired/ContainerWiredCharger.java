@@ -17,6 +17,12 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCharger> {
 
+  // JEI wants this data without giving us a chance to instantiate a container
+  public static int FIRST_RECIPE_SLOT = 0;
+  public static int NUM_RECIPE_SLOT = 1;
+  public static int FIRST_INVENTORY_SLOT = 1 + 1 + 1; // input + output + upgrade
+  public static int NUM_INVENTORY_SLOT = 4 * 9;
+
   public ContainerWiredCharger(@Nonnull InventoryPlayer playerInv, @Nonnull TileWiredCharger te) {
     super(playerInv, te);
   }
@@ -32,24 +38,31 @@ public class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCha
     NNList<ItemStack> fulls = new NNList<>();
     ItemHelper.getValidItems().apply(new Callback<ItemStack>() {
       @Override
-      public void apply(@Nonnull ItemStack e) {
-        if (PowerHandlerUtil.getCapability(e, null) != null) {
-          ItemStack empty = e.copy();
-          IEnergyStorage emptyCap = PowerHandlerUtil.getCapability(empty, null);
+      public void apply(@Nonnull ItemStack stack) {
+        if (PowerHandlerUtil.getCapability(stack, null) != null) {
+          ItemStack copy = stack.copy();
+          IEnergyStorage emptyCap = PowerHandlerUtil.getCapability(copy, null);
           if (emptyCap != null) {
-            if (emptyCap.canExtract()) {
-              emptyCap.extractEnergy(Integer.MAX_VALUE, false);
+            int extracted = 1;
+            while (extracted > 0 && emptyCap.canExtract()) {
+              extracted = emptyCap.extractEnergy(Integer.MAX_VALUE, false);
             }
-            if (emptyCap.canReceive()) {
-              empties.add(empty.copy());
-              emptyCap.receiveEnergy(Integer.MAX_VALUE, false);
-              fulls.add(empty);
+            if (emptyCap.canReceive() && emptyCap.getEnergyStored() < emptyCap.getMaxEnergyStored()) {
+              ItemStack empty = copy.copy();
+              int added = 1;
+              while (added > 0) {
+                added = emptyCap.receiveEnergy(Integer.MAX_VALUE, false);
+              }
+              empties.add(empty);
+              fulls.add(copy);
             }
           }
         }
       }
     });
 
+    ghostSlots.removeAllByClass(GhostBackgroundItemSlot.class); // JEI will cause initGui to be re-run after closing the recipe view, causing duplicate ghost
+                                                                // slots
     final GhostBackgroundItemSlot ghost0 = new GhostBackgroundItemSlot(empties, getSlotFromInventory(0));
     ghost0.displayStdOverlay = true;
     ghostSlots.add(ghost0);

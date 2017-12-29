@@ -26,6 +26,7 @@ public class MachinesPlugin extends BlankModPlugin {
     SoulBinderRecipeCategory.register(registry, guiHelper);
     TankRecipeCategory.register(registry, guiHelper);
     VatRecipeCategory.register(registry, guiHelper);
+    WiredChargerRecipeCategory.register(registry, guiHelper);
   }
 
 }
