@@ -1,0 +1,18 @@
+<!--
+    Railcraft is stuck at Minecraft 1.10 currently, saving Railcraft related
+    recipes that incompatible with newer Forge/Minecraft here.
+-->
+
+<SAGMillRecipes>
+  <recipeGroup name="Railcraft" >
+    <recipe name="CrushedObsidian" energyCost="2400" >
+      <input>
+        <itemStack modID="Railcraft" itemName="tile.railcraft.cube" itemMeta="4" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustObsidian" number="1" />
+        <itemStack oreDictionary="dustObsidian" number="1" chance="0.01" />
+      </output>
+    </recipe>
+  </recipeGroup>
+</SAGMillRecipes>

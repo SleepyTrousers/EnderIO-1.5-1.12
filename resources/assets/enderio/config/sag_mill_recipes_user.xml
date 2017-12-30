@@ -12,7 +12,7 @@
   <recipeGroup name="CrazyPantsGroup" >
     <recipe name="SolarToGlass" energyCost="120" >
         <input>
-          <itemStack modID="EnderIO" itemName="enderIO:blockSolarPanel" />
+          <itemStack modID="enderio" itemName="enderio:block_solar_panel" />
         </input>
         <output>
           <itemStack modID="minecraft" itemName="glass" />
@@ -63,7 +63,7 @@
         <itemStack modID="minecraft" itemName="obsidian" />
       </input>
       <output>
-        <itemStack modID="Railcraft" itemName="tile.railcraft.cube" itemMeta="4" number="1" />
+        <itemStack modID="railcraft" itemName="tile.railcraft.cube" itemMeta="4" number="1" />
         <itemStack oreDictionary="dustObsidian" number="1" chance="0.15" />
         <itemStack oreDictionary="dustObsidian" number="1" chance="0.025" />
       </output>

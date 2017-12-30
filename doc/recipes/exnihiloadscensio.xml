@@ -1,0 +1,79 @@
+<!--
+    Ex Nihilo Adsscensio is stuck at Minecraft 1.10 currently, saving Ex Nihilo Adsscensio
+    related recipes that incompatible with newer Forge/Minecraft here.
+-->
+
+  <recipeGroup name="ExNihiloOreDoubling" >
+    <recipe name="Iron" energyCost="2500" >
+        <input>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreIron" itemMeta="1" />
+        </input>
+        <output>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreIron" itemMeta="2" number="2"/>
+        </output>
+      </recipe>
+    <recipe name="Gold" energyCost="2500" >
+        <input>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreGold" itemMeta="1" />
+        </input>
+        <output>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreGold" itemMeta="2" number="2"/>
+        </output>
+      </recipe>
+    <recipe name="Copper" energyCost="2500" >
+        <input>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreCopper" itemMeta="1" />
+        </input>
+        <output>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreCopper" itemMeta="2" number="2"/>
+        </output>
+      </recipe>
+    <recipe name="Aluminum" energyCost="2500" >
+        <input>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreAluminium" itemMeta="1" />
+        </input>
+        <output>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreAluminium" itemMeta="2" number="2"/>
+        </output>
+      </recipe>
+    <recipe name="Lead" energyCost="2500" >
+        <input>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreLead" itemMeta="1" />
+        </input>
+        <output>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreLead" itemMeta="2" number="2"/>
+        </output>
+      </recipe>
+    <recipe name="Silver" energyCost="2500" >
+        <input>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreSilver" itemMeta="1" />
+        </input>
+        <output>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreSilver" itemMeta="2" number="2"/>
+        </output>
+      </recipe>
+    <recipe name="Nickel" energyCost="2500" >
+        <input>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreNickel" itemMeta="1" />
+        </input>
+        <output>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreNickel" itemMeta="2" number="2"/>
+        </output>
+      </recipe>
+    <recipe name="Ardite" energyCost="2500" >
+        <input>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreArdite" itemMeta="1" />
+        </input>
+        <output>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreArdite" itemMeta="2" number="2"/>
+        </output>
+      </recipe>
+    <recipe name="Cobalt" energyCost="2500" >
+        <input>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreCobalt" itemMeta="1" />
+        </input>
+        <output>
+          <itemStack modID="exnihiloadscensio" itemName="itemOreCobalt" itemMeta="2" number="2"/>
+        </output>
+      </recipe>
+  </recipeGroup>
