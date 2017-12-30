@@ -14,9 +14,13 @@ import crazypants.enderio.base.power.PowerDistributor;
 import crazypants.enderio.base.power.forge.InternalRecieverTileWrapper;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
@@ -147,6 +151,15 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
     super.clearAllIoModes();
     if (dist != null) {
       dist.neighboursChanged();
+    }
+  }
+  
+  @Override
+  public void onNeighborBlockChange(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos posIn, @Nonnull Block blockIn,
+      @Nonnull BlockPos fromPos) {
+    super.onNeighborBlockChange(state, worldIn, posIn, blockIn, fromPos);
+    if (dist != null) {
+	  dist.neighboursChanged();
     }
   }
 
