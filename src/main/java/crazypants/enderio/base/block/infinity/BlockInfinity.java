@@ -29,6 +29,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -162,7 +163,7 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
     if (!world.isRemote) {
       if (world.canBlockSeeSky(pos)) { // exposed to the sky?
         world.setBlockToAir(pos);
-        world.createExplosion(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, .1f, true);
+        world.addWeatherEffect(new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), true));
         return;
       }
 
@@ -357,13 +358,14 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
   @SideOnly(Side.CLIENT)
   @Override
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rnd) {
-    for (int i = 0; i < 3; i++) {
+    int count = world.canBlockSeeSky(pos) ? 1 : 3;
+    for (int i = 0; i < count; i++) {
       float offsetX = (.25f + .5f * rnd.nextFloat());
       float offsetY = (.25f + .5f * rnd.nextFloat());
       float offsetZ = (.25f + .5f * rnd.nextFloat());
       float maxSize = Math.min(Math.min(Math.min(1f - offsetX, offsetX), Math.min(1f - offsetY, offsetY)), Math.min(1f - offsetZ, offsetZ))
           * (.5f + .5f * rnd.nextFloat()) * 2;
-      float color = (i == 0 && !bs.getValue(HARMLESS)) ? 0 : rnd.nextFloat();
+      float color = (i == 0 && !bs.getValue(HARMLESS) && count > 1) ? 0 : rnd.nextFloat();
       Minecraft.getMinecraft().effectRenderer
           .addEffect(new InfinityParticle(world, pos, new Vector4f(color, color, color, 0.4f), new Vector4f(offsetX, offsetY, offsetZ, maxSize)));
     }
