@@ -46,7 +46,7 @@
  Valid input item definitions:
   - Must have either: modID + itemName or oreDictionary
   - 'modID' is the identifier registered by the mod with Forge (for example vanilla blocks use 'minecraft' while Ender IO
-  is 'EnderIO'). This value can be found in the details panel of Forge's 'mods' UI.
+  is 'enderio'). This value can be found in the details panel of Forge's 'mods' UI.
   - 'itemName' the name used to register the block/item with forge. To write all registered items to
   config/modObjectsRegistery.txt include: <dumpRegistry modObjects="true" />
   - 'oreDictionary' will use the OreDictionary to find the appropriate itemStack. The first entry returned by the
@@ -74,7 +74,7 @@
   <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="6" />
   <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
   <itemStack oreDictionary="dustNickel" number="1" chance="0.1" />
-  <itemStack modID="BiomesOPlenty" itemName="bop.bones" itemMeta="0" number="4" chance="0.1" />
+  <itemStack modID="biomesoplenty" itemName="bones" itemMeta="0" number="4" chance="0.1" />
 
   Recipes can also be added using forge IMC messages. For example, in the init method of a mod:
   String recipe =
@@ -922,15 +922,6 @@
         <itemStack oreDictionary="dustSaltpeter" number="4" />
         </output>
     </recipe>
-    <recipe name="CrushedObsidian" energyCost="2400" >
-      <input>
-        <itemStack modID="Railcraft" itemName="tile.railcraft.cube" itemMeta="4" />
-      </input>
-      <output>
-        <itemStack oreDictionary="dustObsidian" number="1" />
-        <itemStack oreDictionary="dustObsidian" number="1" chance="0.01" />
-      </output>
-    </recipe>
   </recipeGroup>
 
   <recipeGroup name="Dense Ores" >
@@ -1075,7 +1066,7 @@
   <recipeGroup name="Biomes O' Plenty" >
     <recipe name="SmallBoneSegment" energyCost="2600" >
       <input>
-        <itemStack modID="BiomesOPlenty" itemName="bones" itemMeta="0" />
+        <itemStack modID="biomesoplenty" itemName="bones" itemMeta="0" />
       </input>
       <output>
         <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="8" />
@@ -1083,7 +1074,7 @@
     </recipe>
     <recipe name="MediumBoneSegment" energyCost="3200" >
       <input>
-        <itemStack modID="BiomesOPlenty" itemName="bones" itemMeta="1" />
+        <itemStack modID="biomesoplenty" itemName="bones" itemMeta="1" />
       </input>
       <output>
         <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="12" />
@@ -1091,7 +1082,7 @@
     </recipe>
     <recipe name="LargeBoneSegment" energyCost="4800" >
       <input>
-        <itemStack modID="BiomesOPlenty" itemName="bones" itemMeta="2" />
+        <itemStack modID="biomesoplenty" itemName="bones" itemMeta="2" />
       </input>
       <output>
         <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="24" />
@@ -1169,11 +1160,11 @@
     </recipe>
     <recipe name="AmethystOre" energyCost="2400" >
       <input>
-        <itemStack modID="BiomesOPlenty" itemName="gemOre" />
+        <itemStack modID="biomesoplenty" itemName="gem_ore" />
       </input>
       <output>
-        <itemStack modID="BiomesOPlenty" itemName="gems" number="2" />
-        <itemStack modID="BiomesOPlenty" itemName="gems" number="1" chance="0.5" />
+        <itemStack modID="biomesoplenty" itemName="gems" number="2" />
+        <itemStack modID="biomesoplenty" itemName="gems" number="1" chance="0.5" />
         <itemStack modID="minecraft" itemName="end_stone" chance="0.15" />
       </output>
     </recipe>
@@ -2483,258 +2474,258 @@
   <recipeGroup name="UndergroundBiomesConstruct" >
     <recipe name="Red Granite" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="0" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_stone" itemMeta="0" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="0" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="0" />
       </output>
     </recipe>
     <recipe name="Black Granite" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="1" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_stone" itemMeta="1" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="1" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="1" />
       </output>
     </recipe>
     <recipe name="Rhyolite" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="2" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_stone" itemMeta="2" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="2" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="2" />
       </output>
     </recipe>
     <recipe name="Andesite" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="3" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_stone" itemMeta="3" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="3" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="3" />
       </output>
     </recipe>
     <recipe name="Gabbro" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="4" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_stone" itemMeta="4" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="4" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="4" />
       </output>
     </recipe>
     <recipe name="Basalt" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="5" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_stone" itemMeta="5" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="5" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="5" />
       </output>
     </recipe>
     <recipe name="Komatiite" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="6" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_stone" itemMeta="6" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="6" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="6" />
       </output>
     </recipe>
     <recipe name="Dacite" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="7" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_stone" itemMeta="7" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="7" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="7" />
       </output>
     </recipe>
     <recipe name="Red Granite Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="0" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_brick" itemMeta="0" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="0" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="0" number="4" />
       </output>
     </recipe>
     <recipe name="Black Granite Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="1" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_brick" itemMeta="1" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="1" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="1" number="4" />
       </output>
     </recipe>
     <recipe name="Rhyolite Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="2" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_brick" itemMeta="2" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="2" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="2" number="4" />
       </output>
     </recipe>
     <recipe name="Andesite Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="3" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_brick" itemMeta="3" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="3" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="3" number="4" />
       </output>
     </recipe>
     <recipe name="Gabbro Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="4" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_brick" itemMeta="4" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="4" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="4" number="4" />
       </output>
     </recipe>
     <recipe name="Basalt Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="5" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_brick" itemMeta="5" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="5" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="5" number="4" />
       </output>
     </recipe>
     <recipe name="Komatiite Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="6" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_brick" itemMeta="6" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="6" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="6" number="4" />
       </output>
     </recipe>
     <recipe name="Dacite Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="7" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_brick" itemMeta="7" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="7" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="igneous_cobble" itemMeta="7" number="4" />
       </output>
     </recipe>
     <recipe name="Gneiss" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="0" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_stone" itemMeta="0" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="0" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="0" />
       </output>
     </recipe>
     <recipe name="Eclogite" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="1" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_stone" itemMeta="1" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="1" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="1" />
       </output>
     </recipe>
     <recipe name="Marble" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="2" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_stone" itemMeta="2" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="2" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="2" />
       </output>
     </recipe>
     <recipe name="Quartzite" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="3" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_stone" itemMeta="3" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="3" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="3" />
       </output>
     </recipe>
     <recipe name="Blue Schist" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="4" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_stone" itemMeta="4" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="4" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="4" />
       </output>
     </recipe>
     <recipe name="Green Schist" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="5" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_stone" itemMeta="5" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="5" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="5" />
       </output>
     </recipe>
     <recipe name="Soapstone" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="6" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_stone" itemMeta="6" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="6" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="6" />
       </output>
     </recipe>
     <recipe name="Migmatite" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="7" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_stone" itemMeta="7" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="7" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="7" />
       </output>
     </recipe>
     <recipe name="Gneiss Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="0" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_brick" itemMeta="0" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="0" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="0" number="4" />
       </output>
     </recipe>
     <recipe name="Eclogite Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="1" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_brick" itemMeta="1" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="1" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="1" number="4" />
       </output>
     </recipe>
     <recipe name="Marble Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="2" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_brick" itemMeta="2" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="2" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="2" number="4" />
       </output>
     </recipe>
     <recipe name="Quartzite Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="3" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_brick" itemMeta="3" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="3" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="3" number="4" />
       </output>
     </recipe>
     <recipe name="Blue Schist Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="4" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_brick" itemMeta="4" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="4" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="4" number="4" />
       </output>
     </recipe>
     <recipe name="Green Schist Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="5" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_brick" itemMeta="5" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="5" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="5" number="4" />
       </output>
     </recipe>
     <recipe name="Soapstone Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="6" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_brick" itemMeta="6" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="6" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="6" number="4" />
       </output>
     </recipe>
     <recipe name="Migmatite Brick" energyCost="2400" >
       <input>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="7" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_brick" itemMeta="7" />
       </input>
       <output>
-        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="7" number="4" />
+        <itemStack modID="undergroundbiomes" itemName="metamorphic_cobble" itemMeta="7" number="4" />
       </output>
     </recipe>
   </recipeGroup>
@@ -2973,89 +2964,14 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="ExNihiloOreDoubling" >      
-    <recipe name="Iron" energyCost="2500" >
-        <input>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreIron" itemMeta="1" />
-        </input>
-        <output>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreIron" itemMeta="2" number="2"/>
-        </output>
-      </recipe>
-    <recipe name="Gold" energyCost="2500" >
-        <input>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreGold" itemMeta="1" />
-        </input>
-        <output>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreGold" itemMeta="2" number="2"/>
-        </output>
-      </recipe>
-    <recipe name="Copper" energyCost="2500" >
-        <input>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreCopper" itemMeta="1" />
-        </input>
-        <output>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreCopper" itemMeta="2" number="2"/>
-        </output>
-      </recipe>
-    <recipe name="Aluminum" energyCost="2500" >
-        <input>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreAluminium" itemMeta="1" />
-        </input>
-        <output>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreAluminium" itemMeta="2" number="2"/>
-        </output>
-      </recipe>
-    <recipe name="Lead" energyCost="2500" >
-        <input>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreLead" itemMeta="1" />
-        </input>
-        <output>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreLead" itemMeta="2" number="2"/>
-        </output>
-      </recipe>
-    <recipe name="Silver" energyCost="2500" >
-        <input>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreSilver" itemMeta="1" />
-        </input>
-        <output>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreSilver" itemMeta="2" number="2"/>
-        </output>
-      </recipe>
-    <recipe name="Nickel" energyCost="2500" >
-        <input>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreNickel" itemMeta="1" />
-        </input>
-        <output>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreNickel" itemMeta="2" number="2"/>
-        </output>
-      </recipe>
-    <recipe name="Ardite" energyCost="2500" >
-        <input>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreArdite" itemMeta="1" />
-        </input>
-        <output>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreArdite" itemMeta="2" number="2"/>
-        </output>
-      </recipe>
-    <recipe name="Cobalt" energyCost="2500" >
-        <input>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreCobalt" itemMeta="1" />
-        </input>
-        <output>
-          <itemStack modID="exnihiloadscensio" itemName="itemOreCobalt" itemMeta="2" number="2"/>
-        </output>
-      </recipe>
-  </recipeGroup>
-
   <recipeGroup name="Natura" >
     <recipe name="Barley" energyCost="800" >
       <input>
-        <itemStack modID="Natura" itemName="barleyFood" />
+        <itemStack modID="natura" itemName="materials" itemMeta="0"/>
       </input>
       <output>
         <itemStack oreDictionary="dustWheat" number="2" />
-        <itemStack modID="Natura" itemName="barley.seed" chance="0.2" />
+        <itemStack modID="natura" itemName="overworld_seeds" itemMeta="0" chance="0.2" />
       </output>
     </recipe>
   </recipeGroup>
@@ -3145,9 +3061,9 @@
         <itemStack oreDictionary="compressed1xSand" />
       </input>
       <output>
-        <itemStack modID="enderio" itemName="itemMaterial" number="3" itemMeta="0" chance="0.5" />
-        <itemStack modID="enderio" itemName="itemMaterial" number="3" itemMeta="0" chance="0.5" />
-        <itemStack modID="enderio" itemName="itemMaterial" number="3" itemMeta="0" chance="0.5" />
+        <itemStack oreDictionary="silicon" number="3" chance="0.5" />
+        <itemStack oreDictionary="silicon" number="3" chance="0.5" />
+        <itemStack oreDictionary="silicon" number="3" chance="0.5" />
         <itemStack oreDictionary="sand" chance="0.05" />
       </output>
     </recipe>
@@ -3156,9 +3072,9 @@
         <itemStack oreDictionary="compressed2xSand" />
       </input>
       <output>
-        <itemStack modID="enderio" itemName="itemMaterial" number="27" itemMeta="0" chance="0.5" />
-        <itemStack modID="enderio" itemName="itemMaterial" number="27" itemMeta="0" chance="0.5" />
-        <itemStack modID="enderio" itemName="itemMaterial" number="27" itemMeta="0" chance="0.5" />
+        <itemStack oreDictionary="silicon" number="27" chance="0.5" />
+        <itemStack oreDictionary="silicon" number="27" chance="0.5" />
+        <itemStack oreDictionary="silicon" number="27" chance="0.5" />
         <itemStack oreDictionary="compressed1xSand" chance="0.05" />
       </output>
     </recipe>
@@ -3195,10 +3111,10 @@
   <recipeGroup name="Draconic" >
     <recipe name="DraconiumDust" energyCost="4000" >
         <input>
-          <itemStack modID="DraconicEvolution" itemName="draconiumOre" />
+          <itemStack modID="draconicevolution" itemName="draconium_ore" />
         </input>
         <output>
-          <itemStack modID="DraconicEvolution" itemName="draconiumDust" number="2"/>
+          <itemStack modID="draconicevolution" itemName="draconium_dust" number="2"/>
           <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
         </output>
       </recipe>

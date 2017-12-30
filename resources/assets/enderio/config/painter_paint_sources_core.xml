@@ -14,7 +14,7 @@
 
   <PainterPaintSources>
     <whitelist>
-      <itemStack modID="Thaumcraft" itemName="blockWoodenDevice" itemMeta="6" remove="true" />
+      <itemStack modID="thaumcraft" itemName="block_wooden_device" itemMeta="6" remove="true" />
     </whitelist>
   </PainterPaintSources>
 
