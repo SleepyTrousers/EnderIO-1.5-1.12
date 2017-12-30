@@ -108,16 +108,16 @@ public class ManyToOneRecipeManager {
       IRecipeInput in = rec.getInputs()[0];
 
       IRecipeInput in2 = in.copy();
-      in2.getInput().grow(in2.getInput().getCount());
+      in2.getInput().grow(in.getInput().getCount());
       RecipeOutput out2 = new RecipeOutput(out.getOutput(), out.getChance(), out.getExperiance());
-      out2.getOutput().grow(out2.getOutput().getCount());
+      out2.getOutput().grow(out.getOutput().getCount());
 
       IRecipeInput in3 = in.copy();
-      in3.getInput().grow(in3.getInput().getCount());
-      in3.getInput().grow(in3.getInput().getCount());
+      in3.getInput().grow(in.getInput().getCount());
+      in3.getInput().grow(in.getInput().getCount());
       RecipeOutput out3 = new RecipeOutput(out.getOutput(), out.getChance(), out.getExperiance());
-      out3.getOutput().grow(out3.getOutput().getCount());
-      out3.getOutput().grow(out3.getOutput().getCount());
+      out3.getOutput().grow(out.getOutput().getCount());
+      out3.getOutput().grow(out.getOutput().getCount());
 
       recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new IRecipeInput[] { in.copy(), in.copy(), in.copy() })).setSynthetic());
       recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new IRecipeInput[] { in.copy(), in2.copy() })).setSynthetic());
