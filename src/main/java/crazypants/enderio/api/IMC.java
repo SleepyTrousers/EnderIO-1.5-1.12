@@ -3,7 +3,6 @@ package crazypants.enderio.api;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.item.soulvial.ItemSoulVial;
 import crazypants.enderio.base.paint.PaintSourceValidator;
-import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
 import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
@@ -27,15 +26,11 @@ public final class IMC {
   public static final String SAG_RECIPE = "recipe:sagmill";
 
   /**
-   * Key for a string message to add Alloy Smelter recipes. Calls {@link AlloyRecipeManager#addCustomRecipes(String)} with the string value of the message.
+   * Key for a string message to add xml recipes. The supplied xml is treated as if it was loaded from one of the 'recipe_xxx.xml's.
+   * 
+   * Note that this does not do the recipe merging you get between core and user xmls. So you cannot disable already processed recipes.
    */
-  public static final String ALLOY_RECIPE = "recipe:alloysmelter";
-
-  /**
-   * Key for a string message to add Enchanter recipes. Calls {@link EnchanterRecipeManager#addCustomRecipes(String)} with the string value of the message. The
-   * supplied xml is treated as if it was loaded from EnchanterRecipes_User.xm.
-   */
-  public static final String ENCHANTER_RECIPE = "recipe:enchanter";
+  public static final String XML_RECIPE = "recipe:xml";
 
   /**
    * Key for a string message to add Slice'N'Splice recipes. Calls {@link SliceAndSpliceRecipeManager#addCustomRecipes(String)} with the string value of the

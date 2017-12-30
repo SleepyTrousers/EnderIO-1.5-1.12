@@ -1,7 +1,6 @@
 package crazypants.enderio.base.recipe.alloysmelter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,7 +12,6 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.material.OreDictionaryPreferences;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
-import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.Recipe;
@@ -33,21 +31,9 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   // which produces ten RF per tick of burn time
   private static final int RF_PER_ITEM = TileEntityFurnace.getItemBurnTime(new ItemStack(Items.COAL, 1, 0)) * 10 / 8;
 
-  private boolean enabled = true;
-
-  private final @Nonnull List<RecipeInput> excludes = new ArrayList<RecipeInput>();
-
   @Override
   public @Nonnull String getUid() {
     return "VanillaSmeltingRecipe";
-  }
-
-  public void setEnabled(boolean enabled) {
-    this.enabled = enabled;
-  }
-
-  public void addExclude(RecipeInput ri) {
-    excludes.add(ri);
   }
 
   @Override
@@ -73,12 +59,9 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public boolean isRecipe(@Nonnull MachineRecipeInput... inputs) {
-    if (!enabled) {
-      return false;
-    }
     ItemStack output = Prep.getEmpty();
     for (MachineRecipeInput ri : inputs) {
-      if (ri != null && Prep.isValid(ri.item) && !isExcluded(ri.item)) {
+      if (ri != null && Prep.isValid(ri.item)) {
         if (Prep.isInvalid(output)) {
           output = FurnaceRecipes.instance().getSmeltingResult(ri.item);
           if (Prep.isInvalid(output)) {
@@ -93,15 +76,6 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
       }
     }
     return Prep.isValid(output);
-  }
-
-  private boolean isExcluded(@Nonnull ItemStack item) {
-    for (IRecipeInput ri : excludes) {
-      if (ri != null && ri.isInput(item)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   @Override
@@ -134,12 +108,6 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public boolean isValidInput(@Nonnull MachineRecipeInput input) {
-    if (!enabled) {
-      return false;
-    }
-    if (isExcluded(input.item)) {
-      return false;
-    }
     ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(input.item);
     return Prep.isValid(itemstack);
   }
@@ -170,9 +138,6 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   public List<IRecipe> getAllRecipes() {
-    if (!enabled) {
-      return Collections.emptyList();
-    }
     List<IRecipe> result = new ArrayList<IRecipe>();
     Map<ItemStack, ItemStack> metaList = FurnaceRecipes.instance().getSmeltingList();
     for (Entry<ItemStack, ItemStack> entry : metaList.entrySet()) {

@@ -220,11 +220,9 @@ public class EnderIO implements IEnderIOAddon {
             VatRecipeManager.getInstance().addCustomRecipes(value);
           } else if (IMC.SAG_RECIPE.equals(key)) {
             SagMillRecipeManager.getInstance().addCustomRecipes(value);
-          } else if (IMC.ALLOY_RECIPE.equals(key)) {
-            AlloyRecipeManager.getInstance().addCustomRecipes(value);
           } else if (IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
             Config.TRAVEL_BLACKLIST.add(value);
-          } else if (IMC.ENCHANTER_RECIPE.equals(key)) {
+          } else if (IMC.XML_RECIPE.equals(key)) {
             RecipeLoader.addIMCRecipe(value);
           } else if (IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
             SliceAndSpliceRecipeManager.getInstance().addCustomRecipes(key);
