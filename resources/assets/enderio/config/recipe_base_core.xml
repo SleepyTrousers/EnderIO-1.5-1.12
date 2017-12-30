@@ -687,19 +687,80 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
-
-<!-- 
-
-  <recipe name="Alloy: xxx" required="true">
-    <alloying energy="111" exp="000">
-      <input name="xxx"/>
-      <input name="xxx"/>
-      <input name="xxx"/>
-      <output name="xxx"/>
+  <recipe name="Alloy: Electrum Ingot (Thermal Expansion)" required="false">
+    <alloying energy="2000" exp="0.25">
+      <input name="ingotGold"/>
+      <input name="ingotSilver"/>
+      <output name="ingotElectrum"/>
     </alloying>
   </recipe>
 
+  <recipe name="Alloy: Invar Ingot (Thermal Expansion)" required="false">
+    <alloying energy="3000" exp="0.25">
+      <input name="ingotNickel"/>
+      <input name="ingotIron" amount="2"/>
+      <output name="ingotInvar" amount="3"/>
+    </alloying>
+  </recipe>
 
- -->
+  <recipe name="Alloy: Bronze (Thermal Expansion)" required="false">
+    <alloying energy="4000" exp="0">
+      <input name="ingotCopper" amount="3"/>
+      <input name="ingotTin"/>
+      <output name="ingotBronze" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Constantan (Thermal Expansion)" required="false">
+    <alloying energy="4000" exp="0">
+      <input name="ingotCopper"/>
+      <input name="ingotNickel"/>
+      <output name="ingotConstantan" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Signalum (Thermal Expansion)" required="false">
+    <alloying energy="32000" exp="0">
+      <input name="ingotCopper" amount="3"/>
+      <input name="ingotSilver"/>
+      <input name="dustRedstone" amount="10"/>
+      <output name="ingotSignalum" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Lumium from dust (Thermal Expansion)" required="false">
+    <alloying energy="32000" exp="0">
+      <input name="ingotTin" amount="3"/>
+      <input name="ingotSilver"/>
+      <input name="dustGlowstone" amount="4"/>
+      <output name="ingotLumium" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Lumium (Thermal Expansion)" required="false">
+    <alloying energy="32000" exp="0">
+      <input name="ingotTin" amount="3"/>
+      <input name="ingotSilver"/>
+      <input name="oredict:glowstone"/>
+      <output name="ingotLumium" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enderium Base (Thermal Expansion)" required="false">
+    <alloying energy="4000" exp="0">
+      <input name="ingotLead" amount="3"/>
+      <input name="ingotPlatinum"/>
+      <input name="ordecit:enderpearl" amount="4"/>
+      <output name="ingotEnderiumBase" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enderium (Thermal Expansion)" required="false">
+    <alloying energy="25000" exp="0">
+      <input name="ingotEnderiumBase" amount="2"/>
+      <input name="oredict:sand"/>
+      <output name="ingotEnderium" amount="2"/>
+    </alloying>
+  </recipe>
 
 </enderio:recipes>
