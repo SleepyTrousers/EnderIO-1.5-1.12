@@ -194,6 +194,8 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
         }
       }
     }
+    
+    super.neighborChanged(state, world, pos, blockIn, fromPos);
   }
 
 }

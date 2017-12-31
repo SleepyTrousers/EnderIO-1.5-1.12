@@ -9,6 +9,14 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
+import static crazypants.enderio.base.init.ModObject.itemBrokenSpawner;
+import static crazypants.enderio.base.init.ModObject.itemSoulVial;
+import static crazypants.enderio.machines.init.MachineObject.block_soul_binder;
+import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.NUM_RECIPE_SLOT;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
@@ -38,14 +46,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import static crazypants.enderio.base.init.ModObject.itemBrokenSpawner;
-import static crazypants.enderio.base.init.ModObject.itemSoulVial;
-import static crazypants.enderio.machines.init.MachineObject.block_soul_binder;
-import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.NUM_RECIPE_SLOT;
-
 public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderRecipeCategory.SoulBinderRecipeWrapper> {
 
   public static final @Nonnull String UID = "SoulBinder";
@@ -58,10 +58,6 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
 
     public SoulBinderRecipeWrapper(ISoulBinderRecipe recipe) {
       this.recipe = recipe;
-    }
-
-    public long getEnergyRequired() {
-      return recipe.getEnergyRequired();
     }
 
     @Override
@@ -138,18 +134,15 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
   private int xOff = 34;
   private int yOff = 28;
 
-  @Nonnull
-  private final IDrawable background;
-
-  @Nonnull
-  protected final IDrawableAnimated arror;
+  private final @Nonnull IDrawable background;
+  private final @Nonnull IDrawableAnimated arrow;
 
   public SoulBinderRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("soul_fuser");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 120, 50);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 177, 14, 22, 16);
-    arror = guiHelper.createAnimatedDrawable(flameDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
+    arrow = guiHelper.createAnimatedDrawable(flameDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
   }
 
   @Override
@@ -169,7 +162,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
 
   @Override
   public void drawExtras(@Nonnull Minecraft minecraft) {
-    arror.draw(minecraft, 81 - xOff, 35 - yOff);
+    arrow.draw(minecraft, 81 - xOff, 35 - yOff);
   }
 
   @Override
@@ -177,12 +170,15 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
       @Nonnull IIngredients ingredients) {
 
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+    IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
+
     guiItemStacks.init(0, true, 37 - xOff, 33 - yOff);
     guiItemStacks.init(1, true, 58 - xOff, 33 - yOff);
     guiItemStacks.init(2, false, 111 - xOff, 33 - yOff);
     guiItemStacks.init(3, false, 133 - xOff, 33 - yOff);
-    guiItemStacks.set(ingredients);
+    group.init(xOff, true, EnergyIngredientRenderer.INSTANCE, 5, 35, 60, 10, 0, 0);
 
+    guiItemStacks.set(ingredients);
     IFocus<?> focus = recipeLayout.getFocus();
     if (focus != null && focus.getMode() == Mode.INPUT && focus.getValue() instanceof ItemStack
         && ((ItemStack) focus.getValue()).getItem() == itemSoulVial.getItemNN() && CapturedMob.containsSoul(((ItemStack) focus.getValue()))
@@ -216,9 +212,6 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
       }
     }
 
-    IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
-    group.init(xOff, true, EnergyIngredientRenderer.INSTANCE, 5, 35, 60, 10, 0, 0);
     group.set(ingredients);
   }
-
 }
