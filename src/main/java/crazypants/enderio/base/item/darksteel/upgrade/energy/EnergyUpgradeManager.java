@@ -7,7 +7,9 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.util.NbtComparer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class EnergyUpgradeManager {
 
@@ -15,6 +17,15 @@ public abstract class EnergyUpgradeManager {
   protected static final @Nonnull String KEY_ENERGY = "energy";
   protected static final @Nonnull Random RANDOM = new Random();
 
+ // Should this really be here.
+ // TODO: Consider refactoring in the future
+ private static final NbtComparer energyInvarientNbtComparer;
+
+ static {
+   energyInvarientNbtComparer = new NbtComparer();
+   energyInvarientNbtComparer.addInvarientTagKey(EnergyUpgradeManager.KEY_ENERGY);
+ }
+  
   public static EnergyUpgrade.EnergyUpgradeHolder loadFromItem(@Nonnull ItemStack stack) {
     EnergyUpgrade energyUpgrade = EnergyUpgrade.loadAnyFromItem(stack);
     return energyUpgrade != null ? energyUpgrade.getEnergyUpgradeHolder(stack) : null;
@@ -102,6 +113,10 @@ public abstract class EnergyUpgradeManager {
       return 0;
     }
     return eu.getCapacity();
+  }
+  
+  public static boolean compareNbt(NBTTagCompound oldNbt, NBTTagCompound newNbt) {
+    return energyInvarientNbtComparer.compare(oldNbt, newNbt);
   }
 
 }
