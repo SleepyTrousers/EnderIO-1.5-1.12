@@ -25,6 +25,7 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.tic.TicUtil;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.item.darksteel.upgrade.travel.TravelUpgrade;
 import crazypants.enderio.base.material.alloy.Alloy;
@@ -322,8 +323,8 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       ItemStack sword = player.getHeldItemMainhand();
 
       // Durability damage
-      EnergyUpgrade eu = EnergyUpgradeManager.loadFromItem(stack);
-      if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+      EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
+      if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
         eu.extractEnergy(powerPerDamagePoint, false);
 
       } else {
@@ -357,12 +358,12 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -374,7 +375,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     if (str != null) {
       list.add(str);
     }
-    DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   public ItemStack createItemStack() {
@@ -392,7 +393,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   private boolean isTravelUpgradeActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {
-    return isEquipped(ep) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
+    return isEquipped(ep) && ep.isSneaking() && TravelUpgrade.INSTANCE.hasUpgrade(equipped);
   }
 
   @Override

@@ -130,7 +130,7 @@ public class DarkSteelUpgradeRecipeCategory {
     @Override
     @Nullable
     public String getSubtypeInfo(@Nonnull ItemStack itemStack) {
-      String result = DarkSteelRecipeManager.instance.getUpgradesAsString(itemStack);
+      String result = DarkSteelRecipeManager.getUpgradesAsString(itemStack);
       Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemStack);
       final List<Enchantment> keyList = new NNList<>(enchantments.keySet());
       keyList.sort(new Comparator<Enchantment>() {

@@ -11,34 +11,43 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.OreDictionaryHelper;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.UpgradeConfig;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.IDarkSteelItem;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.item.darksteel.upgrade.explosive.ExplosiveUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.spoon.SpoonUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.travel.TravelUpgrade;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.material.alloy.Alloy;
+import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TravelController;
 import crazypants.enderio.util.Prep;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -48,11 +57,14 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.GameType;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -61,10 +73,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   public static boolean isEquipped(EntityPlayer player, @Nonnull EnumHand hand) {
     return player != null && player.getHeldItem(hand).getItem() == ModObject.itemDarkSteelPickaxe.getItem();
-  }
-
-  public static boolean isEquippedAndPowered(EntityPlayer player, EnumHand hand, int requiredPower) {
-    return getStoredPower(player) > requiredPower;
   }
 
   public static int getStoredPower(EntityPlayer player) {
@@ -97,6 +105,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     EnergyUpgradeManager.setPowerFull(is);
     TravelUpgrade.INSTANCE.writeToItem(is);
     SpoonUpgrade.INSTANCE.writeToItem(is);
+    ExplosiveUpgrade.INSTANCE.writeToItem(is);
     par3List.add(is);
   }
 
@@ -113,10 +122,13 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   @Override
   public boolean onBlockDestroyed(@Nonnull ItemStack item, @Nonnull World world, @Nonnull IBlockState bs, @Nonnull BlockPos pos,
       @Nonnull EntityLivingBase entityLiving) {
-    if (bs.getBlockHardness(world, pos) != 0.0D) {
+    if (bs.getBlockHardness(world, pos) != 0.0D) {// TODO
       if (useObsidianEffeciency(item, bs)) {
         extractInternal(item, Config.darkSteelPickPowerUseObsidian);
       }
+    }
+    if (!entityLiving.isSneaking() && entityLiving instanceof EntityPlayerMP && hasExplosiveUpgrade(item)) {
+      doExplosiveAction(item, world, pos, (EntityPlayerMP) entityLiving);
     }
     return super.onBlockDestroyed(item, world, bs, pos, entityLiving);
   }
@@ -176,8 +188,8 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   private boolean absorbDamageWithEnergy(@Nonnull ItemStack stack, int amount) {
-    EnergyUpgrade eu = EnergyUpgradeManager.loadFromItem(stack);
-    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
+    if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(amount, false);
       eu.writeToItem(stack);
       return true;
@@ -196,7 +208,11 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   private boolean hasSpoonUpgrade(@Nonnull ItemStack item) {
-    return SpoonUpgrade.loadFromItem(item) != null;
+    return SpoonUpgrade.INSTANCE.hasUpgrade(item);
+  }
+
+  private boolean hasExplosiveUpgrade(@Nonnull ItemStack item) {
+    return ExplosiveUpgrade.INSTANCE.hasUpgrade(item);
   }
 
   @Override
@@ -267,12 +283,12 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -289,7 +305,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       list.add(Lang.PICK_OBSIDIAN.get(TextFormatting.WHITE, Config.darkSteelPickEffeciencyObsidian));
       list.add(Lang.PICK_OBSIDIAN_COST.get(TextFormatting.WHITE, LangPower.RF(Config.darkSteelPickPowerUseObsidian)));
     }
-    DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -303,7 +319,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   private boolean isTravelUpgradeActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped, @Nonnull EnumHand hand) {
-    return isEquipped(ep, hand) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
+    return isEquipped(ep, hand) && ep.isSneaking() && TravelUpgrade.INSTANCE.hasUpgrade(equipped);
   }
 
   @Override
@@ -345,6 +361,54 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   @Override
   public boolean shouldCauseReequipAnimation(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
     return slotChanged || Prep.isInvalid(oldStack) || Prep.isInvalid(newStack) || oldStack.getItem() != newStack.getItem();
+  }
+
+  private static final Things STONES = new Things().add(Blocks.STONE).add(Blocks.COBBLESTONE).add(Blocks.NETHERRACK).add(Blocks.SANDSTONE)
+      .add(Blocks.BRICK_BLOCK).add(Blocks.BRICK_STAIRS).add(Blocks.COBBLESTONE_WALL).add(Blocks.END_BRICKS).add(Blocks.END_STONE).add(Blocks.MOSSY_COBBLESTONE)
+      .add(Blocks.MONSTER_EGG).add(Blocks.HARDENED_CLAY).add(Blocks.NETHER_BRICK).add(Blocks.NETHER_BRICK_FENCE).add(Blocks.NETHER_BRICK_STAIRS)
+      .add(Blocks.SANDSTONE_STAIRS).add(Blocks.STAINED_HARDENED_CLAY).add(Blocks.STONE_BRICK_STAIRS).add(Blocks.STONE_STAIRS).add(Blocks.STONEBRICK)
+      .add(Blocks.STONE_SLAB).add(Blocks.STONE_SLAB2).add(Blocks.DOUBLE_STONE_SLAB).add(Blocks.DOUBLE_STONE_SLAB2);
+  private static final Things DIRTS = new Things().add(Blocks.DIRT).add(Blocks.GRAVEL).add(Blocks.GRASS).add(Blocks.SOUL_SAND).add(Blocks.MYCELIUM)
+      .add(Blocks.GRASS_PATH).add(Blocks.FARMLAND).add(Blocks.CLAY);
+
+  private void doExplosiveAction(@Nonnull ItemStack item, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayerMP player) {
+    boolean hasDoneSomething = false;
+    float referenceHardness = world.getBlockState(pos).getBlockHardness(world, pos);
+    final boolean withSpoon = hasSpoonUpgrade(item);
+    GameType gameType = player.interactionManager.getGameType();
+    int cost = UpgradeConfig.explosiveUpgradeEnergyPerBlock.get();
+    for (NNIterator<BlockPos> itr = NNList.SHELL.fastIterator(); getEnergyStored(item) >= cost && itr.hasNext();) {
+      final BlockPos target = pos.add(itr.next());
+      final IBlockState blockstate = world.getBlockState(target);
+      final Block block = blockstate.getBlock();
+      if ((UpgradeConfig.explosiveUpgradeUnlimitedTargets.get() || STONES.contains(block) || (withSpoon && DIRTS.contains(block)))
+          && referenceHardness >= blockstate.getBlockHardness(world, target) && isToolEffective(blockstate, item)) {
+        final int exp = ForgeHooks.onBlockBreakEvent(world, gameType, player, target);
+        if (exp != -1 && block.canHarvestBlock(world, target, player)) {
+          if (block.removedByPlayer(blockstate, world, target, player, true)) {
+            block.onBlockDestroyedByPlayer(world, target, blockstate);
+            block.harvestBlock(world, player, target, blockstate, null, item);
+            if (!gameType.isCreative() && exp > 0) {
+              block.dropXpOnBlockBreak(world, target, exp);
+            }
+            extractInternal(item, cost);
+            if (itemRand.nextFloat() < UpgradeConfig.explosiveUpgradeDurabilityChance.get()) {
+              // damage the item
+              super.onBlockDestroyed(item, world, blockstate, target, player);
+            }
+            hasDoneSomething = true;
+            if (itemRand.nextFloat() < .3f) {
+              PacketSpawnParticles.create(world, target, 1, EnumParticleTypes.EXPLOSION_NORMAL, EnumParticleTypes.SMOKE_NORMAL);
+            } else if (itemRand.nextFloat() < .5f) {
+              PacketSpawnParticles.create(world, target, 1, EnumParticleTypes.SMOKE_NORMAL);
+            }
+          }
+        }
+      }
+    }
+    if (hasDoneSomething) {
+      PacketSpawnParticles.create(world, pos, 1, EnumParticleTypes.EXPLOSION_LARGE);
+    }
   }
 
 }

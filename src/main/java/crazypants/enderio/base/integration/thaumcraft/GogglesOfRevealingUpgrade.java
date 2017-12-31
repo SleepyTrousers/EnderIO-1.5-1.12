@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
@@ -27,24 +26,9 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
     return Prep.getEmpty();
   }
 
-  public static GogglesOfRevealingUpgrade loadFromItem(@Nonnull ItemStack stack) {
-    final NBTTagCompound tagCompound = stack.getTagCompound();
-    if (tagCompound == null) {
-      return null;
-    }
-    if (!tagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new GogglesOfRevealingUpgrade((NBTTagCompound) tagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
-  }
-
   public static boolean isUpgradeEquipped(@Nonnull EntityPlayer player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-    return GogglesOfRevealingUpgrade.loadFromItem(helmet) != null;
-  }
-
-  public GogglesOfRevealingUpgrade(@Nonnull NBTTagCompound tag) {
-    super(UPGRADE_NAME, tag);
+    return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(helmet);
   }
 
   public GogglesOfRevealingUpgrade() {
@@ -56,15 +40,7 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
     if (stack.getItem() != ModObject.itemDarkSteelHelmet.getItemNN() || Prep.isInvalid(getGoggles())) {
       return false;
     }
-    GogglesOfRevealingUpgrade up = loadFromItem(stack);
-    if (up == null) {
-      return true;
-    }
-    return false;
-  }
-
-  @Override
-  public void writeUpgradeToNBT(@Nonnull NBTTagCompound upgradeRoot) {
+    return !hasUpgrade(stack);
   }
 
   @Override

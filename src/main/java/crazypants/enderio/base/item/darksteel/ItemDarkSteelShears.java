@@ -22,6 +22,7 @@ import crazypants.enderio.base.handler.darksteel.IDarkSteelItem;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.alloy.Alloy;
@@ -210,8 +211,8 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     }
     int damage = newDamage - oldDamage;
 
-    EnergyUpgrade eu = EnergyUpgradeManager.loadFromItem(stack);
-    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
+    if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * Config.darkSteelShearsPowerUsePerDamagePoint, false);
     } else {
       super.setDamage(stack, newDamage);
@@ -233,12 +234,12 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -254,7 +255,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
       list.add(Lang.SHEARS_MULTIHARVEST.get());
       list.add(Lang.SHEARS_POWERED.get(TextFormatting.WHITE, Config.darkSteelShearsEffeciencyBoostWhenPowered));
     }
-    DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   public ItemStack createItemStack() {

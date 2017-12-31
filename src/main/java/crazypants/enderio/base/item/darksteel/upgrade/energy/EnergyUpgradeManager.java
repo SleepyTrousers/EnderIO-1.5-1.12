@@ -5,57 +5,40 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.base.item.travelstaff.ItemTravelStaff;
+import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.lang.LangPower;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class EnergyUpgradeManager {
 
   protected static final @Nonnull String UPGRADE_NAME = "energyUpgrade";
-  protected static final @Nonnull String KEY_CAPACITY = "capacity";
   protected static final @Nonnull String KEY_ENERGY = "energy";
-  protected static final @Nonnull String KEY_MAX_IN = "maxInput";
-  protected static final @Nonnull String KEY_MAX_OUT = "maxOuput";
   protected static final @Nonnull Random RANDOM = new Random();
-  protected static final @Nonnull String KEY_LEVEL = "energyUpgradeLevel";
 
-  public static EnergyUpgrade loadFromNBT(@Nonnull NBTTagCompound nbt) {
-    if (!nbt.hasKey(AbstractUpgrade.KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new EnergyUpgrade(nbt.getCompoundTag(AbstractUpgrade.KEY_UPGRADE_PREFIX + UPGRADE_NAME));
-  }
-
-  public static EnergyUpgrade loadFromItem(@Nonnull ItemStack stack) {
-    final NBTTagCompound tagCompound = stack.getTagCompound();
-    EnergyUpgrade upgrade = tagCompound == null ? null : loadFromNBT(tagCompound);
-    if (upgrade == null && stack.getItem() instanceof ItemTravelStaff) {
-      return EnergyUpgrade.EMPOWERED.copy();
-    }
-    return upgrade;
-  
+  public static EnergyUpgrade.EnergyUpgradeHolder loadFromItem(@Nonnull ItemStack stack) {
+    EnergyUpgrade energyUpgrade = EnergyUpgrade.loadAnyFromItem(stack);
+    return energyUpgrade != null ? energyUpgrade.getEnergyUpgradeHolder(stack) : null;
   }
 
   public static boolean itemHasAnyPowerUpgrade(@Nonnull ItemStack itemstack) {
-    return loadFromItem(itemstack) != null;
+    return EnergyUpgrade.loadAnyFromItem(itemstack) != null;
   }
 
   public static AbstractUpgrade next(AbstractUpgrade upgrade) {
     if (upgrade == null) {
       return EnergyUpgrade.EMPOWERED;
-    } else if (upgrade.getUnlocalizedName().equals(EnergyUpgrade.EMPOWERED.getUnlocalizedName())) {
+    } else if (upgrade == EnergyUpgrade.EMPOWERED) {
       return EnergyUpgrade.EMPOWERED_TWO;
-    } else if (upgrade.getUnlocalizedName().equals(EnergyUpgrade.EMPOWERED_TWO.getUnlocalizedName())) {
+    } else if (upgrade == EnergyUpgrade.EMPOWERED_TWO) {
       return EnergyUpgrade.EMPOWERED_THREE;
-    } else if (upgrade.getUnlocalizedName().equals(EnergyUpgrade.EMPOWERED_THREE.getUnlocalizedName())) {
+    } else if (upgrade == EnergyUpgrade.EMPOWERED_THREE) {
       return EnergyUpgrade.EMPOWERED_FOUR;
     }
     return null;
   }
 
   public static int extractEnergy(@Nonnull ItemStack container, int maxExtract, boolean simulate) {
-    EnergyUpgrade eu = loadFromItem(container);
+    EnergyUpgradeHolder eu = loadFromItem(container);
     if (eu == null) {
       return 0;
     }
@@ -67,7 +50,7 @@ public abstract class EnergyUpgradeManager {
   }
 
   public static int receiveEnergy(@Nonnull ItemStack container, int maxReceive, boolean simulate) {
-    EnergyUpgrade eu = loadFromItem(container);
+    EnergyUpgradeHolder eu = loadFromItem(container);
     if (eu == null) {
       return 0;
     }
@@ -83,7 +66,7 @@ public abstract class EnergyUpgradeManager {
       return;
     }
     amount = Math.min(amount, getMaxEnergyStored(item));
-    EnergyUpgrade eu = loadFromItem(item);
+    EnergyUpgradeHolder eu = loadFromItem(item);
     eu.setEnergy(amount);
     eu.writeToItem(item);
   }
@@ -92,21 +75,21 @@ public abstract class EnergyUpgradeManager {
     if (!itemHasAnyPowerUpgrade(item)) {
       return;
     }
-    EnergyUpgrade eu = loadFromItem(item);
+    EnergyUpgradeHolder eu = loadFromItem(item);
     eu.setEnergy(eu.getCapacity());
     eu.writeToItem(item);
   }
 
   public static String getStoredEnergyString(@Nonnull ItemStack itemstack) {
-    EnergyUpgrade up = loadFromItem(itemstack);
+    EnergyUpgradeHolder up = loadFromItem(itemstack);
     if (up == null) {
       return null;
     }
-    return LangPower.RF(up.energy, up.capacity);
+    return LangPower.RF(up.getEnergy(), up.getCapacity());
   }
 
   public static int getEnergyStored(@Nonnull ItemStack container) {
-    EnergyUpgrade eu = loadFromItem(container);
+    EnergyUpgradeHolder eu = loadFromItem(container);
     if (eu == null) {
       return 0;
     }
@@ -114,7 +97,7 @@ public abstract class EnergyUpgradeManager {
   }
 
   public static int getMaxEnergyStored(@Nonnull ItemStack container) {
-    EnergyUpgrade eu = loadFromItem(container);
+    EnergyUpgradeHolder eu = loadFromItem(container);
     if (eu == null) {
       return 0;
     }

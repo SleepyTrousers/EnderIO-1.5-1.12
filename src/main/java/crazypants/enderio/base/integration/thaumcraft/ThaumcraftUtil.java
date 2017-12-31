@@ -1,10 +1,17 @@
 package crazypants.enderio.base.integration.thaumcraft;
 
-import java.util.List;
+import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.handler.darksteel.IDarkSteelUpgrade;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class ThaumcraftUtil {
 
   public static void create() {
@@ -152,7 +159,13 @@ public class ThaumcraftUtil {
 //    //ThaumcraftApi.registerObjectTag(new ItemStack(item, 1, meta), ThaumcraftApiHelper.generateTags(item, meta));
 //  }
 
-  public static void loadUpgrades(List<IDarkSteelUpgrade> upgrades) {
-    upgrades.add(GogglesOfRevealingUpgrade.INSTANCE);
+  @SubscribeEvent
+  public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
+    if (Loader.isModLoaded("Thaumcraft")) {
+      final IForgeRegistry<IDarkSteelUpgrade> registry = event.getRegistry();
+      registry.register(GogglesOfRevealingUpgrade.INSTANCE);
+      Log.info("Dark Steel Upgrades: Thaumcraft integration loaded");
+    }
   }
+
 }

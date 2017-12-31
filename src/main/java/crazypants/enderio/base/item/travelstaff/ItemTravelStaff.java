@@ -78,18 +78,18 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     list.add(EnergyUpgradeManager.getStoredEnergyString(itemstack));
-    DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override

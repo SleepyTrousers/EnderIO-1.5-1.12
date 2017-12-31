@@ -10,7 +10,6 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.recipes.RecipeLoader;
 import crazypants.enderio.base.filter.recipes.FilterRecipes;
-import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.integration.top.TOPUtil;
 import crazypants.enderio.base.machine.recipes.MachineRecipes;
 import crazypants.enderio.base.material.recipes.MaterialRecipes;
@@ -70,7 +69,6 @@ public class CommonProxy {
   
   public void init(@Nonnull FMLInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(tickTimer);
-    MinecraftForge.EVENT_BUS.register(DarkSteelRecipeManager.instance);
 
     if (Config.registerRecipes) {
       MaterialRecipes.addRecipes();

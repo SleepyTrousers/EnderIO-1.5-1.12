@@ -497,31 +497,33 @@ enderio.coolant.tooltip.degreesPerBucket=%s Deg per bucket
 
 enderio.darksteel.upgrade.empowered_one.name=Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D% damage absorbed
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D%% damage absorbed
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=by power
 
 enderio.darksteel.upgrade.empowered_two.name=Empowered II
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D% damage absorbed
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D%% damage absorbed
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=by power
 
 enderio.darksteel.upgrade.empowered_three.name=Empowered III
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% damage absorbed
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D%% damage absorbed
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=by power
 
 enderio.darksteel.upgrade.empowered_four.name=Empowered IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% damage absorbed
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D%% damage absorbed
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
 
 enderio.darksteel.upgrade.travel.name=Travel
-enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or
-enderio.darksteel.upgrade.travel.tooltip.detailed.line2=activate a travel anchor or Ender IO
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or activate a travel anchor or Ender IO
 
 enderio.darksteel.upgrade.spoon.name=Spoon
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Who needs a shovel when 
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line2=you have a spoon
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Who needs a shovel when you have a spoon...
+
+enderio.darksteel.upgrade.tnt.name=Explosive
+enderio.darksteel.upgrade.tnt.tooltip.detailed.line1=Adds explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.tooltip.detailed.line2=For problems that look like nails.
 
 enderio.darksteel.upgrade.glider.name=Glider
 enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Enables gliding
@@ -530,12 +532,12 @@ enderio.darksteel.upgrade.glider.disabled=Glider Disabled
 
 enderio.darksteel.upgrade.elytra.name=Elytra
 enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=Enables Elytra flight
+enderio.darksteel.upgrade.elytra.tooltip.detailed.line2=§4(That means flying as if an Elytra was equipped, NOT "creative" flight!)
 enderio.darksteel.upgrade.elytra.enabled=Elytra Active
 enderio.darksteel.upgrade.elytra.disabled=Elytra Disabled
 
 enderio.darksteel.upgrade.sound.name=Sound Locator
-enderio.darksteel.upgrade.sound.tooltip.detailed.line1=Displays the location of
-enderio.darksteel.upgrade.sound.tooltip.detailed.line2=nearby sounds
+enderio.darksteel.upgrade.sound.tooltip.detailed.line1=Displays the location of nearby sounds
 enderio.darksteel.upgrade.sound.enabled=Sound Locator Active
 enderio.darksteel.upgrade.sound.disabled=Sound Locator Disabled
 
@@ -594,15 +596,6 @@ enderio.darksteel.upgrade.nightVision.enabled=Night Vision Enabled
 enderio.darksteel.upgrade.nightVision.disabled=Night Vision Disabled
 
 enderio.darksteel.upgrade.top.name=The One Probe
-
-enderio.darksteel.upgrade.solar_one.name=Solar I
-enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=Generates power from the sun.
-
-enderio.darksteel.upgrade.solar_two.name=Solar II
-enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=Generates power from the sun.
-
-enderio.darksteel.upgrade.solar_three.name=Solar III
-enderio.darksteel.upgrade.solar_three.tooltip.detailed.line1=Generates power from the sun.
 
 // These are used for the "The One Probe" integration
 enderio.top.action.header=%s:

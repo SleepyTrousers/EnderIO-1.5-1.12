@@ -10,7 +10,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class NaturalistEyeUpgrade extends AbstractUpgrade {
@@ -27,23 +26,8 @@ public class NaturalistEyeUpgrade extends AbstractUpgrade {
     return Prep.getEmpty();
   }
 
-  public static NaturalistEyeUpgrade loadFromItem(@Nonnull ItemStack stack) {
-    final NBTTagCompound tagCompound = stack.getTagCompound();
-    if (tagCompound == null) {
-      return null;
-    }
-    if (!tagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new NaturalistEyeUpgrade((NBTTagCompound) tagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
-  }
-
   public static boolean isUpgradeEquipped(@Nonnull EntityLivingBase player) {
-    return NaturalistEyeUpgrade.loadFromItem(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD)) != null;
-  }
-
-  public NaturalistEyeUpgrade(@Nonnull NBTTagCompound tag) {
-    super(UPGRADE_NAME, tag);
+    return NaturalistEyeUpgrade.INSTANCE.hasUpgrade(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD));
   }
 
   public NaturalistEyeUpgrade() {
@@ -55,12 +39,7 @@ public class NaturalistEyeUpgrade extends AbstractUpgrade {
     if (stack.getItem() != ModObject.itemDarkSteelHelmet.getItem() || Prep.isInvalid(getUpgradeItem())) {
       return false;
     }
-    NaturalistEyeUpgrade up = loadFromItem(stack);
-    return up == null;
-  }
-
-  @Override
-  public void writeUpgradeToNBT(@Nonnull NBTTagCompound upgradeRoot) {
+    return !hasUpgrade(stack);
   }
 
   @Override

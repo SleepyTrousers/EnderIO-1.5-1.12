@@ -5,9 +5,9 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.init.ModObject;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class SwimUpgrade extends AbstractUpgrade {
 
@@ -15,39 +15,21 @@ public class SwimUpgrade extends AbstractUpgrade {
 
   public static final @Nonnull SwimUpgrade INSTANCE = new SwimUpgrade();
 
-  public static SwimUpgrade loadFromItem(@Nonnull ItemStack stack) {
-    final NBTTagCompound tagCompound = stack.getTagCompound();
-    if (tagCompound == null) {
-      return null;
-    }
-    if (!tagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new SwimUpgrade((NBTTagCompound) tagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
-  }
-
-  public SwimUpgrade(@Nonnull NBTTagCompound tag) {
-    super(UPGRADE_NAME, tag);
-  }
-
   public SwimUpgrade() {
     super(UPGRADE_NAME, "enderio.darksteel.upgrade.swim", new ItemStack(Blocks.WATERLILY), Config.darkSteelSwimCost);
   }
 
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack) {
-    if (stack.getItem() != ModObject.itemDarkSteelBoots.getItem()) {
-      return false;
-    }
-    SwimUpgrade up = loadFromItem(stack);
-    if (up == null) {
-      return true;
-    }
-    return false;
+    return stack.getItem() == ModObject.itemDarkSteelBoots.getItem() && !hasUpgrade(stack);
   }
 
   @Override
-  public void writeUpgradeToNBT(@Nonnull NBTTagCompound upgradeRoot) {
+  public void onPlayerTick(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+    if (player.isInWater() && !player.capabilities.isFlying) {
+      player.motionX *= 1.1;
+      player.motionZ *= 1.1;
+    }
   }
 
 }

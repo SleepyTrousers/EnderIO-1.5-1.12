@@ -10,11 +10,9 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.ClientUtil;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
-import com.enderio.core.common.util.Util;
-import com.enderio.core.common.vecmath.VecmathUtil;
-import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vector4d;
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.base.config.Config;
@@ -23,11 +21,9 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.top.TheOneProbeUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
-import crazypants.enderio.base.item.darksteel.upgrade.flippers.SwimUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.jump.JumpUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.solar.SolarUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.speed.SpeedController;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerHandlerUtil;
@@ -45,8 +41,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MovementInput;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -140,116 +134,27 @@ public class DarkSteelController {
       // leggings
       speedController.updateSpeed(player);
 
-      updateGlide(player);
-
-      updateSwim(player);
-
-      updateSolar(player);
-
-    }
-
-  }
-
-  private void updateSolar(EntityPlayer player) {
-    // no processing on client
-    if (player.world.isRemote) {
-      return;
-    }
-
-    ItemStack helm = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-    SolarUpgrade upgrade = SolarUpgrade.loadFromItem(helm);
-    if (upgrade == null || !player.world
-        .canBlockSeeSky(new BlockPos(MathHelper.floor(player.posX), MathHelper.floor(player.posY + player.eyeHeight + .25), MathHelper.floor(player.posZ)))) {
-      return;
-    }
-
-    int RFperSecond = Math.round(upgrade.getRFPerSec() * SolarUpgrade.calculateLightRatio(player.world));
-
-    int leftover = RFperSecond % 20;
-    boolean addExtraRF = player.world.getTotalWorldTime() % 20 < leftover;
-
-    int toAdd = (RFperSecond / 20) + (addExtraRF ? 1 : 0);
-
-    if (toAdd != 0) {
-
-      int nextIndex = player.getEntityData().getInteger("dsarmor:solar") % 4;
-
-      for (int i = 0; i < 4 && toAdd > 0; i++) {
-        ItemStack stack = player.inventory.armorInventory.get(nextIndex);
-        IEnergyStorage cap = PowerHandlerUtil.getCapability(stack, null);
-        if (cap != null && (EnergyUpgradeManager.loadFromItem(stack) != null || Config.darkSteelSolarChargeOthers)) {
-          toAdd -= cap.receiveEnergy(toAdd, false);
+      NNList.of(EntityEquipmentSlot.class).apply(new Callback<EntityEquipmentSlot>() {
+        @Override
+        public void apply(@Nonnull EntityEquipmentSlot slot) {
+          ItemStack item = player.getItemStackFromSlot(slot);
+          if (item.getItem() instanceof IDarkSteelItem) {
+            for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
+              if (upgrade.hasUpgrade(item)) {
+                upgrade.onPlayerTick(item, player);
+              }
+            }
+          }
         }
-        nextIndex = (nextIndex + 1) % 4;
-      }
+      });
 
-      player.getEntityData().setInteger("dsarmor:solar", nextIndex);
     }
   }
 
-  private void updateSwim(EntityPlayer player) {
-    ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-    SwimUpgrade upgrade = SwimUpgrade.loadFromItem(boots);
-    if (upgrade == null) {
-      return;
-    }
-    if (player.isInWater() && !player.capabilities.isFlying) {
-      player.motionX *= 1.1;
-      player.motionZ *= 1.1;
-    }
-  }
-
-  private void updateGlide(EntityPlayer player) {
-    if (!isGlideActive(player) || !isGliderUpgradeEquipped(player)) {
-      return;
-    }
-
-    if (!player.onGround && player.motionY < 0 && !player.isSneaking() && !player.isInWater()) {
-
-      double horizontalSpeed = Config.darkSteelGliderHorizontalSpeed;
-      double verticalSpeed = Config.darkSteelGliderVerticalSpeed;
-      if (player.isSprinting()) {
-        verticalSpeed = Config.darkSteelGliderVerticalSpeedSprinting;
-      }
-
-      Vector3d look = Util.getLookVecEio(player);
-      Vector3d side = new Vector3d();
-      side.cross(new Vector3d(0, 1, 0), look);
-      Vector3d playerPos = new Vector3d(player.prevPosX, player.prevPosY, player.prevPosZ);
-      Vector3d b = new Vector3d(playerPos);
-      b.y += 1;
-      Vector3d c = new Vector3d(playerPos);
-      c.add(side);
-      Vector4d plane = new Vector4d();
-      VecmathUtil.computePlaneEquation(playerPos, b, c, plane);
-      double dist = Math.abs(VecmathUtil.distanceFromPointToPlane(plane, new Vector3d(player.posX, player.posY, player.posZ)));
-      double minDist = 0.15;
-      if (dist < minDist) {
-        double dropRate = (minDist * 10) - (dist * 10);
-        verticalSpeed = verticalSpeed + (verticalSpeed * dropRate * 8);
-        horizontalSpeed -= (0.02 * dropRate);
-      }
-
-      double x = Math.cos(Math.toRadians(player.rotationYawHead + 90)) * horizontalSpeed;
-      double z = Math.sin(Math.toRadians(player.rotationYawHead + 90)) * horizontalSpeed;
-
-      player.motionX += x;
-      player.motionZ += z;
-
-      player.motionY = verticalSpeed;
-      player.fallDistance = 0f;
-
-    }
-
-  }
 
   public boolean isGliderUpgradeEquipped(EntityPlayer player) {
     ItemStack chestPlate = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-    GliderUpgrade glideUpgrade = GliderUpgrade.loadFromItem(chestPlate);
-    if (glideUpgrade == null) {
-      return false;
-    }
-    return true;
+    return GliderUpgrade.INSTANCE.hasUpgrade(chestPlate);
   }
 
   public boolean isElytraUpgradeEquipped(EntityPlayer player) {
@@ -258,11 +163,7 @@ public class DarkSteelController {
   }
 
   public boolean isElytraUpgradeEquipped(@Nonnull ItemStack chestPlate) {
-    ElytraUpgrade glideUpgrade = ElytraUpgrade.loadFromItem(chestPlate);
-    if (glideUpgrade == null) {
-      return false;
-    }
-    return true;
+    return ElytraUpgrade.INSTANCE.hasUpgrade(chestPlate);
   }
 
   private void updateStepHeightAndFallDistance(EntityPlayer player) {
@@ -280,8 +181,7 @@ public class DarkSteelController {
       }
     }
 
-    JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
-    if (jumpUpgrade != null && boots.getItem() == ModObject.itemDarkSteelBoots.getItem() && isStepAssistActive(player)) {
+    if (JumpUpgrade.isEquipped(player) && isStepAssistActive(player)) {
       player.stepHeight = 1.0023F;
     } else if (player.stepHeight == 1.0023F) {
       player.stepHeight = 0.6F;
@@ -392,7 +292,7 @@ public class DarkSteelController {
     }
 
     ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-    JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
+    JumpUpgrade jumpUpgrade = JumpUpgrade.loadAnyFromItem(boots);
 
     if (jumpUpgrade == null) {
       return false;
@@ -445,7 +345,7 @@ public class DarkSteelController {
 
   public boolean isNightVisionUpgradeEquipped(EntityPlayer player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-    return NightVisionUpgrade.loadFromItem(helmet) != null;
+    return NightVisionUpgrade.INSTANCE.hasUpgrade(helmet);
   }
 
   public void setNightVisionActive(boolean isNightVisionActive) {
@@ -461,7 +361,7 @@ public class DarkSteelController {
 
   public boolean isTopUpgradeEquipped(EntityPlayer player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-    return TheOneProbeUpgrade.loadFromItem(helmet) != null;
+    return TheOneProbeUpgrade.INSTANCE.hasUpgrade(helmet);
   }
 
   public void setTopActive(EntityPlayer player, boolean active) {

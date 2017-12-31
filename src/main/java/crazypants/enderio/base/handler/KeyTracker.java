@@ -24,8 +24,8 @@ import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetectorUpgrade
 import crazypants.enderio.base.item.darksteel.upgrade.speed.SpeedUpgrade;
 import crazypants.enderio.base.item.magnet.ItemMagnet;
 import crazypants.enderio.base.item.magnet.MagnetController;
-import crazypants.enderio.base.item.magnet.PacketMagnetState;
 import crazypants.enderio.base.item.magnet.MagnetController.ActiveMagnet;
+import crazypants.enderio.base.item.magnet.PacketMagnetState;
 import crazypants.enderio.base.item.magnet.PacketMagnetState.SlotType;
 import crazypants.enderio.base.item.yetawrench.YetaWrenchPacketProcessor;
 import crazypants.enderio.base.network.PacketHandler;
@@ -117,11 +117,7 @@ public class KeyTracker {
 
   public static boolean isSoundDetectorUpgradeEquipped(EntityPlayerSP player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-    SoundDetectorUpgrade upgrade = SoundDetectorUpgrade.loadFromItem(helmet);
-    if (upgrade == null) {
-      return false;
-    }
-    return true;
+    return SoundDetectorUpgrade.INSTANCE.hasUpgrade(helmet);
   }
 
   private static class MagnetAction implements Action {

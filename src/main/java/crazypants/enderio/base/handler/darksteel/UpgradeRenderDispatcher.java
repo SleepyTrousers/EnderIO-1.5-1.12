@@ -26,7 +26,7 @@ public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlay
       float p_177141_6_, float p_177141_7_, float scale) {
     for (ItemStack piece : entitylivingbaseIn.inventory.armorInventory) {
       if (piece.getItem() instanceof IDarkSteelItem) {
-        for (IDarkSteelUpgrade upg : DarkSteelRecipeManager.instance.getUpgrades()) {
+        for (IDarkSteelUpgrade upg : UpgradeRegistry.getUpgrades()) {
           if (upg.hasUpgrade(piece)) {
             IRenderUpgrade render = upg.getRender();
             if (render != null) {

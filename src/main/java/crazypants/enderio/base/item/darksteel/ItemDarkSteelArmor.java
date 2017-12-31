@@ -32,6 +32,7 @@ import crazypants.enderio.base.integration.forestry.ApiaristArmorUpgrade;
 import crazypants.enderio.base.integration.forestry.NaturalistEyeUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
@@ -145,7 +146,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
     EnergyUpgradeManager.setPowerFull(is);
 
-    Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.instance.recipeIterator();
+    Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.recipeIterator();
     while (iter.hasNext()) {
       IDarkSteelUpgrade upgrade = iter.next();
       if (!(upgrade instanceof EnergyUpgrade || upgrade instanceof GliderUpgrade || upgrade instanceof ElytraUpgrade) && upgrade.canAddToItem(is)) {
@@ -185,12 +186,12 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -208,13 +209,13 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
         list.addAll(Lang.DARK_BOOTS_POWERED.getLines(TextFormatting.WHITE));
       }
     }
-    DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public String getArmorTexture(@Nonnull ItemStack itemStack, @Nonnull Entity entity, @Nonnull EntityEquipmentSlot slot, @Nonnull String layer) {
-    if (armorType == EntityEquipmentSlot.LEGS || (armorType == EntityEquipmentSlot.HEAD && NightVisionUpgrade.loadFromItem(itemStack) == null
-        && SoundDetectorUpgrade.loadFromItem(itemStack) == null)) {
+    if (armorType == EntityEquipmentSlot.LEGS || (armorType == EntityEquipmentSlot.HEAD && !NightVisionUpgrade.INSTANCE.hasUpgrade(itemStack)
+        && !SoundDetectorUpgrade.INSTANCE.hasUpgrade(itemStack))) {
       // LEGS and HELMET without faceplate
       return EnderIO.DOMAIN + ":textures/models/armor/dark_steel_layer_2.png";
     }
@@ -270,8 +271,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public void damageArmor(EntityLivingBase entity, @Nonnull ItemStack stack, DamageSource source, int damage, int slot) {
-    EnergyUpgrade eu = EnergyUpgradeManager.loadFromItem(stack);
-    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
+    if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * powerPerDamagePoint, false);
       eu.writeToItem(stack);
     } else {
@@ -391,7 +392,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   @Method(modid = "forestry")
   public boolean protectEntity(@Nonnull EntityLivingBase entity, @Nonnull ItemStack armor, @Nullable String cause, boolean doProtect) {
-    return ApiaristArmorUpgrade.loadFromItem(armor) != null;
+    return ApiaristArmorUpgrade.HELMET.hasUpgrade(armor) || ApiaristArmorUpgrade.CHEST.hasUpgrade(armor) || ApiaristArmorUpgrade.LEGS.hasUpgrade(armor)
+        || ApiaristArmorUpgrade.BOOTS.hasUpgrade(armor);
   }
 
   @Override

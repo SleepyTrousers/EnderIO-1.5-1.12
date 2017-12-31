@@ -8,12 +8,13 @@ import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.farmers.IFarmerJoe;
 import crazypants.enderio.base.farming.fertilizer.Bonemeal;
 import crazypants.enderio.base.farming.fertilizer.Fertilizer;
-import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.base.handler.darksteel.IDarkSteelUpgrade;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class ForestryUtil {
@@ -32,13 +33,16 @@ public class ForestryUtil {
     }
   }
 
-  public static void addUpgrades(@Nonnull DarkSteelRecipeManager manager) {
+  @SubscribeEvent
+  public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
     if (Loader.isModLoaded("forestry")) {
-      manager.addUpgrade(NaturalistEyeUpgrade.INSTANCE);
-      manager.addUpgrade(ApiaristArmorUpgrade.HELMET);
-      manager.addUpgrade(ApiaristArmorUpgrade.CHEST);
-      manager.addUpgrade(ApiaristArmorUpgrade.LEGS);
-      manager.addUpgrade(ApiaristArmorUpgrade.BOOTS);
+      final IForgeRegistry<IDarkSteelUpgrade> registry = event.getRegistry();
+      registry.register(NaturalistEyeUpgrade.INSTANCE);
+      registry.register(ApiaristArmorUpgrade.HELMET);
+      registry.register(ApiaristArmorUpgrade.CHEST);
+      registry.register(ApiaristArmorUpgrade.LEGS);
+      registry.register(ApiaristArmorUpgrade.BOOTS);
+      Log.info("Dark Steel Upgrades: Forestry integration loaded");
     }
   }
 

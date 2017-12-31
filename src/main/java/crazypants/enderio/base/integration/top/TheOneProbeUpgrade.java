@@ -10,7 +10,6 @@ import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 
 public class TheOneProbeUpgrade extends AbstractUpgrade {
@@ -23,24 +22,9 @@ public class TheOneProbeUpgrade extends AbstractUpgrade {
   @ItemStackHolder("theoneprobe:probe")
   public static ItemStack probe = null;
 
-  public static TheOneProbeUpgrade loadFromItem(@Nonnull ItemStack stack) {
-    final NBTTagCompound tagCompound = stack.getTagCompound();
-    if (tagCompound == null) {
-      return null;
-    }
-    if (!tagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new TheOneProbeUpgrade((NBTTagCompound) tagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
-  }
-
   @Override
   public @Nonnull ItemStack getUpgradeItem() {
     return NullHelper.first(probe, Prep.getEmpty());
-  }
-
-  public TheOneProbeUpgrade(@Nonnull NBTTagCompound tag) {
-    super(UPGRADE_NAME, tag);
   }
 
   public TheOneProbeUpgrade() {
@@ -49,11 +33,7 @@ public class TheOneProbeUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack) {
-    return isAvailable() && stack.getItem() == ModObject.itemDarkSteelHelmet.getItem() && loadFromItem(stack) == null;
-  }
-
-  @Override
-  public void writeUpgradeToNBT(@Nonnull NBTTagCompound upgradeRoot) {
+    return isAvailable() && stack.getItem() == ModObject.itemDarkSteelHelmet.getItem() && !hasUpgrade(stack);
   }
 
   @Override

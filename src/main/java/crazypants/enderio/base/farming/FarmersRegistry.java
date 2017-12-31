@@ -143,6 +143,18 @@ public final class FarmersRegistry {
     }
   }
 
+  public static boolean isLog(Block block) {
+    return WOODS.contains(block);
+  }
+
+  public static boolean isLog(Item item) {
+    return WOODS.contains(item);
+  }
+
+  public static boolean isLog(ItemStack stack) {
+    return WOODS.contains(stack);
+  }
+
   private FarmersRegistry() {
   }
 

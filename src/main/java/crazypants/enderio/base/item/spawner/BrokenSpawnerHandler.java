@@ -158,7 +158,7 @@ public class BrokenSpawnerHandler {
     }
   }
 
-  public static boolean isBlackListed(ResourceLocation entityId) {
+  public static boolean isBlackListed(@Nonnull ResourceLocation entityId) {
     return PoweredSpawnerRecipeRegistry.getInstance().isBlackListed(entityId);
   }
 

@@ -72,7 +72,8 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketOpenAuthGui.Handler.class, PacketOpenAuthGui.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketUpdateLocationPrintout.Handler.class, PacketUpdateLocationPrintout.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(new PacketConfigSyncNewHandler(BaseConfig.F), PacketConfigSyncNew.class, PacketHandler.nextID(), Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketConfigSync.Handler.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketConfigSync.Handler.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketSpawnParticles.Handler.class, PacketSpawnParticles.class, PacketHandler.nextID(), Side.CLIENT);
 
   }
 

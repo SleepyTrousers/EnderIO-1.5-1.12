@@ -15,6 +15,7 @@ import com.enderio.core.common.util.OreDictionaryHelper;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.farmers.HarvestResult;
 import crazypants.enderio.base.farming.farmers.TreeHarvestUtil;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
@@ -22,6 +23,7 @@ import crazypants.enderio.base.handler.darksteel.IDarkSteelItem;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.alloy.Alloy;
@@ -51,7 +53,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
@@ -59,7 +60,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelAxe.getItem();
   }
 
-  public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
+  public static boolean isPowered(EntityPlayer player, int requiredPower) {
     return getStoredPower(player) > requiredPower;
   }
 
@@ -73,7 +74,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     return res;
   }
 
-  private int logOreId = -1;
   private final MultiHarvestComparator harvestComparator = new MultiHarvestComparator();
 
   protected ItemDarkSteelAxe(@Nonnull IModObject modObject) {
@@ -110,7 +110,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     if (!player.world.isRemote && player.isSneaking()) {
       IBlockState bs = player.world.getBlockState(pos);
       Block block = bs.getBlock();
-      if (isLog(bs)) {
+      if (FarmersRegistry.isLog(block)) {
         int powerStored = EnergyUpgradeManager.getEnergyStored(itemstack);
 
         TreeHarvestUtil harvester = new TreeHarvestUtil();
@@ -161,12 +161,13 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
 
   @SubscribeEvent
   public void onBreakSpeedEvent(PlayerEvent.BreakSpeed evt) {
-    if (evt.getEntityPlayer().isSneaking() && isEquippedAndPowered(evt.getEntityPlayer(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest)
-        && isLog(evt.getState())) {
-      evt.setNewSpeed(evt.getOriginalSpeed() / Config.darkSteelAxeSpeedPenaltyMultiHarvest);
-    }
-    if (isEquipped(evt.getEntityPlayer()) && evt.getState().getMaterial() == Material.LEAVES) {
-      evt.setNewSpeed(6);
+    if (isEquipped(evt.getEntityPlayer())) {
+      if (evt.getEntityPlayer().isSneaking() && isPowered(evt.getEntityPlayer(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest)
+          && FarmersRegistry.isLog(evt.getState().getBlock())) {
+        evt.setNewSpeed(evt.getOriginalSpeed() / Config.darkSteelAxeSpeedPenaltyMultiHarvest);
+      } else if (evt.getState().getMaterial() == Material.LEAVES) {
+        evt.setNewSpeed(6);
+      }
     }
   }
 
@@ -194,8 +195,8 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   }
 
   private boolean absorbDamageWithEnergy(@Nonnull ItemStack stack, int amount) {
-    EnergyUpgrade eu = EnergyUpgradeManager.loadFromItem(stack);
-    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
+    if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(amount, false);
       eu.writeToItem(stack);
       return true;
@@ -216,19 +217,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     return super.getStrVsBlock(stack, state);
   }
 
-  private boolean isLog(IBlockState bs) {
-    if (logOreId == -1) {
-      logOreId = OreDictionary.getOreID("logWood");
-    }
-    int[] targetOreId = OreDictionary.getOreIDs(new ItemStack(bs.getBlock(), 1, bs.getBlock().getMetaFromState(bs)));
-    for (int id : targetOreId) {
-      if (logOreId == id) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   @Override
   public boolean getIsRepairable(@Nonnull ItemStack i1, @Nonnull ItemStack i2) {
     return false;
@@ -236,12 +224,12 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -257,7 +245,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
       list.add(Lang.AXE_MULTIHARVEST.get());
       list.add(Lang.AXE_POWERED.get(TextFormatting.WHITE, Config.darkSteelAxeEffeciencyBoostWhenPowered));
     }
-    DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   private static class MultiHarvestComparator implements Comparator<BlockPos> {

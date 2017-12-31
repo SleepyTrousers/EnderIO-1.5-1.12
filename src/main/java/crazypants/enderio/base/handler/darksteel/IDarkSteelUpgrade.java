@@ -5,9 +5,11 @@ import javax.annotation.Nonnull;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
 import crazypants.enderio.base.render.IHasPlayerRenderer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 
-public interface IDarkSteelUpgrade extends IAdvancedTooltipProvider, IHasPlayerRenderer {
+public interface IDarkSteelUpgrade extends IAdvancedTooltipProvider, IHasPlayerRenderer, IForgeRegistryEntry<IDarkSteelUpgrade> {
 
   @Nonnull
   String getUnlocalizedName();
@@ -29,5 +31,10 @@ public interface IDarkSteelUpgrade extends IAdvancedTooltipProvider, IHasPlayerR
 
   @Nonnull
   String getUpgradeItemName();
+
+  default void onPlayerTick(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+  }
+
+  IDarkSteelUpgrade loadFromItem(@Nonnull ItemStack stack);
 
 }

@@ -11,7 +11,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class ApiaristArmorUpgrade extends AbstractUpgrade {
@@ -33,26 +32,11 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
     return Prep.getEmpty();
   }
 
-  public static ApiaristArmorUpgrade loadFromItem(ItemStack stack) {
-    final NBTTagCompound tagCompound = stack.getTagCompound();
-    if (tagCompound == null) {
-      return null;
-    }
-    if (!tagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new ApiaristArmorUpgrade((NBTTagCompound) tagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
-  }
-
   private final EntityEquipmentSlot slot;
 
-  public ApiaristArmorUpgrade(@Nonnull NBTTagCompound tag) {
-    super(UPGRADE_NAME, tag);
-    this.slot = EntityEquipmentSlot.fromString(tag.getString("slot"));
-  }
-
   public ApiaristArmorUpgrade(@Nonnull EntityEquipmentSlot slot) {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.apiaristArmor." + slot.getName(), getApiaristArmor(slot), Config.darkSteelApiaristArmorCost);
+    super(UPGRADE_NAME + slot.getName(), "enderio.darksteel.upgrade.apiaristArmor." + slot.getName(), getApiaristArmor(slot),
+        Config.darkSteelApiaristArmorCost);
     this.slot = slot;
   }
 
@@ -61,18 +45,7 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
     if (!(stack.getItem() instanceof ItemArmor) || ((ItemArmor) stack.getItem()).armorType != slot || Prep.isInvalid(getUpgradeItem())) {
       return false;
     }
-    ApiaristArmorUpgrade up = loadFromItem(stack);
-    return up == null;
-  }
-
-  @Override
-  public boolean hasUpgrade(@Nonnull ItemStack stack) {
-    return super.hasUpgrade(stack) && (stack.getItem() instanceof ItemArmor) && ((ItemArmor) stack.getItem()).armorType == slot;
-  }
-
-  @Override
-  public void writeUpgradeToNBT(@Nonnull NBTTagCompound upgradeRoot) {
-    upgradeRoot.setString("slot", slot.getName());
+    return !hasUpgrade(stack);
   }
 
   @Override

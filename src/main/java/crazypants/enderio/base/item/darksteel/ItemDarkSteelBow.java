@@ -16,6 +16,7 @@ import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.IDarkSteelItem;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.material.material.Material;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
@@ -132,7 +133,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
       boolean arrowIsInfinite = hasInfinateArrows && itemstack.getItem() instanceof ItemArrow;
       if (!worldIn.isRemote) {
 
-        EnergyUpgrade upgrade = EnergyUpgradeManager.loadFromItem(stack);
+        EnergyUpgradeHolder upgrade = EnergyUpgradeManager.loadFromItem(stack);
 
         ItemArrow itemarrow = ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
         EntityArrow entityarrow = itemarrow.createArrow(worldIn, itemstack, entityplayer);
@@ -187,7 +188,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     entityplayer.addStat(StatList.getObjectUseStats(this));
   }
 
-  private int getRequiredPower(int drawDuration, EnergyUpgrade upgrade) {
+  private int getRequiredPower(int drawDuration, EnergyUpgradeHolder upgrade) {
     if (upgrade == null || drawDuration <= 0) {
       return 0;
     }
@@ -259,9 +260,9 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     }
 
     float mult = (float) Config.darkSteelBowFovMultipliers[0];
-    EnergyUpgrade upgrade = EnergyUpgradeManager.loadFromItem(currentItem);
+    EnergyUpgradeHolder upgrade = EnergyUpgradeManager.loadFromItem(currentItem);
     if (upgrade != null && upgrade.getEnergy() > 0) {
-      mult = (float) Config.darkSteelBowFovMultipliers[upgrade.getLevel() + 1];
+      mult = (float) Config.darkSteelBowFovMultipliers[upgrade.getUpgrade().getLevel() + 1];
     }
     fovEvt.setNewfov((1.0F - ratio * mult));
   }
@@ -270,20 +271,20 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     return getDrawTime(EnergyUpgradeManager.loadFromItem(stack));
   }
 
-  public int getDrawTime(EnergyUpgrade upgrade) {
+  public int getDrawTime(EnergyUpgradeHolder upgrade) {
     if (upgrade == null) {
       return Config.darkSteelBowDrawSpeeds[0];
     }
     if (upgrade.getEnergy() >= Config.darkSteelBowPowerUsePerDraw) {
-      return Config.darkSteelBowDrawSpeeds[upgrade.getLevel() + 1];
+      return Config.darkSteelBowDrawSpeeds[upgrade.getUpgrade().getLevel() + 1];
     }
     return Config.darkSteelBowDrawSpeeds[0];
   }
 
-  private float getForceMultiplier(EnergyUpgrade upgrade) {
+  private float getForceMultiplier(EnergyUpgradeHolder upgrade) {
     float res = (float) Config.darkSteelBowForceMultipliers[0];
     if (upgrade != null && upgrade.getEnergy() >= 0) {
-      res = (float) Config.darkSteelBowForceMultipliers[upgrade.getLevel() + 1];
+      res = (float) Config.darkSteelBowForceMultipliers[upgrade.getUpgrade().getLevel() + 1];
     }
     return res;
   }
@@ -302,8 +303,8 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   }
 
   private boolean absorbDamageWithEnergy(@Nonnull ItemStack stack, int amount) {
-    EnergyUpgrade eu = EnergyUpgradeManager.loadFromItem(stack);
-    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
+    if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(amount, false);
       eu.writeToItem(stack);
       return true;
@@ -349,12 +350,12 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -366,7 +367,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     if (str != null) {
       list.add(str);
     }
-    DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
 }
