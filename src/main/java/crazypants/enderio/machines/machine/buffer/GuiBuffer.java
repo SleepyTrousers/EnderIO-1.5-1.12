@@ -103,11 +103,13 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
   }
 
   private void checkForTeChanges() {
-    if (getTileEntity().getMaxInput() != lastInputTe) {
-      maxInput.setText(LangPower.format(lastInputTe = getTileEntity().getMaxInput()));
-    }
-    if (getTileEntity().getMaxOutput() != lastOutputTe) {
-      maxOutput.setText(LangPower.format(lastOutputTe = getTileEntity().getMaxOutput()));
+    if (hasPower) {
+      if (getTileEntity().getMaxInput() != lastInputTe) {
+        maxInput.setText(LangPower.format(lastInputTe = getTileEntity().getMaxInput()));
+      }
+      if (getTileEntity().getMaxOutput() != lastOutputTe) {
+        maxOutput.setText(LangPower.format(lastOutputTe = getTileEntity().getMaxOutput()));
+      }
     }
   }
 
