@@ -75,8 +75,6 @@ public class MarkerParticle extends Particle {
 
     float fade = tolive / (float) maxage;
 
-    GlStateManager.translate(-interpPosX, -interpPosY, -interpPosZ);
-
     GlStateManager.color(color.x, color.y, color.z, color.w * fade);
 
     RenderUtil.renderBoundingBox(new BoundingBox(pos).expand(0.01, 0.01, 0.01), IconUtil.instance.whiteTexture);

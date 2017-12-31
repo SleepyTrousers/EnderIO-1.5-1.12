@@ -70,7 +70,7 @@ public abstract class TileEntityEio extends TileEntityBase {
   @Override
   protected final void readCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
     Reader.read(action, root, this);
-    if (action == NBTAction.SYNC || action == NBTAction.UPDATE) {
+    if (action == NBTAction.CLIENT) {
       onAfterDataPacket();
     }
     onAfterNbtRead();

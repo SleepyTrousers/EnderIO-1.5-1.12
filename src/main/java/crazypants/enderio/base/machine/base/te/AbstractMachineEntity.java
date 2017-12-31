@@ -43,12 +43,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
 
   private static final @Nonnull Limit PULL_PUSH_LIMIT = new Limit(1, 64);
 
-  @Store({ NBTAction.SYNC, NBTAction.UPDATE, NBTAction.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   public @Nonnull EnumFacing facing = EnumFacing.SOUTH;
 
   // Client sync monitoring
   protected int ticksSinceSync = -1;
-  @Store({ NBTAction.UPDATE, NBTAction.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   protected final @Nonnull ResettingFlag forceClientUpdate = new ResettingFlag();
   protected boolean lastActive;
   protected int ticksSinceActiveChanged = 0;
@@ -56,7 +56,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
   @Store
   protected @Nonnull RedstoneControlMode redstoneControlMode = RedstoneControlMode.IGNORE;
 
-  @Store({ NBTAction.UPDATE, NBTAction.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   protected boolean redstoneCheckPassed;
 
   private boolean redstoneStateDirty = true;

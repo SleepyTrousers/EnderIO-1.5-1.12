@@ -27,7 +27,7 @@ public class HandleResettingFlag implements IHandler<ResettingFlag> {
   @Override
   public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
       @Nonnull ResettingFlag object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
-    nbt.setBoolean(name, phase.contains(NBTAction.UPDATE) ? object.read() : object.peek());
+    nbt.setBoolean(name, phase.contains(NBTAction.CLIENT) ? object.read() : object.peek());
     return true;
   }
 

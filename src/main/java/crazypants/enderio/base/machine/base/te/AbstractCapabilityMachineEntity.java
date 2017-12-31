@@ -3,6 +3,7 @@ package crazypants.enderio.base.machine.base.te;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.View;
 import com.enderio.core.common.inventory.InventorySlot;
@@ -21,7 +22,7 @@ import net.minecraftforge.items.IItemHandler;
 @Storable
 public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEntity {
 
-  @Store
+  @Store({ NBTAction.SAVE, NBTAction.ITEM })
   private final @Nonnull EnderInventory inventory = new EnderInventory();
   private final @Nonnull EnderInventory inventoryDelegate;
   private final @Nonnull View upgradeSlots, inputSlots, outputSlots;
