@@ -7,6 +7,8 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.fuel.ISolidFuelHandler;
+import crazypants.enderio.base.machine.fuel.SolidFuelCenter;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -15,6 +17,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -101,6 +104,15 @@ public class BlockStirlingGenerator<T extends TileStirlingGenerator> extends Abs
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull T tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isActive());
+  }
+
+  static {
+    SolidFuelCenter.registerSolidFuelHandler(new ISolidFuelHandler() {
+      @Override
+      public long getBurnTime(@Nonnull ItemStack itemstack) {
+        return TileStirlingGenerator.getBurnTimeGeneric(itemstack);
+      }
+    });
   }
 
 }

@@ -137,6 +137,10 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
     }
   }
 
+  public static int getBurnTimeGeneric(@Nonnull ItemStack item) {
+    return Math.round(TileEntityFurnace.getItemBurnTime(item));
+  }
+
   public int getBurnTime(@Nonnull ItemStack item) {
     return Math.round(TileEntityFurnace.getItemBurnTime(item) * getBurnTimeMultiplier());
   }

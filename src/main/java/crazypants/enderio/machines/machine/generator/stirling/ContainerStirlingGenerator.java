@@ -8,13 +8,14 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.base.integration.jei.ItemHelper;
+import crazypants.enderio.base.machine.fuel.ISolidFuelHandler;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerStirlingGenerator<T extends TileStirlingGenerator> extends AbstractMachineContainer<T> {
+public class ContainerStirlingGenerator<T extends TileStirlingGenerator> extends AbstractMachineContainer<T> implements ISolidFuelHandler {
 
   public ContainerStirlingGenerator(@Nonnull InventoryPlayer playerInv, @Nonnull T te) {
     super(playerInv, te);
@@ -47,6 +48,21 @@ public class ContainerStirlingGenerator<T extends TileStirlingGenerator> extends
       }
     });
     ghostSlots.add(new GhostBackgroundItemSlot(fuels, getSlotFromInventory(0)));
+  }
+
+  @Override
+  public boolean isInGUI() {
+    return true;
+  }
+
+  @Override
+  public int getPowerUsePerTick() {
+    return getTe().getPowerUsePerTick();
+  }
+
+  @Override
+  public long getBurnTime(@Nonnull ItemStack itemstack) {
+    return getTe().isMachineItemValidForSlot(0, itemstack) ? getTe().getBurnTime(itemstack) : -1;
   }
 
 }
