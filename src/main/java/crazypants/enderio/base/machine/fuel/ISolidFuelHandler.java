@@ -9,9 +9,13 @@ public interface ISolidFuelHandler {
   /**
    * True if the current GUI belongs to this handler.
    */
-  boolean isInGUI();
+  default boolean isInGUI() {
+    return false;
+  }
 
-  int getPowerUsePerTick();
+  default int getPowerUsePerTick() {
+    return 0;
+  }
 
   long getBurnTime(@Nonnull ItemStack itemstack);
 

@@ -1,4 +1,4 @@
-package crazypants.enderio.base.gui;
+package crazypants.enderio.base.gui.tooltip;
 
 import java.util.List;
 

@@ -488,10 +488,10 @@ enderio.fluid.millibucket.format.ofname=%s / %s mB of %s
 enderio.fluid.millibucket.format.tickper=%s t/mB
 
 enderio.fuel.tooltip.heading=Fuel Details
-enderio.fuel.tooltip.generates=Generates % at %s
-enderio.fuel.tooltip.burnTime=burn time %s
+enderio.fuel.tooltip.generates=Generates %s at %s
+enderio.fuel.tooltip.burnTime=Burn time %s ticks
 enderio.coolant.tooltip.heading=Coolant
-enderio.coolant.tooltip.degreesPerBucket=%s Deg per bucket
+enderio.coolant.tooltip.degreesPerBucket=%s°C per bucket
 
 
 

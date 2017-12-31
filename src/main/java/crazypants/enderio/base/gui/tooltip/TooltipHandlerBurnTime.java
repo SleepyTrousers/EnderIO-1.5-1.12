@@ -1,4 +1,4 @@
-package crazypants.enderio.base.gui;
+package crazypants.enderio.base.gui.tooltip;
 
 import java.util.List;
 
@@ -14,6 +14,7 @@ import crazypants.enderio.base.machine.fuel.ISolidFuelHandler;
 import crazypants.enderio.base.machine.fuel.SolidFuelCenter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
 
 public class TooltipHandlerBurnTime implements ITooltipCallback {
 
@@ -24,9 +25,12 @@ public class TooltipHandlerBurnTime implements ITooltipCallback {
     if (burnTime > 0) {
       if (handler.isInGUI()) {
         int rate = handler.getPowerUsePerTick();
-        list.add(Lang.FUEL_GENERATES.get(LangPower.RF(burnTime * rate), LangPower.RFt(rate)));
+        list.add(Lang.FUEL_HEADING.get());
+        list.add(TextFormatting.ITALIC + " " + Lang.FUEL_GENERATES.get(LangPower.RF(burnTime * rate), LangPower.RFt(rate)));
+        list.add(TextFormatting.ITALIC + " " + Lang.FUEL_BURNTIME.get(burnTime));
       } else if (Config.addFurnaceFuelTootip) {
-        list.add(Lang.FUEL_BURNTIME.get(burnTime));
+        list.add(Lang.FUEL_HEADING.get());
+        list.add(TextFormatting.ITALIC + " " + Lang.FUEL_BURNTIME.get(burnTime));
       }
     }
   }
