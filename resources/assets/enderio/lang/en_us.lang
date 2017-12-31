@@ -1,4 +1,4 @@
-itemGroup.enderio.machines=EnderIO Machines
+//Machines Lang
 
 enderio.gui.combustion_generator.output=Generating: %s
 enderio.gui.combustion_generator.coolantTank.empty=Coolant
