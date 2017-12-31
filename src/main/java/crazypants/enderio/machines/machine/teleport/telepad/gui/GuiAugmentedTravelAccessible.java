@@ -2,7 +2,9 @@ package crazypants.enderio.machines.machine.teleport.telepad.gui;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.gui.IToggleableGui;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.gui.ToggleTravelButton;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.GuiTravelAccessable;
 import crazypants.enderio.machines.machine.teleport.telepad.BlockTelePad;
@@ -23,7 +25,7 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable<TileTelePa
     switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, GuiTelePad.SWITCH_X, GuiTelePad.SWITCH_Y, IconEIO.IO_WHATSIT);
     switchButton.setToolTip(Lang.GUI_TELEPAD_TO_MAIN.get());
   }
-  
+
   @Override
   public void initGui() {
     super.initGui();
