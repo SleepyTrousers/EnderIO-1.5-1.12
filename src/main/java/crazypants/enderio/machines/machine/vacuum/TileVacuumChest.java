@@ -63,7 +63,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
       IItemFilter newFilter = FilterRegistry.getFilterForUpgrade(newStack);
       if (newFilter == null || newFilter instanceof ItemFilter) { // TODO this only works with basic filters, update here for more filters
         filter = (ItemFilter) newFilter;
-        updateBlock();
+        forceUpdatePlayers();
       }
     }
   };
@@ -77,7 +77,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
   private int range = VacuumConfig.vacuumChestRange.get();
   @Store
   private ItemFilter filter;
-  @Store({ NBTAction.SYNC, NBTAction.UPDATE })
+  @Store({ NBTAction.CLIENT })
   private boolean clientActive;
 
   public TileVacuumChest() {

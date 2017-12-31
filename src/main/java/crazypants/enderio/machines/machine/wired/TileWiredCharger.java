@@ -3,6 +3,7 @@ package crazypants.enderio.machines.machine.wired;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.common.NBTAction;
 
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -12,9 +13,12 @@ import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
 public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity, IProgressTile {
@@ -73,11 +77,20 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
     return false;
   }
 
+  @Store(NBTAction.CLIENT)
+  private @Nonnull ItemStack itemForClient = Prep.getEmpty();
+
+  @SideOnly(Side.CLIENT)
+  protected @Nonnull ItemStack getItemToRender() {
+    return itemForClient;
+  }
+
   @Override
   public void setInventorySlotContents(int slot, @Nonnull ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
     if (slot == getSlotDefinition().minInputSlot) {
       // TESR renders this, need to keep clients updated
+      itemForClient = contents;
       forceUpdatePlayers();
     }
   }

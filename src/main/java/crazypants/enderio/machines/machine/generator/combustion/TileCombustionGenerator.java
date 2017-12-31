@@ -77,12 +77,12 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   private int ticksRemaingFuel;
   @Store({ NBTAction.ITEM, NBTAction.SAVE })
   private int ticksRemaingCoolant;
-  @Store(NBTAction.UPDATE)
+  @Store(NBTAction.CLIENT)
   private boolean active;
 
   private PowerDistributor powerDis;
 
-  @Store(NBTAction.UPDATE)
+  @Store(NBTAction.CLIENT)
   private int generated;
 
   private boolean inPause = false;

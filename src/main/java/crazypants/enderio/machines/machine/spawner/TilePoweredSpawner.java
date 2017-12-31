@@ -53,7 +53,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_SPEEDUP
 @Storable
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged, EntityAction.Implementer {
 
-  @Store({ NBTAction.SYNC, NBTAction.UPDATE, NBTAction.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   private CapturedMob capturedMob = null;
   @Store
   private boolean isSpawnMode = true;

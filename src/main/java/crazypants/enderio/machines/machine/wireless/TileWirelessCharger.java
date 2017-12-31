@@ -157,7 +157,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
     updateBlock();
   }
 
-  @Store({ NBTAction.SYNC, NBTAction.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   protected IBlockState sourceBlock;
 
   @Override

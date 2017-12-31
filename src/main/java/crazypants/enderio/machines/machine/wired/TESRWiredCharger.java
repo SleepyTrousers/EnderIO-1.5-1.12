@@ -78,7 +78,7 @@ public class TESRWiredCharger<T extends TileWiredCharger> extends ManagedTESR<T>
   }
 
   protected @Nonnull ItemStack getFloatingItem(@Nonnull T te) {
-    return te.getStackInSlot(te.getSlotDefinition().minInputSlot);
+    return te.getItemToRender();
   }
 
   public void doRender(@Nonnull ItemStack itemstack, double rot) {

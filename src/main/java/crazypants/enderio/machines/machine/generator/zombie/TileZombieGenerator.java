@@ -49,7 +49,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   final SmartTank tank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), Fluid.BUCKET_VOLUME * 2);
 
   private boolean tanksDirty;
-  @Store(NBTAction.UPDATE)
+  @Store(NBTAction.CLIENT)
   private boolean active = false;
   private PowerDistributor powerDis;
 
