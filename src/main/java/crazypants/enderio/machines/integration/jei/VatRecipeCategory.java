@@ -4,6 +4,12 @@ import java.awt.Rectangle;
 
 import javax.annotation.Nonnull;
 
+import static crazypants.enderio.machines.init.MachineObject.block_vat;
+import static crazypants.enderio.machines.machine.vat.ContainerVat.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.vat.ContainerVat.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machines.machine.vat.ContainerVat.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.vat.ContainerVat.NUM_RECIPE_SLOT;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.integration.jei.RecipeWrapper;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
@@ -29,23 +35,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-import static crazypants.enderio.machines.init.MachineObject.block_vat;
-import static crazypants.enderio.machines.machine.vat.ContainerVat.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.vat.ContainerVat.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machines.machine.vat.ContainerVat.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.vat.ContainerVat.NUM_RECIPE_SLOT;
-
 public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.VatRecipeWrapper> {
 
   public static final @Nonnull String UID = "Vat";
-
-  // Offsets from full size gui, makes it much easier to get the location
-  // correct
-  private static final int xOff = 24;
-  private static final int yOff = 9;
-
-  private Rectangle inTankBounds = new Rectangle(30 - xOff, 12 - yOff, 15, 47);
-  private Rectangle outTankBounds = new Rectangle(132 - xOff, 12 - yOff, 15, 47);
 
   // ------------ Recipes
 
@@ -105,8 +97,14 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
 
   // ------------ Category
 
-  @Nonnull
-  private final IDrawable background;
+  // Offsets from full size gui, makes it much easier to get the location
+  // correct
+  private static final int xOff = 24;
+  private static final int yOff = 9;
+  private Rectangle inTankBounds = new Rectangle(30 - xOff, 12 - yOff, 15, 47);
+  private Rectangle outTankBounds = new Rectangle(132 - xOff, 12 - yOff, 15, 47);
+
+  private final @Nonnull IDrawable background;
 
   public VatRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("vat");
@@ -133,19 +131,17 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
     recipeWrapper.setCurrentLayout(recipeLayout);
 
     final IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+    final IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
+    IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
 
     guiItemStacks.init(0, true, 55 - xOff, 11 - yOff);
     guiItemStacks.init(1, true, 104 - xOff, 11 - yOff);
-    guiItemStacks.set(ingredients);
-
-    final IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
     fluidStacks.init(2, true, inTankBounds.x, inTankBounds.y, inTankBounds.width, inTankBounds.height, 8000, false, null);
     fluidStacks.init(3, false, outTankBounds.x, outTankBounds.y, outTankBounds.width, outTankBounds.height, 8000, false, null);
-    fluidStacks.set(ingredients);
-
-    IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
     group.init(4, true, EnergyIngredientRenderer.INSTANCE, 76, 58, 50, 10, 0, 0);
+
+    guiItemStacks.set(ingredients);
+    fluidStacks.set(ingredients);
     group.set(ingredients);
   }
-
 }
