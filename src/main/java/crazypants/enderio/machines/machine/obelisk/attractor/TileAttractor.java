@@ -12,8 +12,8 @@ import com.mojang.authlib.GameProfile;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.machine.modes.EntityAction;
+import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.machines.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.machines.machine.obelisk.spawn.AbstractMobObelisk;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLiving;
@@ -67,7 +67,7 @@ public class TileAttractor extends AbstractMobObelisk {
         next.getValue().release(this, next.getKey());
         iterator.remove();
       } else if (next.getKey().world.rand.nextInt(4) == 0) {
-        PacketObeliskFx.create(next.getKey(), EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.VILLAGER_HAPPY);
+        PacketSpawnParticles.create(next.getKey(), EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.VILLAGER_HAPPY);
       }
     }
   }
@@ -97,7 +97,7 @@ public class TileAttractor extends AbstractMobObelisk {
       if (handler.canAttract(this, ent)) {
         handler.startAttracting(this, ent);
         tracking.put(ent, handler);
-        PacketObeliskFx.create(ent, EnumParticleTypes.HEART, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL,
+        PacketSpawnParticles.create(ent, EnumParticleTypes.HEART, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL,
             EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.VILLAGER_HAPPY);
         return;
       }

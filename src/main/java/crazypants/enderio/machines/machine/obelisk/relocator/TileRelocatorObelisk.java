@@ -9,8 +9,8 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.EntityAction;
+import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.machines.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.machines.machine.obelisk.spawn.TileEntityAbstractSpawningObelisk;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
@@ -80,11 +80,11 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
                 && (world.containsAnyLiquid(bb) == mob.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
 
             if (spaceClear) {
-              PacketObeliskFx.create(mob, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL);
+              PacketSpawnParticles.create(mob, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL);
               mob.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
               mob.setPositionAndUpdate(x - dx / 2, y + .05, z - dz / 2);
               mob.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
-              PacketObeliskFx.create(mob, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL);
+              PacketSpawnParticles.create(mob, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL);
               iterator.remove();
             }
           }

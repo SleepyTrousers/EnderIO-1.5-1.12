@@ -15,7 +15,6 @@ import crazypants.enderio.machines.machine.farm.PacketUpdateNotification;
 import crazypants.enderio.machines.machine.generator.combustion.PacketCombustionTank;
 import crazypants.enderio.machines.machine.generator.stirling.PacketBurnTime;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
-import crazypants.enderio.machines.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.machines.machine.obelisk.weather.PacketActivateWeather;
 import crazypants.enderio.machines.machine.obelisk.weather.PacketWeatherTank;
 import crazypants.enderio.machines.machine.sagmill.PacketGrindingBall;
@@ -74,7 +73,6 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketFarmAction.Handler.class, PacketFarmAction.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketUpdateNotification.Handler.class, PacketUpdateNotification.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketFarmLockedSlot.Handler.class, PacketFarmLockedSlot.class, PacketHandler.nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketObeliskFx.Handler.class, PacketObeliskFx.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketGrindingBall.Handler.class, PacketGrindingBall.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketStoredEnergy.Handler.class, PacketStoredEnergy.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketTankFluid.Handler.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);

@@ -344,4 +344,13 @@ enderio.jei.combustion_generator.range.line2=Better capacitor gives higher outpu
 enderio.jei.combustion_generator.range.line3=Better model gives more output at same fuel cost.
 enderio.jei.combustion_generator.range.line4=Some ancient capacitors that can be found in the world can give even better results than shown here.
 
+enderio.darksteel.upgrade.solar_1.name=Solar I
+enderio.darksteel.upgrade.solar_1.tooltip.detailed.line1=Generates power from the sun.
+
+enderio.darksteel.upgrade.solar_2.name=Solar II
+enderio.darksteel.upgrade.solar_2.tooltip.detailed.line1=Generates power from the sun.
+
+enderio.darksteel.upgrade.solar_3.name=Solar III
+enderio.darksteel.upgrade.solar_3.tooltip.detailed.line1=Generates power from the sun.
+
 
