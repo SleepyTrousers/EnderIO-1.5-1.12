@@ -3070,9 +3070,9 @@
         <itemStack oreDictionary="compressed1xSand" />
       </input>
       <output>
-        <itemStack oreDictionary="silicon" number="3" chance="0.5" />
-        <itemStack oreDictionary="silicon" number="3" chance="0.5" />
-        <itemStack oreDictionary="silicon" number="3" chance="0.5" />
+        <itemStack oreDictionary="itemSilicon" number="3" chance="0.5" />
+        <itemStack oreDictionary="itemSilicon" number="3" chance="0.5" />
+        <itemStack oreDictionary="itemSilicon" number="3" chance="0.5" />
         <itemStack oreDictionary="sand" chance="0.05" />
       </output>
     </recipe>
@@ -3081,9 +3081,9 @@
         <itemStack oreDictionary="compressed2xSand" />
       </input>
       <output>
-        <itemStack oreDictionary="silicon" number="27" chance="0.5" />
-        <itemStack oreDictionary="silicon" number="27" chance="0.5" />
-        <itemStack oreDictionary="silicon" number="27" chance="0.5" />
+        <itemStack oreDictionary="itemSilicon" number="27" chance="0.5" />
+        <itemStack oreDictionary="itemSilicon" number="27" chance="0.5" />
+        <itemStack oreDictionary="itemSilicon" number="27" chance="0.5" />
         <itemStack oreDictionary="compressed1xSand" chance="0.05" />
       </output>
     </recipe>
