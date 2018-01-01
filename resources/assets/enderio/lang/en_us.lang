@@ -5,6 +5,13 @@
 
 // These keys have been confirmed in 1.11
 
+# Names for the creative tabs
+
+itemGroup.enderio.machines=EnderIO Machines
+itemGroup.enderio.items=EnderIO Items
+itemGroup.enderio.materials=EnderIO Materials
+itemGroup.enderio.main=EnderIO Main
+
 item.item_alloy_ingot_conductive_iron.name=Conductive Iron Ingot
 item.item_alloy_ingot_dark_steel.name=Dark Steel Ingot
 item.item_alloy_ingot_electrical_steel.name=Electrical Steel Ingot
@@ -827,31 +834,31 @@ enderio.loot.capacitor.title.21=Nothing
 ;
 ;enderio.itemItemConduit.name=Item Conduit
 ;
-;enderio.filterUpgradeBasic.name=Basic Item Filter
-;enderio.filterUpgradeAdvanced.name=Advanced Item Filter
-;enderio.filterUpgradeLimited.name=Counting Item Filter
-;enderio.filterUpgradeSpecies.name=Forestry Species Item Filter
+item.item_item_filter_filterUpgradeBasic.name=Basic Item Filter
+item.item_item_filter_filterUpgradeAdvanced.name=Advanced Item Filter
+item.item_item_filter_filterUpgradeLimited.name=Counting Item Filter
+enderio.filterUpgradeSpecies.name=Forestry Species Item Filter
 ;
-;item.itemExistingItemFilter.name=Existing Item Filter
-;item.itemExistingItemFilter.tooltip.basic.line1=Upgrade for item conduits
-;item.itemExistingItemFilter.tooltip.detailed.line1=Selects only items already
-;item.itemExistingItemFilter.tooltip.detailed.line2=in the inventory
-;item.itemExistingItemFilter.tooltip.detailed.line3=Right click while sneaking
-;item.itemExistingItemFilter.tooltip.detailed.line4=on an inventory to add the
-;item.itemExistingItemFilter.tooltip.detailed.line5=content to the snapshot
+item.item_existing_item_filter.name=Existing Item Filter
+item.item_existing_item_filter.tooltip.basic.line1=Upgrade for item conduits
+item.item_existing_item_filter.tooltip.detailed.line1=Selects only items already
+item.item_existing_item_filter.tooltip.detailed.line2=in the inventory
+item.item_existing_item_filter.tooltip.detailed.line3=Right click while sneaking
+item.item_existing_item_filter.tooltip.detailed.line4=on an inventory to add the
+item.item_existing_item_filter.tooltip.detailed.line5=content to the snapshot
 ;
 ;enderio.item.itemExistingItemFilter.filterUpdated=New items have been added to the snapshot
 ;enderio.item.itemExistingItemFilter.filterNotUpdated=The snapshot already covers all items in the inventory
 ;
-;item.itemModItemFilter.name=Mod Item Filter
-;item.itemModItemFilter.tooltip.basic.line1=Upgrade for item conduits
-;item.itemModItemFilter.tooltip.detailed.line1=Selects only items for a specified
-;item.itemModItemFilter.tooltip.detailed.line2=mod/s
+item.item_mod_item_filter.name=Mod Item Filter
+item.item_mod_item_filter.tooltip.basic.line1=Upgrade for item conduits
+item.item_mod_item_filter.tooltip.detailed.line1=Selects only items for a specified
+item.item_mod_item_filter.tooltip.detailed.line2=mod/s
 ;
-;item.itemPowerItemFilter.name=Chargeable Item Filter
-;item.itemPowerItemFilter.tooltip.basic.line1=Upgrade for item conduits
-;item.itemPowerItemFilter.tooltip.detailed.line1=Filters chargeable items based on
-;item.itemPowerItemFilter.tooltip.detailed.line2=how much RF they have stored
+item.item_power_item_filter.name=Chargeable Item Filter
+item.item_power_item_filter.tooltip.basic.line1=Upgrade for item conduits
+item.item_power_item_filter.tooltip.detailed.line1=Filters chargeable items based on
+item.item_power_item_filter.tooltip.detailed.line2=how much RF they have stored
 ;
 ;item.itemExtractSpeedUpgrade.name=Item Conduit Speed Upgrade
 ;item.itemExtractSpeedUpgrade.tooltip.basic.line1=Upgrade for item conduits
