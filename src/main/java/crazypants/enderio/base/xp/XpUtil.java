@@ -30,30 +30,27 @@ public class XpUtil {
     return experienceToLiquid(getExperienceForLevel(level));
   }
 
-  private static final int[] xpmap = new int[256];
+  private static final int[] xpmap = new int[21863];
 
   public static int getExperienceForLevel(int level) {
-    if (level >= 0 && level < xpmap.length) {
-      if (xpmap[level] <= 0) {
-        xpmap[level] = getExperienceForLevelImpl(level);
-      }
-      return xpmap[level];
+    if (level <= 0) {
+      return 0;
     }
     if (level >= 21863) {
       return Integer.MAX_VALUE;
     }
-    return getExperienceForLevelImpl(level);
+    return xpmap[level];
   }
 
-  private static int getExperienceForLevelImpl(int level) {
+  static {
     int res = 0;
-    for (int i = 0; i < level; i++) {
+    for (int i = 0; i < 21863; i++) {
       res += getXpBarCapacity(i);
       if (res < 0) {
-        return Integer.MAX_VALUE;
+        res = Integer.MAX_VALUE;
       }
+      xpmap[i] = res;
     }
-    return res;
   }
 
   public static int getXpBarCapacity(int level) {
@@ -66,11 +63,12 @@ public class XpUtil {
   }
 
   public static int getLevelForExperience(int experience) {
-    int i = 1;
-    while (getExperienceForLevel(i) <= experience) {
-      i++;
+    for (int i = 1; i < xpmap.length; i++) {
+      if (xpmap[i] > experience) {
+        return i - 1;
+      }
     }
-    return i - 1;
+    return xpmap.length;
   }
 
   public static int getPlayerXP(@Nonnull EntityPlayer player) {
