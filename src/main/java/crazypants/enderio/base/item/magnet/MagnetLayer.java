@@ -24,8 +24,7 @@ public class MagnetLayer implements IRenderUpgrade {
 
   @Override
   public void doRenderLayer(@Nonnull RenderPlayer renderPlayer, @Nonnull ItemStack piece, @Nonnull AbstractClientPlayer entitylivingbaseIn, float p_177141_2_,
-      float p_177141_3_,
-      float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
+      float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
     GlStateManager.pushMatrix();
 
     if (entitylivingbaseIn.isSneaking()) {

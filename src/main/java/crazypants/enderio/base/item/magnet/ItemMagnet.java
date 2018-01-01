@@ -31,7 +31,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
@@ -44,7 +43,6 @@ import static crazypants.enderio.util.NbtValue.MAGNET_ACTIVE;
 public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipProvider, IBauble, IOverlayRenderAware, IHasPlayerRenderer {
 
   public static ItemMagnet create(@Nonnull IModObject modObject) {
-    MinecraftForge.EVENT_BUS.register(controller);
     return new ItemMagnet(modObject);
   }
 
@@ -76,8 +74,6 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
   public void drainPerSecondPower(@Nonnull ItemStack itemStack) {
     extractEnergyInternal(itemStack, Config.magnetPowerUsePerSecondRF);
   }
-
-  static MagnetController controller = new MagnetController();
 
   @Override
   @SideOnly(Side.CLIENT)
@@ -151,7 +147,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
       return;
     }
     if (player instanceof EntityPlayer && isActive(itemstack) && hasPower(itemstack) && ((EntityPlayer) player).getHealth() > 0f) {
-      controller.doHoover((EntityPlayer) player);
+      MagnetController.doHoover((EntityPlayer) player);
       if (!player.world.isRemote && player.world.getTotalWorldTime() % 20 == 0) {
         // mustn't change the item that is in the slot or Baubles will ignore the change
         ItemStack changedStack = itemstack.copy();

@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.MagnetUtil;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
@@ -28,19 +29,21 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import static crazypants.enderio.base.integration.botania.BotaniaUtil.hasSolegnoliaAround;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class MagnetController {
 
-  public MagnetController() {
+  private MagnetController() {
   }
 
   @SubscribeEvent
-  public void onPlayerTick(@Nonnull TickEvent.PlayerTickEvent event) {
+  public static void onPlayerTick(@Nonnull TickEvent.PlayerTickEvent event) {
     if (event.phase != TickEvent.Phase.END || event.player.getHealth() <= 0f || event.player.isSpectator()) {
       return;
     }
@@ -75,7 +78,7 @@ public class MagnetController {
   private static final double speed = 0.035;
   private static final double speed4 = speed * 4;
 
-  public void doHoover(EntityPlayer player) {
+  public static void doHoover(EntityPlayer player) {
 
     if (blacklist == null) {
       initBlacklist();
@@ -132,7 +135,7 @@ public class MagnetController {
     return false;
   }
 
-  private List<Entity> selectEntitiesWithinAABB(World world, AxisAlignedBB bb) {
+  private static List<Entity> selectEntitiesWithinAABB(World world, AxisAlignedBB bb) {
     List<Entity> arraylist = null;
 
     int itemsRemaining = Config.magnetMaxItems;
