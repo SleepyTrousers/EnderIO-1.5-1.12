@@ -69,7 +69,8 @@ public class ConfigHandler {
 
   @SubscribeEvent
   public static void onConfigChanged(OnConfigChangedEvent event) {
-    if (event.getModID().equals(EnderIOMachines.MODID)) {
+    if (event.getModID().equals(EnderIOMachines.MODID) || event.getModID().equals(EnderIO.MODID)) {
+      // need to listen for EnderIO.MODID, too, as our config gets chained to the root mod for the GUI config
       Log.info("Updating config...");
       syncConfig(false);
       init((FMLInitializationEvent) null);
