@@ -150,7 +150,7 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
 
   @Override
   public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
-
+    setupHarvesting(farm, bc);
 
     if (!hasAxe) {
       farm.setNotification(FarmNotification.NO_AXE);

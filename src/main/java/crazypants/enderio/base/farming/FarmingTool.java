@@ -5,9 +5,11 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.energy.IEnergyStorage;
 
 public enum FarmingTool {
   HAND,
@@ -46,7 +48,7 @@ public enum FarmingTool {
   }
 
   public final boolean itemMatches(@Nonnull ItemStack item) {
-    return Prep.isValid(item) && match(item) && !isBrokenTinkerTool(item);
+    return Prep.isValid(item) && match(item);
   }
   
   public final Things getThings() {
@@ -80,4 +82,14 @@ public enum FarmingTool {
     }
     return NONE;
   }
+
+  public static boolean isDryRfTool(ItemStack stack) {
+    IEnergyStorage cap = PowerHandlerUtil.getCapability(stack, null);
+    return cap != null && cap.getMaxEnergyStored() > 0 && cap.getEnergyStored() <= 0;
+  }
+
+  public static boolean canDamage(@Nonnull ItemStack stack) {
+    return stack.isItemStackDamageable() && stack.getItem().isDamageable();
+  }
+
 }

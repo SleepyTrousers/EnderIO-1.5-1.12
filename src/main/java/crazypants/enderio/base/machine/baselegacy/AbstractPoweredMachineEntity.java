@@ -170,6 +170,9 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   // Power use
 
   protected final boolean tryToUsePower() {
+    if (getCapacitorData() == DefaultCapacitorData.NONE) {
+      return false;
+    }
     int powerUsePerTick = getPowerUsePerTick();
     if (powerUsePerTick <= 0) {
       return true;

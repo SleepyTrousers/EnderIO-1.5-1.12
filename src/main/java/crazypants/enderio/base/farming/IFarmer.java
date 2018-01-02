@@ -43,11 +43,13 @@ public interface IFarmer {
   /**
    * Prepares the fake player to be used for interacting with the world using the given item in the main hand.
    */
+  @Nonnull
   FakePlayerEIO startUsingItem(@Nonnull ItemStack stack);
 
   /**
    * Prepares the fake player to be used for interacting with the world using the given tool in the main hand.
    */
+  @Nonnull
   FakePlayerEIO startUsingItem(@Nonnull FarmingTool tool);
 
   /**
@@ -113,5 +115,7 @@ public interface IFarmer {
   ItemStack takeSeedFromSupplies(@Nonnull ItemStack seeds, @Nonnull BlockPos bc);
 
   int getFarmSize();
+
+  void handleExtraItem(@Nonnull ItemStack stack, @Nullable BlockPos drop);
 
 }
