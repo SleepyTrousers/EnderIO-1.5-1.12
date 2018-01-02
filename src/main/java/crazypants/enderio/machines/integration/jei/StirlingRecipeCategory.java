@@ -46,9 +46,9 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
 
   public static class StirlingRecipeWrapper extends BlankRecipeWrapper {
 
-    private final List<ItemStack> solidFuel;
+    private final NNList<ItemStack> solidFuel;
 
-    private StirlingRecipeWrapper(List<ItemStack> solidFuel) {
+    private StirlingRecipeWrapper(NNList<ItemStack> solidFuel) {
       this.solidFuel = solidFuel;
     }
 
@@ -58,16 +58,12 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
       list.add(solidFuel);
       ingredients.setInputLists(ItemStack.class, list);
 
-      int minEnergyProduced = Math.round(
-          TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0)) *
-              TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.BASIC_CAPACITOR) *
-          CapacitorKey.SIMPLE_STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR)
-        );
-      int maxEnergyProduced = Math.round(
-          TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0)) *
-              TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.ENDER_CAPACITOR) *
-              CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR)
-        );
+      int minEnergyProduced = Math
+          .round(TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0)) * TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.BASIC_CAPACITOR)
+              * CapacitorKey.SIMPLE_STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR));
+      int maxEnergyProduced = Math
+          .round(TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0)) * TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.ENDER_CAPACITOR)
+              * CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR));
       ingredients.setOutputs(EnergyIngredient.class,
           new NNList<>(new EnergyIngredient(Math.round(CapacitorKey.SIMPLE_STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR)), true),
               new EnergyIngredient(Math.round(CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR)), true),
@@ -111,18 +107,18 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
     long start = System.nanoTime();
 
     // Put valid fuel to "buckets" based on their burn time (energy production)
-    HashMap<Integer, List<ItemStack>> recipeInputs = new HashMap<Integer, List<ItemStack>>();
+    HashMap<Integer, NNList<ItemStack>> recipeInputs = new HashMap<>();
     List<ItemStack> validItems = registry.getIngredientRegistry().getIngredients(ItemStack.class);
     int fuelCount = 0;
     for (ItemStack stack : validItems) {
-      int burntime = TileStirlingGenerator.getBurnTimeGeneric(stack);
+      int burntime = stack == null ? -1 : TileStirlingGenerator.getBurnTimeGeneric(stack);
       if (burntime <= 0)
         continue;
       ++fuelCount;
       if (recipeInputs.containsKey(burntime)) {
         recipeInputs.get(burntime).add(stack);
       } else {
-        ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+        NNList<ItemStack> list = new NNList<>();
         list.add(stack);
         recipeInputs.put(burntime, list);
       }
@@ -138,8 +134,8 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
     registry.addRecipes(recipeList, UID);
 
     long end = System.nanoTime();
-    Log.info(String.format("StirlingRecipeCategory: Added %d stirling generator recipes for %d solidFuel to JEI in %.3f seconds.", recipeList.size(), fuelCount,
-        (end - start) / 1000000000d));
+    Log.info(String.format("StirlingRecipeCategory: Added %d stirling generator recipes for %d solid fuel to JEI in %.3f seconds.", recipeList.size(),
+        fuelCount, (end - start) / 1000000000d));
   }
 
   // ------------ Category
@@ -187,6 +183,6 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
 
     guiItemStacks.set(ingredients);
     group.set(ingredients);
-
   }
+
 }
