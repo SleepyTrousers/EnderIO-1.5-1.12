@@ -412,31 +412,30 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   @Override
-  public boolean shouldCauseBlockBreakReset(ItemStack oldStack, ItemStack newStack) {
+  public boolean shouldCauseBlockBreakReset(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack) {
     // This is the offending method, there are a few things going on here to make sure we don't break anything.
     // The vanilla behavior is to reset the "block break" on item change and/or metadata change and/or NBT change
     // since we use NBT to store the energy value, when a wireless charger updates the NBT the default behavior
     // will reset progress.
     // So first thing first, if by vanilla standards it's ok to keep going, keep going
-    if (!super.shouldCauseBlockBreakReset(oldStack, newStack))
+    if (!super.shouldCauseBlockBreakReset(oldStack, newStack)) {
       return false;
-    
+    }
+
     // Make sure the only difference is in NBT
-    if (oldStack.isEmpty() != newStack.isEmpty() || oldStack.hasTagCompound() != newStack.hasTagCompound())
+    if (oldStack.isEmpty() != newStack.isEmpty() || oldStack.hasTagCompound() != newStack.hasTagCompound() || newStack.getItem() != oldStack.getItem()
+        || newStack.isItemStackDamageable() && newStack.getMetadata() != oldStack.getMetadata()) {
       return true;
-    
-    boolean isDifferentItem = newStack.getItem() != oldStack.getItem();
-    boolean isDifferentMeta = newStack.isItemStackDamageable() && newStack.getMetadata() != oldStack.getMetadata(); 
-    if (isDifferentItem || isDifferentMeta)
-      return true;
-    
+    }
+
     // Here comes the tricky part, in theory we could totally ignore NBT but that could cause problems
     // and honestly will be an ugly hack. Instead we'll use a deep comparer that ignores the energy
     // tag.
-    if (!oldStack.hasTagCompound() && !newStack.hasTagCompound())
+    if (!oldStack.hasTagCompound() && !newStack.hasTagCompound()) {
       return false;
-    
+    }
+
     return !EnergyUpgradeManager.compareNbt(oldStack.getTagCompound(), newStack.getTagCompound());
   }
-  
+
 }
