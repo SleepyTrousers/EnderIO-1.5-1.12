@@ -18,6 +18,7 @@ import crazypants.enderio.base.item.magnet.PacketMagnetState;
 import crazypants.enderio.base.item.travelstaff.PacketDrainStaff;
 import crazypants.enderio.base.item.xptransfer.PacketXpTransferEffects;
 import crazypants.enderio.base.item.yetawrench.YetaWrenchPacketProcessor;
+import crazypants.enderio.base.machine.base.network.PacketPowerStorage;
 import crazypants.enderio.base.machine.baselegacy.PacketLegacyPowerStorage;
 import crazypants.enderio.base.machine.modes.PacketIoMode;
 import crazypants.enderio.base.machine.modes.PacketRedstoneMode;
@@ -74,6 +75,7 @@ public class PacketHandler {
     INSTANCE.registerMessage(new PacketConfigSyncNewHandler(BaseConfig.F), PacketConfigSyncNew.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketConfigSync.Handler.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketSpawnParticles.Handler.class, PacketSpawnParticles.class, PacketHandler.nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketPowerStorage.Handler.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
 
   }
 

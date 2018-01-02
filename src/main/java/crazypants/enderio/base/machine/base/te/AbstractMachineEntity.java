@@ -230,8 +230,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
         // this will cause 'getPacketDescription()' to be called and its result
         // will be sent to the PacketHandler on the other end of
         // client/server connection
-        IBlockState bs = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, bs, bs, 3);
+        forceUpdatePlayers();
 
         // And this will make sure our current tile entity state is saved
         markDirty();

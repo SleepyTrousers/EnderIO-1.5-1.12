@@ -4,17 +4,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.inventory.InventorySlot;
-import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.capacitor.CapacitorHelper;
 import crazypants.enderio.base.capacitor.CapacitorKey;
-import crazypants.enderio.base.capacitor.CapacitorKeyType;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
-import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
-import crazypants.enderio.base.capacitor.Scaler;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -116,16 +111,11 @@ public class EnergyTank implements IEnergyStorage {
   @Store
   private int storedEnergy;
 
-  public EnergyTank(TileEntity owner, @Nonnull IModObject modObject, @Nullable ICapacitorKey maxEnergyRecieved, @Nullable ICapacitorKey maxEnergyStored,
-      @Nullable ICapacitorKey maxEnergyUsed) {
+  public EnergyTank(TileEntity owner, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
     this.owner = owner;
-    this.maxEnergyRecieved = NullHelper.first(maxEnergyRecieved, new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80));
-    this.maxEnergyStored = NullHelper.first(maxEnergyStored, new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000));
-    this.maxEnergyUsed = NullHelper.first(maxEnergyUsed, new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20));
-  }
-
-  public EnergyTank(TileEntity owner, @Nonnull IModObject modObject) {
-    this(owner, modObject, null, null, null);
+    this.maxEnergyRecieved = maxEnergyRecieved;
+    this.maxEnergyStored = maxEnergyStored;
+    this.maxEnergyUsed = maxEnergyUsed;
   }
 
   public EnergyTank(TileEntity owner) {
@@ -168,12 +158,16 @@ public class EnergyTank implements IEnergyStorage {
   }
 
   public boolean useEnergy() {
-    int toUse = maxEnergyUsed.get(capacitorData);
+    int toUse = getMaxUsage();
     if (toUse <= getEnergyStored()) {
       setEnergyStored(getEnergyStored() - toUse);
       return true;
     }
     return false;
+  }
+
+  public int getMaxUsage() {
+    return maxEnergyUsed.get(capacitorData);
   }
 
   public void setEnergyStored(int stored) {
