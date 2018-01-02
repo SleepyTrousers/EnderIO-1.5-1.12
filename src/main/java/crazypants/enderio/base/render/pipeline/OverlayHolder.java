@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList.NNIterator;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.render.property.IOMode;
 import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
@@ -43,7 +44,8 @@ public class OverlayHolder {
       }
       IBakedModel model = event.getModelRegistry().getObject(mrl);
       if (model == null) {
-        throw new RuntimeException("Model for state " + state + " failed to load from " + mrl + ".");
+        Log.warn("Model for state " + state + " failed to load from " + mrl + ".");
+        continue;
       }
 
       QuadCollector quads = new QuadCollector();
