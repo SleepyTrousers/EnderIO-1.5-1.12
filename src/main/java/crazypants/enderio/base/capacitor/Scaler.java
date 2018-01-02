@@ -108,7 +108,7 @@ public interface Scaler {
       }
     }),
     SPAWNER(new IndexedScaler(1f, 0, 1, 5, 10, 20)),
-    BURNTIME(new IndexedScaler(1f, 1, 1f / 2f, 1f / 1.5f, 1f / 1.5f, 1f / 1.25f, 1f / 1f)),
+    BURNTIME(new IndexedScaler(1f, 0.5f, 1f / 2f, 1f / 1.5f, 1f / 1.5f, 1f / 1.25f, 1f / 1f)),
     CHEMICAL(new Scaler() { // (.75)-1-1.25-1.5-1.75-2...
       @Override
       public float scaleValue(float idx) {
