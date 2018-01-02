@@ -483,7 +483,6 @@ enderio.config.soulbinder=Soulbinder Settings
 enderio.config.soulvial= Soal Vial Settings
 enderio.config.top=The One Probe Integration Settings
 enderio.config.upgrades=Dark Steel Upgrade Settings
-enderio.config.weatherWeather Obelisk Settings
 enderio.config.wireless=Wireless Charger Settings
 
 enchantment.soulBound=Soulbound

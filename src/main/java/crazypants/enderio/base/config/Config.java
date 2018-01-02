@@ -63,7 +63,6 @@ public final class Config {
   public static final @Nonnull Section sectionSoulVial = new Section("", "soulvial");
   public static final @Nonnull Section sectionAttractor = new Section("Mob Attractor Settings", "attractor");
   public static final @Nonnull Section sectionEnchantments = new Section("Enchantments", "enchantments");
-  public static final @Nonnull Section sectionWeather = new Section("Weather", "weather");
   public static final @Nonnull Section sectionMisc = new Section("Misc", "misc");
   public static final @Nonnull Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
   public static final @Nonnull Section sectionTOP = new Section("The One Probe integration", "top");
@@ -373,10 +372,6 @@ public final class Config {
 
   public static boolean spawnGuardStopAllSlimesDebug = false;
   public static boolean spawnGuardStopAllSquidSpawning = false;
-
-  public static int weatherObeliskClearFluid = 2000;
-  public static int weatherObeliskRainFluid = 500;
-  public static int weatherObeliskThunderFluid = 1000;
 
   public static boolean dumpMobNames = false;
 
@@ -1205,15 +1200,6 @@ public final class Config {
         "When true slimes wont be allowed to spawn at all. Only added to aid testing in super flat worlds.");
     spawnGuardStopAllSquidSpawning = config.getBoolean("spawnGuardStopAllSquidSpawning", sectionAttractor.name, spawnGuardStopAllSquidSpawning,
         "When true no squid will be spawned.");
-
-    weatherObeliskClearFluid = config
-        .get(sectionWeather.name, "weatherObeliskClearFluid", weatherObeliskClearFluid, "The fluid required (in mB) to set the world to clear weather")
-        .getInt();
-    weatherObeliskRainFluid = config
-        .get(sectionWeather.name, "weatherObeliskRainFluid", weatherObeliskRainFluid, "The fluid required (in mB) to set the world to rainy weather").getInt();
-    weatherObeliskThunderFluid = config
-        .get(sectionWeather.name, "weatherObeliskThunderFluid", weatherObeliskThunderFluid, "The fluid required (in mB) to set the world to thundering weather")
-        .getInt();
 
     xpObeliskMaxXpLevel = config.get(sectionMisc.name, "xpObeliskMaxXpLevel", xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
 
