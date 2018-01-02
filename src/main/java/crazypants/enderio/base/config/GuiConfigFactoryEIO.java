@@ -13,10 +13,12 @@ import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 
+import static crazypants.enderio.base.lang.Lang.CONFIG_TITLE;
+
 public class GuiConfigFactoryEIO extends GuiConfig {
 
   public GuiConfigFactoryEIO(GuiScreen parentScreen) {
-    super(parentScreen, getConfigElements(parentScreen), EnderIO.MODID, false, false, EnderIO.lang.localize("config.title"));
+    super(parentScreen, getConfigElements(parentScreen), EnderIO.MODID, false, false, CONFIG_TITLE.get());
   }
 
   private static List<IConfigElement> getConfigElements(GuiScreen parent) {

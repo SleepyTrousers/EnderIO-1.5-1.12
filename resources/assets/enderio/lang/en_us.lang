@@ -447,7 +447,7 @@ enderio.config.power=Power Settings
 enderio.config.power.tooltip=So many numbers to change...
 enderio.config.recipe=Recipe Settings
 enderio.config.recipe.tooltip=Config ALL the things!
-enderio.config.item=Item Enabling
+enderio.config.item=Item Settings
 enderio.config.item.tooltip=If you don't like some of my amazing items :(
 enderio.config.efficiency=Efficiency Settings
 enderio.config.efficiency.tooltip=Where do the numbers end?
@@ -469,8 +469,22 @@ enderio.config.magnet=Magnet Settings
 enderio.config.magnet.tooltip=How do they work?
 enderio.config.fluid=Fluid Settings
 enderio.config.fluid.tooltip=Pure liquid energy!
-enderio.config.spawner=PoweredSpawner Settings
-enderio.config.spawner.tooltip=I ran out of witty tooltips.
+
+enderio.config.attractor=Attraction Obelisk Settings
+enderio.config.capacitor=Capacitor Settings
+enderio.config.enchanter=Enchanter Settings
+enderio.config.enchantments=Enchantment Settings
+enderio.config.hoes=Hoes for Farming Station
+enderio.config.infinitypowder=Infinity Powder Settings
+enderio.config.killerjoe=Killer Joe Settings
+enderio.config.misc=Other Settings
+enderio.config.rod=Rod of Return Settings
+enderio.config.soulbinder=Soulbinder Settings
+enderio.config.soulvial= Soal Vial Settings
+enderio.config.top=The One Probe Integration Settings
+enderio.config.upgrades=Dark Steel Upgrade Settings
+enderio.config.weatherWeather Obelisk Settings
+enderio.config.wireless=Wireless Charger Settings
 
 enchantment.soulBound=Soulbound
 description.enchantment.enderio.soulBound=Prevents item from being lost on death

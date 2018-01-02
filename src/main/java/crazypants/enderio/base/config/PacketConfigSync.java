@@ -20,8 +20,6 @@ public class PacketConfigSync implements IMessage {
     buf.writeInt(Config.travelStaffMaximumDistance);
     buf.writeInt(Config.travelStaffMaxBlinkDistance);
     buf.writeFloat(Config.travelStaffPowerPerBlockRF);
-    buf.writeBoolean(Config.telepadLockCoords);
-    buf.writeBoolean(Config.telepadLockDimension);
     buf.writeInt(Config.darkSteelAnvilMaxLevel);
   }
 
@@ -35,8 +33,6 @@ public class PacketConfigSync implements IMessage {
     Config.travelStaffMaximumDistance = data.readInt();
     Config.travelStaffMaxBlinkDistance = data.readInt();
     Config.travelStaffPowerPerBlockRF = data.readFloat();
-    Config.telepadLockCoords = data.readBoolean();
-    Config.telepadLockDimension = data.readBoolean();
     Config.darkSteelAnvilMaxLevel = data.readInt();
   }
 

@@ -6,6 +6,7 @@ import com.enderio.core.common.util.stackable.RebuildableThings;
 
 import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.base.config.ValueFactory.IValue;
+import net.minecraftforge.fluids.Fluid;
 
 public class SectionedValueFactory {
 
@@ -39,6 +40,13 @@ public class SectionedValueFactory {
 
   public @Nonnull IValue<RebuildableThings> make(@Nonnull String keyname, @Nonnull RebuildableThings defaultValue, @Nonnull String text) {
     return parent.make(section, keyname, defaultValue, text);
+  }
+
+  /**
+   * Please note that fluids won't work in or before preinit!
+   */
+  public @Nonnull IValue<Fluid> makeFluid(@Nonnull String keyname, @Nonnull String defaultValue, @Nonnull String text) {
+    return parent.makeFluid(section, keyname, defaultValue, text);
   }
 
 }

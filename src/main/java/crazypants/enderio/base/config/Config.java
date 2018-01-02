@@ -58,15 +58,12 @@ public final class Config {
   public static final @Nonnull Section sectionAdvanced = new Section("Advanced Settings", "advanced");
   public static final @Nonnull Section sectionMagnet = new Section("Magnet Settings", "magnet");
   public static final @Nonnull Section sectionFluid = new Section("Fluid Settings", "fluid");
-  public static final @Nonnull Section sectionSpawner = new Section("PoweredSpawner Settings", "spawner");
   public static final @Nonnull Section sectionKiller = new Section("Killer Joe Settings", "killerjoe");
   public static final @Nonnull Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
+  public static final @Nonnull Section sectionSoulVial = new Section("", "soulvial");
   public static final @Nonnull Section sectionAttractor = new Section("Mob Attractor Settings", "attractor");
-  public static final @Nonnull Section sectionMobConfig = new Section("Mob Config", "mobconfig");
   public static final @Nonnull Section sectionEnchantments = new Section("Enchantments", "enchantments");
   public static final @Nonnull Section sectionWeather = new Section("Weather", "weather");
-  public static final @Nonnull Section sectionTelepad = new Section("Telepad", "telepad");
-  public static final @Nonnull Section sectionInventoryPanel = new Section("InventoryPanel", "inventorypanel");
   public static final @Nonnull Section sectionMisc = new Section("Misc", "misc");
   public static final @Nonnull Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
   public static final @Nonnull Section sectionTOP = new Section("The One Probe integration", "top");
@@ -311,7 +308,7 @@ public final class Config {
   public static boolean magnetAllowDeactivatedInBaublesSlot = false;
   public static String magnetBaublesType = "AMULET";
 
-  public static int crafterRfPerCraft = 2500;
+  // public static int crafterRfPerCraft = 2500;
 
   public static int capacitorBankMaxIoRF = 5000;
   public static int capacitorBankMaxStorageRF = 5000000;
@@ -392,17 +389,6 @@ public final class Config {
   public static Rarity enchantmentSoulBoundRarity = Rarity.VERY_RARE;
   public static boolean enchantmentSoulBoundEnabled = true;
 
-  public static boolean telepadLockDimension = true;
-  public static boolean telepadLockCoords = true;
-  public static int telepadPowerCoefficient = 100000;
-  public static int telepadPowerInterdimensional = 100000;
-  public static boolean telepadShrinkEffect = true;
-  public static boolean telepadIsTravelAnchor = true;
-  public static int telepadEnergyBufferRF = 100000;
-  public static int telepadEnergyUsePerTickRF = 4000;
-  public static String telepadFluidType = "ender_distillation";
-  public static int telepadFluidUse = 50;
-
   public static boolean rodOfReturnCanTargetAnywhere = false;
   public static int rodOfReturnTicksToActivate = 50;
   public static int rodOfReturnPowerStorage = 2000000;
@@ -411,19 +397,6 @@ public final class Config {
   public static int rodOfReturnFluidUsePerTeleport = 200;
   public static int rodOfReturnFluidStorage = 200;
   public static String rodOfReturnFluidType = "ender_distillation";
-
-  public static boolean inventoryPanelFree = false;
-  public static float inventoryPanelPowerPerMB = 800.0f;
-  public static float inventoryPanelScanCostPerSlot = 0.1f;
-  public static float inventoryPanelExtractCostPerItem = 12.0f;
-  public static float inventoryPanelExtractCostPerOperation = 32.0f;
-  public static boolean inventoryPanelScaleText = true;
-
-  public static int[] remoteInventoryMBPerOpen = { 100, 25, 15 };
-  public static int[] remoteInventoryRFPerTick = { 4, 6, 8 };
-  public static int[] remoteInventoryMBCapacity = { 2000, 1000, 1500 };
-  public static int[] remoteInventoryRFCapacity = { 60000, 120000, 150000 };
-  public static String[] remoteInventoryFluidTypes = { "nutrient_distillation", "ender_distillation", "vapor_of_levity" };
 
   public static String coldFireIgniterFluidType = "vapor_of_levity";
   public static int coldFireIgniterMbPerUse = 10;
@@ -1133,7 +1106,8 @@ public final class Config {
             "The BaublesType the magnet should be, 'AMULET', 'RING' or 'BELT' (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)")
         .getString();
 
-    crafterRfPerCraft = config.get("AutoCrafter Settings", "crafterRfPerCraft", crafterRfPerCraft, "RF used per autocrafted recipe").getInt(crafterRfPerCraft);
+    // crafterRfPerCraft = config.get("AutoCrafter Settings", "crafterRfPerCraft", crafterRfPerCraft, "RF used per autocrafted
+    // recipe").getInt(crafterRfPerCraft);
 
     nutrientFoodBoostDelay = config.get(sectionFluid.name, "nutrientFluidFoodBoostDelay", nutrientFoodBoostDelay,
         "The delay in ticks between when nutrient distillation boosts your food value.").getInt((int) nutrientFoodBoostDelay);
@@ -1160,7 +1134,7 @@ public final class Config {
         temp.add(rl.toString());
       }
     });
-    String[] list = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, temp.toArray(new String[0]),
+    String[] list = config.getStringList("soulVesselBlackList", sectionSoulVial.name, temp.toArray(new String[0]),
         "Entities listed here will can not be captured in a Soul Vial");
     soulVesselBlackList.clear();
     for (String string : list) {
@@ -1176,7 +1150,7 @@ public final class Config {
         temp.add(rl.toString());
       }
     });
-    list = config.getStringList("soulVesselUnspawnableList", sectionSpawner.name, temp.toArray(new String[0]),
+    list = config.getStringList("soulVesselUnspawnableList", sectionSoulVial.name, temp.toArray(new String[0]),
         "Entities listed here cannot be spawned and must be cloned from a captured entity instead (Attention: Possibility of item duping!)");
     soulVesselUnspawnableList.clear();
     for (String string : list) {
@@ -1185,7 +1159,7 @@ public final class Config {
       }
     }
 
-    soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionSoulBinder.name, soulVesselCapturesBosses,
+    soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionSoulVial.name, soulVesselCapturesBosses,
         "When set to false, any mob with a 'boss bar' won't be able to be captured in the Soul Vial. Note: The Ender Dragon can not "
             + "be captured, even with this enabled. This is a limitation of the dragon, not the Soul Vial.");
 
@@ -1200,8 +1174,6 @@ public final class Config {
     soulBinderAttractorCystalRF = config
         .get(sectionSoulBinder.name, "soulBinderAttractorCystalRF", soulBinderAttractorCystalRF, "The number of RF required to create an attractor crystal.")
         .getInt(soulBinderAttractorCystalRF);
-    // soulBinderEnderRailRF = config.get(sectionSoulBinder.name, "soulBinderEnderRailRF", soulBinderEnderRailRF,
-    // "The number of RF required to create an ender rail.").getInt(soulBinderEnderRailRF);
     soulBinderTunedPressurePlateRF = config
         .get(sectionSoulBinder.name, "soulBinderTunedPressurePlateRF", soulBinderTunedPressurePlateRF, "The number of RF required to tune a pressure plate.")
         .getInt(soulBinderTunedPressurePlateRF);
@@ -1221,8 +1193,6 @@ public final class Config {
         .getInt(soulBinderReanimationLevels);
     soulBinderBrokenSpawnerLevels = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerLevels", soulBinderBrokenSpawnerLevels,
         "The number of levels required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerLevels);
-    // soulBinderEnderRailLevels = config.get(sectionSoulBinder.name, "soulBinderEnderRailLevels", soulBinderEnderRailLevels,
-    // "The number of levels required to create an ender rail.").getInt(soulBinderEnderRailLevels);
     soulBinderTunedPressurePlateLevels = config.get(sectionSoulBinder.name, "soulBinderTunedPressurePlateLevels", soulBinderTunedPressurePlateLevels,
         "The number of levels required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateLevels);
 
@@ -1244,9 +1214,6 @@ public final class Config {
     weatherObeliskThunderFluid = config
         .get(sectionWeather.name, "weatherObeliskThunderFluid", weatherObeliskThunderFluid, "The fluid required (in mB) to set the world to thundering weather")
         .getInt();
-
-    dumpMobNames = config.getBoolean("dumpMobNames", sectionMobConfig.name, dumpMobNames,
-        "When set to true a list of all registered mobs will be dumped to config/enderio/mobTypes.txt The names are in the format required by EIOs mob blacklists.");
 
     xpObeliskMaxXpLevel = config.get(sectionMisc.name, "xpObeliskMaxXpLevel", xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
 
@@ -1281,55 +1248,6 @@ public final class Config {
       Log.warn("Could not set value config entry enchantmentWitherArrowRarity Specified value " + rareStr);
       e.printStackTrace();
     }
-
-    telepadLockDimension = config
-        .get(sectionTelepad.name, "lockDimension", telepadLockDimension, "If true, the dimension cannot be set via the GUI, the coord selector must be used.")
-        .getBoolean();
-    telepadLockCoords = config
-        .get(sectionTelepad.name, "lockCoords", telepadLockCoords, "If true, the coordinates cannot be set via the GUI, the coord selector must be used.")
-        .getBoolean();
-    telepadPowerCoefficient = config.get(sectionTelepad.name, "powerCoefficient", telepadPowerCoefficient,
-        "Power for a teleport is calculated by the formula:\npower = [this value] * ln(0.005*distance + 1)").getInt();
-    telepadPowerInterdimensional = config
-        .get(sectionTelepad.name, "powerInterdimensional", telepadPowerInterdimensional, "The amount of RF required for an interdimensional teleport.")
-        .getInt();
-    telepadEnergyBufferRF = config.get(sectionTelepad.name, "telepadEnergyBufferRF", telepadEnergyBufferRF, "The amount of RF in the internal buffer.")
-        .getInt();
-    telepadEnergyUsePerTickRF = config.get(sectionTelepad.name, "telepadEnergyUsePerTickRF", telepadEnergyUsePerTickRF,
-        "The max amount of RF that can be used per tick. Higher values allow faster teleporting.").getInt();
-
-    telepadFluidType = config.getString("telepadFluidType", sectionTelepad.name, telepadFluidType, "The type of fluid required to teleport entities");
-    telepadFluidUse = config.get(sectionTelepad.name, "telepadFluidUse", telepadFluidUse,
-        "The max amount of fluid in mb used per teleport. If set to <= 0 fluid use will be disabled").getInt();
-
-    telepadIsTravelAnchor = config
-        .get(sectionTelepad.name, "telepadIsTravelAnchor", telepadIsTravelAnchor, "If true, TelePads will also act as normal Travel Anchors.").getBoolean();
-    telepadShrinkEffect = config.get(sectionPersonal.name, "telepadShrinkEffect", telepadShrinkEffect,
-        "Can be used to disable the 'shrinking' effect of the telepad in case of conflicts with other mods.").getBoolean();
-
-    inventoryPanelFree = config.getBoolean("inventoryPanelFree", sectionInventoryPanel.name, inventoryPanelFree,
-        "If true, the inv panel will not accept fluids and will be active permanently.");
-    inventoryPanelPowerPerMB = config.getFloat("powerPerMB", sectionInventoryPanel.name, inventoryPanelPowerPerMB, 1.0f, 10000.0f,
-        "Internal power generated per mB. The default of 800/mB matches the RF generation of the Zombie generator. A panel tries to refill only once every second - setting this value too low slows down the scanning speed.");
-    inventoryPanelScanCostPerSlot = config.getFloat("scanCostPerSlot", sectionInventoryPanel.name, inventoryPanelScanCostPerSlot, 0.0f, 10.0f,
-        "Internal power used for scanning a slot");
-    inventoryPanelExtractCostPerItem = config.getFloat("extractCostPerItem", sectionInventoryPanel.name, inventoryPanelExtractCostPerItem, 0.0f, 10.0f,
-        "Internal power used per item extracted (not a stack of items)");
-    inventoryPanelExtractCostPerOperation = config.getFloat("extractCostPerOperation", sectionInventoryPanel.name, inventoryPanelExtractCostPerOperation, 0.0f,
-        10000.0f, "Internal power used per extract operation (independent of stack size)");
-    inventoryPanelScaleText = config.getBoolean("inventoryPanelScaleText", sectionInventoryPanel.name, inventoryPanelScaleText,
-        "If true stack sizes will be drawn at a smaller size with a little more detail.");
-
-    remoteInventoryMBPerOpen = config.get(sectionInventoryPanel.name, "remoteInventoryMBPerOpen", remoteInventoryMBPerOpen, "MB required to open the panel")
-        .getIntList();
-    remoteInventoryRFPerTick = config
-        .get(sectionInventoryPanel.name, "remoteInventoryRFPerTick", remoteInventoryRFPerTick, "RF used per tick when the panel is open").getIntList();
-    remoteInventoryMBCapacity = config
-        .get(sectionInventoryPanel.name, "remoteInventoryMBCapacity", remoteInventoryMBCapacity, "Capacity of the intrenal tank in MB").getIntList();
-    remoteInventoryRFCapacity = config
-        .get(sectionInventoryPanel.name, "remoteInventoryRFCapacity", remoteInventoryRFCapacity, "Capacity of the intrenal energy storage in RF").getIntList();
-    remoteInventoryFluidTypes = config.getStringList("remoteInventoryFluidTypes", sectionInventoryPanel.name, remoteInventoryFluidTypes,
-        "The type of fluid reqquired");
 
     coldFireIgniterFluidType = config.getString("coldFireIgniterFluidType", sectionDarkSteel.name, coldFireIgniterFluidType,
         "The type of fluid required to ignite cold fire");
@@ -1387,21 +1305,6 @@ public final class Config {
     }
     if (darkSteelBowFovMultipliers == null || darkSteelBowFovMultipliers.length != 5) {
       throw new IllegalArgumentException("Ender IO config value darkSteelBowFovMultipliers must have exactly 5 values");
-    }
-    if (remoteInventoryMBPerOpen == null || remoteInventoryMBPerOpen.length != 3) {
-      throw new IllegalArgumentException("Ender IO config value remoteInventoryMBPerOpen must have exactly 3 values");
-    }
-    if (remoteInventoryRFPerTick == null || remoteInventoryRFPerTick.length != 3) {
-      throw new IllegalArgumentException("Ender IO config value remoteInventoryRFPerTick must have exactly 3 values");
-    }
-    if (remoteInventoryMBCapacity == null || remoteInventoryMBCapacity.length != 3) {
-      throw new IllegalArgumentException("Ender IO config value remoteInventoryMBCapacity must have exactly 3 values");
-    }
-    if (remoteInventoryRFCapacity == null || remoteInventoryRFCapacity.length != 3) {
-      throw new IllegalArgumentException("Ender IO config value remoteInventoryRFCapacity must have exactly 3 values");
-    }
-    if (remoteInventoryFluidTypes == null || remoteInventoryFluidTypes.length != 3) {
-      throw new IllegalArgumentException("Ender IO config value remoteInventoryFluidTypes must have exactly 3 values");
     }
   }
 

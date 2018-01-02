@@ -20,6 +20,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
@@ -77,6 +81,13 @@ public class ValueFactory {
   public @Nonnull IValue<RebuildableThings> make(@Nonnull Section section, @Nonnull String keyname, @Nonnull RebuildableThings defaultValue,
       @Nonnull String text) {
     return new ThingsValue(section.name, keyname, defaultValue, text).preload();
+  }
+
+  /**
+   * Please note that fluids won't work in or before preinit!
+   */
+  public @Nonnull IValue<Fluid> makeFluid(@Nonnull Section section, @Nonnull String keyname, @Nonnull String defaultValue, @Nonnull String text) {
+    return new FluidValue(section.name, keyname, defaultValue, text).preload();
   }
 
   public interface IValue<T> {
@@ -314,6 +325,63 @@ public class ValueFactory {
     @Override
     protected DataTypes getDataType() {
       return DataTypes.STRING;
+    }
+
+  }
+
+  private static final @Nonnull Fluid defaultFluidPlaceholder = new Fluid("", null, null);
+
+  public class FluidValue extends AbstractValue<Fluid> {
+
+    private final @Nonnull String defaultValueName;
+    private Fluid defaultFluid = null;
+
+    protected FluidValue(@Nonnull String section, @Nonnull String keyname, @Nonnull String defaultValue, @Nonnull String text) {
+      super(section, keyname, defaultFluidPlaceholder, text);
+      defaultValueName = defaultValue;
+    }
+
+    @Nonnull
+    @Override
+    public Fluid get() {
+      if (!Loader.instance().hasReachedState(LoaderState.INITIALIZATION)) {
+        return defaultValue;
+      }
+      if (defaultFluid == null) {
+        FluidRegistry.getFluid(defaultValueName);
+      }
+      if (value == null || valueGeneration != generation) {
+        if (serverConfig != null && serverConfig.containsKey(keyname)) {
+          value = FluidRegistry.getFluid((String) serverConfig.get(keyname));
+        } else {
+          value = FluidRegistry.getFluid(config.getString(keyname, section, defaultValueName, text));
+          if (!inInit && config.hasChanged()) {
+            config.save();
+          }
+        }
+        valueGeneration = generation;
+      }
+      return NullHelper.first(value, defaultFluid, defaultValue);
+    }
+
+    @Override
+    protected @Nullable Fluid makeValue() {
+      return null;
+    }
+
+    @Override
+    protected DataTypes getDataType() {
+      return DataTypes.STRING;
+    }
+
+    @Override
+    public void save(final ByteBuf buf) {
+      final byte[] bytes = keyname.getBytes(Charset.forName("UTF-8"));
+      buf.writeInt(bytes.length);
+      buf.writeBytes(bytes);
+      DataTypes dataType = getDataType();
+      buf.writeByte(dataType.ordinal());
+      dataType.saveValue(buf, NullHelper.first(FluidRegistry.getFluidName(get()), defaultValueName));
     }
 
   }
