@@ -24,6 +24,7 @@ public class MachinesPlugin extends BlankModPlugin {
     SagMillRecipeCategory.register(registry, guiHelper);
     SliceAndSpliceRecipeCategory.register(registry, guiHelper);
     SoulBinderRecipeCategory.register(registry, guiHelper);
+    StirlingRecipeCategory.register(registry, guiHelper);
     TankRecipeCategory.register(registry, guiHelper);
     VatRecipeCategory.register(registry, guiHelper);
     WiredChargerRecipeCategory.register(registry, guiHelper);
