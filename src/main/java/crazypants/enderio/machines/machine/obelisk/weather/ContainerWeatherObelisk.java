@@ -8,9 +8,9 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.machines.machine.tank.InventorySlot;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerWeatherObelisk extends AbstractMachineContainer<TileWeatherObelisk> {
@@ -21,20 +21,13 @@ public class ContainerWeatherObelisk extends AbstractMachineContainer<TileWeathe
     super(playerInv, te);
   }
 
-  private int slotno;
-
   @Override
   protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
-    slotno = inventorySlots.indexOf(addSlotToContainer(new Slot(getInv(), 0, 80, 11) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack p_75214_1_) {
-        return getInv().isItemValidForSlot(0, p_75214_1_);
-      }
-    }));
+    addSlotToContainer(new InventorySlot(getInv(), 0, 80, 11));
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(new ItemStack(Items.FIREWORKS), inventorySlots.get(slotno)));
+    slots.add(new GhostBackgroundItemSlot(new ItemStack(Items.FIREWORKS), getSlotFromInventory(0)));
   }
 
 }

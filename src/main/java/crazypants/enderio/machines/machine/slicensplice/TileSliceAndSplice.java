@@ -183,13 +183,14 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
           boolean valid = true;
           for (int i = 0; valid && i < resultInv.length; i++) {
             // skip Tool slots and empty slots
-            if (resultInv[i] == null || resultInv[i].isEmpty())
+            final ItemStack resultInvI = resultInv[i];
+            if (resultInvI == null || resultInvI.isEmpty())
               continue;
             // check if the current item set is valid for this recipe
             for (IRecipeInput ri : oneRecipe.getInputs()) {
               if (ri.getSlotNumber() != i)
                 continue;
-              if (!ri.isInput(resultInv[i]))
+              if (!ri.isInput(resultInvI))
                 valid = false;
               break;
             }

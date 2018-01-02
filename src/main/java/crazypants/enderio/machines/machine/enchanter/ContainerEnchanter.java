@@ -127,8 +127,8 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(Items.WRITABLE_BOOK, inventorySlots.get(0)));
-    slots.add(new GhostBackgroundItemSlot(new ItemStack(Items.DYE, 1, 4), inventorySlots.get(2)));
+    slots.add(new GhostBackgroundItemSlot(Items.WRITABLE_BOOK, getSlotFromInventory(0)));
+    slots.add(new GhostBackgroundItemSlot(new ItemStack(Items.DYE, 1, 4), getSlotFromInventory(2)));
   }
 
   public boolean playerHasEnoughLevels(EntityPlayer player) {

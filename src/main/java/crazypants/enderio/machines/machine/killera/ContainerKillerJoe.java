@@ -8,9 +8,8 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.machines.machine.tank.InventorySlot;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class ContainerKillerJoe extends AbstractMachineContainer<TileKillerJoe> {
 
@@ -18,20 +17,13 @@ public class ContainerKillerJoe extends AbstractMachineContainer<TileKillerJoe> 
     super(playerInv, te);
   }
 
-  private int slotno;
-
   @Override
   protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
-    slotno = inventorySlots.indexOf(addSlotToContainer(new Slot(getInv(), 0, 48, 24) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack itemStack) {
-        return getInv().isItemValidForSlot(0, itemStack);
-      }
-    }));
+    addSlotToContainer(new InventorySlot(getInv(), 0, 48, 24));
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(TileKillerJoe.WEAPONS.getItemStacks(), inventorySlots.get(slotno)));
+    slots.add(new GhostBackgroundItemSlot(TileKillerJoe.WEAPONS.getItemStacks(), getSlotFromInventory(0)));
   }
 
 }

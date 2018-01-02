@@ -23,7 +23,7 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
   private class InvSlot extends Slot {
     private final int slot;
 
-    private InvSlot(IInventory inventoryIn, int index, int xPosition, int yPosition, int slot) {
+    private InvSlot(@Nonnull IInventory inventoryIn, int index, int xPosition, int yPosition, int slot) {
       super(inventoryIn, index, xPosition, yPosition);
       this.slot = slot;
     }

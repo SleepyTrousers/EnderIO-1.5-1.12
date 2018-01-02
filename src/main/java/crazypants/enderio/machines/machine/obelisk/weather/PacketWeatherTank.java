@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.obelisk.weather;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
@@ -18,7 +20,7 @@ public class PacketWeatherTank extends MessageTileEntity<TileWeatherObelisk> {
   public PacketWeatherTank() {
   }
 
-  public PacketWeatherTank(TileWeatherObelisk tile) {
+  public PacketWeatherTank(@Nonnull TileWeatherObelisk tile) {
     super(tile);
     tag = tile.getInputTank().writeToNBT(new NBTTagCompound());
   }
