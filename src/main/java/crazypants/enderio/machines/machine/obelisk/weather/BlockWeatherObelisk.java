@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,4 +53,13 @@ public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
   }
+
+  @Override
+  public void neighborChanged(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block changedTo, @Nonnull BlockPos fromPos) {
+    TileWeatherObelisk tileEntity = getTileEntity(world, pos);
+    if (tileEntity != null) {
+      tileEntity.updateRedstoneState();
+    }
+  }
+
 }

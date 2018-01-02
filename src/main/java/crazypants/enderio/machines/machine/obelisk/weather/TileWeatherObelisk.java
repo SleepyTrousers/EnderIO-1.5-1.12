@@ -16,8 +16,10 @@ import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.machines.network.PacketHandler;
+import crazypants.enderio.machines.capacitor.CapacitorKey;
+import crazypants.enderio.machines.config.config.WeatherConfig;
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -53,6 +55,11 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
         rain(world, false);
         thunder(world, false);
       }
+
+      @Override
+      int getRequiredFluidAmount() {
+        return WeatherConfig.weatherObeliskClearFluid.get();
+      }
     },
     RAIN(new Color(120, 120, 255)) {
       @Override
@@ -60,12 +67,22 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
         rain(world, true);
         thunder(world, false);
       }
+
+      @Override
+      int getRequiredFluidAmount() {
+        return WeatherConfig.weatherObeliskRainFluid.get();
+      }
     },
     STORM(Color.DARK_GRAY) {
       @Override
       void complete(World world) {
         rain(world, true);
         thunder(world, true);
+      }
+
+      @Override
+      int getRequiredFluidAmount() {
+        return WeatherConfig.weatherObeliskThunderFluid.get();
       }
     };
 
@@ -76,6 +93,8 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     }
 
     abstract void complete(World world);
+
+    abstract int getRequiredFluidAmount();
 
     protected void rain(World world, boolean state) {
       world.getWorldInfo().setRaining(state);
@@ -104,8 +123,12 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     }
   }
 
+  @Store
   private int fluidUsed = 0;
   private WeatherTask activeTask = null;
+
+  @Store
+  private boolean redstoneActivePrev;
 
   private boolean canBeActive = true;
   private boolean tanksDirty;
@@ -151,7 +174,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
   @Override
   public float getProgress() {
-    return isActive() ? world.isRemote ? progress : (float) fluidUsed / 1000 : 0;
+    return isActive() ? world.isRemote ? progress : (float) fluidUsed / getActiveTask().getRequiredFluidAmount() : 0;
   }
 
   @Override
@@ -192,9 +215,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       double zf = pos1.getZ() + 0.5 + correction;
 
       IBlockState bs = world.getBlockState(pos);
-      // Block b = getBlockType();
-      // double yi = pos1.getY() + b.getBlockBoundsMaxY() - 0.1;
-      double yi = bs.getBoundingBox(world, pos).maxY - 01.;
+      double yi = pos1.getY() + bs.getBoundingBox(world, pos).maxY - 0.1;
       double offset = 0.3;
       Minecraft.getMinecraft().effectRenderer
           .addEffect(new EntityFluidLoadingFX(world, pos1.getX() + offset + correction, yi, pos1.getZ() + offset + correction, xf, yf, zf, c));
@@ -223,16 +244,20 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     } else {
       canBeActive = true;
 
-      if (isActive()) {
-        if (getEnergyStored() > getPowerUsePerTick() && inputTank.getFluidAmount() > 3) {
-          setEnergyStored(getEnergyStored() - getPowerUsePerTick());
+      if (!world.isRemote && fluidUsed > 0 && activeTask == null && !inputTank.isEmpty()) {
+        // we were saved while a task was active. Luckily those are easy to recreate
+        activeTask = WeatherTask.fromFluid(inputTank.getFluidNN().getFluid());
+        PacketHandler.INSTANCE.sendToAllAround(new PacketActivateWeather(this, activeTask != null), this);
+      }
 
-          int toUse = 4;
-          inputTank.removeFluidAmount(toUse);
-          fluidUsed += toUse;
+      if (isActive()) {
+        if (getEnergyStored() > getPowerUsePerTick() && !inputTank.isEmpty()) {
+          setEnergyStored(getEnergyStored() - getPowerUsePerTick());
+          fluidUsed += inputTank
+              .removeFluidAmount(Math.min(CapacitorKey.WEATHER_POWER_FLUID_USE.get(getCapacitorData()), getActiveTask().getRequiredFluidAmount() - fluidUsed));
         }
 
-        if (fluidUsed >= 1000) {
+        if (fluidUsed >= getActiveTask().getRequiredFluidAmount()) {
           EntityWeatherRocket e = new EntityWeatherRocket(world, activeTask);
           e.setPosition(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5);
           world.spawnEntity(e);
@@ -258,8 +283,8 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
    * @return True if the task can be started with the item in the inventory.
    */
   public boolean canStartTask(WeatherTask task) {
-    return task != null && getActiveTask() == null && !WeatherTask.worldIsState(task, world) && Prep.isValid(getStackInSlot(0))
-        && inputTank.getFluidAmount() >= 1000 && task == WeatherTask.fromFluid(inputTank.getFluid().getFluid());
+    return task != null && getActiveTask() == null && !WeatherTask.worldIsState(task, world) && inputTank.getFluidAmount() >= task.getRequiredFluidAmount()
+        && task == WeatherTask.fromFluid(inputTank.getFluidNN().getFluid()) && (world.isRemote || Prep.isValid(getStackInSlot(0)));
   }
 
   /**
@@ -268,7 +293,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   public boolean startTask() {
     if (getActiveTask() == null && inputTank.getFluidAmount() > 0) {
       fluidUsed = 0;
-      WeatherTask task = WeatherTask.fromFluid(inputTank.getFluid().getFluid());
+      WeatherTask task = WeatherTask.fromFluid(inputTank.getFluidNN().getFluid());
       if (canStartTask(task)) {
         decrStackSize(0, 1);
         activeTask = task;
@@ -283,7 +308,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       activeTask = null;
       fluidUsed = 0;
       if (!world.isRemote) {
-        PacketHandler.INSTANCE.sendToDimension(new PacketActivateWeather(this), world.provider.getDimension());
+        PacketHandler.INSTANCE.sendToAllAround(new PacketActivateWeather(this, false), this);
       } else {
         playedFuse = false;
       }
@@ -355,6 +380,15 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       return (T) getSmartTankFluidHandler().get(facingIn);
     }
     return super.getCapability(capability, facingIn);
+  }
+
+  public void updateRedstoneState() {
+    boolean redstone = isPoweredRedstone();
+    if (!redstoneActivePrev && redstone) {
+      startTask();
+      PacketHandler.INSTANCE.sendToAllAround(new PacketActivateWeather(this, activeTask != null), this);
+    }
+    redstoneActivePrev = redstone;
   }
 
 }

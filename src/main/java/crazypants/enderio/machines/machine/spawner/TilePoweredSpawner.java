@@ -113,12 +113,14 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   public int getPowerUsePerTick() {
-    return (int) (super.getPowerUsePerTick() * PoweredSpawnerRecipeRegistry.getInstance().getCostMultiplierFor(getEntityName()));
+    final ResourceLocation entityName = getEntityName();
+    return (int) (super.getPowerUsePerTick() * (entityName == null ? 0 : PoweredSpawnerRecipeRegistry.getInstance().getCostMultiplierFor(entityName)));
   }
 
   @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {
-    return (int) (super.getMaxEnergyRecieved(dir) * PoweredSpawnerRecipeRegistry.getInstance().getCostMultiplierFor(getEntityName()));
+    final ResourceLocation entityName = getEntityName();
+    return (int) (super.getMaxEnergyRecieved(dir) * (entityName == null ? 0 : PoweredSpawnerRecipeRegistry.getInstance().getCostMultiplierFor(entityName)));
   }
 
   @Override

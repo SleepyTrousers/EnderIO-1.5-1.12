@@ -86,7 +86,8 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
 
   WEATHER_POWER_INTAKE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
   WEATHER_POWER_BUFFER(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  WEATHER_POWER_USE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 20),
+  WEATHER_POWER_USE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
+  WEATHER_POWER_FLUID_USE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 4),
 
   PAINTER_POWER_INTAKE(MachineObject.block_painter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
   PAINTER_POWER_BUFFER(MachineObject.block_painter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),

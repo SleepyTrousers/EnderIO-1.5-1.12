@@ -107,7 +107,6 @@ public class GuiWeatherObelisk extends GuiInventoryMachineBase<TileWeatherObelis
     drawTexturedModalRect(x, y, 186, 33, 16, 63);
 
     if (shouldRenderProgress() && getTileEntity().getActiveTask() != null) {
-      // TODO 1.10 test
       int barHeight = getProgressScaled(ContainerWeatherObelisk.MAX_SCALE);
       Color color = getTileEntity().getActiveTask().color;
       GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
@@ -121,7 +120,7 @@ public class GuiWeatherObelisk extends GuiInventoryMachineBase<TileWeatherObelis
     super.actionPerformed(b);
     if (b.id >= 0 && b.id <= 2) {
       getTileEntity().startTask();
-      PacketHandler.INSTANCE.sendToServer(new PacketActivateWeather(getTileEntity()));
+      PacketHandler.INSTANCE.sendToServer(new PacketActivateWeather(getTileEntity(), true));
     }
   }
 }
