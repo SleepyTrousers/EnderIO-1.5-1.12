@@ -23,13 +23,13 @@ public class FarmingStationSpecialRenderer extends ManagedTESR<TileFarmStation> 
 
   @Override
   protected boolean shouldRender(@Nonnull TileFarmStation te, @Nonnull IBlockState blockState, int renderPass) {
-    return !te.notification.isEmpty() && !Config.disableFarmNotification;
+    return !te.getNotification().isEmpty() && !Config.disableFarmNotification;
   }
 
   @Override
   protected void renderTileEntity(@Nonnull TileFarmStation te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     float offset = 0;
-    for (FarmNotification note : te.notification) {
+    for (FarmNotification note : te.getNotification()) {
       RenderUtil.drawBillboardedText(new Vector3f(0.5, 1.5 + offset, 0.5), note.getDisplayString(), 0.25f);
       offset += 0.375f;
     }
