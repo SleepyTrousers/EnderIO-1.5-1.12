@@ -66,7 +66,11 @@ public class RangeParticle<T extends TileEntity & IRanged> extends Particle {
 
     float scale = Math.min((age + partialTicks) / INIT_TIME, 1);
 
-    GlStateManager.translate(-interpPosX, -interpPosY, -interpPosZ);
+    // Vanilla bug? Particle.interpPosX/Y/Z variables are always one frame behind
+    double x = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX) * partialTicks;
+    double y = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY) * partialTicks;
+    double z = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * partialTicks;
+    GlStateManager.translate(-x, -y, -z);
 
     GlStateManager.color(color.x, color.y, color.z, color.w);
 
