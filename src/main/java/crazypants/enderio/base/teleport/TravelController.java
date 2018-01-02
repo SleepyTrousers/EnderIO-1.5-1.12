@@ -683,7 +683,7 @@ public class TravelController {
     final BlockPos pos = new BlockPos(x, y, z);
     TileEntity tileEntity = world.getTileEntity(pos);
     if (tileEntity instanceof ITravelAccessable) {
-      if (Config.telepadIsTravelAnchor || !(tileEntity instanceof ITravelAccessable.Secondary)) {
+      if (((ITravelAccessable) tileEntity).isTravelTarget()) {
         return new BlockPos(x, y, z);
       }
     }

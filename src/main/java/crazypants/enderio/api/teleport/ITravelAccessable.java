@@ -52,12 +52,16 @@ public interface ITravelAccessable {
 
   void setPlacedBy(@Nonnull EntityPlayer player);
 
-  public void clearAuthorisedUsers();
+  void clearAuthorisedUsers();
 
-  public @Nonnull BlockPos getLocation();
+  @Nonnull
+  BlockPos getLocation();
 
-  public static interface Secondary extends ITravelAccessable {
-
+  /**
+   * Is this block a travel target for the staff or a travel anchor?
+   */
+  default boolean isTravelTarget() {
+    return true;
   }
 
 }
