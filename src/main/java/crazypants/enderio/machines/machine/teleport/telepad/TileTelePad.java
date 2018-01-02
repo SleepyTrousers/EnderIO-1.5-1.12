@@ -10,27 +10,25 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.SmartTank;
-import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.inventory.EnderInventory.Type;
+import com.enderio.core.common.inventory.Filters.PredicateItemStack;
+import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.NullHelper;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.base.capacitor.CapacitorKeyType;
-import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
-import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.Scaler;
-import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
-import crazypants.enderio.base.machine.baselegacy.PacketLegacyPowerStorage;
 import crazypants.enderio.base.machine.sound.MachineSound;
-import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.teleport.TeleportUtil;
+import crazypants.enderio.machines.config.config.TelePadConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.anchor.TileTravelAnchor;
@@ -41,7 +39,6 @@ import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTelepor
 import crazypants.enderio.machines.machine.teleport.telepad.render.BlockType;
 import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -53,8 +50,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -62,24 +59,22 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
 
-import static crazypants.enderio.base.init.ModObject.itemLocationPrintout;
+public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgressTile, ITankAccess.IExtendedTankAccess {
 
-public class TileTelePad extends TileTravelAnchor
-    implements ILegacyPowerReceiver, ITelePad, IProgressTile, IItemHandlerModifiable, ITankAccess.IExtendedTankAccess {
+  public static final @Nonnull Predicate<ItemStack> LOCATION_PRINTOUTS = new PredicateItemStack() {
+    @Override
+    public boolean doApply(@Nonnull ItemStack input) {
+      return TelepadTarget.readFromNBT(input) != null;
+    }
+  };
 
-  @Nonnull
-  private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
-  private final ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER,
-      Config.telepadEnergyUsePerTickRF);
-  private final ICapacitorKey maxEnergyStored = new DefaultCapacitorKey(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER,
-      Config.telepadEnergyBufferRF);
-  private final ICapacitorKey maxEnergyUsed = new DefaultCapacitorKey(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER,
-      Config.telepadEnergyUsePerTickRF);
-
-  @Store
-  private int storedEnergyRF;
+  private static final @Nonnull ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_INTAKE,
+      Scaler.Factory.FIXED_1, TelePadConfig.telepadEnergyUsePerTickRF.get());
+  private static final @Nonnull ICapacitorKey maxEnergyStored = new DefaultCapacitorKey(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_BUFFER,
+      Scaler.Factory.FIXED_1, TelePadConfig.telepadEnergyBufferRF.get());
+  private static final @Nonnull ICapacitorKey maxEnergyUsed = new DefaultCapacitorKey(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_USE,
+      Scaler.Factory.FIXED_1, TelePadConfig.telepadEnergyUsePerTickRF.get());
 
   private TileTelePad masterTile = null;
 
@@ -87,8 +82,6 @@ public class TileTelePad extends TileTravelAnchor
 
   @Store
   private @Nonnull TelepadTarget target = new TelepadTarget(new BlockPos(0, 0, 0), Integer.MIN_VALUE);
-
-  private int lastSyncPowerStored;
 
   private Queue<Entity> toTeleport = Queues.newArrayDeque();
   private int powerUsed;
@@ -121,23 +114,15 @@ public class TileTelePad extends TileTravelAnchor
   public float spinSpeed = 0;
   public float speedMult = 2.5f;
 
-  @Store(handler = HandleItemStackNNList.class)
-  protected NNList<ItemStack> inventory = new NNList<>(2, ItemStack.EMPTY);
-
   public TileTelePad() {
-    Fluid fluid = null;
-    if (Config.rodOfReturnFluidType != null) {
-      fluid = FluidRegistry.getFluid(Config.telepadFluidType);
-    }
-    if (fluid == null) {
-      fluid = Fluids.ENDER_DISTILLATION.getFluid();
-    }
-    fluidType = fluid;
+    super(maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
 
-    int tankCap = 0;
-    if (Config.telepadFluidUse > 0) {
-      tankCap = Config.telepadFluidUse * 10;
-    }
+    getInventory().add(Type.INPUT, "INPUT", new InventorySlot(LOCATION_PRINTOUTS, 1));
+    getInventory().add(Type.OUTPUT, "OUTPUT", new InventorySlot(1));
+
+    fluidType = TelePadConfig.telepadFluidType.get();
+
+    int tankCap = TelePadConfig.telepadFluidUse.get() * 10;
     tank = new SmartTank(fluidType, tankCap);
     if (tankCap <= 0) {
       tank.setCanFill(false);
@@ -189,30 +174,23 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   @Override
-  public void doUpdate() {
+  protected boolean processTasks(boolean redstoneCheck) {
     if (!isMaster()) {
-      return;
+      return false;
     }
 
     if (target.getDimension() == Integer.MIN_VALUE) {
       target.setDimension(world.provider.getDimension());
     }
 
-    if (world.isRemote) {
-      updateEntityClient();
-      return;
+    if (!getInventory().getSlot("INPUT").isEmpty() && getInventory().getSlot("OUTPUT").isEmpty()) {
+      ItemStack stack = getInventory().getSlot("INPUT").get();
+      setTarget(TelepadTarget.readFromNBT(stack));
+      getInventory().getSlot("INPUT").clear();
+      getInventory().getSlot("OUTPUT").set(stack);
     }
 
-    if (!inventory.get(0).isEmpty() && inventory.get(1).isEmpty()) {
-      ItemStack stack = inventory.get(0);
-      TelepadTarget newTarg = TelepadTarget.readFromNBT(stack);
-      setTarget(newTarg);
-      inventory.set(0, ItemStack.EMPTY);
-      inventory.set(1, stack);
-      markDirty();
-    }
-
-    if (tankDirty && shouldDoWorkThisTick(5)) {
+    if (tankDirty && shouldDoWorkThisTick(10)) {
       PacketHandler.sendToAllAround(new PacketFluidLevel(this), this);
       tankDirty = false;
     }
@@ -222,8 +200,8 @@ public class TileTelePad extends TileTravelAnchor
         teleport(toTeleport.poll());
         powerUsed = 0;
       } else {
-        int usable = Math.min(Math.min(getUsage(), requiredPower), getEnergyStored());
-        setEnergyStored(getEnergyStored() - usable);
+        int usable = Math.min(Math.min(getUsage(), requiredPower), getEnergy().getEnergyStored());
+        getEnergy().setEnergyStored(getEnergy().getEnergyStored() - usable);
         powerUsed += usable;
       }
       if (shouldDoWorkThisTick(5)) {
@@ -231,17 +209,15 @@ public class TileTelePad extends TileTravelAnchor
       }
     }
 
-    boolean powerChanged = (lastSyncPowerStored != getEnergyStored() && shouldDoWorkThisTick(5));
-    if (powerChanged) {
-      lastSyncPowerStored = getEnergyStored();
-      PacketHandler.sendToAllAround(new PacketLegacyPowerStorage(this), this);
-    }
     if (coordsChanged) {
       coordsChanged = false;
       PacketHandler.sendToAllAround(new PacketSetTarget(this, target), this);
     }
+
+    return false;
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   protected void updateEntityClient() {
     updateRotations();
@@ -320,19 +296,19 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   public int getPowerScaled(int scale) {
-    return (int) ((((float) getEnergyStored()) / (getMaxEnergyStored())) * scale);
+    return (int) ((((float) getEnergy().getEnergyStored()) / (getEnergy().getMaxEnergyStored())) * scale);
   }
 
   private int calculateTeleportPower() {
     if (world.provider.getDimension() == target.getDimension()) {
       int distance = (int) Math.ceil(pos.getDistance(target.getLocation().getX(), target.getLocation().getY(), target.getLocation().getZ()));
       double base = Math.log((0.005 * distance) + 1);
-      requiredPower = (int) (base * Config.telepadPowerCoefficient);
+      requiredPower = (int) (base * TelePadConfig.telepadPowerCoefficient.get());
     } else {
-      requiredPower = Config.telepadPowerInterdimensional;
+      requiredPower = TelePadConfig.telepadPowerInterdimensional.get();
     }
     // Max out at the inter dim. value
-    int res = MathHelper.clamp(requiredPower, 5000, Config.telepadPowerInterdimensional);
+    int res = MathHelper.clamp(requiredPower, 5000, TelePadConfig.telepadPowerInterdimensional.get());
     return res;
   }
 
@@ -427,7 +403,7 @@ public class TileTelePad extends TileTravelAnchor
 
   @Override
   public void setX(int x) {
-    if (Config.telepadLockCoords) {
+    if (TelePadConfig.telepadLockCoords.get()) {
       return;
     }
     setTarget(getTarget().setX(x));
@@ -435,7 +411,7 @@ public class TileTelePad extends TileTravelAnchor
 
   @Override
   public void setY(int y) {
-    if (Config.telepadLockCoords) {
+    if (TelePadConfig.telepadLockCoords.get()) {
       return;
     }
     setTarget(getTarget().setY(y));
@@ -443,7 +419,7 @@ public class TileTelePad extends TileTravelAnchor
 
   @Override
   public void setZ(int z) {
-    if (Config.telepadLockCoords) {
+    if (TelePadConfig.telepadLockCoords.get()) {
       return;
     }
     setTarget(getTarget().setZ(z));
@@ -451,7 +427,7 @@ public class TileTelePad extends TileTravelAnchor
 
   @Override
   public void setTargetDim(int dimID) {
-    if (Config.telepadLockCoords) {
+    if (TelePadConfig.telepadLockCoords.get()) {
       return;
     }
     setTarget(getTarget().setDimension(dimID));
@@ -459,7 +435,7 @@ public class TileTelePad extends TileTravelAnchor
 
   @Override
   public void setCoords(@Nonnull BlockPos coords) {
-    if (Config.telepadLockCoords) {
+    if (TelePadConfig.telepadLockCoords.get()) {
       return;
     }
     setTarget(getTarget().setLocation(coords));
@@ -566,16 +542,16 @@ public class TileTelePad extends TileTravelAnchor
       return false;
     }
 
-    if (Config.telepadFluidUse > 0) {
-      if (tank.getFluidAmount() < Config.telepadFluidUse) {
-        tank.drain(Config.telepadFluidUse, true);
+    if (TelePadConfig.telepadFluidUse.get() > 0) {
+      if (tank.getFluidAmount() < TelePadConfig.telepadFluidUse.get()) {
+        tank.drain(TelePadConfig.telepadFluidUse.get(), true);
         if (entity instanceof EntityPlayer) {
           ((EntityPlayer) entity).sendMessage(Lang.GUI_TELEPAD_NOFLUID.toChatServer(new FluidStack(fluidType, 1).getLocalizedName()));
         }
         wasBlocked = true;
         return true;
       }
-      tank.drainInternal(Config.telepadFluidUse, true);
+      tank.drainInternal(TelePadConfig.telepadFluidUse.get(), true);
     }
 
     entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
@@ -603,59 +579,8 @@ public class TileTelePad extends TileTravelAnchor
     return isMaster() && inNetwork();
   }
 
-  /* IInternalPowerReceiver */
-
-  @Override
-  public int getMaxEnergyRecieved(EnumFacing dir) {
-    return inNetwork() && getMasterTile() != null ? getMasterTile() == this ? maxEnergyRecieved.get(capacitorData) : getMasterTile().getMaxEnergyRecieved(dir)
-        : 0;
-  }
-
-  @Override
-  public int getMaxEnergyStored() {
-    return inNetwork() && getMasterTile() != null ? getMasterTile() == this ? maxEnergyStored.get(capacitorData) : getMasterTile().getMaxEnergyStored() : 0;
-  }
-
-  @Override
-  public boolean displayPower() {
-    return inNetwork() && getMasterTile() != null;
-  }
-
-  @Override
-  public int getEnergyStored() {
-    return inNetwork() && getMasterTile() != null ? getMasterTile() == this ? storedEnergyRF : getMasterTile().getEnergyStored() : 0;
-  }
-
-  @Override
-  public void setEnergyStored(int storedEnergy) {
-    if (inNetwork() && getMasterTile() != null) {
-      if (getMasterTile() == this) {
-        storedEnergyRF = Math.min(getMaxEnergyStored(), storedEnergy);
-      } else {
-        getMasterTile().setEnergyStored(storedEnergy);
-      }
-    }
-  }
-
-  @Override
-  public boolean canConnectEnergy(@Nonnull EnumFacing from) {
-    return inNetwork() && getMasterTile() != null;
-  }
-
-  @Override
-  public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-    if (!inNetwork()) {
-      return 0;
-    }
-    int max = Math.max(0, Math.min(Math.min(getMaxEnergyRecieved(from), maxReceive), getMaxEnergyStored() - getEnergyStored()));
-    if (!simulate) {
-      setEnergyStored(getEnergyStored() + max);
-    }
-    return max;
-  }
-
   public int getUsage() {
-    return maxEnergyUsed.get(capacitorData);
+    return getEnergy().getMaxUsage();
   }
 
   private TileTelePad getMasterTile() {
@@ -675,72 +600,27 @@ public class TileTelePad extends TileTravelAnchor
   // Inventory
 
   @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    if (inNetwork() && (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) {
-      return true;
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+        || capability == CapabilityEnergy.ENERGY) {
+      return inNetwork();
     }
-    return super.hasCapability(capability, facing);
+    return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-    if (!inNetwork()) {
-      return super.getCapability(capability, facing);
-    }
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      return (T) getMaster();
+      return inNetwork() ? (T) getMaster() : null;
     }
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return (T) NullHelper.notnull(getMaster(), "Telepad master is null while in network!").tank;
+      return inNetwork() ? (T) NullHelper.notnull(getMaster(), "Telepad master is null while in network!").tank : null;
     }
-    return super.getCapability(capability, facing);
-  }
-
-  @Override
-  public int getSlots() {
-    return 2;
-  }
-
-  @Override
-  public @Nonnull ItemStack getStackInSlot(int slot) {
-    if (slot < 0 || slot >= inventory.size()) {
-      return ItemStack.EMPTY;
+    if (capability == CapabilityEnergy.ENERGY) {
+      return inNetwork() ? (T) NullHelper.notnull(getMaster(), "Telepad master is null while in network!").getEnergy().get(facingIn) : null;
     }
-    return inventory.get(slot);
-  }
-
-  @Override
-  public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
-    if (slot < 0 || slot >= inventory.size()) {
-      return;
-    }
-    inventory.set(slot, stack);
-  }
-
-  @Override
-  public @Nonnull ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-    if (slot != 0 || !inventory.get(0).isEmpty() || stack.isEmpty() || stack.getItem() != itemLocationPrintout.getItem()) {
-      return stack;
-    }
-    if (!simulate) {
-      inventory.set(0, stack.copy());
-      markDirty();
-    }
-    return ItemStack.EMPTY;
-  }
-
-  @Override
-  public @Nonnull ItemStack extractItem(int slot, int amount, boolean simulate) {
-    if (slot != 1 || amount < 1 || inventory.get(1).isEmpty()) {
-      return ItemStack.EMPTY;
-    }
-    ItemStack res = inventory.get(1).copy();
-    if (!simulate) {
-      markDirty();
-      inventory.set(1, ItemStack.EMPTY);
-    }
-    return res;
+    return super.getCapability(capability, facingIn);
   }
 
   // Fluids
@@ -819,8 +699,8 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   @Override
-  public int getSlotLimit(int slot) {
-    return 64;
+  public boolean isTravelTarget() {
+    return isMaster() && inNetwork() && TelePadConfig.telepadIsTravelAnchor.get();
   }
 
 }

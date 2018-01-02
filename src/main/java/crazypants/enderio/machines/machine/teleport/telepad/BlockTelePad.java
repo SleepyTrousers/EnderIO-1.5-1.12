@@ -3,7 +3,6 @@ package crazypants.enderio.machines.machine.teleport.telepad;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -11,6 +10,7 @@ import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.ContainerTravelAccessable;
 import crazypants.enderio.machines.machine.teleport.ContainerTravelAuth;
 import crazypants.enderio.machines.machine.teleport.GuiTravelAuth;
@@ -30,7 +30,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -137,26 +136,21 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
 
   @Override
   protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
-    TileEntity te = world.getTileEntity(pos);
-    if (te instanceof ITelePad) {
-      ITelePad tp = (ITelePad) te;
-      if (tp.inNetwork()) {
-        if (!tp.isMaster()) {
-          ITelePad master = tp.getMaster();
-          return openGui(world, master.getLocation(), entityPlayer, side);
+    BlockType type = world.getBlockState(pos).getValue(BLOCK_TYPE);
+    BlockPos masterPos = type.getLocationOfMaster(pos);
+    if (masterPos != null) {
+      TileTelePad tp = getTileEntity(world, masterPos);
+      if (tp != null) {
+        if (tp.canBlockBeAccessed(entityPlayer)) {
+          return openGui(world, masterPos, entityPlayer, side, GUI_ID_TELEPAD);
+        } else {
+          sendPrivateChatMessage(entityPlayer, tp.getOwner());
+          return false;
         }
-      } else {
-        return false;
-      }
-
-      // from here out we know that we are connected and are the master
-      if (tp.canBlockBeAccessed(entityPlayer)) {
-        return openGui(world, pos, entityPlayer, side, GUI_ID_TELEPAD);
-      } else {
-        sendPrivateChatMessage(entityPlayer, tp.getOwner());
       }
     }
-    return true;
+    entityPlayer.sendStatusMessage(Lang.STATUS_TELEPAD_UNFORMED.toChatServer(), true);
+    return false;
   }
 
   @Override
@@ -221,7 +215,6 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
 
   @Override
   public void breakBlock(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
-    super.breakBlock(worldIn, pos, state);
     if (state.getBlock() == this) {
       BlockType type = state.getValue(BLOCK_TYPE);
       if (type != BlockType.SINGLE) {

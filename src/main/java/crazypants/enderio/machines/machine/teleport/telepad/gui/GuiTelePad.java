@@ -12,24 +12,23 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 import com.google.common.collect.Lists;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IToggleableGui;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.ToggleTravelButton;
-import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.machines.config.config.TelePadConfig;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.telepad.BlockTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketOpenServerGui;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
 import crazypants.enderio.machines.network.PacketHandler;
-import crazypants.enderio.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -51,7 +50,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
   private static final int powerX = 8;
   private static final int powerY = 9;
-  private int powerScale = Config.telepadFluidUse > 0 ? 57 : 120; // TODO -> method
+  private int powerScale = TelePadConfig.telepadFluidUse.get() > 0 ? 57 : 120; // TODO -> method
 
   private static final int progressX = 26;
   private static final int progressY = 110;
@@ -85,7 +84,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
       }
     });
 
-    if (Config.telepadFluidUse > 0) {
+    if (TelePadConfig.telepadFluidUse.get() > 0) {
       addToolTip(new GuiToolTip(RECTANGLE_TANK, "") {
         @Override
         protected void updateText() {
@@ -112,10 +111,10 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     zTF.setText(Integer.toString(te.getZ()));
     dimTF.setText(Integer.toString(te.getTargetDim()));
 
-    xTF.setCanLoseFocus(!Config.telepadLockCoords);
-    yTF.setCanLoseFocus(!Config.telepadLockCoords);
-    zTF.setCanLoseFocus(!Config.telepadLockCoords);
-    dimTF.setCanLoseFocus(!Config.telepadLockDimension);
+    xTF.setCanLoseFocus(!TelePadConfig.telepadLockCoords.get());
+    yTF.setCanLoseFocus(!TelePadConfig.telepadLockCoords.get());
+    zTF.setCanLoseFocus(!TelePadConfig.telepadLockCoords.get());
+    dimTF.setCanLoseFocus(!TelePadConfig.telepadLockDimension.get());
 
     textFields.addAll(Lists.newArrayList(xTF, yTF, zTF, dimTF));
 
@@ -138,7 +137,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
   protected void updatePowerBarTooltip(List<String> text) {
     text.add(Lang.GUI_TELEPAD_MAX.get(LangPower.RFt(getPowerOutputValue())));
-    text.add(LangPower.RF(te.getEnergyStored(), te.getMaxEnergyStored()));
+    text.add(LangPower.RF(te.getEnergy().getEnergyStored(), te.getEnergy().getMaxEnergyStored()));
   }
 
   @Override
@@ -162,11 +161,16 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   public void updateScreen() {
     super.updateScreen();
 
-    if (Prep.isValid(te.getStackInSlot(0))) {
-      te.setTarget(TelepadTarget.readFromNBT(te.getStackInSlot(0)));
+    if (!xTF.isFocused()) {
       xTF.setText(Integer.toString(te.getX()));
+    }
+    if (!yTF.isFocused()) {
       yTF.setText(Integer.toString(te.getY()));
+    }
+    if (!zTF.isFocused()) {
       zTF.setText(Integer.toString(te.getZ()));
+    }
+    if (!dimTF.isFocused()) {
       dimTF.setText(Integer.toString(te.getTargetDim()));
     }
   }
@@ -205,11 +209,11 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
     // draw power / fluid background
-    int u = Config.telepadFluidUse > 0 ? 200 : 187;
+    int u = TelePadConfig.telepadFluidUse.get() > 0 ? 200 : 187;
     int v = 0;
     drawTexturedModalRect(sx + powerX - 1, sy + powerY - 1, u, v, 12, 122);
 
-    if (Config.telepadFluidUse > 0 && te.getFluidAmount() > 0) {
+    if (TelePadConfig.telepadFluidUse.get() > 0 && te.getFluidAmount() > 0) {
       RenderUtil.renderGuiTank(te.getTank(), sx + fluidX, sy + fluidY, 0, 10, fluidScale);
       bindGuiTexture();
       drawTexturedModalRect(sx + fluidX, sy + fluidY, 213, v, 10, fluidScale);
@@ -225,7 +229,8 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     String[] text = { "X", "Y", "Z", "DIM" };
     for (int i = 0; i < text.length; i++) {
       TextFieldEnder f = textFields.get(i);
-      fnt.drawString(text[i], f.xPosition - (fnt.getStringWidth(text[i]) / 2) - 10, f.yPosition + ((f.height - fnt.FONT_HEIGHT) / 2) + 1, 0x000000);
+      fnt.drawString(NullHelper.first(text[i]), f.xPosition - (fnt.getStringWidth(NullHelper.first(text[i], "")) / 2) - 10,
+          f.yPosition + ((f.height - fnt.FONT_HEIGHT) / 2) + 1, 0x000000);
       if (!f.getCanLoseFocus()) {
         IconEIO.map.render(IconEIO.LOCK_LOCKED, f.xPosition + f.width - 2, f.yPosition - 2, true);
       }

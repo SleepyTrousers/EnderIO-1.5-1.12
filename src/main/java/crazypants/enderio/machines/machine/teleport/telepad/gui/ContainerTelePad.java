@@ -8,19 +8,19 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnderCap;
+import com.enderio.core.common.inventory.EnderInventory;
+import com.enderio.core.common.inventory.EnderInventory.Type;
+import com.enderio.core.common.inventory.EnderSlot;
 
-import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.SlotItemHandler;
 
 import static crazypants.enderio.base.init.ModObject.itemLocationPrintout;
 
-public class ContainerTelePad extends ContainerEnderCap<TileTelePad, TileTelePad> {
+public class ContainerTelePad extends ContainerEnderCap<EnderInventory, TileTelePad> {
 
-  public ContainerTelePad(@Nonnull InventoryPlayer playerInv, @Nonnull TileTelePad itemHandler) {
-    super(playerInv, itemHandler, itemHandler);
+  public ContainerTelePad(@Nonnull InventoryPlayer playerInv, @Nonnull TileTelePad te) {
+    super(playerInv, te.getInventory(), te);
   }
 
   @Override
@@ -30,16 +30,8 @@ public class ContainerTelePad extends ContainerEnderCap<TileTelePad, TileTelePad
 
   @Override
   protected void addSlots() {
-    int x = 153;
-    int y = 47;
-    inventorySlots.indexOf(addSlotToContainer(new SlotItemHandler(getItemHandler(), 0, x, y) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack itemStack) {
-        return TelepadTarget.readFromNBT(itemStack) != null;
-      }
-    }));
-    y = 84;
-    addSlotToContainer(new SlotItemHandler(getItemHandler(), 1, x, y));
+    addSlotToContainer(new EnderSlot(Type.INPUT, getItemHandler(), "INPUT", 153, 47));
+    addSlotToContainer(new EnderSlot(Type.OUTPUT, getItemHandler(), "OUTPUT", 153, 84));
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {

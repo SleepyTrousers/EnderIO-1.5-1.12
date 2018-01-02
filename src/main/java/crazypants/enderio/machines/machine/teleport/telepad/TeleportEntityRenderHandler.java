@@ -1,14 +1,12 @@
 package crazypants.enderio.machines.machine.teleport.telepad;
 
-import static org.lwjgl.opengl.GL11.GL_ONE;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_ZERO;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4i;
 
+import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.TelePadConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -18,10 +16,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import static crazypants.enderio.base.config.Config.telepadShrinkEffect;
+import static org.lwjgl.opengl.GL11.GL_ONE;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_ZERO;
 
+@EventBusSubscriber(modid = EnderIOMachines.MODID)
 public class TeleportEntityRenderHandler {
 
   private static final Vector4i COL_TOP = new Vector4i(220, 255, 255, 0);
@@ -32,7 +34,7 @@ public class TeleportEntityRenderHandler {
    */
 
   @SubscribeEvent
-  public void onEntityRender(RenderLivingEvent.Post<EntityLivingBase> event) {
+  public static void onEntityRender(RenderLivingEvent.Post<EntityLivingBase> event) {
     EntityLivingBase e = event.getEntity();
     if (e.getEntityData().getBoolean("eio_needs_pop")) {
       GlStateManager.popMatrix();
@@ -83,7 +85,7 @@ public class TeleportEntityRenderHandler {
 
       vertexBuffer.pos(bb.maxX, bb.maxY, bb.maxZ).color(COL_TOP.x, COL_TOP.y, COL_TOP.z, COL_TOP.w).endVertex();
       vertexBuffer.pos(bb.maxX, bb.minY, bb.maxZ).color(COL_BOT.x, COL_BOT.y, COL_BOT.z, COL_BOT.w).endVertex();
-      
+
       tes.draw();
 
       GlStateManager.enableTexture2D();
@@ -97,8 +99,8 @@ public class TeleportEntityRenderHandler {
   }
 
   @SubscribeEvent
-  public void onEntityRender(RenderLivingEvent.Pre<EntityLivingBase> event) {
-    if (telepadShrinkEffect) {
+  public static void onEntityRender(RenderLivingEvent.Pre<EntityLivingBase> event) {
+    if (TelePadConfig.telepadShrinkEffect.get()) {
       final NBTTagCompound entityData = event.getEntity().getEntityData();
       boolean isTarget = false;
       if (entityData.getBoolean(TileTelePad.TELEPORTING_KEY)) {

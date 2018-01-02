@@ -1,8 +1,5 @@
 package crazypants.enderio.machines.machine.teleport.telepad.render;
 
-import static crazypants.enderio.base.config.Config.telepadIsTravelAnchor;
-import static crazypants.enderio.machines.init.MachineObject.block_tele_pad;
-
 import java.util.Random;
 
 import javax.annotation.Nonnull;
@@ -10,6 +7,7 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.base.render.property.EnumRenderMode;
+import crazypants.enderio.machines.config.config.TelePadConfig;
 import crazypants.enderio.machines.machine.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import net.minecraft.block.state.IBlockState;
@@ -27,16 +25,18 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.machines.init.MachineObject.block_tele_pad;
+
 @SideOnly(Side.CLIENT)
 public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer<TileTelePad> {
 
-  private final IBlockState blade, lights, glass;
+  private final @Nonnull IBlockState blade, lights, glass;
 
   public TelePadSpecialRenderer() {
-    super(block_tele_pad.getBlock());
-    blade = block_tele_pad.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_WEST);
-    lights = block_tele_pad.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON_WEST);
-    glass = block_tele_pad.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON);
+    super(block_tele_pad.getBlockNN());
+    blade = block_tele_pad.getBlockNN().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_WEST);
+    lights = block_tele_pad.getBlockNN().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON_WEST);
+    glass = block_tele_pad.getBlockNN().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON);
 
   }
 
@@ -65,14 +65,14 @@ public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer<TileTele
 
       render(te, glass);
 
-      if (telepadIsTravelAnchor && super.shouldRender(te, blockState, 1)) {
+      if (TelePadConfig.telepadIsTravelAnchor.get() && super.shouldRender(te, blockState, 1)) {
         RenderHelper.enableStandardItemLighting();
         super.renderTileEntity(te, blockState, partialTicks, destroyStage);
       }
     }
   }
 
-  public void render(TileEntity tileEntity, final IBlockState state) {
+  public void render(@Nonnull TileEntity tileEntity, final @Nonnull IBlockState state) {
     final BlockPos pos = tileEntity.getPos();
     final Tessellator tessellator = Tessellator.getInstance();
     final VertexBuffer vertexBuffer = tessellator.getBuffer();

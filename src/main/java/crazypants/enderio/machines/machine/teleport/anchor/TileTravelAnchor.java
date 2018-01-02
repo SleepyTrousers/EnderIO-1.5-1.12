@@ -11,8 +11,14 @@ import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.capacitor.CapacitorKeyType;
+import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
+import crazypants.enderio.base.capacitor.Scaler;
+import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
+import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.machines.init.MachineObject;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.endercore.HandleUserIdent;
@@ -20,12 +26,24 @@ import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStack
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable, IPaintable.IPaintableTileEntity {
+public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity implements ITravelAccessable, IPaintable.IPaintableTileEntity {
+
+  private static final @Nonnull ICapacitorKey NONE = new DefaultCapacitorKey(MachineObject.block_travel_anchor, CapacitorKeyType.ENERGY_INTAKE,
+      Scaler.Factory.FIXED_1, 0);
+
+  protected TileTravelAnchor(@Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
+    super(null, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+  }
+
+  public TileTravelAnchor() {
+    this(NONE, NONE, NONE);
+  }
 
   @Store
   protected IBlockState sourceBlock;
@@ -196,4 +214,20 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   public @Nonnull BlockPos getLocation() {
     return getPos();
   }
+
+  @Override
+  public boolean isActive() {
+    return false;
+  }
+
+  @Override
+  protected boolean processTasks(boolean redstoneCheck) {
+    return false;
+  }
+
+  @Override
+  public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
+    return mode == IoMode.NONE;
+  }
+
 }

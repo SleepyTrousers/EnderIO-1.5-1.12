@@ -17,11 +17,11 @@ import com.enderio.core.common.util.Util;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.telepad.TileDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
+import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -197,7 +197,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
       renderInfoMessage(sx, sy, txt, 0x000000);
       return;
     }
-    if (telepad.getEnergyStored() <= 0) {
+    if (telepad.getEnergy().getEnergyStored() <= 0) {
       String txt = TextFormatting.DARK_RED + "Telepad not powered";
       renderInfoMessage(sx, sy, txt, 0x000000);
       return;

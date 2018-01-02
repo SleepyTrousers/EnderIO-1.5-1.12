@@ -117,7 +117,7 @@ enderio.gui.telepad.blocked=Teleport Blocked!
 enderio.gui.telepad.teleport=Teleport!
 enderio.gui.telepad.tank=Reagent Tank
 enderio.gui.telepad.max=Max: %s
-
+enderio.status.telepad.unformed=§4Telepad must be a 3x3 structure
 
 tile.block_alloy_smelter.name=Alloy Smelter
 tile.block_alloy_smelter.tooltip.detailed.line1=Used to create EnderIO alloys
@@ -353,4 +353,16 @@ enderio.darksteel.upgrade.solar_2.tooltip.detailed.line1=Generates power from th
 enderio.darksteel.upgrade.solar_3.name=Solar III
 enderio.darksteel.upgrade.solar_3.tooltip.detailed.line1=Generates power from the sun.
 
+enderio.config.capacitor=Capacitor Settings
+enderio.config.client=Client Settings
+enderio.config.combustiongenerator=Combustion Generator Settings
+enderio.config.killerjoe=Killer Joe Settings
+enderio.config.solar=Solar Panel Settings
+enderio.config.soulbinder=Soulbinder Settings
+enderio.config.spawner=Powered Spawner Settings
+enderio.config.spawner.tooltip=I ran out of witty tooltips.
+enderio.config.vacuum=Vacuum Chest/XP Vacuum Settings
+enderio.config.vat=Vat Settings
+enderio.config.zombiegenerator=Zombie Generator Settings
+enderio.config.telepad=TelePad Settings
 
