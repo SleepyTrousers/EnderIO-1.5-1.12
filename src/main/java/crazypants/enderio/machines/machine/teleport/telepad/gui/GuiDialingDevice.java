@@ -13,11 +13,10 @@ import com.enderio.core.common.util.Util;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.telepad.TileDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
-import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
-import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -26,7 +25,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.text.TextFormatting;
 
-public class GuiDialingDevice extends GuiContainerBaseEIO {
+public class GuiDialingDevice extends GuiContainerBaseEIO implements IDialingDeviceRemoteExec.GUI {
 
   private static final int ID_TELEPORT_BUTTON = 96;
 
@@ -98,12 +97,12 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
   }
 
   protected int getPowerOutputValue() {
-    return dialingDevice.getUsage();
+    return dialingDevice.getEnergy().getMaxUsage();
   }
 
   protected void updatePowerBarTooltip(List<String> text) {
     text.add(Lang.GUI_TELEPAD_MAX.get(LangPower.RFt(getPowerOutputValue())));
-    text.add(LangPower.RF(dialingDevice.getEnergyStored(), dialingDevice.getMaxEnergyStored()));
+    text.add(LangPower.RF(dialingDevice.getEnergy().getEnergyStored(), dialingDevice.getEnergy().getMaxEnergyStored()));
   }
 
   @Override
@@ -124,6 +123,10 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
     targetList.onGuiInit(this);
   }
 
+  private int getPowerScaled(int scale) {
+    return (int) ((((float) dialingDevice.getEnergy().getEnergyStored()) / (dialingDevice.getEnergy().getMaxEnergyStored())) * scale);
+  }
+
   @Override
   protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -133,25 +136,25 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
 
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
-    int powerScaled = dialingDevice.getPowerScaled(powerScale);
+    int powerScaled = getPowerScaled(powerScale);
     drawTexturedModalRect(sx + powerX, sy + powerY + powerScale - powerScaled, xSize, 0, 10, powerScaled);
 
     targetList.drawScreen(mouseX, mouseY, partialTick);
 
     super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
 
-    if (dialingDevice.getEnergyStored() < dialingDevice.getUsage()) {
-      String txt = TextFormatting.DARK_RED + "No Power";
+    if (dialingDevice.getEnergy().getEnergyStored() < dialingDevice.getEnergy().getMaxUsage(CapacitorKey.DIALING_DEVICE_POWER_USE_TELEPORT)) {
+      String txt = TextFormatting.DARK_RED + "No Power"; // FIXME I18N
       renderInfoMessage(sx, sy, txt, 0x000000);
       return;
     }
     if (telepad.getEnergy().getEnergyStored() <= 0) {
-      String txt = TextFormatting.DARK_RED + "Telepad not powered";
+      String txt = TextFormatting.DARK_RED + "Telepad not powered"; // FIXME I18N
       renderInfoMessage(sx, sy, txt, 0x000000);
       return;
     }
     if (targetList.getSelectedElement() == null) {
-      String txt = TextFormatting.DARK_RED + "Enter Target";
+      String txt = TextFormatting.DARK_RED + "Enter Target"; // FIXME I18N
       renderInfoMessage(sx, sy, txt, 0x000000);
       return;
     }
@@ -182,10 +185,11 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
 
     if (button.id == ID_TELEPORT_BUTTON) {
       TelepadTarget target = targetList.getSelectedElement();
-      if (target != null && dialingDevice.getEnergyStored() > 0) {
-        telepad.setTarget(target);
-        PacketHandler.INSTANCE.sendToServer(new PacketSetTarget(telepad, target));
-        telepad.teleportAll();
+      if (target != null) {
+        int targetID = dialingDevice.getTargets().indexOf(target);
+        if (targetID >= 0) {
+          doTeleport(telepad.getPos(), targetID, true);
+        }
       }
     }
   }

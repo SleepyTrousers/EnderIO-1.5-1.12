@@ -611,16 +611,19 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      return inNetwork() ? (T) getMaster() : null;
+    if (isMaster()) {
+      if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
+      }
+      return super.getCapability(capability, facingIn);
+    } else if (inNetwork()) {
+      return NullHelper.notnull(getMaster(), "Telepad master is null while in network!").getCapability(capability, facingIn);
+    } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+        || capability == CapabilityEnergy.ENERGY) {
+      return null;
+    } else {
+      return super.getCapability(capability, facingIn);
     }
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return inNetwork() ? (T) NullHelper.notnull(getMaster(), "Telepad master is null while in network!").tank : null;
-    }
-    if (capability == CapabilityEnergy.ENERGY) {
-      return inNetwork() ? (T) NullHelper.notnull(getMaster(), "Telepad master is null while in network!").getEnergy().get(facingIn) : null;
-    }
-    return super.getCapability(capability, facingIn);
   }
 
   // Fluids

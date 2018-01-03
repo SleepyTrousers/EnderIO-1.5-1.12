@@ -6,6 +6,7 @@ import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
+import crazypants.enderio.machines.config.config.TelePadConfig;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,11 +45,26 @@ public class PacketSetTarget extends MessageTileEntity<TileEntity> {
     target = nbt != null ? TelepadTarget.readFromNBT(nbt) : null;
   }
 
-  public static class Handler implements IMessageHandler<PacketSetTarget, IMessage> {
-
+  public static class HandlerServer implements IMessageHandler<PacketSetTarget, IMessage> {
     @Override
     public IMessage onMessage(PacketSetTarget message, MessageContext ctx) {
-      TileEntity te = message.getTileEntity(ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx));
+      TileEntity te = message.getTileEntity(message.getWorld(ctx));
+      if (te instanceof TileTelePad) {
+        TileTelePad tp = (TileTelePad) te;
+        if (!TelePadConfig.telepadLockCoords.get()
+            && (!TelePadConfig.telepadLockDimension.get() || message.target == null || message.target.getDimension() == tp.getTargetDim())) {
+          tp.setTarget(message.target);
+        }
+        return new PacketSetTarget(tp, tp.getTarget());
+      }
+      return null;
+    }
+  }
+
+  public static class HandlerClient implements IMessageHandler<PacketSetTarget, IMessage> {
+    @Override
+    public IMessage onMessage(PacketSetTarget message, MessageContext ctx) {
+      TileEntity te = message.getTileEntity(EnderIO.proxy.getClientWorld());
       if (te instanceof TileTelePad) {
         TileTelePad tp = (TileTelePad) te;
         tp.setTarget(message.target);
@@ -56,4 +72,5 @@ public class PacketSetTarget extends MessageTileEntity<TileEntity> {
       return null;
     }
   }
+
 }

@@ -89,8 +89,8 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketTargetList.Handler.class, PacketTargetList.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketTargetList.Handler.class, PacketTargetList.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketOpenServerGui.Handler.class, PacketOpenServerGui.class, PacketHandler.nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketSetTarget.Handler.class, PacketSetTarget.class, PacketHandler.nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketSetTarget.Handler.class, PacketSetTarget.class, PacketHandler.nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketSetTarget.HandlerServer.class, PacketSetTarget.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketSetTarget.HandlerClient.class, PacketSetTarget.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketTeleportTrigger.Handler.class, PacketTeleportTrigger.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketTeleport.Handler.class, PacketTeleport.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketFluidLevel.Handler.class, PacketFluidLevel.class, PacketHandler.nextID(), Side.CLIENT);

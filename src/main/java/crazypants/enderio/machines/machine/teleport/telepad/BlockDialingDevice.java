@@ -90,7 +90,7 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice>
   public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     TileDialingDevice tile = getTileEntitySafe(worldIn, pos);
     if (tile != null) {
-      DialerFacing facing = tile.getFacing();
+      DialerFacing facing = tile.getDialerFacing();
       return state.withProperty(FACING, facing);
     } else {
       return state;

@@ -92,7 +92,7 @@ public class BlockItemDialingDevice extends ItemBlock {
       break;
     }
     TileDialingDevice logicTileEntity = (TileDialingDevice) te;
-    logicTileEntity.setFacing(facing);
+    logicTileEntity.setDialerFacing(facing);
     return result;
 
   }

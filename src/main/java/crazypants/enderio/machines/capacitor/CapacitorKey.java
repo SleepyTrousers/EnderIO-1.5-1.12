@@ -127,6 +127,12 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   WIRELESS_POWER_BUFFER(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 200000),
   WIRELESS_POWER_OUTPUT(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10000),
 
+  DIALING_DEVICE_POWER_INTAKE(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 80),
+  DIALING_DEVICE_POWER_BUFFER(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 100000),
+  DIALING_DEVICE_POWER_USE(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 5),
+  DIALING_DEVICE_POWER_USE_TELEPORT(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 1000),
+  DIALING_DEVICE_POWER_USE_PAPER(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 1000),
+
   //
   ;
 

@@ -46,12 +46,12 @@ public class GuiDialingDeviceNoTelepad extends GuiContainerBaseEIO {
   }
 
   protected int getPowerOutputValue() {
-    return dialingDevice.getUsage();
+    return dialingDevice.getEnergy().getMaxUsage();
   }
 
   protected void updatePowerBarTooltip(List<String> text) {
     text.add(Lang.GUI_TELEPAD_MAX.get(LangPower.RFt(getPowerOutputValue())));
-    text.add(LangPower.RF(dialingDevice.getEnergyStored(), dialingDevice.getMaxEnergyStored()));
+    text.add(LangPower.RF(dialingDevice.getEnergy().getEnergyStored(), dialingDevice.getEnergy().getMaxEnergyStored()));
   }
 
   @Override
@@ -81,7 +81,7 @@ public class GuiDialingDeviceNoTelepad extends GuiContainerBaseEIO {
 
     super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
 
-    String txt = TextFormatting.DARK_RED + "No Telepad";
+    String txt = TextFormatting.DARK_RED + "No Telepad"; // FIXME I18N
     renderInfoMessage(sx, sy, txt, 0x000000);
   }
 
