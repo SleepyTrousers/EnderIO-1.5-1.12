@@ -31,7 +31,7 @@ public abstract class AbstractMachineContainer<E extends AbstractInventoryMachin
     this.te = te;
   }
 
-  public E getTe() {
+  public @Nonnull E getTe() {
     return te;
   }
 
