@@ -32,7 +32,6 @@ public class TelePadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
 
   public static final @Nonnull TelePadRenderMapper instance = new TelePadRenderMapper();
 
-  private static final @Nonnull EnumRenderMode GLASS_TOP_MODEL = EnumRenderMode.FRONT_ON;
   private static final @Nonnull EnumRenderMode FULL_MODEL = EnumRenderMode.FRONT_EAST;
   private static final @Nonnull EnumRenderMode SINGLE_MODEL = EnumRenderMode.FRONT;
   private static final @Nonnull EnumRenderMode SINGLE_MODEL_INVENTORY = EnumRenderMode.FRONT_SOUTH;

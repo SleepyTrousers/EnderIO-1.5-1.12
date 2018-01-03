@@ -82,8 +82,8 @@ public class ContainerSoulBinder extends AbstractMachineContainer<TileSoulBinder
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(ModObject.itemSoulVial.getItemNN(), getSlotFromInventory(getInv(), 0)));
-    slots.add(new GhostBackgroundItemSlot(ModObject.itemBrokenSpawner.getItemNN(), getSlotFromInventory(getInv(), 1)));
+    slots.add(new GhostBackgroundItemSlot(ModObject.itemSoulVial.getItemNN(), getSlotFromInventory(0)));
+    slots.add(new GhostBackgroundItemSlot(ModObject.itemBrokenSpawner.getItemNN(), getSlotFromInventory(1)));
   }
 
   @Override

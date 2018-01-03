@@ -6,12 +6,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.widget.GuiToolTip;
-import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
@@ -25,10 +21,9 @@ import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 
 public class GuiDialingDevice extends GuiContainerBaseEIO {
@@ -37,25 +32,24 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
 
   GuiButton teleportButton;
 
-  private final TileDialingDevice dialingDevice;
-  private final TileTelePad telepad;
+  private final @Nonnull TileDialingDevice dialingDevice;
+  private final @Nonnull TileTelePad telepad;
 
-  private int powerX = 8;
-  private int powerY = 9;
-  private int powerScale = 120;
+  private final static int powerX = 8;
+  private final static int powerY = 9;
+  private final static int powerScale = 120;
 
-  private int progressX = 26;
-  private int progressY = 110;
-  private int progressScale = 124;
+  private final static int progressX = 26;
+  private final static int progressY = 110;
+  private final static int progressScale = 124;
 
   private final GuiTargetList targetList;
 
-  public GuiDialingDevice(@Nonnull InventoryPlayer playerInv, @Nonnull TileDialingDevice te) {
+  public GuiDialingDevice(@Nonnull InventoryPlayer playerInv, @Nonnull TileDialingDevice te, @Nonnull TileTelePad telepad) {
     super(new ContainerDialingDevice(playerInv, te), "dialing_device");
     this.dialingDevice = te;
-    telepad = findTelepad();
-
-    ySize = 220;
+    this.telepad = telepad;
+    this.ySize = 220;
 
     addToolTip(new GuiToolTip(new Rectangle(powerX, powerY, 10, powerScale), "") {
       @Override
@@ -69,9 +63,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
       @Override
       protected void updateText() {
         text.clear();
-        if (telepad != null) {
-          text.add(Math.round(telepad.getProgress() * 100) + "%");
-        }
+        text.add(Math.round(telepad.getProgress() * 100) + "%");
       }
     });
 
@@ -83,9 +75,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
     targetList.setShowSelectionBox(true);
     targetList.setScrollButtonIds(100, 101);
 
-    if (telepad != null) {
-      targetList.setSelection(telepad.getTarget());
-    }
+    targetList.setSelection(telepad.getTarget());
 
     addToolTip(new GuiToolTip(new Rectangle(x, y, w, h), "") {
       @Override
@@ -105,37 +95,6 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
       }
     });
 
-  }
-
-  private TileTelePad findTelepad() {
-
-    BlockPos pos = dialingDevice.getPos();
-    EnumFacing forward = dialingDevice.getFacing().getInputSide();
-    EnumFacing up;
-    EnumFacing side;
-    if (forward.getFrontOffsetY() == 0) {
-      up = EnumFacing.UP;
-      side = forward.rotateY();
-    } else { // look along y
-      up = EnumFacing.NORTH;
-      side = EnumFacing.EAST;
-    }
-
-    int range = 4;
-    TileTelePad result = null;
-    for (int i = 0; i < range * 2; i++) {
-      for (int j = 0; j < range * 2; j++) {
-        for (int k = 0; k < range * 2; k++) {
-          BlockPos check = pos.offset(forward, i + 1).offset(side, j - range).offset(up, k - range);
-          result = BlockEnder.getAnyTileEntitySafe(dialingDevice.getWorld(), check, TileTelePad.class);
-          if (result != null) {
-            return result.getMaster();
-          }
-        }
-      }
-    }
-
-    return result;
   }
 
   protected int getPowerOutputValue() {
@@ -166,13 +125,8 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
   }
 
   @Override
-  public void updateScreen() {
-    super.updateScreen();
-  }
-
-  @Override
   protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
@@ -191,12 +145,6 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
       renderInfoMessage(sx, sy, txt, 0x000000);
       return;
     }
-
-    if (telepad == null) {
-      String txt = TextFormatting.DARK_RED + "No Telepad";
-      renderInfoMessage(sx, sy, txt, 0x000000);
-      return;
-    }
     if (telepad.getEnergy().getEnergyStored() <= 0) {
       String txt = TextFormatting.DARK_RED + "Telepad not powered";
       renderInfoMessage(sx, sy, txt, 0x000000);
@@ -209,7 +157,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
     }
 
     bindGuiTexture();
-    int progressScaled = Util.getProgressScaled(progressScale, NullHelper.notnull(telepad, "Telepad reference concurrently became null??"));
+    int progressScaled = Util.getProgressScaled(progressScale, telepad);
     drawTexturedModalRect(sx + progressX, sy + progressY, 0, ySize, progressScaled, 10);
 
     Entity e = telepad.getCurrentTarget();
@@ -234,11 +182,12 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
 
     if (button.id == ID_TELEPORT_BUTTON) {
       TelepadTarget target = targetList.getSelectedElement();
-      if (target != null && dialingDevice.getEnergyStored() > 0 && telepad != null) {
+      if (target != null && dialingDevice.getEnergyStored() > 0) {
         telepad.setTarget(target);
         PacketHandler.INSTANCE.sendToServer(new PacketSetTarget(telepad, target));
         telepad.teleportAll();
       }
     }
   }
+
 }

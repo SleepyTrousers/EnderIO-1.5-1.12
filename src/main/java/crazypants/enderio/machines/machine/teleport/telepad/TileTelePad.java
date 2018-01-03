@@ -441,7 +441,7 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
     setTarget(getTarget().setLocation(coords));
   }
 
-  public void setTarget(TelepadTarget newTarget) {
+  public void setTarget(@Nullable TelepadTarget newTarget) {
     if (inNetwork() && !isMaster()) {
       getMaster().setTarget(newTarget);
       return;

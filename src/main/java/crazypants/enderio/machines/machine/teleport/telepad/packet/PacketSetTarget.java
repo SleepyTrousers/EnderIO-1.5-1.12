@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.teleport.telepad.packet;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
@@ -21,7 +23,7 @@ public class PacketSetTarget extends MessageTileEntity<TileEntity> {
 
   private TelepadTarget target;
 
-  public PacketSetTarget(TileTelePad te, TelepadTarget target) {
+  public PacketSetTarget(@Nonnull TileTelePad te, @Nonnull TelepadTarget target) {
     super(te.getTileEntity());
     this.target = target;
   }
@@ -39,7 +41,7 @@ public class PacketSetTarget extends MessageTileEntity<TileEntity> {
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     NBTTagCompound nbt = ByteBufUtils.readTag(buf);
-    target = TelepadTarget.readFromNBT(nbt);
+    target = nbt != null ? TelepadTarget.readFromNBT(nbt) : null;
   }
 
   public static class Handler implements IMessageHandler<PacketSetTarget, IMessage> {

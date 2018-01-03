@@ -1,5 +1,10 @@
 package crazypants.enderio.machines.machine.teleport.telepad;
 
+import javax.annotation.Nonnull;
+
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+
 import static net.minecraft.util.EnumFacing.DOWN;
 import static net.minecraft.util.EnumFacing.EAST;
 import static net.minecraft.util.EnumFacing.NORTH;
@@ -7,12 +12,9 @@ import static net.minecraft.util.EnumFacing.SOUTH;
 import static net.minecraft.util.EnumFacing.UP;
 import static net.minecraft.util.EnumFacing.WEST;
 
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
-
 //Derived from LogicFacing in RTTools
 public enum DialerFacing implements IStringSerializable {
-  
+
   DOWN_TONORTH("down_tonorth", 0, NORTH),
   DOWN_TOSOUTH("down_tosouth", 1, SOUTH),
   DOWN_TOWEST("down_towest", 2, WEST),
@@ -43,18 +45,18 @@ public enum DialerFacing implements IStringSerializable {
   EAST_TOUP("east_toup", 2, UP),
   EAST_TODOWN("east_todown", 3, DOWN);
 
-  private final String name;
+  private final @Nonnull String name;
   private final int meta;
-  private final EnumFacing inputSide;
+  private final @Nonnull EnumFacing inputSide;
 
-  DialerFacing(String name, int meta, EnumFacing inputSide) {
+  DialerFacing(@Nonnull String name, int meta, @Nonnull EnumFacing inputSide) {
     this.name = name;
     this.meta = meta;
     this.inputSide = inputSide;
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return name;
   }
 
@@ -62,11 +64,12 @@ public enum DialerFacing implements IStringSerializable {
     return meta;
   }
 
-  public EnumFacing getInputSide() {
+  public @Nonnull EnumFacing getInputSide() {
     return inputSide;
   }
 
-  public EnumFacing getSide() {
+  @SuppressWarnings("null")
+  public @Nonnull EnumFacing getSide() {
     return EnumFacing.values()[ordinal() / 4];
   }
 

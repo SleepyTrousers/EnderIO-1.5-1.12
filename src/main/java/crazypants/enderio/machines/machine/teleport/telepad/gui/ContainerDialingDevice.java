@@ -12,6 +12,7 @@ import com.enderio.core.common.ContainerEnderCap;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.machines.machine.teleport.telepad.TileDialingDevice;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -43,7 +44,10 @@ public class ContainerDialingDevice extends ContainerEnderCap<TileDialingDevice,
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(itemLocationPrintout.getItemNN(), inventorySlots.get(0)));
+    final Slot slot = inventorySlots.get(0);
+    if (slot != null) {
+      slots.add(new GhostBackgroundItemSlot(itemLocationPrintout.getItemNN(), slot));
+    }
   }
 
 }

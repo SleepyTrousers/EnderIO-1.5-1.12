@@ -14,6 +14,7 @@ import com.enderio.core.common.inventory.EnderSlot;
 
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 
 import static crazypants.enderio.base.init.ModObject.itemLocationPrintout;
 
@@ -35,7 +36,10 @@ public class ContainerTelePad extends ContainerEnderCap<EnderInventory, TileTele
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(itemLocationPrintout.getItemNN(), inventorySlots.get(0)));
+    final Slot slot = inventorySlots.get(0);
+    if (slot != null) {
+      slots.add(new GhostBackgroundItemSlot(itemLocationPrintout.getItemNN(), slot));
+    }
   }
 
 }

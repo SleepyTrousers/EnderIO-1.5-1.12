@@ -11,6 +11,7 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.ContainerDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.GuiDialingDevice;
+import crazypants.enderio.machines.machine.teleport.telepad.gui.GuiDialingDeviceNoTelepad;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.PropertyEnum;
@@ -76,7 +77,8 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice>
     if (te == null) {
       return null;
     }
-    return new GuiDialingDevice(player.inventory, te);
+    TileTelePad telepad = te.findTelepad();
+    return telepad == null ? new GuiDialingDeviceNoTelepad(player.inventory, te) : new GuiDialingDevice(player.inventory, te, telepad);
   }
 
   @Override

@@ -6,28 +6,38 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
+import com.enderio.core.common.util.blockiterators.CubicBlockIterator;
+import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.item.coordselector.TelepadTarget.TelepadTargetArrayListHandler;
 import crazypants.enderio.base.machine.baselegacy.PacketLegacyPowerStorage;
-import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
+import crazypants.enderio.base.render.ranged.IRanged;
+import crazypants.enderio.base.render.ranged.RangeParticle;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetList;
+import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import static crazypants.enderio.base.init.ModObject.itemLocationPrintout;
 
-public class TileDialingDevice extends TileEntityEio implements ILegacyPowerReceiver, IItemHandlerModifiable {
+public class TileDialingDevice extends TileEntityEio implements ILegacyPowerReceiver, IItemHandlerModifiable, IRanged {
 
   private static final int RF_PER_TICK = 20;
 
@@ -236,4 +246,57 @@ public class TileDialingDevice extends TileEntityEio implements ILegacyPowerRece
   public int getSlotLimit(int slot) {
     return 64;
   }
+
+  public @Nullable TileTelePad findTelepad() {
+    for (BlockPos check : new CubicBlockIterator(getBounds())) {
+      TileTelePad result = BlockEnder.getAnyTileEntitySafe(getWorld(), NullHelper.first(check, pos), TileTelePad.class);
+      if (result != null) {
+        return result.getMaster();
+      }
+    }
+    return null;
+  }
+
+  // RANGE
+
+  private boolean showingRange;
+
+  @SideOnly(Side.CLIENT)
+  public void setShowRange(boolean showRange) {
+    if (showingRange == showRange) {
+      return;
+    }
+    showingRange = showRange;
+    if (showingRange) {
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<>(this, new Vector4f(0x22 / 255f, 0x75 / 255f, 0x81 / 255f, 0.4f)));
+    }
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean isShowingRange() {
+    return showingRange;
+  }
+
+  @Override
+  @Nonnull
+  public BoundingBox getBounds() {
+    EnumFacing forward = getFacing().getInputSide();
+    EnumFacing up;
+    EnumFacing side;
+    if (forward.getFrontOffsetY() == 0) {
+      up = EnumFacing.UP;
+      side = forward.rotateY();
+    } else { // look along y
+      up = EnumFacing.NORTH;
+      side = EnumFacing.EAST;
+    }
+
+    int range = 4;
+    BlockPos checkMin = pos.offset(forward, 0 + 1).offset(side, 0 - range).offset(up, 0 - range);
+    BlockPos checkMax = pos.offset(forward, (range * 2 - 1) + 1).offset(side, (range * 2 - 1) - range).offset(up, (range * 2 - 1) - range);
+
+    return new BoundingBox(checkMin, checkMax);
+  }
+
 }
