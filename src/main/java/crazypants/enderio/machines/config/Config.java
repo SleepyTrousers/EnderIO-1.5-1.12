@@ -10,6 +10,7 @@ import com.enderio.core.common.network.ThreadedNetworkWrapper;
 import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.base.config.ValueFactory;
 import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.ClientConfig;
 import crazypants.enderio.machines.config.config.CombustionGenConfig;
 import crazypants.enderio.machines.config.config.KillerJoeConfig;
@@ -28,7 +29,7 @@ public final class Config {
 
   public static final Section sectionCapacitor = new Section("", "capacitor");
 
-  public static final ValueFactory F = new ValueFactory(new Supplier<ThreadedNetworkWrapper>() {
+  public static final ValueFactory F = new ValueFactory(EnderIOMachines.MODID, new Supplier<ThreadedNetworkWrapper>() {
     @Override
     public ThreadedNetworkWrapper get() {
       return PacketHandler.INSTANCE;

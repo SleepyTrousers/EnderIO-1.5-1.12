@@ -4,10 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
-import crazypants.enderio.base.config.PacketConfigSyncNew;
-import crazypants.enderio.base.config.PacketConfigSyncNew.PacketConfigSyncNewHandler;
 import crazypants.enderio.machines.EnderIOMachines;
-import crazypants.enderio.machines.config.Config;
 import crazypants.enderio.machines.machine.buffer.PacketBufferIO;
 import crazypants.enderio.machines.machine.farm.PacketFarmAction;
 import crazypants.enderio.machines.machine.farm.PacketFarmLockedSlot;
@@ -65,7 +62,6 @@ public class PacketHandler {
   }
 
   public static void init(FMLInitializationEvent event) {
-    INSTANCE.registerMessage(new PacketConfigSyncNewHandler(Config.F), PacketConfigSyncNew.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketNutrientTank.Handler.class, PacketNutrientTank.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketBurnTime.Handler.class, PacketBurnTime.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketCombustionTank.Handler.class, PacketCombustionTank.class, nextID(), Side.CLIENT);
