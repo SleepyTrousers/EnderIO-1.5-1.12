@@ -63,6 +63,15 @@ public class GuiPacket implements IMessage {
     p.send();
   }
 
+  public static void send(IRemoteExec gui, int msgID, int data1, int data2, long data3) {
+    GuiPacket p = new GuiPacket(gui, msgID, 3, new int[] { data1, data2 }, new long[] { 0, 0, data3 }, null);
+    p.send();
+  }
+
+  public static void send(IRemoteExec gui, int msgID, int data1, boolean data2, BlockPos data3) {
+    send(gui, msgID, data1, data2 ? 1 : 0, data3.toLong());
+  }
+
   // ------------------------------------------------------------------
 
   private static enum DataType {
@@ -71,7 +80,7 @@ public class GuiPacket implements IMessage {
     STRING;
   }
 
-  private static final DataType[][] PATTERN = { {}, { DataType.INT }, { DataType.STRING } };
+  private static final DataType[][] PATTERN = { {}, { DataType.INT }, { DataType.STRING }, { DataType.INT, DataType.INT, DataType.LONG } };
 
   private int guiID, msgID, pattern;
   private int[] ints;

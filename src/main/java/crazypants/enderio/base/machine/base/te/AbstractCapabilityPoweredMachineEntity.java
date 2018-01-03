@@ -113,7 +113,7 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityEnergy.ENERGY) {
-      return (T) energy.get(facingIn);
+      return (T) getEnergy().get(facingIn);
     }
     return super.getCapability(capability, facingIn);
   }

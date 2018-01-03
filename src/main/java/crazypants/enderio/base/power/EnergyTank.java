@@ -157,8 +157,24 @@ public class EnergyTank implements IEnergyStorage {
     return maxEnergyRecieved.get(capacitorData);
   }
 
+  public boolean canUseEnergy() {
+    return canUseEnergy(maxEnergyUsed);
+  }
+
+  public boolean canUseEnergy(@Nonnull ICapacitorKey key) {
+    int toUse = getMaxUsage(key);
+    if (toUse <= getEnergyStored()) {
+      return true;
+    }
+    return false;
+  }
+
   public boolean useEnergy() {
-    int toUse = getMaxUsage();
+    return useEnergy(maxEnergyUsed);
+  }
+
+  public boolean useEnergy(@Nonnull ICapacitorKey key) {
+    int toUse = getMaxUsage(key);
     if (toUse <= getEnergyStored()) {
       setEnergyStored(getEnergyStored() - toUse);
       return true;
@@ -167,7 +183,11 @@ public class EnergyTank implements IEnergyStorage {
   }
 
   public int getMaxUsage() {
-    return maxEnergyUsed.get(capacitorData);
+    return getMaxUsage(maxEnergyUsed);
+  }
+
+  public int getMaxUsage(@Nonnull ICapacitorKey key) {
+    return key.get(capacitorData);
   }
 
   public void setEnergyStored(int stored) {
