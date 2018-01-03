@@ -8,7 +8,6 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.PacketConfigSync;
 import crazypants.enderio.base.config.PacketConfigSyncNew;
 import crazypants.enderio.base.config.PacketConfigSyncNew.PacketConfigSyncNewHandler;
-import crazypants.enderio.base.config.config.BaseConfig;
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelPowerPacket;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe;
@@ -72,7 +71,7 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketMagnetState.Handler.class, PacketMagnetState.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketOpenAuthGui.Handler.class, PacketOpenAuthGui.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketUpdateLocationPrintout.Handler.class, PacketUpdateLocationPrintout.class, nextID(), Side.SERVER);
-    INSTANCE.registerMessage(new PacketConfigSyncNewHandler(BaseConfig.F), PacketConfigSyncNew.class, PacketHandler.nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketConfigSyncNewHandler.class, PacketConfigSyncNew.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketConfigSync.Handler.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketSpawnParticles.Handler.class, PacketSpawnParticles.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketPowerStorage.Handler.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);

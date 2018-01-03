@@ -4,12 +4,13 @@ import java.util.function.Supplier;
 
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.ValueFactory;
 import crazypants.enderio.base.network.PacketHandler;
 
 public final class BaseConfig {
 
-  public static final ValueFactory F = new ValueFactory(new Supplier<ThreadedNetworkWrapper>() {
+  public static final ValueFactory F = new ValueFactory(EnderIO.MODID, new Supplier<ThreadedNetworkWrapper>() {
     @Override
     public ThreadedNetworkWrapper get() {
       return PacketHandler.INSTANCE;

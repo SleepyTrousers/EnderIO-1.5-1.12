@@ -30,6 +30,9 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnection
 
 public class ValueFactory {
 
+  private static final @Nonnull Map<String, ValueFactory> factories = new HashMap<>();
+
+  protected final @Nonnull String modid;
   protected final @Nonnull Supplier<ThreadedNetworkWrapper> network;
   protected Configuration config = null;
   protected boolean inInit = false;
@@ -38,9 +41,21 @@ public class ValueFactory {
   protected final @Nonnull NNList<AbstractValue<?>> syncValues = new NNList<>();
   protected final @Nonnull NNList<AbstractValue<?>> preloadValues = new NNList<>();
 
-  public ValueFactory(@Nonnull Supplier<ThreadedNetworkWrapper> network) {
+  public ValueFactory(@Nonnull String modid, @Nonnull Supplier<ThreadedNetworkWrapper> network) {
     MinecraftForge.EVENT_BUS.register(this);
+    this.modid = modid;
     this.network = network;
+    synchronized (factories) {
+      factories.put(modid, this);
+    }
+  }
+
+  public static void read(String mod, final ByteBuf buf) {
+    factories.get(mod).read(buf);
+  }
+
+  public @Nonnull String getModid() {
+    return modid;
   }
 
   public void setConfig(Configuration config) {
@@ -204,7 +219,7 @@ public class ValueFactory {
     protected abstract DataTypes getDataType();
   }
 
-  protected final synchronized void read(final ByteBuf buf) {
+  private final synchronized void read(final ByteBuf buf) {
     Map<String, Object> result = new HashMap<>();
     boolean reading = true;
     while (reading) {
@@ -221,7 +236,7 @@ public class ValueFactory {
         reading = false;
       }
     }
-    Log.info("Read " + result.size() + " config values from server packet");
+    Log.info("Read " + result.size() + " config values from server packet for mod " + modid);
     serverConfig = result;
     generation++;
   }
@@ -236,12 +251,12 @@ public class ValueFactory {
   @SubscribeEvent
   public void onPlayerLoggon(final PlayerLoggedInEvent evt) {
     network.get().sendTo(new PacketConfigSyncNew(this), (EntityPlayerMP) evt.player);
-    Log.info("Sent config to player " + evt.player.getDisplayNameString());
+    Log.info("Sent config to player " + evt.player.getDisplayNameString() + " for mod " + modid);
   }
 
   @SubscribeEvent
   public void onPlayerLogout(final ClientDisconnectionFromServerEvent event) {
-    Log.info("Removed server config override");
+    Log.info("Removed server config override for mod " + modid);
     serverConfig = null;
     generation++;
   }
