@@ -1,6 +1,7 @@
 package crazypants.enderio.base.transceiver;
 
 import com.enderio.core.common.network.NetworkUtil;
+import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.base.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
@@ -43,8 +44,8 @@ public class PacketAddRemoveChannel implements IMessage {
     @Override
     public IMessage onMessage(PacketAddRemoveChannel message, MessageContext ctx) {
       if (ctx.side == Side.SERVER) {
-        if (!message.channel.getUser().equals(ctx.getServerHandler().player.getGameProfile())) {
-          ctx.getServerHandler().player.connection.disconnect("Don't mess with other player's channels, you cheat.");
+        if (!message.channel.getUser().equals(UserIdent.NOBODY) && !message.channel.getUser().equals(ctx.getServerHandler().player.getGameProfile())) {
+          ctx.getServerHandler().player.connection.disconnect("Don't mess with other players' channels, you cheat.");
           return null;
         }
         if (message.isAdd) {
