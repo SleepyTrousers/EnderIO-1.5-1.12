@@ -36,7 +36,7 @@ public class PacketConfigSyncNew implements IMessage {
   public static class PacketConfigSyncNewHandler implements IMessageHandler<PacketConfigSyncNew, IMessage> {
     @Override
     public IMessage onMessage(PacketConfigSyncNew message, MessageContext ctx) {
-      if (true || !Minecraft.getMinecraft().isIntegratedServerRunning()) {
+      if (!Minecraft.getMinecraft().isIntegratedServerRunning()) {
         ValueFactory.read(message.factoryName, message.bufferCopy);
       }
       if (message.bufferCopy != null) {

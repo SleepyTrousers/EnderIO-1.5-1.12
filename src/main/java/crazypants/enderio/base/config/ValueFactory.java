@@ -3,18 +3,17 @@ package crazypants.enderio.base.config;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.network.ThreadedNetworkWrapper;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.RebuildableThings;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config.Section;
+import crazypants.enderio.base.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
@@ -33,7 +32,6 @@ public class ValueFactory {
   private static final @Nonnull Map<String, ValueFactory> factories = new HashMap<>();
 
   protected final @Nonnull String modid;
-  protected final @Nonnull Supplier<ThreadedNetworkWrapper> network;
   protected Configuration config = null;
   protected boolean inInit = false;
   protected Map<String, Object> serverConfig = null;
@@ -41,10 +39,9 @@ public class ValueFactory {
   protected final @Nonnull NNList<AbstractValue<?>> syncValues = new NNList<>();
   protected final @Nonnull NNList<AbstractValue<?>> preloadValues = new NNList<>();
 
-  public ValueFactory(@Nonnull String modid, @Nonnull Supplier<ThreadedNetworkWrapper> network) {
+  public ValueFactory(@Nonnull String modid) {
     MinecraftForge.EVENT_BUS.register(this);
     this.modid = modid;
-    this.network = network;
     synchronized (factories) {
       factories.put(modid, this);
     }
@@ -250,7 +247,7 @@ public class ValueFactory {
 
   @SubscribeEvent
   public void onPlayerLoggon(final PlayerLoggedInEvent evt) {
-    network.get().sendTo(new PacketConfigSyncNew(this), (EntityPlayerMP) evt.player);
+    PacketHandler.sendTo(new PacketConfigSyncNew(this), (EntityPlayerMP) evt.player);
     Log.info("Sent config to player " + evt.player.getDisplayNameString() + " for mod " + modid);
   }
 
