@@ -6,8 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.base.network.GuiPacket;
-import crazypants.enderio.base.network.IRemoteExec;
+import crazypants.enderio.machines.machine.alloy.TileAlloySmelter.Mode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -18,7 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public abstract class ContainerAlloySmelter<T extends TileAlloySmelter> extends AbstractMachineContainer<T> implements IRemoteExec.IContainer {
+public abstract class ContainerAlloySmelter<T extends TileAlloySmelter> extends AbstractMachineContainer<T> implements IAlloySmelterRemoteExec.Container {
 
   public static class Normal extends ContainerAlloySmelter<TileAlloySmelter> {
     public Normal(@Nonnull InventoryPlayer playerInv, @Nonnull TileAlloySmelter te) {
@@ -132,16 +131,10 @@ public abstract class ContainerAlloySmelter<T extends TileAlloySmelter> extends 
   }
 
   @Override
-  public IMessage networkExec(int id, GuiPacket message) {
-    switch (id) {
-    case 0:
-      getTe().setMode(message.getEnum(0, TileAlloySmelter.Mode.class));
-      IBlockState bs = getTe().getWorld().getBlockState(getTe().getPos());
-      getTe().getWorld().notifyBlockUpdate(getTe().getPos(), bs, bs, 3);
-      break;
-    default:
-      break;
-    }
+  public IMessage doSetMode(@Nonnull Mode mode) {
+    getTe().setMode(mode);
+    IBlockState bs = getTe().getWorld().getBlockState(getTe().getPos());
+    getTe().getWorld().notifyBlockUpdate(getTe().getPos(), bs, bs, 3);
     return null;
   }
 

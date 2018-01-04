@@ -39,7 +39,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     }
 
     @Override
-    public Mode getMode() {
+    public @Nonnull Mode getMode() {
       return Mode.ALLOY;
     }
 
@@ -68,11 +68,10 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   }
 
   @Store
-  protected Mode mode;
+  protected @Nonnull Mode mode = Mode.ALL;
 
   public TileAlloySmelter() {
-    super(new SlotDefinition(3, 1), ALLOY_SMELTER_POWER_INTAKE, ALLOY_SMELTER_POWER_BUFFER, ALLOY_SMELTER_POWER_USE);
-    mode = Mode.ALL;
+    this(new SlotDefinition(3, 1), ALLOY_SMELTER_POWER_INTAKE, ALLOY_SMELTER_POWER_BUFFER, ALLOY_SMELTER_POWER_USE);
   }
 
   protected TileAlloySmelter(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
@@ -80,7 +79,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
-  public Mode getMode() {
+  public @Nonnull Mode getMode() {
     return mode;
   }
 
@@ -96,7 +95,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
 
   @Override
   protected IMachineRecipe canStartNextTask(float chance) {
-    if (mode == Mode.FURNACE) {
+    if (getMode() == Mode.FURNACE) {
       VanillaSmeltingRecipe vr = AlloyRecipeManager.getInstance().getVanillaRecipe();
       if (vr.isRecipe(getRecipeInputs())) {
         IMachineRecipe.ResultStack[] res = vr.getCompletedResult(chance, getRecipeInputs());
@@ -109,7 +108,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     }
 
     IMachineRecipe nextRecipe = getNextRecipe();
-    if (mode == Mode.ALLOY && nextRecipe instanceof VanillaSmeltingRecipe) {
+    if (getMode() == Mode.ALLOY && nextRecipe instanceof VanillaSmeltingRecipe) {
       nextRecipe = null;
     }
     if (nextRecipe == null) {
@@ -141,9 +140,9 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     }
     NNList<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
 
-    if (mode == Mode.FURNACE) {
+    if (getMode() == Mode.FURNACE) {
       return isValidInputForFurnaceRecipe(itemstack, numSlotsFilled, recipes);
-    } else if (mode == Mode.ALLOY) {
+    } else if (getMode() == Mode.ALLOY) {
       return isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
     }
     return isValidInputForFurnaceRecipe(itemstack, numSlotsFilled, recipes) || isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);

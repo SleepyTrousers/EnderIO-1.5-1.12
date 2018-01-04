@@ -4,17 +4,16 @@ import java.awt.Point;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.TileEntityBase;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.base.network.GuiPacket;
-import crazypants.enderio.base.network.IRemoteExec;
-import crazypants.enderio.machines.network.PacketHandler;
+import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
 import crazypants.enderio.base.teleport.packet.PacketPassword;
-import crazypants.enderio.machines.machine.teleport.anchor.TileTravelAnchor;
+import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -24,10 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerTravelAccessable extends ContainerEnder<IInventory> implements IRemoteExec.IContainer {
-
-  public static final int EXEC_ACCESS_MODE = 0;
-  public static final int EXEC_LABEL = 1;
+public class ContainerTravelAccessable extends ContainerEnder<IInventory> implements ITravelAccessableRemoteExec.Container {
 
   final @Nonnull ITravelAccessable ta;
   final TileEntity te;
@@ -123,19 +119,23 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
     return guiID;
   }
 
+  @SuppressWarnings("null") // gah, Eclipse thinks a final field can go null from one side of the comma to the next
   @Override
-  public IMessage networkExec(int id, GuiPacket message) {
-    switch (id) {
-    case EXEC_ACCESS_MODE:
-      ta.setAccessMode(message.getEnum(0, TileTravelAnchor.AccessMode.class));
-      break;
-    case EXEC_LABEL:
-      ta.setLabel(message.getString(0));
-      break;
-    default:
-      return null;
+  public IMessage doSetAccessMode(@Nonnull AccessMode accesmode) {
+    ta.setAccessMode(accesmode);
+    if (te != null) { // TODO what's this? overkill?
+      IBlockState bs = te.getWorld().getBlockState(te.getPos());
+      te.getWorld().notifyBlockUpdate(te.getPos(), bs, bs, 3);
+      te.getWorld().markChunkDirty(te.getPos(), te);
     }
-    if (te != null) {
+    return null;
+  }
+
+  @SuppressWarnings("null") // gah, Eclipse thinks a final field can go null from one side of the comma to the next
+  @Override
+  public IMessage doSetLabel(@Nullable String label) {
+    ta.setLabel(label);
+    if (te != null) { // TODO what's this? overkill?
       IBlockState bs = te.getWorld().getBlockState(te.getPos());
       te.getWorld().notifyBlockUpdate(te.getPos(), bs, bs, 3);
       te.getWorld().markChunkDirty(te.getPos(), te);

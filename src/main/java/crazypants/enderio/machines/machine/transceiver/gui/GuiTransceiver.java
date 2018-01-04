@@ -17,7 +17,7 @@ import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> {
+public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> implements ITransceiverRemoteExec.GUI {
 
   private int activeTab = 0;
   private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();

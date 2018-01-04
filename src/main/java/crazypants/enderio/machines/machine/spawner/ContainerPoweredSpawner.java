@@ -9,15 +9,13 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.base.network.GuiPacket;
-import crazypants.enderio.base.network.IRemoteExec;
 import crazypants.enderio.machines.machine.tank.InventorySlot;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePoweredSpawner> implements IRemoteExec.IContainer {
+public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePoweredSpawner> implements IPoweredSpawnerRemoteExec.Container {
 
   private Slot slotInput;
   private Slot slotOutput;
@@ -49,14 +47,8 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
   }
 
   @Override
-  public IMessage networkExec(int id, GuiPacket message) {
-    switch (id) {
-    case 0:
-      getTe().setSpawnMode(message.getBoolean(0));
-      break;
-    default:
-      break;
-    }
+  public IMessage doSetSpawnMode(boolean isSpawn) {
+    getTe().setSpawnMode(isSpawn);
     return null;
   }
 

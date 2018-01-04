@@ -16,7 +16,6 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
-import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -24,7 +23,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiPoweredSpawner extends GuiInventoryMachineBase<TilePoweredSpawner> {
+public class GuiPoweredSpawner extends GuiInventoryMachineBase<TilePoweredSpawner> implements IPoweredSpawnerRemoteExec.GUI {
 
   private final @Nonnull MultiIconButton modeB;
   private final @Nonnull Rectangle progressTooltipRect;
@@ -68,7 +67,7 @@ public class GuiPoweredSpawner extends GuiInventoryMachineBase<TilePoweredSpawne
   protected void actionPerformed(@Nonnull GuiButton par1GuiButton) throws IOException {
     if (par1GuiButton == modeB) {
       getTileEntity().setSpawnMode(!getTileEntity().isSpawnMode());
-      GuiPacket.send(this, 0, getTileEntity().isSpawnMode());
+      doSetSpawnMode(getTileEntity().isSpawnMode());
     } else if (par1GuiButton == showRangeB) {
       getTileEntity().setShowRange(showRangeB.isSelected());
     } else {

@@ -9,17 +9,15 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
-import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.xp.ExperienceBarRenderer;
 import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> {
+public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> implements IExperienceObeliskRemoteExec.GUI {
 
   private @Nonnull IconButton p;
   private @Nonnull IconButton pp;
@@ -184,33 +182,19 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
   @Override
   protected void actionPerformed(@Nonnull GuiButton b) throws IOException {
     super.actionPerformed(b);
-    int levels = 0;
     if (b == p) {
-      levels = -1;
+      doDrainXP(1);
     } else if (b == pp) {
-      levels = -10;
+      doDrainXP(10);
     } else if (b == ppp) {
-      levels = -5000;
+      doDrainXP(5000);
     } else if (b == m) {
-      levels = 1;
+      doAddXP(1);
     } else if (b == mm) {
-      levels = 10;
+      doAddXP(10);
     } else if (b == mmm) {
-      levels = 5000;
-    } else {
-      return;
+      doAddXP(5000);
     }
-
-    if (levels < 0) {
-      EntityPlayerSP player = Minecraft.getMinecraft().player;
-      int currLevel = player.experienceLevel;
-      int targetLevel = Math.max(0, currLevel + levels);
-
-      GuiPacket.send(this, ContainerExperienceObelisk.DWN_XP, targetLevel);
-    } else {
-      GuiPacket.send(this, ContainerExperienceObelisk.ADD_XP, levels);
-    }
-
   }
 
   @Override

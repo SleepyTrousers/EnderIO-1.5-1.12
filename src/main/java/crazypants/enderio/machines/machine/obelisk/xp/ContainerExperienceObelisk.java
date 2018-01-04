@@ -2,14 +2,13 @@ package crazypants.enderio.machines.machine.obelisk.xp;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.network.GuiPacket;
-import crazypants.enderio.base.network.IRemoteExec;
 import crazypants.enderio.base.xp.PacketExperienceContainer;
 import crazypants.enderio.base.xp.XpUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerExperienceObelisk extends Container implements IRemoteExec.IContainer {
+public class ContainerExperienceObelisk extends Container implements IExperienceObeliskRemoteExec.Container {
 
   public static final int ADD_XP = 42;
   public static final int DWN_XP = 43;
@@ -39,29 +38,29 @@ public class ContainerExperienceObelisk extends Container implements IRemoteExec
   }
 
   @Override
-  public PacketExperienceContainer networkExec(int id, GuiPacket message) {
-    switch (id) {
-    case ADD_XP:
-      inv.getContainer().givePlayerXp(message.getPlayer(), message.getInt(0));
-      return new PacketExperienceContainer(inv);
-    case DWN_XP:
-      if (message.getPlayer().capabilities.isCreativeMode) {
-        inv.getContainer().addExperience(XpUtil.getExperienceForLevel(message.getInt(0)));
-      } else {
-        inv.getContainer().drainPlayerXpToReachPlayerLevel(message.getPlayer(), message.getInt(0));
-      }
-      return new PacketExperienceContainer(inv);
-    case REM_XP:
-      if (message.getPlayer().capabilities.isCreativeMode) {
-        inv.getContainer().addExperience(XpUtil.getExperienceForLevel(message.getInt(0)));
-      } else {
-        inv.getContainer().drainPlayerXpToReachContainerLevel(message.getPlayer(), message.getInt(0));
-      }
-      return new PacketExperienceContainer(inv);
-    default:
-      break;
+  public IMessage doAddXP(@Nonnull EntityPlayer player, int levels) {
+    inv.getContainer().givePlayerXp(player, levels);
+    return new PacketExperienceContainer(inv);
+  }
+
+  @Override
+  public IMessage doDrainXP(@Nonnull EntityPlayer player, int level) {
+    if (player.capabilities.isCreativeMode) {
+      inv.getContainer().addExperience(XpUtil.getExperienceForLevel(level));
+    } else {
+      inv.getContainer().drainPlayerXpToReachPlayerLevel(player, level);
     }
-    return null;
+    return new PacketExperienceContainer(inv);
+  }
+
+  @Override
+  public IMessage doRemoveXP(@Nonnull EntityPlayer player, int level) {
+    if (player.capabilities.isCreativeMode) {
+      inv.getContainer().addExperience(XpUtil.getExperienceForLevel(level));
+    } else {
+      inv.getContainer().drainPlayerXpToReachContainerLevel(player, level);
+    }
+    return new PacketExperienceContainer(inv);
   }
 
 }

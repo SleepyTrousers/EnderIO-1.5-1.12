@@ -14,7 +14,6 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -143,7 +142,7 @@ public class GeneralTab implements ITabPanel {
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     if (guiButton == bufferSizeB) {
       parent.getTransciever().setBufferStacks(bufferSizeB.isSelected());
-      GuiPacket.send(parent, ContainerTransceiver.EXEC_SET_BUFFER, bufferSizeB.isSelected());
+      parent.doSetBufferStacks(bufferSizeB.isSelected());
     }
   }
 
