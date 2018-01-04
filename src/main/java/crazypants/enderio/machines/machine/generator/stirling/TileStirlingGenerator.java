@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.capability.ItemTools.MoveResult;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
@@ -27,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -54,7 +56,7 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
 
   }
 
-  private static final @Nonnull String SOUND_NAME = "generator.stirling";
+  private static final @Nonnull ResourceLocation SOUND = new ResourceLocation(EnderIO.DOMAIN, "generator.stirling");
 
   /** How many ticks left until the item is burnt. */
   @Store
@@ -124,8 +126,8 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
   }
 
   @Override
-  public @Nonnull String getSoundName() {
-    return SOUND_NAME;
+  public ResourceLocation getSound() {
+    return SOUND;
   }
 
   @Override

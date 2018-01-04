@@ -1,7 +1,13 @@
 package crazypants.enderio.machines.machine.sagmill;
 
-import javax.annotation.Nonnull;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_USE;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
@@ -17,11 +23,8 @@ import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_USE;
 
 @Storable
 public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -121,8 +124,8 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   }
 
   @Override
-  public @Nonnull String getSoundName() {
-    return "machine.sagmill";
+  public ResourceLocation getSound() {
+    return new ResourceLocation(EnderIO.DOMAIN, "machine.sagmill");
   }
 
   @Override

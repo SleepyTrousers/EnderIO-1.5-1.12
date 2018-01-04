@@ -12,6 +12,7 @@ import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -28,6 +29,7 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -168,8 +170,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   }
 
   @Override
-  public @Nonnull String getSoundName() {
-    return "machine.vat";
+  public ResourceLocation getSound() {
+    return new ResourceLocation(EnderIO.DOMAIN, "machine.vat");
   }
 
   @Override

@@ -1,11 +1,18 @@
 package crazypants.enderio.machines.machine.slicensplice;
 
+import static crazypants.enderio.base.config.Config.slicenspliceToolDamageChance;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_USE;
+
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.paint.IPaintable;
@@ -21,13 +28,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-
-import static crazypants.enderio.base.config.Config.slicenspliceToolDamageChance;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_USE;
 
 @Storable
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -35,6 +38,8 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   protected final static int axeIndex = 6;
   protected final static int shearsIndex = 7;
   private EntityLivingBase fakePlayer;
+  
+  private static final @Nonnull ResourceLocation SOUND = new ResourceLocation(EnderIO.DOMAIN, "machine.slicensplice");
 
   public TileSliceAndSplice() {
     super(new SlotDefinition(8, 1, 1), SLICE_POWER_INTAKE, SLICE_POWER_BUFFER, SLICE_POWER_USE);
@@ -43,6 +48,11 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   @Override
   public @Nonnull String getMachineName() {
     return MachineRecipeRegistry.SLICENSPLICE;
+  }
+  
+  @Override
+  public ResourceLocation getSound() {
+    return SOUND;
   }
 
   @Override

@@ -1,0 +1,54 @@
+{
+  "generator.zombie.bubble": {
+    "category": "block",
+    "sounds": [
+      "enderio:generator/zombie/bubble"
+    ]
+  },
+  "generator.stirling": {
+    "category": "block",
+	"sounds": [
+	  "enderio:generator/stirling/burn"
+	]
+  },
+  "machine.vat": {
+    "category": "block",
+	"sounds": [
+	  "enderio:machine/vat/gurgle"
+	]
+  },
+  "machine.sagmill": {
+    "category": "block",
+	"sounds": [
+	  "enderio:machine/sagmill/tumble"
+	]
+  },
+  "machine.slicensplice": {
+  	"category": "block",
+  	"sounds": [
+  	  "enderio:machine/slicensplice/slicensplice"
+  	]
+  },
+  "telepad.active": {
+    "category": "block",
+    "sounds" : [
+      "enderio:telepad/active"
+    ]
+  },
+  "telepad.teleport": {
+    "category": "block",
+    "sounds" : [
+        "enderio:telepad/teleport1",
+        "enderio:telepad/teleport2"
+    ]
+  },
+  "machine.soulbinder": {
+    "category": "block",
+    "sounds": [
+      "enderio:machine/soul/grind1",
+      "enderio:machine/soul/grind2",
+      "enderio:machine/soul/grind3",
+      "enderio:machine/soul/grind4"
+    ]
+  }
+}

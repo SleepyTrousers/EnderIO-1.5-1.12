@@ -14,6 +14,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POW
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_USE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_SOUND_PITCH;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -33,6 +34,7 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
@@ -249,8 +251,8 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
-  public @Nonnull String getSoundName() {
-    return "machine.soulbinder";
+  public ResourceLocation getSound() {
+    return new ResourceLocation(EnderIO.DOMAIN, "machine.soulbinder");
   }
 
   @Override

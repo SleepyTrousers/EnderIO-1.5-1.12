@@ -20,6 +20,7 @@ import com.google.common.collect.Queues;
 
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.CapacitorKeyType;
 import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
@@ -87,7 +88,7 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
   private int powerUsed;
   private int requiredPower;
 
-  public static final @Nonnull ResourceLocation ACTIVE_RES = AbstractMachineEntity.getSoundFor("telepad.active");
+  public static final @Nonnull ResourceLocation ACTIVE_RES = new ResourceLocation(EnderIO.DOMAIN, "telepad.active");
   @SideOnly(Side.CLIENT)
   private MachineSound activeSound;
 
