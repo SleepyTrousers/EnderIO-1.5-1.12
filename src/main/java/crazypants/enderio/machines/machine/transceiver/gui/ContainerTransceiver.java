@@ -9,17 +9,13 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.base.network.GuiPacket;
-import crazypants.enderio.base.network.IRemoteExec;
 import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiver> implements IRemoteExec.IContainer {
-
-  public static final int EXEC_SET_BUFFER = 0;
+public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiver> implements ITransceiverRemoteExec.Container {
 
   public static final int GUI_WIDTH = 256;
 
@@ -127,14 +123,8 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
   }
 
   @Override
-  public IMessage networkExec(int id, GuiPacket message) {
-    switch (id) {
-    case EXEC_SET_BUFFER:
-      getTe().setBufferStacks(message.getBoolean(0));
-      break;
-    default:
-      break;
-    }
+  public IMessage doSetBufferStacks(boolean bufferStacks) {
+    getTe().setBufferStacks(bufferStacks);
     return null;
   }
 

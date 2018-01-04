@@ -10,7 +10,6 @@ import com.enderio.core.common.util.SoundUtil;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
-import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.xp.ExperienceBarRenderer;
 import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.lang.Lang;
@@ -20,7 +19,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 
-public class GuiSoulBinder extends GuiInventoryMachineBase<TileSoulBinder> {
+public class GuiSoulBinder extends GuiInventoryMachineBase<TileSoulBinder> implements ISoulBinderRemoteExec.GUI {
 
   private static final int PLAYER_XP_ID = 985162394;
 
@@ -50,7 +49,7 @@ public class GuiSoulBinder extends GuiInventoryMachineBase<TileSoulBinder> {
     if (b.id == PLAYER_XP_ID) {
       int xp = XpUtil.getPlayerXP(Minecraft.getMinecraft().player);
       if (xp > 0 || Minecraft.getMinecraft().player.capabilities.isCreativeMode) {
-        GuiPacket.send(this, ContainerSoulBinder.ADD_XP, getTileEntity().getCurrentlyRequiredLevel());
+        doDrainXP(getTileEntity().getCurrentlyRequiredLevel());
         SoundUtil.playClientSoundFX(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, getTileEntity());
       }
     }

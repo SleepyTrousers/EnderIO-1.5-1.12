@@ -14,7 +14,6 @@ import com.enderio.core.client.render.ColorUtil;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
-import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -23,7 +22,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> extends GuiContainerBaseEIO {
+public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> extends GuiContainerBaseEIO implements ITravelAccessableRemoteExec.GUI {
 
   private static final int ID_PUBLIC = 0;
   private static final int ID_PRIVATE = 1;
@@ -97,7 +96,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     AccessMode curMode = b.id == ID_PRIVATE ? AccessMode.PRIVATE : b.id == ID_PROTECTED ? AccessMode.PROTECTED : AccessMode.PUBLIC;
     te.setAccessMode(curMode);
 
-    GuiPacket.send(this, ContainerTravelAccessable.EXEC_ACCESS_MODE, curMode);
+    doSetAccessMode(curMode);
   }
 
   @Override
@@ -144,15 +143,15 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     int x = sx;
     int y = sy + 38;
 
-    FontRenderer fontRenderer = getFontRenderer();
-    x = sx + col0x - fontRenderer.getStringWidth(privateStr) / 2;
-    fontRenderer.drawStringWithShadow(privateStr, x, y, col);
+    FontRenderer fr = getFontRenderer();
+    x = sx + col0x - fr.getStringWidth(privateStr) / 2;
+    fr.drawStringWithShadow(privateStr, x, y, col);
 
-    x = sx + col1x - fontRenderer.getStringWidth(protectedStr) / 2;
-    fontRenderer.drawStringWithShadow(protectedStr, x, y, col);
+    x = sx + col1x - fr.getStringWidth(protectedStr) / 2;
+    fr.drawStringWithShadow(protectedStr, x, y, col);
 
-    x = sx + col2x - fontRenderer.getStringWidth(publicStr) / 2;
-    fontRenderer.drawStringWithShadow(publicStr, x, y, col);
+    x = sx + col2x - fr.getStringWidth(publicStr) / 2;
+    fr.drawStringWithShadow(publicStr, x, y, col);
     checkLabelForChange();
 
     super.drawGuiContainerBackgroundLayer(f, i, j);
@@ -183,7 +182,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
       return;
     }
     te.setLabel(newTxt);
-    GuiPacket.send(this, ContainerTravelAccessable.EXEC_LABEL, newTxt);
+    doSetLabel(newTxt);
   }
 
   @Override

@@ -14,7 +14,6 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
-import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.alloy.TileAlloySmelter.Mode;
 import net.minecraft.client.Minecraft;
@@ -24,7 +23,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 
-public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMachineBase<T> {
+public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMachineBase<T> implements IAlloySmelterRemoteExec.GUI {
 
   private final @Nonnull IIconButton vanillaFurnaceButton;
   private final @Nonnull GuiToolTip vanillaFurnaceTooltip;
@@ -93,7 +92,7 @@ public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMac
     if (button.id == SMELT_MODE_BUTTON_ID) {
       getTileEntity().setMode(mbutton == 0 ? getTileEntity().getMode().next() : getTileEntity().getMode().prev());
       updateVanillaFurnaceButton();
-      GuiPacket.send(this, 0, getTileEntity().getMode());
+      doSetMode(getTileEntity().getMode());
     } else {
       super.actionPerformed(button);
     }
