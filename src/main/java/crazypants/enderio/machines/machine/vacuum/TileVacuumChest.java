@@ -165,11 +165,11 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
         hooverEntity(entity);
       } else {
         double speed = 0.06;
-        double distScale = 1.0 - Math.min(0.9, distance / rangeSqr);
+        double distScale = 1.0 - Math.min(0.9, (distance - 1) / rangeSqr);
         distScale *= distScale;
 
         entity.motionX += x / distance * distScale * speed;
-        entity.motionY += y / distance * distScale * 0.2;
+        entity.motionY += y / distance * distScale * 0.4;
         entity.motionZ += z / distance * distScale * speed;
       }
     }
