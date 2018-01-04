@@ -52,11 +52,6 @@ public class GuiZombieGenerator extends GuiInventoryMachineBase<TileZombieGenera
   }
 
   @Override
-  protected boolean showRecipeButton() {
-    return false;
-  }
-
-  @Override
   public void renderSlotHighlights(@Nonnull IoMode mode) {
     super.renderSlotHighlights(mode);
 

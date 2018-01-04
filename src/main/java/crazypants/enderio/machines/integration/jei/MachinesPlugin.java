@@ -29,6 +29,6 @@ public class MachinesPlugin extends BlankModPlugin {
     VatRecipeCategory.register(registry, guiHelper);
     WiredChargerRecipeCategory.register(registry, guiHelper);
     WeatherObeliskRecipeCategory.register(registry, guiHelper);
+    ZombieGeneratorRecipeCategory.register(registry, guiHelper);
   }
-
 }
