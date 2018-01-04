@@ -1,11 +1,7 @@
 package crazypants.enderio.machines.config;
 
-import java.util.function.Supplier;
-
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-
-import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.base.config.ValueFactory;
@@ -22,19 +18,13 @@ import crazypants.enderio.machines.config.config.VacuumConfig;
 import crazypants.enderio.machines.config.config.VatConfig;
 import crazypants.enderio.machines.config.config.WeatherConfig;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
-import crazypants.enderio.machines.network.PacketHandler;
 
 @ParametersAreNonnullByDefault // Not the right one, but eclipse knows only 3 null annotations anyway, so it's ok
 public final class Config {
 
   public static final Section sectionCapacitor = new Section("", "capacitor");
 
-  public static final ValueFactory F = new ValueFactory(EnderIOMachines.MODID, new Supplier<ThreadedNetworkWrapper>() {
-    @Override
-    public ThreadedNetworkWrapper get() {
-      return PacketHandler.INSTANCE;
-    }
-  });
+  public static final ValueFactory F = new ValueFactory(EnderIOMachines.MODID);
 
   public static final IValue<Boolean> registerRecipes = new IValue<Boolean>() {
     @Override
