@@ -19,6 +19,7 @@ import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config;
@@ -78,7 +79,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
 
   private static final int RF_MAX_INPUT = (int) Math.ceil(Config.rodOfReturnPowerStorage / (double) Config.rodOfReturnMinTicksToRecharge);
 
-  public static final @Nonnull ResourceLocation ACTIVE_RES = AbstractMachineEntity.getSoundFor("telepad.active");
+  public static final @Nonnull ResourceLocation ACTIVE_RES = new ResourceLocation(EnderIO.DOMAIN, "telepad.active");
   @SideOnly(Side.CLIENT)
   private MachineSound activeSound;
 

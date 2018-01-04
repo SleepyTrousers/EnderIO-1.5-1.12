@@ -72,16 +72,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
   @Store(NBTAction.SAVE)
   private @Nullable UserIdent owner;
 
-  private final @Nonnull ResourceLocation soundRes;
-
-  public static @Nonnull ResourceLocation getSoundFor(@Nonnull String sound) {
-    return new ResourceLocation(EnderIO.DOMAIN + ":" + sound);
-  }
-
-  public AbstractMachineEntity() {
-    soundRes = getSoundFor(getSoundName());
-  }
-
   @Override
   public @Nonnull IoMode toggleIoModeForFace(@Nullable EnumFacing faceHit) {
     IoMode curMode = getIoMode(faceHit);
@@ -158,12 +148,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
 
   public abstract boolean isActive();
 
-  public @Nonnull String getSoundName() {
-    return "";
+  public @Nullable ResourceLocation getSound() {
+    return null;
   }
 
   public boolean hasSound() {
-    return !getSoundName().isEmpty();
+    return getSound() != null;
   }
 
   public float getVolume() {
@@ -184,7 +174,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
       if (shouldPlaySound()) {
         if (sound == null) {
           FMLClientHandler.instance().getClient().getSoundHandler()
-              .playSound(sound = new MachineSound(soundRes, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, getVolume(), getPitch()));
+              .playSound(sound = new MachineSound(getSound(), pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, getVolume(), getPitch()));
         }
       } else if (sound != null) {
         sound.endPlaying();
