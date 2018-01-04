@@ -179,5 +179,10 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Man
 
     GlStateManager.popMatrix();
   }
+  
+  @Override
+  public boolean isGlobalRenderer(T te) {
+    return true;
+  }
 
 }
