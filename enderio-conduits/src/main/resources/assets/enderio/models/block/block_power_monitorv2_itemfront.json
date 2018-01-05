@@ -1,0 +1,13 @@
+{
+"__comment": "Designed by Henryloenwind with BDcraft Cubik PRO 0.95 Beta - http://bdcraft.net",
+"elements": [ 
+{
+    "__comment": "front plate",
+    "from": [ 1, 1, 14 ],
+    "to": [ 15, 15, 14.75 ],
+    "faces": {
+        "south": { "uv": [ 1.001, 1.001, 14.999, 14.999 ], "texture": "#fakeface", "cullface": "south" }
+    }
+}
+]
+}

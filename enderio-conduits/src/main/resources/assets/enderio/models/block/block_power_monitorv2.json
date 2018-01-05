@@ -1,0 +1,46 @@
+{
+"__comment": "Designed by Henryloenwind with BDcraft Cubik PRO 0.95 Beta - http://bdcraft.net",
+"elements": [ 
+{
+    "from": [ 1, 1, 14.75 ],
+    "to": [ 15, 2, 15.75 ],
+    "faces": {
+        "up":    { "uv": [ 1.01, 14.01, 14.99, 14.99 ], "texture": "#texture", "cullface": "south" },
+        "south": { "uv": [ 1.01, 14.01, 14.99, 14.99 ], "texture": "#texture", "cullface": "south" }
+    }
+},
+{
+    "from": [ 1, 14, 14.75 ],
+    "to": [ 15, 15, 15.75 ],
+    "faces": {
+        "down":  { "uv": [ 14.99, 1.99, 1.01, 1.01 ], "texture": "#texture", "cullface": "south" },
+        "south": { "uv": [ 1.01, 1.01, 14.99, 1.99 ], "texture": "#texture", "cullface": "south" }
+    }
+},
+{
+    "from": [ 1, 2, 14.75 ],
+    "to": [ 2, 14, 15.75 ],
+    "faces": {
+        "south": { "uv": [ 1.01, 2.01, 1.99, 13.99 ], "texture": "#texture", "cullface": "south" },
+        "east":  { "uv": [ 1.01, 2.01, 1.99, 13.99 ], "texture": "#texture", "cullface": "south" }
+    }
+},
+{
+    "from": [ 14, 2, 14.75 ],
+    "to": [ 15, 14, 15.75 ],
+    "faces": {
+        "south": { "uv": [ 14.01, 2.01, 14.99, 13.99 ], "texture": "#texture", "cullface": "south" },
+        "west":  { "uv": [ 14.01, 2.01, 14.99, 13.99 ], "texture": "#texture", "cullface": "south" }
+    }
+},
+{
+    "from": [ 2, 2, 15.25 ],
+    "to": [ 4, 5, 15.75 ],
+    "faces": {
+        "up":    { "uv": [ 2.01, 11.01, 3.99, 11.99 ], "texture": "#texture", "cullface": "south" },
+        "south": { "uv": [ 2.01, 11.01, 3.99, 13.99 ], "texture": "#texture", "cullface": "south" },
+        "east":  { "uv": [ 3.01, 11.01, 3.99, 13.99 ], "texture": "#texture", "cullface": "south" }
+    }
+}
+]
+}

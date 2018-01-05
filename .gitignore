@@ -2,8 +2,8 @@
 /eclipseBin
 
 ## gradle
-/.gradle
-/build
+**/.gradle
+**/build
 
 ## ForgeGradle
 /run
@@ -11,11 +11,11 @@
 
 ## eclipse
 /eclipse
-/.settings
-/.metadata
-/.classpath
-/.project
-/bin
+**/.settings
+**/.metadata
+**/.classpath
+**/.project
+**/bin
 
 ## intellij
 /out
@@ -37,10 +37,5 @@
 resources/assets/enderio/lang/*.lang.txt
 /ebin/
 
-resources/assets/enderio/textures/gui/Corel Auto-Preserve/
-
-resources/assets/enderio/textures/items/Corel Auto-Preserve/
-
-resources/assets/enderio/textures/blocks/Corel Auto-Preserve/
-
-resources/assets/enderio/textures/gui/40/Corel Auto-Preserve/
+## local user properties
+user.properties

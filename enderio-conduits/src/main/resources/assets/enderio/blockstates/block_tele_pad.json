@@ -1,0 +1,41 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures": {
+            "particle": "enderio:blocks/machine_bottom",
+            "machineBottom": "enderio:blocks/machine_bottom",
+            "center": "enderio:blocks/telepad/center",
+            "singletop": "enderio:blocks/telepad/tele_pad_top",
+            "glass": "enderio:blocks/telepad/glass",
+            "centerSide": "enderio:blocks/telepad/center_side",
+            "parts": "enderio:blocks/telepad/parts"
+        }
+    },
+    "variants":{
+        "render":{
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
+            "front":{          "submodel":{ "front":{ "model":"enderio:telepad_single" } } },
+            "front_east":{     "submodel":{ "front":{ "model":"enderio:telepad" } } },
+            "front_south":{    "submodel":{ "front":{ "model":"enderio:telepad_single" } }, "textures": { "singletop": "enderio:blocks/telepad/center" } },
+            "front_west":{     "submodel":{ "front":{ "model":"enderio:telepad_blade" } } },
+            "front_on":{       "submodel":{ "front":{ "model":"enderio:telepad_glass" } } },
+            "front_on_east":{  "submodel":{ "front":{ "model":"enderio:null" } } },
+            "front_on_south":{ "submodel":{ "front":{ "model":"enderio:null" } } },
+            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:telepad_lights" } } }
+        },
+        "blocktype":{
+            "single":{},
+            "master":{},
+            "single":{},
+            "n":{},
+            "ne":{},
+            "e":{},
+            "se":{},
+            "s":{},
+            "sw":{},
+            "w":{},
+            "nw":{}                        
+        }
+    }
+}

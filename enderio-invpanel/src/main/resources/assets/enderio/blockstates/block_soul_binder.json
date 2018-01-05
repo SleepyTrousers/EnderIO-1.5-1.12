@@ -1,0 +1,28 @@
+{
+    "forge_marker":1,
+    "defaults":{
+			"textures": {
+			    "particle": "enderio:blocks/block_soul_machine_bottom",
+			    "0": "enderio:blocks/block_soul_machine_bottom",
+			    "1": "enderio:blocks/block_soul_machine_top",
+			    "2": "enderio:blocks/enderman_skull_front",
+			    "3": "enderio:blocks/skull_skeleton",
+			    "4": "enderio:blocks/skull_zombie",
+			    "5": "enderio:blocks/skull_creeper"
+			}
+    },
+    "variants":{
+        "render":{
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
+            "front":{          "submodel":{ "front":{ "model":"enderio:block_soul_binder_core",  "y":180 } } },
+            "front_east":{     "submodel":{ "front":{ "model":"enderio:block_soul_binder_core",  "y":270 } } },
+            "front_south":{    "submodel":{ "front":{ "model":"enderio:block_soul_binder_core",  "y":0   } } },
+            "front_west":{     "submodel":{ "front":{ "model":"enderio:block_soul_binder_core",  "y":90  } } },
+            "front_on":{       "submodel":{ "front":{ "model":"enderio:block_soul_binder_core",  "y":180 } }, "textures": { "2": "enderio:blocks/enderman_skull_front_eyes" } },
+            "front_on_east":{  "submodel":{ "front":{ "model":"enderio:block_soul_binder_core",  "y":270 } }, "textures": { "2": "enderio:blocks/enderman_skull_front_eyes" } },
+            "front_on_south":{ "submodel":{ "front":{ "model":"enderio:block_soul_binder_core",  "y":0   } }, "textures": { "2": "enderio:blocks/enderman_skull_front_eyes" } },
+            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:block_soul_binder_core",  "y":90  } }, "textures": { "2": "enderio:blocks/enderman_skull_front_eyes" } }
+        }
+    }
+}

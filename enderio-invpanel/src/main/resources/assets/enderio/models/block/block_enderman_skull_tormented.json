@@ -1,0 +1,129 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+    "textures": {
+        "particle": "enderio:blocks/enderman_skull_side",
+        "side": "enderio:blocks/enderman_skull_side",
+        "front": "enderio:blocks/enderman_skull_front",
+        "top": "enderio:blocks/enderman_skull_top",
+        "bolt": "enderio:blocks/block_soul_machine_bottom"
+    },
+    "elements": [
+        {
+            "name": "Skull",
+            "from": [ 4.0, 0.0, 4.0 ], 
+            "to": [ 12.0, 8.0, 12.0 ], 
+            "faces": {                
+                "north": { "texture": "#front", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "east": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "south": { "texture": "#top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "west": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "up": { "texture": "#top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "#top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "bolt",
+            "from": [ 5.0, 6.0, 12.0 ], 
+            "to": [ 6.0, 7.0, 13.0 ], 
+            "faces": {
+                "north": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "east": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "south": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "west": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "up": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "down": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 10.0, 6.0, 12.0 ], 
+            "to": [ 11.0, 7.0, 13.0 ], 
+            "faces": {
+                "north": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "east": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "south": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "west": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "up": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "down": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 10.0, 6.0, 3.0 ], 
+            "to": [ 11.0, 7.0, 4.0 ], 
+            "faces": {
+                "north": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "east": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "south": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "west": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "up": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "down": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 5.0, 6.0, 3.0 ], 
+            "to": [ 6.0, 7.0, 4.0 ], 
+            "faces": {
+                "north": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "east": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "south": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "west": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "up": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "down": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 3.0, 6.0, 5.0 ], 
+            "to": [ 4.0, 7.0, 6.0 ], 
+            "faces": {
+                "north": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "east": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "south": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "west": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "up": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "down": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 3.0, 6.0, 10.0 ], 
+            "to": [ 4.0, 7.0, 11.0 ], 
+            "faces": {
+                "north": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "east": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "south": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "west": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "up": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "down": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 12.0, 6.0, 10.0 ], 
+            "to": [ 13.0, 7.0, 11.0 ], 
+            "faces": {
+                "north": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "east": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "south": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "west": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "up": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "down": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 12.0, 6.0, 5.0 ], 
+            "to": [ 13.0, 7.0, 6.0 ], 
+            "faces": {
+                "north": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "east": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "south": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "west": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "up": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+                "down": { "texture": "#bolt", "uv": [ 0.0, 0.0, 1.0, 1.0 ] }
+            }
+        }
+    ]
+}

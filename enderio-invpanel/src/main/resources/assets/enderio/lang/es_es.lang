@@ -1,0 +1,998 @@
+//***  Ender IO *****// 
+
+//Traducción española por @SamerNieve
+
+//Power
+enderio.power.rf=RF
+enderio.power.tmb=t/mB
+enderio.power.tick=/t
+enderio.power.maxOutput=Salida máx.
+enderio.power.generates=Genera
+enderio.power.generation_rate=a
+
+//Ender IO / Enderface
+tile.blockEnderIo.name=Ender IO
+tile.blockEnderIo.tooltip.detailed.line1=Permite el acceso remoto a bloques cercanos. Se usa junto con el Ancla de Viaje o la Vara de Viaje.
+
+item.enderio.itemEnderface.name=Enderface
+
+//Conduits
+enderio.blockConduitBundle=Manojo de Tuberías
+enderio.blockConduitFacade=Fachada para Tuberías
+item.enderio.itemConduitFacade.name=Fachada para Tuberías
+item.enderio.itemConduitFacade.hardened.name=Fachada para Tuberías Endurecida
+enderio.item.itemConduitFacade.tooltip.notpainted=Sin pintar.
+item.enderio.itemConduitFacade.tooltip.detailed.line1=Pintado en la Máquina de Pintar.
+item.enderio.itemConduitFacade.tooltip.detailed.line2=Clic-derecho en una tubería para colocarla.
+item.enderio.itemConduitFacade.tooltip.detailed.line3=Se oculta cuando una llave inglesa o una tubería está equipada.
+item.enderio.itemConduitFacade.hardened.tooltip=Endurecida: resiste roturas y explosiones.
+
+enderio.itemPowerConduit.name=Tubería de Energía
+enderio.itemPowerConduitEnhanced.name=Tubería de Energía Mejorada
+enderio.itemPowerConduitEnder.name=Tubería de Energía de Ender
+
+enderio.itemRedstoneConduit.name=Tubería de Redstone
+enderio.itemRedstoneConduitSwitch.name=Tubería Intercambiadora
+enderio.itemRedstoneConduitInsulated.name=Tubería de Redstone Aislada
+
+enderio.itemLiquidConduit.name=Tubería de Fluidos
+enderio.itemLiquidConduitAdvanced.name=Tubería de Fluidos Presurizada
+enderio.itemLiquidConduitEnder.name=Tubería de Fluidos de Ender
+enderio.itemLiquidConduit.lockedType=Tipo de fluido restringido a
+enderio.itemLiquidConduit.unlockedType=Tipo de fluido indefinido
+enderio.itemLiquidConduit.lockedWaila=Restringido a
+
+enderio.itemLiquidConduit.tooltip.maxExtract=Extracción máx.:
+enderio.itemLiquidConduit.tooltip.maxIo=IO máx.:
+enderio.itemLiquidConduit.tooltip.detailed.line1=El flujo del fluido respeta la gravedad.
+enderio.itemLiquidConduit.tooltip.detailed.line2=El caudal del fluido depende de su viscosidad.
+
+enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Teletransportación instantánea del fluido
+enderio.itemLiquidConduitEnder.tooltip.detailed.line2=Permite la transportación de múltiples fluidos por la misma línea.
+
+enderio.itemItemConduit.name=Tubería de Objetos
+
+enderio.filterUpgradeBasic.name=Filtrador de Objetos Básico
+enderio.filterUpgradeAdvanced.name=Filtrador de Objetos Avanzado
+enderio.itemConduitFilterUpgrade=Mejora para Tuberías de Objetos
+
+enderio.itemConduitFilterUpgrade.configured=Configurado
+enderio.itemConduitFilterUpgrade.clearConfigMethod=Colócala en una cuadricula de fabricación para desconfigurarla.
+enderio.itemConduitFilterUpgrade.clearConfigWarning=Atención: hacer esto desconfigurará todos los ajustes de filtrado guardados.
+
+item.itemExistingItemFilter.name=Filtrador de Objetos Existentes
+item.itemExistingItemFilter.tooltip.basic.line1=Mejora para filtradores de objetos
+item.itemExistingItemFilter.tooltip.detailed.line1=Solo selecciona objetos existentes en el inventario.
+item.itemExistingItemFilter.tooltip.detailed.line2=Clic-derecho+shift en un inventario para añadir el contenido a la configuración.
+
+enderio.item.itemExistingItemFilter.filterUpdated=Se han añadido objetos nuevos a la configuración.
+enderio.item.itemExistingItemFilter.filterNotUpdated=La configuración ya cubre todos los objetos del inventario.
+
+item.itemModItemFilter.name=Filtrador de Objetos por Mod
+item.itemModItemFilter.tooltip.basic.line1=Mejora para filtradores de objetos
+item.itemModItemFilter.tooltip.detailed.line1=Solo selecciona los objetos del mod o mods seleccionados.
+
+item.itemPowerItemFilter.name=Filtrador de Objetos con Cargas
+item.itemPowerItemFilter.tooltip.basic.line1=Mejora para filtradores de objetos
+item.itemPowerItemFilter.tooltip.detailed.line1=Filtra objetos recargables basándose en la cantidad de RF que tienen almacenada.
+
+item.itemExtractSpeedUpgrade.name=Mejora de Velocidad para tuberías de objetos
+item.itemExtractSpeedUpgrade.tooltip.basic.line1=Mejora para tuberías de objetos
+item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Incrementa la velocidad de extracción a 4 objetos por extracción.
+item.itemExtractSpeedUpgrade.tooltip.detailed.line2=El máximo de mejoras está en 15.
+
+item.itemExtractSpeedDowngrade.name=Reductor de Velocidad para tuberías de objetos
+item.itemExtractSpeedDowngrade.tooltip.basic.line1=Reversor para tuberías de objetos
+item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Reduce la velocidad de extracción a 1 objetos por extracción.
+
+item.itemInventoryPanelUpgrade.name=Mejora de Percatación Remota
+item.itemInventoryPanelUpgrade.tooltip.basic.line1=Panel de inventario de acceso remoto
+item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Mejora funcional para tuberías de objetos.
+item.itemInventoryPanelUpgrade.tooltip.detailed.line2=Permite ver y extraer objetos de los paneles de inventario pegados a la red independientemente del modo de la tubería (no hay necesidad de ver la tubería para extraer).
+
+enderio.itemGasConduit.name=Tubería de Gas
+
+enderio.itemGasConduit.tooltip.maxExtract=Extracción máx.:
+enderio.itemGasConduit.tooltip.maxIo=IO máx.:
+enderio.itemGasConduit.tooltip.detailed.line1=Transfiere gases con mecánica compatible.
+
+enderio.itemMEConduit.name=Tubería ME
+enderio.itemMEConduitDense.name=Tubería ME Densa
+enderio.itemMEConduit.channelsUsed={0,number} de {1,number} canales
+
+//Entity
+entity.witherSkeleton.name=Esqueleto Wither
+
+//Materials
+enderio.itemMaterial.name=Materiales
+enderio.silicon.name=Silicona
+enderio.conduitBinder.name=Pegamento de Tubería
+enderio.binderComposite.name=Compuesto de Pegamento
+enderio.phasedIronNugget.name=Pepita de Hierro Pulsante
+tile.blockDarkIronBars.name=Barrotes de Hierro Oscuro
+tile.blockEndermanSkull.name=Calavera de Enderman
+tile.blockEndermanSkull.base.name=Cabeza de Enderman
+tile.blockEndermanSkull.reanimated.name=Cabeza de Enderman Reanimada
+tile.blockEndermanSkull.tormented.name=Cabeza de Enderman Atormentada
+enderio.blastResistant=Resistente a estallidos
+enderio.lightEmitter=Emite luz
+enderio.lightBlocker=Bloquea la luz
+enderio.tooltip.isBeaconBase=Se puede usar como base para el Faro
+enderio.dustWheat.name=Harina
+
+//Fluids
+fluid.nutrient_distillation=Destilado de Nutrientes
+tile.fluid.nutrient_distillation.name=Destilado de Nutrientes
+item.bucketNutrient_distillation.name=Cubo de Destilado de Nutrientes
+
+fluid.hootch=Alcohol
+tile.fluid.hootch.name=Alcohol
+item.bucketHootch.name=Cubo de Alcohol
+fluid.fire_water=Agua de Fuego
+tile.fluid.fire_water.name=Agua de Fuego
+item.bucketFire_water.name=Cubo de Agua de Fuego
+fluid.rocket_fuel=Combustible de Cohete
+tile.fluid.rocket_fuel.name=Combustible de Cohete
+item.bucketRocket_fuel.name=Cubo de Combustible de Cohete
+fluid.eio.xpjuice=XP Líquida
+tile.fluid.eio.xpjuice.name=XP Líquida
+item.bucketXpjuice.name=Cubo de XP
+
+enderio.fluid.millibucket.abr=mB
+
+enderio.fuel.tooltip.heading=Detalles del Combustible
+enderio.fuel.tooltip.burnTime=tiempo de combustión {0,number}
+enderio.fluid.millibucketsTick=mB/t
+enderio.coolant.tooltip.heading=Refrigerante
+enderio.coolant.tooltip.degreesPerBucket=Grados por Cubo
+enderio.gas.gasTick=Gas/t
+
+//Materials
+enderio.itemMachinePart.name=Partes de Máquina
+enderio.machineChassi.name=Chasis de Máquina
+enderio.basicGear.name=Engranaje Básico
+enderio.pulsatingCrystal.name=Cristal Pulsante
+enderio.vibrantCrystal.name=Cristal Vibrante
+enderio.enderCrystal.name=Cristal de Ender
+enderio.attractorCrystal.name=Cristal Tentador
+enderio.weatherCrystal.name=Cristal Meteorológico
+enderio.darkGrindingBall.name=Bola de Acero Oscuro
+enderio.darkGrindingBall.tooltip.detailed.line1=Bola de molido para la Moledora SAG
+enderio.darkGrindingBall.tooltip.detailed.line2=Salida General
+enderio.darkGrindingBall.tooltip.detailed.line3=Salida Extra
+enderio.darkGrindingBall.tooltip.detailed.line4=Reducción de Energía
+
+tile.blockReinforcedObsidian.name=Obsidiana Reforzada
+tile.blockReinforcedObsidian.tooltip.common.line1=A prueba de Withers
+
+//Quartz / Glass
+tile.blockFusedQuartz.name=Cuarzo Fundido
+enderio.blockFusedQuartz.fusedQuartz.name=Cuarzo Fundido
+enderio.blockFusedQuartz.fusedGlass.name=Cristal Totalmente Transparente
+enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Cuarzo Fundido Iluminado
+enderio.blockFusedQuartz.enlightenedFusedGlass.name=Cristal Transparente Iluminado
+enderio.blockFusedQuartz.darkFusedQuartz.name=Cuarzo Fundido Oscuro
+enderio.blockFusedQuartz.darkFusedGlass.name=Cristal Oscuro Transparente
+
+item.enderio.itemFusedQuartzFrame.name=Marco de Cuarzo Fundido
+enderio.itemPowderIngot=Polvos y Lingotes
+
+//Alloys
+enderio.itemAlloy.name=Aleación
+enderio.electricalSteel.name=Acero Eléctrico
+enderio.energeticAlloy.name=Aleación Energética
+enderio.phasedGold.name=Aleación Vibrante
+enderio.redstoneAlloy.name=Aleación de Redstone
+enderio.conductiveIron.name=Hierro Conductor
+enderio.phasedIron.name=Hierro Pulsante
+enderio.vibrantNugget.name=Pepita de Aleación Vibrante
+enderio.darkSteel.name=Acero Oscuro
+enderio.soularium.name=Animarium
+
+tile.blockIngotStorage.name=Almacenamiento de Lingotes
+tile.enderio.electricalSteel.name=Bloque de Acero Eléctrico
+tile.enderio.energeticAlloy.name=Bloque de Aleación Energética
+tile.enderio.phasedGold.name=Bloque de Aleación Vibrante
+tile.enderio.redstoneAlloy.name=Bloque de Aleación de Redstone
+tile.enderio.conductiveIron.name=Bloque de Hierro Conductor
+tile.enderio.phasedIron.name=Bloque de Hierro Pulsante
+tile.enderio.vibrantNugget.name=Bloque de Pepita de Aleación Vibrante
+tile.enderio.darkSteel.name=Bloque de Acero Oscuro
+tile.enderio.soularium.name=Bloque de Animarium
+
+//Powder / Ingot
+enderio.powderCoal.name=Polvo de Carbón
+enderio.powderIron.name=Polvo de Hierro
+enderio.powderGold.name=Polvo de Oro
+enderio.powderCopper.name=Polvo de Cobre
+enderio.powderTin.name=Polvo de Estaño
+enderio.powderEnder.name=Polvo de Perla de Ender
+enderio.powderObsidian.name=Polvo de Obsidiana
+enderio.ingotEnderiumBase.name=Base de Enderium
+
+//Capacitors
+enderio.itemBasicCapacitor.name=Condensador
+enderio.basicCapacitor.name=Condensador Básico
+enderio.activatedCapacitor.name=Condensador de Doble Capa
+enderio.enderCapacitor.name=Condensador Octadiano 
+
+enderio.machine.tooltip.upgrade=Mejora de Máquinas
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Aumenta el almacenamiento de energía y la velocidad o rango de las máquinas.
+enderio.machine.tooltip.clearConfig=Atención: Hacer esto borrará toda la información guardada.
+
+//Machines
+tile.blockStirlingGenerator.name=Generador Stirling
+tile.blockStirlingGenerator.tooltip.detailed.line1=Quema combustible sólido para generar energía.
+tile.blockStirlingGenerator.tooltip.detailed.line2=Puede mejorarse para aumentar la energía de salida y la eficiencia con condensadores.
+
+tile.blockReservoir.name=Tanque
+tile.blockReservoir.tooltip.detailed.line1=Se crea formando una estructura de 2x2x1.
+tile.blockReservoir.tooltip.detailed.line2=Añade dos cubos de agua para producir una fuente infinita de agua.
+tile.blockReservoir.tooltip.detailed.line3=Produce un cubo por segundo.
+tile.blockReservoir.tooltip.detailed.line4=Haz clic-derecho con una llave inglesa para activar el auto-drenaje.
+
+tile.blockAlloySmelter.name=Fundición de Aleaciones
+tile.blockAlloySmelter.tooltip.detailed.line1=Se usa para crear aleaciones EnderIO o como horno eléctrico común.
+tile.blockAlloySmelter.tooltip.detailed.line2=Puedes mejorarlo con condensadores para aumentar la velocidad y el almacenamiento de energía.
+
+tile.blockSolarPanel.name=Célula Fotovoltaica
+tile.blockSolarPanel.advanced.name=Célula Fotovoltaica Avanzada
+tile.blockSolarPanel.tooltip.common.line1=¡Energía Solar!
+tile.blockSolarPanel.tooltip.detailed.line1=Produce energía durante las horas de luz
+tile.blockSolarPanel.tooltip.detailed.line2=Debe colocarse de cara al cielo y sin ningún obstáculo entremedias.
+enderio.maxSolorProduction=Salida máx.
+enderio.tooltip.efficiency=Eficiencia
+enderio.tooltip.sunlightBlocked=¡Imposible ver el cielo!
+
+item.itemElectricLight.name=Lámpara Eléctrica
+item.itemElectricLight.tooltip.detailed.line1=Ilumina una gran área cuando se le proporciona energía y una señal de redstone.
+
+item.itemElectricLightInverted.name=Lámpara Eléctrica (Invertida)
+item.itemElectricLightInverted.tooltip.detailed.line1=Ilumina una gran área cuando se le proporciona energía.
+item.itemElectricLightInverted.tooltip.detailed.line2=Desactívala con una señal de redstone.
+
+item.itemLight.name=Lámpara
+item.itemLight.tooltip.detailed.line1=Emite luz con una señal de redstone.
+
+item.itemLightInverted.name=Lámpara (Invertida)
+item.itemLightInverted.tooltip.detailed.line1=Emite luz. Desactívala con una señal de redstone.
+
+item.itemWirelessLight.name=Lámpara Eléctrica Inalámbrica
+item.itemWirelessLight.tooltip.detailed.line1=Ilumina una gran área cuando se le proporciona energía y una señal de redstone.
+item.itemWirelessLight.tooltip.detailed.line2=Puede recibir energía de los cargadores inalámbricos.
+
+item.itemWirelessLightInverted.name=Lámpara Eléctrica Inalámbrica (Invertida)
+item.itemWirelessLightInverted.tooltip.detailed.line1=Ilumina una gran área cuando se le proporciona energía.
+item.itemWirelessLightInverted.tooltip.detailed.line2=Desactívala con una señal de redstone.
+item.itemWirelessLightInverted.tooltip.detailed.line3=Puede recibir energía de los cargadores inalámbricos.
+
+tile.blockCapacitorBank.name=Condensador de Almacenaje (Obsoleto)
+tile.blockCapacitorBank.creative.name=Condensador de Almacenaje Creativo (Obsoleto)
+tile.blockCapacitorBank.tooltip.detailed.line1=Conviértelo en nuevo poniéndolo en una cuadrícula de fabricación.
+tile.blockCapacitorBank.tooltipPrefix=Contiene
+
+tile.blockCapBank.creative.name=Condensador de Almacenaje Creativo
+tile.blockCapBank.simple.name=Condensador de Almacenaje Básico
+tile.blockCapBank.activated.name=Condensador de Almacenaje
+tile.blockCapBank.vibrant.name=Condensador de Almacenaje Vibrante
+tile.blockCapBank.tooltip.detailed.line1=Almacén Multi-bloque de Energía
+tile.blockCapBank.tooltip.detailed.line2=Puede cargar objetos con energía RF.
+tile.blockCapBank.tooltip.detailed.line3=Shift+Clic-derecho en una cara con la mano vacía para cambiar el monitor de información.
+tile.blockCapBank.tooltip.hasItems={0,number,integer} {0,choice,1#item|1<items} en el inventario
+tile.blockCapBank.tooltipPrefix=Contiene
+
+enderio.capbank.maxIO=I/O máx.
+enderio.capbank.maxIn=Entrada máx.
+enderio.capbank.maxOut=Salida máx.
+enderio.capbank.change=I/O
+enderio.capbank.iodisplay.stable=I/O
+enderio.capbank.iodisplay.gain=Entran
+enderio.capbank.iodisplay.loss=Salen
+enderio.capbank.iodisplay.input=Entrada
+enderio.capbank.iodisplay.output=Salida
+
+tile.blockWirelessCharger.name=Cargador Inalámbrico
+tile.blockWirelessCharger.tooltip.detailed.line1=Carga los objetos recargables de los inventarios de los jugadores cercanos.
+
+tile.blockSagMill.name=Moledora SAG
+tile.blockSagMill.tooltip.detailed.line1=Muele menas y otros objetos.
+tile.blockSagMill.tooltip.detailed.line2=Añade bolas de molido para incrementar la producción y eficiencia.
+tile.blockSagMill.tooltip.detailed.line3=Mejórala con condensadores para aumentar la velocidad y el almacenamiento de energía.
+tile.blockSagMill.tooltipPrefix=Contiene
+
+tile.blockHyperCube.name=Transceptor Dimensional (Obsoleto)
+tile.blockHyperCube.tooltip.detailed.line1=Conviértelo en nuevo colocándolo en una cuadricula de fabricación.
+
+tile.blockTransceiver.name=Transceptor Dimensional
+tile.blockTransceiver.tooltip.detailed.line1=Transfiere objetos, fluidos y energía inalámbricamente desde cualquier distancia y entre dimensiones.
+
+tile.blockEnderRail.name=Vía Ender
+tile.blockEnderRail.tooltip.detailed.line1=Teletransporta vagonetas cuando se colocan encima de un Transceptor Dimensional.
+tile.blockEnderRail.tooltip.detailed.line2=Establece las destinaciones usando la pestaña de vías del transceptor.
+tile.blockEnderRail.tooltip.detailed.line3=Establece la dirección haciendo shift+clic-derecho con una llave inglesa.
+
+enderio.trans.showChannels=<Pulsa Shift para mostrar los canales>
+
+enderio.trans.power=Energía
+enderio.trans.item=Objetos
+enderio.trans.fluid=Fluidos
+enderio.trans.rail=Vías
+
+enderio.trans.receiving=Recibiendo
+enderio.trans.sending=Enviando
+
+tile.blockPowerMonitor.name=Monitor de Energía
+tile.blockPowerMonitor.tooltip.detailed.line1=Muestra detalles del uso de energía y del almacenamiento.
+tile.blockPowerMonitor.tooltip.detailed.line2=Puede usarse para emitir señales de redstone basadas en los niveles de energía almacenados.
+tile.blockPowerMonitor.tooltip.detailed.line3=Debe estar unido a una tubería de EnderIO.
+
+tile.blockVat.name=El Tanque
+tile.blockVat.tooltip.detailed.line1=Se usa para fermentar fluidos de EnderIO.
+
+tile.blockEnchanter.name=Encantador
+tile.blockEnchanter.tooltip.detailed.line1=Usa XP para combinar objetos, y un Libro y pluma para crear libros encantados.
+
+tile.blockCombustionGenerator.name=Generador de Combustión
+tile.blockCombustionGenerator.tooltip.detailed.line1=Consume combustible líquido para generar energía.
+tile.blockCombustionGenerator.tooltip.detailed.line2=Requiere un refrigerante (ej. agua).
+tile.blockCombustionGenerator.tooltip.detailed.line3=La cantidad de energía de salida depende del combustible utilizado.
+
+tile.blockZombieGenerator.name=Generador Zombi
+tile.blockZombieGenerator.tooltip.detailed.line1=Consume Destilado de Nutrientes para generar energía.
+enderio.zombieGenerator.fuelTank=Tanque de Nutrientes
+enderio.gui.fluid.minReq=%s requeridos para la activación.
+
+tile.blockKillerJoe.name=Killer Joe
+tile.blockKillerJoe.tooltip.detailed.line1=Ataca a las criaturas cercanas cuando se le proporciona una espada y Destilado de Nutrientes.
+tile.blockKillerJoe.tooltip.detailed.line2=La experiencia se puede drenar como XP Líquida usando tuberías de fluidos.
+
+enderio.killerJoe.fuelTank=Tanque de Nutrientes
+enderio.killerJoe.giveXp.tooltip=Toma XP
+enderio.killerJoe.giveXp10.tooltip=Toma 10 niveles de XP
+
+tile.blockSliceAndSplice.name=Rebanayempalma
+tile.blockSliceAndSplice.tooltip.detailed.line1=Rebana cabezas y las empalma en todo tipo de cosas útiles.
+
+tile.blockFarmStation.name=Estación de Cultivo
+tile.blockFarmStation.tooltip.detailed.line1=Planta y cosecha cultivos.
+tile.blockFarmStation.tooltip.detailed.line2=Requiere energía y herramientas apropiadas (azada y hacha).
+tile.blockFarmStation.tooltip.detailed.line3=Saqueo y Fortuna en las herramientas se aplican cuando se cosecha.
+tile.blockFarmStation.tooltip.detailed.line4=Mejórala con condensadores para aumentar el rango. La mejora también aumenta la energía usada.
+tile.blockFarmStation.tooltip.detailed.line7=range, upgrade also increases power use
+
+enderio.farm.note.outputFull=Producción llena
+enderio.farm.note.noSeeds=No hay semillas
+enderio.farm.note.noAxe=No hay hacha
+enderio.farm.note.noHoe=No hay azada
+enderio.farm.note.noPower=Sin energía
+enderio.farm.gui.baseUse=Uso base:
+
+tile.blockTank.name=Tanque de Fluidos
+tile.blockTank.advanced.name=Tanque de Fluidos Presurizado
+tile.blockTank.tooltip.detailed.line1=Tanque de fluidos portátil.
+tile.blockTank.tooltip.detailed.line2=Se puede usar para vaciar y llenar contenedores de fluido.
+enderio.tank.tank=Tanque
+enderio.tooltip.none=Ninguno
+enderio.tooltip.fluidStored=Fluido almacenado
+
+enderio.gui.tooltip.voidslot=Ranura de Vacío
+enderio.gui.void.mode=Modo Vacío
+
+enderio.gui.void.mode.always=Siempre
+enderio.gui.void.mode.always.desc=La ranura de vacío acepta todos los objetos.
+
+enderio.gui.void.mode.if_not_container=Ignorar Contenedores
+enderio.gui.void.mode.if_not_container.desc=La ranura de vacío acepta todos los objetos que no sean contenedores de fluidos.
+
+enderio.gui.void.mode.never=Nunca
+enderio.gui.void.mode.never.desc=La ranura de vacío no acepta ningún objeto.
+
+tile.blockCrafter.name=Fabricador
+tile.blockCrafter.tooltip.detailed.line1=Fabricador automático eléctrico.
+tile.blockCrafter.tooltip.detailed.line2=Consume energía por operación.
+tile.blockCrafter.tooltip.detailed.line3=Se puede mejorar con condensadores para aumentar la velocidad y el almacenamiento de energía.
+
+tile.blockVacuumChest.name=Cofre Aspirador
+tile.blockVacuumChest.tooltip.detailed.line1=Absorbe los objetos cercanos y los almacena en su inventario.
+
+tile.blockPoweredSpawner.name=Spawner Eléctrico
+tile.blockPoweredSpawner.tooltip.empty=Vacío
+enderio.tile.blockPoweredSpawner.tooltip.none=Ninguno
+tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Combínalo con un Spawner Roto en un yunque.
+tile.blockPoweredSpawner.tooltip.detailed.line1=Proporciónale energía para activarlo.
+tile.blockPoweredSpawner.tooltip.detailed.line2=Se puede mejorar con condensadores para aumentar la velocidad y el almacenamiento de energía.
+
+item.itemBrokenSpawner.name=Spawner Roto
+item.itemBrokenSpawner.tooltip.detailed.line1=Combínalo con un Spawner Eléctrico en un yunque para establecer el tipo de invocaciones.
+
+tile.blockSoulBinder.name=Atador de Almas
+tile.blockSoulBinder.tooltip.detailed.line1=Se usa para convertir el tipo de Spawner Roto.
+
+tile.blockAttractor.name=Obelisco de Atracción
+tile.blockAttractor.tooltip.detailed.line1=Atrae criaturas hacia él.
+tile.blockAttractor.tooltip.detailed.line2=Especifica la criatura a atraer colocando su alma dentro del aparato.
+
+tile.blockSpawnGuard.name=Obelisco de Aversión
+tile.blockSpawnGuard.tooltip.detailed.line1=Previene que las criaturas aparezcan dentro de su área de efecto.
+
+tile.blockExperienceObelisk.name=Obelisco de Experiencia
+tile.blockExperienceObelisk.tooltip.detailed.line1=Almacena experiencia.
+tile.blockExperienceObelisk.tooltip.detailed.line2=Puede extraer XP Líquida hacia tanques adyacentes.
+
+tile.blockWeatherObelisk.name=Obelisco del Clima
+tile.blockWeatherObelisk.tooltip.detailed.line1=Cambia el clima actual.
+tile.blockWeatherObelisk.tooltip.detailed.line2=Requiere mucha energía y un objeto catalizador.
+
+tile.blockBuffer.item.name=Búfer de Objetos
+tile.blockBuffer.power.name=Búfer de Energía
+tile.blockBuffer.omni.name=OmniBúfer
+tile.blockBuffer.creative.name=Búfer Creativo
+
+tile.blockInventoryPanel.name=Panel de Inventario
+tile.blockInventoryPanel.tooltip.basic.line1=Acceso y fabricación remotos
+tile.blockInventoryPanel.tooltip.detailed.line1=Permite el acceso remoto a inventarios a través de las mejoras de percatación remota en las tuberías.
+tile.blockInventoryPanel.tooltip.detailed.line3=Usa destilado de Nutrientes como energía.
+tile.blockInventoryPanel.tooltip.detailed.line4=Ofrece una cuadrícula de fabricación permanente.
+enderio.gui.inventorypanel.header.crafting=Cuadrícula
+enderio.gui.inventorypanel.header.return=Extracción
+enderio.gui.inventorypanel.header.storage=Almacenamiento
+enderio.gui.inventorypanel.info.filter=<Filtrar por nombre>
+enderio.gui.inventorypanel.info.offline=<SIN LÍNEA>
+enderio.gui.inventorypanel.tooltip.return.line1=Área de Extracción
+enderio.gui.inventorypanel.tooltip.return.line2=Los objetos aquí colocados se pueden extraer con una tubería de objetos pero no se usarán para fabricación.
+enderio.gui.inventorypanel.tooltip.return.line5=Haz clic para cambiar a Área de Almacenamiento.
+enderio.gui.inventorypanel.tooltip.storage.line1=Área de Almacenamiento de Objetos
+enderio.gui.inventorypanel.tooltip.storage.line2=Pequeña área de almacenamiento temporal
+enderio.gui.inventorypanel.tooltip.storage.line3=Haz clic para cambiar a Área de Extracción.
+enderio.gui.inventorypanel.tooltip.filterslot.line1=Ranura para filtros
+enderio.gui.inventorypanel.tooltip.filterslot.line2=Coloca filtradores de objetos configurados aquí para seleccionar qué objetos mostrar.
+enderio.gui.inventorypanel.tooltip.sort.name_down.line1=Ordenar por nombre
+enderio.gui.inventorypanel.tooltip.sort.name_up.line1=Ordenar por nombre
+enderio.gui.inventorypanel.tooltip.sort.name_up.line2=Empezar por el final del alfabeto
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line1=Ordenar por Mod
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line2=Objetos del mismo Mod se ordenan por nombre
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line1=Ordenar por Mod
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line2=Objetos del mismo Mod se ordenan por nombre
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line3=Empezar por el final del alfabeto
+enderio.gui.inventorypanel.tooltip.sort.count_down.line1=Ordenar por cantidad
+enderio.gui.inventorypanel.tooltip.sort.count_down.line2=Empezar por el de mayor cantidad
+enderio.gui.inventorypanel.tooltip.sort.count_up.line1=Ordenar por cantidad
+enderio.gui.inventorypanel.tooltip.sort.count_up.line2=Empezar por los individuales
+enderio.gui.inventorypanel.tooltip.refill.line1=Rellena la cuadrícula de fabricación
+enderio.gui.inventorypanel.tooltip.refill.line2=Un clic coloca objetos solo para una operación de fabricación, mientras que shift+clic intenta llenar la cuadricula de fabricación
+enderio.gui.inventorypanel.tooltip.setrecipe.line1=Memoriza la receta de fabricación actual.
+enderio.gui.inventorypanel.tooltip.setrecipe.line2=Permite rellenar la receta actual.
+enderio.gui.inventorypanel.tooltip.clear.line1=Limpiar cuadrícula de fabricación
+enderio.gui.inventorypanel.tooltip.clear.line2=Mueve todos los objetos al área de almacenamiento.
+enderio.gui.inventorypanel.tooltip.fuelTank=Tanque de Nutriente
+enderio.gui.inventorypanel.tooltip.itemsstored=Objetos almacenados: %s
+enderio.gui.inventorypanel.tooltip.addrecipe.line1=Guardar la receta de fabricación actual
+enderio.gui.inventorypanel.tooltip.addrecipe.line2=Se pueden guardar hasta un máximo de 6 recetas.
+enderio.gui.inventorypanel.tooltip.addrecipe.line3=Hacer clic derecho en una receta guardada intentará colocar objetos para una operación de fabricación en la cuadrícula.
+enderio.gui.inventorypanel.tooltip.addrecipe.line4=Shift+Clic-derecho intentará llenar la cuadrícula hasta el máximo.
+enderio.gui.inventorypanel.tooltip.addrecipe.line7=Haz clic izquierdo en una receta almacenada para borrarla.
+enderio.gui.inventorypanel.tooltip.sync=Sinc. NEI
+
+enderio.machine.tooltip.configured=(Configurado)
+
+//Blocks
+tile.blockDarkSteelPressurePlate.name=Placa de Presión Oscura
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Solo se activa con jugadores.
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=Se puede pintar en la Maquina de Pintar. Invisible cuando se pinta con Cristal Totalmente Transparente.
+tile.blockDarkSteelPressurePlate.silent.tooltip.common.line1=Silenciosa
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line1=Solo se activa con jugadores.
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line2=Se puede pintar en la Maquina de Pintar. Invisible cuando se pinta con Cristal Totalmente Transparente.
+
+tile.blockDarkSteelAnvil.intact.name=Yunque de Acero Oscuro
+tile.blockDarkSteelAnvil.slightlyDamaged.name=Yunque de Acero Oscuro Ligeramente Dañado
+tile.blockDarkSteelAnvil.veryDamaged.name=Yunque de Acero Oscuro Muy Dañado
+tile.blockDarkSteelAnvil.tooltip.common.line1=Resistente al Daño
+tile.blockDarkSteelAnvil.tooltip.detailed.line1=Dura mucho más que el yunque común.
+
+tile.blockDarkSteelLadder.name=Escalera de Mano de Acero Oscuro
+tile.blockDarkSteelLadder.tooltip.common.line1=Más rápida que la Escalera de Mano común.
+
+//Travel
+tile.blockTravelAnchor.name=Ancla de Viaje
+tile.blockTravelAnchor.tooltip.detailed.line1=Permite la teletransportación entre anclas.
+tile.blockTravelAnchor.tooltip.detailed.line2=Colócate en una ancla, mira hacia otra ancla y salta para teletransportarte.
+tile.blockTravelAnchor.tooltip.detailed.line3=También se puede usar con la Vara de Viaje.
+tile.blockTravelAnchor.tooltip.detailed.line4=Se puede pintar en la Máquina de Pintar.
+
+enderio.blockTravelPlatform.invalidTarget=Destinación obstruida.
+enderio.blockTravelPlatform.outOfRange=Destinación fuera de rango.
+
+tile.blockTelePad.name=Bloque Telepad
+tile.blockTelePad.tooltip.detailed.line1=Usa energía para teletransportar entidades a un posición y dimensión específica.
+tile.blockTelePad.tooltip.detailed.line2=Debe formar un multibloque de 3x1x3.
+enderio.gui.telepad.teleport=¡Teletransportación!
+
+item.itemTravelStaff.name=Vara de Viaje
+item.itemTravelStaff.tooltip.detailed.line1=Cuando se selecciona, las anclas de viaje y los enderIO se hacen visibles y se pueden activar haciendo clic-derecho.
+item.itemTravelStaff.tooltip.detailed.line2=Shift+Clic-derecho teletransportara al jugador una distancia corta.
+enderio.itemTravelStaff.notEnoughPower=Energía Insuficiente.
+
+item.itemCoordSelector.name=Selector de Coordinadas
+item.itemCoordSelector.tooltip.detailed.line1=Guarda las coordinadas de un bloque.
+item.itemCoordSelector.tooltip.detailed.line2=Clic derecho al bloque para seleccionar el bloque adyacente a esa cara del bloque.
+item.itemCoordSelector.tooltip.detailed.line3=Shift+Clic-derecho a un bloque para seleccionar ese bloque en concreto.
+item.itemCoordSelector.tooltip.detailed.line4=Se puede seleccionar desde la distancia.
+enderio.itemCoordSelector.chat.newCoords=Nuevas Coordenadas: %s
+enderio.itemCoordSelector.chat.setCoords=Establecer Coordenadas: %s
+enderio.itemCoordSelector.chat.newDimension=Nueva Dimensión: %s%s
+enderio.itemCoordSelector.chat.setDimension=Establecer Dimensión: %s%s
+
+//Painter
+tile.blockPainter.name=Máquina de Pintar
+enderio.blockPainter.paintedWith=Pintado con:
+tile.blockPaintedFence.name=Valla Pintada
+tile.blockPaintedFenceGate.name=Puerta de Valla Pintada
+tile.blockPaintedWall.name=Muro Pintado
+tile.blockPaintedStair.name=Escaleras Pintadas
+tile.blockPaintedSlab.name=Losa Pintada
+tile.blockPaintedDoubleSlab.name=Losas Pintadas
+tile.blockPaintedGlowstone.name=Piedra Luminosa Pintada
+tile.blockPaintedCarpet.name=Alfombra Pintada
+enderio.painter.tooltip.wasPainted=§o¿Qué pensabas que haría eso?
+
+tile.blockPainter.tooltip.detailed.line1=Se usa para pintar: 
+tile.blockPainter.tooltip.detailed.line2=Fachadas para tuberías, escaleras, vallas, puertas de valla, losas, muros de roca, marcos de cristal, piedras luminosas, alfombras, placas de presión de acero oscuro y anclas de viaje.
+
+//Items
+item.itemYetaWrench.name=Llave Inglesa Yeta
+item.itemYetaWrench.tooltip.detailed.line1=Oculta fachadas para tuberías cuando se selecciona.
+item.itemYetaWrench.tooltip.detailed.line2=Shift+Clic-derecho para romper máquinas y tuberías instantáneamente.
+item.itemYetaWrench.tooltip.detailed.line3=Shift+Clic-izquierdo en una tubería para abrir la interfaz de opciones de la tubería.
+item.itemYetaWrench.tooltip.detailed.line4=Shift+Rueda del ratón o '%s' para renderizar solo un tipo de tubería.
+
+item.itemMagnet.name=Electroimán
+item.itemMagnet.tooltip.detailed.line1=Atrae los objetos cercanos hacia ti.
+item.itemMagnet.tooltip.detailed.line2=Shift+clic-derecho para activar/desactivar.
+item.itemMagnet.tooltip.detailed.line3=Debe estar cargado, activado y en la barra de objetos para funcionar.
+
+item.enderio.itemConduitProbe.name=Tubería de Sondeo
+item.enderio.itemConduitProbe.tooltip.detailed.line1=En modo Sonda, haz clic derecho en una tubería para mostrar detalles sobre su red.
+item.enderio.itemConduitProbe.tooltip.detailed.line2=En modo Copiar y Pegar, haz shift+clic-derecho para copiar los ajustes de conexión de un manojo de tuberías.
+item.enderio.itemConduitProbe.tooltip.detailed.line3=Clic derecho para pegarlos.
+item.enderio.itemConduitProbe.tooltip.detailed.line4=Usa shift+rueda del ratón o 'Y' para cambiar de modo.
+
+item.itemSoulVessel.name=Vial de Almas
+enderio.item.itemSoulVessel.tooltip.health=Salud:
+enderio.item.itemSoulVessel.tooltip.fluidname=Nombre del Fluido:
+enderio.item.itemSoulVessel.tooltip.color=Color:
+enderio.item.itemSoulVessel.tooltip.empty=Vacío
+item.itemSoulVessel.tooltip.detailed.line1=Haz clic derecho en una criatura para capturar su alma.
+item.itemSoulVessel.tooltip.detailed.line2=Haz clic derecho de nuevo para liberarla.
+
+item.itemXpTransfer.name=Vara de Experiencia
+item.itemXpTransfer.tooltip.detailed.line1=Haz clic derecho en un tanque de fluido que contenga XP Líquido para ganar niveles.
+item.itemXpTransfer.tooltip.detailed.line2=Shift+Clic-derecho para transferir niveles al tanque.
+
+skullZombieElectrode.name=Electrodo Zombi
+skullZombieController.name=Controlador Lógico-Z
+skullZombieFrankenstien.name=Frankenzombi
+skullEnderResonator.name=Resonador Ender 
+skullSentientEnder.name=Sensor Ender
+
+item.itemSpawnEggEnderIO.name=Spawn
+
+//Dark Steel
+item.darkSteel_helmet.name=Yelmo Oscuro
+item.darkSteel_chestplate.name=Pechera Oscura
+item.darkSteel_leggings.name=Mallas Oscuras
+item.darkSteel_boots.name=Botas Oscuras
+item.darkSteel_sword.name=La Rematadora
+item.darkSteel_pickaxe.name=Pico Oscuro
+item.darkSteel_axe.name=Hacha Oscura
+item.darkSteel_shears.name=Tijeras Oscuras
+
+enderio.item.darkSteel.tooltip.lvs=nvs
+
+enderio.item.darkSteel_pickaxe.tooltip.effPowered=Eficiencia cuando está cargada.
+enderio.item.darkSteel_pickaxe.tooltip.effObs=Eficiencia rompiendo obsidiana.
+enderio.item.darkSteel_pickaxe.tooltip.cost=coste
+
+enderio.item.darkSteel_axe.tooltip.multiHarvest=Mantén pulsado shift para recoger múltiples troncos.
+
+enderio.item.darkSteel_shears.tooltip.multiHarvest=Recorta múltiples bloques u ovejas cuando está cargada.
+
+enderio.item.darkSteel_sword.tooltip.line1=Incrementado el saqueo de calaveras y perlas de Ender.
+enderio.item.darkSteel_sword.tooltip.line2=Los Enderman no se pueden teletransportar una vez se les ha golpeado.
+enderio.item.darkSteel_sword.tooltip.line3=+2 de daño cuando está cargada.
+
+enderio.item.darkSteel_armor.tooltip.line1=Nivel de protección equivalente al diamante cuando está cargada.
+
+enderio.item.darkSteel_boots.tooltip.line1=Daño de caída ignorado cuando están cargadas.
+
+enderio.darksteel.upgrade.empowered_one.name=Fortaleza
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Poder: $P
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D% daño absorbido por punto de poder.
+
+enderio.darksteel.upgrade.empowered_two.name=Fortaleza II
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Poder: $P
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D% daño absorbido por punto de poder.
+
+enderio.darksteel.upgrade.empowered_three.name=Fortaleza III
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Poder: $P
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% daño absorbido por punto de poder.
+
+enderio.darksteel.upgrade.empowered_four.name=Fortaleza IV
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Poder: $P
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% daño absorbido por punto de poder.
+
+enderio.darksteel.upgrade.travel.name=Viaje
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Mantén pulsado shift y haz clic derecho para viajar o activar una ancla de viaje o Ender IO.
+
+enderio.darksteel.upgrade.spoon.name=Cuchara
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=¿Quién necesita una pala cuando tienes una cuchara?
+
+enderio.darksteel.upgrade.glider.name=Planeador
+enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Posibilita el planeo.
+enderio.darksteel.upgrade.glider.enabled=Planeador Activado
+enderio.darksteel.upgrade.glider.disabled=Planeador Desactivado
+
+enderio.darksteel.upgrade.sound.name=Localizador de Sonidos
+enderio.darksteel.upgrade.sound.tooltip.detailed.line1=Muestra la localización de los sonidos cercanos.
+enderio.darksteel.upgrade.sound.enabled=Localizador de Sonidos Activado
+enderio.darksteel.upgrade.sound.disabled=Localizador de Sonidos Desactivado
+
+enderio.darksteel.upgrade.gogglesOfRevealing.name=Revelador
+enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Descuento de Vis: 5%
+enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Se está revelando la magia.
+enderio.darksteel.upgrade.gogglesOfRevealing.disabled=La magia está oculta a simple vista.
+
+enderio.darksteel.upgrade.naturalistEye.name=Ojo del Naturalista
+enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Muestra las hojas de árboles polinizados.
+
+enderio.darksteel.upgrade.apiaristArmor.helmet.name=Sobrero del Apicultor
+enderio.darksteel.upgrade.apiaristArmor.helmet.tooltip.detailed.line1=Protección contra abejas.
+
+enderio.darksteel.upgrade.apiaristArmor.chestplate.name=Camisa del Apicultor
+enderio.darksteel.upgrade.apiaristArmor.chestplate.tooltip.detailed.line1=Protección contra abejas.
+
+enderio.darksteel.upgrade.apiaristArmor.leggings.name=Pantalones del Apicultor
+enderio.darksteel.upgrade.apiaristArmor.leggings.tooltip.detailed.line1=Protección contra abejas.
+
+enderio.darksteel.upgrade.apiaristArmor.boots.name=Zapatos del Apicultor
+enderio.darksteel.upgrade.apiaristArmor.boots.tooltip.detailed.line1=Protección contra abejas.
+
+item.itemGliderWing.name=Ala de Planeador
+item.itemGliderWings.name=Alas de Planeador
+item.itemGliderWings.tooltip.detailed.line1=Mejora para la pechera de Acero Oscuro.
+
+enderio.darksteel.upgrade.jump.enabled=Salto Activado
+enderio.darksteel.upgrade.jump.disabled=Salto Desactivado
+
+enderio.darksteel.upgrade.jump_one.name=Salto
+enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Aumenta la altura de salto y de los pasos.
+enderio.darksteel.upgrade.stepAssist.enabled=Asistente de Pasos Activado
+enderio.darksteel.upgrade.stepAssist.disabled=Asistente de Pasos Desactivado
+
+enderio.darksteel.upgrade.jump_two.name=Salto II
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Aumenta la altura de salto y de los pasos.
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Permite saltos dobles.
+
+enderio.darksteel.upgrade.jump_three.name=Salto III
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=Aumenta la altura de salto y de los pasos.
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=Permite saltos triples.
+
+enderio.darksteel.upgrade.speed_one.name=Velocidad
+enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=Aumenta la velocidad de movimiento.
+enderio.darksteel.upgrade.speed.enabled=Velocidad Activada
+enderio.darksteel.upgrade.speed.disabled=Velocidad Desactivada
+
+enderio.darksteel.upgrade.speed_two.name=Velocidad II
+enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Aumenta la velocidad de movimiento.
+
+enderio.darksteel.upgrade.speed_three.name=Velocidad III
+enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=Aumenta la velocidad de movimiento.
+
+enderio.darksteel.upgrade.swim.name=Aletas
+
+enderio.darksteel.upgrade.nightVision.name=Visión Nocturna
+enderio.darksteel.upgrade.nightVision.enabled=Visión Nocturna Activada
+enderio.darksteel.upgrade.nightVision.disabled=Visión Nocturna Desactivada
+
+enderio.darksteel.upgrade.solar_one.name=Solar I
+enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=Genera energía a través del Sol.
+
+enderio.darksteel.upgrade.solar_two.name=Solar II
+enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=Genera energía a través del Sol.
+
+//------GUI
+
+enderio.gui.simple.in=Entrada máx.:
+enderio.gui.simple.out=Salida máx.:
+
+enderio.gui.available=Disponible
+enderio.gui.disabled=Desactivado
+enderio.gui.enabled=Activado
+enderio.gui.max=Máx.:
+enderio.gui.progress=Progreso {0,number}%
+enderio.gui.receive=Recibe
+enderio.gui.send=Envía
+enderio.gui.sendReceive=Envia y Recibe 
+
+//Redstone controls
+enderio.gui.tooltip.redstoneControlMode=Modo Redstone
+enderio.gui.tooltip.redstoneControlMode.ignore=Siempre Activo
+enderio.gui.tooltip.redstoneControlMode.on=Activo con señal
+enderio.gui.tooltip.redstoneControlMode.off=Activo sin señal
+enderio.gui.tooltip.redstoneControlMode.never=Nunca Activo
+
+enderio.gui.machine.button.storelevel=Almacenar 1
+enderio.gui.machine.tooltip.storelevel=Nivel de XP del jugador
+enderio.gui.machine.button.storelevels=Almacenar 10
+enderio.gui.machine.tooltip.storelevels=Niveles de XP del jugador
+enderio.gui.machine.button.storeall=Almacenar toda
+enderio.gui.machine.tooltip.storeall=XP del jugador
+enderio.gui.machine.button.retrievelevel=Recuperar 1
+enderio.gui.machine.tooltip.retrievelevel=Nivel de XP del jugador
+enderio.gui.machine.button.retrievelevels=Recuperar 10
+enderio.gui.machine.tooltip.retrievelevels=Niveles de XP del jugador
+enderio.gui.machine.button.retrieveall=Recuperar todo
+enderio.gui.machine.ioMode.overlay.tooltip=Configurar IO
+enderio.gui.machine.ioMode.overlay.tooltip.visible.line1=Shift+clic para reiniciar todas las caras a sus ajustes por defecto.
+enderio.gui.machine.ioMode.none=Ninguno
+enderio.gui.machine.ioMode.pull=Extraer
+enderio.gui.machine.ioMode.push=Insertar
+enderio.gui.machine.ioMode.disabled=Desactivado
+enderio.gui.machine.ioMode.pullPush=Insertar/Extraer
+enderio.gui.machine.ioMode.pullPush.colored=%sInsertar %s/ %sExtraer
+enderio.gui.machine.ioMode=Modo: %s
+enderio.gui.machine.poweredspawner.capture=Capturar
+enderio.gui.machine.poweredspawner.spawn=Engendrar
+enderio.gui.machine.receivefilter=Filtro de Recibo
+enderio.gui.machine.sendfilter=Filtro de Envío
+enderio.gui.machine.sendReceivebuffer=Búfer de envío/recibo
+enderio.gui.machine.localbuffer=Búfer Local
+enderio.gui.machine.upkeep=Mantenimiento:
+enderio.gui.machine.bufferingstacks=Almacenando montones de objetos en la memoria interna
+enderio.gui.machine.bufferingsingle=Almacenando objetos individuales en la memoria interna
+enderio.gui.machine.percraft=Por fabricación
+enderio.gui.machine.side=Cara: %s
+enderio.gui.machine.side.north=Norte
+enderio.gui.machine.side.south=Sur
+enderio.gui.machine.side.west=Oeste
+enderio.gui.machine.side.east=Este
+enderio.gui.machine.side.up=Arriba
+enderio.gui.machine.side.down=Abajo
+
+
+//Power Monitor
+enderio.gui.powerMonitor.engineControl=Control de Máquinas
+enderio.gui.powerMonitor.emit=Emitir
+enderio.gui.powerMonitor.engineSection1=Emitir señal cuando el almacenamiento es inferior 
+enderio.gui.powerMonitor.engineSection2=que
+enderio.gui.powerMonitor.engineSection3=% lleno.
+enderio.gui.powerMonitor.engineSection4=Parar cuando el almacenamiento es mayor
+enderio.gui.powerMonitor.engineSection5=o igual a
+enderio.gui.powerMonitor.of=de
+enderio.gui.powerMonitor.monHeading1=Almacenamiento de Tubería
+enderio.gui.powerMonitor.monHeading2=Condensador de Almacenaje
+enderio.gui.powerMonitor.monHeading3=Búfers de Máquinas
+enderio.gui.powerMonitor.monHeading4=Salida media cada 5 segundos
+enderio.gui.powerMonitor.monHeading5=Entrada media cada 5 segundos
+
+//MJ Reader
+enderio.gui.mjReader.networkHeading=Sistema de Energía
+enderio.gui.mjReader.conduitBuffer=Búfer Interno
+enderio.gui.mjReader.requestRange=Rango de solicitud por tic
+enderio.gui.mjReader.currentRequest=Solicitud actual
+enderio.gui.mjReader.itemHeading=Tubería de Objetos
+enderio.gui.mjReader.itemNoConnections=No hay conexiones externas
+enderio.gui.mjReader.noPowerFromSide=No puede recibir energía por este lado
+enderio.gui.mjReader.connectionDir=Conexión al
+enderio.gui.mjReader.extractedItems=Objetos Extraídos
+enderio.gui.mjReader.extractedItem=Objeto
+enderio.gui.mjReader.noOutputs=No hay salidas válidas
+enderio.gui.mjReader.insertedInto=Será insertado a:
+enderio.gui.mjReader.noItems=No recibe objetos.
+enderio.gui.mjReader.noItem=No puede recibir.
+enderio.gui.mjReader.receiveItems=Puede recibir objetos de:
+enderio.gui.mjReader.receiveItem1=Puede recibir
+enderio.gui.mjReader.receiveItem2=de:
+
+//CapactorBank
+enderio.gui.capBank.inputRs=Modo de Entrada de Redstone
+enderio.gui.capBank.outputRs=Modo de Salida de Redstone
+enderio.gui.capBank.maxIo=Máx. I/O
+enderio.gui.capBank.maxInput=Entrada máx.
+enderio.gui.capBank.maxOutput=Salida máx.
+enderio.gui.capBank.inputMode=Entrada
+enderio.gui.capBank.outputMode=Salida
+
+//Transceiver
+enderio.gui.trans.publicChannel=Canal Público
+enderio.gui.trans.privateChannel=Canal Privado
+enderio.gui.trans.addChannel=Añadir Canal
+enderio.gui.trans.deleteChannel=Eliminar Canal
+enderio.gui.trans.activateChannel=Activar Canal
+enderio.gui.trans.powerMode=Modo de Energía
+enderio.gui.trans.fluidMode=Modo de Fluidos
+enderio.gui.trans.itemMode=Modo de Objetos
+enderio.gui.trans.publicHeading=Público
+enderio.gui.trans.privateHeading=Privado
+
+//Alloy Smelter
+enderio.gui.alloy.mode.heading=Modo Horno
+enderio.gui.alloy.mode.all=Fundir Todo
+enderio.gui.alloy.mode.alloy=Solo Aleaciones
+enderio.gui.alloy.mode.furnace=Solo Horno
+
+//Vacuum chest
+enderio.gui.vacuum.range=Fuerza de succión
+enderio.gui.vacuum.header.chest=Cofre Aspirador
+enderio.gui.vacuum.header.filter=Filtro de Objetos
+enderio.gui.vacuum.header.range=Rango
+
+//Vat
+enderio.vat.outputTank=Tanque de Salida
+enderio.vat.inputTank=Tanque de Entrada
+enderio.gui.machine.vat.dump.1=Verter Tanque de Entrada
+enderio.gui.machine.vat.dump.2=Verter Tanque de Salida
+
+//Combustion Gen
+enderio.combustionGenerator.coolantTank=Refrigerante
+enderio.combustionGenerator.fuelTank=Combustible
+enderio.combustionGenerator.output=Generando:
+
+//Stirling Gen
+enderio.stirlingGenerator.output=Generando:
+enderio.stirlingGenerator.burnRate=Índice de consumo:
+enderio.stirlingGenerator.upgradeslot=Ranura de Mejora
+enderio.stirlingGenerator.upgrades={0} proporciona {2}{1,number,#.#}x{3} de eficiencia
+enderio.stirlingGenerator.remaining={0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF Restantes.
+
+//Travel Blocks
+enderio.gui.travelAccessable.privateBlock1=Solo
+enderio.gui.travelAccessable.privateBlock2=Puede cambiar los ajustes de este bloque.
+enderio.gui.travelAccessable.public=Público
+enderio.gui.travelAccessable.private=Privado
+enderio.gui.travelAccessable.protected=Protegido
+enderio.gui.travelAccessable.unauthorised=No se te permite acceder a este bloque.
+enderio.gui.travelAccessable.enterCode=Requiere Codigo de Acceso
+enderio.gui.travelAccessable.ok=Autorizar
+enderio.gui.travelAccessable.skipLocked=Ancla Bloqueada omitida, usa el teletransporte dirigido.
+enderio.gui.travelAccessable.skipObstructed=Ancla Obstruida omitida.
+enderio.gui.travelAccessable.skipPrivate=Ancla Privada omitida.
+
+enderio.gui.telepad.configure.travel=Ajustes de Viaje
+enderio.gui.telepad.configure.telepad=Ajustes del Telepad
+enderio.gui.telepad.blocked=¡Teletransporte Bloqueado!
+
+//Spawn Gurad [sic]
+enderio.gui.spawnGurad.showRange=Muestra el alcance
+enderio.gui.spawnGurad.hideRange=Oculta el alcance
+enderio.gui.spawnGurad.range=Alcance:
+
+//conduits
+enderio.gui.conduit.ioMode=Modo
+enderio.gui.conduit.ioMode.inOut=Entrada/Salida
+enderio.gui.conduit.ioMode.input=Extraer
+enderio.gui.conduit.ioMode.output=Insertar
+enderio.gui.conduit.ioMode.disabled=Desactivado
+enderio.gui.conduit.ioMode.notSet=Por defecto
+tile.blockConduitBundle.name=Conector de Tuberías
+
+enderio.gui.conduit.button.clear=Limpiar
+enderio.gui.conduit.button.merge=Incorporar
+enderio.gui.conduit.button.show=Mostrar
+enderio.gui.conduit.button.snap=Imágen
+enderio.gui.conduit.item.insertionFilter=Insertar
+enderio.gui.conduit.item.extractionFilter=Extraer
+enderio.gui.conduit.item.sigCol=Color de la Señal
+enderio.gui.conduit.item.channel=Canal
+enderio.gui.conduit.item.ignoreMetaData=Ignorar Metadatos
+enderio.gui.conduit.item.matchMetaData=Combinar Metadatos
+enderio.gui.conduit.item.whitelist=Lista Blanca
+enderio.gui.conduit.item.blacklist=Lista Negra
+enderio.gui.conduit.item.stickyEnabled=Modo Adherente Activado/Seleccionado. Los objetos solo se enviarán a este u otras salidas Adherentes.
+enderio.gui.conduit.item.stickyDisbaled=Modo Adherente Desactivado
+enderio.gui.conduit.item.ignoreNBT=Ignorar datos NBT
+enderio.gui.conduit.item.matchNBT=Combinar datos NBT
+enderio.gui.conduit.item.oreDicEnabled=Diccionario de Menas Habilitado
+enderio.gui.conduit.item.oreDicDisabled=Diccionario de Menas Deshabilitado
+enderio.gui.conduit.item.selfFeedEnabled=Auto-alimentación Activada
+enderio.gui.conduit.item.selfFeedDisabled=Auto-alimentación Desactivada
+enderio.gui.conduit.item.roundRobinEnabled=Round Robin Activado
+enderio.gui.conduit.item.roundRobinDisabled=Round Robin Desactivado
+enderio.gui.conduit.item.priority=Prioridad
+
+enderio.gui.conduit.item.filterupgrade=Insertar Filtro de Objetos
+enderio.gui.conduit.item.speedupgrade=Insertar Mejoras/Reductores de Velocidad para tuberías de objetos
+enderio.gui.conduit.item.speedupgrade2=Máximo de 15 mejoras; Máximo de 1 reductor.
+enderio.gui.conduit.item.functionupgrade.line1=Mejoras de funcionalidad compatibles:
+
+enderio.gui.conduit.redstone.signalColor=Color de la señal
+enderio.gui.conduit.redstone.color=Color
+enderio.gui.conduit.redstone.signalStrengh=Señal Fuerte
+enderio.gui.conduit.redstone.signalStrengh.tooltip=Emite una señal de Redstone fuerte.
+
+enderio.gui.conduit.fluid.autoExtract=Auto-Extracción
+enderio.gui.conduit.fluid.filter=Filtro
+enderio.gui.conduit.fluid.whitelist=Lista Blanca
+enderio.gui.conduit.fluid.blacklist=Lista Negra
+
+enderio.gui.conduit.gas.autoExtract=Auto-Extracción
+
+//Weather
+enderio.gui.weather.task.clear=Clima Despejado
+enderio.gui.weather.task.rain=Clima Lluvioso
+enderio.gui.weather.task.storm=Tormenta
+enderio.gui.weather.requireditem=Objetos necesarios: %s
+
+//Enchants
+enchantment.enderio.soulBound=Ligado al Alma
+description.enchantment.enderio.soulBound=Evita que se pierdan los objetos al morir.
+
+//Configuration
+enderio.config.title=Configuración Ender IO
+
+enderio.config.power=Ajustes de Energía
+enderio.config.power.tooltip=Demasiados números que cambiar...
+
+enderio.config.recipe=Ajustes de Receta
+enderio.config.recipe.tooltip=¡Configúralo TODO!
+
+enderio.config.item=Activación de Objetos
+enderio.config.item.tooltip=Por si no te gustan algunos de mis increíbles objetos :(
+
+enderio.config.efficiency=Ajustes de Eficiencia
+enderio.config.efficiency.tooltip=¿Dónde se acaban los números?
+
+enderio.config.personal=Ajustes Personales
+enderio.config.personal.tooltip=No se lo contaré a nadie, lo primeto.
+
+enderio.config.anchor=Ajustes de Anclas
+enderio.config.anchor.tooltip=¡Levad Anclas!
+
+enderio.config.staff=Ajustes de Vara
+enderio.config.staff.tooltip=Ten cuidado con esa cosa, no sea que te teletransportes la cara.
+
+enderio.config.darksteel=Acero Oscuro
+enderio.config.darksteel.tooltip=No es acero común, es acero o§curi§i§imo.
+
+enderio.config.farm=Ajustes de Cultivo
+enderio.config.farm.tooltip="¡La comuna es para toda la vida!"
+
+enderio.config.aesthetic=Ajustes Estéticos
+enderio.config.aesthetic.tooltip=Oooh, aaah, qué bonito.
+
+enderio.config.advanced=Ajustes Avanzados
+enderio.config.advanced.tooltip=Para aquellos que nunca tienen suficientes configuraciones.
+
+enderio.config.magnet=Ajustes del Imán
+enderio.config.magnet.tooltip=¿Cómo funcionan?
+
+enderio.config.fluid=Ajustes de Fluidos
+enderio.config.fluid.tooltip=¡Energía líquida en estado puro!
+
+enderio.config.spawner=Ajustes del Spawner Eléctrico
+enderio.config.spawner.tooltip=Me he quedado sin descripciones ingeniosas.
+
+//Keybinds/Waila/NEI/Tooltips
+enderio.category.darksteelarmor=Armadura de Acero Oscuro
+enderio.category.tools=Herramientas
+enderio.keybind.glidertoggle=Activar/Desactivar Planeador
+enderio.keybind.gogglesofrevealing=Gafas de Revelación
+enderio.keybind.nightvision=Visión Nocturna
+enderio.keybind.soundlocator=Localizador de Sonidos
+enderio.keybind.speed=Velocidad
+enderio.keybind.jump=Salto
+enderio.keybind.stepassist=Assistente de Pasos
+enderio.keybind.yetawrenchmode=Modo de Llave Inglesa Yeta
+enderio.keybind.magnet=Activar/Desactivar Electroimán
+enderio.nei.alloysmelter=Fundición de Aleaciones
+enderio.nei.enchanter=Encantador
+enderio.nei.sagmill=Moledora SAG
+enderio.nei.sagmill.outputchance=Probabilidad: {0,choice,0#'<1'|0<{0,number}}%
+enderio.nei.slicensplice=Rebanayempalma
+enderio.nei.soulbinder=Atador de Almas
+enderio.nei.vat=El Tanque
+enderio.tooltip.burntime=Tiempo de combustión:
+enderio.tooltip.oredict=Diccionario de Menas:
+enderio.tooltip.meta=Meta:
+enderio.tooltip.uid=UID:
+enderio.tooltip.anvilupgrades=Mejoras de Yunque:
+enderio.waila.config.hiddenfacades=Fachadas Engañosas

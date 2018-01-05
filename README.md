@@ -8,12 +8,15 @@ Do what you want with it, as long as you smile while doing so. While it is not a
 
 ### Sound Credits
 
-Most sound attributed under Creative Commons Attribution 3.0 Unported (CC BY 3.0)
+Below sounds are used under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) or [CC BY-NC 3.0](https://creativecommons.org/licenses/by-nc/3.0/)
 
-Credits:
-- http://freesound.org/people/Glaneur%20de%20sons/
-- http://freesound.org/people/luffy/
-- http://freesound.org/people/Anton/
-- http://freesound.org/people/pj1s/
-- http://freesound.org/people/Syna-Max/
- 
+- https://freesound.org/people/Glaneur%20de%20sons/
+- https://freesound.org/people/luffy/
+- https://freesound.org/people/Anton/
+- https://freesound.org/people/pj1s/
+- https://freesound.org/people/Syna-Max/
+- https://freesound.org/people/Robinhood76/
+- https://freesound.org/people/zimbot/
+- https://freesound.org/people/LiamG_SFX/
+- https://freesound.org/people/kuchenanderung1/
+- https://freesound.org/people/170048@virtualwindow.co.za/

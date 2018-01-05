@@ -1,0 +1,16 @@
+{
+  "elements": [
+    {
+      "__comment": "north_down",
+      "from": [ 1, 0, 0 ],
+      "to": [ 15, 2.5, 1 ],
+      "faces": {
+        "up":    { "uv": [ 1, 0, 15, 1 ], "texture": "#side" },
+        "north": { "uv": [ 1, 13.5, 15, 16 ], "texture": "#side", "cullface": "north" },
+        "south": { "uv": [ 1, 13.5, 15, 16 ], "texture": "#side" },
+        "west":  { "uv": [ 0, 13.5, 1, 16 ], "texture": "#side" },
+        "east":  { "uv": [ 15, 13.5, 16, 16 ], "texture": "#side" }
+      }
+    }
+  ]
+}

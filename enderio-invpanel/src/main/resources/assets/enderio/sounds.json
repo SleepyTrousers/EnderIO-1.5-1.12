@@ -1,0 +1,82 @@
+{
+  "generator.zombie.bubble": {
+    "category": "block",
+    "sounds": [
+      "enderio:generator/zombie/bubble"
+    ]
+  },
+  "generator.stirling": {
+    "category": "block",
+	"sounds": [
+	  "enderio:generator/stirling/burn"
+	]
+  },
+  "machine.vat": {
+    "category": "block",
+	"sounds": [
+	  "enderio:machine/vat/gurgle"
+	]
+  },
+  "machine.sagmill": {
+    "category": "block",
+	"sounds": [
+	  "enderio:machine/sagmill/tumble"
+	]
+  },
+  "ds.nightvision.on": {
+    "category": "master",
+	"sounds": [
+	  "enderio:darksteel/modules/nightvision/on"
+	]
+  },
+  "ds.nightvision.off": {
+    "category": "master",
+	"sounds": [
+	  "enderio:darksteel/modules/nightvision/off"
+	]
+  },
+  "ds.jump": {
+    "category": "master",
+	"sounds": [
+	  "enderio:darksteel/modules/jump/jump1",
+	  "enderio:darksteel/modules/jump/jump2",
+	  "enderio:darksteel/modules/jump/jump3",
+	  "enderio:darksteel/modules/jump/jump4",
+	  "enderio:darksteel/modules/jump/jump5"
+	]
+  },
+  "telepad.active": {
+    "category": "block",
+    "sounds" : [
+      "enderio:telepad/active"
+    ]
+  },
+  "telepad.teleport": {
+    "category": "block",
+    "sounds" : [
+        "enderio:telepad/teleport1",
+        "enderio:telepad/teleport2"
+    ]
+  },
+  "silence.dig": {
+    "category": "block",
+    "sounds": [
+      "enderio:silence"
+    ]
+  },
+  "silence.step": {
+    "category": "block",
+    "sounds": [
+      "enderio:silence"
+    ]
+  },
+  "machine.soulbinder": {
+    "category": "block",
+    "sounds": [
+      "enderio:machine/soul/grind1",
+      "enderio:machine/soul/grind2",
+      "enderio:machine/soul/grind3",
+      "enderio:machine/soul/grind4"
+    ]
+  }
+}
