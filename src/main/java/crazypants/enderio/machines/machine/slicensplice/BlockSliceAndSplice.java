@@ -1,5 +1,6 @@
 package crazypants.enderio.machines.machine.slicensplice;
 
+import java.awt.Color;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
@@ -20,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -62,28 +64,41 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
       int z = pos.getZ();
       EnumFacing front = te.getFacing();
 
-      for (int i = 0; i < 2; i++) {
-        double px = x + 0.5 + front.getFrontOffsetX() * 0.6;
-        double pz = z + 0.5 + front.getFrontOffsetZ() * 0.6;
-        double v = 0.05;
+      int count = rand.nextInt(3) + 2;
+      for (int i = 0; i < count; i++) {
+        double px = x + 0.5 + front.getFrontOffsetX() * 0.5;
+        double pz = z + 0.5 + front.getFrontOffsetZ() * 0.5;
+        double v = 0.1;
         double vx = 0;
         double vz = 0;
 
         if (front == EnumFacing.NORTH || front == EnumFacing.SOUTH) {
-          px += world.rand.nextFloat() * 0.9 - 0.45;
+          px += rand.nextFloat() * 0.6 - 0.275;
           vz += front == EnumFacing.NORTH ? -v : v;
         } else {
-          pz += world.rand.nextFloat() * 0.9 - 0.45;
+          pz += rand.nextFloat() * 0.6 - 0.275;
           vx += front == EnumFacing.WEST ? -v : v;
         }
 
-        Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), px, y + 0.5, pz, vx, 0, vz,
-            0);
-        if (fx != null) {
-          fx.setRBGColorF(0.3f + (rand.nextFloat() * 0.1f), 0.1f + (rand.nextFloat() * 0.1f), 0.1f + (rand.nextFloat() * 0.1f));
-          fx.multiplyVelocity(0.25f);
+        if (rand.nextFloat() > 0.3f) {
+          Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), px, y + 0.7, pz, vx, 0, vz,
+              0);
+          if (fx != null) {
+            float[] colors = new float[3];
+            // Convert a dark unsaturated red to HSB
+            Color.RGBtoHSB(80, 20, 20, colors);
+            // Randomly lower saturation
+            colors[1] = Math.max(0, colors[1] + (rand.nextFloat() * 0.4f) - 0.4f);
+            // Randomly perturb the brightness slightly
+            colors[2] += (rand.nextFloat() * 0.2f) - 0.1f;
+            // Reassemble to RGB
+            Color color = Color.getHSBColor(colors[0], colors[1], colors[2]);
+            fx.setRBGColorF(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
+            fx.multiplyVelocity(0.25f);
+          }
+        } else {
+          Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleBloodDrip(world, px + front.getFrontOffsetX() * 0.1, y + 0.325, pz + front.getFrontOffsetZ() * 0.1, front));
         }
-
       }
     }
   }
