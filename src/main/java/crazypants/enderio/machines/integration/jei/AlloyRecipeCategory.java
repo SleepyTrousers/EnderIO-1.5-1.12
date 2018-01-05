@@ -5,14 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.machines.init.MachineObject.block_alloy_smelter;
-import static crazypants.enderio.machines.init.MachineObject.block_simple_alloy_smelter;
-import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.NUM_RECIPE_SLOT;
-
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.integration.jei.RecipeWrapper;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
@@ -35,6 +29,13 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import static crazypants.enderio.machines.init.MachineObject.block_alloy_smelter;
+import static crazypants.enderio.machines.init.MachineObject.block_simple_alloy_smelter;
+import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.NUM_RECIPE_SLOT;
 
 public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory.AlloyRecipe> {
 
@@ -62,6 +63,8 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_simple_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID);
 
+    long start = System.nanoTime();
+
     List<IRecipe> result = new ArrayList<IRecipe>();
     for (IManyToOneRecipe rec : AlloyRecipeManager.getInstance().getRecipes()) {
       if (!rec.isSynthetic()) {
@@ -69,6 +72,8 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
       }
     }
     result.addAll(AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes());
+
+    long end = System.nanoTime();
     registry.addRecipes(result, UID);
 
     registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.Normal.class, AlloyRecipeCategory.UID, FIRST_RECIPE_SLOT,
@@ -77,6 +82,8 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
         NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT - 1, NUM_INVENTORY_SLOT);
     registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.Normal.class, VanillaRecipeCategoryUid.SMELTING, FIRST_RECIPE_SLOT,
         NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
+
+    Log.info(String.format("AlloyRecipeCategory: Added %d alloy smelter recipes to JEI in %.3f seconds.", result.size(), (end - start) / 1000000000d));
   }
 
   // ------------ Category
