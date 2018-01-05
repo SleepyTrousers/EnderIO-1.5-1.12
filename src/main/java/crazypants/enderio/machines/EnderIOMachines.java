@@ -27,7 +27,7 @@ import static crazypants.enderio.machines.EnderIOMachines.MODID;
 import static crazypants.enderio.machines.EnderIOMachines.MOD_NAME;
 import static crazypants.enderio.machines.EnderIOMachines.VERSION;
 
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:" + crazypants.enderio.base.EnderIO.MODID)
+@Mod(modid = MODID, name = MOD_NAME, version = VERSION, /* D: */ dependencies = "after:" + crazypants.enderio.base.EnderIO.MODID /* :D */)
 @EventBusSubscriber(Side.CLIENT)
 public class EnderIOMachines implements IEnderIOAddon {
 
