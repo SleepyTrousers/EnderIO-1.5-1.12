@@ -136,7 +136,7 @@ public class LegacyMachineWrapper implements IItemHandler {
     int max = Math.min(amount, existing.getCount());
 
     ItemStack copy = existing.copy();
-    copy.grow(max);
+    copy.setCount(max);
 
     if (!simulate) {
       existing.shrink(max);
