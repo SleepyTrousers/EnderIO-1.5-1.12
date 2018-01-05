@@ -1,0 +1,34 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "enderio:light"
+	},
+	"variants": {
+	    "inventory": [{}],
+		"type": {
+			"electric": {},
+			"electric_inv": {},
+			"basic": {},
+			"basic_inv": {},
+			"wireless": {},
+			"wireless_inv": {}
+		},
+		"active": {
+		  "true" : {		    
+		  },
+		  "false" : {
+		    "textures": {
+			  "face": "enderio:blocks/block_electric_light_face_off"
+			}
+		  }
+		},
+		"face": {
+		  "up": {"x" : 180},
+		  "down": { },
+		  "north": { "x" : 270},
+		  "south": { "x" : 90},
+		  "east": { "y" : 90, "x" : 270},
+		  "west": { "y" : 90, "x" : 90}
+		}
+	}
+}

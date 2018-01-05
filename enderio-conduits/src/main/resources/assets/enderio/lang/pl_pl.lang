@@ -1,0 +1,250 @@
+//*** Ender IO *****//
+
+//Power
+enderio.power.mj=MJ
+enderio.power.rf=RF
+enderio.power.tick=/t
+enderio.power.maxOutput=Maksymalny przepływ
+
+//Ender IO / Enderface
+enderio.blockEnderIo=Ender IO
+item.enderio.itemEnderface.name=Twarz Endera
+
+//Conduits
+enderio.blockConduitBundle=Wiązka przewodów
+enderio.blockConduitFacade=Fasada przewodu
+item.enderio.itemConduitFacade.name=Fasada przewodu
+
+enderio.itemPowerConduit.name=Przewód energetyczny
+enderio.itemPowerConduitEnhanced.name=Ulepszony przewód energetyczny
+enderio.itemPowerConduitEnder.name=Przewód energetyczny Endera
+
+enderio.itemRedstoneConduit.name=Przewód z czerwonego kamienia
+enderio.itemRedstoneConduitSwitch.name=Przełącznik przewodów
+enderio.itemRedstoneConduitInsulated.name=Zaizolowany przewód z czerwonego kamienia
+
+enderio.itemLiquidConduit.name=Przewód cieczy
+enderio.itemLiquidConduitAdvanced.name=Przewód cieczy z wysokim ciśnieniem
+enderio.itemLiquidConduit.lockedType=Ustawiona ciecz:
+enderio.itemLiquidConduit.unlockedType=Odblokowana ciecz:
+
+enderio.itemItemConduit.name=Przwód przedmiotów
+enderio.itemItemConduitEmpowered.name=Ulepszony przewód przedmiotów
+
+enderio.itemMeConduit.name=Przewód ME
+
+//Materials
+enderio.itemMaterial.name=Materiały
+enderio.silicon.name=Silikon
+enderio.conduitBinder.name=Izolator przewodów
+enderio.binderComposite.name=Kompozyt izolatora
+enderio.phasedIronNugget.name=Bryłka pulsacyjnego żelaza
+
+//Crafting components
+enderio.itemMachinePart.name=Części maszyny
+enderio.machineChassi.name=Szkielet maszyny
+enderio.basicGear.name=Zębatka
+enderio.pulsatingCrystal.name=Kryształ pulsacyjny
+enderio.vibrantCrystal.name=Kryształ wibracyjny
+
+
+//Quartz / Glass
+enderio.blockFusedQuartz=Skondensowany kwarc
+enderio.blockFusedQuartz.fusedQuartz.name=Skondensowany kwarc
+enderio.blockFusedQuartz.fusedGlass.name=Skondensowane szkło
+
+item.enderio.itemFusedQuartzFrame.name=Skondensowana rama kwarcowa
+enderio.itemPowderIngot=Proszki i sztabki
+
+//Alloys
+enderio.itemAlloy.name=Stop
+enderio.electricalSteel.name=Stal elektryczna
+enderio.energeticAlloy.name=Stop energetyczny
+enderio.phasedGold.name=Stop wibracyjny
+enderio.redstoneAlloy.name=Stop z czerwonego kamienia
+enderio.conductiveIron.name=Przewodzące żelazo
+enderio.phasedIron.name=Żelazo pulsacyjne 
+enderio.vibrantNugget.name=Bryłka wibracyjnego stopu
+
+//Powder / Ingot
+enderio.powderCoal.name=Sproszkowany węgiel
+enderio.powderIron.name=Sproszkowane żelazo
+enderio.powderGold.name=Sproszkowane złoto
+enderio.powderCopper.name=Sproszkowana miedź
+enderio.powderTin.name=Sproszkowana cyna
+enderio.powderEnder.name=Sproszkowana perła kresu
+
+//Capacitors
+enderio.itemBasicCapacitor.name=Kondensator
+enderio.basicCapacitor.name=Kondensator
+enderio.activatedCapacitor.name=Dwuwarstwowy kondensator
+enderio.enderCapacitor.name=Ośmiowarstwowy kondensator
+
+//Machines
+tile.enderio.blockStirlingGenerator.name=Generator Stirlinga
+tile.enderio.blockReservoir.name=Zbiornik
+tile.enderio.blockAlloySmelter.name=Piec stopów
+tile.enderio.blockSolarPanel.name=Ogniwo fotowoltaiczne
+tile.enderio.blockElectricLight.name=Lampa
+tile.enderio.blockCapacitorBank.name=Bateria energetyczna
+tile.enderio.blockCapacitorBank.tooltipPrefix=Zawiera
+tile.enderio.blockCrusher.name=Rozdrabniarka
+tile.enderio.blockHyperCube.name=Międzywymiarowy odbiornik
+tile.enderio.blockPowerMonitor.name=Ekran energetyczny
+
+//Travel
+tile.enderio.blockTravelPlatform.name=Blok podróży
+enderio.blockTravelPlatform.invalidTarget=Cel zablokowany
+enderio.blockTravelPlatform.outOfRange=Cel poza zasięgiem
+item.enderio.itemTravelStaff.name=Berło podróży
+enderio.itemTravelStaff.notEnoughPower=Za mało energii
+
+//Painter
+tile.enderio.blockPainter.name=Maszyna do malowania
+enderio.blockPainter.paintedWith=Pomalowana:
+enderio.blockCustomFence=Pomalowany płot
+enderio.blockCustomFenceGate=Pomalowana furtka
+enderio.blockCustomWall=Pomalowany mur
+enderio.blockCustomStair=Pomalowane schody
+enderio.blockCustomSlab=Pomalowany półblok
+enderio.blockCustomDoubleSlab=Pomalowany półblok
+
+//Items
+item.enderio.itemYetaWrench.name=Klucz Yeta
+item.enderio.itemMJReader.name=Miernik energetyczny
+
+enderio.itemEnderface.wrongDimension=Blok EnderIO jest w innym wymiarze.
+enderio.itemEnderface.tooFar=Blok EnderIO jest za daleko.
+enderio.itemEnderface.destroyed=Blok EnderIO został zniszczony.
+enderio.itemEnderface.noSync=Twarz Endera nie została zsynchronizowana z EnderIO.
+
+
+//------GUI
+enderio.color.black=Czarny
+enderio.color.red=Czerwony
+enderio.color.green=Zielony
+enderio.color.brown=Brązowy
+enderio.color.blue=Niebieski
+enderio.color.purple=Purpurowy
+enderio.color.cyan=Cyjan
+enderio.color.lightGray=Jasno-szary
+enderio.color.gray=Szary
+enderio.color.pink=Różowy
+enderio.color.lime=Limonka
+enderio.color.yellow=Żółty
+enderio.color.lightBlue=Jasno-niebieski
+enderio.color.magenta=Magenta
+enderio.color.orange=Pomarańczowy
+enderio.color.white=Biały
+
+enderio.gui.enabled=Włączony
+enderio.gui.disabled=Wyłączony
+enderio.gui.send=Wysyłaj
+enderio.gui.receive=Odbieraj
+enderio.gui.sendReceive=Wysyłaj i odbieraj
+
+//Redstone controls
+enderio.gui.tooltip.redstoneControlMode=Tryb włącznika
+enderio.gui.tooltip.redstoneControlMode.ignore=Włączony
+enderio.gui.tooltip.redstoneControlMode.on=Włączony z sygnałem
+enderio.gui.tooltip.redstoneControlMode.off=Włączony bez sygnału
+enderio.gui.tooltip.redstoneControlMode.never=Wyłączony
+
+//Power Monitor
+enderio.gui.powerMonitor.engineControl=Kontroluj energię
+enderio.gui.powerMonitor.emit=Emituj
+enderio.gui.powerMonitor.engineSection1=Emituj sygnał, gdy jest mniej energii
+enderio.gui.powerMonitor.engineSection2=niż
+enderio.gui.powerMonitor.engineSection3=% całości.
+enderio.gui.powerMonitor.engineSection4=Przestań, gdy jest więcej lub
+enderio.gui.powerMonitor.engineSection5=równo
+enderio.gui.powerMonitor.of=z
+enderio.gui.powerMonitor.monHeading1=Energia w przewodach:
+enderio.gui.powerMonitor.monHeading2=Energia w bateriach energetycznych:
+enderio.gui.powerMonitor.monHeading3=Energia w maszynach:
+enderio.gui.powerMonitor.monHeading4=Średni ubytek w ciągu 5 sekund:
+enderio.gui.powerMonitor.monHeading5=Średni przyrost w ciągu 5 sekund:
+
+//MJ Reader
+enderio.gui.mjReader.networkHeading=Sieć energetyczna
+enderio.gui.mjReader.conduitBuffer=Bufor wewnętrzny
+enderio.gui.mjReader.requestRange=Szacowany pobór na tick
+enderio.gui.mjReader.currentRequest=Obecny pobór
+enderio.gui.mjReader.itemHeading=Przewód przedmiotów
+enderio.gui.mjReader.itemNoConnections=nie ma zewnętrznego połączenia
+enderio.gui.mjReader.noPowerFromSide=nie można przesyłać prądu z tej strony
+enderio.gui.mjReader.connectionDir=połączenie z
+enderio.gui.mjReader.extractedItems=Wyjętymi rzeczami
+enderio.gui.mjReader.extractedItem=Przedmiot
+enderio.gui.mjReader.noOutputs=nie ma prawidłowego wyjścia
+enderio.gui.mjReader.insertedInto=zostanie wysłany do:
+enderio.gui.mjReader.noItems=Nie otrzymuje rzeczy.
+enderio.gui.mjReader.noItem=Nie można przesłać
+enderio.gui.mjReader.receiveItems=Może otrzymać rzeczy z:
+enderio.gui.mjReader.receiveItem1=Przyjmie
+enderio.gui.mjReader.receiveItem2=z:
+
+//CapactorBank
+enderio.gui.capBank.inputRs=Włącznik przyrostu energii
+enderio.gui.capBank.outputRs=Włącznik ubytku energii
+enderio.gui.capBank.maxIo=Maksymalne wej./wyj.
+enderio.gui.capBank.maxInput=Wejście
+enderio.gui.capBank.maxOutput=Wyjście
+
+//Transceiver
+enderio.gui.trans.publicChannel=Publiczny kanał
+enderio.gui.trans.privateChannel=Prywatny kanał
+enderio.gui.trans.addChannel=Dodaj kanał
+enderio.gui.trans.deleteChannel=Usuń kanał
+enderio.gui.trans.activateChannel=Aktywuj kanał
+enderio.gui.trans.powerMode=Tryb energetyczny
+enderio.gui.trans.fluidMode=Tryb cieczy
+enderio.gui.trans.itemMode=Tryb przedmiotów
+enderio.gui.trans.publicHeading=Publiczne kanały:
+enderio.gui.trans.privateHeading=Prywatne kanały:
+
+//Alloy Smelter
+enderio.gui.alloy.mode.heading=Tryb pieca
+enderio.gui.alloy.mode.all=Przetapiaj wszystko
+enderio.gui.alloy.mode.alloy=Tylko stopy
+enderio.gui.alloy.mode.furnace=Tylko jak zwykły piec
+
+//Travel Blocks
+enderio.gui.travelAccessable.privateBlock1=Można
+enderio.gui.travelAccessable.privateBlock2=zmienić tylko te ustawienia.
+enderio.gui.travelAccessable.public=Publiczny
+enderio.gui.travelAccessable.private=Prywatny
+enderio.gui.travelAccessable.protected=Chroniony
+enderio.gui.travelAccessable.unauthorised=Nie masz dostępu do tego bloku.
+enderio.gui.travelAccessable.enterCode=Podaj hasło
+enderio.gui.travelAccessable.ok=Autoryzuj
+
+//conduits
+enderio.gui.conduit.ioMode=Tryb
+enderio.gui.conduit.ioMode.inOut=Wej./Wyj.
+enderio.gui.conduit.ioMode.input=Wejście
+enderio.gui.conduit.ioMode.output=Wyjście
+enderio.gui.conduit.ioMode.disabled=Wyłączony
+enderio.gui.conduit.ioMode.notSet=Domyślny
+
+enderio.gui.conduit.item.insertionFilter=Filtr wejścia
+enderio.gui.conduit.item.extractionFilter=Filtr wyjścia
+enderio.gui.conduit.item.sigCol=Kolor sygnału
+enderio.gui.conduit.item.channel=Kanał
+enderio.gui.conduit.item.ignoreMetaData=Ignoruj meta dane
+enderio.gui.conduit.item.matchMetaData=Dopasuj meta dane
+enderio.gui.conduit.item.whitelist=Biała lista
+enderio.gui.conduit.item.blacklist=Czarna lista
+enderio.gui.conduit.item.stickyEnabled=Lepki tryb włączony|Ustawione przedmioty będą|lecieć tylko do przewodów|z lepkim trybem.
+enderio.gui.conduit.item.stickyDisbaled=Lepki tryb wyłączony
+enderio.gui.conduit.item.ignoreNBT=Ignoruj dane NBT
+enderio.gui.conduit.item.matchNBT=Dopasuj dane NBT
+enderio.gui.conduit.item.oreDicEnabled=Słownik rud włączony
+enderio.gui.conduit.item.oreDicDisabled=Słownik rud wyłączony
+enderio.gui.conduit.item.selfFeedEnabled=Pętla włączona
+enderio.gui.conduit.item.selfFeedDisabled=Pętla wyłączona
+
+enderio.gui.conduit.redstone.signalColor=Kolor sygnału
+enderio.gui.conduit.redstone.color=Kolor
+
+enderio.gui.conduit.fluid.autoExtract=Wypompuj automatycznie

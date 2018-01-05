@@ -1,0 +1,71 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle":"enderio:blocks/machine_bottom"
+        }
+    },
+    "variants":{
+        "inventory": [{}],
+        "sub":{
+            "defaults":{
+                "textures":{ "front":"enderio:blocks/machine_side" },
+                "submodel":{
+                    "body":{ "model":"enderio:machine_body", "y":180 },
+                    "front":{ "model":"enderio:machine_front", "y":180 }
+                }
+            },
+            "body":{       "submodel":{ "body":{ "model":"enderio:machine_body", "y":180 } } },
+            "body_east":{  "submodel":{ "body":{ "model":"enderio:machine_body", "y":270 } } },
+            "body_south":{ "submodel":{ "body":{ "model":"enderio:machine_body", "y":0 } } },
+            "body_west":{  "submodel":{ "body":{ "model":"enderio:machine_body", "y":90 } } },
+            "soul":{           
+                "textures":{
+			        "top":"enderio:blocks/block_soul_machine_top",
+			        "bottom":"enderio:blocks/block_soul_machine_bottom",
+			        "side":"enderio:blocks/block_soul_machine_side",
+			        "back":"enderio:blocks/block_soul_machine_back",
+			        "frontframe":"enderio:blocks/block_soul_machine_side"
+			    },
+                "submodel":{ "body":{ "model":"enderio:machine_body", "y":180 } } },
+            "soul_east":{           
+                "textures":{
+                    "top":"enderio:blocks/block_soul_machine_top",
+                    "bottom":"enderio:blocks/block_soul_machine_bottom",
+                    "side":"enderio:blocks/block_soul_machine_side",
+                    "back":"enderio:blocks/block_soul_machine_back",
+                    "frontframe":"enderio:blocks/block_soul_machine_side"
+                },
+                "submodel":{ "body":{ "model":"enderio:machine_body", "y":270 } } },
+            "soul_south":{           
+                "textures":{
+                    "top":"enderio:blocks/block_soul_machine_top",
+                    "bottom":"enderio:blocks/block_soul_machine_bottom",
+                    "side":"enderio:blocks/block_soul_machine_side",
+                    "back":"enderio:blocks/block_soul_machine_back",
+                    "frontframe":"enderio:blocks/block_soul_machine_side"
+                },
+                "submodel":{ "body":{ "model":"enderio:machine_body", "y":0 } } },
+            "soul_west":{
+                "textures":{
+                    "top":"enderio:blocks/block_soul_machine_top",
+                    "bottom":"enderio:blocks/block_soul_machine_bottom",
+                    "side":"enderio:blocks/block_soul_machine_side",
+                    "back":"enderio:blocks/block_soul_machine_back",
+                    "frontframe":"enderio:blocks/block_soul_machine_side"
+                },
+                "submodel":{ "body":{ "model":"enderio:machine_body", "y":90 } } },
+            "paint_overlay":{
+                "textures":{
+                    "particle":"enderio:items/conduit_facade_overlay",
+                    "overlay":"enderio:items/conduit_facade_overlay"
+                },
+                "model":"enderio:paint_overlay"
+            },
+            "soul_frame":{          "submodel":{ "frame":{ "model":"enderio:block_soul_binder_frame", "y":180 } }, "textures":{  "0": "enderio:blocks/block_soul_machine_bottom", "1": "enderio:blocks/block_soul_machine_top" } },
+            "soul_frame_east":{     "submodel":{ "frame":{ "model":"enderio:block_soul_binder_frame", "y":270 } }, "textures":{  "0": "enderio:blocks/block_soul_machine_bottom", "1": "enderio:blocks/block_soul_machine_top" } },
+            "soul_frame_south":{    "submodel":{ "frame":{ "model":"enderio:block_soul_binder_frame", "y":0   } }, "textures":{  "0": "enderio:blocks/block_soul_machine_bottom", "1": "enderio:blocks/block_soul_machine_top" } },
+            "soul_frame_west":{     "submodel":{ "frame":{ "model":"enderio:block_soul_binder_frame", "y":90  } }, "textures":{  "0": "enderio:blocks/block_soul_machine_bottom", "1": "enderio:blocks/block_soul_machine_top" } }
+        }
+    }
+}

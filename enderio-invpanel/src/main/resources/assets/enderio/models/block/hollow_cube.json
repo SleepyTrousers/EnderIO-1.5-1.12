@@ -1,0 +1,96 @@
+{
+    "parent": "enderio:block/transform/block",
+    "elements":[
+        {
+            "from":[ 0, 0, 0 ],
+            "to":[ 16, 16, 16 ],
+            "faces":{
+                "down":{
+                    "texture":"#bottom",
+                    "cullface":"down"
+                },
+                "up":{
+                    "texture":"#top",
+                    "cullface":"up"
+                },
+                "north":{
+                    "texture":"#side",
+                    "cullface":"north"
+                },
+                "south":{
+                    "texture":"#side",
+                    "cullface":"south"
+                },
+                "west":{
+                    "texture":"#side",
+                    "cullface":"west"
+                },
+                "east":{
+                    "texture":"#side",
+                    "cullface":"east"
+                }
+            }
+        },
+        {
+            "from":[ 0, 0, 0.01 ],
+            "to":[ 16, 16, 0.01 ],
+            "faces":{
+                "south":{
+                    "texture":"#side",
+                    "uv":[16, 0, 0, 16]
+                }
+            }
+        },
+        {
+            "from":[ 0, 0, 15.99 ],
+            "to":[ 16, 16, 15.99 ],
+            "faces":{
+                "north":{
+                    "texture":"#side",
+                    "uv":[16, 0, 0, 16]
+                }
+            }
+        },
+        {
+            "from":[ 0.01, 0, 0 ],
+            "to":[ 0.01, 16, 16 ],
+            "faces":{
+                "east":{
+                    "texture":"#side",
+                    "uv":[16, 0, 0, 16]
+                }
+            }
+        },
+        {
+            "from":[ 15.99, 0, 0 ],
+            "to":[ 15.99, 16, 16 ],
+            "faces":{
+                "west":{
+                    "texture":"#side",
+                    "uv":[16, 0, 0, 16]
+                }
+            }
+        },
+        {
+            "from":[ 0, 0.01, 0 ],
+            "to":[ 16, 0.01, 16 ],
+            "faces":{
+                "up":{
+                    "texture":"#bottom",
+                    "uv":[16, 0, 0, 16]
+                }
+            }
+        },
+        {
+            "from":[ 0, 15.99, 0 ],
+            "to":[ 16, 15.99, 16 ],
+            "faces":{
+                "down":{
+                    "texture":"#top",
+                    "uv":[16, 0, 0, 16]
+                }
+            }
+        }
+        
+    ]
+}

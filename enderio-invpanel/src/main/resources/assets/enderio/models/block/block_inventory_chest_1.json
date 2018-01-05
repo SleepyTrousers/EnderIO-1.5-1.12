@@ -1,0 +1,41 @@
+{
+	"__comment": "Designed by HenryLoenwind with Cubik Studio - https://cubik.studio",
+	"parent": "block/block",
+	"elements": [
+		{
+			"__comment": "Cube2",
+			"from": [ 7, 7, 13.75 ],
+			"to": [ 9, 9, 15.75 ],
+			"faces": {
+				"down": { "uv": [ 0, 8, 8, 0 ], "texture": "#con" },
+				"up": { "uv": [ 0, 8, 8, 0 ], "texture": "#con" },
+				"south": { "uv": [ 0, 0, 8, 8 ], "texture": "#con" },
+				"west": { "uv": [ 8, 0, 0, 8 ], "texture": "#con" },
+				"east": { "uv": [ 8, 0, 0, 8 ], "texture": "#con" }
+			}
+		},
+		{
+			"__comment": "Cube6",
+			"from": [ 9, 7.75, 14.375 ],
+			"to": [ 12.5, 8.25, 15.375 ],
+			"faces": {
+				"down": { "uv": [ 0, 11.5, 7.5, 13.5 ], "texture": "#con" },
+				"up": { "uv": [ 0, 8.5, 7.5, 10.5 ], "texture": "#con" },
+				"south": { "uv": [ 0, 10, 7.5, 12 ], "texture": "#con" },
+				"east": { "uv": [ 0, 0, 8, 8 ], "texture": "#con" }
+			}
+		},
+		{
+			"__comment": "Cube10",
+			"from": [ 12.25, 4, 14.125 ],
+			"to": [ 12.75, 9.75, 15.125 ],
+			"faces": {
+				"down": { "uv": [ 12.5, 6, 13, 5.5 ], "texture": "#color" },
+				"up": { "uv": [ 12.25, 11.5, 13, 11 ], "texture": "#color" },
+				"south": { "uv": [ 12.25, 11.5, 12.75, 5.75 ], "texture": "#color" },
+				"west": { "uv": [ 14.25, 11.5, 15.25, 5.75 ], "texture": "#color" },
+				"east": { "uv": [ 0.75, 11.5, 1.75, 5.75 ], "texture": "#color" }
+			}
+		}
+	]
+}

@@ -1,0 +1,21 @@
+{
+	"forge_marker": 1,
+	"variants": {
+		"inventory": {
+			"model": "enderio:machine_body",
+			"submodel": {
+				"front": {
+					"model": "enderio:machine_front"
+				}
+			},
+			"textures": {
+				"top": "enderio:items/machine_chassi",
+				"bottom": "enderio:items/machine_chassi",
+				"side": "enderio:items/machine_chassi",
+				"back": "enderio:items/machine_chassi",
+				"frontframe": "enderio:items/machine_chassi",
+				"front": "enderio:items/machine_chassi"
+			}
+		}
+	}
+}
