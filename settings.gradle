@@ -1,0 +1,8 @@
+include ':enderio-base', ':enderio-machines', ':enderio-conduits', ':enderio-invpanel'
+
+rootProject.name = 'EnderIO'
+
+rootProject.children.each { project ->
+    String fileBaseName = project.name.toLowerCase()
+    project.buildFileName = "${fileBaseName}.gradle"
+}

@@ -1,0 +1,174 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+		classpath "gradle.plugin.net.intellisun:modDependencies:1.0.1-alpha"
+		// classpath files('K:/Workspace/modDependencies/build/libs/moddependencies-1.0.1-alpha.jar')
+    }
+}
+
+apply plugin: 'maven'
+
+ext.user = parseConfig(file('user.properties'))
+if (ext.user != null) {
+	ext.user.each { k, v ->
+		project.ext.set(k, v)
+	}
+}
+
+task copyJars(type: Copy) {
+    from subprojects.collect { 
+		it.tasks.withType(Jar) 
+	}
+    into "$buildDir/libs"
+}
+
+task apiJar(type: Jar) {
+}
+
+build.dependsOn copyJars
+
+allprojects {
+}
+
+subprojects {
+	apply plugin: 'net.minecraftforge.gradle.forge'
+	apply plugin: 'net.intellisun.moddependencies'
+	
+	group = "com.enderio"
+	archivesBaseName = "${rootProject.name}"
+	if (project.hasProperty('module_name')) {
+		archivesBaseName += "-${project.module_name}"
+	}
+	
+	if (!project.hasProperty('module_build_number') || project.module_build_number == '0') {
+		ext.module_build_number = ''
+			
+		if (System.getenv('BUILD_NUMBER') != null) 
+			project.module_build_number = System.getenv('BUILD_NUMBER')
+		else 
+			ext.module_build_number += "git rev-parse --short HEAD".execute().text.trim()
+	}
+	
+	ext.version_suffix = module_build_number
+	if (project.hasProperty('version_appendix') && project.version_appendix != '')
+		ext.version_suffix = "${version_appendix}+${module_build_number}"
+	
+	version = version_major + '.' + version_minor + '.' + version_patch + '-' + version_suffix
+	
+	sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+    compileJava {
+        sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+    }
+	
+	sourceSets {
+		main {
+			java {
+				srcDir 'src/main/java'
+			}
+			resources {
+				srcDir 'src/main/resources'
+			}
+		}
+	}
+	
+	minecraft {
+        version = "${minecraft_version}-${forge_version}"
+        mappings = mcp_mappings
+        runDir = "run"
+
+        replace '@VERSION@', project.version
+    }
+	
+	repositories {
+		mavenCentral()
+		maven { url = "http://tehnut.info/maven" }
+		maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
+		maven { url = "http://maven.tterrag.com" }
+		maven { url = "http://dvs1.progwml6.com/files/maven" } 
+		maven { url = "http://files.minecraftforge.net/maven" }
+		maven { url = "http://maven.cil.li/" }
+		maven { url = "http://maven.ic2.player.to" }
+		maven { url = "http://maven.epoxide.xyz" }
+		ivy {
+			url "http://ae-mod.info/builds"
+			layout "pattern", {
+				artifact "[module]-[revision](-[classifier])(.[ext])"
+			}
+		}
+		mavenLocal()
+	}
+	
+	dependencies {
+		if (!project.hasProperty('use_local_ender_core')) {
+			deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
+		}
+
+		compile fileTree(dir: "lib", include: '*.jar') 
+		compile fileTree(dir: "${project.rootDir}/lib", include: '*.jar') 
+	}
+	
+	modDependencies {
+		forge { requireAfter forge_version }
+		enderCore { requireAfter endercore_version }
+		jei { loadAfter jei_version }
+	}
+	
+	processResources {
+		inputs.property "version", project.version
+		inputs.property "mcversion", project.minecraft.version
+
+		from(sourceSets.main.resources.srcDirs) {
+			include '**/*.info'
+			include '**/*.properties'
+
+			expand 'version': project.version, 'mcversion': project.minecraft.version
+		}
+
+		from(sourceSets.main.resources.srcDirs) {
+			exclude '**/*.info'
+			exclude '**/*.properties'
+		}
+	}
+	
+	apiJar {
+		from sourceSets.main.allSource
+		from sourceSets.main.output
+		include 'crazypants/enderio/api/**/*'
+		classifier = 'api'
+	}
+	
+	if (JavaVersion.current().isJava8Compatible()) {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+	
+	build.dependsOn sourceJar, apiJar
+	
+	artifacts {
+		archives sourceJar
+		archives apiJar    
+	}
+}
+
+def parseConfig(File config) {
+    if (!config.exists())
+        return null
+		
+    config.withReader {
+        def prop = new Properties()
+        prop.load(it)
+        return (new ConfigSlurper().parse(prop))
+    }
+}
