@@ -108,14 +108,14 @@ public class ItemTools {
             for (int i = 0; i < sourceHandler.getSlots(); i++) {
               ItemStack removable = sourceHandler.extractItem(i, limit.getItems(), true);
               if (Prep.isValid(removable)) {
-                ItemStack unacceptable = ItemHandlerHelper.insertItemStacked(targetHandler, removable, true);
+                ItemStack unacceptable = insertItemStacked(targetHandler, removable, true);
                 int movable = removable.getCount() - unacceptable.getCount();
                 if (movable > 0) {
                   ItemStack removed = sourceHandler.extractItem(i, movable, false);
                   if (Prep.isValid(removed)) {
-                    ItemStack targetRejected = ItemHandlerHelper.insertItemStacked(targetHandler, removed, false);
+                    ItemStack targetRejected = insertItemStacked(targetHandler, removed, false);
                     if (Prep.isValid(targetRejected)) {
-                      ItemStack sourceRejected = ItemHandlerHelper.insertItemStacked(sourceHandler, targetRejected, false);
+                      ItemStack sourceRejected = insertItemStacked(sourceHandler, targetRejected, false);
                       if (Prep.isValid(sourceRejected)) {
                         EntityItem drop = new EntityItem(source.getWorld(), sourcePos.getX() + 0.5, sourcePos.getY() + 0.5, sourcePos.getZ() + 0.5,
                             sourceRejected);
@@ -158,7 +158,7 @@ public class ItemTools {
       return 0;
     }
     int startSize = item.getCount();
-    ItemStack res = ItemHandlerHelper.insertItemStacked(inventory, item.copy(), false);
+    ItemStack res = insertItemStacked(inventory, item.copy(), false);
     int val = startSize - res.getCount();
     return val;
   }
@@ -301,6 +301,48 @@ public class ItemTools {
 
   public static @Nullable IItemHandler getExternalInventory(@Nonnull TileEntity tile, @Nonnull EnumFacing face) {
     return tile.getCapability(NullHelper.notnullF(ITEM_HANDLER_CAPABILITY, "Capability<IItemHandler> is missing"), face);
+  }
+
+  @Nonnull
+  public static ItemStack insertItemStacked(@Nonnull IItemHandler inventory, @Nonnull ItemStack stack, boolean simulate) {
+    if (Prep.isValid(stack)) {
+
+      // not stackable -> just insert into a new slot
+      if (!stack.isStackable()) {
+        return ItemHandlerHelper.insertItem(inventory, stack, simulate);
+      }
+
+      int sizeInventory = inventory.getSlots();
+      int firstEmptyStack = -1;
+      int origSize = stack.getCount();
+
+      // go through the inventory and try to fill up already existing items
+      for (int i = 0; i < sizeInventory; i++) {
+        ItemStack slot = inventory.getStackInSlot(i);
+        if (ItemHandlerHelper.canItemStacksStackRelaxed(slot, stack)) {
+          stack = inventory.insertItem(i, stack, simulate);
+
+          if ((simulate && stack.getCount() != origSize) || Prep.isInvalid(stack)) {
+            // stack has been completely inserted, or we are are simulating and have a partial insert. As inventories may change their acceptance rules after a
+            // partial insert, we stop here as the simulated insert doesn't do that.
+            return stack;
+          }
+        } else if (firstEmptyStack < 0 && Prep.isInvalid(slot)) {
+          firstEmptyStack = i;
+        }
+      }
+
+      // insert remainder into empty slot
+      if (Prep.isValid(stack) && firstEmptyStack >= 0) {
+        stack = inventory.insertItem(firstEmptyStack, stack, simulate);
+        if (!simulate && Prep.isValid(stack)) {
+          // same "partial insert" issue as above
+          return ItemHandlerHelper.insertItem(inventory, stack, simulate);
+        }
+      }
+    }
+
+    return stack;
   }
 
 }
