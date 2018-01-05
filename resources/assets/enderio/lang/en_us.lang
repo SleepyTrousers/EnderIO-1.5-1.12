@@ -253,7 +253,9 @@ tile.block_solar_panel.tooltip.common.line1=Solar Power!
 tile.block_solar_panel.tooltip.detailed.line1=Produces power during daylight hours
 tile.block_solar_panel.tooltip.detailed.line2=Must have a clear line of sight to
 tile.block_solar_panel.tooltip.detailed.line3=the sky
-
+enderio.jei.solar_panel.output=Generating up to
+enderio.jei.solar_panel.range.line1=Actual power generated depends on
+enderio.jei.solar_panel.range.line2=the weather and the angle of Sun
 
 tile.block_soul_binder.name=Soul Binder
 tile.block_soul_binder.tooltip.detailed.line1=Used to convert the type of
