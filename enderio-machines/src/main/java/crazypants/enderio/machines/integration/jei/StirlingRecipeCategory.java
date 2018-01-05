@@ -76,11 +76,11 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
 
       String txt = Lang.GUI_STIRGEN_OUTPUT.get("");
       int sw = fr.getStringWidth(txt);
-      fr.drawStringWithShadow(txt, 89 - sw / 2 - xOff, 0 - yOff, ColorUtil.getRGB(Color.WHITE));
+      fr.drawStringWithShadow(txt, 89 - sw / 2 - xOff, 10 - yOff, ColorUtil.getRGB(Color.WHITE));
       txt = "-";
       sw = fr.getStringWidth(txt);
-      fr.drawStringWithShadow(txt, 89 - sw / 2 - xOff, 16 - yOff, ColorUtil.getRGB(Color.WHITE));
-      fr.drawStringWithShadow(txt, 89 - sw / 2 - xOff, 71 - yOff, ColorUtil.getRGB(Color.WHITE));
+      fr.drawStringWithShadow(txt, 89 - sw / 2 - xOff, 22 - yOff, ColorUtil.getRGB(Color.WHITE));
+      fr.drawStringWithShadow(txt, 89 - sw / 2 - xOff, 68 - yOff, ColorUtil.getRGB(Color.WHITE));
 
       GlStateManager.color(1, 1, 1, 1);
     }
@@ -176,10 +176,10 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
     IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
 
     guiItemStacks.init(0, true, 79 - xOff, 33 - yOff);
-    group.init(1, false, EnergyIngredientRenderer.INSTANCE, 37 - xOff, 15 - yOff, 40, 10, 0, 0);
-    group.init(2, false, EnergyIngredientRenderer.INSTANCE, 54 + 47 - xOff, 15 - yOff, 40, 10, 0, 0);
-    group.init(3, false, EnergyIngredientRenderer.INSTANCE, 32 - xOff, 70 - yOff, 40, 10, 0, 0);
-    group.init(4, false, EnergyIngredientRenderer.INSTANCE, 54 + 44 - xOff, 70 - yOff, 40, 10, 0, 0);
+    group.init(1, false, EnergyIngredientRenderer.INSTANCE, 37 - xOff, 21 - yOff, 40, 10, 0, 0);
+    group.init(2, false, EnergyIngredientRenderer.INSTANCE, 54 + 47 - xOff, 21 - yOff, 40, 10, 0, 0);
+    group.init(3, false, EnergyIngredientRenderer.INSTANCE, 30 - xOff, 67 - yOff, 52, 10, 0, 0);
+    group.init(4, false, EnergyIngredientRenderer.INSTANCE, 54 + 44 - xOff, 67 - yOff, 60, 10, 0, 0);
 
     guiItemStacks.set(ingredients);
     group.set(ingredients);
