@@ -33,8 +33,8 @@ task copyJars(type: Copy) {
     into "$buildDir/libs"
 }
 
-task apiJar(type: Jar) {
-}
+// task apiJar(type: Jar) {
+// }
 
 build.dependsOn copyJars
 
@@ -141,7 +141,7 @@ subprojects {
 		}
 	}
 	
-	apiJar {
+	task apiJar(type: Jar) {
 		from sourceSets.main.allSource
 		from sourceSets.main.output
 		include 'crazypants/enderio/api/**/*'
