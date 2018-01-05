@@ -58,7 +58,7 @@ public abstract class HandleAbstractCollection<E, C extends Collection<E>> imple
       int size = tag.getInteger("size");
       for (int i = 0; i < size; i++) {
         if (tag.hasKey(i + "")) {
-          object.add(elemHandler.read(registry, phase, tag, null, i + "", null));
+          object.add(elemHandler.read(registry, phase, tag, null, i + "", makeEmptyValueObject()));
         } else {
           object.add(null);
         }
@@ -68,5 +68,9 @@ public abstract class HandleAbstractCollection<E, C extends Collection<E>> imple
   }
 
   abstract protected @Nonnull C makeCollection();
+
+  protected @Nullable E makeEmptyValueObject() {
+    return null;
+  }
 
 }
