@@ -71,15 +71,16 @@ public class WiredChargerRecipeCategory extends BlankRecipeCategory<WiredCharger
         ItemStack copy = stack.copy();
         IEnergyStorage emptyCap = PowerHandlerUtil.getCapability(copy, null);
         if (emptyCap != null) {
-          int extracted = 1;
-          while (extracted > 0 && emptyCap.canExtract()) {
+          int extracted = 1, maxloop = 200;
+          while (extracted > 0 && emptyCap.canExtract() && maxloop-- > 0) {
             extracted = emptyCap.extractEnergy(Integer.MAX_VALUE, false);
           }
           if (emptyCap.canReceive() && emptyCap.getEnergyStored() < emptyCap.getMaxEnergyStored()) {
             ItemStack empty = copy.copy();
             int added = emptyCap.receiveEnergy(Integer.MAX_VALUE, false);
             int power = added;
-            while (added > 0) {
+            maxloop = 200;
+            while (added > 0 && maxloop-- > 0) {
               power += added = emptyCap.receiveEnergy(Integer.MAX_VALUE, false);
             }
             result.add(new WiredChargerRecipeWrapper(empty, copy, power));
