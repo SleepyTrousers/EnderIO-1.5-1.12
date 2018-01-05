@@ -108,7 +108,7 @@ public class ItemTools {
             for (int i = 0; i < sourceHandler.getSlots(); i++) {
               ItemStack removable = sourceHandler.extractItem(i, limit.getItems(), true);
               if (Prep.isValid(removable)) {
-                ItemStack unacceptable = insertItemStacked(targetHandler, removable, true);
+                ItemStack unacceptable = insertItemStacked(targetHandler, removable, true); // <---
                 int movable = removable.getCount() - unacceptable.getCount();
                 if (movable > 0) {
                   ItemStack removed = sourceHandler.extractItem(i, movable, false);
@@ -335,9 +335,14 @@ public class ItemTools {
       // insert remainder into empty slot
       if (Prep.isValid(stack) && firstEmptyStack >= 0) {
         stack = inventory.insertItem(firstEmptyStack, stack, simulate);
-        if (!simulate && Prep.isValid(stack)) {
+        if ((!simulate || stack.getCount() == origSize) && Prep.isValid(stack)) {
           // same "partial insert" issue as above
-          return ItemHandlerHelper.insertItem(inventory, stack, simulate);
+          for (int i = 0; i < sizeInventory; i++) {
+            stack = inventory.insertItem(i, stack, simulate);
+            if ((simulate && stack.getCount() != origSize) || Prep.isInvalid(stack)) {
+              return stack;
+            }
+          }
         }
       }
     }
