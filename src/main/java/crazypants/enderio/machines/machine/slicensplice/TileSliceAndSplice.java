@@ -1,14 +1,8 @@
 package crazypants.enderio.machines.machine.slicensplice;
 
-import static crazypants.enderio.base.config.Config.slicenspliceToolDamageChance;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_USE;
-
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 
@@ -32,13 +26,18 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
+import static crazypants.enderio.base.config.Config.slicenspliceToolDamageChance;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_USE;
+
 @Storable
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   protected final static int axeIndex = 6;
   protected final static int shearsIndex = 7;
   private EntityLivingBase fakePlayer;
-  
+
   private static final @Nonnull ResourceLocation SOUND = new ResourceLocation(EnderIO.DOMAIN, "machine.slicensplice");
 
   public TileSliceAndSplice() {
@@ -49,7 +48,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   public @Nonnull String getMachineName() {
     return MachineRecipeRegistry.SLICENSPLICE;
   }
-  
+
   @Override
   public ResourceLocation getSound() {
     return SOUND;

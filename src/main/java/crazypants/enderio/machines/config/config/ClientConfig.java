@@ -1,7 +1,10 @@
 package crazypants.enderio.machines.config.config;
 
+import java.util.Locale;
+
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.base.config.SectionedValueFactory;
 import crazypants.enderio.base.config.ValueFactory.IValue;
@@ -26,6 +29,22 @@ public final class ClientConfig {
     @Override
     public @Nonnull Float get() {
       return crazypants.enderio.base.config.Config.machineSoundVolume;
+    }
+  };
+
+  public static final IValue<Boolean> bloodEnabled = new IValue<Boolean>() {
+    private final IValue<Boolean> bloodEnabledInt = F.make("bloodEnabled", true, "Should blood be red or green?");
+
+    @Override
+    public @Nonnull Boolean get() {
+      final boolean overrideNeeded = Locale.getDefault().getCountry().equals(Locale.GERMANY.getCountry());
+      if (overrideNeeded) {
+        Log.warn("Detected local country '" + Locale.getDefault().getCountry() + "', cencoring blood.");
+        return false;
+      } else {
+        Log.info("Detected local country '" + Locale.getDefault().getCountry() + "'");
+        return bloodEnabledInt.get();
+      }
     }
   };
 

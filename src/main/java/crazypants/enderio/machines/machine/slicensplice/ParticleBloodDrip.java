@@ -2,6 +2,7 @@ package crazypants.enderio.machines.machine.slicensplice;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.machines.config.config.ClientConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -30,8 +31,13 @@ public class ParticleBloodDrip extends Particle {
     this.setPosition(xCoordIn, yCoordIn, zCoordIn);
     this.particleGravity = 0.06F;
     this.particleMaxAge = (int) (64.0D / (Math.random() * 0.8D + 0.2D));
-    this.particleRed = 0.3f;
-    this.particleGreen = this.particleBlue = 0;
+    if (ClientConfig.bloodEnabled.get()) {
+      this.particleRed = 0.3f;
+      this.particleGreen = this.particleBlue = 0;
+    } else {
+      this.particleGreen = 0.3f;
+      this.particleRed = this.particleBlue = 0;
+    }
     setScale();
   }
 
@@ -71,7 +77,11 @@ public class ParticleBloodDrip extends Particle {
           posX + (0.1 * facing.getDirectionVec().getX()), posY, posZ + (0.1 * facing.getDirectionVec().getZ()), 0, 0, 0);
 
       if (fx != null) {
-        fx.setRBGColorF(1, 0, 0);
+        if (ClientConfig.bloodEnabled.get()) {
+          fx.setRBGColorF(1, 0, 0);
+        } else {
+          fx.setRBGColorF(0, 1, 0);
+        }
       }
       this.motionX *= 0.7;
       this.motionZ *= 0.7;
