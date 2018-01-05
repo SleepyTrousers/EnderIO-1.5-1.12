@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
@@ -17,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import static crazypants.enderio.machines.init.MachineObject.block_solar_panel;
@@ -200,7 +202,19 @@ public class SolarPanelNetwork implements ISolarPanelNetwork {
   @Nonnull
   @Override
   public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
-    return new String[] { toString() };
+    NNList<String> result = new NNList<>();
+    final @Nonnull String text = String.format(" Energy was last accessed %d ticks ago", EnderIO.proxy.getServerTickCount() - lastTick);
+    result.add(String.format("%d panels producing %d µI/t now and %d µI/t peak", panels.size(), getEnergyAvailablePerTick(), getEnergyMaxPerTick()));
+    result.add(text);
+    for (BlockPos panel : panels) {
+      if (TileSolarPanel.canSeeSun(world, panel)) {
+        result.add(String.format(" Panel at %s cannot see the sun!", BlockCoord.chatString(panel, TextFormatting.RESET)));
+      }
+    }
+    if (result.size() == 2) {
+      result.add(String.format(" All panels can see the sun!"));
+    }
+    return result.toArray(new String[result.size()]);
   }
 
   @Override
