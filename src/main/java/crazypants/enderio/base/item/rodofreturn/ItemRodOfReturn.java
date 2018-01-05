@@ -29,7 +29,6 @@ import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.power.AbstractPoweredItem;
 import crazypants.enderio.base.power.ItemPowerCapabilityBackend;

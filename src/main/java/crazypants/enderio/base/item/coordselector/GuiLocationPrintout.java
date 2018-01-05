@@ -108,15 +108,15 @@ public class GuiLocationPrintout extends GuiScreenBase {
 
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture(GUI_BACKGROUND);
-    drawTexturedModalRect(getGuiLeft(), getGuiTop(), 0, 0, this.xSize, this.ySize);
+    drawTexturedModalRect(getGuiRootLeft(), getGuiRootTop(), 0, 0, this.xSize, this.ySize);
 
     checkLabelForChange();
     tf.drawTextBox();
 
     int col = ColorUtil.getRGB(Color.white);
     String txt;
-    int midX = getGuiLeft() + xSize / 2;
-    int y = getGuiTop() + 48;
+    int midX = getGuiRootLeft() + xSize / 2;
+    int y = getGuiRootTop() + 48;
 
     BlockPos loc = target.getLocation();
     txt = loc.getX() + " " + loc.getY() + " " + loc.getZ();

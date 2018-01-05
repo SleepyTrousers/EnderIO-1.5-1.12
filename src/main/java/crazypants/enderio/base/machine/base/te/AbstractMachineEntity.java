@@ -12,7 +12,6 @@ import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.capability.ItemTools.Limit;
 import crazypants.enderio.base.config.Config;
@@ -171,10 +170,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
   @SideOnly(Side.CLIENT)
   private void updateSound() {
     if (Config.machineSoundsEnabled && hasSound()) {
-      if (shouldPlaySound()) {
+      final ResourceLocation soundRL = getSound();
+      if (shouldPlaySound() && soundRL != null) {
         if (sound == null) {
           FMLClientHandler.instance().getClient().getSoundHandler()
-              .playSound(sound = new MachineSound(getSound(), pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, getVolume(), getPitch()));
+              .playSound(sound = new MachineSound(soundRL, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, getVolume(), getPitch()));
         }
       } else if (sound != null) {
         sound.endPlaying();
