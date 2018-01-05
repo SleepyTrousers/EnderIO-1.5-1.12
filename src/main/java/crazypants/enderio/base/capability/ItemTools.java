@@ -166,7 +166,7 @@ public class ItemTools {
   public static boolean hasFreeSpace(@Nonnull IItemHandler handler) {
     for (int i = 0; i < handler.getSlots(); i++) {
       ItemStack stack = handler.getStackInSlot(i);
-      if (Prep.isInvalid(stack) || (stack.isStackable() == stack.getCount() < stack.getMaxStackSize())) {
+      if (Prep.isInvalid(stack) || (stack.isStackable() && stack.getCount() < stack.getMaxStackSize() && stack.getCount() < handler.getSlotLimit(i))) {
         return true;
       }
     }
