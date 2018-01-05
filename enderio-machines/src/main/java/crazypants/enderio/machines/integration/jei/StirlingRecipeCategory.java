@@ -26,6 +26,8 @@ import crazypants.enderio.machines.machine.generator.stirling.TileStirlingGenera
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.gui.IDrawableAnimated;
+import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiIngredientGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -146,12 +148,15 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
   static int yOff = 7;
   static int xSize = 136 - 3;
 
-  @Nonnull
-  private final IDrawable background;
+  private final @Nonnull IDrawable background;
+  private final @Nonnull IDrawableAnimated flame;
 
   public StirlingRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("stirling_generator");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, xSize, 70);
+
+    IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 176, 0, 13, 13);
+    flame = guiHelper.createAnimatedDrawable(flameDrawable, 200, IDrawableAnimated.StartDirection.BOTTOM, false);
   }
 
   @Override
@@ -168,6 +173,11 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
   @Override
   public @Nonnull IDrawable getBackground() {
     return background;
+  }
+
+  @Override
+  public void drawExtras(@Nonnull Minecraft minecraft) {
+    flame.draw(minecraft, 81 - xOff, 53 - yOff);
   }
 
   @Override
