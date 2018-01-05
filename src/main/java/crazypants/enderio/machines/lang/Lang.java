@@ -98,6 +98,8 @@ public enum Lang implements ILang {
   GUI_TELEPAD_MAX(".gui.telepad.max"),
   JEI_SAGMILL_CHANCE(".jei.sagmill.outputchance"),
   JEI_COMBGEN_RANGE(".jei.combustion_generator.range"),
+  JEI_SOLAR_OUTPUT(".jei.solar_panel.output"),
+  JEI_SOLAR_RANGE(".jei.solar_panel.range"),
   GUI_BUFFER_MAXIO(".gui.buffer.maxio"),
 
   ;
