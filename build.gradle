@@ -18,6 +18,7 @@ buildscript {
 }
 
 apply plugin: 'maven'
+apply plugin: 'eclipse'
 
 ext.user = parseConfig(file('user.properties'))
 if (ext.user != null) {
@@ -39,9 +40,6 @@ task copyJars(type: Copy) {
 build.dependsOn copyJars
 
 allprojects {
-}
-
-subprojects {
 	apply plugin: 'net.minecraftforge.gradle.forge'
 	apply plugin: 'net.intellisun.moddependencies'
 	
@@ -109,6 +107,16 @@ subprojects {
 		mavenLocal()
 	}
 	
+	if (JavaVersion.current().isJava8Compatible()) {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
+subprojects {
+	apply plugin: 'eclipse-wtp'
+
 	dependencies {
 		if (!project.hasProperty('use_local_ender_core')) {
 			deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
@@ -148,18 +156,26 @@ subprojects {
 		classifier = 'api'
 	}
 	
-	if (JavaVersion.current().isJava8Compatible()) {
-        tasks.withType(Javadoc) {
-            options.addStringOption('Xdoclint:none', '-quiet')
-        }
-    }
-	
 	build.dependsOn sourceJar, apiJar
 	
 	artifacts {
 		archives sourceJar
 		archives apiJar    
 	}
+}
+
+subprojects.each { subproject -> 
+	evaluationDependsOn(subproject.path)
+}
+
+jar.dependsOn subprojects.tasks['classes']
+jar {
+    subprojects.each { subproject ->
+        from subproject.sourceSets.main.output.classesDirs
+        from subproject.sourceSets.api.output.classesDirs
+        from subproject.sourceSets.main.output.resourcesDir
+        from subproject.sourceSets.api.output.resourcesDir
+    }
 }
 
 def parseConfig(File config) {
