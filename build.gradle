@@ -16,6 +16,10 @@ buildscript {
     }
 }
 
+plugins {
+  id 'com.matthewprenger.cursegradle' version "1.0.7"
+}
+
 apply plugin: 'maven'
 apply plugin: 'eclipse'
 
@@ -50,22 +54,34 @@ allprojects {
         archivesBaseName += "-${project.module_name}"
     }
     
-    if (!project.hasProperty('module_build_number') || project.module_build_number == '0') {
-        ext.module_build_number = ''
-            
-        if (System.getenv('BUILD_NUMBER') != null) 
-            project.module_build_number = System.getenv('BUILD_NUMBER')
-        else try {
-            ext.module_build_number += "git rev-parse --short HEAD".execute().text.trim()
-            } catch (all) {}
-    }
+	if (System.getenv('BUILD_NUMBER') != null)
+	{
+		ext.version_suffix = ''
+		ext.module_version = version_major + '.' + version_minor + '.' + System.getenv('BUILD_NUMBER')
+		if (project.hasProperty('version_appendix') && project.version_appendix != '')
+			ext.version_suffix = '-' + version_appendix
+	}
+	else
+	{
+		if (!project.hasProperty('module_build_number') || project.module_build_number == '0') {
+			ext.module_build_number = ''
+				
+			if (System.getenv('MODULE_BUILD_NUMBER') != null) 
+				project.module_build_number = System.getenv('MODULE_BUILD_NUMBER')
+			else try {
+				ext.module_build_number += "git rev-parse --short HEAD".execute().text.trim()
+			} catch (all) {}
+		}
+		
+		ext.version_suffix = '-' + module_build_number
+		if (project.hasProperty('version_appendix') && project.version_appendix != '')
+			ext.version_suffix = "-${version_appendix}.${module_build_number}"
+		
+		ext.module_version = version_major + '.' + version_minor + '.' + version_patch
+	}
     
-    ext.version_suffix = module_build_number
-    if (project.hasProperty('version_appendix') && project.version_appendix != '')
-        ext.version_suffix = "${version_appendix}.${module_build_number}"
-    
-    version = version_major + '.' + version_minor + '.' + version_patch + '-' + version_suffix
-    
+	version = "${minecraft_version}_${module_version}"// ${version_suffix}"
+	
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
     compileJava {
         sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
@@ -91,7 +107,7 @@ allprojects {
     repositories {
         mavenCentral()
         maven { url = "http://tehnut.info/maven" }
-//        maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
+//      maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
         maven { url = "http://maven.tterrag.com" }
         maven { url = "http://dvs1.progwml6.com/files/maven" } 
         maven { url = "http://files.minecraftforge.net/maven" }
@@ -214,6 +230,37 @@ apiJar {
     subprojects.each { subproject ->
         from subproject.sourceSets.api.output.classesDirs
         from subproject.sourceSets.api.output.resourcesDir
+    }
+}
+
+tasks.curseforge.enabled = !dev && project.hasProperty('curseforge_key')
+curseforge {
+    if (project.hasProperty('curseforge_key')) {
+        apiKey = project.curseforge_key
+    }
+
+    project {
+        id = project.curse_projectId
+        changelog = System.getenv('CHANGELOG') == null || System.getenv('CHANGELOG').equals('none') ? "NA" : System.getenv('CHANGELOG')
+        changelogType = 'html'
+        releaseType = 'alpha' // for now
+        mainArtifact(jar) {
+            displayName = "${archivesBaseName} - ${version}"
+        }
+        relations {
+          requiredLibrary 'endercore'
+          optionalLibrary 'waila'
+          optionalLibrary 'just-enough-items-jei'
+          optionalLibrary 'the-one-probe'
+          optionalLibrary 'baubles'
+        }
+		
+		addArtifact sourceJar
+        addArtifact apiJar
+		
+		subprojects.each { subproject ->
+			addArtifact subproject.jar
+		}
     }
 }
 
