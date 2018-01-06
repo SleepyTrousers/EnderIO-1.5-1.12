@@ -1,0 +1,15 @@
+{
+    "textures":{
+        "overlay":"enderio:blocks/overlays/none"
+    },
+    "elements":[
+        {
+			    "from": [ 1, 1, -0.08 ],
+			    "to": [ 15, 15, -0.08 ],
+			    "faces": {
+			        "north": { "uv": [ 1, 1, 15, 15 ], "texture": "#overlay", "cullface": "north" },
+			        "south": { "uv": [ 15, 1, 1, 15 ], "texture": "#overlay" }
+			    }
+			}
+    ]
+}

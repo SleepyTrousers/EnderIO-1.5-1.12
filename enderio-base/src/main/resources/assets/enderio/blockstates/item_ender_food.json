@@ -1,0 +1,15 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "enderio:item_generated"
+  },
+  "variants": {
+    "variant": {
+      "enderios": {
+        "textures": {
+          "layer0": "enderio:items/item_ender_food_enderios"
+        }
+      }
+    }
+  }
+}

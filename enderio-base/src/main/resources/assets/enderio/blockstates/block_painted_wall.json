@@ -1,0 +1,36 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/cobblestone"
+        },
+        "model": "enderio:transform/fence"
+    },
+    "variants": {
+        "inventory": [{}],
+        "east":{
+            "true": { },
+            "false": { }
+        },
+        "west":{
+            "true": { },
+            "false": { }
+        },
+        "south":{
+            "true": { },
+            "false": { }
+        },
+        "north":{
+            "true": { },
+            "false": { }
+        },
+        "up":{
+            "true": { },
+            "false": { }
+        },
+        "variant":{
+            "cobblestone": { },
+            "mossy_cobblestone": { }
+        }
+    }
+}

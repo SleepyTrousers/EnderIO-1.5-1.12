@@ -2,19 +2,21 @@
 /eclipseBin
 
 ## gradle
-/.gradle
-/build
+**/.gradle
+**/build
 
 ## ForgeGradle
 /run
+/*.launch
+/*/*.launch
 
 ## eclipse
 /eclipse
-/.settings
-/.metadata
-/.classpath
-/.project
-/bin
+**/.settings
+**/.metadata
+**/.classpath
+**/.project
+**/bin
 
 ## intellij
 /out
@@ -23,9 +25,18 @@
 /*.ipr
 /*.iws
 /atlassian-ide-plugin.xml
+/classes
 
 ## gedit
 *~
+## most Windows editors
+*.bak
+## OSX
+.DS_Store
 
 ## translation reports
 resources/assets/enderio/lang/*.lang.txt
+/ebin/
+
+## local user properties
+user.properties

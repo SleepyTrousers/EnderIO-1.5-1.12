@@ -1,0 +1,21 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/planks_oak"
+        },
+        "model": "enderio:transform/fence_gate"
+    },
+    "variants": {
+        "inventory": [{}],
+        "facing":{
+            "east": { },
+            "west": { },
+            "south": { },
+            "north": { }
+        },
+        "in_wall":{"true":{},"false":{}},
+        "open":{"true":{},"false":{}},
+        "powered":{"true":{},"false":{}}
+    }
+}

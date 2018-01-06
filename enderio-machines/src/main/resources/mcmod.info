@@ -1,0 +1,20 @@
+[
+{
+  "modid": "enderio-machines",
+  "name": "Ender IO Machines",
+  "description": "All sorts of stuff and bling.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://enderio.com",
+  "updateUrl": "",
+  "authorList": [ "CrazyPants", "tterrag", "HenryLoenwind", "MatthiasM" , "CyanideX"],
+  "credits": "By CrazyPants, with the help of many",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"enderio",
+  "dependencies": [
+        "enderio"
+  ]
+}
+]

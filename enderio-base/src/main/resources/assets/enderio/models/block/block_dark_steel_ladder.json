@@ -1,0 +1,83 @@
+{
+"__comment": "Designed by - with BDcraft Cubik PRO 0.95 Beta - http://bdcraft.net",
+"elements": [ 
+{
+    "__comment": "rung",
+    "from": [ 1, 13, 0.5 ],
+    "to": [ 15, 15, 1.5 ],
+    "faces": {
+        "down":  { "uv": [ 1.01, 2.99, 14.99, 2.01 ], "texture": "#texture" },
+        "up":    { "uv": [ 1.01, 1.01, 14.99, 1.99 ], "texture": "#texture" },
+        "north": { "uv": [ 14.99, 1.01, 1.01, 2.99 ], "texture": "#texture" },
+        "south": { "uv": [ 1.01, 1.01, 14.99, 2.99 ], "texture": "#texture" },
+        "west":  { "uv": [ 1.01, 1.01, 1.99, 2.99 ], "texture": "#texture" },
+        "east":  { "uv": [ 14.99, 1.01, 14.01, 2.99 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "rung",
+    "from": [ 1, 9, 0.5 ],
+    "to": [ 15, 11, 1.5 ],
+    "faces": {
+        "down":  { "uv": [ 1.01, 6.99, 14.99, 6.01 ], "texture": "#texture" },
+        "up":    { "uv": [ 1.01, 5.01, 14.99, 5.99 ], "texture": "#texture" },
+        "north": { "uv": [ 14.99, 5.01, 1.01, 6.99 ], "texture": "#texture" },
+        "south": { "uv": [ 1.01, 5.01, 14.99, 6.99 ], "texture": "#texture" },
+        "west":  { "uv": [ 1.01, 5.01, 1.99, 6.99 ], "texture": "#texture" },
+        "east":  { "uv": [ 14.99, 5.01, 14.01, 6.99 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "rung",
+    "from": [ 1, 5, 0.5 ],
+    "to": [ 15, 7, 1.5 ],
+    "faces": {
+        "down":  { "uv": [ 1.01, 10.99, 14.99, 10.01 ], "texture": "#texture" },
+        "up":    { "uv": [ 1.01, 9.01, 14.99, 9.99 ], "texture": "#texture" },
+        "north": { "uv": [ 14.99, 9.01, 1.01, 10.99 ], "texture": "#texture" },
+        "south": { "uv": [ 1.01, 9.01, 14.99, 10.99 ], "texture": "#texture" },
+        "west":  { "uv": [ 1.01, 9.01, 1.99, 10.99 ], "texture": "#texture" },
+        "east":  { "uv": [ 14.99, 9.01, 14.01, 10.99 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "rung",
+    "from": [ 1, 1, 0.5 ],
+    "to": [ 15, 3, 1.5 ],
+    "faces": {
+        "down":  { "uv": [ 1.01, 14.99, 14.99, 14.01 ], "texture": "#texture" },
+        "up":    { "uv": [ 1.01, 13.01, 14.99, 13.99 ], "texture": "#texture" },
+        "north": { "uv": [ 14.99, 13.01, 1.01, 14.99 ], "texture": "#texture" },
+        "south": { "uv": [ 1.01, 13.01, 14.99, 14.99 ], "texture": "#texture" },
+        "west":  { "uv": [ 1.01, 13.01, 1.99, 14.99 ], "texture": "#texture" },
+        "east":  { "uv": [ 14.99, 13.01, 14.01, 14.99 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "blockDarkSteelLadder x16",
+    "from": [ 2, 0, 0 ],
+    "to": [ 4, 16, 1 ],
+    "faces": {
+        "down":  { "uv": [ 1.501, 15.99, 3.499, 15.01 ], "texture": "#texture", "cullface": "down" },
+        "up":    { "uv": [ 2.01, 0.01, 3.99, 0.99 ], "texture": "#texture", "cullface": "up" },
+        "north": { "uv": [ 3.99, 0.01, 2.01, 15.99 ], "texture": "#texture", "cullface": "north" },
+        "south": { "uv": [ 2.01, 0.01, 3.99, 15.99 ], "texture": "#texture" },
+        "west":  { "uv": [ 2.01, 0.01, 2.99, 15.99 ], "texture": "#texture" },
+        "east":  { "uv": [ 3.99, 0.01, 3.01, 15.99 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "blockDarkSteelLadder x16",
+    "from": [ 12, 0, 0 ],
+    "to": [ 14, 16, 1 ],
+    "faces": {
+        "down":  { "uv": [ 12.01, 15.99, 13.99, 15.01 ], "texture": "#texture", "cullface": "down" },
+        "up":    { "uv": [ 12.01, 0.01, 13.99, 0.99 ], "texture": "#texture", "cullface": "up" },
+        "north": { "uv": [ 13.99, 0.01, 12.01, 15.99 ], "texture": "#texture", "cullface": "north" },
+        "south": { "uv": [ 12.01, 0.01, 13.99, 15.99 ], "texture": "#texture" },
+        "west":  { "uv": [ 12.01, 0.01, 12.99, 15.99 ], "texture": "#texture" },
+        "east":  { "uv": [ 13.99, 0.01, 13.01, 15.99 ], "texture": "#texture" }
+    }
+}
+]
+}

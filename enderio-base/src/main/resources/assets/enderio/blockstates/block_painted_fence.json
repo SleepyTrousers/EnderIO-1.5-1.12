@@ -1,0 +1,16 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/planks_oak"
+        },
+        "model": "enderio:transform/fence"
+    },
+    "variants": {
+        "inventory": [{}],
+        "east":{"true":{},"false":{}},
+        "north":{"true":{},"false":{}},
+        "south":{"true":{},"false":{}},
+        "west":{"true":{},"false":{}}
+    }
+}

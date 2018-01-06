@@ -1,0 +1,18 @@
+{
+"__comment": "Designed by - with BDcraft Cubik PRO 0.95 Beta - http://bdcraft.net",
+    "parent": "enderio:block/transform/block",
+"elements": [ 
+{
+    "from": [ 0.5, 0.5, 0.5 ],
+    "to": [ 15.5, 15.5, 15.5 ],
+    "faces": {
+        "down":  { "uv": [ 15.5, 15.5, 0.5, 0.5 ], "texture": "#texture", "cullface": "down" },
+        "up":    { "uv": [ 0.5, 0.5, 15.5, 15.5 ], "texture": "#texture", "cullface": "up" },
+        "north": { "uv": [ 0.5, 0.5, 15.5, 15.5 ], "texture": "#texture", "cullface": "north" },
+        "south": { "uv": [ 0.5, 0.5, 15.5, 15.5 ], "texture": "#texture", "cullface": "south" },
+        "west":  { "uv": [ 0.5, 0.5, 15.5, 15.5 ], "texture": "#texture", "cullface": "west" },
+        "east":  { "uv": [ 0.5, 0.5, 15.5, 15.5 ], "texture": "#texture", "cullface": "east" }
+    }
+}
+]
+}

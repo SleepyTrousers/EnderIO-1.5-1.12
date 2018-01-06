@@ -1,0 +1,19 @@
+{
+    "textures":{
+        "overlay":"enderio:items/paint_overlay"
+    },
+    "elements":[
+        {
+			    "from": [ -0.08, -0.08, -0.08 ],
+			    "to": [ 16.08, 16.08, 16.08 ],
+			    "faces": {
+			        "down": { "uv": [ 0.08, 0.08, 15.92, 15.92 ], "texture": "#overlay" },
+                    "up": { "uv": [ 0.08, 0.08, 15.92, 15.92 ], "texture": "#overlay" },
+                    "north": { "uv": [ 0.08, 0.08, 15.92, 15.92 ], "texture": "#overlay" },
+                    "south": { "uv": [ 0.08, 0.08, 15.92, 15.92 ], "texture": "#overlay" },
+                    "west": { "uv": [ 0.08, 0.08, 15.92, 15.92 ], "texture": "#overlay" },
+                    "east": { "uv": [ 0.08, 0.08, 15.92, 15.92 ], "texture": "#overlay" }
+			    }
+			}
+    ]
+}

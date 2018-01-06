@@ -1,0 +1,29 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/planks_oak"
+        },
+        "model": "enderio:transform/stairs"
+    },
+    "variants": {
+        "inventory": [{}],
+        "facing":{
+            "east": { },
+            "west": { },
+            "south": { },
+            "north": { }
+        },
+        "half":{
+            "bottom":{},
+            "top":{}
+        },
+        "shape":{
+            "straight":{},
+            "outer_right":{},
+            "outer_left":{},
+            "inner_right":{},
+            "inner_left":{}
+        }
+    }
+}

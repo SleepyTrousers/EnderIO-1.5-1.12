@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the build-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+To make changes to the recipes, copy the recipes you want to change to
+the matching _user.xml. To disabled a recipe, add an attribute "disabled"
+and set it to true, e.g.: <recipe name="Gear" disabled="true" />
+
+Item specifications can reference an alias, an ore dictionary name, a
+block or an item. You can force the type by prefixing the value with
+"oredict:", "block:" or "item:". Recipes that have items that cannot be
+found in-game are either skipped or an error, depending on their "required"
+attribute.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe name="Painted Pressure Plate, Dark Steel" required="true">
+    <crafting>
+      <grid size="2x1">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" />
+      </grid>
+      <output name="PPP_DARK_STEEL" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Soularium" required="true">
+    <crafting>
+      <grid size="2x1">
+        <item name="SOULARIUM" /><item name="SOULARIUM" />
+      </grid>
+      <output name="PPP_SOULARIUM" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Wood, Silent" required="true">
+    <crafting>
+      <grid size="1x2">
+        <item name="minecraft:wooden_pressure_plate" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_WOOD_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Stone, Silent" required="true">
+    <crafting>
+      <grid size="1x2">
+        <item name="minecraft:stone_pressure_plate" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_STONE_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Iron Silent" required="true">
+    <crafting>
+      <grid size="1x2">
+        <item name="minecraft:heavy_weighted_pressure_plate" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_IRON_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Gold Silent" required="true">
+    <crafting>
+      <grid size="1x2">
+        <item name="minecraft:light_weighted_pressure_plate" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_GOLD_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Wood, Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_WOOD" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_WOOD_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Stone, Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_STONE" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_STONE_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Iron Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_IRON" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_IRON_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Gold Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_GOLD" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_GOLD_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Dark Steel Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_DARK_STEEL" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_DARK_STEEL_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Soularium Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_SOULARIUM" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_SOULARIUM_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Tuned Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_TUNED" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_TUNED_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Exit Rail" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron" /><item name="minecraft:piston" /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="minecraft:stone_pressure_plate" /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="dustRedstone" /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:block_exit_rail" amount="6" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Detector Block" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemChassiParts" /><item name="PPP_DARK_STEEL" /><item name="itemChassiParts" />
+        <item name="itemChassiParts" /><item name="piston" /><item name="itemChassiParts" />
+        <item name="itemChassiParts" /><item name="redstone_block" /><item name="itemChassiParts" />
+      </grid>
+      <output name="enderio:block_detector_block" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Detector Block, Silent" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemChassiParts" /><item name="PPP_DARK_STEEL_SILENT" /><item name="itemChassiParts" />
+        <item name="itemChassiParts" /><item name="piston" /><item name="itemChassiParts" />
+        <item name="itemChassiParts" /><item name="redstone_block" /><item name="itemChassiParts" />
+      </grid>
+      <output name="enderio:block_detector_block_silent" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Detector Block, Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="enderio:block_detector_block" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="enderio:block_detector_block_silent" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Enchanter: minecraft:protection" required="true" disabled="false">
+    <enchanting>
+      <input name="DARK_STEEL" amount="16"/>
+      <enchantment name="minecraft:protection" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:fire_protection" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:blaze_powder" amount="16"/>
+      <enchantment name="minecraft:fire_protection" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:feather_falling" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:feather" amount="1"/>
+      <enchantment name="minecraft:feather_falling" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:blast_protection" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:gunpowder" amount="16"/>
+      <enchantment name="minecraft:blast_protection" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:projectile_protection" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:arrow" amount="16"/>
+      <enchantment name="minecraft:projectile_protection" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:respiration" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:glass_bottle" amount="1"/>
+      <enchantment name="minecraft:respiration" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:aqua_affinity" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:waterlily" amount="1"/>
+      <enchantment name="minecraft:aqua_affinity" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:depth_strider" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:prismarine:0" amount="1"/>
+      <enchantment name="minecraft:depth_strider" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:frost_walker" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:ice" amount="16"/>
+      <enchantment name="minecraft:frost_walker" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:thorns" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:double_plant:4" amount="1"/>
+      <enchantment name="minecraft:thorns" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:sharpness" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:quartz" amount="12"/>
+      <enchantment name="minecraft:sharpness" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:smite" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:rotten_flesh" amount="12"/>
+      <enchantment name="minecraft:smite" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:bane_of_arthropods" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:spider_eye" amount="12"/>
+      <enchantment name="minecraft:bane_of_arthropods" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:knockback" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:piston" amount="1"/>
+      <enchantment name="minecraft:knockback" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:fire_aspect" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:blaze_rod" amount="8"/>
+      <enchantment name="minecraft:fire_aspect" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:looting" required="true" disabled="false">
+    <enchanting>
+      <input name="oredict:itemSkull" amount="1"/>
+      <enchantment name="minecraft:looting" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:efficiency" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:redstone" amount="12"/>
+      <enchantment name="minecraft:efficiency" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:silk_touch" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:slime_ball" amount="1"/>
+      <enchantment name="minecraft:silk_touch" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:unbreaking" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:obsidian" amount="1"/>
+      <enchantment name="minecraft:unbreaking" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:mending" required="true" disabled="false">
+    <enchanting>
+      <input name="enderio:item_xp_transfer" amount="1"/>
+      <enchantment name="minecraft:mending" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:fortune" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:emerald" amount="1"/>
+      <enchantment name="minecraft:fortune" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:power" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:flint" amount="12"/>
+      <enchantment name="minecraft:power" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:punch" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:string" amount="1"/>
+      <enchantment name="minecraft:punch" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:flame" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:netherrack" amount="1"/>
+      <enchantment name="minecraft:flame" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:infinity" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:ender_pearl" amount="1"/>
+      <enchantment name="minecraft:infinity" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:luck_of_the_sea" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:dye:4" amount="1"/>
+      <enchantment name="minecraft:luck_of_the_sea" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:lure" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:fish" amount="1"/>
+      <enchantment name="minecraft:lure" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: enderio:soulbound" required="true" disabled="false">
+    <enchanting>
+      <input name="ENDER_CRYSTAL" amount="1"/>
+      <enchantment name="enderio:soulbound" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+
+  <recipe name="Spawner, defaults" required="true">
+    <spawning>
+      <!-- This will print out all available mobs: 
+      <entity name="minecraft:herobrine" costMultiplier="1" disabled="false"/>
+      -->
+      <entity name="*"                             costMultiplier="1.0" disabled="false"/> <!-- default -->
+      <entity name="minecraft:bat"                 costMultiplier="0.5" disabled="false"/> <!-- Bat -->
+      <entity name="minecraft:blaze"               costMultiplier="5.0" disabled="false"/> <!-- Blaze -->
+      <entity name="minecraft:cave_spider"         costMultiplier="1.0" disabled="false"/> <!-- Cave Spider -->
+      <entity name="minecraft:chicken"             costMultiplier="0.5" disabled="false"/> <!-- Chicken -->
+      <entity name="minecraft:cow"                 costMultiplier="0.5" disabled="false"/> <!-- Cow -->
+      <entity name="minecraft:creeper"             costMultiplier="1.5" disabled="false"/> <!-- Creeper -->
+      <entity name="minecraft:donkey"              costMultiplier="1.0" disabled="false"/> <!-- Donkey -->
+      <entity name="minecraft:elder_guardian"      costMultiplier="10"  disabled="true"/> <!-- Elder Guardian -->
+      <entity name="minecraft:enderman"            costMultiplier="10"  disabled="false"/> <!-- Enderman -->
+      <entity name="minecraft:endermite"           costMultiplier="0.3" disabled="false"/> <!-- Endermite -->
+      <entity name="minecraft:evocation_illager"   costMultiplier="25"  disabled="true"/> <!-- Evoker -->
+      <entity name="minecraft:ghast"               costMultiplier="10"  disabled="false"/> <!-- Ghast -->
+      <entity name="minecraft:giant"               costMultiplier="100" disabled="false"/> <!-- Giant -->
+      <entity name="minecraft:guardian"            costMultiplier="5.0" disabled="false"/> <!-- Guardian -->
+      <entity name="minecraft:horse"               costMultiplier="1.0" disabled="false"/> <!-- Horse -->
+      <entity name="minecraft:husk"                costMultiplier="2.0" disabled="false"/> <!-- Husk -->
+      <entity name="minecraft:llama"               costMultiplier="1.0" disabled="false"/> <!-- Llama -->
+      <entity name="minecraft:magma_cube"          costMultiplier="2.0" disabled="false"/> <!-- Magma Cube -->
+      <entity name="minecraft:mooshroom"           costMultiplier="1.0" disabled="false"/> <!-- Mooshroom -->
+      <entity name="minecraft:mule"                costMultiplier="1.0" disabled="false"/> <!-- Mule -->
+      <entity name="minecraft:ocelot"              costMultiplier="1.0" disabled="false"/> <!-- Ocelot -->
+      <entity name="minecraft:pig"                 costMultiplier="0.5" disabled="false"/> <!-- Pig -->
+      <entity name="minecraft:polar_bear"          costMultiplier="2.0" disabled="false"/> <!-- Polar Bear -->
+      <entity name="minecraft:rabbit"              costMultiplier="0.1" disabled="false"/> <!-- Rabbit -->
+      <entity name="minecraft:sheep"               costMultiplier="0.5" disabled="false"/> <!-- Sheep -->
+      <entity name="minecraft:shulker"             costMultiplier="10"  disabled="false"/> <!-- Shulker -->
+      <entity name="minecraft:silverfish"          costMultiplier="1.0" disabled="false"/> <!-- Silverfish -->
+      <entity name="minecraft:skeleton"            costMultiplier="2.0" disabled="false"/> <!-- Skeleton -->
+      <entity name="minecraft:skeleton_horse"      costMultiplier="2.0" disabled="false"/> <!-- Skeleton Horse -->
+      <entity name="minecraft:slime"               costMultiplier="5.0" disabled="false"/> <!-- Slime -->
+      <entity name="minecraft:snowman"             costMultiplier="1.0" disabled="false"/> <!-- Snow Golem -->
+      <entity name="minecraft:spider"              costMultiplier="1.0" disabled="false"/> <!-- Spider -->
+      <entity name="minecraft:squid"               costMultiplier="0.5" disabled="false"/> <!-- Squid -->
+      <entity name="minecraft:stray"               costMultiplier="3.0" disabled="false"/> <!-- Stray -->
+      <entity name="minecraft:vex"                 costMultiplier="1.0" disabled="false"/> <!-- Vex -->
+      <entity name="minecraft:villager"            costMultiplier="1.0" disabled="true"/> <!-- Villager -->
+      <entity name="minecraft:villager_golem"      costMultiplier="10"  disabled="true"/> <!-- Iron Golem -->
+      <entity name="minecraft:vindication_illager" costMultiplier="30"  disabled="false"/> <!-- Vindicator -->
+      <entity name="minecraft:witch"               costMultiplier="5.0" disabled="false"/> <!-- Witch -->
+      <entity name="minecraft:wither"              costMultiplier="50"  disabled="true"/> <!-- Wither -->
+      <entity name="minecraft:wither_skeleton"     costMultiplier="20"  disabled="false"/> <!-- Wither Skeleton -->
+      <entity name="minecraft:wolf"                costMultiplier="1.0" disabled="false"/> <!-- Wolf -->
+      <entity name="minecraft:zombie"              costMultiplier="1.0" disabled="false"/> <!-- Zombie -->
+      <entity name="minecraft:zombie_horse"        costMultiplier="2.0" disabled="false"/> <!-- Zombie Horse -->
+      <entity name="minecraft:zombie_pigman"       costMultiplier="5.0" disabled="false"/> <!-- Zombie Pigman -->
+      <entity name="minecraft:zombie_villager"     costMultiplier="2.5" disabled="false"/> <!-- Zombie Villager -->
+      <!-- Note: All unconfigured mobs will have a costMultiplier of 1.0 -->
+    </spawning>
+  </recipe>
+
+  <recipe name="Spawner, Ender Zoo" required="false">
+    <spawning>
+      <entity name="enderzoo:concussioncreeper"    costMultiplier="1.5" disabled="false"/>
+      <entity name="enderzoo:direslime"            costMultiplier="0.9" disabled="false"/>
+      <entity name="enderzoo:direwolf"             costMultiplier="1.5" disabled="false"/>
+      <entity name="enderzoo:enderminy"            costMultiplier="9.0" disabled="false"/>
+      <entity name="enderzoo:fallenknight"         costMultiplier="1.0" disabled="false"/>
+      <entity name="enderzoo:fallenmount"          costMultiplier="1.5" disabled="false"/>
+      <entity name="enderzoo:owl"                  costMultiplier="1.0" disabled="false"/>
+      <entity name="enderzoo:withercat"            costMultiplier="1.0" disabled="false"/>
+      <entity name="enderzoo:witherwitch"          costMultiplier="3.0" disabled="false"/>
+    </spawning>
+  </recipe>
+
+  <recipe name="Alloy: Electrical Steel" required="true">
+    <alloying energy="10000" exp="0.5">
+      <input name="ingotIron"/>
+      <input name="dustCoal"/>
+      <input name="itemSilicon"/>
+      <output name="ingotElectricalSteel"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Energetic Alloy" required="true">
+    <alloying energy="10000" exp="0.7">
+      <input name="dustRedstone"/>
+      <input name="ingotGold"/>
+      <input name="dustGlowstone"/>
+      <output name="ingotEnergeticAlloy"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Vibrant Alloy" required="true">
+    <alloying energy="10000" exp="1">
+      <input name="ingotEnergeticAlloy"/>
+      <input name="oredict:enderpearl"/>
+      <output name="ingotVibrantAlloy"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Redstone Alloy" required="true">
+    <alloying energy="10000" exp="0.5">
+      <input name="dustRedstone"/>
+      <input name="itemSilicon"/>
+      <output name="ingotRedstoneAlloy"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Conductive Iron" required="true">
+    <alloying energy="10000" exp="0.5">
+      <input name="dustRedstone"/>
+      <input name="ingotIron"/>
+      <output name="ingotConductiveIron"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Pulsating Iron" required="true">
+    <alloying energy="10000" exp="0.7">
+      <input name="ingotIron"/>
+      <input name="oredict:enderpearl"/>
+      <output name="ingotPulsatingIron"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dark Steel" required="true">
+    <alloying energy="20000" exp="0.5">
+      <input name="ingotIron"/>
+      <input name="dustCoal"/>
+      <input name="obsidian"/>
+      <output name="ingotDarkSteel"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Soularium" required="true">
+    <alloying energy="10000" exp="0.7">
+      <input name="minecraft:soul_sand"/><!-- has no oredict entry -->
+      <input name="ingotGold"/>
+      <output name="ingotSoularium"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Fused Quartz" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="gemQuartz" amount="4"/>
+      <output name="enderio:block_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Fused Quartz from Block" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="blockQuartz"/>
+      <output name="enderio:block_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Fused Glass" required="true">
+    <alloying energy="2500" exp="0.1">
+      <input name="minecraft:glass"/><!-- don't oredict this one -->
+      <output name="enderio:block_fused_glass:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Quartz" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="gemQuartz" amount="4"/>
+      <input name="dustGlowstone" amount="4"/>
+      <output name="enderio:block_enlightened_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Quartz, Upgrade" required="true">
+    <alloying energy="2500" exp="0.5">
+      <input name="enderio:block_fused_quartz:0"/>
+      <input name="dustGlowstone" amount="4"/>
+      <output name="enderio:block_enlightened_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Quartz from Block, Variant 1" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="blockQuartz"/>
+      <input name="dustGlowstone" amount="4"/>
+      <output name="enderio:block_enlightened_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Quartz from Block, Variant 2" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="blockQuartz"/>
+      <input name="oredict:glowstone"/>
+      <output name="enderio:block_enlightened_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Quartz from Block, Variant 3" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="gemQuartz" amount="4"/>
+      <input name="oredict:glowstone"/>
+      <output name="enderio:block_enlightened_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Quartz from Block, Variant 4" required="true">
+    <alloying energy="2500" exp="0.5">
+      <input name="enderio:block_fused_quartz:0"/>
+      <input name="oredict:glowstone"/>
+      <output name="enderio:block_enlightened_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Glass" required="true">
+    <alloying energy="2500" exp="0.2">
+      <input name="minecraft:glass"/><!-- don't oredict this one -->
+      <input name="dustGlowstone" amount="4"/>
+      <output name="enderio:block_enlightened_fused_glass:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Glass, Upgrade" required="true">
+    <alloying energy="1250" exp="0.2">
+      <input name="enderio:block_fused_glass:0"/>
+      <input name="dustGlowstone" amount="4"/>
+      <output name="enderio:block_enlightened_fused_glass:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dark Fused Quartz" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="gemQuartz" amount="4"/>
+      <input name="dyeBlack"/>
+      <output name="enderio:block_dark_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dark Fused Quartz from Block, Variant 1" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="blockQuartz"/>
+      <input name="dyeBlack"/>
+      <output name="enderio:block_dark_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dark Fused Quartz from Block, Variant 2" required="true">
+    <alloying energy="2500" exp="0.5">
+      <input name="enderio:block_fused_quartz:0"/>
+      <input name="dyeBlack"/>
+      <output name="enderio:block_dark_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dark Fused Glass" required="true">
+    <alloying energy="2500" exp="0.2">
+      <input name="minecraft:glass"/><!-- don't oredict this one -->
+      <input name="dyeBlack" amount="2"/>
+      <output name="enderio:block_dark_fused_glass:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dark Fused Glass, Upgrade" required="true">
+    <alloying energy="1250" exp="0.2">
+      <input name="enderio:block_fused_Glass:0"/>
+      <input name="dyeBlack" amount="2"/>
+      <output name="enderio:block_dark_fused_glass:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Green Dye" required="true">
+    <alloying energy="2000" exp="0.25">
+      <input name="itemPlantgreen" amount="12"/>
+      <input name="oredict:slimeball"/>
+      <output name="enderio:item_material:44" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Green Dye, Variant" required="true">
+    <alloying energy="1500" exp="0.125">
+      <input name="itemPlantgreen" amount="6"/>
+      <input name="oredict:egg"/>
+      <output name="enderio:item_material:44"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Brown Dye" required="true">
+    <alloying energy="2000" exp="0.25">
+      <input name="itemPlantbrown" amount="12"/>
+      <input name="oredict:slimeball"/>
+      <output name="enderio:item_material:45" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Brown Dye, Variant" required="true">
+    <alloying energy="1500" exp="0.125">
+      <input name="itemPlantbrown" amount="6"/>
+      <input name="minecraft:mushroom_stew"/>
+      <output name="enderio:item_material:45"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Red Dye" required="true">
+    <alloying energy="15000" exp="1.0">
+      <input name="minecraft:beetroot"/>
+      <input name="itemClay" amount="3"/>
+      <input name="oredict:egg" amount="6"/>
+      <output name="dyeRed" amount="12"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dead Tree" required="true">
+    <alloying energy="2000" exp="0.05">
+      <input name="treeSapling"/>
+      <output name="minecraft:deadbush"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Manyullyn" required="false">
+    <alloying energy="10000" exp="0.25">
+      <input name="ingotArdite"/>
+      <input name="ingotCobalt"/>
+      <output name="ingotManyullyn"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Steel" required="false">
+    <alloying energy="10000" exp="0">
+      <input name="ingotIron"/>
+      <input name="dustCoal" amount="2"/>
+      <output name="ingotSteel"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Electrum Ingot (Thermal Expansion)" required="false">
+    <alloying energy="2000" exp="0.25">
+      <input name="ingotGold"/>
+      <input name="ingotSilver"/>
+      <output name="ingotElectrum"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Invar Ingot (Thermal Expansion)" required="false">
+    <alloying energy="3000" exp="0.25">
+      <input name="ingotNickel"/>
+      <input name="ingotIron" amount="2"/>
+      <output name="ingotInvar" amount="3"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Bronze (Thermal Expansion)" required="false">
+    <alloying energy="4000" exp="0">
+      <input name="ingotCopper" amount="3"/>
+      <input name="ingotTin"/>
+      <output name="ingotBronze" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Constantan (Thermal Expansion)" required="false">
+    <alloying energy="4000" exp="0">
+      <input name="ingotCopper"/>
+      <input name="ingotNickel"/>
+      <output name="ingotConstantan" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Signalum (Thermal Expansion)" required="false">
+    <alloying energy="32000" exp="0">
+      <input name="ingotCopper" amount="3"/>
+      <input name="ingotSilver"/>
+      <input name="dustRedstone" amount="10"/>
+      <output name="ingotSignalum" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Lumium from dust (Thermal Expansion)" required="false">
+    <alloying energy="32000" exp="0">
+      <input name="ingotTin" amount="3"/>
+      <input name="ingotSilver"/>
+      <input name="dustGlowstone" amount="4"/>
+      <output name="ingotLumium" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Lumium (Thermal Expansion)" required="false">
+    <alloying energy="32000" exp="0">
+      <input name="ingotTin" amount="3"/>
+      <input name="ingotSilver"/>
+      <input name="oredict:glowstone"/>
+      <output name="ingotLumium" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enderium Base (Thermal Expansion)" required="false">
+    <alloying energy="4000" exp="0">
+      <input name="ingotLead" amount="3"/>
+      <input name="ingotPlatinum"/>
+      <input name="ordecit:enderpearl" amount="4"/>
+      <output name="ingotEnderiumBase" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enderium (Thermal Expansion)" required="false">
+    <alloying energy="25000" exp="0">
+      <input name="ingotEnderiumBase" amount="2"/>
+      <input name="oredict:sand"/>
+      <output name="ingotEnderium" amount="2"/>
+    </alloying>
+  </recipe>
+
+</enderio:recipes>

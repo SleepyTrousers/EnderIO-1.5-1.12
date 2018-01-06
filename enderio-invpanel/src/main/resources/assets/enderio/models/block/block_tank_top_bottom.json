@@ -1,0 +1,30 @@
+{
+"__comment": "Designed by - with BDcraft Cubik PRO 0.95 Beta - http://bdcraft.net",
+"elements": [ 
+{
+    "__comment": "topbottom",
+    "from": [ 0, 0, 0 ],
+    "to": [ 16, 16, 16 ],
+    "faces": {
+        "down":  { "uv": [ 15.99, 15.99, 0.01, 0.01 ], "texture": "#bottom", "cullface": "down" },
+        "up":    { "uv": [ 0.01, 0.01, 15.99, 15.99 ], "texture": "#top", "cullface": "up" }
+    }
+},
+{
+    "__comment": "bottominner",
+    "from": [ 0, 0, 0 ],
+    "to": [ 16, 0.5, 16 ],
+    "faces": {
+        "up":    { "uv": [ 15.99, 0.01, 0.01, 15.99 ], "texture": "#bottom" }
+    }
+},
+{
+    "__comment": "topinner",
+    "from": [ 0, 15.5, 0 ],
+    "to": [ 16, 16, 16 ],
+    "faces": {
+        "down":  { "uv": [ 0.01, 15.99, 15.99, 0.01 ], "texture": "#top" }
+    }
+}
+]
+}

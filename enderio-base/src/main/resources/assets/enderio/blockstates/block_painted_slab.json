@@ -1,0 +1,16 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/planks_oak"
+        },
+        "model":"enderio:transform/block"
+    },
+    "variants": {
+        "inventory": [{}],
+        "half":{
+	        "top": { },
+            "bottom": { }
+        }
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"enderio:blocks/block_machine_bottom"
+        },
+        "model": "enderio:transform/thin_block"
+    },
+    "variants": {
+        "inventory": [{}],
+        "color":{
+	        "white": { },
+			"orange": { },
+			"magenta": { },
+			"light_blue": { },
+			"yellow": { },
+			"lime": { },
+			"pink": { },
+			"gray": { },
+			"silver": { },
+			"cyan": { },
+			"purple": { },
+			"blue": { },
+			"brown": { },
+			"green": { },
+			"red": { },
+			"black": { }
+        }
+    }
+}

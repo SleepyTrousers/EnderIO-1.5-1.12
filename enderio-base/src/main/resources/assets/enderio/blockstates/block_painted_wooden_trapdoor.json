@@ -1,0 +1,26 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/trapdoor"
+        },
+        "model":"trapdoor_bottom"
+    },
+    "variants": {
+        "inventory": [{}],
+        "half":{
+	        "top": {},
+          "bottom": {}
+        },
+        "facing":{
+        	"east":{},
+        	"west":{},
+        	"north":{},
+        	"south":{}
+        },
+        "open":{
+        	"true":{},
+        	"false":{}
+        }
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/cobblestone"
+        },
+        "model":"enderio:transform/block"
+    },
+    "variants": {
+        "inventory": [{}],
+        "normal": [{}]
+    }
+}

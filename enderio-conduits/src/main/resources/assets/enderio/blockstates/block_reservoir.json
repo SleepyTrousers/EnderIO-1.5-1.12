@@ -1,0 +1,65 @@
+{
+  "forge_marker":1,
+  "defaults":{
+    "textures": {
+        "particle": "enderio:blocks/reservoir",
+        "side": "enderio:blocks/reservoir"
+    }
+  },
+  "variants":{
+    "render":{
+		"defaults":{ "model":"enderio:transform/block" },
+		"auto":{ "model":"enderio:null" },
+
+      "sides":{
+        "__comment":"only used for the item. the block simply renders nothing.",
+        "submodel":{
+          "down_up":{ "model":"enderio:merging_block_2px_faces", "x":90, "textures": { "side": "blocks/water_still" } },
+          "north_south":{ "model":"enderio:merging_block_2px_faces", "textures": { "side": "blocks/water_still" } },
+          "west_east":{ "model":"enderio:merging_block_2px_faces", "y":90, "textures": { "side": "blocks/water_still" } }
+        }
+      },
+      
+      "north_west_up":{ "model":"enderio:merging_block_2px_north_west_up" },
+
+      "north_east_up":{ "model":"enderio:merging_block_2px_north_west_up", "y":90 },
+
+      "south_east_up":{ "model":"enderio:merging_block_2px_north_west_up", "y":180 },
+
+      "south_west_up":{ "model":"enderio:merging_block_2px_north_west_up", "y":270 },
+
+      "north_west_down":{ "model":"enderio:merging_block_2px_north_west_down" },
+
+      "north_east_down":{ "model":"enderio:merging_block_2px_north_west_down", "y":90 },
+
+      "south_east_down":{ "model":"enderio:merging_block_2px_north_west_down", "y":180 },
+
+      "south_west_down":{ "model":"enderio:merging_block_2px_north_west_down", "y":270 },
+
+      "north_west":{ "model":"enderio:merging_block_2px_north_west" },
+
+      "north_east":{ "model":"enderio:merging_block_2px_north_west", "y":90 },
+
+      "south_east":{ "model":"enderio:merging_block_2px_north_west", "y":180 },
+
+      "south_west":{ "model":"enderio:merging_block_2px_north_west", "y":270 },
+
+      "north_up":{ "model":"enderio:merging_block_2px_north_up" },
+
+      "east_up":{ "model":"enderio:merging_block_2px_north_up", "y":90 },
+
+      "south_up":{ "model":"enderio:merging_block_2px_north_up", "y":180 },
+
+      "west_up":{ "model":"enderio:merging_block_2px_north_up", "y":270 },
+
+      "north_down":{ "model":"enderio:merging_block_2px_north_down" },
+
+      "east_down":{ "model":"enderio:merging_block_2px_north_down", "y":90 },
+
+      "south_down":{ "model":"enderio:merging_block_2px_north_down", "y":180 },
+
+      "west_down":{ "model":"enderio:merging_block_2px_north_down", "y":270 }
+
+    }
+  }
+}
