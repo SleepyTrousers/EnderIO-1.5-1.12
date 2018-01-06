@@ -23,6 +23,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
+@SideOnly(Side.CLIENT)
 public class UpgradeRenderManager {
 
   // no WeakHashSet in Java...

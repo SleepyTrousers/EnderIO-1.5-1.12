@@ -18,12 +18,13 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import static org.lwjgl.opengl.GL11.GL_ONE;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_ZERO;
 
-@EventBusSubscriber(modid = EnderIOMachines.MODID)
+@EventBusSubscriber(modid = EnderIOMachines.MODID, value = Side.CLIENT)
 public class TeleportEntityRenderHandler {
 
   private static final Vector4i COL_TOP = new Vector4i(220, 255, 255, 0);

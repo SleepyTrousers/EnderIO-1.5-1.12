@@ -8,6 +8,8 @@ import com.enderio.core.common.util.NullHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SolidFuelCenter {
 
@@ -15,7 +17,7 @@ public class SolidFuelCenter {
   }
 
   private static final @Nonnull NNList<ISolidFuelHandler> HANDLERS = new NNList<>();
-  
+
   static {
     HANDLERS.add(new ISolidFuelHandler() {
 
@@ -77,6 +79,7 @@ public class SolidFuelCenter {
     HANDLERS.add(handler);
   }
 
+  @SideOnly(Side.CLIENT)
   public static ISolidFuelHandler getActiveSolidFuelHandler() {
     EntityPlayer player = Minecraft.getMinecraft().player;
 
