@@ -70,15 +70,18 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 
-@Mod(modid = crazypants.enderio.base.EnderIO.MODID, name = crazypants.enderio.base.EnderIO.MOD_NAME, version = crazypants.enderio.base.EnderIO.VERSION, //
-    dependencies = "after:endercore;after:hwyla;after:jei", guiFactory = "crazypants.enderio.base.config.ConfigFactoryEIO")
+@Mod(modid = EnderIO.MODID, name = EnderIO.MOD_NAME, version = EnderIO.VERSION, dependencies = EnderIO.DEPENDENCIES, 
+	guiFactory = "crazypants.enderio.base.config.ConfigFactoryEIO")
 public class EnderIO implements IEnderIOAddon {
 
   public static final @Nonnull String MODID = "enderio";
   public static final @Nonnull String DOMAIN = "enderio";
   public static final @Nonnull String MOD_NAME = "Ender IO";
   public static final @Nonnull String VERSION = "@VERSION@";
-
+  
+  private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:endercore;after:hwyla;after:jei";
+  public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
+  
   @Instance(MODID)
   public static EnderIO instance;
 
