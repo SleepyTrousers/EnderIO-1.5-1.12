@@ -19,8 +19,8 @@
         	"south":{}
         },
         "open":{
-        	true:{},
-        	false:{}
+        	"true":{},
+        	"false":{}
         }
     }
 }

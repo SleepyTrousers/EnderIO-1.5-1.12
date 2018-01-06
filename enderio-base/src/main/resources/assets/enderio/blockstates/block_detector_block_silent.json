@@ -14,8 +14,8 @@
   "variants":{
   	"inventory":[{}],
   	"on":{
-      true:             { "model": "enderio:block_detector_block_off" },
-      false:            { "model": "enderio:block_detector_block_on" }
+      "true":           { "model": "enderio:block_detector_block_off" },
+      "false":          { "model": "enderio:block_detector_block_on" }
     },
     "facing":{
     	"east":           { "x":90, "y":90 },
