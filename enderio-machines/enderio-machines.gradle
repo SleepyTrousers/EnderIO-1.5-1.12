@@ -1,3 +1,9 @@
 dependencies {
 	compile project(":enderio-base")
 }
+
+modDependencies {
+	forge { requireAfter(forge_version) }
+	enderio { requireAfter(project(":enderio-base").version) }
+	jei { loadAfter(jei_version) }
+}

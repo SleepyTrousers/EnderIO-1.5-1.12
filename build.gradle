@@ -13,12 +13,13 @@ buildscript {
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
 		classpath "gradle.plugin.net.intellisun:modDependencies:1.0.1-alpha"
-		// classpath files('K:/Workspace/modDependencies/build/libs/moddependencies-1.0.1-alpha.jar')
     }
 }
 
 apply plugin: 'maven'
 apply plugin: 'eclipse'
+
+def dev = System.getenv("RELEASE") == null || System.getenv("RELEASE").equalsIgnoreCase("false")
 
 ext.user = parseConfig(file('user.properties'))
 if (ext.user != null) {
@@ -61,7 +62,7 @@ allprojects {
 	
 	ext.version_suffix = module_build_number
 	if (project.hasProperty('version_appendix') && project.version_appendix != '')
-		ext.version_suffix = "${version_appendix}+${module_build_number}"
+		ext.version_suffix = "${version_appendix}.${module_build_number}"
 	
 	version = version_major + '.' + version_minor + '.' + version_patch + '-' + version_suffix
 	
@@ -69,6 +70,12 @@ allprojects {
     compileJava {
         sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
     }
+	
+	minecraft {
+		version = "${minecraft_version}-${forge_version}"
+		mappings = mcp_mappings
+		runDir = "run"
+	}
 	
 	sourceSets {
 		main {
@@ -80,14 +87,6 @@ allprojects {
 			}
 		}
 	}
-	
-	minecraft {
-        version = "${minecraft_version}-${forge_version}"
-        mappings = mcp_mappings
-        runDir = "run"
-
-        replace '@VERSION@', project.version
-    }
 	
 	repositories {
 		mavenCentral()
@@ -113,6 +112,38 @@ allprojects {
             options.addStringOption('Xdoclint:none', '-quiet')
         }
     }
+	
+	task apiJar(type: Jar) {
+		classifier = 'api'
+	}
+	
+	
+	task mkKeyStore(type:Exec) {
+	   workingDir projectDir
+	   commandLine 'keytool', '-genkey', '-alias', 'signFiles', '-keystore', 'eiostore.jks', '-storepass', '123456', '-noprompt', '-dname', 'CN='+getCN(), '-keypass', '123456'
+	}
+
+	task signJar(type: SignJar, dependsOn: reobfJar) {
+		inputFile = jar.archivePath
+		outputFile = jar.archivePath
+		keyStore = 'eiostore.jks'
+		alias = 'signFiles'
+		storePass = '123456'
+		keyPass = '123456'
+	}
+
+	task rmKeyStore(type: Delete) {
+	  delete 'eiostore.jks'
+	}
+
+	build.dependsOn rmKeyStore
+	rmKeyStore.dependsOn signJar
+	signJar.dependsOn mkKeyStore
+
+	artifacts {
+		archives sourceJar
+		archives apiJar    
+	}
 }
 
 subprojects {
@@ -150,18 +181,19 @@ subprojects {
 		}
 	}
 	
-	task apiJar(type: Jar) {
+	apiJar {
 		from sourceSets.main.allSource
 		from sourceSets.main.output
 		include 'crazypants/enderio/api/**/*'
-		classifier = 'api'
 	}
 	
 	build.dependsOn sourceJar, apiJar
-	
-	artifacts {
-		archives sourceJar
-		archives apiJar    
+}
+
+configure(subprojects) {
+	minecraft {
+		replace '@VERSION@', project.version
+		replace 'DEFAULT_DEPENDENCIES;', "\"${project.dependencyString}\";"
 	}
 }
 
@@ -173,10 +205,23 @@ jar.dependsOn subprojects.tasks['classes']
 jar {
     subprojects.each { subproject ->
         from subproject.sourceSets.main.output.classesDirs
-        from subproject.sourceSets.api.output.classesDirs
         from subproject.sourceSets.main.output.resourcesDir
+    }
+}
+
+apiJar.dependsOn subprojects.tasks['classes']
+apiJar {
+    subprojects.each { subproject ->
+        from subproject.sourceSets.api.output.classesDirs
         from subproject.sourceSets.api.output.resourcesDir
     }
+}
+
+String getCN() {
+    def firsts = ['Donald', 'Lex', 'Mike', 'Arthur', 'Bridget', 'Dorian', 'Ford', 'Guy', 'James', 'Jessica', 'John', 'Michael', 'Robinson', 'Zaphod', 'Bell', 'Penelope']
+    def lasts = ['Duck', 'Luthor', 'Meyers', 'Dent', 'Jones', 'Gray', 'Prefect', 'Montag', 'Moriarty', 'Rabbit', 'Watson', 'Smith', 'Corleone', 'Crusoe', 'Beeblebrox', 'Cranel', 'Akk']
+    def rand = new Random()
+    return firsts[rand.nextInt(firsts.size())] + ' ' + lasts[rand.nextInt(lasts.size())]
 }
 
 def parseConfig(File config) {
