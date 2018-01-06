@@ -38,6 +38,9 @@ public class PacketHandler {
 
   private static int ID = 0;
 
+  private PacketHandler() {
+  }
+
   public static int nextID() {
     return ID++;
   }

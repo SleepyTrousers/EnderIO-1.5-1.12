@@ -6,12 +6,11 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.EnderIODummy;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.IModObject.Registerable;
-import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.lang.Lang;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -34,7 +33,7 @@ public class GuiHelper {
             "Permission to open the GUI(s) of Ender IO's " + mo.getUnlocalisedName()));
       }
     }
-    NetworkRegistry.INSTANCE.registerGuiHandler(EnderIODummy.getInstance(), new GuiHandler()); // TODO: switch to real mod
+    NetworkRegistry.INSTANCE.registerGuiHandler(EnderIO.getInstance(), new GuiHandler());
   }
 
   public static boolean openGui(@Nonnull IModObject mo, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer,
@@ -97,7 +96,7 @@ public class GuiHelper {
     }
     d = param1;
 
-    entityPlayer.openGui(EnderIODummy.getInstance(), a, world, b, c, d); // TODO
+    entityPlayer.openGui(EnderIO.getInstance(), a, world, b, c, d);
     return true;
   }
 

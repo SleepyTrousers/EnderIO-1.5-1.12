@@ -9,6 +9,7 @@ import crazypants.enderio.base.handler.darksteel.IRenderUpgrade;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.power.PowerHandlerUtil;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.SolarConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.solar.TileSolarPanel;
@@ -51,7 +52,7 @@ public class SolarUpgrade extends AbstractUpgrade {
   private final @Nonnull IValue<Integer> realLevelCost, rf;
 
   public SolarUpgrade(@Nonnull ItemStack item, int level, @Nonnull IValue<Integer> levelCost, @Nonnull IValue<Integer> rf) {
-    super(UPGRADE_NAME, level, NAME + level, item, 99);
+    super(EnderIOMachines.MODID, UPGRADE_NAME, level, NAME + level, item, 99);
     this.level = level;
     this.realLevelCost = levelCost;
     this.rf = rf;

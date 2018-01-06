@@ -34,13 +34,21 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
     this(id, 0, unlocName, upgradeItem, levelCost);
   }
 
+  protected AbstractUpgrade(@Nonnull String domain, @Nonnull String id, @Nonnull String unlocName, @Nonnull ItemStack upgradeItem, int levelCost) {
+    this(domain, id, 0, unlocName, upgradeItem, levelCost);
+  }
+
   protected AbstractUpgrade(@Nonnull String id, int variant, @Nonnull String unlocName, @Nonnull ItemStack upgradeItem, int levelCost) {
+    this(EnderIO.DOMAIN, id, variant, unlocName, upgradeItem, levelCost);
+  }
+
+  protected AbstractUpgrade(@Nonnull String domain, @Nonnull String id, int variant, @Nonnull String unlocName, @Nonnull ItemStack upgradeItem, int levelCost) {
     this.id = KEY_UPGRADE_PREFIX + id;
     this.unlocName = unlocName;
     this.upgradeItem = upgradeItem;
     this.levelCost = levelCost;
     this.variant = variant;
-    setRegistryName(EnderIO.DOMAIN, id + variant);
+    setRegistryName(domain, id + (variant != 0 ? variant : ""));
   }
 
   @Override

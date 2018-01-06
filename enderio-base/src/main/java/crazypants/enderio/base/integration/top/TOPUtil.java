@@ -26,9 +26,9 @@ public class TOPUtil {
 
   @SubscribeEvent
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
-    if (TheOneProbeUpgrade.INSTANCE.isAvailable()) {
+    if (TheOneProbeUpgrade.getInstance().isAvailable()) {
       final IForgeRegistry<IDarkSteelUpgrade> registry = event.getRegistry();
-      registry.register(TheOneProbeUpgrade.INSTANCE);
+      registry.register(TheOneProbeUpgrade.getInstance());
       Log.info("Dark Steel Upgrades: TOP integration loaded");
     }
   }

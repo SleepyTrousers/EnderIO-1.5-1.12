@@ -17,7 +17,12 @@ public class TheOneProbeUpgrade extends AbstractUpgrade {
   private static final @Nonnull String UPGRADE_NAME = "top";
   public static final @Nonnull String PROBETAG = "theoneprobe";
 
-  public static final @Nonnull TheOneProbeUpgrade INSTANCE = new TheOneProbeUpgrade();
+  static private TheOneProbeUpgrade INSTANCE;
+
+  public static @Nonnull TheOneProbeUpgrade getInstance() {
+    // need to delay creation so we don't run when the ItemStackHolder classloads us, which is too early
+    return INSTANCE != null ? INSTANCE : (INSTANCE = new TheOneProbeUpgrade());
+  }
 
   @ItemStackHolder("theoneprobe:probe")
   public static ItemStack probe = null;

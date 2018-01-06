@@ -74,9 +74,9 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
     dependencies = "after:endercore;after:hwyla;after:jei", guiFactory = "crazypants.enderio.base.config.ConfigFactoryEIO")
 public class EnderIO implements IEnderIOAddon {
 
-  public static final @Nonnull String MODID = "enderiobase";
+  public static final @Nonnull String MODID = "enderio";
   public static final @Nonnull String DOMAIN = "enderio";
-  public static final @Nonnull String MOD_NAME = "Ender IO Base";
+  public static final @Nonnull String MOD_NAME = "Ender IO";
   public static final @Nonnull String VERSION = "@VERSION@";
 
   @Instance(MODID)
@@ -85,9 +85,7 @@ public class EnderIO implements IEnderIOAddon {
   @SidedProxy(clientSide = "crazypants.enderio.base.init.ClientProxy", serverSide = "crazypants.enderio.base.init.CommonProxy")
   public static CommonProxy proxy;
 
-  public static final @Nonnull PacketHandler packetPipeline = new PacketHandler();
-
-  public static final @Nonnull Lang lang = new Lang("enderio");
+  public static final @Nonnull Lang lang = new Lang(MODID);
 
   // prePreInit
   static {
