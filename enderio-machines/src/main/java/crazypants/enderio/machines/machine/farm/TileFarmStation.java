@@ -19,6 +19,9 @@ import crazypants.enderio.base.farming.FarmingAction;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.base.farming.IFarmer;
 import crazypants.enderio.base.farming.farmers.IHarvestResult;
+import crazypants.enderio.base.farming.fertilizer.Fertilizer;
+import crazypants.enderio.base.farming.fertilizer.IFertilizer;
+import crazypants.enderio.base.farming.fertilizer.Result;
 import crazypants.enderio.base.farming.registry.Commune;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -40,7 +43,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fml.relauncher.Side;
@@ -236,10 +238,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     if (hasBonemeal() && bonemealCooldown-- <= 0 && random.nextFloat() <= FarmConfig.farmBonemealChance.get()
         && farmer.checkAction(FarmingAction.FERTILIZE, FarmingTool.HAND)) {
       final ItemStack fertStack = getStackInSlot(minFirtSlot);
-      Fertilizer fertilizer = Fertilizer.getInstance(fertStack);
+      IFertilizer fertilizer = Fertilizer.getInstance(fertStack);
       if ((fertilizer.applyOnPlant() != isOpen(farmingPos, block)) || (fertilizer.applyOnAir() == world.isAirBlock(farmingPos))) {
-        FakePlayerEIO farmerJoe = farmer.startUsingItem(fertStack);
-        if (fertilizer.apply(fertStack, farmerJoe, world, farmingPos)) {
+        FakePlayerEIO farmerJoe = farmer.startUsingItem(Prep.getEmpty());
+        final Result result = fertilizer.apply(fertStack, farmerJoe, world, farmingPos);
+        if (result.isWasApplied()) {
+          setInventorySlotContents(minFirtSlot, result.getStack());
           PacketHandler.sendToAllAround(new PacketFarmAction(farmingPos), this);
           bonemealCooldown = FarmConfig.farmBonemealDelaySuccess.get();
           farmer.registerAction(FarmingAction.FERTILIZE, FarmingTool.HAND);
@@ -247,8 +251,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
           usePower(FarmConfig.farmBonemealEnergyUseFail.get());
           bonemealCooldown = FarmConfig.farmBonemealDelayFail.get();
         }
-        setInventorySlotContents(minFirtSlot, farmerJoe.getHeldItem(EnumHand.MAIN_HAND));
-        farmerJoe.setHeldItem(EnumHand.MAIN_HAND, Prep.getEmpty());
         farmer.handleExtraItems(farmer.endUsingItem(true), farmingPos);
       }
     }

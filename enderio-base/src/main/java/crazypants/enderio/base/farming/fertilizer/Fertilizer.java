@@ -39,7 +39,7 @@ public class Fertilizer {
 
   /**
    * Returns the singleton instance for the fertilizer that was given as parameter. If the given item is no fertilizer, it will return an instance of
-   * Fertilizer.None.
+   * {@link Fertilizer#NONE}.
    * 
    */
   public static @Nonnull IFertilizer getInstance(@Nonnull ItemStack stack) {

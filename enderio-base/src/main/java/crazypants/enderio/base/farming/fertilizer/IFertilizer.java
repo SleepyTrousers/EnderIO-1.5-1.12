@@ -12,10 +12,9 @@ public interface IFertilizer {
   /**
    * Tries to apply the given item on the given block using the type-specific method. SFX is played on success.
    * 
-   * If the item was successfully applied, the stacksize will be decreased if appropriate. The caller will need to check for stacksize 0 and null the inventory
-   * slot if needed.
+   * If the item was successfully applied, the stacksize will be decreased if appropriate.
    * 
-   * @param stack
+   * @param stackIn
    * @param player
    * @param world
    * @param bc
