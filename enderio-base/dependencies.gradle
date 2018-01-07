@@ -1,0 +1,5 @@
+modDependencies {
+	forge { requireAfter(forge_version) }
+	endercore { requireAfter(endercore_version) }
+	jei { loadAfter(jei_version) }
+}

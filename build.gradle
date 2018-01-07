@@ -214,12 +214,15 @@ subprojects {
     build.dependsOn sourceJar, apiJar
 }
 
-subprojects { sub ->
-	sub.evaluate()
-	
+subprojects {
+	if (file('dependencies.gradle').exists())
+		apply from: 'dependencies.gradle'
+		
 	minecraft {
-		replace '@VERSION@', project.version
-		replace 'DEFAULT_DEPENDENCIES;', "\"${project.dependencyString}\";"
+		replace '@VERSION@', version
+		
+		if (project.hasProperty('dependencyString'))
+			replace 'DEFAULT_DEPENDENCIES;', "\"${dependencyString}\";"
 	}
 }
 
