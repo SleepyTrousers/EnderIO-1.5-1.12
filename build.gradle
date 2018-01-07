@@ -214,11 +214,13 @@ subprojects {
     build.dependsOn sourceJar, apiJar
 }
 
-configure(subprojects) {
-    minecraft {
-        replace '@VERSION@', project.version
-        replace 'DEFAULT_DEPENDENCIES;', "\"${project.dependencyString}\";"
-    }
+subprojects { sub ->
+	sub.evaluate()
+	
+	minecraft {
+		replace '@VERSION@', project.version
+		replace 'DEFAULT_DEPENDENCIES;', "\"${project.dependencyString}\";"
+	}
 }
 
 jar.doFirst {
