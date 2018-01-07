@@ -77,7 +77,7 @@ allprojects {
         ext.module_version = version_major + '.' + version_minor + '.' + version_patch
     }
 
-    version = "${minecraft_version}_${module_version}"// ${version_suffix}"
+    version = "${minecraft_version}-${module_version}"// ${version_suffix}"
 
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
     compileJava {
@@ -264,14 +264,22 @@ curseforge {
 
     project {
         id = project.curse_projectId
-        changelog = System.getenv('CHANGELOG') == null || System.getenv('CHANGELOG').equals('none') ? "NA" : System.getenv('CHANGELOG')
+        changelog = """
+<p>You need <strong>either</strong> the main file <strong>or</strong> a selection of the "split" jars, not both!</p>
+<p>&nbsp;</p>
+<p><a href="http://ci.tterrag.com/job/EnderIO-Modules/job/EnderIO-Base/#BUILD#/changes">Changelog (this build)</a> / 
+<a href="http://ci.tterrag.com/job/EnderIO-Modules/job/EnderIO-Base/changes">Changelog (all builds)</a></p>
+<p>&nbsp;</p>
+<p>#EXTRA#</p>
+""".replaceAll('#BUILD#', System.getenv('BUILD_NUMBER') == null ? '0' : System.getenv('BUILD_NUMBER')).replaceAll('#EXTRA#', System.getenv('CHANGELOG') == null || System.getenv('CHANGELOG').equals('none') ? '' : System.getenv('CHANGELOG'))
         changelogType = 'html'
         releaseType = 'alpha' // for now
         mainArtifact(jar) {
-            displayName = "${archivesBaseName} - ${version}"
+            displayName = "Ender IO - ${module_version}"
         }
         relations {
           requiredLibrary 'endercore'
+
           optionalLibrary 'waila'
           optionalLibrary 'jei'
           optionalLibrary 'the-one-probe'
