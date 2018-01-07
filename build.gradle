@@ -86,6 +86,14 @@ allprojects {
 
     version = "${minecraft_version}-${module_version}"// ${version_suffix}"
 
+	if (!project.hasProperty('include_in_build'))
+		project.ext.include_in_build = true
+	else
+		project.include_in_build = project.include_in_build != 'false'
+	
+	if (!project.include_in_build)
+		println "Project ${project.name} is forcefully excluded from the build"
+	
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
     compileJava {
         sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
@@ -166,6 +174,8 @@ allprojects {
     }
 }
 
+def buildprojects = subprojects.findAll { sp -> sp.include_in_build }
+
 subprojects {
     apply plugin: 'eclipse-wtp'
 
@@ -176,12 +186,6 @@ subprojects {
 
         compile fileTree(dir: "lib", include: '*.jar')
         compile fileTree(dir: "${project.rootDir}/lib", include: '*.jar')
-    }
-
-    modDependencies {
-        forge { requireAfter forge_version }
-        enderCore { requireAfter endercore_version }
-        jei { loadAfter jei_version }
     }
 
     processResources {
@@ -210,30 +214,32 @@ subprojects {
     build.dependsOn sourceJar, apiJar
 }
 
-configure(subprojects) {
-    minecraft {
-        replace '@VERSION@', project.version
-        replace 'DEFAULT_DEPENDENCIES;', "\"${project.dependencyString}\";"
-    }
+subprojects { sub ->
+	sub.evaluate()
+	
+	minecraft {
+		replace '@VERSION@', project.version
+		replace 'DEFAULT_DEPENDENCIES;', "\"${project.dependencyString}\";"
+	}
 }
 
 jar.doFirst {
     File target = new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/lang")
     target.mkdirs()
-    subprojects.each { subproject ->
+    buildprojects.each { subproject ->
         new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/lang/').eachFileMatch( ~".*\\.lang\$" ) { langfile ->
             new File(target, langfile.name) << "\n" << langfile.text
         }
     }
 
     def mcmod = ""
-    subprojects.each { subproject ->
+    buildprojects.each { subproject ->
         mcmod += new File(subproject.sourceSets.main.output.resourcesDir, 'mcmod.info').text
     }
     new File(project.sourceSets.main.output.resourcesDir, "mcmod.info") << mcmod.replaceAll(/\]\s*\[/, ',')
 
     def sound = ""
-    subprojects.each { subproject ->
+    buildprojects.each { subproject ->
         sound += new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/sounds.json').text
     }
     new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/sounds.json") << sound.replaceAll(/\}\s*\{/, ',')
@@ -249,7 +255,7 @@ jar.dependsOn subprojects.tasks['classes']
 jar {
     from project.sourceSets.main.output.resourcesDir
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    subprojects.each { subproject ->
+    buildprojects.each { subproject ->
         from subproject.sourceSets.main.output.classesDirs
         from subproject.sourceSets.main.output.resourcesDir
     }
@@ -257,7 +263,7 @@ jar {
 
 apiJar.dependsOn subprojects.tasks['classes']
 apiJar {
-    subprojects.each { subproject ->
+    buildprojects.each { subproject ->
         from subproject.sourceSets.api.output.classesDirs
         from subproject.sourceSets.api.output.resourcesDir
     }
@@ -315,11 +321,19 @@ curseforge {
 
         addArtifact apiJar
 
-        subprojects.each { subproject ->
+        buildprojects.each { subproject ->
             addArtifact subproject.jar
             addArtifact subproject.sourceJar
         }
     }
+}
+
+gradle.taskGraph.whenReady { 
+	gradle.taskGraph.allTasks.each { 
+		if(!it.project.include_in_build) { 
+			it.onlyIf { false } 
+		} 
+	} 
 }
 
 String getCN() {
