@@ -213,12 +213,38 @@ configure(subprojects) {
     }
 }
 
+jar.doFirst {
+    File target = new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/lang")
+    target.mkdirs()
+    subprojects.each { subproject ->
+        new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/lang/').eachFileMatch( ~".*\\.lang\$" ) { langfile ->
+            new File(target, langfile.name) << "\n" << langfile.text
+        }
+    }
+
+    def mcmod = ""
+    subprojects.each { subproject ->
+        mcmod += new File(subproject.sourceSets.main.output.resourcesDir, 'mcmod.info').text
+    }
+    new File(project.sourceSets.main.output.resourcesDir, "mcmod.info") << mcmod.replaceAll(/\]\s*\[/, ',')
+
+    def sound = ""
+    subprojects.each { subproject ->
+        sound += new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/sounds.json').text
+    }
+    new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/sounds.json") << sound.replaceAll(/\}\s*\{/, ',')
+
+    println "Created derived resources in ${target}"
+}
+
 subprojects.each { subproject -> 
     evaluationDependsOn(subproject.path)
 }
 
 jar.dependsOn subprojects.tasks['classes']
 jar {
+    from project.sourceSets.main.output.resourcesDir
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     subprojects.each { subproject ->
         from subproject.sourceSets.main.output.classesDirs
         from subproject.sourceSets.main.output.resourcesDir
