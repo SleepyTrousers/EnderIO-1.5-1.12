@@ -12,13 +12,13 @@ import com.enderio.core.common.util.NNList.ShortCallback;
 import com.enderio.core.common.util.NullHelper;
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.farming.FarmNotification;
 import crazypants.enderio.base.farming.FarmingAction;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.base.farming.IFarmer;
 import crazypants.enderio.base.farming.PickupWorld;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
+import crazypants.enderio.machines.config.config.FarmConfig;
 import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
@@ -181,7 +181,7 @@ public class FarmLogic implements IFarmer {
 
   @Override
   public int isLowOnSaplings(@Nonnull BlockPos pos) {
-    return 90 * (Config.farmSaplingReserveAmount - getSeedTypeInSuppliesFor(pos).getCount()) / Config.farmSaplingReserveAmount;
+    return 90 * (FarmConfig.farmSaplingReserveAmount.get() - getSeedTypeInSuppliesFor(pos).getCount()) / FarmConfig.farmSaplingReserveAmount.get();
   }
 
   @Override
@@ -350,36 +350,26 @@ public class FarmLogic implements IFarmer {
       }
       return false;
     }
-    switch (action) {
-    case FERTILIZE:
-      return owner.getEnergyStored() >= Config.farmBonemealActionEnergyUseRF;
-    case HARVEST:
-      return owner.getEnergyStored() >= (tool == FarmingTool.AXE ? Config.farmAxeActionEnergyUseRF : Config.farmActionEnergyUseRF);
-    case PLANT:
-      return owner.getEnergyStored() >= 0;
-    case TILL:
-      return owner.getEnergyStored() >= 0;
-    default:
-      return false;
-    }
+    return owner.getEnergyStored() >= getEnergyUse(action, tool);
   }
 
   @Override
   public void registerAction(@Nonnull FarmingAction action, @Nonnull FarmingTool tool) {
+    owner.usePower(getEnergyUse(action, tool));
+  }
+
+  private int getEnergyUse(@Nonnull FarmingAction action, @Nonnull FarmingTool tool) {
     switch (action) {
     case FERTILIZE:
-      owner.usePower(Config.farmBonemealActionEnergyUseRF);
-      break;
+      return FarmConfig.farmBonemealEnergyUseSuccess.get();
     case HARVEST:
-      owner.usePower(tool == FarmingTool.AXE ? Config.farmAxeActionEnergyUseRF : Config.farmActionEnergyUseRF);
-      break;
+      return tool == FarmingTool.AXE ? FarmConfig.farmHarvestAxeEnergyUse.get() : FarmConfig.farmHarvestEnergyUse.get();
     case PLANT:
-      owner.usePower(0);
-      break;
+      return FarmConfig.farmPlantEnergyUse.get();
     case TILL:
-      owner.usePower(0);
-      break;
+      return FarmConfig.farmTillEnergyUse.get();
     default:
+      return 0;
     }
   }
 
@@ -387,7 +377,7 @@ public class FarmLogic implements IFarmer {
   public void registerAction(@Nonnull FarmingAction action, @Nonnull FarmingTool tool, @Nonnull IBlockState state, @Nonnull BlockPos pos) {
     registerAction(action, tool);
     ItemStack toolStack = getTool(tool);
-    if (Prep.isValid(toolStack) && getWorld().rand.nextFloat() >= Config.farmToolTakeDamageChance) {
+    if (Prep.isValid(toolStack) && getWorld().rand.nextFloat() <= FarmConfig.farmToolDamageChance.get()) {
       FarmSlots toolSlot = null;
       for (FarmSlots slot : FarmSlots.TOOLS) {
         if (slot.get(owner) == toolStack) { // sic! identity check
@@ -399,6 +389,9 @@ public class FarmLogic implements IFarmer {
       switch (tool) {
       case AXE:
         toolStack.getItem().onBlockDestroyed(toolStack, getWorld(), state, pos, farmerJoe);
+        if (FarmingTool.isBrokenTinkerTool(toolStack) || FarmingTool.isDryRfTool(toolStack)) {
+          handleExtraItem(toolStack, null);
+        }
         break;
       case HAND:
         break;

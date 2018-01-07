@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.farming.FarmingAction;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.base.farming.IFarmer;
@@ -28,9 +27,7 @@ public class CocoaFarmer extends CustomSeedFarmer {
   public CocoaFarmer() {
     super(Blocks.COCOA, new ItemStack(Items.DYE, 1, 3));
     this.requiresTilling = false;
-    if (!Config.farmHarvestJungleWhenCocoa) {
-      this.disableTreeFarm = true;
-    }
+    this.disableTreeFarm = true;
   }
 
   @Override

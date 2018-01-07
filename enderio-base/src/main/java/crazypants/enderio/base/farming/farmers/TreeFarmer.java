@@ -10,7 +10,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.farming.FarmNotification;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.FarmingAction;
@@ -180,8 +179,7 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
     return res;
   }
 
-  void harvestSingleBlock(@Nonnull IFarmer farm, final @Nonnull World world, final @Nonnull HarvestResult result,
-      final @Nonnull BlockPos harvestPos) {
+  void harvestSingleBlock(@Nonnull IFarmer farm, final @Nonnull World world, final @Nonnull HarvestResult result, final @Nonnull BlockPos harvestPos) {
     float chance = 1.0F;
     List<ItemStack> drops;
     final IBlockState state = farm.getBlockState(harvestPos);
@@ -199,7 +197,7 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
       drops = blk.getDrops(world, harvestPos, state, fortune);
       EntityPlayerMP joe = farm.startUsingItem(FarmingTool.AXE);
       chance = ForgeEventFactory.fireBlockHarvesting(drops, joe.world, harvestPos, state, fortune, chance, false, joe);
-      if (isWood(blk) || Config.farmAxeDamageOnLeafBreak || !hasHoe) {
+      if (isWood(blk) || !hasHoe) {
         farm.registerAction(FarmingAction.HARVEST, FarmingTool.AXE, state, harvestPos);
         hasAxe = farm.hasTool(FarmingTool.AXE);
         if (!hasAxe) {

@@ -14,7 +14,6 @@ import com.enderio.core.common.util.blockiterators.PlanarBlockIterator;
 import com.enderio.core.common.util.blockiterators.PlanarBlockIterator.Orientation;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.farming.FarmNotification;
 import crazypants.enderio.base.farming.FarmingAction;
 import crazypants.enderio.base.farming.FarmingTool;
@@ -31,6 +30,7 @@ import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
+import crazypants.enderio.machines.config.config.FarmConfig;
 import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -48,7 +48,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
 
-import static crazypants.enderio.base.config.Config.farmStopOnNoOutputSlots;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_BASE_SIZE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_BONUS_SIZE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_POWER_BUFFER;
@@ -125,16 +124,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     }
     if (i <= maxToolSlot) {
       FarmingTool toolType = FarmingTool.getToolType(stack);
-      if (toolType != FarmingTool.NONE && !FarmingTool.isBrokenTinkerTool(stack) || !FarmingTool.isDryRfTool(stack)) {
-        if (!toolmappingInitialized) {
-          buildToolmapping();
-        }
-        return toolmapping.get(toolType) == null;
+      if (toolType != FarmingTool.NONE && !FarmingTool.isBrokenTinkerTool(stack) && !FarmingTool.isDryRfTool(stack)) {
+        return getSlotForTool(toolType) == null;
       }
       return false;
     } else if (i <= maxFirtSlot) {
       return Fertilizer.isFertilizer(stack);
     } else if (i <= maxSupSlot) {
+      // TODO: When switching to EnderInventory, make it so that the GUI allows putting things into empty locked slots
       return isSlotLocked(i) ? ItemUtil.areStacksEqual(stack, getStackInSlot(i)) : Commune.instance.canPlant(stack);
     } else {
       return false;
@@ -144,26 +141,24 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   private EnumMap<FarmingTool, FarmSlots> toolmapping = new EnumMap<>(FarmingTool.class);
   private boolean toolmappingInitialized = false;
 
-  @Override
-  public void setInventorySlotContents(int slot, @Nonnull ItemStack contents) {
-    super.setInventorySlotContents(slot, contents);
-    if (slot <= maxToolSlot) {
-      buildToolmapping();
+  private void buildToolmapping() {
+    if (!toolmappingInitialized || world.isRemote) {
+      toolmapping.clear();
+      toolmapping.put(FarmingTool.getToolType(getStackInSlot(0)), FarmSlots.TOOL1);
+      toolmapping.put(FarmingTool.getToolType(getStackInSlot(1)), FarmSlots.TOOL2);
+      toolmapping.put(FarmingTool.getToolType(getStackInSlot(2)), FarmSlots.TOOL3);
+      toolmappingInitialized = true;
     }
   }
 
-  private void buildToolmapping() {
-    toolmapping.clear();
-    toolmapping.put(FarmingTool.getToolType(getStackInSlot(0)), FarmSlots.TOOL1);
-    toolmapping.put(FarmingTool.getToolType(getStackInSlot(1)), FarmSlots.TOOL2);
-    toolmapping.put(FarmingTool.getToolType(getStackInSlot(2)), FarmSlots.TOOL3);
-    toolmappingInitialized = true;
+  @Override
+  public void markDirty() {
+    super.markDirty();
+    toolmappingInitialized = false;
   }
 
   protected FarmSlots getSlotForTool(@Nonnull FarmingTool tool) {
-    if (!toolmappingInitialized) {
-      buildToolmapping();
-    }
+    buildToolmapping();
     return toolmapping.get(tool);
   }
 
@@ -178,7 +173,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   @Override
   protected boolean checkProgress(boolean redstoneChecksPassed) {
-    if (shouldDoWorkThisTick(6 * 60 * 20)) {
+    if (shouldDoWorkThisTick(1 * 60 * 20)) {
       clearNotification();
     }
     if (redstoneChecksPassed) {
@@ -238,18 +233,19 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   private void executeBonemeal(@Nonnull IFarmer farmer, @Nonnull BlockPos farmingPos, @Nonnull Block block) {
-    if (hasBonemeal() && bonemealCooldown-- <= 0 && random.nextFloat() <= .75f && farmer.checkAction(FarmingAction.FERTILIZE, FarmingTool.HAND)) {
+    if (hasBonemeal() && bonemealCooldown-- <= 0 && random.nextFloat() <= FarmConfig.farmBonemealChance.get()
+        && farmer.checkAction(FarmingAction.FERTILIZE, FarmingTool.HAND)) {
       final ItemStack fertStack = getStackInSlot(minFirtSlot);
       Fertilizer fertilizer = Fertilizer.getInstance(fertStack);
       if ((fertilizer.applyOnPlant() != isOpen(farmingPos, block)) || (fertilizer.applyOnAir() == world.isAirBlock(farmingPos))) {
         FakePlayerEIO farmerJoe = farmer.startUsingItem(fertStack);
         if (fertilizer.apply(fertStack, farmerJoe, world, farmingPos)) {
           PacketHandler.sendToAllAround(new PacketFarmAction(farmingPos), this);
-          bonemealCooldown = 16;
+          bonemealCooldown = FarmConfig.farmBonemealDelaySuccess.get();
           farmer.registerAction(FarmingAction.FERTILIZE, FarmingTool.HAND);
         } else {
-          usePower(Config.farmBonemealTryEnergyUseRF);
-          bonemealCooldown = 4;
+          usePower(FarmConfig.farmBonemealEnergyUseFail.get());
+          bonemealCooldown = FarmConfig.farmBonemealDelayFail.get();
         }
         setInventorySlotContents(minFirtSlot, farmerJoe.getHeldItem(EnumHand.MAIN_HAND));
         farmerJoe.setHeldItem(EnumHand.MAIN_HAND, Prep.getEmpty());
@@ -304,7 +300,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   private boolean isOutputFull() {
     for (FarmSlots slot : FarmSlots.OUTPUTS) {
       ItemStack curStack = slot.get(this);
-      if (Prep.isInvalid(curStack) || (!farmStopOnNoOutputSlots && curStack.getCount() < curStack.getMaxStackSize())) {
+      if (Prep.isInvalid(curStack) || (!FarmConfig.farmStopOnNoOutputSlots.get() && curStack.getCount() < curStack.getMaxStackSize())) {
         return false;
       }
     }

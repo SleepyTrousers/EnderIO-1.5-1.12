@@ -6,8 +6,8 @@ import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3f;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.farming.FarmNotification;
+import crazypants.enderio.machines.config.config.FarmConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -23,7 +23,7 @@ public class FarmingStationSpecialRenderer extends ManagedTESR<TileFarmStation> 
 
   @Override
   protected boolean shouldRender(@Nonnull TileFarmStation te, @Nonnull IBlockState blockState, int renderPass) {
-    return !te.getNotification().isEmpty() && !Config.disableFarmNotification;
+    return !te.getNotification().isEmpty() && !FarmConfig.disableFarmNotification.get();
   }
 
   @Override

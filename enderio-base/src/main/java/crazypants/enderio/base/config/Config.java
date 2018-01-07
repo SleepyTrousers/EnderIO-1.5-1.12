@@ -53,7 +53,6 @@ public final class Config {
   public static final @Nonnull Section sectionStaff = new Section("Staff Settings", "staff");
   public static final @Nonnull Section sectionRod = new Section("Rod of Return Settings", "rod");
   public static final @Nonnull Section sectionDarkSteel = new Section("Dark Steel", "darksteel");
-  public static final @Nonnull Section sectionFarm = new Section("Farm Settings", "farm");
   public static final @Nonnull Section sectionAesthetic = new Section("Aesthetic Settings", "aesthetic");
   public static final @Nonnull Section sectionAdvanced = new Section("Advanced Settings", "advanced");
   public static final @Nonnull Section sectionMagnet = new Section("Magnet Settings", "magnet");
@@ -255,16 +254,6 @@ public final class Config {
   public static boolean addFurnaceFuelTootip = true;
   public static boolean addDurabilityTootip = true;
 
-  public static int farmActionEnergyUseRF = 500;
-  public static int farmAxeActionEnergyUseRF = 1000;
-  public static int farmBonemealActionEnergyUseRF = 160;
-  public static int farmBonemealTryEnergyUseRF = 80;
-
-  public static boolean farmAxeDamageOnLeafBreak = false;
-  public static float farmToolTakeDamageChance = 1;
-  public static boolean disableFarmNotification = false;
-  public static boolean farmManaBeansEnabled = false;
-  public static boolean farmHarvestJungleWhenCocoa = false;
   public static String[] hoeStrings = new String[] { "minecraft:wooden_hoe", "minecraft:stone_hoe", "minecraft:iron_hoe", "minecraft:diamond_hoe",
       "minecraft:golden_hoe", "MekanismTools:ObsidianHoe", "MekanismTools:LapisLazuliHoe", "MekanismTools:OsmiumHoe", "MekanismTools:BronzeHoe",
       "MekanismTools:GlowstoneHoe", "MekanismTools:SteelHoe", "Steamcraft:hoeBrass", "Steamcraft:hoeGildedGold", "TConstruct:mattock",
@@ -291,10 +280,7 @@ public final class Config {
       "calculator:FlawlessDiamondHoe", "calculator:FireDiamondHoe", "calculator:ElectricHoe", "embers:hoeDawnstone", "embers:hoeCopper", "embers:hoeSilver",
       "embers:hoeLead", "roots:livingHoe", "mysticalagriculture:inferium_hoe", "mysticalagriculture:prudentium_hoe", "mysticalagriculture:intermedium_hoe",
       "mysticalagriculture:superium_hoe", "mysticalagriculture:supremium_hoe" };
-  public static Things farmHoes = new Things();
-  public static int farmSaplingReserveAmount = 8;
-  public static boolean farmStopOnNoOutputSlots = true;
-  public static boolean farmEvictEmptyRFTools = true;
+  public static @Nonnull Things farmHoes = new Things();
 
   public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;
@@ -523,9 +509,8 @@ public final class Config {
         .get(sectionRecipe.name, "recipeLevel", recipeLevel, "How expensive should the crafting recipes be? 0=cheapest, 1=cheaper, 2=normal, 3=expensive")
         .getInt(recipeLevel);
 
-    registerRecipes = config
-        .get(sectionRecipe.name, "registerRecipes", registerRecipes,
-            "If set to false: No crafting recipes (crafting table and furnace) will be registered. You need to use Creative mode or something like minetweaker to add them yourself.")
+    registerRecipes = config.get(sectionRecipe.name, "registerRecipes", registerRecipes,
+        "If set to false: No crafting recipes (crafting table and furnace) will be registered. You need to use Creative mode or something like minetweaker to add them yourself.")
         .getBoolean(registerRecipes);
 
     addPeacefulRecipes = config
@@ -533,9 +518,8 @@ public final class Config {
         .getBoolean(addPeacefulRecipes);
     allowTileEntitiesAsPaintSource = config.get(sectionRecipe.name, "allowTileEntitiesAsPaintSource", allowTileEntitiesAsPaintSource,
         "When enabled blocks with tile entities (e.g. machines) can be used as paint targets.").getBoolean(allowTileEntitiesAsPaintSource);
-    createSyntheticRecipes = config
-        .get(sectionRecipe.name, "createSyntheticRecipes", createSyntheticRecipes,
-            "Automatically create alloy smelter recipes with double and triple inputs and different slot allocations (1+1+1, 2+1, 1+2, 3 and 2) for single-input recipes.")
+    createSyntheticRecipes = config.get(sectionRecipe.name, "createSyntheticRecipes", createSyntheticRecipes,
+        "Automatically create alloy smelter recipes with double and triple inputs and different slot allocations (1+1+1, 2+1, 1+2, 3 and 2) for single-input recipes.")
         .getBoolean(createSyntheticRecipes);
 
     redstoneConduitsShowState = config
@@ -575,9 +559,8 @@ public final class Config {
     transceiverBucketTransmissionCostRF = config.get(sectionEfficiency.name, "transceiverBucketTransmissionCostRF", transceiverBucketTransmissionCostRF,
         "The cost in RF of transporting a bucket of fluid via a Dimensional Transceiver.").getInt(transceiverBucketTransmissionCostRF);
 
-    detailedPowerTrackingEnabled = config
-        .get(sectionAdvanced.name, "perInterfacePowerTrackingEnabled", detailedPowerTrackingEnabled,
-            "Enable per tick sampling on individual power inputs and outputs. This allows slightly more detailed messages from the RF Reader but has a negative impact on server performance.")
+    detailedPowerTrackingEnabled = config.get(sectionAdvanced.name, "perInterfacePowerTrackingEnabled", detailedPowerTrackingEnabled,
+        "Enable per tick sampling on individual power inputs and outputs. This allows slightly more detailed messages from the RF Reader but has a negative impact on server performance.")
         .getBoolean(detailedPowerTrackingEnabled);
 
     useSneakMouseWheelYetaWrench = config.get(sectionPersonal.name, "useSneakMouseWheelYetaWrench", useSneakMouseWheelYetaWrench,
@@ -694,9 +677,8 @@ public final class Config {
     darkSteelRightClickPlaceEnabled = config.get(sectionDarkSteel.name, "darkSteelRightClickPlaceEnabled", darkSteelRightClickPlaceEnabled,
         "Enable / disable right click to place block using dark steel tools.").getBoolean(darkSteelRightClickPlaceEnabled);
 
-    darkSteelPowerDamgeAbsorptionRatios = config
-        .get(sectionDarkSteel.name, "darkSteelPowerDamgeAbsorptionRatios", darkSteelPowerDamgeAbsorptionRatios,
-            "A list of the amount of durability damage absorbed when items are powered. In order of upgrade level. 1=100% so items take no durability damage when powered.")
+    darkSteelPowerDamgeAbsorptionRatios = config.get(sectionDarkSteel.name, "darkSteelPowerDamgeAbsorptionRatios", darkSteelPowerDamgeAbsorptionRatios,
+        "A list of the amount of durability damage absorbed when items are powered. In order of upgrade level. 1=100% so items take no durability damage when powered.")
         .getDoubleList();
     darkSteelPowerStorageBase = config
         .get(sectionDarkSteel.name, "darkSteelPowerStorageBase", darkSteelPowerStorageBase, "Base amount of power stored by dark steel items.")
@@ -871,9 +853,8 @@ public final class Config {
     ticBeheadingSkullModifier = (float) config.get(sectionPersonal.name, "ticBeheadingSkullModifier", ticBeheadingSkullModifier,
         "The chance per level of Beheading that a skull will be dropped when using a TiC weapon").getDouble(ticBeheadingSkullModifier);
 
-    fakePlayerSkullChance = (float) config
-        .get(sectionDarkSteel.name, "fakePlayerSkullChance", fakePlayerSkullChance,
-            "The ratio of skull drops when a mob is killed by a 'FakePlayer', such as Killer Joe. When set to 0 no skulls will drop, at 1 the rate of skull drops is not modified")
+    fakePlayerSkullChance = (float) config.get(sectionDarkSteel.name, "fakePlayerSkullChance", fakePlayerSkullChance,
+        "The ratio of skull drops when a mob is killed by a 'FakePlayer', such as Killer Joe. When set to 0 no skulls will drop, at 1 the rate of skull drops is not modified")
         .getDouble(fakePlayerSkullChance);
 
     darkSteelSwordPowerUsePerHit = config
@@ -987,36 +968,6 @@ public final class Config {
         .get(sectionPersonal.name, "addFurnaceFuelTootip", addFuelTooltipsToAllFluidContainers, "If true, adds burn duration tooltips to furnace fuels")
         .getBoolean(addFurnaceFuelTootip);
 
-    farmActionEnergyUseRF = config
-        .get(sectionFarm.name, "farmActionEnergyUseRF", farmActionEnergyUseRF, "The amount of power used by a farm per action (eg plant, till, harvest) ")
-        .getInt(farmActionEnergyUseRF);
-    farmAxeActionEnergyUseRF = config
-        .get(sectionFarm.name, "farmAxeActionEnergyUseRF", farmAxeActionEnergyUseRF, "The amount of power used by a farm per wood block 'chopped'")
-        .getInt(farmAxeActionEnergyUseRF);
-
-    farmBonemealActionEnergyUseRF = config
-        .get(sectionFarm.name, "farmBonemealActionEnergyUseRF", farmBonemealActionEnergyUseRF, "The amount of power used by a farm per bone meal used")
-        .getInt(farmBonemealActionEnergyUseRF);
-    farmBonemealTryEnergyUseRF = config
-        .get(sectionFarm.name, "farmBonemealTryEnergyUseRF", farmBonemealTryEnergyUseRF, "The amount of power used by a farm per bone meal try")
-        .getInt(farmBonemealTryEnergyUseRF);
-
-    farmAxeDamageOnLeafBreak = config
-        .get(sectionFarm.name, "farmAxeDamageOnLeafBreak", farmAxeDamageOnLeafBreak, "Should axes in a farm take damage when breaking leaves?")
-        .getBoolean(farmAxeDamageOnLeafBreak);
-    farmToolTakeDamageChance = (float) config
-        .get(sectionFarm.name, "farmToolTakeDamageChance", farmToolTakeDamageChance, "The chance that a tool in the farm will take damage.")
-        .getDouble(farmToolTakeDamageChance);
-
-    disableFarmNotification = config
-        .get(sectionFarm.name, "disableFarmNotifications", disableFarmNotification, "Disable the notification text above the farm block.").getBoolean();
-
-    farmManaBeansEnabled = config.get(sectionFarm.name, "farmManaBeansEnabled", farmManaBeansEnabled,
-        "This setting controls whether mana beans from Thaumcraft can be harvested by the farm.").getBoolean();
-
-    farmHarvestJungleWhenCocoa = config.get(sectionFarm.name, "farmHarvestJungleWhenCocoa", farmHarvestJungleWhenCocoa,
-        "If this is enabled the farm will harvest jungle wood even if it has cocoa beans in its inventory.").getBoolean();
-
     debugTraceNBTActivityExtremelyDetailed = config
         .get(sectionAdvanced.name, "debugTraceNBTActivityExtremelyDetailed", debugTraceNBTActivityExtremelyDetailed,
             "This will flood your logfile with gigabytes of data filling up your harddisk very fast. DO NOT enable unless asked by an Ender IO developer!")
@@ -1041,15 +992,6 @@ public final class Config {
       config.get(sectionHoes.name, hoe, true, "Is this item a hoe that can be used in the farming station?");
     }
 
-    final Property hoeProp = config.get(sectionFarm.name, "farmHoes", new String[0],
-        "Use this to add items that can be hoes in the farming station. They will be moved to the proper config section. Use the registry name (eg. modid:name).");
-    for (String hoe : hoeProp.getStringList()) {
-      if (!config.hasKey(sectionHoes.name, hoe)) {
-        config.get(sectionHoes.name, hoe, true, "Is this item a hoe that can be used in the farming station? (user added value)");
-      }
-    }
-    hoeProp.set(new String[0]);
-
     farmHoes = new Things();
     for (Entry<String, Property> entry : hoes.entrySet()) {
       if (entry.getValue().getBoolean()) {
@@ -1058,20 +1000,6 @@ public final class Config {
     }
 
     // END Hoes
-
-    farmSaplingReserveAmount = config
-        .get(sectionFarm.name, "farmSaplingReserveAmount", farmSaplingReserveAmount,
-            "The amount of saplings the farm has to have in reserve to switch to shearing all leaves. If there are less "
-                + "saplings in store, it will only shear part the leaves and break the others for spalings. Set this to 0 to " + "always shear all leaves.")
-        .getInt(farmSaplingReserveAmount);
-
-    farmStopOnNoOutputSlots = config
-        .get(sectionFarm.name, "farmStopOnNoOutputSlots", farmStopOnNoOutputSlots,
-            "If this is enabled the farm will stop if there is not at least one empty output slot. Otherwise it will only stop if all output slots are full.")
-        .getBoolean();
-
-    farmEvictEmptyRFTools = config.get(sectionFarm.name, "farmEvictEmptyRFTools", farmEvictEmptyRFTools,
-        "If this is enabled the farm will move tools that can store RF and are empty to the output slots instead of using them.").getBoolean();
 
     magnetPowerUsePerSecondRF = config
         .get(sectionMagnet.name, "magnetPowerUsePerTickRF", magnetPowerUsePerSecondRF, "The amount of RF power used per tick when the magnet is active")
@@ -1091,9 +1019,8 @@ public final class Config {
 
     magnetAllowInBaublesSlot = config.get(sectionMagnet.name, "magnetAllowInBaublesSlot", magnetAllowInBaublesSlot,
         "If true the magnet can be put into the 'amulet' Baubles slot (requires Baubles to be installed)").getBoolean(magnetAllowInBaublesSlot);
-    magnetAllowDeactivatedInBaublesSlot = config
-        .get(sectionMagnet.name, "magnetAllowDeactivatedInBaublesSlot", magnetAllowDeactivatedInBaublesSlot,
-            "If true the magnet can be put into the 'amulet' Baubles slot even if switched off (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)")
+    magnetAllowDeactivatedInBaublesSlot = config.get(sectionMagnet.name, "magnetAllowDeactivatedInBaublesSlot", magnetAllowDeactivatedInBaublesSlot,
+        "If true the magnet can be put into the 'amulet' Baubles slot even if switched off (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)")
         .getBoolean(magnetAllowDeactivatedInBaublesSlot);
 
     magnetBaublesType = config

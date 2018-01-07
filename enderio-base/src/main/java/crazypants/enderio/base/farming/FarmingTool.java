@@ -33,8 +33,8 @@ public enum FarmingTool {
       return false;
     }
   };
-  
-  private final Things things;
+
+  private final @Nonnull Things things;
 
   private FarmingTool(String... things) {
     this(new Things());
@@ -42,16 +42,16 @@ public enum FarmingTool {
       this.things.add(s);
     }
   }
-  
-  private FarmingTool(Things things) {
+
+  private FarmingTool(@Nonnull Things things) {
     this.things = things;
   }
 
   public final boolean itemMatches(@Nonnull ItemStack item) {
     return Prep.isValid(item) && match(item);
   }
-  
-  public final Things getThings() {
+
+  public final @Nonnull Things getThings() {
     return things;
   }
 
@@ -74,16 +74,18 @@ public enum FarmingTool {
     return false;
   }
 
-  public static FarmingTool getToolType(@Nonnull ItemStack stack) {
-    for (FarmingTool type : values()) {
-      if (type.itemMatches(stack)) {
-        return type;
+  public static @Nonnull FarmingTool getToolType(@Nonnull ItemStack stack) {
+    if (Prep.isValid(stack)) {
+      for (FarmingTool type : values()) {
+        if (type.itemMatches(stack)) {
+          return type;
+        }
       }
     }
     return NONE;
   }
 
-  public static boolean isDryRfTool(ItemStack stack) {
+  public static boolean isDryRfTool(@Nonnull ItemStack stack) {
     IEnergyStorage cap = PowerHandlerUtil.getCapability(stack, null);
     return cap != null && cap.getMaxEnergyStored() > 0 && cap.getEnergyStored() <= 0;
   }

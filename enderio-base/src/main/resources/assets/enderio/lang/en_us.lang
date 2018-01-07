@@ -1,6 +1,6 @@
 //***  Ender IO *****//
 
-// Translators, run the command "gradlew checkTranslations" to get a report which keys your
+// Translators, check your ".guess" file to see which keys your
 // language is missing and which keys it has that do not exist anymore.
 
 // These keys have been confirmed in 1.11
@@ -459,8 +459,6 @@ enderio.config.staff=Staff Settings
 enderio.config.staff.tooltip=Be careful with that thing, you'll teleport your face off.
 enderio.config.darksteel=Dark Steel
 enderio.config.darksteel.tooltip=It's not just regular steel, it's §odark§r§e steel.
-enderio.config.farm=Farm Settings
-enderio.config.farm.tooltip="The commune is for life!"
 enderio.config.aesthetic=Aesthetic Settings
 enderio.config.aesthetic.tooltip=Oooh, ahhh, pretty.
 enderio.config.advanced=Advanced Settings
