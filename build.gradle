@@ -306,11 +306,11 @@ curseforge {
           optionalLibrary 'tinkers-construct'
         }
 
-        addArtifact sourceJar
         addArtifact apiJar
 
         subprojects.each { subproject ->
             addArtifact subproject.jar
+            addArtifact subproject.sourceJar
         }
     }
 }
