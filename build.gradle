@@ -54,27 +54,34 @@ allprojects {
     if (System.getenv('BUILD_NUMBER') != null)
     {
         ext.version_suffix = ''
-        ext.module_version = version_major + '.' + version_minor + '.' + System.getenv('BUILD_NUMBER')
-        if (project.hasProperty('version_appendix') && project.version_appendix != '')
-            ext.version_suffix = '-' + version_appendix
+        if (System.getenv('NIGHTLY') != null)
+        {
+            ext.module_version = 'nightly-0.' + System.getenv('BUILD_NUMBER')
+        }
+        else
+        {
+            ext.module_version = version_major + '.' + version_minor + '.' + System.getenv('BUILD_NUMBER')
+            if (project.hasProperty('version_appendix') && project.version_appendix != '')
+                ext.version_suffix = '-' + version_appendix
+        }
     }
     else
     {
         if (!project.hasProperty('module_build_number') || project.module_build_number == '0') {
-            ext.module_build_number = ''
+            ext.module_build_number = '0'
 
             if (System.getenv('MODULE_BUILD_NUMBER') != null)
                 project.module_build_number = System.getenv('MODULE_BUILD_NUMBER')
             else try {
-                ext.module_build_number += "git rev-parse --short HEAD".execute().text.trim()
+                ext.module_build_number = "git rev-parse --short HEAD".execute().text.trim()
             } catch (all) {}
         }
 
-        ext.version_suffix = '-' + module_build_number
+        ext.version_suffix = ''
         if (project.hasProperty('version_appendix') && project.version_appendix != '')
-            ext.version_suffix = "-${version_appendix}.${module_build_number}"
+            ext.version_suffix = "-${version_appendix}"
 
-        ext.module_version = version_major + '.' + version_minor + '.' + version_patch
+        ext.module_version = version_major + '.' + version_minor + '.' + module_build_number
     }
 
     version = "${minecraft_version}-${module_version}"// ${version_suffix}"
