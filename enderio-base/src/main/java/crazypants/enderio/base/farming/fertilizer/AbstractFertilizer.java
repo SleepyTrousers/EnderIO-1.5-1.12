@@ -11,9 +11,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 import net.minecraftforge.oredict.OreDictionary;
 
-public abstract class AbstractFertilizer implements IFertilizer {
+public abstract class AbstractFertilizer extends IForgeRegistryEntry.Impl<IFertilizer> implements IFertilizer {
 
   protected final @Nonnull ItemStack fertilizer;
 
@@ -26,9 +27,10 @@ public abstract class AbstractFertilizer implements IFertilizer {
   }
 
   protected AbstractFertilizer(@Nonnull ItemStack stack) {
-    fertilizer = Prep.isInvalid(stack) ? Prep.getEmpty() : stack;
+    fertilizer = stack;
     if (Prep.isValid(fertilizer)) {
       FarmersRegistry.slotItemsFertilizer.add(fertilizer);
+      setRegistryName(fertilizer.getItem().getRegistryName());
     }
   }
 

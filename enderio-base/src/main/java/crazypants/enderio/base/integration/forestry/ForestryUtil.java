@@ -7,7 +7,7 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.farmers.IFarmerJoe;
 import crazypants.enderio.base.farming.fertilizer.Bonemeal;
-import crazypants.enderio.base.farming.fertilizer.Fertilizer;
+import crazypants.enderio.base.farming.fertilizer.IFertilizer;
 import crazypants.enderio.base.handler.darksteel.IDarkSteelUpgrade;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -26,10 +26,19 @@ public class ForestryUtil {
   public static void registerFarmers(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
     if (Loader.isModLoaded("forestry")) {
       ForestryFarmer.init(event);
-      Fertilizer.registerFertilizer(new Bonemeal(FarmersRegistry.findItem("forestry", "fertilizer_compound")));
-      Log.info("Farming Station: Forestry integration fully loaded");
+      Log.info("Farming Station: Forestry integration for farming fully loaded");
     } else {
-      Log.info("Farming Station: Forestry integration not loaded");
+      Log.info("Farming Station: Forestry integration for farming not loaded");
+    }
+  }
+
+  @SubscribeEvent
+  public static void registerFertilizer(@Nonnull RegistryEvent.Register<IFertilizer> event) {
+    if (Loader.isModLoaded("forestry")) {
+      event.getRegistry().register(new Bonemeal(FarmersRegistry.findItem("forestry", "fertilizer_compound")));
+      Log.info("Farming Station: Forestry integration for fertilizing fully loaded");
+    } else {
+      Log.info("Farming Station: Forestry integration for fertilizing not loaded");
     }
   }
 

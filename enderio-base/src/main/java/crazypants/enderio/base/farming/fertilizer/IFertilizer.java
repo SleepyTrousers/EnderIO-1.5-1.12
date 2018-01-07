@@ -6,8 +6,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 
-public interface IFertilizer {
+public interface IFertilizer extends IForgeRegistryEntry<IFertilizer> {
 
   /**
    * Tries to apply the given item on the given block using the type-specific method. SFX is played on success.

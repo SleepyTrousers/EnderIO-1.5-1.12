@@ -9,7 +9,7 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.farmers.IFarmerJoe;
 import crazypants.enderio.base.farming.farmers.PlaceableFarmer;
-import crazypants.enderio.base.farming.fertilizer.Fertilizer;
+import crazypants.enderio.base.farming.fertilizer.IFertilizer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -54,29 +54,27 @@ public class BotaniaUtil {
 
   @SubscribeEvent(priority = EventPriority.NORMAL)
   public static void registerFarmers(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
-    int count = 0;
     FarmersRegistry.registerFlower("block:botania:flower", "block:botania:doubleflower1", "block:botania:doubleflower2", "block:botania:shinyflower",
         "block:botania:mushroom");
     PlaceableFarmer farmer = new PlaceableFarmer("item:botania:petal");
     farmer.addDirt("block:minecraft:grass");
     if (farmer.isValid()) {
       event.getRegistry().register(farmer.setRegistryName("botania", "petals"));
-      count++;
+      Log.info("Farming Station: Botania integration for farming fully loaded");
+    } else {
+      Log.info("Farming Station: Botania integration for farming not loaded");
     }
+  }
+
+  @SubscribeEvent
+  public static void registerFertilizer(@Nonnull RegistryEvent.Register<IFertilizer> event) {
     final MagicalFertilizer fertilizer = new MagicalFertilizer(FarmersRegistry.findItem("botania", "fertilizer"));
     if (fertilizer.isValid()) {
-      Fertilizer.registerFertilizer(fertilizer);
-      count++;
-    }
-
-    if (count == 2) {
-      Log.info("Farming Station: Botania integration fully loaded");
-    } else if (count == 0) {
-      Log.info("Farming Station: Botania integration not loaded");
+      event.getRegistry().register(fertilizer);
+      Log.info("Farming Station: Botania integration for fertilizing fully loaded");
     } else {
-      Log.info("Farming Station: Botania integration partially loaded (" + count + " of 2)");
+      Log.info("Farming Station: Botania integration for fertilizing not loaded");
     }
-
   }
 
 }

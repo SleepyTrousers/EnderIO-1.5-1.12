@@ -2,60 +2,52 @@ package crazypants.enderio.base.farming.fertilizer;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.NNList;
-
-import crazypants.enderio.util.Prep;
-import net.minecraft.entity.player.EntityPlayer;
+import crazypants.enderio.base.EnderIO;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import net.minecraftforge.fml.common.registry.RegistryBuilder;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class Fertilizer {
 
-  /**
-   * Not a fertilizer. Using this handler class any item can be "used" as a fertilizer. Meaning, fertilizing will always fail.
-   */
-  private static @Nonnull IFertilizer NONE = new AbstractFertilizer(Prep.getEmpty()) {
+  private static IForgeRegistry<IFertilizer> REGISTRY = null;
 
-    @Override
-    public Result apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
-      return new Result(stack, false);
-    }
-
-  };
-
-  private static final NNList<IFertilizer> validFertilizers = new NNList<>();
-
-  static {
-    registerFertilizer(new Bonemeal(new ItemStack(Items.DYE, 1, 15)));
+  @SubscribeEvent(priority = EventPriority.NORMAL)
+  public static void registerRegistry(@Nonnull RegistryEvent.NewRegistry event) {
+    REGISTRY = new RegistryBuilder<IFertilizer>().setName(new ResourceLocation(EnderIO.DOMAIN, "fertilizer")).setType(IFertilizer.class)
+        .setIDRange(0, Integer.MAX_VALUE - 1).create();
   }
 
-  public static void registerFertilizer(@Nonnull IFertilizer fertilizer) {
-    if (fertilizer.isValid()) {
-      validFertilizers.add(fertilizer);
-    }
+  @SubscribeEvent(priority = EventPriority.HIGH)
+  public static void registerFertilizer(@Nonnull RegistryEvent.Register<IFertilizer> event) {
+    event.getRegistry().register(new Bonemeal(new ItemStack(Items.DYE, 1, 15)));
   }
 
   /**
    * Returns the singleton instance for the fertilizer that was given as parameter. If the given item is no fertilizer, it will return an instance of
-   * {@link Fertilizer#NONE}.
+   * {@link NoFertilizer#NONE}.
    * 
    */
   public static @Nonnull IFertilizer getInstance(@Nonnull ItemStack stack) {
-    for (IFertilizer fertilizer : validFertilizers) {
+    for (IFertilizer fertilizer : REGISTRY.getValues()) {
       if (fertilizer.matches(stack)) {
         return fertilizer;
       }
     }
-    return NONE;
+    return NoFertilizer.getNone();
   }
 
   /**
    * Returns true if the given item can be used as fertilizer.
    */
   public static boolean isFertilizer(@Nonnull ItemStack stack) {
-    return getInstance(stack) != NONE;
+    return getInstance(stack) != NoFertilizer.getNone();
   }
 
 }
