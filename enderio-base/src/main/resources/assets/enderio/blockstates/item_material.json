@@ -1,0 +1,251 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "enderio:item_generated"
+  },
+  "variants": {
+    "variant": {
+      "attractor_crystal": {
+        "textures": {
+          "layer0": "enderio:items/item_material_attractor_crystal"
+        }
+      },
+      "binder_composite": {
+        "textures": {
+          "layer0": "enderio:items/item_material_binder_composite"
+        }
+      },
+      "chassi_parts": {
+        "textures": {
+          "layer0": "enderio:items/item_material_chassi_parts"
+        }
+      },
+      "conduit_binder": {
+        "textures": {
+          "layer0": "enderio:items/item_material_conduit_binder"
+        }
+      },
+      "dark_grinding_ball": {
+        "textures": {
+          "layer0": "enderio:items/item_material_dark_grinding_ball"
+        }
+      },
+      "dust_wheat": {
+        "textures": {
+          "layer0": "enderio:items/item_material_dust_wheat"
+        }
+      },
+      "ender_crystal": {
+        "textures": {
+          "layer0": "enderio:items/item_material_ender_crystal"
+        }
+      },
+      "ender_crystal_powder": {
+        "textures": {
+          "layer0": "enderio:items/item_material_ender_crystal_powder"
+        }
+      },
+      "glider_wing": {
+        "textures": {
+          "layer0": "enderio:items/item_material_glider_wing"
+        }
+      },
+      "glider_wings": {
+        "textures": {
+          "layer0": "enderio:items/item_material_glider_wings"
+        }
+      },
+      "ingot_enderium_base": {
+        "textures": {
+          "layer0": "enderio:items/item_material_ingot_enderium_base"
+        }
+      },
+      "machine_chassi": {
+        "model": "enderio:machine_body",
+        "submodel": {
+          "front": {
+            "model": "enderio:machine_front"
+          }
+        },
+        "textures": {
+          "top": "enderio:items/item_machine_chassi",
+          "bottom": "enderio:items/item_machine_chassi",
+          "side": "enderio:items/item_machine_chassi",
+          "back": "enderio:items/item_machine_chassi",
+          "frontframe": "enderio:items/item_machine_chassi",
+          "front": "enderio:items/item_machine_chassi"
+        }
+      },
+      "nutritious_stick": {
+        "textures": {
+          "layer0": "enderio:items/item_material_nutritious_stick"
+        }
+      },
+      "plantbrown": {
+        "textures": {
+          "layer0": "enderio:items/item_material_plantbrown"
+        }
+      },
+      "plantgreen": {
+        "textures": {
+          "layer0": "enderio:items/item_material_plantgreen"
+        }
+      },
+      "powder_ardite": {
+        "textures": {
+          "layer0": "enderio:items/item_material_powder_ardite"
+        }
+      },
+      "powder_coal": {
+        "textures": {
+          "layer0": "enderio:items/item_material_powder_coal"
+        }
+      },
+      "powder_cobalt": {
+        "textures": {
+          "layer0": "enderio:items/item_material_powder_cobalt"
+        }
+      },
+      "powder_copper": {
+        "textures": {
+          "layer0": "enderio:items/item_material_powder_copper"
+        }
+      },
+      "powder_ender": {
+        "textures": {
+          "layer0": "enderio:items/item_material_powder_ender"
+        }
+      },
+      "powder_gold": {
+        "textures": {
+          "layer0": "enderio:items/item_material_powder_gold"
+        }
+      },
+      "powder_infinity": {
+        "textures": {
+          "layer0": "enderio:items/item_material_powder_infinity"
+        }
+      },
+      "powder_iron": {
+        "textures": {
+          "layer0": "enderio:items/item_material_powder_iron"
+        }
+      },
+      "powder_obsidian": {
+        "textures": {
+          "layer0": "enderio:items/item_material_powder_obsidian"
+        }
+      },
+      "powder_tin": {
+        "textures": {
+          "layer0": "enderio:items/item_material_powder_tin"
+        }
+      },
+      "precient_crystal": {
+        "textures": {
+          "layer0": "enderio:items/item_material_precient_crystal"
+        }
+      },
+      "precient_powder": {
+        "textures": {
+          "layer0": "enderio:items/item_material_precient_powder"
+        }
+      },
+      "pulsating_crystal": {
+        "textures": {
+          "layer0": "enderio:items/item_material_pulsating_crystal"
+        }
+      },
+      "pulsating_powder": {
+        "textures": {
+          "layer0": "enderio:items/item_material_pulsating_powder"
+        }
+      },
+      "silicon": {
+        "textures": {
+          "layer0": "enderio:items/item_material_silicon"
+        }
+      },
+      "skull_ender_resonator": {
+        "textures": {
+          "layer0": "enderio:items/item_material_skull_ender_resonator"
+        }
+      },
+      "skull_sentient_ender": {
+        "textures": {
+          "layer0": "enderio:items/item_material_skull_ender_resonator"
+        }
+      },
+      "skull_skeletal_contractor": {
+        "textures": {
+          "layer0": "enderio:items/item_material_skull_skeletal_contractor"
+        }
+      },
+      "skull_zombie_controller": {
+        "textures": {
+          "layer0": "enderio:items/item_material_skull_zombie_controller"
+        }
+      },
+      "skull_zombie_electrode": {
+        "textures": {
+          "layer0": "enderio:items/item_material_skull_zombie_electrode"
+        }
+      },
+      "skull_zombie_frankenstien": {
+        "textures": {
+          "layer0": "enderio:items/item_material_skull_zombie_controller"
+        }
+      },
+      "vibrant_crystal": {
+        "textures": {
+          "layer0": "enderio:items/item_material_vibrant_crystal"
+        }
+      },
+      "vibrant_powder": {
+        "textures": {
+          "layer0": "enderio:items/item_material_vibrant_powder"
+        }
+      },
+      "weather_crystal": {
+        "textures": {
+          "layer0": "enderio:items/item_material_weather_crystal"
+        }
+      },
+      "gear_energized": {
+        "textures": {
+          "layer0": "enderio:items/item_material_gear_energized"
+        }
+      },
+      "gear_iron": {
+        "textures": {
+          "layer0": "enderio:items/item_material_gear_iron"
+        }
+      },
+      "gear_stone": {
+        "textures": {
+          "layer0": "enderio:items/item_material_gear_stone"
+        }
+      },
+      "gear_vibrant": {
+        "textures": {
+          "layer0": "enderio:items/item_material_gear_vibrant"
+        }
+      },
+      "gear_wood": {
+        "textures": {
+          "layer0": "enderio:items/item_material_gear_wood"
+        }
+      },
+      "organic_green_dye": {
+        "textures": {
+          "layer0": "enderio:items/item_material_organic_green_dye"
+        }
+      },
+      "organic_brown_dye": {
+        "textures": {
+          "layer0": "enderio:items/item_material_organic_brown_dye"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "enderio:hollow_cube",
+        "textures": {
+            "particle":"enderio:blocks/capacitor_bank",
+            "bottom": "enderio:blocks/block_gauge",
+            "top": "enderio:blocks/block_gauge",
+            "side": "enderio:blocks/block_gauge"
+        }
+    },
+    "variants": {
+        "inventory": [{}],
+        "normal": [{}]
+    }
+}

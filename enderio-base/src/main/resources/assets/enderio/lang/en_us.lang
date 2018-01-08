@@ -1,0 +1,1379 @@
+//***  Ender IO *****//
+
+// Translators, check your ".guess" file to see which keys your
+// language is missing and which keys it has that do not exist anymore.
+
+// These keys have been confirmed in 1.11
+
+# Names for the creative tabs
+
+itemGroup.enderio.machines=EnderIO Machines
+itemGroup.enderio.items=EnderIO Items
+itemGroup.enderio.materials=EnderIO Materials
+itemGroup.enderio.main=EnderIO Main
+
+item.item_alloy_ingot_conductive_iron.name=Conductive Iron Ingot
+item.item_alloy_ingot_dark_steel.name=Dark Steel Ingot
+item.item_alloy_ingot_electrical_steel.name=Electrical Steel Ingot
+item.item_alloy_ingot_energetic_alloy.name=Energetic Alloy Ingot
+item.item_alloy_ingot_pulsating_iron.name=Pulsating Iron Ingot
+item.item_alloy_ingot_redstone_alloy.name=Redstone Alloy Ingot
+item.item_alloy_ingot_soularium.name=Soularium Ingot
+item.item_alloy_ingot_vibrant_alloy.name=Vibrant Alloy Ingot
+
+item.item_alloy_nugget_conductive_iron.name=Conductive Iron Nugget
+item.item_alloy_nugget_dark_steel.name=Dark Steel Nugget
+item.item_alloy_nugget_electrical_steel.name=Electrical Steel Nugget
+item.item_alloy_nugget_energetic_alloy.name=Energetic Alloy Nugget
+item.item_alloy_nugget_pulsating_iron.name=Pulsating Iron Nugget
+item.item_alloy_nugget_redstone_alloy.name=Redstone Alloy Nugget
+item.item_alloy_nugget_soularium.name=Soularium Nugget
+item.item_alloy_nugget_vibrant_alloy.name=Vibrant Alloy Nugget
+
+item.item_basic_capacitor.activated.name=Double-Layer Capacitor
+item.item_basic_capacitor.basic.name=Basic Capacitor
+item.item_basic_capacitor.ender.name=Octadic Capacitor
+
+item.item_broken_spawner.name=Broken Spawner
+item.item_broken_spawner.tooltip.detailed.line1=Combine with a Powered Spawner
+item.item_broken_spawner.tooltip.detailed.line2=in an Anvil to set spawn type
+
+item.item_cold_fire_igniter.name=Cold Fire Igniter
+item.item_cold_fire_igniter.tooltip.detailed.line1=Allows to place Cold Fire.
+item.item_cold_fire_igniter.tooltip.detailed.line2=Cold Fire will not spread to other blocks.
+item.item_cold_fire_igniter.chat.outoffluid=ERROR: Out of %s
+
+item.item_conduit_facade.name=Conduit Facade
+item.item_conduit_facade.tooltip.detailed.line1=Painted in the Painting Machine
+item.item_conduit_facade.tooltip.detailed.line2=R-Click on a conduit to place
+item.item_conduit_facade.tooltip.detailed.line3=Hidden when a wrench or conduit
+item.item_conduit_facade.tooltip.detailed.line4=is equipped
+
+item.item_conduit_facade.hardened.name=Hardened Conduit Facade
+item.item_conduit_facade.hardened.tooltip.detailed.line1=Hardened: Resists breaking and explosions
+
+item.item_conduit_facade.transparent.name=Transparent Conduit Facade
+item.item_conduit_facade.transparent.tooltip.detailed.line1=Transparent: Hides the conduits when painted with a non-solid block
+
+item.item_conduit_facade.transparent.hardened.name=Transparent Hardened Conduit Facade
+item.item_conduit_facade.transparent.hardened.tooltip.detailed.line1=Transparent: Hides the conduits when painted with a non-solid block
+item.item_conduit_facade.transparent.hardened.tooltip.detailed.line2=Hardened: Resists breaking and explosions
+
+item.item_conduit_probe.name=Conduit Probe
+item.item_conduit_probe.tooltip.detailed.line1=In probe mode R-Click on a conduit
+item.item_conduit_probe.tooltip.detailed.line2=to display details about its network
+item.item_conduit_probe.tooltip.detailed.line3=In copy/paste mode Shift-R-Click to
+item.item_conduit_probe.tooltip.detailed.line4=copy a conduit bundles connection settings 
+item.item_conduit_probe.tooltip.detailed.line5=R-Click to paste them
+item.item_conduit_probe.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to change mode
+
+item.item_coord_selector.name=Coordinate Selector
+item.item_coord_selector.tooltip.detailed.line1=Prints coordinates of a block.
+item.item_coord_selector.tooltip.detailed.line2=Right click at block to select
+item.item_coord_selector.tooltip.detailed.line3=the block adjacent on that side.
+item.item_coord_selector.tooltip.detailed.line4=Shift right click at a block to
+item.item_coord_selector.tooltip.detailed.line5=select that specific block.
+item.item_coord_selector.tooltip.detailed.line6=Can select from a distance.
+
+item.item_dark_steel_sword.name=The Ender
+item.item_dark_steel_sword.tooltip.detailed.line1=Increased skull and ender pearl drops
+item.item_dark_steel_sword.tooltip.detailed.line2=When powered: Endermen can't teleport once hit, extra Damage and Speed
+
+item.item_dark_steel_pickaxe.name=Dark Pick
+item.item_dark_steel_pickaxe.tooltip.effPowered=%s+%s Efficiency when powered
+item.item_dark_steel_pickaxe.tooltip.effObs=%s+%s Efficiency breaking obsidian
+item.item_dark_steel_pickaxe.tooltip.cost=%s     (cost %s)
+
+item.item_dark_steel_axe.name=Dark Axe
+item.item_dark_steel_axe.tooltip.effPowered=%sEfficiency when powered: %s
+item.item_dark_steel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
+
+item.item_dark_steel_shears.name=Dark Shears
+item.item_dark_steel_shears.tooltip.effPowered=%sEfficiency when powered: %s
+item.item_dark_steel_shears.tooltip.multiHarvest=Shears multiple blocks/sheep when empowered
+
+item.item_dark_steel_bow.name=Dark Bow
+
+item.item_dark_steel_armor.tooltip.line1=%sDiamond level protection when powered
+item.item_dark_steel_armor.tooltip.levelcost.line1=%s%s:
+item.item_dark_steel_armor.tooltip.levelcost.line2=%s%s  %s + %s levels
+
+item.item_dark_steel_boots.name=Dark Boots
+item.item_dark_steel_boots.tooltip.line1=Fall damage negated when powered
+
+item.item_dark_steel_chestplate.name=Dark Plate
+
+item.item_dark_steel_helmet.name=Dark Helm
+
+item.item_dark_steel_leggings.name=Dark Leggings
+
+item.item_ender_food.enderios.name="Enderios"
+item.item_ender_food.enderios.tooltip.common.line1=Part of a balanced breakfast!
+item.item_ender_food.enderios.tooltip.detailed.line1=Not actually healthy. Contains 253g of sugar, 53g of fat, and 394g of ender dust.
+item.item_ender_food.enderios.tooltip.detailed.line2=Side effects of ender dust include: nausea, dizziness, confusion, and random teleporting.
+
+item.item_location_printout.name=Location Printout
+item.item_location_printout.tooltip.detailed.line1=Created using the Coordinate Selector
+item.item_location_printout.tooltip.detailed.line2=Used to add destinations to a Telepad
+item.item_location_printout.chat.setTarget=Target set to
+item.item_location_printout.chat.addTarget=Added target
+item.item_location_printout.chat.noPaper=No Paper in Inventory
+item.item_location_printout.chat.privateBlock=Only %s may access this block
+
+item.item_magnet.name=Electromagnet
+item.item_magnet.tooltip.detailed.line1=Pulls nearby item towards you
+item.item_magnet.tooltip.detailed.line2=Shift-R-Click to enable / disable
+item.item_magnet.tooltip.detailed.line3=Must be powered, active and in the
+item.item_magnet.tooltip.detailed.line4=hot bar (or a Baubles slot) to function
+item.item_magnet.everywhere.tooltip.detailed.line1=Pulls nearby item towards you
+item.item_magnet.everywhere.tooltip.detailed.line2=Shift-R-Click to enable / disable
+item.item_magnet.everywhere.tooltip.detailed.line3=Must be powered, active and in the
+item.item_magnet.everywhere.tooltip.detailed.line4=inventory (or a Baubles slot) to function
+
+item.item_material.attractor_crystal.name=Enticing Crystal
+item.item_material.binder_composite.name=Binder Composite
+item.item_material.chassi_parts.name=Machine Parts
+item.item_material.conduit_binder.name=Conduit Binder
+item.item_material.dark_grinding_ball.name=Dark Steel Ball
+item.item_material.dust_wheat.name=Flour
+item.item_material.ender_crystal.name=Ender Crystal
+item.item_material.ender_crystal_powder.name=Grains of the End
+item.item_material.gear_energized.name=Energized Bimetal Gear
+item.item_material.gear_iron.name=Iron Gear
+item.item_material.gear_stone.name=Stone Compound Gear
+item.item_material.gear_vibrant.name=Vibrant Bimetal Gear
+item.item_material.gear_wood.name=Wooden Gear
+item.item_material.glider_wing.name=Glider Wing
+item.item_material.glider_wings.name=Glider Wings
+item.item_material.glider_wings.tooltip.detailed.line1=Upgrade for Dark Steel chestplate
+item.item_material.ingot_enderium_base.name=Enderium Base
+item.item_material.machine_chassi.name=Machine Chassis
+item.item_material.nutritious_stick.name=Nutritious Stick
+item.item_material.plantbrown.name=Twigs and Prunings
+item.item_material.plantgreen.name=Clippings and Trimmings
+item.item_material.powder_ardite.name=Ardite Powder
+item.item_material.powder_coal.name=Coal Powder
+item.item_material.powder_cobalt.name=Cobalt Powder
+item.item_material.powder_copper.name=Copper Powder
+item.item_material.powder_ender.name=Ender Pearl Powder
+item.item_material.powder_gold.name=Gold Powder
+item.item_material.powder_infinity.name=Grains of Infinity
+item.item_material.powder_iron.name=Iron Powder
+item.item_material.powder_obsidian.name=Obsidian Powder
+item.item_material.powder_tin.name=Tin Powder
+item.item_material.precient_crystal.name=Precient Crystal
+item.item_material.precient_powder.name=Grains of Prescience
+item.item_material.pulsating_crystal.name=Pulsating Crystal
+item.item_material.pulsating_powder.name=Grains of Piezallity
+item.item_material.silicon.name=Silicon
+item.item_material.skull_ender_resonator.name=Ender Resonator
+item.item_material.skull_sentient_ender.name=Sentient Ender
+item.item_material.skull_skeletal_contractor.name=Skeletal Contractor
+item.item_material.skull_zombie_controller.name=Z-Logic Controller
+item.item_material.skull_zombie_electrode.name=Zombie Electrode
+item.item_material.skull_zombie_frankenstien.name=Frank'N'Zombie
+item.item_material.vibrant_crystal.name=Vibrant Crystal
+item.item_material.vibrant_powder.name=Grains of Vibrancy
+item.item_material.weather_crystal.name=Weather Crystal
+item.item_material.organic_green_dye.name=Organic Green Dye
+item.item_material.organic_green_dye.tooltip.detailed.line1=Industrially processed plant matter with a "natural" washed-out color.
+item.item_material.organic_green_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with plenty of water and seek medical advice.
+item.item_material.organic_brown_dye.name=Organic Brown Dye
+item.item_material.organic_brown_dye.tooltip.detailed.line1=Industrially processed plant matter with a "natural" washed-out color.
+item.item_material.organic_brown_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with plenty of water and seek medical advice.
+
+item.item_rod_of_return.name=Rod of Return
+item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad
+item.item_rod_of_return.tooltip.detailed.line2=Sync with a Telepad using Shift-R-Click
+item.item_rod_of_return.tooltip.detailed.line3=Requires RF and %s
+item.item_rod_of_return.tooltip.fluid=%s
+item.item_rod_of_return.tooltip.power=%s
+item.item_rod_of_return.chat.notEnoughPower=%sNot enough power
+item.item_rod_of_return.chat.notEnoughFluid=%sNot enough fluid
+item.item_rod_of_return.chat.targetNotSet=%sNo destination set
+item.item_rod_of_return.chat.sync=Synchronised with location 
+item.item_rod_of_return.chat.sync.telepad=Synchronised with Telepad
+
+item.item_soul_vial.name=Soul Vial
+item.item_soul_vial.tooltip.detailed.line1=R-Click on a mob to capture its soul
+item.item_soul_vial.tooltip.detailed.line2=R-Click again to release it
+item.item_soul_vial.tooltip.health=Health: %s
+item.item_soul_vial.tooltip.fluidname=Fluid Name: %s
+item.item_soul_vial.tooltip.color=Color: %s
+item.item_soul_vial.tooltip.empty=Empty
+
+item.item_travel_staff.name=Staff of Traveling
+item.item_travel_staff.tooltip.detailed.line1=When held Travel Anchors and EnderIO
+item.item_travel_staff.tooltip.detailed.line2=blocks become visible and can be
+item.item_travel_staff.tooltip.detailed.line3=activated by R-Click
+item.item_travel_staff.tooltip.detailed.line4=Shift-R-Click will teleport the
+item.item_travel_staff.tooltip.detailed.line5=player a short distance
+item.item_travel_staff.chat.notEnoughPower=Not enough power
+
+item.item_xp_transfer.name=Experience Rod
+item.item_xp_transfer.tooltip.detailed.line1=R-Click on a fluid tank containing
+item.item_xp_transfer.tooltip.detailed.line2=liquid XP to gain levels
+item.item_xp_transfer.tooltip.detailed.line3=Shift-R-Click to transfer levels to
+item.item_xp_transfer.tooltip.detailed.line4=the tank
+
+item.item_yeta_wrench.name=Yeta Wrench
+item.item_yeta_wrench.tooltip.detailed.line1=Hides conduit facades when held
+item.item_yeta_wrench.tooltip.detailed.line2=Shift-R-Click to break machines
+item.item_yeta_wrench.tooltip.detailed.line3=and conduits instantly
+item.item_yeta_wrench.tooltip.detailed.line4=Shift-L-Click on a conduit to 
+item.item_yeta_wrench.tooltip.detailed.line5=open conduit settings GUI
+item.item_yeta_wrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or '%s' to
+item.item_yeta_wrench.tooltip.detailed.line7=render a single conduit type
+
+tile.block_infinity_fog.name=Infinity Dust
+tile.block_infinity_fog.tooltip.common.line1=§4§oDangerous
+tile.block_infinity_fog.tooltip.detailed.line1=When Grains of Infinity are ground to a very fine dust, the dust starts to develop properties of the infinite bedrock it was made from.
+tile.block_infinity_fog.tooltip.detailed.line2=Released into the air it forms a volatile dust cloud. Touching it is unhealthy at the least. And when the dust settles, it may leave some nasty things behind.
+tile.block_infinity_fog.tooltip.detailed.line3=§6Has a chance of spawning §lEndermen§r§6 and other monsters.
+
+tile.block_alloy.name=Alloy Block
+tile.block_alloy.conductive_iron.name=Conductive Iron Block
+tile.block_alloy.dark_steel.name=Dark Steel Block
+tile.block_alloy.electrical_steel.name=Electrical Steel Block
+tile.block_alloy.energetic_alloy.name=Energetic Alloy Block
+tile.block_alloy.pulsating_iron.name=Pulsating Iron Block
+tile.block_alloy.redstone_alloy.name=Redstone Alloy Block
+tile.block_alloy.soularium.name=Soularium Block
+tile.block_alloy.vibrant_alloy.name=Vibrant Alloy Block
+
+tile.block_cold_fire.name=Cold Fire
+
+tile.block_dark_fused_glass.name=Dark Clear Glass
+
+tile.block_dark_fused_quartz.name=Dark Fused Quartz
+
+tile.block_dark_iron_bars.name=Dark Iron Bars
+
+tile.block_dark_steel_anvil.name=Dark Steel Anvil
+tile.block_dark_steel_anvil.tooltip.common.line1=Damage Resistant
+tile.block_dark_steel_anvil.tooltip.detailed.line1=Lasts much longer than the vanilla anvil
+tile.block_dark_steel_anvil.intact.name=Dark Steel Anvil
+tile.block_dark_steel_anvil.slightlyDamaged.name=Slightly Damaged Dark Steel Anvil
+tile.block_dark_steel_anvil.veryDamaged.name=Very Damaged Dark Steel Anvil
+
+tile.block_dark_steel_ladder.name=Dark Steel Ladder
+tile.block_dark_steel_ladder.tooltip.common.line1=Faster than regular ladders
+
+tile.block_dark_steel_trapdoor.name=Dark Steel Trapdoor
+tile.block_dark_steel_trapdoor.tooltip.detailed.line1=IT'S A TRAP!
+
+tile.block_decoration1.name=Decoration Block
+tile.block_decoration1.type00.name=Machine Chassis (decoration block)
+tile.block_decoration1.type01.name=Blank Machine (decoration block)
+tile.block_decoration1.type02.name=Machine Tops (decoration block)
+tile.block_decoration1.type03.name=Machine Sides (decoration block)
+tile.block_decoration1.type04.name=Machine Backs (decoration block)
+tile.block_decoration1.type05.name=Machine with sides (decoration block)
+tile.block_decoration1.type06.name=Machine width backs (decoration block)
+tile.block_decoration1.type07.name=Blank Soul Machine (decoration block)
+tile.block_decoration1.type08.name=Soul Machine Tops (decoration block)
+tile.block_decoration1.type09.name=Soul Machine Sides (decoration block)
+tile.block_decoration1.type10.name=Soul Machine Backs (decoration block)
+tile.block_decoration1.type11.name=Soul Machine with sides (decoration block)
+tile.block_decoration1.type12.name=Soul Machine width backs (decoration block)
+tile.block_decoration1.type13.name=Red Machine (decoration block)
+tile.block_decoration1.type14.name=Broken Spawner (decoration block)
+tile.block_decoration1.type15.name=Invisible Block (decoration block)
+
+tile.block_decoration2.name=Decoration Block
+tile.block_decoration2.type00.name=Alloy Smelter (decoration block)
+tile.block_decoration2.type01.name=Item Buffer (decoration block)
+tile.block_decoration2.type02.name=Power Buffer (decoration block)
+tile.block_decoration2.type03.name=Omni Buffer (decoration block)
+tile.block_decoration2.type04.name=Creative Buffer (decoration block)
+tile.block_decoration2.type05.name=Crafter (decoration block)
+tile.block_decoration2.type06.name=Painting Machine (decoration block)
+tile.block_decoration2.type07.name=Power Monitor (decoration block)
+tile.block_decoration2.type08.name=SAG Mill (decoration block)
+tile.block_decoration2.type09.name=Slice'N'Splice (decoration block)
+tile.block_decoration2.type10.name=Stirling Generator (decoration block)
+tile.block_decoration2.type11.name=Fluid Tank (decoration block)
+tile.block_decoration2.type12.name=Pressurized Fluid Tank (decoration block)
+tile.block_decoration2.type13.name=Travel Anchor (decoration block)
+tile.block_decoration2.type14.name=Vacuum Chest (decoration block)
+tile.block_decoration2.type15.name=Wireless Charger (decoration block)
+
+tile.block_decoration3.name=Decoration Block
+tile.block_decoration3.type00.name=XP Vacuum (decoration block)
+tile.block_decoration3.type01.name=Simple Alloy Smelter (decoration block)
+tile.block_decoration3.type02.name=Simple Stirling Generator (decoration block)
+tile.block_decoration3.type03.name=Wired Charger (decoration block)
+tile.block_decoration3.type04.name=n/a (decoration block)
+tile.block_decoration3.type05.name=n/a (decoration block)
+tile.block_decoration3.type06.name=n/a (decoration block)
+tile.block_decoration3.type07.name=n/a (decoration block)
+tile.block_decoration3.type08.name=n/a (decoration block)
+tile.block_decoration3.type09.name=n/a (decoration block)
+tile.block_decoration3.type10.name=n/a (decoration block)
+tile.block_decoration3.type11.name=n/a (decoration block)
+tile.block_decoration3.type12.name=n/a (decoration block)
+tile.block_decoration3.type13.name=n/a (decoration block)
+tile.block_decoration3.type14.name=n/a (decoration block)
+tile.block_decoration3.type15.name=n/a (decoration block)
+
+tile.block_detector_block.name=Block Detector
+tile.block_detector_block_silent.name=Block Detector (Silent)
+
+tile.block_enderman_skull.name=Enderman Skull
+tile.block_enderman_skull.base.name=Enderman Head
+tile.block_enderman_skull.tormented.name=Tormented Enderman Head
+tile.block_enderman_skull.reanimated.name=Reanimated Enderman Head
+tile.block_enderman_skull.reanimated_tormented.name=Reanimated Tormented Enderman Head
+
+tile.block_enlightened_fused_glass.name=Enlightened Clear Glass
+
+tile.block_enlightened_fused_quartz.name=Enlightened Fused Quartz
+
+tile.block_exit_rail.name=Exit Rail
+
+tile.block_fused_glass.name=Quite Clear Glass
+
+tile.block_fused_quartz.name=Fused Quartz
+
+tile.block_machine_base.name=(technical block)
+tile.block_machine_io.name=(technical block)
+
+tile.block_painted_carpet.name=Painted Carpet
+tile.block_painted_dark_steel_trapdoor.name=Painted Dark Steel Trapdoor
+tile.block_painted_double_slab.name=Painted Slab
+tile.block_painted_fence.name=Painted Fence
+tile.block_painted_fence_gate.name=Painted Gate
+tile.block_painted_fused_quartz.name=Painted Fused Quartz
+tile.block_painted_glowstone.name=Painted Glowstone
+tile.block_painted_glowstone_solid.name=Painted Glowstone
+tile.block_painted_iron_trapdoor.name=Painted Iron Trapdoor
+
+tile.block_painted_pressure_plate.name=Painted Pressure Plate
+tile.block_painted_pressure_plate.darksteel.name=Dark Pressure Plate
+tile.block_painted_pressure_plate.darksteel.tooltip.detailed.line1=Only activated by players.
+tile.block_painted_pressure_plate.darksteel.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.darksteel.silent.name=Dark Pressure Plate (Silent)
+tile.block_painted_pressure_plate.darksteel.silent.tooltip.detailed.line1=Only activated by players.
+tile.block_painted_pressure_plate.darksteel.silent.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.gold.name=Weighted Pressure Plate (Light)
+tile.block_painted_pressure_plate.gold.tooltip.detailed.line1=Variable Redstone Output: One per item.
+tile.block_painted_pressure_plate.gold.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.gold.silent.name=Weighted Pressure Plate (Light) (Silent)
+tile.block_painted_pressure_plate.gold.silent.tooltip.detailed.line1=Variable Redstone Output: One per item.
+tile.block_painted_pressure_plate.gold.silent.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.iron.name=Weighted Pressure Plate (Heavy)
+tile.block_painted_pressure_plate.iron.tooltip.detailed.line1=Variable Redstone Output: One per entity.
+tile.block_painted_pressure_plate.iron.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.iron.silent.name=Weighted Pressure Plate (Heavy) (Silent)
+tile.block_painted_pressure_plate.iron.silent.tooltip.detailed.line1=Variable Redstone Output: One per entity.
+tile.block_painted_pressure_plate.iron.silent.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.soularium.name=Soularium Pressure Plate
+tile.block_painted_pressure_plate.soularium.tooltip.detailed.line1=Only activated by hostile mobs.
+tile.block_painted_pressure_plate.soularium.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.soularium.tooltip.detailed.line3=Can be tuned in Soul Binder.
+tile.block_painted_pressure_plate.soularium.silent.name=Soularium Pressure Plate (Silent)
+tile.block_painted_pressure_plate.soularium.silent.tooltip.detailed.line1=Only activated by hostile mobs.
+tile.block_painted_pressure_plate.soularium.silent.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.soularium.silent.tooltip.detailed.line3=Can be tuned in Soul Binder.
+tile.block_painted_pressure_plate.stone.name=Stone Pressure Plate
+tile.block_painted_pressure_plate.stone.tooltip.detailed.line1=Only activated by mobs and players.
+tile.block_painted_pressure_plate.stone.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.stone.silent.name=Stone Pressure Plate (Silent)
+tile.block_painted_pressure_plate.stone.silent.tooltip.detailed.line1=Only activated by mobs and players.
+tile.block_painted_pressure_plate.stone.silent.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.tuned.name=Soularium Pressure Plate (Tuned)
+tile.block_painted_pressure_plate.tuned.tooltip.detailed.line1=Only activated by specific mobs.
+tile.block_painted_pressure_plate.tuned.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.tuned.tooltip.detailed.line3=Can be tuned in Soul Binder.
+tile.block_painted_pressure_plate.tuned.tooltip=Tuned to: %s
+tile.block_painted_pressure_plate.tuned.silent.name=Soularium Pressure Plate (Tuned) (Silent)
+tile.block_painted_pressure_plate.tuned.silent.tooltip.detailed.line1=Only activated by specific mobs.
+tile.block_painted_pressure_plate.tuned.silent.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.tuned.silent.tooltip.detailed.line3=Can be tuned in Soul Binder.
+tile.block_painted_pressure_plate.wood.name=Wooden Pressure Plate
+tile.block_painted_pressure_plate.wood.tooltip.detailed.line1=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.wood.silent.name=Wooden Pressure Plate (Silent)
+tile.block_painted_pressure_plate.wood.silent.tooltip.detailed.line1=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+
+tile.block_painted_redstone.name=Painted Redstone
+tile.block_painted_redstone_solid.name=Painted Redstone
+tile.block_painted_slab.name=Painted Slab
+tile.block_painted_stair.name=Painted Stairs
+tile.block_painted_stone.name=Painted Cobblestone
+tile.block_painted_stone_double_slab.name=Painted Stone Slab
+tile.block_painted_stone_fence.name=Painted Stone Fence
+tile.block_painted_stone_slab.name=Painted Stone Slab
+tile.block_painted_stone_stair.name=Painted Stone Stairs
+tile.block_painted_wall.name=Painted Wall
+tile.block_painted_wooden_trapdoor.name=Painted Wooden Trapdoor
+
+tile.block_reinforced_obsidian.name=Reinforced Obsidian
+tile.block_reinforced_obsidian.tooltip.common.line1=Wither Proof
+
+tile.block_self_resetting_lever5.name=Self-resetting Lever (5 seconds)
+tile.block_self_resetting_lever10.name=Self-resetting Lever (10 seconds)
+tile.block_self_resetting_lever30.name=Self-resetting Lever (30 seconds)
+tile.block_self_resetting_lever60.name=Self-resetting Lever (1 Minute)
+tile.block_self_resetting_lever300.name=Self-resetting Lever (5 Minutes)
+
+
+
+enderio.machine.tooltip.configured=%s (Configured)
+enderio.machine.tooltip.upgrade=Machine Upgrade
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and speed / range of machines
+
+enderio.block.tooltip.blastResistant=Blast Resistant
+enderio.block.tooltip.lightEmitter=Emits Light
+enderio.block.tooltip.lightBlocker=Blocks Light
+
+
+enderio.grindingball.tooltip.line1=%sSAG Mill Grinding Ball
+enderio.grindingball.tooltip.line2=%sMain Output %s
+enderio.grindingball.tooltip.line3=%sBonus Output %s
+enderio.grindingball.tooltip.line4=%sPower Reduction %s
+
+enderio.gui.permission.denied=Permission denied
+
+enderio.gui.conduit.ioMode.inOut=In / Out
+enderio.gui.conduit.ioMode.input=Extract
+enderio.gui.conduit.ioMode.output=Insert
+enderio.gui.conduit.ioMode.disabled=Disabled
+enderio.gui.conduit.ioMode.notSet=Default
+
+enderio.gui.tooltip.redstoneControlMode=Redstone Mode
+
+enderio.config.title=Ender IO Configuration
+enderio.config.power=Power Settings
+enderio.config.power.tooltip=So many numbers to change...
+enderio.config.recipe=Recipe Settings
+enderio.config.recipe.tooltip=Config ALL the things!
+enderio.config.item=Item Settings
+enderio.config.item.tooltip=If you don't like some of my amazing items :(
+enderio.config.efficiency=Efficiency Settings
+enderio.config.efficiency.tooltip=Where do the numbers end?
+enderio.config.personal=Personal Settings
+enderio.config.personal.tooltip=I won't tell anyone, I promise.
+enderio.config.anchor=Anchor Settings
+enderio.config.anchor.tooltip=Anchors away!
+enderio.config.staff=Staff Settings
+enderio.config.staff.tooltip=Be careful with that thing, you'll teleport your face off.
+enderio.config.darksteel=Dark Steel
+enderio.config.darksteel.tooltip=It's not just regular steel, it's §odark§r§e steel.
+enderio.config.aesthetic=Aesthetic Settings
+enderio.config.aesthetic.tooltip=Oooh, ahhh, pretty.
+enderio.config.advanced=Advanced Settings
+enderio.config.advanced.tooltip=For those who can't have enough configs.
+enderio.config.magnet=Magnet Settings
+enderio.config.magnet.tooltip=How do they work?
+enderio.config.fluid=Fluid Settings
+enderio.config.fluid.tooltip=Pure liquid energy!
+
+enderio.config.attractor=Attraction Obelisk Settings
+enderio.config.capacitor=Capacitor Settings
+enderio.config.enchanter=Enchanter Settings
+enderio.config.enchantments=Enchantment Settings
+enderio.config.hoes=Hoes for Farming Station
+enderio.config.infinitypowder=Infinity Powder Settings
+enderio.config.killerjoe=Killer Joe Settings
+enderio.config.misc=Other Settings
+enderio.config.rod=Rod of Return Settings
+enderio.config.soulbinder=Soulbinder Settings
+enderio.config.soulvial= Soal Vial Settings
+enderio.config.top=The One Probe Integration Settings
+enderio.config.upgrades=Dark Steel Upgrade Settings
+enderio.config.wireless=Wireless Charger Settings
+
+enchantment.soulBound=Soulbound
+description.enchantment.enderio.soulBound=Prevents item from being lost on death
+
+enderio.farm.note.outputFull=Output Full
+enderio.farm.note.noSeeds=No Seeds
+enderio.farm.note.noAxe=No Axe
+enderio.farm.note.noHoe=No Hoe
+enderio.farm.note.noShears=No Shears
+enderio.farm.note.noTreetap=No Treetap
+enderio.farm.note.noPower=No Power
+
+enderio.power.symbol=µI
+enderio.power.format=%s µI
+enderio.power.format.of=%s / %s µI
+enderio.power.format.pertick=%s µI/t
+
+enderio.fluid.millibucket.format=%s mB
+enderio.fluid.millibucket.format.name=%s mB of %s
+enderio.fluid.millibucket.format.of=%s / %s mB
+enderio.fluid.millibucket.format.ofname=%s / %s mB of %s
+enderio.fluid.millibucket.format.tickper=%s t/mB
+
+enderio.fuel.tooltip.heading=Fuel Details
+enderio.fuel.tooltip.generates=Generates %s at %s
+enderio.fuel.tooltip.burnTime=Burn time %s ticks
+enderio.coolant.tooltip.heading=Coolant
+enderio.coolant.tooltip.degreesPerBucket=%s°C per bucket
+
+
+
+enderio.darksteel.upgrade.empowered_one.name=Empowered
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D%% damage absorbed
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=by power
+
+enderio.darksteel.upgrade.empowered_two.name=Empowered II
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D%% damage absorbed
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=by power
+
+enderio.darksteel.upgrade.empowered_three.name=Empowered III
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D%% damage absorbed
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=by power
+
+enderio.darksteel.upgrade.empowered_four.name=Empowered IV
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D%% damage absorbed
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
+
+enderio.darksteel.upgrade.travel.name=Travel
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or activate a travel anchor or Ender IO
+
+enderio.darksteel.upgrade.spoon.name=Spoon
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Who needs a shovel when you have a spoon...
+
+enderio.darksteel.upgrade.tnt.name=Explosive
+enderio.darksteel.upgrade.tnt.tooltip.detailed.line1=Adds explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.tooltip.detailed.line2=For problems that look like nails.
+
+enderio.darksteel.upgrade.glider.name=Glider
+enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Enables gliding
+enderio.darksteel.upgrade.glider.enabled=Glider Active
+enderio.darksteel.upgrade.glider.disabled=Glider Disabled
+
+enderio.darksteel.upgrade.elytra.name=Elytra
+enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=Enables Elytra flight
+enderio.darksteel.upgrade.elytra.tooltip.detailed.line2=§4(That means flying as if an Elytra was equipped, NOT "creative" flight!)
+enderio.darksteel.upgrade.elytra.enabled=Elytra Active
+enderio.darksteel.upgrade.elytra.disabled=Elytra Disabled
+
+enderio.darksteel.upgrade.sound.name=Sound Locator
+enderio.darksteel.upgrade.sound.tooltip.detailed.line1=Displays the location of nearby sounds
+enderio.darksteel.upgrade.sound.enabled=Sound Locator Active
+enderio.darksteel.upgrade.sound.disabled=Sound Locator Disabled
+
+enderio.darksteel.upgrade.gogglesOfRevealing.name=Revealing
+enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount: 5%
+enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Magic is being revealed
+enderio.darksteel.upgrade.gogglesOfRevealing.disabled=Magic is hidden from plain sight
+
+enderio.darksteel.upgrade.naturalistEye.name=Naturalist's Eye
+enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Shows pollinated tree leaves
+
+enderio.darksteel.upgrade.apiaristArmor.helmet.name=Apiarist's Hat
+enderio.darksteel.upgrade.apiaristArmor.helmet.tooltip.detailed.line1=Protection against bees
+
+enderio.darksteel.upgrade.apiaristArmor.chestplate.name=Apiarist's Shirt
+enderio.darksteel.upgrade.apiaristArmor.chestplate.tooltip.detailed.line1=Protection against bees
+
+enderio.darksteel.upgrade.apiaristArmor.leggings.name=Apiarist's Pants
+enderio.darksteel.upgrade.apiaristArmor.leggings.tooltip.detailed.line1=Protection against bees
+
+enderio.darksteel.upgrade.apiaristArmor.boots.name=Apiarist's Shoes
+enderio.darksteel.upgrade.apiaristArmor.boots.tooltip.detailed.line1=Protection against bees
+
+
+enderio.darksteel.upgrade.jump.enabled=Jump Enabled
+enderio.darksteel.upgrade.jump.disabled=Jump Disabled
+
+enderio.darksteel.upgrade.jump_one.name=Jump
+enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Increases step and jump height
+enderio.darksteel.upgrade.stepAssist.enabled=Step Assist Active
+enderio.darksteel.upgrade.stepAssist.disabled=Step Assist Disabled
+
+enderio.darksteel.upgrade.jump_two.name=Jump II
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Increases step and jump height
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Allows double jumps
+
+enderio.darksteel.upgrade.jump_three.name=Jump III
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=Increases step and jump height
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=Allows triple jumps
+
+enderio.darksteel.upgrade.speed_one.name=Speed
+enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=Increases movement speed
+enderio.darksteel.upgrade.speed.enabled=Speed Active
+enderio.darksteel.upgrade.speed.disabled=Speed Disabled
+
+enderio.darksteel.upgrade.speed_two.name=Speed II
+enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Increases movement speed
+
+enderio.darksteel.upgrade.speed_three.name=Speed III
+enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=Increases movement speed
+
+enderio.darksteel.upgrade.swim.name=Flippers
+
+enderio.darksteel.upgrade.nightVision.name=Night Vision
+enderio.darksteel.upgrade.nightVision.enabled=Night Vision Enabled
+enderio.darksteel.upgrade.nightVision.disabled=Night Vision Disabled
+
+enderio.darksteel.upgrade.top.name=The One Probe
+
+// These are used for the "The One Probe" integration
+enderio.top.action.header=%s:
+enderio.top.action.none=nothing
+enderio.top.machine.active=active
+enderio.top.machine.idle=idle
+enderio.top.progress.idle=idle
+enderio.top.suffix.percent= %
+enderio.top.suffix.rf= RF
+enderio.top.suffix.levels= Levels
+enderio.top.suffix.items= Items
+enderio.top.range.header=Range: %s
+enderio.top.range=%sx%sx%s
+enderio.top.machine.outofpower=No Power
+enderio.top.progress.outofpower=Out of Power
+enderio.top.redstone.header=Currently: %s
+enderio.top.redstone.true=On
+enderio.top.redstone.false=Off
+enderio.top.tank.content=%s/%smb
+enderio.top.tank.content.empty=Empty
+enderio.top.tank.header.input=Input Tank: %s
+enderio.top.tank.header.output=Output Tank: %s
+enderio.top.tank.header.storage=%s
+enderio.top.rf.header.maxin=Max Input:
+enderio.top.rf.header.maxout=Max Output:
+enderio.top.rf.header.avg=I/O:
+enderio.top.rf.value=%s RF/t
+enderio.top.paint.header=Painted with:
+enderio.top.owner.header=Owner:
+
+//Fluids
+fluid.nutrient_distillation=Nutrient Distillation
+tile.fluid.nutrient_distillation.name=Nutrient Distillation
+
+fluid.ender_distillation=Dew of the Void
+tile.fluid.ender_distillation.name=Dew of the Void
+
+fluid.vapor_of_levity=Vapor of Levity
+tile.vapor_of_levity.name=Vapor of Levity
+
+fluid.hootch=Hootch
+tile.fluid.hootch.name=Hootch
+
+fluid.fire_water=Fire Water
+tile.fluid.fire_water.name=Fire Water
+
+fluid.rocket_fuel=Rocket Fuel
+tile.fluid.rocket_fuel.name=Rocket Fuel
+
+fluid.liquid_sunshine=Liquid Sunshine
+tile.fluid.liquid_sunshine.name=Liquid Sunshine
+
+fluid.cloud_seed=Cloud Seed
+tile.fluid.cloud_seed.name=Cloud Seed
+
+fluid.cloud_seed_concentrated=Concentrated Cloud Seed
+tile.fluid.cloud_seed_concentrated.name=Concentrated Cloud Seed
+
+fluid.xpjuice=Liquid XP
+tile.fluid.xpjuice.name=Liquid XP
+
+enderio.itemConduitFilterUpgrade=Upgrade for item conduits
+
+enderio.itemConduitFilterUpgrade.configured=%sConfigured
+enderio.itemConduitFilterUpgrade.clearConfigMethod=%sPlace in crafting grid to clear
+enderio.itemConduitFilterUpgrade.clearConfigWarning=%sThis will clear all stored filter settings!
+
+enderio.gui.generic.max=Max: %s
+enderio.gui.generic.progress=Progress %s%%
+enderio.gui.generic.ioMode.overlay.tooltip=Configure IO
+enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=Configure IO
+enderio.gui.generic.ioMode.overlay.tooltip.visible.line2=Shift click to reset all sides
+enderio.gui.generic.ioMode.overlay.tooltip.visible.line3=to their default setting
+enderio.gui.generic.nocap.line1=§3Capacitor missing
+enderio.gui.generic.nocap.line2=Insert any capacitor so
+enderio.gui.generic.nocap.line3=this machine can work!
+
+
+// consumed by EntityAction
+enderio.entity_action.block_attractor_obelisk.action=Attracts
+enderio.entity_action.block_aversion_obelisk.action=Prevents spawning
+enderio.entity_action.block_powered_spawner.action=Spawns
+enderio.entity_action.block_relocator_obelisk.action=Relocates
+
+// Redstone controls
+enderio.gui.tooltip.redstoneControlMode.ignore=Always active
+enderio.gui.tooltip.redstoneControlMode.on=Active with signal
+enderio.gui.tooltip.redstoneControlMode.off=Active without signal
+enderio.gui.tooltip.redstoneControlMode.never=Never active
+
+// IO Modes
+enderio.gui.machine.ioMode.none=None
+enderio.gui.machine.ioMode.pull=Pull
+enderio.gui.machine.ioMode.push=Push
+enderio.gui.machine.ioMode.disabled=Disabled
+enderio.gui.machine.ioMode.pullPush=Push / Pull
+enderio.gui.machine.ioMode.pullPush.colored=%sPush %s/ %sPull
+
+enderio.recipe.tooltip.clearConfig=§c§oThis will clear all stored info!
+enderio.block.tooltip.isBeaconBase=Can be used as beacon base
+
+// Colors e.g. for Colored Fused Quartz
+enderio.color.black=Black
+enderio.color.red=Red
+enderio.color.green=Green
+enderio.color.brown=Brown
+enderio.color.blue=Blue
+enderio.color.purple=Purple
+enderio.color.cyan=Cyan
+enderio.color.silver=Light Gray
+enderio.color.gray=Gray
+enderio.color.pink=Pink
+enderio.color.lime=Lime
+enderio.color.yellow=Yellow
+enderio.color.lightBlue=Light Blue
+enderio.color.magenta=Magenta
+enderio.color.orange=Orange
+enderio.color.white=White
+
+enderio.generic.tooltip.paintedWith=Painted with: %s
+enderio.generic.tooltip.unpainted=Not painted
+
+enderio.wrench.permission.denied=Permission §cdenied§r!
+enderio.soulvial.denied=Permission §cdenied§r!
+enderio.soulvial.owned.denied=Permission §cdenied§r - only owners may pick up owned animals
+enderio.soulvial.player.denied=§cNo!$r How would you feel if you had to play this game from inside a bottle?
+enderio.soulvial.blacklisted.denied=Permission §cdenied§r - this entity is blacklisted
+
+// There's a 1% change that a soul vial containing a pig is named this:
+enderio.easteregg.piginabottle=Bacon in a Bottle
+
+## Names for random capacitors. These are layered ("level"+"type")xN "baselevel", e.g.
+## "Failed Smelting Simple Hungry Nice Insatiable Impossible Capacitor"
+
+# Types. intake=all machines max power input, buffer=all
+# machines buffer size
+enderio.loot.capacitor.intake=Hungry %s
+enderio.loot.capacitor.buffer=Insatiable %s
+
+# Names for capacitor levels, the number is the upper boundary of the range (e.g. "25" is used for capacitors level 1.51 to 2.5)
+# This is the general level of the capacitor
+enderio.loot.capacitor.baselevel.10=%s Dud
+enderio.loot.capacitor.baselevel.15=%s
+enderio.loot.capacitor.baselevel.25=Enhanced %s
+enderio.loot.capacitor.baselevel.35=Wonder %s
+enderio.loot.capacitor.baselevel.45=Impossible %s
+enderio.loot.capacitor.name=Capacitor
+
+# As above but for the special attribute
+enderio.loot.capacitor.level.10=Failed %s
+enderio.loot.capacitor.level.15=Simple %s
+enderio.loot.capacitor.level.25=Nice %s
+enderio.loot.capacitor.level.30=Good %s
+enderio.loot.capacitor.level.35=Enhanced %s
+enderio.loot.capacitor.level.40=Premium %s
+enderio.loot.capacitor.level.42=Incredibly %s 
+enderio.loot.capacitor.level.45=Unstable %s
+
+enderio.loot.capacitor.entry.count=9
+enderio.loot.capacitor.entry.0=An attached note describes this as "%s"
+enderio.loot.capacitor.entry.1=You can decipher ancient runes that translate roughly as "%s". Odd...
+enderio.loot.capacitor.entry.2=By the power of Enderskull, I have the %s!
+enderio.loot.capacitor.entry.3=If you had to describe this, "%s" would be a good name.
+enderio.loot.capacitor.entry.4=If you had to describe this, "%s" would be a bad name.
+enderio.loot.capacitor.entry.5=This "%s" is the property of Randalf the Tinkerer. Unauthorized removal is unauthorized!
+enderio.loot.capacitor.entry.6=This "%s" is the property of Randalf the Ex-Tinkerer. Unauthorized removal is welcome!
+enderio.loot.capacitor.entry.7=Your "%s" can now be upgraded free of charge to "Capacitor 1". Press ok or abort to do so.
+enderio.loot.capacitor.entry.8=Put this "%s" into different machines to find out what it does. Or ask aunt Google.
+
+enderio.loot.capacitor.title.count=22
+enderio.loot.capacitor.title.0=Remarkable Capacitor
+enderio.loot.capacitor.title.1=Unremarkable Capacitor
+enderio.loot.capacitor.title.2=Found Capacitor
+enderio.loot.capacitor.title.3=Lost Capacitor
+enderio.loot.capacitor.title.4=Ancient Capacitor
+enderio.loot.capacitor.title.5=Magic Capacitor
+enderio.loot.capacitor.title.6=Capacitor of Holding
+enderio.loot.capacitor.title.7=Capacitor of the Southern Winds
+enderio.loot.capacitor.title.8=Capacitor of What is This Doing Here
+enderio.loot.capacitor.title.9=Modified Power Holding Device
+enderio.loot.capacitor.title.10=A Mystery wrapped in tin foil
+enderio.loot.capacitor.title.11=Something wonderful
+enderio.loot.capacitor.title.12=A Capacitor. Maybe
+enderio.loot.capacitor.title.13=Heaven Cent
+enderio.loot.capacitor.title.14=Don't turn it on, take it apart!
+enderio.loot.capacitor.title.15=Not blue. Not a box.
+enderio.loot.capacitor.title.16=Shocking Contraption
+enderio.loot.capacitor.title.17=Technomagical Marvel
+enderio.loot.capacitor.title.18=Unnamed Thing
+enderio.loot.capacitor.title.19=Thing
+enderio.loot.capacitor.title.20=Something
+enderio.loot.capacitor.title.21=Nothing
+
+
+// These keys have not (yet) been confirmed in 1.11
+;
+;//Power
+;enderio.power.maxOutput=Max Output
+;
+;//Enderface
+;item.enderio.itemEnderface.name=Enderface
+;
+;//Conduits
+;enderio.blockConduitBundle=Conduit Bundle
+;enderio.item.itemConduitFacade.tooltip.notpainted=Not Painted
+;
+;enderio.itemPowerConduit.name=Energy Conduit
+;enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
+;enderio.itemPowerConduitEnder.name=Ender Energy Conduit
+;
+;enderio.itemRedstoneConduitInsulated.name=Redstone Conduit
+;
+;enderio.itemLiquidConduit.name=Fluid Conduit
+;enderio.itemLiquidConduitAdvanced.name=Pressurized Fluid Conduit
+;enderio.itemLiquidConduitEnder.name=Ender Fluid Conduit
+;enderio.itemLiquidConduit.lockedType=Fluid type locked to
+;enderio.itemLiquidConduit.unlockedType=Fluid type unlocked
+;enderio.itemLiquidConduit.lockedWaila=Locked to 
+;
+;enderio.itemLiquidConduit.tooltip.maxExtract=Max Extract:
+;enderio.itemLiquidConduit.tooltip.maxIo=Max IO:
+;enderio.itemLiquidConduit.tooltip.detailed.line1=Fluid flow respects gravity
+;enderio.itemLiquidConduit.tooltip.detailed.line2=Flow rate dependent on fluid
+;enderio.itemLiquidConduit.tooltip.detailed.line3=viscosity
+;
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Instant fluid teleportation
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line2=allows multiple fluids to be
+;enderio.itemLiquidConduitEnder.tooltip.detailed.line3=transported on the same line
+;
+;enderio.itemItemConduit.name=Item Conduit
+;
+item.item_item_filter_filterUpgradeBasic.name=Basic Item Filter
+item.item_item_filter_filterUpgradeAdvanced.name=Advanced Item Filter
+item.item_item_filter_filterUpgradeLimited.name=Counting Item Filter
+enderio.filterUpgradeSpecies.name=Forestry Species Item Filter
+;
+item.item_existing_item_filter.name=Existing Item Filter
+item.item_existing_item_filter.tooltip.basic.line1=Upgrade for item conduits
+item.item_existing_item_filter.tooltip.detailed.line1=Selects only items already
+item.item_existing_item_filter.tooltip.detailed.line2=in the inventory
+item.item_existing_item_filter.tooltip.detailed.line3=Right click while sneaking
+item.item_existing_item_filter.tooltip.detailed.line4=on an inventory to add the
+item.item_existing_item_filter.tooltip.detailed.line5=content to the snapshot
+;
+;enderio.item.itemExistingItemFilter.filterUpdated=New items have been added to the snapshot
+;enderio.item.itemExistingItemFilter.filterNotUpdated=The snapshot already covers all items in the inventory
+;
+item.item_mod_item_filter.name=Mod Item Filter
+item.item_mod_item_filter.tooltip.basic.line1=Upgrade for item conduits
+item.item_mod_item_filter.tooltip.detailed.line1=Selects only items for a specified
+item.item_mod_item_filter.tooltip.detailed.line2=mod/s
+;
+item.item_power_item_filter.name=Chargeable Item Filter
+item.item_power_item_filter.tooltip.basic.line1=Upgrade for item conduits
+item.item_power_item_filter.tooltip.detailed.line1=Filters chargeable items based on
+item.item_power_item_filter.tooltip.detailed.line2=how much RF they have stored
+;
+;item.itemExtractSpeedUpgrade.name=Item Conduit Speed Upgrade
+;item.itemExtractSpeedUpgrade.tooltip.basic.line1=Upgrade for item conduits
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Increases speed by 4
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line2=items per extraction
+;item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Max upgrades is 15
+;
+;item.itemExtractSpeedDowngrade.name=Item Conduit Speed Downgrade
+;item.itemExtractSpeedDowngrade.tooltip.basic.line1=Downgrade for item conduits
+;item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Reduces speed to 1
+;item.itemExtractSpeedDowngrade.tooltip.detailed.line2=item per extraction
+;
+;item.itemInventoryPanelUpgrade.name=Remote Awareness Upgrade
+;item.itemInventoryPanelUpgrade.tooltip.basic.line1=Inventory Panel Remote Awareness
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Function upgrade for item conduits
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line2=Allows Inventory Panels attached
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line3=to this network to see and extract
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line4=items from this inventory independent
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line5=of the conduit mode.
+;item.itemInventoryPanelUpgrade.tooltip.detailed.line6=(No need to set the conduit to extract)
+;
+;enderio.itemGasConduit.name=Gas Conduit
+;
+;enderio.itemGasConduit.tooltip.maxExtract=Max Extract:
+;enderio.itemGasConduit.tooltip.maxIo=Max IO:
+;enderio.itemGasConduit.tooltip.detailed.line1=Transfers Mekanism-compatible gases
+;
+;enderio.itemMEConduit.name=ME Conduit
+;enderio.itemMEConduitDense.name=Dense ME Conduit
+;enderio.itemMEConduit.channelsUsed={0,number} of {1,number} Channels
+;
+;enderio.itemOCConduit.name=Network Conduit (OC)
+;
+;//display string for Skeleton(type==1)
+;entity.witherSkeleton.name=Wither Skeleton
+;entity.ZombieVillager.name=Zombie Villager
+;
+;//Materials
+;
+;
+;
+;
+;enderio.fluid.millibucketsTick=mB/t
+;enderio.gas.gasTick=Gas/t
+;
+;//Materials
+;
+;
+;
+;
+;
+;//Machines
+
+;
+
+;
+;
+
+;
+;item.itemElectricLight.name=Powered Light
+;item.itemElectricLight.tooltip.detailed.line1=Lights a large area when supplied with
+;item.itemElectricLight.tooltip.detailed.line2=power and a redstone signal.
+;
+;item.itemElectricLightInverted.name=Powered Light (Inverted)
+;item.itemElectricLightInverted.tooltip.detailed.line1=Lights a large area when supplied with
+;item.itemElectricLightInverted.tooltip.detailed.line2=power.
+;item.itemElectricLightInverted.tooltip.detailed.line3=Turn off with a redstone signal.
+;
+;item.itemLight.name=Light
+;item.itemLight.tooltip.detailed.line1=Emits light with a
+;item.itemLight.tooltip.detailed.line2=redstone signal.
+;
+;item.itemLightInverted.name=Light (Inverted)
+;item.itemLightInverted.tooltip.detailed.line1=Emits light, disable with
+;item.itemLightInverted.tooltip.detailed.line2=a redstone signal.
+;
+;item.itemWirelessLight.name=Wireless Powered Light
+;item.itemWirelessLight.tooltip.detailed.line1=Lights a large area when supplied with
+;item.itemWirelessLight.tooltip.detailed.line2=power and a redstone signal.
+;item.itemWirelessLight.tooltip.detailed.line3=Can receive power from wireless chargers.
+;
+;item.itemWirelessLightInverted.name=Wireless Powered Light (Inverted)
+;item.itemWirelessLightInverted.tooltip.detailed.line1=Lights a large area when supplied with
+;item.itemWirelessLightInverted.tooltip.detailed.line2=power.
+;item.itemWirelessLightInverted.tooltip.detailed.line3=Turn off with a redstone signal.
+;item.itemWirelessLightInverted.tooltip.detailed.line4=Can receive power from wireless chargers.
+;
+;tile.blockCapacitorBank.name=Capacitor Bank (Deprecated)
+;tile.blockCapacitorBank.creative.name=Creative Capacitor Bank (Deprecated)
+;tile.blockCapacitorBank.tooltip.detailed.line1=Convert to new block by placing
+;tile.blockCapacitorBank.tooltip.detailed.line2=in a crafting grid
+;tile.blockCapacitorBank.tooltipPrefix=Contains
+;
+;tile.blockCapBank.creative.name=Creative Capacitor Bank
+;tile.blockCapBank.simple.name=Basic Capacitor Bank
+;tile.blockCapBank.activated.name=Capacitor Bank
+;tile.blockCapBank.vibrant.name=Vibrant Capacitor Bank
+;tile.blockCapBank.tooltip.detailed.line1=Multi-block energy storage.
+;tile.blockCapBank.tooltip.detailed.line2=Can charge RF powered items.
+;tile.blockCapBank.tooltip.detailed.line3=Shift-R-Click on a face with an empty hand
+;tile.blockCapBank.tooltip.detailed.line4=to change information display
+;tile.blockCapBank.tooltip.hasItems={0,number,integer} {0,choice,1#item|1<items} in inventory
+;tile.blockCapBank.tooltipPrefix=Contains
+;
+;enderio.capbank.maxIO=Max I/O
+;enderio.capbank.maxIn=Max Input
+;enderio.capbank.maxOut=Max Output
+;enderio.capbank.change=I/O
+;enderio.capbank.iodisplay.stable=I/O
+;enderio.capbank.iodisplay.gain=In
+;enderio.capbank.iodisplay.loss=Out
+;enderio.capbank.iodisplay.input=Input
+;enderio.capbank.iodisplay.output=Output
+;
+;
+;tile.blockHyperCube.name=Dimensional Transceiver (Deprecated)
+;tile.blockHyperCube.tooltip.detailed.line1=Convert to new model by placing
+;tile.blockHyperCube.tooltip.detailed.line2=in the crafting grid
+;
+
+;
+;tile.blockEnderRail.name=Ender Rail
+;tile.blockEnderRail.tooltip.detailed.line1=Teleports minecarts when placed
+;tile.blockEnderRail.tooltip.detailed.line2=on a Dimensional Transceiver
+;tile.blockEnderRail.tooltip.detailed.line3=Set destinations using the
+;tile.blockEnderRail.tooltip.detailed.line4=Transceiver's rail tab
+;tile.blockEnderRail.tooltip.detailed.line5=Set direction with a Shift-R-Click
+;tile.blockEnderRail.tooltip.detailed.line6=of a wrench
+;
+;enderio.trans.showChannels=<Shift to show channels>
+;
+;enderio.trans.power=Power
+;enderio.trans.item=Item
+;enderio.trans.fluid=Fluid
+;enderio.trans.rail=Rail
+;
+;enderio.trans.receiving=Receiving
+;enderio.trans.sending=Sending
+;
+;tile.blockPowerMonitor.name=Power Monitor
+;tile.blockPowerMonitor.tooltip.detailed.line1=Displays details of power use and
+;tile.blockPowerMonitor.tooltip.detailed.line2=storage
+;tile.blockPowerMonitor.tooltip.detailed.line3=Can be used to emit redstone
+;tile.blockPowerMonitor.tooltip.detailed.line4=based on stored power levels
+;tile.blockPowerMonitor.tooltip.detailed.line5=Must be attached to an EnderIO
+;tile.blockPowerMonitor.tooltip.detailed.line6=conduit
+;
+;tile.blockPowerMonitorv2.name=Graphical Power Monitor
+;tile.blockPowerMonitorv2.tooltip.detailed.line1=Displays details of power use and
+;tile.blockPowerMonitorv2.tooltip.detailed.line2=storage
+;tile.blockPowerMonitorv2.tooltip.detailed.line3=Can be used to emit redstone
+;tile.blockPowerMonitorv2.tooltip.detailed.line4=based on stored power levels
+;tile.blockPowerMonitorv2.tooltip.detailed.line5=Must be attached to an EnderIO
+;tile.blockPowerMonitorv2.tooltip.detailed.line6=conduit
+;
+;tile.blockGauge.name=RF Gauge
+;tile.blockGauge.tooltip.detailed.line1=Displays RF levels of adjacent
+;tile.blockGauge.tooltip.detailed.line2=blocks.
+;
+
+;
+;
+;tile.blockAttractor.name=Attractor Obelisk
+;tile.blockAttractor.tooltip.detailed.line1=Draws mobs towards it
+;tile.blockAttractor.tooltip.detailed.line2=Specify the mobs to effect
+;tile.blockAttractor.tooltip.detailed.line3=by placing their souls
+;tile.blockAttractor.tooltip.detailed.line4=within the device
+;
+;
+;tile.blockInventoryPanel.name=Inventory Panel
+;tile.blockInventoryPanel.tooltip.basic.line1=Remote access and crafting
+;tile.blockInventoryPanel.tooltip.detailed.line1=Allows remote access to inventories via
+;tile.blockInventoryPanel.tooltip.detailed.line2=Remote Awareness Upgrades in item conduits.
+;tile.blockInventoryPanel.tooltip.detailed.line3=Uses Nutrient Distillation for power.
+;tile.blockInventoryPanel.tooltip.detailed.line4=Offers a persistent crafting grid.
+;enderio.gui.inventorypanel.header.crafting=Crafting grid
+;enderio.gui.inventorypanel.header.return=Return area
+;enderio.gui.inventorypanel.header.storage=Storage area
+;enderio.gui.inventorypanel.info.filter=<filter by name>
+;enderio.gui.inventorypanel.info.offline=<OFFLINE>
+;enderio.gui.inventorypanel.tooltip.return.line1=Item return area
+;enderio.gui.inventorypanel.tooltip.return.line2=Items placed here can be extracted
+;enderio.gui.inventorypanel.tooltip.return.line3=by an item conduit, but will not be
+;enderio.gui.inventorypanel.tooltip.return.line4=used for crafting.
+;enderio.gui.inventorypanel.tooltip.return.line5=Click to change into storage area.
+;enderio.gui.inventorypanel.tooltip.storage.line1=Item storage area
+;enderio.gui.inventorypanel.tooltip.storage.line2=Small temporary item storage area.
+;enderio.gui.inventorypanel.tooltip.storage.line3=Click to change into return area
+;enderio.gui.inventorypanel.tooltip.filterslot.line1=Filter card slot
+;enderio.gui.inventorypanel.tooltip.filterslot.line2=Place configured item filters in
+;enderio.gui.inventorypanel.tooltip.filterslot.line3=here to select which items to show.
+;enderio.gui.inventorypanel.tooltip.sort.name_down.line1=Sort items by name
+;enderio.gui.inventorypanel.tooltip.sort.name_up.line1=Sort items by name
+;enderio.gui.inventorypanel.tooltip.sort.name_up.line2=Starting at the end of the alphabet
+;enderio.gui.inventorypanel.tooltip.sort.mod_down.line1=Sort items by mod ID
+;enderio.gui.inventorypanel.tooltip.sort.mod_down.line2=Items from the same mod are sorted by name
+;enderio.gui.inventorypanel.tooltip.sort.mod_up.line1=Sort items by mod ID
+;enderio.gui.inventorypanel.tooltip.sort.mod_up.line2=Items from the same mod are sorted by name
+;enderio.gui.inventorypanel.tooltip.sort.mod_up.line3=Starting at the end of the alphabet
+;enderio.gui.inventorypanel.tooltip.sort.count_down.line1=Sort items by their quantity
+;enderio.gui.inventorypanel.tooltip.sort.count_down.line2=Starting with the highest quantity
+;enderio.gui.inventorypanel.tooltip.sort.count_up.line1=Sort items by their quantity
+;enderio.gui.inventorypanel.tooltip.sort.count_up.line2=Starting with the lonely ones
+;enderio.gui.inventorypanel.tooltip.refill.line1=Refills the crafting grid.
+;enderio.gui.inventorypanel.tooltip.refill.line2=Click to place items
+;enderio.gui.inventorypanel.tooltip.refill.line3=for one crafting operation,
+;enderio.gui.inventorypanel.tooltip.refill.line4=shift click to place as
+;enderio.gui.inventorypanel.tooltip.refill.line5=many items as possible.
+;enderio.gui.inventorypanel.tooltip.clear.line1=Clear crafting grid
+;enderio.gui.inventorypanel.tooltip.clear.line2=Moves all items to the return area
+;enderio.gui.inventorypanel.tooltip.fuelTank=Nutrient Tank
+;enderio.gui.inventorypanel.tooltip.itemsstored=Items Stored: %s
+;enderio.gui.inventorypanel.tooltip.addrecipe.line1=Store the current crafting recipe
+;enderio.gui.inventorypanel.tooltip.addrecipe.line2=A maximum of 6 recipes can be stored.
+;enderio.gui.inventorypanel.tooltip.addrecipe.line3=Left clicking a stored recipe will try to put
+;enderio.gui.inventorypanel.tooltip.addrecipe.line4=items for one crafting operation into the grid.
+;enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift left clicking tries to fill the crafting
+;enderio.gui.inventorypanel.tooltip.addrecipe.line6=grid to the maximum.
+;enderio.gui.inventorypanel.tooltip.addrecipe.line7=Right click a stored recipe to delete it.
+;enderio.gui.inventorypanel.tooltip.sync=NEI/JEI Sync
+;enderio.gui.inventorypanel.tooltip.sync.nei=NEI Sync
+;enderio.gui.inventorypanel.tooltip.sync.jei=JEI Sync
+;enderio.gui.inventorypanel.tooltip.sync.jei.line1=Text entered into filter field will be remembered.
+;enderio.gui.inventorypanel.tooltip.sync.jei.line2=Text entered into JEI field will not be remembered.
+;
+;
+;tile.blockInventoryPanelSensor.name=Inventory Sensor
+;tile.blockInventoryPanelSensor.tooltip.detailed.line1=Emits redstone signals based
+;tile.blockInventoryPanelSensor.tooltip.detailed.line2=on the number of an item available
+;tile.blockInventoryPanelSensor.tooltip.detailed.line3=in an Inventory Panel network
+;
+;enderio.gui.inventorySensor.control1=Start when < 
+;enderio.gui.inventorySensor.control2=Stop when >=
+;
+;
+;enderio.painter.tooltip.wasPainted=§oWhat did you think that would do?
+;
+;tile.blockPainter.tooltip.detailed.line1=Used to paint:
+;tile.blockPainter.tooltip.detailed.line2=Conduit Facades, Stairs, Fences, Gates,
+;tile.blockPainter.tooltip.detailed.line3=Slabs, Cobblestone, Cobblestone Walls,
+;tile.blockPainter.tooltip.detailed.line4=Glowstone, Redstone, Carpet, Pressure
+;tile.blockPainter.tooltip.detailed.line5=Plates, Quite Clear Glass, Fused Quartz,
+;tile.blockPainter.tooltip.detailed.line6=Trapdoors, and most machines
+;
+;//Items
+;
+
+;
+;item.itemSpawnEggEnderIO.name=Spawn
+;
+;//Dark Steel
+;
+;
+;
+;
+;
+;//------GUI
+;
+;
+;enderio.gui.available=Available
+;enderio.gui.disabled=Disabled
+;enderio.gui.enabled=Enabled
+;enderio.gui.receive=Receive
+;enderio.gui.send=Send
+;enderio.gui.sendReceive=Send & Receive 
+;
+;
+;enderio.gui.machine.ioMode=Mode: %s
+;enderio.gui.machine.receivefilter=Receive Filter
+;enderio.gui.machine.sendfilter=Send Filter
+;enderio.gui.machine.bufferingstacks=Buffering item stacks
+;enderio.gui.machine.bufferingsingle=Buffering single items
+;enderio.gui.machine.percraft=Per Craft
+;enderio.gui.machine.side=Side: %s
+;enderio.gui.machine.side.north=North
+;enderio.gui.machine.side.south=South
+;enderio.gui.machine.side.west=West
+;enderio.gui.machine.side.east=East
+;enderio.gui.machine.side.up=Up
+;enderio.gui.machine.side.down=Down
+;
+;
+;//Power Monitor
+;enderio.gui.powerMonitor.engineControl=Engine Control
+;enderio.gui.powerMonitor.emit=Emit
+;enderio.gui.powerMonitor.engineSection1=Emit signal when storage less
+;enderio.gui.powerMonitor.engineSection2=than
+;enderio.gui.powerMonitor.engineSection3=% full.
+;enderio.gui.powerMonitor.engineSection4= Stop when storage greater than
+;enderio.gui.powerMonitor.engineSection5=or equal to
+;enderio.gui.powerMonitor.of=of
+;enderio.gui.powerMonitor.monHeading1=Conduit Storage
+;enderio.gui.powerMonitor.monHeading2=Capacitor Bank Storage
+;enderio.gui.powerMonitor.monHeading3=Machine Buffers
+;enderio.gui.powerMonitor.monHeading4=Average output over 5 seconds
+;enderio.gui.powerMonitor.monHeading5=Average input over 5 seconds
+;enderio.gui.powerMonitor.noNetworkError=No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
+;
+;//MJ Reader
+;enderio.gui.mjReader.networkHeading=Power Network
+;enderio.gui.mjReader.conduitBuffer=Internal Buffer
+;enderio.gui.mjReader.requestRange=Per tick request range
+;enderio.gui.mjReader.currentRequest=Current request
+;enderio.gui.mjReader.itemHeading=Item Conduit
+;enderio.gui.mjReader.itemNoConnections=has no external connections
+;enderio.gui.mjReader.noPowerFromSide=cannot receive power from this side
+;enderio.gui.mjReader.connectionDir=connection to:
+;enderio.gui.mjReader.extractedItems=Extracted items
+;enderio.gui.mjReader.extractedItem=Item
+;enderio.gui.mjReader.noOutputs=has no valid outputs
+;enderio.gui.mjReader.insertedInto=will be inserted into:
+;enderio.gui.mjReader.noItems=Receives no items.
+;enderio.gui.mjReader.noItem=Can not receive
+;enderio.gui.mjReader.receiveItems=Can receive items from:
+;enderio.gui.mjReader.receiveItem1=Can receive
+;enderio.gui.mjReader.receiveItem2=from:
+;
+;//CapactorBank
+;enderio.gui.capBank.inputRs=Input Redstone Mode
+;enderio.gui.capBank.outputRs=Output Redstone Mode
+;enderio.gui.capBank.maxIo=Max I/O
+;enderio.gui.capBank.maxInput=Max Input
+;enderio.gui.capBank.maxOutput=Max Output
+;enderio.gui.capBank.inputMode=Input
+;enderio.gui.capBank.outputMode=Output
+;
+
+;//Travel Blocks
+;enderio.gui.travelAccessable.unauthorised=You are not allowed to access this block.
+;enderio.gui.travelAccessable.skipLocked=Skipped locked anchor, use targeted teleport.
+;enderio.gui.travelAccessable.skipObstructed=Skipped obstructed anchor.
+;enderio.gui.travelAccessable.skipPrivate=Skipped private anchor.
+;
+;
+;//Spawn Gurad [sic]
+;
+;//conduits
+;enderio.gui.conduit.ioMode=Mode
+;tile.blockConduitBundle.name=Conduit Connector
+;
+;enderio.gui.conduit.button.clear=Clear
+;enderio.gui.conduit.button.merge=Merge
+;enderio.gui.conduit.button.show=Show
+;enderio.gui.conduit.button.snap=Snapshot
+;enderio.gui.conduit.button.snap.tooltip=Optional|If no snapshot is set,|the inventory content will|be used as filter
+;enderio.gui.conduit.item.insertionFilter=Insert
+;enderio.gui.conduit.item.extractionFilter=Extract
+;enderio.gui.conduit.item.sigCol=Signal Color
+;enderio.gui.conduit.item.channel=Channel
+;enderio.gui.conduit.item.ignoreMetaData=Ignore Meta Data
+;enderio.gui.conduit.item.matchMetaData=Match Meta Data
+;enderio.gui.conduit.item.whitelist=Whitelist
+;enderio.gui.conduit.item.blacklist=Blacklist
+;enderio.gui.conduit.item.stickyEnabled=Sticky Mode Enabled|Selected items will only|be sent to this or other|Sticky outputs.
+;enderio.gui.conduit.item.stickyDisbaled=Sticky Mode Disabled
+;enderio.gui.conduit.item.ignoreNBT=Ignore NBT Data
+;enderio.gui.conduit.item.matchNBT=Match NBT Data
+;enderio.gui.conduit.item.oreDicEnabled=Ore Dictionary Enabled
+;enderio.gui.conduit.item.oreDicDisabled=Ore Dictionary Disabled
+;enderio.gui.conduit.item.selfFeedEnabled=Self Feed Enabled
+;enderio.gui.conduit.item.selfFeedDisabled=Self Feed Disabled
+;enderio.gui.conduit.item.roundRobinEnabled=Round Robin Enabled
+;enderio.gui.conduit.item.roundRobinDisabled=Round Robin Disabled
+;enderio.gui.conduit.item.priority=Priority
+;
+;enderio.gui.conduit.item.damage.disabled=Ignore Damage
+;enderio.gui.conduit.item.damage.damage_00_25=Up to 25% Damaged
+;enderio.gui.conduit.item.damage.damage_25_00=More than 25% Damaged
+;enderio.gui.conduit.item.damage.damage_00_50=Up to 50% Damaged
+;enderio.gui.conduit.item.damage.damage_50_00=More than 50% Damaged
+;enderio.gui.conduit.item.damage.damage_00_75=Up to 75% Damaged
+;enderio.gui.conduit.item.damage.damage_75_00=More than 75% Damaged
+;enderio.gui.conduit.item.damage.damage_00_00=Not Damaged
+;enderio.gui.conduit.item.damage.damage_01_00=Damaged
+;enderio.gui.conduit.item.damage.damage_yes=Can be Damaged
+;enderio.gui.conduit.item.damage.damage_not=Cannot be Damaged
+;
+;enderio.gui.conduit.item.species.both=Match primary and secondary species
+;enderio.gui.conduit.item.species.primary=Match primary species only
+;enderio.gui.conduit.item.species.secondary=Match secondary species only
+;
+;enderio.gui.conduit.item.filterupgrade=Insert Item Filter
+;enderio.gui.conduit.item.speedupgrade=Insert Item Conduit Speed Upgrades/Downgrade
+;enderio.gui.conduit.item.speedupgrade2=Max upgrades is 15; Max downgrades is 1
+;enderio.gui.conduit.item.functionupgrade.line1=Possible function upgrades:
+;
+;enderio.gui.conduit.redstone.signalColor=Signal Color
+;enderio.gui.conduit.redstone.color=Color
+;enderio.gui.conduit.redstone.signalStrengh=Strong Signal
+;enderio.gui.conduit.redstone.signalStrengh.tooltip=Output a strong redstone signal 
+;
+;enderio.gui.conduit.fluid.autoExtract=Auto Extract
+;enderio.gui.conduit.fluid.filter=Filter
+;enderio.gui.conduit.fluid.whitelist=Whitelist
+;enderio.gui.conduit.fluid.blacklist=Blacklist
+;
+;enderio.gui.conduit.gas.autoExtract=Auto Extract
+;
+;//Weather
+;enderio.gui.weather.task.clear=Clear Weather
+;enderio.gui.weather.task.rain=Rainy Weather
+;enderio.gui.weather.task.storm=Thunderstorm
+;enderio.gui.weather.requiredfluid=Required Fluid: %s mB
+;enderio.weatherObelisk.fuelTank=Barometric Flux Tank
+;
+;//Enchants
+;
+;
+;//Keybinds/Waila/NEI/Tooltips
+;enderio.category.darksteelarmor=Dark Steel Armor
+;enderio.category.tools=Tools
+;enderio.keybind.glidertoggle=Glider/Elytra Toggle
+;enderio.keybind.gogglesofrevealing=Goggles of Revealing
+;enderio.keybind.nightvision=Night Vision
+;enderio.keybind.soundlocator=Sound Locator
+;enderio.keybind.speed=Speed
+;enderio.keybind.jump=Jump
+;enderio.keybind.stepassist=Step Assist
+;enderio.keybind.yetawrenchmode=Yeta Wrench Mode
+;enderio.keybind.magnet=Toggle Electromagnet
+;enderio.keybind.top=Toggle The One Probe (Helmet Upgrade)
+;enderio.keybind.fovplus=Camera: Zoom out (creative only)
+;enderio.keybind.fovminus=Camera: Zoom in (creative only)
+;enderio.keybind.fovplusfast=Camera: Zoom out fast (creative only)
+;enderio.keybind.fovminusfast=Camera: Zoom in fast (creative only)
+;enderio.keybind.fovreset=Camera: Reset Zoom (creative only)
+;enderio.nei.alloysmelter=Alloy Smelter
+;enderio.nei.enchanter=Enchanter
+;enderio.nei.sagmill=SAG Mill
+;enderio.nei.slicensplice=Slice'N'Splice
+;enderio.nei.soulbinder=Soul Binder
+;enderio.nei.vat=Vat
+;enderio.tooltip.burntime=Burn Time: {0,number}
+;enderio.tooltip.oredict=Ore Dictionary:
+;enderio.tooltip.meta=Meta:
+;enderio.tooltip.uid=UID:
+;enderio.tooltip.anvilupgrades=Anvil Upgrades:
+;enderio.waila.config.hiddenfacades=Sneaky Facades
+;
+;enderio.config.capacitor.alloy_smelter_power_buffer=Alloy Smelter: Internal power buffer size (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.alloy_smelter_power_intake=Alloy Smelter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.alloy_smelter_power_use=Alloy Smelter: Power use per tick (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.buffer_power_buffer=Energy/Omni Buffer: Internal power buffer size (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.buffer_power_intake=Energy/Omni Buffer: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.crafter_power_buffer=Crafter: Internal power buffer size (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.crafter_power_intake=Crafter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
+;enderio.config.capacitor.crafter_ticks=Crafter: Ticks per crafting operation (will be scaled by the used upgrade capacitor)
+;
+;
+;
+;
+;enderio.remoteinv.chat.set=Target set
+;enderio.remoteinv.chat.notarget=ERROR: No target
+;enderio.remoteinv.chat.outofrange=ERROR: Out of range
+;enderio.remoteinv.chat.invalidtargetworld=ERROR: Target in unaccessible dimension
+;enderio.remoteinv.chat.notloaded=ERROR: Target is not loaded
+;enderio.remoteinv.chat.invalidtarget=ERROR: Target does not exist
+;enderio.remoteinv.chat.outofpower=ERROR: Out of power
+;enderio.remoteinv.chat.outoffluid=ERROR: Out of {FLUIDNAME}
+;enderio.remoteinv.chat.error=ERROR: Technical error, see log
+;
+;item.itemRemoteInvAccessbasic.name=Inventory Panel Remote
+;item.itemRemoteInvAccessbasic.tooltip.detailed.line1=Allows you to access an Inventory Panel from up to 5 chunks away.
+;item.itemRemoteInvAccessbasic.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
+;item.itemRemoteInvAccessbasic.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
+;
+;item.itemRemoteInvAccessadvanced.name=Advanced Inventory Panel Remote
+;item.itemRemoteInvAccessadvanced.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere in the same dimension.
+;item.itemRemoteInvAccessadvanced.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
+;item.itemRemoteInvAccessadvanced.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
+;
+;item.itemRemoteInvAccessender.name=Ender Inventory Panel Remote
+;item.itemRemoteInvAccessender.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere.
+;item.itemRemoteInvAccessender.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
+;item.itemRemoteInvAccessender.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
+;
+;
+;
+;tile.blockInventoryChest_tiny.name=Tiny Inventory System Storage
+;tile.blockInventoryChest_small.name=Small Inventory System Storage
+;tile.blockInventoryChest_medium.name=Medium Inventory System Storage
+;tile.blockInventoryChest_big.name=Big Inventory System Storage
+;tile.blockInventoryChest_large.name=Large Inventory System Storage
+;tile.blockInventoryChest_huge.name=Huge Inventory System Storage
+;tile.blockInventoryChest_enormous.name=Enormous Inventory System Storage
+;tile.blockInventoryChest_warehouse.name=Inventory System Storage Warehouse
+;tile.blockInventoryChest_warehouse13.name=Inventory System Storage Extended Warehouse
+;
+
+;fluid.electricalsteel=Molten Electrical Steel
+;fluid.energeticalloy=Molten Energetic Alloy
+;fluid.vibrantalloy=Molten Vibrant Alloy
+;fluid.redstonealloy=Molten Redstone Alloy
+;fluid.conductiveiron=Molten Conductive Iron
+;fluid.pulsatingiron=Molten Pulsating Iron
+;fluid.darksteel=Molten Dark Steel
+;fluid.soularium=Molten Soularium
+;fluid.glowstone=Glowgas
+;fluid.redstone=Molten Redstone
+;fluid.ender=Liquidfied Ender Pearls
+;
+;itemGroup.enderio.main=Ender IO
+;itemGroup.enderio.items=Ender IO Items
+;itemGroup.enderio.materials=Ender IO Materials
+;itemGroup.enderio.machines=Ender IO Machines
+;itemGroup.enderio.invalid=Invalid
+;

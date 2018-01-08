@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the build-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+To make changes to the recipes, copy the recipes you want to change to
+the matching _user.xml. To disabled a recipe, add an attribute "disabled"
+and set it to true, e.g.: <recipe name="Gear" disabled="true" />
+
+Item specifications can reference an alias, an ore dictionary name, a
+block or an item. You can force the type by prefixing the value with
+"oredict:", "block:" or "item:". Recipes that have items that cannot be
+found in-game are either skipped or an error, depending on their "required"
+attribute.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe name="Frank'N'Zombie" required="true">
+    <config section="Recipe Settings" name="addPeacefulRecipes" value="true" />
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotGold" /><item name="gemDiamond" /><item name="ingotGold" />
+        <item name="gemDiamond" /><item name="ZOMBIE_CONTROLLER" /><item name="gemDiamond" />
+        <item name="ingotGold" /><item name="gemDiamond" /><item name="ingotGold" />
+      </grid>
+      <output name="FRANKEN_ZOMBIE" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Sentient Ender" required="true">
+    <config section="Recipe Settings" name="addPeacefulRecipes" value="true" />
+    <crafting>
+      <grid size="3x3">
+        <item name="gemDiamond" /><item name="gemDiamond" /><item name="gemDiamond" />
+        <item name="gemDiamond" /><item name="ENDER_RESONATOR" /><item name="gemDiamond" />
+        <item name="ingotGold" /><item name="blockGold" /><item name="ingotGold" />
+      </grid>
+      <output name="SENTIENT_ENDER" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit Probe" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="enderio:itemPowerConduit:0" /><item name="ELECTRICAL_STEEL" />
+        <item name="oredict:paneGlass" /><item name="item:minecraft:comparator" /><item name="oredict:paneGlass" />
+        <item name="SILICON" /><item name="enderio:itemRedstoneConduit:0" /><item name="SILICON" />
+      </grid>
+      <output name="CONDUIT_PROBE" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Awareness Upgrade" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="CONDUIT_BINDER" /><item name="SILICON" /><item name="CONDUIT_BINDER" />
+        <item name="SILICON" /><item name="pearlEnderEye" /><item name="SILICON" />
+        <item name="CONDUIT_BINDER" /><item name="ELECTRICAL_STEEL" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemFunctionUpgrade:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Staff Of Travelling" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item /><item name="ENDER_CRYSTAL" />
+        <item /><item name="DARK_STEEL" /><item />
+        <item name="DARK_STEEL" /><item /><item />
+      </grid>
+      <output name="enderio:itemTravelStaff" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Rod of Return" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="PULSATING_CRYSTAL"/><item name="ENDER_CRYSTAL" />
+        <item /><item name="ELECTRICAL_STEEL" /><item name="PULSATING_CRYSTAL"/>
+        <item name="ELECTRICAL_STEEL" /><item /><item />
+      </grid>
+      <output name="enderio:itemRodOfReturn" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Coordinate Selector" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="enderpearl" /><item name="ELECTRICAL_STEEL" />
+        <item /><item name="minecraft:compass" /><item name="ELECTRICAL_STEEL" />
+        <item /><item /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:itemCoordSelector" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Yeta Wrench" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="" /><item name="ELECTRICAL_STEEL" />
+        <item /><item name="GEAR" /><item />
+        <item /><item name="ELECTRICAL_STEEL" /><item />
+      </grid>
+      <output name="enderio:itemYetaWrench" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Electromagnet" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="CONDUCTIVE_IRON" /><item name="VIBRANT_CRYSTAL" /><item name="CONDUCTIVE_IRON" />
+        <item name="CONDUCTIVE_IRON" /><item /><item name="CONDUCTIVE_IRON" />
+        <item name="ELECTRICAL_STEEL" /><item /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:itemMagnet" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Helmet" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item /><item name="DARK_STEEL" />
+      </grid>
+      <output name="enderio:darkSteel_helmet" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Chestplate" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL" /><item /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+      </grid>
+      <output name="enderio:darkSteel_chestplate" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Leggings" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item /><item name="DARK_STEEL" />
+      </grid>
+      <output name="enderio:darkSteel_leggings" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Boots" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="DARK_STEEL" /><item /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item /><item name="DARK_STEEL" />
+      </grid>
+      <output name="enderio:darkSteel_boots" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Glider Wing" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item /><item name="DARK_STEEL" />
+        <item /><item name="DARK_STEEL" /><item name="itemLeather" />
+        <item name="DARK_STEEL" /><item name="itemLeather" /><item name="itemLeather" />
+      </grid>
+      <output name="enderio:itemGliderWing:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Gilder Wings" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item /><item name="DARK_STEEL" /><item />
+        <item name="enderio:itemGliderWing:0" /><item name="DARK_STEEL" /><item name="enderio:itemGliderWing:0" />
+      </grid>
+      <output name="enderio:itemGliderWing:1" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Shears" required="true">
+    <crafting>
+      <grid size="2x2">
+        <item /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item />
+      </grid>
+      <output name="enderio:darkSteel_shears" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Cold Fire Igniter" required="true">
+    <crafting>
+      <shapeless>
+        <item name="DARK_STEEL" />
+        <item name="itemFlint" />
+      </shapeless>
+      <output name="enderio:itemColdFireIgniter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Soul Vial" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="SOULARIUM" /><item />
+        <item name="FUSED_QUARTZ" /><item /><item name="FUSED_QUARTZ" />
+        <item /><item name="FUSED_QUARTZ" /><item />
+      </grid>
+      <output name="enderio:itemSoulVessel" />
+    </crafting>
+  </recipe>
+
+  <recipe name="XP Rod" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item /><item name="SOULARIUM" />
+        <item /><item name="ENERGETIC_ALLOY" /><item />
+        <item name="SOULARIUM" /><item /><item />
+      </grid>
+      <output name="enderio:itemXpTransfer" />
+    </crafting>
+  </recipe>
+
+  <recipe name="The Ender" required="true">
+    <crafting>
+      <grid size="1x3">
+        <item name="DARK_STEEL" />
+        <item name="DARK_STEEL" />
+        <item name="stickWood" />
+      </grid>
+      <output name="enderio:darkSteel_sword" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Pickaxe" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item /><item name="stickWood" /><item />
+        <item /><item name="stickWood" /><item />
+      </grid>
+      <output name="enderio:darkSteel_pickaxe" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Dark Axe" required="true">
+    <crafting>
+      <grid size="2x3">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item name="stickWood" />
+        <item /><item name="stickWood" />
+      </grid>
+      <output name="enderio:darkSteel_axe" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Dark Bow" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="NUTRITIOUS_STICK" /><item name="string"/>
+        <item name="SKELETAL_CONTRACTOR"/><item/><item name="string"/>
+        <item /><item name="NUTRITIOUS_STICK"/><item name="string"/>
+      </grid>
+      <output name="enderio:darkSteelBow" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Conduit Facade" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="CONDUIT_BINDER" /><item /><item name="CONDUIT_BINDER" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemConduitFacade:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit Facade, hardened" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="dustObsidian" /><item />
+        <item name="dustObsidian" /><item name="enderio:itemConduitFacade:0" /><item name="dustObsidian" />
+        <item /><item name="dustObsidian" /><item />
+      </grid>
+      <output name="enderio:itemConduitFacade:1" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit Facade, transparent" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="CONDUIT_BINDER" /><item name="FUSED_GLASS" /><item name="CONDUIT_BINDER" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemConduitFacade:2" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit Facade, transparent, upgrade" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:itemConduitFacade:0"/><item name="FUSED_GLASS" />
+      </shapeless>
+      <output name="enderio:itemConduitFacade:2" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit Facade, transparent, hardened" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="dustObsidian" /><item />
+        <item name="dustObsidian" /><item name="enderio:itemConduitFacade:2" /><item name="dustObsidian" />
+        <item /><item name="dustObsidian" /><item />
+      </grid>
+      <output name="enderio:itemConduitFacade:3" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit Facade, transparent, hardened, upgrade" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:itemConduitFacade:1"/><item name="FUSED_GLASS" />
+      </shapeless>
+      <output name="enderio:itemConduitFacade:3" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Liquid, Basic" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="FUSED_GLASS" /><item name="FUSED_GLASS" /><item name="FUSED_GLASS" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemLiquidConduit:0" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="enderio:itemLiquidConduit:0" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="enderio:itemLiquidConduit:0" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Liquid, Advanced" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemLiquidConduit:1" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="enderio:itemLiquidConduit:1" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="enderio:itemLiquidConduit:1" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Liquid, Advanced (upgrade)" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="FUSED_QUARTZ" /><item name="enderio:itemLiquidConduit:0" /><item name="FUSED_QUARTZ" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemLiquidConduit:1" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="enderio:itemLiquidConduit:1" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="enderio:itemLiquidConduit:1" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Liquid, Ender" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="VIBRANT_ALLOY" /><item name="FUSED_QUARTZ" /><item name="VIBRANT_ALLOY" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemLiquidConduit:2" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="enderio:itemLiquidConduit:2" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="enderio:itemLiquidConduit:2" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Liquid, Ender (upgrade)" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="VIBRANT_ALLOY" /><item name="enderio:itemLiquidConduit:1" /><item name="VIBRANT_ALLOY" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemLiquidConduit:2" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="enderio:itemLiquidConduit:2" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="enderio:itemLiquidConduit:2" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Tier 1" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="CONDUCTIVE_IRON" /><item name="CONDUCTIVE_IRON" /><item name="CONDUCTIVE_IRON" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemPowerConduit:0" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="enderio:itemPowerConduit:0" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="enderio:itemPowerConduit:0" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Tier 2" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ENERGETIC_ALLOY" /><item name="ENERGETIC_ALLOY" /><item name="ENERGETIC_ALLOY" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemPowerConduit:1" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="enderio:itemPowerConduit:1" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="enderio:itemPowerConduit:1" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Tier 2 (upgrade)" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ENERGETIC_ALLOY" /><item name="enderio:itemPowerConduit:0" /><item name="ENERGETIC_ALLOY" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemPowerConduit:1" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="enderio:itemPowerConduit:1" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="enderio:itemPowerConduit:1" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Tier 3" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="VIBRANT_ALLOY" /><item name="VIBRANT_ALLOY" /><item name="VIBRANT_ALLOY" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemPowerConduit:2" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="enderio:itemPowerConduit:2" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="enderio:itemPowerConduit:2" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Tier 3 (upgrade)" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="VIBRANT_ALLOY" /><item name="enderio:itemPowerConduit:1" /><item name="VIBRANT_ALLOY" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemPowerConduit:2" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="enderio:itemPowerConduit:2" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="enderio:itemPowerConduit:2" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Redstone, Insulated" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="REDSTONE_ALLOY" /><item name="REDSTONE_ALLOY" /><item name="REDSTONE_ALLOY" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemRedstoneConduit:0" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="enderio:itemRedstoneConduit:0" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="enderio:itemRedstoneConduit:0" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <alias name="OC_CONDUIT" item="enderio:itemOCConduit:0">
+    <dependency item="enderio:itemOCConduit:0" reverse="false"/>
+  </alias>
+  <alias name="OC_CONDUIT" item="minecraft:stone:0">
+    <!-- prevent log messages from the output tags using this -->
+    <dependency item="enderio:itemOCConduit:0" reverse="true"/>
+  </alias>
+
+  <recipe name="Conduit, Computer" required="true">
+    <config name="enableOCConduits" section="Item Enabling" value="true"/>
+    <dependency item="enderio:itemOCConduit:0" />
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="REDSTONE_ALLOY" /><item name="ingotIron" /><item name="REDSTONE_ALLOY" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="OC_CONDUIT" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="OC_CONDUIT" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="OC_CONDUIT" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <alias name="ME_CONDUIT" item="enderio:itemMEConduit:0">
+    <dependency item="enderio:itemMEConduit:0" reverse="false"/>
+  </alias>
+  <alias name="ME_CONDUIT" item="minecraft:stone:0">
+    <!-- prevent log messages from the output tags using this -->
+    <dependency item="enderio:itemMEConduit:0" reverse="true"/>
+  </alias>
+
+  <recipe name="Conduit, ME" required="true">
+    <config name="enableMEConduits" section="Item Enabling" value="true"/>
+    <dependency item="enderio:itemMEConduit:0" />
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="crystalFluix" /><item name="appliedenergistics2:part:140" /><item name="crystalFluix" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="ME_CONDUIT" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="ME_CONDUIT" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="ME_CONDUIT" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, ME (pure)" required="true">
+    <config name="enableMEConduits" section="Item Enabling" value="true"/>
+    <dependency item="enderio:itemMEConduit:0" />
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="crystalPureFluix" /><item name="appliedenergistics2:part:140" /><item name="crystalPureFluix" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="ME_CONDUIT" amount="6">
+        <level maxlevel="1"/>
+      </output>
+      <output name="ME_CONDUIT" amount="4">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="ME_CONDUIT" amount="1">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <alias name="ME_CONDUIT_DENSE" item="enderio:itemMEConduit:1">
+    <dependency item="enderio:itemMEConduit:1" reverse="false"/>
+  </alias>
+  <alias name="ME_CONDUIT_DENSE" item="minecraft:stone:0">
+    <!-- prevent log messages from the output tags using this -->
+    <dependency item="enderio:itemMEConduit:1" reverse="true"/>
+  </alias>
+
+  <recipe name="Conduit, ME, dense" required="true">
+    <config name="enableMEConduits" section="Item Enabling" value="true"/>
+    <dependency item="enderio:itemMEConduit:1" />
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="ME_CONDUIT" /><item name="CONDUIT_BINDER" />
+        <item name="ME_CONDUIT" /><item name="CONDUIT_BINDER" /><item name="ME_CONDUIT" />
+        <item name="CONDUIT_BINDER" /><item name="ME_CONDUIT" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="ME_CONDUIT_DENSE" amount="1" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Item" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="PULSATING_IRON_NUGGET" /><item name="PULSATING_IRON_NUGGET" /><item name="PULSATING_IRON_NUGGET" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemItemConduit:0" amount="12">
+        <level maxlevel="1"/>
+      </output>
+      <output name="enderio:itemItemConduit:0" amount="8">
+        <level minlevel="2" maxlevel="2"/>
+      </output>
+      <output name="enderio:itemItemConduit:0" amount="2">
+        <level minlevel="3"/>
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Basic" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="oredict:paper" /><item />
+        <item name="oredict:paper" /><item name="blockHopper" /><item name="oredict:paper" />
+        <item /><item name="oredict:paper" /><item/>
+      </grid>
+      <output name="enderio:itemBasicFilterUpgrade:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Advanced" required="true">
+    <crafting>
+      <grid>
+        <item name="dustRedstone" /><item name="oredict:paper" /><item name="dustRedstone" />
+        <item name="oredict:paper" /><item name="ZOMBIE_CONTROLLER" /><item name="oredict:paper" />
+        <item name="dustRedstone" /><item name="oredict:paper" /><item name="dustRedstone" />
+      </grid>
+      <output name="ADVANCED_FILTER" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Counting" required="true">
+    <crafting>
+      <grid size="3x1">
+        <item name="minecraft:comparator" /><item name="ADVANCED_FILTER" /><item name="minecraft:comparator" />
+      </grid>
+      <output name="COUNTING_FILTER" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Mod" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="oredict:paper" /><item />
+        <item name="oredict:paper" /><item name="enderio:itemYetaWrench" /><item name="oredict:paper" />
+        <item /><item name="oredict:paper" /><item/>
+      </grid>
+      <output name="enderio:itemModItemFilter:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Existing" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="dustRedstone" /><item />
+        <item name="dustRedstone" /><item name="enderio:itemBasicFilterUpgrade:1" /><item name="dustRedstone" />
+        <item /><item name="minecraft:comparator" /><item/>
+      </grid>
+      <output name="enderio:itemExistingItemFilter:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Power" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="oredict:paper" /><item />
+        <item name="oredict:paper" /><item name="CONDUIT_PROBE" /><item name="oredict:paper" />
+        <item /><item name="oredict:paper" /><item/>
+      </grid>
+      <output name="enderio:itemPowerItemFilter:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Species" required="false">
+    <crafting>
+      <grid size="3x1">
+        <item name="forestry:propolis" /><item name="ADVANCED_FILTER" /><item name="forestry:propolis" />
+      </grid>
+      <output name="enderio:itemSpeciesItemFilter:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Upgrade, Speed" required="true">
+    <crafting>
+      <grid>
+        <item name="ingotIron" /><item name="ingotIron" /><item name="ingotIron" />
+        <item name="ELECTRICAL_STEEL" /><item name="minecraft:piston" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="minecraft:redstone_torch" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:itemExtractSpeedUpgrade:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Upgrade, Slowness" required="true">
+    <crafting>
+      <grid>
+        <item name="ingotIron" /><item name="ingotIron" /><item name="ingotIron" />
+        <item name="ELECTRICAL_STEEL" /><item name="slimeball" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="stickWood" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:itemExtractSpeedUpgrade:1" />
+    </crafting>
+  </recipe>
+
+
+  <recipe name="Inventory Panel Remote" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item/><item/><item name="minecraft:heavy_weighted_pressure_plate" />
+        <item name="minecraft:heavy_weighted_pressure_plate" /><item name="enderio:blockInventoryPanel" /><item name="minecraft:heavy_weighted_pressure_plate" />
+        <item name="minecraft:heavy_weighted_pressure_plate" /><item name="enderio:blockTravelAnchor" /><item name="minecraft:heavy_weighted_pressure_plate" />
+      </grid>
+      <output name="enderio:itemRemoteInvAccess:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Remote, variant" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item/><item/><item name="PPP_IRON" />
+        <item name="PPP_IRON" /><item name="enderio:blockInventoryPanel" /><item name="PPP_IRON" />
+        <item name="PPP_IRON" /><item name="enderio:blockTravelAnchor" /><item name="PPP_IRON" />
+      </grid>
+      <output name="enderio:itemRemoteInvAccess:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Advanced Inventory Panel Remote" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item/><item/><item name="PPP_DARK_STEEL" />
+        <item name="PPP_DARK_STEEL" /><item name="enderio:itemRemoteInvAccess:0" /><item name="PPP_DARK_STEEL" />
+        <item name="PPP_DARK_STEEL" /><item name="enderio:itemTravelStaff" /><item name="PPP_DARK_STEEL" />
+      </grid>
+      <output name="enderio:itemRemoteInvAccess:1" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Ender Inventory Panel Remote" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item/><item/><item name="PPP_SOULARIUM" />
+        <item name="PPP_SOULARIUM" /><item name="enderio:itemRemoteInvAccess:1" /><item name="PPP_SOULARIUM" />
+        <item name="PPP_SOULARIUM" /><item name="enderio:blockTransceiver" /><item name="PPP_SOULARIUM" />
+      </grid>
+      <output name="enderio:itemRemoteInvAccess:2" />
+    </crafting>
+  </recipe>
+
+</enderio:recipes>

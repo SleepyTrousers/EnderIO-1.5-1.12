@@ -1,0 +1,24 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle":"enderio:blocks/alloy_smelter_front",
+            "front":"enderio:blocks/alloy_smelter_front",
+            "fronton":"enderio:blocks/alloy_smelter_front_on"
+        }
+    },
+    "variants":{
+        "render":{
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
+            "front":{                                             "submodel":{ "front":{ "model":"enderio:block_alloy_smelter", "y":180 } } },
+            "front_east":{                                        "submodel":{ "front":{ "model":"enderio:block_alloy_smelter", "y":270 } } },
+            "front_south":{                                       "submodel":{ "front":{ "model":"enderio:block_alloy_smelter", "y":0   } } },
+            "front_west":{                                        "submodel":{ "front":{ "model":"enderio:block_alloy_smelter", "y":90  } } },
+            "front_on":{       "textures":{ "front":"#fronton" }, "submodel":{ "front":{ "model":"enderio:block_alloy_smelter", "y":180 } } },
+            "front_on_east":{  "textures":{ "front":"#fronton" }, "submodel":{ "front":{ "model":"enderio:block_alloy_smelter", "y":270 } } },
+            "front_on_south":{ "textures":{ "front":"#fronton" }, "submodel":{ "front":{ "model":"enderio:block_alloy_smelter", "y":0   } } },
+            "front_on_west":{  "textures":{ "front":"#fronton" }, "submodel":{ "front":{ "model":"enderio:block_alloy_smelter", "y":90  } } }
+        }
+    }
+}

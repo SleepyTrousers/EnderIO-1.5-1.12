@@ -1,0 +1,58 @@
+{
+"__comment": "Designed by - with BDcraft Cubik PRO 0.95 Beta - http://bdcraft.net",
+"textures": {
+    "base": "blocks/ccob2",
+    "overlay": "blocks/comp1",
+    "inner": "blocks/comp3"
+},
+"elements": [ 
+{
+    "from": [ 1, 1, 1 ],
+    "to": [ 15, 15, 15 ],
+    "faces": {
+        "down":  { "uv": [ 14.999, 14.999, 1.001, 1.001 ], "texture": "#base" },
+        "up":    { "uv": [ 1.001, 1.001, 14.999, 14.999 ], "texture": "#base" },
+        "north": { "uv": [ 1.001, 1.001, 14.999, 14.999 ], "texture": "#base" },
+        "south": { "uv": [ 1.001, 1.001, 14.999, 14.999 ], "texture": "#base" },
+        "west":  { "uv": [ 1.001, 1.001, 14.999, 14.999 ], "texture": "#base" },
+        "east":  { "uv": [ 1.001, 1.001, 14.999, 14.999 ], "texture": "#base" }
+    }
+},
+{
+    "from": [ 0, 0, 0 ],
+    "to": [ 16, 16, 16 ],
+    "faces": {
+        "down":  { "uv": [ 15.999, 15.999, 0.001, 0.001 ], "texture": "#overlay", "cullface": "down" },
+        "up":    { "uv": [ 0.001, 0.001, 15.999, 15.999 ], "texture": "#overlay", "cullface": "up" },
+        "north": { "uv": [ 0.001, 0.001, 15.999, 15.999 ], "texture": "#overlay", "cullface": "north" },
+        "south": { "uv": [ 0.001, 0.001, 15.999, 15.999 ], "texture": "#overlay", "cullface": "south" },
+        "west":  { "uv": [ 0.001, 0.001, 15.999, 15.999 ], "texture": "#overlay", "cullface": "west" },
+        "east":  { "uv": [ 0.001, 0.001, 15.999, 15.999 ], "texture": "#overlay", "cullface": "east" }
+    }
+},
+{
+    "from": [ 0, 0, 7 ],
+    "to": [ 16, 16, 9 ],
+    "faces": {
+        "north": { "uv": [ 0.001, 0.001, 15.999, 15.999 ], "texture": "#inner" },
+        "south": { "uv": [ 0.001, 0.001, 15.999, 15.999 ], "texture": "#inner" }
+    }
+},
+{
+    "from": [ 7, 0, 0 ],
+    "to": [ 9, 16, 16 ],
+    "faces": {
+        "west":  { "uv": [ 0.001, 0.001, 15.999, 15.999 ], "texture": "#base" },
+        "east":  { "uv": [ 0.001, 0.001, 15.999, 15.999 ], "texture": "#inner" }
+    }
+},
+{
+    "from": [ 0, 7, 0 ],
+    "to": [ 16, 9, 16 ],
+    "faces": {
+        "down":  { "uv": [ 15.999, 15.999, 0.001, 0.001 ], "texture": "#inner" },
+        "up":    { "uv": [ 0.001, 0.001, 15.999, 15.999 ], "texture": "#inner" }
+    }
+}
+]
+}

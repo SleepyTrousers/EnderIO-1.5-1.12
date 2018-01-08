@@ -1,0 +1,23 @@
+<!--
+	Thaumcraft is stuck at Minecraft 1.8 currently, saving Thaumcraft related
+	recipes that incompatible with newer Forge/Minecraft here.
+-->
+
+<VatRecipes>
+  <recipeGroup name="enderio" > <!-- Required for EnderIO to function correctly. -->
+    <recipe name="Nutrient Distilation" energyCost="10000" allowMissing="true">
+      <input>
+        <itemStack modID="Thaumcraft" itemName="ItemZombieBrain" slot="0" multiplier="2" />
+        <itemStack modID="minecraft" itemName="sugar" slot="1" multiplier="1" />
+        <itemStack modID="minecraft" itemName="brown_mushroom" slot="1" multiplier="1.5" />
+        <itemStack modID="minecraft" itemName="red_mushroom" slot="1" multiplier="1.5" />
+        <itemStack modID="minecraft" itemName="nether_wart" slot="1" multiplier="1.5" />
+        <itemStack modID="minecraft" itemName="fermented_spider_eye" slot="1" multiplier="2" />
+        <fluidStack name="water" multiplier="0.25" />
+      </input>
+      <output>
+        <fluidStack name="nutrient_distillation" />
+      </output>
+    </recipe>
+  </recipeGroup>
+</VatRecipes>

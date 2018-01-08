@@ -1,0 +1,32 @@
+[
+  {
+    "modid": "enderio",
+    "name": "Ender IO",
+    "description": "Compact conduits, painted things and all sorts of stuff and bling.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "http://enderio.com",
+    "updateUrl": "",
+    "authorList": [ "CrazyPants", "tterrag", "HenryLoenwind", "MatthiasM" , "CyanideX"],
+    "credits": "By CrazyPants, with the help of many",
+    "logoFile": "",
+    "screenshots": [
+    ],
+    "parent":"",
+    "dependencies": [
+    ]
+  },
+  {
+  	"modid": "enderiobase",
+  	"name": "Ender IO Base",
+  	"description": "Basic materials and items for all EnderIO modules.",
+  	"version": "${version}",
+  	"mcversion": "${mcversion}",
+  	"url": "http://enderio.com",
+  	"authorList": [ "CrazyPants", "tterrag", "HenryLoenwind", "MatthiasM" , "CyanideX"],
+  	"parent": "enderio",
+  	"dependencies": [
+  		"enderio"
+  	]
+  }
+]

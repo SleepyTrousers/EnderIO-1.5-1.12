@@ -1,0 +1,23 @@
+{
+ 	"forge_marker": 1,
+	"defaults": {
+        "textures": {
+            "particle": "enderio:blocks/anvil/base",
+            "body": "enderio:blocks/anvil/base"
+        },
+	    "model": "anvil"
+	},
+    "variants": {
+        "damage": {
+            "0": { "textures": { "top": "enderio:blocks/anvil/0" } },
+            "1": { "textures": { "top": "enderio:blocks/anvil/1" } },
+            "2": { "textures": { "top": "enderio:blocks/anvil/2" } }
+        },
+        "facing": {
+            "south": { },
+            "west": { "y": 90 },
+            "north": { "y": 180 },
+            "east": { "y": 270 }
+        }
+    }
+}

@@ -1,0 +1,56 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+    "textures": {
+        "particle": "enderio:blocks/block_enderman_skull_top",
+        "side": "enderio:blocks/block_enderman_skull_side",
+        "front": "enderio:blocks/block_enderman_skull_front",
+        "top": "enderio:blocks/block_enderman_skull_top"
+    },
+    "elements": [
+        {
+            "name": "Cube",
+            "from": [ 4.0, 0.0, 4.0 ], 
+            "to": [ 12.0, 8.0, 12.0 ], 
+            "faces": {                
+                "north": { "texture": "#front", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "east": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "south": { "texture": "#top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "west": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "up": { "texture": "#top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "#top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
+            }
+        }
+    ],
+    "display": {
+        "gui": {
+            "rotation": [ 30, 135, 0 ],
+            "translation": [ 0, 3, 0 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "fixed": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 4, 0],
+            "scale":[ 1, 1, 1 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 3, 0 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "thirdperson_righthand": {
+            "rotation": [ 45, 45, 0 ],
+            "translation": [ 0, 3, 0 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 135, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.40, 0.40, 0.40 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 135, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.40, 0.40, 0.40 ]
+        }
+    }
+}

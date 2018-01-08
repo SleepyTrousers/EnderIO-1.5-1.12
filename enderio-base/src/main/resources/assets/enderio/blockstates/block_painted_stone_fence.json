@@ -1,0 +1,16 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/nether_brick"
+        },
+        "model": "enderio:transform/fence"
+    },
+    "variants": {
+        "inventory": [{}],
+        "east":{"true":{},"false":{}},
+        "north":{"true":{},"false":{}},
+        "south":{"true":{},"false":{}},
+        "west":{"true":{},"false":{}}
+    }
+}

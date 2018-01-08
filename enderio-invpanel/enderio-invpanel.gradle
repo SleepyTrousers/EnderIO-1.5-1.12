@@ -1,0 +1,5 @@
+dependencies {
+	compile project(":enderio-base")
+	compile project(":enderio-machines")
+	compile project(":enderio-conduits")
+}

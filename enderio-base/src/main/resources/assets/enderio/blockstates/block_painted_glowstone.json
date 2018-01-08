@@ -1,0 +1,13 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/glowstone"
+        },
+        "model":"enderio:transform/block"
+    },
+    "variants": {
+        "inventory": [{}],
+        "normal": [{}]
+    }
+}

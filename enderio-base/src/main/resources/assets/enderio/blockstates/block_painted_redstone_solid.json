@@ -1,0 +1,13 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/redstone_block"
+        },
+        "model":"enderio:transform/block"
+    },
+    "variants": {
+        "inventory": [{}],
+        "normal": [{}]
+    }
+}

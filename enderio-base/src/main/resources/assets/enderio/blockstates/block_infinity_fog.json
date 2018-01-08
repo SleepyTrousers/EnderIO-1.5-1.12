@@ -1,0 +1,26 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "enderio:item_generated",
+    "textures": {
+      "layer0": "enderio:items/item_block_infinity_fog"
+    }
+  },
+  "variants": {
+    "age": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {},
+      "4": {},
+      "5": {},
+      "6": {},
+      "7": {}
+    },
+    "harmless": {
+      "true": {},
+      "false": {}
+    },
+    "inventory": [{}]
+  }
+}

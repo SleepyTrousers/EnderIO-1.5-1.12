@@ -1,0 +1,8 @@
+{
+    "parent": "enderio:block/hollow_cube",
+    "textures": {
+        "side": "enderio:items/item_broken_spawner",
+	      "top": "enderio:items/item_broken_spawner",
+	      "bottom": "enderio:items/item_broken_spawner"
+    }
+}

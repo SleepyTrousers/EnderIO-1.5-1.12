@@ -1,0 +1,30 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "enderio:item_generated"
+  },
+  "variants": {
+    "variant": {
+      "items": {
+        "textures": {
+          "layer0": "enderio:items/item_enderface_items"
+        }
+      },
+      "machines": {
+        "textures": {
+          "layer0": "enderio:items/item_enderface_machines"
+        }
+      },
+      "materials": {
+        "textures": {
+          "layer0": "enderio:items/item_enderface_materials"
+        }
+      },
+      "none": {
+        "textures": {
+          "layer0": "enderio:items/item_enderface_none"
+        }
+      }
+    }
+  }
+}

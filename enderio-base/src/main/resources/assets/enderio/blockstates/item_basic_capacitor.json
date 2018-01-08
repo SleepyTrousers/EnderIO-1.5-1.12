@@ -1,0 +1,30 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "enderio:item_generated"
+  },
+  "variants": {
+    "variant": {
+      "activated": {
+        "textures": {
+          "layer0": "enderio:items/item_basic_capacitor_activated"
+        }
+      },
+      "basic": {
+        "textures": {
+          "layer0": "enderio:items/item_basic_capacitor_basic"
+        }
+      },
+      "ender": {
+        "textures": {
+          "layer0": "enderio:items/item_basic_capacitor_ender"
+        }
+      },
+      "special": {
+        "textures": {
+          "layer0": "enderio:items/item_basic_capacitor_special"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "forge_marker":1,
+  "defaults":{
+    "textures": {
+        "particle": "enderio:blocks/machine_bottom",
+        "bottom": "enderio:blocks/machine_bottom"
+    }
+  },
+  "variants":{
+    "kind":{
+      "simple":   { "textures": { "side": "enderio:blocks/solar_panel_side", "top": "enderio:blocks/solar_panel_top" } },
+      "advanced": { "textures": { "side": "enderio:blocks/solar_panel_advanced_side", "top": "enderio:blocks/solar_panel_advanced_top" } },
+      "vibrant":  { "textures": { "side": "enderio:blocks/solar_panel_vibrant_side", "top": "enderio:blocks/solar_panel_vibrant_top" } }
+      },
+    "render":{
+      "auto":{ "model":"enderio:null" },
+      
+      "defaults":{ "model":"enderio:transform/thin_block" },
+
+      "sides":{
+        "submodel":{
+          "top":{ "model":"enderio:solar_body" }
+        }
+      },
+      
+      "north_west_up":{  },
+
+      "north_east_up":{  },
+
+      "south_east_up":{  },
+
+      "south_west_up":{  },
+
+      "north_west_down":{ "model":"enderio:solar_north_west_border" },
+
+      "north_east_down":{ "model":"enderio:solar_north_west_border", "y":90 },
+
+      "south_east_down":{ "model":"enderio:solar_north_west_border", "y":180 },
+
+      "south_west_down":{ "model":"enderio:solar_north_west_border", "y":270 },
+
+      "north_west":{  },
+
+      "north_east":{  },
+
+      "south_east":{  },
+
+      "south_west":{  },
+
+      "north_up":{  },
+
+      "east_up":{  },
+
+      "south_up":{  },
+
+      "west_up":{  },
+
+      "north_down":{ "model":"enderio:solar_north_border" },
+
+      "east_down":{ "model":"enderio:solar_north_border", "y":90 },
+
+      "south_down":{ "model":"enderio:solar_north_border", "y":180 },
+
+      "west_down":{ "model":"enderio:solar_north_border", "y":270 }
+
+    }
+  }
+}

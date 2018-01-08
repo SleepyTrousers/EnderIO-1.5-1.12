@@ -1,0 +1,22 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle":"enderio:blocks/block_soul_machine_bottom"
+        }
+    },
+    "variants":{
+        "render":{
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
+            "front":{          "submodel":{ "front":{ "model":"enderio:powered_spawner" } }, "y":0 },
+            "front_east":{     "submodel":{ "front":{ "model":"enderio:powered_spawner" } }, "y":90 },
+            "front_south":{    "submodel":{ "front":{ "model":"enderio:powered_spawner" } }, "y":180 },
+            "front_west":{     "submodel":{ "front":{ "model":"enderio:powered_spawner" } }, "y":270 },
+            "front_on":{       "submodel":{ "front":{ "model":"enderio:powered_spawner" } }, "y":0, "textures": { "1": "enderio:blocks/block_powered_spawnerActive" } },
+            "front_on_east":{  "submodel":{ "front":{ "model":"enderio:powered_spawner" } }, "y":90, "textures": { "1": "enderio:blocks/block_powered_spawnerActive" } },
+            "front_on_south":{ "submodel":{ "front":{ "model":"enderio:powered_spawner" } }, "y":180,   "textures": { "1": "enderio:blocks/block_powered_spawnerActive" } },
+            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:powered_spawner" } }, "y":270,  "textures": { "1": "enderio:blocks/block_powered_spawnerActive" } }
+        }
+    }
+}

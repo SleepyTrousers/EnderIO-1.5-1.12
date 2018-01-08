@@ -1,240 +1,358 @@
 buildscript {
     repositories {
+        jcenter()
         mavenCentral()
-        maven { url = "http://files.minecraftforge.net/maven" }
-        maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
-    }
-    dependencies { classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT' }
-}
-
-apply plugin: 'forge'
-apply plugin: 'maven-publish'
-apply plugin: 'curseforge'
-
-ext.buildnumber = 0
-if (System.getenv('BUILD_NUMBER') != null)
-    project.buildnumber = System.getenv('BUILD_NUMBER')
-else {
-    try {
-        ext.buildnumber += "_" + "git rev-parse --abbrev-ref HEAD".execute().text.trim();
-        ext.buildnumber += "_" + "git rev-parse --short HEAD".execute().text.trim();
-    } catch (all) {}
-    logger.lifecycle "No build number detected, setting to ${ext.buildnumber}"
-}
-
-group = "com.enderio"
-archivesBaseName = "EnderIO"
-version = "${minecraft_version}-${mod_version}.${buildnumber}"
-boolean release = true
-
-if (project.hasProperty('mod_appendix')) {
-    version += "_${project.mod_appendix}"
-    release = false
-}
-
-minecraft {
-    version = "${minecraft_version}-${forge_version}"
-    runDir = 'run'
-
-    replace "@VERSION@", project.version
-   	replace "${toReplace}", "required-after:Forge@[${forgeDep_version},);required-after:endercore@[${endercore_version},);after:MineFactoryReloaded;after:Waila@[${waila_version},);after:Thaumcraft;after:appliedenergistics2@[rv2-beta-8,)"
-    replaceIn "EnderIO.java"
-}
-
-configurations {
-    compile.extendsFrom exportedCompile
-}
-
-repositories {
-    mavenCentral()
-    maven { url = "http://mobiusstrip.eu/maven" }
-    maven { url = "http://chickenbones.net/maven/" }
-    maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
-    maven { url = "http://maven.tterrag.com" }
-    maven { url = "http://maven.ic2.player.to" }
-    maven { url = "http://maven.cil.li/" }
-    mavenLocal()
-}
-
-dependencies {
-    exportedCompile 'cglib:cglib-nodep:3.1'
-
-    if (!project.hasProperty('useLocalEnderCore')) {
-        compile "com.enderio.core:EnderCore:${endercore_version}:dev"
-    }
-
-    compile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
-    compile "mcp.mobius.waila:Waila:${waila_version}_${minecraft_version}:dev"
-    compile "net.sengir.forestry:${forestry_version}:api"
-    compile ("com.pahimar.ee3:EquivalentExchange3:${ee3_version}:dev") {
-        transitive = false
-    }
-    
-    // WAILA ships really old CCC/CCL versions, so we force the new versions
-    compile "codechicken:CodeChickenLib:${minecraft_version}-${ccl_version}:dev"
-    compile "codechicken:CodeChickenCore:${minecraft_version}-${ccc_version}:dev"
-    
-    compile "li.cil.oc:OpenComputers:${opencomputers_version}:api"
-}
-
-sourceSets {
-    main {
-        java {
-            srcDir 'src/main/java'
-            exclude '**/enderio/trigger/**'
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
         }
-        resources {
-            srcDir 'resources'
+        maven {
+            url "https://plugins.gradle.org/m2/"
         }
     }
-}
-
-processResources {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include '**/*.info'
-        include '**/*.properties'
-
-        expand 'version': project.version, 'mcversion': project.minecraft.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude '**/*.info'
-        exclude '**/*.properties'
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath "gradle.plugin.net.intellisun:modDependencies:1.0.1-alpha.2" // https://github.com/IntelliSun-MC/modDependencies
     }
 }
 
-jar {
-    from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
+plugins {
+  id 'com.matthewprenger.cursegradle' version "1.0.7"
 }
 
-task sourceJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+
+def dev = System.getenv("RELEASE") == null || System.getenv("RELEASE").equalsIgnoreCase("false")
+
+ext.user = parseConfig(file('user.properties'))
+if (ext.user != null) {
+    ext.user.each { k, v ->
+        project.ext.set(k, v)
+    }
 }
 
-task apiJar(type: Jar) {
-    from sourceSets.main.allSource
-    from sourceSets.main.output
-	include 'crazypants/enderio/api/**/*'
-    classifier = 'api'
+task copyJars(type: Copy) {
+    from subprojects.collect {
+        it.tasks.withType(Jar)
+    }
+    into "$buildDir/libs"
 }
 
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
-    classifier = 'dev'
-}
+// task apiJar(type: Jar) {
+// }
 
-task exportJavadoc(type: Javadoc) {
-    include 'crazypants/enderio/api/**/*'
-    source = sourceSets.main.allSource
-}
+build.dependsOn copyJars
 
-if (JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-        tasks.withType(Javadoc) {
-            options.addStringOption('Xdoclint:none', '-quiet')
+allprojects {
+    apply plugin: 'net.minecraftforge.gradle.forge'
+    apply plugin: 'net.intellisun.moddependencies'
+
+    group = "com.enderio"
+    archivesBaseName = project.name.toLowerCase()
+
+    if (System.getenv('BUILD_NUMBER') != null)
+    {
+        ext.version_suffix = ''
+        if (System.getenv('NIGHTLY') != null)
+        {
+            ext.module_version = 'nightly-0.' + System.getenv('BUILD_NUMBER')
+        }
+        else
+        {
+            ext.module_version = version_major + '.' + version_minor + '.' + System.getenv('BUILD_NUMBER')
+            if (project.hasProperty('version_appendix') && project.version_appendix != '')
+                ext.version_suffix = '-' + version_appendix
         }
     }
-}
+    else
+    {
+        if (!project.hasProperty('module_build_number') || project.module_build_number == '0') {
+            ext.module_build_number = '0'
 
-build.dependsOn sourceJar, deobfJar, apiJar, exportJavadoc
-install.dependsOn build
+            if (System.getenv('MODULE_BUILD_NUMBER') != null)
+                project.module_build_number = System.getenv('MODULE_BUILD_NUMBER')
+            else try {
+                ext.module_build_number = "git rev-parse --short HEAD".execute().text.trim()
+            } catch (all) {}
+        }
 
-publishing {
-    tasks.publish.dependsOn 'build'
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
+        ext.version_suffix = ''
+        if (project.hasProperty('version_appendix') && project.version_appendix != '')
+            ext.version_suffix = "-${version_appendix}"
 
-            artifact sourceJar
-            artifact apiJar
-            artifact deobfJar
+        ext.module_version = version_major + '.' + version_minor + '.' + module_build_number
+    }
+
+    version = "${minecraft_version}-${module_version}"// ${version_suffix}"
+
+	if (!project.hasProperty('include_in_build'))
+		project.ext.include_in_build = true
+	else
+		project.include_in_build = project.include_in_build != 'false'
+	
+	if (!project.include_in_build)
+		println "Project ${project.name} is forcefully excluded from the build"
+	
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+    compileJava {
+        sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    minecraft {
+        version = "${minecraft_version}-${forge_version}"
+        mappings = mcp_mappings
+        runDir = "run"
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDir 'src/main/java'
+            }
+            resources {
+                srcDir 'src/main/resources'
+            }
         }
     }
 
     repositories {
-        if (project.hasProperty('mavendir')) {
-            maven { url mavendir }
+        mavenCentral()
+        maven { url = "http://tehnut.info/maven" }
+//      maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
+        maven { url = "http://maven.tterrag.com" }
+        maven { url = "http://dvs1.progwml6.com/files/maven" }
+        maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url = "http://maven.cil.li/" }
+        maven { url = "http://maven.ic2.player.to" }
+        maven { url = "http://maven.epoxide.xyz" }
+        ivy {
+            url "http://ae-mod.info/builds"
+            layout "pattern", {
+                artifact "[module]-[revision](-[classifier])(.[ext])"
+            }
+        }
+        mavenLocal()
+    }
+
+    if (JavaVersion.current().isJava8Compatible()) {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+
+    task apiJar(type: Jar) {
+        classifier = 'api'
+    }
+
+
+    task mkKeyStore(type:Exec) {
+       workingDir projectDir
+       commandLine 'keytool', '-genkey', '-alias', 'signFiles', '-keystore', 'eiostore.jks', '-storepass', '123456', '-noprompt', '-dname', 'CN='+getCN(), '-keypass', '123456'
+    }
+
+    task signJar(type: SignJar, dependsOn: reobfJar) {
+        inputFile = jar.archivePath
+        outputFile = jar.archivePath
+        keyStore = 'eiostore.jks'
+        alias = 'signFiles'
+        storePass = '123456'
+        keyPass = '123456'
+    }
+
+    task rmKeyStore(type: Delete) {
+      delete 'eiostore.jks'
+    }
+
+    build.dependsOn rmKeyStore
+    rmKeyStore.dependsOn signJar
+    signJar.dependsOn mkKeyStore
+
+    artifacts {
+        archives sourceJar
+        archives apiJar
+    }
+}
+
+def buildprojects = subprojects.findAll { sp -> sp.include_in_build }
+
+subprojects {
+    apply plugin: 'eclipse-wtp'
+
+    dependencies {
+        if (!project.hasProperty('use_local_ender_core')) {
+            deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
+        }
+
+        compile fileTree(dir: "lib", include: '*.jar')
+        compile fileTree(dir: "${project.rootDir}/lib", include: '*.jar')
+    }
+
+    processResources {
+        inputs.property "version", project.version
+        inputs.property "mcversion", project.minecraft.version
+
+        from(sourceSets.main.resources.srcDirs) {
+            include '**/*.info'
+            include '**/*.properties'
+
+            expand 'version': project.version, 'mcversion': project.minecraft.version
+        }
+
+        from(sourceSets.main.resources.srcDirs) {
+            exclude '**/*.info'
+            exclude '**/*.properties'
+        }
+    }
+
+    apiJar {
+        from sourceSets.main.allSource
+        from sourceSets.main.output
+        include 'crazypants/enderio/api/**/*'
+    }
+
+    build.dependsOn sourceJar, apiJar
+}
+
+subprojects {
+	if (file('dependencies.gradle').exists())
+		apply from: 'dependencies.gradle'
+		
+	minecraft {
+		replace '@VERSION@', version
+		
+		if (project.hasProperty('dependencyString'))
+			replace 'DEFAULT_DEPENDENCIES;', "\"${dependencyString}\";"
+	}
+}
+
+jar.doFirst {
+    File target = new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/lang")
+    target.mkdirs()
+    buildprojects.each { subproject ->
+        new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/lang/').eachFileMatch( ~".*\\.lang\$" ) { langfile ->
+            new File(target, langfile.name) << "\n" << langfile.text
+        }
+    }
+
+    def mcmod = ""
+    buildprojects.each { subproject ->
+        mcmod += new File(subproject.sourceSets.main.output.resourcesDir, 'mcmod.info').text
+    }
+    new File(project.sourceSets.main.output.resourcesDir, "mcmod.info") << mcmod.replaceAll(/\]\s*\[/, ',')
+
+    def sound = ""
+    buildprojects.each { subproject ->
+        sound += new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/sounds.json').text
+    }
+    new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/sounds.json") << sound.replaceAll(/\}\s*\{/, ',')
+
+    println "Created derived resources in ${target}"
+}
+
+subprojects.each { subproject ->
+    evaluationDependsOn(subproject.path)
+}
+
+jar.dependsOn subprojects.tasks['classes']
+jar {
+    from project.sourceSets.main.output.resourcesDir
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    buildprojects.each { subproject ->
+        from subproject.sourceSets.main.output.classesDirs
+        from subproject.sourceSets.main.output.resourcesDir
+    }
+}
+
+apiJar.dependsOn subprojects.tasks['classes']
+apiJar {
+    buildprojects.each { subproject ->
+        from subproject.sourceSets.api.output.classesDirs
+        from subproject.sourceSets.api.output.resourcesDir
+    }
+}
+
+tasks.curseforge.enabled = !dev && project.hasProperty('curseforge_key')
+curseforge {
+    if (project.hasProperty('curseforge_key')) {
+        apiKey = project.curseforge_key
+    }
+
+    project {
+        id = project.curse_projectId
+        changelog = """
+<p>You need <strong>either</strong> the main file <strong>or</strong> a selection of the "split" jars, not both!</p>
+<p>&nbsp;</p>
+<p><a href="http://ci.tterrag.com/job/EnderIO-Modules/job/EnderIO-Base/#BUILD#/changes">Changelog (this build)</a> / 
+<a href="http://ci.tterrag.com/job/EnderIO-Modules/job/EnderIO-Base/changes">Changelog (all builds)</a></p>
+<p>&nbsp;</p>
+<p>#EXTRA#</p>
+""".replaceAll('#BUILD#', System.getenv('BUILD_NUMBER') == null ? '0' : System.getenv('BUILD_NUMBER')).replaceAll('#EXTRA#', System.getenv('CHANGELOG') == null || System.getenv('CHANGELOG').equals('none') ? '' : System.getenv('CHANGELOG'))
+        changelogType = 'html'
+        releaseType = 'alpha' // for now
+        mainArtifact(jar) {
+            displayName = "Ender IO - ${module_version}"
+        }
+        relations {
+          requiredLibrary 'endercore'
+
+          optionalLibrary 'waila'
+          optionalLibrary 'jei'
+          optionalLibrary 'the-one-probe'
+          optionalLibrary 'baubles'
+          optionalLibrary 'chisel'
+          optionalLibrary 'hwyla'
+          optionalLibrary 'opencomputers'
+          optionalLibrary 'forestry'
+          optionalLibrary 'ctm'
+          optionalLibrary 'tesla'
+          optionalLibrary 'applied-energistics-2'
+          optionalLibrary 'actually-additions'
+          optionalLibrary 'extreme-reactors'
+          optionalLibrary 'biomes-o-plenty'
+          optionalLibrary 'botania'
+          optionalLibrary 'buildcraft'
+          optionalLibrary 'chisels-bits'
+          optionalLibrary 'extra-utilities'
+          optionalLibrary 'immersive-engineering'
+          optionalLibrary 'industrial-craft'
+          optionalLibrary 'natura'
+          optionalLibrary 'railcraft'
+          optionalLibrary 'thermal-foundation'
+          optionalLibrary 'tinkers-construct'
+        }
+
+        addArtifact apiJar
+
+        buildprojects.each { subproject ->
+            addArtifact subproject.jar
+            addArtifact subproject.sourceJar
         }
     }
 }
 
-artifacts {
-    archives sourceJar
-    archives apiJar
-    archives deobfJar
+gradle.taskGraph.whenReady { 
+	gradle.taskGraph.allTasks.each { 
+		if(!it.project.include_in_build) { 
+			it.onlyIf { false } 
+		} 
+	} 
 }
 
-String getChangelogText() {
-    def changelogFile = new File('ReleaseNotes.txt')
-    String str = ''
-    String separator = '---'
-    int lineCount = 0
-    boolean done = false
-    changelogFile.eachLine {
-        if (done || it == null) {
-            return
-        }
-        if (lineCount < 3) {
-            lineCount++
-            if (it.startsWith(separator)) {return}
-        }
-        if (!it.startsWith(separator)) {
-            str += "$it" + (lineCount < 3 ? ':\n\n' : '\n')
-            return
-        }
-        done = true // once we go past the first version block, parse no more
-    }
-    return str
+String getCN() {
+    def firsts = ['Donald', 'Lex', 'The', 'Arthur', 'Bridget', 'Dorian', 'Ford', 'Guy', 'James', 'Jessica', 'John', 'Michael', 'Robinson', 'Zaphod', 'Bell', 'Penelope']
+    def lasts = ['Duck', 'Luthor', 'Doctor', 'Master', 'Dent', 'Jones', 'Gray', 'Prefect', 'Montag', 'Moriarty', 'Rabbit', 'Watson', 'Smith', 'Corleone', 'Crusoe', 'Beeblebrox', 'Cranel', 'Akk']
+    def rand = new Random()
+    return firsts[rand.nextInt(firsts.size())] + ' ' + lasts[rand.nextInt(lasts.size())]
 }
 
-curse {
-    dependsOn 'reobf'
-    
-    onlyIf {
-        return project.hasProperty('curseforge_key') && System.getenv("CURSE") != null && System.getenv("CURSE").equalsIgnoreCase("true")
-    }
+def parseConfig(File config) {
+    if (!config.exists())
+        return null
 
-    if (project.hasProperty('curseforge_key')) apiKey = project.curseforge_key
-    projectId = project.curse_projectId
-    changelog = System.getenv("CHANGELOG").equals("none") ? release ? getChangelogText() : project.changelog : System.getenv("CHANGELOG")
-    releaseType = project.hasProperty('mod_appendix') ? "${mod_appendix}".toString() : 'release'
-    additionalArtifact deobfJar
-    relatedProject 'endercore'
-}
-
-task checkTranslations << {
-    Map<String, String> mapen = new HashMap<String, String>()
-    (new File('resources/assets/enderio/lang/en_US.lang')).eachLine {
-        def (value1, value2) = it.tokenize( '=' )
-        if (value1 == null || value2 == null) {return}
-        mapen.put(value1, value2)
-    }
-    
-    new File('resources/assets/enderio/lang/').eachFileMatch( ~".*\\.lang\$" ) { langfile ->
-        if (!langfile.getName().contains("en_US")) {
-	        Map<String, String> map = new HashMap<String, String>()
-	        File outfile = new File("${langfile}.txt")
-	        Writer outwriter = outfile.newWriter("UTF8")
-	        outwriter.write("\n// Additional translations:\n")
-	        outwriter << langfile.filterLine {
-	            def (value1, value2) = it.tokenize( '=' )
-	            if (value1 == null || value2 == null) {return false}
-	            map.put(value1, value2)
-	            return !mapen.containsKey(value1)
-	        }
-	        
-	        outwriter.append("\n// Missing translations:\n")
-	        for (e in mapen) {
-	            if (!map.containsKey(e.key)) {
-	                outwriter.append(e.key + "=" + e.value + "\n")
-	            }
-	        }
-        println "Created translation report ${outfile}"
-        }
+    config.withReader {
+        def prop = new Properties()
+        prop.load(it)
+        return (new ConfigSlurper().parse(prop))
     }
 }

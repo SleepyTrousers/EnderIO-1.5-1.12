@@ -1,0 +1,50 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "enderio:item_generated"
+  },
+  "variants": {
+    "variant": {
+      "conductive_iron": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_nugget_conductive_iron"
+        }
+      },
+      "dark_steel": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_nugget_dark_steel"
+        }
+      },
+      "electrical_steel": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_nugget_electrical_steel"
+        }
+      },
+      "energetic_alloy": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_nugget_energetic_alloy"
+        }
+      },
+      "pulsating_iron": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_nugget_pulsating_iron"
+        }
+      },
+      "redstone_alloy": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_nugget_redstone_alloy"
+        }
+      },
+      "soularium": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_nugget_soularium"
+        }
+      },
+      "vibrant_alloy": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_nugget_vibrant_alloy"
+        }
+      }
+    }
+  }
+}

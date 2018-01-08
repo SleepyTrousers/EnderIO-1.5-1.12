@@ -1,0 +1,17 @@
+{
+"elements": [ 
+{
+    "__comment": "blade",
+    "from": [ -11, 6, 5 ],
+    "to": [ 27, 8, 11 ],
+    "faces": {
+        "down":  { "uv": [ 0, 2, 9.5, 3.5 ], "texture": "#parts" },
+        "up":    { "uv": [ 0, 0, 9.5, 1.5 ], "texture": "#parts" },
+        "north": { "uv": [ 0, 1.5, 9.5, 2 ], "texture": "#parts" },
+        "south": { "uv": [ 0, 3.5, 9.5, 4 ], "texture": "#parts" },
+        "west":  { "uv": [ 0, 4, 1.5, 4.5 ], "texture": "#parts" },
+        "east":  { "uv": [ 0, 4, 1.5, 4.5 ], "texture": "#parts" }
+    }
+}
+]
+}

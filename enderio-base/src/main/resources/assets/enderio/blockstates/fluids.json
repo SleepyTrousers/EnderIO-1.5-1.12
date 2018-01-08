@@ -1,0 +1,85 @@
+{
+    "forge_marker": 1,
+	"variants": {
+        "nutrient_distillation": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "nutrient_distillation" }
+        },
+        "hootch": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "hootch" }
+        },
+        "rocket_fuel": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "rocket_fuel" }
+        },
+        "fire_water": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "fire_water" }
+        },
+        "liquid_sunshine": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "liquid_sunshine" }            
+        },
+        "cloud_seed": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "cloud_seed" }            
+        },
+        "cloud_seed_concentrated": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "cloud_seed_concentrated" }            
+        },
+        "ender_distillation": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "ender_distillation" }            
+        },
+        "vapor_of_levity": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "vapor_of_levity" }            
+        },
+        "electrical_steel": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "electrical_steel" }
+        },
+        "energetic_alloy": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "energetic_alloy" }
+        },
+        "vibrant_alloy": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "vibrant_alloy" }
+        },
+        "redstone_alloy": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "redstone_alloy" }
+        },
+        "conductive_iron": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "conductive_iron" }
+        },
+        "pulsating_iron": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "pulsating_iron" }
+        },
+        "dark_steel": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "dark_steel" }
+        },
+        "soularium": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "soularium" }
+        },
+        "glowstone": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "glowstone" }
+        },
+        "redstone": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "redstone" }
+        },
+        "ender": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "ender" }
+        }
+    }
+}
