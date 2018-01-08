@@ -2,9 +2,9 @@ package crazypants.enderio.base.integration.techreborn;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.farming.farmers.IFarmerJoe;
 import crazypants.enderio.base.farming.farmers.RubberTreeFarmer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;

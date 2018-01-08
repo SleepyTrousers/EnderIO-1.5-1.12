@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.api.farm.IHarvestResult;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.math.BlockPos;
 

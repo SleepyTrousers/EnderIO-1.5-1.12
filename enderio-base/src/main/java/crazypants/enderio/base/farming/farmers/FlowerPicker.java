@@ -8,11 +8,13 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.base.farming.FarmNotification;
+import crazypants.enderio.api.farm.FarmNotification;
+import crazypants.enderio.api.farm.FarmingAction;
+import crazypants.enderio.api.farm.IFarmer;
+import crazypants.enderio.api.farm.IFarmerJoe;
+import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmersRegistry;
-import crazypants.enderio.base.farming.FarmingAction;
 import crazypants.enderio.base.farming.FarmingTool;
-import crazypants.enderio.base.farming.IFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;

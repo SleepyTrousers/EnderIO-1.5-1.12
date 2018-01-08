@@ -2,11 +2,11 @@ package crazypants.enderio.base.integration.natura;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.farming.FarmNotification;
+import crazypants.enderio.api.farm.FarmNotification;
+import crazypants.enderio.api.farm.IFarmer;
+import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmingTool;
-import crazypants.enderio.base.farming.IFarmer;
 import crazypants.enderio.base.farming.farmers.HarvestResult;
-import crazypants.enderio.base.farming.farmers.IHarvestResult;
 import crazypants.enderio.base.farming.farmers.PickableFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

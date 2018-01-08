@@ -4,12 +4,12 @@ import java.lang.reflect.Method;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.farm.IFarmerJoe;
+import crazypants.enderio.api.farm.IFertilizer;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.farming.FarmersRegistry;
-import crazypants.enderio.base.farming.farmers.IFarmerJoe;
 import crazypants.enderio.base.farming.farmers.PlaceableFarmer;
-import crazypants.enderio.base.farming.fertilizer.IFertilizer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;

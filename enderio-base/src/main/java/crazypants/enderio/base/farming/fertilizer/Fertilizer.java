@@ -2,6 +2,7 @@ package crazypants.enderio.base.farming.fertilizer;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.farm.IFertilizer;
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

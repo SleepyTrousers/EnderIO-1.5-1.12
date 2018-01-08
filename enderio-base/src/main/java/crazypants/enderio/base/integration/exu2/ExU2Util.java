@@ -2,11 +2,11 @@ package crazypants.enderio.base.integration.exu2;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.farmers.CustomSeedFarmer;
-import crazypants.enderio.base.farming.farmers.IFarmerJoe;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;

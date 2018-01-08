@@ -176,13 +176,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     // If active, randomly throw some smoke around
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
     if (isActive(world, pos)) {
-      float startX = x + 1.0F;
-      float startY = y + 1.0F;
-      float startZ = z + 1.0F;
+      float startX = pos.getX() + 1.0F;
+      float startY = pos.getY() + 1.0F;
+      float startZ = pos.getZ() + 1.0F;
       for (int i = 0; i < 4; i++) {
         float xOffset = -0.2F - rand.nextFloat() * 0.6F;
         float yOffset = -0.1F + rand.nextFloat() * 0.2F;

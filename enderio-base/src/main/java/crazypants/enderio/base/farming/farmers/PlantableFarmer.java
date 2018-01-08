@@ -9,10 +9,12 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
-import crazypants.enderio.base.farming.FarmNotification;
-import crazypants.enderio.base.farming.FarmingAction;
+import crazypants.enderio.api.farm.FarmNotification;
+import crazypants.enderio.api.farm.FarmingAction;
+import crazypants.enderio.api.farm.IFarmer;
+import crazypants.enderio.api.farm.IFarmerJoe;
+import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmingTool;
-import crazypants.enderio.base.farming.IFarmer;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStem;
@@ -178,7 +180,7 @@ public class PlantableFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
       }
     }
 
-    farm.endUsingItem(FarmingTool.HOE).apply(new Callback<ItemStack>() {
+    NNList.wrap(farm.endUsingItem(FarmingTool.HOE)).apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack drop) {
         result.add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));

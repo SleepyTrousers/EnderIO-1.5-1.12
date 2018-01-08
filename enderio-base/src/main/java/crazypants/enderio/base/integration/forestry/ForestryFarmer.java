@@ -2,9 +2,9 @@ package crazypants.enderio.base.integration.forestry;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.farming.IFarmer;
-import crazypants.enderio.base.farming.farmers.IFarmerJoe;
-import crazypants.enderio.base.farming.farmers.IHarvestResult;
+import crazypants.enderio.api.farm.IFarmer;
+import crazypants.enderio.api.farm.IFarmerJoe;
+import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.util.Prep;
 import forestry.api.arboriculture.EnumGermlingType;
 import forestry.api.arboriculture.ITree;

@@ -2,7 +2,7 @@ package crazypants.enderio.base.integration.thaumcraft;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.farming.IFarmer;
+import crazypants.enderio.api.farm.IFarmer;
 import crazypants.enderio.base.farming.farmers.CustomSeedFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;

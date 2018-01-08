@@ -5,8 +5,8 @@ import java.util.Map;
 import com.enderio.core.common.util.NNList;
 import com.google.common.collect.BiMap;
 
+import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.base.farming.farmers.CustomSeedFarmer;
-import crazypants.enderio.base.farming.farmers.IFarmerJoe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 

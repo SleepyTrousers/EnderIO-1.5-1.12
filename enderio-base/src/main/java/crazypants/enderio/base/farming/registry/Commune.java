@@ -5,9 +5,9 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.farming.IFarmer;
-import crazypants.enderio.base.farming.farmers.IFarmerJoe;
-import crazypants.enderio.base.farming.farmers.IHarvestResult;
+import crazypants.enderio.api.farm.IFarmer;
+import crazypants.enderio.api.farm.IFarmerJoe;
+import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.farmers.TreeFarmer;
 import crazypants.enderio.base.farming.registry.Registry.Callback;
 import crazypants.enderio.util.Prep;

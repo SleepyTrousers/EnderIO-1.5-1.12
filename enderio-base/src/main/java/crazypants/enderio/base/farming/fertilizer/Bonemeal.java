@@ -3,6 +3,7 @@ package crazypants.enderio.base.farming.fertilizer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.api.farm.IFertilizerResult;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -27,13 +28,13 @@ public class Bonemeal extends AbstractFertilizer {
   }
 
   @Override
-  public Result apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
+  public IFertilizerResult apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
     ItemStack before = player.getHeldItem(EnumHand.MAIN_HAND);
     player.setHeldItem(EnumHand.MAIN_HAND, stack);
     EnumActionResult res = stack.getItem().onItemUse(player, world, bc, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
     ItemStack after = player.getHeldItem(EnumHand.MAIN_HAND);
     player.setHeldItem(EnumHand.MAIN_HAND, before);
-    return new Result(after, res != EnumActionResult.PASS);
+    return new FertilizerResult(after, res != EnumActionResult.PASS);
   }
 
 }

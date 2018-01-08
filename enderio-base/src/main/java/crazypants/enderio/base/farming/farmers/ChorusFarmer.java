@@ -8,11 +8,12 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NNList.NNIterator;
 
-import crazypants.enderio.base.farming.FarmNotification;
-import crazypants.enderio.base.farming.FarmingAction;
+import crazypants.enderio.api.farm.FarmNotification;
+import crazypants.enderio.api.farm.FarmingAction;
+import crazypants.enderio.api.farm.IFarmer;
+import crazypants.enderio.api.farm.IFarmerJoe;
+import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmingTool;
-import crazypants.enderio.base.farming.IFarmer;
-import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChorusFlower;
@@ -29,6 +30,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry.Impl;
 
@@ -132,7 +134,7 @@ public class ChorusFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
 
   private void doHarvest(@Nonnull final IFarmer farm, @Nonnull final World world, @Nonnull IBlockState blockState, @Nonnull final BlockPos pos, int fortune,
       @Nonnull final HarvestResult result) {
-    FakePlayerEIO joe = farm.startUsingItem(FarmingTool.AXE);
+    FakePlayer joe = farm.startUsingItem(FarmingTool.AXE);
     List<ItemStack> drops = blockState.getBlock().getDrops(world, pos, blockState, fortune);
     final float chance = ForgeEventFactory.fireBlockHarvesting(drops, world, pos, blockState, fortune, 1f, false, joe);
 
@@ -148,7 +150,7 @@ public class ChorusFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
       }
     });
 
-    farm.endUsingItem(FarmingTool.AXE).apply(new Callback<ItemStack>() {
+    NNList.wrap(farm.endUsingItem(FarmingTool.AXE)).apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack drop) {
         result.getDrops().add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));

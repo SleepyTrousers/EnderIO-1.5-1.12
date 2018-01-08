@@ -7,14 +7,17 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.base.farming.FarmNotification;
+import crazypants.enderio.api.farm.FarmNotification;
+import crazypants.enderio.api.farm.FarmingAction;
+import crazypants.enderio.api.farm.IFarmer;
+import crazypants.enderio.api.farm.IFarmerJoe;
+import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmersRegistry;
-import crazypants.enderio.base.farming.FarmingAction;
 import crazypants.enderio.base.farming.FarmingTool;
-import crazypants.enderio.base.farming.IFarmer;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -210,7 +213,7 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
           farm.setNotification(FarmNotification.NO_HOE);
         }
       }
-      farm.endUsingItem(FarmingTool.HOE).apply(new Callback<ItemStack>() {
+      NNList.wrap(farm.endUsingItem(FarmingTool.HOE)).apply(new Callback<ItemStack>() {
         @Override
         public void apply(@Nonnull ItemStack drop) {
           result.getDrops().add(new EntityItem(world, harvestPos.getX() + 0.5, harvestPos.getY() + 0.5, harvestPos.getZ() + 0.5, drop.copy()));

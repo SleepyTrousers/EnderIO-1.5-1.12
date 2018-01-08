@@ -2,7 +2,7 @@ package crazypants.enderio.base.farming.farmers;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.farming.IFarmer;
+import crazypants.enderio.api.farm.IFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;

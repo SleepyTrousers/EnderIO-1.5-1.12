@@ -2,10 +2,10 @@ package crazypants.enderio.base.integration.immersiveengineering;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.farming.IFarmer;
+import crazypants.enderio.api.farm.IFarmer;
+import crazypants.enderio.api.farm.IFarmerJoe;
+import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.farmers.CustomSeedFarmer;
-import crazypants.enderio.base.farming.farmers.IFarmerJoe;
-import crazypants.enderio.base.farming.farmers.IHarvestResult;
 import crazypants.enderio.base.farming.farmers.StemFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

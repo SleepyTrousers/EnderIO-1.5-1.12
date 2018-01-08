@@ -3,6 +3,8 @@ package crazypants.enderio.base.farming.fertilizer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.api.farm.IFertilizer;
+import crazypants.enderio.api.farm.IFertilizerResult;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
@@ -34,7 +36,6 @@ public abstract class AbstractFertilizer extends IForgeRegistryEntry.Impl<IFerti
     }
   }
 
-  @Override
   public boolean isValid() {
     return Prep.isValid(fertilizer);
   }
@@ -45,7 +46,7 @@ public abstract class AbstractFertilizer extends IForgeRegistryEntry.Impl<IFerti
   }
 
   @Override
-  public abstract Result apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc);
+  public abstract IFertilizerResult apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc);
 
   @Override
   public boolean applyOnAir() {

@@ -6,7 +6,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.base.farming.IFarmer;
+import crazypants.enderio.api.farm.IFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNewLog;
 import net.minecraft.block.BlockOldLog;

@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.farm.IFertilizer;
+import crazypants.enderio.api.farm.IFertilizerResult;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,8 +35,8 @@ public final class NoFertilizer extends AbstractFertilizer {
   }
 
   @Override
-  public Result apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
-    return new Result(stack, false);
+  public IFertilizerResult apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
+    return new FertilizerResult(stack, false);
   }
 
   @Override

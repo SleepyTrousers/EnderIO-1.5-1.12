@@ -2,8 +2,9 @@ package crazypants.enderio.base.integration.botania;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.farm.IFertilizerResult;
 import crazypants.enderio.base.farming.fertilizer.Bonemeal;
-import crazypants.enderio.base.farming.fertilizer.Result;
+import crazypants.enderio.base.farming.fertilizer.FertilizerResult;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -18,13 +19,13 @@ public class MagicalFertilizer extends Bonemeal {
   }
 
   @Override
-  public Result apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
+  public IFertilizerResult apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
     BlockPos below = bc.down();
     Block belowBlock = world.getBlockState(below).getBlock();
     if (belowBlock == Blocks.DIRT || belowBlock == Blocks.GRASS) {
       return super.apply(stack, player, world, below);
     }
-    return new Result(stack, false);
+    return new FertilizerResult(stack, false);
   }
 
   @Override

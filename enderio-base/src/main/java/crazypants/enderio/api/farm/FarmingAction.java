@@ -1,4 +1,4 @@
-package crazypants.enderio.base.farming;
+package crazypants.enderio.api.farm;
 
 public enum FarmingAction {
   TILL,

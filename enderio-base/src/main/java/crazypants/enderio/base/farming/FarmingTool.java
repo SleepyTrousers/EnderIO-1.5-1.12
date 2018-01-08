@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.api.farm.IFarmingTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.util.Prep;
@@ -11,7 +12,7 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public enum FarmingTool {
+public enum FarmingTool implements IFarmingTool {
   HAND,
   HOE(Config.farmHoes),
   AXE {
@@ -47,6 +48,12 @@ public enum FarmingTool {
     this.things = things;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see crazypants.enderio.base.farming.IFarmingTool#itemMatches(net.minecraft.item.ItemStack)
+   */
+  @Override
   public final boolean itemMatches(@Nonnull ItemStack item) {
     return Prep.isValid(item) && match(item);
   }
@@ -66,7 +73,7 @@ public enum FarmingTool {
   }
 
   public static boolean isTool(@Nonnull ItemStack stack) {
-    for (FarmingTool type : values()) {
+    for (IFarmingTool type : values()) {
       if (type.itemMatches(stack)) {
         return true;
       }
@@ -92,6 +99,15 @@ public enum FarmingTool {
 
   public static boolean canDamage(@Nonnull ItemStack stack) {
     return stack.isItemStackDamageable() && stack.getItem().isDamageable();
+  }
+
+  static {
+    IFarmingTool.Tools.HAND = HAND;
+    IFarmingTool.Tools.HOE = HOE;
+    IFarmingTool.Tools.AXE = AXE;
+    IFarmingTool.Tools.TREETAP = TREETAP;
+    IFarmingTool.Tools.SHEARS = SHEARS;
+    IFarmingTool.Tools.NONE = NONE;
   }
 
 }

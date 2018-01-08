@@ -4,13 +4,13 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.farming.farmers.ChorusFarmer;
 import crazypants.enderio.base.farming.farmers.CocoaFarmer;
 import crazypants.enderio.base.farming.farmers.CustomSeedFarmer;
 import crazypants.enderio.base.farming.farmers.FlowerPicker;
-import crazypants.enderio.base.farming.farmers.IFarmerJoe;
 import crazypants.enderio.base.farming.farmers.MelonFarmer;
 import crazypants.enderio.base.farming.farmers.PickableFarmer;
 import crazypants.enderio.base.farming.farmers.PlantableFarmer;

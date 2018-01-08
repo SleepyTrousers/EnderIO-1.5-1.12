@@ -12,10 +12,11 @@ import com.enderio.core.common.util.NNList.ShortCallback;
 import com.enderio.core.common.util.NullHelper;
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.base.farming.FarmNotification;
-import crazypants.enderio.base.farming.FarmingAction;
+import crazypants.enderio.api.farm.FarmNotification;
+import crazypants.enderio.api.farm.FarmingAction;
+import crazypants.enderio.api.farm.IFarmer;
+import crazypants.enderio.api.farm.IFarmingTool;
 import crazypants.enderio.base.farming.FarmingTool;
-import crazypants.enderio.base.farming.IFarmer;
 import crazypants.enderio.base.farming.PickupWorld;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.machines.config.config.FarmConfig;
@@ -31,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -123,11 +125,6 @@ public class FarmLogic implements IFarmer {
     owner.setNotification(notification);
   }
 
-  @Override
-  public void clearNotification() {
-    owner.clearNotification();
-  }
-
   // Seeds
 
   @Override
@@ -192,26 +189,26 @@ public class FarmLogic implements IFarmer {
   // Tools
 
   @Override
-  public boolean hasTool(@Nonnull FarmingTool tool) {
+  public boolean hasTool(@Nonnull IFarmingTool tool) {
     return Prep.isValid(getTool(tool));
   }
 
   @Override
-  public int getLootingValue(@Nonnull FarmingTool tool) {
+  public int getLootingValue(@Nonnull IFarmingTool tool) {
     ItemStack stack = getTool(tool);
     return Math.max(EnchantmentHelper.getEnchantmentLevel(Enchantments.LOOTING, stack), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
   }
 
   @Override
   @Nonnull
-  public ItemStack getTool(@Nonnull FarmingTool tool) {
+  public ItemStack getTool(@Nonnull IFarmingTool tool) {
     FarmSlots slot = owner.getSlotForTool(tool);
     if (slot != null) {
       ItemStack stack = slot.get(owner);
       if (FarmingTool.isBrokenTinkerTool(stack) || FarmingTool.isDryRfTool(stack)) {
         handleExtraItem(stack, null);
       } else if (tool.itemMatches(stack)) {
-        switch (tool) {
+        switch (tool(tool)) {
         case AXE:
           owner.removeNotification(FarmNotification.NO_AXE);
           break;
@@ -282,7 +279,7 @@ public class FarmLogic implements IFarmer {
   }
 
   @Override
-  public @Nonnull FakePlayerEIO startUsingItem(@Nonnull FarmingTool tool) {
+  public @Nonnull FakePlayerEIO startUsingItem(@Nonnull IFarmingTool tool) {
     cleanJoe();
     joeInUse = true;
     ItemStack toolStack = getTool(tool);
@@ -310,7 +307,7 @@ public class FarmLogic implements IFarmer {
 
   @Override
   @Nonnull
-  public NNList<ItemStack> endUsingItem(@Nonnull FarmingTool tool) {
+  public NNList<ItemStack> endUsingItem(@Nonnull IFarmingTool tool) {
     removeJoesTool();
     return endUsingItem(false);
   }
@@ -318,8 +315,8 @@ public class FarmLogic implements IFarmer {
   // Result Handling
 
   @Override
-  public void handleExtraItems(@Nonnull NNList<ItemStack> items, @Nullable BlockPos pos) {
-    items.apply(new Callback<ItemStack>() {
+  public void handleExtraItems(@Nonnull NonNullList<ItemStack> items, @Nullable BlockPos pos) {
+    NNList.wrap(items).apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack stack) {
         handleExtraItem(stack, NullHelper.first(pos, getLocation()));
@@ -330,9 +327,9 @@ public class FarmLogic implements IFarmer {
   // Actions
 
   @Override
-  public boolean checkAction(@Nonnull FarmingAction action, @Nonnull FarmingTool tool) {
+  public boolean checkAction(@Nonnull FarmingAction action, @Nonnull IFarmingTool tool) {
     if (tool != FarmingTool.HAND && !hasTool(tool)) {
-      switch (tool) {
+      switch (tool(tool)) {
       case AXE:
         setNotification(FarmNotification.NO_AXE);
         break;
@@ -354,11 +351,11 @@ public class FarmLogic implements IFarmer {
   }
 
   @Override
-  public void registerAction(@Nonnull FarmingAction action, @Nonnull FarmingTool tool) {
+  public void registerAction(@Nonnull FarmingAction action, @Nonnull IFarmingTool tool) {
     owner.usePower(getEnergyUse(action, tool));
   }
 
-  private int getEnergyUse(@Nonnull FarmingAction action, @Nonnull FarmingTool tool) {
+  private int getEnergyUse(@Nonnull FarmingAction action, @Nonnull IFarmingTool tool) {
     switch (action) {
     case FERTILIZE:
       return FarmConfig.farmBonemealEnergyUseSuccess.get();
@@ -374,7 +371,7 @@ public class FarmLogic implements IFarmer {
   }
 
   @Override
-  public void registerAction(@Nonnull FarmingAction action, @Nonnull FarmingTool tool, @Nonnull IBlockState state, @Nonnull BlockPos pos) {
+  public void registerAction(@Nonnull FarmingAction action, @Nonnull IFarmingTool tool, @Nonnull IBlockState state, @Nonnull BlockPos pos) {
     registerAction(action, tool);
     ItemStack toolStack = getTool(tool);
     if (Prep.isValid(toolStack) && getWorld().rand.nextFloat() <= FarmConfig.farmToolDamageChance.get()) {
@@ -386,7 +383,7 @@ public class FarmLogic implements IFarmer {
       }
 
       boolean canDamage = FarmingTool.canDamage(toolStack);
-      switch (tool) {
+      switch (tool(tool)) {
       case AXE:
         toolStack.getItem().onBlockDestroyed(toolStack, getWorld(), state, pos, farmerJoe);
         if (FarmingTool.isBrokenTinkerTool(toolStack) || FarmingTool.isDryRfTool(toolStack)) {
@@ -460,4 +457,7 @@ public class FarmLogic implements IFarmer {
     }
   }
 
+  private @Nonnull FarmingTool tool(@Nonnull IFarmingTool tool) {
+    return (tool instanceof FarmingTool) ? (FarmingTool) tool : FarmingTool.NONE;
+  }
 }

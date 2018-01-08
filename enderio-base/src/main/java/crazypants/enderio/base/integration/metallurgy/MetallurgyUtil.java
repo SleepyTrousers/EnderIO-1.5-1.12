@@ -2,11 +2,11 @@ package crazypants.enderio.base.integration.metallurgy;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.farm.IFertilizer;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.fertilizer.Bonemeal;
-import crazypants.enderio.base.farming.fertilizer.IFertilizer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

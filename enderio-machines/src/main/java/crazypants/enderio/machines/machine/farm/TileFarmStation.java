@@ -9,23 +9,24 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.blockiterators.PlanarBlockIterator;
 import com.enderio.core.common.util.blockiterators.PlanarBlockIterator.Orientation;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.base.farming.FarmNotification;
-import crazypants.enderio.base.farming.FarmingAction;
+import crazypants.enderio.api.farm.FarmNotification;
+import crazypants.enderio.api.farm.FarmingAction;
+import crazypants.enderio.api.farm.IFarmer;
+import crazypants.enderio.api.farm.IFarmingTool;
+import crazypants.enderio.api.farm.IFertilizer;
+import crazypants.enderio.api.farm.IFertilizerResult;
+import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmingTool;
-import crazypants.enderio.base.farming.IFarmer;
-import crazypants.enderio.base.farming.farmers.IHarvestResult;
 import crazypants.enderio.base.farming.fertilizer.Fertilizer;
-import crazypants.enderio.base.farming.fertilizer.IFertilizer;
-import crazypants.enderio.base.farming.fertilizer.Result;
 import crazypants.enderio.base.farming.registry.Commune;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.task.ContinuousTask;
 import crazypants.enderio.base.paint.IPaintable;
@@ -45,6 +46,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
@@ -125,7 +127,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       return false;
     }
     if (i <= maxToolSlot) {
-      FarmingTool toolType = FarmingTool.getToolType(stack);
+      IFarmingTool toolType = FarmingTool.getToolType(stack);
       if (toolType != FarmingTool.NONE && !FarmingTool.isBrokenTinkerTool(stack) && !FarmingTool.isDryRfTool(stack)) {
         return getSlotForTool(toolType) == null;
       }
@@ -159,7 +161,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     toolmappingInitialized = false;
   }
 
-  protected FarmSlots getSlotForTool(@Nonnull FarmingTool tool) {
+  protected FarmSlots getSlotForTool(@Nonnull IFarmingTool tool) {
     buildToolmapping();
     return toolmapping.get(tool);
   }
@@ -239,10 +241,22 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
         && farmer.checkAction(FarmingAction.FERTILIZE, FarmingTool.HAND)) {
       final ItemStack fertStack = getStackInSlot(minFirtSlot);
       IFertilizer fertilizer = Fertilizer.getInstance(fertStack);
-      if ((fertilizer.applyOnPlant() != isOpen(farmingPos, block)) || (fertilizer.applyOnAir() == world.isAirBlock(farmingPos))) {
-        FakePlayerEIO farmerJoe = farmer.startUsingItem(Prep.getEmpty());
-        final Result result = fertilizer.apply(fertStack, farmerJoe, world, farmingPos);
-        if (result.isWasApplied()) {
+      boolean doApply;
+
+      if (fertilizer.applyOnPlant() && fertilizer.applyOnAir()) {
+        doApply = !isOpen(farmingPos, block) || world.isAirBlock(farmingPos);
+      } else if (fertilizer.applyOnPlant()) {
+        doApply = !isOpen(farmingPos, block);
+      } else if (fertilizer.applyOnAir()) {
+        doApply = world.isAirBlock(farmingPos);
+      } else {
+        doApply = true;
+      }
+
+      if (doApply) {
+        FakePlayer farmerJoe = farmer.startUsingItem(Prep.getEmpty());
+        final IFertilizerResult result = fertilizer.apply(fertStack, farmerJoe, world, farmingPos);
+        if (result.wasApplied()) {
           setInventorySlotContents(minFirtSlot, result.getStack());
           PacketHandler.sendToAllAround(new PacketFarmAction(farmingPos), this);
           bonemealCooldown = FarmConfig.farmBonemealDelaySuccess.get();
@@ -251,7 +265,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
           usePower(FarmConfig.farmBonemealEnergyUseFail.get());
           bonemealCooldown = FarmConfig.farmBonemealDelayFail.get();
         }
-        farmer.handleExtraItems(farmer.endUsingItem(true), farmingPos);
+        farmer.handleExtraItems(farmer.endUsingItem(false), farmingPos);
       }
     }
   }
@@ -267,7 +281,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
         PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
         PacketHandler.sendToAllAround(pkt, this);
       }
-      harvest.getDrops().apply(new Callback<EntityItem>() {
+      NNList.wrap(harvest.getDrops()).apply(new Callback<EntityItem>() {
         @Override
         public void apply(@Nonnull EntityItem ei) {
           if (!ei.isDead) {

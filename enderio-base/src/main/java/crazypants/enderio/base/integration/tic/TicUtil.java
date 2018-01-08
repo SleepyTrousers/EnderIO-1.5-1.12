@@ -2,9 +2,9 @@ package crazypants.enderio.base.integration.tic;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.farming.FarmersRegistry;
-import crazypants.enderio.base.farming.farmers.IFarmerJoe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;

@@ -5,11 +5,11 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
+import crazypants.enderio.api.farm.IFarmer;
+import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.farming.FarmersRegistry;
-import crazypants.enderio.base.farming.IFarmer;
-import crazypants.enderio.base.farming.farmers.IFarmerJoe;
 import crazypants.enderio.base.farming.farmers.PickableFarmer;
 import crazypants.enderio.base.farming.farmers.PlantableFarmer;
 import crazypants.enderio.base.farming.farmers.StemFarmer;
