@@ -89,8 +89,8 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
 
     @Override
     public @Nonnull List<String> getTooltipStrings(int mouseX, int mouseY) {
-      if (mouseY < (20 - yOff) || mouseY > (21 - yOff + 47 + 1)) {
-        return Lang.JEI_COMBGEN_RANGE.getLines();
+      if (mouseY < (32 - yOff) || mouseY >= (69 - yOff)) {
+        return Lang.JEI_STIRGEN_RANGE.getLines();
       }
       return super.getTooltipStrings(mouseX, mouseY);
     }
