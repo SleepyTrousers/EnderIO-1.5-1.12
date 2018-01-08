@@ -2,7 +2,7 @@ package crazypants.enderio.base.item.magnet;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.handler.darksteel.IRenderUpgrade;
+import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class MagnetLayer implements IRenderUpgrade {
 
-  public static final MagnetLayer instance = new MagnetLayer();
+  public static final @Nonnull MagnetLayer instance = new MagnetLayer();
 
   private MagnetLayer() {
   }

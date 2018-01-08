@@ -10,10 +10,10 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.OreDictionaryHelper;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.base.handler.darksteel.IDarkSteelItem;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
@@ -100,7 +100,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     par3List.add(is);
 
     is = new ItemStack(this);
-    EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
+    EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
     EnergyUpgradeManager.setPowerFull(is);
     par3List.add(is);
   }

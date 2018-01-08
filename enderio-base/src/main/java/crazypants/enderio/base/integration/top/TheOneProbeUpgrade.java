@@ -42,8 +42,8 @@ public class TheOneProbeUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public void writeToItem(@Nonnull ItemStack stack) {
-    super.writeToItem(stack);
+  public void addToItem(@Nonnull ItemStack stack) {
+    super.addToItem(stack);
     ItemUtil.getOrCreateNBT(stack).setInteger(PROBETAG, 1);
   }
 

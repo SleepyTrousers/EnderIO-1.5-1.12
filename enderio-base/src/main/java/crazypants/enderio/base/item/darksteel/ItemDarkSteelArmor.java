@@ -16,14 +16,15 @@ import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.Multimap;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
+import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.base.handler.darksteel.IDarkSteelItem;
-import crazypants.enderio.base.handler.darksteel.IDarkSteelUpgrade;
-import crazypants.enderio.base.handler.darksteel.IRenderUpgrade;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.base.init.IModObject;
@@ -43,7 +44,6 @@ import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintUtil.IWithPaintName;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.HelmetPainterTemplate;
-import crazypants.enderio.base.render.IHasPlayerRenderer;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;
 import forestry.api.apiculture.IArmorApiarist;
@@ -143,24 +143,24 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     par3List.add(is);
 
     is = new ItemStack(this);
-    EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
+    EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
     EnergyUpgradeManager.setPowerFull(is);
 
     Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.recipeIterator();
     while (iter.hasNext()) {
       IDarkSteelUpgrade upgrade = iter.next();
       if (!(upgrade instanceof EnergyUpgrade || upgrade instanceof GliderUpgrade || upgrade instanceof ElytraUpgrade) && upgrade.canAddToItem(is)) {
-        upgrade.writeToItem(is);
+        upgrade.addToItem(is);
       }
     }
 
     if (GliderUpgrade.INSTANCE.canAddToItem(is)) {
       ItemStack is2 = is.copy();
-      GliderUpgrade.INSTANCE.writeToItem(is2);
+      GliderUpgrade.INSTANCE.addToItem(is2);
       par3List.add(is2);
       if (ElytraUpgrade.INSTANCE.canAddToItem(is)) {
         ItemStack is3 = is.copy();
-        ElytraUpgrade.INSTANCE.writeToItem(is3);
+        ElytraUpgrade.INSTANCE.addToItem(is3);
         par3List.add(is3);
       }
       return;
@@ -329,13 +329,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   }
 
   @Override
-  @Nullable
   @SideOnly(Side.CLIENT)
-  public IRenderUpgrade getRender() {
-    if (armorType == EntityEquipmentSlot.HEAD) {
-      return PaintedHelmetLayer.instance;
-    }
-    return null;
+  public @Nonnull IRenderUpgrade getRender() {
+    return armorType == EntityEquipmentSlot.HEAD ? PaintedHelmetLayer.instance : PaintedHelmetLayer.not_an_helmet;
   }
 
   @SuppressWarnings("null")

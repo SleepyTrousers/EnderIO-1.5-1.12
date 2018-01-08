@@ -2,8 +2,8 @@ package crazypants.enderio.base.item.darksteel.upgrade.elytra;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.handler.darksteel.IRenderUpgrade;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelElytra;
 import net.minecraft.client.renderer.GlStateManager;

@@ -4,11 +4,11 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.api.farm.IFertilizer;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.fertilizer.Bonemeal;
-import crazypants.enderio.base.handler.darksteel.IDarkSteelUpgrade;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;

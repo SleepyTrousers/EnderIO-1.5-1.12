@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;

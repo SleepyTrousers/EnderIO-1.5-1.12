@@ -15,6 +15,8 @@ import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
 import com.mojang.authlib.GameProfile;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.base.init.ModObject;
