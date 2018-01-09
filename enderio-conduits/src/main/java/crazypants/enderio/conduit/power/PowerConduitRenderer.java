@@ -13,7 +13,7 @@ import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.Offset;
-import crazypants.enderio.base.machine.RedstoneControlMode;
+import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;

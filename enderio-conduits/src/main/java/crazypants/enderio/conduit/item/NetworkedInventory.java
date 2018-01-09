@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
@@ -15,19 +16,18 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.machine.invpanel.TileInventoryPanel;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
-import crazypants.enderio.conduit.item.filter.ILimitedItemFilter;
+import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.ILimitedItemFilter;
+import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
-public class NetworkedInventory {
+public class NetworkedInventory implements INetworkedInventory {
 
   private static final boolean SIMULATE = true;
   private static final boolean EXECUTE = false;
@@ -44,30 +44,31 @@ public class NetworkedInventory {
 
   int tickDeficit;
 
-  boolean inventoryPanel = false;
+  // TODO Inventory
+//  boolean inventoryPanel = false;
 
   World world;
   ItemConduitNetwork network;
   String invName;
 
-  NetworkedInventory(ItemConduitNetwork network, IItemConduit con, EnumFacing conDir, IItemHandler inv, BlockCoord location) {
+  NetworkedInventory(@Nonnull ItemConduitNetwork network, @Nonnull IItemConduit con, @Nonnull EnumFacing conDir, @Nonnull IItemHandler inv, @Nonnull BlockPos location) {
     this.network = network;
     inventorySide = conDir.getOpposite();
     this.con = con;
     this.conDir = conDir;
-    this.location = location.getBlockPos();
+    this.location = location;
     world = con.getBundle().getBundleworld();
 
-    IBlockState bs = world.getBlockState(location.getBlockPos());
+    IBlockState bs = world.getBlockState(location);
     invName = bs.getBlock().getLocalizedName();
     
-    TileEntity te = world.getTileEntity(location.getBlockPos());       
-    if(te instanceof TileInventoryPanel) {
-      inventoryPanel = true;
-    }
+//    TileEntity te = world.getTileEntity(location);
+//    if(te instanceof TileInventoryPanel) {
+//      inventoryPanel = true;
+//    }
   }
 
-  public boolean hasTarget(IItemConduit conduit, EnumFacing dir) {
+  public boolean hasTarget(@Nonnull IItemConduit conduit, @Nonnull EnumFacing dir) {
     for (Target t : sendPriority) {
       if(t.inv.con == conduit && t.inv.conDir == dir) {
         return true;
@@ -82,16 +83,16 @@ public class NetworkedInventory {
   }
 
   boolean canInsert() {
-    if(inventoryPanel) {
-      return false;
-    }
+//    if(inventoryPanel) {
+//      return false;
+//    }
     ConnectionMode mode = con.getConnectionMode(conDir);
     return mode == ConnectionMode.OUTPUT || mode == ConnectionMode.IN_OUT;
   }
 
-  boolean isInventoryPanel() {
-    return inventoryPanel;
-  }
+//  boolean isInventoryPanel() {
+//    return inventoryPanel;
+//  }
 
   boolean isSticky() {
     return con.getOutputFilter(conDir) != null && con.getOutputFilter(conDir).isValid() && con.getOutputFilter(conDir).isSticky();
@@ -154,10 +155,10 @@ public class NetworkedInventory {
             item = Prep.getEmpty();
           } else if (count < Integer.MAX_VALUE) { // some limit
             final ItemStack stackInSlot = inventory.getStackInSlot(slot);
-            if (stackInSlot.stackSize <= count) { // there's less than the limit in there
+            if (stackInSlot.getCount() <= count) { // there's less than the limit in there
               item = Prep.getEmpty();
-            } else if (stackInSlot.stackSize - item.stackSize < count) { // we are trying to extract more than allowed
-              item = inventory.extractItem(slot, stackInSlot.stackSize - count, SIMULATE);
+            } else if (stackInSlot.getCount() - item.getCount() < count) { // we are trying to extract more than allowed
+              item = inventory.extractItem(slot, stackInSlot.getCount() - count, SIMULATE);
             }
           }
         } else if (filter != null && !filter.doesItemPassFilter(this, item)) {
@@ -173,15 +174,15 @@ public class NetworkedInventory {
     return false;
   }
 
-  private boolean doTransfer(IItemHandler inventory, ItemStack extractedItem, int slot) {
+  private boolean doTransfer(@Nonnull IItemHandler inventory, @Nonnull ItemStack extractedItem, int slot) {
     int numInserted = insertIntoTargets(extractedItem.copy());
     if(numInserted <= 0) {
       return false;
     }
     ItemStack extracted = inventory.extractItem(slot, numInserted, EXECUTE);
-    if (Prep.isInvalid(extracted) || extracted.stackSize != numInserted || extracted.getItem() != extractedItem.getItem()) {
+    if (Prep.isInvalid(extracted) || extracted.getCount() != numInserted || extracted.getItem() != extractedItem.getItem()) {
       Log.warn("NetworkedInventory.itemExtracted: Inserted " + numInserted + " " + extractedItem.getDisplayName() + " but only removed "
-          + (Prep.isInvalid(extracted) ? "null" : extracted.stackSize + " " + extracted.getDisplayName()) + " from " + inventory + " at " + location);
+          + (Prep.isInvalid(extracted) ? "null" : extracted.getCount() + " " + extracted.getDisplayName()) + " from " + inventory + " at " + location);
     }
     onItemExtracted(slot, numInserted);
     return true;
@@ -192,12 +193,12 @@ public class NetworkedInventory {
     tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
   }
 
-  int insertIntoTargets(ItemStack toExtract) {
+  int insertIntoTargets(@Nonnull ItemStack toExtract) {
     if (Prep.isInvalid(toExtract)) {
       return 0;
     }
 
-    int totalToInsert = toExtract.stackSize;
+    int totalToInsert = toExtract.getCount();
     int leftToInsert = totalToInsert;
     boolean matchedStickyInput = false;
 
@@ -212,7 +213,7 @@ public class NetworkedInventory {
       if(target.stickyInput || !matchedStickyInput) {        
         int inserted = target.inv.insertItem(toExtract);
         if(inserted > 0) {
-          toExtract.stackSize -= inserted;
+          toExtract.shrink(inserted);
           leftToInsert -= inserted;
         }
         if(leftToInsert <= 0) {
@@ -230,7 +231,7 @@ public class NetworkedInventory {
     return sendPriority;
   }
 
-  private int insertItem(ItemStack item) {
+  private int insertItem(@Nonnull ItemStack item) {
     if (!canInsert() || Prep.isInvalid(item)) {
       return 0;
     }
@@ -243,9 +244,9 @@ public class NetworkedInventory {
         final int maxInsert = ItemTools.getInsertLimit(getInventory(), item, count);
         if (maxInsert <= 0) {
           return 0;
-        } else if (maxInsert < item.stackSize) {
+        } else if (maxInsert < item.getCount()) {
           item = item.copy();
-          item.stackSize = maxInsert;
+          item.setCount(maxInsert);
         }
       }
     } else if (filter != null && !filter.doesItemPassFilter(this, item)) {
@@ -278,9 +279,9 @@ public class NetworkedInventory {
       Collections.sort(sendPriority);
     } else {
       if(!result.isEmpty()) {
-        Map<BlockCoord, Integer> visited = new HashMap<BlockCoord, Integer>();
-        List<BlockCoord> steps = new ArrayList<BlockCoord>();
-        steps.add(con.getLocation());
+        Map<BlockPos, Integer> visited = new HashMap<BlockPos, Integer>();
+        List<BlockPos> steps = new ArrayList<BlockPos>();
+        steps.add(con.getBundle().getLocation());
         calculateDistances(result, visited, steps, 0);
 
         sendPriority.addAll(result);
@@ -291,14 +292,14 @@ public class NetworkedInventory {
 
   }
 
-  private void calculateDistances(List<Target> targets, Map<BlockCoord, Integer> visited, List<BlockCoord> steps, int distance) {
+  private void calculateDistances(@Nonnull List<Target> targets, @Nonnull Map<BlockPos, Integer> visited, @Nonnull List<BlockPos> steps, int distance) {
     if(steps == null || steps.isEmpty()) {
       return;
     }
 
-    ArrayList<BlockCoord> nextSteps = new ArrayList<BlockCoord>();
-    for (BlockCoord bc : steps) {
-      IItemConduit con1 = network.conMap.get(bc);
+    ArrayList<BlockPos> nextSteps = new ArrayList<BlockPos>();
+    for (BlockPos pos : steps) {
+      IItemConduit con1 = network.conMap.get(pos);
       if (con1 != null) {
         for (EnumFacing dir : con1.getExternalConnections()) {
           Target target = getTarget(targets, con1, dir);
@@ -307,33 +308,33 @@ public class NetworkedInventory {
           }
         }
 
-        if(!visited.containsKey(bc)) {
-          visited.put(bc, distance);
+        if(!visited.containsKey(pos)) {
+          visited.put(pos, distance);
         } else {
-          int prevDist = visited.get(bc);
+          int prevDist = visited.get(pos);
           if(prevDist <= distance) {
             continue;
           }
-          visited.put(bc, distance);
+          visited.put(pos, distance);
         }
 
         for (EnumFacing dir : con1.getConduitConnections()) {
-          nextSteps.add(bc.getLocation(dir));
+          nextSteps.add(pos.offset(dir));
         }
       }
     }
     calculateDistances(targets, visited, nextSteps, distance + 1);
   }
 
-  private Target getTarget(List<Target> targets, IItemConduit con1, EnumFacing dir) {
-    if (targets == null || con1 == null || con1.getLocation() == null) {
+  private Target getTarget(@Nonnull List<Target> targets, @Nonnull IItemConduit con1, @Nonnull EnumFacing dir) {
+    if (targets == null || con1 == null || con1.getBundle().getLocation() == null) {
       return null;
     }
     for (Target target : targets) {
-      BlockCoord targetConLoc = null;
+      BlockPos targetConLoc = null;
       if(target != null && target.inv != null && target.inv.con != null) {
-        targetConLoc = target.inv.con.getLocation();
-        if (targetConLoc != null && target.inv.conDir == dir && targetConLoc.equals(con1.getLocation())) {
+        targetConLoc = target.inv.con.getBundle().getLocation();
+        if (targetConLoc != null && target.inv.conDir == dir && targetConLoc.equals(con1.getBundle().getLocation())) {
           return target;
         }
       }
@@ -342,7 +343,8 @@ public class NetworkedInventory {
   }
 
   private int distanceTo(NetworkedInventory other) {
-    return con.getLocation().getDistSq(other.con.getLocation());
+    // TODO Check if this should be a double or int
+    return (int) con.getBundle().getLocation().distanceSq(other.con.getBundle().getLocation());
   }
 
   public @Nullable IItemHandler getInventory() {
@@ -363,7 +365,7 @@ public class NetworkedInventory {
     boolean stickyInput;
     int priority;
 
-    Target(NetworkedInventory inv, int distance, boolean stickyInput, int priority) {
+    Target(@Nonnull NetworkedInventory inv, int distance, boolean stickyInput, int priority) {
       this.inv = inv;
       this.distance = distance;
       this.stickyInput = stickyInput;

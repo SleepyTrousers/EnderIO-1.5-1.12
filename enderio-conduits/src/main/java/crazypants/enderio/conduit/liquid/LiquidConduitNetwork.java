@@ -11,7 +11,10 @@ import com.enderio.core.common.util.BlockCoord;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
+
+import javax.annotation.Nonnull;
 
 public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidConduit> {
 
@@ -124,7 +127,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
         if(con.canOutputToDir(dir)) {
           IFluidWrapper externalTank = con.getExternalHandler(dir);
           if(externalTank != null) {
-            externals.add(new LocatedFluidHandler(externalTank, con.getLocation().getLocation(dir), dir.getOpposite()));
+            externals.add(new LocatedFluidHandler(externalTank, con.getBundle().getLocation().offset(dir), dir.getOpposite()));
           }
         }
       }
@@ -157,8 +160,8 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     return true;
   }
 
-  private void drainConduitToNearestExternal(LiquidConduit con, List<LocatedFluidHandler> externals) {
-    BlockCoord conLoc = con.getLocation();
+  private void drainConduitToNearestExternal(@Nonnull LiquidConduit con, List<LocatedFluidHandler> externals) {
+    BlockPos conPos = con.getBundle().getLocation();
     FluidStack toDrain = con.getTank().getFluid();
     if(toDrain == null) {
       return;
@@ -166,7 +169,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     int closestDistance = Integer.MAX_VALUE;
     LocatedFluidHandler closestTank = null;
     for (LocatedFluidHandler lh : externals) {
-      int distance = lh.bc.getDistSq(conLoc);
+      int distance = (int) lh.pos.distanceSq(conPos);
       if(distance < closestDistance && con.canOutputToDir(lh.dir.getOpposite())) {
         int couldFill = lh.tank.offer(toDrain.copy());
         if(couldFill > 0) {
@@ -183,7 +186,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
   }
 
-  private void flowFrom(LiquidConduit con, List<FlowAction> actions, int pushPoken) {
+  private void flowFrom(@Nonnull LiquidConduit con, List<FlowAction> actions, int pushPoken) {
 
     ConduitTank tank = con.getTank();
     int totalAmount = tank.getFluidAmount();
@@ -195,8 +198,8 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
     // First flow all we can down, then balance the rest
     if(con.getConduitConnections().contains(EnumFacing.DOWN)) {
-      BlockCoord loc = con.getLocation().getLocation(EnumFacing.DOWN);
-      ILiquidConduit dc = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), loc.x, loc.y, loc.z, ILiquidConduit.class);
+      BlockPos pos = con.getBundle().getLocation().offset(EnumFacing.DOWN);
+      ILiquidConduit dc = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), ILiquidConduit.class);
       if(dc instanceof LiquidConduit) {
         LiquidConduit downCon = (LiquidConduit) dc;
         int filled = downCon.fill(EnumFacing.UP, tank.getFluid().copy(), false, false, pushPoken);
@@ -255,10 +258,10 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     }
     int totalCapacity = tank.getCapacity();
 
-    BlockCoord loc = con.getLocation();
+    BlockPos pos = con.getBundle().getLocation();
     Collection<ILiquidConduit> connections =
         ConduitUtil.getConnectedConduits(con.getBundle().getEntity().getWorld(),
-            loc.x, loc.y, loc.z, ILiquidConduit.class);    
+            pos.getX(), pos.getY(), pos.getZ(), ILiquidConduit.class);
     for (ILiquidConduit n : connections) {
       LiquidConduit neighbour = (LiquidConduit) n;
       if(canFlowTo(con, neighbour)) { // can only flow within same network
@@ -294,7 +297,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     if(neighbour.getNetwork() != this) {
       return false;
     }
-    if(neighbour.getLocation().y > con.getLocation().y) {
+    if(neighbour.getBundle().getLocation().getY() > con.getBundle().getLocation().getY()) {
       return false;
     }
     float nr = neighbour.getTank().getFilledRatio();
@@ -341,12 +344,12 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
   static class LocatedFluidHandler {
     final IFluidWrapper tank;
-    final BlockCoord bc;
+    final BlockPos pos;
     final EnumFacing dir;
 
-    LocatedFluidHandler(IFluidWrapper tank, BlockCoord bc, EnumFacing dir) {
+    LocatedFluidHandler(IFluidWrapper tank, BlockPos pos, EnumFacing dir) {
       this.tank = tank;
-      this.bc = bc;
+      this.pos = pos;
       this.dir = dir;
     }
   }

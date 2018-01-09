@@ -7,7 +7,10 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import net.minecraft.util.EnumFacing;
+
+// TODO Javadocs
 
 public interface IRedstoneConduit extends IConduit {
 

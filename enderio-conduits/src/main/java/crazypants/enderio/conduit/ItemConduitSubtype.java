@@ -1,9 +1,10 @@
+
 package crazypants.enderio.conduit;
 
 public class ItemConduitSubtype {
 
   public final String baseName;
-  
+
   public final String unlocalisedName;
 
   public final String modelLocation;

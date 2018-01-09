@@ -14,6 +14,8 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 
+import javax.annotation.Nonnull;
+
 public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
 
   @Override
@@ -25,7 +27,7 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, BlockRenderLayer layer,
+  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex, @Nonnull CollidableComponent component, float selfIllum, @Nonnull BlockRenderLayer layer,
       List<BakedQuad> quads) {
   
     super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);

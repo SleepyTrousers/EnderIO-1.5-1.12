@@ -5,14 +5,15 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.ModObject;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.conduit.AbstractItemConduit;
+import crazypants.enderio.conduit.init.ConduitObject;
+import crazypants.enderio.conduit.item.AbstractItemConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -25,21 +26,21 @@ public class ItemPowerConduit extends AbstractItemConduit {
   private static String POSTFIX;
 
   static ItemConduitSubtype[] SUBTYPES = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ModObject.itemPowerConduit.name(), "enderio:itemPowerConduit"),
-      new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Enhanced", "enderio:itemPowerConduitEnhanced"),
-      new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Ender", "enderio:itemPowerConduitEnder")
+      new ItemConduitSubtype(ConduitObject.item_power_conduit.name(), "enderio:itemPowerConduit"),
+      new ItemConduitSubtype(ConduitObject.item_power_conduit.name() + "Enhanced", "enderio:itemPowerConduitEnhanced"),
+      new ItemConduitSubtype(ConduitObject.item_power_conduit.name() + "Ender", "enderio:itemPowerConduitEnder")
   };
 
   private final ConduitRegistry.ConduitInfo conduitInfo;
 
-  public static ItemPowerConduit create() {
-    ItemPowerConduit result = new ItemPowerConduit();
+  public static ItemPowerConduit create(@Nonnull IModObject modObject) {
+    ItemPowerConduit result = new ItemPowerConduit(modObject);
     result.init();
     return result;
   }
 
-  protected ItemPowerConduit() {
-    super(ModObject.itemPowerConduit, SUBTYPES);
+  protected ItemPowerConduit(@Nonnull IModObject modObject) {
+    super(modObject, SUBTYPES);
     conduitInfo = new ConduitRegistry.ConduitInfo(getBaseConduitType(), Offset.DOWN, Offset.DOWN, Offset.SOUTH, Offset.DOWN);
     conduitInfo.addMember(PowerConduit.class);
     ConduitRegistry.register(conduitInfo);
@@ -48,8 +49,8 @@ public class ItemPowerConduit extends AbstractItemConduit {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
-    super.registerRenderers();
+  public void registerRenderers(@Nonnull IModObject modObject) {
+    super.registerRenderers(modObject);
     conduitInfo.addRenderer(new PowerConduitRenderer());
   }
 

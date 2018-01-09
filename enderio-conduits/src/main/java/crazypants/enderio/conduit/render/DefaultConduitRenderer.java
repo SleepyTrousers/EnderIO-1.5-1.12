@@ -57,7 +57,7 @@ public abstract class DefaultConduitRenderer implements IConduitRenderer {
   // ------------ Static Model ---------------------------------------------
 
   @Override
-  public void addBakedQuads(TileEntitySpecialRenderer conduitBundleRenderer, IConduitBundle bundle, IConduit conduit, float brightness, BlockRenderLayer layer,
+  public void addBakedQuads(TileEntitySpecialRenderer conduitBundleRenderer, IConduitBundle bundle, IConduit.WithDefaultRendering conduit, float brightness, BlockRenderLayer layer,
       List<BakedQuad> quads) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
@@ -142,7 +142,7 @@ public abstract class DefaultConduitRenderer implements IConduitRenderer {
   // ------------ Dynamic ---------------------------------------------
 
   @Override
-  public void renderDynamicEntity(TileEntitySpecialRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z,
+  public void renderDynamicEntity(TileEntitySpecialRenderer conduitBundleRenderer, IConduitBundle te, IConduit.WithDefaultRendering conduit, double x, double y, double z,
       float partialTick,
       float worldLight) {
         
@@ -166,7 +166,7 @@ public abstract class DefaultConduitRenderer implements IConduitRenderer {
     }
   }
 
-  protected void renderConduitDynamic(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {
+  protected void renderConduitDynamic(TextureAtlasSprite tex, IConduit.WithDefaultRendering conduit, CollidableComponent component, float brightness) {
     GlStateManager.color(1, 1, 1);
     if (isNSEWUD(component.dir)) {
       float scaleFactor = 0.75f;

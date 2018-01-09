@@ -23,6 +23,7 @@ import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.EnumFacing;
@@ -62,7 +63,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected void renderConduitDynamic(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {
+  protected void renderConduitDynamic(TextureAtlasSprite tex, IConduit.WithDefaultRendering conduit, CollidableComponent component, float brightness) {
     if (isNSEWUD(component.dir)) {
       LiquidConduit lc = (LiquidConduit) conduit;
       FluidStack fluid = lc.getFluidType();
@@ -73,7 +74,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z,
+  public void renderDynamicEntity(TileEntitySpecialRenderer conduitBundleRenderer, IConduitBundle te, IConduit.WithDefaultRendering conduit, double x, double y, double z,
       float partialTick, float worldLight) {
     calculateRatios((LiquidConduit) conduit);
     super.renderDynamicEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight);

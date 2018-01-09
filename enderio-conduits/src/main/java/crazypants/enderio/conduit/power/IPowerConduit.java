@@ -8,6 +8,8 @@ import net.minecraft.util.EnumFacing;
 
 public interface IPowerConduit extends ILegacyPowerReceiver, IExtractor {
 
+  // TODO Lang
+
   public static final String ICON_KEY = "enderio:blocks/powerConduit";
   public static final String ICON_KEY_INPUT = "enderio:blocks/powerConduitInput";
   public static final String ICON_KEY_OUTPUT = "enderio:blocks/powerConduitOutput";

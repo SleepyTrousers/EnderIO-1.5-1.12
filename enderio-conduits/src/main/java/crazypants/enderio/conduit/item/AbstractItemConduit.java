@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit;
+package crazypants.enderio.conduit.item;
 
 import javax.annotation.Nonnull;
 
@@ -11,6 +11,7 @@ import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitItem;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
+import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -50,6 +51,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
     setRegistryName(modObj.getUnlocalisedName());
   }
 
+  // TODO Check necessity
   protected void init() {
     GameRegistry.register(this);
   }

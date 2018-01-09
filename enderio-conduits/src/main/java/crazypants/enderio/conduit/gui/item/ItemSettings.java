@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
+import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.ColorButton;
@@ -20,19 +23,18 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
-import crazypants.enderio.base.machine.IRedstoneModeControlable;
-import crazypants.enderio.base.machine.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.BaseSettingsPanel;
 import crazypants.enderio.conduit.gui.FilterChangeListener;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+
+import javax.annotation.Nonnull;
 
 public class ItemSettings extends BaseSettingsPanel {
 
@@ -80,10 +82,11 @@ public class ItemSettings extends BaseSettingsPanel {
 
   private IItemFilterGui filterGui;
 
-  public ItemSettings(final GuiExternalConnection gui, IConduit con) {
+  public ItemSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_ITEM, EnderIO.lang.localize("itemItemConduit.name"), gui, con);
     itemConduit = (IItemConduit) con;
 
+    // TODO Lang
     inputHeading = EnderIO.lang.localize("gui.conduit.item.extractionFilter");
     outputHeading = EnderIO.lang.localize("gui.conduit.item.insertionFilter");
 
@@ -128,7 +131,7 @@ public class ItemSettings extends BaseSettingsPanel {
     rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
 
       @Override
-      public void setRedstoneControlMode(RedstoneControlMode mode) {
+      public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
         RedstoneControlMode curMode = getRedstoneControlMode();
         itemConduit.setExtractionRedstoneMode(mode, gui.getDir());
         if(curMode != mode) {
@@ -138,6 +141,7 @@ public class ItemSettings extends BaseSettingsPanel {
       }
 
       @Override
+      @Nonnull
       public RedstoneControlMode getRedstoneControlMode() {
         return itemConduit.getExtractionRedstoneMode(gui.getDir());
       }
@@ -301,7 +305,7 @@ public class ItemSettings extends BaseSettingsPanel {
   }
 
   @Override
-  public void actionPerformed(GuiButton guiButton) {
+  public void actionPerformed(@Nonnull GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if(guiButton.id == NEXT_FILTER_ID) {
       inOutShowIn = !inOutShowIn;
@@ -427,7 +431,7 @@ public class ItemSettings extends BaseSettingsPanel {
       filterGui.deactivate();
       filterGui = null;
     }
-    gui.clearGhostSlots();
+    gui.getGhostSlotHandler().getGhostSlots().clear();
   }
 
 }

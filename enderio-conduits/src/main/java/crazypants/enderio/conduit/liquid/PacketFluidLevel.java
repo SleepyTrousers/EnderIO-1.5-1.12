@@ -4,7 +4,6 @@ import com.enderio.core.EnderCore;
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.conduit.IConduitBundle;
-import crazypants.enderio.conduit.TileConduitBundle;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -49,7 +48,7 @@ public class PacketFluidLevel extends MessageTileEntity<TileEntity> implements I
     if (con == null) {
       return null;
     }
-    con.readFromNBT(message.tc, TileConduitBundle.NBT_VERSION);
+    con.readFromNBT(message.tc);
     return null;
   }
 }

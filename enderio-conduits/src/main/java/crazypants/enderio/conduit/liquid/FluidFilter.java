@@ -9,6 +9,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nonnull;
+
 public class FluidFilter {
 
   private final FluidStack[] fluids = new FluidStack[5];
@@ -88,7 +90,7 @@ public class FluidFilter {
     return !isBlacklist && isEmpty();
   }
 
-  public void writeToNBT(NBTTagCompound root) {
+  public void writeToNBT(@Nonnull NBTTagCompound root) {
     root.setBoolean("isBlacklist", isBlacklist);
     if(isEmpty()) {
       root.removeTag("fluidFilter");
@@ -110,7 +112,7 @@ public class FluidFilter {
 
   }
 
-  public void readFromNBT(NBTTagCompound root) {
+  public void readFromNBT(@Nonnull NBTTagCompound root) {
     isBlacklist = root.getBoolean("isBlacklist");
     if (root.hasKey("fluidFilter")) {
       NBTTagList fluidList = (NBTTagList) root.getTag("fluidFilter");

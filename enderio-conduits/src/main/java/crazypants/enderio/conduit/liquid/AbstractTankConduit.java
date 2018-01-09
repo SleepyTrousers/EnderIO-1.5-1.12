@@ -9,6 +9,7 @@ import com.enderio.core.common.util.FluidUtil;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.tool.ToolUtil;
@@ -20,9 +21,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+
+import javax.annotation.Nonnull;
 
 public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
@@ -34,9 +38,9 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
   private int lastLightValue;
 
   @Override
-  public boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all) {
+  public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     ItemStack heldItem = player.getHeldItem(hand);
-    if(heldItem == null) {
+    if(heldItem.isEmpty()) {
       return false;
     }
     AbstractTankConduitNetwork<? extends AbstractTankConduit> network = getTankNetwork();
@@ -56,18 +60,18 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
               return true;
             }
 
-            BlockCoord loc = getLocation().getLocation(faceHit);
-            ILiquidConduit n = ConduitUtil.getConduit(getBundle().getEntity().getWorld(), loc.x, loc.y, loc.z, ILiquidConduit.class);
-            if(n == null) {
+            BlockPos pos = getBundle().getLocation().offset(faceHit);
+            ILiquidConduit liquidConduit = ConduitUtil.getConduit(getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), ILiquidConduit.class);
+            if(liquidConduit == null) {
               return false;
             }
-            if(!canJoinNeighbour(n)) {
+            if(!canJoinNeighbour(liquidConduit)) {
               return false;
             }
-            if(!(n instanceof AbstractTankConduit)) {
+            if(!(liquidConduit instanceof AbstractTankConduit)) {
               return false;
             }
-            AbstractTankConduit neighbour = (AbstractTankConduit) n;
+            AbstractTankConduit neighbour = (AbstractTankConduit) liquidConduit;
             if(neighbour.getFluidType() == null || getFluidType() == null) {
               FluidStack type = getFluidType();
               type = type != null ? type : neighbour.getFluidType();
@@ -106,6 +110,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
           if(network.fluidTypeLocked) {
             network.setFluidTypeLocked(false);
             numEmptyEvents = 0;
+            // TODO Lang
             ChatUtil.sendNoSpamUnloc(player, EnderIO.lang, "itemLiquidConduit.unlockedType");
           }
         } else if(network != null) {
@@ -144,7 +149,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
   }
 
   private void setFluidTypeOnNetwork(AbstractTankConduit con, FluidStack type) {
-    AbstractConduitNetwork<?, ?> n = con.getNetwork();
+    IConduitNetwork<?, ?> n = con.getNetwork();
     if(n != null) {
       AbstractTankConduitNetwork<?> network = (AbstractTankConduitNetwork<?>) n;
       network.setFluidType(type);
@@ -189,11 +194,11 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
   }
 
   @Override
-  public void updateEntity(World world) {
+  public void updateEntity(@Nonnull World world) {
     int lightValue = getLightValue();
     if(lastLightValue != lightValue) {
-      BlockCoord bc = getLocation();      
-      getBundle().getBundleworld().checkLightFor(EnumSkyBlock.BLOCK, bc.getBlockPos());
+      BlockPos pos = getBundle().getLocation();
+      getBundle().getBundleworld().checkLightFor(EnumSkyBlock.BLOCK, pos);
       lastLightValue = lightValue;
     }
     super.updateEntity(world);
@@ -208,8 +213,8 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
   protected abstract void updateTank();
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
-    super.readFromNBT(nbtRoot, nbtVersion);
+  public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
+    super.readFromNBT(nbtRoot);
     updateTank();
     if(nbtRoot.hasKey("tank")) {
       FluidStack liquid = FluidStack.loadFluidStackFromNBT(nbtRoot.getCompoundTag("tank"));
@@ -221,7 +226,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
+  public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
     FluidStack ft = getFluidType();
     if(ConduitUtil.isFluidValid(ft)) {

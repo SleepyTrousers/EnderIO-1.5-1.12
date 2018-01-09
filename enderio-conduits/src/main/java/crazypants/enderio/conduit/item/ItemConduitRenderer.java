@@ -17,6 +17,8 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 
+import javax.annotation.Nonnull;
+
 public class ItemConduitRenderer extends DefaultConduitRenderer {
 
   @Override
@@ -78,5 +80,4 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
   public void initIcons() {
     ItemConduit.initIcons();
   }
-
 }
