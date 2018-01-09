@@ -15,6 +15,7 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
@@ -23,6 +24,7 @@ import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.generator.stirling.ContainerStirlingGenerator;
 import crazypants.enderio.machines.machine.generator.stirling.GuiStirlingGenerator;
 import crazypants.enderio.machines.machine.generator.stirling.TileStirlingGenerator;
+import crazypants.enderio.util.Prep;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -49,27 +51,48 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
   public static class StirlingRecipeWrapper extends BlankRecipeWrapper {
 
     private final NNList<ItemStack> solidFuel;
+    private IDrawable stirlingFront;
 
-    private StirlingRecipeWrapper(NNList<ItemStack> solidFuel) {
+    private StirlingRecipeWrapper(NNList<ItemStack> solidFuel, @Nonnull IGuiHelper guiHelper) {
       this.solidFuel = solidFuel;
+      if (!simpleFuel(solidFuel.get(0))) {
+        ResourceLocation stirlingFrontLocation = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_stirling_gen_simple_front_off.png");
+        stirlingFront = guiHelper.createDrawable(stirlingFrontLocation, 0, 0, 16, 16, 16, 16);
+      }
+    }
+
+    /**
+     * Checks if the fuel works with Simple Stirling Generator
+     */
+    private boolean simpleFuel(@Nonnull ItemStack fuel) {
+      return Prep.isInvalid(fuel.getItem().getContainerItem(fuel));
     }
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-      List<List<ItemStack>> list = new ArrayList<>();
+      List<List<ItemStack>> list = new NNList<>();
       list.add(solidFuel);
       ingredients.setInputLists(ItemStack.class, list);
 
-      int minEnergyProduced = Math
-          .round(TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0)) * TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.BASIC_CAPACITOR)
-              * CapacitorKey.SIMPLE_STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR));
-      int maxEnergyProduced = Math
-          .round(TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0)) * TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.ENDER_CAPACITOR)
-              * CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR));
+      double minEnergyProducedPerTick = simpleFuel(solidFuel.get(0)) ?
+        CapacitorKey.SIMPLE_STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR) :
+        CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR);
+      double maxEnergyProducedPerTick =
+        CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR);
+
+      double minEnergyProduced = minEnergyProducedPerTick *
+        TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0)) *
+        TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.BASIC_CAPACITOR);
+      double maxEnergyProduced = maxEnergyProducedPerTick *
+        TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0)) *
+        TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.ENDER_CAPACITOR);
+
       ingredients.setOutputs(EnergyIngredient.class,
-          new NNList<>(new EnergyIngredient(Math.round(CapacitorKey.SIMPLE_STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR)), true),
-              new EnergyIngredient(Math.round(CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR)), true),
-              new EnergyIngredient(minEnergyProduced, false), new EnergyIngredient(maxEnergyProduced, false)));
+        new NNList<>(
+          new EnergyIngredient((int)Math.round(minEnergyProducedPerTick), true),
+          new EnergyIngredient((int)Math.round(maxEnergyProducedPerTick), true),
+          new EnergyIngredient((int)Math.round(minEnergyProduced), false),
+          new EnergyIngredient((int)Math.round(maxEnergyProduced), false)));
     }
 
     @Override
@@ -85,10 +108,20 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
       fr.drawStringWithShadow(txt, 89 - sw / 2 - xOff, 68 - yOff, ColorUtil.getRGB(Color.WHITE));
 
       GlStateManager.color(1, 1, 1, 1);
+
+      if (!simpleFuel(solidFuel.get(0))) {
+        stirlingFront.draw(minecraft, 129 - xOff, 40 - yOff);
+        IconEIO.map.render(IconEIO.GENERIC_VERBOTEN, 135 - xOff, 34 - yOff, true);
+      }
     }
 
     @Override
     public @Nonnull List<String> getTooltipStrings(int mouseX, int mouseY) {
+      if (!simpleFuel(solidFuel.get(0)) &&
+        mouseX >= (121 - xOff) && mouseX <= (121 - xOff + 32) &&
+        mouseY >= 32 - yOff && mouseY <= 32 - yOff + 32) {
+        return Lang.JEI_STIRGEN_NOTSIMPLE.getLines();
+      }
       if (mouseY < (32 - yOff) || mouseY >= (69 - yOff)) {
         return Lang.JEI_STIRGEN_RANGE.getLines();
       }
@@ -131,7 +164,7 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
     TreeSet<Integer> recipeOrder = new TreeSet<Integer>(recipeInputs.keySet());
     Iterator<Integer> it = recipeOrder.descendingIterator();
     while (it.hasNext())
-      recipeList.add(new StirlingRecipeWrapper(recipeInputs.get(it.next())));
+      recipeList.add(new StirlingRecipeWrapper(recipeInputs.get(it.next()), guiHelper));
 
     registry.addRecipes(recipeList, UID);
 
