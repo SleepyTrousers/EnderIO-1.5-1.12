@@ -74,7 +74,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
               neighbour.setFluidTypeOnNetwork(neighbour, type);
               setFluidTypeOnNetwork(this, type);
             }
-            return ConduitUtil.joinConduits(this, faceHit);
+            return ConduitUtil.connectConduits(this, faceHit);
           } else if(containsExternalConnection(connDir)) {
             // Toggle extraction mode
             setConnectionMode(connDir, getNextConnectionMode(connDir));
@@ -83,7 +83,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
             if(getTankNetwork() != null) {
               curFluidType = getTankNetwork().getFluidType();
             }
-            ConduitUtil.disconectConduits(this, connDir);
+            ConduitUtil.disconnectConduits(this, connDir);
             setFluidType(curFluidType);
 
           }

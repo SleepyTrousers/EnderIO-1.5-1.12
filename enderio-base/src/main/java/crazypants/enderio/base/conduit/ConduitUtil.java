@@ -1,21 +1,8 @@
 package crazypants.enderio.base.conduit;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
@@ -39,6 +26,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 
 import static crazypants.enderio.base.init.ModObject.itemConduitProbe;
 
@@ -76,6 +67,60 @@ public class ConduitUtil {
     }
     if (con.setNetwork(network)) {
       network.addConduit(con);
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Disconnects a conduit from the network in a direction
+   * @param con Conduit to disconnect as selected by the player
+   * @param connDir Direction that is being disconnected
+   * @param <T> Type of Conduit
+   */
+  public static <T extends IConduit> void disconnectConduits(@Nonnull T con, @Nonnull EnumFacing connDir) {
+    con.conduitConnectionRemoved(connDir);
+    BlockPos pos = con.getBundle().getLocation().offset(connDir);
+    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), con.getBaseConduitType());
+    if (neighbour != null) {
+      neighbour.conduitConnectionRemoved(connDir.getOpposite());
+      if (neighbour.getNetwork() != null) {
+        neighbour.getNetwork().destroyNetwork();
+      }
+    }
+    if (con.getNetwork() != null) { // this should have been destroyed when
+      // destroying the neighbour's network but
+      // lets just make sure
+      con.getNetwork().destroyNetwork();
+    }
+    con.connectionsChanged();
+    if (neighbour != null) {
+      neighbour.connectionsChanged();
+    }
+  }
+
+  /**
+   * Connects two conduits together
+   * @param con Conduit to connect
+   * @param faceHit Direction the conduit is connecting to
+   * @param <T> Type of Conduit
+   * @return True if the conduit can be connected, false otherwise
+   */
+
+  public static <T extends IConduit> boolean connectConduits(@Nonnull T con, @Nonnull EnumFacing faceHit) {
+    BlockPos pos = con.getBundle().getLocation().offset(faceHit);
+    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), con.getBaseConduitType());
+    if (neighbour != null && con.canConnectToConduit(faceHit, neighbour) && neighbour.canConnectToConduit(faceHit.getOpposite(), con)) {
+      con.conduitConnectionAdded(faceHit);
+      neighbour.conduitConnectionAdded(faceHit.getOpposite());
+      if (con.getNetwork() != null) {
+        con.getNetwork().destroyNetwork();
+      }
+      if (neighbour.getNetwork() != null) {
+        neighbour.getNetwork().destroyNetwork();
+      }
+      con.connectionsChanged();
+      neighbour.connectionsChanged();
       return true;
     }
     return false;

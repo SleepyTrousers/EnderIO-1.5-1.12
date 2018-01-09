@@ -1,16 +1,18 @@
 package crazypants.enderio.conduit.item;
 
 import com.enderio.core.common.util.DyeColor;
-
 import crazypants.enderio.base.conduit.IExtractor;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.base.filter.IItemFilter;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nonnull;
+
 public interface IItemConduit extends IExtractor {
 
+  // Textures
   TextureAtlasSprite getTextureForInputMode();
 
   TextureAtlasSprite getTextureForOutputMode();
@@ -21,64 +23,73 @@ public interface IItemConduit extends IExtractor {
 
   TextureAtlasSprite getEnderIcon();
 
-  IItemHandler getExternalInventory(EnumFacing direction);
+  IItemHandler getExternalInventory(@Nonnull EnumFacing direction);
 
-  int getMaximumExtracted(EnumFacing direction);
+  int getMaximumExtracted(@Nonnull EnumFacing direction);
 
-  float getTickTimePerItem(EnumFacing direction);
+  float getTickTimePerItem(@Nonnull EnumFacing direction);
 
   void itemsExtracted(int numInserted, int slot);
   
-  void setInputFilterUpgrade(EnumFacing dir, ItemStack stack);
+  void setInputFilterUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack stack);
 
-  void setOutputFilterUpgrade(EnumFacing dir, ItemStack stack);
+  void setOutputFilterUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack stack);
 
-  ItemStack getInputFilterUpgrade(EnumFacing dir);
+  @Nonnull
+  ItemStack getInputFilterUpgrade(@Nonnull EnumFacing dir);
 
-  ItemStack getOutputFilterUpgrade(EnumFacing dir);  
+  @Nonnull
+  ItemStack getOutputFilterUpgrade(@Nonnull EnumFacing dir);
 
-  void setInputFilter(EnumFacing dir, IItemFilter filter);
+  void setInputFilter(@Nonnull EnumFacing dir, @Nonnull IItemFilter filter);
 
-  void setOutputFilter(EnumFacing dir, IItemFilter filter);
+  void setOutputFilter(@Nonnull EnumFacing dir, @Nonnull IItemFilter filter);
 
-  IItemFilter getInputFilter(EnumFacing dir);
+  IItemFilter getInputFilter(@Nonnull EnumFacing dir);
 
-  IItemFilter getOutputFilter(EnumFacing dir);
+  IItemFilter getOutputFilter(@Nonnull EnumFacing dir);
   
-  void setSpeedUpgrade(EnumFacing dir, ItemStack upgrade);
+  void setSpeedUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade);
+
+  @Nonnull
+  ItemStack getSpeedUpgrade(@Nonnull EnumFacing dir);
+
+
+
+
+
+  int getOutputPriority(@Nonnull EnumFacing dir);
   
-  ItemStack getSpeedUpgrade(EnumFacing dir);
-
-  void setFunctionUpgrade(EnumFacing dir, ItemStack upgrade);
-
-  ItemStack getFunctionUpgrade(EnumFacing dir);
-
-  boolean hasInventoryPanelUpgrade(EnumFacing dir);
-
-  int getOutputPriority(EnumFacing dir);
-  
-  void setOutputPriority(EnumFacing dir, int priority);
+  void setOutputPriority(@Nonnull EnumFacing dir, int priority);
 
   int getMetaData();
 
-  boolean isExtractionRedstoneConditionMet(EnumFacing dir);
+  boolean isExtractionRedstoneConditionMet(@Nonnull EnumFacing dir);
 
-  boolean isSelfFeedEnabled(EnumFacing dir);
+  boolean isSelfFeedEnabled(@Nonnull EnumFacing dir);
 
-  void setSelfFeedEnabled(EnumFacing dir, boolean enabled);
+  void setSelfFeedEnabled(@Nonnull EnumFacing dir, boolean enabled);
   
-  boolean isRoundRobinEnabled(EnumFacing dir);
+  boolean isRoundRobinEnabled(@Nonnull EnumFacing dir);
   
-  void setRoundRobinEnabled(EnumFacing dir, boolean enabled);
+  void setRoundRobinEnabled(@Nonnull EnumFacing dir, boolean enabled);
 
-  DyeColor getInputColor(EnumFacing dir);
+  DyeColor getInputColor(@Nonnull EnumFacing dir);
 
-  DyeColor getOutputColor(EnumFacing dir);
+  DyeColor getOutputColor(@Nonnull EnumFacing dir);
 
-  void setInputColor(EnumFacing dir, DyeColor col);
+  void setInputColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);
 
-  void setOutputColor(EnumFacing dir, DyeColor col);
+  void setOutputColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);
 
-  boolean isConnectedToNetworkAwareBlock(EnumFacing dir);
+// TODO Inventory
+//  boolean isConnectedToNetworkAwareBlock(@Nonnull EnumFacing dir);
+//
+//  boolean hasInventoryPanelUpgrade(@Nonnull EnumFacing dir);
+//
+//  void setFunctionUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade);
+//
+//  @Nonnull
+//  ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir);
 
 }

@@ -2,7 +2,6 @@ package crazypants.enderio.conduit.packet;
 
 import com.enderio.core.common.util.DyeColor;
 
-import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import io.netty.buffer.ByteBuf;

@@ -281,7 +281,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
                 neighbour.setConnectionMode(faceHit.getOpposite(), ConnectionMode.NOT_SET);
               }
               setConnectionMode(faceHit, ConnectionMode.NOT_SET);
-              return ConduitUtil.joinConduits(this, faceHit);
+              return ConduitUtil.connectConduits(this, faceHit);
             }
             forceConnectionMode(faceHit, ConnectionMode.IN_OUT);
             return true;
