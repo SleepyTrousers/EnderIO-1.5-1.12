@@ -2,8 +2,8 @@ package crazypants.enderio.base.item.darksteel.upgrade.energy;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.handler.darksteel.IDarkSteelItem;
 import crazypants.enderio.base.power.tesla.ForgeToTeslaAdapter;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;

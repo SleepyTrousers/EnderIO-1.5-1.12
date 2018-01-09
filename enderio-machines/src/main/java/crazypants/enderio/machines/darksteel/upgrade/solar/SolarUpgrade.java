@@ -2,10 +2,11 @@ package crazypants.enderio.machines.darksteel.upgrade.solar;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
+import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.ValueFactory.IValue;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.base.handler.darksteel.IRenderUpgrade;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.power.PowerHandlerUtil;
@@ -21,7 +22,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class SolarUpgrade extends AbstractUpgrade {
+public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer {
 
   private static final @Nonnull String UPGRADE_NAME = "solar";
   static final @Nonnull String NAME = "enderio.darksteel.upgrade.solar_";
@@ -77,7 +78,7 @@ public class SolarUpgrade extends AbstractUpgrade {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderUpgrade getRender() {
+  public @Nonnull IRenderUpgrade getRender() {
     return SolarUpgradeLayer.instance;
   }
 

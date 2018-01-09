@@ -16,11 +16,11 @@ import com.google.common.collect.Multimap;
 
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.base.handler.darksteel.IDarkSteelItem;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.tic.TicUtil;
@@ -117,9 +117,9 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     par3List.add(is);
 
     is = new ItemStack(this);
-    EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
+    EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
     EnergyUpgradeManager.setPowerFull(is);
-    TravelUpgrade.INSTANCE.writeToItem(is);
+    TravelUpgrade.INSTANCE.addToItem(is);
     par3List.add(is);
   }
 

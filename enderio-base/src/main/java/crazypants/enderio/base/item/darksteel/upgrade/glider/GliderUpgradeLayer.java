@@ -2,8 +2,8 @@ package crazypants.enderio.base.item.darksteel.upgrade.glider;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
-import crazypants.enderio.base.handler.darksteel.IRenderUpgrade;
 import crazypants.enderio.base.material.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GliderUpgradeLayer implements IRenderUpgrade {
 
-  public static final GliderUpgradeLayer instance = new GliderUpgradeLayer();
+  public static final @Nonnull GliderUpgradeLayer instance = new GliderUpgradeLayer();
 
   private GliderUpgradeLayer() {
   }
@@ -26,8 +26,7 @@ public class GliderUpgradeLayer implements IRenderUpgrade {
 
   @Override
   public void doRenderLayer(@Nonnull RenderPlayer renderPlayer, @Nonnull ItemStack piece, @Nonnull AbstractClientPlayer entitylivingbaseIn, float p_177141_2_,
-      float p_177141_3_,
-      float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
+      float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
     if (entitylivingbaseIn.hasPlayerInfo() && !entitylivingbaseIn.isInvisible() && DarkSteelController.instance.isGlideActive(entitylivingbaseIn)) { // changed
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       // removed: this.playerRenderer.bindTexture(entitylivingbaseIn.getLocationCape());
@@ -52,10 +51,8 @@ public class GliderUpgradeLayer implements IRenderUpgrade {
       }
 
       float f4 = entitylivingbaseIn.prevCameraYaw + (entitylivingbaseIn.cameraYaw - entitylivingbaseIn.prevCameraYaw) * partialTicks;
-      f1 = f1
-          + MathHelper
-              .sin((entitylivingbaseIn.prevDistanceWalkedModified + (entitylivingbaseIn.distanceWalkedModified - entitylivingbaseIn.prevDistanceWalkedModified)
-                  * partialTicks) * 6.0F) * 32.0F * f4 * .1f; // changed
+      f1 = f1 + MathHelper.sin((entitylivingbaseIn.prevDistanceWalkedModified
+          + (entitylivingbaseIn.distanceWalkedModified - entitylivingbaseIn.prevDistanceWalkedModified) * partialTicks) * 6.0F) * 32.0F * f4 * .1f; // changed
 
       if (entitylivingbaseIn.isSneaking()) {
         f1 += 25.0F;

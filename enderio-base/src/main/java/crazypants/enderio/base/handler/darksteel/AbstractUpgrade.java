@@ -5,11 +5,12 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.ItemUtil;
 
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,7 +19,7 @@ import net.minecraftforge.fml.common.registry.IForgeRegistryEntry.Impl;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements IDarkSteelUpgrade {
+public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements IAdvancedTooltipProvider, IDarkSteelUpgrade {
 
   public static final @Nonnull String KEY_UPGRADE_PREFIX = "enderio.darksteel.upgrade.";
 
@@ -52,18 +53,8 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
   }
 
   @Override
-  public boolean isUpgradeItem(@Nonnull ItemStack stack) {
-    return Prep.isValid(stack) && stack.isItemEqual(getUpgradeItem()) && stack.getCount() == getUpgradeItem().getCount();
-  }
-
-  @Override
   public @Nonnull ItemStack getUpgradeItem() {
     return upgradeItem;
-  }
-
-  @Override
-  public @Nonnull String getUpgradeItemName() {
-    return getUpgradeItem().getDisplayName();
   }
 
   @Override
@@ -96,37 +87,18 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public IRenderUpgrade getRender() {
-    return null;
-  }
-
-  @Override
   public boolean hasUpgrade(@Nonnull ItemStack stack) {
     final NBTTagCompound tagCompound = stack.getTagCompound();
     return tagCompound != null && tagCompound.hasKey(id) && tagCompound.getCompoundTag(id).getInteger(KEY_VARIANT) == variant;
   }
 
   @Override
-  public void writeToItem(@Nonnull ItemStack stack) {
+  public void addToItem(@Nonnull ItemStack stack) {
     NBTTagCompound upgradeRoot = new NBTTagCompound();
     upgradeRoot.setInteger(KEY_VARIANT, variant);
     NBTTagCompound stackRoot = ItemUtil.getOrCreateNBT(stack);
     stackRoot.setTag(id, upgradeRoot);
     stack.setTagCompound(stackRoot);
-  }
-
-  @Override
-  public void removeFromItem(@Nonnull ItemStack stack) {
-    final NBTTagCompound tagCompound = stack.getTagCompound();
-    if (tagCompound != null) {
-      tagCompound.removeTag(id);
-    }
-  }
-
-  @Override
-  public IDarkSteelUpgrade loadFromItem(@Nonnull ItemStack stack) {
-    return hasUpgrade(stack) ? this : null;
   }
 
   public @Nonnull NBTTagCompound getUpgradeNBT(@Nonnull ItemStack stack) {
@@ -139,4 +111,5 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
     }
     return tagCompound.getCompoundTag(id);
   }
+
 }

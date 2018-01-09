@@ -10,11 +10,11 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.base.handler.darksteel.IDarkSteelItem;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -49,7 +49,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
 
   @Override
   public void onCreated(@Nonnull ItemStack itemStack, @Nonnull World world, @Nonnull EntityPlayer entityPlayer) {
-    EnergyUpgrade.EMPOWERED.writeToItem(itemStack);
+    EnergyUpgrade.EMPOWERED.addToItem(itemStack);
   }
 
   @Override
@@ -104,7 +104,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
     par3List.add(is);
 
     is = new ItemStack(this);
-    EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
+    EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
     EnergyUpgradeManager.setPowerFull(is);
     par3List.add(is);
   }

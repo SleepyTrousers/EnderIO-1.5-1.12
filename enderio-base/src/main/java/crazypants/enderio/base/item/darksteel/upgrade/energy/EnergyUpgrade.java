@@ -8,10 +8,10 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.base.handler.darksteel.IDarkSteelItem;
 import crazypants.enderio.base.item.travelstaff.ItemTravelStaff;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.material.material.Material;
@@ -66,7 +66,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
     }
 
     public void writeToItem(@Nonnull ItemStack stack) {
-      EnergyUpgrade.this.writeToItem(stack);
+      EnergyUpgrade.this.addToItem(stack);
       getUpgradeNBT(stack).setInteger(EnergyUpgradeManager.KEY_ENERGY, energy);
     }
 

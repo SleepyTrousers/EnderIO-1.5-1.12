@@ -64,13 +64,13 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
     });
 
   }
-  
+
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
     return getUnlocalizedName() + "." + getCapacitorData(stack).getUnlocalizedName();
   }
 
-  @Override  
+  @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull Item par1, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     for (int j = 0; j < DefaultCapacitorData.values().length - 1; ++j) {
@@ -111,7 +111,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
   public @Nonnull EnumActionResult onItemUseFirst(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side,
       float hitX, float hitY, float hitZ, @Nonnull EnumHand hand) {
 
-    if (world.isRemote || System.getProperty("INDEV") == null) {
+    if (world.isRemote || System.getProperty("INDEV") == null || !player.isCreative()) {
       return EnumActionResult.PASS;
     }
 

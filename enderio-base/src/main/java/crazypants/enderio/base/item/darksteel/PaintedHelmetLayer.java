@@ -1,6 +1,8 @@
 package crazypants.enderio.base.item.darksteel;
 
-import crazypants.enderio.base.handler.darksteel.IRenderUpgrade;
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -15,7 +17,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class PaintedHelmetLayer implements IRenderUpgrade {
 
-  public static final PaintedHelmetLayer instance = new PaintedHelmetLayer();
+  public static final @Nonnull PaintedHelmetLayer instance = new PaintedHelmetLayer();
+
+  public static final @Nonnull IRenderUpgrade not_an_helmet = new IRenderUpgrade() {
+    @Override
+    public void doRenderLayer(@Nonnull RenderPlayer renderPlayer, @Nonnull ItemStack piece, @Nonnull AbstractClientPlayer entitylivingbaseIn, float p_177141_2_,
+        float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
+    }
+  };
 
   private PaintedHelmetLayer() {
   }

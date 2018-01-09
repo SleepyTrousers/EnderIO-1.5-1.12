@@ -219,7 +219,7 @@ subprojects {
 		apply from: 'dependencies.gradle'
 		
 	minecraft {
-		replace '@VERSION@', version
+		replace '@VERSION@', project.version
 		
 		if (project.hasProperty('dependencyString'))
 			replace 'DEFAULT_DEPENDENCIES;', "\"${dependencyString}\";"

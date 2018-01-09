@@ -9,10 +9,13 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 import com.google.common.collect.ImmutableList;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
@@ -116,7 +119,7 @@ public class DarkSteelRecipeManager {
         if (tagCompound != null) {
           res.setTagCompound(tagCompound.copy());
         }
-        upgrade.writeToItem(res);
+        upgrade.addToItem(res);
         evt.setOutput(res);
         evt.setCost(upgrade.getLevelCost());
         return;
@@ -159,16 +162,16 @@ public class DarkSteelRecipeManager {
 
   public static void addCommonTooltipEntries(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
-      if (upgrade.hasUpgrade(itemstack)) {
-        upgrade.addCommonEntries(itemstack, entityplayer, list, flag);
+      if (upgrade instanceof IAdvancedTooltipProvider && upgrade.hasUpgrade(itemstack)) {
+        ((IAdvancedTooltipProvider) upgrade).addCommonEntries(itemstack, entityplayer, list, flag);
       }
     }
   }
 
   public static void addBasicTooltipEntries(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
-      if (upgrade.hasUpgrade(itemstack)) {
-        upgrade.addBasicEntries(itemstack, entityplayer, list, flag);
+      if (upgrade instanceof IAdvancedTooltipProvider && upgrade.hasUpgrade(itemstack)) {
+        ((IAdvancedTooltipProvider) upgrade).addBasicEntries(itemstack, entityplayer, list, flag);
       }
     }
   }
@@ -176,8 +179,8 @@ public class DarkSteelRecipeManager {
   public static void addAdvancedTooltipEntries(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     List<IDarkSteelUpgrade> applyableUpgrades = new ArrayList<IDarkSteelUpgrade>();
     for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
-      if (upgrade.hasUpgrade(itemstack)) {
-        upgrade.addDetailedEntries(itemstack, entityplayer, list, flag);
+      if (upgrade instanceof IAdvancedTooltipProvider && upgrade.hasUpgrade(itemstack)) {
+        ((IAdvancedTooltipProvider) upgrade).addDetailedEntries(itemstack, entityplayer, list, flag);
       } else if (upgrade.canAddToItem(itemstack)) {
         applyableUpgrades.add(upgrade);
       }
@@ -213,7 +216,7 @@ public class DarkSteelRecipeManager {
       for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
         if (upgrade.canAddToItem(stack)) {
           ItemStack newStack = stack.copy();
-          upgrade.writeToItem(newStack);
+          upgrade.addToItem(newStack);
           String id = newStack.getItem() + getUpgradesAsString(stack) + ":" + getUpgradesAsString(newStack);
           if (!seen.contains(id)) {
             seen.add(id);

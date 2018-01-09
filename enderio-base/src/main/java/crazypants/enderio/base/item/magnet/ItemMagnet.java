@@ -10,14 +10,14 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
+import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.handler.darksteel.IRenderUpgrade;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.power.AbstractPoweredItem;
-import crazypants.enderio.base.render.IHasPlayerRenderer;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.creativetab.CreativeTabs;
@@ -195,9 +195,8 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
   }
 
   @Override
-  @Nullable
   @SideOnly(Side.CLIENT)
-  public IRenderUpgrade getRender() {
+  public @Nonnull IRenderUpgrade getRender() {
     return MagnetLayer.instance;
   }
 

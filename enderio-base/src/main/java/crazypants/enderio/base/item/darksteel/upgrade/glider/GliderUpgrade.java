@@ -7,10 +7,11 @@ import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
 
+import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
+import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
-import crazypants.enderio.base.handler.darksteel.IRenderUpgrade;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.material.material.Material;
@@ -19,7 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class GliderUpgrade extends AbstractUpgrade {
+public class GliderUpgrade extends AbstractUpgrade implements IHasPlayerRenderer {
 
   private static final @Nonnull String UPGRADE_NAME = "glide";
 
@@ -37,7 +38,7 @@ public class GliderUpgrade extends AbstractUpgrade {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IRenderUpgrade getRender() {
+  public @Nonnull IRenderUpgrade getRender() {
     return GliderUpgradeLayer.instance;
   }
 
