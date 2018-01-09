@@ -1,47 +1,39 @@
 package crazypants.enderio.conduit.item;
 
-import java.util.List;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.ModObject;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipProvider, IHaveRenderers  {
 
   private static final SpeedUpgrade UPGRADES[] = SpeedUpgrade.values();
 
-  public static ItemExtractSpeedUpgrade create() {
-    ItemExtractSpeedUpgrade result = new ItemExtractSpeedUpgrade();
-    result.init();
-    return result;
+  public static ItemExtractSpeedUpgrade create(@Nonnull IModObject modObject) {
+    return new ItemExtractSpeedUpgrade(modObject);
   }
 
-  protected ItemExtractSpeedUpgrade() {
+  protected ItemExtractSpeedUpgrade(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(ModObject.itemExtractSpeedUpgrade.getUnlocalisedName());
-    setRegistryName(ModObject.itemExtractSpeedUpgrade.getUnlocalisedName());
+    modObject.apply(this);
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
   }
 
-  protected void init() {
-    GameRegistry.register(this);
-  }
-
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {       
+  public void registerRenderers(@Nonnull IModObject modObject) {
     for (SpeedUpgrade c : SpeedUpgrade.values()) {
       ClientUtil.regRenderer(this, c.ordinal(), c.baseName);
     }     
@@ -55,7 +47,7 @@ public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipPro
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList par3List) {
     for (int j = 0; j < UPGRADES.length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }
