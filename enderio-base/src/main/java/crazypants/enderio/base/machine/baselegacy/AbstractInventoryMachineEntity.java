@@ -37,6 +37,19 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     clear();
   }
 
+  @Override
+  protected void onAfterNbtRead() {
+    super.onAfterNbtRead();
+    if (inventory.length < slotDefinition.getNumSlots()) {
+      // This can happen if a machine was upgraded into a version that has more slots
+      ItemStack[] tmp = inventory;
+      inventory = new ItemStack[slotDefinition.getNumSlots()];
+      for (int i = 0; i < tmp.length; i++) {
+        inventory[i] = tmp[i];
+      }
+    }
+  }
+
   public @Nonnull SlotDefinition getSlotDefinition() {
     return slotDefinition;
   }
@@ -242,7 +255,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   }
 
   public class InventoryWrapper implements IInventory {
-    
+
     public AbstractInventoryMachineEntity getOwner() {
       return AbstractInventoryMachineEntity.this;
     }
