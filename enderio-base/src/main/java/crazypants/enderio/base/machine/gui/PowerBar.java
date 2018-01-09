@@ -124,7 +124,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
   }
 
   private void paintPowerBar(int guiX0, int guiY0) {
-    final int drawX = guiX0 + x + 1; //Dirty hack, that fixes wrong energy bar position.
+    final int drawX = guiX0 + x + 1; // Dirty hack, that fixes wrong energy bar position.
     final int barWidth = width;
 
     final int barHeight = machine.getEnergyStoredScaled(height);
@@ -150,14 +150,14 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
 
   private void paintCapacitorError(float partialTicks, int guiX0, int guiY0) {
     final int drawX = guiX0 + x + 1; // >Dirty hack, that fixes wrong fake capacitor position.
-    final int drawY = guiY0 + y + 16;
+    final int drawY = guiY0 + y + 16 - 6;
 
     final int barWidth = width;
     final int barHeight = height;
 
     final int textureHeight = 24;
 
-    final int overlayFrame = 4; // (int) ((EnderIO.proxy.getTickCount() >>> 1) % 5);
+    final int overlayFrame = (int) ((EnderIO.proxy.getTickCount() >>> 2) % 5);
     final int drawUoverlay = 160 + overlayFrame * 9;
     final int drawVoverlay = 128;
 
@@ -167,7 +167,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
 
     int stackX = drawX + barWidth / 2 - 16 / 2; // 16 = itemStack width
     int stackY = drawY + barHeight - textureHeight - 13;
-    
+
     GlStateManager.pushMatrix();
     float f1 = MathHelper.sin((EnderIO.proxy.getTickCount() + partialTicks) / 10.0F) * 4F;
     GlStateManager.translate(0, f1, 0);

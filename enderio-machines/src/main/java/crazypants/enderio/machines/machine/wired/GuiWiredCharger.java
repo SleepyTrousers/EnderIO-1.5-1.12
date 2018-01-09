@@ -34,7 +34,7 @@ public class GuiWiredCharger extends GuiInventoryMachineBase<TileWiredCharger> {
 
     if (shouldRenderProgress()) {
       int scaled = getProgressScaled(37);
-      drawTexturedModalRect(sx + 81, sy + 17, 176, 0, 14, 1 + scaled);
+      drawTexturedModalRect(sx + 81, sy + 17 + 37 - scaled, 176, 0 + 37 - scaled, 14, 38);
     }
 
     String invName = EnderIOMachines.lang.localizeExact(getTileEntity().getMachineName() + ".name");

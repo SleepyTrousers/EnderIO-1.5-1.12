@@ -24,6 +24,11 @@
         "textures": {
           "layer0": "enderio:items/item_basic_capacitor_special"
         }
+      },
+      "special2": {
+        "textures": {
+          "layer0": "enderio:items/item_basic_capacitor_special2"
+        }
       }
     }
   }

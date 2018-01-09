@@ -92,9 +92,9 @@ public class LootManager {
 
       final CapturedMob polarBear = CapturedMob.create(new ResourceLocation("minecraft", "polar_bear"));
       if (polarBear != null) {
-        lp.addEntry(new LootEntryItem(ModObject.itemSoulVial.getItemNN(), 1, 1,
-            new LootFunction[] { setCount(1, 1), new SetNBT(NO_CONDITIONS, polarBear.toNbt(null)) }, new LootCondition[] { new RandomChance(.2F) },
-            "PolarBearSoulVial"));
+        lp.addEntry(
+            new LootEntryItem(ModObject.itemSoulVial.getItemNN(), 1, 1, new LootFunction[] { setCount(1, 1), new SetNBT(NO_CONDITIONS, polarBear.toNbt(null)) },
+                new LootCondition[] { new RandomChance(.2F) }, "PolarBearSoulVial"));
       }
       lp.addEntry(createLootEntry(ModObject.itemSoulVial.getItemNN(), 1, 3, 0.5F));
       lp.addEntry(createLootCapacitor(0.05F));
@@ -214,8 +214,8 @@ public class LootManager {
 
   private @Nonnull LootEntry createLootCapacitor(float chance) {
     capCount++;
-    return new LootEntryItem(itemBasicCapacitor.getItemNN(), 1, 1, new LootFunction[] { ls, setMetadata(3) }, new LootCondition[] { new RandomChance(chance) },
-        itemBasicCapacitor.getUnlocalisedName() + capCount);
+    return new LootEntryItem(itemBasicCapacitor.getItemNN(), 1, 1, new LootFunction[] { ls, setMetadata(3, 4) },
+        new LootCondition[] { new RandomChance(chance) }, itemBasicCapacitor.getUnlocalisedName() + capCount);
   }
 
   private @Nonnull SetCount setCount(int min, int max) {
@@ -224,6 +224,10 @@ public class LootManager {
 
   private @Nonnull SetDamage setDamage(Item item, int damage) {
     return new SetDamage(NO_CONDITIONS, new RandomValueRange(damage > 0 ? damage : 1, damage > 0 ? damage : item.getMaxDamage()));
+  }
+
+  private @Nonnull SetMetadata setMetadata(int metaMin, int metaMax) {
+    return new SetMetadata(NO_CONDITIONS, new RandomValueRange(metaMin, metaMax));
   }
 
   private @Nonnull SetMetadata setMetadata(int meta) {

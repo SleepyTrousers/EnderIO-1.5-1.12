@@ -9,7 +9,8 @@ public enum DefaultCapacitorData implements ICapacitorData {
   BASIC_CAPACITOR("basic", 1),
   ACTIVATED_CAPACITOR("activated", 2),
   ENDER_CAPACITOR("ender", 3),
-  SPECIAL_CAPACITOR("special", 1);
+  SPECIAL_CAPACITOR("special", 1),
+  SPECIAL2_CAPACITOR("special2", 1);
 
   public static final @Nonnull ICapacitorData NONE = new ICapacitorData() {
 
@@ -34,10 +35,20 @@ public enum DefaultCapacitorData implements ICapacitorData {
 
   private final @Nonnull String unlocalizedName;
   private final int baselevel;
+  private final boolean regular;
+
+  private DefaultCapacitorData(@Nonnull String unlocalizedName) {
+    this(unlocalizedName, 1, false);
+  }
 
   private DefaultCapacitorData(@Nonnull String unlocalizedName, int baselevel) {
+    this(unlocalizedName, baselevel, true);
+  }
+
+  private DefaultCapacitorData(@Nonnull String unlocalizedName, int baselevel, boolean regular) {
     this.unlocalizedName = unlocalizedName;
     this.baselevel = baselevel;
+    this.regular = regular;
   }
 
   @Override
@@ -53,6 +64,10 @@ public enum DefaultCapacitorData implements ICapacitorData {
   @Override
   public float getUnscaledValue(@Nonnull ICapacitorKey key) {
     return baselevel;
+  }
+
+  public boolean isRegular() {
+    return regular;
   }
 
 }

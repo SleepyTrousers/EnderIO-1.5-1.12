@@ -107,7 +107,7 @@ public class WiredChargerRecipeCategory extends BlankRecipeCategory<WiredCharger
   public WiredChargerRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("wired_charger");
     background = guiHelper.createDrawable(backgroundLocation, 28, 15, 100, 49, 0, 0, 46, 0);
-    flame = guiHelper.createAnimatedDrawable(guiHelper.createDrawable(backgroundLocation, 176, 0, 14, 37), 200, IDrawableAnimated.StartDirection.TOP, false);
+    flame = guiHelper.createAnimatedDrawable(guiHelper.createDrawable(backgroundLocation, 176, 0, 14, 37), 200, IDrawableAnimated.StartDirection.BOTTOM, false);
   }
 
   @Override

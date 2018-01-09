@@ -34,7 +34,7 @@ public class AnvilCapacitorRecipe {
     ItemStack right = evt.getRight();
 
     if (Prep.isInvalid(left) || Prep.isInvalid(right) || left.getItem() != itemBasicCapacitor.getItem() || right.getItem() != itemBasicCapacitor.getItem()
-        || left.getMetadata() != 3 || right.getMetadata() != 3 || left.getCount() > right.getCount()) {
+        || left.getMetadata() < 3 || right.getMetadata() < 3 || left.getMetadata() != right.getMetadata() || left.getCount() > right.getCount()) {
       return;
     }
 

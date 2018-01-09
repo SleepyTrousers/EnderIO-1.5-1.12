@@ -73,8 +73,10 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull Item par1, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    for (int j = 0; j < DefaultCapacitorData.values().length - 1; ++j) {
-      par3List.add(new ItemStack(par1, 1, j));
+    for (DefaultCapacitorData dcd : DefaultCapacitorData.values()) {
+      if (dcd.isRegular()) {
+        par3List.add(new ItemStack(par1, 1, dcd.ordinal()));
+      }
     }
   }
 
