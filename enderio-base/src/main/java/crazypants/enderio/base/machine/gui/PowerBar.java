@@ -77,7 +77,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     this.owner = owner;
     this.x = x > 0 ? x : 15;
     this.y = y > 0 ? y : 14;
-    this.width = width > 0 ? width : 10;
+    this.width = width > 0 ? width : 9;
     this.height = height > 0 ? height : 42;
     tooltip = new PowerBarTooltip();
   }
@@ -113,7 +113,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
   }
 
   private void paintC24Overlay(int guiX0, int guiY0) {
-    final int drawX = guiX0 + x;
+    final int drawX = guiX0 + x + 1;
     final int barWidth = width;
     final int fullBarHeight = height;
     final int drawYfullBar = guiY0 + (y + height) - fullBarHeight;
@@ -124,7 +124,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
   }
 
   private void paintPowerBar(int guiX0, int guiY0) {
-    final int drawX = guiX0 + x;
+    final int drawX = guiX0 + x + 1; //Dirty hack, that fixes wrong energy bar position.
     final int barWidth = width;
 
     final int barHeight = machine.getEnergyStoredScaled(height);
@@ -149,16 +149,16 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
   }
 
   private void paintCapacitorError(float partialTicks, int guiX0, int guiY0) {
-    final int drawX = guiX0 + x;
-    final int drawY = guiY0 + y;
+    final int drawX = guiX0 + x + 1; // >Dirty hack, that fixes wrong fake capacitor position.
+    final int drawY = guiY0 + y + 16;
 
     final int barWidth = width;
     final int barHeight = height;
 
-    final int textureHeight = 20;
+    final int textureHeight = 24;
 
     final int overlayFrame = 4; // (int) ((EnderIO.proxy.getTickCount() >>> 1) % 5);
-    final int drawUoverlay = 160 + overlayFrame * 10;
+    final int drawUoverlay = 160 + overlayFrame * 9;
     final int drawVoverlay = 128;
 
     final int barY = drawY + barHeight - textureHeight;
@@ -166,11 +166,11 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     owner.drawTexturedModalRect(drawX, barY, drawUoverlay, drawVoverlay, barWidth, textureHeight);
 
     int stackX = drawX + barWidth / 2 - 16 / 2; // 16 = itemStack width
-    int stackY = drawY + barHeight - textureHeight - 6;
+    int stackY = drawY + barHeight - textureHeight - 13;
     
     GlStateManager.pushMatrix();
     float f1 = MathHelper.sin((EnderIO.proxy.getTickCount() + partialTicks) / 10.0F) * 4F;
-    GlStateManager.translate(.5, f1, 0);
+    GlStateManager.translate(0, f1, 0);
 
     owner.drawFakeItemStack(stackX, stackY, new ItemStack(ModObject.itemBasicCapacitor.getItemNN()));
     GlStateManager.popMatrix();

@@ -137,7 +137,7 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
     bindGuiTexture();
 
     if (hasPower) {
-      drawPowerBg(sx, sy);
+      drawPowerBg(sx, sy + 2); //Dirty hack for capacitor slot! I'm sorry, not.
     }
 
     if (hasInventory) {
@@ -151,7 +151,7 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
 
     if (hasPower) {
       sx += isFull() ? 31 : 57;
-      sy += 17;
+      sy += 19;
 
       getFontRenderer().drawStringWithShadow(Lang.GUI_BUFFER_IN.get(), sx, sy, 0xFFFFFF);
       getFontRenderer().drawStringWithShadow(Lang.GUI_BUFFER_OUT.get(), sx, sy + 27, 0xFFFFFF);
