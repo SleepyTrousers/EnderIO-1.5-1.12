@@ -11,9 +11,12 @@ import com.enderio.core.common.util.BlockCoord;
 import crazypants.enderio.base.conduit.IConduit;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nonnull;
+// TODO Javadocs
 public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<AdvancedLiquidConduit> {
 
   private final ConduitTank tank = new ConduitTank(0);
@@ -33,14 +36,14 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   @Override
-  public void addConduit(AdvancedLiquidConduit con) {
+  public void addConduit(@Nonnull AdvancedLiquidConduit con) {
     tank.setCapacity(tank.getCapacity() + AdvancedLiquidConduit.CONDUIT_VOLUME);
     if(con.getTank().containsValidLiquid()) {
       tank.addAmount(con.getTank().getFluidAmount());
     }
     for (EnumFacing dir : con.getExternalConnections()) {
       if(con.getConnectionMode(dir).acceptsOutput()) {
-        outputs.add(new LiquidOutput(con.getLocation().getLocation(dir), dir.getOpposite()));
+        outputs.add(new LiquidOutput(con.getBundle().getLocation().offset(dir), dir.getOpposite()));
       }
     }
     outputIterator = null;
@@ -87,8 +90,8 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
           leftOvers--;
         }
         con.getTank().setLiquid(f);
-        BlockCoord bc = con.getLocation();
-        con.getBundle().getEntity().getWorld().markChunkDirty(bc.getBlockPos(), con.getBundle().getEntity());
+        BlockPos pos = con.getBundle().getLocation();
+        con.getBundle().getEntity().getWorld().markChunkDirty(pos, con.getBundle().getEntity());
       }
 
     }
@@ -167,7 +170,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
 
   }
 
-  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+  public int fill(FluidStack resource, boolean doFill) {
     if(resource == null) {
       return 0;
     }
@@ -182,7 +185,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     return res;
   }
 
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+  public FluidStack drain(FluidStack resource, boolean doDrain) {
     if(resource == null || tank.isEmpty() || !tank.containsValidLiquid() || !LiquidConduitNetwork.areFluidsCompatable(getFluidType(), resource)) {
       return null;
     }
@@ -196,7 +199,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     return result;
   }
 
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
+  public FluidStack drain(int maxDrain, boolean doDrain) {
     if(tank.isEmpty() || !tank.containsValidLiquid()) {
       return null;
     }
@@ -243,11 +246,11 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   public IFluidWrapper getTankContainer(LiquidOutput output) {
-    return FluidWrapper.wrap(getWorld(), output.location.getBlockPos(), output.dir);
+    return FluidWrapper.wrap(getWorld(), output.location, output.dir);
   }
 
-  public IFluidWrapper getTankContainer(AdvancedLiquidConduit con, EnumFacing dir) {
-    return FluidWrapper.wrap(getWorld(), con.getLocation().getBlockPos().offset(dir), dir.getOpposite());
+  public IFluidWrapper getTankContainer(@Nonnull AdvancedLiquidConduit con, @Nonnull EnumFacing dir) {
+    return FluidWrapper.wrap(getWorld(), con.getBundle().getLocation().offset(dir), dir.getOpposite());
   }
 
   World getWorld() {

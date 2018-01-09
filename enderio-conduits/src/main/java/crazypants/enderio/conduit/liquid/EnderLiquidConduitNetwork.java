@@ -14,8 +14,13 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+
+import javax.annotation.Nonnull;
 
 public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit, EnderLiquidConduit> {
 
@@ -33,7 +38,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     super(EnderLiquidConduit.class, ILiquidConduit.class);
   }
 
-  public void connectionChanged(EnderLiquidConduit con, EnumFacing conDir) {
+  public void connectionChanged(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
     NetworkTankKey key = new NetworkTankKey(con, conDir);
     NetworkTank tank = new NetworkTank(con, conDir);
     tanks.remove(tank); // remove old tank, NB: =/hash is only calced on location and dir
@@ -42,7 +47,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     tankMap.put(key, tank);
   }
 
-  public boolean extractFrom(EnderLiquidConduit con, EnumFacing conDir) {
+  public boolean extractFrom(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
     NetworkTank tank = getTank(con, conDir);
     if(tank == null || !tank.isValid()) {
       return false;
@@ -69,15 +74,16 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     return true;
   }
 
-  private NetworkTank getTank(EnderLiquidConduit con, EnumFacing conDir) {
+  @Nonnull
+  private NetworkTank getTank(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
     return tankMap.get(new NetworkTankKey(con, conDir));
   }
 
-  public int fillFrom(EnderLiquidConduit con, EnumFacing conDir, FluidStack resource, boolean doFill) {
+  public int fillFrom(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir, FluidStack resource, boolean doFill) {
     return fillFrom(getTank(con, conDir), resource, doFill);
   }
 
-  public int fillFrom(NetworkTank tank, FluidStack resource, boolean doFill) {
+  public int fillFrom(@Nonnull NetworkTank tank, FluidStack resource, boolean doFill) {
 
     if(filling) {
       return 0;
@@ -114,7 +120,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     }
   }
 
-  private boolean matchedFilter(FluidStack drained, EnderLiquidConduit con, EnumFacing conDir, boolean isInput) {
+  private boolean matchedFilter(FluidStack drained, @Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir, boolean isInput) {
     if(drained == null || con == null || conDir == null) {
       return false;
     }
@@ -125,7 +131,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     return filter.matchesFilter(drained);
   }
 
-  private Iterable<NetworkTank> getIteratorForTank(NetworkTank tank) {
+  private Iterable<NetworkTank> getIteratorForTank(@Nonnull NetworkTank tank) {
     if(iterators == null) {
       iterators = new HashMap<NetworkTank, RoundRobinIterator<NetworkTank>>();
     }
@@ -137,29 +143,29 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     return res;
   }
 
-  public FluidTankInfo[] getTankInfo(EnderLiquidConduit con, EnumFacing conDir) {
-    List<FluidTankInfo> res = new ArrayList<FluidTankInfo>(tanks.size());
+  public IFluidTankProperties[] getTankProperties(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
+    List<IFluidTankProperties> res = new ArrayList<IFluidTankProperties>(tanks.size());
     NetworkTank tank = getTank(con, conDir);
     for (NetworkTank target : tanks) {
       if(!target.equals(tank) && target.isValid()) {
         for (ITankInfoWrapper info : target.externalTank.getTankInfoWrappers()) {
-          res.add(info.getFluidTankInfo());
+          res.add(info.getIFluidTankProperties());
         }
       }
     }
-    return res.toArray(new FluidTankInfo[res.size()]);
+    return res.toArray(new IFluidTankProperties[res.size()]);
   }
 
   static class NetworkTankKey {
 
     EnumFacing conDir;
-    BlockCoord conduitLoc;
+    BlockPos conduitLoc;
 
-    public NetworkTankKey(EnderLiquidConduit con, EnumFacing conDir) {
-      this(con.getLocation(), conDir);
+    public NetworkTankKey(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
+      this(con.getBundle().getLocation(), conDir);
     }
 
-    public NetworkTankKey(BlockCoord conduitLoc, EnumFacing conDir) {
+    public NetworkTankKey(@Nonnull BlockPos conduitLoc, @Nonnull EnumFacing conDir) {
       this.conDir = conDir;
       this.conduitLoc = conduitLoc;
     }
@@ -203,18 +209,19 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
   static class NetworkTank {
 
     EnderLiquidConduit con;
+    // TODO Confirm dir necessity
     EnumFacing conDir;
     IFluidWrapper externalTank;
     EnumFacing tankDir;
-    BlockCoord conduitLoc;
+    BlockPos conduitLoc;
     boolean acceptsOuput;
 
-    public NetworkTank(EnderLiquidConduit con, EnumFacing conDir) {
+    public NetworkTank(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
       this.con = con;
       this.conDir = conDir;
-      conduitLoc = con.getLocation();
+      conduitLoc = con.getBundle().getLocation();
       tankDir = conDir.getOpposite();
-      externalTank = AbstractLiquidConduit.getExternalFluidHandler(con.getBundle().getBundleworld(), conduitLoc.getLocation(conDir).getBlockPos(), tankDir);
+      externalTank = AbstractLiquidConduit.getExternalFluidHandler(con.getBundle().getBundleworld(), conduitLoc.offset(conDir), tankDir);
       acceptsOuput = con.getConnectionMode(conDir).acceptsOutput();
     }
 

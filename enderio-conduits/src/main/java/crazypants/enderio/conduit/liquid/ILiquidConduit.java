@@ -4,11 +4,13 @@ import crazypants.enderio.base.conduit.IExtractor;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import javax.annotation.Nonnull;
+
 public interface ILiquidConduit extends IFluidHandler, IExtractor {
 
-  boolean canOutputToDir(EnumFacing dir);
+  boolean canOutputToDir(@Nonnull EnumFacing dir);
 
-  boolean canExtractFromDir(EnumFacing dir);
+  boolean canExtractFromDir(@Nonnull EnumFacing dir);
 
-  boolean canInputToDir(EnumFacing dir);
+  boolean canInputToDir(@Nonnull EnumFacing dir);
 }

@@ -1,17 +1,17 @@
+
 package crazypants.enderio.conduit;
 
-import crazypants.enderio.base.init.IModObject;
-
-import javax.annotation.Nonnull;
-
 public class ItemConduitSubtype {
-  
+
+  public final String baseName;
+
   public final String unlocalisedName;
 
   public final String modelLocation;
 
-  public ItemConduitSubtype(@Nonnull IModObject modObject, String iconKey) {
-    this.unlocalisedName = modObject.getUnlocalisedName();
+  public ItemConduitSubtype(String baseName, String iconKey) {
+    this.baseName = baseName;
+    this.unlocalisedName = "enderio." + baseName;
     this.modelLocation = iconKey;
   }
 

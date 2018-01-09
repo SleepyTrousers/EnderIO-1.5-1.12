@@ -25,4 +25,6 @@ public interface IConduitRenderer {
     return false;
   }
 
+  void initIcons();
+
 }

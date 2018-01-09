@@ -8,7 +8,7 @@ import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.conduit.AbstractItemConduit;
+import crazypants.enderio.conduit.item.AbstractItemConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

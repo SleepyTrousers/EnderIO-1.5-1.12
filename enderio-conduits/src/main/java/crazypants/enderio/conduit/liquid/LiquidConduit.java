@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.liquid;
 
-import static crazypants.enderio.base.ModObject.itemLiquidConduit;
+import static crazypants.enderio.conduit.init.ConduitObject.item_liquid_conduit;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,13 +10,13 @@ import java.util.Set;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.fluid.IFluidWrapper;
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.network.PacketHandler;
@@ -28,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,9 +37,13 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class LiquidConduit extends AbstractTankConduit implements IConduitComponent {
 
   static final int VOLUME_PER_CONNECTION = Fluid.BUCKET_VOLUME / 4;
+
+  // TODO Lang
 
   public static final String ICON_KEY = "enderio:blocks/liquidConduit";
   public static final String ICON_KEY_LOCKED = "enderio:blocks/liquidConduitLocked";
@@ -82,12 +87,12 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   private EnumFacing startPushDir = EnumFacing.DOWN;
 
-  private final Set<BlockCoord> filledFromThisTick = new HashSet<BlockCoord>();
+  private final Set<BlockPos> filledFromThisTick = new HashSet<BlockPos>();
 
   private long ticksSinceFailedExtract = 0;
 
   @Override
-  public void updateEntity(World world) {
+  public void updateEntity(@Nonnull World world) {
     super.updateEntity(world);
     if(world.isRemote) {
       return;
@@ -105,8 +110,8 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
       //need to send a custom packet as we don't want want to trigger a full chunk update, just
       //need to get the required  values to the entity renderer
-      BlockCoord loc = getLocation();
-      PacketHandler.INSTANCE.sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.getDimension(), loc.x, loc.y, loc.z, 64));
+      BlockPos pos = getBundle().getLocation();
+      PacketHandler.INSTANCE.sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
       lastSyncRatio = tank.getFilledRatio();
     }
   }
@@ -151,6 +156,8 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   }
 
+  // TODO Confirm from use
+
   @Override
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
@@ -164,13 +171,13 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
     // Note: This is just a guard against mekansims pipes that will continuously
     // call
     // fill on us if we push liquid to them.
-    if(filledFromThisTick.contains(getLocation().getLocation(from))) {
+    if(filledFromThisTick.contains(getBundle().getLocation().offset(from))) {
       return 0;
     }
 
     if(network.lockNetworkForFill()) {
       if(doFill) {
-        filledFromThisTick.add(getLocation().getLocation(from));
+        filledFromThisTick.add(getBundle().getLocation().offset(from));
       }
       try {
         int res = fill(from, resource, doFill, true, network == null ? -1 : network.getNextPushToken());
@@ -188,7 +195,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   }
 
-  public int fill(EnumFacing from, FluidStack resource, boolean doFill, boolean doPush, int pushToken) {
+  public int fill(@Nonnull EnumFacing from, FluidStack resource, boolean doFill, boolean doPush, int pushToken) {
     if(resource == null || resource.amount <= 0) {
       return 0;
     }
@@ -226,14 +233,14 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
     startPushDir = newVal;
   }
 
-  private EnumFacing getNextDir(EnumFacing dir) {
+  private EnumFacing getNextDir(@Nonnull EnumFacing dir) {
     if(dir.ordinal() >= EnumFacing.VALUES.length - 1) {
       return EnumFacing.VALUES[0];
     }
     return EnumFacing.VALUES[dir.ordinal() + 1];
   }
 
-  private int pushLiquid(EnumFacing from, FluidStack pushStack, boolean doPush, int token) {
+  private int pushLiquid(@Nonnull EnumFacing from, FluidStack pushStack, boolean doPush, int token) {
     if(token == currentPushToken || pushStack == null || pushStack.amount <= 0 || network == null) {
       return 0;
     }
@@ -275,7 +282,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
     return pushed;
   }
 
-  private ILiquidConduit getFluidConduit(EnumFacing dir) {
+  private ILiquidConduit getFluidConduit(@Nonnull EnumFacing dir) {
     TileEntity ent = getBundle().getEntity();
     return ConduitUtil.getConduit(ent.getWorld(), ent, dir, ILiquidConduit.class);
   }
@@ -333,17 +340,19 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   }
 
   @Override
+  @Nonnull
   public ItemStack createItem() {
-    return new ItemStack(itemLiquidConduit.getItem(), 1, 0);
+    return new ItemStack(item_liquid_conduit.getItem(), 1, 0);
   }
 
   @Override
-  public AbstractConduitNetwork<?, ?> getNetwork() {
+  @Nonnull
+  public IConduitNetwork<?, ?> getNetwork() {
     return network;
   }
 
   @Override
-  public boolean setNetwork(AbstractConduitNetwork<?, ?> network) {
+  public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
     if(network == null) {
       this.network = null;
       return true;
@@ -365,7 +374,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   }
 
   @Override
-  public boolean canConnectToConduit(EnumFacing direction, IConduit con) {
+  public boolean canConnectToConduit(@Nonnull EnumFacing direction, @Nonnull IConduit con) {
     if(!super.canConnectToConduit(direction, con)) {
       return false;
     }
@@ -380,7 +389,8 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   @SideOnly(Side.CLIENT)
   @Override
-  public TextureAtlasSprite getTextureForState(CollidableComponent component) {
+  @Nonnull
+  public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
     if(component.dir == null) {
       return ICONS.get(ICON_CORE_KEY);
     }
@@ -394,7 +404,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   }
 
   @Override
-  public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
+  public TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     if(tank.getFluid() != null && tank.getFluid().getFluid() != null) {
       return RenderUtil.getStillTexture(tank.getFluid());
     }
@@ -403,7 +413,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Vector4f getTransmitionTextureColorForState(CollidableComponent component) {
+  public Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     if (tank.getFluid() != null && tank.getFluid().getFluid() != null) {
       int color = tank.getFluid().getFluid().getColor(tank.getFluid());
       return new Vector4f((color >> 16 & 0xFF) / 255d, (color >> 8 & 0xFF) / 255d, (color & 0xFF) / 255d, 1);
@@ -433,6 +443,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   }
 
   @Override
+  @Nonnull
   public LiquidConduitNetwork createNetworkForType() {
     return new LiquidConduitNetwork();
   }

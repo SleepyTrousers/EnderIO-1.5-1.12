@@ -1,17 +1,18 @@
 package crazypants.enderio.conduit.liquid;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
+import javax.annotation.Nonnull;
+// TODO Make Java Docs
 public class LiquidOutput {
 
   final EnumFacing dir;
-  final BlockCoord location;
+  final BlockPos location;
 
-  public LiquidOutput(BlockCoord bc, EnumFacing dir) {
+  public LiquidOutput(@Nonnull BlockPos pos, @Nonnull EnumFacing dir) {
     this.dir = dir;
-    this.location = bc;
+    this.location = pos;
   }
 
   @Override

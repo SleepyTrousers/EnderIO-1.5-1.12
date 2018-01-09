@@ -8,7 +8,6 @@ import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduit.init.ConduitObject;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +20,7 @@ public class ItemItemConduit extends AbstractItemConduit {
   private final ConduitRegistry.ConduitInfo conduitInfo;
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ConduitObject.item_item_conduit, "enderio:itemItemConduit")
+      new ItemConduitSubtype(ConduitObject.item_item_conduit.name(), "enderio:itemItemConduit")
   };
 
   public static ItemItemConduit create(@Nonnull IModObject modObject) {

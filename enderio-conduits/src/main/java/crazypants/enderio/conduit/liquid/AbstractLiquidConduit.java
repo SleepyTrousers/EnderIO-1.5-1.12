@@ -14,7 +14,7 @@ import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
-import crazypants.enderio.base.machine.RedstoneControlMode;
+import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.LiquidSettings;
@@ -30,7 +30,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   protected final EnumMap<EnumFacing, RedstoneControlMode> extractionModes = new EnumMap<EnumFacing, RedstoneControlMode>(EnumFacing.class);
   protected final EnumMap<EnumFacing, DyeColor> extractionColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
-  public static IFluidWrapper getExternalFluidHandler(IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public static IFluidWrapper getExternalFluidHandler(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     if (world.getTileEntity(pos) instanceof IConduitBundle) {
       return null;
     }
@@ -38,11 +38,11 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   public IFluidWrapper getExternalHandler(EnumFacing direction) {
-    return getExternalFluidHandler(getBundle().getBundleworld(), getLocation().getLocation(direction).getBlockPos(), direction.getOpposite());
+    return getExternalFluidHandler(getBundle().getBundleworld(), getBundle().getLocation().offset(direction), direction.getOpposite());
   }
 
   @Override
-  public boolean canConnectToExternal(EnumFacing direction, boolean ignoreDisabled) {
+  public boolean canConnectToExternal(@Nonnull EnumFacing direction, boolean ignoreDisabled) {
     IFluidWrapper h = getExternalHandler(direction);
     if(h == null) {
       return false;
@@ -51,17 +51,19 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
+  @Nonnull
   public Class<? extends IConduit> getBaseConduitType() {
     return ILiquidConduit.class;
   }
 
   @Override
-  public void setExtractionRedstoneMode(RedstoneControlMode mode, EnumFacing dir) {
+  public void setExtractionRedstoneMode(@Nonnull RedstoneControlMode mode, @Nonnull EnumFacing dir) {
     extractionModes.put(dir, mode);
   }
 
   @Override
-  public @Nonnull RedstoneControlMode getExtractionRedstoneMode(EnumFacing dir) {
+  @Nonnull
+  public RedstoneControlMode getExtractionRedstoneMode(@Nonnull EnumFacing dir) {
     RedstoneControlMode res = extractionModes.get(dir);
     if(res == null) {
       res = RedstoneControlMode.NEVER;
@@ -70,12 +72,13 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public void setExtractionSignalColor(EnumFacing dir, DyeColor col) {
+  public void setExtractionSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
     extractionColors.put(dir, col);
   }
 
   @Override
-  public DyeColor getExtractionSignalColor(EnumFacing dir) {
+  @Nonnull
+  public DyeColor getExtractionSignalColor(@Nonnull EnumFacing dir) {
     DyeColor result = extractionColors.get(dir);
     if(result == null) {
       return DyeColor.RED;
@@ -84,7 +87,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public boolean canOutputToDir(EnumFacing dir) {
+  public boolean canOutputToDir(@Nonnull EnumFacing dir) {
     if(!canInputToDir(dir)) {
       return false;
     }
@@ -97,7 +100,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     return true;
   }
 
-  protected boolean autoExtractForDir(EnumFacing dir) {
+  protected boolean autoExtractForDir(@Nonnull EnumFacing dir) {
     if(!canExtractFromDir(dir)) {
       return false;
     }
@@ -106,33 +109,33 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public boolean canExtractFromDir(EnumFacing dir) {
+  public boolean canExtractFromDir(@Nonnull EnumFacing dir) {
     return getConnectionMode(dir).acceptsInput();
   }
   
   @Override
-  public boolean canInputToDir(EnumFacing dir) {
+  public boolean canInputToDir(@Nonnull EnumFacing dir) {
     return getConnectionMode(dir).acceptsOutput() && !autoExtractForDir(dir);
   }
 
   protected boolean hasExtractableMode() {
-    return hasConnectionMode(ConnectionMode.INPUT) || hasConnectionMode(ConnectionMode.IN_OUT);
+    return supportsConnectionMode(ConnectionMode.INPUT) || supportsConnectionMode(ConnectionMode.IN_OUT);
   }
 
   @Override
-  protected void readTypeSettings(EnumFacing dir, NBTTagCompound dataRoot) {
+  protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
     setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
   }
 
   @Override
-  protected void writeTypeSettingsToNbt(EnumFacing dir, NBTTagCompound dataRoot) {
+  protected void writeTypeSettingsToNbt(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     dataRoot.setShort("extractionSignalColor", (short)getExtractionSignalColor(dir).ordinal());
     dataRoot.setShort("extractionRedstoneMode", (short)getExtractionRedstoneMode(dir).ordinal());
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
+  public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
 
     for (Entry<EnumFacing, RedstoneControlMode> entry : extractionModes.entrySet()) {
@@ -152,8 +155,8 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
-    super.readFromNBT(nbtRoot, nbtVersion);
+  public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
+    super.readFromNBT(nbtRoot);
 
     for (EnumFacing dir : EnumFacing.VALUES) {
       String key = "extRM." + dir.name();
@@ -173,16 +176,22 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     }
   }
 
+//  @SideOnly(Side.CLIENT)
+//  @Override
+//  public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
+//    return new LiquidSettings(gui, con);
+//  }
+
   @SideOnly(Side.CLIENT)
+  @Nonnull
   @Override
-  public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
+  public ITabPanel createGuiPanel(@Nonnull Object gui) {
     return new LiquidSettings(gui, con);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public int getTabOrderForConduit(IConduit con) {
+  public int getGuiPanelTabOrder() {
     return 1;
   }
-
 }

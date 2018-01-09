@@ -8,39 +8,40 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.ModObject;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.conduit.AbstractItemConduit;
+import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.conduit.init.ConduitObject;
+import crazypants.enderio.conduit.item.AbstractItemConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+
+
 public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedTooltipProvider {
 
   private final ConduitRegistry.ConduitInfo conduitInfo;
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-    new ItemConduitSubtype(ModObject.itemLiquidConduit.name(), "enderio:itemLiquidConduit"),
-    new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "Advanced", "enderio:itemLiquidConduitAdvanced"),
-    new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "Ender", "enderio:itemLiquidConduitEnder")
+    new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name(), "enderio:itemLiquidConduit"),
+    new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name() + "Advanced", "enderio:itemLiquidConduitAdvanced"),
+    new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name() + "Ender", "enderio:itemLiquidConduitEnder")
 
   };
 
-  public static ItemLiquidConduit create() {
-    ItemLiquidConduit result = new ItemLiquidConduit();
-    result.init();
-    return result;
+  public static ItemLiquidConduit create(@Nonnull IModObject modObject) {
+    return new ItemLiquidConduit(modObject);
   }
 
-  protected ItemLiquidConduit() {
-    super(ModObject.itemLiquidConduit, subtypes);
+  protected ItemLiquidConduit(@Nonnull IModObject modObject) {
+    super(modObject, subtypes);
     conduitInfo = new ConduitRegistry.ConduitInfo(getBaseConduitType(), Offset.WEST, Offset.NORTH, Offset.WEST, Offset.WEST);
     conduitInfo.addMember(LiquidConduit.class);
     conduitInfo.addMember(AdvancedLiquidConduit.class);
@@ -51,8 +52,8 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
-    super.registerRenderers();
+  public void registerRenderers(@Nonnull IModObject modObject) {
+    super.registerRenderers(modObject);
     conduitInfo.addRenderer(LiquidConduitRenderer.create());
     conduitInfo.addRenderer(new AdvancedLiquidConduitRenderer());
     conduitInfo.addRenderer(new EnderLiquidConduitRenderer());
@@ -64,7 +65,7 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
   }
 
   @Override
-  public IConduit createConduit(ItemStack stack, EntityPlayer player) {
+  public IConduit createConduit(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
     if(stack.getItemDamage() == 1) {
       return new AdvancedLiquidConduit();
     } else if(stack.getItemDamage() == 2) {
@@ -75,18 +76,18 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
 
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     int extractRate;
     int maxIo;
 
@@ -100,6 +101,9 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
       extractRate = Config.enderFluidConduitExtractRate;
       maxIo = Config.enderFluidConduitMaxIoRate;
     }
+
+    // TODO Lang
+
     String mbt = " " + EnderIO.lang.localize("fluid.millibucketsTick");
     list.add(EnderIO.lang.localize("itemLiquidConduit.tooltip.maxExtract") + " " + extractRate + mbt);
     list.add(EnderIO.lang.localize("itemLiquidConduit.tooltip.maxIo") + " " + maxIo + mbt);
@@ -113,7 +117,7 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
   }
 
   @Override
-  public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+  public boolean shouldHideFacades(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
     return true;
   }
 

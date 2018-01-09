@@ -7,6 +7,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
+import javax.annotation.Nonnull;
+
 public class ConduitTank implements IFluidTank {
 
   private FluidStack fluid;
@@ -153,7 +155,7 @@ public class ConduitTank implements IFluidTank {
     return ConduitUtil.isFluidValid(fluid);
   }
 
-  public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+  public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound nbt) {
     if(containsValidLiquid()) {
       fluid.writeToNBT(nbt);
     } else {
@@ -162,7 +164,7 @@ public class ConduitTank implements IFluidTank {
     return nbt;
   }
 
-  public IFluidTank readFromNBT(NBTTagCompound nbt) {
+  public IFluidTank readFromNBT(@Nonnull NBTTagCompound nbt) {
     if(!nbt.hasKey("emptyTank")) {
       FluidStack liquid = FluidStack.loadFluidStackFromNBT(nbt);
       if(liquid != null) {
