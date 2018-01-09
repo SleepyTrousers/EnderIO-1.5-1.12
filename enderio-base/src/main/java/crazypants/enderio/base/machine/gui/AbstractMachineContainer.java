@@ -11,15 +11,20 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.Util;
 
+import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity.InventoryWrapper;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.util.Prep;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractMachineContainer<E extends AbstractInventoryMachineEntity> extends ContainerEnder<InventoryWrapper> {
 
@@ -52,6 +57,19 @@ public abstract class AbstractMachineContainer<E extends AbstractInventoryMachin
             public boolean isItemValid(@Nonnull ItemStack itemStack) {
               return te.isItemValidForSlot(te.getSlotDefinition().getMinUpgradeSlot(), itemStack);
             }
+
+            @Override
+            @SideOnly(Side.CLIENT)
+            public @Nonnull ResourceLocation getBackgroundLocation() {
+              return IconEIO.CAPACITOR.getMap().getTexture();
+            }
+
+            @Override
+            @SideOnly(Side.CLIENT)
+            public @Nonnull TextureAtlasSprite getBackgroundSprite() {
+              return IconEIO.CAPACITOR.getAsTextureAtlasSprite();
+            }
+
           });
     }
   }

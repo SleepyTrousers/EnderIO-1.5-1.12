@@ -129,8 +129,6 @@ public enum IconEIO implements IWidgetIcon {
   DOUBLE_MINUS(224, 208),
   TRIPLE_MINUS(208, 208),
 
-  ENDER_RAIL(192, 208),
-
   FILTER(192, 192),
 
   ITEM_STACK(144, 208),
@@ -154,6 +152,9 @@ public enum IconEIO implements IWidgetIcon {
   HIDE_RANGE(160, 176),
 
   MODE_BACKGROUND(0, 98, 16, 10),
+
+  GENERIC_VERBOTEN(192, 160),
+  CAPACITOR(208, 160),
 
   YETA_GEAR(48, 224);
 
