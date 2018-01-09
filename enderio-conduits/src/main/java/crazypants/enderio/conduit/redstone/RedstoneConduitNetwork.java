@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.redstone;
 
-import static crazypants.enderio.base.ModObject.blockConduitBundle;
+import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,11 +8,12 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.redstone.signals.Signal;
+import crazypants.enderio.base.conduit.redstone.signals.SignalSource;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import net.minecraft.block.state.IBlockState;
@@ -20,6 +21,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import javax.annotation.Nonnull;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
 
@@ -34,7 +37,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   @Override
-  public void init(IConduitBundle tile, Collection<IRedstoneConduit> connections, World world) {
+  public void init(@Nonnull IConduitBundle tile, Collection<IRedstoneConduit> connections, @Nonnull World world) {
     super.init(tile, connections, world);
     updatingNetwork = true;
     notifyNeigborsOfSignalUpdate();
@@ -55,13 +58,13 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   @Override
-  public void addConduit(IRedstoneConduit con) {    
+  public void addConduit(@Nonnull IRedstoneConduit con) {
     super.addConduit(con);    
     updateInputsFromConduit(con, true); // all call paths to here come from updateNetwork() which already notifies all neighbors
   }
 
-  public void updateInputsFromConduit(IRedstoneConduit con, boolean delayUpdate) {
-    BlockPos pos = con.getLocation().getBlockPos();
+  public void updateInputsFromConduit(@Nonnull IRedstoneConduit con, boolean delayUpdate) {
+    BlockPos pos = con.getBundle().getLocation();
 
     // Make my neighbors update as if we have no signals
     updatingNetwork = true;
@@ -92,7 +95,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   private void updateActiveState() {
     boolean isActive = false;
     for (Signal s : getSignals().values()) {
-      if (s.strength > 0) {
+      if (s.getStrength() > 0) {
         isActive = true;
         break;
       }
@@ -102,10 +105,10 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     }
   }
   
-  private void updateInputsForSource(IRedstoneConduit con, SignalSource source) {    
+  private void updateInputsForSource(@Nonnull IRedstoneConduit con, @Nonnull SignalSource source) {
     updatingNetwork = true;
     signals.removeAll(source);
-    Set<Signal> sigs = con.getNetworkInputs(source.fromDirection);
+    Set<Signal> sigs = con.getNetworkInputs(source.getDir());
     if(sigs != null && !sigs.isEmpty()) {      
       signals.putAll(source, sigs);
     }
@@ -165,7 +168,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     }
   }
 
-  private void notifyConduitNeighbours(IRedstoneConduit con) {
+  private void notifyConduitNeighbours(@Nonnull IRedstoneConduit con) {
     if (con.getBundle() == null) {
       return;
     }
@@ -183,13 +186,13 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     for (EnumFacing dir : con.getExternalConnections()) {
       BlockPos bc2 = bc1.offset(dir);
       if (world.isBlockLoaded(bc2)) {
-        world.notifyBlockOfStateChange(bc2, blockConduitBundle.getBlock());
+        world.notifyNeighborsOfStateChange(bc2, block_conduit_bundle.getBlock(), false);
         IBlockState bs = world.getBlockState(bc2);
         if (bs.isBlockNormalCube()) {
           for (EnumFacing dir2 : EnumFacing.VALUES) {
             BlockPos bc3 = bc2.offset(dir2);
             if (!bc3.equals(bc1) && world.isBlockLoaded(bc3)) {
-              world.notifyBlockOfStateChange(bc3, blockConduitBundle.getBlock());
+              world.notifyNeighborsOfStateChange(bc3, block_conduit_bundle.getBlock(), false);
             }
           }
         }
@@ -205,14 +208,14 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
    * @param conduits
    * @param oldSignals
    */
-  public void afterChunkUnload(List<IRedstoneConduit> conduits, Multimap<SignalSource, Signal> oldSignals) {
+  public void afterChunkUnload(@Nonnull List<IRedstoneConduit> conduits, @Nonnull Multimap<SignalSource, Signal> oldSignals) {
     World world = null;
     for (IRedstoneConduit c : conduits) {
       if (world == null) {
         world = c.getBundle().getBundleworld();
       }
-      BlockCoord loc = c.getLocation();
-      if (world.isBlockLoaded(loc.getBlockPos())) {
+      BlockPos pos = c.getBundle().getLocation();
+      if (world.isBlockLoaded(pos)) {
         this.getConduits().add(c);
         c.setNetwork(this);
       }
@@ -221,7 +224,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     signals.clear();
     boolean signalsChanged = false;
     for (Entry<SignalSource, Signal> s : oldSignals.entries()) {
-      if (world != null && world.isBlockLoaded(s.getKey().getPos())) {
+      if (world != null && world.isBlockLoaded(s.getKey().getSource())) {
         signals.put(s.getKey(), s.getValue());
       } else {
         signalsChanged = true;
