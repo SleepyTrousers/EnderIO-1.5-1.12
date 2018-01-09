@@ -99,12 +99,12 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
             if(!(n instanceof EnderLiquidConduit)) {
               return false;
             }
-            return ConduitUtil.joinConduits(this, faceHit);
+            return ConduitUtil.connectConduits(this, faceHit);
           } else if(containsExternalConnection(connDir)) {
             // Toggle extraction mode
             setConnectionMode(connDir, getNextConnectionMode(connDir));
           } else if(containsConduitConnection(connDir)) {
-            ConduitUtil.disconectConduits(this, connDir);
+            ConduitUtil.disconnectConduits(this, connDir);
 
           }
         }

@@ -1,15 +1,15 @@
 package crazypants.enderio.conduit.init;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.EnderIOConduits;
+import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
+import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
+import crazypants.enderio.conduit.item.ItemItemConduit;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -19,11 +19,20 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
+
 @EventBusSubscriber(modid = EnderIOConduits.MODID)
 public enum ConduitObject implements IModObject.Registerable {
 
   // Conduits
-  block_conduit_bundle(BlockConduitBundle.class);
+  block_conduit_bundle(BlockConduitBundle.class),
+
+  item_item_conduit(ItemItemConduit.class),
+
+  item_extract_speed_upgrade(ItemExtractSpeedUpgrade.class),
+  item_function_upgrade(ItemFunctionUpgrade.class);
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
@@ -37,7 +46,7 @@ public enum ConduitObject implements IModObject.Registerable {
 
   protected final @Nonnull Class<?> clazz;
   protected final @Nullable String blockMethodName, itemMethodName;
-  protected final @Nullable Class<? extends TileEntity> teClazz;
+  protected final @Nullable List<Class<? extends TileEntity>> teClazzes;
 
   private ConduitObject(@Nonnull Class<?> clazz) {
     this(clazz, "create", (Class<? extends TileEntity>) null);
@@ -55,7 +64,7 @@ public enum ConduitObject implements IModObject.Registerable {
     this(clazz, blockMethodName, itemMethodName, null);
   }
 
-  private ConduitObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity> teClazz) {
+  private ConduitObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity>... teClazz) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     if (Block.class.isAssignableFrom(clazz)) {
@@ -67,15 +76,15 @@ public enum ConduitObject implements IModObject.Registerable {
     } else {
       throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
     }
-    this.teClazz = teClazz;
+    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
   }
 
-  private ConduitObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity> teClazz) {
+  private ConduitObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity>... teClazz) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
     this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    this.teClazz = teClazz;
+    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
   }
 
   @Override
@@ -124,10 +133,10 @@ public enum ConduitObject implements IModObject.Registerable {
     return itemMethodName;
   }
 
-  @Override
   @Nullable
-  public Class<? extends TileEntity> getTileClass() {
-    return teClazz;
+  @Override
+  public final List<Class<? extends TileEntity>> getTileClass() {
+    return teClazzes;
   }
 
   @Override

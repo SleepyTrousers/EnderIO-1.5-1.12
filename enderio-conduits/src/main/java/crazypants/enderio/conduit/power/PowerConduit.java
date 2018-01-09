@@ -135,12 +135,12 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
               return true;
             }
             // Attempt to join networks
-            return ConduitUtil.joinConduits(this, faceHit);
+            return ConduitUtil.connectConduits(this, faceHit);
           } else if(externalConnections.contains(connDir)) {
             setConnectionMode(connDir, getNextConnectionMode(connDir));
             return true;
           } else if(containsConduitConnection(connDir)) {
-            ConduitUtil.disconectConduits(this, connDir);
+            ConduitUtil.disconnectConduits(this, connDir);
             return true;
           }
         }

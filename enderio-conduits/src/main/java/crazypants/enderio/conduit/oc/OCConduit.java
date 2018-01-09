@@ -292,12 +292,12 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
               setConnectionMode(faceHit, ConnectionMode.IN_OUT);
               return true;
             }
-            return ConduitUtil.joinConduits(this, faceHit);
+            return ConduitUtil.connectConduits(this, faceHit);
           } else if (externalConnections.contains(connDir)) {
             setConnectionMode(connDir, getNextConnectionMode(connDir));
             return true;
           } else if (containsConduitConnection(connDir)) {
-            ConduitUtil.disconectConduits(this, connDir);
+            ConduitUtil.disconnectConduits(this, connDir);
             addMissingNodeConnections();
             return true;
           }

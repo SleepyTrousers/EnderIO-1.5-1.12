@@ -1,11 +1,13 @@
 package crazypants.enderio.conduit.item;
 
+import net.minecraft.util.ResourceLocation;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.util.ResourceLocation;
-
 public enum FunctionUpgrade {
+
+  // TODO Move Inventory Panel
 
   INVENTORY_PANEL("inventoryPanelUpgrade", "item.itemInventoryPanelUpgrade", 1);
 

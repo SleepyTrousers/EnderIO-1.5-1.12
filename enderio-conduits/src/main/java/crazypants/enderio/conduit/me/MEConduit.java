@@ -250,12 +250,12 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
               setConnectionMode(faceHit, ConnectionMode.IN_OUT);
               return true;
             }
-            return ConduitUtil.joinConduits(this, faceHit);
+            return ConduitUtil.connectConduits(this, faceHit);
           } else if(externalConnections.contains(connDir)) {
             setConnectionMode(connDir, getNextConnectionMode(connDir));
             return true;
           } else if(containsConduitConnection(connDir)) {
-            ConduitUtil.disconectConduits(this, connDir);
+            ConduitUtil.disconnectConduits(this, connDir);
             return true;
           }
         }
@@ -289,7 +289,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
         IMEConduit cond = ((TileConduitBundle) te).getConduit(IMEConduit.class);
         if(cond != null) {
           cond.setConnectionMode(dir.getOpposite(), ConnectionMode.IN_OUT);
-          ConduitUtil.joinConduits(cond, dir.getOpposite());
+          ConduitUtil.connectConduits(cond, dir.getOpposite());
         }
       }
     }
