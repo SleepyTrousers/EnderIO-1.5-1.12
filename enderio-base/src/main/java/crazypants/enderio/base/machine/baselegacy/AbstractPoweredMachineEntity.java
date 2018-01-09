@@ -96,8 +96,8 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     if (slotDefinition.getNumUpgradeSlots() <= 0) {
       return DefaultCapacitorData.BASIC_CAPACITOR;
     } else {
-    return capacitorData;
-  }
+      return capacitorData;
+    }
   }
 
   public int getEnergyStoredScaled(int scale) {
@@ -152,6 +152,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
 
   @Override
   protected void onAfterNbtRead() {
+    super.onAfterNbtRead();
     updateCapacitorFromSlot();
   }
 

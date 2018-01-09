@@ -51,7 +51,7 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
     getEnergy().updateCapacitorFromSlot(getInventory().getSlot(CAPSLOT));
   }
 
-  //----- Common Machine Functions
+  // ----- Common Machine Functions
 
   @Override
   public void doUpdate() {
@@ -94,10 +94,11 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
     }
   }
 
-  //--------- NBT
+  // --------- NBT
 
   @Override
   protected void onAfterNbtRead() {
+    super.onAfterNbtRead();
     updateCapacitorFromSlot();
   }
 
