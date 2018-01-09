@@ -17,6 +17,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, IPowerConduit> {
 
@@ -31,7 +34,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
   }
 
   @Override
-  public void init(IConduitBundle tile, Collection<IPowerConduit> connections, World world) {
+  public void init(@Nonnull IConduitBundle tile, Collection<IPowerConduit> connections, @Nonnull World world) {
     super.init(tile, connections, world);
     powerManager = new NetworkPowerManager(this, world);
     powerManager.receptorsChanged();
@@ -53,7 +56,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
   }
 
   @Override
-  public void addConduit(IPowerConduit con) {
+  public void addConduit(@Nonnull IPowerConduit con) {
     super.addConduit(con);
     Set<EnumFacing> externalDirs = con.getExternalConnections();
     for (EnumFacing dir : externalDirs) {
@@ -69,15 +72,15 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
     }
   }
 
-  public void powerReceptorAdded(IPowerConduit powerConduit, EnumFacing direction, int x, int y, int z, IPowerInterface powerReceptor) {
+  public void powerReceptorAdded(@Nonnull IPowerConduit powerConduit, @Nonnull EnumFacing direction, int x, int y, int z, @Nonnull IPowerInterface powerReceptor) {
     if(powerReceptor == null) {
       return;
     }
-    BlockCoord location = new BlockCoord(x, y, z);
-    ReceptorKey key = new ReceptorKey(location, direction);
+    BlockPos pos = new BlockPos(x, y, z);
+    ReceptorKey key = new ReceptorKey(pos, direction);
     ReceptorEntry re = powerReceptors.get(key);
     if(re == null) {
-      re = new ReceptorEntry(powerReceptor, location, powerConduit, direction);
+      re = new ReceptorEntry(powerReceptor, pos, powerConduit, direction);
       powerReceptors.put(key, re);
     }
     if(powerManager != null) {
@@ -86,10 +89,10 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
   }
 
   public void powerReceptorRemoved(int x, int y, int z) {
-    BlockCoord bc = new BlockCoord(x, y, z);
+    BlockPos pos = new BlockPos(x, y, z);
     List<ReceptorKey> remove = new ArrayList<ReceptorKey>();
     for (ReceptorKey key : powerReceptors.keySet()) {
-      if(key != null && key.coord.equals(bc)) {
+      if(key != null && key.pos.equals(pos)) {
         remove.add(key);
       }
     }
@@ -111,14 +114,14 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
   public static class ReceptorEntry {
 
     IPowerConduit emmiter;
-    BlockCoord coord;
+    BlockPos pos;
     EnumFacing direction;
 
     IPowerInterface powerInterface;
 
-    public ReceptorEntry(IPowerInterface powerReceptor, BlockCoord coord, IPowerConduit emmiter, EnumFacing direction) {
+    public ReceptorEntry(@Nonnull IPowerInterface powerReceptor, @Nonnull BlockPos pos, @Nonnull IPowerConduit emmiter, @Nonnull EnumFacing direction) {
       powerInterface = powerReceptor;
-      this.coord = coord;
+      this.pos = pos;
       this.emmiter = emmiter;
       this.direction = direction;
     }
@@ -126,11 +129,11 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
   }
 
   private static class ReceptorKey {
-    BlockCoord coord;
+    BlockPos pos;
     EnumFacing direction;
 
-    ReceptorKey(BlockCoord coord, EnumFacing direction) {
-      this.coord = coord;
+    ReceptorKey(@Nonnull BlockPos pos, @Nonnull EnumFacing direction) {
+      this.pos = pos;
       this.direction = direction;
     }
 
@@ -138,7 +141,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
     public int hashCode() {
       final int prime = 31;
       int result = 1;
-      result = prime * result + ((coord == null) ? 0 : coord.hashCode());
+      result = prime * result + ((pos == null) ? 0 : pos.hashCode());
       result = prime * result + ((direction == null) ? 0 : direction.hashCode());
       return result;
     }
@@ -155,11 +158,11 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
         return false;
       }
       ReceptorKey other = (ReceptorKey) obj;
-      if(coord == null) {
-        if(other.coord != null) {
+      if(pos == null) {
+        if(other.pos != null) {
           return false;
         }
-      } else if(!coord.equals(other.coord)) {
+      } else if(!pos.equals(other.pos)) {
         return false;
       }
       if(direction != other.direction) {

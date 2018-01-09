@@ -11,6 +11,7 @@ import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.conduit.item.ItemItemConduit;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
+import crazypants.enderio.conduit.power.ItemPowerConduit;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -32,6 +33,7 @@ public enum ConduitObject implements IModObject.Registerable {
 
   item_item_conduit(ItemItemConduit.class),
   item_liquid_conduit(ItemLiquidConduit.class),
+  item_power_conduit(ItemPowerConduit.class),
 
   item_extract_speed_upgrade(ItemExtractSpeedUpgrade.class),
   item_function_upgrade(ItemFunctionUpgrade.class);

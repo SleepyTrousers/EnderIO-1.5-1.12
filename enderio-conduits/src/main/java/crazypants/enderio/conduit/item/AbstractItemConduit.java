@@ -51,6 +51,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
     setRegistryName(modObj.getUnlocalisedName());
   }
 
+  // TODO Check necessity
   protected void init() {
     GameRegistry.register(this);
   }

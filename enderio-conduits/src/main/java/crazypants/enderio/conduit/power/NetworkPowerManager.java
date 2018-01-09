@@ -19,6 +19,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
+// TODO Javadocs
+
 public class NetworkPowerManager {
 
   private final PowerConduitNetwork network;
@@ -39,8 +43,8 @@ public class NetworkPowerManager {
 
   private final CapBankSupply capSupply = new CapBankSupply();
 
-  public NetworkPowerManager(PowerConduitNetwork netowrk, World world) {
-    network = netowrk;
+  public NetworkPowerManager(@Nonnull PowerConduitNetwork network, @Nonnull World world) {
+    this.network = network;
     maxEnergyStored = 64;
   }
 
@@ -216,12 +220,12 @@ public class NetworkPowerManager {
     for (IPowerConduit con : network.getConduits()) {
       if(con.hasExternalConnections()) {
         PowerTracker tracker = getOrCreateTracker(con);
-        tracker.tickStart(con.getEnergyStored(null));
+        tracker.tickStart(con.getEnergyStored());
       }
     }
   }
 
-  private void trackerSend(IPowerConduit con, int sent, boolean fromBank) {
+  private void trackerSend(@Nonnull IPowerConduit con, int sent, boolean fromBank) {
     if(!fromBank) {
       networkPowerTracker.powerSent(sent);
     }
@@ -231,7 +235,7 @@ public class NetworkPowerManager {
     getOrCreateTracker(con).powerSent(sent);
   }
 
-  private void trackerRecieve(IPowerConduit con, int recieved, boolean fromBank) {
+  private void trackerRecieve(@Nonnull IPowerConduit con, int recieved, boolean fromBank) {
     if(!fromBank) {
       networkPowerTracker.powerRecieved(recieved);
     }
@@ -248,12 +252,12 @@ public class NetworkPowerManager {
     for (IPowerConduit con : network.getConduits()) {
       if(con.hasExternalConnections()) {
         PowerTracker tracker = getOrCreateTracker(con);
-        tracker.tickEnd(con.getEnergyStored(null));
+        tracker.tickEnd(con.getEnergyStored());
       }
     }
   }
 
-  private PowerTracker getOrCreateTracker(IPowerConduit con) {
+  private PowerTracker getOrCreateTracker(@Nonnull IPowerConduit con) {
     PowerTracker result = powerTrackers.get(con);
     if(result == null) {
       result = new PowerTracker();
@@ -279,8 +283,8 @@ public class NetworkPowerManager {
         // NB: use ceil to ensure we dont through away any energy due to
         // rounding
         // errors
-        int give = (int) Math.ceil(con.getMaxEnergyStored(null) * filledRatio);
-        give = Math.min(give, con.getMaxEnergyStored(null));
+        int give = (int) Math.ceil(con.getMaxEnergyStored() * filledRatio);
+        give = Math.min(give, con.getMaxEnergyStored());
         give = Math.min(give, energyLeft);
         con.setEnergyStored(give);
         energyLeft -= give;
@@ -298,9 +302,9 @@ public class NetworkPowerManager {
     maxEnergyStored = 0;
     energyStored = 0;
     for (IPowerConduit con : network.getConduits()) {
-      maxEnergyStored += con.getMaxEnergyStored(null);
+      maxEnergyStored += con.getMaxEnergyStored();
       con.onTick();
-      energyStored += con.getEnergyStored(null);
+      energyStored += con.getEnergyStored();
     }
     energyStored = MathHelper.clamp(energyStored, 0, maxEnergyStored);
   }
