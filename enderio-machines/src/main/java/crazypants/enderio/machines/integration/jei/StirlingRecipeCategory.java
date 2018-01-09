@@ -136,8 +136,8 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_stirling_generator.getBlockNN(), 1, 0), StirlingRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_simple_stirling_generator.getBlockNN(), 1, 0), StirlingRecipeCategory.UID);
     registry.addRecipeClickArea(GuiStirlingGenerator.class, 155, 42, 16, 16, StirlingRecipeCategory.UID);
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerStirlingGenerator.class, StirlingRecipeCategory.UID, 0, 1, 2, 4 * 9);
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerStirlingGenerator.class, StirlingRecipeCategory.UID, 0, 1, 1, 4 * 9);
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerStirlingGenerator.Normal.class, StirlingRecipeCategory.UID, 0, 1, 2, 4 * 9);
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerStirlingGenerator.Simple.class, StirlingRecipeCategory.UID, 0, 1, 1, 4 * 9);
 
     long start = System.nanoTime();
 
