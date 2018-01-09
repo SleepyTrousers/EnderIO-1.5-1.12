@@ -15,6 +15,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Allows item conduits to extract more quickly
+ */
 public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipProvider, IHaveRenderers  {
 
   private static final SpeedUpgrade UPGRADES[] = SpeedUpgrade.values();
@@ -40,7 +43,7 @@ public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipPro
   }
 
   @Override
-  public String getUnlocalizedName(ItemStack par1ItemStack) {
+  public String getUnlocalizedName(@Nonnull ItemStack par1ItemStack) {
     return getSpeedUpgrade(par1ItemStack).unlocName;
   }
 
@@ -53,13 +56,13 @@ public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipPro
     }
   }
 
-  public static SpeedUpgrade getSpeedUpgrade(ItemStack par1ItemStack) {
+  public static SpeedUpgrade getSpeedUpgrade(@Nonnull ItemStack par1ItemStack) {
     int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, UPGRADES.length - 1);
     return UPGRADES[i];
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+  public String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName(itemStack);
   }
 

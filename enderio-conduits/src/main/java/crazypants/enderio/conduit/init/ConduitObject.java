@@ -8,6 +8,7 @@ import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.EnderIOConduits;
 import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
+import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -27,7 +28,8 @@ public enum ConduitObject implements IModObject.Registerable {
   // Conduits
   block_conduit_bundle(BlockConduitBundle.class),
 
-  item_extract_speed_upgrade(ItemExtractSpeedUpgrade.class);
+  item_extract_speed_upgrade(ItemExtractSpeedUpgrade.class),
+  item_function_upgrade(ItemFunctionUpgrade.class);
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
