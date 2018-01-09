@@ -370,9 +370,6 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
-  /**
-   * @return true if some information was hidden
-   */
   private void mkProgressLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.progressResult != TOPData.ProgressResult.NONE) {
       if (mode != ProbeMode.NORMAL || topShowProgressByDefault || data.progressResult == TOPData.ProgressResult.PROGRESS_NO_POWER) {

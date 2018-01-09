@@ -22,10 +22,11 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.machines.EnderIOMachines.DEPENDENCIES;
 import static crazypants.enderio.machines.EnderIOMachines.MODID;
 import static crazypants.enderio.machines.EnderIOMachines.MOD_NAME;
 import static crazypants.enderio.machines.EnderIOMachines.VERSION;
-import static crazypants.enderio.machines.EnderIOMachines.DEPENDENCIES;
 
 @Mod(modid = MODID, name = MOD_NAME, version = VERSION, /* D: */ dependencies = DEPENDENCIES /* :D */)
 @EventBusSubscriber(Side.CLIENT)
@@ -38,7 +39,7 @@ public class EnderIOMachines implements IEnderIOAddon {
 
   private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:" + crazypants.enderio.base.EnderIO.MODID;
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
-  
+
   @SubscribeEvent
   @SideOnly(Side.CLIENT)
   public static void onModelRegister(ModelRegistryEvent event) {

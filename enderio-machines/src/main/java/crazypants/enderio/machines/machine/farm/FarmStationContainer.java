@@ -1,25 +1,21 @@
 package crazypants.enderio.machines.machine.farm;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class FarmStationContainer extends AbstractMachineContainer<TileFarmStation> {
@@ -27,45 +23,17 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
   // TODO: This is a mess. Someone should make some nice, hand-selected lists of
   // what to put in here.
 
-  // TODO2: Why are these lists? Things would be simpler...
-
-  static private final @Nonnull List<ItemStack> slotItemsStacks1 = new ArrayList<ItemStack>();
-  static private final @Nonnull List<ItemStack> slotItemsStacks2 = new ArrayList<ItemStack>();
-  static private final @Nonnull List<ItemStack> slotItemsStacks3 = new ArrayList<ItemStack>();
-  static public final @Nonnull List<ItemStack> slotItemsSeeds = new ArrayList<ItemStack>();
-  static public final @Nonnull List<ItemStack> slotItemsProduce = new ArrayList<ItemStack>();
-  static public final @Nonnull List<ItemStack> slotItemsFertilizer = new ArrayList<ItemStack>();
-  static {
-    for (Item item : new Item[] { Items.WOODEN_HOE, Items.STONE_HOE, Items.IRON_HOE, Items.GOLDEN_HOE, Items.DIAMOND_HOE }) {
-      slotItemsStacks1.add(new ItemStack(item));
-    }
-    slotItemsStacks1.addAll(Config.farmHoes.getItemStacks());
-    for (Item item : new Item[] { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE,
-        ModObject.itemDarkSteelAxe.getItem() }) {
-      slotItemsStacks2.add(new ItemStack(item));
-    }
-    for (Item item : new Item[] { Items.SHEARS, ModObject.itemDarkSteelShears.getItem() }) {
-      slotItemsStacks3.add(new ItemStack(item));
-    }
-    slotItemsStacks3.addAll(FarmingTool.TREETAP.getThings().getItemStacks());
-    slotItemsSeeds.add(new ItemStack(Items.WHEAT_SEEDS));
-    slotItemsSeeds.add(new ItemStack(Items.CARROT));
-    slotItemsSeeds.add(new ItemStack(Items.POTATO));
-    slotItemsSeeds.add(new ItemStack(Blocks.RED_MUSHROOM));
-    slotItemsSeeds.add(new ItemStack(Blocks.BROWN_MUSHROOM));
-    slotItemsSeeds.add(new ItemStack(Items.NETHER_WART));
-    slotItemsSeeds.add(new ItemStack(Blocks.SAPLING));
-    slotItemsSeeds.add(new ItemStack(Items.REEDS));
-    slotItemsSeeds.add(new ItemStack(Items.MELON_SEEDS));
-    slotItemsSeeds.add(new ItemStack(Items.PUMPKIN_SEEDS));
-    slotItemsProduce.add(new ItemStack(Blocks.LOG, 1, 0));
-    slotItemsProduce.add(new ItemStack(Blocks.WHEAT));
-    slotItemsProduce.add(new ItemStack(Blocks.LEAVES, 1, 0));
-    slotItemsProduce.add(new ItemStack(Items.APPLE));
-    slotItemsProduce.add(new ItemStack(Items.MELON));
-    slotItemsProduce.add(new ItemStack(Blocks.PUMPKIN));
-    slotItemsFertilizer.add(new ItemStack(Items.DYE, 1, 15));
-  }
+  static private final @Nonnull Things slotItemsStacks1 = new Things().add(Config.farmHoes).add(Items.WOODEN_HOE).add(Items.STONE_HOE).add(Items.IRON_HOE)
+      .add(Items.GOLDEN_HOE).add(Items.DIAMOND_HOE);
+  static private final @Nonnull Things slotItemsStacks2 = new Things().add(Items.WOODEN_AXE).add(Items.STONE_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE)
+      .add(Items.DIAMOND_AXE).add(ModObject.itemDarkSteelAxe);
+  static private final @Nonnull Things slotItemsStacks3 = new Things().add(Items.SHEARS).add(ModObject.itemDarkSteelShears)
+      .add(FarmingTool.TREETAP.getThings());
+  static public final @Nonnull Things slotItemsSeeds = new Things().add(Items.WHEAT_SEEDS).add(Items.CARROT).add(Items.POTATO).add(Blocks.RED_MUSHROOM)
+      .add(Blocks.BROWN_MUSHROOM).add(Items.NETHER_WART).add(Blocks.SAPLING).add(Items.REEDS).add(Items.MELON_SEEDS).add(Items.PUMPKIN_SEEDS);
+  static public final @Nonnull Things slotItemsProduce = new Things().add(new ItemStack(Blocks.LOG, 1, 0)).add(Blocks.WHEAT)
+      .add(new ItemStack(Blocks.LEAVES, 1, 0)).add(Items.APPLE).add(Items.MELON).add(Blocks.PUMPKIN);
+  static public final @Nonnull Things slotItemsFertilizer = new Things().add(new ItemStack(Items.DYE, 1, 15));
 
   private static final int ROW_TOOLS = 19;
   private static final int ROW_IO = 44;
@@ -127,25 +95,12 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
 
   }
 
-  private static void clean(List<ItemStack> list) {
-    Iterator<ItemStack> iterator = list.iterator();
-    while (iterator.hasNext()) {
-      if (Prep.isInvalid(iterator.next())) {
-        iterator.remove();
-      }
-    }
-  }
-
   public void createGhostSlots(GhostSlotHandler slots) {
-    clean(slotItemsStacks1);
-    clean(slotItemsStacks2);
-    clean(slotItemsStacks3);
-    clean(slotItemsFertilizer);
-    clean(slotItemsSeeds);
-    clean(slotItemsProduce);
-
     for (SlotPoint p : points) {
-      slots.add(new GhostBackgroundItemSlot(p.ghosts, p.s));
+      final Slot slot = p.s;
+      if (slot != null) {
+        slots.add(new GhostBackgroundItemSlot(p.ghosts.getItemStacks(), slot));
+      }
     }
   }
 
@@ -162,12 +117,12 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
   private static class SlotPoint {
     int x, y;
     @Nonnull
-    List<ItemStack> ghosts;
+    Things ghosts;
     // It's a bit of a hack having the slot in a static field, but it is only used on the client, and there only one instance of the GUI can exist at any time,
     // so it works.
     Slot s = null;
 
-    SlotPoint(int x, int y, @Nonnull List<ItemStack> ghosts) {
+    SlotPoint(int x, int y, @Nonnull Things ghosts) {
       this.x = x;
       this.y = y;
       this.ghosts = ghosts;

@@ -34,6 +34,9 @@ public class TransceiverRenderer extends ManagedTESR<TileTransceiver> {
   @Override
   protected void renderTileEntity(@Nonnull TileTransceiver te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     TextureAtlasSprite icon = ((BlockTransceiver) block_transceiver.getBlockNN()).getPortalIcon();
+    if (icon == null) {
+      return;
+    }
 
     float time = Math.abs(50 - (EnderIO.proxy.getTickCount() % 100)) / 50f;
     float localScale = scale + 0.05f - time * 0.1f;

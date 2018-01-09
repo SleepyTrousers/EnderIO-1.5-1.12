@@ -26,7 +26,6 @@ import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.Scaler;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
-import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.teleport.TeleportUtil;
 import crazypants.enderio.machines.config.config.TelePadConfig;

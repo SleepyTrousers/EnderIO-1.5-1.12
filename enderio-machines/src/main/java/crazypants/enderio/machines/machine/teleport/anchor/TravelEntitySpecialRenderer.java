@@ -59,8 +59,8 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Man
 
   @Override
   public boolean shouldRender(@Nonnull T te, @Nonnull IBlockState blockState, int renderPass) {
-   return TravelController.instance.showTargets() &&
-       (TravelController.instance.getPosPlayerOn() == null || BlockCoord.getDist(TravelController.instance.getPosPlayerOn(), te.getLocation()) > 2)
+    return TravelController.instance.showTargets()
+        && (TravelController.instance.getPosPlayerOn() == null || BlockCoord.getDist(TravelController.instance.getPosPlayerOn(), te.getLocation()) > 2)
         && te.canSeeBlock(Minecraft.getMinecraft().player);
   }
 
@@ -68,9 +68,10 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Man
   public void renderTileEntity(@Nonnull T te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     Vector3d eye = Util.getEyePositionEio(Minecraft.getMinecraft().player);
     Vector3d loc = new Vector3d(te.getPos().getX() + 0.5, te.getPos().getY() + 0.5, te.getPos().getZ() + 0.5);
-    double maxDistance = TravelController.instance.isTravelItemActiveForRendering(Minecraft.getMinecraft().player) ? TravelSource.STAFF.getMaxDistanceTravelledSq()
+    double maxDistance = TravelController.instance.isTravelItemActiveForRendering(Minecraft.getMinecraft().player)
+        ? TravelSource.STAFF.getMaxDistanceTravelledSq()
         : TravelSource.BLOCK.getMaxDistanceTravelledSq();
-    if(eye.distanceSquared(loc) > maxDistance) {
+    if (eye.distanceSquared(loc) > maxDistance) {
       return;
     }
 
@@ -179,9 +180,9 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Man
 
     GlStateManager.popMatrix();
   }
-  
+
   @Override
-  public boolean isGlobalRenderer(T te) {
+  public boolean isGlobalRenderer(@Nonnull T te) {
     return true;
   }
 

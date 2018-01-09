@@ -136,7 +136,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
   @Override
   public void invalidate() {
     super.invalidate();
-    if (registered && world != null && !world.isRemote) {
+    if (registered && !world.isRemote) {
       TransceiverRegistry.INSTANCE.dergister(this);
       registered = false;
     }
@@ -145,7 +145,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
   @Override
   public void onChunkUnload() {
     super.onChunkUnload();
-    if (registered && world != null && !world.isRemote) {
+    if (registered && !world.isRemote) {
       TransceiverRegistry.INSTANCE.dergister(this);
       registered = false;
     }
@@ -242,7 +242,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
     }
   }
 
-  static NBTTagList createTagList(ChannelList channels) {
+  static @Nonnull NBTTagList createTagList(ChannelList channels) {
     NBTTagList res = new NBTTagList();
     for (Set<Channel> chan : channels.values()) {
       for (Channel channel : chan) {

@@ -115,7 +115,7 @@ public class ZombieGeneratorRecipeCategory extends BlankRecipeCategory<ZombieGen
     guiFluidStacks.addTooltipCallback(new ITooltipCallback<FluidStack>() {
 
       @Override
-      public void onTooltip(int slotIndex, boolean input, FluidStack ingredient, List<String> tooltip) {
+      public void onTooltip(int slotIndex, boolean input, @Nonnull FluidStack ingredient, @Nonnull List<String> tooltip) {
         if (slotIndex != 0)
           return;
         tooltip.add(Lang.GUI_ZOMBGEN_MINREQ.get(LangFluid.MB(Math.round(ZombieGenConfig.minimumTankLevel.get() * tankCapacity))));

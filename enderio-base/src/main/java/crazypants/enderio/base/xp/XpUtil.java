@@ -6,7 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Values taken from OpenMods EnchantmentUtils to ensure consistent behavior
- * @see {@link https://github.com/OpenMods/OpenModsLib/blob/master/src/main/java/openmods/utils/EnchantmentUtils.java}
+ * 
+ * @see <a href="https://github.com/OpenMods/OpenModsLib/blob/master/src/main/java/openmods/utils/EnchantmentUtils.java">OpenMods</a>
  *
  */
 public class XpUtil {
@@ -17,7 +18,6 @@ public class XpUtil {
   public static final int RATIO = 20;
   public static final int LIQUID_PER_XP_BOTTLE = XP_PER_BOTTLE * RATIO;
 
-  
   public static int liquidToExperience(int liquid) {
     return liquid / RATIO;
   }

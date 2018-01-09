@@ -37,12 +37,8 @@ public class TeleportEntityEvent extends EntityEvent {
    * 
    * @param entity
    *          The entity teleporting
-   * @param x
-   *          The target X coord
-   * @param y
-   *          The target Y coord
-   * @param z
-   *          The target Z coord
+   * @param pos
+   *          The target coord
    */
   public TeleportEntityEvent(@Nonnull Entity entity, @Nonnull TravelSource source, @Nonnull BlockPos pos, int dimension) {
     super(entity);

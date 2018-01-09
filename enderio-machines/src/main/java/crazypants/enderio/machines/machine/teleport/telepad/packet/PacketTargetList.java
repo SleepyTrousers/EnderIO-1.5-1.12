@@ -42,7 +42,7 @@ public class PacketTargetList extends MessageTileEntity<TileDialingDevice> {
     super.fromBytes(buf);
     isAdd = buf.readBoolean();
     NBTTagCompound nbt = ByteBufUtils.readTag(buf);
-    target = TelepadTarget.readFromNBT(nbt);
+    target = nbt != null ? TelepadTarget.readFromNBT(nbt) : null;
   }
 
   public static class Handler implements IMessageHandler<PacketTargetList, IMessage> {

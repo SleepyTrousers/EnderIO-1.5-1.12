@@ -1,8 +1,6 @@
 package crazypants.enderio.machines.machine.transceiver;
 
-import java.util.Iterator;
 import java.util.Random;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -19,7 +17,6 @@ import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.IOMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
-import crazypants.enderio.base.transceiver.Channel;
 import crazypants.enderio.base.transceiver.ConnectionHandler;
 import crazypants.enderio.machines.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machines.machine.transceiver.gui.GuiTransceiver;
@@ -83,51 +80,6 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
   @SideOnly(Side.CLIENT)
   @Override
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
-  }
-  //
-  // @Override
-  // public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-  // TileTransceiver te = getTileEntity(world, pos);
-  // if (te != null && player.isSneaking()) {
-  // for (ChannelType type : ChannelType.VALUES) {
-  // Set<Channel> recieving = te.getRecieveChannels(type);
-  // Set<Channel> sending = te.getSendChannels(type);
-  // String recieve = "[" + buildString(recieving) + "]";
-  // String send = "[" + buildString(sending) + "]";
-  //
-  // if (isEmpty(recieve) && isEmpty(send)) {
-  // continue;
-  // }
-  //
-  // tooltip.add(TextFormatting.WHITE + EnderIO.lang.localize("trans." + type.name().toLowerCase(Locale.US)));
-  //
-  // if (!isEmpty(recieve)) {
-  // tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.receiving"), Util.TAB + Util.ALIGNRIGHT
-  // + TextFormatting.WHITE, recieve));
-  // }
-  // if (!isEmpty(send)) {
-  // tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.sending"), Util.TAB + Util.ALIGNRIGHT
-  // + TextFormatting.WHITE, send));
-  // }
-  // }
-  // }
-  // }
-
-  private boolean isEmpty(String str) {
-    return "[]".equals(str);
-  }
-
-  private String buildString(Set<Channel> recieving) {
-    StringBuilder sb = new StringBuilder();
-    Iterator<Channel> iter = recieving.iterator();
-    while (iter.hasNext()) {
-      Channel c = iter.next();
-      sb.append(c.getName());
-      if (iter.hasNext()) {
-        sb.append(", ");
-      }
-    }
-    return sb.toString();
   }
 
   @Override

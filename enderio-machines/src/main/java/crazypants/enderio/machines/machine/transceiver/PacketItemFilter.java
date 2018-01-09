@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.transceiver;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
 
@@ -19,7 +21,7 @@ public class PacketItemFilter extends MessageTileEntity<TileTransceiver> {
   public PacketItemFilter() {
   }
 
-  public PacketItemFilter(TileTransceiver te, boolean isSend) {
+  public PacketItemFilter(@Nonnull TileTransceiver te, boolean isSend) {
     super(te);
     this.isSend = isSend;
     if (isSend) {
