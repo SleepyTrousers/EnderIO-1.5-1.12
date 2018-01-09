@@ -2,14 +2,15 @@ package crazypants.enderio.conduit.item;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.ModObject;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
+import crazypants.enderio.conduit.init.ConduitObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -20,17 +21,15 @@ public class ItemItemConduit extends AbstractItemConduit {
   private final ConduitRegistry.ConduitInfo conduitInfo;
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ModObject.itemItemConduit.name(), "enderio:itemItemConduit")
+      new ItemConduitSubtype(ConduitObject.item_item_conduit, "enderio:itemItemConduit")
   };
 
-  public static ItemItemConduit create() {
-    ItemItemConduit result = new ItemItemConduit();
-    result.init();
-    return result;
+  public static ItemItemConduit create(@Nonnull IModObject modObject) {
+    return new ItemItemConduit(modObject);
   }
 
-  protected ItemItemConduit() {
-    super(ModObject.itemItemConduit, subtypes);
+  protected ItemItemConduit(@Nonnull IModObject modObject) {
+    super(modObject, subtypes);
     conduitInfo = new ConduitRegistry.ConduitInfo(getBaseConduitType(), Offset.EAST, Offset.SOUTH, Offset.EAST, Offset.EAST);
     conduitInfo.addMember(ItemConduit.class);
     ConduitRegistry.register(conduitInfo);
@@ -39,8 +38,8 @@ public class ItemItemConduit extends AbstractItemConduit {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
-    super.registerRenderers();
+  public void registerRenderers(@Nonnull IModObject modObject) {
+    super.registerRenderers(modObject);
     conduitInfo.addRenderer(new ItemConduitRenderer());
   }
 
