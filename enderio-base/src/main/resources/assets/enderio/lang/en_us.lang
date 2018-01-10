@@ -430,7 +430,7 @@ enderio.block.tooltip.lightBlocker=Blocks Light
 enderio.grindingball.tooltip.line1=%sSAG Mill Grinding Ball
 enderio.grindingball.tooltip.line2=%sMain Output %s
 enderio.grindingball.tooltip.line3=%sBonus Output %s
-enderio.grindingball.tooltip.line4=%sPower Reduction %s
+enderio.grindingball.tooltip.line4=%sPower Use %s
 
 enderio.gui.permission.denied=Permission denied
 

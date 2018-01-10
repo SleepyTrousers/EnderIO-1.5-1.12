@@ -36,7 +36,7 @@ public class TooltipHandlerGrinding implements ITooltipCallback {
     list.add(Lang.GRINDING_BALL_1.get(TextFormatting.BLUE));
     list.add(Lang.GRINDING_BALL_2.get(TextFormatting.GRAY, toPercent(ball.getGrindingMultiplier())));
     list.add(Lang.GRINDING_BALL_3.get(TextFormatting.GRAY, toPercent(ball.getChanceMultiplier())));
-    list.add(Lang.GRINDING_BALL_4.get(TextFormatting.GRAY, toPercent(1 - ball.getPowerMultiplier())));
+    list.add(Lang.GRINDING_BALL_4.get(TextFormatting.GRAY, toPercent(ball.getPowerMultiplier())));
   }
 
   private String toPercent(float fl) {
