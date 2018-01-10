@@ -691,7 +691,7 @@ XML editor will display that as tooltips when editing this file.
     <alloying energy="2000" exp="0.25">
       <input name="ingotGold"/>
       <input name="ingotSilver"/>
-      <output name="ingotElectrum"/>
+      <output name="ingotElectrum" amount="2"/>
     </alloying>
   </recipe>
 
