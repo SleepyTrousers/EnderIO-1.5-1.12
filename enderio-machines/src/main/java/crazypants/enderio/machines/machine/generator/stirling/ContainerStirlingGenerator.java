@@ -17,6 +17,18 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerStirlingGenerator<T extends TileStirlingGenerator> extends AbstractMachineContainer<T> implements ISolidFuelHandler {
 
+  public static class Normal extends ContainerStirlingGenerator<TileStirlingGenerator> {
+    public Normal(@Nonnull InventoryPlayer playerInv, @Nonnull TileStirlingGenerator te) {
+      super(playerInv, te);
+    }
+  }
+
+  public static class Simple extends ContainerStirlingGenerator<TileStirlingGenerator.Simple> {
+    public Simple(@Nonnull InventoryPlayer playerInv, @Nonnull TileStirlingGenerator.Simple te) {
+      super(playerInv, te);
+    }
+  }
+
   public ContainerStirlingGenerator(@Nonnull InventoryPlayer playerInv, @Nonnull T te) {
     super(playerInv, te);
   }
