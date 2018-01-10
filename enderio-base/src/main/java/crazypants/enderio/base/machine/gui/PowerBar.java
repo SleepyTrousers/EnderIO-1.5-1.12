@@ -72,7 +72,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     this(machine, owner, x, y, -1, height);
   }
 
-  protected PowerBar(@Nonnull T machine, @Nonnull GuiContainerBaseEIO owner, int x, int y, int width, int height) {
+  public PowerBar(@Nonnull T machine, @Nonnull GuiContainerBaseEIO owner, int x, int y, int width, int height) {
     this.machine = machine;
     this.owner = owner;
     this.x = x > 0 ? x : 15;
