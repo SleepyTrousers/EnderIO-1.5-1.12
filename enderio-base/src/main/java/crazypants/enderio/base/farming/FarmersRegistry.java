@@ -31,14 +31,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public final class FarmersRegistry {
 
-  public static final @Nonnull Things slotItemsAxeTools = new Things().add(Items.WOODEN_HOE).add(Items.STONE_HOE).add(Items.IRON_HOE).add(Items.GOLDEN_HOE)
+  public static final @Nonnull Things slotItemsHoeTools = new Things().add(Items.WOODEN_HOE).add(Items.STONE_HOE).add(Items.IRON_HOE).add(Items.GOLDEN_HOE)
       .add(Items.DIAMOND_HOE).add(Config.farmHoes);
-  public static final @Nonnull Things slotItemsHoeTools = new Things().add(Items.WOODEN_AXE).add(Items.STONE_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE)
+  public static final @Nonnull Things slotItemsAxeTools = new Things().add(Items.WOODEN_AXE).add(Items.STONE_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE)
       .add(Items.DIAMOND_AXE).add(ModObject.itemDarkSteelAxe);
   public static final @Nonnull Things slotItemsExtraTools = new Things().add(Items.SHEARS).add(ModObject.itemDarkSteelShears);
   public static final @Nonnull Things slotItemsSeeds = new Things("treeSapling").add(Items.WHEAT_SEEDS).add(Items.CARROT).add(Items.POTATO)
-      .add(Blocks.RED_MUSHROOM)
-      .add(Blocks.BROWN_MUSHROOM).add(Items.NETHER_WART).add(Blocks.SAPLING).add(Items.REEDS).add(Items.MELON_SEEDS).add(Items.PUMPKIN_SEEDS);
+      .add(Blocks.RED_MUSHROOM).add(Blocks.BROWN_MUSHROOM).add(Items.NETHER_WART).add(Blocks.SAPLING).add(Items.REEDS).add(Items.MELON_SEEDS)
+      .add(Items.PUMPKIN_SEEDS);
   public static final @Nonnull Things slotItemsProduce = new Things("logWood").add(new ItemStack(Blocks.LOG, 1, 0)).add(Blocks.WHEAT)
       .add(new ItemStack(Blocks.LEAVES, 1, 0)).add(Items.APPLE).add(Items.MELON).add(Blocks.PUMPKIN).add(Blocks.YELLOW_FLOWER).add(Blocks.RED_FLOWER);
   public static final @Nonnull Things slotItemsFertilizer = new Things().add(new ItemStack(Items.DYE, 1, 15));
