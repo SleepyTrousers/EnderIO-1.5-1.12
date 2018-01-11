@@ -1,0 +1,85 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"elements": [
+		{
+			"name": "cube",
+			"from": [0, 12, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 16, 4],
+					"texture": "#centerSide"
+				},
+				"east": {
+					"uv": [0, 0, 16, 4],
+					"texture": "#centerSide"
+				},
+				"south": {
+					"uv": [0, 0, 16, 4],
+					"texture": "#centerSide"
+				},
+				"west": {
+					"uv": [0, 0, 16, 4],
+					"texture": "#centerSide"
+				},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#center"},
+				"down": {"uv": [16, 16, 0, 0], "texture": "#center"}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [2, 6, 2],
+			"to": [14, 12, 14],
+			"faces": {
+				"north": {
+					"uv": [2, 4, 14, 10],
+					"texture": "#centerSide"
+				},
+				"east": {
+					"uv": [2, 4, 14, 10],
+					"texture": "#centerSide"
+				},
+				"south": {
+					"uv": [2, 4, 14, 10],
+					"texture": "#centerSide"
+				},
+				"west": {
+					"uv": [2, 4, 14, 10],
+					"texture": "#centerSide"
+				}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [0, 0, 0],
+			"to": [16, 6, 16],
+			"faces": {
+				"north": {
+					"uv": [0, 10, 16, 16],
+					"texture": "#centerSide"
+				},
+				"east": {
+					"uv": [0, 10, 16, 16],
+					"texture": "#centerSide"
+				},
+				"south": {
+					"uv": [0, 10, 16, 16],
+					"texture": "#centerSide"
+				},
+				"west": {
+					"uv": [0, 10, 16, 16],
+					"texture": "#centerSide"
+				},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#center"},
+				"down": {
+					"uv": [16, 16, 0, 0],
+					"texture": "#machineBottom",
+					"cullface": "down"
+				}
+			},
+			"type": "cube"
+		}
+	]
+}

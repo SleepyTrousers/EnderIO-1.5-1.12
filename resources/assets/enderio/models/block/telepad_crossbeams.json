@@ -1,0 +1,65 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"elements": [
+		{
+			"name": "cube",
+			"from": [-12, 13, 6.5],
+			"to": [28, 15, 9.5],
+			"faces": {
+				"north": {
+					"uv": [0, 5.5, 16, 6],
+					"texture": "#parts"
+				},
+				"south": {
+					"uv": [0, 5.5, 16, 6],
+					"texture": "#parts"
+				},
+				"up": {
+					"uv": [0, 4.5, 16, 5.5],
+					"texture": "#parts"
+				},
+				"down": {
+					"uv": [0, 4.5, 16, 5.5],
+					"texture": "#parts"
+				}
+			},
+			"rotation": {
+				"origin": [8, 13, 8],
+				"axis": "y",
+				"angle": 45,
+				"rescale": true
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [-12, 13, 6.5],
+			"to": [28, 15, 9.5],
+			"faces": {
+				"north": {
+					"uv": [0, 5.5, 16, 6],
+					"texture": "#parts"
+				},
+				"south": {
+					"uv": [0, 5.5, 16, 6],
+					"texture": "#parts"
+				},
+				"up": {
+					"uv": [0, 4.5, 16, 5.5],
+					"texture": "#parts"
+				},
+				"down": {
+					"uv": [0, 4.5, 16, 5.5],
+					"texture": "#parts"
+				}
+			},
+			"rotation": {
+				"origin": [8, 13, 8],
+				"axis": "y",
+				"angle": -45,
+				"rescale": true
+			},
+			"type": "cube"
+		}
+	]
+}
