@@ -14,7 +14,7 @@ import crazypants.enderio.base.farming.farmers.PickableFarmer;
 import crazypants.enderio.base.farming.farmers.PlantableFarmer;
 import crazypants.enderio.base.farming.farmers.StemFarmer;
 import crazypants.enderio.base.farming.farmers.TreeFarmer;
-import crazypants.enderio.base.farming.farmers.TreeHarvestUtil;
+import crazypants.enderio.base.farming.harvesters.IHarvestingTarget;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -63,7 +63,7 @@ public class NaturaUtil {
         PickableFarmer farmer = new NaturaBerryFarmer(berryBlock, 0, 3, new ItemStack(berryItem, 1, 0));
         farmer.setRequiresTilling(false);
         event.getRegistry().register(farmer.setRegistryName("natura", "berries"));
-        TreeHarvestUtil.addLeavesExcemption(berryBlock); // berry bushes are leaves, idiotic...
+        IHarvestingTarget.addLeavesExcemption(berryBlock); // berry bushes are leaves, idiotic...
         count++;
       }
     }

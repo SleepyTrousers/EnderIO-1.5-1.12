@@ -22,6 +22,7 @@ import crazypants.enderio.api.farm.IFarmingTool;
 import crazypants.enderio.api.farm.IFertilizer;
 import crazypants.enderio.api.farm.IFertilizerResult;
 import crazypants.enderio.api.farm.IHarvestResult;
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.base.farming.fertilizer.Fertilizer;
 import crazypants.enderio.base.farming.registry.Commune;
@@ -379,7 +380,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   @Override
   public int getInventoryStackLimit(int slot) {
     if (slot >= minSupSlot && slot <= maxSupSlot) {
-      return Math.min(FARM_STACK_LIMIT.get(getCapacitorData()), 64);
+      return getCapacitorData() == DefaultCapacitorData.NONE ? 0 : Math.min(FARM_STACK_LIMIT.get(getCapacitorData()), 64);
     }
     return 64;
   }

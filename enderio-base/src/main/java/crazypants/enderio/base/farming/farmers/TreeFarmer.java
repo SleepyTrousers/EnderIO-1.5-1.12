@@ -18,6 +18,9 @@ import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.FarmingTool;
+import crazypants.enderio.base.farming.harvesters.FarmHarvestingTarget;
+import crazypants.enderio.base.farming.harvesters.IHarvestingTarget;
+import crazypants.enderio.base.farming.harvesters.TreeHarvester;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -41,7 +44,6 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   protected final @Nonnull Things saplings;
   protected final @Nonnull Things woods;
 
-  protected final @Nonnull TreeHarvestUtil harvester = new TreeHarvestUtil();
   private boolean ignoreMeta = false;
 
   public TreeFarmer(@Nonnull Things saplings, @Nonnull Things woods) {
@@ -73,7 +75,7 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
     return isWood(block);
   }
 
-  protected boolean isWood(Block block) {
+  public boolean isWood(Block block) {
     return woods.contains(block);
   }
 
@@ -161,7 +163,8 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
 
     final World world = farm.getWorld();
     final HarvestResult res = new HarvestResult();
-    harvester.harvest(farm, this, bc, res);
+    final IHarvestingTarget target = new FarmHarvestingTarget(this, farm);
+    TreeHarvester.harvest(world, bc, res, target);
     Collections.sort(res.getHarvestedBlocks(), comp);
 
     List<BlockPos> actualHarvests = new ArrayList<BlockPos>();
@@ -197,28 +200,28 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
         farm.setNotification(FarmNotification.NO_SHEARS);
       }
     } else {
+      FarmingTool tool = isWood(blk) || !hasHoe ? FarmingTool.AXE : FarmingTool.HOE;
       drops = blk.getDrops(world, harvestPos, state, fortune);
-      EntityPlayerMP joe = farm.startUsingItem(FarmingTool.AXE);
+      EntityPlayerMP joe = farm.startUsingItem(tool);
       chance = ForgeEventFactory.fireBlockHarvesting(drops, joe.world, harvestPos, state, fortune, chance, false, joe);
-      if (isWood(blk) || !hasHoe) {
-        farm.registerAction(FarmingAction.HARVEST, FarmingTool.AXE, state, harvestPos);
-        hasAxe = farm.hasTool(FarmingTool.AXE);
-        if (!hasAxe) {
-          farm.setNotification(FarmNotification.NO_AXE);
-        }
-      } else {
-        farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, state, harvestPos);
-        hasHoe = farm.hasTool(FarmingTool.HOE);
-        if (!hasHoe) {
-          farm.setNotification(FarmNotification.NO_HOE);
-        }
-      }
-      NNList.wrap(farm.endUsingItem(FarmingTool.HOE)).apply(new Callback<ItemStack>() {
+      farm.registerAction(FarmingAction.HARVEST, tool, state, harvestPos);
+      NNList.wrap(farm.endUsingItem(tool)).apply(new Callback<ItemStack>() {
         @Override
         public void apply(@Nonnull ItemStack drop) {
           result.getDrops().add(new EntityItem(world, harvestPos.getX() + 0.5, harvestPos.getY() + 0.5, harvestPos.getZ() + 0.5, drop.copy()));
         }
       });
+      if (tool == FarmingTool.AXE) {
+        hasAxe = farm.hasTool(FarmingTool.AXE);
+        if (!hasAxe) {
+          farm.setNotification(FarmNotification.NO_AXE);
+        }
+      } else {
+        hasHoe = farm.hasTool(FarmingTool.HOE);
+        if (!hasHoe) {
+          farm.setNotification(FarmNotification.NO_HOE);
+        }
+      }
     }
 
     if (drops != null) {

@@ -12,6 +12,7 @@ import crazypants.enderio.api.farm.IFarmer;
 import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.FarmingTool;
+import crazypants.enderio.base.farming.harvesters.IHarvestingTarget;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -82,7 +83,7 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
           }
         }
         harvestLeavesAround(farm, world, res, pos);
-      } else if (TreeHarvestUtil.isLeaves(state)) {
+      } else if (IHarvestingTarget.isDefaultLeaves(state)) {
         harvestLeavesBlock(farm, res, world, pos);
       } else {
         return res;
@@ -94,7 +95,7 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
 
   private void harvestLeavesBlock(@Nonnull final IFarmer farm, @Nonnull final HarvestResult res, final @Nonnull World world, final @Nonnull BlockPos pos) {
     IBlockState state = world.getBlockState(pos);
-    if (TreeHarvestUtil.isLeaves(state)) {
+    if (IHarvestingTarget.isDefaultLeaves(state)) {
       harvestSingleBlock(farm, world, res, pos);
       res.getHarvestedBlocks().add(pos);
       harvestLeavesAround(farm, world, res, pos);
