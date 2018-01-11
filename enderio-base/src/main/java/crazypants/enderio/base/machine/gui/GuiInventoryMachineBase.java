@@ -2,6 +2,8 @@ package crazypants.enderio.base.machine.gui;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.ContainerEnder;
+
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -19,7 +21,8 @@ public class GuiInventoryMachineBase<T extends AbstractInventoryMachineEntity> e
     SlotDefinition slotDef = getTileEntity().getSlotDefinition();
 
     for (Slot invSlot : inventorySlots.inventorySlots) {
-      if (invSlot.inventory == getTileEntity()) {
+      if (invSlot.inventory == getTileEntity() // this is a bit hacky, we need a better way for cap-based machines
+          || (inventorySlots instanceof ContainerEnder && invSlot.inventory == ((ContainerEnder<?>) inventorySlots).getInv())) {
         if ((mode == IoMode.PULL || mode == IoMode.PUSH_PULL) && slotDef.isInputSlot(invSlot.getSlotIndex())) {
           renderSlotHighlight(invSlot, PULL_COLOR);
         } else if ((mode == IoMode.PUSH || mode == IoMode.PUSH_PULL) && slotDef.isOutputSlot(invSlot.getSlotIndex())) {
