@@ -20,7 +20,7 @@ public interface IWirelessCharger {
   int takeEnergy(int max);
 
   /**
-   * Can prevent {@link #chargeItems(ItemStack[])} from being called.
+   * Can prevent {@link #chargeItems(NonNullList)} from being called.
    * 
    * @return If this charger is "active". If the charger is not active it will not be attempted to be used.
    */

@@ -13,9 +13,6 @@ public class PoweredSpawnerRecipeRegistry {
 
   private static final PoweredSpawnerRecipeRegistry instance = new PoweredSpawnerRecipeRegistry();
 
-  private static final @Nonnull String KEY_ENTITY_NAME = "entityName";
-  private static final @Nonnull String KEY_COST_MULTIPLIER = "costMultiplier";
-
   private double defaultCostMultiplier = 1f;
   private boolean allowUnconfiguredMobs = true;
 
