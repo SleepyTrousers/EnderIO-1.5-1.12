@@ -13,36 +13,23 @@
             </annotation>
             <complexType>
               <sequence>
-                <element minOccurs="0" maxOccurs="unbounded" name="config">
+                <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
                   <annotation>
                     <documentation>Restricts this alias to only be used if the given config value has the given value.
                     </documentation>
-                  </annotation>
-                  <complexType>
-                    <attribute use="required" name="section" type="string" />
-                    <attribute use="required" name="name" type="string" />
-                    <attribute use="optional" name="value" type="boolean" />
-                  </complexType>
+                  </annotation>
                 </element>
-                <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
                   <annotation>
                     <documentation>Restricts this alias to only be used if the given elements descriptor can (not) be found in the
                       game. Use this to prevent replacing good aliases with bad ones.
                     </documentation>
-                  </annotation>
-                  <complexType>
-                    <attribute use="required" name="item" type="string" />
-                    <attribute use="optional" name="reverse" type="boolean" />
-                  </complexType>
+                  </annotation>
                 </element>
-                <element minOccurs="0" maxOccurs="1" name="level">
+                <element minOccurs="0" maxOccurs="1" name="level" type="enderio:levelComplexType">
                   <annotation>
                     <documentation>Restricts this alias to only be used if the recipe level is in the given range.</documentation>
-                  </annotation>
-                  <complexType>
-                    <attribute use="optional" name="minlevel" type="int" />
-                    <attribute use="optional" name="maxlevel" type="int" />
-                  </complexType>
+                  </annotation>
                 </element>
               </sequence>
               <attribute name="name" type="string" use="required">
@@ -67,36 +54,23 @@
             </annotation>
             <complexType>
               <sequence>
-                <element minOccurs="0" maxOccurs="unbounded" name="config">
+                <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
                   <annotation>
                     <documentation>Restricts this recipe to only be used if the given config value has the given value.
                     </documentation>
-                  </annotation>
-                  <complexType>
-                    <attribute use="required" name="section" type="string" />
-                    <attribute use="required" name="name" type="string" />
-                    <attribute use="optional" name="value" type="boolean" />
-                  </complexType>
+                  </annotation>
                 </element>
-                <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
                   <annotation>
                     <documentation>Restricts this recipe to only be used if the given game element can (not) be found in the game.
                     </documentation>
-                  </annotation>
-                  <complexType>
-                    <attribute use="required" name="item" type="string" />
-                    <attribute use="optional" name="reverse" type="boolean" />
-                  </complexType>
+                  </annotation>
                 </element>
-                <element minOccurs="0" maxOccurs="1" name="level">
+                <element minOccurs="0" maxOccurs="1" name="level" type="enderio:levelComplexType">
                   <annotation>
                     <documentation>Restricts this recipe to only be used if the recipe level is within the given bounds.
                     </documentation>
-                  </annotation>
-                  <complexType>
-                    <attribute use="optional" name="minlevel" type="int" />
-                    <attribute use="optional" name="maxlevel" type="int" />
-                  </complexType>
+                  </annotation>
                 </element>
                 <choice minOccurs="1" maxOccurs="1">
                   <element minOccurs="1" maxOccurs="unbounded" name="crafting">
@@ -105,37 +79,24 @@
                     </annotation>
                     <complexType>
                       <sequence>
-                        <element minOccurs="0" maxOccurs="unbounded" name="config">
+                        <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the given config value has the given value.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="required" name="section" type="string" />
-                            <attribute use="required" name="name" type="string" />
-                            <attribute use="optional" name="value" type="boolean" />
-                          </complexType>
+                          </annotation>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                        <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the given game element can (not) be found in
                               the game.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="required" name="item" type="string" />
-                            <attribute use="optional" name="reverse" type="boolean" />
-                          </complexType>
+                          </annotation>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded" name="level">
+                        <element minOccurs="0" maxOccurs="unbounded" name="level" type="enderio:levelComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the recipe level is within the given bounds.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="optional" name="minlevel" type="int" />
-                            <attribute use="optional" name="maxlevel" type="int" />
-                          </complexType>
+                          </annotation>
                         </element>
                         <choice minOccurs="1" maxOccurs="1">
                           <element minOccurs="1" maxOccurs="1" name="grid">
@@ -256,37 +217,24 @@
                     </annotation>
                     <complexType>
                       <sequence>
-                        <element minOccurs="0" maxOccurs="unbounded" name="config">
+                        <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the given config value has the given value.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="required" name="section" type="string" />
-                            <attribute use="required" name="name" type="string" />
-                            <attribute use="optional" name="value" type="boolean" />
-                          </complexType>
+                          </annotation>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                        <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the given game element can (not) be found in
                               the game.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="required" name="item" type="string" />
-                            <attribute use="optional" name="reverse" type="boolean" />
-                          </complexType>
+                          </annotation>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded" name="level">
+                        <element minOccurs="0" maxOccurs="unbounded" name="level" type="enderio:levelComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the recipe level is within the given bounds.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="optional" name="minlevel" type="int" />
-                            <attribute use="optional" name="maxlevel" type="int" />
-                          </complexType>
+                          </annotation>
                         </element>
                         <element minOccurs="1" maxOccurs="1" name="input">
                           <complexType>
@@ -393,37 +341,24 @@
                     </annotation>
                     <complexType>
                       <sequence>
-                        <element minOccurs="0" maxOccurs="unbounded" name="config">
+                        <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the given config value has the given value.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="required" name="section" type="string" />
-                            <attribute use="required" name="name" type="string" />
-                            <attribute use="optional" name="value" type="boolean" />
-                          </complexType>
+                          </annotation>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                        <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the given game element can (not) be found in
                               the game.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="required" name="item" type="string" />
-                            <attribute use="optional" name="reverse" type="boolean" />
-                          </complexType>
+                          </annotation>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded" name="level">
+                        <element minOccurs="0" maxOccurs="unbounded" name="level" type="enderio:levelComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the recipe level is within the given bounds.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="optional" name="minlevel" type="int" />
-                            <attribute use="optional" name="maxlevel" type="int" />
-                          </complexType>
+                          </annotation>
                         </element>
                         <element minOccurs="1" maxOccurs="1" name="input">
                           <annotation>
@@ -471,37 +406,24 @@
                     </annotation>
                     <complexType>
                       <sequence>
-                        <element minOccurs="0" maxOccurs="unbounded" name="config">
+                        <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the given config value has the given value.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="required" name="section" type="string" />
-                            <attribute use="required" name="name" type="string" />
-                            <attribute use="optional" name="value" type="boolean" />
-                          </complexType>
+                          </annotation>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                        <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the given game element can (not) be found in
                               the game.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="required" name="item" type="string" />
-                            <attribute use="optional" name="reverse" type="boolean" />
-                          </complexType>
+                          </annotation>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded" name="level">
+                        <element minOccurs="0" maxOccurs="unbounded" name="level" type="enderio:levelComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the recipe level is within the given bounds.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="optional" name="minlevel" type="int" />
-                            <attribute use="optional" name="maxlevel" type="int" />
-                          </complexType>
+                          </annotation>
                         </element>
                         <element minOccurs="1" maxOccurs="1" name="input">
                           <annotation>
@@ -552,37 +474,24 @@
                         <documentation>Spawn recipes to be used in the powered spawner.</documentation>
                       </annotation>
                       <sequence>
-                        <element minOccurs="0" maxOccurs="unbounded" name="config">
+                        <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the given config value has the given value.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="required" name="section" type="string" />
-                            <attribute use="required" name="name" type="string" />
-                            <attribute use="optional" name="value" type="boolean" />
-                          </complexType>
+                          </annotation>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                        <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the given game element can (not) be found in
                               the game.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="required" name="item" type="string" />
-                            <attribute use="optional" name="reverse" type="boolean" />
-                          </complexType>
+                          </annotation>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded" name="level">
+                        <element minOccurs="0" maxOccurs="unbounded" name="level" type="enderio:levelComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the recipe level is within the given bounds.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="optional" name="minlevel" type="int" />
-                            <attribute use="optional" name="maxlevel" type="int" />
-                          </complexType>
+                          </annotation>
                         </element>
                         <element minOccurs="1" maxOccurs="unbounded" name="entity">
                           <annotation>
@@ -617,37 +526,24 @@
                     </annotation>
                     <complexType>
                       <sequence>
-                        <element minOccurs="0" maxOccurs="unbounded" name="config">
+                        <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the given config value has the given value.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="required" name="section" type="string" />
-                            <attribute use="required" name="name" type="string" />
-                            <attribute use="optional" name="value" type="boolean" />
-                          </complexType>
+                          </annotation>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                        <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the given game element can (not) be found in
                               the game.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="required" name="item" type="string" />
-                            <attribute use="optional" name="reverse" type="boolean" />
-                          </complexType>
+                          </annotation>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded" name="level">
+                        <element minOccurs="0" maxOccurs="unbounded" name="level" type="enderio:levelComplexType">
                           <annotation>
                             <documentation> Restricts this variant to only be used if the recipe level is within the given bounds.
                             </documentation>
-                          </annotation>
-                          <complexType>
-                            <attribute use="optional" name="minlevel" type="int" />
-                            <attribute use="optional" name="maxlevel" type="int" />
-                          </complexType>
+                          </annotation>
                         </element>
                         <element minOccurs="1" maxOccurs="3" name="input">
                           <complexType>
@@ -771,4 +667,17 @@
       </sequence>
     </complexType>
   </element>
+  <complexType name="configComplexType">
+    <attribute use="required" name="section" type="string"></attribute>
+    <attribute use="required" name="name" type="string"></attribute>
+    <attribute use="optional" name="value" type="boolean"></attribute>
+  </complexType>
+  <complexType name="dependencyComplexType">
+    <attribute use="required" name="item" type="string"></attribute>
+    <attribute use="optional" name="reverse" type="boolean"></attribute>
+  </complexType>
+  <complexType name="levelComplexType">
+    <attribute use="optional" name="minlevel" type="int"></attribute>
+    <attribute use="optional" name="maxlevel" type="int"></attribute>
+  </complexType>
 </schema>
