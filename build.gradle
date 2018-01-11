@@ -32,17 +32,11 @@ if (ext.user != null) {
     }
 }
 
-task copyJars(type: Copy) {
-    from subprojects.collect {
-        it.tasks.withType(Jar)
-    }
-    into "$buildDir/libs"
-}
+
 
 // task apiJar(type: Jar) {
 // }
 
-build.dependsOn copyJars
 
 allprojects {
     apply plugin: 'net.minecraftforge.gradle.forge'
@@ -271,6 +265,15 @@ apiJar {
         from subproject.sourceSets.api.output.resourcesDir
     }
 }
+
+task copyJars(type: Copy, dependsOn: subprojects.tasks['signJar']) {
+    from subprojects.collect {
+        it.tasks.withType(Jar)
+    }
+    into "$buildDir/libs"
+}
+build.dependsOn copyJars
+
 
 tasks.curseforge.enabled = !dev && project.hasProperty('curseforge_key')
 curseforge {
