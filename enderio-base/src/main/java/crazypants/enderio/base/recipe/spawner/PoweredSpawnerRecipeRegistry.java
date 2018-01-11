@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class PoweredSpawnerRecipeRegistry {
@@ -59,16 +58,6 @@ public class PoweredSpawnerRecipeRegistry {
     if (costMultiplier > 0) {
       costs.put(entityName, costMultiplier);
     }
-  }
-
-  public void addEntityCostFromNBT(@Nonnull NBTTagCompound tag) {
-    if (!tag.hasKey(KEY_ENTITY_NAME)) {
-      return;
-    }
-    if (!tag.hasKey(KEY_COST_MULTIPLIER)) {
-      return;
-    }
-    addEntityCost(new ResourceLocation(tag.getString(KEY_ENTITY_NAME)), tag.getDouble(KEY_COST_MULTIPLIER));
   }
 
 }

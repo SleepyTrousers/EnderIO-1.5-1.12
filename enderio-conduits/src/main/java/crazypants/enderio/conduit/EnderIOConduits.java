@@ -3,7 +3,7 @@ package crazypants.enderio.conduit;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.base.config.IEnderIOAddon;
+import crazypants.enderio.api.addon.IEnderIOAddon;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 

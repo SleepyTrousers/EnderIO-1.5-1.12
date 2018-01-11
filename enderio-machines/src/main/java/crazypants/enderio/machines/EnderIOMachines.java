@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.Lang;
 
-import crazypants.enderio.base.config.IEnderIOAddon;
+import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.machines.config.Config;
 import crazypants.enderio.machines.config.ConfigHandler;
 import crazypants.enderio.machines.config.RecipeLoaderMachines;
