@@ -14,7 +14,7 @@ public interface IDialingDeviceRemoteExec {
   public interface GUI extends IRemoteExec.IGui {
 
     default void doTeleport(@Nonnull BlockPos telepad, int targetID, boolean initiateTeleport) {
-      GuiPacket.send(this, ID_DO_TELEPORT, targetID, true, telepad);
+      GuiPacket.send(this, ID_DO_TELEPORT, targetID, initiateTeleport, telepad);
     }
 
   }
