@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.gui.item;
 
-import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.base.filter.IItemFilter;
 
 public interface IItemFilterContainer {
 

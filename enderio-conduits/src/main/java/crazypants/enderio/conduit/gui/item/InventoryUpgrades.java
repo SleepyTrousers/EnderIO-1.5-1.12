@@ -1,13 +1,7 @@
 package crazypants.enderio.conduit.gui.item;
 
-import static crazypants.enderio.base.ModObject.itemExtractSpeedUpgrade;
-
-import javax.annotation.Nullable;
-
-import crazypants.enderio.conduit.item.FunctionUpgrade;
+import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
-import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -16,6 +10,13 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 
+import javax.annotation.Nonnull;
+
+import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_upgrade;
+
+/**
+ * The Inventory for Holding Conduit Upgrades
+ */
 public class InventoryUpgrades implements IInventory {
 
   IItemConduit itemConduit;
@@ -32,12 +33,19 @@ public class InventoryUpgrades implements IInventory {
   }
 
   @Override
+  public boolean isEmpty() {
+    return false;
+  }
+
+  @Override
+  @Nonnull
   public ItemStack getStackInSlot(int slot) {
     switch (slot) {
     case 0:
       return itemConduit.getSpeedUpgrade(dir);
-    case 1:
-      return itemConduit.getFunctionUpgrade(dir);
+      // TODO Inventory
+//    case 1:
+//      return itemConduit.getFunctionUpgrade(dir);
     case 2:
       return itemConduit.getInputFilterUpgrade(dir);
     case 3:
@@ -48,40 +56,42 @@ public class InventoryUpgrades implements IInventory {
   }
 
   @Override
+  @Nonnull
   public ItemStack decrStackSize(int slot, int num) {
     ItemStack current = getStackInSlot(slot);
-    if (current == null) {
+    if (current.isEmpty()) {
       return current;
     }
     ItemStack result;
     ItemStack remaining;
-    if (num >= current.stackSize) {
+    if (num >= current.getCount()) {
       result = current.copy();
-      remaining = null;
+      remaining = ItemStack.EMPTY;
     } else {
       result = current.copy();
-      result.stackSize = num;
+      result.setCount(num);
       remaining = current.copy();
-      remaining.stackSize -= num;
+      remaining.shrink(num);
     }
     setInventorySlotContents(slot, remaining);
     return result;
   }
 
   @Override
-  public void setInventorySlotContents(int slot, @Nullable ItemStack var2) {
+  public void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
     switch (slot) {
     case 0:
-      itemConduit.setSpeedUpgrade(dir, var2);
+      itemConduit.setSpeedUpgrade(dir, stack);
       break;
-    case 1:
-      itemConduit.setFunctionUpgrade(dir, var2);
-      break;
+      // TODO Inventory
+//    case 1:
+//      itemConduit.setFunctionUpgrade(dir, stack);
+//      break;
     case 2:
-      itemConduit.setInputFilterUpgrade(dir, var2);
+      itemConduit.setInputFilterUpgrade(dir, stack);
       break;
     case 3:
-      itemConduit.setOutputFilterUpgrade(dir, var2);
+      itemConduit.setOutputFilterUpgrade(dir, stack);
       break;
     }
   }
@@ -89,18 +99,20 @@ public class InventoryUpgrades implements IInventory {
   @Override
   public void clear() {
     for (int i = 0; i < 4; i++) {
-      setInventorySlotContents(i, null);
+      setInventorySlotContents(i, ItemStack.EMPTY);
     }
   }
 
   @Override
+  @Nonnull
   public ItemStack removeStackFromSlot(int index) {
     ItemStack res = getStackInSlot(index);
-    setInventorySlotContents(index, null);
+    setInventorySlotContents(index, ItemStack.EMPTY);
     return res;
   }
 
   @Override
+  @Nonnull
   public String getName() {
     return "Upgrades";
   }
@@ -120,12 +132,12 @@ public class InventoryUpgrades implements IInventory {
   }
 
   @Override
-  public boolean isUseableByPlayer(EntityPlayer var1) {
+  public boolean isUsableByPlayer(@Nonnull EntityPlayer var1) {
     return true;
   }
 
   @Override
-  public void openInventory(EntityPlayer e) {
+  public void openInventory(@Nonnull EntityPlayer e) {
   }
 
   @Override
@@ -133,17 +145,18 @@ public class InventoryUpgrades implements IInventory {
   }
 
   @Override
-  public boolean isItemValidForSlot(int slot, ItemStack item) {
-    if (item == null) {
+  public boolean isItemValidForSlot(int slot, @Nonnull ItemStack item) {
+    if (item.isEmpty()) {
       return false;
     }
     switch (slot) {
     case 0:
-      return item.getItem() == itemExtractSpeedUpgrade.getItem();
-    case 1:
-      final FunctionUpgrade functionUpgrade = ItemFunctionUpgrade.getFunctionUpgrade(item);
-      return functionUpgrade != null
-          && (functionUpgrade != FunctionUpgrade.INVENTORY_PANEL || !itemConduit.isConnectedToNetworkAwareBlock(dir));
+      return item.getItem() == item_extract_speed_upgrade.getItem();
+      // TODO Inventory
+//    case 1:
+//      final FunctionUpgrade functionUpgrade = ItemFunctionUpgrade.getFunctionUpgrade(item);
+//      return functionUpgrade != null
+//          && (functionUpgrade != FunctionUpgrade.INVENTORY_PANEL || !itemConduit.isConnectedToNetworkAwareBlock(dir));
     case 2:
     case 3:
       return item.getItem() instanceof IItemFilterUpgrade;
@@ -152,6 +165,7 @@ public class InventoryUpgrades implements IInventory {
   }
 
   @Override
+  @Nonnull
   public ITextComponent getDisplayName() {
     return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
   }

@@ -1,10 +1,5 @@
 package crazypants.enderio.conduit.gui.item;
 
-import java.awt.Rectangle;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.IconButton;
@@ -12,13 +7,12 @@ import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.button.TooltipButton;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
-
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.filter.filters.ExistingItemFilter;
+import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.filter.ExistingItemFilter;
 import crazypants.enderio.conduit.packet.PacketExistingItemFilterSnapshot;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import net.minecraft.client.Minecraft;
@@ -26,6 +20,10 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
+import java.util.List;
 
 public class ExistingItemFilterGui implements IItemFilterGui {
 
@@ -38,10 +36,8 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   private static final int ID_CLEAR = GuiExternalConnection.nextButtonId();
   private static final int ID_SHOW = GuiExternalConnection.nextButtonId();
   private static final int ID_MERGE = GuiExternalConnection.nextButtonId();
-  
 
-  private IItemConduit itemConduit;
-  private GuiExternalConnection gui;
+  private GuiContainerBaseEIO gui;
 
   private ToggleButton useMetaB;
   private ToggleButton useNbtB;
@@ -60,16 +56,11 @@ public class ExistingItemFilterGui implements IItemFilterGui {
 
   private ExistingItemFilter filter;
 
-  public ExistingItemFilterGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+  public ExistingItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer container) {
     this.gui = gui;
-    this.itemConduit = itemConduit;
     this.isInput = isInput;
 
-    if(isInput) {
-      filter = (ExistingItemFilter) itemConduit.getInputFilter(gui.getDir());
-    } else {
-      filter = (ExistingItemFilter) itemConduit.getOutputFilter(gui.getDir());
-    }
+    filter = (ExistingItemFilter) container.getItemFilter();
 
     int butLeft = 37;
     int x = butLeft;
@@ -209,6 +200,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     snapshotOverlay.setIsVisible(true);    
   }
 
+  // TODO Decouple from Conduits?
   private void sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode opcode) {
     PacketHandler.INSTANCE.sendToServer(new PacketExistingItemFilterSnapshot(itemConduit, gui.getDir(),isInput,opcode));
   }

@@ -1,12 +1,5 @@
 package crazypants.enderio.conduit.gui;
 
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.util.Collections;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
@@ -14,14 +7,13 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.DyeColor;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
-import crazypants.enderio.base.machine.IRedstoneModeControlable;
-import crazypants.enderio.base.machine.RedstoneControlMode;
+import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
+import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
@@ -35,6 +27,12 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.opengl.GL11;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.Collections;
+import java.util.List;
 
 public class LiquidSettings extends BaseSettingsPanel {
 
@@ -64,7 +62,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   private MultiIconButton inOutNextB;
   private IconButton whiteListB;
 
-  public LiquidSettings(final GuiExternalConnection gui, IConduit con) {
+  public LiquidSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_FLUID, EnderIO.lang.localize("itemLiquidConduit.name"), gui, con);
 
     conduit = (ILiquidConduit) con;
@@ -93,7 +91,7 @@ public class LiquidSettings extends BaseSettingsPanel {
     rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
 
       @Override
-      public void setRedstoneControlMode(RedstoneControlMode mode) {
+      public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
         RedstoneControlMode curMode = getRedstoneControlMode();
         conduit.setExtractionRedstoneMode(mode, gui.getDir());
         if(curMode != mode) {
@@ -129,7 +127,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   }
 
   @Override
-  public void actionPerformed(GuiButton guiButton) {
+  public void actionPerformed(@Nonnull GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if(guiButton.id == ID_COLOR_BUTTON) {
       conduit.setExtractionSignalColor(gui.getDir(), DyeColor.values()[colorB.getColorIndex()]);
@@ -152,7 +150,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   }
 
   @Override
-  protected void connectionModeChanged(ConnectionMode conectionMode) {
+  protected void connectionModeChanged(@Nonnull ConnectionMode conectionMode) {
     super.connectionModeChanged(conectionMode);
     updateGuiVisibility();
   }
@@ -181,7 +179,7 @@ public class LiquidSettings extends BaseSettingsPanel {
     }
     ItemStack st = Minecraft.getMinecraft().player.inventory.getItemStack();
     FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput());
-    if(filter == null && st == null) {
+    if(filter == null && st.isEmpty()) {
       return;
     }
     if(filter == null) {
@@ -343,6 +341,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       this.index = index;
     }
 
+    // TODO Fix Nullness
     @Override
     public List<String> getToolTipText() {
       if(!isFilterVisible()) {
