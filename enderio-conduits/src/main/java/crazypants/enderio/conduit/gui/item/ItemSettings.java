@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.ColorButton;
@@ -25,8 +26,7 @@ import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.BaseSettingsPanel;
-import crazypants.enderio.conduit.gui.FilterChangeListener;
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
@@ -103,7 +103,7 @@ public class ItemSettings extends BaseSettingsPanel {
     filterUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18 * 2, customTop + 3 + 16, 18, 18), EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
       @Override
       public boolean shouldDraw() {
-        return !gui.getContainer().hasFilterUpgrades(isInputVisible()) && super.shouldDraw();
+        return !gui.getContainer().hasFilter(isInputVisible()) && super.shouldDraw();
       }
     };
     speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18, customTop + 3 + 16, 18, 18), EnderIO.lang.localize("gui.conduit.item.speedupgrade"), EnderIO.lang.localize("gui.conduit.item.speedupgrade2")) {
@@ -121,7 +121,7 @@ public class ItemSettings extends BaseSettingsPanel {
     functionUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18*2, customTop + 3 + 34, 18, 18), list) {
       @Override
       public boolean shouldDraw() {
-        return !gui.getContainer().hasFunctionUpgrades() && super.shouldDraw();
+        return !gui.getContainer().hasFunctionUpgrade() && super.shouldDraw();
       }
     };
 
@@ -175,7 +175,7 @@ public class ItemSettings extends BaseSettingsPanel {
     priUpB = MultiIconButton.createAddButton(gui, ID_PRIORITY_UP, x, y);
     priDownB = MultiIconButton.createMinusButton(gui, ID_PRIORITY_DOWN, x, y+8);
 
-    gui.getContainer().addFilterListener(new FilterChangeListener() {
+    gui.getContainer().addFilterListener(new IFilterChangeListener() {
       @Override
       public void onFilterChanged() {
         filtersChanged();
@@ -230,13 +230,13 @@ public class ItemSettings extends BaseSettingsPanel {
     } else if(showInput) {
       activeFilter = itemConduit.getInputFilter(gui.getDir());
       gui.getContainer().setInventorySlotsVisible(true);
-      gui.getContainer().setInoutSlotsVisible(true, false);
+      gui.getContainer().setInOutSlotsVisible(true, false);
       if(activeFilter != null) {
         filterGui = activeFilter.getGui(gui,itemConduit,true);
       }
     } else if(showOutput) {
       activeFilter = itemConduit.getOutputFilter(gui.getDir());
-      gui.getContainer().setInoutSlotsVisible(false, true);
+      gui.getContainer().setInOutSlotsVisible(false, true);
       gui.getContainer().setInventorySlotsVisible(true);
       if(activeFilter != null) {
         filterGui = activeFilter.getGui(gui,itemConduit,false);
@@ -410,7 +410,7 @@ public class ItemSettings extends BaseSettingsPanel {
   @Override
   public void deactivate() {
     gui.getContainer().setInventorySlotsVisible(false);
-    gui.getContainer().setInoutSlotsVisible(false, false);
+    gui.getContainer().setInOutSlotsVisible(false, false);
     rsB.detach();
     colorB.detach();
     roundRobinB.detach();

@@ -38,7 +38,7 @@ public class PacketSlotVisibility implements IMessage, IMessageHandler<PacketSlo
     EntityPlayerMP player = ctx.getServerHandler().playerEntity;
     if(player.openContainer instanceof ExternalConnectionContainer) {
       ExternalConnectionContainer ecc = (ExternalConnectionContainer) player.openContainer;
-      ecc.setInoutSlotsVisible(message.inputVisible, message.outputVisible);
+      ecc.setInOutSlotsVisible(message.inputVisible, message.outputVisible);
     }
     return null;
   }

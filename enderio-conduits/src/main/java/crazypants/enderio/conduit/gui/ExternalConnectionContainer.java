@@ -1,22 +1,23 @@
 package crazypants.enderio.conduit.gui;
 
-import static crazypants.enderio.base.init.ModObject.itemBasicFilterUpgrade;
-import static crazypants.enderio.base.init.ModObject.itemExtractSpeedUpgrade;
-import static crazypants.enderio.base.init.ModObject.itemFunctionUpgrade;
+import static crazypants.enderio.base.init.ModObject.itemItemFilter;
+import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_upgrade;
+import static crazypants.enderio.conduit.init.ConduitObject.item_function_upgrade;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.ItemUtil;
 
+import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
 import crazypants.enderio.conduit.item.IItemConduit;
@@ -32,28 +33,28 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrades> {
+public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrades> implements IExternalConnectionContainer{
 
   private final IItemConduit itemConduit;
 
   private int speedUpgradeSlotLimit = 15;
 
-  private static final int outputFilterUpgradeSlot = 36;
-  private static final int inputFilterUpgradeSlot = 37;
+  private static final int outputFilterSlot = 36;
+  private static final int inputFilterSlot = 37;
   private static final int speedUpgradeSlot = 38;
   private static final int functionUpgradeSlot = 39;
 
   private Slot slotSpeedUpgrades;
   private Slot slotFunctionUpgrades;
-  private Slot slotInputFilterUpgrades;
-  private Slot slotOutputFilterUpgrades;
+  private Slot slotInputFilter;
+  private Slot slotOutputFilter;
 
   private final List<Point> slotLocations = new ArrayList<Point>();
 
-  final List<FilterChangeListener> filterListeners = new ArrayList<FilterChangeListener>();
+  final List<IFilterChangeListener> filterListeners = new ArrayList<IFilterChangeListener>();
   final List<GhostBackgroundItemSlot> bgSlots = new ArrayList<GhostBackgroundItemSlot>();
 
-  public ExternalConnectionContainer(InventoryPlayer playerInv, IConduitBundle bundle, EnumFacing dir) {
+  public ExternalConnectionContainer(@Nonnull InventoryPlayer playerInv, @Nonnull IConduitBundle bundle, @Nonnull EnumFacing dir) {
     super(playerInv, new InventoryUpgrades(bundle.getConduit(IItemConduit.class), dir));
     this.itemConduit = bundle.getConduit(IItemConduit.class);
     slotLocations.addAll(playerSlotLocations.values());
@@ -64,22 +65,22 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
     if (itemConduit != null) {
       x = 10;
       y = 47;
-      slotOutputFilterUpgrades = addSlotToContainer(new FilterSlot(getInv(), 3, x, y));
+      slotOutputFilter = addSlotToContainer(new FilterSlot(getInv(), 3, x, y));
       slotLocations.add(new Point(x, y));
-      bgSlots.add(new GhostBackgroundItemSlot(itemBasicFilterUpgrade.getItem(), slotOutputFilterUpgrades));
+      bgSlots.add(new GhostBackgroundItemSlot(itemItemFilter.getItem(), slotOutputFilter));
 
       x = 10;
       y = 47;
-      slotInputFilterUpgrades = addSlotToContainer(new FilterSlot(getInv(), 2, x, y));
+      slotInputFilter = addSlotToContainer(new FilterSlot(getInv(), 2, x, y));
       slotLocations.add(new Point(x, y));
-      bgSlots.add(new GhostBackgroundItemSlot(itemBasicFilterUpgrade.getItem(), slotInputFilterUpgrades));
+      bgSlots.add(new GhostBackgroundItemSlot(itemItemFilter.getItem(), slotInputFilter));
 
       x = 28;
       y = 47;
       slotSpeedUpgrades = addSlotToContainer(new Slot(getInv(), 0, x, y) {
         @Override
-        public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
-          return getInv().isItemValidForSlot(0, par1ItemStack);
+        public boolean isItemValid(@Nonnull ItemStack itemStack) {
+          return getInv().isItemValidForSlot(0, itemStack);
         }
 
         @Override
@@ -88,14 +89,14 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
         }
       });
       slotLocations.add(new Point(x, y));
-      bgSlots.add(new GhostBackgroundItemSlot(itemExtractSpeedUpgrade.getItem(), slotSpeedUpgrades));
+      bgSlots.add(new GhostBackgroundItemSlot(item_extract_speed_upgrade.getItem(), slotSpeedUpgrades));
 
       x = 10;
       y = 65;
       slotFunctionUpgrades = addSlotToContainer(new Slot(getInv(), 1, x, y) {
         @Override
-        public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
-          return getInv().isItemValidForSlot(1, par1ItemStack);
+        public boolean isItemValid(@Nonnull ItemStack itemStack) {
+          return getInv().isItemValidForSlot(1, itemStack);
         }
 
         @Override
@@ -104,49 +105,55 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
         }
       });
       slotLocations.add(new Point(x, y));
-      bgSlots.add(new GhostBackgroundItemSlot(itemFunctionUpgrade.getItem(), slotFunctionUpgrades));
+      bgSlots.add(new GhostBackgroundItemSlot(item_function_upgrade.getItem(), slotFunctionUpgrades));
     }
   }
 
-  public void createGhostSlots(GhostSlotHandler slots) {
+  public void createGhostSlots(@Nonnull GhostSlotHandler slots) {
 //    slots.addAll(bgSlots);
   }
 
   @Override
+  @Nonnull
   public Point getPlayerInventoryOffset() {
     return new Point(23, 113);
   }
-  
-  public void addFilterListener(FilterChangeListener list) {
+
+  @Override
+  public void addFilterListener(@Nonnull IFilterChangeListener list) {
     filterListeners.add(list);
   }
 
   protected void filterChanged() {
-    for (FilterChangeListener list : filterListeners) {
+    for (IFilterChangeListener list : filterListeners) {
       list.onFilterChanged();
     }
   }
 
+  @Override
   public boolean hasSpeedUpgrades() {
     return slotSpeedUpgrades != null && slotSpeedUpgrades.getHasStack();
   }
 
-  public boolean hasFunctionUpgrades() {
+  @Override
+  public boolean hasFunctionUpgrade() {
     return slotFunctionUpgrades != null && slotFunctionUpgrades.getHasStack();
   }
 
-  public boolean hasFilterUpgrades(boolean input) {
-    Slot slot = input ? slotInputFilterUpgrades : slotOutputFilterUpgrades;
+  @Override
+  public boolean hasFilter(boolean input) {
+    Slot slot = input ? slotInputFilter : slotOutputFilter;
     return slot != null && slot.getHasStack();
   }
 
-  public void setInoutSlotsVisible(boolean inputVisible, boolean outputVisible) {
+  @Override
+  public void setInOutSlotsVisible(boolean inputVisible, boolean outputVisible) {
     if(itemConduit == null) {
       return;
     }
-    setSlotsVisible(inputVisible, inputFilterUpgradeSlot, inputFilterUpgradeSlot + 1);
+    setSlotsVisible(inputVisible, inputFilterSlot, inputFilterSlot + 1);
     setSlotsVisible(inputVisible, speedUpgradeSlot, speedUpgradeSlot + 1);
-    setSlotsVisible(outputVisible, outputFilterUpgradeSlot, outputFilterUpgradeSlot + 1);
+    setSlotsVisible(outputVisible, outputFilterSlot, outputFilterSlot + 1);
     setSlotsVisible(inputVisible || outputVisible, functionUpgradeSlot, functionUpgradeSlot + 1);
     World world = itemConduit.getBundle().getBundleworld();
     if(world.isRemote) {
@@ -154,6 +161,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
     }
   }
 
+  @Override
   public void setInventorySlotsVisible(boolean visible) {
     setSlotsVisible(visible, 0, 36);
   }
@@ -172,26 +180,27 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
   }
 
   @Override
-  public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+  @Nonnull
+  public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, @Nonnull EntityPlayer player) {
     ItemStack st = player.inventory.getItemStack();
     setSpeedUpgradeSlotLimit(st);
     try {
       return super.slotClick(slotId, dragType, clickTypeIn, player);
     } catch (Exception e) {
-      //Horrible work around for a bug when double clicking on a stack in inventory which matches a filter item
+      //TODO Horrible work around for a bug when double clicking on a stack in inventory which matches a filter item
       //This does does double clicking to fill a stack from working with this GUI open.
-      return null;
+      return ItemStack.EMPTY;
     }
   }
 
-  private void setSpeedUpgradeSlotLimit(ItemStack st) {
-    if (st != null && st.getItem() == itemExtractSpeedUpgrade.getItem()) {
+  private void setSpeedUpgradeSlotLimit(@Nonnull ItemStack st) {
+    if (!st.isEmpty() && st.getItem() == item_extract_speed_upgrade.getItem()) {
       SpeedUpgrade speedUpgrade = ItemExtractSpeedUpgrade.getSpeedUpgrade(st);
       speedUpgradeSlotLimit = speedUpgrade.maxStackSize;
     }
   }
 
-  private boolean mergeItemStackSpecial(ItemStack origStack, Slot targetSlot) {
+  private boolean mergeItemStackSpecial(@Nonnull ItemStack origStack, @Nonnull Slot targetSlot) {
     if (!targetSlot.isItemValid(origStack)) {
       return false;
     }
@@ -200,7 +209,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
     ItemStack curStack = targetSlot.getStack();
     int maxStackSize =  Math.min(origStack.getMaxStackSize(), targetSlot.getSlotStackLimit());
 
-    if(curStack == null) {
+    if(curStack.isEmpty()) {
       curStack = origStack.copy();
       curStack.setCount(Math.min(origStack.getCount(), maxStackSize));
       origStack.shrink(curStack.getCount());
@@ -226,16 +235,17 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
   }
 
   @Override
-  public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
-    ItemStack copystack = null;
+  @Nonnull
+  public ItemStack transferStackInSlot(@Nonnull EntityPlayer entityPlayer, int slotIndex) {
+    ItemStack copyStack = ItemStack.EMPTY;
     Slot slot = inventorySlots.get(slotIndex);
     if(slot != null && slot.getHasStack()) {
       ItemStack origStack = slot.getStack();
-      copystack = origStack.copy();
+      copyStack = origStack.copy();
 
       boolean merged = false;
-      if (slotIndex < outputFilterUpgradeSlot) {
-        for (int targetSlotIdx = outputFilterUpgradeSlot; targetSlotIdx <= functionUpgradeSlot; targetSlotIdx++) {
+      if (slotIndex < outputFilterSlot) {
+        for (int targetSlotIdx = outputFilterSlot; targetSlotIdx <= functionUpgradeSlot; targetSlotIdx++) {
           Slot targetSlot = inventorySlots.get(targetSlotIdx);
           if(targetSlot.xPos >= 0 && mergeItemStackSpecial(origStack, targetSlot)) {
             merged = true;
@@ -243,29 +253,29 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
           }
         }
       } else {
-        merged = mergeItemStack(origStack, 0, outputFilterUpgradeSlot, false);
+        merged = mergeItemStack(origStack, 0, outputFilterSlot, false);
       }
 
       if(!merged) {
-        return null;
+        return ItemStack.EMPTY;
       }
 
-      slot.onSlotChange(origStack, copystack);
+      slot.onSlotChange(origStack, copyStack);
 
       if(origStack.getCount() == 0) {
-        slot.putStack((ItemStack) null);
+        slot.putStack(ItemStack.EMPTY);
       } else {
         slot.onSlotChanged();
       }
 
-      if(origStack.getCount() == copystack.getCount()) {
-        return null;
+      if(origStack.getCount() == copyStack.getCount()) {
+        return ItemStack.EMPTY;
       }
 
       slot.onTake(entityPlayer, origStack);
     }
 
-    return copystack;
+    return copyStack;
   }
 
   private class FilterSlot extends Slot {
@@ -284,7 +294,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
     }
 
     @Override
-    public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
+    public boolean isItemValid(@Nonnull ItemStack par1ItemStack) {
       return inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
     }
     

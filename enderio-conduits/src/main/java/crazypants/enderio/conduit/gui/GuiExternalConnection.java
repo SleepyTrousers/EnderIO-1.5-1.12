@@ -10,6 +10,8 @@ import com.enderio.core.api.client.gui.ITabPanel;
 
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IExternalConnectionContainer;
+import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -18,7 +20,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
-public class GuiExternalConnection extends GuiContainerBaseEIO {
+import javax.annotation.Nonnull;
+
+public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiExternalConnection {
 
   private static int nextButtonId = 1;
 
@@ -34,9 +38,9 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
   private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
   private int activeTab = 0;
 
-  private final ExternalConnectionContainer container;
+  private final IExternalConnectionContainer container;
 
-  public GuiExternalConnection(InventoryPlayer playerInv, IConduitBundle bundle, EnumFacing dir) {
+  public GuiExternalConnection(@Nonnull InventoryPlayer playerInv, @Nonnull IConduitBundle bundle, @Nonnull EnumFacing dir) {
     super(new ExternalConnectionContainer(playerInv, bundle, dir), "externalConduitConnection", "itemFilter");
     container = (ExternalConnectionContainer) inventorySlots;
     this.playerInv = playerInv;
@@ -46,23 +50,22 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
     ySize = 166 + 29;
     xSize = 206;
 
-    container.setInoutSlotsVisible(false, false);
+    container.setInOutSlotsVisible(false, false);
     container.setInventorySlotsVisible(false);
 
     List<IConduit> cons = new ArrayList<IConduit>(bundle.getConduits());
     Collections.sort(cons, new Comparator<IConduit>() {
 
       @Override
-      public int compare(IConduit o1, IConduit o2) {
-        //NB: using Double.comp instead of Integer.comp as the int version is only from Java 1.7+
-        return Double.compare(o1.getTabOrderForConduit(o1), o2.getTabOrderForConduit(o2));
+      public int compare(@Nonnull IConduit o1, @Nonnull IConduit o2) {
+        return Integer.compare(o1.getGuiPanelTabOrder(), o2.getGuiPanelTabOrder());
 
       }
     });
 
     for (IConduit con : cons) {
       if(con.containsExternalConnection(dir) || con.canConnectToExternal(dir, true)) {
-        ITabPanel tab = con.createPanelForConduit(this, con);
+        ITabPanel tab = con.createGuiPanel(this, con);
         if(tab != null) {
           conduits.add(con);
           tabs.add(tab);
@@ -118,7 +121,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
   }
 
   @Override
-  protected void actionPerformed(GuiButton guiButton) throws IOException {
+  protected void actionPerformed(@Nonnull GuiButton guiButton) throws IOException {
     super.actionPerformed(guiButton);
     if (activeTab < tabs.size())
     tabs.get(activeTab).actionPerformed(guiButton);
@@ -145,11 +148,12 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
+  @Override
   public EnumFacing getDir() {
     return dir;
   }
 
-  public ExternalConnectionContainer getContainer() {
+  public IExternalConnectionContainer getContainer() {
     return container;
   }
 
@@ -168,7 +172,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
 //  }
 
   @Override
-  protected void drawFakeItemStack(int x, int y, ItemStack stack) {
+  public void drawFakeItemStack(int x, int y, @Nonnull ItemStack stack) {
     super.drawFakeItemStack(x, y, stack);
     itemRender.renderItemOverlayIntoGUI(fontRenderer, stack, x, y, "");
   }

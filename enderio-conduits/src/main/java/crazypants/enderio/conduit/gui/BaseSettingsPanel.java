@@ -43,7 +43,7 @@ public class BaseSettingsPanel implements ITabPanel {
 
   protected int customTop = 0;
 
-  protected BaseSettingsPanel(IconEIO icon, String typeName, GuiExternalConnection gui, IConduit con) {
+  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IConduit con) {
     this.icon = icon;
     this.typeName = typeName;
     this.gui = gui;

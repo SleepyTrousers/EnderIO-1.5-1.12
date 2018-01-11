@@ -30,7 +30,7 @@ public interface IConduit {
 
   @SideOnly(Side.CLIENT)
   @Nonnull
-  ITabPanel createGuiPanel(@Nonnull Object gui); // TODO 1.11 IGuiExternalConnection
+  ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IConduit con);
 
   @SideOnly(Side.CLIENT)
   int getGuiPanelTabOrder();
