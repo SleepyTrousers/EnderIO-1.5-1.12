@@ -11,7 +11,7 @@ import crazypants.enderio.base.config.recipes.StaxFactory;
 
 public abstract class AbstractCrafting extends AbstractConditional {
 
-  private List<Output> outputs;
+  protected List<Output> outputs;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -20,16 +20,13 @@ public abstract class AbstractCrafting extends AbstractConditional {
       throw new InvalidRecipeConfigException("Missing <output>");
     }
 
-    int count = 0;
-    for (Output output : outputs) {
-      if (output.isValid() && output.isActive()) {
-        count++;
-      }
-    }
-
-    valid = count == 1;
+    valid = checkOutputCount(getOutputs().size());
 
     return this;
+  }
+
+  protected boolean checkOutputCount(int count) {
+    return count == 1;
   }
 
   public Output getOutput() {
@@ -39,6 +36,16 @@ public abstract class AbstractCrafting extends AbstractConditional {
       }
     }
     return null;
+  }
+
+  public List<Output> getOutputs() {
+    List<Output> result = new ArrayList<Output>();
+    for (Output output : outputs) {
+      if (output.isValid() && output.isActive()) {
+        result.add(output);
+      }
+    }
+    return result;
   }
 
   @Override

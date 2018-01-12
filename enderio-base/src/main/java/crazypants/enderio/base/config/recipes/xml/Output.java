@@ -18,6 +18,8 @@ public class Output extends AbstractConditional {
 
   private Item item;
 
+  private boolean required = true;
+
   private transient NBTTagCompound tag;
 
   @Override
@@ -62,6 +64,11 @@ public class Output extends AbstractConditional {
     return item != null && item.isValid();
   }
 
+  @Override
+  public boolean isActive() {
+    return super.isActive() && (required || item.isValid());
+  }
+
   public @Nonnull ItemStack getItemStack() {
     ItemStack itemStack = item.getItemStack().copy();
     itemStack.setCount(amount);
@@ -85,6 +92,10 @@ public class Output extends AbstractConditional {
       item = new Item();
       item.setName(value);
       item.readResolve();
+      return true;
+    }
+    if ("required".equals(name)) {
+      this.required = Boolean.parseBoolean(value);
       return true;
     }
 
