@@ -371,7 +371,7 @@ String getArchiveBaseName(Project proj) {
 }
 
 String getChangelogFormat() {
-    return new File(projectdir, 'doc/changelog.html').getText('UTF-8')
+    return new File(projectDir, 'doc/changelog.html').getText('UTF-8')
 }
 
 // parse and import external config
