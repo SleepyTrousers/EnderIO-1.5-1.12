@@ -490,6 +490,24 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
+  <recipe name="Photovoltaic Powder" required="true">
+    <crafting>
+      <shapeless>
+        <item name="minecraft:dye:4"/>
+        <item name="dustCoal"/>
+        <item name="itemSilicon"/>
+      </shapeless>
+      <output name="itemPowderPhotovoltaic"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Alloy: Photovoltaic Plate" required="true">
+    <alloying energy="15000" exp="0.5">
+      <input name="itemPowderPhotovoltaic" amount="3"/>
+      <output name="itemPlatePhotovoltaic"/>
+    </alloying>
+  </recipe>
+
   <recipe name="Alloy: Soularium" required="true">
     <alloying energy="10000" exp="0.7">
       <input name="minecraft:soul_sand"/><!-- has no oredict entry -->

@@ -246,16 +246,17 @@
           "layer0": "enderio:items/item_material_organic_brown_dye"
         }
       },
-	  "powder_photovoltaic":	{
-		"textures": {
-			"layer0": "enderio:items/item_material_powder_photovoltaic"
-		}
-	  },
-	  "plate_photovoltaic":{
-		"textures": {
-			"layer0": "enderio:items/item_material_plate_photovoltaic"
-		 }
-	  }
+      "powder_photovoltaic":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_powder_photovoltaic"
+        }
+      },
+      "plate_photovoltaic":{
+        "textures": {
+            "layer0": "enderio:items/item_material_plate_photovoltaic"
+         },
+        "model": "enderio:item_plate_photovoltaic"
+      }
     }
   }
 }

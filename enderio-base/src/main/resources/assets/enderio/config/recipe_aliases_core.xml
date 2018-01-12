@@ -115,6 +115,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="SOLAR_1" item="enderio:block_solar_panel:0" />
   <alias name="SOLAR_2" item="enderio:block_solar_panel:1" />
   <alias name="SOLAR_3" item="enderio:block_solar_panel:2" />
+  <alias name="SOLAR_4" item="enderio:block_solar_panel:3" />
 
   <alias name="CONDUIT_PROBE" item="enderio:item_conduit_probe:0" />
 

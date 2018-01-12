@@ -313,16 +313,16 @@ XML editor will display that as tooltips when editing this file.
   <alias name="CAPACITOR_METAL" item="ingotCopper">
     <dependency item="ingotCopper" reverse="false"/>
   </alias>
-  <alias name="CAPACITOR_METAL" item="nuggetGold">
+  <alias name="CAPACITOR_METAL" item="dustRedstone">
     <dependency item="ingotCopper" reverse="true"/>
   </alias>
 
   <recipe name="Capacitor 1" required="true">
     <crafting>
       <grid>
-        <item /><item name="nuggetGold"/><item name="dustRedstone"/>
+        <item /><item name="nuggetGold"/><item name="POWDER_INFINITY"/>
         <item name="nuggetGold"/><item name="CAPACITOR_METAL"/><item name="nuggetGold"/>
-        <item name="dustRedstone"/><item name="nuggetGold"/><item />
+        <item name="POWDER_INFINITY"/><item name="nuggetGold"/><item />
       </grid>
       <output name="CAPACITOR1"/>
     </crafting>

@@ -12,7 +12,8 @@ import net.minecraft.util.IStringSerializable;
 
 public enum SolarType implements IStringSerializable {
 
-  SIMPLE(""),
+  SIMPLE(".simple"),
+  NORMAL(""),
   ADVANCED(".advanced"),
   VIBRANT(".vibrant");
 
@@ -49,10 +50,12 @@ public enum SolarType implements IStringSerializable {
     switch (this) {
     case SIMPLE:
       return SolarConfig.solarPanelOneOutput.get();
-    case ADVANCED:
+    case NORMAL:
       return SolarConfig.solarPanelTwoOutput.get();
-    case VIBRANT:
+    case ADVANCED:
       return SolarConfig.solarPanelThreeOutput.get();
+    case VIBRANT:
+      return SolarConfig.solarPanelFourOutput.get();
     default:
       return 0;
     }
