@@ -38,7 +38,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 @Storable(handler = HandleFilter.class)
 public class ItemFilter implements IInventory, IItemFilter {
-  
+
   // Proxies to writetoNBT/readFromNBT
   // TODO ItemFilter could easily be naturally @Storable
   public static class HandleFilter implements IHandler<ItemFilter> {
@@ -50,8 +50,7 @@ public class ItemFilter implements IInventory, IItemFilter {
 
     @Override
     public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
-        @Nonnull ItemFilter object)
-        throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+        @Nonnull ItemFilter object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
       NBTTagCompound root = new NBTTagCompound();
       object.writeToNBT(root);
       nbt.setTag(name, root);
@@ -60,8 +59,7 @@ public class ItemFilter implements IInventory, IItemFilter {
 
     @Override
     public ItemFilter read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
-        @Nullable ItemFilter object)
-        throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+        @Nullable ItemFilter object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
       if (object == null) {
         // Note: This will be called with no nbt when a fresh itemstack is placed---output should be null!
         if (nbt.hasKey(name)) {
@@ -518,10 +516,10 @@ public class ItemFilter implements IInventory, IItemFilter {
     }
 
     @Override
-    public void putStack(@Nonnull ItemStack stack) {
+    public void putStack(@Nonnull ItemStack stack, int realsize) {
       if (Prep.isValid(stack)) {
         stack = stack.copy();
-        stack.setCount(MathHelper.clamp(stack.getCount(), 1, stackSizeLimit));
+        stack.setCount(MathHelper.clamp(realsize, 1, stackSizeLimit));
       }
       items.set(slot, stack);
       cb.run();

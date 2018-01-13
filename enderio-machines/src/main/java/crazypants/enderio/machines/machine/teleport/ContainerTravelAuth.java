@@ -19,8 +19,8 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
   static class AuthInventory extends ArrayInventory {
     private ContainerTravelAuth container;
 
-    private AuthInventory(@Nonnull ItemStack[] inv) {
-      super(inv);
+    private AuthInventory() {
+      super(new ItemStack[] { ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY });
     }
 
     private void setContainer(ContainerTravelAuth container) {
@@ -61,7 +61,7 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
     public void setInventorySlotContents(int i, @Nonnull ItemStack itemstack) {
       if (!itemstack.isEmpty()) {
         items[i] = itemstack.copy();
-        items[i].setCount(0);
+        items[i].setCount(1);
       } else {
         items[i] = ItemStack.EMPTY;
       }
@@ -74,7 +74,7 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
 
     @Override
     public int getInventoryStackLimit() {
-      return 0;
+      return 1;
     }
 
     public @Nonnull ItemStack[] getInventory() {
@@ -85,7 +85,7 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
   boolean dirty = false;
 
   public ContainerTravelAuth(@Nonnull InventoryPlayer playerInv) {
-    super(playerInv, new AuthInventory(new ItemStack[5]));
+    super(playerInv, new AuthInventory());
     getInv().setContainer(this);
   }
 
@@ -135,7 +135,7 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
     }
 
     @Override
-    public void putStack(@Nonnull ItemStack stack) {
+    public void putStack(@Nonnull ItemStack stack, int realsize) {
       inv.setInventorySlotContents(slot, stack);
     }
 

@@ -93,7 +93,7 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
     }
 
     @Override
-    public void putStack(@Nonnull ItemStack stack) {
+    public void putStack(@Nonnull ItemStack stack, int realsize) {
       if (isAuth) {
         if (ta instanceof TileEntityBase) {
           PacketHandler.INSTANCE.sendToServer(PacketPassword.setPassword((TileEntityBase) ta, slot, stack));
