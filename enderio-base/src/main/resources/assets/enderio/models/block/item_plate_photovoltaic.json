@@ -1,0 +1,19 @@
+{
+	"__comment": "Designed by HenryLoenwind with Cubik Studio - https://cubik.studio",
+  "parent": "enderio:block/transform/thin_block",
+	"elements": [ 	 
+		{
+			"__comment": "Box1",
+			"from": [ 1, 0, 1 ],
+			"to": [ 15, 0.5, 15 ],
+			"faces": {
+				"down": { "uv": [ 2, 1, 15, 15 ], "texture": "#layer0" },
+				"up": { "uv": [ 2, 1, 15, 15 ], "texture": "#layer0" },
+				"north": { "uv": [ 2, 14, 15, 15 ], "texture": "#layer0" },
+				"south": { "uv": [ 2, 14, 15, 15 ], "texture": "#layer0" },
+				"west": { "uv": [ 2, 14, 15, 15 ], "texture": "#layer0" },
+				"east": { "uv": [ 2, 14, 15, 15 ], "texture": "#layer0" }
+			}
+		}
+	]
+}

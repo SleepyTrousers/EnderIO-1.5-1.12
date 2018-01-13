@@ -73,7 +73,7 @@ public class GuiRangedObelisk extends GuiInventoryMachineBase<AbstractRangedTile
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
     int range = (int) getTileEntity().getRange();
-    drawCenteredString(fontRenderer, Lang.GUI_RANGE.get(range), getGuiLeft() + sx / 2 + 9, getGuiTop() + 68, ColorUtil.getRGB(Color.white));
+    drawCenteredString(fontRenderer, Lang.GUI_RANGE.get(range), width / 2 + 9, sy + 68, ColorUtil.getRGB(Color.white));
   }
 
   @Override

@@ -24,10 +24,12 @@ public final class SolarConfig {
       "Cost in XP levels of the Solar III upgrade.").setMin(1).sync();
 
   public static final IValue<Integer> solarPanelOneOutput = F.make("solarPanelOneOutput", 10, //
-      "Maximum output in RF/t of the Photovoltaic Panels.").setMin(1).sync();
+      "Maximum output in RF/t of the Simple Photovoltaic Panels.").setMin(1).sync();
   public static final IValue<Integer> solarPanelTwoOutput = F.make("solarPanelTwoOutput", 40, //
+      "Maximum output in RF/t of the Photovoltaic Panels.").setMin(1).sync();
+  public static final IValue<Integer> solarPanelThreeOutput = F.make("solarPanelThreeOutput", 80, //
       "Maximum output in RF/t of the Advanced Photovoltaic Panels.").setMin(1).sync();
-  public static final IValue<Integer> solarPanelThreeOutput = F.make("solarPanelThreeOutput", 160, //
+  public static final IValue<Integer> solarPanelFourOutput = F.make("solarPanelFourOutput", 160, //
       "Maximum output in RF/t of the Vibrant Photovoltaic Panels.").setMin(1).sync();
 
   public static final IValue<Boolean> canSolarTypesJoin = F.make("canSolarTypesJoin", false, //

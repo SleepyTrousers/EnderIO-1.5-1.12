@@ -8,7 +8,8 @@
   },
   "variants":{
     "kind":{
-      "simple":   { "textures": { "side": "enderio:blocks/solar_panel_side", "top": "enderio:blocks/solar_panel_top" } },
+      "simple":   { "textures": { "side": "enderio:blocks/solar_panel_simple_side", "top": "enderio:blocks/solar_panel_simple_top" } },
+      "normal":   { "textures": { "side": "enderio:blocks/solar_panel_normal_side", "top": "enderio:blocks/solar_panel_normal_top" } },
       "advanced": { "textures": { "side": "enderio:blocks/solar_panel_advanced_side", "top": "enderio:blocks/solar_panel_advanced_top" } },
       "vibrant":  { "textures": { "side": "enderio:blocks/solar_panel_vibrant_side", "top": "enderio:blocks/solar_panel_vibrant_top" } }
       },

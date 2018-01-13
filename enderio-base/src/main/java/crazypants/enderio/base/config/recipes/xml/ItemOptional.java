@@ -32,7 +32,7 @@ public class ItemOptional implements RecipeConfigElement {
       return this;
     }
     thing.add(name);
-    NNList<ItemStack> itemStacks = thing.getItemStacksRaw();
+    NNList<ItemStack> itemStacks = thing.getItemStacks();
     stack = itemStacks.isEmpty() ? Prep.getEmpty() : itemStacks.get(0);
     List<Object> recipeObjects = thing.getRecipeObjects();
     if (recipeObjects.size() > 1) {

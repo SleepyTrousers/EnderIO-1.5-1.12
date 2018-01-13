@@ -5,7 +5,6 @@ import crazypants.enderio.base.item.soulvial.ItemSoulVial;
 import crazypants.enderio.base.paint.PaintSourceValidator;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
-import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
 import crazypants.enderio.base.teleport.TravelController;
 
@@ -55,18 +54,6 @@ public final class IMC {
    * {@link PaintSourceValidator#addToBlacklist(net.minecraft.item.ItemStack)}
    */
   public static final String PAINTER_BLACKLIST_ADD = "painter:blacklist:add";
-
-  /**
-   * Key for a string message to add an entity to the Powered Spawner blacklist. Calls {@link PoweredSpawnerRecipeRegistry#addToBlacklist(String)} with the string value
-   * of the message.
-   */
-  public static final String POWERED_SPAWNER_BLACKLIST_ADD = "poweredSpawner:blacklist:add";
-
-  /**
-   * Key for an NBT message to specify a cost multiplier for spawning an entity in the Powered Spawner. Calls
-   * {@link PoweredSpawnerRecipeRegistry#addEntityCostFromNBT(net.minecraft.nbt.NBTTagCompound)} with the NBT value of the message.
-   */
-  public static final String POWERED_SPAWNER_COST_MULTIPLIER = "poweredSpawner:costMultiplier";
 
   /**
    * Key for a string message to add an entity to the Soul Vial blacklist. Calls {@link ItemSoulVial#addEntityToBlackList(String)} with the string value of

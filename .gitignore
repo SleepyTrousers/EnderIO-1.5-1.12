@@ -40,3 +40,6 @@ resources/assets/enderio/lang/*.lang.txt
 
 ## local user properties
 user.properties
+
+## temporary build files
+eiostore.jks

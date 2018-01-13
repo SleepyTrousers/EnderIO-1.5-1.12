@@ -79,12 +79,12 @@ public class Recipe extends AbstractConditional {
   public void register() {
     if (!disabled && valid && active) {
       Log.debug("Registering XML recipe '" + getName() + "'");
-        for (AbstractConditional crafting : craftings) {
-          if (crafting.isValid() && crafting.isActive()) {
-            crafting.register();
-            return;
-          }
+      for (AbstractConditional crafting : craftings) {
+        if (crafting.isValid() && crafting.isActive()) {
+          crafting.register();
+          return;
         }
+      }
     } else {
       Log.debug("Skipping XML recipe '" + getName() + "' (valid=" + valid + ", active=" + active + ", required=" + required + ", disabled=" + disabled + ")");
     }
@@ -96,7 +96,6 @@ public class Recipe extends AbstractConditional {
     }
     return "unnamed recipe";
   }
-
 
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
@@ -143,6 +142,10 @@ public class Recipe extends AbstractConditional {
         craftings.add(factory.read(new Alloying(), startElement));
         return true;
       }
+      if ("sagmilling".equals(name)) {
+        craftings.add(factory.read(new Sagmilling(), startElement));
+        return true;
+      }
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in recipe '" + getName() + "'");
     }
@@ -150,12 +153,10 @@ public class Recipe extends AbstractConditional {
     return super.setElement(factory, name, startElement);
   }
 
-
   @Override
   public boolean isValid() {
     return disabled || super.isValid();
   }
-
 
   @Override
   public boolean isActive() {

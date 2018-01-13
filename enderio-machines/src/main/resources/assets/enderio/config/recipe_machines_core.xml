@@ -354,20 +354,10 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Solar Panel 1" required="true">
     <crafting>
-      <level maxlevel="1" />
       <grid size="3x3">
-        <item name="ENERGETIC_ALLOY" /><item name="blockGlassHardened" /><item name="ENERGETIC_ALLOY" />
-        <item name="SILICON" /><item name="blockGlassHardened" /><item name="SILICON" />
-        <item name="ELECTRICAL_STEEL" /><item name="minecraft:daylight_detector" /><item name="ELECTRICAL_STEEL" />
-      </grid>
-      <output name="SOLAR_1" />
-    </crafting>
-    <crafting>
-      <level minlevel="2" />
-      <grid size="3x3">
-        <item name="ENERGETIC_ALLOY" /><item name="blockGlassHardened" /><item name="ENERGETIC_ALLOY" />
-        <item name="VIBRANT_ALLOY" /><item name="blockGlassHardened" /><item name="VIBRANT_ALLOY" />
-        <item name="CAPACITOR1" /><item name="minecraft:daylight_detector" /><item name="CAPACITOR1" />
+        <item name="ELECTRICAL_STEEL" /><item name="FUSED_GLASS" /><item name="ELECTRICAL_STEEL" />
+        <item name="itemPlatePhotovoltaic" /><item name="itemPlatePhotovoltaic" /><item name="itemPlatePhotovoltaic" />
+        <item name="POWDER_INFINITY" /><item name="GEAR_IRON" /><item name="POWDER_INFINITY" />
       </grid>
       <output name="SOLAR_1" />
     </crafting>
@@ -375,20 +365,21 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Solar Panel 2" required="true">
     <crafting>
-      <level maxlevel="1" />
       <grid size="3x3">
-        <item name="VIBRANT_ALLOY" /><item name="ENLIGHTED_QUARTZ" /><item name="VIBRANT_ALLOY" />
-        <item name="VIBRANT_CRYSTAL" /><item name="ENLIGHTED_QUARTZ" /><item name="VIBRANT_CRYSTAL" />
-        <item name="PULSATING_IRON" /><item name="minecraft:daylight_detector" /><item name="PULSATING_IRON" />
+        <item name="ENERGETIC_ALLOY" /><item name="FUSED_QUARTZ" /><item name="ENERGETIC_ALLOY" />
+        <item name="itemPlatePhotovoltaic" /><item name="itemPlatePhotovoltaic" /><item name="itemPlatePhotovoltaic" />
+        <item name="CAPACITOR1" /><item name="minecraft:daylight_detector" /><item name="CAPACITOR1" />
       </grid>
       <output name="SOLAR_2" />
     </crafting>
+  </recipe>
+
+  <recipe name="Solar Panel 2, Upgrade" required="true">
     <crafting>
-      <level minlevel="2" />
       <grid size="3x3">
-        <item name="PULSATING_IRON" /><item name="ENLIGHTED_QUARTZ" /><item name="PULSATING_IRON" />
-        <item name="VIBRANT_ALLOY" /><item name="ENLIGHTED_QUARTZ" /><item name="VIBRANT_ALLOY" />
-        <item name="CAPACITOR2" /><item name="minecraft:daylight_detector" /><item name="CAPACITOR2" />
+        <item name="ENERGETIC_ALLOY" /><item name="FUSED_QUARTZ" /><item name="ENERGETIC_ALLOY" />
+        <item /><item name="SOLAR_1" /><item />
+        <item name="CAPACITOR1" /><item name="minecraft:daylight_detector" /><item name="CAPACITOR1" />
       </grid>
       <output name="SOLAR_2" />
     </crafting>
@@ -397,9 +388,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Solar Panel 3" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="SOULARIUM" /><item name="DARK_QUARTZ" /><item name="SOULARIUM" />
-        <item name="VIBRANT_ALLOY" /><item name="DARK_QUARTZ" /><item name="VIBRANT_ALLOY" />
-        <item name="CAPACITOR3" /><item name="minecraft:daylight_detector" /><item name="CAPACITOR3" />
+        <item name="PULSATING_IRON" /><item name="ENLIGHTED_QUARTZ" /><item name="PULSATING_IRON" />
+        <item name="itemPlatePhotovoltaic" /><item name="itemPlatePhotovoltaic" /><item name="itemPlatePhotovoltaic" />
+        <item name="CAPACITOR2" /><item name="minecraft:daylight_detector" /><item name="CAPACITOR2" />
       </grid>
       <output name="SOLAR_3" />
     </crafting>
@@ -408,11 +399,33 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Solar Panel 3, Upgrade" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="SOULARIUM" /><item name="DARK_QUARTZ" /><item name="SOULARIUM" />
-        <item  /><item name="DARK_QUARTZ" /><item  />
-        <item name="SOLAR_2" /><item name="GEAR_VIBRANT" /><item name="SOLAR_2" />
+        <item name="PULSATING_IRON" /><item name="ENLIGHTED_QUARTZ" /><item name="PULSATING_IRON" />
+        <item name="ENERGETIC_ALLOY" /><item name="dustCoal" /><item name="ENERGETIC_ALLOY" />
+        <item name="CAPACITOR1" /><item name="SOLAR_2" /><item name="CAPACITOR1" />
       </grid>
       <output name="SOLAR_3" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Solar Panel 4" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="VIBRANT_ALLOY" /><item name="DARK_QUARTZ" /><item name="VIBRANT_ALLOY" />
+        <item name="itemPlatePhotovoltaic" /><item name="itemPlatePhotovoltaic" /><item name="itemPlatePhotovoltaic" />
+        <item name="CAPACITOR3" /><item name="minecraft:daylight_detector" /><item name="CAPACITOR3" />
+      </grid>
+      <output name="SOLAR_4" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Solar Panel 4, Upgrade" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="VIBRANT_ALLOY" /><item name="DARK_QUARTZ" /><item name="VIBRANT_ALLOY" />
+        <item name="VIBRANT_ALLOY" /><item name="oredict:glowstone" /><item name="VIBRANT_ALLOY" />
+        <item name="CAPACITOR2" /><item name="SOLAR_3" /><item name="CAPACITOR2" />
+      </grid>
+      <output name="SOLAR_4" />
     </crafting>
   </recipe>
 

@@ -10,6 +10,7 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -111,8 +112,8 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
   public void renderSlotHighlights(@Nonnull IoMode mode) {
     SlotDefinition slotDef = tileEntity.getSlotDefinition();
 
-    for (Slot invSlot : inventorySlots.inventorySlots) {
-      if (invSlot.inventory == tileEntity) {
+    for (Slot invSlot : inventorySlots.inventorySlots) { // this is a bit hacky, we need a better way for cap-based machines
+      if (invSlot.inventory == tileEntity || (inventorySlots instanceof ContainerEnder && invSlot.inventory == ((ContainerEnder<?>) inventorySlots).getInv())) {
         if ((mode == IoMode.PULL || mode == IoMode.PUSH_PULL) && slotDef.isInputSlot(invSlot.getSlotIndex())) {
           renderSlotHighlight(invSlot, PULL_COLOR);
         } else if ((mode == IoMode.PUSH || mode == IoMode.PUSH_PULL) && slotDef.isOutputSlot(invSlot.getSlotIndex())) {

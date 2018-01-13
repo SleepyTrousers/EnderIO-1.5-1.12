@@ -246,6 +246,7 @@ tile.block_slice_and_splice.name=Slice'N'Splice
 tile.block_slice_and_splice.tooltip.detailed.line1=Slices heads and splices in
 tile.block_slice_and_splice.tooltip.detailed.line2=all sorts of useful things
 
+tile.block_solar_panel.simple.name=Simple Photovoltaic Cell
 tile.block_solar_panel.name=Photovoltaic Cell
 tile.block_solar_panel.advanced.name=Advanced Photovoltaic Cell
 tile.block_solar_panel.vibrant.name=Vibrant Photovoltaic Cell

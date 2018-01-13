@@ -18,7 +18,9 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.farmers.HarvestResult;
-import crazypants.enderio.base.farming.farmers.TreeHarvestUtil;
+import crazypants.enderio.base.farming.harvesters.AxeHarvestingTarget;
+import crazypants.enderio.base.farming.harvesters.IHarvestingTarget;
+import crazypants.enderio.base.farming.harvesters.TreeHarvester;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
@@ -113,9 +115,9 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
       if (FarmersRegistry.isLog(block)) {
         int powerStored = EnergyUpgradeManager.getEnergyStored(itemstack);
 
-        TreeHarvestUtil harvester = new TreeHarvestUtil();
         HarvestResult res = new HarvestResult();
-        harvester.harvest(player.world, pos, res);
+        final IHarvestingTarget target = new AxeHarvestingTarget(bs, pos);
+        TreeHarvester.harvest(player.world, pos, res, target);
 
         NNList<BlockPos> sortedTargets = new NNList<BlockPos>(res.getHarvestedBlocks());
         harvestComparator.refPoint = pos;

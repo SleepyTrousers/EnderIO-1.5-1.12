@@ -10,9 +10,9 @@ import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
-import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.machines.machine.teleport.telepad.TileDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetList;
+import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -68,6 +68,10 @@ public class GuiTargetList extends GuiScrollableList<TelepadTarget> {
     if (iconBounds.contains(elX, elY)) {
       te.removeTarget(target);
       PacketHandler.INSTANCE.sendToServer(new PacketTargetList(te, target, false));
+      if (selectedIndex >= getNumElements()) {
+        setSelection(getNumElements() - 1);
+      }
+      return false;
     }
     return true;
   }

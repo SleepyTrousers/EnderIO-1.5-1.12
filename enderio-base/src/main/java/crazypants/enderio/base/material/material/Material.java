@@ -74,6 +74,9 @@ public enum Material {
   DYE_GREEN("organic_green_dye", "dyeGreen"),
   DYE_BROWN("organic_brown_dye", "dyeBrown"),
 
+  POWDER_PHOTOVOLTAIC("powderPhotovoltaic", false),
+  PLATE_PHOTOVOLTAIC("platePhotovoltaic", false),
+
   ;
 
   public final boolean hasEffect;
