@@ -64,9 +64,6 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
   @Store
   private String label;
 
-  @Store
-  private @Nonnull UserIdent owner = UserIdent.NOBODY;
-
   @Store(handler = HandleUserIdent.HandleUserIdentArrayList.class)
   private List<UserIdent> authorisedUsers = new ArrayList<UserIdent>();
 
@@ -75,7 +72,7 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
   }
 
   private boolean isOwnerUser(UserIdent ident) {
-    return owner.equals(ident);
+    return super.getOwner().equals(ident);
   }
 
   @Override
@@ -128,6 +125,7 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
 
   @Override
   public boolean canUiBeAccessed(@Nonnull EntityPlayer playerName) {
+
     return isOwnerUser(UserIdent.create(playerName.getGameProfile()));
   }
 
@@ -156,6 +154,7 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
 
   @Override
   public void setPassword(@Nonnull NNList<ItemStack> password) {
+
     this.password = password;
   }
 
@@ -180,13 +179,10 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
   }
 
   @Override
-  public @Nonnull UserIdent getOwner() {
-    return owner;
-  }
-
-  @Override
   public void setPlacedBy(@Nonnull EntityPlayer player) {
-    this.owner = UserIdent.create(player.getGameProfile());
+    if (!world.isRemote) {
+      super.setOwner(player);
+    }
   }
 
   @Override
