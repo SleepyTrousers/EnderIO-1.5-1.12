@@ -201,7 +201,7 @@ XML editor will display that as tooltips when editing this file.
       <grid size="3x3">
         <item name="itemFlint" /><item name="itemFlint" /><item name="itemFlint" />
         <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
-        <item name="GEAR_WOOD" /><item name="minecraft:piston" /><item name="GEAR_WOOD" />
+        <item name="GEAR_ENERGIZED" /><item name="minecraft:piston" /><item name="GEAR_ENERGIZED" />
       </grid>
       <output name="enderio:block_sag_mill" />
     </crafting>
