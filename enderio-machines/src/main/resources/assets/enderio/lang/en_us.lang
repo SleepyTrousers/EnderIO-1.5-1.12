@@ -25,7 +25,7 @@ enderio.gui.stirling_generator.output=Generating: %s
 enderio.gui.stirling_generator.burnRate=Burn Rate: %s%%
 enderio.gui.stirling_generator.upgradeslot=Upgrade slot
 enderio.gui.stirling_generator.upgrades={0} gives {2}{1,number,#.#}x{3} efficiency
-enderio.gui.stirling_generator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
+enderio.gui.stirling_generator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} µI
 
 enderio.gui.zombie_generator.output=Generating: %s
 enderio.gui.zombie_generator.fuelTank=Nutrient Tank

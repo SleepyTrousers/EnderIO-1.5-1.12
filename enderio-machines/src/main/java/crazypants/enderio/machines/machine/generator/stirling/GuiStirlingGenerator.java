@@ -74,8 +74,8 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
     int totalBurnTime = getTileEntity().totalBurnTime;
     int remainingTicks = (int) (remaining * totalBurnTime);
     int remainingSecs = remainingTicks / 20;
-    int remainingRF = getTileEntity().getPowerUsePerTick() * remainingTicks;
-    Object[] objects = { remaining, remainingSecs / 60, remainingSecs % 60, remainingRF };
+    int remainingPower = getTileEntity().getPowerUsePerTick() * remainingTicks;
+    Object[] objects = { remaining, remainingSecs / 60, remainingSecs % 60, remainingPower };
     return MessageFormat.format(Lang.GUI_STIRGEN_REMAINING.get(), objects);
   }
 
