@@ -86,6 +86,7 @@ public enum MachineObject implements IModObject.Registerable {
 
   block_painter(BlockPainter.class),
   block_reservoir(BlockReservoir.class),
+  block_simple_sag_mill(BlockSagMill.class, "create_simple"),
   block_sag_mill(BlockSagMill.class),
   block_slice_and_splice(BlockSliceAndSplice.class),
   block_solar_panel(BlockSolarPanel.class),

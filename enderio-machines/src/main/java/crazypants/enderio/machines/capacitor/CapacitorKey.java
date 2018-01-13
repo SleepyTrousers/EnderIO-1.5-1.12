@@ -97,6 +97,10 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   SAG_MILL_POWER_BUFFER(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
   SAG_MILL_POWER_USE(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
 
+  SIMPLE_SAG_MILL_POWER_INTAKE(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 10),
+  SIMPLE_SAG_MILL_POWER_BUFFER(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 1000),
+  SIMPLE_SAG_MILL_POWER_USE(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 5),
+
   SLICE_POWER_INTAKE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.QUADRATIC, 160),
   SLICE_POWER_BUFFER(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
   SLICE_POWER_USE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 80),

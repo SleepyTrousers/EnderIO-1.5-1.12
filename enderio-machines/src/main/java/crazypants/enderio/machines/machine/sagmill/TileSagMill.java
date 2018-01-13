@@ -3,6 +3,7 @@ package crazypants.enderio.machines.machine.sagmill;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
@@ -24,9 +25,32 @@ import net.minecraft.util.math.MathHelper;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_SAG_MILL_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_SAG_MILL_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_SAG_MILL_POWER_USE;
 
 @Storable
-public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
+public abstract class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
+
+  @Storable
+  public static class Simple extends TileSagMill {
+    public Simple() {
+      super(new SlotDefinition(2, 4, 0), SIMPLE_SAG_MILL_POWER_INTAKE, SIMPLE_SAG_MILL_POWER_BUFFER, SIMPLE_SAG_MILL_POWER_USE);
+    }
+
+    @Override
+    public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
+      // Reject everything for the invisible ball slot
+      return i != 1 && super.isMachineItemValidForSlot(i, itemstack);
+    }
+  }
+
+  @Storable
+  public static class Normal extends TileSagMill {
+    public Normal() {
+      super(new SlotDefinition(2, 4), SAG_MILL_POWER_INTAKE, SAG_MILL_POWER_BUFFER, SAG_MILL_POWER_USE);
+    }
+  }
 
   @Store
   protected IGrindingMultiplier grindingBall;
@@ -37,8 +61,9 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   @Store
   protected int lastSendGbScaled = 0;
 
-  public TileSagMill() {
-    super(new SlotDefinition(2, 4), SAG_MILL_POWER_INTAKE, SAG_MILL_POWER_BUFFER, SAG_MILL_POWER_USE);
+  protected TileSagMill(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+      @Nonnull ICapacitorKey maxEnergyUsed) {
+    super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
   @Override
