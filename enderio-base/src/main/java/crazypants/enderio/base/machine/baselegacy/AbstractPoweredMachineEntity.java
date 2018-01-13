@@ -73,7 +73,9 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
 
   @Override
   public void setEnergyStored(int stored) {
-    storedEnergyRF = MathHelper.clamp(stored, 0, getMaxEnergyStored());
+    // Don't clamp this on the client, as the client may not know about the capacitor (inventory data is only synced while the GUI is open, while energy is
+    // synced more often as the rendering depends on it)
+    storedEnergyRF = world.isRemote ? stored : MathHelper.clamp(stored, 0, getMaxEnergyStored());
   }
 
   @Override

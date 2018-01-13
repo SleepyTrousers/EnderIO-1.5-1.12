@@ -122,7 +122,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     } else {
       startFailed = true;
     }
-    sendTaskProgressPacket();
 
     return requiresClientSync;
   }
@@ -162,7 +161,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     }
     markDirty();
     currentTask = null;
-    lastProgressScaled = 0;
   }
 
   protected void mergeResults(@Nonnull ResultStack[] results) {
