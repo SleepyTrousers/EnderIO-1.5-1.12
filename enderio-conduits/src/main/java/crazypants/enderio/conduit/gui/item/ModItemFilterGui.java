@@ -3,6 +3,8 @@ package crazypants.enderio.conduit.gui.item;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+import crazypants.enderio.base.filter.filters.ModItemFilter;
+import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
@@ -12,20 +14,20 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.filter.ModItemFilter;
 import crazypants.enderio.conduit.packet.PacketModItemFilter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class ModItemFilterGui implements IItemFilterGui {
 
   private static final int MOD_NAME_COLOR = ColorUtil.getRGB(Color.white);
 
-  private final IItemConduit itemConduit;
-  private final GuiExternalConnection gui;
+  private final IItemFilterContainer filterContainer;
+  private final GuiContainerBaseEIO gui;
   
   boolean isInput;
 
@@ -41,21 +43,22 @@ public class ModItemFilterGui implements IItemFilterGui {
   private final int tfWidth;
   private final int tfTextureX;
   private final int tfTextureY;
-  
-  public ModItemFilterGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+
+  // TODO Remove isInput
+  public ModItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isInput) {
     this.gui = gui;
-    this.itemConduit = itemConduit;
     this.isInput = isInput;
+    this.filterContainer = filterContainer;
 
     
     if(isInput) {
-      filter = (ModItemFilter) itemConduit.getInputFilter(gui.getDir());
+      filter = (ModItemFilter) filterContainer.getItemFilter();
       inputOffsetX = 50;
       tfWidth = 96;
       tfTextureX = 120;
       tfTextureY = 214;
     } else {
-      filter = (ModItemFilter) itemConduit.getOutputFilter(gui.getDir());
+      filter = (ModItemFilter) filterContainer.getItemFilter();
       inputOffsetX = 32;
       tfWidth = 114;
       tfTextureX = 120;
@@ -129,7 +132,7 @@ public class ModItemFilterGui implements IItemFilterGui {
       gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 38, gui.getGuiTop() + r.y - 1, tfTextureX, tfTextureY, tfWidth, 18);
     }    
     
-    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     for(int i=0;i<inputBounds.length;i++) {
       String mod = filter.getModAt(i);
       if(mod != null) {
@@ -155,6 +158,7 @@ public class ModItemFilterGui implements IItemFilterGui {
     }    
   }
 
+  // TODO Decouple from conduits?
   private void setMod(int i, ItemStack st) {
     String mod = filter.setMod(i, st);    
     PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(),isInput,i, mod));

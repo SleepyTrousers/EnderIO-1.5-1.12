@@ -1,8 +1,10 @@
 package crazypants.enderio.conduit.gui.item;
 
+import com.enderio.core.client.gui.button.CycleButton;
+import crazypants.enderio.base.filter.filters.SpeciesItemFilter;
+import crazypants.enderio.base.filter.filters.SpeciesMode;
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 
@@ -10,9 +12,10 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.item.filter.SpeciesItemFilter;
-import crazypants.enderio.conduit.item.filter.SpeciesMode;
 import net.minecraft.client.gui.GuiButton;
+
+import javax.annotation.MatchesPattern;
+import javax.annotation.Nonnull;
 
 public class SpeciesItemFilterGui implements IItemFilterGui {
 
@@ -35,11 +38,12 @@ public class SpeciesItemFilterGui implements IItemFilterGui {
   private int xOffset;
   private int yOffset;
 
-  public SpeciesItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
+  // TODO Investigate isStickModAvailable
+  public SpeciesItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
     this(gui, filterContainer, isStickyModeAvailable, 32, 68, 0);
   }
 
-  public SpeciesItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable,
+  public SpeciesItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable,
                               int xOffset, int yOffset,
                               int buttonIdOffset) {
     this.gui = gui;
@@ -70,7 +74,7 @@ public class SpeciesItemFilterGui implements IItemFilterGui {
   }
 
   public void createFilterSlots() {
-    filter.createGhostSlots(gui.getGhostSlots(), xOffset+1, yOffset+1, new Runnable() {
+    filter.createGhostSlots(gui.getGhostSlotHandler().getGhostSlots(), xOffset+1, yOffset+1, new Runnable() {
       @Override
       public void run() {
         sendFilterChange();
@@ -104,7 +108,7 @@ public class SpeciesItemFilterGui implements IItemFilterGui {
   
   
   @Override
-  public void actionPerformed(GuiButton guiButton) {
+  public void actionPerformed(@Nonnull GuiButton guiButton) {
     
     if(guiButton.id == ID_STICKY + buttonIdOffset) {
       filter.setSticky(stickyB.isSelected());

@@ -14,7 +14,6 @@ import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.packet.PacketExistingItemFilterSnapshot;
-import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
@@ -22,6 +21,7 @@ import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.List;
 
@@ -37,7 +37,8 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   private static final int ID_SHOW = GuiExternalConnection.nextButtonId();
   private static final int ID_MERGE = GuiExternalConnection.nextButtonId();
 
-  private GuiContainerBaseEIO gui;
+  private final GuiContainerBaseEIO gui;
+  private final IItemFilterContainer filterContainer;
 
   private ToggleButton useMetaB;
   private ToggleButton useNbtB;
@@ -51,16 +52,17 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   private GuiButton showB;
   private GuiButton mergeB;
   private SnapshotOverlay snapshotOverlay;
-
-  boolean isInput;
+  private boolean isInput;
 
   private ExistingItemFilter filter;
 
-  public ExistingItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer container) {
+  // TODO Remove isInput
+  public ExistingItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isInput) {
     this.gui = gui;
+    this.filterContainer = filterContainer;
     this.isInput = isInput;
 
-    filter = (ExistingItemFilter) container.getItemFilter();
+    filter = (ExistingItemFilter) filterContainer.getItemFilter();
 
     int butLeft = 37;
     int x = butLeft;
@@ -207,7 +209,8 @@ public class ExistingItemFilterGui implements IItemFilterGui {
 
   private void sendFilterChange() {
     updateButtons();
-    PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));    
+    filterContainer.onFilterChanged();
+    //PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
   }
 
   @Override

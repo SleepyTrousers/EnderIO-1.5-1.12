@@ -3,13 +3,16 @@ package crazypants.enderio.conduit.gui.item;
 import com.enderio.core.client.gui.button.ToggleButton;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.conduit.IFilterChangeListener;
+import crazypants.enderio.base.filter.filters.PowerItemFilter;
+import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.filter.PowerItemFilter;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import net.minecraft.client.gui.GuiButton;
+
+import javax.annotation.Nonnull;
 
 public class PowerItemFilterGui implements IItemFilterGui {
 
@@ -18,8 +21,8 @@ public class PowerItemFilterGui implements IItemFilterGui {
   private static final int ID_MORE = GuiExternalConnection.nextButtonId();
   private static final int ID_LEVEL = GuiExternalConnection.nextButtonId();
 
-  private final IItemConduit itemConduit;
-  private final GuiExternalConnection gui;
+  private final IItemFilterContainer filterContainer;
+  private final GuiContainerBaseEIO gui;
 
   private final ToggleButton stickyB;
 
@@ -30,15 +33,16 @@ public class PowerItemFilterGui implements IItemFilterGui {
 
   private final PowerItemFilter filter;
 
-  public PowerItemFilterGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+  // TODO Remove isInput
+  public PowerItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isInput) {
     this.gui = gui;
-    this.itemConduit = itemConduit;
+    this.filterContainer = filterContainer;
     this.isInput = isInput;
 
     if(isInput) {
-      filter = (PowerItemFilter) itemConduit.getInputFilter(gui.getDir());
+      filter = (PowerItemFilter) filterContainer.getItemFilter();
     } else {
-      filter = (PowerItemFilter) itemConduit.getOutputFilter(gui.getDir());
+      filter = (PowerItemFilter) filterContainer.getItemFilter();
     }
 
     int butLeft = 37;
@@ -93,7 +97,7 @@ public class PowerItemFilterGui implements IItemFilterGui {
   }
 
   @Override
-  public void actionPerformed(GuiButton guiButton) {
+  public void actionPerformed(@Nonnull GuiButton guiButton) {
     if(guiButton.id == ID_STICKY) {
       filter.setSticky(stickyB.isSelected());
       sendFilterChange();
@@ -108,7 +112,8 @@ public class PowerItemFilterGui implements IItemFilterGui {
 
   private void sendFilterChange() {
     updateButtons();
-    PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
+    filterContainer.onFilterChanged();
+    //PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
   }
 
   @Override
