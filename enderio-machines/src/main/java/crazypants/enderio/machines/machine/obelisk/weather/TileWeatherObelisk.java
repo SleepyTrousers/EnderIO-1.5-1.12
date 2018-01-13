@@ -183,11 +183,6 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   }
 
   @Override
-  protected int getProgressUpdateFreq() {
-    return 3;
-  }
-
-  @Override
   public @Nonnull TileEntity getTileEntity() {
     return this;
   }
@@ -264,6 +259,9 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
           stopTask();
           res = true;
         }
+        // we have a very smooth block animation, so all clients need very detailed progress data
+        // TODO: check if this is really needed for the WeatherObelisk
+        PacketHandler.INSTANCE.sendToAllAround(getProgressPacket(), this);
       }
     }
 

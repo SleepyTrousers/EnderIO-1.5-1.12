@@ -207,6 +207,9 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
       if (shouldDoWorkThisTick(5)) {
         updateQueuedEntities();
       }
+      // we have a very smooth block animation, so all clients need very detailed progress data
+      // TODO: check if this is really needed for the TelePad
+      PacketHandler.INSTANCE.sendToAllAround(getProgressPacket(), this);
     }
 
     if (coordsChanged) {
@@ -352,11 +355,6 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
   @Override
   public float getProgress() {
     return ((float) powerUsed) / ((float) requiredPower);
-  }
-
-  @Override
-  protected int getProgressUpdateFreq() {
-    return 1;
   }
 
   @Override
