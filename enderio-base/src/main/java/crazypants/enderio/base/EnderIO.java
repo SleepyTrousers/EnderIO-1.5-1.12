@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableList;
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.recipes.RecipeLoader;
 import crazypants.enderio.base.enchantment.Enchantments;
@@ -223,6 +224,8 @@ public class EnderIO implements IEnderIOAddon {
             Config.TRAVEL_BLACKLIST.add(value);
           } else if (IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
             SliceAndSpliceRecipeManager.getInstance().addCustomRecipes(key);
+          } else if (IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {
+            ConnectivityTool.registerRedstoneAware(value);
           }
         } else if (msg.isResourceLocationMessage()) {
           ResourceLocation value = msg.getResourceLocationValue();
@@ -242,8 +245,6 @@ public class EnderIO implements IEnderIOAddon {
             FluidFuelRegister.instance.addFuel(nbtValue);
           } else if (IMC.FLUID_COOLANT_ADD.equals(key)) {
             FluidFuelRegister.instance.addCoolant(nbtValue);
-          } else if (IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {
-            // TODO 1.11 InsulatedRedstoneConduit.addConnectableBlock(msg.getNBTValue());
           }
         } else if (msg.isItemStackMessage()) {
           if (IMC.PAINTER_WHITELIST_ADD.equals(key)) {
