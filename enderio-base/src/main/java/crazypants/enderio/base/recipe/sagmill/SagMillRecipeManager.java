@@ -18,7 +18,6 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.Recipe;
 import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.base.recipe.RecipeConfig;
-import crazypants.enderio.base.recipe.RecipeConfigParser;
 import crazypants.enderio.base.recipe.RecipeInput;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.util.Prep;
@@ -120,24 +119,6 @@ public class SagMillRecipeManager {
       Log.error("Could not load recipes for SAG Mill.");
     }
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SAGMILL, new SagMillMachineRecipe());
-  }
-
-  public void addCustomRecipes(@Nonnull String xmlDef) {
-    GrindingBallTagHandler th = new GrindingBallTagHandler();
-    RecipeConfig config;
-    try {
-      config = RecipeConfigParser.parse(xmlDef, th);
-    } catch (Exception e) {
-      Log.error("Error parsing custom xml");
-      return;
-    }
-
-    balls.addAll(th.balls.values());
-    if (config == null) {
-      Log.error("Could not process custom XML");
-      return;
-    }
-    processConfig(config);
   }
 
   public IRecipe getRecipeForInput(@Nonnull ItemStack input) {

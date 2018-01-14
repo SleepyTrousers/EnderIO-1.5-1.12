@@ -47,14 +47,17 @@ public class SolarPanelRecipeCategory extends BlankRecipeCategory<SolarPanelReci
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-      ingredients.setInputs(ItemStack.class, new NNList<ItemStack>(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 0),
-          new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 1), new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 2)));
+      ingredients.setInputs(ItemStack.class, new NNList<ItemStack>( //
+          new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 0), //
+          new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 1), //
+          new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 2), //
+          new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 3)));
 
-      ingredients.setOutputs(EnergyIngredient.class, new NNList<>(
-        new EnergyIngredient(Math.round(SolarType.SIMPLE.getRfperTick()), true),
-        new EnergyIngredient(Math.round(SolarType.ADVANCED.getRfperTick()), true),
-        new EnergyIngredient(Math.round(SolarType.VIBRANT.getRfperTick()), true)
-      ));
+      ingredients.setOutputs(EnergyIngredient.class, new NNList<>( //
+          new EnergyIngredient(Math.round(SolarType.SIMPLE.getRfperTick()), true), //
+          new EnergyIngredient(Math.round(SolarType.NORMAL.getRfperTick()), true), //
+          new EnergyIngredient(Math.round(SolarType.ADVANCED.getRfperTick()), true), //
+          new EnergyIngredient(Math.round(SolarType.VIBRANT.getRfperTick()), true)));
     }
 
     @Override
@@ -81,11 +84,12 @@ public class SolarPanelRecipeCategory extends BlankRecipeCategory<SolarPanelReci
 
   // -------------------------------------
 
-  public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+  public static void register(@Nonnull IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
     registry.addRecipeCategories(new SolarPanelRecipeCategory(guiHelper));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 0), SolarPanelRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 1), SolarPanelRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 3), SolarPanelRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 2), SolarPanelRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 1), SolarPanelRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 0), SolarPanelRecipeCategory.UID);
     registry.addRecipes(Collections.singletonList(new SolarPanelRecipeWrapper(guiHelper)), UID);
   }
 
@@ -94,8 +98,8 @@ public class SolarPanelRecipeCategory extends BlankRecipeCategory<SolarPanelReci
   @Nonnull
   private final IDrawable background;
 
-  public SolarPanelRecipeCategory(IGuiHelper guiHelper) {
-    background = guiHelper.createBlankDrawable(155, 95);
+  public SolarPanelRecipeCategory(@Nonnull IGuiHelper guiHelper) {
+    background = guiHelper.createBlankDrawable(160, 95);
   }
 
   @Override
@@ -119,12 +123,15 @@ public class SolarPanelRecipeCategory extends BlankRecipeCategory<SolarPanelReci
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
     IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
 
-    guiItemStacks.init(0, true, 28 - 8, 45);
-    guiItemStacks.init(1, true, 75 - 8, 45);
-    guiItemStacks.init(2, true, 125 - 8, 45);
-    group.init(3, false, EnergyIngredientRenderer.INSTANCE, 10, 80, 40, 10, 0, 0);
-    group.init(4, false, EnergyIngredientRenderer.INSTANCE, 58, 80, 40, 10, 0, 0);
-    group.init(5, false, EnergyIngredientRenderer.INSTANCE, 107, 80, 40, 10, 0, 0);
+    int offset = 40 / 2 - 16 / 2; // center of text minus half-width of stack
+    guiItemStacks.init(0, true, 0 * 40 + offset, 45);
+    guiItemStacks.init(1, true, 1 * 40 + offset, 45);
+    guiItemStacks.init(2, true, 2 * 40 + offset, 45);
+    guiItemStacks.init(3, true, 3 * 40 + offset, 45);
+    group.init(4, false, EnergyIngredientRenderer.INSTANCE, 0 * 40, 80, 40, 10, 0, 0);
+    group.init(5, false, EnergyIngredientRenderer.INSTANCE, 1 * 40, 80, 40, 10, 0, 0);
+    group.init(6, false, EnergyIngredientRenderer.INSTANCE, 2 * 40, 80, 40, 10, 0, 0);
+    group.init(7, false, EnergyIngredientRenderer.INSTANCE, 3 * 40, 80, 40, 10, 0, 0);
 
     guiItemStacks.set(ingredients);
     group.set(ingredients);

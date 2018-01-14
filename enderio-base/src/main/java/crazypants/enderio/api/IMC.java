@@ -20,11 +20,6 @@ public final class IMC {
   public static final String VAT_RECIPE = "recipe:vat";
 
   /**
-   * Key for a string message to add SAGMill recipes. Calls {@link CrusherRecipeManager#addCustomRecipes(String)} with the string value of the message.
-   */
-  public static final String SAG_RECIPE = "recipe:sagmill";
-
-  /**
    * Key for a string message to add xml recipes. The supplied xml is treated as if it was loaded from one of the 'recipe_xxx.xml's.
    * 
    * Note that this does not do the recipe merging you get between core and user xmls. So you cannot disable already processed recipes.
@@ -56,8 +51,8 @@ public final class IMC {
   public static final String PAINTER_BLACKLIST_ADD = "painter:blacklist:add";
 
   /**
-   * Key for a string message to add an entity to the Soul Vial blacklist. Calls {@link ItemSoulVial#addEntityToBlackList(String)} with the string value of
-   * the message.
+   * Key for a string message to add an entity to the Soul Vial blacklist. Calls {@link ItemSoulVial#addEntityToBlackList(String)} with the string value of the
+   * message.
    */
   public static final String SOUL_VIAL_BLACKLIST = "soulVial:blacklist:add";
 

@@ -66,7 +66,7 @@ public class BlockSceneRenderer {
     pitchRot.setIdentity();
     yawRot.setIdentity();
 
-    pitch = -mc.player.rotationPitch;
+    pitch = -22.5f; // looks nice for fire on bedrock, may need a parameter for other renderings
 
     distance = Math.max(Math.max(size.x, size.y), size.z) + 4;
   }
