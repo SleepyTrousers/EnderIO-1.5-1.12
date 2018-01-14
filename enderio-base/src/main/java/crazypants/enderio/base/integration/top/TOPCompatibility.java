@@ -357,7 +357,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
             content1 = TextFormatting.YELLOW + EnderIO.lang.localize("top.tank.header.storage", TextFormatting.WHITE + content1);
             break;
           }
-          ItemStack stack = new ItemStack(ModObject.blockFusedQuartz.getBlockNN());
+          ItemStack stack = new ItemStack(ModObject.blockFusedQuartz.getBlockNN()); // TODO: we either need the Tank here or another item that can
+                                                                                    // piggyback-render the fluid
           SmartTankItemAccess.setTank(stack, smartTank);
           NbtValue.FAKE.setBoolean(stack, true);
 
