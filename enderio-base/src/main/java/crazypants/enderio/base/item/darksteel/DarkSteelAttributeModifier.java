@@ -17,23 +17,23 @@ public class DarkSteelAttributeModifier extends AttributeModifier {
   private static final @Nonnull AttributeModifier NONE = new AttributeModifier(UU_ID, "Empowered", 0, 0);
 
   private static final @Nonnull NNList<AttributeModifier> ATTACK_DAMAGE = new NNList<>(
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordDamageBonusEmpowered),
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordDamageBonusEmpowered1),
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordDamageBonusEmpowered2),
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordDamageBonusEmpowered3));
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordDamageBonusEmpowered, OPERATION.ADD),
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordDamageBonusEmpowered1, OPERATION.ADD),
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordDamageBonusEmpowered2, OPERATION.ADD),
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordDamageBonusEmpowered3, OPERATION.ADD));
   private static final @Nonnull NNList<AttributeModifier> ATTACK_SPEED = new NNList<>(
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordSpeedBonusEmpowered),
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordSpeedBonusEmpowered1),
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordSpeedBonusEmpowered2),
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordSpeedBonusEmpowered3));
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordSpeedBonusEmpowered, OPERATION.ADD),
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordSpeedBonusEmpowered1, OPERATION.ADD),
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordSpeedBonusEmpowered2, OPERATION.ADD),
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSwordSpeedBonusEmpowered3, OPERATION.ADD));
   private static final @Nonnull NNList<AttributeModifier> WALK_SPEED = new NNList<>(NONE,
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSpeedWalkModifier1), //
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSpeedWalkModifier2), //
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSpeedWalkModifier3));
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSpeedWalkModifier1, OPERATION.PERCENT_OF_BASE), //
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSpeedWalkModifier2, OPERATION.PERCENT_OF_BASE), //
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSpeedWalkModifier3, OPERATION.PERCENT_OF_BASE));
   private static final @Nonnull NNList<AttributeModifier> SPRINT_SPEED = new NNList<>(NONE,
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSpeedSprintModifier1), //
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSpeedSprintModifier2), //
-      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSpeedSprintModifier3));
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSpeedSprintModifier1, OPERATION.PERCENT_OF_BASE), //
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSpeedSprintModifier2, OPERATION.PERCENT_OF_BASE), //
+      new DarkSteelAttributeModifier(DarkSteelConfig.darkSteelSpeedSprintModifier3, OPERATION.PERCENT_OF_BASE));
 
   public static @Nonnull AttributeModifier getAttackDamage(int level) {
     return ATTACK_DAMAGE.get(level);
@@ -53,14 +53,20 @@ public class DarkSteelAttributeModifier extends AttributeModifier {
 
   private final IValue<Float> config;
 
-  private DarkSteelAttributeModifier(IValue<Float> config) {
-    super(UU_ID, "Empowered", 0, 0);
+  private DarkSteelAttributeModifier(IValue<Float> config, OPERATION op) {
+    super(UU_ID, "Empowered", 0, op.ordinal());
     this.config = config;
   }
 
   @Override
   public double getAmount() {
     return config.get();
+  }
+
+  private static enum OPERATION {
+    ADD,
+    PERCENT_OF_BASE,
+    PERCENT_MULTIPLIER;
   }
 
 }
