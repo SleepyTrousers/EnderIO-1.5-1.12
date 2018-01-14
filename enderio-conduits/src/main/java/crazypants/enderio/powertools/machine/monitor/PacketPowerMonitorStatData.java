@@ -1,5 +1,7 @@
 package crazypants.enderio.powertools.machine.monitor;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
@@ -20,16 +22,16 @@ public class PacketPowerMonitorStatData extends MessageTileEntity<TilePowerMonit
   public PacketPowerMonitorStatData() {
   }
 
-  private PacketPowerMonitorStatData(TilePowerMonitor tile) {
+  private PacketPowerMonitorStatData(@Nonnull TilePowerMonitor tile) {
     super(tile);
   }
 
-  public static IMessage requestUpdate(TilePowerMonitor te) {
+  public static IMessage requestUpdate(@Nonnull TilePowerMonitor te) {
     PacketPowerMonitorStatData msg = new PacketPowerMonitorStatData(te);
     return msg;
   }
 
-  public static IMessage sendUpdate(TilePowerMonitor te, TilePowerMonitor.StatData data) {
+  public static IMessage sendUpdate(@Nonnull TilePowerMonitor te, TilePowerMonitor.StatData data) {
     PacketPowerMonitorStatData msg = new PacketPowerMonitorStatData(te);
     msg.data = data;
     return msg;
@@ -75,7 +77,7 @@ public class PacketPowerMonitorStatData extends MessageTileEntity<TilePowerMonit
 
     @Override
     public IMessage onMessage(PacketPowerMonitorStatData msg, MessageContext ctx) {
-      TilePowerMonitor te = msg.getTileEntity(ctx.getServerHandler().playerEntity.world);
+      TilePowerMonitor te = msg.getTileEntity(ctx.getServerHandler().player.world);
       if (te != null) {
         NetworkPowerManager powerManager = te.getPowerManager();
         if (powerManager != null) {

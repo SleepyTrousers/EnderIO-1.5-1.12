@@ -6,8 +6,6 @@ import info.loenwind.autosave.annotations.Storable;
 @Storable
 public class TileGauge extends TileEntityEio {
 
-  public TileGauge() {
-    super();
-  }
+  // Note: TE is only needed for the TESR
 
 }

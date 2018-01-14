@@ -13,7 +13,6 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.task.ContinuousTask;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable.IPaintableTileEntity;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.conduit.power.IPowerConduit;
@@ -21,6 +20,7 @@ import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.powertools.init.PowerToolObject;
+import crazypants.enderio.powertools.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -31,6 +31,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static com.enderio.core.common.NBTAction.CLIENT;
 import static com.enderio.core.common.NBTAction.ITEM;
 import static com.enderio.core.common.NBTAction.SAVE;
+import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
+import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
+import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;
 
 @Storable
 public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {
@@ -179,13 +182,12 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   }
 
   @Override
-  protected IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, float chance) {
+  protected IPoweredTask createTask(@Nullable IMachineRecipe nextRecipe, float chance) {
     return new ContinuousTask(getPowerUsePerTick());
   }
 
   @Override
   public void onCapacitorDataChange() {
-    // TODO setCapacitor(new BasicCapacitor(100, 10000, 10));
     currentTask = createTask(null, 0);
     initialized = false;
   }

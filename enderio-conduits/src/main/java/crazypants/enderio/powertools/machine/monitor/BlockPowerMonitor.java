@@ -11,11 +11,9 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
-import crazypants.enderio.powertools.init.PowerToolObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -37,29 +35,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor>
     implements IAdvancedTooltipProvider, IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
-  public static BlockPowerMonitor advancedInstance;
+  private final boolean advanced;
 
-  public static BlockPowerMonitor createAdvancedPowerMonitor() {
-    PacketHandler.INSTANCE.registerMessage(PacketPowerMonitorGraph.ClientHandler.class, PacketPowerMonitorGraph.class, PacketHandler.nextID(), Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketPowerMonitorGraph.ServerHandler.class, PacketPowerMonitorGraph.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketPowerMonitorStatData.ClientHandler.class, PacketPowerMonitorStatData.class, PacketHandler.nextID(),
-        Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketPowerMonitorStatData.ServerHandler.class, PacketPowerMonitorStatData.class, PacketHandler.nextID(),
-        Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketPowerMonitorConfig.ServerHandler.class, PacketPowerMonitorConfig.class, PacketHandler.nextID(), Side.SERVER);
-    advancedInstance = new BlockPowerMonitor(PowerToolObject.block_advanced_power_monitor);
-    advancedInstance.init();
-    return advancedInstance;
-  }
-
-  public static Block createPowerMonitor() {
-    BlockPowerMonitor result = new BlockPowerMonitor(PowerToolObject.block_power_monitor);
+  public static BlockPowerMonitor createAdvancedPowerMonitor(@Nonnull IModObject modObject) {
+    BlockPowerMonitor result = new BlockPowerMonitor(modObject, true);
     result.init();
     return result;
   }
 
-  public BlockPowerMonitor(@Nonnull IModObject mo) {
+  public static Block createPowerMonitor(@Nonnull IModObject modObject) {
+    BlockPowerMonitor result = new BlockPowerMonitor(modObject, false);
+    result.init();
+    return result;
+  }
+
+  public BlockPowerMonitor(@Nonnull IModObject mo, boolean advanced) {
     super(mo, TilePowerMonitor.class);
+    this.advanced = advanced;
   }
 
   @Override
@@ -122,7 +114,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor>
     super.onBlockPlacedBy(world, pos, state, player, stack);
     TilePowerMonitor te = getTileEntity(world, pos);
     if (te != null) {
-      te.setAdvanced(this == advancedInstance);
+      te.setAdvanced(advanced);
     }
   }
 
@@ -156,7 +148,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor>
     if (!super.shouldSideBeRendered(bs, worldIn, pos, side)) {
       return false;
     }
-    if (advancedInstance != this) {
+    if (!advanced) {
       return true;
     }
     TilePowerMonitor tileEntity = getTileEntitySafe(worldIn, pos);

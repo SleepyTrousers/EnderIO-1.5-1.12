@@ -7,12 +7,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.render.IHaveTESR;
@@ -21,7 +21,6 @@ import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
-import crazypants.enderio.powertools.init.PowerToolObject;
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -43,14 +42,14 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
 
   public static final TextureSupplier gaugeIcon = TextureRegistry.registerTexture("blocks/blockGaugeOverlay");
 
-  public static BlockGauge create() {
-    BlockGauge result = new BlockGauge();
+  public static BlockGauge create(@Nonnull IModObject modObject) {
+    BlockGauge result = new BlockGauge(modObject);
     result.init();
     return result;
   }
 
-  private BlockGauge() {
-    super(PowerToolObject.block_gauge, TileGauge.class, Material.GLASS);
+  private BlockGauge(@Nonnull IModObject modObject) {
+    super(modObject, TileGauge.class, Material.GLASS);
     setLightOpacity(255);
     useNeighborBrightness = true;
   }
@@ -128,10 +127,12 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
       @Override
       public void apply(@Nonnull EnumFacing face) {
         BlockPos neighbor = pos.offset(face);
-        TileEntity tile = BlockEnder.getAnyTileEntitySafe(world, neighbor);
-        IPowerInterface eh = PowerHandlerUtil.getPowerInterface(tile, face.getOpposite());
-        if (eh != null && !(tile instanceof TileCapBank) && !(tile instanceof IConduitBundle)) {
-          sides.put(face, eh);
+        TileEntity tile = getAnyTileEntitySafe(world, neighbor);
+        if (!(tile instanceof TileCapBank) && !(tile instanceof IConduitBundle)) {
+          IPowerInterface eh = PowerHandlerUtil.getPowerInterface(tile, face.getOpposite());
+          if (eh != null) {
+            sides.put(face, eh);
+          }
         }
       }
     });

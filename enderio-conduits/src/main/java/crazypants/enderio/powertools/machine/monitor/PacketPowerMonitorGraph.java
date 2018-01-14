@@ -1,5 +1,7 @@
 package crazypants.enderio.powertools.machine.monitor;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
@@ -19,11 +21,11 @@ public class PacketPowerMonitorGraph extends MessageTileEntity<TilePowerMonitor>
   public PacketPowerMonitorGraph() {
   }
 
-  private PacketPowerMonitorGraph(TilePowerMonitor tile) {
+  private PacketPowerMonitorGraph(@Nonnull TilePowerMonitor tile) {
     super(tile);
   }
 
-  public static IMessage requestUpdate(TilePowerMonitor te, int no) {
+  public static IMessage requestUpdate(@Nonnull TilePowerMonitor te, int no) {
     PacketPowerMonitorGraph msg = new PacketPowerMonitorGraph(te);
     msg.no = no;
     msg.collectCount = -1;
@@ -32,7 +34,7 @@ public class PacketPowerMonitorGraph extends MessageTileEntity<TilePowerMonitor>
     return msg;
   }
 
-  public static IMessage sendUpdate(TilePowerMonitor te, int no) {
+  public static IMessage sendUpdate(@Nonnull TilePowerMonitor te, int no) {
     PacketPowerMonitorGraph msg = new PacketPowerMonitorGraph(te);
     msg.no = no;
     msg.collectCount = te.stats[no].getCollectCount();
@@ -71,7 +73,7 @@ public class PacketPowerMonitorGraph extends MessageTileEntity<TilePowerMonitor>
 
     @Override
     public IMessage onMessage(PacketPowerMonitorGraph msg, MessageContext ctx) {
-      TilePowerMonitor te = msg.getTileEntity(ctx.getServerHandler().playerEntity.world);
+      TilePowerMonitor te = msg.getTileEntity(ctx.getServerHandler().player.world);
       if (te != null && msg.no >= 0 && msg.no < te.stats.length) {
         return sendUpdate(te, msg.no);
       }
