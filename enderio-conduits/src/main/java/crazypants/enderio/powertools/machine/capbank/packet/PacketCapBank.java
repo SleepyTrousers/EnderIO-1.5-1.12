@@ -1,5 +1,7 @@
 package crazypants.enderio.powertools.machine.capbank.packet;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
@@ -16,7 +18,7 @@ public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMe
     super();
   }
 
-  public PacketCapBank(TileCapBank capBank) {
+  public PacketCapBank(@Nonnull TileCapBank capBank) {
     super(capBank);
   }
 
@@ -31,8 +33,9 @@ public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMe
 
   protected abstract Q handleMessage(TileCapBank te, T message, MessageContext ctx);
 
+  @SuppressWarnings("null")
   @Override
-  protected World getWorld(MessageContext ctx) {
+  protected @Nonnull World getWorld(MessageContext ctx) {
     if (ctx.side == Side.SERVER) {
       return ctx.getServerHandler().player.world;
     } else {

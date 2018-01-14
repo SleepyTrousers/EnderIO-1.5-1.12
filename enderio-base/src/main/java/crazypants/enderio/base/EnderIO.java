@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableList;
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.recipes.RecipeLoader;
 import crazypants.enderio.base.enchantment.Enchantments;
@@ -69,18 +70,17 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 
-@Mod(modid = EnderIO.MODID, name = EnderIO.MOD_NAME, version = EnderIO.VERSION, dependencies = EnderIO.DEPENDENCIES, 
-	guiFactory = "crazypants.enderio.base.config.ConfigFactoryEIO")
+@Mod(modid = EnderIO.MODID, name = EnderIO.MOD_NAME, version = EnderIO.VERSION, dependencies = EnderIO.DEPENDENCIES, guiFactory = "crazypants.enderio.base.config.ConfigFactoryEIO")
 public class EnderIO implements IEnderIOAddon {
 
   public static final @Nonnull String MODID = "enderio";
   public static final @Nonnull String DOMAIN = "enderio";
   public static final @Nonnull String MOD_NAME = "Ender IO";
   public static final @Nonnull String VERSION = "@VERSION@";
-  
+
   private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:endercore;after:hwyla;after:jei";
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
-  
+
   @Instance(MODID)
   public static EnderIO instance;
 
@@ -220,12 +220,12 @@ public class EnderIO implements IEnderIOAddon {
             RecipeLoader.addIMCRecipe(value);
           } else if (IMC.VAT_RECIPE.equals(key)) {
             VatRecipeManager.getInstance().addCustomRecipes(value);
-          } else if (IMC.SAG_RECIPE.equals(key)) {
-            SagMillRecipeManager.getInstance().addCustomRecipes(value);
           } else if (IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
             Config.TRAVEL_BLACKLIST.add(value);
           } else if (IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
             SliceAndSpliceRecipeManager.getInstance().addCustomRecipes(key);
+          } else if (IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {
+            ConnectivityTool.registerRedstoneAware(value);
           }
         } else if (msg.isResourceLocationMessage()) {
           ResourceLocation value = msg.getResourceLocationValue();
@@ -245,8 +245,6 @@ public class EnderIO implements IEnderIOAddon {
             FluidFuelRegister.instance.addFuel(nbtValue);
           } else if (IMC.FLUID_COOLANT_ADD.equals(key)) {
             FluidFuelRegister.instance.addCoolant(nbtValue);
-          } else if (IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {
-            // TODO 1.11 InsulatedRedstoneConduit.addConnectableBlock(msg.getNBTValue());
           }
         } else if (msg.isItemStackMessage()) {
           if (IMC.PAINTER_WHITELIST_ADD.equals(key)) {

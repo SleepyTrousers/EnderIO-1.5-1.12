@@ -7,19 +7,16 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.power.AbstractPoweredBlockItem;
-import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
+import crazypants.enderio.base.power.IInternalPoweredItem;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.powertools.init.PowerToolObject;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-public class BlockItemCapBank extends AbstractPoweredBlockItem implements IOverlayRenderAware {
+public class BlockItemCapBank extends ItemBlock implements IOverlayRenderAware, IInternalPoweredItem {
 
   public static @Nonnull ItemStack createItemStackWithPower(int meta, int storedEnergy) {
     ItemStack res = new ItemStack(PowerToolObject.block_cap_bank.getBlockNN(), 1, meta);
@@ -37,11 +34,10 @@ public class BlockItemCapBank extends AbstractPoweredBlockItem implements IOverl
     NbtValue.ENERGY.setInt(item, Math.max(0, storedEnergy));
   }
 
-  public BlockItemCapBank(@Nonnull BlockCapBank blockCapBank, @Nonnull ResourceLocation name) {
-    super(blockCapBank, 0, 0, 0);
+  public BlockItemCapBank(@Nonnull BlockCapBank blockCapBank) {
+    super(blockCapBank);
     setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
-    setRegistryName(name);
   }
 
   @Override
@@ -82,49 +78,24 @@ public class BlockItemCapBank extends AbstractPoweredBlockItem implements IOverl
   }
 
   @Override
-  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
-    return new InnerProv(stack);
+  public int getEnergyStored(@Nonnull ItemStack container) {
+    if (CapBankType.getTypeFromMeta(container.getMetadata()).isCreative()) {
+      return CapBankType.getTypeFromMeta(container.getMetadata()).getMaxEnergyStored() / 2;
+    }
+    return IInternalPoweredItem.super.getEnergyStored(container);
   }
 
-  private class InnerProv implements ICapabilityProvider {
-
-    private final ItemStack container;
-    private final ItemPowerCapabilityBackend backend;
-
-    public InnerProv(@Nonnull ItemStack container) {
-      this.container = container;
-      this.backend = new ItemPowerCapabilityBackend(container);
+  @Override
+  public void setEnergyStored(@Nonnull ItemStack container, int energy) {
+    if (CapBankType.getTypeFromMeta(container.getMetadata()).isCreative()) {
+      energy = CapBankType.getTypeFromMeta(container.getMetadata()).getMaxEnergyStored() / 2;
     }
-
-    @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-      return backend.hasCapability(capability, facing);
-    }
-
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-      if (hasCapability(capability, facing) && CapBankType.getTypeFromMeta(container.getMetadata()).isCreative()) {
-        return null; // TODO (T)new CreativePowerCap(container);
-      }
-      return backend.getCapability(capability, facing);
-    }
+    IInternalPoweredItem.super.setEnergyStored(container, energy);
   }
 
-  // private class CreativePowerCap extends InternalPoweredItemWrapper {
-  //
-  // public CreativePowerCap (ItemStack container) {
-  // super(container, BlockItemCapBank.this);
-  // }
-  //
-  // @Override
-  // public int receiveEnergy(int maxReceive, boolean simulate) {
-  // return maxReceive;
-  // }
-  //
-  // @Override
-  // public int extractEnergy(int maxExtract, boolean simulate) {
-  // return maxExtract;
-  // }
-  // }
+  @Override
+  public @Nonnull ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+    return IInternalPoweredItem.super.initCapabilities(stack, nbt);
+  }
 
 }

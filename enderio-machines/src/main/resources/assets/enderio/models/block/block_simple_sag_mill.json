@@ -1,0 +1,69 @@
+{
+	"__comment": "Designed by HenryLoenwind with Cubik Studio - https://cubik.studio",
+	"elements": [ 	 
+		{
+			"__comment": "Box1",
+			"from": [ 0.5, 0.5, 14.75 ],
+			"to": [ 15.5, 9, 15.75 ],
+			"faces": {
+				"up": { "uv": [ 0.5, 7, 15.5, 8 ], "texture": "#front" },
+				"south": { "uv": [ 0.5, 7, 15.5, 15.5 ], "texture": "#front" }
+			}
+		},
+		{
+			"__comment": "Box2",
+			"from": [ 0.5, 12, 14.75 ],
+			"to": [ 15.5, 15.5, 15.75 ],
+			"faces": {
+				"down": { "uv": [ 0.5, 3, 15.5, 4 ], "texture": "#front" },
+				"south": { "uv": [ 0.5, 0.5, 15.5, 4 ], "texture": "#front" }
+			}
+		},
+		{
+			"__comment": "Box3",
+			"from": [ 0.5, 9, 14.75 ],
+			"to": [ 3, 12, 15.75 ],
+			"faces": {
+				"south": { "uv": [ 0.5, 4, 3, 7 ], "texture": "#front" },
+				"east": { "uv": [ 2, 4, 3, 7 ], "texture": "#front" }
+			}
+		},
+		{
+			"__comment": "Box4",
+			"from": [ 13, 9, 14.75 ],
+			"to": [ 15.5, 12, 15.75 ],
+			"faces": {
+				"south": { "uv": [ 13, 4, 15.5, 7 ], "texture": "#front" },
+				"west": { "uv": [ 13, 4, 14, 7 ], "texture": "#front" }
+			}
+		},
+		{
+			"__comment": "Box5",
+			"from": [ 4, 9, 14.25 ],
+			"to": [ 5, 12, 15.25 ],
+			"faces": {
+				"south": { "uv": [ 4, 4, 5, 7 ], "texture": "#front" },
+				"west": { "uv": [ 4, 4, 5, 7 ], "texture": "#front" },
+				"east": { "uv": [ 4, 4, 5, 7 ], "texture": "#front" }
+			}
+		},
+		{
+			"__comment": "Box6",
+			"from": [ 11, 9, 14.25 ],
+			"to": [ 12, 12, 15.25 ],
+			"faces": {
+				"south": { "uv": [ 11, 4, 12, 7 ], "texture": "#front" },
+				"west": { "uv": [ 11, 4, 12, 7 ], "texture": "#front" },
+				"east": { "uv": [ 11, 4, 12, 7 ], "texture": "#front" }
+			}
+		},
+		{
+			"__comment": "Box7",
+			"from": [ 2, 8, 13.75 ],
+			"to": [ 14, 13, 14.75 ],
+			"faces": {
+				"south": { "uv": [ 2, 3, 14, 8 ], "texture": "#front" }
+			}
+		}
+	]
+}

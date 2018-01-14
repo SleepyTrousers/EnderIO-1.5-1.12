@@ -18,10 +18,13 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -264,6 +267,20 @@ public abstract class AbstractMachineContainer<E extends AbstractInventoryMachin
 
   public int getGuiID() {
     return guiID;
+  }
+
+  @Override
+  public void detectAndSendChanges() {
+    super.detectAndSendChanges();
+    // getInv() is not the te, so we have to do super's work for the real te
+    final SPacketUpdateTileEntity updatePacket = te.getUpdatePacket();
+    if (updatePacket != null) {
+      for (IContainerListener containerListener : listeners) {
+        if (containerListener instanceof EntityPlayerMP) {
+          ((EntityPlayerMP) containerListener).connection.sendPacket(updatePacket);
+        }
+      }
+    }
   }
 
 }

@@ -30,7 +30,9 @@ public enum PowerToolObject implements IModObject.Registerable {
   block_cap_bank(BlockCapBank.class),
   block_gauge(BlockGauge.class),
   block_power_monitor(BlockPowerMonitor.class, "createPowerMonitor"),
-  block_advanced_power_monitor(BlockPowerMonitor.class, "createAdvancedPowerMonitor"),;
+  block_advanced_power_monitor(BlockPowerMonitor.class, "createAdvancedPowerMonitor"),
+
+  ;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {

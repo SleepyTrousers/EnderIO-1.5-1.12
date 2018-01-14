@@ -20,7 +20,6 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.powertools.init.PowerToolObject;
 import crazypants.enderio.powertools.machine.capbank.BlockItemCapBank;
@@ -36,7 +35,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> {
+public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements IPowerMonitorRemoteExec.GUI {
 
   private static enum Tab {
     GRAPH(0, new ItemStack(PowerToolObject.block_advanced_power_monitor.getBlockNN())),
@@ -181,11 +180,7 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> {
 
       if (engineControlEnabled_value != engineControlEnabled.isSelected() || !engineControlStart_value.equals(engineControlStart.getText())
           || !engineControlStop_value.equals(engineControlStop.getText())) {
-        PacketHandler.INSTANCE.sendToServer(new PacketPowerMonitorConfig(getTileEntity(), engineControlEnabled.isSelected(), getInt(engineControlStart) / 100f,
-            getInt(engineControlStop) / 100f));
-        getTileEntity().setEngineControlEnabled(engineControlEnabled.isSelected());
-        getTileEntity().setStartLevel(getInt(engineControlStart) / 100f);
-        getTileEntity().setStopLevel(getInt(engineControlStop) / 100f);
+        doSetConfig(getTileEntity(), engineControlEnabled.isSelected(), getInt(engineControlStart) / 100f, getInt(engineControlStop) / 100f);
       }
 
       if (engineControlEnabled_value != getTileEntity().isEngineControlEnabled()

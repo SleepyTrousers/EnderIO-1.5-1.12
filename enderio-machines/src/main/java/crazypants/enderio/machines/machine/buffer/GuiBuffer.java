@@ -42,10 +42,10 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
 
     if (hasPower) {
       int x = (isFull() ? 32 : 58);
-      int y = guiTop + 27;
+      int y = guiTop + 28;
 
       maxInput = new TextFieldEnder(getFontRenderer(), x, y, 60, 12);
-      y += 28;
+      y += 29;
       maxOutput = new TextFieldEnder(getFontRenderer(), x, y, 60, 12);
 
       textFields.add(maxInput);
@@ -150,11 +150,11 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
     getFontRenderer().drawStringWithShadow(invName, sx + (xSize / 2) - (getFontRenderer().getStringWidth(invName) / 2), sy + 4, 0xFFFFFF);
 
     if (hasPower) {
-      sx += isFull() ? 31 : 57;
-      sy += 19;
+      sx += isFull() ? 32 : 58;
+      sy += 17;
 
       getFontRenderer().drawStringWithShadow(Lang.GUI_BUFFER_IN.get(), sx, sy, 0xFFFFFF);
-      getFontRenderer().drawStringWithShadow(Lang.GUI_BUFFER_OUT.get(), sx, sy + 27, 0xFFFFFF);
+      getFontRenderer().drawStringWithShadow(Lang.GUI_BUFFER_OUT.get(), sx, sy + 29, 0xFFFFFF);
     }
   }
 

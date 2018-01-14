@@ -228,7 +228,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     }
 
     @Override
-    public void putStack(@Nonnull ItemStack stack) {
+    public void putStack(@Nonnull ItemStack stack, int realsize) {
       PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterSlot(GuiVacuumChest.this.te, slot, stack));
     }
 

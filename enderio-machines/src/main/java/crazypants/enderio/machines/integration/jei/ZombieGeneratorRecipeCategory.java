@@ -111,7 +111,7 @@ public class ZombieGeneratorRecipeCategory extends BlankRecipeCategory<ZombieGen
     IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
     IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
 
-    guiFluidStacks.init(0, true, 80 - xOff, 21 - yOff, 15, 47, tankCapacity, true, null);
+    guiFluidStacks.init(0, true, 80 - xOff, 21 - yOff, 16, 47, tankCapacity, true, null);
     guiFluidStacks.addTooltipCallback(new ITooltipCallback<FluidStack>() {
 
       @Override

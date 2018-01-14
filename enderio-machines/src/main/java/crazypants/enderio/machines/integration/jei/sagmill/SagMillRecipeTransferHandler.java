@@ -12,17 +12,18 @@ import mezz.jei.transfer.BasicRecipeTransferHandler;
 import mezz.jei.transfer.BasicRecipeTransferInfo;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class SagMillRecipeTransferHandler extends BasicRecipeTransferHandler<ContainerSagMill> {
+public class SagMillRecipeTransferHandler extends BasicRecipeTransferHandler<ContainerSagMill.Normal> {
 
   public SagMillRecipeTransferHandler(IModRegistry registry, @Nonnull String uid, int recipeSlotStart, int recipeSlotCount, int inventorySlotStart,
       int inventorySlotCount) {
     super((StackHelper) registry.getJeiHelpers().getStackHelper(), registry.getJeiHelpers().recipeTransferHandlerHelper(),
-        new BasicRecipeTransferInfo<ContainerSagMill>(ContainerSagMill.class, uid, recipeSlotStart, recipeSlotCount, inventorySlotStart, inventorySlotCount));
+        new BasicRecipeTransferInfo<ContainerSagMill.Normal>(ContainerSagMill.Normal.class, uid, recipeSlotStart, recipeSlotCount, inventorySlotStart,
+            inventorySlotCount));
   }
 
   @Override
   @Nullable
-  public IRecipeTransferError transferRecipe(@Nonnull ContainerSagMill container, @Nonnull IRecipeLayout recipeLayout, @Nonnull EntityPlayer player,
+  public IRecipeTransferError transferRecipe(@Nonnull ContainerSagMill.Normal container, @Nonnull IRecipeLayout recipeLayout, @Nonnull EntityPlayer player,
       boolean maxTransfer, boolean doTransfer) {
 
     return super.transferRecipe(container, new SagMillRecipeLayout(recipeLayout), player, maxTransfer, doTransfer);

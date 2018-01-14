@@ -2,7 +2,6 @@ package crazypants.enderio.machines.integration.jei;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
@@ -11,6 +10,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNMap;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
@@ -50,10 +50,10 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
 
   public static class StirlingRecipeWrapper extends BlankRecipeWrapper {
 
-    private final NNList<ItemStack> solidFuel;
+    private final @Nonnull NNList<ItemStack> solidFuel;
     private IDrawable stirlingFront;
 
-    private StirlingRecipeWrapper(NNList<ItemStack> solidFuel, @Nonnull IGuiHelper guiHelper) {
+    private StirlingRecipeWrapper(@Nonnull NNList<ItemStack> solidFuel, @Nonnull IGuiHelper guiHelper) {
       this.solidFuel = solidFuel;
       if (!simpleFuel(solidFuel.get(0))) {
         ResourceLocation stirlingFrontLocation = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_stirling_gen_simple_front_off.png");
@@ -74,25 +74,19 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
       list.add(solidFuel);
       ingredients.setInputLists(ItemStack.class, list);
 
-      double minEnergyProducedPerTick = simpleFuel(solidFuel.get(0)) ?
-        CapacitorKey.SIMPLE_STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR) :
-        CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR);
-      double maxEnergyProducedPerTick =
-        CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR);
+      double minEnergyProducedPerTick = simpleFuel(solidFuel.get(0)) ? CapacitorKey.SIMPLE_STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR)
+          : CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR);
+      double maxEnergyProducedPerTick = CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR);
 
-      double minEnergyProduced = minEnergyProducedPerTick *
-        TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0)) *
-        TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.BASIC_CAPACITOR);
-      double maxEnergyProduced = maxEnergyProducedPerTick *
-        TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0)) *
-        TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.ENDER_CAPACITOR);
+      double minEnergyProduced = minEnergyProducedPerTick * TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0))
+          * TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.BASIC_CAPACITOR);
+      double maxEnergyProduced = maxEnergyProducedPerTick * TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0))
+          * TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.ENDER_CAPACITOR);
 
       ingredients.setOutputs(EnergyIngredient.class,
-        new NNList<>(
-          new EnergyIngredient((int)Math.round(minEnergyProducedPerTick), true),
-          new EnergyIngredient((int)Math.round(maxEnergyProducedPerTick), true),
-          new EnergyIngredient((int)Math.round(minEnergyProduced), false),
-          new EnergyIngredient((int)Math.round(maxEnergyProduced), false)));
+          new NNList<>(new EnergyIngredient((int) Math.round(minEnergyProducedPerTick), true),
+              new EnergyIngredient((int) Math.round(maxEnergyProducedPerTick), true), new EnergyIngredient((int) Math.round(minEnergyProduced), false),
+              new EnergyIngredient((int) Math.round(maxEnergyProduced), false)));
     }
 
     @Override
@@ -109,7 +103,7 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
 
       GlStateManager.color(1, 1, 1, 1);
 
-      if (!simpleFuel(solidFuel.get(0))) {
+      if (stirlingFront != null) {
         stirlingFront.draw(minecraft, 129 - xOff, 40 - yOff);
         IconEIO.map.render(IconEIO.GENERIC_VERBOTEN, 135 - xOff, 34 - yOff, true);
       }
@@ -117,9 +111,7 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
 
     @Override
     public @Nonnull List<String> getTooltipStrings(int mouseX, int mouseY) {
-      if (!simpleFuel(solidFuel.get(0)) &&
-        mouseX >= (121 - xOff) && mouseX <= (121 - xOff + 32) &&
-        mouseY >= 32 - yOff && mouseY <= 32 - yOff + 32) {
+      if (stirlingFront != null && mouseX >= (121 - xOff) && mouseX <= (121 - xOff + 32) && mouseY >= 32 - yOff && mouseY <= 32 - yOff + 32) {
         return Lang.JEI_STIRGEN_NOTSIMPLE.getLines();
       }
       if (mouseY < (32 - yOff) || mouseY >= (69 - yOff)) {
@@ -130,7 +122,7 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
 
   } // -------------------------------------
 
-  public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+  public static void register(@Nonnull IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
 
     registry.addRecipeCategories(new StirlingRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_stirling_generator.getBlockNN(), 1, 0), StirlingRecipeCategory.UID);
@@ -142,7 +134,7 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
     long start = System.nanoTime();
 
     // Put valid fuel to "buckets" based on their burn time (energy production)
-    HashMap<Integer, NNList<ItemStack>> recipeInputs = new HashMap<>();
+    NNMap<Integer, NNList<ItemStack>> recipeInputs = new NNMap.Brutal<>();
     List<ItemStack> validItems = registry.getIngredientRegistry().getIngredients(ItemStack.class);
     int fuelCount = 0;
     for (ItemStack stack : validItems) {
@@ -184,7 +176,7 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
   private final @Nonnull IDrawable background;
   private final @Nonnull IDrawableAnimated flame;
 
-  public StirlingRecipeCategory(IGuiHelper guiHelper) {
+  public StirlingRecipeCategory(@Nonnull IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("stirling_generator");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, xSize, 70);
 

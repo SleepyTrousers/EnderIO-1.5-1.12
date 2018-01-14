@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 
-
 public interface ITravelAccessable {
 
   public enum AccessMode {
@@ -34,23 +33,23 @@ public interface ITravelAccessable {
 
   void setAccessMode(@Nonnull AccessMode accessMode);
 
-  @Nonnull NNList<ItemStack> getPassword();
+  @Nonnull
+  NNList<ItemStack> getPassword();
 
   void setPassword(@Nonnull NNList<ItemStack> password);
-  
-  @Nonnull ItemStack getItemLabel();
-  
+
+  @Nonnull
+  ItemStack getItemLabel();
+
   void setItemLabel(@Nonnull ItemStack lableIcon);
-  
+
   @Nullable
   String getLabel();
-  
+
   void setLabel(@Nullable String label);
 
   @Nonnull
   UserIdent getOwner();
-
-  void setPlacedBy(@Nonnull EntityPlayer player);
 
   void clearAuthorisedUsers();
 

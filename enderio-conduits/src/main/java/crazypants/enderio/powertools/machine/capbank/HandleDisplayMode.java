@@ -18,50 +18,50 @@ import net.minecraft.util.EnumFacing;
 
 public class HandleDisplayMode implements IHandler<Map<EnumFacing, InfoDisplayType>> {
 
-    public HandleDisplayMode() {
-    }
+  public HandleDisplayMode() {
+  }
 
-    @Override
-    public boolean canHandle(Class<?> clazz) {
-        // This handler is named specifically in the @Store annotation
-        return false;
-    }
+  @Override
+  public boolean canHandle(Class<?> clazz) {
+    // This handler is named specifically in the @Store annotation
+    return false;
+  }
 
-    @Override
-    public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
-                         @Nonnull Map<EnumFacing, InfoDisplayType> object) throws IllegalArgumentException, IllegalAccessException, InstantiationException,
-            NoHandlerFoundException {
-        long value = 0;
-        for (EnumFacing face : EnumFacing.values()) {
-            long subvalue = 0xFF;
-            if (object.containsKey(face)) {
-                subvalue = object.get(face).ordinal();
-            }
-            value = value | (subvalue << (face.ordinal() * 8));
+  @Override
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+      @Nonnull Map<EnumFacing, InfoDisplayType> object)
+      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+    long value = 0;
+    for (EnumFacing face : EnumFacing.values()) {
+      long subvalue = 0xFF;
+      if (object.containsKey(face)) {
+        subvalue = object.get(face).ordinal();
+      }
+      value = value | (subvalue << (face.ordinal() * 8));
+    }
+    nbt.setLong(name, value);
+    return true;
+  }
+
+  @Override
+  public Map<EnumFacing, InfoDisplayType> read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
+      @Nonnull String name, @Nullable Map<EnumFacing, InfoDisplayType> object)
+      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+    if (nbt.hasKey(name)) {
+      if (object == null) {
+        object = new EnumMap<EnumFacing, InfoDisplayType>(EnumFacing.class);
+      }
+      long value = nbt.getLong(name);
+      for (EnumFacing face : EnumFacing.values()) {
+        long subvalue = (value >>> (face.ordinal() * 8)) & 0xFF;
+        if (subvalue > 0 && subvalue < InfoDisplayType.values().length) {
+          object.put(face, InfoDisplayType.values()[(int) subvalue]);
+        } else {
+          object.remove(face);
         }
-        nbt.setLong(name, value);
-        return true;
+      }
     }
-
-    @Override
-    public Map<EnumFacing, InfoDisplayType> read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
-                                                 @Nonnull String name, @Nullable Map<EnumFacing, InfoDisplayType> object)
-            throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
-        if (nbt.hasKey(name)) {
-            if (object == null) {
-                object = new EnumMap<EnumFacing, InfoDisplayType>(EnumFacing.class);
-            }
-            long value = nbt.getLong(name);
-            for (EnumFacing face : EnumFacing.values()) {
-                long subvalue = (value >>> (face.ordinal() * 8)) & 0xFF;
-                if (subvalue > 0 && subvalue < InfoDisplayType.values().length) {
-                    object.put(face, InfoDisplayType.values()[(int) subvalue]);
-                } else {
-                    object.remove(face);
-                }
-            }
-        }
-        return object;
-    }
+    return object;
+  }
 
 }

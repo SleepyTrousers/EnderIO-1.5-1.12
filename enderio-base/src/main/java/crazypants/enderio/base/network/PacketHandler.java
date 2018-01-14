@@ -22,6 +22,7 @@ import crazypants.enderio.base.machine.baselegacy.PacketLegacyPowerStorage;
 import crazypants.enderio.base.machine.modes.PacketIoMode;
 import crazypants.enderio.base.machine.modes.PacketRedstoneMode;
 import crazypants.enderio.base.teleport.packet.PacketOpenAuthGui;
+import crazypants.enderio.base.teleport.packet.PacketPassword;
 import crazypants.enderio.base.teleport.packet.PacketTravelEvent;
 import crazypants.enderio.base.transceiver.PacketAddRemoveChannel;
 import crazypants.enderio.base.transceiver.PacketChannelList;
@@ -78,6 +79,7 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketConfigSync.Handler.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketSpawnParticles.Handler.class, PacketSpawnParticles.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketPowerStorage.Handler.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketPassword.Handler.class, PacketPassword.class, PacketHandler.nextID(), Side.SERVER);
 
   }
 

@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.base.EnderIO;
@@ -15,8 +18,8 @@ import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiButtonIoConfig;
+import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.machine.gui.GuiOverlayIoConfig;
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -25,6 +28,7 @@ import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.powertools.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketGuiChange;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkStateRequest;
+import crazypants.enderio.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -37,9 +41,9 @@ import net.minecraft.util.text.TextFormatting;
 
 public class GuiCapBank extends GuiContainerBaseEIO {
 
-  public static final ResourceLocation baublesBackground = new ResourceLocation("baubles", "textures/gui/expanded_inventory.png");
+  public static final @Nonnull ResourceLocation baublesBackground = new ResourceLocation("baubles", "textures/gui/expanded_inventory.png");
 
-  private static final CapBankClientNetwork NULL_NETWORK = new CapBankClientNetwork(-1);
+  private static final @Nonnull CapBankClientNetwork NULL_NETWORK = new CapBankClientNetwork(-1);
 
   protected static final int INPUT_BUTTON_ID = 18;
   protected static final int OUTPUT_BUTTON_ID = 37;
@@ -60,27 +64,27 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   private int rightMargin = 8 + 24;
 
-  private final TileCapBank capBank;
+  private final @Nonnull TileCapBank capBank;
 
-  private RedstoneModeButton<?> inputRsButton;
-  private RedstoneModeButton<?> outputRsButton;
+  private final @Nonnull RedstoneModeButton<?> inputRsButton;
+  private final @Nonnull RedstoneModeButton<?> outputRsButton;
 
-  private TextFieldEnder maxInputTF;
-  private TextFieldEnder maxOutputTF;
+  private final @Nonnull TextFieldEnder maxInputTF;
+  private final @Nonnull TextFieldEnder maxOutputTF;
 
-  private final GuiOverlayIoConfig<TileCapBank> configOverlay;
-  private final GuiButtonIoConfig<TileCapBank> configB;
+  private final @Nonnull GuiOverlayIoConfig<TileCapBank> configOverlay;
+  private final @Nonnull GuiButtonIoConfig<TileCapBank> configB;
 
-  private CapBankClientNetwork network;
+  private @Nonnull CapBankClientNetwork network = NULL_NETWORK;
 
   private int initialStateCount = -1;
   private boolean initState = true;
   private boolean textFieldsHaveRealData = false;
 
-  private final ContainerCapBank container;
+  private final @Nonnull ContainerCapBank container;
 
   @SuppressWarnings("rawtypes")
-  public GuiCapBank(Entity player, InventoryPlayer playerInv, TileCapBank te, ContainerCapBank container) {
+  public GuiCapBank(Entity player, InventoryPlayer playerInv, @Nonnull TileCapBank te, @Nonnull ContainerCapBank container) {
     super(container, "capacitorBank");
     capBank = te;
     this.container = (ContainerCapBank) inventorySlots;
@@ -95,8 +99,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
       protected void updateText() {
         text.clear();
         text.add(LangPower.format(network.getEnergyStoredL()) + " " + LangPower.ofStr());
-        text.add(TextFormatting.WHITE + LangPower.format(network.getMaxEnergyStoredL()) + " " + TextFormatting.GRAY
-            + LangPower.abrevation());
+        text.add(TextFormatting.WHITE + LangPower.format(network.getMaxEnergyStoredL()) + " " + TextFormatting.GRAY + LangPower.abrevation());
 
         float change = network.getAverageChangePerTick();
         String color = TextFormatting.WHITE.toString();
@@ -105,24 +108,24 @@ public class GuiCapBank extends GuiContainerBaseEIO {
         } else if (change < 0) {
           color = TextFormatting.RED.toString();
         }
-        text.add(String.format("%s%s%s" + LangPower.abrevation() + LangPower.perTickStr(), color,
-            LangPower.format(Math.round(change)), " " + TextFormatting.GRAY.toString()));
+        text.add(String.format("%s%s%s" + LangPower.abrevation() + LangPower.perTickStr(), color, LangPower.format(Math.round(change)),
+            " " + TextFormatting.GRAY.toString()));
       }
 
     });
 
-    int x = xSize - rightMargin - GuiPoweredMachineBase.BUTTON_SIZE - 21;
+    int x = xSize - rightMargin - GuiMachineBase.BUTTON_SIZE - 21;
     int y = inputY;
     inputRsButton = new RedstoneModeButton(this, -1, x, y, new IRedstoneModeControlable() {
 
       @Override
-      public void setRedstoneControlMode(RedstoneControlMode mode) {
+      public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
         network.setInputControlMode(mode);
         sendUpdateToServer();
       }
 
       @Override
-      public RedstoneControlMode getRedstoneControlMode() {
+      public @Nonnull RedstoneControlMode getRedstoneControlMode() {
         return network.getInputControlMode();
       }
 
@@ -137,13 +140,13 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     outputRsButton = new RedstoneModeButton(this, -1, x, y, new IRedstoneModeControlable() {
 
       @Override
-      public void setRedstoneControlMode(RedstoneControlMode mode) {
+      public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
         network.setOutputControlMode(mode);
         sendUpdateToServer();
       }
 
       @Override
-      public RedstoneControlMode getRedstoneControlMode() {
+      public @Nonnull RedstoneControlMode getRedstoneControlMode() {
         return network.getOutputControlMode();
       }
 
@@ -155,7 +158,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     outputRsButton.setToolTip("enderio.gui.capBank.outputRs");
 
     List<BlockPos> coords = new ArrayList<BlockPos>();
-    if (network != null && network.getMembers().size() < 200) {
+    if (network.getMembers().size() < 200) {
       for (TileCapBank cb : network.getMembers()) {
         coords.add(cb.getLocation());
       }
@@ -166,7 +169,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
     configOverlay = new GuiOverlayIoConfig<TileCapBank>(coords) {
       @Override
-      protected String getLabelForMode(IoMode mode) {
+      protected @Nonnull String getLabelForMode(IoMode mode) {
         if (mode == IoMode.PUSH) {
           return EnderIO.lang.localize("gui.capBank.outputMode");
         } else if (mode == IoMode.PULL) {
@@ -180,17 +183,17 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     y += 20;
     configB = new GuiButtonIoConfig<TileCapBank>(this, CONFIG_ID, x, y, te, configOverlay);
 
-    FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
     x = inputX - 24;
     y = inputY;
-    maxInputTF = new TextFieldEnder(fontRenderer, x, y, 68, 16);
+    maxInputTF = new TextFieldEnder(fr, x, y, 68, 16);
     maxInputTF.setMaxStringLength(10);
     maxInputTF.setCharFilter(TextFieldEnder.FILTER_NUMERIC);
 
     x = outputX - 24;
     y = outputY;
-    maxOutputTF = new TextFieldEnder(fontRenderer, x, y, 68, 16);
+    maxOutputTF = new TextFieldEnder(fr, x, y, 68, 16);
     maxOutputTF.setMaxStringLength(10);
     maxOutputTF.setCharFilter(TextFieldEnder.FILTER_NUMERIC);
 
@@ -254,7 +257,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 
     requestStateUpdate();
-    
+
     GlStateManager.color(1, 1, 1);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
@@ -269,7 +272,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
       }
       RenderUtil.bindTexture(baublesBackground);
       for (int i = 0; i < container.baubles.getSizeInventory(); i++) {
-        if (container.baubles.getStackInSlot(i) == null) {
+        if (Prep.isInvalid(container.baubles.getStackInSlot(i))) {
           final int textureX = 77 + (i / 4) * 19;
           final int textureY = 8 + (i % 4) * 18;
           drawTexturedModalRect(sx + 196, sy + 12 + i * 18, textureX, textureY, 16, 16);
@@ -289,31 +292,31 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     int midX = sx + xSize / 2;
 
     String str = EnderIO.lang.localize("gui.capBank.maxIo") + " " + LangPower.RFt(network.getMaxIO());
-    FontRenderer fontRenderer = getFontRenderer();
-    int swid = fontRenderer.getStringWidth(str);
+    FontRenderer fr = getFontRenderer();
+    int swid = fr.getStringWidth(str);
     int x = midX - swid / 2;
     int y = guiTop + 5;
 
-    drawString(fontRenderer, str, x, y, -1);
+    drawString(fr, str, x, y, -1);
 
     str = EnderIO.lang.localize("gui.capBank.maxInput") + ":";
-    swid = fontRenderer.getStringWidth(str);
+    swid = fr.getStringWidth(str);
     x = guiLeft + inputX - swid - 3;
     y = guiTop + inputY + 2;
-    drawString(fontRenderer, str, x, y, -1);
+    drawString(fr, str, x, y, -1);
 
     str = EnderIO.lang.localize("gui.capBank.maxOutput") + ":";
-    swid = fontRenderer.getStringWidth(str);
+    swid = fr.getStringWidth(str);
     x = guiLeft + outputX - swid - 3;
     y = guiTop + outputY + 2;
-    drawString(fontRenderer, str, x, y, -1);
+    drawString(fr, str, x, y, -1);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
   @Override
-  public void drawHoveringText(List<String> par1List, int par2, int par3, FontRenderer font) {    
-    super.drawHoveringText(par1List, par2, par3, font);    
+  public void drawHoveringText(@Nonnull List<String> par1List, int par2, int par3, @Nonnull FontRenderer font) {
+    super.drawHoveringText(par1List, par2, par3, font);
   }
 
   @Override
@@ -337,7 +340,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   }
 
   @Override
-  public FontRenderer getFontRenderer() {
+  public @Nonnull FontRenderer getFontRenderer() {
     return Minecraft.getMinecraft().fontRenderer;
   }
 
@@ -362,8 +365,8 @@ public class GuiCapBank extends GuiContainerBaseEIO {
       network = NULL_NETWORK;
       return true;
     }
-    if (network == null || network == NULL_NETWORK) {
-      network = (CapBankClientNetwork) capBank.getNetwork();
+    if (network == NULL_NETWORK) {
+      network = NullHelper.first((CapBankClientNetwork) capBank.getNetwork(), NULL_NETWORK);
       initialStateCount = network.getStateUpdateCount();
       PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(capBank));
       return true;

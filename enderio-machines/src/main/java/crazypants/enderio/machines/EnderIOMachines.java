@@ -23,12 +23,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.machines.EnderIOMachines.DEPENDENCIES;
-import static crazypants.enderio.machines.EnderIOMachines.MODID;
-import static crazypants.enderio.machines.EnderIOMachines.MOD_NAME;
-import static crazypants.enderio.machines.EnderIOMachines.VERSION;
-
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION, /* D: */ dependencies = DEPENDENCIES /* :D */)
+@Mod(modid = EnderIOMachines.MODID, name = EnderIOMachines.MOD_NAME, version = EnderIOMachines.VERSION, dependencies = EnderIOMachines.DEPENDENCIES)
 @EventBusSubscriber(Side.CLIENT)
 public class EnderIOMachines implements IEnderIOAddon {
 

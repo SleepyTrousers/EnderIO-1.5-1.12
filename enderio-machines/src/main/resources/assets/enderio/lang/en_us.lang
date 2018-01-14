@@ -25,7 +25,7 @@ enderio.gui.stirling_generator.output=Generating: %s
 enderio.gui.stirling_generator.burnRate=Burn Rate: %s%%
 enderio.gui.stirling_generator.upgradeslot=Upgrade slot
 enderio.gui.stirling_generator.upgrades={0} gives {2}{1,number,#.#}x{3} efficiency
-enderio.gui.stirling_generator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
+enderio.gui.stirling_generator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} µI
 
 enderio.gui.zombie_generator.output=Generating: %s
 enderio.gui.zombie_generator.fuelTank=Nutrient Tank
@@ -241,6 +241,9 @@ tile.block_sag_mill.tooltip.detailed.line3=and efficiency
 tile.block_sag_mill.tooltip.detailed.line4=Upgrade with capacitors to increase
 tile.block_sag_mill.tooltip.detailed.line5=speed and energy storage
 tile.block_sag_mill.tooltipPrefix=Contains
+
+tile.block_simple_sag_mill.name=Simple SAG Mill
+tile.block_simple_sag_mill.tooltip.detailed.line1=Grinds ore and other items
 
 tile.block_slice_and_splice.name=Slice'N'Splice
 tile.block_slice_and_splice.tooltip.detailed.line1=Slices heads and splices in

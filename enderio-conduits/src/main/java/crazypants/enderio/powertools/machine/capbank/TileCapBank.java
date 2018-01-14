@@ -1,7 +1,5 @@
 package crazypants.enderio.powertools.machine.capbank;
 
-import static crazypants.enderio.base.machine.MachineObject.blockCapBank;
-
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -30,6 +28,7 @@ import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.IPowerStorage;
 import crazypants.enderio.base.power.PowerHandlerUtil;
+import crazypants.enderio.powertools.init.PowerToolObject;
 import crazypants.enderio.powertools.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.powertools.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.powertools.machine.capbank.network.EnergyReceptor;
@@ -44,32 +43,24 @@ import info.loenwind.autosave.handlers.enderio.HandleIOMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IInventory, IIoConfigurable, IPowerStorage {
+public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IIoConfigurable, IPowerStorage {
 
   @Store(handler = HandleIOMode.class)
   private Map<EnumFacing, IoMode> faceModes;
   @Store(handler = HandleDisplayMode.class)
   private Map<EnumFacing, InfoDisplayType> faceDisplayTypes;
 
-  @Store
-  private CapBankType type;
-
-  @Store({ NBTAction.SAVE, NBTAction.SYNC, NBTAction.UPDATE })
+  @Store({ NBTAction.SAVE, NBTAction.CLIENT })
   private int energyStored;
   @Store
   private int maxInput = -1;
@@ -77,19 +68,19 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   private int maxOutput = -1;
 
   @Store
-  private RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
+  private @Nonnull RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
   @Store
-  private RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
+  private @Nonnull RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
 
   private boolean redstoneStateDirty = true;
 
-  private final List<EnergyReceptor> receptors = new ArrayList<EnergyReceptor>();
+  private final @Nonnull List<EnergyReceptor> receptors = new ArrayList<EnergyReceptor>();
   private boolean receptorsDirty = true;
 
   private ICapBankNetwork network;
 
   @Store
-  private final ItemStack[] inventory = new ItemStack[4];
+  private final @Nonnull ItemStack[] inventory = new ItemStack[4];
 
   // Client side reference to look up network state
   private int networkId = -1;
@@ -100,15 +91,12 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   private boolean revalidateDisplayTypes;
   private int lastComparatorState;
 
-  public CapBankType getType() {
-    if (type == null) {
-      if (!hasWorld()) {
-        // needed when loading from invalid NBT
-        return CapBankType.VIBRANT;
-      }
-      type = CapBankType.getTypeFromMeta(getBlockMetadata());
+  public @Nonnull CapBankType getType() {
+    if (!hasWorld()) {
+      // needed when loading from invalid NBT
+      return CapBankType.VIBRANT;
     }
-    return type;
+    return CapBankType.getTypeFromMeta(getBlockMetadata());
   }
 
   public void onNeighborBlockChange(Block blockId) {
@@ -142,7 +130,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
     return true;
   }
 
-  public boolean canConnectTo(TileCapBank cap) {
+  public boolean canConnectTo(@Nonnull TileCapBank cap) {
     CapBankType myType = getType();
     return myType.isMultiblock() && myType == cap.getType();
   }
@@ -314,9 +302,9 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   public void setDefaultIoMode(@Nonnull EnumFacing faceHit) {
     EnergyReceptor er = getEnergyReceptorForFace(faceHit);
-   /* TODO conduits if (er == null || er.getConduit() != null) {
-      setIoMode(faceHit, IoMode.NONE);
-    } else */ if (er.getReceptor().canReceive()) {
+    /*
+     * TODO conduits if (er == null || er.getConduit() != null) { setIoMode(faceHit, IoMode.NONE); } else
+     */ if (er.getReceptor().canReceive()) {
       setIoMode(faceHit, IoMode.PUSH);
     } else {
       setIoMode(faceHit, IoMode.PULL);
@@ -409,7 +397,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
     List<EnumFacing> reset = new ArrayList<EnumFacing>();
     for (Entry<EnumFacing, InfoDisplayType> entry : faceDisplayTypes.entrySet()) {
       IBlockState bs = world.getBlockState(getPos().offset(NullHelper.notnullJ(entry.getKey(), "EnumMap.getKey()")));
-      if (bs.isOpaqueCube() || bs.getBlock() == blockCapBank.getBlock()) {
+      if (bs.isOpaqueCube() || bs.getBlock() == PowerToolObject.block_cap_bank.getBlock()) {
         reset.add(entry.getKey());
       }
     }
@@ -437,7 +425,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   @Override
   @SideOnly(Side.CLIENT)
-  public AxisAlignedBB getRenderBoundingBox() {
+  public @Nonnull AxisAlignedBB getRenderBoundingBox() {
     if (!getType().isMultiblock() || !(network instanceof CapBankClientNetwork)) {
       return super.getRenderBoundingBox();
     }
@@ -483,20 +471,20 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   // ----------- Redstone
 
-  public RedstoneControlMode getInputControlMode() {
+  public @Nonnull RedstoneControlMode getInputControlMode() {
     return inputControlMode;
   }
 
-  public void setInputControlMode(RedstoneControlMode inputControlMode) {
+  public void setInputControlMode(@Nonnull RedstoneControlMode inputControlMode) {
     this.inputControlMode = inputControlMode;
     markDirty();
   }
 
-  public RedstoneControlMode getOutputControlMode() {
+  public @Nonnull RedstoneControlMode getOutputControlMode() {
     return outputControlMode;
   }
 
-  public void setOutputControlMode(RedstoneControlMode outputControlMode) {
+  public void setOutputControlMode(@Nonnull RedstoneControlMode outputControlMode) {
     this.outputControlMode = outputControlMode;
     markDirty();
   }
@@ -566,7 +554,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
     return getType().isCreative();
   }
 
-  public List<EnergyReceptor> getReceptors() {
+  public @Nonnull List<EnergyReceptor> getReceptors() {
     if (receptorsDirty) {
       updateReceptors();
     }
@@ -625,24 +613,23 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   private void validateModeForReceptor(EnergyReceptor er) {
     if (er == null)
       return;
-//    IoMode ioMode = getIoMode(er.getDir());
-//    if ((ioMode == IoMode.PUSH_PULL || ioMode == IoMode.NONE) && er.getConduit() == null) {
-//      if (er.getReceptor().isOutputOnly()) {
-//        setIoMode(er.getDir(), IoMode.PULL, false);
-//      } else if (er.getReceptor().isInputOnly()) {
-//        setIoMode(er.getDir(), IoMode.PUSH, false);
-//      }
-//    }
-//    if (ioMode == IoMode.PULL && er.getReceptor().isInputOnly()) {
-//      setIoMode(er.getDir(), IoMode.PUSH, false);
-//    } else if (ioMode == IoMode.PUSH && er.getReceptor().isOutputOnly()) {
-//      setIoMode(er.getDir(), IoMode.DISABLED, false);
-//    }
+    // IoMode ioMode = getIoMode(er.getDir());
+    // if ((ioMode == IoMode.PUSH_PULL || ioMode == IoMode.NONE) && er.getConduit() == null) {
+    // if (er.getReceptor().isOutputOnly()) {
+    // setIoMode(er.getDir(), IoMode.PULL, false);
+    // } else if (er.getReceptor().isInputOnly()) {
+    // setIoMode(er.getDir(), IoMode.PUSH, false);
+    // }
+    // }
+    // if (ioMode == IoMode.PULL && er.getReceptor().isInputOnly()) {
+    // setIoMode(er.getDir(), IoMode.PUSH, false);
+    // } else if (ioMode == IoMode.PUSH && er.getReceptor().isOutputOnly()) {
+    // setIoMode(er.getDir(), IoMode.DISABLED, false);
+    // }
   }
 
-  
-  //------------------- Power -----------------
-  
+  // ------------------- Power -----------------
+
   @Override
   public void addEnergy(int energy) {
     if (network == null) {
@@ -682,7 +669,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   }
 
   public void setMaxInput(int maxInput) {
-    if(this.maxInput == maxInput) {
+    if (this.maxInput == maxInput) {
       return;
     }
 
@@ -710,7 +697,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   }
 
   public void setMaxOutput(int maxOutput) {
-    if(this.maxOutput == maxOutput) {
+    if (this.maxOutput == maxOutput) {
       return;
     }
 
@@ -742,8 +729,8 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   }
 
   @Override
-  public boolean canConnectEnergy(EnumFacing from) {
-    return from != null && getIoMode(from) != IoMode.DISABLED;
+  public boolean canConnectEnergy(@Nonnull EnumFacing from) {
+    return getIoMode(from) != IoMode.DISABLED;
   }
 
   public int getComparatorOutput() {
@@ -805,22 +792,12 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   @Override
   public boolean isEmpty() {
-    for (ItemStack stack : inventory){
+    for (ItemStack stack : inventory) {
       if (!stack.isEmpty()) {
         return false;
       }
     }
     return true;
-  }
-
-  @Override
-  public @Nonnull String getName() {
-    return blockCapBank.getBlock().getUnlocalizedName() + ".name";
-  }
-
-  @Override
-  public boolean hasCustomName() {
-    return false;
   }
 
   @Override
@@ -834,14 +811,6 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   }
 
   @Override
-  public void openInventory(EntityPlayer e) {
-  }
-
-  @Override
-  public void closeInventory(EntityPlayer e) {
-  }
-
-  @Override
   public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
     if (itemstack.isEmpty()) {
       return false;
@@ -849,7 +818,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
     return PowerHandlerUtil.getCapability(itemstack, null) != null;
   }
 
-  public ItemStack[] getInventory() {
+  public @Nonnull ItemStack[] getInventory() {
     return inventory;
   }
 
@@ -878,46 +847,21 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   // ---------------- NBT
 
-
   @Override
   public void readFromItemStack(@Nonnull ItemStack stack) {
     super.readFromItemStack(stack);
-    NBTTagCompound rootTag = NbtValue.getRoot(stack);
-    if(stack.getTagCompound().hasKey("storedEnergyRF")) {
-      energyStored = rootTag.getInteger("storedEnergyRF");
-    } else {
-      energyStored = NbtValue.ENERGY.getInt(rootTag);
-    }
+    energyStored = NbtValue.ENERGY.getInt(stack);
   }
 
   @Override
   public void writeToItemStack(@Nonnull ItemStack stack) {
     super.writeToItemStack(stack);
-    NbtValue.ENERGY.setInt(NbtValue.getRoot(stack), energyStored);
+    NbtValue.ENERGY.setInt(stack, energyStored);
   }
 
   @Override
-  public BlockPos getLocation() {
+  public @Nonnull BlockPos getLocation() {
     return getPos();
   }
 
-  @Override
-  public @Nonnull ITextComponent getDisplayName() {
-    return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
-  }
-
-  @Override
-  public int getField(int id) {
-    return 0;
-  }
-
-  @Override
-  public void setField(int id, int value) {
-  }
-
-  @Override
-  public int getFieldCount() {
-    return 0;
-  }
-  
 }

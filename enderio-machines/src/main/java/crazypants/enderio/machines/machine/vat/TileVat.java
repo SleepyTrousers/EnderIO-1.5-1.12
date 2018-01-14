@@ -35,6 +35,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_INTAKE;
@@ -128,9 +129,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   }
 
   @Override
-  protected void sendTaskProgressPacket() {
-    PacketHandler.sendToAllAround(new PacketVatProgress(this), this);
-    ticksSinceLastProgressUpdate = 0;
+  public @Nonnull IMessage getProgressPacket() {
+    return new PacketVatProgress(this);
   }
 
   @Override

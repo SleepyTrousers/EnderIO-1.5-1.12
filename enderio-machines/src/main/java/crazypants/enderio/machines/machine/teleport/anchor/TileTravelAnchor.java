@@ -64,9 +64,6 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
   @Store
   private String label;
 
-  @Store
-  private @Nonnull UserIdent owner = UserIdent.NOBODY;
-
   @Store(handler = HandleUserIdent.HandleUserIdentArrayList.class)
   private List<UserIdent> authorisedUsers = new ArrayList<UserIdent>();
 
@@ -75,7 +72,7 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
   }
 
   private boolean isOwnerUser(UserIdent ident) {
-    return owner.equals(ident);
+    return getOwner().equals(ident);
   }
 
   @Override
@@ -85,7 +82,6 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
     }
     // Covers protected and private access modes
     return isOwnerUser(UserIdent.create(playerName.getGameProfile())) || isAuthorisedUser(UserIdent.create(playerName.getGameProfile()));
-
   }
 
   @Override
@@ -177,16 +173,6 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
   @Override
   public void setLabel(@Nullable String label) {
     this.label = label;
-  }
-
-  @Override
-  public @Nonnull UserIdent getOwner() {
-    return owner;
-  }
-
-  @Override
-  public void setPlacedBy(@Nonnull EntityPlayer player) {
-    this.owner = UserIdent.create(player.getGameProfile());
   }
 
   @Override

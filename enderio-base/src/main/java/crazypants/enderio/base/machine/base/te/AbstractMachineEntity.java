@@ -334,7 +334,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
   }
 
   public void setOwner(@Nonnull EntityPlayer player) {
-    this.owner = UserIdent.create(player.getGameProfile());
+    if (!world.isRemote) {
+      this.owner = UserIdent.create(player.getGameProfile());
+    }
   }
 
   public @Nonnull UserIdent getOwner() {

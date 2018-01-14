@@ -18,8 +18,8 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.power.AbstractPoweredItem;
+import crazypants.enderio.base.power.IInternalPoweredItem;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
-import crazypants.enderio.util.NbtValue;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,7 +67,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
   }
 
   public static boolean hasPower(@Nonnull ItemStack itemStack) {
-    int energyStored = NbtValue.ENERGY.getInt(itemStack);
+    int energyStored = itemStack.getItem() instanceof IInternalPoweredItem ? ((IInternalPoweredItem) itemStack.getItem()).getEnergyStored(itemStack) : 0;
     return energyStored > 0 && energyStored >= Config.magnetPowerUsePerSecondRF;
   }
 
@@ -90,7 +90,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    list.add(LangPower.RF(NbtValue.ENERGY.getInt(itemStack), Config.magnetPowerCapacityRF));
+    list.add(LangPower.RF(getEnergyStored(itemStack), Config.magnetPowerCapacityRF));
   }
 
   @Override

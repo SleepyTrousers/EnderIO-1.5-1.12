@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 public class CapBankClientNetwork implements ICapBankNetwork {
 
   private final int id;
-  private final Map<BlockPos, TileCapBank> members = new HashMap<>();
+  private final @Nonnull Map<BlockPos, TileCapBank> members = new HashMap<>();
   private int maxEnergySent;
   private int maxEnergyRecieved;
 
@@ -33,10 +34,10 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   private long maxEnergyStored;
   private long energyStored;
 
-  private RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
-  private RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
+  private @Nonnull RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
+  private @Nonnull RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
 
-  private final InventoryImpl inventory = new InventoryImpl();
+  private final @Nonnull InventoryImpl inventory = new InventoryImpl();
 
   private float avgInput;
   private float avgOutput;
@@ -54,10 +55,10 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     return id;
   }
 
-  public void requestPowerUpdate(TileCapBank capBank, int interval) {
+  public void requestPowerUpdate(@Nonnull TileCapBank capBank, int interval) {
     long curTick = EnderIO.proxy.getTickCount();
-    if(lastPowerRequestTick == -1 || curTick - lastPowerRequestTick >= interval) {
-      if(stateUpdateCount == 0) {
+    if (lastPowerRequestTick == -1 || curTick - lastPowerRequestTick >= interval) {
+      if (stateUpdateCount == 0) {
         PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(capBank));
         // the network state also contains the energy data
       } else {
@@ -67,7 +68,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     }
   }
 
-  public void setState(World world, NetworkState state) {
+  public void setState(@Nonnull World world, @Nonnull NetworkState state) {
     maxEnergyRecieved = state.getMaxInput();
     maxEnergySent = state.getMaxOutput();
     maxIO = state.getMaxIO();
@@ -77,11 +78,11 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     outputControlMode = state.getOutputMode();
 
     BlockPos pos = state.getInventoryImplLocation();
-    if(pos == null) {
+    if (pos == null) {
       inventory.setCapBank(null);
-    } else if(world != null) {
+    } else {
       TileEntity te = world.getTileEntity(pos);
-      if(te instanceof TileCapBank) {
+      if (te instanceof TileCapBank) {
         inventory.setCapBank((TileCapBank) te);
       }
     }
@@ -100,13 +101,13 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public void addMember(TileCapBank capBank) {
+  public void addMember(@Nonnull TileCapBank capBank) {
     members.put(capBank.getLocation(), capBank);
     invalidateDisplayInfoCache();
   }
 
   @Override
-  public Collection<TileCapBank> getMembers() {
+  public @Nonnull Collection<TileCapBank> getMembers() {
     return members.values();
   }
 
@@ -163,34 +164,34 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   public double getEnergyStoredRatio() {
-    if(getMaxEnergyStoredL() <= 0) {
+    if (getMaxEnergyStoredL() <= 0) {
       return 0;
     }
     return (double) getEnergyStoredL() / getMaxEnergyStoredL();
   }
 
   @Override
-  public RedstoneControlMode getInputControlMode() {
+  public @Nonnull RedstoneControlMode getInputControlMode() {
     return inputControlMode;
   }
 
   @Override
-  public void setInputControlMode(RedstoneControlMode inputControlMode) {
+  public void setInputControlMode(@Nonnull RedstoneControlMode inputControlMode) {
     this.inputControlMode = inputControlMode;
   }
 
   @Override
-  public RedstoneControlMode getOutputControlMode() {
+  public @Nonnull RedstoneControlMode getOutputControlMode() {
     return outputControlMode;
   }
 
   @Override
-  public void setOutputControlMode(RedstoneControlMode outputControlMode) {
+  public void setOutputControlMode(@Nonnull RedstoneControlMode outputControlMode) {
     this.outputControlMode = outputControlMode;
   }
 
   @Override
-  public InventoryImpl getInventory() {
+  public @Nonnull InventoryImpl getInventory() {
     return inventory;
   }
 
@@ -215,7 +216,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public NetworkState getState() {
+  public @Nonnull NetworkState getState() {
     return new NetworkState(this);
   }
 
@@ -229,15 +230,15 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public void removeReceptors(Collection<EnergyReceptor> receptors) {
+  public void removeReceptors(@Nonnull Collection<EnergyReceptor> receptors) {
   }
 
   @Override
-  public void addReceptors(Collection<EnergyReceptor> receptors) {
+  public void addReceptors(@Nonnull Collection<EnergyReceptor> receptors) {
   }
 
   @Override
-  public void updateRedstoneSignal(TileCapBank tileCapBank, boolean recievingSignal) {
+  public void updateRedstoneSignal(@Nonnull TileCapBank tileCapBank, boolean recievingSignal) {
   }
 
   @Override
@@ -280,30 +281,30 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     ioDisplayInfoCache = null;
   }
 
-  public IOInfo getIODisplayInfo(BlockPos pos, EnumFacing face) {
+  public @Nonnull IOInfo getIODisplayInfo(@Nonnull BlockPos pos, @Nonnull EnumFacing face) {
     return getIODisplayInfo(pos.getX(), pos.getY(), pos.getZ(), face);
   }
-  
-  public IOInfo getIODisplayInfo(int x, int y, int z, EnumFacing face) {
+
+  public @Nonnull IOInfo getIODisplayInfo(int x, int y, int z, @Nonnull EnumFacing face) {
     DisplayInfoKey key = new DisplayInfoKey(x, y, z, face);
-    if(ioDisplayInfoCache == null) {
+    if (ioDisplayInfoCache == null) {
       ioDisplayInfoCache = new HashMap<DisplayInfoKey, IOInfo>();
     }
     IOInfo value = ioDisplayInfoCache.get(key);
-    if(value == null) {
+    if (value == null) {
       value = computeIODisplayInfo(x, y, z, face);
       ioDisplayInfoCache.put(key, value);
     }
     return value;
   }
 
-  private IOInfo computeIODisplayInfo(int xOrg, int yOrg, int zOrg, EnumFacing dir) {
-    if(dir.getFrontOffsetY() != 0) {
+  private @Nonnull IOInfo computeIODisplayInfo(int xOrg, int yOrg, int zOrg, @Nonnull EnumFacing dir) {
+    if (dir.getFrontOffsetY() != 0) {
       return IOInfo.SINGLE;
     }
 
     TileCapBank cb = getCapBankAt(xOrg, yOrg, zOrg);
-    if(cb == null) {
+    if (cb == null) {
       return IOInfo.SINGLE;
     }
 
@@ -315,13 +316,13 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     int vOff = 0;
 
     // step 1: find top left
-    while(isIOType(xOrg+left.getFrontOffsetX(), yOrg, zOrg+left.getFrontOffsetZ(), dir, type)) {
+    while (isIOType(xOrg + left.getFrontOffsetX(), yOrg, zOrg + left.getFrontOffsetZ(), dir, type)) {
       xOrg += left.getFrontOffsetX();
       zOrg += left.getFrontOffsetZ();
       hOff++;
     }
 
-    while(isIOType(xOrg, yOrg+1, zOrg, dir, type)) {
+    while (isIOType(xOrg, yOrg + 1, zOrg, dir, type)) {
       yOrg++;
       vOff++;
     }
@@ -337,8 +338,8 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     int xTmp = xOrg;
     int yTmp = yOrg;
     int zTmp = zOrg;
-    while(isIOType(xTmp+right.getFrontOffsetX(), yTmp, zTmp+right.getFrontOffsetZ(), dir, type)) {
-      if(isIOType(xTmp+right.getFrontOffsetX(), yTmp+1, zTmp+right.getFrontOffsetZ(), dir, type)) {
+    while (isIOType(xTmp + right.getFrontOffsetX(), yTmp, zTmp + right.getFrontOffsetZ(), dir, type)) {
+      if (isIOType(xTmp + right.getFrontOffsetX(), yTmp + 1, zTmp + right.getFrontOffsetZ(), dir, type)) {
         // not a rectangle
         return IOInfo.SINGLE;
       }
@@ -348,27 +349,27 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     }
 
     // step 3: find height
-    while(isIOType(xOrg, yTmp-1, zOrg, dir, type)) {
+    while (isIOType(xOrg, yTmp - 1, zOrg, dir, type)) {
       xTmp = xOrg;
       yTmp--;
       zTmp = zOrg;
 
-      if(isIOType(xTmp+left.getFrontOffsetX(), yTmp, zTmp+left.getFrontOffsetZ(), dir, type)) {
+      if (isIOType(xTmp + left.getFrontOffsetX(), yTmp, zTmp + left.getFrontOffsetZ(), dir, type)) {
         // not a rectangle
         return IOInfo.SINGLE;
       }
 
-      for(int i=1 ; i<width ; i++) {
+      for (int i = 1; i < width; i++) {
         xTmp += right.getFrontOffsetX();
         zTmp += right.getFrontOffsetZ();
 
-        if(!isIOType(xTmp, yTmp, zTmp, dir, type)) {
+        if (!isIOType(xTmp, yTmp, zTmp, dir, type)) {
           // not a rectangle
           return IOInfo.SINGLE;
         }
       }
 
-      if(isIOType(xTmp+right.getFrontOffsetX(), yTmp, zTmp+right.getFrontOffsetZ(), dir, type)) {
+      if (isIOType(xTmp + right.getFrontOffsetX(), yTmp, zTmp + right.getFrontOffsetZ(), dir, type)) {
         // not a rectangle
         return IOInfo.SINGLE;
       }
@@ -380,8 +381,8 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     yTmp--;
     zTmp = zOrg;
 
-    for(int i=0 ; i<width ; i++) {
-      if(isIOType(xTmp, yTmp, zTmp, dir, type)) {
+    for (int i = 0; i < width; i++) {
+      if (isIOType(xTmp, yTmp, zTmp, dir, type)) {
         // not a rectangle
         return IOInfo.SINGLE;
       }
@@ -390,23 +391,23 @@ public class CapBankClientNetwork implements ICapBankNetwork {
       zTmp += right.getFrontOffsetZ();
     }
 
-    if(width == 1 && height == 1) {
+    if (width == 1 && height == 1) {
       return IOInfo.SINGLE;
     }
 
-    if(hOff > 0 || vOff > 0) {
+    if (hOff > 0 || vOff > 0) {
       return IOInfo.INSIDE;
     }
 
     return new IOInfo(width, height);
   }
 
-  private boolean isIOType(int x, int y, int z, EnumFacing face, CapBankType type) {
+  private boolean isIOType(int x, int y, int z, @Nonnull EnumFacing face, @Nonnull CapBankType type) {
     TileCapBank cb = getCapBankAt(x, y, z);
     return cb != null && type == cb.getType() && cb.getDisplayType(face) == InfoDisplayType.IO;
   }
 
-  private TileCapBank getCapBankAt(int x, int y, int z) {
+  private @Nullable TileCapBank getCapBankAt(int x, int y, int z) {
     return members.get(new BlockPos(x, y, z));
   }
 
@@ -414,9 +415,9 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     final int x;
     final int y;
     final int z;
-    final EnumFacing face;
+    final @Nonnull EnumFacing face;
 
-    public DisplayInfoKey(int x, int y, int z, EnumFacing face) {
+    public DisplayInfoKey(int x, int y, int z, @Nonnull EnumFacing face) {
       this.x = x;
       this.y = y;
       this.z = z;
@@ -435,14 +436,11 @@ public class CapBankClientNetwork implements ICapBankNetwork {
 
     @Override
     public boolean equals(Object obj) {
-      if(!(obj instanceof DisplayInfoKey)) {
+      if (!(obj instanceof DisplayInfoKey)) {
         return false;
       }
       final DisplayInfoKey other = (DisplayInfoKey) obj;
-      return (this.x == other.x) &&
-              (this.y == other.y) &&
-              (this.z == other.z) &&
-              (this.face == other.face);
+      return (this.x == other.x) && (this.y == other.y) && (this.z == other.z) && (this.face == other.face);
     }
   }
 
@@ -450,8 +448,8 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     public final int width;
     public final int height;
 
-    static final IOInfo SINGLE = new IOInfo(1, 1);
-    static final IOInfo INSIDE = new IOInfo(0, 0);
+    static final @Nonnull IOInfo SINGLE = new IOInfo(1, 1);
+    static final @Nonnull IOInfo INSIDE = new IOInfo(0, 0);
 
     IOInfo(int width, int height) {
       this.width = width;

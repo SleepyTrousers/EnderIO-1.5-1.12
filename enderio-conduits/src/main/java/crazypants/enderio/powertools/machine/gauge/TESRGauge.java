@@ -58,7 +58,7 @@ public class TESRGauge extends ManagedTESR<TileGauge> {
         FillGaugeBakery bakery = new FillGaugeBakery(world, te.getPos().offset(face.getOpposite()), face, BlockGauge.gaugeIcon.get(TextureAtlasSprite.class),
             ratio);
         if (bakery.canRender()) {
-          GL11.glPushMatrix();
+          GL11.glPushMatrix(); // sic!
           GL11.glTranslated(-face.getFrontOffsetX(), -face.getFrontOffsetY(), -face.getFrontOffsetZ());
           bakery.render();
           GL11.glPopMatrix();

@@ -1,5 +1,7 @@
 package crazypants.enderio.powertools.machine.capbank.packet;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import crazypants.enderio.powertools.machine.capbank.network.ClientNetworkManager;
 import io.netty.buffer.ByteBuf;
@@ -9,13 +11,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class PacketNetworkIdResponse extends PacketCapBank<PacketNetworkIdResponse, IMessage> {
 
   private int id;
-  
+
   public PacketNetworkIdResponse() {
   }
 
-  PacketNetworkIdResponse(TileCapBank capBank) {
+  PacketNetworkIdResponse(@Nonnull TileCapBank capBank) {
     super(capBank);
-    if(capBank != null && capBank.getNetwork() != null) {
+    if (capBank.getNetwork() != null) {
       id = capBank.getNetwork().getId();
     } else {
       id = -1;

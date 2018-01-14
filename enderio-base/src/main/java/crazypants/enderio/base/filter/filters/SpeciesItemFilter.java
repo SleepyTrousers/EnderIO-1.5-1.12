@@ -350,7 +350,7 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
     }
 
     @Override
-    public void putStack(@Nonnull ItemStack stack) {
+    public void putStack(@Nonnull ItemStack stack, int realsize) {
       if (AlleleManager.alleleRegistry.getSpeciesRoot(stack) != null) {
         stack = stack.copy();
         stack.setCount(1);

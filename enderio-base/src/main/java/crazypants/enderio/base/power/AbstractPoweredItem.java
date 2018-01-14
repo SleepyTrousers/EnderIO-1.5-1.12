@@ -3,11 +3,9 @@ package crazypants.enderio.base.power;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.util.NbtValue;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public abstract class AbstractPoweredItem extends Item implements IInternalPoweredItem {
@@ -26,16 +24,6 @@ public abstract class AbstractPoweredItem extends Item implements IInternalPower
   public int getMaxEnergyStored(@Nonnull ItemStack container) {
     return maxEneryStored;
   }
-  
-  @Override
-  public int getEnergyStored(@Nonnull ItemStack container) {
-    return NbtValue.ENERGY.getInt(container);
-  }
-    
-  @Override
-  public void setEnergyStored(@Nonnull ItemStack container, int energy) {
-    NbtValue.ENERGY.setInt(container, MathHelper.clamp(energy, 0, maxEneryStored));
-  }
 
   @Override
   public int getMaxInput(@Nonnull ItemStack container) {
@@ -46,14 +34,10 @@ public abstract class AbstractPoweredItem extends Item implements IInternalPower
   public int getMaxOutput(@Nonnull ItemStack container) {
     return maxOutput;
   }
-  
-  public void setFull(@Nonnull ItemStack container) {
-    setEnergyStored(container, getMaxEnergyStored(container));
-  }
 
   @Override
-  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
-    return new ItemPowerCapabilityBackend(stack);
+  public @Nonnull ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+    return IInternalPoweredItem.super.initCapabilities(stack, nbt);
   }
 
 }

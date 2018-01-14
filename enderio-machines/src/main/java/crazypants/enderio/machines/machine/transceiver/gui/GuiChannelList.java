@@ -30,8 +30,12 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
   void setChannels(Set<Channel> val, Predicate<Channel> filter) {
     if (val == null) {
       channels = FluentIterable.from(Sets.<Channel> newHashSet());
-    } // FIXME: else?
-    channels = FluentIterable.from(val).filter(filter);
+    } else {
+      channels = FluentIterable.from(val);
+      if (filter != null) {
+        channels = channels.filter(filter);
+      }
+    }
   }
 
   @Override
@@ -42,18 +46,9 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
   @Override
   public @Nonnull Channel getElementAt(int index) {
     if (index < 0 || index >= channels.size()) {
-      return null;
+      throw new IndexOutOfBoundsException("No channel for index " + index);
     }
     return channels.get(index);
-  }
-
-  @Override
-  protected boolean elementClicked(int i, boolean flag, int x, int y) {
-    if (getElementAt(i) == null) {
-      return false;
-    } else {
-      return true;
-    }
   }
 
   @Override
@@ -62,9 +57,6 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
       return;
     }
     Channel c = getElementAt(index);
-    if (c == null) {
-      return;
-    }
     int col = ColorUtil.getRGB(Color.white);
     parent.drawString(parent.getFontRenderer(), c.getName(), xPosition + margin, yPosition + margin / 2, col);
     if (!c.isPublic()) {

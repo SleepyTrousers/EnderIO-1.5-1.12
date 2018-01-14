@@ -195,22 +195,34 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Simple SAG Mill" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemFlint" /><item name="itemFlint" /><item name="itemFlint" />
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+        <item name="GEAR_STONE" /><item name="minecraft:piston" /><item name="GEAR_STONE" />
+      </grid>
+      <output name="enderio:block_simple_sag_mill" />
+    </crafting>
+  </recipe>
+
   <recipe name="SAG Mill" required="true">
     <crafting>
-      <level maxlevel="2" />
       <grid size="3x3">
         <item name="itemFlint" /><item name="itemFlint" /><item name="itemFlint" />
         <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
-        <item name="GEAR_WOOD" /><item name="minecraft:piston" /><item name="GEAR_WOOD" />
+        <item name="GEAR_ENERGIZED" /><item name="minecraft:piston" /><item name="GEAR_ENERGIZED" />
       </grid>
       <output name="enderio:block_sag_mill" />
     </crafting>
-    <crafting>
-      <level minlevel="3" />
+  </recipe>
+
+  <recipe name="SAG Mill, Upgrade" required="true">
+    <crafting upgrade="true">
       <grid size="3x3">
-        <item name="oredict:obsidian" /><item name="GEAR_IRON" /><item name="oredict:obsidian" />
-        <item name="itemFlint" /><item name="CHASSIS" /><item name="itemFlint" />
-        <item name="minecraft:piston" /><item name="ingotIron" /><item name="minecraft:piston" />
+        <item /><item name="enderio:block_simple_sag_mill" /><item />
+        <item /><item name="CHASSIS" /><item />
+        <item name="GEAR_ENERGIZED" /><item /><item name="GEAR_ENERGIZED" />
       </grid>
       <output name="enderio:block_sag_mill" />
     </crafting>
@@ -221,7 +233,7 @@ XML editor will display that as tooltips when editing this file.
       <grid size="3x3">
         <item name="ingotIron" /><item name="minecraft:furnace" /><item name="ingotIron" />
         <item name="minecraft:furnace" /><item /><item name="minecraft:furnace" />
-        <item name="GEAR_STONE" /><item name="item:minecraft:cauldron" /><item name="GEAR_STONE" />
+        <item name="GEAR_STONE" /><item name="item:minecraft:bucket" /><item name="GEAR_STONE" />
       </grid>
       <output name="enderio:block_simple_alloy_smelter" />
     </crafting>
@@ -229,18 +241,8 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Alloy Smelter" required="true">
     <crafting>
-      <level maxlevel="2" />
       <grid size="3x3">
         <item name="ingotIron" /><item name="minecraft:furnace" /><item name="ingotIron" />
-        <item name="minecraft:furnace" /><item name="CHASSIS" /><item name="minecraft:furnace" />
-        <item name="GEAR_ENERGIZED" /><item name="item:minecraft:cauldron" /><item name="GEAR_ENERGIZED" />
-      </grid>
-      <output name="enderio:block_alloy_smelter" />
-    </crafting>
-    <crafting>
-      <level minlevel="3" />
-      <grid size="3x3">
-        <item name="blockIron" /><item name="minecraft:furnace" /><item name="blockIron" />
         <item name="minecraft:furnace" /><item name="CHASSIS" /><item name="minecraft:furnace" />
         <item name="GEAR_ENERGIZED" /><item name="item:minecraft:cauldron" /><item name="GEAR_ENERGIZED" />
       </grid>
@@ -250,20 +252,10 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Alloy Smelter, Upgrade" required="true">
     <crafting upgrade="true">
-      <level maxlevel="2" />
       <grid size="3x3">
         <item /><item name="enderio:block_simple_alloy_smelter" /><item />
         <item /><item name="CHASSIS" /><item />
-        <item name="GEAR_ENERGIZED" /><item /><item name="GEAR_ENERGIZED" />
-      </grid>
-      <output name="enderio:block_alloy_smelter" />
-    </crafting>
-    <crafting upgrade="true">
-      <level minlevel="3" />
-      <grid size="3x3">
-        <item name="blockIron" /><item name="enderio:block_simple_alloy_smelter" /><item name="blockIron" />
-        <item /><item name="CHASSIS" /><item />
-        <item name="GEAR_ENERGIZED" /><item /><item name="GEAR_ENERGIZED" />
+        <item name="GEAR_ENERGIZED" /><item name="item:minecraft:cauldron" /><item name="GEAR_ENERGIZED" />
       </grid>
       <output name="enderio:block_alloy_smelter" />
     </crafting>

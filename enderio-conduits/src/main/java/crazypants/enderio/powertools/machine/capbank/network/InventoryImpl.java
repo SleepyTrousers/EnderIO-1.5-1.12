@@ -1,12 +1,12 @@
 package crazypants.enderio.powertools.machine.capbank.network;
 
-import static crazypants.enderio.base.machine.MachineObject.blockCapBank;
-
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.power.PowerHandlerUtil;
+import crazypants.enderio.powertools.init.PowerToolObject;
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -19,7 +19,7 @@ public class InventoryImpl implements IInventory {
 
   public static boolean isInventoryEmtpy(TileCapBank cap) {
     for (ItemStack st : cap.getInventory()) {
-      if(st != null) {
+      if (st != null) {
         return false;
       }
     }
@@ -27,11 +27,11 @@ public class InventoryImpl implements IInventory {
   }
 
   public static boolean isInventoryEmtpy(ItemStack[] inv) {
-    if(inv == null) {
+    if (inv == null) {
       return true;
     }
     for (ItemStack st : inv) {
-      if(st != null) {
+      if (st != null) {
         return false;
       }
     }
@@ -51,7 +51,7 @@ public class InventoryImpl implements IInventory {
 
   public void setCapBank(TileCapBank cap) {
     capBank = cap;
-    if(cap == null) {
+    if (cap == null) {
       inventory = null;
       return;
     }
@@ -67,35 +67,35 @@ public class InventoryImpl implements IInventory {
   }
 
   @Override
-  public ItemStack getStackInSlot(int slot) {
-    if(inventory == null) {
+  public @Nonnull ItemStack getStackInSlot(int slot) {
+    if (inventory == null) {
       return null;
     }
-    if(slot < 0 || slot >= inventory.length) {
+    if (slot < 0 || slot >= inventory.length) {
       return null;
     }
     return inventory[slot];
   }
 
   @Override
-  public ItemStack decrStackSize(int slot, int amount) {
+  public @Nonnull ItemStack decrStackSize(int slot, int amount) {
     return Util.decrStackSize(this, slot, amount);
   }
 
   @Override
   public void setInventorySlotContents(int slot, @Nullable ItemStack itemstack) {
-    if(inventory == null) {
+    if (inventory == null) {
       return;
     }
-    if(slot < 0 || slot >= inventory.length) {
+    if (slot < 0 || slot >= inventory.length) {
       return;
     }
     inventory[slot] = itemstack;
   }
 
   @Override
-  public ItemStack removeStackFromSlot(int index) {
-    if(inventory == null) {
+  public @Nonnull ItemStack removeStackFromSlot(int index) {
+    if (inventory == null) {
       return null;
     }
     ItemStack res = getStackInSlot(index);
@@ -105,24 +105,24 @@ public class InventoryImpl implements IInventory {
 
   @Override
   public void clear() {
-    if(inventory == null) {
+    if (inventory == null) {
       return;
     }
-    for(int i=0;i<inventory.length;i++) {
+    for (int i = 0; i < inventory.length; i++) {
       inventory[i] = null;
     }
   }
-  
+
   @Override
   public int getSizeInventory() {
     return 4;
   }
 
-  //--- constant values
+  // --- constant values
 
   @Override
-  public String getName() {
-    return blockCapBank.getBlock().getUnlocalizedName() + ".name";
+  public @Nonnull String getName() {
+    return PowerToolObject.block_cap_bank.getBlockNN().getUnlocalizedName() + ".name";
   }
 
   @Override
@@ -136,24 +136,24 @@ public class InventoryImpl implements IInventory {
   }
 
   @Override
-  public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
+  public boolean isUsableByPlayer(@Nonnull EntityPlayer p_70300_1_) {
     return true;
   }
 
   @Override
-  public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-    if(itemStack.isEmpty()) {
+  public boolean isItemValidForSlot(int slot, @Nonnull ItemStack itemstack) {
+    if (itemstack.isEmpty()) {
       return false;
     }
     return PowerHandlerUtil.getCapability(itemstack, null) != null;
   }
 
   @Override
-  public void openInventory(EntityPlayer e) {
+  public void openInventory(@Nonnull EntityPlayer e) {
   }
 
   @Override
-  public void closeInventory(EntityPlayer e) {
+  public void closeInventory(@Nonnull EntityPlayer e) {
   }
 
   @Override
@@ -164,7 +164,7 @@ public class InventoryImpl implements IInventory {
   }
 
   @Override
-  public ITextComponent getDisplayName() {
+  public @Nonnull ITextComponent getDisplayName() {
     return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
   }
 
@@ -182,6 +182,10 @@ public class InventoryImpl implements IInventory {
     return 0;
   }
 
-  
+  @Override
+  public boolean isEmpty() {
+    // TODO Auto-generated method stub
+    return false;
+  }
 
 }

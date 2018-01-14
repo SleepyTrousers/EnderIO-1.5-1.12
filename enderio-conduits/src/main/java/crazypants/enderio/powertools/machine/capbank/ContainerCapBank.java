@@ -2,6 +2,7 @@ package crazypants.enderio.powertools.machine.capbank;
 
 import java.awt.Point;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.ContainerEnder;
@@ -39,7 +40,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
   // server is a bad idea as Baubles does some very bad things...
   protected IInventory baubles;
 
-  public static ContainerCapBank create(InventoryPlayer playerInv, TileCapBank cb, final int baublesSize) {
+  public static @Nonnull ContainerCapBank create(InventoryPlayer playerInv, TileCapBank cb, final int baublesSize) {
     return new ContainerCapBank(playerInv, cb) {
       @Override
       protected int getBaublesSize() {
@@ -59,7 +60,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
   }
 
   @Override
-  protected void addSlots(final InventoryPlayer playerInv) {
+  protected void addSlots(final @Nonnull InventoryPlayer playerInv) {
     if (getInv().getNetwork() != null && getInv().getNetwork().getInventory() != null) {
       inv = getInv().getNetwork().getInventory();
     } else {
@@ -75,22 +76,22 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
     if (hasBaublesSlots() && (baubles == null || baubles.getSizeInventory() != getBaublesSize())) {
       baubles = new ArrayInventory(getBaublesSize()) {
         @Override
-        public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+        public boolean isItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
           return false;
         }
 
         @Override
-        public ItemStack getStackInSlot(int slot) {
+        public @Nonnull ItemStack getStackInSlot(int slot) {
           return new ItemStack(Blocks.BARRIER);
         }
 
         @Override
-        public ItemStack decrStackSize(int slot, int amount) {
+        public @Nonnull ItemStack decrStackSize(int slot, int amount) {
           return null;
         }
 
         @Override
-        public ItemStack removeStackFromSlot(int index) {
+        public @Nonnull ItemStack removeStackFromSlot(int index) {
           return null;
         }
 
@@ -104,8 +105,8 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
       addSlotToContainer(new SlotImpl(inv, i, 59 + armorOffset + i * 20, 59));
     }
 
-    for(final EntityEquipmentSlot slt : EntityEquipmentSlot.values()) {
-      if(slt.getSlotType() == Type.ARMOR) {
+    for (final EntityEquipmentSlot slt : EntityEquipmentSlot.values()) {
+      if (slt.getSlotType() == Type.ARMOR) {
         addSlotToContainer(new Slot(playerInv, 36 + slt.getIndex(), -15 + armorOffset, sideSlotY(3 - slt.getIndex())) {
 
           @Override
@@ -129,7 +130,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
         });
       }
     }
-    
+
     addSlotToContainer(new Slot(playerInv, 40, -15 + armorOffset, sideSlotY(4)) {
       @Override
       @Nullable
@@ -148,7 +149,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
           }
 
           @Override
-          public boolean canTakeStack(EntityPlayer playerIn) {
+          public boolean canTakeStack(@Nonnull EntityPlayer playerIn) {
             ItemStack stackInSlot = inventory.getStackInSlot(getSlotIndex());
             if (stackInSlot != null && stackInSlot.getItem() == Item.getItemFromBlock(Blocks.BARRIER)) {
               return false;
@@ -167,14 +168,14 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
   }
 
   @Override
-  public Point getPlayerInventoryOffset() {
+  public @Nonnull Point getPlayerInventoryOffset() {
     Point p = super.getPlayerInventoryOffset();
     p.translate(21, 0);
     return p;
   }
-  
+
   @Override
-  public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
+  public @Nonnull ItemStack transferStackInSlot(@Nonnull EntityPlayer entityPlayer, int slotIndex) {
     int otherSlots = 4 + 5; // charging + armor + off-hand
     int startBaublesSlot = otherSlots;
     int endBaublesSlot = hasBaublesSlots() ? 0 : startBaublesSlot + getBaublesSize();
@@ -191,10 +192,10 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
       if (slotIndex < 4) {
         // merge from machine input slots to inventory
-        if (!mergeItemStackIntoArmor(entityPlayer, origStack, slotIndex) && /*
-                                                                             * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot,
-                                                                             * false)) &&
-                                                                             */!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
+        if (!mergeItemStackIntoArmor(entityPlayer, origStack, slotIndex)
+            && /*
+                * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
+                */!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
           return null;
         }
 

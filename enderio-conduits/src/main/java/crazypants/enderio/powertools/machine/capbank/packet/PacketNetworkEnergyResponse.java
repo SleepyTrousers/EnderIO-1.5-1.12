@@ -1,5 +1,7 @@
 package crazypants.enderio.powertools.machine.capbank.packet;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.powertools.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.powertools.machine.capbank.network.ICapBankNetwork;
 import io.netty.buffer.ByteBuf;
@@ -17,7 +19,7 @@ public class PacketNetworkEnergyResponse implements IMessage, IMessageHandler<Pa
   public PacketNetworkEnergyResponse() {
   }
 
-  public PacketNetworkEnergyResponse(ICapBankNetwork network) {
+  public PacketNetworkEnergyResponse(@Nonnull ICapBankNetwork network) {
     id = network.getId();
     energyStored = network.getEnergyStoredL();
     avgInput = network.getAverageInputPerTick();

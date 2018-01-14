@@ -34,7 +34,7 @@ public class BlockDecorationFacing extends BlockDecoration {
   }
 
   public static BlockDecoration create2(@Nonnull IModObject modObject) {
-    return new BlockDecorationFacing(modObject, EnumDecoBlock.TYPE03);
+    return new BlockDecorationFacing(modObject, EnumDecoBlock.TYPE04);
   }
 
   public static final @Nonnull PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class, EnumFacing.HORIZONTALS);
