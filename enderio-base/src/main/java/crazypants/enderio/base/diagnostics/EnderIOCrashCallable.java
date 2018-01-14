@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.server.FMLServerHandler;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class EnderIOCrashCallable implements ICrashCallable {
@@ -34,6 +35,12 @@ public class EnderIOCrashCallable implements ICrashCallable {
     List<String> result = new ArrayList<String>();
     if (FMLCommonHandler.instance().getSide() == Side.CLIENT && FMLClientHandler.instance().hasOptifine()) {
       result.add(" * Optifine is installed. This is NOT supported.");
+    }
+    if (EnderIO.proxy.isDedicatedServer()) {
+      if (!FMLServerHandler.instance().getServer().isServerInOnlineMode() && System.getProperty("INDEV") == null) {
+        Log.warn("@Devs: See github for dev env setup; set INDEV if needed.");
+        result.add(" * Offline mode for dedicated servers is NOT supported by Ender IO.");
+      }
     }
 
     for (ModContainer modContainer : ModAPIManager.INSTANCE.getAPIList()) {
