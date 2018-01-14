@@ -1,5 +1,8 @@
 package crazypants.enderio.powertools.machine.capbank.packet;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -19,7 +22,7 @@ public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
   public PacketGuiChange() {
   }
 
-  public PacketGuiChange(TileCapBank capBank) {
+  public PacketGuiChange(@Nonnull TileCapBank capBank) {
     super(capBank);
     ICapBankNetwork network = capBank.getNetwork();
     maxSend = network.getMaxOutput();
@@ -45,7 +48,7 @@ public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
     buf.writeShort(outputMode.ordinal());
   }
 
-  @Override  
+  @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     maxSend = buf.readInt();
@@ -55,9 +58,9 @@ public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
   }
 
   @Override
-  protected IMessage handleMessage(TileCapBank te, PacketGuiChange message, MessageContext ctx) {
+  protected @Nullable IMessage handleMessage(TileCapBank te, PacketGuiChange message, MessageContext ctx) {
     ICapBankNetwork net = te.getNetwork();
-    if(net == null) {
+    if (net == null) {
       return null;
     }
     net.setMaxOutput(message.maxSend);

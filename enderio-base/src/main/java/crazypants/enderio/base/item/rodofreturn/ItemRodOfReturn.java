@@ -31,7 +31,6 @@ import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.power.AbstractPoweredItem;
-import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TeleportUtil;
 import net.minecraft.client.Minecraft;
@@ -419,8 +418,8 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   }
 
   @Override
-  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
-    return new CompoundCapabilityProvider(new FluidCapabilityProvider(stack), new ItemPowerCapabilityBackend(stack));
+  public @Nonnull ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+    return new CompoundCapabilityProvider(new FluidCapabilityProvider(stack), super.initCapabilities(stack, nbt));
   }
 
   private class FluidCapabilityProvider implements IFluidHandlerItem, ICapabilityProvider {

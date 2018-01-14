@@ -2,26 +2,29 @@ package crazypants.enderio.powertools.machine.capbank.network;
 
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.power.IPowerStorage;
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 
 public interface ICapBankNetwork extends IPowerStorage {
 
-  //------ Network
+  // ------ Network
 
   int getId();
 
-  void addMember(TileCapBank cap);
+  void addMember(@Nonnull TileCapBank cap);
 
+  @Nonnull
   Collection<TileCapBank> getMembers();
 
   void destroyNetwork();
 
+  @Nonnull
   NetworkState getState();
 
-
-  //------ Energy
+  // ------ Energy
 
   @Override
   long getEnergyStoredL();
@@ -52,33 +55,34 @@ public interface ICapBankNetwork extends IPowerStorage {
 
   float getAverageOutputPerTick();
 
-  void removeReceptors(Collection<EnergyReceptor> receptors);
+  void removeReceptors(@Nonnull Collection<EnergyReceptor> receptors);
 
-  void addReceptors(Collection<EnergyReceptor> receptors);
+  void addReceptors(@Nonnull Collection<EnergyReceptor> receptors);
 
+  // ------ Inventory
 
-  //------ Inventory
-
+  @Nonnull
   InventoryImpl getInventory();
 
+  // ------ Redstone
 
-  //------ Redstone
+  void setOutputControlMode(@Nonnull RedstoneControlMode outputControlMode);
 
-  void setOutputControlMode(RedstoneControlMode outputControlMode);
-
+  @Nonnull
   RedstoneControlMode getOutputControlMode();
 
-  void setInputControlMode(RedstoneControlMode inputControlMode);
+  void setInputControlMode(@Nonnull RedstoneControlMode inputControlMode);
 
+  @Nonnull
   RedstoneControlMode getInputControlMode();
 
-  void updateRedstoneSignal(TileCapBank tileCapBank, boolean recievingSignal);
+  void updateRedstoneSignal(@Nonnull TileCapBank tileCapBank, boolean recievingSignal);
 
   boolean isOutputEnabled();
 
   boolean isInputEnabled();
 
-  //------- rendering info caching
+  // ------- rendering info caching
 
   void invalidateDisplayInfoCache();
 

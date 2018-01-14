@@ -1,5 +1,7 @@
 package crazypants.enderio.powertools.machine.capbank.packet;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import crazypants.enderio.powertools.machine.capbank.network.ICapBankNetwork;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -9,7 +11,7 @@ public class PacketNetworkStateRequest extends PacketCapBank<PacketNetworkStateR
   public PacketNetworkStateRequest() {
   }
 
-  public PacketNetworkStateRequest(TileCapBank capBank) {
+  public PacketNetworkStateRequest(@Nonnull TileCapBank capBank) {
     super(capBank);
   }
 

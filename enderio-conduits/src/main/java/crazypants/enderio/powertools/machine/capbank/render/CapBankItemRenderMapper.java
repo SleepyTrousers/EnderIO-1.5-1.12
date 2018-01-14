@@ -1,8 +1,5 @@
 package crazypants.enderio.powertools.machine.capbank.render;
 
-import static crazypants.enderio.base.machine.MachineObject.blockCapBank;
-import static crazypants.enderio.base.render.property.EnumMergingBlockRenderMode.RENDER;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,14 +23,19 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.base.render.property.EnumMergingBlockRenderMode.RENDER;
+
+@SideOnly(Side.CLIENT)
 public class CapBankItemRenderMapper implements IItemRenderMapper.IItemStateMapper, IItemRenderMapper.IDynamicOverlayMapper {
 
-  public CapBankItemRenderMapper() {
+  public static final @Nonnull CapBankItemRenderMapper instance = new CapBankItemRenderMapper();
+
+  private CapBankItemRenderMapper() {
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ItemQuadCollector itemQuadCollector) {
     List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
     IBlockState defaultState = block.getDefaultState();
     states.add(Pair.of(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.sides).withProperty(CapBankType.KIND, CapBankType.NONE), (ItemStack) null));
@@ -51,13 +53,13 @@ public class CapBankItemRenderMapper implements IItemRenderMapper.IItemStateMapp
 
   @Override
   @SideOnly(Side.CLIENT)
-  public ItemQuadCollector mapItemDynamicOverlayRender(Block block, ItemStack stack) {
+  public ItemQuadCollector mapItemDynamicOverlayRender(@Nonnull Block block, @Nonnull ItemStack stack) {
     IEnergyStorage energyItem = PowerHandlerUtil.getCapability(stack, null);
     if (energyItem != null) {
       int maxEnergy = energyItem.getMaxEnergyStored();
       if (maxEnergy > 0) {
         int energy = energyItem.getEnergyStored();
-        FillGaugeBakery gauge = new FillGaugeBakery(((BlockCapBank) blockCapBank.getBlock()).getGaugeIcon(), (double) energy / maxEnergy);
+        FillGaugeBakery gauge = new FillGaugeBakery(BlockCapBank.getGaugeIcon(), (double) energy / maxEnergy);
         if (gauge.canRender()) {
           ItemQuadCollector result = new ItemQuadCollector();
           List<BakedQuad> quads = new ArrayList<BakedQuad>();

@@ -2,6 +2,8 @@ package crazypants.enderio.powertools.machine.capbank.render;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
@@ -30,8 +32,8 @@ import net.minecraft.world.IBlockAccess;
 
 public class FillGaugeBakery {
 
-  private static final Double px = 1d / 16d;
-  private static final Vector3d CENTER = new Vector3d(8 * px, 8 * px, 8 * px);
+  private static final double px = 1d / 16d;
+  private static final @Nonnull Vector3d CENTER = new Vector3d(8 * px, 8 * px, 8 * px);
 
   private CapBankType bankType;
   private int height, myOffset;
@@ -39,15 +41,15 @@ public class FillGaugeBakery {
   private boolean connectUp, connectDown;
   private final IBlockAccess world;
   private final BlockPos pos;
-  private final EnumFacing face;
-  private final TextureAtlasSprite tex;
+  private final @Nonnull EnumFacing face;
+  private final @Nonnull TextureAtlasSprite tex;
   private HalfBakedList buffer, litBuffer;
 
-  public FillGaugeBakery(TextureAtlasSprite tex, double fillLevel) {
+  public FillGaugeBakery(@Nonnull TextureAtlasSprite tex, double fillLevel) {
     this(null, null, EnumFacing.NORTH, tex, fillLevel);
   }
 
-  public FillGaugeBakery(IBlockAccess world, BlockPos pos, EnumFacing face, TextureAtlasSprite tex, double fillLevel) {
+  public FillGaugeBakery(IBlockAccess world, BlockPos pos, @Nonnull EnumFacing face, @Nonnull TextureAtlasSprite tex, double fillLevel) {
     this.world = world;
     this.pos = pos;
     this.face = face;
@@ -57,7 +59,7 @@ public class FillGaugeBakery {
     mkQuads();
   }
 
-  public FillGaugeBakery(IBlockAccess world, BlockPos pos, EnumFacing face, TextureAtlasSprite tex) {
+  public FillGaugeBakery(IBlockAccess world, BlockPos pos, @Nonnull EnumFacing face, @Nonnull TextureAtlasSprite tex) {
     this.world = world;
     this.pos = pos;
     this.face = face;
@@ -162,22 +164,23 @@ public class FillGaugeBakery {
   }
 
   private void countNeighbors() {
-    height=1; myOffset=0;
-    
+    height = 1;
+    myOffset = 0;
+
     BlockPos other = pos;
     while (true) {
       other = other.up();
       IBlockState state = world.getBlockState(other);
       if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType) {
         break;
-      }      
+      }
       IBlockState infrontOfOther = world.getBlockState(other.offset(face));
-      boolean isCovered = infrontOfOther.isSideSolid(world, other.offset(face), face.getOpposite());      
-      if(isCovered) {
+      boolean isCovered = infrontOfOther.isSideSolid(world, other.offset(face), face.getOpposite());
+      if (isCovered) {
         break;
       }
       TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, other);
-      if (!(tileEntity instanceof TileCapBank) || ((TileCapBank)tileEntity).getDisplayType(face) != InfoDisplayType.LEVEL_BAR) {
+      if (!(tileEntity instanceof TileCapBank) || ((TileCapBank) tileEntity).getDisplayType(face) != InfoDisplayType.LEVEL_BAR) {
         break;
       }
       height++;
@@ -190,12 +193,12 @@ public class FillGaugeBakery {
       IBlockState state = world.getBlockState(other);
       if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType) {
         break;
-      }      
+      }
       IBlockState infrontOfOther = world.getBlockState(other.offset(face));
-      boolean isCovered = infrontOfOther.isSideSolid(world, other.offset(face), face.getOpposite());      
-      if(isCovered) {
+      boolean isCovered = infrontOfOther.isSideSolid(world, other.offset(face), face.getOpposite());
+      if (isCovered) {
         break;
-      }      
+      }
       TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, other);
       if (!(tileEntity instanceof TileCapBank) || ((TileCapBank) tileEntity).getDisplayType(face) != InfoDisplayType.LEVEL_BAR) {
         break;
@@ -205,7 +208,7 @@ public class FillGaugeBakery {
       connectDown = true;
     }
   }
-  
+
   public void render() {
     if (canRender()) {
       int i = world.getCombinedLight(pos.offset(face), 0);
@@ -227,7 +230,7 @@ public class FillGaugeBakery {
     return buffer != null;
   }
 
-  public void bake(List<BakedQuad> quads) {
+  public void bake(@Nonnull List<BakedQuad> quads) {
     buffer.bake(quads);
     if (litBuffer != null) {
       litBuffer.bake(quads);

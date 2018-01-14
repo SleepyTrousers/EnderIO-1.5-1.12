@@ -2,20 +2,20 @@ package crazypants.enderio.powertools.machine.capbank.network;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.power.IPowerInterface;
+import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
 public class EnergyReceptor {
 
   private final @Nonnull IPowerInterface receptor;
   private final @Nonnull EnumFacing fromDir;
   private final @Nonnull IoMode mode;
-  private final BlockCoord location;
+  private final BlockPos location;
 
   private final IPowerConduit conduit;
 
@@ -23,7 +23,7 @@ public class EnergyReceptor {
     this.receptor = receptor;
     fromDir = dir;
     mode = cb.getIoMode(dir);
-    if(receptor.getProvider() instanceof IConduitBundle) {
+    if (receptor.getProvider() instanceof IConduitBundle) {
       conduit = ((IConduitBundle) receptor.getProvider()).getConduit(IPowerConduit.class);
     } else {
       conduit = null;
@@ -47,8 +47,8 @@ public class EnergyReceptor {
     return mode;
   }
 
-  //NB: Special impl of equals and hash code based solely on the location and dir
-  //This is done to ensure the receptors in the Networks Set are added / removed correctly
+  // NB: Special impl of equals and hash code based solely on the location and dir
+  // This is done to ensure the receptors in the Networks Set are added / removed correctly
 
   @Override
   public int hashCode() {
@@ -61,24 +61,24 @@ public class EnergyReceptor {
 
   @Override
   public boolean equals(Object obj) {
-    if(this == obj) {
+    if (this == obj) {
       return true;
     }
-    if(obj == null) {
+    if (obj == null) {
       return false;
     }
-    if(getClass() != obj.getClass()) {
+    if (getClass() != obj.getClass()) {
       return false;
     }
     EnergyReceptor other = (EnergyReceptor) obj;
-    if(fromDir != other.fromDir) {
+    if (fromDir != other.fromDir) {
       return false;
     }
-    if(location == null) {
-      if(other.location != null) {
+    if (location == null) {
+      if (other.location != null) {
         return false;
       }
-    } else if(!location.equals(other.location)) {
+    } else if (!location.equals(other.location)) {
       return false;
     }
     return true;

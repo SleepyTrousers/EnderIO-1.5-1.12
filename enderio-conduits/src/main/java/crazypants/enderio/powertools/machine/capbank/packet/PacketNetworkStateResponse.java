@@ -1,5 +1,7 @@
 package crazypants.enderio.powertools.machine.capbank.packet;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.powertools.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.powertools.machine.capbank.network.ICapBankNetwork;
@@ -17,13 +19,13 @@ public class PacketNetworkStateResponse implements IMessage, IMessageHandler<Pac
   public PacketNetworkStateResponse() {
   }
 
-  public PacketNetworkStateResponse(ICapBankNetwork network) {
+  public PacketNetworkStateResponse(@Nonnull ICapBankNetwork network) {
     this(network, false);
   }
 
-  public PacketNetworkStateResponse(ICapBankNetwork network, boolean remove) {
+  public PacketNetworkStateResponse(@Nonnull ICapBankNetwork network, boolean remove) {
     id = network.getId();
-    if(!remove) {
+    if (!remove) {
       state = network.getState();
     } else {
       state = null;
@@ -34,7 +36,7 @@ public class PacketNetworkStateResponse implements IMessage, IMessageHandler<Pac
   public void toBytes(ByteBuf buf) {
     buf.writeInt(id);
     buf.writeBoolean(state != null);
-    if(state != null) {
+    if (state != null) {
       state.writeToBuf(buf);
     }
   }
@@ -43,7 +45,7 @@ public class PacketNetworkStateResponse implements IMessage, IMessageHandler<Pac
   public void fromBytes(ByteBuf buf) {
     id = buf.readInt();
     boolean hasState = buf.readBoolean();
-    if(hasState) {
+    if (hasState) {
       state = NetworkState.readFromBuf(buf);
     } else {
       state = null;
@@ -52,7 +54,7 @@ public class PacketNetworkStateResponse implements IMessage, IMessageHandler<Pac
 
   @Override
   public IMessage onMessage(PacketNetworkStateResponse message, MessageContext ctx) {
-    if(message.state != null) {
+    if (message.state != null) {
       ClientNetworkManager.getInstance().updateState(EnderIO.proxy.getClientWorld(), message.id, message.state);
     } else {
       ClientNetworkManager.getInstance().destroyNetwork(message.id);

@@ -1,24 +1,36 @@
 package crazypants.enderio.base.power;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import crazypants.enderio.util.NbtValue;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-/**
- * Implementations must store power level in the stacks NBT using NBTValue.ENERGY
- */
 public interface IInternalPoweredItem {
 
-  // TODO Java8: All these can be default implementations
+  int getMaxEnergyStored(@Nonnull ItemStack container);
 
-  int getMaxEnergyStored(@Nonnull ItemStack stack);
+  int getMaxInput(@Nonnull ItemStack container);
 
-  int getEnergyStored(@Nonnull ItemStack stack);
+  int getMaxOutput(@Nonnull ItemStack container);
 
-  void setEnergyStored(@Nonnull ItemStack container, int energy);
+  default int getEnergyStored(@Nonnull ItemStack container) {
+    return NbtValue.ENERGY.getInt(container);
+  }
 
-  int getMaxInput(@Nonnull ItemStack stack);
+  default void setEnergyStored(@Nonnull ItemStack container, int energy) {
+    NbtValue.ENERGY.setInt(container, MathHelper.clamp(energy, 0, getMaxEnergyStored(container)));
+  }
 
-  int getMaxOutput(@Nonnull ItemStack stack);
+  default void setFull(@Nonnull ItemStack container) {
+    setEnergyStored(container, getMaxEnergyStored(container));
+  }
+
+  default @Nonnull ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+    return new ItemPowerCapabilityBackend(stack);
+  }
 
 }

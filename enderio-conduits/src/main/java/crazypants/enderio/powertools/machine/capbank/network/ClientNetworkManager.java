@@ -4,21 +4,26 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.powertools.EnderIOPowerTools;
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIOPowerTools.MODID)
 public class ClientNetworkManager {
 
-  private static final ClientNetworkManager instance = new ClientNetworkManager();
+  private static final @Nonnull ClientNetworkManager instance = new ClientNetworkManager();
 
-  public static ClientNetworkManager getInstance() {
+  public static @Nonnull ClientNetworkManager getInstance() {
     return instance;
   }
 
-  private final Map<Integer, WeakReference<CapBankClientNetwork>> networks = new HashMap<Integer, WeakReference<CapBankClientNetwork>>();
+  private final @Nonnull Map<Integer, WeakReference<CapBankClientNetwork>> networks = new HashMap<Integer, WeakReference<CapBankClientNetwork>>();
 
   ClientNetworkManager() {
   }
@@ -33,7 +38,7 @@ public class ClientNetworkManager {
     }
   }
 
-  public void updateState(World world, int id, NetworkState state) {
+  public void updateState(@Nonnull World world, int id, @Nonnull NetworkState state) {
     CapBankClientNetwork network = getOrCreateNetwork(id);
     network.setState(world, state);
   }
@@ -44,32 +49,32 @@ public class ClientNetworkManager {
       return;
     }
     CapBankClientNetwork res = ref.get();
-    if(res == null) {
+    if (res == null) {
       return;
     }
     res.setEnergyStored(energyStored);
     res.setAverageIOPerTick(avgInput, avgOutput);
   }
 
-  public CapBankClientNetwork getOrCreateNetwork(int id) {
+  public @Nonnull CapBankClientNetwork getOrCreateNetwork(int id) {
     WeakReference<CapBankClientNetwork> ref = networks.get(id);
     CapBankClientNetwork res = ref != null ? ref.get() : null;
-    if(res == null) {
+    if (res == null) {
       res = new CapBankClientNetwork(id);
       networks.put(id, new WeakReference<CapBankClientNetwork>(res));
     }
     return res;
   }
 
-  public void addToNetwork(int id, TileCapBank tileCapBank) {
+  public void addToNetwork(int id, @Nonnull TileCapBank tileCapBank) {
     CapBankClientNetwork network = getOrCreateNetwork(id);
     network.addMember(tileCapBank);
   }
 
   @SubscribeEvent
-  public void unload(WorldEvent.Unload event) {
+  public static void unload(WorldEvent.Unload event) {
     if (event.getWorld() instanceof WorldClient) {
-      networks.clear();
+      instance.networks.clear();
     }
   }
 

@@ -1,10 +1,10 @@
 package crazypants.enderio.powertools.machine.capbank.render;
 
-import static crazypants.enderio.base.machine.MachineObject.blockCapBank;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
@@ -29,7 +29,7 @@ import net.minecraft.util.EnumFacing;
 public class IoDisplay implements IInfoRenderer {
 
   @Override
-  public void render(TileCapBank cb, EnumFacing dir, float partialTick) {
+  public void render(@Nonnull TileCapBank cb, @Nonnull EnumFacing dir, float partialTick) {
     if (dir.getFrontOffsetY() != 0) {
       return;
     }
@@ -59,7 +59,7 @@ public class IoDisplay implements IInfoRenderer {
 
       float scale = 0.85f;
       float offset = (1 - scale) / 2;
-      TextureAtlasSprite icon = ((BlockCapBank) blockCapBank.getBlock()).getInfoPanelIcon();
+      TextureAtlasSprite icon = BlockCapBank.getInfoPanelIcon();
       float minU = icon.getMinU();
       float maxU = icon.getMaxU();
       float minV = icon.getMinV();
@@ -190,7 +190,7 @@ public class IoDisplay implements IInfoRenderer {
     GlStateManager.popMatrix();
   }
 
-  private float drawText(HeadingText heading, String text, float offset, float scale, float size, FontRenderer fr) {
+  private float drawText(HeadingText heading, @Nonnull String text, float offset, float scale, float size, FontRenderer fr) {
     GlStateManager.pushMatrix();
     GlStateManager.translate(0, offset, 0);
     GlStateManager.scale(scale, scale, scale);
@@ -208,7 +208,7 @@ public class IoDisplay implements IInfoRenderer {
     return offset;
   }
 
-  protected String getChangeText(float average, FontRenderer fr) {
+  protected @Nonnull String getChangeText(float average, FontRenderer fr) {
     int change = Math.round(Math.abs(average));
     String txt = LangPower.format(change);
     int width = fr.getStringWidth(txt);
@@ -226,7 +226,7 @@ public class IoDisplay implements IInfoRenderer {
     INPUT(ColorUtil.getRGB(0, 0.25f, 0)),
     OUTPUT(ColorUtil.getRGB(0.25f, 0, 0));
 
-    final String text;
+    final @Nonnull String text;
     final int color;
 
     private HeadingText(int color) {
