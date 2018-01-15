@@ -87,20 +87,11 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
     return TileEntityFurnace.isItemFuel(itemstack);
   }
 
-  // @Override
-  // public @Nonnull int[] getSlotsForFace(EnumFacing var1) {
-  // return new int[] { 0 };
-  // }
-
-  @Override
-  public boolean canInsertItem(int i, @Nonnull ItemStack itemstack, @Nonnull EnumFacing j) {
-    return isItemValidForSlot(i, itemstack);
-  }
-
-  @Override
+  @Deprecated
   public boolean canExtractItem(int i, @Nonnull ItemStack itemstack, @Nonnull EnumFacing j) {
     return !TileEntityFurnace.isItemFuel(itemstack);
   }
+  // TODO 1.11 didn't we have a special capability for this machine that handles this?
 
   @Override
   public boolean isActive() {

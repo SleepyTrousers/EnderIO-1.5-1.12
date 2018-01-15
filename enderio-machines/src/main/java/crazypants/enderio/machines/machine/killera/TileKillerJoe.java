@@ -2,38 +2,30 @@ package crazypants.enderio.machines.machine.killera;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
-import com.enderio.core.common.transform.EnderCoreMethods.ICreeperTarget;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.util.MagnetUtil;
-import com.enderio.core.common.util.UserIdent;
 import com.enderio.core.common.util.stackable.Things;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
-import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
-import crazypants.enderio.base.power.wireless.WirelessChargedLocation;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
 import crazypants.enderio.machines.config.config.KillerJoeConfig;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machines.network.PacketHandler;
@@ -44,18 +36,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -71,14 +60,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.TargetContext;
 
-import static crazypants.enderio.base.config.Config.killerProvokesCreeperExpolosions;
-
 @Storable
 public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank, IRanged {
 
   private static final int IO_MB_TICK = 250;
-
-  private EnumFacing[] frontFaceAndSides;
 
   protected final static @Nonnull BoundingBox NULL_AABB = new BoundingBox(new BlockPos(0, 0, 0));
 
@@ -88,10 +73,11 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   protected Attackera attackera;
 
-  protected WirelessChargedLocation chargedLocation;
-
   @Store
   final SmartTank tank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), Fluid.BUCKET_VOLUME * 2);
+
+  @Store(NBTAction.CLIENT)
+  protected @Nonnull ItemStack renderWeapon = Prep.getEmpty();
 
   int lastFluidLevelUpdate;
 
@@ -105,7 +91,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   private float prevSwingProgress;
 
-  private boolean hadSword;
+  private boolean hasSword = false;
 
   private boolean isMending = false;
 
@@ -113,11 +99,6 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     super(new SlotDefinition(1, 0, 0));
     tank.setTileEntity(this);
     tank.setCanDrain(false);
-  }
-
-  @Override
-  public @Nonnull String getMachineName() {
-    return MachineObject.block_killer_joe.getUnlocalisedName();
   }
 
   // These weapons are tested to work and render correctly in the Killer Joe. That's why this is not in the config file.
@@ -130,9 +111,6 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   @Override
   public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
-    if (itemstack.isEmpty()) {
-      return false;
-    }
     return itemstack.getItem() instanceof ItemSword || itemstack.getItem() instanceof ItemAxe || WEAPONS.contains(itemstack);
   }
 
@@ -142,48 +120,30 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   @Override
-  public void doUpdate() {
+  protected void updateEntityClient() {
+    super.updateEntityClient();
     updateArmSwingProgress();
-    if (!world.isRemote) {
-      if (doMending()) {
-        hooverXP();
-        if (!needsMending()) {
-          endMending();
-        }
-      }
-      getAttackera().onUpdate();
-      if (Prep.isValid(getStackInSlot(0)) != hadSword) {
-        updateBlock();
-        hadSword = Prep.isValid(getStackInSlot(0));
-      }
-    }
-    super.doUpdate();
   }
 
   private void endMending() {
     isMending = false;
   }
 
-  @Override
-  public boolean canExtractItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
-    if (isSideDisabled(side)) {
-      return false;
-    }
-    if (inventory[slot] == null || inventory[slot].getCount() < itemstack.getCount()) {
-      return false;
-    }
-    return itemstack.getItem() == inventory[slot].getItem();
-  }
+  // TODO 1.11 check that broken tools can be removed by automation
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
 
-    // send any maintaince packets no more than twice a second
-    if (shouldDoWorkThisTick(10)) {
-      if (tanksDirty) {
-        PacketHandler.sendToAllAround(new PacketNutrientTank(this), this);
-        tanksDirty = false;
-      }
+    updateArmSwingProgress();
+
+    if (Prep.isValid(getWeapon()) != hasSword) {
+      hasSword = Prep.isValid(getWeapon());
+      forceUpdatePlayers();
+    }
+
+    if (tanksDirty && shouldDoWorkThisTick(20)) {
+      PacketHandler.sendToAllAround(new PacketNutrientTank(this), this);
+      tanksDirty = false;
     }
 
     if (!redstoneCheck) {
@@ -194,60 +154,62 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
       return false;
     }
 
-    if (getStackInSlot(0).isEmpty()) {
+    if (!hasSword) {
       return false;
     }
 
+    if (doMending()) {
+      hooverXP();
+      if (!needsMending()) {
+        endMending();
+      }
+    }
+
+    getAttackera().onUpdate();
+
     Attackera atackera = getAttackera();
-    atackera.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, getStackInSlot(0));
     if (atackera.getTicksSinceLastSwing() < atackera.getCooldownPeriod()) {
       return false;
     }
 
     List<EntityLivingBase> entsInBounds = world.getEntitiesWithinAABB(EntityLivingBase.class, getKillBounds());
-    if (!entsInBounds.isEmpty()) {
-
-      for (EntityLivingBase ent : entsInBounds) {
-        if (!ent.isDead && ent.deathTime <= 0 && !ent.isEntityInvulnerable(DamageSource.GENERIC) && ent.hurtResistantTime == 0) {
-          if (ent instanceof EntityPlayer && ((EntityPlayer) ent).capabilities.disableDamage) {
-            continue; // Ignore players in creative, can't damage them;
-          }
-          boolean togglePvp = false;
-          if (ent instanceof EntityPlayer && !FMLCommonHandler.instance().getMinecraftServerInstance().isPVPEnabled()) {
-            if (KillerJoeConfig.killerPvPoffDisablesSwing.get()) {
-              continue;
-            } else if (KillerJoeConfig.killerPvPoffIsIgnored.get()) {
-              togglePvp = true;
-            }
-          }
-          if (KillerJoeConfig.killerJoeMustSee.get() && !canJoeSee(ent)) {
-            continue;
-          }
-          if (!PermissionAPI.hasPermission(getOwner().getAsGameProfile(), BlockKillerJoe.permissionAttacking, new TargetContext(atackera, ent))) {
-            continue;
-          }
-          if (ent instanceof EntityZombie) {
-            // TODO: tag the entity instead (see Powered Spawner)
-            ZombieCache.cache.add(ent.getUniqueID());
-          }
-          try {
-            if (togglePvp) {
-              FMLCommonHandler.instance().getMinecraftServerInstance().setAllowPvp(true);
-            }
-            atackera.attackTargetEntityWithCurrentItem(ent);
-          } finally {
-            if (togglePvp) {
-              FMLCommonHandler.instance().getMinecraftServerInstance().setAllowPvp(false);
-            }
-          }
-          atackera.resetCooldown();
-          useNutrient();
-          swingWeapon();
-          if (getStackInSlot(0).isEmpty() || getStackInSlot(0).getCount() <= 0 || atackera.getHeldItemMainhand().isEmpty()) {
-            setInventorySlotContents(0, ItemStack.EMPTY);
-          }
-          return false;
+    for (EntityLivingBase ent : entsInBounds) {
+      if (!ent.isDead && ent.deathTime <= 0 && !ent.isEntityInvulnerable(DamageSource.GENERIC) && ent.hurtResistantTime == 0) {
+        if (ent instanceof EntityPlayer && ((EntityPlayer) ent).capabilities.disableDamage) {
+          continue; // Ignore players in creative, can't damage them;
         }
+        boolean togglePvp = false;
+        if (ent instanceof EntityPlayer && !FMLCommonHandler.instance().getMinecraftServerInstance().isPVPEnabled()) {
+          if (KillerJoeConfig.killerPvPoffDisablesSwing.get()) {
+            continue;
+          } else if (KillerJoeConfig.killerPvPoffIsIgnored.get()) {
+            togglePvp = true;
+          }
+        }
+        if (KillerJoeConfig.killerJoeMustSee.get() && !canJoeSee(ent)) {
+          continue;
+        }
+        if (!PermissionAPI.hasPermission(getOwner().getAsGameProfile(), BlockKillerJoe.permissionAttacking, new TargetContext(atackera, ent))) {
+          continue;
+        }
+        if (ent instanceof EntityZombie) {
+          // TODO: tag the entity instead (see Powered Spawner)
+          ZombieCache.cache.add(ent.getUniqueID());
+        }
+        try {
+          if (togglePvp) {
+            FMLCommonHandler.instance().getMinecraftServerInstance().setAllowPvp(true);
+          }
+          atackera.attackTargetEntityWithCurrentItem(ent);
+        } finally {
+          if (togglePvp) {
+            FMLCommonHandler.instance().getMinecraftServerInstance().setAllowPvp(false);
+          }
+        }
+        atackera.resetCooldown();
+        useNutrient();
+        swingWeapon();
+        return false;
       }
     }
     return false;
@@ -259,18 +221,12 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   private boolean canJoeSee(EntityLivingBase ent) {
     Vec3d entPos = new Vec3d(ent.posX, ent.posY + ent.getEyeHeight(), ent.posZ);
-    for (EnumFacing facing1 : frontFaceAndSides) {
+    for (EnumFacing facing1 : new EnumFacing[] { facing, facing.rotateY(), facing.rotateYCCW() }) {
       if (this.world.rayTraceBlocks(new Vec3d(getPos().getX() + faceMidPoints[facing1.ordinal()][0], getPos().getY() + faceMidPoints[facing1.ordinal()][1],
           getPos().getZ() + faceMidPoints[facing1.ordinal()][2]), entPos) == null)
         return true;
     }
     return false;
-  }
-
-  @Override
-  public void setFacing(@Nonnull EnumFacing facing) {
-    super.setFacing(facing);
-    frontFaceAndSides = new EnumFacing[] { facing, facing.rotateY(), facing.rotateYCCW() };
   }
 
   private static final double[][] faceMidPoints = new double[][] { { 0.5D, 0.0D, 0.5D }, { 0.5D, 1.0D, 0.5D }, { 0.5D, 0.5D, 0.0D }, { 0.5D, 0.5D, 1.0D },
@@ -317,11 +273,11 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   private void hooverXP(EntityXPOrb entity) {
-    if (!world.isRemote && !entity.isDead && needsMending()) {
+    if (!entity.isDead) {
       int xpValue = entity.getXpValue();
-      int i = Math.min(xpToDurability(xpValue), getStackInSlot(0).getItemDamage());
+      int i = Math.min(xpToDurability(xpValue), getWeapon().getItemDamage());
       xpValue -= durabilityToXp(i);
-      getStackInSlot(0).setItemDamage(getStackInSlot(0).getItemDamage() - i);
+      getWeapon().setItemDamage(getWeapon().getItemDamage() - i);
       markDirty();
       if (xpValue > 0) {
         entity.xpValue = xpValue;
@@ -339,13 +295,13 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     } else if (isMending) {
       return true;
     } else {
-      return isMending = getStackInSlot(0).getItem().getDurabilityForDisplay(getStackInSlot(0)) > .1;
+      return isMending = getWeapon().getItem().getDurabilityForDisplay(getWeapon()) > .1;
     }
   }
 
   private boolean needsMending() {
-    return KillerJoeConfig.killerMendingEnabled.get() && getStackInSlot(0).isItemDamaged()
-        && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, getStackInSlot(0)) > 0;
+    return KillerJoeConfig.killerMendingEnabled.get() && getWeapon().isItemDamaged()
+        && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, getWeapon()) > 0;
   }
 
   private int durabilityToXp(int durability) {
@@ -359,7 +315,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   // ------------------------------- Weapon stuffs
 
   void swingWeapon() {
-    if (getStackInSlot(0).isEmpty()) {
+    if (Prep.isInvalid(renderWeapon)) {
       return;
     }
     if (!isSwingInProgress || swingProgressInt >= getArmSwingAnimationEnd() / 2 || swingProgressInt < 0) {
@@ -382,7 +338,6 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   private void updateArmSwingProgress() {
-
     prevSwingProgress = swingProgress;
 
     int i = getArmSwingAnimationEnd();
@@ -402,18 +357,11 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     return 6;
   }
 
-  Attackera getAttackera() {
+  private Attackera getAttackera() {
     if (attackera == null) {
-      attackera = new Attackera(getOwner());
+      attackera = new Attackera(this, getOwner());
     }
     return attackera;
-  }
-
-  WirelessChargedLocation getChargedLocation() {
-    if (chargedLocation == null) {
-      chargedLocation = new WirelessChargedLocation(this);
-    }
-    return chargedLocation;
   }
 
   private @Nonnull BoundingBox getKillBounds() {
@@ -499,56 +447,6 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     return res;
   }
 
-  private static final UUID uuid = UUID.fromString("3baa66fa-a69a-11e4-89d3-123b93f75cba");
-  private static final GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[Killer Joe]");
-
-  private class Attackera extends FakePlayerEIO implements ICreeperTarget {
-
-    @Nonnull
-    ItemStack prevWeapon = ItemStack.EMPTY;
-
-    public Attackera(UserIdent owner) {
-      super(getWorld(), getLocation(), (owner == null || owner == UserIdent.NOBODY || StringUtils.isBlank(owner.getPlayerName())) ? DUMMY_PROFILE
-          : new GameProfile(uuid, "[" + owner.getPlayerName() + "'s Killer Joe]"));
-      setOwner(owner);
-    }
-
-    @Override
-    public void onUpdate() {
-
-      setHeldItem(EnumHand.MAIN_HAND, getStackInSlot(0));
-
-      ItemStack prev = prevWeapon;
-      ItemStack cur = getHeldItemMainhand();
-      if (!ItemStack.areItemStacksEqual(cur, prev)) {
-        if (!prev.isEmpty()) {
-          getAttributeMap().removeAttributeModifiers(prev.getAttributeModifiers(EntityEquipmentSlot.MAINHAND));
-        }
-
-        if (!cur.isEmpty()) {
-          getAttributeMap().applyAttributeModifiers(cur.getAttributeModifiers(EntityEquipmentSlot.MAINHAND));
-        }
-        prevWeapon = cur.isEmpty() ? ItemStack.EMPTY : cur.copy();
-      }
-
-      if (getChargedLocation().chargeItems(inventory.mainInventory)) {
-        markDirty();
-      }
-      ticksSinceLastSwing++;
-
-    }
-
-    public int getTicksSinceLastSwing() {
-      return ticksSinceLastSwing;
-    }
-
-    @Override
-    public boolean isCreeperTarget(@Nonnull EntityCreeper swellingCreeper) {
-      return killerProvokesCreeperExpolosions;
-    }
-
-  }
-
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
     if (forFluidType != null && forFluidType.getFluid() == Fluids.NUTRIENT_DISTILLATION.getFluid()) {
@@ -573,6 +471,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public boolean shouldRenderInPass(int pass) {
     return true;
   }
@@ -643,6 +542,20 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
       return (T) getSmartTankFluidHandler().get(facingIn);
     }
     return super.getCapability(capability, facingIn);
+  }
+
+  public @Nonnull ItemStack getWeapon() {
+    if (!world.isRemote) {
+      renderWeapon = getStackInSlot(0);
+    }
+    return renderWeapon;
+  }
+
+  @Override
+  public void setInventorySlotContents(int slot, @Nonnull ItemStack contents) {
+    super.setInventorySlotContents(slot, contents);
+    getWeapon();
+    forceUpdatePlayers();
   }
 
 }

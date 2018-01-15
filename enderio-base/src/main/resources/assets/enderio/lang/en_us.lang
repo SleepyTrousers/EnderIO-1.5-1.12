@@ -678,7 +678,7 @@ enderio.top.tank.header.storage.pre=§f
 enderio.top.tank.header.storage.post=
 
 
-//Fluids
+# Fluids
 fluid.nutrient_distillation=Nutrient Distillation
 tile.fluid.nutrient_distillation.name=Nutrient Distillation
 
@@ -863,6 +863,11 @@ enderio.keybind.fovminusfast=Camera: Zoom in fast
 enderio.keybind.fovreset=Camera: Reset Zoom
 key.category.darksteelarmor=Dark Steel Armor 
 key.category.tools=Tools
+
+# unless we want to copy the sound, it will always show this subtitle.
+subtitles.entity.enderman.teleport=Something teleports
+# just because I feel that way...
+container.chestDouble=Double Chest
 
 # These keys have not (yet) been confirmed in 1.11
 ;

@@ -218,38 +218,6 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     return res == null ? Prep.getEmpty() : res;
   }
 
-  public boolean canInsertItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
-    if (isSideDisabled(side) || !slotDefinition.isInputSlot(slot)) {
-      return false;
-    }
-    ItemStack existing = inventory[slot];
-    if (existing != null && Prep.isValid(existing)) {
-      // no point in checking the recipes if an item is already in the slot
-      // worst case we get more of the wrong item - but that doesn't change
-      // anything
-      return existing.isStackable() && existing.getCount() < existing.getMaxStackSize() && existing.isItemEqual(itemstack);
-    }
-    // no need to call isItemValidForSlot as upgrade slots are not input slots
-    return isMachineItemValidForSlot(slot, itemstack);
-  }
-
-  public boolean canExtractItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
-    if (isSideDisabled(side)) {
-      return false;
-    }
-    if (!slotDefinition.isOutputSlot(slot)) {
-      return false;
-    }
-    return canExtractItem(slot, itemstack);
-  }
-
-  protected boolean canExtractItem(int slot, @Nonnull ItemStack itemstack) {
-    if (inventory[slot] == null || inventory[slot].getCount() < itemstack.getCount()) {
-      return false;
-    }
-    return itemstack.getItem() == inventory[slot].getItem();
-  }
-
   public @Nonnull InventoryWrapper getAsInventory() {
     return new InventoryWrapper();
   }

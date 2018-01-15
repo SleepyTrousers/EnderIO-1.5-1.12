@@ -21,6 +21,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.BlockRenderLayer;
@@ -111,6 +112,11 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   @Override
   public boolean isFullCube(@Nonnull IBlockState bs) {
     return false;
+  }
+
+  @Override
+  protected @Nonnull EnumFacing getFacingForHeading(@Nonnull EntityLivingBase player) {
+    return super.getFacingForHeading(player).getOpposite();
   }
 
   @Override

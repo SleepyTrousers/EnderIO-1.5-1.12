@@ -153,13 +153,13 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
       dist.neighboursChanged();
     }
   }
-  
+
   @Override
   public void onNeighborBlockChange(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos posIn, @Nonnull Block blockIn,
       @Nonnull BlockPos fromPos) {
     super.onNeighborBlockChange(state, worldIn, posIn, blockIn, fromPos);
     if (dist != null) {
-	  dist.neighboursChanged();
+      dist.neighboursChanged();
     }
   }
 
@@ -178,15 +178,7 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
     initMaxIO();
   }
 
-  @Override
-  public boolean canInsertItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
-    return hasInventory() && super.canInsertItem(slot, itemstack, side);
-  }
-
-  @Override
-  public boolean canExtractItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
-    return hasInventory() && super.canExtractItem(slot, itemstack, side);
-  }
+  // TODO 1.11 check that items can be inserted *and* removed by automation
 
   @Override
   public boolean canConnectEnergy(@Nonnull EnumFacing from) {

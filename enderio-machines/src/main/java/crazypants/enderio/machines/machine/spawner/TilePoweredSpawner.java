@@ -408,14 +408,15 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   @Override
   public @Nonnull BoundingBox getBounds() {
     if (isSpawnMode) {
-      if (bounds == null) {
-        bounds = new BoundingBox(getPos()).expand(getRange(), 1d, getRange());
-        if (capturedMob != null) {
-          Entity ent = capturedMob.getEntity(world, false);
-          if (ent != null) {
-            int height = Math.max((int) Math.ceil(ent.height) - 1, 0);
-            return bounds = bounds.setMaxY(bounds.maxY + height);
-          }
+      if (bounds != null) {
+        return bounds;
+      }
+      bounds = new BoundingBox(getPos()).expand(getRange(), 1d, getRange());
+      if (capturedMob != null) {
+        Entity ent = capturedMob.getEntity(world, false);
+        if (ent != null) {
+          int height = Math.max((int) Math.ceil(ent.height) - 1, 0);
+          return bounds = bounds.setMaxY(bounds.maxY + height);
         }
       }
     }
