@@ -10,12 +10,14 @@ import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.util.NullHelper;
 import com.google.common.base.Function;
 
+import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.material.material.Material;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.NbtValue;
@@ -97,6 +99,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
         mkOwner(mode, eiobox, data);
 
         mkPaint(mode, eiobox, data);
+
+        mkNotificationLine(mode, eiobox, data);
 
         mkProgressLine(mode, eiobox, data);
 
@@ -231,6 +235,16 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
+  private void mkNotificationLine(ProbeMode mode, EioBox eiobox, TOPData data) {
+    if (data.notifications != null && !data.notifications.isEmpty()) {
+      IProbeInfo vertical = addIcon(eiobox.get().horizontal(eiobox.center()), IconEIO.REDSTONE_MODE_NEVER)
+          .vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1));
+      for (ILocalizable notification : data.notifications) {
+        vertical.text(locRaw(notification.getUnlocalizedName()));
+      }
+    }
+  }
+
   private void mkSideConfigLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasIOMode) {
       if (mode != ProbeMode.NORMAL || topShowSideConfigByDefault) {
@@ -282,7 +296,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
   private void mkRfLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasRF) {
       if (mode != ProbeMode.NORMAL || topShowPowerByDefault) {
-        IProbeInfo rfLine = eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.REDSTONE));
+        IProbeInfo rfLine = eiobox.get().horizontal(eiobox.center()).item(Material.POWDER_INFINITY.getStack());
         if (data.hasRFIO) {
           rfLine = rfLine.vertical();
         }

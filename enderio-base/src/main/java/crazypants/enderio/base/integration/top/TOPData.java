@@ -2,6 +2,7 @@ package crazypants.enderio.base.integration.top;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -14,6 +15,7 @@ import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.UserIdent;
 
+import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.base.block.painted.TileEntityTwicePaintedBlock;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
@@ -22,6 +24,7 @@ import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.interfaces.IHasFillLevel;
 import crazypants.enderio.base.machine.interfaces.IIoConfigurable;
+import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -70,6 +73,7 @@ class TOPData {
   @Nonnull
   ItemStack paint2 = Prep.getEmpty();
   UserIdent owner = null;
+  Set<? extends ILocalizable> notifications = null;
 
   public TOPData(TileEntity tileEntity, IProbeHitData hitData) {
 
@@ -180,6 +184,10 @@ class TOPData {
         }
       }
       hasItemFillLevel = true;
+    }
+
+    if (tileEntity instanceof INotifier) {
+      notifications = ((INotifier) tileEntity).getNotification();
     }
 
     calculateProgress();
