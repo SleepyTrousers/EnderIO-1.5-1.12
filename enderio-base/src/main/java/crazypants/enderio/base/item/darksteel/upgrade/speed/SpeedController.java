@@ -1,7 +1,5 @@
 package crazypants.enderio.base.item.darksteel.upgrade.speed;
 
-import java.util.UUID;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.Log;
@@ -9,6 +7,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
+import crazypants.enderio.base.item.darksteel.DarkSteelAttributeModifier;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -22,8 +21,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SpeedController {
 
-  private static final @Nonnull UUID UU_ID = new UUID(12879874982l, 320981923);
-
   private boolean ignoreFovEvent = false;
 
   public void updateSpeed(@Nonnull EntityPlayer player) {
@@ -32,8 +29,8 @@ public class SpeedController {
     }
 
     IAttributeInstance moveInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MOVEMENT_SPEED);
-    if (moveInst.getModifier(UU_ID) != null) {
-      moveInst.removeModifier(UU_ID);
+    if (moveInst.getModifier(DarkSteelAttributeModifier.UU_ID) != null) {
+      moveInst.removeModifier(DarkSteelAttributeModifier.UU_ID);
     }
 
     SpeedUpgrade speedUpgrade = getActiveSpeedUpgrade(player);
@@ -45,7 +42,8 @@ public class SpeedController {
     double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
     int cost = (int) (horzMovement * costModifier);
     DarkSteelController.instance.usePlayerEnergy(player, EntityEquipmentSlot.LEGS, cost);
-    moveInst.applyModifier(speedUpgrade.getModifier(UU_ID, player.isSprinting()));
+    moveInst.applyModifier(player.isSprinting() ? DarkSteelAttributeModifier.getSprintSpeed(speedUpgrade.getLevel())
+        : DarkSteelAttributeModifier.getWalkSpeed(speedUpgrade.getLevel()));
   }
 
   @SideOnly(Side.CLIENT)
@@ -56,23 +54,19 @@ public class SpeedController {
       return;
     }
 
-    boolean limitFov = true;
-    if (!limitFov) {
-      return;
-    }
-
     EntityPlayer player = NullHelper.notnullF(evt.getEntity(), "FOVUpdateEvent has no player");
-    SpeedUpgrade speedUpgrade = getActiveSpeedUpgrade(player);
-    if (speedUpgrade == null) {
-      return;
-    }
 
     // set the same as vanilla does without our speed buff
     IAttributeInstance moveInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MOVEMENT_SPEED);
-    if (moveInst.getModifier(UU_ID) != null) {
-      moveInst.removeModifier(UU_ID);
+    if (moveInst.getModifier(DarkSteelAttributeModifier.UU_ID) != null) {
+      moveInst.removeModifier(DarkSteelAttributeModifier.UU_ID);
       evt.setNewfov(getVanillaFovModifier(player));
-      moveInst.applyModifier(speedUpgrade.getModifier(UU_ID, player.isSprinting()));
+
+      SpeedUpgrade speedUpgrade = getActiveSpeedUpgrade(player);
+      if (speedUpgrade != null) {
+        moveInst.applyModifier(player.isSprinting() ? DarkSteelAttributeModifier.getSprintSpeed(speedUpgrade.getLevel())
+            : DarkSteelAttributeModifier.getWalkSpeed(speedUpgrade.getLevel()));
+      }
     }
   }
 

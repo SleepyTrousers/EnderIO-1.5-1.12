@@ -9,6 +9,8 @@ import com.enderio.core.api.client.render.IWidgetMap;
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public enum IconEIO implements IWidgetIcon {
 
@@ -171,6 +173,7 @@ public enum IconEIO implements IWidgetIcon {
 
   public static final @Nonnull IWidgetMap map = new IWidgetMap.WidgetMapImpl(TEX_SIZE, TEXTURE) {
     @Override
+    @SideOnly(Side.CLIENT)
     public void render(@Nonnull IWidgetIcon widget, double x, double y, double width, double height, double zLevel, boolean doDraw, boolean flipY) {
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       super.render(widget, x, y, width, height, zLevel, doDraw, flipY);

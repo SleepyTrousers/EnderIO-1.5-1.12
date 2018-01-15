@@ -140,14 +140,6 @@ public final class Config {
   public static int darkSteelPowerStorageLevelTwo = 250000;
   public static int darkSteelPowerStorageLevelThree = 1000000;
 
-  public static float darkSteelSpeedOneWalkModifier = 0.15f;
-  public static float darkSteelSpeedTwoWalkMultiplier = 0.3f;
-  public static float darkSteelSpeedThreeWalkMultiplier = 0.45f;
-
-  public static float darkSteelSpeedOneSprintModifier = 0.1f;
-  public static float darkSteelSpeedTwoSprintMultiplier = 0.3f;
-  public static float darkSteelSpeedThreeSprintMultiplier = 0.5f;
-
   public static int darkSteelSpeedOneCost = 4;
   public static int darkSteelSpeedTwoCost = 6;
   public static int darkSteelSpeedThreeCost = 8;
@@ -165,8 +157,6 @@ public final class Config {
   public static int darkSteelBootsJumpPowerCost = 150;
   public static int darkSteelFallDistanceCost = 75;
 
-  public static float darkSteelSwordPoweredDamageBonus = 1.0f;
-  public static float darkSteelSwordPoweredSpeedBonus = 0.4f;
   public static float darkSteelSwordWitherSkullChance = 0.05f;
   public static float darkSteelSwordWitherSkullLootingModifier = 0.05f;
   public static float darkSteelSwordSkullChance = 0.1f;
@@ -728,20 +718,6 @@ public final class Config {
             "Should the dark steel placement, when in the first (0th) slot, place the item in the last slot. If false, will place what's in the second slot.")
         .getBoolean();
 
-    darkSteelSpeedOneWalkModifier = (float) config.get(sectionDarkSteel.name, "darkSteelSpeedOneWalkModifier", darkSteelSpeedOneWalkModifier,
-        "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedOneWalkModifier);
-    darkSteelSpeedTwoWalkMultiplier = (float) config.get(sectionDarkSteel.name, "darkSteelSpeedTwoWalkMultiplier", darkSteelSpeedTwoWalkMultiplier,
-        "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedTwoWalkMultiplier);
-    darkSteelSpeedThreeWalkMultiplier = (float) config.get(sectionDarkSteel.name, "darkSteelSpeedThreeWalkMultiplier", darkSteelSpeedThreeWalkMultiplier,
-        "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedThreeWalkMultiplier);
-
-    darkSteelSpeedOneSprintModifier = (float) config.get(sectionDarkSteel.name, "darkSteelSpeedOneSprintModifier", darkSteelSpeedOneSprintModifier,
-        "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedOneSprintModifier);
-    darkSteelSpeedTwoSprintMultiplier = (float) config.get(sectionDarkSteel.name, "darkSteelSpeedTwoSprintMultiplier", darkSteelSpeedTwoSprintMultiplier,
-        "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedTwoSprintMultiplier);
-    darkSteelSpeedThreeSprintMultiplier = (float) config.get(sectionDarkSteel.name, "darkSteelSpeedThreeSprintMultiplier", darkSteelSpeedThreeSprintMultiplier,
-        "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedThreeSprintMultiplier);
-
     darkSteelBootsJumpModifier = config.get(sectionDarkSteel.name, "darkSteelBootsJumpModifier", darkSteelBootsJumpModifier,
         "Jump height modifier applied when jumping with Dark Steel Boots equipped").getDouble(darkSteelBootsJumpModifier);
 
@@ -822,13 +798,6 @@ public final class Config {
         .get(sectionDarkSteel.name, "darkSteelSwordSkullLootingModifier", darkSteelSwordSkullLootingModifier,
             "The chance per looting level that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)")
         .getDouble(darkSteelSwordSkullLootingModifier);
-
-    darkSteelSwordPoweredDamageBonus = (float) config
-        .get(sectionDarkSteel.name, "darkSteelSwordPoweredDamageBonus", darkSteelSwordPoweredDamageBonus, "The extra damage dealt when the sword is powered")
-        .getDouble(darkSteelSwordPoweredDamageBonus);
-    darkSteelSwordPoweredSpeedBonus = (float) config
-        .get(sectionDarkSteel.name, "darkSteelSwordPoweredSpeedBonus", darkSteelSwordPoweredSpeedBonus, "The increase in attack speed when powered")
-        .getDouble(darkSteelSwordPoweredSpeedBonus);
 
     darkSteelSwordWitherSkullChance = (float) config
         .get(sectionDarkSteel.name, "darkSteelSwordWitherSkullChance", darkSteelSwordWitherSkullChance,

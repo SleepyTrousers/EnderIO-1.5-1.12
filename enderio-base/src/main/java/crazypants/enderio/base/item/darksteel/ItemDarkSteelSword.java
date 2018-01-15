@@ -1,7 +1,6 @@
 package crazypants.enderio.base.item.darksteel;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -77,11 +76,6 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   static final @Nonnull ToolMaterial MATERIAL = NullHelper
       .notnull(EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 2000, 8, 3.0001f, 25), "failed to add tool material");
   // 3.0001f = more desirable for mobs (i.e. they'll pick it up even if they already have diamond)
-
-  private final @Nonnull AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered",
-      Config.darkSteelSwordPoweredDamageBonus, 0);
-  private final @Nonnull AttributeModifier swordAttackSpeedPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered",
-      Config.darkSteelSwordPoweredSpeedBonus, 0);
 
   public static boolean isEquipped(EntityPlayer player) {
     return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelSword.getItem();
@@ -307,8 +301,10 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     Multimap<String, AttributeModifier> res = super.getItemAttributeModifiers(equipmentSlot);
     if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
       if (Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgradeManager.getEnergyStored(stack) >= Config.darkSteelSwordPowerUsePerHit) {
-        res.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), swordDamageModifierPowered);
-        res.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), swordAttackSpeedPowered);
+        EnergyUpgrade energyUpgrade = EnergyUpgrade.loadAnyFromItem(stack);
+        int level = energyUpgrade.getLevel();
+        res.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), DarkSteelAttributeModifier.getAttackDamage(level));
+        res.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), DarkSteelAttributeModifier.getAttackSpeed(level));
       }
     }
     return res;
