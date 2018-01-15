@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class TOPUtil {
@@ -26,9 +25,8 @@ public class TOPUtil {
 
   @SubscribeEvent
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
-    if (TheOneProbeUpgrade.getInstance().isAvailable()) {
-      final IForgeRegistry<IDarkSteelUpgrade> registry = event.getRegistry();
-      registry.register(TheOneProbeUpgrade.getInstance());
+    if (Loader.isModLoaded("theoneprobe")) {
+      event.getRegistry().register(TheOneProbeUpgrade.getInstance());
       Log.info("Dark Steel Upgrades: TOP integration loaded");
     }
   }

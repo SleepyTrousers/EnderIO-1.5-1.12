@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
-import net.minecraft.util.text.TextFormatting;
 
 public enum IoMode {
 
@@ -50,21 +49,11 @@ public enum IoMode {
   }
 
   public @Nonnull String colorLocalisedName() {
-    String loc = getLocalisedName();
-    switch (this) {
-    case DISABLED:
-      return TextFormatting.RED + loc;
-    case NONE:
-      return TextFormatting.GRAY + loc;
-    case PULL:
-      return TextFormatting.AQUA + loc;
-    case PUSH:
-      return TextFormatting.GOLD + loc;
-    case PUSH_PULL:
-      return EnderIO.lang.localize(this.getUnlocalisedName() + ".colored", TextFormatting.GOLD, TextFormatting.WHITE, TextFormatting.AQUA);
-    default:
-      return loc;
-    }
+    return EnderIO.lang.localize(getColorerUnlocalizedName());
+  }
+
+  public @Nonnull String getColorerUnlocalizedName() {
+    return this.getUnlocalisedName() + ".colored";
   }
 
   public @Nonnull IoMode next() {

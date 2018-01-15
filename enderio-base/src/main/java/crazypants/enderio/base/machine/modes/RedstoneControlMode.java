@@ -44,7 +44,11 @@ public enum RedstoneControlMode {
     }
 
     public @Nonnull String getTooltip() {
-      return EnderIO.lang.localize("gui.tooltip.redstoneControlMode." + name().toLowerCase(Locale.US));
+      return EnderIO.lang.localize(getUnlocalizedTooltip());
+    }
+
+    public @Nonnull String getUnlocalizedTooltip() {
+      return "gui.tooltip.redstoneControlMode." + name().toLowerCase(Locale.US);
     }
 
     @Override

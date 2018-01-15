@@ -57,7 +57,6 @@ public class DarkSteelController {
 
   public static void init(@Nonnull FMLPreInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(instance);
-    MinecraftForge.EVENT_BUS.register(speedController);
   }
 
   private static final EnumSet<Type> DEFAULT_ACTIVE = EnumSet.of(Type.SPEED, Type.STEP_ASSIST, Type.JUMP);
@@ -68,9 +67,7 @@ public class DarkSteelController {
   private int jumpCount;
   private int ticksSinceLastJump;
 
-  private final static SpeedController speedController = new SpeedController();
-
-  private final Map<UUID, EnumSet<Type>> allActive = new HashMap<UUID, EnumSet<Type>>();
+  private final @Nonnull Map<UUID, EnumSet<Type>> allActive = new HashMap<UUID, EnumSet<Type>>();
 
   private boolean nightVisionActive = false;
   private boolean removeNightvision = false;
@@ -134,7 +131,7 @@ public class DarkSteelController {
       updateStepHeightAndFallDistance(player);
 
       // leggings
-      speedController.updateSpeed(player);
+      SpeedController.updateSpeed(player);
 
       NNList.of(EntityEquipmentSlot.class).apply(new Callback<EntityEquipmentSlot>() {
         @Override
@@ -152,7 +149,6 @@ public class DarkSteelController {
 
     }
   }
-
 
   public boolean isGliderUpgradeEquipped(EntityPlayer player) {
     ItemStack chestPlate = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);

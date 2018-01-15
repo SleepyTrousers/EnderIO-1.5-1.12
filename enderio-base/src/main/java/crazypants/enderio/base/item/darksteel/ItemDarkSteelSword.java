@@ -23,6 +23,7 @@ import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.tic.TicUtil;
+import crazypants.enderio.base.item.darksteel.attributes.DarkSteelAttributeModifiers;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -303,8 +304,8 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       if (Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgradeManager.getEnergyStored(stack) >= Config.darkSteelSwordPowerUsePerHit) {
         EnergyUpgrade energyUpgrade = EnergyUpgrade.loadAnyFromItem(stack);
         int level = energyUpgrade.getLevel();
-        res.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), DarkSteelAttributeModifier.getAttackDamage(level));
-        res.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), DarkSteelAttributeModifier.getAttackSpeed(level));
+        res.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), DarkSteelAttributeModifiers.getAttackDamage(level));
+        res.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), DarkSteelAttributeModifiers.getAttackSpeed(level));
       }
     }
     return res;

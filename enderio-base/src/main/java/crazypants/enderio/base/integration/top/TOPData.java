@@ -126,7 +126,7 @@ class TOPData {
       redstoneControlStatus = te.getRedstoneControlStatus();
       IconHolder iconHolder = RedstoneControlMode.IconHolder.getFromMode(redstoneControlMode);
       redstoneIcon = iconHolder.getIcon();
-      redstoneTooltip = iconHolder.getTooltip();
+      redstoneTooltip = iconHolder.getUnlocalizedTooltip();
       hasRedstone = true;
     }
 
