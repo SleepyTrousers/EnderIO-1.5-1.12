@@ -27,6 +27,7 @@ public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk
     BlockWeatherObelisk ret = new BlockWeatherObelisk(modObject);
     ret.init();
 
+    // FIXME: this is wrong! "Detected an attempt by a mod %s to perform game activity during mod construction. This is a serious programming error."
     EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.DOMAIN, "weather_rocket"), EntityWeatherRocket.class, "weather_rocket", 33, EnderIO.instance,
         64, 3, false); // TODO Check if Forge has a registry for this
     return ret;
