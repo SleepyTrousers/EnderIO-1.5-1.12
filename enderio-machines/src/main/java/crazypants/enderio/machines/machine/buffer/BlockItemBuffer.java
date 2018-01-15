@@ -7,7 +7,6 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.power.AbstractPoweredBlockItem;
-import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -69,18 +68,18 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
   }
 
   @Override
-  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
-    return new InnerProv(stack);
+  public @Nonnull ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+    return new InnerProv(stack, super.initCapabilities(stack, nbt));
   }
 
   private class InnerProv implements ICapabilityProvider {
 
     private final @Nonnull ItemStack container;
-    private final @Nonnull ItemPowerCapabilityBackend backend;
+    private final @Nonnull ICapabilityProvider backend;
 
-    public InnerProv(@Nonnull ItemStack container) {
+    public InnerProv(@Nonnull ItemStack container, @Nonnull ICapabilityProvider backend) {
       this.container = container;
-      this.backend = new ItemPowerCapabilityBackend(container);
+      this.backend = backend;
     }
 
     @Override
