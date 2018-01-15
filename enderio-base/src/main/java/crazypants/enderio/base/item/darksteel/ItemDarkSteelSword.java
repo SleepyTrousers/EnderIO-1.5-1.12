@@ -286,7 +286,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       return new ItemStack(Items.SKULL, 1, 0);
     } else if (entityLiving instanceof EntityWitherSkeleton) {
       return new ItemStack(Items.SKULL, 1, 1);
-    } else if (entityLiving instanceof EntityZombie) {
+    } else if (entityLiving.getClass() == EntityZombie.class) { // sic! not PigZombie, ZombieVillager or Husk
       return new ItemStack(Items.SKULL, 1, 2);
     } else if (entityLiving instanceof EntityCreeper) {
       return new ItemStack(Items.SKULL, 1, 4);
