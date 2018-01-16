@@ -161,6 +161,22 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
+  public boolean removedByPlayer(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer,
+      boolean willHarvest) {
+    TileEntity te = world.getTileEntity(pos);
+
+    ITravelAccessable ta = (ITravelAccessable) te;
+    if (ta.getOwner().equals(UserIdent.create(entityPlayer.getGameProfile())) || (ta.getAccessMode() == ITravelAccessable.AccessMode.PUBLIC)) {
+      return super.removedByPlayer(state, world, pos, entityPlayer, willHarvest);
+    } else {
+
+      ChatUtil.sendNoSpam(entityPlayer, Lang.GUI_HARVEST_ERROR_PRIVATE.toChatServer(TextFormatting.RED + ta.getOwner().getPlayerName() + TextFormatting.WHITE));
+      return false;
+    }
+
+  }
+
+  @Override
   protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
     TileEntity te = world.getTileEntity(pos);
     if (!world.isRemote && te instanceof ITravelAccessable) {
