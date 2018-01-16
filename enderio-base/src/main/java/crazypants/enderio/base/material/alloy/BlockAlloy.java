@@ -27,7 +27,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -116,7 +115,7 @@ public class BlockAlloy extends BlockEio<TileEntityEio> implements IAdvancedTool
   }
 
   @Override
-  public boolean shouldWrench(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
+  public boolean canBeWrenched() {
     return false;
   }
 

@@ -103,7 +103,7 @@ public class BlockMachineExtension extends BlockEio<TileEntityEio> {
   }
 
   @Override
-  public boolean shouldWrench(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
+  public boolean canBeWrenched() {
     return true;
   }
 
