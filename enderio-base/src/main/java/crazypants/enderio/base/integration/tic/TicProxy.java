@@ -51,11 +51,11 @@ public class TicProxy {
         Class<Object> TinkerRegistry = ReflectionHelper.getClass(TicProxy.class.getClassLoader(), "slimeknights.tconstruct.library.TinkerRegistry");
         getMelting = ReflectionHelper.findMethod(TinkerRegistry, "getMelting", (String) null, ItemStack.class); // MeltingRecipe
         registerAlloy = ReflectionHelper.findMethod(TinkerRegistry, "registerAlloy", (String) null, FluidStack.class, FluidStack[].class); // void
-        registerTableCasting = ReflectionHelper.findMethod(TinkerRegistry, "registerTableCasting", (String) null, ItemStack.class, ItemStack.class,
-            Fluid.class, int.class); // void
+        registerTableCasting = ReflectionHelper.findMethod(TinkerRegistry, "registerTableCasting", (String) null, ItemStack.class, ItemStack.class, Fluid.class,
+            int.class); // void
         registerMelting = ReflectionHelper.findMethod(TinkerRegistry, "registerMelting", (String) null, ItemStack.class, Fluid.class, int.class); // void
-        registerBasinCasting = ReflectionHelper.findMethod(TinkerRegistry, "registerBasinCasting", (String) null, ItemStack.class, ItemStack.class,
-            Fluid.class, int.class); // void
+        registerBasinCasting = ReflectionHelper.findMethod(TinkerRegistry, "registerBasinCasting", (String) null, ItemStack.class, ItemStack.class, Fluid.class,
+            int.class); // void
 
         Class<Object> MeltingRecipe = ReflectionHelper.getClass(TicProxy.class.getClassLoader(), "slimeknights.tconstruct.library.smeltery.MeltingRecipe");
         getResult = ReflectionHelper.findMethod(MeltingRecipe, "getResult", (String) null); // FluidStack
@@ -327,6 +327,9 @@ public class TicProxy {
     tag.setString("ore", alloy.getOreOre());
     tag.setBoolean("toolforge", true);
     FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
+    registerSmelterySmelting(alloy.getStackNugget(), f, 16);
+    registerSmelterySmelting(alloy.getStackIngot(), f, 144);
+    registerSmelterySmelting(alloy.getStackBlock(), f, 1296);
   }
 
   private static class CastQueue {
