@@ -48,7 +48,7 @@ public class PacketOpenServerGui extends MessageTileEntity<TileTelePad> {
       TileTelePad te = message.getTileEntity(world);
       if (te != null) {
         if (message.id == BlockTelePad.GUI_ID_TELEPAD_TRAVEL && !te.canUiBeAccessed(player)) {
-          BlockTravelAnchor.sendPrivateChatMessage(player, te.getOwner());
+          BlockTravelAnchor.sendPrivateStatusMessage(world, player, te.getOwner());
         } else {
           MachineObject.block_tele_pad.openGui(world, te.getPos(), player, null, message.id);
         }

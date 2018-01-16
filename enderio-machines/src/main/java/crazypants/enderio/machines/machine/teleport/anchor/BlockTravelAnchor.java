@@ -45,7 +45,6 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -169,8 +168,9 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
       if (ta.getOwner().equals(UserIdent.create(entityPlayer.getGameProfile())) || (ta.getAccessMode() == ITravelAccessable.AccessMode.PUBLIC)) {
         return super.removedByPlayer(state, world, pos, entityPlayer, willHarvest);
       } else {
-
-        sendPrivateStatusMessage(world, entityPlayer, Lang.GUI_AUTH_ERROR_HARVEST.toChat(ta.getOwner().getPlayerName()), false);
+        if (!world.isRemote) {
+          entityPlayer.sendStatusMessage(Lang.GUI_AUTH_ERROR_HARVEST.toChat(ta.getOwner().getPlayerName()), false);
+        }
       }
     }
     return false;
@@ -184,16 +184,16 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
       if (ta.canUiBeAccessed(entityPlayer)) {
         return openGui(world, pos, entityPlayer, side, GUI_ID_TRAVEL_ACCESSABLE);
       } else {
-        sendPrivateStatusMessage(world, entityPlayer, Lang.GUI_AUTH_ERROR_PRIVATE.toChat(ta.getOwner().getPlayerName()), true);
+        sendPrivateStatusMessage(world, entityPlayer, ta.getOwner());
       }
     }
     return true;
   }
 
-  public static void sendPrivateStatusMessage(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull TextComponentString text, boolean ignoreSneaking) {
+  public static void sendPrivateStatusMessage(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull UserIdent owner) {
 
-    if (!world.isRemote && (!player.isSneaking()) || ignoreSneaking) {
-      player.sendStatusMessage(text, true);
+    if (!world.isRemote && !player.isSneaking()) {
+      player.sendStatusMessage(Lang.GUI_AUTH_ERROR_PRIVATE.toChat(owner.getPlayerName()), false);
     }
   }
 
