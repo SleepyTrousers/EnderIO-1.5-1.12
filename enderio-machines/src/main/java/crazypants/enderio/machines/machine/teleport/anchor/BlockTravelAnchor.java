@@ -160,14 +160,16 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   @Override
   public boolean removedByPlayer(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer,
       boolean willHarvest) {
+    System.out.println(willHarvest);
     T te = getTileEntity(world, pos);
 
     if (te != null) {
-      if (te.getOwner().equals(UserIdent.create(entityPlayer.getGameProfile())) || (te.getAccessMode() == ITravelAccessable.AccessMode.PUBLIC)) {
+      if (te.getOwner().equals(UserIdent.create(entityPlayer.getGameProfile())) || (te.getAccessMode() == ITravelAccessable.AccessMode.PUBLIC)
+          || (entityPlayer.isCreative() && !willHarvest)) {
         return super.removedByPlayer(state, world, pos, entityPlayer, willHarvest);
       } else {
         if (!world.isRemote) {
-          entityPlayer.sendStatusMessage(Lang.GUI_AUTH_ERROR_HARVEST.toChatServer(te.getOwner().getPlayerName()), false);
+          entityPlayer.sendStatusMessage(Lang.GUI_AUTH_ERROR_HARVEST.toChatServer(te.getOwner().getPlayerName()), true);
         }
       }
     }
@@ -189,7 +191,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   public static void sendPrivateStatusMessage(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull UserIdent owner) {
     if (!world.isRemote && !player.isSneaking()) {
-      player.sendStatusMessage(Lang.GUI_AUTH_ERROR_PRIVATE.toChatServer(owner.getPlayerName()), false);
+      player.sendStatusMessage(Lang.GUI_AUTH_ERROR_PRIVATE.toChatServer(owner.getPlayerName()), true);
     }
   }
 
