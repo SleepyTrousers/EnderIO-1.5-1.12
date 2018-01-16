@@ -170,7 +170,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
         return super.removedByPlayer(state, world, pos, entityPlayer, willHarvest);
       } else {
 
-        sendPrivateStatusMessage(world, entityPlayer, Lang.GUI_HARVEST_ERROR_PRIVATE.toChat(ta.getOwner().getPlayerName()), false);
+        sendPrivateStatusMessage(world, entityPlayer, Lang.GUI_AUTH_ERROR_HARVEST.toChat(ta.getOwner().getPlayerName()), false);
       }
     }
     return false;
