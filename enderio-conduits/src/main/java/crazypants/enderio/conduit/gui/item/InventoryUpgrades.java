@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.gui.item;
 
+import com.enderio.core.common.inventory.EnderInventory;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +18,7 @@ import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_u
 /**
  * The Inventory for Holding Conduit Upgrades
  */
-public class InventoryUpgrades implements IInventory {
+public class InventoryUpgrades extends EnderInventory {
 
   IItemConduit itemConduit;
   EnumFacing dir;
