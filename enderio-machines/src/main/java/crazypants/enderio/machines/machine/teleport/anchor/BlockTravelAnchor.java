@@ -147,12 +147,11 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase entity,
       @Nonnull ItemStack stack) {
     if (entity instanceof EntityPlayer) {
-      TileEntity te = world.getTileEntity(pos);
-      if (te instanceof TileTravelAnchor) {
-        TileTravelAnchor ta = (TileTravelAnchor) te;
-        ta.setOwner((EntityPlayer) entity);
+      T te = getTileEntity(world, pos);
+      if (te != null) {
+        te.setOwner((EntityPlayer) entity);
         IBlockState bs = PaintUtil.getSourceBlock(stack);
-        ta.setPaintSource(bs);
+        te.setPaintSource(bs);
         te.getWorld().notifyBlockUpdate(pos, state, state, 3);
       }
     }
@@ -161,15 +160,14 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   @Override
   public boolean removedByPlayer(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer,
       boolean willHarvest) {
-    TileEntity te = getTileEntity(world, pos);
+    T te = getTileEntity(world, pos);
 
     if (te != null) {
-      ITravelAccessable ta = (ITravelAccessable) te;
-      if (ta.getOwner().equals(UserIdent.create(entityPlayer.getGameProfile())) || (ta.getAccessMode() == ITravelAccessable.AccessMode.PUBLIC)) {
+      if (te.getOwner().equals(UserIdent.create(entityPlayer.getGameProfile())) || (te.getAccessMode() == ITravelAccessable.AccessMode.PUBLIC)) {
         return super.removedByPlayer(state, world, pos, entityPlayer, willHarvest);
       } else {
         if (!world.isRemote) {
-          entityPlayer.sendStatusMessage(Lang.GUI_AUTH_ERROR_HARVEST.toChat(ta.getOwner().getPlayerName()), false);
+          entityPlayer.sendStatusMessage(Lang.GUI_AUTH_ERROR_HARVEST.toChatServer(te.getOwner().getPlayerName()), false);
         }
       }
     }
@@ -178,22 +176,20 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   @Override
   protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
-    TileEntity te = world.getTileEntity(pos);
-    if (!world.isRemote && te instanceof ITravelAccessable) {
-      ITravelAccessable ta = (ITravelAccessable) te;
-      if (ta.canUiBeAccessed(entityPlayer)) {
+    T te = getTileEntity(world, pos);
+    if (!world.isRemote && te != null) {
+      if (te.canUiBeAccessed(entityPlayer)) {
         return openGui(world, pos, entityPlayer, side, GUI_ID_TRAVEL_ACCESSABLE);
       } else {
-        sendPrivateStatusMessage(world, entityPlayer, ta.getOwner());
+        sendPrivateStatusMessage(world, entityPlayer, te.getOwner());
       }
     }
     return true;
   }
 
   public static void sendPrivateStatusMessage(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull UserIdent owner) {
-
     if (!world.isRemote && !player.isSneaking()) {
-      player.sendStatusMessage(Lang.GUI_AUTH_ERROR_PRIVATE.toChat(owner.getPlayerName()), false);
+      player.sendStatusMessage(Lang.GUI_AUTH_ERROR_PRIVATE.toChatServer(owner.getPlayerName()), false);
     }
   }
 
