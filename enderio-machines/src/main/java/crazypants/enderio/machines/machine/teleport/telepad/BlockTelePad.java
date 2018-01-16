@@ -144,7 +144,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
         if (tp.canBlockBeAccessed(entityPlayer)) {
           return openGui(world, masterPos, entityPlayer, side, GUI_ID_TELEPAD);
         } else {
-          sendPrivateChatMessage(entityPlayer, tp.getOwner());
+          sendPrivateStatusMessage(world, entityPlayer, tp.getOwner());
           return false;
         }
       }

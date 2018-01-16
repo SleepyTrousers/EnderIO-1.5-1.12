@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.ChatUtil;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.UserIdent;
 
@@ -46,7 +45,6 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -161,6 +159,24 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
+  public boolean removedByPlayer(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer,
+      boolean willHarvest) {
+    TileEntity te = getTileEntity(world, pos);
+
+    if (te != null) {
+      ITravelAccessable ta = (ITravelAccessable) te;
+      if (ta.getOwner().equals(UserIdent.create(entityPlayer.getGameProfile())) || (ta.getAccessMode() == ITravelAccessable.AccessMode.PUBLIC)) {
+        return super.removedByPlayer(state, world, pos, entityPlayer, willHarvest);
+      } else {
+        if (!world.isRemote) {
+          entityPlayer.sendStatusMessage(Lang.GUI_AUTH_ERROR_HARVEST.toChat(ta.getOwner().getPlayerName()), false);
+        }
+      }
+    }
+    return false;
+  }
+
+  @Override
   protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
     TileEntity te = world.getTileEntity(pos);
     if (!world.isRemote && te instanceof ITravelAccessable) {
@@ -168,15 +184,16 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
       if (ta.canUiBeAccessed(entityPlayer)) {
         return openGui(world, pos, entityPlayer, side, GUI_ID_TRAVEL_ACCESSABLE);
       } else {
-        sendPrivateChatMessage(entityPlayer, ta.getOwner());
+        sendPrivateStatusMessage(world, entityPlayer, ta.getOwner());
       }
     }
     return true;
   }
 
-  public static void sendPrivateChatMessage(EntityPlayer player, UserIdent owner) {
-    if (!player.isSneaking()) {
-      ChatUtil.sendNoSpam(player, Lang.GUI_AUTH_ERROR_PRIVATE.toChatServer(TextFormatting.RED + owner.getPlayerName() + TextFormatting.WHITE));
+  public static void sendPrivateStatusMessage(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull UserIdent owner) {
+
+    if (!world.isRemote && !player.isSneaking()) {
+      player.sendStatusMessage(Lang.GUI_AUTH_ERROR_PRIVATE.toChat(owner.getPlayerName()), false);
     }
   }
 
