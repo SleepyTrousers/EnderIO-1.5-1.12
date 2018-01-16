@@ -327,9 +327,11 @@ public class TicProxy {
     tag.setString("ore", alloy.getOreOre());
     tag.setBoolean("toolforge", true);
     FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
+    // FIXME: TiC is supposed to pick those up itself:
     registerSmelterySmelting(alloy.getStackNugget(), f, 16);
     registerSmelterySmelting(alloy.getStackIngot(), f, 144);
     registerSmelterySmelting(alloy.getStackBlock(), f, 1296);
+    // find out why that doesn't work
   }
 
   private static class CastQueue {

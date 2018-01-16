@@ -869,13 +869,13 @@ subtitles.entity.enderman.teleport=Something teleports
 # just because I feel that way...
 container.chestDouble=Double Chest
 
-fluid.electricalsteel=Molten Electrical Steel
-fluid.energeticalloy=Molten Energetic Alloy
-fluid.vibrantalloy=Molten Vibrant Alloy
-fluid.redstonealloy=Molten Redstone Alloy
-fluid.conductiveiron=Molten Conductive Iron
-fluid.pulsatingiron=Molten Pulsating Iron
-fluid.darksteel=Molten Dark Steel
+fluid.electrical_steel=Molten Electrical Steel
+fluid.energetic_alloy=Molten Energetic Alloy
+fluid.vibrant_alloy=Molten Vibrant Alloy
+fluid.redstone_alloy=Molten Redstone Alloy
+fluid.conductive_iron=Molten Conductive Iron
+fluid.pulsating_iron=Molten Pulsating Iron
+fluid.dark_steel=Molten Dark Steel
 fluid.soularium=Molten Soularium
 fluid.glowstone=Glowgas
 fluid.redstone=Molten Redstone

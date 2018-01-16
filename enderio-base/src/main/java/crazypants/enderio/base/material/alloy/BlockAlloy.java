@@ -32,6 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -52,8 +53,8 @@ public class BlockAlloy extends BlockEio<TileEntityEio> implements IAdvancedTool
   }
 
   @Override
-  protected void init() {
-    super.init();
+  public void init(@Nonnull IModObject modObject, @Nonnull FMLInitializationEvent event) {
+    super.init(modObject, event);
     NNList.of(Alloy.class).apply(new Callback<Alloy>() {
       @Override
       public void apply(@Nonnull Alloy alloy) {
