@@ -190,7 +190,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     return true;
   }
 
-  public static void sendPrivateStatusMessage(World world, EntityPlayer player, TextComponentString text, boolean ignoreSneaking) {
+  public static void sendPrivateStatusMessage(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull TextComponentString text, boolean ignoreSneaking) {
 
     if (!world.isRemote && (!player.isSneaking()) || ignoreSneaking) {
       player.sendStatusMessage(text, true);
