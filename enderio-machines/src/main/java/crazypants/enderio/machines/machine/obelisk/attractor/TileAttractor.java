@@ -106,7 +106,7 @@ public class TileAttractor extends AbstractMobObelisk {
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if (!redstoneCheck || !hasPower()) {
+    if (!redstoneCheck || !hasPower() || !canWork()) {
       untrackAll();
       return false;
     }

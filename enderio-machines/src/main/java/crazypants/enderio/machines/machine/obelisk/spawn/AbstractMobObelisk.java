@@ -9,6 +9,7 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.machines.machine.obelisk.AbstractRangedTileEntity;
 import crazypants.enderio.util.CapturedMob;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -37,6 +38,16 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity implem
 
   protected boolean isMobInRange(EntityLivingBase mob) {
     return mob != null && getBounds().isVecInside(new Vec3d(mob.posX, mob.posY, mob.posZ));
+  }
+
+  @Override
+  public boolean canWork() {
+    for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot; i++) {
+      if (Prep.isValid(getStackInSlot(i))) {
+        return true;
+      }
+    }
+    return false;
   }
 
   protected boolean isMobInFilter(EntityLivingBase entity) {

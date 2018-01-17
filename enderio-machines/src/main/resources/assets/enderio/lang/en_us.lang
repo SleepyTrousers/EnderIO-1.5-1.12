@@ -155,7 +155,9 @@ tile.block_farm_station.tooltip.detailed.line5=applied when harvesting
 tile.block_farm_station.tooltip.detailed.line6=Upgrade with capacitors to increase
 tile.block_farm_station.tooltip.detailed.line7=range, upgrade also increases power use
 
-;lights
+enderio.gui.obelisk.no_vials=Need Soul Vials!
+
+#lights
 
 tile.block_electric_light.electric.name=Electric Light
 
@@ -169,7 +171,7 @@ tile.block_electric_light.wireless.name=Wireless Light
 
 tile.block_electric_light.wireless.inverted.name=Wireless Light (Inverted)
 
-;generators
+#generators
 
 tile.block_enhanced_combustion_generator.name=Enhanced Combustion Generator
 

@@ -28,7 +28,7 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractMobObeli
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if (redstoneCheck && hasPower()) {
+    if (redstoneCheck && hasPower() && canWork()) {
       if (!registered) {
         SpawningObeliskController.instance.registerGuard(this);
         registered = true;

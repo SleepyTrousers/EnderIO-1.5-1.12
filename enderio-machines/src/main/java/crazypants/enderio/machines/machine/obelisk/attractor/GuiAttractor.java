@@ -68,8 +68,12 @@ public class GuiAttractor extends GuiInventoryMachineBase<TileAttractor> {
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
-    int range = (int) getTileEntity().getRange();
-    drawCenteredString(fontRenderer, Lang.GUI_RANGE.get(range), width / 2 + 9, sy + 68, ColorUtil.getRGB(Color.white));
+    if (!getTileEntity().canWork()) {
+      drawCenteredString(fontRenderer, Lang.GUI_OBELISK_NO_VIALS.get(), width / 2 + 9, sy + 68, ColorUtil.getRGB(Color.red));
+    } else {
+      int range = (int) getTileEntity().getRange();
+      drawCenteredString(fontRenderer, Lang.GUI_RANGE.get(range), width / 2 + 9, sy + 68, ColorUtil.getRGB(Color.white));
+    }
   }
 
   @Override
