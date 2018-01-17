@@ -28,7 +28,7 @@ public class GuiHelper {
     NNList<Registerable> objects = ModObjectRegistry.getObjects();
     for (int i = 0; i < objects.size(); i++) {
       IModObject mo = objects.get(i);
-      if (mo.getBlock() instanceof IEioGuiHandler || mo.getItem() instanceof IEioGuiHandler) {
+      if (mo.getBlock() instanceof IEioGuiHandler.WithServerComponent || mo.getItem() instanceof IEioGuiHandler.WithServerComponent) {
         Log.info("Registered permission ", PermissionAPI.registerNode(getPermission(mo), DefaultPermissionLevel.ALL,
             "Permission to open the GUI(s) of Ender IO's " + mo.getUnlocalisedName()));
       }
@@ -43,7 +43,7 @@ public class GuiHelper {
           new BlockPosContext(entityPlayer, pos, world.getBlockState(pos), side))) {
         return openGui(world, entityPlayer, getID(mo), pos, side, param, 0, 0);
       } else {
-        entityPlayer.sendMessage(Lang.GUI_PERMISSION_DENIED.toChat());
+        entityPlayer.sendStatusMessage(Lang.GUI_PERMISSION_DENIED.toChatServer(), true);
         return false;
       }
     } else {
@@ -56,7 +56,7 @@ public class GuiHelper {
       if (PermissionAPI.hasPermission(entityPlayer.getGameProfile(), getPermission(mo), new PlayerContext(entityPlayer))) {
         return openGui(world, entityPlayer, getID(mo), null, null, a, b, c);
       } else {
-        entityPlayer.sendMessage(Lang.GUI_PERMISSION_DENIED.toChat());
+        entityPlayer.sendStatusMessage(Lang.GUI_PERMISSION_DENIED.toChatServer(), true);
         return false;
       }
     } else {
@@ -121,10 +121,10 @@ public class GuiHelper {
   }
 
   protected static @Nonnull String getPermission(@Nonnull IModObject mo) {
-    if (mo.getBlock() instanceof IEioGuiHandler || mo.getItem() instanceof IEioGuiHandler) {
+    if (mo.getBlock() instanceof IEioGuiHandler.WithServerComponent || mo.getItem() instanceof IEioGuiHandler.WithServerComponent) {
       return EnderIO.DOMAIN + ".gui." + mo.getUnlocalisedName();
     } else {
-      throw new RuntimeException("Cannot open GUI for object " + mo + " because it has no GUI handler.");
+      throw new RuntimeException("Cannot open GUI for object " + mo + " because it has no server-side GUI handler.");
     }
   }
 

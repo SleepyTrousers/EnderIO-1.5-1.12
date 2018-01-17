@@ -18,7 +18,7 @@ public interface IEioGuiHandler {
   Object getGuiElement(boolean server, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1,
       int param2, int param3);
 
-  public interface WithPos extends IEioGuiHandler {
+  public interface WithPos extends IEioGuiHandler.WithServerComponent {
     @Override
     default @Nullable Object getGuiElement(boolean server, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
         @Nullable EnumFacing facing, int param1, int param2, int param3) {
@@ -40,4 +40,14 @@ public interface IEioGuiHandler {
     @SideOnly(Side.CLIENT)
     GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1);
   }
+  
+ /**
+  * This marker interface is needed for GUIs that are opened server-side. It will trigger the proper permissions to be created.
+  * 
+  * @author Henry Loenwind
+  *
+  */
+  public interface WithServerComponent extends IEioGuiHandler {
+  }
+
 }

@@ -160,7 +160,6 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   @Override
   public boolean removedByPlayer(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer,
       boolean willHarvest) {
-    System.out.println(willHarvest);
     T te = getTileEntity(world, pos);
 
     if (te != null) {
