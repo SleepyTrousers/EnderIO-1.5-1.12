@@ -529,23 +529,19 @@ enderio.tooltip.anvilupgrades=Anvil Upgrades:
 
 enderio.darksteel.upgrade.empowered_one.name=Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D%% damage absorbed
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=by power
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D% damage absorbed by power
 
 enderio.darksteel.upgrade.empowered_two.name=Empowered II
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D%% damage absorbed
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=by power
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D% damage absorbed by power
 
 enderio.darksteel.upgrade.empowered_three.name=Empowered III
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D%% damage absorbed
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=by power
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% damage absorbed by power
 
 enderio.darksteel.upgrade.empowered_four.name=Empowered IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D%% damage absorbed
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% damage absorbed by power
 
 enderio.darksteel.upgrade.travel.name=Travel
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or activate a travel anchor or Ender IO
@@ -563,7 +559,7 @@ enderio.darksteel.upgrade.glider.enabled=Glider Active
 enderio.darksteel.upgrade.glider.disabled=Glider Disabled
 
 enderio.darksteel.upgrade.elytra.name=Elytra
-enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=Enables Elytra flight
+enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=Makes armor work as Elytra
 enderio.darksteel.upgrade.elytra.tooltip.detailed.line2=§4(That means flying as if an Elytra was equipped, NOT "creative" flight!)
 enderio.darksteel.upgrade.elytra.enabled=Elytra Active
 enderio.darksteel.upgrade.elytra.disabled=Elytra Disabled

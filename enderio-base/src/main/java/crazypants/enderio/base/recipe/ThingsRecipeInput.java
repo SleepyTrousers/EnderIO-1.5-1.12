@@ -2,7 +2,6 @@ package crazypants.enderio.base.recipe;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.util.Prep;
@@ -28,10 +27,17 @@ public class ThingsRecipeInput implements IRecipeInput {
     this(things, slot, 1f);
   }
 
+  public ThingsRecipeInput(@Nonnull Things things, @Nonnull ItemStack leadStack, int slot) {
+    this(things, leadStack, slot, 1f);
+  }
+
   public ThingsRecipeInput(@Nonnull Things things, int slot, float multiplier) {
+    this(things, things.getItemStacks().isEmpty() ? Prep.getEmpty() : things.getItemStacks().get(0).copy(), slot, multiplier);
+  }
+
+  public ThingsRecipeInput(@Nonnull Things things, @Nonnull ItemStack leadStack, int slot, float multiplier) {
     this.things = things;
-    final NNList<ItemStack> stacks = things.getItemStacks();
-    this.leadStack = stacks.isEmpty() ? Prep.getEmpty() : stacks.get(0).copy();
+    this.leadStack = leadStack;
     this.slot = slot;
     this.multiplier = multiplier;
   }
@@ -43,7 +49,7 @@ public class ThingsRecipeInput implements IRecipeInput {
 
   @Override
   public @Nonnull ThingsRecipeInput copy() {
-    return new ThingsRecipeInput(things, slot, multiplier).setCount(leadStack.getCount());
+    return new ThingsRecipeInput(things, leadStack.copy(), slot, multiplier);
   }
 
   @Override
@@ -73,7 +79,7 @@ public class ThingsRecipeInput implements IRecipeInput {
 
   @Override
   public boolean isInput(@Nonnull ItemStack test) {
-    return things.contains(test);
+    return things.contains(test) && (!leadStack.hasTagCompound() || ItemStack.areItemStackTagsEqual(leadStack, test));
   }
 
   @Override
@@ -87,6 +93,9 @@ public class ThingsRecipeInput implements IRecipeInput {
     for (int i = 0; i < result.length; i++) {
       result[i] = result[i].copy();
       result[i].setCount(leadStack.getCount());
+      if (leadStack.hasTagCompound()) {
+        result[i].setTagCompound(leadStack.getTagCompound());
+      }
     }
     return result;
   }

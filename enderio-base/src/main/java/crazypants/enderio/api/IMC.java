@@ -5,7 +5,6 @@ import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.paint.PaintSourceValidator;
-import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
 import crazypants.enderio.util.CapturedMob;
@@ -29,12 +28,6 @@ public final class IMC {
    * Note that this does not do the recipe merging you get between core and user xmls. So you cannot disable already processed recipes.
    */
   public static final String XML_RECIPE = "recipe:xml";
-
-  /**
-   * Key for a string message to add Slice'N'Splice recipes. Calls {@link SliceAndSpliceRecipeManager#addCustomRecipes(String)} with the string value of the
-   * message.
-   */
-  public static final String SLINE_N_SPLICE_RECIPE = "recipe:slicensplice";
 
   /**
    * Key for an NBT message to add Soul Binder recipes. Calls {@link SoulBinderRecipeManager#addRecipeFromNBT(net.minecraft.nbt.NBTTagCompound)} with the NBT

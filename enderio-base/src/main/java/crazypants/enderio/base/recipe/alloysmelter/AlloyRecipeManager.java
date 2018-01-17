@@ -25,14 +25,13 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
   VanillaSmeltingRecipe vanillaRecipe = new VanillaSmeltingRecipe();
 
   public AlloyRecipeManager() {
-    super("", "", "Alloy Smelter");
+    super("Alloy Smelter");
   }
 
   public @Nonnull VanillaSmeltingRecipe getVanillaRecipe() {
     return vanillaRecipe;
   }
 
-  @Override
   public void loadRecipesFromConfig() {
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.ALLOYSMELTER,
         new ManyToOneMachineRecipe("AlloySmelterRecipe", MachineRecipeRegistry.ALLOYSMELTER, this));

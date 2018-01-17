@@ -13,12 +13,10 @@ public class SliceAndSpliceRecipeManager extends ManyToOneRecipeManager {
   }
 
   public SliceAndSpliceRecipeManager() {
-    super("slice_and_splice_recipes_core.xml", "slice_and_splice_recipes_user.xml", "Slice'N'Splice");
+    super("Slice'N'Splice");
   }
 
-  @Override
   public void loadRecipesFromConfig() {
-    super.loadRecipesFromConfig();
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SLICENSPLICE,
         new ManyToOneMachineRecipe("SpliceAndSpliceRecipe", MachineRecipeRegistry.SLICENSPLICE, this));
   }

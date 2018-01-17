@@ -1,8 +1,5 @@
 package crazypants.enderio.base.recipe.vat;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;

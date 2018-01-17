@@ -87,6 +87,12 @@ public class Output extends AbstractConditional {
   public @Nonnull NNList<ItemStack> getAlternatives() {
     NNList<ItemStack> list = item.getThing().getItemStacks().copy();
     list.remove(0);
+    for (ItemStack itemStack : list) {
+      itemStack.setCount(amount);
+      if (tag != null) {
+        itemStack.setTagCompound(tag);
+      }
+    }
     return list;
   }
 

@@ -90,9 +90,9 @@ public class RecipeInput implements IRecipeInput {
     }
 
     if (useMeta) {
-      return test.getItem() == input.getItem() && test.getItemDamage() == input.getItemDamage();
+      return ItemStack.areItemsEqual(input, test) && (!input.hasTagCompound() || ItemStack.areItemStackTagsEqual(input, test));
     }
-    return test.getItem() == input.getItem();
+    return test.getItem() == input.getItem() && (!input.hasTagCompound() || ItemStack.areItemStackTagsEqual(input, test));
   }
 
   @Override

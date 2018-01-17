@@ -1,6 +1,5 @@
 package crazypants.enderio.base.recipe;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
