@@ -3,6 +3,8 @@ package crazypants.enderio.base.config.recipes.xml;
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import net.minecraft.item.ItemStack;
@@ -76,6 +78,16 @@ public class Output extends AbstractConditional {
       itemStack.setTagCompound(tag);
     }
     return itemStack;
+  }
+
+  public boolean hasAlternatives() {
+    return item.getThing().getItemStacks().size() > 1;
+  }
+
+  public @Nonnull NNList<ItemStack> getAlternatives() {
+    NNList<ItemStack> list = item.getThing().getItemStacks().copy();
+    list.remove(0);
+    return list;
   }
 
   @Override

@@ -2,6 +2,10 @@ package crazypants.enderio.base.integration.jei;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
+import net.minecraft.item.crafting.IRecipe;
+
 public class JeiAccessor {
 
   static boolean jeiRuntimeAvailable = false;
@@ -21,6 +25,12 @@ public class JeiAccessor {
       return JeiPlugin.getFilterText();
     }
     return "";
+  }
+
+  static NNList<IRecipe> ALTERNATIVES = new NNList<>();
+
+  public static void addAlternativeRecipe(@Nonnull IRecipe recipe) {
+    ALTERNATIVES.add(recipe);
   }
 
 }
