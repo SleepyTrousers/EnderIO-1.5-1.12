@@ -177,7 +177,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Dark Grinding Ball Casting" required="true">
-  <dependency item="tconstruct:cast_custom:2"/>
+    <dependency item="tconstruct:cast_custom:2"/>
     <casting>
       <level maxlevel="1"/>
       <input name="DARK_STEEL" amount="0.16"/>
@@ -199,7 +199,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Dark Grinding Ball Smelting" required="true">
-  <dependency item="tconstruct:cast_custom:2"/>
+    <dependency item="tconstruct:cast_custom:2"/>
     <smelting tinkers="true" vanilla="false">
       <level maxlevel="1"/>
       <input name="DARK_GRINDING_BALL" amount="25"/>
@@ -218,7 +218,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Dark Grinding Ball Reverse Casting" required="true">
-  <dependency item="tconstruct:cast_custom:2"/>
+    <dependency item="tconstruct:cast_custom:2"/>
     <casting>
       <input name="ingotGold" amount="2"/>
       <cast name="DARK_GRINDING_BALL"/>
@@ -227,7 +227,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Gear Reverse Casting, 1" required="true">
-  <dependency item="tconstruct:cast_custom:4"/>
+    <dependency item="tconstruct:cast_custom:4"/>
     <casting>
       <input name="ingotGold" amount="2"/>
       <cast name="GEAR_STONE"/>
@@ -236,7 +236,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Gear Reverse Casting, 2" required="true">
-  <dependency item="tconstruct:cast_custom:4"/>
+    <dependency item="tconstruct:cast_custom:4"/>
     <casting>
       <input name="ingotGold" amount="2"/>
       <cast name="GEAR_ENERGIZED"/>
@@ -245,7 +245,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Gear Reverse Casting, 3" required="true">
-  <dependency item="tconstruct:cast_custom:4"/>
+    <dependency item="tconstruct:cast_custom:4"/>
     <casting>
       <input name="ingotGold" amount="2"/>
       <cast name="GEAR_VIBRANT"/>

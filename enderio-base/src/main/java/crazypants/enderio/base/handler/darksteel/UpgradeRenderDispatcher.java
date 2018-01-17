@@ -28,8 +28,8 @@ public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlay
   }
 
   @Override
-  public void doRenderLayer(@Nonnull AbstractClientPlayer player, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_,
-      float p_177141_6_, float p_177141_7_, float scale) {
+  public void doRenderLayer(@Nonnull AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
+      float netHeadYaw, float headPitch, float scale) {
 
     NNList.of(EntityEquipmentSlot.class).apply(new Callback<EntityEquipmentSlot>() {
       @Override
@@ -38,14 +38,14 @@ public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlay
         if (item.getItem() instanceof IDarkSteelItem) {
           for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
             if (upgrade instanceof IHasPlayerRenderer && upgrade.hasUpgrade(item)) {
-              ((IHasPlayerRenderer) upgrade).getRender().doRenderLayer(renderPlayer, item, player, p_177141_2_, p_177141_3_, partialTicks, p_177141_5_,
-                  p_177141_6_, p_177141_7_, scale);
+              ((IHasPlayerRenderer) upgrade).getRender().doRenderLayer(renderPlayer, slot, item, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks,
+                  netHeadYaw, headPitch, scale);
             }
           }
         }
         if (item.getItem() instanceof IHasPlayerRenderer) {
-          ((IHasPlayerRenderer) item.getItem()).getRender().doRenderLayer(renderPlayer, item, player, p_177141_2_, p_177141_3_, partialTicks, p_177141_5_,
-              p_177141_6_, p_177141_7_, scale);
+          ((IHasPlayerRenderer) item.getItem()).getRender().doRenderLayer(renderPlayer, slot, item, player, limbSwing, limbSwingAmount, partialTicks,
+              ageInTicks, netHeadYaw, headPitch, scale);
         }
       }
     });
@@ -55,8 +55,8 @@ public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlay
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
         ItemStack piece = baubles.getStackInSlot(i);
         if (piece.getItem() instanceof IHasPlayerRenderer) {
-          ((IHasPlayerRenderer) piece.getItem()).getRender().doRenderLayer(renderPlayer, piece, player, p_177141_2_, p_177141_3_, partialTicks, p_177141_5_,
-              p_177141_6_, p_177141_7_, scale);
+          ((IHasPlayerRenderer) piece.getItem()).getRender().doRenderLayer(renderPlayer, null, piece, player, limbSwing, limbSwingAmount, partialTicks,
+              ageInTicks, netHeadYaw, headPitch, scale);
         }
       }
     }
