@@ -1,5 +1,9 @@
 package crazypants.enderio.machines.machine.vat;
 
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_USE;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,10 +41,6 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_USE;
-
 @Storable
 public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
@@ -77,19 +77,19 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   }
 
   protected boolean isMachineRecipeInputValid(@Nonnull MachineRecipeInput recipeInput) {
-    MachineRecipeInput[] inputs = getRecipeInputs();
-    for (int j = 0; j < inputs.length; j++) {
-      if (inputs[j].slotNumber == recipeInput.slotNumber) {
-        inputs[j] = recipeInput;
+    NNList<MachineRecipeInput> inputs = getRecipeInputs();
+    for (int j = 0; j < inputs.size(); j++) {
+      if (inputs.get(j).slotNumber == recipeInput.slotNumber) {
+        inputs.set(j, recipeInput);
         return VatRecipeManager.getInstance().isValidInput(inputs);
       }
     }
-    if (inputs.length == 0) {
+    if (inputs.size() == 0) {
       return VatRecipeManager.getInstance().isValidInput(recipeInput);
-    } else if (inputs.length == 1) {
-      return VatRecipeManager.getInstance().isValidInput(inputs[0], recipeInput);
-    } else if (inputs.length == 2) {
-      return VatRecipeManager.getInstance().isValidInput(inputs[0], inputs[1], recipeInput);
+    } else if (inputs.size() == 1) {
+      return VatRecipeManager.getInstance().isValidInput(new NNList<>(inputs.get(0), recipeInput));
+    } else if (inputs.size() == 2) {
+      return VatRecipeManager.getInstance().isValidInput(new NNList<>(inputs.get(0), inputs.get(1), recipeInput));
     } else {
       // all 3 slots filled, but none of them is the slot to be inserted into?
       return false;
@@ -155,7 +155,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   }
 
   @Override
-  protected @Nonnull MachineRecipeInput[] getRecipeInputs() {
+  protected @Nonnull NNList<MachineRecipeInput> getRecipeInputs() {
     NNList<MachineRecipeInput> res = new NNList<>();
     for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot; slot++) {
       final ItemStack item = getStackInSlot(slot);
@@ -166,7 +166,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
     if (!inputTank.isEmpty()) {
       res.add(new MachineRecipeInput(0, inputTank.getFluid()));
     }
-    return res.toArray(new MachineRecipeInput[res.size()]);
+    return res;
   }
 
   @Override

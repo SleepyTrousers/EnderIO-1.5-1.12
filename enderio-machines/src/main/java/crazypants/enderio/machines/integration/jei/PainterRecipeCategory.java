@@ -130,7 +130,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
       list.add(paints);
       ingredients.setInputLists(ItemStack.class, list);
       ingredients.setOutputs(ItemStack.class, results);
-      ingredients.setInput(EnergyIngredient.class, new EnergyIngredient(recipe.getEnergyRequired()));
+      ingredients.setInput(EnergyIngredient.class, new EnergyIngredient(recipe.getEnergyRequired(NNList.emptyList())));
     }
   }
 
