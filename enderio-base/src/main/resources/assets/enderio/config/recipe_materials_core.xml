@@ -198,6 +198,61 @@ XML editor will display that as tooltips when editing this file.
     </casting>
   </recipe>
 
+  <recipe name="Dark Grinding Ball Smelting" required="true">
+  <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <level maxlevel="1"/>
+      <input name="DARK_GRINDING_BALL" amount="25"/>
+      <output name="DARK_STEEL" amount="4"/>
+    </smelting>
+    <smelting tinkers="true" vanilla="false">
+      <level minlevel="2" maxlevel="2"/>
+      <input name="DARK_GRINDING_BALL" amount="25"/>
+      <output name="DARK_STEEL" amount="5"/>
+    </smelting>
+    <smelting tinkers="true" vanilla="false">
+      <level minlevel="3"/>
+      <input name="DARK_GRINDING_BALL" amount="25"/>
+      <output name="DARK_STEEL" amount="8"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Dark Grinding Ball Reverse Casting" required="true">
+  <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="DARK_GRINDING_BALL"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Gear Reverse Casting, 1" required="true">
+  <dependency item="tconstruct:cast_custom:4"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="GEAR_STONE"/>
+      <output name="tconstruct:cast_custom:4"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Gear Reverse Casting, 2" required="true">
+  <dependency item="tconstruct:cast_custom:4"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="GEAR_ENERGIZED"/>
+      <output name="tconstruct:cast_custom:4"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Gear Reverse Casting, 3" required="true">
+  <dependency item="tconstruct:cast_custom:4"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="GEAR_VIBRANT"/>
+      <output name="tconstruct:cast_custom:4"/>
+    </casting>
+  </recipe>
+
   <recipe name="Iron Dust, Smelting" required="true">
     <smelting>
       <input name="POWDER_IRON"/>
