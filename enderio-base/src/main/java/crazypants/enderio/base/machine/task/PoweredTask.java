@@ -26,7 +26,7 @@ public class PoweredTask implements IPoweredTask {
 
   private float usedEnergy = 0;
 
-  private @Nonnull MachineRecipeInput[] inputs;
+  private @Nonnull NNList<MachineRecipeInput> inputs;
 
   private float requiredEnergy;
 
@@ -36,30 +36,17 @@ public class PoweredTask implements IPoweredTask {
 
   private float chance;
 
-  public PoweredTask(@Nonnull IMachineRecipe recipe, float chance, @Nonnull MachineRecipeInput... inputs) {
+  public PoweredTask(@Nonnull IMachineRecipe recipe, float chance, @Nonnull NNList<MachineRecipeInput> inputs) {
     this(recipe, 0, chance, inputs);
   }
 
-  protected PoweredTask(@Nonnull IMachineRecipe recipe, float usedEnergy, float chance, @Nonnull MachineRecipeInput... inputsIn) {
-    this.inputs = inputsIn;
-    int numInputs = 0;
-    for (int i = 0; i < inputsIn.length; i++) {
-      if (inputsIn[i] != null && (Prep.isValid(inputsIn[i].item) || inputsIn[i].fluid != null)) {
-        numInputs++;
-      }
-    }
-
-    inputs = new MachineRecipeInput[numInputs];
-    int index = 0;
-    for (int i = 0; i < inputsIn.length; i++) {
-      if (inputsIn[i] != null) {
-        if (Prep.isValid(inputsIn[i].item)) {
-          inputs[index] = new MachineRecipeInput(inputsIn[i].slotNumber, inputsIn[i].item.copy());
-          index++;
-        } else if (inputsIn[i].fluid != null) {
-          inputs[index] = new MachineRecipeInput(inputsIn[i].slotNumber, inputsIn[i].fluid.copy());
-          index++;
-        }
+  protected PoweredTask(@Nonnull IMachineRecipe recipe, float usedEnergy, float chance, @Nonnull NNList<MachineRecipeInput> inputsIn) {
+    inputs = new NNList<>();
+    for (int i = 0; i < inputsIn.size(); i++) {
+      if (Prep.isValid(inputsIn.get(i).item)) {
+        inputs.add(new MachineRecipeInput(inputsIn.get(i).slotNumber, inputsIn.get(i).item.copy()));
+      } else if (inputsIn.get(i).fluid != null) {
+        inputs.add(new MachineRecipeInput(inputsIn.get(i).slotNumber, inputsIn.get(i).fluid.copy()));
       }
     }
 
@@ -91,11 +78,11 @@ public class PoweredTask implements IPoweredTask {
   }
 
   @Override
-  public @Nonnull MachineRecipeInput[] getInputs() {
+  public @Nonnull NNList<MachineRecipeInput> getInputs() {
     return inputs;
   }
 
-  public void setInputs(@Nonnull MachineRecipeInput[] inputs) {
+  public void setInputs(@Nonnull NNList<MachineRecipeInput> inputs) {
     this.inputs = inputs;
   }
 
@@ -157,7 +144,7 @@ public class PoweredTask implements IPoweredTask {
     String uid = nbtRoot.getString(KEY_RECIPE);
     recipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);
     if (recipe != null) {
-      return new PoweredTask(recipe, usedEnergy, chance, ins.toArray(new MachineRecipeInput[0]));
+      return new PoweredTask(recipe, usedEnergy, chance, ins);
     }
     return null;
 

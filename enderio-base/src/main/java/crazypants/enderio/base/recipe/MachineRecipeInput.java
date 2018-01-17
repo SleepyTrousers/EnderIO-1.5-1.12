@@ -2,6 +2,8 @@ package crazypants.enderio.base.recipe;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,11 +11,20 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class MachineRecipeInput {
 
-  public static @Nonnull ItemStack getInputForSlot(int slot, MachineRecipeInput... inputs) {
+  public static @Nonnull ItemStack getInputForSlot(int slot, NNList<MachineRecipeInput> inputs) {
+    ItemStack ret = Prep.getEmpty();
     for (MachineRecipeInput ri : inputs) {
-      if (ri.slotNumber == slot) {
-        return ri.item;
+      ret = getInputForSlot(slot, ri);
+      if (Prep.isValid(ret)) {
+        return ret;
       }
+    }
+    return ret;
+  }
+  
+  public static @Nonnull ItemStack getInputForSlot(int slot, MachineRecipeInput input) {
+    if (input.slotNumber == slot) {
+      return input.item;
     }
     return Prep.getEmpty();
   }

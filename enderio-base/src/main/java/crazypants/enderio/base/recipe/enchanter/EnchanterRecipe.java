@@ -1,7 +1,5 @@
 package crazypants.enderio.base.recipe.enchanter;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
@@ -55,12 +53,12 @@ public class EnchanterRecipe implements IMachineRecipe {
   }
 
   @Override
-  public int getEnergyRequired(@Nonnull MachineRecipeInput... inputs) {
+  public int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
     return 0;
   }
 
   @Override
-  public boolean isRecipe(@Nonnull MachineRecipeInput... inputs) {
+  public boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs) {
     ItemStack slot0 = MachineRecipeInput.getInputForSlot(0, inputs);
     ItemStack slot1 = MachineRecipeInput.getInputForSlot(1, inputs);
     ItemStack slot2 = MachineRecipeInput.getInputForSlot(2, inputs);
@@ -76,7 +74,7 @@ public class EnchanterRecipe implements IMachineRecipe {
 
   @Override
   @Nonnull
-  public ResultStack[] getCompletedResult(float randomChance, @Nonnull MachineRecipeInput... inputs) {
+  public ResultStack[] getCompletedResult(float randomChance, @Nonnull NNList<MachineRecipeInput> inputs) {
     ItemStack slot1 = MachineRecipeInput.getInputForSlot(1, inputs);
     int level = getLevelForStackSize(slot1.getCount());
     EnchantmentData enchantmentData = new EnchantmentData(enchantment, level);
@@ -101,7 +99,7 @@ public class EnchanterRecipe implements IMachineRecipe {
 
   @Override
   @Nonnull
-  public List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull MachineRecipeInput... inputs) {
+  public NNList<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs) {
     ItemStack slot0 = MachineRecipeInput.getInputForSlot(0, inputs).copy();
     ItemStack slot1 = MachineRecipeInput.getInputForSlot(1, inputs).copy();
     ItemStack slot2 = MachineRecipeInput.getInputForSlot(2, inputs).copy();
@@ -111,15 +109,15 @@ public class EnchanterRecipe implements IMachineRecipe {
     slot1.setCount(stackSizePerLevel * level);
     slot2.setCount(getLapizForLevel(level));
 
-    List<MachineRecipeInput> result = new NNList<MachineRecipeInput>();
+    NNList<MachineRecipeInput> result = new NNList<MachineRecipeInput>();
     result.add(new MachineRecipeInput(0, slot0));
     result.add(new MachineRecipeInput(1, slot1));
     result.add(new MachineRecipeInput(2, slot2));
     return result;
   }
 
-  public NNList<List<MachineRecipeInput>> getVariants() {
-    NNList<List<MachineRecipeInput>> result = new NNList<>();
+  public NNList<NNList<MachineRecipeInput>> getVariants() {
+    NNList<NNList<MachineRecipeInput>> result = new NNList<>();
     for (int level = 1; level <= enchantment.getMaxLevel(); level++) {
       for (ItemStack item : input.getItemStacks()) {
         item = item.copy();
@@ -128,8 +126,8 @@ public class EnchanterRecipe implements IMachineRecipe {
           item.setCount(stackSizePerLevel * level);
           lapis.setCount(getLapizForLevel(level));
           if (item.getCount() <= item.getMaxStackSize() && lapis.getCount() <= lapis.getMaxStackSize()) {
-            result.add(getQuantitiesConsumed(new MachineRecipeInput(0, BOOK.getItemStacks().get(0)), new MachineRecipeInput(1, item),
-                new MachineRecipeInput(2, lapis)));
+            result.add(getQuantitiesConsumed(new NNList<>(new MachineRecipeInput(0, BOOK.getItemStacks().get(0)), new MachineRecipeInput(1, item),
+                new MachineRecipeInput(2, lapis))));
           }
         }
       }
@@ -137,7 +135,7 @@ public class EnchanterRecipe implements IMachineRecipe {
     return result;
   }
 
-  public int getXPCost(@Nonnull MachineRecipeInput... inputs) {
+  public int getXPCost(@Nonnull NNList<MachineRecipeInput> inputs) {
     ItemStack slot1 = MachineRecipeInput.getInputForSlot(1, inputs);
     int level = getLevelForStackSize(slot1.getCount());
     return getCostForLevel(level);

@@ -2,6 +2,8 @@ package crazypants.enderio.base.machine.task;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
@@ -68,8 +70,8 @@ public class PoweredTaskProgress implements IPoweredTask {
   }
 
   @Override
-  public @Nonnull MachineRecipeInput[] getInputs() {
-    return new MachineRecipeInput[0];
+  public @Nonnull NNList<MachineRecipeInput> getInputs() {
+    return NNList.emptyList();
   }
 
 }

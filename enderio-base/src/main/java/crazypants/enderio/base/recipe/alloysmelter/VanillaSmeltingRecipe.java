@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.material.OreDictionaryPreferences;
@@ -37,17 +38,17 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   @Override
-  public int getEnergyRequired(@Nonnull MachineRecipeInput... inputs) {
+  public int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
     int numInputs = getNumInputs(inputs);
     return numInputs * RF_PER_ITEM;
   }
 
   @Override
-  public @Nonnull RecipeBonusType getBonusType(@Nonnull MachineRecipeInput... inputs) {
+  public @Nonnull RecipeBonusType getBonusType(@Nonnull NNList<MachineRecipeInput> inputs) {
     return RecipeBonusType.NONE;
   }
 
-  private int getNumInputs(@Nonnull MachineRecipeInput... inputs) {
+  private int getNumInputs(@Nonnull NNList<MachineRecipeInput> inputs) {
     int numInputs = 0;
     for (MachineRecipeInput input : inputs) {
       if (input != null && isValidInput(input)) {
@@ -58,7 +59,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   @Override
-  public boolean isRecipe(@Nonnull MachineRecipeInput... inputs) {
+  public boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs) {
     ItemStack output = Prep.getEmpty();
     for (MachineRecipeInput ri : inputs) {
       if (ri != null && Prep.isValid(ri.item)) {
@@ -79,7 +80,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   @Override
-  public @Nonnull ResultStack[] getCompletedResult(float chance, @Nonnull MachineRecipeInput... inputs) {
+  public @Nonnull ResultStack[] getCompletedResult(float chance, @Nonnull NNList<MachineRecipeInput> inputs) {
     ItemStack output = null;
     for (MachineRecipeInput ri : inputs) {
       if (ri != null && Prep.isValid(ri.item) && output == null) {
@@ -118,7 +119,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   @Override
-  public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull MachineRecipeInput... inputs) {
+  public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs) {
     int consumed = 0;
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
     for (MachineRecipeInput ri : inputs) {

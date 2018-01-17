@@ -52,8 +52,8 @@ public class SagMillRecipeManager {
     return getGrindballFromStack(stack) != null;
   }
 
-  public boolean isExcludedFromBallBonus(@Nonnull MachineRecipeInput[] inputs) {
-    if (inputs.length < 1) {
+  public boolean isExcludedFromBallBonus(@Nonnull NNList<MachineRecipeInput> inputs) {
+    if (inputs.size() < 1) {
       return true;
     }
     for (MachineRecipeInput input : inputs) {
@@ -125,7 +125,7 @@ public class SagMillRecipeManager {
     if (Prep.isInvalid(input)) {
       return null;
     }
-    final MachineRecipeInput machineRecipeInput = new MachineRecipeInput(0, input);
+    final NNList<MachineRecipeInput> machineRecipeInput = new NNList<>(new MachineRecipeInput(0, input));
     for (Recipe recipe : recipes) {
       if (recipe.isInputForRecipe(machineRecipeInput)) {
         return recipe;

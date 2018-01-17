@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.recipe.AbstractMachineRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
@@ -21,7 +23,7 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
   }
 
   @Override
-  public IRecipe getRecipeForInputs(@Nonnull MachineRecipeInput[] inputs) {
+  public IRecipe getRecipeForInputs(@Nonnull NNList<MachineRecipeInput> inputs) {
     return VatRecipeManager.instance.getRecipeForInput(inputs);
   }
 
@@ -36,8 +38,8 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
   }
 
   @Override
-  public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull MachineRecipeInput... inputs) {
-    List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
+  public @Nonnull NNList<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs) {
+    NNList<MachineRecipeInput> result = new NNList<MachineRecipeInput>();
 
     VatRecipe rec = (VatRecipe) getRecipeForInputs(inputs);
     FluidStack inputFluidStack = rec.getRequiredFluidInput(inputs);
@@ -54,8 +56,8 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
   }
 
   @Override
-  public @Nonnull ResultStack[] getCompletedResult(float chance, @Nonnull MachineRecipeInput... inputs) {
-    if (inputs.length <= 0) {
+  public @Nonnull ResultStack[] getCompletedResult(float chance, @Nonnull NNList<MachineRecipeInput> inputs) {
+    if (inputs.size() <= 0) {
       return new ResultStack[0];
     }
     VatRecipe recipe = (VatRecipe) getRecipeForInputs(inputs);

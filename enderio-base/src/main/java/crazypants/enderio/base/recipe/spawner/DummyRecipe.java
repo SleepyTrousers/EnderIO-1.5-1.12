@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -19,23 +21,23 @@ public class DummyRecipe implements IMachineRecipe {
   }
 
   @Override
-  public int getEnergyRequired(@Nonnull MachineRecipeInput... inputs) {
+  public int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
     // NB: This value is not actually used, see createTask in the tile
     return 8000;
   }
 
   @Override
-  public boolean isRecipe(@Nonnull MachineRecipeInput... inputs) {
+  public boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs) {
     return true;
   }
 
   @Override
-  public @Nonnull ResultStack[] getCompletedResult(float randomChance, @Nonnull MachineRecipeInput... inputs) {
+  public @Nonnull ResultStack[] getCompletedResult(float randomChance, @Nonnull NNList<MachineRecipeInput> inputs) {
     return new ResultStack[0];
   }
 
   @Override
-  public @Nonnull RecipeBonusType getBonusType(@Nonnull MachineRecipeInput... inputs) {
+  public @Nonnull RecipeBonusType getBonusType(@Nonnull NNList<MachineRecipeInput> inputs) {
     return RecipeBonusType.NONE;
   }
 
@@ -55,7 +57,7 @@ public class DummyRecipe implements IMachineRecipe {
   }
 
   @Override
-  public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull MachineRecipeInput... inputs) {
+  public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs) {
     return Collections.emptyList();
   }
 

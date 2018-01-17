@@ -2,6 +2,8 @@ package crazypants.enderio.base.recipe.sagmill;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.recipe.AbstractMachineRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
@@ -16,8 +18,8 @@ public class SagMillMachineRecipe extends AbstractMachineRecipe {
   }
 
   @Override
-  public IRecipe getRecipeForInputs(@Nonnull MachineRecipeInput[] inputs) {
-    return SagMillRecipeManager.instance.getRecipeForInput(inputs[0].item);
+  public IRecipe getRecipeForInputs(@Nonnull NNList<MachineRecipeInput> inputs) {
+    return SagMillRecipeManager.instance.getRecipeForInput(inputs.get(0).item);
   }
 
   @Override
@@ -31,8 +33,8 @@ public class SagMillMachineRecipe extends AbstractMachineRecipe {
   }
 
   @Override
-  public @Nonnull RecipeBonusType getBonusType(@Nonnull MachineRecipeInput... inputs) {
-    if (inputs.length <= 0) {
+  public @Nonnull RecipeBonusType getBonusType(@Nonnull NNList<MachineRecipeInput> inputs) {
+    if (inputs.size() <= 0) {
       return RecipeBonusType.NONE;
     }
     IRecipe recipe = getRecipeForInputs(inputs);

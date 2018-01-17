@@ -64,8 +64,8 @@ public class VatRecipeManager {
     processConfig(config);
   }
 
-  public IRecipe getRecipeForInput(@Nonnull MachineRecipeInput[] inputs) {
-    if (inputs.length == 0) {
+  public IRecipe getRecipeForInput(@Nonnull NNList<MachineRecipeInput> inputs) {
+    if (inputs.size() == 0) {
       return null;
     }
     for (IRecipe recipe : recipes) {
@@ -110,7 +110,7 @@ public class VatRecipeManager {
     return false;
   }
 
-  public boolean isValidInput(@Nonnull MachineRecipeInput... inputs) {
+  public boolean isValidInput(@Nonnull NNList<MachineRecipeInput> inputs) {
     for (IRecipe recipe : recipes) {
       boolean allValid = true;
       for (MachineRecipeInput input : inputs) {

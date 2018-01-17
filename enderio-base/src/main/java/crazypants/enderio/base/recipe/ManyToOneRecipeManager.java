@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.Log;
@@ -95,7 +96,7 @@ public class ManyToOneRecipeManager {
         && rec.getOutputs().length == 1 && !rec.getOutputs()[0].isFluid() //
         && rec.getOutputs()[0].getOutput().getCount() <= (rec.getOutputs()[0].getOutput().getMaxStackSize() / 3)) {
 
-      IRecipe dupe = getRecipeForInputs(rec.getInputStacks());
+      IRecipe dupe = getRecipeForStacks(rec.getInputStacks());
       if (dupe != null) {
         // do it here because we will add "dupes" and the check need to be
         // done on the supplied recipe---which is added last
@@ -140,23 +141,23 @@ public class ManyToOneRecipeManager {
   }
 
   public void addRecipe(@Nonnull IManyToOneRecipe recipe) {
-    IRecipe rec = getRecipeForInputs(recipe.getInputStacks());
+    IRecipe rec = getRecipeForStacks(recipe.getInputStacks());
     if(rec != null) {
       Log.warn("The supplied recipe " + recipe + " for " + managerName + " may be a duplicate to: " + rec);
     }
     recipes.add(recipe);
   }
 
-  private IRecipe getRecipeForInputs(@Nonnull NNList<ItemStack> inputs) {
-    MachineRecipeInput[] ins = new MachineRecipeInput[inputs.size()];
+  private IRecipe getRecipeForStacks(@Nonnull NNList<ItemStack> inputs) {
+    NNList<MachineRecipeInput> ins = new NNList<>();
 
-    for (int i = 0; i < inputs.size(); i++) {
-      ins[i] = new MachineRecipeInput(-1, inputs.get(i));
+    for (ItemStack stack : inputs) {
+      ins.add(new MachineRecipeInput(-1, NullHelper.notnullM(stack, "NNList iterated with null")));
     }
     return getRecipeForInputs(ins);
   }
 
-  public IRecipe getRecipeForInputs(@Nonnull MachineRecipeInput[] inputs) {
+  public IRecipe getRecipeForInputs(@Nonnull NNList<MachineRecipeInput> inputs) {
 
     for (IManyToOneRecipe rec : recipes) {
       if(rec.isInputForRecipe(inputs)) {

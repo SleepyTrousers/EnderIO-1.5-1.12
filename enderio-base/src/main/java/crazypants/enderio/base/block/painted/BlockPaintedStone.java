@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIOTab;
@@ -62,7 +63,7 @@ public class BlockPaintedStone extends Block implements ITileEntityProvider, IPa
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedStone>(this, Blocks.COBBLESTONE) {
 
       @Override
-      public int getEnergyRequired(@Nonnull MachineRecipeInput... inputs) {
+      public int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
         return super.getEnergyRequired(inputs) * 3;
       }
 

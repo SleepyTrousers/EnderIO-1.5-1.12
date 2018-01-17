@@ -252,7 +252,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     return 0;
   }
 
-  protected @Nonnull MachineRecipeInput[] getRecipeInputs() {
+  protected @Nonnull NNList<MachineRecipeInput> getRecipeInputs() {
     NNList<MachineRecipeInput> res = new NNList<>();
     for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot; slot++) {
       final ItemStack item = getStackInSlot(slot);
@@ -260,7 +260,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
         res.add(new MachineRecipeInput(slot, item));
       }
     }
-    return res.toArray(new MachineRecipeInput[res.size()]);
+    return res;
   }
 
   protected @Nullable IMachineRecipe getNextRecipe() {

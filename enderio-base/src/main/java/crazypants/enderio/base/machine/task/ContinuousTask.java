@@ -2,11 +2,13 @@ package crazypants.enderio.base.machine.task;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.RecipeBonusType;
-import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class ContinuousTask implements IPoweredTask {
@@ -66,8 +68,8 @@ public class ContinuousTask implements IPoweredTask {
   }
 
   @Override
-  public @Nonnull MachineRecipeInput[] getInputs() {
-    return new MachineRecipeInput[0];
+  public @Nonnull NNList<MachineRecipeInput> getInputs() {
+    return NNList.emptyList();
   }
 
 }
