@@ -113,6 +113,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends AbstractMachi
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int ID,
       @Nonnull T te) {
     if (GUI_ID_TRAVEL_ACCESSABLE == ID) {
