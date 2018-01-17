@@ -7,6 +7,7 @@
 
 ## ForgeGradle
 /run
+/*/run
 /*.launch
 /*/*.launch
 
