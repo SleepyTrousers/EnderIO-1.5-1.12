@@ -185,6 +185,15 @@ item.item_material.organic_green_dye.tooltip.detailed.line2=§7Not edible. Avoid
 item.item_material.organic_brown_dye.name=Organic Brown Dye
 item.item_material.organic_brown_dye.tooltip.detailed.line1=Industrially processed plant matter with a "natural" washed-out color.
 item.item_material.organic_brown_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with plenty of water and seek medical advice.
+item.item_material.powder_lapis_lazuli.name=Lapis Lazuli Powder
+item.item_material.powder_quartz.name=Quartz Powder
+item.item_material.machine_dye.name=Organic Machine Dye
+item.item_material.machine_dye.tooltip.detailed.line1=Industrially produced dye with organic and inorganic components. Not biodegradable.
+item.item_material.machine_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with plenty of water and seek medical advice.
+item.item_material.simple_machine_chassi.name=Simple Machine Chassis
+# Note: Misspelling below is on purpose. Trying for "chenglish"
+item.item_material.simple_machine_chassi.tooltip.detailed.line1=High quality enclose toolkit for building your own machines. Made in Germany! High Uality, my friend!
+item.item_material.simple_machine_chassi.tooltip.detailed.line2=§7Not stainless. Keep away from moisture. Made in town of Gemany, China.
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad

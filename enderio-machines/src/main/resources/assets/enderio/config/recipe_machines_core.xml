@@ -26,7 +26,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="minecraft:stonebrick:0" /><item name="minecraft:furnace" /><item name="minecraft:stonebrick:0" />
-        <item name="minecraft:stonebrick:0" /><item /><item name="minecraft:stonebrick:0" />
+        <item name="minecraft:stonebrick:0" /><item name="SIMPLE_CHASSIS"/><item name="minecraft:stonebrick:0" />
         <item name="GEAR_IRON" /><item name="minecraft:piston" /><item name="GEAR_IRON" />
       </grid>
       <output name="enderio:block_simple_stirling_generator" />
@@ -199,7 +199,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="itemFlint" /><item name="itemFlint" /><item name="itemFlint" />
-        <item name="ingotIron" /><item /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="SIMPLE_CHASSIS"/><item name="ingotIron" />
         <item name="GEAR_STONE" /><item name="minecraft:piston" /><item name="GEAR_STONE" />
       </grid>
       <output name="enderio:block_simple_sag_mill" />
@@ -232,7 +232,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="ingotIron" /><item name="minecraft:furnace" /><item name="ingotIron" />
-        <item name="minecraft:furnace" /><item /><item name="minecraft:furnace" />
+        <item name="minecraft:furnace" /><item name="SIMPLE_CHASSIS"/><item name="minecraft:furnace" />
         <item name="GEAR_STONE" /><item name="item:minecraft:bucket" /><item name="GEAR_STONE" />
       </grid>
       <output name="enderio:block_simple_alloy_smelter" />

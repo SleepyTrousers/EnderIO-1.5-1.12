@@ -233,15 +233,42 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Chassis" required="true">
-    <crafting>      
+  <recipe name="Simple Chassis" required="true">
+    <crafting>
       <grid>
         <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
         <item name="ingotIron"/><item name="POWDER_INFINITY"/><item name="ingotIron"/>
         <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
       </grid>
+      <output name="SIMPLE_CHASSIS"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Chassis">
+    <alloying energy="3600" exp="1">
+      <input name="SIMPLE_CHASSIS"/>
+      <input name="dyeMachine" amount="6"/>
       <output name="CHASSIS"/>
-    </crafting>    
+    </alloying>
+  </recipe>
+
+  <recipe name="Machine Dye">
+    <crafting>
+      <grid>
+        <item name="dustLapis"/><item name="dustQuartz"/><item name="ORGANIC_GREEN_DYE"/>
+        <item name="dustQuartz"/><item name="dustCoal"/><item name="dustQuartz"/>
+        <item name="ORGANIC_GREEN_DYE"/><item name="dustQuartz"/><item name="dustLapis"/>
+      </grid>
+      <output name="dyeMachine" amount="9"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Quartz Dust">
+    <sagmilling bonus="chance_only" energy="2400">
+      <input name="gemQuartz"/>
+      <output name="dustQuartz"/>
+      <output name="dustQuartz" chance=".1"/>
+    </sagmilling>
   </recipe>
 
   <recipe name="Gear, Wood" required="true">

@@ -645,7 +645,7 @@ XML editor will display that as tooltips when editing this file.
     <alloying energy="2000" exp="0.25">
       <input name="itemPlantgreen" amount="12"/>
       <input name="oredict:slimeball"/>
-      <output name="enderio:item_material:44" amount="2"/>
+      <output name="ORGANIC_GREEN_DYE" amount="2"/>
     </alloying>
   </recipe>
 
@@ -653,7 +653,7 @@ XML editor will display that as tooltips when editing this file.
     <alloying energy="1500" exp="0.125">
       <input name="itemPlantgreen" amount="6"/>
       <input name="oredict:egg"/>
-      <output name="enderio:item_material:44"/>
+      <output name="ORGANIC_GREEN_DYE"/>
     </alloying>
   </recipe>
 
@@ -661,7 +661,7 @@ XML editor will display that as tooltips when editing this file.
     <alloying energy="2000" exp="0.25">
       <input name="itemPlantbrown" amount="12"/>
       <input name="oredict:slimeball"/>
-      <output name="enderio:item_material:45" amount="2"/>
+      <output name="ORGANIC_BROWN_DYE" amount="2"/>
     </alloying>
   </recipe>
 
@@ -669,7 +669,7 @@ XML editor will display that as tooltips when editing this file.
     <alloying energy="1500" exp="0.125">
       <input name="itemPlantbrown" amount="6"/>
       <input name="minecraft:mushroom_stew"/>
-      <output name="enderio:item_material:45"/>
+      <output name="ORGANIC_BROWN_DYE"/>
     </alloying>
   </recipe>
 
