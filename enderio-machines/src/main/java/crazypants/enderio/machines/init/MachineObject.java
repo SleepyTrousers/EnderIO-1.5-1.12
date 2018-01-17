@@ -101,7 +101,7 @@ public enum MachineObject implements IModObject.Registerable {
   block_xp_vacuum(BlockXPVacuum.class),
 
   block_travel_anchor(BlockTravelAnchor.class),
-  block_tele_pad(BlockTelePad.class),
+  block_tele_pad(BlockTelePad.class, "create_telepad"),
   block_dialing_device(BlockDialingDevice.class),;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)

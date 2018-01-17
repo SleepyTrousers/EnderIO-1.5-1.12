@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
-import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode;
@@ -30,7 +29,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -41,16 +39,12 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPaintable.ISolidBlockPaintableBlock, /* IWailaInfoProvider, */IHaveTESR {
+public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPaintable.ISolidBlockPaintableBlock {
 
   public static final int GUI_ID_TELEPAD = 0;
   public static final int GUI_ID_TELEPAD_TRAVEL = 1;
 
-  @SuppressWarnings("rawtypes")
-  public static BlockTravelAnchor create(@Nonnull IModObject modObject) {
-
-    // PacketFluidLevel
-
+  public static BlockTelePad create_telepad(@Nonnull IModObject modObject) {
     BlockTelePad ret = new BlockTelePad(modObject);
     ret.init();
     return ret;
@@ -97,18 +91,11 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
     blockStateWrapper.addCacheKey(tileEntity.inNetwork()).addCacheKey(tileEntity.isMaster());
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {
-    return true;
-  }
-
   /*
    * This makes us "air" for purposes of lighting. Otherwise our model would be much too dark, as it is always surrounded be 8 TelePad blocks.
    */
   @Override
   public boolean isFullCube(@Nonnull IBlockState bs) {
-
     return false;
   }
 
@@ -154,36 +141,28 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   }
 
   @Override
-  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
-      int ID) {
-    TileTelePad te = getTileEntity(world, pos);
-    if (te != null) {
-      if (GUI_ID_TELEPAD == ID) {
-        return new ContainerTelePad(player.inventory, te);
-      } else if (GUI_ID_TELEPAD_TRAVEL == ID) {
-        return new ContainerTravelAccessable(player.inventory, te, world);
-      } else {
-        return new ContainerTravelAuth(player.inventory);
-      }
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int ID,
+      @Nonnull TileTelePad te) {
+    if (GUI_ID_TELEPAD == ID) {
+      return new ContainerTelePad(player.inventory, te);
+    } else if (GUI_ID_TELEPAD_TRAVEL == ID) {
+      return new ContainerTravelAccessable(player.inventory, te, world);
+    } else {
+      return new ContainerTravelAuth(player.inventory);
     }
-    return null;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
-      int ID) {
-    TileTelePad te = getTileEntity(world, pos);
-    if (te != null) {
-      if (GUI_ID_TELEPAD == ID) {
-        return new GuiTelePad(player.inventory, te);
-      } else if (GUI_ID_TELEPAD_TRAVEL == ID) {
-        return new GuiAugmentedTravelAccessible(player.inventory, te, world);
-      } else {
-        return new GuiTravelAuth(player, te, world);
-      }
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int ID,
+      @Nonnull TileTelePad te) {
+    if (GUI_ID_TELEPAD == ID) {
+      return new GuiTelePad(player.inventory, te);
+    } else if (GUI_ID_TELEPAD_TRAVEL == ID) {
+      return new GuiAugmentedTravelAccessible(player.inventory, te, world);
+    } else {
+      return new GuiTravelAuth(player, te, world);
     }
-    return null;
   }
 
   @Override
@@ -288,26 +267,6 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
     return TelePadRenderMapper.instance;
   }
-
-  // @Override
-  // public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-  // if (Config.telepadFluidUse <= 0 || world == null) {
-  // return;
-  // }
-  // TileTelePad te = getTileEntity(world, pos);
-  // if (te != null && te.inNetwork()) {
-  // FluidStack stored = te.getMaster().tank.getFluid();
-  // String fluid = stored == null ? EnderIO.lang.localize("tooltip.none") : stored.getFluid().getLocalizedName(stored);
-  // int amount = stored == null ? 0 : stored.amount;
-  // tooltip.add(String.format("%s%s : %s (%d %s)", TextFormatting.WHITE, EnderIO.lang.localize("tooltip.fluidStored"), fluid, amount,
-  // EnderIO.lang.localize("fluid.millibucket.abr")));
-  // }
-  // }
-  //
-  // @Override
-  // public int getDefaultDisplayMask(World world, int x, int y, int z) {
-  // return IWailaInfoProvider.ALL_BITS;
-  // }
 
   @Override
   @SideOnly(Side.CLIENT)
