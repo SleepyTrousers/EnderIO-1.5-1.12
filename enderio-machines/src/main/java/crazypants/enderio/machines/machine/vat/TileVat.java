@@ -1,9 +1,5 @@
 package crazypants.enderio.machines.machine.vat;
 
-import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_INTAKE;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_USE;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +36,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_USE;
 
 @Storable
 public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
@@ -84,16 +84,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
         return VatRecipeManager.getInstance().isValidInput(inputs);
       }
     }
-    if (inputs.size() == 0) {
-      return VatRecipeManager.getInstance().isValidInput(recipeInput);
-    } else if (inputs.size() == 1) {
-      return VatRecipeManager.getInstance().isValidInput(new NNList<>(inputs.get(0), recipeInput));
-    } else if (inputs.size() == 2) {
-      return VatRecipeManager.getInstance().isValidInput(new NNList<>(inputs.get(0), inputs.get(1), recipeInput));
-    } else {
-      // all 3 slots filled, but none of them is the slot to be inserted into?
-      return false;
-    }
+    inputs.add(recipeInput);
+    return VatRecipeManager.getInstance().isValidInput(inputs);
   }
 
   @Override
