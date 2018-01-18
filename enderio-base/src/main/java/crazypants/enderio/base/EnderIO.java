@@ -107,8 +107,6 @@ public class EnderIO implements IEnderIOAddon {
     FluidFuelRegister.init(event);
     Fluids.registerFluids();
 
-    TicProxy.init(event);
-
     ModObjectRegistry.init(event);
 
     EnergyUpgradePowerAdapter.init(event);

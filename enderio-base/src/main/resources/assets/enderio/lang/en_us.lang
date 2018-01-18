@@ -714,6 +714,30 @@ tile.fluid.cloud_seed_concentrated.name=Concentrated Cloud Seed
 fluid.xpjuice=Liquid XP
 tile.fluid.xpjuice.name=Liquid XP
 
+fluid.electrical_steel=Molten Electrical Steel
+tile.fluid.electrical_steel.name=Molten Electrical Steel
+fluid.energetic_alloy=Molten Energetic Alloy
+tile.fluid.energetic_alloy.name=Molten Energetic Alloy
+fluid.vibrant_alloy=Molten Vibrant Alloy
+tile.fluid.vibrant_alloy.name=Molten Vibrant Alloy
+fluid.redstone_alloy=Molten Redstone Alloy
+tile.fluid.redstone_alloy.name=Molten Redstone Alloy
+fluid.conductive_iron=Molten Conductive Iron
+tile.fluid.conductive_iron.name=Molten Conductive Iron
+fluid.pulsating_iron=Molten Pulsating Iron
+tile.fluid.pulsating_iron.name=Molten Pulsating Iron
+fluid.dark_steel=Molten Dark Steel
+tile.fluid.dark_steel.name=Molten Dark Steel
+fluid.soularium=Molten Soularium
+tile.fluid.soularium.name=Molten Soularium
+
+fluid.enderio.glowstone=Glowgas
+tile.fluid.enderio.glowstone.name=Glowgas
+fluid.enderio.redstone=Molten Redstone
+tile.fluid.enderio.redstone.name=Molten Redstone
+fluid.enderio.ender=Liquefied Ender Pearls
+tile.fluid.enderio.ender.name=Liquefied Ender Pearls
+
 enderio.itemConduitFilterUpgrade=Upgrade for item conduits
 
 enderio.itemConduitFilterUpgrade.configured=%sConfigured
@@ -874,17 +898,6 @@ subtitles.entity.enderman.teleport=Something teleports
 # just because I feel that way...
 container.chestDouble=Double Chest
 
-fluid.electrical_steel=Molten Electrical Steel
-fluid.energetic_alloy=Molten Energetic Alloy
-fluid.vibrant_alloy=Molten Vibrant Alloy
-fluid.redstone_alloy=Molten Redstone Alloy
-fluid.conductive_iron=Molten Conductive Iron
-fluid.pulsating_iron=Molten Pulsating Iron
-fluid.dark_steel=Molten Dark Steel
-fluid.soularium=Molten Soularium
-fluid.glowstone=Glowgas
-fluid.redstone=Molten Redstone
-fluid.ender=Liquidfied Ender Pearls
 
 # These keys have not (yet) been confirmed in 1.11
 ;

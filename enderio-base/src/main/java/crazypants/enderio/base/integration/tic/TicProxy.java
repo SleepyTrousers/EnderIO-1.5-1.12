@@ -30,7 +30,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class TicProxy {
@@ -66,12 +65,6 @@ public class TicProxy {
         Log.error("Failed to load Tinker's Construct integration. Reason:");
         e.printStackTrace();
       }
-    }
-  }
-
-  public static void init(FMLPreInitializationEvent event) {
-    if (isLoaded) {
-      AdditionalFluid.init(event); // TODO 1.11 needs to be called by Registry<Block> event, I'd say
     }
   }
 

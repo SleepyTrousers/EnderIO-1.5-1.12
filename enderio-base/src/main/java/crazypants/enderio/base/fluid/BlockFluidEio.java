@@ -69,7 +69,7 @@ public final class BlockFluidEio {
     public int getFireSpreadSpeed(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
       return 60;
     }
-    
+
     @Override
     public Boolean isEntityInsideMaterial(@Nonnull IBlockAccess world, @Nonnull BlockPos blockpos, @Nonnull IBlockState iblockstate, @Nonnull Entity entity,
         double yToTest, @Nonnull Material materialIn, boolean testingHead) {
@@ -402,11 +402,6 @@ public final class BlockFluidEio {
       super.onEntityCollidedWithBlock(world, pos, state, entity);
     }
 
-    @Override
-    public void init() {
-      super.init();
-    }
-
   }
 
   /////////////////////////////////////////////////////////////////////////
@@ -430,11 +425,6 @@ public final class BlockFluidEio {
       super.onEntityCollidedWithBlock(world, pos, state, entity);
     }
 
-    @Override
-    public void init() {
-      super.init();
-    }
-
   }
 
   /////////////////////////////////////////////////////////////////////////
@@ -442,7 +432,6 @@ public final class BlockFluidEio {
   /////////////////////////////////////////////////////////////////////////
 
   public static class MoltenEnder extends BlockFluidEnder {
-
 
     public MoltenEnder(Fluid fluid, Material material, int fogColor) { // 0xff0000
       super(fluid, material, fogColor);
@@ -454,12 +443,6 @@ public final class BlockFluidEio {
         RandomTeleportUtil.teleportEntity(world, entity, false);
       }
       super.onEntityCollidedWithBlock(world, pos, state, entity);
-    }
-
-
-    @Override
-    public void init() {
-      super.init();
     }
 
   }
