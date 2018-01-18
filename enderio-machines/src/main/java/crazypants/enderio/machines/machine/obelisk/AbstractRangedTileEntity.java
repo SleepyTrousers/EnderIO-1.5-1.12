@@ -48,4 +48,8 @@ public abstract class AbstractRangedTileEntity extends AbstractPowerConsumerEnti
 
   abstract protected float getRange();
 
+  public boolean canWork() {
+    return true;
+  }
+
 }

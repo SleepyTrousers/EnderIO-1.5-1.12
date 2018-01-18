@@ -104,6 +104,7 @@ public enum Lang implements ILang {
   JEI_SOLAR_OUTPUT(".jei.solar_panel.output"),
   JEI_SOLAR_RANGE(".jei.solar_panel.range"),
   GUI_BUFFER_MAXIO(".gui.buffer.maxio"),
+  GUI_OBELISK_NO_VIALS(".gui.obelisk.no_vials"),
 
   ;
 

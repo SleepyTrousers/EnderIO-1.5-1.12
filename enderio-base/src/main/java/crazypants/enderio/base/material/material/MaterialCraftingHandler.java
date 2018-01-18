@@ -7,10 +7,11 @@ import java.util.Random;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.InfinityConfig;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -41,7 +42,17 @@ public class MaterialCraftingHandler {
       if (fires.containsKey(posIdx)) {
         if (world.isAirBlock(pos) && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK && worldTime > fires.get(posIdx)
             && RANDOM.nextFloat() <= InfinityConfig.infinityDropChance.get()) {
-          Block.spawnAsEntity(world, pos, Material.POWDER_INFINITY.getStack(InfinityConfig.infinityStackSize.get()));
+          double d0 = RANDOM.nextFloat() * 0.5F + 0.25D;
+          double d1 = RANDOM.nextFloat() * 0.5F + 0.25D;
+          double d2 = RANDOM.nextFloat() * 0.5F + 0.25D;
+          EntityItem entityitem = new EntityItem(world, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2,
+              Material.POWDER_INFINITY.getStack(InfinityConfig.infinityStackSize.get()));
+          entityitem.setDefaultPickupDelay();
+          // This gives the item enough health to survive for a while...
+          entityitem.attackEntityFrom(DamageSource.IN_FIRE, -100);
+          // while being on fire
+          entityitem.setFire(10);
+          world.spawnEntity(entityitem);
           if (InfinityConfig.infinityMakesSound.get()) {
             world.playSound(null, pos, SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, SoundCategory.BLOCKS, 1.0F, RANDOM.nextFloat() * 0.4F + 0.8F);
           }
