@@ -1,26 +1,11 @@
 package crazypants.enderio.conduit.gui;
 
-import static crazypants.enderio.base.init.ModObject.itemItemFilter;
-import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_upgrade;
-import static crazypants.enderio.conduit.init.ConduitObject.item_function_upgrade;
-
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
-import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnderCap;
-import com.enderio.core.common.inventory.EnderInventory;
-import com.enderio.core.common.inventory.EnderSlot;
-import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.ItemUtil;
-
-import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
+import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
@@ -31,13 +16,23 @@ import crazypants.enderio.conduit.packet.PacketSlotVisibility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
-public class ExternalConnectionContainer extends ContainerEnderCap<EnderInventory, TileConduitBundle> implements IExternalConnectionContainer{
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static crazypants.enderio.base.init.ModObject.itemItemFilter;
+import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_upgrade;
+import static crazypants.enderio.conduit.init.ConduitObject.item_function_upgrade;
+
+public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgrades, TileConduitBundle> implements IExternalConnectionContainer{
 
   private final IItemConduit itemConduit;
 
@@ -59,40 +54,36 @@ public class ExternalConnectionContainer extends ContainerEnderCap<EnderInventor
   public ExternalConnectionContainer(@Nonnull InventoryPlayer playerInv, @Nonnull EnumFacing dir, @Nonnull TileConduitBundle bundle) {
     super(playerInv, new InventoryUpgrades(bundle.getConduit(IItemConduit.class), dir), bundle);
     this.itemConduit = bundle.getConduit(IItemConduit.class);
-
-    int x;
-    int y;
-
-    if (itemConduit != null) {
-
-      x = 28;
-      y = 47;
-      slotSpeedUpgrades = addSlotToContainer(new Slot(getInv(), 0, x, y) {
-        @Override
-        public boolean isItemValid(@Nonnull ItemStack itemStack) {
-          return getInv().isItemValidForSlot(0, itemStack);
-        }
-
-        @Override
-        public int getSlotStackLimit() {
-          return speedUpgradeSlotLimit;
-        }
-      });
-
-      x = 10;
-      y = 65;
-      slotFunctionUpgrades = addSlotToContainer(new Slot(getInv(), 1, x, y) {
-        @Override
-        public boolean isItemValid(@Nonnull ItemStack itemStack) {
-          return getInv().isItemValidForSlot(1, itemStack);
-        }
-
-        @Override
-        public int getSlotStackLimit() {
-          return 1;
-        }
-      });
-    }
+//    if (itemConduit != null) {
+//    TODO Kept in case it is needed for specific values, remove later
+//      x = 28;
+//      y = 47;
+//      slotSpeedUpgrades = addSlotToContainer(new Slot(getInv(), 0, x, y) {
+//        @Override
+//        public boolean isItemValid(@Nonnull ItemStack itemStack) {
+//          return getInv().isItemValidForSlot(0, itemStack);
+//        }
+//
+//        @Override
+//        public int getSlotStackLimit() {
+//          return speedUpgradeSlotLimit;
+//        }
+//      });
+//
+//      x = 10;
+//      y = 65;
+//      slotFunctionUpgrades = addSlotToContainer(new Slot(getInv(), 1, x, y) {
+//        @Override
+//        public boolean isItemValid(@Nonnull ItemStack itemStack) {
+//          return getInv().isItemValidForSlot(1, itemStack);
+//        }
+//
+//        @Override
+//        public int getSlotStackLimit() {
+//          return 1;
+//        }
+//      });
+//    }
   }
 
 
@@ -100,21 +91,31 @@ public class ExternalConnectionContainer extends ContainerEnderCap<EnderInventor
   @Override
   protected void addSlots() {
     if (itemConduit != null) {
-      addSlotToContainer(slotInputFilter = new EnderSlot(getItemHandler().getView(EnderInventory.Type.UPGRADE), "filter_input", 10, 47) {
-        @Override public void onSlotChanged() {
-          filterChanged();
+
+      addSlotToContainer(slotInputFilter = new FilterSlot(getItemHandler(), 2, 10, 47));
+      addSlotToContainer(slotOutputFilter = new FilterSlot(getItemHandler(), 3, 10, 47));
+      addSlotToContainer(slotSpeedUpgrades = new SlotItemHandler(getItemHandler(), 0, 10, 47) {
+        @Override
+        public boolean isItemValid(@Nonnull ItemStack itemStack) {
+          return inventory.isItemValidForSlot(0, itemStack);
+        }
+
+        @Override
+        public int getSlotStackLimit() {
+          return speedUpgradeSlotLimit;
         }
       });
+      addSlotToContainer(slotFunctionUpgrades = new SlotItemHandler(getItemHandler(), 1, 10, 47) {
+        @Override
+        public boolean isItemValid(@Nonnull ItemStack itemStack) {
+          return inventory.isItemValidForSlot(1, itemStack);
+        }
 
-      addSlotToContainer(slotOutputFilter = new EnderSlot(getItemHandler().getView(EnderInventory.Type.UPGRADE), "filter_output", 10, 47) {
-        @Override public void onSlotChanged() {
-          filterChanged();
+        @Override
+        public int getSlotStackLimit() {
+          return 1;
         }
       });
-
-      addSlotToContainer(slotSpeedUpgrades = new EnderSlot(getItemHandler().getView(EnderInventory.Type.UPGRADE), "speed_upgrade", 10, 47));
-
-      addSlotToContainer(slotFunctionUpgrades = new EnderSlot(getItemHandler().getView(EnderInventory.Type.UPGRADE), "function_upgrade", 10, 47));
     }
   }
 
@@ -289,4 +290,27 @@ public class ExternalConnectionContainer extends ContainerEnderCap<EnderInventor
 
     return copyStack;
   }
+
+  private class FilterSlot extends SlotItemHandler {
+    public FilterSlot(IItemHandler handler, int index, int x, int y) {
+      super(handler, index, x, y);
+    }
+
+    @Override
+    public int getSlotStackLimit() {
+      return 1;
+    }
+
+    @Override
+    public void onSlotChanged() {
+      filterChanged();
+    }
+
+    @Override
+    public boolean isItemValid(@Nonnull ItemStack stack) {
+      return inventory.isItemValidForSlot(getSlotIndex(), stack);
+    }
+
+  }
+
 }
