@@ -1,12 +1,12 @@
 package crazypants.enderio.conduit.power;
 
 import crazypants.enderio.base.conduit.IExtractor;
-import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.IPowerInterface;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.energy.IEnergyStorage;
 
-public interface IPowerConduit extends ILegacyPowerReceiver, IExtractor {
+public interface IPowerConduit extends IEnergyStorage, IExtractor {
 
   // TODO Lang
 
@@ -19,8 +19,6 @@ public interface IPowerConduit extends ILegacyPowerReceiver, IExtractor {
   public static final String COLOR_CONTROLLER_ID = "ColorController";
 
   IPowerInterface getExternalPowerReceptor(EnumFacing direction);
-
-  int getMaxEnergyExtracted(EnumFacing dir);
 
   TextureAtlasSprite getTextureForInputMode();
 

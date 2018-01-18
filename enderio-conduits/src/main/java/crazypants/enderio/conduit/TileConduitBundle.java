@@ -678,7 +678,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     for (IConduit conduit : getConduits()) {
       if (conduit.hasCapability(capability, facing))
-        return facing != null;
+        return true; // TODO is this right?
     }
     return super.hasCapability(capability, facing);
   }
