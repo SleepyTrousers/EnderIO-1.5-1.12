@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 
 import com.mojang.authlib.GameProfile;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.machine.modes.EntityAction;
@@ -18,6 +19,7 @@ import crazypants.enderio.machines.machine.obelisk.attractor.handlers.Attraction
 import crazypants.enderio.machines.machine.obelisk.attractor.handlers.IMobAttractionHandler;
 import crazypants.enderio.machines.machine.obelisk.base.AbstractMobObeliskEntity;
 import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
@@ -94,7 +96,7 @@ public class TileAttractor extends AbstractMobObeliskEntity {
     }
   }
 
-  private void collectEntity(EntityLiving ent) {
+  private void collectEntity(@Nonnull EntityLiving ent) {
     for (IMobAttractionHandler handler : AttractionHandlers.instance.getRegistry()) {
       if (handler.canAttract(this, ent)) {
         handler.startAttracting(this, ent);
@@ -104,6 +106,7 @@ public class TileAttractor extends AbstractMobObeliskEntity {
         return;
       }
     }
+    Log.warn("Attractor Obelisk: Don't know how to attract " + EntityList.getKey(ent));
   }
 
   @Override
