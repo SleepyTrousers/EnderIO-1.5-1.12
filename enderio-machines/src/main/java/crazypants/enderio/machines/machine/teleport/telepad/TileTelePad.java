@@ -3,6 +3,7 @@ package crazypants.enderio.machines.machine.teleport.telepad;
 import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 
+import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.base.EnderIO;
@@ -26,6 +28,7 @@ import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.Scaler;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
+import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.teleport.TeleportUtil;
 import crazypants.enderio.machines.config.config.TelePadConfig;
@@ -60,7 +63,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgressTile, ITankAccess.IExtendedTankAccess {
+public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgressTile, ITankAccess.IExtendedTankAccess, INotifier {
 
   public static final @Nonnull Predicate<ItemStack> LOCATION_PRINTOUTS = new PredicateItemStack() {
     @Override
@@ -702,6 +705,18 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
   @Override
   public boolean isTravelTarget() {
     return isMaster() && inNetwork() && TelePadConfig.telepadIsTravelAnchor.get();
+  }
+
+  @Override
+  @Nonnull
+  public Set<? extends ILocalizable> getNotification() {
+    return inNetwork() ? Collections.emptySet() : Collections.singleton(new ILocalizable() {
+      @Override
+      @Nonnull
+      public String getUnlocalizedName() {
+        return Lang.STATUS_TELEPAD_UNFORMED.getKey();
+      }
+    });
   }
 
 }
