@@ -33,11 +33,11 @@ public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk
     MinecraftForge.EVENT_BUS.register(ret);
     return ret;
   }
-  
+
   @SubscribeEvent
   public void onEntityRegister(RegistryEvent.Register<EntityEntry> event) {
-    EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.DOMAIN, "weather_rocket"), EntityWeatherRocket.class, "weather_rocket", 33, EnderIO.instance,
-        64, 3, false);
+    EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.DOMAIN, "weather_rocket"), EntityWeatherRocket.class, "weather_rocket", 33, EnderIO.MODID, 64,
+        3, false);
   }
 
   private BlockWeatherObelisk(@Nonnull IModObject modObject) {
