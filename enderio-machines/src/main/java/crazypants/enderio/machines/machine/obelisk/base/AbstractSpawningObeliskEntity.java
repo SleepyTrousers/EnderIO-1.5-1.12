@@ -1,4 +1,4 @@
-package crazypants.enderio.machines.machine.obelisk.spawn;
+package crazypants.enderio.machines.machine.obelisk.base;
 
 import javax.annotation.Nonnull;
 
@@ -7,14 +7,14 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import info.loenwind.autosave.annotations.Storable;
 
 @Storable
-public abstract class TileEntityAbstractSpawningObelisk extends AbstractMobObelisk implements ISpawnCallback {
+public abstract class AbstractSpawningObeliskEntity extends AbstractMobObeliskEntity implements ISpawnCallback {
 
   private boolean registered = false;
 
   @Override
   public abstract @Nonnull String getMachineName();
 
-  public TileEntityAbstractSpawningObelisk(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved,
+  public AbstractSpawningObeliskEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved,
       @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }

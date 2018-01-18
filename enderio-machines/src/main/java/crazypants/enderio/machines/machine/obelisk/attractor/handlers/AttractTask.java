@@ -1,7 +1,8 @@
-package crazypants.enderio.machines.machine.obelisk.attractor;
+package crazypants.enderio.machines.machine.obelisk.attractor.handlers;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.machines.machine.obelisk.attractor.TileAttractor;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.tileentity.TileEntity;

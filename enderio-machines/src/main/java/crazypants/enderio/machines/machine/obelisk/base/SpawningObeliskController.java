@@ -1,4 +1,4 @@
-package crazypants.enderio.machines.machine.obelisk.spawn;
+package crazypants.enderio.machines.machine.obelisk.base;
 
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.passive.EntitySquid;

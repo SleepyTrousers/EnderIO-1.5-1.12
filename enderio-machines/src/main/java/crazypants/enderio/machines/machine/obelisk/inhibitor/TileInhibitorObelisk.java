@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.machines.machine.obelisk.AbstractRangedTileEntity;
+import crazypants.enderio.machines.machine.obelisk.base.AbstractRangedObeliskEntity;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
 
@@ -14,7 +14,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.INHIBITOR_POWER
 import static crazypants.enderio.machines.capacitor.CapacitorKey.INHIBITOR_RANGE;
 
 @Storable
-public class TileInhibitorObelisk extends AbstractRangedTileEntity {
+public class TileInhibitorObelisk extends AbstractRangedObeliskEntity {
 
   public TileInhibitorObelisk() {
     super(new SlotDefinition(0, 0, 1), INHIBITOR_POWER_INTAKE, INHIBITOR_POWER_BUFFER, INHIBITOR_POWER_USE);
@@ -67,6 +67,11 @@ public class TileInhibitorObelisk extends AbstractRangedTileEntity {
   public void onChunkUnload() {
     super.onChunkUnload();
     BlockInhibitorObelisk.instance.activeInhibitors.remove(getLocation());
+  }
+
+  @Override
+  public boolean canWork() {
+    return true;
   }
 
 }

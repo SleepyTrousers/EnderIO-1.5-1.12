@@ -1,4 +1,4 @@
-package crazypants.enderio.machines.machine.obelisk.attractor;
+package crazypants.enderio.machines.machine.obelisk.attractor.handlers;
 
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;

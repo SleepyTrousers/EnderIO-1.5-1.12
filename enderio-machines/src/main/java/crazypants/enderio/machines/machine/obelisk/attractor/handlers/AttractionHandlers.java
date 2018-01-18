@@ -1,4 +1,4 @@
-package crazypants.enderio.machines.machine.obelisk.attractor;
+package crazypants.enderio.machines.machine.obelisk.attractor.handlers;
 
 import java.util.ArrayList;
 import java.util.List;

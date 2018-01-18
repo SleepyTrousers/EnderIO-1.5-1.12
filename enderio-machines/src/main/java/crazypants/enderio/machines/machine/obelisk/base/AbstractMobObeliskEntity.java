@@ -1,13 +1,18 @@
-package crazypants.enderio.machines.machine.obelisk.spawn;
+package crazypants.enderio.machines.machine.obelisk.base;
+
+import java.util.Collections;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.machine.modes.EntityAction;
-import crazypants.enderio.machines.machine.obelisk.AbstractRangedTileEntity;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -16,9 +21,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 
 @Storable
-public abstract class AbstractMobObelisk extends AbstractRangedTileEntity implements EntityAction.Implementer {
+public abstract class AbstractMobObeliskEntity extends AbstractRangedObeliskEntity implements EntityAction.Implementer, INotifier {
 
-  public AbstractMobObelisk(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+  public AbstractMobObeliskEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
       @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
@@ -70,6 +75,18 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity implem
       }
     }
     return result;
+  }
+
+  @Override
+  @Nonnull
+  public Set<? extends ILocalizable> getNotification() {
+    return canWork() ? Collections.emptySet() : Collections.singleton(new ILocalizable() {
+      @Override
+      @Nonnull
+      public String getUnlocalizedName() {
+        return Lang.GUI_OBELISK_NO_VIALS.getKey();
+      }
+    });
   }
 
 }

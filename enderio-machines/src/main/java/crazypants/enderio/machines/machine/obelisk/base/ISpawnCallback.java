@@ -1,4 +1,4 @@
-package crazypants.enderio.machines.machine.obelisk.spawn;
+package crazypants.enderio.machines.machine.obelisk.base;
 
 import javax.annotation.Nonnull;
 

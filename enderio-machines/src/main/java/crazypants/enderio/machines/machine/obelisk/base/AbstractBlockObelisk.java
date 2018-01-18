@@ -1,4 +1,4 @@
-package crazypants.enderio.machines.machine.obelisk;
+package crazypants.enderio.machines.machine.obelisk.base;
 
 import java.util.Random;
 

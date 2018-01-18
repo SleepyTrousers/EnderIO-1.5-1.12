@@ -12,8 +12,8 @@ import com.google.common.collect.Maps;
 
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
-import crazypants.enderio.machines.machine.obelisk.GuiRangedObelisk;
+import crazypants.enderio.machines.machine.obelisk.base.AbstractBlockRangedObelisk;
+import crazypants.enderio.machines.machine.obelisk.base.GuiRangedObelisk;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -28,7 +28,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObelisk> {
+public class BlockInhibitorObelisk extends AbstractBlockRangedObelisk<TileInhibitorObelisk> {
 
   public static BlockInhibitorObelisk instance;
 

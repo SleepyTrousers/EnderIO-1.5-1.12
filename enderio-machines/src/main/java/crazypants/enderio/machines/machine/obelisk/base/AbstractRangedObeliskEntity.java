@@ -1,4 +1,4 @@
-package crazypants.enderio.machines.machine.obelisk;
+package crazypants.enderio.machines.machine.obelisk.base;
 
 import javax.annotation.Nonnull;
 
@@ -9,17 +9,18 @@ import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
+import crazypants.enderio.machines.machine.obelisk.inhibitor.BlockInhibitorObelisk;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public abstract class AbstractRangedTileEntity extends AbstractPowerConsumerEntity implements IRanged {
+public abstract class AbstractRangedObeliskEntity extends AbstractPowerConsumerEntity implements IRanged {
 
   private boolean showingRange;
 
-  public AbstractRangedTileEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+  public AbstractRangedObeliskEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
       @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
@@ -37,7 +38,7 @@ public abstract class AbstractRangedTileEntity extends AbstractPowerConsumerEnti
     }
     showingRange = showRange;
     if (showingRange) {
-      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<AbstractRangedTileEntity>(this));
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<AbstractRangedObeliskEntity>(this));
     }
   }
 
@@ -46,10 +47,16 @@ public abstract class AbstractRangedTileEntity extends AbstractPowerConsumerEnti
     return new BoundingBox(getPos()).expand(getRange() / 2d);
   }
 
-  abstract protected float getRange();
+  abstract public float getRange();
 
-  public boolean canWork() {
-    return true;
-  }
+  /**
+   * Checks if this obelisk can work or is missing something. If it returns false, the {@link GuiRangedObelisk} will complain about missing Soul Vials and the
+   * obelisk should not consume power.
+   * <p>
+   * Note: This actually belong on {@link AbstractMobObeliskEntity}, but because the {@link BlockInhibitorObelisk} re-uses the same GUI it is here.
+   * 
+   * @return <code>true</code> is the obelisk can do stuff.
+   */
+  abstract public boolean canWork();
 
 }

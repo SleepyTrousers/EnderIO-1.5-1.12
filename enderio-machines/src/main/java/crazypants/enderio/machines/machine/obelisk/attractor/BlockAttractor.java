@@ -3,25 +3,17 @@ package crazypants.enderio.machines.machine.obelisk.attractor;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.machines.machine.obelisk.AbstractBlockObelisk;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import crazypants.enderio.machines.machine.obelisk.attractor.handlers.EndermanFixer;
+import crazypants.enderio.machines.machine.obelisk.base.AbstractBlockRangedObelisk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
+public class BlockAttractor extends AbstractBlockRangedObelisk<TileAttractor> {
 
   public static BlockAttractor create(@Nonnull IModObject modObject) {
     BlockAttractor res = new BlockAttractor(modObject);
@@ -32,19 +24,6 @@ public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
 
   protected BlockAttractor(@Nonnull IModObject modObject) {
     super(modObject, TileAttractor.class);
-  }
-
-  @Override
-  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
-      int param1, @Nonnull TileAttractor te) {
-    return new ContainerAttractor(player.inventory, te);
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
-      int param1, @Nonnull TileAttractor te) {
-    return new GuiAttractor(player.inventory, te);
   }
 
   protected static @Nonnull String permissionAttracting = "(unititialized)";

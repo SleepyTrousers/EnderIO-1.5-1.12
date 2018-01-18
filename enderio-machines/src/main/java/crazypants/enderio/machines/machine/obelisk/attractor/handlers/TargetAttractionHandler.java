@@ -1,5 +1,6 @@
-package crazypants.enderio.machines.machine.obelisk.attractor;
+package crazypants.enderio.machines.machine.obelisk.attractor.handlers;
 
+import crazypants.enderio.machines.machine.obelisk.attractor.TileAttractor;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityPigZombie;

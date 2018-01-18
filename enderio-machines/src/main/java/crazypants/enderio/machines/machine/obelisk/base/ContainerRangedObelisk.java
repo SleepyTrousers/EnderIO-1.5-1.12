@@ -1,4 +1,4 @@
-package crazypants.enderio.machines.machine.obelisk.attractor;
+package crazypants.enderio.machines.machine.obelisk.base;
 
 import java.util.List;
 
@@ -14,7 +14,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerAttractor extends AbstractMachineContainer<TileAttractor> {
+public class ContainerRangedObelisk extends AbstractMachineContainer<AbstractRangedObeliskEntity> {
+
+  public ContainerRangedObelisk(@Nonnull InventoryPlayer playerInv, @Nonnull AbstractRangedObeliskEntity te) {
+    super(playerInv, te);
+  }
 
   private static class BottleSlot extends Slot {
 
@@ -26,10 +30,6 @@ public class ContainerAttractor extends AbstractMachineContainer<TileAttractor> 
     public boolean isItemValid(@Nonnull ItemStack itemStack) {
       return inventory.isItemValidForSlot(getSlotIndex(), itemStack);
     }
-  }
-
-  public ContainerAttractor(@Nonnull InventoryPlayer playerInv, @Nonnull TileAttractor te) {
-    super(playerInv, te);
   }
 
   @Override
@@ -54,5 +54,4 @@ public class ContainerAttractor extends AbstractMachineContainer<TileAttractor> 
       }
     }
   }
-
 }

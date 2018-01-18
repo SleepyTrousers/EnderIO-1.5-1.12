@@ -1,6 +1,8 @@
-package crazypants.enderio.machines.machine.obelisk.attractor;
+package crazypants.enderio.machines.machine.obelisk.attractor.handlers;
 
 import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.machines.machine.obelisk.attractor.TileAttractor;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
