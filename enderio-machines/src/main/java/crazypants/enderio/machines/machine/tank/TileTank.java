@@ -159,14 +159,13 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     if (tankDirty && canSendClientUpdate()) {
       PacketHandler.sendToAllAround(new PacketTankFluid(this), this);
       world.updateComparatorOutputLevel(pos, getBlockType());
+      updateLight();
       tankDirty = false;
     }
     return false;
   }
   
-  @Override
-  protected void updateEntityClient() {
-    super.updateEntityClient();
+  public void updateLight() {
     final FluidStack fluid = tank.getFluid();
     int thisFluidLuminosity = fluid == null || fluid.getFluid() == null || tank.isEmpty() ? 0 : fluid.getFluid().getLuminosity(fluid);
     if (thisFluidLuminosity != lastFluidLuminosity) {
