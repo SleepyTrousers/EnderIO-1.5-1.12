@@ -9,33 +9,23 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.enderio.core.common.fluid.BlockFluidEnder;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.fluid.Fluids;
-import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.util.Prep;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class TicProxy {
 
-  static final ResourceLocation TEX_STILL = new ResourceLocation("tconstruct:blocks/fluids/molten_metal_flow");
-  static final ResourceLocation TEX_FLOWING = new ResourceLocation("tconstruct:blocks/fluids/molten_metal");
   private static boolean isLoaded = false;
   private static Method getMelting;
   private static Method registerAlloy;
@@ -290,41 +280,6 @@ public class TicProxy {
       e.printStackTrace();
     }
     return null;
-  }
-
-  // to be called and executed during preinit
-  public static void registerMetal(final @Nonnull Alloy alloy) {
-    if (!isLoaded) {
-      return;
-    }
-
-    Fluid f = new Fluid(alloy.getFluidName(), TEX_FLOWING, TEX_STILL) {
-      @Override
-      public int getColor() {
-        return 0xFF000000 | alloy.getColor();
-      }
-    };
-    f.setDensity(9000);
-    f.setLuminosity(4);
-    f.setTemperature(alloy.getMeltingPoint() + 273);
-    f.setViscosity(3000);
-    FluidRegistry.registerFluid(f);
-    BlockFluidEnder.MoltenMetal.create(f, Material.LAVA, alloy.getColor());
-    if (!EnderIO.proxy.isDedicatedServer()) {
-      Fluids.registerFluidBlockRendering(f);
-    }
-    FluidRegistry.addBucketForFluid(f);
-
-    NBTTagCompound tag = new NBTTagCompound();
-    tag.setString("fluid", f.getName());
-    tag.setString("ore", alloy.getOreOre());
-    tag.setBoolean("toolforge", true);
-    FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
-    // FIXME: TiC is supposed to pick those up itself:
-    registerSmelterySmelting(alloy.getStackNugget(), f, 16);
-    registerSmelterySmelting(alloy.getStackIngot(), f, 144);
-    registerSmelterySmelting(alloy.getStackBlock(), f, 1296);
-    // find out why that doesn't work
   }
 
   private static class CastQueue {

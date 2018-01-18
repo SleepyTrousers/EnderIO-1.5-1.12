@@ -13,7 +13,6 @@ import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.ClientUtil;
@@ -31,7 +30,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -49,17 +47,6 @@ public class BlockAlloy extends BlockEio<TileEntityEio> implements IAdvancedTool
     super(modObject, null, Material.IRON);
     setSoundType(SoundType.METAL);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
-  }
-
-  @Override
-  public void init(@Nonnull IModObject modObject, @Nonnull FMLInitializationEvent event) {
-    super.init(modObject, event);
-    NNList.of(Alloy.class).apply(new Callback<Alloy>() {
-      @Override
-      public void apply(@Nonnull Alloy alloy) {
-        TicProxy.registerMetal(alloy);
-      }
-    });
   }
 
   @Override

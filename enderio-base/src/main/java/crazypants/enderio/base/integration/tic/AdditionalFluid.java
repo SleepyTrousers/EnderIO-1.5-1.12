@@ -2,16 +2,18 @@ package crazypants.enderio.base.integration.tic;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.fluid.BlockFluidEnder;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.BlockFluidEio;
 import crazypants.enderio.base.fluid.BlockFluidEio.MoltenEnder;
 import crazypants.enderio.base.fluid.BlockFluidEio.MoltenGlowstone;
 import crazypants.enderio.base.fluid.BlockFluidEio.MoltenRedstone;
 import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -40,11 +42,19 @@ public class AdditionalFluid {
       event.getRegistry().register(createGlowstone());
       event.getRegistry().register(createRedstone());
       event.getRegistry().register(createEnder());
+      NNList.of(Alloy.class).apply(new Callback<Alloy>() {
+        @Override
+        public void apply(@Nonnull Alloy alloy) {
+          event.getRegistry().register(createMetal(alloy));
+        }
+      });
     }
   }
 
   static final ResourceLocation GLOWSTONE_TEX_STILL = new ResourceLocation("enderio:blocks/fluid_glowstone_still");
   static final ResourceLocation GLOWSTONE_TEX_FLOWING = new ResourceLocation("enderio:blocks/fluid_glowstone_flow");
+  static final ResourceLocation TEX_STILL = new ResourceLocation("tconstruct:blocks/fluids/molten_metal_flow");
+  static final ResourceLocation TEX_FLOWING = new ResourceLocation("tconstruct:blocks/fluids/molten_metal");
 
   public static final String GLOWSTONE_FLUID_NAME = "glowstone";
   public static final String REDSTONE_FLUID_NAME = "redstone";
@@ -101,7 +111,7 @@ public class AdditionalFluid {
   }
 
   private static Block createRedstone() {
-    Fluid f = new Fluid(REDSTONE_FLUID_NAME, TicProxy.TEX_FLOWING, TicProxy.TEX_STILL) {
+    Fluid f = new Fluid(REDSTONE_FLUID_NAME, TEX_FLOWING, TEX_STILL) {
       @Override
       public int getColor() {
         return 0xFF000000 | 0xff0000;
@@ -134,7 +144,6 @@ public class AdditionalFluid {
   private static void redstone(FMLPostInitializationEvent event) {
     Fluid f = FluidRegistry.getFluid(REDSTONE_FLUID_NAME);
     if (f != null) {
-      Log.warn("Thermal Foundation fluid '" + REDSTONE_FLUID_NAME + "' is unexpectedly missing. Late registering our own.");
       // Note: We match the old TE amounts
       TicProxy.registerSmelterySmelting(new ItemStack(Items.REDSTONE), f, 100);
       TicProxy.registerSmelterySmelting(new ItemStack(Blocks.REDSTONE_BLOCK), f, 900);
@@ -143,7 +152,7 @@ public class AdditionalFluid {
   }
 
   private static Block createEnder() {
-    Fluid f = new Fluid(ENDER_FLUID_NAME, TicProxy.TEX_FLOWING, TicProxy.TEX_STILL) {
+    Fluid f = new Fluid(ENDER_FLUID_NAME, TEX_FLOWING, TEX_STILL) {
       @Override
       public int getColor() {
         return 0xFF000000 | 0x1b7b6b;
@@ -176,7 +185,6 @@ public class AdditionalFluid {
   private static void ender(FMLPostInitializationEvent event) {
     Fluid f = FluidRegistry.getFluid(ENDER_FLUID_NAME);
     if (f != null) {
-      Log.warn("Thermal Foundation fluid '" + ENDER_FLUID_NAME + "' is unexpectedly missing. Late registering our own.");
       // Note: We match the old TE amounts
       TicProxy.registerSmelterySmelting(new ItemStack(Items.ENDER_PEARL), f, 250);
       // Need to do this late because of the cast
@@ -187,6 +195,33 @@ public class AdditionalFluid {
       }
     }
     TicProxy.registerSmelterySmelting(POWDER_ENDER.getStack(), f, 250 / 9);
+  }
+
+  public static Block createMetal(final @Nonnull Alloy alloy) {
+    Fluid f = new Fluid(alloy.getFluidName(), TEX_FLOWING, TEX_STILL) {
+      @Override
+      public int getColor() {
+        return 0xFF000000 | alloy.getColor();
+      }
+    };
+    f.setDensity(9000);
+    f.setLuminosity(4);
+    f.setTemperature(alloy.getMeltingPoint() + 273);
+    f.setViscosity(3000);
+    FluidRegistry.registerFluid(f);
+    Block block = BlockFluidEnder.MoltenMetal.create(f, Material.LAVA, alloy.getColor());
+    if (!EnderIO.proxy.isDedicatedServer()) {
+      Fluids.registerFluidBlockRendering(f);
+    }
+    FluidRegistry.addBucketForFluid(f);
+
+    NBTTagCompound tag = new NBTTagCompound();
+    tag.setString("fluid", f.getName());
+    tag.setString("ore", alloy.getOreName());
+    tag.setBoolean("toolforge", true);
+    FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
+
+    return block;
   }
 
 }
