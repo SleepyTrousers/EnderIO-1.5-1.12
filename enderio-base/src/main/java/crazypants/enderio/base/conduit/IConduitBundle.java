@@ -1,20 +1,12 @@
 package crazypants.enderio.base.conduit;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
-import com.enderio.core.common.util.DyeColor;
-
 import appeng.api.networking.IGridHost;
+import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.base.conduit.facade.EnumFacadeType;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.SidedEnvironment;
 import net.minecraft.block.Block;
@@ -31,15 +23,19 @@ import net.minecraftforge.fml.common.Optional.InterfaceList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 @InterfaceList({ @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
     @Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputersAPI|Network"),
     @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network"), })
-public interface IConduitBundle extends ILegacyPowerReceiver, IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IGridHost, IHasConduitProbeData {
+public interface IConduitBundle extends IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IGridHost, IHasConduitProbeData {
 
   @Nonnull
   TileEntity getEntity();
 
-  @Override
   @Nonnull
   BlockPos getLocation();
 
@@ -123,5 +119,4 @@ public interface IConduitBundle extends ILegacyPowerReceiver, IPaintable.IPainta
 
   boolean handleFacadeClick(World world, BlockPos placeAt, EntityPlayer player, EnumFacing opposite, ItemStack stack, EnumHand hand, float hitX, float hitY,
       float hitZ);
-
 }

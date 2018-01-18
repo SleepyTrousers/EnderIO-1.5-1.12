@@ -1,15 +1,8 @@
 package crazypants.enderio.base.conduit;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
-
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import net.minecraft.block.Block;
@@ -21,10 +14,16 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public interface IConduit {
+import javax.annotation.Nonnull;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+public interface IConduit extends ICapabilityProvider {
 
   // stuff that would be on the class, not the object if there were interfaces for classes...
 
@@ -198,5 +197,4 @@ public interface IConduit {
   boolean writeConnectionSettingsToNBT(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound nbt);
 
   boolean readConduitSettingsFromNBT(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound nbt);
-
 }
