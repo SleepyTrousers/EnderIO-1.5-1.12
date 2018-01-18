@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import org.apache.commons.lang3.tuple.Pair;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.render.ICacheKey;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.util.ItemQuadCollector;
 import crazypants.enderio.powertools.machine.capbank.render.FillGaugeBakery;
@@ -26,12 +25,6 @@ public class RenderMapperGauge implements IItemRenderMapper.IItemStateMapper, II
   public static final @Nonnull RenderMapperGauge instance = new RenderMapperGauge();
 
   private RenderMapperGauge() {
-  }
-
-  @Override
-  @Nonnull
-  public ICacheKey getCacheKey(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ICacheKey cacheKey) {
-    return cacheKey;
   }
 
   @Override

@@ -1,7 +1,6 @@
 package crazypants.enderio.powertools.machine.capbank.render;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -36,13 +35,6 @@ public class CapBankBlockRenderMapper extends ConnectedBlockRenderMapper {
 
   public CapBankBlockRenderMapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     super(state, world, pos);
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
-      boolean isPainted) {
-    return null;
   }
 
   @Override

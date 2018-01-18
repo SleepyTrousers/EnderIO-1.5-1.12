@@ -1,7 +1,6 @@
 package crazypants.enderio.base.render.pipeline;
 
 import java.util.Collection;
-import java.util.EnumMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -14,15 +13,14 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMap;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.base.paint.IPaintable.IWrenchHideablePaint;
+import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.paint.YetaUtil.YetaDisplayMode;
 import crazypants.enderio.base.paint.render.PaintedBlockAccessWrapper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.model.CollectedQuadBakedBlockModel;
-import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.base.render.util.QuadCollector;
 import crazypants.enderio.util.Profiler;
 import net.minecraft.block.Block;
@@ -230,13 +228,6 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
-        boolean isPainted) {
-      return null;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
     public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
         @Nonnull QuadCollector quadCollector) {
       return null;
@@ -272,7 +263,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     return state.getLightOpacity(world1, pos1);
   }
 
-  @SuppressWarnings("deprecation")  
+  @SuppressWarnings("deprecation")
   @Override
   public int getLightValue() {
     return state.getLightValue();

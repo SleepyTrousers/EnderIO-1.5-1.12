@@ -1,18 +1,17 @@
 package crazypants.enderio.conduit.render;
 
-import java.util.EnumMap;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
-import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.base.render.util.QuadCollector;
 import crazypants.enderio.conduit.TileConduitBundle;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
@@ -21,8 +20,8 @@ public class ConduitRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
   public static final ConduitRenderMapper instance = new ConduitRenderMapper();
 
   @Override
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
-      QuadCollector quadCollector) {
+  public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
+      @Nonnull QuadCollector quadCollector) {
 
     TileEntity tileEntity = state.getTileEntity();
 
@@ -36,11 +35,6 @@ public class ConduitRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
       quadCollector.addQuads(null, blockLayer, quads);
     }
 
-    return null;
-  }
-
-  @Override
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
     return null;
   }
 

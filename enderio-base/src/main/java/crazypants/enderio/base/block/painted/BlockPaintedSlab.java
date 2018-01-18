@@ -1,7 +1,6 @@
 package crazypants.enderio.base.block.painted;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Random;
 
@@ -26,7 +25,6 @@ import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderPart;
-import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.render.util.QuadCollector;
 import crazypants.enderio.util.Prep;
@@ -368,13 +366,6 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
         }
       }
     }
-    return null;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
-      boolean isPainted) {
     return null;
   }
 

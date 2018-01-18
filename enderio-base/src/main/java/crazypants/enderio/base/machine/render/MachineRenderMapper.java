@@ -15,7 +15,6 @@ import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.render.PaintedBlockAccessWrapper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
-import crazypants.enderio.base.render.ICacheKey;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.property.EnumRenderPart;
@@ -132,12 +131,6 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
       }
     }
     return null;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public @Nonnull ICacheKey getCacheKey(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ICacheKey cacheKey) {
-    return cacheKey;
   }
 
 }

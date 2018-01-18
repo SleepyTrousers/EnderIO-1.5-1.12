@@ -55,8 +55,10 @@ public interface IRenderMapper {
      * Note: This will only be called once, with isPainted either true or false. The render layer is determined by the IO block.
      */
     @SideOnly(Side.CLIENT)
-    @Nullable
-    EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, boolean isPainted);
+    default @Nullable EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+        boolean isPainted) {
+      return null;
+    }
 
     /**
      * Render mappers that implement this sub-interface will be called each for block render layer. They are expected to check for the current render layer and
@@ -140,8 +142,9 @@ public interface IRenderMapper {
      * no caching will be performed.
      */
     @SideOnly(Side.CLIENT)
-    @Nonnull
-    ICacheKey getCacheKey(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ICacheKey cacheKey);
+    default @Nonnull ICacheKey getCacheKey(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ICacheKey cacheKey) {
+      return cacheKey;
+    }
   }
 
 }

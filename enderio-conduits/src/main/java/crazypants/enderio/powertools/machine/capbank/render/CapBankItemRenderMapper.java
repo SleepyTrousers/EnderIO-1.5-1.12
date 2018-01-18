@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import org.apache.commons.lang3.tuple.Pair;
 
 import crazypants.enderio.base.power.PowerHandlerUtil;
-import crazypants.enderio.base.render.ICacheKey;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
 import crazypants.enderio.base.render.util.ItemQuadCollector;
@@ -70,11 +69,6 @@ public class CapBankItemRenderMapper implements IItemRenderMapper.IItemStateMapp
       }
     }
     return null;
-  }
-
-  @Override
-  public @Nonnull ICacheKey getCacheKey(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ICacheKey cacheKey) {
-    return cacheKey;
   }
 
 }

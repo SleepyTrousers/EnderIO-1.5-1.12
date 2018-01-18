@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.base.render.ICacheKey;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
 import crazypants.enderio.base.render.util.ItemQuadCollector;
@@ -43,12 +42,6 @@ public class ReservoirItemRenderMapper implements IRenderMapper.IItemRenderMappe
       states.add(Pair.of(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.get(facing, facing.rotateYCCW(), EnumFacing.DOWN)), (ItemStack) null));
     }
     return states;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public @Nonnull ICacheKey getCacheKey(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ICacheKey cacheKey) {
-    return cacheKey;
   }
 
 }
