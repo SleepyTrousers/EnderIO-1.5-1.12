@@ -164,17 +164,22 @@ public class ModObjectRegistry {
       }
     }
 
+    // TODO 1.12: remove the non-domain variants
+
     for (Entry<Class<? extends TileEntity>, List<String>> entry : clazzes.entrySet()) {
       if (entry.getValue().size() == 1) {
-        GameRegistry.registerTileEntity(entry.getKey(), entry.getValue().get(0));
+        GameRegistry.registerTileEntityWithAlternatives(entry.getKey(), EnderIO.DOMAIN + ":" + entry.getValue().get(0), entry.getValue().get(0));
       } else {
         Collections.sort(entry.getValue());
-        String[] params = new String[entry.getValue().size() - 1];
-        for (int i = 0; i < params.length; i++) {
-          params[i] = entry.getValue().get(i + 1);
+        String[] params = new String[(entry.getValue().size() - 1) * 2 + 1];
+        params[0] = entry.getValue().get(0);
+        for (int i = 0; i < entry.getValue().size() - 1; i++) {
+          params[i * 2 + 1] = EnderIO.DOMAIN + ":" + entry.getValue().get(i + 1);
+          params[i * 2 + 2] = entry.getValue().get(i + 1);
         }
-        Log.debug("Registering TileEntity " + entry.getKey() + " as " + entry.getValue().get(0) + " with aliases " + Arrays.asList(params));
-        GameRegistry.registerTileEntityWithAlternatives(entry.getKey(), entry.getValue().get(0), params);
+        Log.debug(
+            "Registering TileEntity " + entry.getKey() + " as " + EnderIO.DOMAIN + ":" + entry.getValue().get(0) + " with aliases " + Arrays.asList(params));
+        GameRegistry.registerTileEntityWithAlternatives(entry.getKey(), EnderIO.DOMAIN + ":" + entry.getValue().get(0), params);
       }
     }
   }
