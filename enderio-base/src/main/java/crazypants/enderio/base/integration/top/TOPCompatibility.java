@@ -14,6 +14,7 @@ import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.fluid.ItemTankHelper;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.LangPower;
@@ -22,7 +23,6 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
-import info.loenwind.autosave.helpers.SmartTankItemAccess;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.ILayoutStyle;
 import mcjty.theoneprobe.api.IProbeConfig;
@@ -383,9 +383,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
             content1 = loc("top.tank.header.storage", content1);
             break;
           }
-          ItemStack stack = new ItemStack(ModObject.blockFusedQuartz.getBlockNN()); // TODO: we either need the Tank here or another item that can
-                                                                                    // piggyback-render the fluid
-          SmartTankItemAccess.setTank(stack, smartTank);
+          ItemStack stack = new ItemStack(ModObject.blockFusedQuartz.getBlockNN()); // sic!
+          ItemTankHelper.setTank(stack, smartTank);
           NbtValue.FAKE.setBoolean(stack, true);
 
           eiobox.get().horizontal(eiobox.center()).item(stack).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(content1).text(content2);
