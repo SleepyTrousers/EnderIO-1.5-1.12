@@ -17,6 +17,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,11 +30,14 @@ public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk
   public static BlockWeatherObelisk create(@Nonnull IModObject modObject) {
     BlockWeatherObelisk ret = new BlockWeatherObelisk(modObject);
     ret.init();
-
-    // FIXME: this is wrong! "Detected an attempt by a mod %s to perform game activity during mod construction. This is a serious programming error."
-    EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.DOMAIN, "weather_rocket"), EntityWeatherRocket.class, "weather_rocket", 33, EnderIO.instance,
-        64, 3, false); // TODO Check if Forge has a registry for this
+    MinecraftForge.EVENT_BUS.register(ret);
     return ret;
+  }
+  
+  @SubscribeEvent
+  public void onEntityRegister(RegistryEvent.Register<EntityEntry> event) {
+    EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.DOMAIN, "weather_rocket"), EntityWeatherRocket.class, "weather_rocket", 33, EnderIO.instance,
+        64, 3, false);
   }
 
   private BlockWeatherObelisk(@Nonnull IModObject modObject) {
