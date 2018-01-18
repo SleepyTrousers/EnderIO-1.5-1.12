@@ -24,11 +24,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -48,8 +50,12 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
   }
 
   @Override
-  public void onCreated(@Nonnull ItemStack itemStack, @Nonnull World world, @Nonnull EntityPlayer entityPlayer) {
-    EnergyUpgrade.EMPOWERED.addToItem(itemStack);
+  @Nullable
+  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+    if (!EnergyUpgrade.EMPOWERED.hasAnyUpgradeVariant(stack)) {
+      EnergyUpgrade.EMPOWERED.addToItem(stack);
+    }
+    return super.initCapabilities(stack, nbt);
   }
 
   @Override
