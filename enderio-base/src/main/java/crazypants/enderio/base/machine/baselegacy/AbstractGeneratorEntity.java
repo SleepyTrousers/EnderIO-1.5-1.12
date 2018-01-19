@@ -1,10 +1,8 @@
-package crazypants.enderio.machines.machine.generator;
+package crazypants.enderio.base.machine.baselegacy;
 
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.capacitor.ICapacitorKey;
-import crazypants.enderio.base.machine.baselegacy.AbstractPoweredMachineEntity;
-import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.power.ILegacyPoweredTile;
 import info.loenwind.autosave.annotations.Storable;
 

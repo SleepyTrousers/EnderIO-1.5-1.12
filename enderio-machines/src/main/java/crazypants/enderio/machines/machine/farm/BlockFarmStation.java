@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -32,7 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
+public class BlockFarmStation extends AbstractPoweredTaskBlock<TileFarmStation>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
   public static BlockFarmStation create(@Nonnull IModObject modObject) {

@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorBlock;
 import crazypants.enderio.base.machine.fuel.ISolidFuelHandler;
 import crazypants.enderio.base.machine.fuel.SolidFuelCenter;
 import crazypants.enderio.base.machine.render.RenderMappers;
@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockStirlingGenerator<T extends TileStirlingGenerator> extends AbstractMachineBlock<T>
+public class BlockStirlingGenerator<T extends TileStirlingGenerator> extends AbstractGeneratorBlock<T>
     implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockStirlingGenerator<TileStirlingGenerator> create(@Nonnull IModObject modObject) {

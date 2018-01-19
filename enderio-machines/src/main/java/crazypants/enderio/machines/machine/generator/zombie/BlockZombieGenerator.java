@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper.IBlockRenderMapper;
@@ -34,7 +34,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> implements IHaveTESR {
+public class BlockZombieGenerator extends AbstractGeneratorBlock<TileZombieGenerator> implements IHaveTESR {
 
   public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/zombie_gen_head");
   public static final TextureSupplier textureHead2 = TextureRegistry.registerTexture("blocks/zombie_gen_head2");

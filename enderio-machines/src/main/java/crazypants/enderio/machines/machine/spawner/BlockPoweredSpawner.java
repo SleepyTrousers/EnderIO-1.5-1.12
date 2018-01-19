@@ -13,7 +13,7 @@ import com.enderio.core.common.util.NNList.Callback;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -54,7 +54,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.machines.init.MachineObject.block_powered_spawner;
 
-public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner>
+public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpawner>
     implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
   public static final @Nonnull String KEY_SPAWNED_BY_POWERED_SPAWNER = "spawnedByPoweredSpawner";

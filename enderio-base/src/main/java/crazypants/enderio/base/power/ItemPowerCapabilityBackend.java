@@ -27,7 +27,7 @@ public class ItemPowerCapabilityBackend implements ICapabilityProvider {
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     for (ItemPowerCapabilityProvider itemPowerCapabilityProvider : providers) {
-      if (itemPowerCapabilityProvider.hasCapability(stack, capability, facing)) {
+      if (stack.getCount() == 1 && itemPowerCapabilityProvider.hasCapability(stack, capability, facing)) {
         return true;
       }
     }
@@ -36,10 +36,12 @@ public class ItemPowerCapabilityBackend implements ICapabilityProvider {
 
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-    for (ItemPowerCapabilityProvider itemPowerCapabilityProvider : providers) {
-      T res = itemPowerCapabilityProvider.getCapability(stack, capability, facing);
-      if (res != null) {
-        return res;
+    if (stack.getCount() == 1) {
+      for (ItemPowerCapabilityProvider itemPowerCapabilityProvider : providers) {
+        T res = itemPowerCapabilityProvider.getCapability(stack, capability, facing);
+        if (res != null) {
+          return res;
+        }
       }
     }
     return null;

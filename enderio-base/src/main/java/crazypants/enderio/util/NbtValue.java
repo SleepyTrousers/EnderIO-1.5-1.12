@@ -27,6 +27,7 @@ public enum NbtValue { // TODO: DONE111
   REMOTE_NAME("name"),
   REMOTE_ICON("icon"),
   ENERGY("Energy"),
+  ENERGY_BUFFER("MaxEnergy"),
   FLUIDAMOUNT("famount"),
   BLOCKSTATE("paint"),
   DISPLAYMODE("displaymode"),

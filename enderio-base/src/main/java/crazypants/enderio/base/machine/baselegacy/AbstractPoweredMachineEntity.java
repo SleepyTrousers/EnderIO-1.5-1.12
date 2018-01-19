@@ -167,7 +167,8 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   @Override
   public void writeToItemStack(@Nonnull ItemStack stack) {
     super.writeToItemStack(stack);
-    NbtValue.ENERGY.setInt(stack, storedEnergyRF);
+    NbtValue.ENERGY.setInt(stack, getEnergyStored());
+    NbtValue.ENERGY_BUFFER.setInt(stack, getMaxEnergyStored());
   }
 
   // Power use

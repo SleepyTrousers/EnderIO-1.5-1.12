@@ -36,7 +36,7 @@ public abstract class AbstractPoweredItem extends Item implements IInternalPower
   }
 
   @Override
-  public @Nonnull ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+  public @Nullable ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
     return IInternalPoweredItem.super.initCapabilities(stack, nbt);
   }
 

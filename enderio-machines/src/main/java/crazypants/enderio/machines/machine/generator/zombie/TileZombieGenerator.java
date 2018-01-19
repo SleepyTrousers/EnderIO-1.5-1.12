@@ -15,12 +15,12 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.power.PowerDistributor;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.machines.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
