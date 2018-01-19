@@ -23,7 +23,7 @@ plugins {
 apply plugin: 'maven'
 apply plugin: 'eclipse'
 
-// Morge user properties
+// More user properties
 ext.user = parseConfig(file('user.properties'))
 if (ext.user != null) {
     ext.user.each { k, v ->
@@ -215,8 +215,11 @@ jar.doFirst {
     File target = new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/lang")
     target.mkdirs()
     buildprojects.each { subproject ->
-        new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/lang/').eachFileMatch( ~".*\\.lang\$" ) { langfile ->
-            new File(target, langfile.name) << "\n" << langfile.text
+        File langDir = new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/lang/')
+        if (langDir.exists()) {
+            langDir.eachFileMatch( ~".*\\.lang\$" ) { langfile ->
+                new File(target, langfile.name) << "\n" << langfile.text
+            }
         }
     }
 
@@ -228,7 +231,10 @@ jar.doFirst {
 
     def sound = ""
     buildprojects.each { subproject ->
-        sound += new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/sounds.json').text
+        File soundFile = new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/sounds.json')
+        if (soundFile.exists()) {
+            sound += soundFile.text
+        }
     }
     new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/sounds.json") << sound.replaceAll(/\}\s*\{/, ',')
 
