@@ -43,7 +43,7 @@ public class EnderIOIntegrationFtbl implements IEnderIOAddon {
   }
 
   @SubscribeEvent
-  public static void registerFertilizer(@Nonnull RegistryEvent.Register<IIntegration> event) {
+  public static void register(@Nonnull RegistryEvent.Register<IIntegration> event) {
     event.getRegistry().register(new FtblIntegration());
     Log.info("FTBL integration fully loaded");
   }
