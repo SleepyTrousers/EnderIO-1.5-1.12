@@ -157,6 +157,25 @@ allprojects {
     build.dependsOn rmKeyStore
     rmKeyStore.dependsOn signJar
     signJar.dependsOn mkKeyStore
+
+    eclipse {
+      classpath {
+        containers 'org.eclipse.buildship.core.gradleclasspathcontainer'
+        file {
+          whenMerged {
+            entries.each { e ->
+              if (e.path.contains('gradleclasspathcontainer') || e.path.contains('org.eclipse.jdt.launching.JRE_CONTAINER')) {
+                e.entryAttributes['annotationpath'] = '/EnderCore/externalannotations'
+              }
+              if (e.path == 'lib/CoFHLib/src/main/java') {
+                e.entryAttributes['ignore_optional_problems'] = 'true'
+              }
+            }
+          }
+        }
+      }
+    }
+
 }
 
 // Configuration that applies only to modules
