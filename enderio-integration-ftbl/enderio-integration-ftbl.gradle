@@ -4,5 +4,5 @@ repositories {
 
 dependencies {
 	compile project(":enderio-base")
-    compile "com.latmod.mods:FTBLib:3.6.5:deobf"
+    deobfCompile "com.latmod.mods:FTBLib:3.6.5"
 }
