@@ -98,7 +98,6 @@ public interface IConduit extends ICapabilityProvider {
 
   void connectionsChanged();
 
-  @Nonnull
   IConduitNetwork<?, ?> getNetwork() throws NullPointerException;
 
   boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network); // TODO: is setNetwork(null) used to clear the network?
