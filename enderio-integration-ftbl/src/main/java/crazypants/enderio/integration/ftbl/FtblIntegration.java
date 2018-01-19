@@ -16,11 +16,13 @@ public class FtblIntegration implements IIntegration {
     ForgePlayer playerA = universe.getPlayer(identA.getUUID());
 
     ForgeTeam team = (ForgeTeam) playerA.getTeam();
-    MyTeamData teamData = new MyTeamData(universe, team, playerA);
+    if (team != null) {
+      MyTeamData teamData = new MyTeamData(universe, team, playerA);
 
-    for (MyTeamPlayerData pd : teamData.players) {
-      if (pd.playerId.equals(identB.getUUID())) {
-        return true;
+      for (MyTeamPlayerData pd : teamData.players) {
+        if (pd.playerId.equals(identB.getUUID())) {
+          return true;
+        }
       }
     }
     return false;
