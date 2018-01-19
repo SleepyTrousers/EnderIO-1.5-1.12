@@ -1,19 +1,5 @@
 package crazypants.enderio.conduit.redstone;
 
-import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
-import static crazypants.enderio.conduit.init.ConduitObject.item_redstone_conduit;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
@@ -22,13 +8,12 @@ import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.*;
+import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.redstone.signals.SignalSource;
 import crazypants.enderio.base.config.Config;
@@ -54,10 +39,16 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
+
+import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
+import static crazypants.enderio.conduit.init.ConduitObject.item_redstone_conduit;
 
 public class InsulatedRedstoneConduit extends AbstractConduit implements IRedstoneConduit, IConduitComponent {
 
@@ -875,5 +866,18 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public int getGuiPanelTabOrder() {
     return 2;
+  }
+
+  // ----------------- CAPABILITIES ------------
+
+  @Override
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+    return false;
+  }
+
+  @Nullable
+  @Override
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+    return null;
   }
 }
