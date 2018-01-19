@@ -1,0 +1,24 @@
+*.class
+
+# Package Files #
+*.war
+*.ear
+/build
+/eclipse
+/bin
+/out
+
+*.mtl
+*.classpath
+*.project
+/.gradle
+/.settings
+/.idea
+*.iml
+*.ipr
+*.iws
+/.metadata/*
+*.eml
+usernamecache.json
+/server
+/bin/
