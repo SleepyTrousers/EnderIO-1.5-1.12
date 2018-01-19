@@ -7,8 +7,8 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.ClientUtil;
 
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
-import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineBlock;
+import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.ITESRItemBlock;
@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> extends AbstractMachineBlock<T> implements ITESRItemBlock {
+public abstract class AbstractBlockObelisk<T extends AbstractInventoryMachineEntity> extends AbstractInventoryMachineBlock<T> implements ITESRItemBlock {
 
   public static final @Nonnull AxisAlignedBB AABB = new AxisAlignedBB(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
 
