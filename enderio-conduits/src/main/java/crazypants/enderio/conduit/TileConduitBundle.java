@@ -694,65 +694,65 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   // TODO Find a way to separate conduit types
-  // ------------ Power -----------------------------
-
-  @Override
-  public int receiveEnergy(@Nonnull EnumFacing from, int maxReceive, boolean simulate) {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if (pc != null) {
-      return pc.receiveEnergy(from, maxReceive, simulate);
-    }
-    return 0;
-  }
-
-  @Override
-  public boolean canConnectEnergy(@Nonnull EnumFacing from) {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if (pc != null) {
-      return pc.canConnectEnergy(from);
-    }
-    return false;
-  }
-
-  @Override
-  public int getMaxEnergyStored(@Nonnull EnumFacing from) {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if (pc != null) {
-      return pc.getMaxEnergyStored(null);
-    }
-    return 0;
-  }
-
-  @Override
-  public int getMaxEnergyRecieved(EnumFacing dir) {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if (pc != null) {
-      return pc.getMaxEnergyRecieved(dir);
-    }
-    return 0;
-  }
-
-  @Override
-  public int getEnergyStored(EnumFacing from) {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if (pc != null) {
-      return pc.getEnergyStored(from);
-    }
-    return 0;
-  }
-
-  public int getMaxEnergyStored() {
-    return getMaxEnergyStored(null);
-  }
-
-  @Override
-  public void setEnergyStored(int stored) {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if (pc != null) {
-      pc.setEnergyStored(stored);
-    }
-
-  }
+//  // ------------ Power -----------------------------
+//
+//  @Override
+//  public int receiveEnergy(@Nonnull EnumFacing from, int maxReceive, boolean simulate) {
+//    IPowerConduit pc = getConduit(IPowerConduit.class);
+//    if (pc != null) {
+//      return pc.receiveEnergy(from, maxReceive, simulate);
+//    }
+//    return 0;
+//  }
+//
+//  @Override
+//  public boolean canConnectEnergy(@Nonnull EnumFacing from) {
+//    IPowerConduit pc = getConduit(IPowerConduit.class);
+//    if (pc != null) {
+//      return pc.canConnectEnergy(from);
+//    }
+//    return false;
+//  }
+//
+//  @Override
+//  public int getMaxEnergyStored(@Nonnull EnumFacing from) {
+//    IPowerConduit pc = getConduit(IPowerConduit.class);
+//    if (pc != null) {
+//      return pc.getMaxEnergyStored(null);
+//    }
+//    return 0;
+//  }
+//
+//  @Override
+//  public int getMaxEnergyRecieved(EnumFacing dir) {
+//    IPowerConduit pc = getConduit(IPowerConduit.class);
+//    if (pc != null) {
+//      return pc.getMaxEnergyRecieved(dir);
+//    }
+//    return 0;
+//  }
+//
+//  @Override
+//  public int getEnergyStored(EnumFacing from) {
+//    IPowerConduit pc = getConduit(IPowerConduit.class);
+//    if (pc != null) {
+//      return pc.getEnergyStored(from);
+//    }
+//    return 0;
+//  }
+//
+//  public int getMaxEnergyStored() {
+//    return getMaxEnergyStored(null);
+//  }
+//
+//  @Override
+//  public void setEnergyStored(int stored) {
+//    IPowerConduit pc = getConduit(IPowerConduit.class);
+//    if (pc != null) {
+//      pc.setEnergyStored(stored);
+//    }
+//
+//  }
 
   //------- Liquids -----------------------------
 
@@ -808,11 +808,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       return lc.getTankInfo(from);
     }
     return new FluidTankInfo[0];
-  }
-
-  @Override
-  public boolean displayPower() {
-    return false;
   }
 
   @Override

@@ -1,8 +1,10 @@
 package crazypants.enderio.base.conduit;
 
+import com.enderio.core.api.client.gui.IGuiScreen;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.EnumFacing;
 
-public interface IGuiExternalConnection {
+public interface IGuiExternalConnection extends IGuiScreen {
 
   /**
    * Gets the direction of the conduit's connection
@@ -14,4 +16,8 @@ public interface IGuiExternalConnection {
    */
   IExternalConnectionContainer getContainer();
 
+  // The following are handled by the Gui class already but are needed here for abstraction to base
+  int getGuiTop();
+
+  FontRenderer getFontRenderer();
 }

@@ -18,6 +18,7 @@ import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitComponent;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.item.ItemSettings;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -37,6 +38,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +51,7 @@ import static crazypants.enderio.conduit.init.ConduitObject.item_item_conduit;
 public class ItemConduit extends AbstractConduit implements IItemConduit, IConduitComponent {
 
   public static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
-  
+
   public static final String EXTERNAL_INTERFACE_GEOM = "ExternalInterface";
 
   public static final String ICON_KEY = "enderio:blocks/itemConduit";
@@ -73,7 +75,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @SideOnly(Side.CLIENT)
   public static void initIcons() {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-      
+
       @Override
       public void registerIcons(TextureMap register) {
         ICONS.put(ICON_KEY, register.registerSprite(new ResourceLocation(ICON_KEY)));
@@ -120,32 +122,31 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     metaData = itemDamage;
   }
 
-
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
-    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);    
+    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
     setInputColor(dir, DyeColor.values()[dataRoot.getShort("inputColor")]);
     setOutputColor(dir, DyeColor.values()[dataRoot.getShort("outputColor")]);
     setSelfFeedEnabled(dir, dataRoot.getBoolean("selfFeed"));
     setRoundRobinEnabled(dir, dataRoot.getBoolean("roundRobin"));
     setOutputPriority(dir, dataRoot.getInteger("outputPriority"));
   }
-  
+
   @Override
   protected void writeTypeSettingsToNbt(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
-    dataRoot.setShort("extractionSignalColor", (short)getExtractionSignalColor(dir).ordinal());
-    dataRoot.setShort("extractionRedstoneMode", (short)getExtractionRedstoneMode(dir).ordinal());
-    dataRoot.setShort("inputColor", (short)getInputColor(dir).ordinal());
-    dataRoot.setShort("outputColor", (short)getOutputColor(dir).ordinal());
+    dataRoot.setShort("extractionSignalColor", (short) getExtractionSignalColor(dir).ordinal());
+    dataRoot.setShort("extractionRedstoneMode", (short) getExtractionRedstoneMode(dir).ordinal());
+    dataRoot.setShort("inputColor", (short) getInputColor(dir).ordinal());
+    dataRoot.setShort("outputColor", (short) getOutputColor(dir).ordinal());
     dataRoot.setBoolean("selfFeed", isSelfFeedEnabled(dir));
     dataRoot.setBoolean("roundRobin", isRoundRobinEnabled(dir));
-    dataRoot.setInteger("outputPriority", getOutputPriority(dir));    
+    dataRoot.setInteger("outputPriority", getOutputPriority(dir));
   }
-  
+
   protected void convertToItemUpgrades(int filterMeta, Map<EnumFacing, ItemStack> converted, EnumMap<EnumFacing, IItemFilter> sourceFilters) {
     for (Entry<EnumFacing, IItemFilter> entry : sourceFilters.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         IItemFilter f = entry.getValue();
         ItemStack up = new ItemStack(itemItemFilter.getItem(), 1, filterMeta);
         FilterRegistry.writeFilterToStack(f, up);
@@ -175,27 +176,27 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
-    if(ConduitUtil.isProbeEquipped(player, hand)) {
-      if(!player.world.isRemote) {
+    if (ConduitUtil.isProbeEquipped(player, hand)) {
+      if (!player.world.isRemote) {
         PacketConduitProbe.sendInfoMessage(player, this, null);
       }
       return true;
-    } else if(ToolUtil.isToolEquipped(player, hand)) {
-      if(!getBundle().getEntity().getWorld().isRemote) {
-        if(res != null && res.component != null) {
+    } else if (ToolUtil.isToolEquipped(player, hand)) {
+      if (!getBundle().getEntity().getWorld().isRemote) {
+        if (res != null && res.component != null) {
           EnumFacing connDir = res.component.dir;
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
-          if(connDir == null || connDir == faceHit) {
-            if(getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
+          if (connDir == null || connDir == faceHit) {
+            if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
               return true;
             }
             // Attempt to join networks
             return ConduitUtil.connectConduits(this, faceHit);
-          } else if(externalConnections.contains(connDir)) {
+          } else if (externalConnections.contains(connDir)) {
             setConnectionMode(connDir, getNextConnectionMode(connDir));
             return true;
-          } else if(containsConduitConnection(connDir)) {
+          } else if (containsConduitConnection(connDir)) {
             ConduitUtil.disconnectConduits(this, connDir);
             return true;
           }
@@ -203,10 +204,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
       }
     } else {
 
-      if(res != null && res.component != null) {
+      if (res != null && res.component != null) {
         EnumFacing connDir = res.component.dir;
         if (connDir != null && containsExternalConnection(connDir)) {
-          if(!player.world.isRemote) {
+          if (!player.world.isRemote) {
             PacketConduitProbe.sendInfoMessage(player, this, player.getHeldItem(hand));
           }
           return true;
@@ -220,7 +221,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public void setInputFilter(@Nonnull EnumFacing dir, IItemFilter filter) {
     inputFilters.put(dir, filter);
-    if(network != null) {
+    if (network != null) {
       network.routesChanged();
     }
     setClientStateDirty();
@@ -229,7 +230,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public void setOutputFilter(@Nonnull EnumFacing dir, IItemFilter filter) {
     outputFilters.put(dir, filter);
-    if(network != null) {
+    if (network != null) {
       network.routesChanged();
     }
     setClientStateDirty();
@@ -273,7 +274,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   public void setSpeedUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade) {
-    if(!upgrade.isEmpty()) {
+    if (!upgrade.isEmpty()) {
       speedUpgrades.put(dir, upgrade);
     } else {
       speedUpgrades.remove(dir);
@@ -286,49 +287,49 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   public ItemStack getSpeedUpgrade(EnumFacing dir) {
     return speedUpgrades.get(dir);
   }
-//
-//  @Override
-//  public void setFunctionUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade) {
-//    boolean hadIPU = hasInventoryPanelUpgrade(dir);
-//    if(!upgrade.isEmpty()) {
-//      functionUpgrades.put(dir, upgrade);
-//    } else {
-//      functionUpgrades.remove(dir);
-//    }
-//    setClientStateDirty();
-//    if(network != null && hadIPU != hasInventoryPanelUpgrade(dir)) {
-//      network.inventoryPanelSourcesChanged();
-//    }
-//  }
-//
-//  @Override
-//  @Nonnull
-//  public ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir) {
-//    return functionUpgrades.get(dir);
-//  }
+  //
+  //  @Override
+  //  public void setFunctionUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade) {
+  //    boolean hadIPU = hasInventoryPanelUpgrade(dir);
+  //    if(!upgrade.isEmpty()) {
+  //      functionUpgrades.put(dir, upgrade);
+  //    } else {
+  //      functionUpgrades.remove(dir);
+  //    }
+  //    setClientStateDirty();
+  //    if(network != null && hadIPU != hasInventoryPanelUpgrade(dir)) {
+  //      network.inventoryPanelSourcesChanged();
+  //    }
+  //  }
+  //
+  //  @Override
+  //  @Nonnull
+  //  public ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir) {
+  //    return functionUpgrades.get(dir);
+  //  }
 
-//  @Override
-//  public boolean hasInventoryPanelUpgrade(@Nonnull EnumFacing dir) {
-//    ItemStack upgrade = functionUpgrades.get(dir);
-//    return (!upgrade.isEmpty() && ItemFunctionUpgrade.getFunctionUpgrade(upgrade) == FunctionUpgrade.INVENTORY_PANEL) || isConnectedToNetworkAwareBlock(dir);
-//  }
-//
-//  @Override
-//  public boolean isConnectedToNetworkAwareBlock(@Nonnull EnumFacing dir) {
-//    if (!externalConnections.contains(dir)) {
-//      return false;
-//    }
-//    World world = getBundle().getBundleworld();
-//    if (world == null) {
-//      return false;
-//    }
-//    BlockPos loc = getBundle().getLocation().offset(dir);
-//    if (!world.isBlockLoaded(loc)) {
-//      return false;
-//    }
-//    TileEntity tileEntity = world.getTileEntity(loc);
-//    return tileEntity instanceof TileInventoryChest;
-//  }
+  //  @Override
+  //  public boolean hasInventoryPanelUpgrade(@Nonnull EnumFacing dir) {
+  //    ItemStack upgrade = functionUpgrades.get(dir);
+  //    return (!upgrade.isEmpty() && ItemFunctionUpgrade.getFunctionUpgrade(upgrade) == FunctionUpgrade.INVENTORY_PANEL) || isConnectedToNetworkAwareBlock(dir);
+  //  }
+  //
+  //  @Override
+  //  public boolean isConnectedToNetworkAwareBlock(@Nonnull EnumFacing dir) {
+  //    if (!externalConnections.contains(dir)) {
+  //      return false;
+  //    }
+  //    World world = getBundle().getBundleworld();
+  //    if (world == null) {
+  //      return false;
+  //    }
+  //    BlockPos loc = getBundle().getLocation().offset(dir);
+  //    if (!world.isBlockLoaded(loc)) {
+  //      return false;
+  //    }
+  //    TileEntity tileEntity = world.getTileEntity(loc);
+  //    return tileEntity instanceof TileInventoryChest;
+  //  }
 
   @Override
   public int getMetaData() {
@@ -344,7 +345,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Nonnull
   public RedstoneControlMode getExtractionRedstoneMode(@Nonnull EnumFacing dir) {
     RedstoneControlMode res = extractionModes.get(dir);
-    if(res == null) {
+    if (res == null) {
       res = RedstoneControlMode.NEVER;
     }
     return res;
@@ -359,7 +360,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Nonnull
   public DyeColor getExtractionSignalColor(@Nonnull EnumFacing dir) {
     DyeColor result = extractionColors.get(dir);
-    if(result == null) {
+    if (result == null) {
       return DyeColor.RED;
     }
     return result;
@@ -375,7 +376,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Nonnull
   public DyeColor getInputColor(@Nonnull EnumFacing dir) {
     DyeColor result = inputColors.get(dir);
-    if(result == null) {
+    if (result == null) {
       return DyeColor.GREEN;
     }
     return result;
@@ -385,7 +386,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Nonnull
   public DyeColor getOutputColor(@Nonnull EnumFacing dir) {
     DyeColor result = outputColors.get(dir);
-    if(result == null) {
+    if (result == null) {
       return DyeColor.GREEN;
     }
     return result;
@@ -394,7 +395,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public void setInputColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
     inputColors.put(dir, col);
-    if(network != null) {
+    if (network != null) {
       network.routesChanged();
     }
     setClientStateDirty();
@@ -404,7 +405,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public void setOutputColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
     outputColors.put(dir, col);
-    if(network != null) {
+    if (network != null) {
       network.routesChanged();
     }
     setClientStateDirty();
@@ -414,7 +415,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public int getMaximumExtracted(@Nonnull EnumFacing dir) {
     ItemStack stack = speedUpgrades.get(dir);
-    if(stack.isEmpty()) {
+    if (stack.isEmpty()) {
       return SpeedUpgrade.BASE_MAX_EXTRACTED;
     }
     SpeedUpgrade speedUpgrade = ItemExtractSpeedUpgrade.getSpeedUpgrade(stack);
@@ -440,7 +441,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public IItemHandler getExternalInventory(@Nonnull EnumFacing direction) {
     World world = getBundle().getBundleworld();
-    if(world == null) {
+    if (world == null) {
       return null;
     }
     BlockPos loc = getBundle().getLocation().offset(direction);
@@ -455,7 +456,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   }
 
   private void checkInventoryConnections(@Nonnull EnumFacing direction) {
-    if(network != null) {
+    if (network != null) {
       BlockPos p = bundle.getEntity().getPos().offset(direction);
       NetworkedInventory networkedInventory = network.getInventory(this, direction);
       if (externalConnections.contains(direction) && getConnectionMode(direction) != ConnectionMode.DISABLED) {
@@ -473,12 +474,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public void setConnectionMode(@Nonnull EnumFacing dir, @Nonnull ConnectionMode mode) {
     ConnectionMode oldVal = conectionModes.get(dir);
-    if(oldVal == mode) {
+    if (oldVal == mode) {
       return;
     }
     super.setConnectionMode(dir, mode);
     checkInventoryConnections(dir);
-    if(network != null) {
+    if (network != null) {
       network.routesChanged();
     }
   }
@@ -486,7 +487,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public boolean isSelfFeedEnabled(@Nonnull EnumFacing dir) {
     Boolean val = selfFeed.get(dir);
-    if(val == null) {
+    if (val == null) {
       return false;
     }
     return val;
@@ -494,12 +495,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   public void setSelfFeedEnabled(@Nonnull EnumFacing dir, boolean enabled) {
-    if(!enabled) {
+    if (!enabled) {
       selfFeed.remove(dir);
     } else {
       selfFeed.put(dir, enabled);
     }
-    if(network != null) {
+    if (network != null) {
       network.routesChanged();
     }
   }
@@ -507,7 +508,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public boolean isRoundRobinEnabled(@Nonnull EnumFacing dir) {
     Boolean val = roundRobin.get(dir);
-    if(val == null) {
+    if (val == null) {
       return false;
     }
     return val;
@@ -515,12 +516,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   public void setRoundRobinEnabled(@Nonnull EnumFacing dir, boolean enabled) {
-    if(!enabled) {
+    if (!enabled) {
       roundRobin.remove(dir);
     } else {
       roundRobin.put(dir, enabled);
     }
-    if(network != null) {
+    if (network != null) {
       network.routesChanged();
     }
   }
@@ -528,7 +529,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public int getOutputPriority(@Nonnull EnumFacing dir) {
     Integer res = priority.get(dir);
-    if(res == null) {
+    if (res == null) {
       return 0;
     }
     return res.intValue();
@@ -536,12 +537,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   public void setOutputPriority(@Nonnull EnumFacing dir, int priority) {
-    if(priority == 0) {
+    if (priority == 0) {
       this.priority.remove(dir);
     } else {
       this.priority.put(dir, priority);
     }
-    if(network != null) {
+    if (network != null) {
       network.routesChanged();
     }
 
@@ -549,7 +550,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   public boolean canConnectToExternal(@Nonnull EnumFacing direction, boolean ignoreDisabled) {
-    return getExternalInventory(direction) != null;    
+    return getExternalInventory(direction) != null;
   }
 
   @Override
@@ -625,10 +626,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
-    if(component.dir == null) {
+    if (component.dir == null) {
       return getCoreIcon();
     }
-    if(EXTERNAL_INTERFACE_GEOM.equals(component.data)) {
+    if (EXTERNAL_INTERFACE_GEOM.equals(component.data)) {
       return getCoreIcon();
     }
     return ICONS.get(ICON_KEY);
@@ -652,9 +653,9 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     super.writeToNBT(nbtRoot);
 
     for (Entry<EnumFacing, IItemFilter> entry : inputFilters.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         IItemFilter f = entry.getValue();
-        if(!isDefault(f)) {
+        if (!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           FilterRegistry.writeFilterToNbt(f, itemRoot);
           nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
@@ -663,7 +664,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     }
 
     for (Entry<EnumFacing, ItemStack> entry : speedUpgrades.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         ItemStack up = entry.getValue();
         NBTTagCompound itemRoot = new NBTTagCompound();
         up.writeToNBT(itemRoot);
@@ -672,7 +673,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     }
 
     for (Entry<EnumFacing, ItemStack> entry : functionUpgrades.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         ItemStack up = entry.getValue();
         NBTTagCompound itemRoot = new NBTTagCompound();
         up.writeToNBT(itemRoot);
@@ -681,9 +682,9 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     }
 
     for (Entry<EnumFacing, IItemFilter> entry : outputFilters.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         IItemFilter f = entry.getValue();
-        if(!isDefault(f)) {
+        if (!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           FilterRegistry.writeFilterToNbt(f, itemRoot);
           nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
@@ -692,7 +693,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     }
 
     for (Entry<EnumFacing, ItemStack> entry : inputFilterUpgrades.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         ItemStack up = entry.getValue();
         IItemFilter filter = getInputFilter(entry.getKey());
         FilterRegistry.writeFilterToStack(filter, up);
@@ -704,7 +705,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     }
 
     for (Entry<EnumFacing, ItemStack> entry : outputFilterUpgrades.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         ItemStack up = entry.getValue();
         IItemFilter filter = getOutputFilter(entry.getKey());
         FilterRegistry.writeFilterToStack(filter, up);
@@ -716,46 +717,46 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     }
 
     for (Entry<EnumFacing, RedstoneControlMode> entry : extractionModes.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         short ord = (short) entry.getValue().ordinal();
         nbtRoot.setShort("extRM." + entry.getKey().name(), ord);
       }
     }
 
     for (Entry<EnumFacing, DyeColor> entry : extractionColors.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         short ord = (short) entry.getValue().ordinal();
         nbtRoot.setShort("extSC." + entry.getKey().name(), ord);
       }
     }
 
     for (Entry<EnumFacing, Boolean> entry : selfFeed.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         nbtRoot.setBoolean("selfFeed." + entry.getKey().name(), entry.getValue());
       }
     }
 
     for (Entry<EnumFacing, Boolean> entry : roundRobin.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         nbtRoot.setBoolean("roundRobin." + entry.getKey().name(), entry.getValue());
       }
     }
 
     for (Entry<EnumFacing, Integer> entry : priority.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         nbtRoot.setInteger("priority." + entry.getKey().name(), entry.getValue());
       }
     }
 
     for (Entry<EnumFacing, DyeColor> entry : inputColors.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         short ord = (short) entry.getValue().ordinal();
         nbtRoot.setShort("inSC." + entry.getKey().name(), ord);
       }
     }
 
     for (Entry<EnumFacing, DyeColor> entry : outputColors.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         short ord = (short) entry.getValue().ordinal();
         nbtRoot.setShort("outSC." + entry.getKey().name(), ord);
       }
@@ -764,7 +765,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   }
 
   private boolean isDefault(IItemFilter f) {
-    if(f instanceof ItemFilter) {
+    if (f instanceof ItemFilter) {
       return ((ItemFilter) f).isDefault();
     }
     return false;
@@ -774,7 +775,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
 
-    if(nbtRoot.hasKey("metaData")) {
+    if (nbtRoot.hasKey("metaData")) {
       metaData = nbtRoot.getShort("metaData");
     } else {
       metaData = 0;
@@ -783,97 +784,97 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     for (EnumFacing dir : EnumFacing.VALUES) {
 
       String key = "inFilts." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
         IItemFilter filter = FilterRegistry.loadFilterFromNbt(filterTag);
         inputFilters.put(dir, filter);
       }
 
       key = "speedUpgrades." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemStack ups = new ItemStack(upTag);
         speedUpgrades.put(dir, ups);
       }
 
       key = "functionUpgrades." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemStack ups = new ItemStack(upTag);
         functionUpgrades.put(dir, ups);
       }
 
       key = "inputFilterUpgrades." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemStack ups = new ItemStack(upTag);
         inputFilterUpgrades.put(dir, ups);
       }
 
       key = "outputFilterUpgrades." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemStack ups = new ItemStack(upTag);
         outputFilterUpgrades.put(dir, ups);
       }
 
       key = "outFilts." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
         IItemFilter filter = FilterRegistry.loadFilterFromNbt(filterTag);
         outputFilters.put(dir, filter);
       }
 
       key = "extRM." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         short ord = nbtRoot.getShort(key);
-        if(ord >= 0 && ord < RedstoneControlMode.values().length) {
+        if (ord >= 0 && ord < RedstoneControlMode.values().length) {
           extractionModes.put(dir, RedstoneControlMode.values()[ord]);
         }
       }
       key = "extSC." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         short ord = nbtRoot.getShort(key);
-        if(ord >= 0 && ord < DyeColor.values().length) {
+        if (ord >= 0 && ord < DyeColor.values().length) {
           extractionColors.put(dir, DyeColor.values()[ord]);
         }
       }
       key = "selfFeed." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         boolean val = nbtRoot.getBoolean(key);
         selfFeed.put(dir, val);
       }
 
       key = "roundRobin." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         boolean val = nbtRoot.getBoolean(key);
         roundRobin.put(dir, val);
       }
 
       key = "priority." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         int val = nbtRoot.getInteger(key);
         priority.put(dir, val);
       }
 
       key = "inSC." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         short ord = nbtRoot.getShort(key);
-        if(ord >= 0 && ord < DyeColor.values().length) {
+        if (ord >= 0 && ord < DyeColor.values().length) {
           inputColors.put(dir, DyeColor.values()[ord]);
         }
       }
 
       key = "outSC." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         short ord = nbtRoot.getShort(key);
-        if(ord >= 0 && ord < DyeColor.values().length) {
+        if (ord >= 0 && ord < DyeColor.values().length) {
           outputColors.put(dir, DyeColor.values()[ord]);
         }
       }
     }
 
-    if(!nbtRoot.hasKey("conModes")) {
+    if (!nbtRoot.hasKey("conModes")) {
       //all externals where on default so need to switch them to the old default
       for (EnumFacing dir : externalConnections) {
         conectionModes.put(dir, ConnectionMode.OUTPUT);
@@ -883,13 +884,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   }
 
   // TODO Inventory
-//  @Override
-//  public boolean onNeighborChange(@Nonnull BlockPos neighbourPos) {
-//    if (neighbourPos != null && network != null && network.hasDatabase()) {
-//      network.getDatabase().onNeighborChange(neighbourPos);
-//    }
-//    return super.onNeighborChange(neighbourPos);
-//  }
+  //  @Override
+  //  public boolean onNeighborChange(@Nonnull BlockPos neighbourPos) {
+  //    if (neighbourPos != null && network != null && network.hasDatabase()) {
+  //      network.getDatabase().onNeighborChange(neighbourPos);
+  //    }
+  //    return super.onNeighborChange(neighbourPos);
+  //  }
 
   @SideOnly(Side.CLIENT)
   @Override
@@ -921,19 +922,22 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     return new ItemConduitNetwork();
   }
 
-//  @SideOnly(Side.CLIENT)
-//  @Override
-//  public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
-//    return new ItemSettings(gui, con);
-//  }
+  //  @SideOnly(Side.CLIENT)
+  //  @Override
+  //  public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
+  //    return new ItemSettings(gui, con);
+  //  }
 
   @SideOnly(Side.CLIENT)
-  @Nonnull @Override public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IConduit con) {
-    return new ItemSettings(gui, con);
+  @Nonnull
+  @Override
+  public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IConduit con) {
+    return new ItemSettings((GuiExternalConnection) gui, con); // TODO abstract this better for base
   }
 
   @SideOnly(Side.CLIENT)
-  @Override public int getGuiPanelTabOrder() {
+  @Override
+  public int getGuiPanelTabOrder() {
     return 0;
   }
 }

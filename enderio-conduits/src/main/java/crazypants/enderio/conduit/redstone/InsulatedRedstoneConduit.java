@@ -36,6 +36,7 @@ import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.IConduitComponent;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.RedstoneSettings;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import net.minecraft.block.Block;
@@ -865,9 +866,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @SideOnly(Side.CLIENT)
   @Nonnull
   @Override
-  public ITabPanel createGuiPanel(@Nonnull Object gui) {
-    return new RedstoneSettings(gui, con);
+  public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IConduit con) {
+    return new RedstoneSettings((GuiExternalConnection) gui, con);
   }
+
 
   @SideOnly(Side.CLIENT)
   @Override

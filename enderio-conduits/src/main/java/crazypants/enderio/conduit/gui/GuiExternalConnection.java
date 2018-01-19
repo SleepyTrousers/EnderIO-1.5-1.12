@@ -13,6 +13,7 @@ import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
+import crazypants.enderio.conduit.TileConduitBundle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -41,7 +42,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
   private final IExternalConnectionContainer container;
 
   public GuiExternalConnection(@Nonnull InventoryPlayer playerInv, @Nonnull IConduitBundle bundle, @Nonnull EnumFacing dir) {
-    super(new ExternalConnectionContainer(playerInv, bundle, dir), "externalConduitConnection", "itemFilter");
+    super(new ExternalConnectionContainer(playerInv, dir, (TileConduitBundle) bundle.getEntity()), "externalConduitConnection", "itemFilter");
     container = (ExternalConnectionContainer) inventorySlots;
     this.playerInv = playerInv;
     this.bundle = bundle;

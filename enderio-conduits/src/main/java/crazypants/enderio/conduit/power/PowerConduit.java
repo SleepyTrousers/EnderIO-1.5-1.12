@@ -19,6 +19,7 @@ import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.IConduitComponent;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.PowerSettings;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import net.minecraft.block.Block;
@@ -507,7 +508,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   @Nonnull
   @Override
   public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IConduit con) {
-    return new PowerSettings(gui, con);
+    return new PowerSettings((GuiExternalConnection) gui, con); // TODO find a better way to abstract this for base
   }
 
   @SideOnly(Side.CLIENT)
