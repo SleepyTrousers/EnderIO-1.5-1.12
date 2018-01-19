@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.ShortCallback;
 import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
@@ -15,6 +16,8 @@ import crazypants.enderio.base.capacitor.CapacitorKeyType;
 import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.Scaler;
+import crazypants.enderio.base.integration.IIntegration;
+import crazypants.enderio.base.integration.IntegrationRegistry;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
@@ -81,7 +84,18 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
       return true;
     }
     // Covers protected and private access modes
-    return isOwnerUser(UserIdent.create(playerName.getGameProfile())) || isAuthorisedUser(UserIdent.create(playerName.getGameProfile()));
+    boolean sameTeam = NNList.wrap(IntegrationRegistry.REGISTRY).apply(new ShortCallback<IIntegration>() {
+      @Override
+      public boolean apply(IIntegration e) {
+        return e.isInSameTeam(UserIdent.create(playerName.getGameProfile()), getOwner());
+      }
+    }
+
+    );
+
+    // TODO TeamMode button
+
+    return isOwnerUser(UserIdent.create(playerName.getGameProfile())) || isAuthorisedUser(UserIdent.create(playerName.getGameProfile())) || sameTeam;
   }
 
   @Override

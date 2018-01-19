@@ -1,0 +1,20 @@
+[
+{
+  "modid": "enderio-integration-ftbl",
+  "name": "Ender IO Integration Ftbl",
+  "description": "Integration ;)",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://enderio.com",
+  "updateUrl": "",
+  "authorList": [ "CrazyPants", "tterrag", "HenryLoenwind", "MatthiasM" , "CyanideX"],
+  "credits": "By CrazyPants, with the help of many",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"enderio",
+  "dependencies": [
+        "enderio"
+  ]
+}
+]
