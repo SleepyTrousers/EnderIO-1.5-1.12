@@ -14,5 +14,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="GradleStartServer"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="enderio-integration-ftbl"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dfml.coreMods.load=com.enderio.core.common.transform.EnderCorePlugin -DINDEV=1"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:EnderIO/enderio-machines/run}"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:EnderIO/run}"/>
 </launchConfiguration>
