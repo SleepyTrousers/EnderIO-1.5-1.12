@@ -165,42 +165,14 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
     return new FluidTankProperties[] { new FluidTankProperties(tank.getFluid(), tank.getCapacity()) };
   }
 
-  // TODO Clean up this mess of code
   @Override
   public int fill(FluidStack resource, boolean doFill) {
-    if (network == null || resource == null) {
-      return 0;
-    }
-
-    // Note: This is just a guard against mekansims pipes that will continuously
-    // call
-    // fill on us if we push liquid to them. TODO See if this is still an issue
-    //    if (filledFromThisTick.contains(getBundle().getLocation().offset(from))) {
-    //      return 0;
-    //    }
-
-    if (network.lockNetworkForFill()) {
-      //      if (doFill) {
-      //        filledFromThisTick.add(getBundle().getLocation().offset(from));
-      //      }
-      try {
-        int res = fill(resource, doFill, true, network == null ? -1 : network.getNextPushToken());
-        return res;
-      } finally {
-        network.unlockNetworkFromFill();
-
-      }
-    } else {
-      return 0;
-    }
+    return 0;
   }
 
   @Nullable
   @Override
   public FluidStack drain(FluidStack resource, boolean doDrain) {
-    if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
-      return null;
-    }
     return drain(resource.amount, doDrain);
   }
 
@@ -212,14 +184,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   // --------------- End -------------------------
 
-  public int fill(FluidStack resource, boolean doFill, boolean doPush, int pushToken) {
-    if (resource == null || resource.amount <= 0) {
-      return 0;
-    }
-
-    if (network == null) {
-      return 0;
-    }
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill, boolean doPush, int pushToken) {
     if (network.canAcceptLiquid(resource)) {
       network.setFluidType(resource);
     } else {
@@ -229,8 +194,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
     resource.amount = Math.min(MAX_IO_PER_TICK, resource.amount);
 
     if (doPush) {
-      // TODO null is a work around that may not actually work. Will need testing to confirm
-      return pushLiquid(null, resource, doFill, pushToken);
+      return pushLiquid(from, resource, doFill, pushToken);
     } else {
       return tank.fill(resource, doFill);
     }
@@ -303,7 +267,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   @Override
   public boolean canFill(EnumFacing from, FluidStack fluid) {
-    if (!getConnectionMode(from).acceptsInput()) {
+    if (!getConnectionMode(from).acceptsInput() || network == null || fluid == null || fluid.amount <= 0) {
       return false;
     }
     if (tank.getFluid() == null) {
@@ -454,11 +418,20 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-      int result = LiquidConduit.this.fill(resource, doFill);
-      if (doFill && externalConnections.contains(side) && network != null) {
-        network.addedFromExternal(result);
+      if (canFill(side, resource) && network.lockNetworkForFill()) {
+        try {
+          int res = LiquidConduit.this.fill(side, resource, doFill, true, network == null ? -1 : network.getNextPushToken());
+          if (doFill && externalConnections.contains(side) && network != null) {
+            network.addedFromExternal(res);
+          }
+          return res;
+        } finally {
+          network.unlockNetworkFromFill();
+
+        }
+      } else {
+        return 0;
       }
-      return result;
     }
   }
 
