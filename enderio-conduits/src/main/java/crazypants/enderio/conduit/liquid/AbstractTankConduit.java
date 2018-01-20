@@ -247,6 +247,20 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     }
   }
 
+  public boolean canFill(EnumFacing side, FluidStack fluid) {
+    if (getNetwork() == null || !getConnectionMode(side).acceptsInput()) {
+      return false;
+    }
+    return canExtractFromDir(side) && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), fluid);
+  }
+
+  public boolean canDrain(EnumFacing side, FluidStack fluid) {
+    if (getNetwork() == null || !getConnectionMode(side).acceptsOutput()) {
+      return false;
+    }
+    return canInputToDir(side) && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), fluid);
+  }
+
   // ---------- CAPABILITIES ----------
 
   @Override
@@ -273,7 +287,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
    * @param dir side for the capability
    * @return returns the connection with reference to the relevant side
    */
-  private IFluidHandler getFluidDir(EnumFacing dir) {
+  protected IFluidHandler getFluidDir(EnumFacing dir) {
     if (dir != null) {
       return new ConnectionTankSide(dir);
     }
@@ -284,24 +298,10 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
    * Inner class for holding the direction of capabilities.
    */
   protected class ConnectionTankSide implements IFluidHandler {
-    private EnumFacing side;
+    protected EnumFacing side;
 
     public ConnectionTankSide(EnumFacing side) {
       this.side = side;
-    }
-
-    public boolean canFill(FluidStack fluid) {
-      if (getNetwork() == null || !getConnectionMode(side).acceptsInput()) {
-        return false;
-      }
-      return canExtractFromDir(side) && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), fluid);
-    }
-
-    public boolean canDrain(FluidStack fluid) {
-      if (getNetwork() == null || !getConnectionMode(side).acceptsOutput()) {
-        return false;
-      }
-      return canInputToDir(side) && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), fluid);
     }
 
     @Override
@@ -311,7 +311,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-      if (canFill(resource)) {
+      if (canFill(side, resource)) {
         return AbstractTankConduit.this.fill(resource, doFill);
       }
       return 0;
@@ -320,7 +320,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     @Nullable
     @Override
     public FluidStack drain(FluidStack resource, boolean doDrain) {
-      if (canDrain(resource)) {
+      if (canDrain(side, resource)) {
         return AbstractTankConduit.this.drain(resource, doDrain);
       }
       return null;
@@ -329,7 +329,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     @Nullable
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
-      if (canDrain(null)) {
+      if (canDrain(side, null)) {
         return AbstractTankConduit.this.drain(maxDrain, doDrain);
       }
       return null;
