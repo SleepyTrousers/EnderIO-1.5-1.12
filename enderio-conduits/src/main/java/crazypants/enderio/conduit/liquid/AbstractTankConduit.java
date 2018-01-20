@@ -19,14 +19,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
 public abstract class AbstractTankConduit extends AbstractLiquidConduit {
@@ -259,81 +254,6 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
       return false;
     }
     return canInputToDir(side) && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), fluid);
-  }
-
-  // ---------- CAPABILITIES ----------
-
-  @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return facing == null;
-    }
-    return false;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Nullable
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return (T) this.getFluidDir(facing);
-    }
-    return null;
-  }
-
-  /**
-   * Used to get the capability of the conduit for the given direction
-   *
-   * @param dir side for the capability
-   * @return returns the connection with reference to the relevant side
-   */
-  protected IFluidHandler getFluidDir(EnumFacing dir) {
-    if (dir != null) {
-      return new ConnectionTankSide(dir);
-    }
-    return this;
-  }
-
-  /**
-   * Inner class for holding the direction of capabilities.
-   */
-  protected class ConnectionTankSide implements IFluidHandler {
-    protected EnumFacing side;
-
-    public ConnectionTankSide(EnumFacing side) {
-      this.side = side;
-    }
-
-    @Override
-    public IFluidTankProperties[] getTankProperties() {
-      return AbstractTankConduit.this.getTankProperties();
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-      if (canFill(side, resource)) {
-        return AbstractTankConduit.this.fill(resource, doFill);
-      }
-      return 0;
-    }
-
-    @Nullable
-    @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
-      if (canDrain(side, resource)) {
-        return AbstractTankConduit.this.drain(resource, doDrain);
-      }
-      return null;
-    }
-
-    @Nullable
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-      if (canDrain(side, null)) {
-        return AbstractTankConduit.this.drain(maxDrain, doDrain);
-      }
-      return null;
-    }
   }
 
 }

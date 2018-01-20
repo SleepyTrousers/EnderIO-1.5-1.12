@@ -23,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
@@ -158,9 +159,13 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   @Override
   public IFluidTankProperties[] getTankProperties() {
-    return new IFluidTankProperties[0];
+    if (network == null) {
+      return new FluidTankProperties[0];
+    }
+    return new FluidTankProperties[] { new FluidTankProperties(tank.getFluid(), tank.getCapacity()) };
   }
 
+  // TODO Clean up this mess of code
   @Override
   public int fill(FluidStack resource, boolean doFill) {
     if (network == null || resource == null) {
@@ -428,7 +433,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   }
 
   @Override
-  protected IFluidHandler getFluidDir(EnumFacing dir) {
+  public IFluidHandler getFluidDir(EnumFacing dir) {
     if (dir != null) {
       return new ConnectionLiquidConduitSide(dir);
     }
@@ -441,7 +446,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
     return new LiquidConduitNetwork();
   }
 
-  protected class ConnectionLiquidConduitSide extends ConnectionTankSide {
+  protected class ConnectionLiquidConduitSide extends ConnectionLiquidSide {
 
     public ConnectionLiquidConduitSide(EnumFacing side) {
       super(side);

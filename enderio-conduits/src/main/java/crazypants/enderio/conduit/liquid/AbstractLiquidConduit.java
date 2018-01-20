@@ -13,10 +13,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.Map.Entry;
 
@@ -182,6 +188,76 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   @Override
   public int getGuiPanelTabOrder() {
     return 1;
+  }
+
+  @Override
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+    {
+      return facing != null; // TODO Is this right?
+    }
+    return false;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Nullable
+  @Override
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+    {
+      return (T) getFluidDir(facing);
+    }
+    return null;
+  }
+
+  @Override
+  public IFluidHandler getFluidDir(EnumFacing dir) {
+    if (dir != null) {
+      return new ConnectionLiquidSide(dir);
+    }
+    return this;
+  }
+
+  /**
+   * Inner class for holding the direction of capabilities.
+   */
+  protected class ConnectionLiquidSide implements IFluidHandler {
+    protected EnumFacing side;
+
+    public ConnectionLiquidSide(EnumFacing side) {
+      this.side = side;
+    }
+
+    @Override
+    public IFluidTankProperties[] getTankProperties() {
+      return AbstractLiquidConduit.this.getTankProperties();
+    }
+
+    @Override
+    public int fill(FluidStack resource, boolean doFill) {
+      if (canFill(side, resource)) {
+        return AbstractLiquidConduit.this.fill(resource, doFill);
+      }
+      return 0;
+    }
+
+    @Nullable
+    @Override
+    public FluidStack drain(FluidStack resource, boolean doDrain) {
+      if (canDrain(side, resource)) {
+        return AbstractLiquidConduit.this.drain(resource, doDrain);
+      }
+      return null;
+    }
+
+    @Nullable
+    @Override
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+      if (canDrain(side, null)) {
+        return AbstractLiquidConduit.this.drain(maxDrain, doDrain);
+      }
+      return null;
+    }
   }
 
 }

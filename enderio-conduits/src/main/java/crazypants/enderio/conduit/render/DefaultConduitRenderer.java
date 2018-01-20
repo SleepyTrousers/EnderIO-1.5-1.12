@@ -57,7 +57,7 @@ public abstract class DefaultConduitRenderer implements IConduitRenderer {
   // ------------ Static Model ---------------------------------------------
 
   @Override
-  public void addBakedQuads(TileEntitySpecialRenderer conduitBundleRenderer, IConduitBundle bundle, IConduit.WithDefaultRendering conduit, float brightness, BlockRenderLayer layer,
+  public void addBakedQuads(TileEntitySpecialRenderer<?> conduitBundleRenderer, IConduitBundle bundle, IConduit.WithDefaultRendering conduit, float brightness, BlockRenderLayer layer,
       List<BakedQuad> quads) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();

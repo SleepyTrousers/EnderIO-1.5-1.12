@@ -1,16 +1,7 @@
 package crazypants.enderio.conduit.liquid;
 
-import static crazypants.enderio.conduit.init.ConduitObject.item_liquid_conduit;
-
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.vecmath.Vector4f;
-
 import crazypants.enderio.base.conduit.*;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -26,13 +17,23 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import static crazypants.enderio.conduit.init.ConduitObject.item_liquid_conduit;
 
 public class EnderLiquidConduit extends AbstractLiquidConduit implements IConduitComponent {
 
@@ -268,19 +269,37 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   }
 
-  //Fluid API
-  // TODO Confirm removal of EnumFacing from
+  // ---------- Fluid Capability -----------------
 
+  // Fill and Tank properties are both sided, and are handled below
   @Override
   public int fill(FluidStack resource, boolean doFill) {
-    if(network == null || !getConnectionMode(from).acceptsInput()) {
-      return 0;
-    }
-    return network.fillFrom(this, from, resource, doFill);
+    return 0;
   }
 
   @Override
-  public boolean canFill(EnumFacing from, Fluid fluid) {
+  public IFluidTankProperties[] getTankProperties() {
+    return new IFluidTankProperties[0];
+  }
+
+  @Nullable
+  @Override
+  public FluidStack drain(FluidStack resource, boolean doDrain) {
+    return null;
+  }
+
+  @Nullable
+  @Override
+  public FluidStack drain(int maxDrain, boolean doDrain) {
+    return null;
+  }
+
+  // ---------- End ------------------------------
+
+  //Fluid API
+
+  @Override
+  public boolean canFill(EnumFacing from, FluidStack fluid) {
     if(network == null) {
       return false;
     }
@@ -288,26 +307,8 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   }
 
   @Override
-  public boolean canDrain(EnumFacing from, Fluid fluid) {
+  public boolean canDrain(EnumFacing from, FluidStack fluid) {
     return false;
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    return null;
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    return null;
-  }
-
-  @Override
-  public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    if(network == null) {
-      return new FluidTankInfo[0];
-    }
-    return network.getTankProperties(this, from);
   }
   
   @Override
@@ -400,4 +401,38 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     return new EnderLiquidConduitNetwork();
   }
 
+  @SuppressWarnings("unchecked")
+  @Nullable
+  @Override
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+    {
+      return (T) new ConnectionEnderLiquidSide(facing);
+    }
+    return null;
+  }
+
+  protected class ConnectionEnderLiquidSide extends ConnectionLiquidSide
+  {
+    public ConnectionEnderLiquidSide(EnumFacing side) {
+      super(side);
+    }
+
+    @Override
+    public int fill(FluidStack resource, boolean doFill) {
+      if (canFill(side, resource))
+      {
+        return network.fillFrom(EnderLiquidConduit.this, side, resource, doFill);
+      }
+      return 0;
+    }
+
+    @Override
+    public IFluidTankProperties[] getTankProperties() {
+      if(network == null) {
+        return new FluidTankProperties[0];
+      }
+      return network.getTankProperties(EnderLiquidConduit.this, side);
+    }
+  }
 }
