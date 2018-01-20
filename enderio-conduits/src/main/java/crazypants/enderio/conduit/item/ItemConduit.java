@@ -10,6 +10,7 @@ import crazypants.enderio.base.conduit.*;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -38,7 +39,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -458,7 +458,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   private void checkInventoryConnections(@Nonnull EnumFacing direction) {
     if (network != null) {
       BlockPos p = bundle.getEntity().getPos().offset(direction);
-      NetworkedInventory networkedInventory = network.getInventory(this, direction);
+      INetworkedInventory networkedInventory = network.getInventory(this, direction);
       if (externalConnections.contains(direction) && getConnectionMode(direction) != ConnectionMode.DISABLED) {
         if (networkedInventory == null) {
           network.inventoryAdded(this, direction, p, getExternalInventory(direction));
