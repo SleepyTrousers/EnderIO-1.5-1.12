@@ -27,7 +27,7 @@ public class EnderIOIntegrationFtbl implements IEnderIOAddon {
   public static final @Nonnull String MOD_NAME = "Ender IO Integration FTBL";
   public static final @Nonnull String VERSION = "@VERSION@";
 
-  private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:" + crazypants.enderio.base.EnderIO.MODID;
+  private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:" + crazypants.enderio.base.EnderIO.MODID + ";after:ftbl";
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
 
   @EventHandler
