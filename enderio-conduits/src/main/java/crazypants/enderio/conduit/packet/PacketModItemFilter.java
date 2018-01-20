@@ -1,7 +1,7 @@
 package crazypants.enderio.conduit.packet;
 
+import crazypants.enderio.base.filter.filters.ModItemFilter;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.filter.ModItemFilter;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
