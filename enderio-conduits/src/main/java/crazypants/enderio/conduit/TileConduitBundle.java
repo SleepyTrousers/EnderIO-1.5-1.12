@@ -36,10 +36,8 @@ import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
-import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.oc.IOCConduit;
-import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
@@ -57,10 +55,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -127,7 +121,26 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
+  public int getInternalRedstoneSignalForColor(@Nonnull DyeColor col) {
+    return 15;
+  }
+
+  @Override
+  public boolean handleFacadeClick(World world, BlockPos placeAt, EntityPlayer player, EnumFacing opposite, ItemStack stack, EnumHand hand,
+      float hitX, float hitY, float hitZ) {
+    // TODO make this more useful
+    return false;
+  }
+
+  // TODO Make each conduit use its own probe data
+  @Nonnull
+  @Override
+  public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
+    return new String[0];
+  }
+
+  @Override
+  protected void writeCustomNBT(NBTTagCompound nbtRoot) {
     NBTTagList conduitTags = new NBTTagList();
     for (IConduit conduit : conduits) {
       NBTTagCompound conduitRoot = new NBTTagCompound();
@@ -691,123 +704,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
         return conduit.getCapability(capability, facing);
     }
     return super.getCapability(capability, facing);
-  }
-
-  // TODO Find a way to separate conduit types
-//  // ------------ Power -----------------------------
-//
-//  @Override
-//  public int receiveEnergy(@Nonnull EnumFacing from, int maxReceive, boolean simulate) {
-//    IPowerConduit pc = getConduit(IPowerConduit.class);
-//    if (pc != null) {
-//      return pc.receiveEnergy(from, maxReceive, simulate);
-//    }
-//    return 0;
-//  }
-//
-//  @Override
-//  public boolean canConnectEnergy(@Nonnull EnumFacing from) {
-//    IPowerConduit pc = getConduit(IPowerConduit.class);
-//    if (pc != null) {
-//      return pc.canConnectEnergy(from);
-//    }
-//    return false;
-//  }
-//
-//  @Override
-//  public int getMaxEnergyStored(@Nonnull EnumFacing from) {
-//    IPowerConduit pc = getConduit(IPowerConduit.class);
-//    if (pc != null) {
-//      return pc.getMaxEnergyStored(null);
-//    }
-//    return 0;
-//  }
-//
-//  @Override
-//  public int getMaxEnergyRecieved(EnumFacing dir) {
-//    IPowerConduit pc = getConduit(IPowerConduit.class);
-//    if (pc != null) {
-//      return pc.getMaxEnergyRecieved(dir);
-//    }
-//    return 0;
-//  }
-//
-//  @Override
-//  public int getEnergyStored(EnumFacing from) {
-//    IPowerConduit pc = getConduit(IPowerConduit.class);
-//    if (pc != null) {
-//      return pc.getEnergyStored(from);
-//    }
-//    return 0;
-//  }
-//
-//  public int getMaxEnergyStored() {
-//    return getMaxEnergyStored(null);
-//  }
-//
-//  @Override
-//  public void setEnergyStored(int stored) {
-//    IPowerConduit pc = getConduit(IPowerConduit.class);
-//    if (pc != null) {
-//      pc.setEnergyStored(stored);
-//    }
-//
-//  }
-
-  //------- Liquids -----------------------------
-
-  @Override
-  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    ILiquidConduit lc = getConduit(ILiquidConduit.class);
-    if (lc != null) {
-      return lc.fill(from, resource, doFill);
-    }
-    return 0;
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    ILiquidConduit lc = getConduit(ILiquidConduit.class);
-    if (lc != null) {
-      return lc.drain(from, resource, doDrain);
-    }
-    return null;
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    ILiquidConduit lc = getConduit(ILiquidConduit.class);
-    if (lc != null) {
-      return lc.drain(from, maxDrain, doDrain);
-    }
-    return null;
-  }
-
-  @Override
-  public boolean canFill(EnumFacing from, Fluid fluid) {
-    ILiquidConduit lc = getConduit(ILiquidConduit.class);
-    if (lc != null) {
-      return lc.canFill(from, fluid);
-    }
-    return false;
-  }
-
-  @Override
-  public boolean canDrain(EnumFacing from, Fluid fluid) {
-    ILiquidConduit lc = getConduit(ILiquidConduit.class);
-    if (lc != null) {
-      return lc.canDrain(from, fluid);
-    }
-    return false;
-  }
-
-  @Override
-  public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    ILiquidConduit lc = getConduit(ILiquidConduit.class);
-    if (lc != null) {
-      return lc.getTankInfo(from);
-    }
-    return new FluidTankInfo[0];
   }
 
   @Override
