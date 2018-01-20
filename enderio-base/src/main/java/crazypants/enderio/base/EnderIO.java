@@ -32,7 +32,6 @@ import crazypants.enderio.base.integration.bigreactors.BRProxy;
 import crazypants.enderio.base.integration.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.base.integration.chiselsandbits.CABIMC;
 import crazypants.enderio.base.integration.te.TEUtil;
-import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradePowerAdapter;
 import crazypants.enderio.base.item.spawner.BrokenSpawnerHandler;
 import crazypants.enderio.base.loot.Loot;
@@ -138,7 +137,7 @@ public class EnderIO implements IEnderIOAddon {
 
     GuiHelper.init(event);
 
-    MaterialRecipes.init(event);
+    MaterialRecipes.init(event); // handles oredict registration
 
     // Register the enchants
     Enchantments.init(event);
@@ -174,7 +173,6 @@ public class EnderIO implements IEnderIOAddon {
     // ThaumcraftCompat.load();
     BuildcraftIntegration.init(event);
     TEUtil.init(event);
-    TicProxy.init(event);
 
     proxy.init(event);
 
