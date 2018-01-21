@@ -1,0 +1,20 @@
+[
+{
+  "modid": "enderio-integration-tic",
+  "name": "Ender IO Integration with Tinkers' Construct",
+  "description": "I'm melting!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://enderio.com",
+  "updateUrl": "",
+  "authorList": [ "CrazyPants", "tterrag", "HenryLoenwind", "MatthiasM" , "CyanideX"],
+  "credits": "By CrazyPants, with the help of many",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"enderio",
+  "dependencies": [
+        "enderio"
+  ]
+}
+]
