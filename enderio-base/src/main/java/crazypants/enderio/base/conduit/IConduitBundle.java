@@ -26,44 +26,62 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @InterfaceList({ @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
     @Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputersAPI|Network"),
     @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network"), })
 public interface IConduitBundle extends IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IGridHost, IHasConduitProbeData {
 
+  /**
+   * @return Tile Entity of the Conduit Bundle
+   */
   @Nonnull
   TileEntity getEntity();
 
+  /**
+   * Location of the Bundle
+   * @return
+   */
   @Nonnull
   BlockPos getLocation();
 
   // conduits
 
+  /**
+   * Checks if the bundle contains the given conduit type
+   * @param type Class of the conduit to check for the type of
+   * @return true if the bundle has the given type of conduit
+   */
   boolean hasType(Class<? extends IConduit> type);
 
+  /**
+   * Gets a conduit of the given conduit type
+   * @param type the type of conduit to get
+   * @param <T> the conduit type to return
+   * @return the conduit of the given type
+   */
   <T extends IConduit> T getConduit(Class<T> type);
 
+  /**
+   * Adds a conduit to the bundle
+   * @param conduit the conduit to add
+   */
   void addConduit(IConduit conduit);
 
+  /**
+   * removes a conduit from the bundle
+   * @param conduit the conduit to remove
+   */
   void removeConduit(IConduit conduit);
 
+  /**
+   * @return Collection of all the conduits in the bundle
+   */
   Collection<IConduit> getConduits();
 
-  Offset getOffset(Class<? extends IConduit> type, EnumFacing dir);
-
-  // connections
-
-  Set<EnumFacing> getConnections(Class<? extends IConduit> type);
-
-  boolean containsConnection(Class<? extends IConduit> type, EnumFacing west);
-
-  Set<EnumFacing> getAllConnections();
-
-  boolean containsConnection(EnumFacing dir);
-
   // geometry
+
+  Offset getOffset(Class<? extends IConduit> type, EnumFacing dir);
 
   List<CollidableComponent> getCollidableComponents();
 
@@ -115,6 +133,7 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, Environ
 
   void setGridNode(Object node);
 
+  // TODO find out what this does
   int getInternalRedstoneSignalForColor(DyeColor col);
 
   boolean handleFacadeClick(World world, BlockPos placeAt, EntityPlayer player, EnumFacing opposite, ItemStack stack, EnumHand hand, float hitX, float hitY,
