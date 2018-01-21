@@ -1,35 +1,20 @@
 package crazypants.enderio.conduit;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.Util;
-
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.GuiID;
-import crazypants.enderio.base.conduit.ConduitDisplayMode;
-import crazypants.enderio.base.conduit.ConduitUtil;
-import crazypants.enderio.base.conduit.IConduit;
-import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.*;
 import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
-import crazypants.enderio.base.conduit.IConduitItem;
-import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.facade.EnumFacadeType;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.conduitprobe.ItemConduitProbe;
 import crazypants.enderio.base.network.PacketHandler;
@@ -41,20 +26,9 @@ import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.gui.GuiExternalConnectionSelector;
 import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.conduit.liquid.PacketFluidLevel;
-import crazypants.enderio.conduit.packet.PacketConnectionMode;
-import crazypants.enderio.conduit.packet.PacketExistingItemFilterSnapshot;
-import crazypants.enderio.conduit.packet.PacketExtractMode;
-import crazypants.enderio.conduit.packet.PacketFluidFilter;
-import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
-import crazypants.enderio.conduit.packet.PacketModItemFilter;
-import crazypants.enderio.conduit.packet.PacketOCConduitSignalColor;
-import crazypants.enderio.conduit.packet.PacketOpenConduitUI;
-import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
-import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
-import crazypants.enderio.conduit.packet.PacketSlotVisibility;
+import crazypants.enderio.conduit.packet.*;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
@@ -68,6 +42,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.particle.ParticleDigging;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -76,14 +51,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -96,15 +68,16 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
 
-import static crazypants.enderio.base.ModObject.blockTank;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 
-public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IGuiHandler, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
+public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IEioGuiHandler.WithPos, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockConduitBundle create() {
 
@@ -166,10 +139,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @Override
   protected void init() {
     super.init();
-    for (EnumFacing dir : EnumFacing.VALUES) {
-      GuiID.registerGuiHandler(GuiID.facing2guiid(dir), this);
-    }
-    GuiID.registerGuiHandler(GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, this);
     SmartModelAttacher.registerNoProps(this);
   }
 
@@ -230,7 +199,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       }
     }
     if (tex == null) {
-      tex = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(blockTank.getBlock().getDefaultState());
+      tex = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(ModObject.block_machine_base.getBlock().getDefaultState());
     }
     lastHitIcon = tex;
     BlockPos p = target.getBlockPos();
@@ -241,8 +210,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @Override
   public boolean addLandingEffects(@Nonnull IBlockState state, @Nonnull net.minecraft.world.WorldServer world, @Nonnull BlockPos bp,
       @Nonnull IBlockState iblockstate, @Nonnull EntityLivingBase entity, int numberOfParticles) {
-    //TODO: Should probably register a dummy state for this, but this gives a nice generic grey color for non facded blocks
-    int stateId = Block.getStateId(blockTank.getBlock().getDefaultState());
+    //TODO: Should probably register a dummy state for this, but this is an easy fix for the blockTank that allows testing to begin
+    int stateId = Block.getStateId(ModObject.block_machine_base.getBlock().getDefaultState());
     TileConduitBundle te = getTileEntity(world, bp);
     if(te != null) {
       IBlockState ps = te.getPaintSource();
@@ -258,7 +227,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @Override
   public boolean addDestroyEffects(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ParticleManager effectRenderer) {
     if (lastHitIcon == null) {
-      lastHitIcon = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(blockTank.getBlock().getDefaultState());
+      lastHitIcon = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(ModObject.block_machine_base.getBlock().getDefaultState());
     }
     
     IBlockState state = world.getBlockState(pos);
@@ -709,7 +678,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         }
       } else {
         if (!world.isRemote) {
-          GuiID.facing2guiid(closest.component.dir).openGui(world, pos, player, side);
+//          GuiID.facing2guiid(closest.component.dir).openGui(world, pos, player, side);
+          openGui(world, pos, player, side);
         }
         return true;
       }
@@ -852,29 +822,33 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
     return a.getBlock().getMetaFromState(a) == b.getBlock().getMetaFromState(b);
   }
-
+  @Nullable
   @Override
-  public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-    if (GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.is(id)) {
-      return null;
-    }
+  public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nullable EnumFacing facing, int param1) {
+//    if (GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.is(id)) {
+//      return null;
+//    }
     // The server needs the container as it manages the adding and removing of
     // items, which are then sent to the client for display
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+    TileEntity te = world.getTileEntity(pos);
     if (te instanceof IConduitBundle) {
-      return new ExternalConnectionContainer(player.inventory, (IConduitBundle) te, GuiID.guiid2facing(GuiID.byID(id)));
+      return new ExternalConnectionContainer(player.inventory, facing, (TileConduitBundle) te);
     }
     return null;
   }
 
+  @SideOnly(Side.CLIENT)
+  @Nullable
   @Override
-  public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+  public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nullable EnumFacing facing, int param1) {
+    TileEntity te = world.getTileEntity(pos);
     if (te instanceof IConduitBundle) {
-      if (GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.is(id)) {
-        return new GuiExternalConnectionSelector((IConduitBundle) te);
-      }
-      return new GuiExternalConnection(player.inventory, (IConduitBundle) te, GuiID.guiid2facing(GuiID.byID(id)));
+//      if (GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.is(id)) {
+//        return new GuiExternalConnectionSelector((IConduitBundle) te);
+//      }
+      return new GuiExternalConnection(player.inventory, (IConduitBundle) te, facing);
     }
     return null;
   }
