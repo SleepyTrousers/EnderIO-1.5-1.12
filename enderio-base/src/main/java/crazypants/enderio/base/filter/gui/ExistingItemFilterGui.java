@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit.gui.item;
+package crazypants.enderio.base.filter.gui;
 
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.IGuiScreen;
@@ -11,9 +11,6 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.ExistingItemFilter;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.packet.PacketExistingItemFilterSnapshot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
@@ -27,15 +24,15 @@ import java.util.List;
 
 public class ExistingItemFilterGui implements IItemFilterGui {
 
-  private static final int ID_NBT = GuiExternalConnection.nextButtonId();
-  private static final int ID_META = GuiExternalConnection.nextButtonId();
-  private static final int ID_ORE_DICT = GuiExternalConnection.nextButtonId();
-  private static final int ID_STICKY = GuiExternalConnection.nextButtonId();
+  private static final int ID_NBT = FilterGuiUtil.nextButtonId();
+  private static final int ID_META = FilterGuiUtil.nextButtonId();
+  private static final int ID_ORE_DICT = FilterGuiUtil.nextButtonId();
+  private static final int ID_STICKY = FilterGuiUtil.nextButtonId();
   
-  private static final int ID_SNAPSHOT = GuiExternalConnection.nextButtonId();
-  private static final int ID_CLEAR = GuiExternalConnection.nextButtonId();
-  private static final int ID_SHOW = GuiExternalConnection.nextButtonId();
-  private static final int ID_MERGE = GuiExternalConnection.nextButtonId();
+  private static final int ID_SNAPSHOT = FilterGuiUtil.nextButtonId();
+  private static final int ID_CLEAR = FilterGuiUtil.nextButtonId();
+  private static final int ID_SHOW = FilterGuiUtil.nextButtonId();
+  private static final int ID_MERGE = FilterGuiUtil.nextButtonId();
 
   private final GuiContainerBaseEIO gui;
   private final IItemFilterContainer filterContainer;
@@ -184,17 +181,17 @@ public class ExistingItemFilterGui implements IItemFilterGui {
       filter.setUseOreDict(useOreDictB.isSelected());
       sendFilterChange();
     } else if(guiButton.id == ID_SNAPSHOT) {
-      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.SET);
+//      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.SET);
     } else if(guiButton.id == ID_CLEAR) {
-      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.CLEAR);
+//      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.CLEAR);
     } else if(guiButton.id == ID_MERGE) {
-      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.MERGE);
+//      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.MERGE);
     } else if(guiButton.id == ID_SHOW) {
       showSnapshotOverlay();  
     } else if (guiButton == whiteListB) {
       filter.setBlacklist(!filter.isBlacklist());
-      sendSnapshotPacket(filter.isBlacklist() ? PacketExistingItemFilterSnapshot.Opcode.SET_BLACK
-          : PacketExistingItemFilterSnapshot.Opcode.UNSET_BLACK);
+//      sendSnapshotPacket(filter.isBlacklist() ? PacketExistingItemFilterSnapshot.Opcode.SET_BLACK
+//          : PacketExistingItemFilterSnapshot.Opcode.UNSET_BLACK);
     }
   }
 
@@ -203,9 +200,9 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   }
 
   // TODO Decouple from Conduits?
-  private void sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode opcode) {
-    PacketHandler.INSTANCE.sendToServer(new PacketExistingItemFilterSnapshot(itemConduit, gui.getDir(),isInput,opcode));
-  }
+//  private void sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode opcode) {
+//    PacketHandler.INSTANCE.sendToServer(new PacketExistingItemFilterSnapshot(itemConduit, gui.getDir(),isInput,opcode));
+//  }
 
   private void sendFilterChange() {
     updateButtons();

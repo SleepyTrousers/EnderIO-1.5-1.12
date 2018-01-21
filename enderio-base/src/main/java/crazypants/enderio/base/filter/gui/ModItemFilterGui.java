@@ -1,26 +1,19 @@
-package crazypants.enderio.conduit.gui.item;
-
-import java.awt.Color;
-import java.awt.Rectangle;
-
-import crazypants.enderio.base.filter.filters.ModItemFilter;
-import crazypants.enderio.base.gui.GuiContainerBaseEIO;
-import org.lwjgl.opengl.GL11;
+package crazypants.enderio.base.filter.gui;
 
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.render.ColorUtil;
-
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.filter.filters.ModItemFilter;
+import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.packet.PacketModItemFilter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 
 public class ModItemFilterGui implements IItemFilterGui {
 
@@ -73,7 +66,7 @@ public class ModItemFilterGui implements IItemFilterGui {
     deleteButs = new IconButton[inputBounds.length];
     for (int i = 0; i < deleteButs.length; i++) {
       Rectangle r = inputBounds[i];
-      IconButton but = new IconButton(gui, GuiExternalConnection.nextButtonId(), r.x + 19, r.y, IconEIO.MINUS);
+      IconButton but = new IconButton(gui, FilterGuiUtil.nextButtonId(), r.x + 19, r.y, IconEIO.MINUS);
       deleteButs[i] = but;
     }
 
@@ -159,14 +152,14 @@ public class ModItemFilterGui implements IItemFilterGui {
   // TODO Decouple from conduits?
   private void setMod(int i, ItemStack st) {
     String mod = filter.setMod(i, st);
-    PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(), isInput, i, mod));
+//    PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(), isInput, i, mod));
 
   }
 
   private void toggleBlacklist() {
     filter.setBlacklist(!filter.isBlacklist());
-    PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(), isInput, -1, filter.isBlacklist() ? "1"
-        : "0"));
+//    PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(), isInput, -1, filter.isBlacklist() ? "1"
+//        : "0"));
   }
 
 }

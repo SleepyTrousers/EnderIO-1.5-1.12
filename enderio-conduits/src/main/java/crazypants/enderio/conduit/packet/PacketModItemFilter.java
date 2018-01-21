@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketModItemFilter extends AbstractConduitPacket<IItemConduit> implements IMessageHandler<PacketModItemFilter, IMessage> {
 
-  private EnumFacing dir;  
+  private EnumFacing dir;
   private boolean isInput;
   private int index;
   private String name;

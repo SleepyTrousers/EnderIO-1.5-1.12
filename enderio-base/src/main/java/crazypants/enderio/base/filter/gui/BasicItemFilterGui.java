@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit.gui.item;
+package crazypants.enderio.base.filter.gui;
 
 import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
@@ -8,7 +8,6 @@ import crazypants.enderio.base.filter.filters.DamageModeIconHolder;
 import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import net.minecraft.client.gui.GuiButton;
 import org.lwjgl.opengl.GL11;
 
@@ -16,12 +15,12 @@ import javax.annotation.Nonnull;
 
 public class BasicItemFilterGui implements IItemFilterGui {
     
-  private static final int ID_WHITELIST = GuiExternalConnection.nextButtonId();
-  private static final int ID_NBT = GuiExternalConnection.nextButtonId();
-  private static final int ID_META = GuiExternalConnection.nextButtonId();
-  private static final int ID_ORE_DICT = GuiExternalConnection.nextButtonId();
-  private static final int ID_STICKY = GuiExternalConnection.nextButtonId();    
-  private static final int ID_DAMAGE = GuiExternalConnection.nextButtonId();
+  private static final int ID_WHITELIST = FilterGuiUtil.nextButtonId();
+  private static final int ID_NBT = FilterGuiUtil.nextButtonId();
+  private static final int ID_META = FilterGuiUtil.nextButtonId();
+  private static final int ID_ORE_DICT = FilterGuiUtil.nextButtonId();
+  private static final int ID_STICKY = FilterGuiUtil.nextButtonId();
+  private static final int ID_DAMAGE = FilterGuiUtil.nextButtonId();
   
   private final GuiContainerBaseEIO gui;
   

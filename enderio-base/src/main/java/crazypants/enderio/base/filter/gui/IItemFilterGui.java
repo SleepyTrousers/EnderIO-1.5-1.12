@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit.gui.item;
+package crazypants.enderio.base.filter.gui;
 
 import net.minecraft.client.gui.GuiButton;
 

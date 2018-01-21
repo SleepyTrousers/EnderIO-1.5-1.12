@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit.gui.item;
+package crazypants.enderio.base.filter.gui;
 
 import crazypants.enderio.base.filter.IItemFilter;
 

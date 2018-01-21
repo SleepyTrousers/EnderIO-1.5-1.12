@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.gui.item;
 
 import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.gui.IItemFilterContainer;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;

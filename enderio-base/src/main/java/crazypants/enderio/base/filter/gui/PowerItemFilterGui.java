@@ -1,21 +1,20 @@
-package crazypants.enderio.conduit.gui.item;
+package crazypants.enderio.base.filter.gui;
 
 import com.enderio.core.client.gui.button.ToggleButton;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.PowerItemFilter;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import net.minecraft.client.gui.GuiButton;
 
 import javax.annotation.Nonnull;
 
 public class PowerItemFilterGui implements IItemFilterGui {
 
-  private static final int ID_STICKY = GuiExternalConnection.nextButtonId();
+  private static final int ID_STICKY = FilterGuiUtil.nextButtonId();
 
-  private static final int ID_MORE = GuiExternalConnection.nextButtonId();
-  private static final int ID_LEVEL = GuiExternalConnection.nextButtonId();
+  private static final int ID_MORE = FilterGuiUtil.nextButtonId();
+  private static final int ID_LEVEL = FilterGuiUtil.nextButtonId();
 
   private final IItemFilterContainer filterContainer;
   private final GuiContainerBaseEIO gui;

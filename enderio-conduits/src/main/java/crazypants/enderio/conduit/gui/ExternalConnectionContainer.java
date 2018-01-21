@@ -32,7 +32,7 @@ import static crazypants.enderio.base.init.ModObject.itemItemFilter;
 import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_upgrade;
 import static crazypants.enderio.conduit.init.ConduitObject.item_function_upgrade;
 
-public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgrades, TileConduitBundle> implements IExternalConnectionContainer{
+public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgrades, TileConduitBundle> implements IExternalConnectionContainer {
 
   private final IItemConduit itemConduit;
 
@@ -54,39 +54,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   public ExternalConnectionContainer(@Nonnull InventoryPlayer playerInv, @Nonnull EnumFacing dir, @Nonnull TileConduitBundle bundle) {
     super(playerInv, new InventoryUpgrades(bundle.getConduit(IItemConduit.class), dir), bundle);
     this.itemConduit = bundle.getConduit(IItemConduit.class);
-//    if (itemConduit != null) {
-//    TODO Kept in case it is needed for specific values, remove later
-//      x = 28;
-//      y = 47;
-//      slotSpeedUpgrades = addSlotToContainer(new Slot(getInv(), 0, x, y) {
-//        @Override
-//        public boolean isItemValid(@Nonnull ItemStack itemStack) {
-//          return getInv().isItemValidForSlot(0, itemStack);
-//        }
-//
-//        @Override
-//        public int getSlotStackLimit() {
-//          return speedUpgradeSlotLimit;
-//        }
-//      });
-//
-//      x = 10;
-//      y = 65;
-//      slotFunctionUpgrades = addSlotToContainer(new Slot(getInv(), 1, x, y) {
-//        @Override
-//        public boolean isItemValid(@Nonnull ItemStack itemStack) {
-//          return getInv().isItemValidForSlot(1, itemStack);
-//        }
-//
-//        @Override
-//        public int getSlotStackLimit() {
-//          return 1;
-//        }
-//      });
-//    }
   }
-
-
 
   @Override
   protected void addSlots() {
@@ -161,7 +129,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   @Override
   public void setInOutSlotsVisible(boolean inputVisible, boolean outputVisible) {
-    if(itemConduit == null) {
+    if (itemConduit == null) {
       return;
     }
     setSlotsVisible(inputVisible, inputFilterSlot, inputFilterSlot + 1);
@@ -169,7 +137,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     setSlotsVisible(outputVisible, outputFilterSlot, outputFilterSlot + 1);
     setSlotsVisible(inputVisible || outputVisible, functionUpgradeSlot, functionUpgradeSlot + 1);
     World world = itemConduit.getBundle().getBundleworld();
-    if(world.isRemote) {
+    if (world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketSlotVisibility(inputVisible, outputVisible));
     }
   }
@@ -182,7 +150,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   private void setSlotsVisible(boolean visible, int startIndex, int endIndex) {
     for (int i = startIndex; i < endIndex; i++) {
       Slot s = getSlot(i);
-      if(visible) {
+      if (visible) {
         s.xPos = getSlot(i).xPos;
         s.yPos = getSlot(i).yPos;
       } else {
@@ -220,23 +188,23 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
     setSpeedUpgradeSlotLimit(origStack);
     ItemStack curStack = targetSlot.getStack();
-    int maxStackSize =  Math.min(origStack.getMaxStackSize(), targetSlot.getSlotStackLimit());
+    int maxStackSize = Math.min(origStack.getMaxStackSize(), targetSlot.getSlotStackLimit());
 
-    if(curStack.isEmpty()) {
+    if (curStack.isEmpty()) {
       curStack = origStack.copy();
       curStack.setCount(Math.min(origStack.getCount(), maxStackSize));
       origStack.shrink(curStack.getCount());
       targetSlot.putStack(curStack);
       targetSlot.onSlotChanged();
       return true;
-    } else if(ItemUtil.areStackMergable(curStack, origStack)) {
+    } else if (ItemUtil.areStackMergable(curStack, origStack)) {
       int mergedSize = curStack.getCount() + origStack.getCount();
-      if(mergedSize <= maxStackSize) {
+      if (mergedSize <= maxStackSize) {
         origStack.setCount(0);
         curStack.setCount(mergedSize);
         targetSlot.onSlotChanged();
         return true;
-      } else if(curStack.getCount() < maxStackSize) {
+      } else if (curStack.getCount() < maxStackSize) {
         origStack.shrink(maxStackSize - curStack.getCount());
         curStack.setCount(maxStackSize);
         targetSlot.onSlotChanged();
@@ -252,7 +220,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   public ItemStack transferStackInSlot(@Nonnull EntityPlayer entityPlayer, int slotIndex) {
     ItemStack copyStack = ItemStack.EMPTY;
     Slot slot = inventorySlots.get(slotIndex);
-    if(slot != null && slot.getHasStack()) {
+    if (slot != null && slot.getHasStack()) {
       ItemStack origStack = slot.getStack();
       copyStack = origStack.copy();
 
@@ -260,7 +228,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       if (slotIndex < outputFilterSlot) {
         for (int targetSlotIdx = outputFilterSlot; targetSlotIdx <= functionUpgradeSlot; targetSlotIdx++) {
           Slot targetSlot = inventorySlots.get(targetSlotIdx);
-          if(targetSlot.xPos >= 0 && mergeItemStackSpecial(origStack, targetSlot)) {
+          if (targetSlot.xPos >= 0 && mergeItemStackSpecial(origStack, targetSlot)) {
             merged = true;
             break;
           }
@@ -269,19 +237,19 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
         merged = mergeItemStack(origStack, 0, outputFilterSlot, false);
       }
 
-      if(!merged) {
+      if (!merged) {
         return ItemStack.EMPTY;
       }
 
       slot.onSlotChange(origStack, copyStack);
 
-      if(origStack.getCount() == 0) {
+      if (origStack.getCount() == 0) {
         slot.putStack(ItemStack.EMPTY);
       } else {
         slot.onSlotChanged();
       }
 
-      if(origStack.getCount() == copyStack.getCount()) {
+      if (origStack.getCount() == copyStack.getCount()) {
         return ItemStack.EMPTY;
       }
 

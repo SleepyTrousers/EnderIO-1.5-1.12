@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.gui.IItemFilterGui;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;

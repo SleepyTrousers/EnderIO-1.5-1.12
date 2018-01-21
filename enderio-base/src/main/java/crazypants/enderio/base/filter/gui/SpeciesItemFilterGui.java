@@ -1,27 +1,23 @@
-package crazypants.enderio.conduit.gui.item;
+package crazypants.enderio.base.filter.gui;
 
 import com.enderio.core.client.gui.button.CycleButton;
-import crazypants.enderio.base.filter.filters.SpeciesItemFilter;
-import crazypants.enderio.base.filter.filters.SpeciesMode;
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
-
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.filter.filters.SpeciesItemFilter;
+import crazypants.enderio.base.filter.filters.SpeciesMode;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import net.minecraft.client.gui.GuiButton;
+import org.lwjgl.opengl.GL11;
 
-import javax.annotation.MatchesPattern;
 import javax.annotation.Nonnull;
 
 public class SpeciesItemFilterGui implements IItemFilterGui {
 
-  private static final int ID_WHITELIST = GuiExternalConnection.nextButtonId();
-  private static final int ID_SPECIES_MODE = GuiExternalConnection.nextButtonId();
-  private static final int ID_STICKY = GuiExternalConnection.nextButtonId();
+  private static final int ID_WHITELIST = FilterGuiUtil.nextButtonId();
+  private static final int ID_SPECIES_MODE = FilterGuiUtil.nextButtonId();
+  private static final int ID_STICKY = FilterGuiUtil.nextButtonId();
 
   private final GuiContainerBaseEIO gui;
 
