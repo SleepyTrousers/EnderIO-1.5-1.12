@@ -95,7 +95,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketOpenConduitUI.class, PacketOpenConduitUI.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketSlotVisibility.class, PacketSlotVisibility.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketOCConduitSignalColor.class, PacketOCConduitSignalColor.class, PacketHandler.nextID(), Side.SERVER);
+//    PacketHandler.INSTANCE.registerMessage(PacketOCConduitSignalColor.class, PacketOCConduitSignalColor.class, PacketHandler.nextID(), Side.SERVER);
 
     BlockConduitBundle result = new BlockConduitBundle();
     result.init();
