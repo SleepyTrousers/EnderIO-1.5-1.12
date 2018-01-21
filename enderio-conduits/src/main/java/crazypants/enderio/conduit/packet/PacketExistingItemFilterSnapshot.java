@@ -1,10 +1,10 @@
 package crazypants.enderio.conduit.packet;
 
 import com.enderio.core.common.util.NNList;
+import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.base.filter.filters.ExistingItemFilter;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
-import crazypants.enderio.conduit.item.NetworkedInventory;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -71,14 +71,14 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
 
       case SET: {
         ItemConduitNetwork icn = (ItemConduitNetwork)conduit.getNetwork();
-        NetworkedInventory inv = icn.getInventory(conduit, message.dir);
+        INetworkedInventory inv = icn.getInventory(conduit, message.dir);
         filter.setSnapshot(inv);
         break;
       }
 
       case MERGE: {
         ItemConduitNetwork icn = (ItemConduitNetwork)conduit.getNetwork();
-        NetworkedInventory inv = icn.getInventory(conduit, message.dir);
+        INetworkedInventory inv = icn.getInventory(conduit, message.dir);
         filter.mergeSnapshot(inv);
         break;
       }
