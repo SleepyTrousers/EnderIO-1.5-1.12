@@ -1,13 +1,6 @@
 package crazypants.enderio.conduit.gui;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import com.enderio.core.api.client.gui.ITabPanel;
-
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
@@ -22,6 +15,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiExternalConnection {
 
@@ -82,7 +80,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
   public void initGui() {
     super.initGui();
     buttonList.clear();
-    ((ExternalConnectionContainer) inventorySlots).createGhostSlots(getGhostSlotHandler());
+    ((ExternalConnectionContainer) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
     for (int i = 0; i < tabs.size(); i++) {
       if(i == activeTab) {
         tabs.get(i).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);

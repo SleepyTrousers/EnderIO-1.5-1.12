@@ -12,7 +12,6 @@ import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.base.filter.filters.ItemFilter;
-import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.tool.ToolUtil;
@@ -179,7 +178,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     if (ConduitUtil.isProbeEquipped(player, hand)) {
       if (!player.world.isRemote) {
-        PacketConduitProbe.sendInfoMessage(player, this, null);
+        // TODO PacketConduitProbe.sendInfoMessage(player, this, null);
       }
       return true;
     } else if (ToolUtil.isToolEquipped(player, hand)) {
@@ -209,7 +208,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
         EnumFacing connDir = res.component.dir;
         if (connDir != null && containsExternalConnection(connDir)) {
           if (!player.world.isRemote) {
-            PacketConduitProbe.sendInfoMessage(player, this, player.getHeldItem(hand));
+            // TODO PacketConduitProbe.sendInfoMessage(player, this, player.getHeldItem(hand));
           }
           return true;
         }

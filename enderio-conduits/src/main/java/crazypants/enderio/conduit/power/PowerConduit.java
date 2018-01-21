@@ -11,7 +11,6 @@ import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.PowerHandlerUtil;
@@ -115,7 +114,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     DyeColor col = DyeColor.getColorFromDye(player.getHeldItemMainhand());
     if (ConduitUtil.isProbeEquipped(player, hand)) {
       if (!player.world.isRemote) {
-        PacketConduitProbe.sendInfoMessage(player, this);
+        // TODO PacketConduitProbe.sendInfoMessage(player, this);
       }
       return true;
     } else if (col != null && res.component != null && isColorBandRendered(res.component.dir)) {
