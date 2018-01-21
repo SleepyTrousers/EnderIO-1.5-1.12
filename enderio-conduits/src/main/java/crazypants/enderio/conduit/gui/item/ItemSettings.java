@@ -1,16 +1,5 @@
 package crazypants.enderio.conduit.gui.item;
 
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-
-import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.filter.gui.IItemFilterGui;
-import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
-import crazypants.enderio.base.machine.modes.RedstoneControlMode;
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -19,23 +8,30 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.DyeColor;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IFilterChangeListener;
+import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.gui.IItemFilterGui;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
+import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
+import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.BaseSettingsPanel;
-import crazypants.enderio.base.conduit.IFilterChangeListener;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class ItemSettings extends BaseSettingsPanel {
 
@@ -233,14 +229,14 @@ public class ItemSettings extends BaseSettingsPanel {
       gui.getContainer().setInventorySlotsVisible(true);
       gui.getContainer().setInOutSlotsVisible(true, false);
       if(activeFilter != null) {
-        filterGui = activeFilter.getGui(gui,itemConduit,true);
+        filterGui = activeFilter.getGui(gui,new ItemConduitFilterContainer(itemConduit, gui.getDir(), true),true);
       }
     } else if(showOutput) {
       activeFilter = itemConduit.getOutputFilter(gui.getDir());
       gui.getContainer().setInOutSlotsVisible(false, true);
       gui.getContainer().setInventorySlotsVisible(true);
       if(activeFilter != null) {
-        filterGui = activeFilter.getGui(gui,itemConduit,false);
+        filterGui = activeFilter.getGui(gui,new ItemConduitFilterContainer(itemConduit, gui.getDir(), false),false);
       }
     }
   }

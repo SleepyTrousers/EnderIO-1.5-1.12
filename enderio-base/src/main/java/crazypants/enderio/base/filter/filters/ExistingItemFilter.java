@@ -1,15 +1,15 @@
 package crazypants.enderio.base.filter.filters;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
-
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.INetworkedInventory;
+import crazypants.enderio.base.filter.gui.ExistingItemFilterGui;
+import crazypants.enderio.base.filter.gui.IItemFilterContainer;
+import crazypants.enderio.base.filter.gui.IItemFilterGui;
+import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;
@@ -18,6 +18,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ExistingItemFilter implements IItemFilter {
 
@@ -276,6 +279,11 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   @Override
+  public IItemFilterGui getGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
+    return new ExistingItemFilterGui(gui, filterContainer, isStickyModeAvailable);
+  }
+
+  @Override
   public void readFromByteBuf(@Nonnull ByteBuf buf) {
     NBTTagCompound settingsTag = NetworkUtil.readNBTTagCompound(buf);
     readSettingsFromNBT(settingsTag);
@@ -292,6 +300,8 @@ public class ExistingItemFilter implements IItemFilter {
         snapshot.add(item);
       }
     }
+
+
 
   }
 
