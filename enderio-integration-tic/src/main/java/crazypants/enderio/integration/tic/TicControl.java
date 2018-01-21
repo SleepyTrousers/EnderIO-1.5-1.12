@@ -12,6 +12,7 @@ import crazypants.enderio.integration.tic.fluids.Glowstone;
 import crazypants.enderio.integration.tic.fluids.Metal;
 import crazypants.enderio.integration.tic.fluids.Redstone;
 import crazypants.enderio.integration.tic.queues.TicHandler;
+import crazypants.enderio.integration.tic.recipes.TicRegistration;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -41,6 +42,7 @@ public class TicControl {
 
   public static void init(FMLInitializationEvent event) {
     // This is the place to integrate materials. All items, block, fluids and oredicts have been registered.
+    // TicMaterials.register();
   }
 
   public static void init(FMLPostInitializationEvent event) {
@@ -48,10 +50,10 @@ public class TicControl {
     Redstone.registerRedstoneRecipes();
     Ender.registerEnderRecipes();
 
-    TicAccess.registerSmeltings();
-    TicAccess.registerAlloys();
-    TicAccess.registerTableCasting();
-    TicAccess.registerBasinCasting();
+    TicRegistration.registerSmeltings();
+    TicRegistration.registerAlloys();
+    TicRegistration.registerTableCasting();
+    TicRegistration.registerBasinCasting();
   }
 
 }

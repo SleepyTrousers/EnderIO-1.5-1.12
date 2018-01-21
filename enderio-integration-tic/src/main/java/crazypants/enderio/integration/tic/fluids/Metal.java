@@ -5,13 +5,12 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.material.alloy.Alloy;
+import crazypants.enderio.integration.tic.materials.TicMaterials;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
 
 public class Metal {
 
@@ -36,11 +35,7 @@ public class Metal {
     }
     FluidRegistry.addBucketForFluid(f);
 
-    NBTTagCompound tag = new NBTTagCompound();
-    tag.setString("fluid", f.getName());
-    tag.setString("ore", alloy.getOreName());
-    tag.setBoolean("toolforge", true);
-    FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
+    TicMaterials.integrate(alloy, f);
 
     return block;
   }

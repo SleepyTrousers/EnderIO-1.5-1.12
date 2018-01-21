@@ -1,4 +1,4 @@
-package crazypants.enderio.integration.tic;
+package crazypants.enderio.integration.tic.recipes;
 
 import javax.annotation.Nonnull;
 
@@ -7,6 +7,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.Log;
+import crazypants.enderio.integration.tic.EnderIOIntegrationTic;
 import crazypants.enderio.integration.tic.queues.BasinQueue;
 import crazypants.enderio.integration.tic.queues.CastQueue;
 import crazypants.enderio.integration.tic.queues.SmeltQueue;
@@ -23,7 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
 
-public class TicAccess {
+public class TicRegistration {
 
   private static void registerAlloyRecipe(Pair<ItemStack, ItemStack[]> alloy) {
     final ItemStack result = NullHelper.notnull(alloy.getLeft(), "missing result item stack in alloy recipe");

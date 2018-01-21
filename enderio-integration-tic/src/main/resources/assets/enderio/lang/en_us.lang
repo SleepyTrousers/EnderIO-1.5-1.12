@@ -1,0 +1,24 @@
+# Tool Material Names
+material.dark_steel.name=Dark Steel
+material.conductive_iron.name=Conductive Iron
+material.electrical_steel.name=Electrical Steel
+material.energetic_alloy.name=Energetic Alloy
+material.pulsating_iron.name=Pulsating Iron
+material.redstone_alloy.name=Redstone Alloy
+material.soularium.name=Soularium
+material.vibrant_alloy.name=Vibrant Alloy
+
+material.dark_steel.prefix=Dark %s
+material.conductive_iron.prefix=Conductive %s
+material.electrical_steel.prefix=Electrical %s
+material.energetic_alloy.prefix=Energetic %s
+material.pulsating_iron.prefix=Pulsating
+material.redstone_alloy.prefix=Red %s
+material.soularium.prefix=Souled %s
+material.vibrant_alloy.prefix=Vibrant %s
+
+modifier.enderport.name=Vanishing
+modifier.enderport.desc=§oOut of my way!§r\nChance to teleport enemies away.
+
+modifier.enderpickup.name=Direct
+modifier.enderpickup.desc=§oIt's mine, all mine!§r\nChance to teleport mined things directly into your inventory.
