@@ -1,15 +1,14 @@
 package crazypants.enderio.conduit.render;
 
-import java.util.List;
-
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
-
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
+
+import java.util.List;
 
 //I am using this class instead of RenderUtil directly in case I decide to cache the BakedQuads
 public class BakedQuadBuilder {
@@ -34,7 +33,7 @@ public class BakedQuadBuilder {
   
   public static void addBakedQuadForFace(List<BakedQuad> quads, BoundingBox bb, TextureAtlasSprite tex, EnumFacing face, boolean rotateUV, boolean flipU,
       Vector4f color) {
-    RenderUtil.addBakedQuadForFace(quads, bb, tex, face, rotateUV, flipU, color);
+    RenderUtil.addBakedQuadForFace(quads, bb, tex, face, null, rotateUV, flipU, true, color);
   }
 
   

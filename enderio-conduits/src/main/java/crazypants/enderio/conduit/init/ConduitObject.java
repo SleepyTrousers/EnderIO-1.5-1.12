@@ -38,7 +38,9 @@ public enum ConduitObject implements IModObject.Registerable {
   item_redstone_conduit(ItemRedstoneConduit.class),
 
   item_extract_speed_upgrade(ItemExtractSpeedUpgrade.class),
-  item_function_upgrade(ItemFunctionUpgrade.class);
+  item_function_upgrade(ItemFunctionUpgrade.class),
+
+  ;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {

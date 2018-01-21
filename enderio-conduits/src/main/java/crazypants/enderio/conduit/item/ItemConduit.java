@@ -39,6 +39,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -939,5 +940,16 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public int getGuiPanelTabOrder() {
     return 0;
+  }
+
+  @Override
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+    return false;
+  }
+
+  @Nullable
+  @Override
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+    return null;
   }
 }
