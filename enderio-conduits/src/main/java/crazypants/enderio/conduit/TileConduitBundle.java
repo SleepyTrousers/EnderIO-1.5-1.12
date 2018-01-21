@@ -1,39 +1,16 @@
 package crazypants.enderio.conduit;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.enderio.core.client.render.BoundingBox;
-
 import appeng.api.networking.IGridNode;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEPartLocation;
+import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.TileEntityEio;
-import crazypants.enderio.base.conduit.ConduitDisplayMode;
-import crazypants.enderio.base.conduit.ConduitUtil;
-import crazypants.enderio.base.conduit.ConnectionMode;
-import crazypants.enderio.base.conduit.IConduit;
-import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.*;
 import crazypants.enderio.base.conduit.facade.EnumFacadeType;
-import crazypants.enderio.base.conduit.geom.CollidableCache;
-import crazypants.enderio.base.conduit.geom.CollidableComponent;
-import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
-import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.base.conduit.geom.Offset;
-import crazypants.enderio.base.conduit.geom.Offsets;
-import crazypants.enderio.base.conduit.registry.ConduitRegistry;
+import crazypants.enderio.base.conduit.geom.*;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.me.IMEConduit;
@@ -41,14 +18,13 @@ import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
+import info.loenwind.autosave.annotations.Store;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -59,6 +35,11 @@ import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import static crazypants.enderio.base.config.Config.transparentFacadesLetThroughBeaconBeam;
 import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
 
@@ -67,8 +48,11 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public static final short NBT_VERSION = 1;
 
   // TODO Fix duct-tape
+  // TODO Check store
+  @Store(handler = ConduitHandler.ConduitArrayListHandler.class)
   private final List<IConduit> conduits = new CopyOnWriteArrayList<IConduit>(); // <- duct-tape fix
 
+  @Store
   private IBlockState facade = null;
   private EnumFacadeType facadeType = EnumFacadeType.BASIC;
 
@@ -88,8 +72,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   private FacadeRenderState facadeRenderAs;
 
   private ConduitDisplayMode lastMode = ConduitDisplayMode.ALL;
-
-  Object covers;
 
   public TileConduitBundle() {
     this.blockType = block_conduit_bundle.getBlock();
@@ -138,59 +120,59 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
     return new String[0];
   }
-
-  @Override
-  protected void writeCustomNBT(NBTTagCompound nbtRoot) {
-    NBTTagList conduitTags = new NBTTagList();
-    for (IConduit conduit : conduits) {
-      NBTTagCompound conduitRoot = new NBTTagCompound();
-      ConduitUtil.writeToNBT(conduit, conduitRoot);
-      conduitTags.appendTag(conduitRoot);
-    }
-    nbtRoot.setTag("conduits", conduitTags);
-    if (facade != null) {
-      PaintUtil.writeNbt(nbtRoot, facade);
-      nbtRoot.setString("facadeType", facadeType.name());
-    }
-
-    nbtRoot.setShort("nbtVersion", NBT_VERSION);
-  }
-
-  @Override
-  public synchronized void readCustomNBT(NBTTagCompound nbtRoot) {
-    short nbtVersion = nbtRoot.getShort("nbtVersion");
-
-    conduits.clear();
-    cachedCollidables.clear();
-    NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
-    if (conduitTags != null) {
-      for (int i = 0; i < conduitTags.tagCount(); i++) {
-        NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
-        IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
-        if (conduit != null) {
-          conduit.setBundle(this);
-          conduits.add(conduit);
-          // keep conduits sorted so the client side cache key is stable
-          ConduitRegistry.sort(conduits);
-        }
-      }
-    }
-    facade = PaintUtil.readNbt(nbtRoot);
-    if (facade != null) {
-      if (nbtRoot.hasKey("facadeType")) { // backwards compat, never true in freshly placed bundles
-        facadeType = EnumFacadeType.valueOf(nbtRoot.getString("facadeType"));
-      } else {
-        facadeType = EnumFacadeType.BASIC;
-      }
-    } else {
-      facade = null;
-      facadeType = EnumFacadeType.BASIC;
-    }
-
-    if (world != null && world.isRemote) {
-      clientUpdated = true;
-    }
-  }
+//
+//  @Override
+//  protected void writeCustomNBT(NBTTagCompound nbtRoot) {
+//    NBTTagList conduitTags = new NBTTagList();
+//    for (IConduit conduit : conduits) {
+//      NBTTagCompound conduitRoot = new NBTTagCompound();
+//      ConduitUtil.writeToNBT(conduit, conduitRoot);
+//      conduitTags.appendTag(conduitRoot);
+//    }
+//    nbtRoot.setTag("conduits", conduitTags);
+//    if (facade != null) {
+//      PaintUtil.writeNbt(nbtRoot, facade);
+//      nbtRoot.setString("facadeType", facadeType.name());
+//    }
+//
+//    nbtRoot.setShort("nbtVersion", NBT_VERSION);
+//  }
+//
+//  @Override
+//  public synchronized void readCustomNBT(NBTTagCompound nbtRoot) {
+//    short nbtVersion = nbtRoot.getShort("nbtVersion");
+//
+//    conduits.clear();
+//    cachedCollidables.clear();
+//    NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
+//    if (conduitTags != null) {
+//      for (int i = 0; i < conduitTags.tagCount(); i++) {
+//        NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
+//        IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
+//        if (conduit != null) {
+//          conduit.setBundle(this);
+//          conduits.add(conduit);
+//          // keep conduits sorted so the client side cache key is stable
+//          ConduitRegistry.sort(conduits);
+//        }
+//      }
+//    }
+//    facade = PaintUtil.readNbt(nbtRoot);
+//    if (facade != null) {
+//      if (nbtRoot.hasKey("facadeType")) { // backwards compat, never true in freshly placed bundles
+//        facadeType = EnumFacadeType.valueOf(nbtRoot.getString("facadeType"));
+//      } else {
+//        facadeType = EnumFacadeType.BASIC;
+//      }
+//    } else {
+//      facade = null;
+//      facadeType = EnumFacadeType.BASIC;
+//    }
+//
+//    if (world != null && world.isRemote) {
+//      clientUpdated = true;
+//    }
+//  }
 
   @Override
   public boolean hasFacade() {
