@@ -104,7 +104,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public int getInternalRedstoneSignalForColor(@Nonnull DyeColor col) {
-    return 15;
+    return 0;
   }
 
   @Override
@@ -120,59 +120,59 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
     return new String[0];
   }
-//
-//  @Override
-//  protected void writeCustomNBT(NBTTagCompound nbtRoot) {
-//    NBTTagList conduitTags = new NBTTagList();
-//    for (IConduit conduit : conduits) {
-//      NBTTagCompound conduitRoot = new NBTTagCompound();
-//      ConduitUtil.writeToNBT(conduit, conduitRoot);
-//      conduitTags.appendTag(conduitRoot);
-//    }
-//    nbtRoot.setTag("conduits", conduitTags);
-//    if (facade != null) {
-//      PaintUtil.writeNbt(nbtRoot, facade);
-//      nbtRoot.setString("facadeType", facadeType.name());
-//    }
-//
-//    nbtRoot.setShort("nbtVersion", NBT_VERSION);
-//  }
-//
-//  @Override
-//  public synchronized void readCustomNBT(NBTTagCompound nbtRoot) {
-//    short nbtVersion = nbtRoot.getShort("nbtVersion");
-//
-//    conduits.clear();
-//    cachedCollidables.clear();
-//    NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
-//    if (conduitTags != null) {
-//      for (int i = 0; i < conduitTags.tagCount(); i++) {
-//        NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
-//        IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
-//        if (conduit != null) {
-//          conduit.setBundle(this);
-//          conduits.add(conduit);
-//          // keep conduits sorted so the client side cache key is stable
-//          ConduitRegistry.sort(conduits);
-//        }
-//      }
-//    }
-//    facade = PaintUtil.readNbt(nbtRoot);
-//    if (facade != null) {
-//      if (nbtRoot.hasKey("facadeType")) { // backwards compat, never true in freshly placed bundles
-//        facadeType = EnumFacadeType.valueOf(nbtRoot.getString("facadeType"));
-//      } else {
-//        facadeType = EnumFacadeType.BASIC;
-//      }
-//    } else {
-//      facade = null;
-//      facadeType = EnumFacadeType.BASIC;
-//    }
-//
-//    if (world != null && world.isRemote) {
-//      clientUpdated = true;
-//    }
-//  }
+  //
+  //  @Override
+  //  protected void writeCustomNBT(NBTTagCompound nbtRoot) {
+  //    NBTTagList conduitTags = new NBTTagList();
+  //    for (IConduit conduit : conduits) {
+  //      NBTTagCompound conduitRoot = new NBTTagCompound();
+  //      ConduitUtil.writeToNBT(conduit, conduitRoot);
+  //      conduitTags.appendTag(conduitRoot);
+  //    }
+  //    nbtRoot.setTag("conduits", conduitTags);
+  //    if (facade != null) {
+  //      PaintUtil.writeNbt(nbtRoot, facade);
+  //      nbtRoot.setString("facadeType", facadeType.name());
+  //    }
+  //
+  //    nbtRoot.setShort("nbtVersion", NBT_VERSION);
+  //  }
+  //
+  //  @Override
+  //  public synchronized void readCustomNBT(NBTTagCompound nbtRoot) {
+  //    short nbtVersion = nbtRoot.getShort("nbtVersion");
+  //
+  //    conduits.clear();
+  //    cachedCollidables.clear();
+  //    NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
+  //    if (conduitTags != null) {
+  //      for (int i = 0; i < conduitTags.tagCount(); i++) {
+  //        NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
+  //        IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
+  //        if (conduit != null) {
+  //          conduit.setBundle(this);
+  //          conduits.add(conduit);
+  //          // keep conduits sorted so the client side cache key is stable
+  //          ConduitRegistry.sort(conduits);
+  //        }
+  //      }
+  //    }
+  //    facade = PaintUtil.readNbt(nbtRoot);
+  //    if (facade != null) {
+  //      if (nbtRoot.hasKey("facadeType")) { // backwards compat, never true in freshly placed bundles
+  //        facadeType = EnumFacadeType.valueOf(nbtRoot.getString("facadeType"));
+  //      } else {
+  //        facadeType = EnumFacadeType.BASIC;
+  //      }
+  //    } else {
+  //      facade = null;
+  //      facadeType = EnumFacadeType.BASIC;
+  //    }
+  //
+  //    if (world != null && world.isRemote) {
+  //      clientUpdated = true;
+  //    }
+  //  }
 
   @Override
   public boolean hasFacade() {

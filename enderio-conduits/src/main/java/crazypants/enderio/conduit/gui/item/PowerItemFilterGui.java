@@ -1,15 +1,11 @@
 package crazypants.enderio.conduit.gui.item;
 
 import com.enderio.core.client.gui.button.ToggleButton;
-
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.filter.filters.PowerItemFilter;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import net.minecraft.client.gui.GuiButton;
 
 import javax.annotation.Nonnull;
@@ -25,25 +21,19 @@ public class PowerItemFilterGui implements IItemFilterGui {
   private final GuiContainerBaseEIO gui;
 
   private final ToggleButton stickyB;
+  private final boolean isStickModeAvailable;
 
   private final GuiButton modeB;
   private final GuiButton levelB;
 
-  private final boolean isInput;
-
   private final PowerItemFilter filter;
 
-  // TODO Remove isInput
-  public PowerItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isInput) {
+  public PowerItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
     this.gui = gui;
     this.filterContainer = filterContainer;
-    this.isInput = isInput;
+    this.isStickModeAvailable = isStickyModeAvailable;
 
-    if(isInput) {
-      filter = (PowerItemFilter) filterContainer.getItemFilter();
-    } else {
-      filter = (PowerItemFilter) filterContainer.getItemFilter();
-    }
+    filter = (PowerItemFilter) filterContainer.getItemFilter();
 
     int butLeft = 37;
     int x = butLeft;
@@ -66,7 +56,7 @@ public class PowerItemFilterGui implements IItemFilterGui {
 
   @Override
   public void updateButtons() {
-    if(!isInput) {
+    if(isStickModeAvailable) {
       stickyB.onGuiInit();
       stickyB.setSelected(filter.isSticky());
     }
