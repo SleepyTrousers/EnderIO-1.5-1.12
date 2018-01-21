@@ -1,13 +1,13 @@
 [
 {
-  "modid": "enderio-integration-tic",
+  "modid": "enderiointegrationtic",
   "name": "Ender IO Integration with Tinkers' Construct",
   "description": "I'm melting!",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "http://enderio.com",
   "updateUrl": "",
-  "authorList": [ "CrazyPants", "tterrag", "HenryLoenwind", "MatthiasM" , "CyanideX"],
+  "authorList": [ "CrazyPants", "tterrag", "HenryLoenwind"],
   "credits": "By CrazyPants, with the help of many",
   "logoFile": "",
   "screenshots": [

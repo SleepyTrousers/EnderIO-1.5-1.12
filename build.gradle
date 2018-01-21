@@ -218,7 +218,7 @@ jar.doFirst {
         File langDir = new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/lang/')
         if (langDir.exists()) {
             langDir.eachFileMatch( ~".*\\.lang\$" ) { langfile ->
-                new File(target, langfile.name) << "\n" << langfile.text
+                new File(target, langfile.name) << langfile.text << "\n"
             }
         }
     }

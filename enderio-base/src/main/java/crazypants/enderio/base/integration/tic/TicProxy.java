@@ -2,7 +2,6 @@ package crazypants.enderio.base.integration.tic;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.Log;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
@@ -15,10 +14,6 @@ public class TicProxy {
   private static ITicHandler handler;
 
   public static boolean isLoaded() {
-    if (handler == null) {
-      Log.warn("Early access!");// FIXME deleme
-      new RuntimeException().printStackTrace();// FIXME deleme
-    }
     return handler != null;
   }
 
