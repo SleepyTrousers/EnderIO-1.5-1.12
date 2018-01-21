@@ -6,6 +6,8 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.energy.IEnergyStorage;
 
+import javax.annotation.Nonnull;
+
 public interface IPowerConduit extends IEnergyStorage, IExtractor {
 
   // TODO Lang
@@ -29,5 +31,9 @@ public interface IPowerConduit extends IEnergyStorage, IExtractor {
   
   boolean getConnectionsDirty();
 
+  void setEnergyStored(int energy);
 
+  int getMaxEnergyRecieved(@Nonnull EnumFacing dir);
+
+  int getMaxEnergyExtracted(@Nonnull EnumFacing dir);
 }

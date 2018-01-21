@@ -45,6 +45,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.Map.Entry;
 
+import static crazypants.enderio.base.conduit.ConnectionMode.INPUT;
 import static crazypants.enderio.base.conduit.ConnectionMode.OUTPUT;
 import static crazypants.enderio.conduit.init.ConduitObject.item_power_conduit;
 
@@ -303,7 +304,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   // ----------- END --------------------------
 
-  private void setEnergyStored(int energyStored) {
+  @Override
+  public void setEnergyStored(int energyStored) {
     energyStoredRF = MathHelper.clamp(energyStored, 0, getMaxEnergyStored());
   }
 
@@ -324,9 +326,19 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     return ConduitUtil.isRedstoneControlModeMet(this, mode, getExtractionSignalColor(dir));
   }
 
+  @Override
   public int getMaxEnergyRecieved(@Nonnull EnumFacing dir) {
     ConnectionMode mode = getConnectionMode(dir);
     if (mode == OUTPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(dir)) {
+      return 0;
+    }
+    return getMaxEnergyIO(subtype);
+  }
+
+  @Override
+  public int getMaxEnergyExtracted(@Nonnull EnumFacing dir) {
+    ConnectionMode mode = getConnectionMode(dir);
+    if (mode == INPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(dir)) {
       return 0;
     }
     return getMaxEnergyIO(subtype);
