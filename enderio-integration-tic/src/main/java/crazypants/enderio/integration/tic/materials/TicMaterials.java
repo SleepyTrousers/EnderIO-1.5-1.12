@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.material.alloy.Alloy;
+import crazypants.enderio.integration.tic.traits.TraitPickup;
+import crazypants.enderio.integration.tic.traits.TraitTeleport;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
@@ -60,10 +62,8 @@ public class TicMaterials {
     TRAITS.put(Alloy.VIBRANT_ALLOY, new Data() {
       @Override
       public void traits(@Nonnull Material material) {
-        material.addTrait(new TraitPickup(1, 0));
+        material.addTrait(TraitPickup.instance);
         material.addTrait(new TraitTeleport(2, 4), MaterialTypes.HEAD);
-        material.addTrait(new TraitPickup(1, 1), MaterialTypes.HANDLE);
-        material.addTrait(new TraitPickup(1, 2), MaterialTypes.EXTRA);
       }
 
       @Override

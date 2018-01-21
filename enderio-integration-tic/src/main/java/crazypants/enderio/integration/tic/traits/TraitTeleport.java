@@ -1,4 +1,4 @@
-package crazypants.enderio.integration.tic.materials;
+package crazypants.enderio.integration.tic.traits;
 
 import java.util.Iterator;
 
@@ -41,6 +41,7 @@ public class TraitTeleport extends AbstractTraitLeveled {
         if (world != null && random.nextFloat() <= event.getDropChance()) {
           if (random.nextFloat() < (data.level * .21f)) {
             RandomTeleportUtil.teleportSpawnItem(world, pos, next);
+            iterator.remove();
           }
         } else {
           iterator.remove();
