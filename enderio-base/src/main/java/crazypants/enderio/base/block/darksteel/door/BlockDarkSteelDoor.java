@@ -56,6 +56,11 @@ public class BlockDarkSteelDoor extends BlockDoor implements IDefaultRenderers, 
   }
 
   @Override
+  public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+    return new ItemStack(ModObject.blockDarkSteelDoor.getItem());
+  }
+
+  @Override
   public Item getItemDropped(IBlockState state, Random rand, int fortune) {
     // TODO Item.getItemFromBlock
     return ModObject.blockDarkSteelDoor.getItem();

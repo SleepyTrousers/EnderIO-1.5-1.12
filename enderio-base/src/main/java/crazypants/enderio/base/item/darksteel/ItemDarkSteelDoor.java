@@ -9,8 +9,5 @@ public class ItemDarkSteelDoor extends ItemDoor {
 
   public ItemDarkSteelDoor(@Nonnull Block block) {
     super(block);
-    setUnlocalizedName(block.getUnlocalizedName());
-
   }
-
 }
