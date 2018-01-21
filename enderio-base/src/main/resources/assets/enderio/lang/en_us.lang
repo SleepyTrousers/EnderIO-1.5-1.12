@@ -275,6 +275,8 @@ tile.block_dark_steel_ladder.tooltip.common.line1=Faster than regular ladders
 tile.block_dark_steel_trapdoor.name=Dark Steel Trapdoor
 tile.block_dark_steel_trapdoor.tooltip.detailed.line1=IT'S A TRAP!
 
+item.block_dark_steel_door.name=Dark Steel Door
+
 tile.block_decoration1.name=Decoration Block
 tile.block_decoration1.type00.name=Machine Chassis (decoration block)
 tile.block_decoration1.type01.name=Blank Machine (decoration block)

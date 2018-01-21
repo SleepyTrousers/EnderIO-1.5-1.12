@@ -12,6 +12,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.block.coldfire.BlockColdFire;
 import crazypants.enderio.base.block.darksteel.anvil.BlockDarkSteelAnvil;
 import crazypants.enderio.base.block.darksteel.bars.BlockDarkIronBars;
+import crazypants.enderio.base.block.darksteel.door.BlockDarkSteelDoor;
 import crazypants.enderio.base.block.darksteel.ladder.BlockDarkSteelLadder;
 import crazypants.enderio.base.block.darksteel.obsidian.BlockReinforcedObsidian;
 import crazypants.enderio.base.block.darksteel.trapdoor.BlockDarkSteelTrapDoor;
@@ -21,6 +22,7 @@ import crazypants.enderio.base.block.detector.BlockDetector;
 import crazypants.enderio.base.block.infinity.BlockInfinity;
 import crazypants.enderio.base.block.lever.BlockSelfResettingLever;
 import crazypants.enderio.base.block.painted.BlockPaintedCarpet;
+import crazypants.enderio.base.block.painted.BlockPaintedDoor;
 import crazypants.enderio.base.block.painted.BlockPaintedFence;
 import crazypants.enderio.base.block.painted.BlockPaintedFenceGate;
 import crazypants.enderio.base.block.painted.BlockPaintedGlowstone;
@@ -101,6 +103,7 @@ public enum ModObject implements IModObject.Registerable {
   blockDarkSteelLadder(BlockDarkSteelLadder.class),
   blockDarkIronBars(BlockDarkIronBars.class),
   blockDarkSteelTrapdoor(BlockDarkSteelTrapDoor.class),
+  blockDarkSteelDoor(BlockDarkSteelDoor.class),
   blockReinforcedObsidian(BlockReinforcedObsidian.class),
   blockSelfResettingLever5(BlockSelfResettingLever.class, "create5"),
   blockSelfResettingLever10(BlockSelfResettingLever.class, "create10"),
@@ -132,6 +135,9 @@ public enum ModObject implements IModObject.Registerable {
   blockPaintedWoodenTrapdoor(BlockPaintedTrapDoor.class, "create_wooden"),
   blockPaintedIronTrapdoor(BlockPaintedTrapDoor.class, "create_iron"),
   blockPaintedDarkSteelTrapdoor(BlockPaintedTrapDoor.class, "create_dark"),
+  blockPaintedWoodenDoor(BlockPaintedDoor.class, "create_wooden"),
+  blockPaintedIronDoor(BlockPaintedDoor.class, "create_iron"),
+  blockPaintedDarkSteelDoor(BlockPaintedDoor.class, "create_dark"),
 
   blockExitRail(BlockExitRail.class),
 
@@ -237,7 +243,6 @@ public enum ModObject implements IModObject.Registerable {
     this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
     this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
   }
-
 
   @Override
   public final @Nonnull String getUnlocalisedName() {
