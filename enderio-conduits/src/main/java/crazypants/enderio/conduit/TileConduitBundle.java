@@ -428,43 +428,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     return conduits;
   }
 
-  @Override
-  public Set<EnumFacing> getConnections(Class<? extends IConduit> type) {
-    IConduit con = getConduit(type);
-    if (con != null) {
-      return con.getConduitConnections();
-    }
-    return null;
-  }
-
-  @Override
-  public boolean containsConnection(Class<? extends IConduit> type, EnumFacing dir) {
-    IConduit con = getConduit(type);
-    if (con != null) {
-      return con.containsConduitConnection(dir);
-    }
-    return false;
-  }
-
-  @Override
-  public boolean containsConnection(EnumFacing dir) {
-    for (IConduit con : conduits) {
-      if (con.containsConduitConnection(dir)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  @Override
-  public Set<EnumFacing> getAllConnections() {
-    EnumSet<EnumFacing> result = EnumSet.noneOf(EnumFacing.class);
-    for (IConduit con : conduits) {
-      result.addAll(con.getConduitConnections());
-    }
-    return result;
-  }
-
   // Geometry
 
   @Override

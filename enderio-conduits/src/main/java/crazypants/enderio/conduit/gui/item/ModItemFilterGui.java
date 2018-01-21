@@ -28,13 +28,13 @@ public class ModItemFilterGui implements IItemFilterGui {
 
   private final IItemFilterContainer filterContainer;
   private final GuiContainerBaseEIO gui;
-  
+
   boolean isInput;
 
   private final ModItemFilter filter;
-  
+
   private final Rectangle[] inputBounds;
-  
+
   private final IconButton[] deleteButs;
 
   private final IconButton whiteListB;
@@ -50,8 +50,7 @@ public class ModItemFilterGui implements IItemFilterGui {
     this.isInput = isInput;
     this.filterContainer = filterContainer;
 
-    
-    if(isInput) {
+    if (isInput) {
       filter = (ModItemFilter) filterContainer.getItemFilter();
       inputOffsetX = 50;
       tfWidth = 96;
@@ -64,28 +63,27 @@ public class ModItemFilterGui implements IItemFilterGui {
       tfTextureX = 120;
       tfTextureY = 238;
     }
-    
-    
+
     inputBounds = new Rectangle[] {
-        new Rectangle(inputOffsetX,47,16,16),
-        new Rectangle(inputOffsetX,68,16,16),
-        new Rectangle(inputOffsetX,89,16,16)
-      };
-    
-    deleteButs = new IconButton[inputBounds.length];    
-    for(int i=0; i < deleteButs.length; i++) {
+        new Rectangle(inputOffsetX, 47, 16, 16),
+        new Rectangle(inputOffsetX, 68, 16, 16),
+        new Rectangle(inputOffsetX, 89, 16, 16)
+    };
+
+    deleteButs = new IconButton[inputBounds.length];
+    for (int i = 0; i < deleteButs.length; i++) {
       Rectangle r = inputBounds[i];
-      IconButton but = new IconButton(gui, GuiExternalConnection.nextButtonId(),  r.x + 19, r.y, IconEIO.MINUS);
+      IconButton but = new IconButton(gui, GuiExternalConnection.nextButtonId(), r.x + 19, r.y, IconEIO.MINUS);
       deleteButs[i] = but;
     }
-    
+
     whiteListB = new IconButton(gui, -1, inputOffsetX - 19, 89, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
   }
 
   @Override
-  public void deactivate() {   
-    for(IconButton but : deleteButs) {
+  public void deactivate() {
+    for (IconButton but : deleteButs) {
       but.detach();
     }
     whiteListB.detach();
@@ -93,7 +91,7 @@ public class ModItemFilterGui implements IItemFilterGui {
 
   @Override
   public void updateButtons() {
-    for(IconButton but : deleteButs) {
+    for (IconButton but : deleteButs) {
       but.onGuiInit();
     }
 
@@ -109,9 +107,9 @@ public class ModItemFilterGui implements IItemFilterGui {
 
   @Override
   public void actionPerformed(GuiButton guiButton) {
-    for(int i=0; i < deleteButs.length; i++) {
+    for (int i = 0; i < deleteButs.length; i++) {
       IconButton but = deleteButs[i];
-      if(but.id == guiButton.id) {
+      if (but.id == guiButton.id) {
         setMod(i, null);
         return;
       }
@@ -122,47 +120,47 @@ public class ModItemFilterGui implements IItemFilterGui {
   }
 
   @Override
-  public void renderCustomOptions(int top, float par1, int par2, int par3) {    
+  public void renderCustomOptions(int top, float par1, int par2, int par3) {
     GL11.glColor3f(1, 1, 1);
     gui.bindGuiTexture();
-    for(Rectangle r : inputBounds) {
+    for (Rectangle r : inputBounds) {
       //slot
       gui.drawTexturedModalRect(gui.getGuiLeft() + r.x - 1, gui.getGuiTop() + r.y - 1, 24, 214, 18, 18);
       //text box
       gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 38, gui.getGuiTop() + r.y - 1, tfTextureX, tfTextureY, tfWidth, 18);
-    }    
-    
+    }
+
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-    for(int i=0;i<inputBounds.length;i++) {
+    for (int i = 0; i < inputBounds.length; i++) {
       String mod = filter.getModAt(i);
-      if(mod != null) {
+      if (mod != null) {
         Rectangle r = inputBounds[i];
         mod = fr.trimStringToWidth(mod, tfWidth - 6);
         fr.drawStringWithShadow(mod, gui.getGuiLeft() + r.x + 41, gui.getGuiTop() + r.y + 4, MOD_NAME_COLOR);
       }
     }
   }
-  
+
   @Override
   public void mouseClicked(int x, int y, int par3) {
     ItemStack st = Minecraft.getMinecraft().player.inventory.getItemStack();
-    if(st == null) {
+    if (st.isEmpty()) {
       return;
     }
-    
-    for(int i=0;i<inputBounds.length;i++) {
+
+    for (int i = 0; i < inputBounds.length; i++) {
       Rectangle bound = inputBounds[i];
-      if(bound.contains(x,y)) {
+      if (bound.contains(x, y)) {
         setMod(i, st);
       }
-    }    
+    }
   }
 
   // TODO Decouple from conduits?
   private void setMod(int i, ItemStack st) {
-    String mod = filter.setMod(i, st);    
-    PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(),isInput,i, mod));
-    
+    String mod = filter.setMod(i, st);
+    PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(), isInput, i, mod));
+
   }
 
   private void toggleBlacklist() {

@@ -137,10 +137,6 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
 
   @Override
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
-    if (network == null) {
-      this.network = null;
-      return true;
-    }
     if (!(network instanceof AdvancedLiquidConduitNetwork)) {
       return false;
     }

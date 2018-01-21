@@ -307,10 +307,6 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   @Override
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
-    if (network == null) {
-      this.network = null;
-      return true;
-    }
     if (!(network instanceof AbstractTankConduitNetwork)) {
       return false;
     }
