@@ -11,3 +11,5 @@ public class ItemDarkSteelDoor extends ItemDoor {
     super(block);
   }
 }
+
+// TODO 1.12 add getBurnTime() {return 0; }
