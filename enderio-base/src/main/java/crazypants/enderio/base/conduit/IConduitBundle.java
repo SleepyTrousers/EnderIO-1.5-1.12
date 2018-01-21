@@ -1,14 +1,11 @@
 package crazypants.enderio.base.conduit;
 
-import appeng.api.networking.IGridHost;
 import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.base.conduit.facade.EnumFacadeType;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
 import crazypants.enderio.base.paint.IPaintable;
-import li.cil.oc.api.network.Environment;
-import li.cil.oc.api.network.SidedEnvironment;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,8 +15,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Optional.Interface;
-import net.minecraftforge.fml.common.Optional.InterfaceList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,10 +22,11 @@ import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.List;
 
-@InterfaceList({ @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
-    @Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputersAPI|Network"),
-    @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network"), })
-public interface IConduitBundle extends IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IGridHost, IHasConduitProbeData {
+//@InterfaceList({ @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
+//    @Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputersAPI|Network"),
+//    @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network"), })
+// extends Environment, SidedEnvironment, IGridHost
+public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasConduitProbeData {
 
   /**
    * @return Tile Entity of the Conduit Bundle
@@ -131,7 +127,7 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, Environ
    */
   void geometryChanged();
 
-  void setGridNode(Object node);
+//  void setGridNode(Object node);
 
   // TODO find out what this does
   int getInternalRedstoneSignalForColor(DyeColor col);

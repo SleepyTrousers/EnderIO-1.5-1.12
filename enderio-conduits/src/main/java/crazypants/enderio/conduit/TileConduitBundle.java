@@ -1,8 +1,5 @@
 package crazypants.enderio.conduit;
 
-import appeng.api.networking.IGridNode;
-import appeng.api.util.AECableType;
-import appeng.api.util.AEPartLocation;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.base.EnderIO;
@@ -13,14 +10,10 @@ import crazypants.enderio.base.conduit.geom.*;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
-import crazypants.enderio.conduit.me.IMEConduit;
-import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
 import info.loenwind.autosave.annotations.Store;
-import li.cil.oc.api.network.Message;
-import li.cil.oc.api.network.Node;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,7 +24,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -655,107 +647,107 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public void geometryChanged() {
   }
 
-  // AE2
-
-  private Object node; // IGridNode object, untyped to avoid crash w/o AE2
-
-  @Override
-  @Method(modid = "appliedenergistics2")
-  public IGridNode getGridNode(AEPartLocation loc) {
-    IMEConduit cond = getConduit(IMEConduit.class);
-    if (cond != null) {
-      if (loc == null || loc == AEPartLocation.INTERNAL || cond.getConnectionMode(loc.getOpposite().getFacing()) == ConnectionMode.IN_OUT) {
-        return (IGridNode) node;
-      }
-    }
-    return null;
-  }
-
-  @SuppressWarnings("cast")
-  @Override
-  @Method(modid = "appliedenergistics2")
-  public void setGridNode(Object node) {
-    this.node = (IGridNode) node;
-  }
-
-  @Override
-  @Method(modid = "appliedenergistics2")
-  public AECableType getCableConnectionType(AEPartLocation loc) {
-    IMEConduit cond = getConduit(IMEConduit.class);
-    if (cond == null || loc == AEPartLocation.INTERNAL) {
-      return AECableType.NONE;
-    } else {
-      return cond.isConnectedTo(loc.getFacing()) ? cond.isDense() ? AECableType.DENSE : AECableType.SMART : AECableType.NONE;
-    }
-  }
-
-  @Override
-  @Method(modid = "appliedenergistics2")
-  public void securityBreak() {
-  }
-
-  // OpenComputers
-
-  @Override
-  @Method(modid = "OpenComputersAPI|Network")
-  public Node node() {
-    IOCConduit cond = getConduit(IOCConduit.class);
-    if (cond != null) {
-      return cond.node();
-    } else {
-      return null;
-    }
-  }
-
-  @Override
-  @Method(modid = "OpenComputersAPI|Network")
-  public void onConnect(Node node) {
-    IOCConduit cond = getConduit(IOCConduit.class);
-    if (cond != null) {
-      cond.onConnect(node);
-    }
-  }
-
-  @Override
-  @Method(modid = "OpenComputersAPI|Network")
-  public void onDisconnect(Node node) {
-    IOCConduit cond = getConduit(IOCConduit.class);
-    if (cond != null) {
-      cond.onDisconnect(node);
-    }
-  }
-
-  @Override
-  @Method(modid = "OpenComputersAPI|Network")
-  public void onMessage(Message message) {
-    IOCConduit cond = getConduit(IOCConduit.class);
-    if (cond != null) {
-      cond.onMessage(message);
-    }
-  }
-
-  @Override
-  @Method(modid = "OpenComputersAPI|Network")
-  public Node sidedNode(EnumFacing side) {
-    IOCConduit cond = getConduit(IOCConduit.class);
-    if (cond != null) {
-      return cond.sidedNode(side);
-    } else {
-      return null;
-    }
-  }
-
-  @Override
-  @Method(modid = "OpenComputersAPI|Network")
-  @SideOnly(Side.CLIENT)
-  public boolean canConnect(EnumFacing side) {
-    IOCConduit cond = getConduit(IOCConduit.class);
-    if (cond != null) {
-      return cond.canConnect(side);
-    } else {
-      return false;
-    }
-  }
+  //  // AE2
+  //
+  //  private Object node; // IGridNode object, untyped to avoid crash w/o AE2
+  //
+  //  @Override
+  //  @Method(modid = "appliedenergistics2")
+  //  public IGridNode getGridNode(AEPartLocation loc) {
+  //    IMEConduit cond = getConduit(IMEConduit.class);
+  //    if (cond != null) {
+  //      if (loc == null || loc == AEPartLocation.INTERNAL || cond.getConnectionMode(loc.getOpposite().getFacing()) == ConnectionMode.IN_OUT) {
+  //        return (IGridNode) node;
+  //      }
+  //    }
+  //    return null;
+  //  }
+  //
+  //  @SuppressWarnings("cast")
+  //  @Override
+  //  @Method(modid = "appliedenergistics2")
+  //  public void setGridNode(Object node) {
+  //    this.node = (IGridNode) node;
+  //  }
+  //
+  //  @Override
+  //  @Method(modid = "appliedenergistics2")
+  //  public AECableType getCableConnectionType(AEPartLocation loc) {
+  //    IMEConduit cond = getConduit(IMEConduit.class);
+  //    if (cond == null || loc == AEPartLocation.INTERNAL) {
+  //      return AECableType.NONE;
+  //    } else {
+  //      return cond.isConnectedTo(loc.getFacing()) ? cond.isDense() ? AECableType.DENSE : AECableType.SMART : AECableType.NONE;
+  //    }
+  //  }
+  //
+  //  @Override
+  //  @Method(modid = "appliedenergistics2")
+  //  public void securityBreak() {
+  //  }
+  //
+  //  // OpenComputers
+  //
+  //  @Override
+  //  @Method(modid = "OpenComputersAPI|Network")
+  //  public Node node() {
+  //    IOCConduit cond = getConduit(IOCConduit.class);
+  //    if (cond != null) {
+  //      return cond.node();
+  //    } else {
+  //      return null;
+  //    }
+  //  }
+  //
+  //  @Override
+  //  @Method(modid = "OpenComputersAPI|Network")
+  //  public void onConnect(Node node) {
+  //    IOCConduit cond = getConduit(IOCConduit.class);
+  //    if (cond != null) {
+  //      cond.onConnect(node);
+  //    }
+  //  }
+  //
+  //  @Override
+  //  @Method(modid = "OpenComputersAPI|Network")
+  //  public void onDisconnect(Node node) {
+  //    IOCConduit cond = getConduit(IOCConduit.class);
+  //    if (cond != null) {
+  //      cond.onDisconnect(node);
+  //    }
+  //  }
+  //
+  //  @Override
+  //  @Method(modid = "OpenComputersAPI|Network")
+  //  public void onMessage(Message message) {
+  //    IOCConduit cond = getConduit(IOCConduit.class);
+  //    if (cond != null) {
+  //      cond.onMessage(message);
+  //    }
+  //  }
+  //
+  //  @Override
+  //  @Method(modid = "OpenComputersAPI|Network")
+  //  public Node sidedNode(EnumFacing side) {
+  //    IOCConduit cond = getConduit(IOCConduit.class);
+  //    if (cond != null) {
+  //      return cond.sidedNode(side);
+  //    } else {
+  //      return null;
+  //    }
+  //  }
+  //
+  //  @Override
+  //  @Method(modid = "OpenComputersAPI|Network")
+  //  @SideOnly(Side.CLIENT)
+  //  public boolean canConnect(EnumFacing side) {
+  //    IOCConduit cond = getConduit(IOCConduit.class);
+  //    if (cond != null) {
+  //      return cond.canConnect(side);
+  //    } else {
+  //      return false;
+  //    }
+  //  }
 
   @Override
   public void invalidate() {
