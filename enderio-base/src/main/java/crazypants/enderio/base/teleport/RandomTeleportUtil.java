@@ -100,7 +100,7 @@ public class RandomTeleportUtil {
     }
     EnderTeleportEvent event = new EnderTeleportEvent(entity, targetX, targetY, targetZ, damage);
     if (!MinecraftForge.EVENT_BUS.post(event)) {
-      if (rand.nextFloat() < 0.15F && world.getGameRules().getBoolean("doMobSpawning")) {
+      if (rand.nextFloat() < 0.15F && world.getGameRules().getBoolean("doMobSpawning") && !(entity instanceof EntityEndermite)) {
         EntityEndermite entityendermite = new EntityEndermite(world);
         entityendermite.setSpawnedByPlayer(true);
         entityendermite.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
