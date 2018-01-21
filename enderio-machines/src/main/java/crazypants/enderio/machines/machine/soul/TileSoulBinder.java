@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
@@ -175,7 +176,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
         }
       }
     } else {
-      MachineRecipeInput[] inputs = new MachineRecipeInput[] { newInput, new MachineRecipeInput(otherSlot, getStackInSlot(otherSlot)) };
+      NNList<MachineRecipeInput> inputs = new NNList<>(newInput, new MachineRecipeInput(otherSlot, getStackInSlot(otherSlot)));
       return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), inputs) != null;
     }
     return false;

@@ -184,8 +184,8 @@ public class VatRecipe implements IRecipe {
     }
   }
 
-  private RecipeMatch matchRecipe(MachineRecipeInput... recipeInputs) {
-    if (!isValid() || recipeInputs == null || recipeInputs.length < requiredItems + 1) {
+  private RecipeMatch matchRecipe(NNList<MachineRecipeInput> recipeInputs) {
+    if (!isValid() || recipeInputs == null || recipeInputs.size() < requiredItems + 1) {
       return null;
     }
     FluidStack inputFluid = null;
@@ -226,7 +226,7 @@ public class VatRecipe implements IRecipe {
   }
 
   @Override
-  public boolean isInputForRecipe(MachineRecipeInput... recipeInputs) {
+  public boolean isInputForRecipe(NNList<MachineRecipeInput> recipeInputs) {
     RecipeMatch m = matchRecipe(recipeInputs);
     return m != null;
   }
@@ -250,7 +250,7 @@ public class VatRecipe implements IRecipe {
     return 1;
   }
 
-  public FluidStack getRequiredFluidInput(MachineRecipeInput[] recipeInputs) {
+  public FluidStack getRequiredFluidInput(NNList<MachineRecipeInput> recipeInputs) {
     RecipeMatch m = matchRecipe(recipeInputs);
     if (m != null) {
       return m.in;
@@ -260,7 +260,7 @@ public class VatRecipe implements IRecipe {
     }
   }
 
-  public FluidStack getFluidOutput(MachineRecipeInput... recipeInputs) {
+  public FluidStack getFluidOutput(NNList<MachineRecipeInput> recipeInputs) {
     RecipeMatch m = matchRecipe(recipeInputs);
     if (m != null) {
       return m.out;

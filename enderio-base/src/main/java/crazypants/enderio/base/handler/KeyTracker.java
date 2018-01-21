@@ -8,8 +8,6 @@ import javax.annotation.Nonnull;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 
-import com.enderio.core.common.util.ChatUtil;
-
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
@@ -40,6 +38,8 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FOVModifier;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -60,17 +60,17 @@ public class KeyTracker {
   private final @Nonnull KeyBinding fovPlusKeyFast, fovMinusKeyFast, fovPlusKey, fovMinusKey, yetaWrenchMode;
 
   public KeyTracker() {
-    create("enderio.keybind.glidertoggle      ", Keyboard.KEY_G, "   enderio.category.darksteelarmor", new GlideAction());
-    create("enderio.keybind.soundlocator      ", Keyboard.KEY_L, "   enderio.category.darksteelarmor", new SoundDetectorAction());
-    create("enderio.keybind.nightvision       ", Keyboard.KEY_P, "   enderio.category.darksteelarmor", new NightVisionAction());
-    create("enderio.keybind.gogglesofrevealing", Keyboard.KEY_NONE, "enderio.category.darksteelarmor", new GogglesAction());
-    create("enderio.keybind.stepassist        ", Keyboard.KEY_NONE, "enderio.category.darksteelarmor", new StepAssistAction());
-    create("enderio.keybind.speed             ", Keyboard.KEY_NONE, "enderio.category.darksteelarmor", new SpeedAction());
-    create("enderio.keybind.jump              ", Keyboard.KEY_NONE, "enderio.category.darksteelarmor", new JumpAction());
-    create("enderio.keybind.top               ", Keyboard.KEY_NONE, "enderio.category.darksteelarmor", new TopAction());
+    create("enderio.keybind.glidertoggle      ", Keyboard.KEY_G, "   key.category.darksteelarmor    ", new GlideAction());
+    create("enderio.keybind.soundlocator      ", Keyboard.KEY_L, "   key.category.darksteelarmor    ", new SoundDetectorAction());
+    create("enderio.keybind.nightvision       ", Keyboard.KEY_P, "   key.category.darksteelarmor    ", new NightVisionAction());
+    create("enderio.keybind.gogglesofrevealing", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new GogglesAction());
+    create("enderio.keybind.stepassist        ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new StepAssistAction());
+    create("enderio.keybind.speed             ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new SpeedAction());
+    create("enderio.keybind.jump              ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new JumpAction());
+    create("enderio.keybind.top               ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new TopAction());
     yetaWrenchMode = //
-    create("enderio.keybind.yetawrenchmode    ", Keyboard.KEY_Y, "   enderio.category.tools         ", new YetaWrenchAction());
-    create("enderio.keybind.magnet            ", Keyboard.KEY_NONE, "enderio.category.tools         ", new MagnetAction());
+        create("enderio.keybind.yetawrenchmode", Keyboard.KEY_Y, "   key.category.tools             ", new YetaWrenchAction());
+    create("enderio.keybind.magnet            ", Keyboard.KEY_NONE, "key.category.tools             ", new MagnetAction());
     create("enderio.keybind.fovreset          ", Keyboard.KEY_NONE, "key.categories.misc            ", new FovAction());
     fovPlusKey = create("     enderio.keybind.fovplus     ", Keyboard.KEY_NONE, "key.categories.misc");
     fovMinusKey = create("    enderio.keybind.fovminus    ", Keyboard.KEY_NONE, "key.categories.misc");
@@ -104,8 +104,8 @@ public class KeyTracker {
   }
 
   private static void sendEnabledChatMessage(String messageBase, boolean isActive) {
-    String message = messageBase.concat(isActive ? ".enabled" : ".disabled");
-    ChatUtil.sendNoSpamClientUnloc(EnderIO.lang, message);
+    String message = EnderIO.lang.addPrefix(messageBase.concat(isActive ? ".enabled" : ".disabled"));
+    Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation(message), true);
   }
 
   private static void toggleDarkSteelController(Type type, String messageBase) {
@@ -132,7 +132,7 @@ public class KeyTracker {
       }
 
       IInventory baubles = BaublesUtil.instance().getBaubles(player);
-      if(baubles != null) {
+      if (baubles != null) {
         for (int i = 0; i < baubles.getSizeInventory(); i++) {
           ItemStack stack = baubles.getStackInSlot(i);
           if (ItemMagnet.isMagnet(stack)) {
@@ -229,7 +229,7 @@ public class KeyTracker {
       }
     }
   }
-  
+
   private static class NightVisionAction implements Action {
     @Override
     public void execute() {
@@ -287,11 +287,7 @@ public class KeyTracker {
       } else if (fovMinusKey.isKeyDown()) {
         fovLevelNext /= 1.01;
       }
-      if (fovLevelNext > 1.3) {
-        fovLevelNext = 1.3;
-      } else if (fovLevelNext < .05) {
-        fovLevelNext = .05;
-      }
+      fovLevelNext = MathHelper.clamp(fovLevelNext, .05, 1.3);
     }
     double val = fovLevelNext * event.getRenderPartialTicks() + fovLevelLast * (1 - event.getRenderPartialTicks());
     event.setFOV((float) (event.getFOV() * val));

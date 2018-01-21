@@ -15,6 +15,7 @@ import crazypants.enderio.base.capacitor.CapacitorKeyType;
 import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.Scaler;
+import crazypants.enderio.base.integration.IntegrationRegistry;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
@@ -81,7 +82,9 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
       return true;
     }
     // Covers protected and private access modes
-    return isOwnerUser(UserIdent.create(playerName.getGameProfile())) || isAuthorisedUser(UserIdent.create(playerName.getGameProfile()));
+    return isOwnerUser(UserIdent.create(playerName.getGameProfile())) || isAuthorisedUser(UserIdent.create(playerName.getGameProfile()))
+    // TODO TeamMode button
+        || IntegrationRegistry.isInSameTeam(UserIdent.create(playerName.getGameProfile()), getOwner());
   }
 
   @Override

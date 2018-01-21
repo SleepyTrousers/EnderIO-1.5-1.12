@@ -13,6 +13,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.base.machine.task.PoweredTask;
@@ -51,7 +52,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_POWER_U
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SPAWNER_SPEEDUP;
 
 @Storable
-public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged, EntityAction.Implementer {
+public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged, EntityAction.Implementer, INotifier {
 
   @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   private CapturedMob capturedMob = null;
@@ -407,14 +408,15 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   @Override
   public @Nonnull BoundingBox getBounds() {
     if (isSpawnMode) {
-      if (bounds == null) {
-        bounds = new BoundingBox(getPos()).expand(getRange(), 1d, getRange());
-        if (capturedMob != null) {
-          Entity ent = capturedMob.getEntity(world, false);
-          if (ent != null) {
-            int height = Math.max((int) Math.ceil(ent.height) - 1, 0);
-            return bounds = bounds.setMaxY(bounds.maxY + height);
-          }
+      if (bounds != null) {
+        return bounds;
+      }
+      bounds = new BoundingBox(getPos()).expand(getRange(), 1d, getRange());
+      if (capturedMob != null) {
+        Entity ent = capturedMob.getEntity(world, false);
+        if (ent != null) {
+          int height = Math.max((int) Math.ceil(ent.height) - 1, 0);
+          return bounds = bounds.setMaxY(bounds.maxY + height);
         }
       }
     }
@@ -464,6 +466,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     return getNotification().contains(note);
   }
 
+  @Override
   public @Nonnull Set<SpawnerNotification> getNotification() {
     return notification;
   }

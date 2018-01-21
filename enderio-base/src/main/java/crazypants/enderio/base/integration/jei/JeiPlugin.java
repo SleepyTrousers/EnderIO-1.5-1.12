@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientHelper;
@@ -19,6 +20,7 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapelessRecipes;
@@ -53,7 +55,13 @@ public class JeiPlugin extends BlankModPlugin {
     inputs.add(new ItemStack(Items.STICK));
     inputs.add(Fluids.NUTRIENT_DISTILLATION.getBucket());
     ShapelessRecipes res = new ShapelessRecipes(new ItemStack(itemMaterial.getItemNN(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
-    registry.addRecipes(Collections.singletonList(res));
+    registry.addRecipes(Collections.singletonList(res), VanillaRecipeCategoryUid.CRAFTING);
+
+    if (!JeiAccessor.ALTERNATIVES.isEmpty()) {
+      // These are lookups for the outputs, the real recipes with the same input create a different oredicted variant of the output item.
+      registry.addRecipes(JeiAccessor.ALTERNATIVES, VanillaRecipeCategoryUid.CRAFTING);
+      Log.debug("Provided " + JeiAccessor.ALTERNATIVES.size() + " synthetic crafting recipes to JEI");
+    }
   }
 
   @Override

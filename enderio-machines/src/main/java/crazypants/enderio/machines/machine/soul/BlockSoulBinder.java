@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.ClientUtil;
 
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.render.SoulBinderBlockRenderMapper;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -30,7 +30,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder>
+public class BlockSoulBinder extends AbstractPoweredTaskBlock<TileSoulBinder>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
   public static BlockSoulBinder create(@Nonnull IModObject modObject) {

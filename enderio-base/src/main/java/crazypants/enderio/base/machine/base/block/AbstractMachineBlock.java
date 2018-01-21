@@ -147,7 +147,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     AbstractMachineEntity te = getTileEntity(world, pos);
     if (te != null) {
       te.readFromItemStack(stack);
-      te.setFacing(Util.getFacingFromEntity(player));
+      te.setFacing(getFacingForHeading(player));
       if (player instanceof EntityPlayer && !world.isRemote) {
         te.setOwner((EntityPlayer) player);
       }
@@ -156,6 +156,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       return;
     }
     world.notifyBlockUpdate(pos, state, state, 3);
+  }
+
+  protected @Nonnull EnumFacing getFacingForHeading(@Nonnull EntityLivingBase player) {
+    return Util.getFacingFromEntity(player);
   }
 
   @Override

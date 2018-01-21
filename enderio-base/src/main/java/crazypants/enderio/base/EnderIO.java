@@ -107,8 +107,6 @@ public class EnderIO implements IEnderIOAddon {
     FluidFuelRegister.init(event);
     Fluids.registerFluids();
 
-    TicProxy.init(event);
-
     ModObjectRegistry.init(event);
 
     EnergyUpgradePowerAdapter.init(event);
@@ -222,8 +220,6 @@ public class EnderIO implements IEnderIOAddon {
             VatRecipeManager.getInstance().addCustomRecipes(value);
           } else if (IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
             Config.TRAVEL_BLACKLIST.add(value);
-          } else if (IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
-            SliceAndSpliceRecipeManager.getInstance().addCustomRecipes(key);
           } else if (IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {
             ConnectivityTool.registerRedstoneAware(value);
           }

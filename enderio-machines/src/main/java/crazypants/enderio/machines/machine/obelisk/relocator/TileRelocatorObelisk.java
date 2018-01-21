@@ -11,7 +11,7 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.machines.machine.obelisk.spawn.TileEntityAbstractSpawningObelisk;
+import crazypants.enderio.machines.machine.obelisk.base.AbstractSpawningObeliskEntity;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
@@ -25,7 +25,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.RELOCATOR_POWER
 import static crazypants.enderio.machines.capacitor.CapacitorKey.RELOCATOR_RANGE;
 
 @Storable
-public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
+public class TileRelocatorObelisk extends AbstractSpawningObeliskEntity {
 
   private final Map<EntityLivingBase, Integer> relocationQueue = new WeakHashMap<EntityLivingBase, Integer>();
   private final Random rand = new Random();

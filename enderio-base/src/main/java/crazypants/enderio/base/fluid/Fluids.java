@@ -209,9 +209,7 @@ public enum Fluids {
   public static void registerBlocks(@Nonnull RegistryEvent.Register<Block> event) {
     for (Fluids fluid : values()) {
       if (fluid.hasBlock) {
-        BlockFluidEnder block = fluid.init();
-        block.init();
-        fluid.getFluid().setBlock(block);
+        event.getRegistry().register(fluid.init());
       }
     }
   }

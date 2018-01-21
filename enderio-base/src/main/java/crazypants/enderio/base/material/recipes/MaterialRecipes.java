@@ -1,9 +1,12 @@
 package crazypants.enderio.base.material.recipes;
 
+import java.util.Locale;
+
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.material.glass.FusedQuartzType;
@@ -20,6 +23,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import static crazypants.enderio.base.init.ModObject.blockEndermanSkull;
+import static crazypants.enderio.base.init.ModObject.itemMaterial;
 
 public class MaterialRecipes {
 
@@ -36,6 +40,11 @@ public class MaterialRecipes {
         }
       }
     });
+
+    Things.addAlias(Material.DYE_GREEN.getBaseName().toUpperCase(Locale.ENGLISH),
+        itemMaterial.getItemNN().getRegistryName() + ":" + Material.DYE_GREEN.ordinal());
+    Things.addAlias(Material.DYE_BROWN.getBaseName().toUpperCase(Locale.ENGLISH),
+        itemMaterial.getItemNN().getRegistryName() + ":" + Material.DYE_BROWN.ordinal());
   }
 
   public static void init(@Nonnull FMLPreInitializationEvent event) {
@@ -84,7 +93,6 @@ public class MaterialRecipes {
   static String[] dyes = { "Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "LightGray", "Gray", "Pink", "Lime", "Yellow", "LightBlue", "Magenta",
       "Orange", "White" };
 
-
   public static void addRecipes() {
 
     for (Alloy alloy : Alloy.values()) {
@@ -97,8 +105,8 @@ public class MaterialRecipes {
 
     for (EnumDyeColor color : EnumDyeColor.values()) {
       for (FusedQuartzType type : FusedQuartzType.values()) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G', type.getOreDictName(),
-            'C', "dye" + dyes[color.getDyeDamage()]));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G', type.getOreDictName(), 'C',
+            "dye" + dyes[color.getDyeDamage()]));
       }
     }
 

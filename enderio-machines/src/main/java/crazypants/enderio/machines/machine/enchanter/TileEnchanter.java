@@ -125,8 +125,8 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
     return currentEnchantmentRecipe != null ? currentEnchantmentRecipe.getXPCost(getInvAsMachineRecipeInput()) : 0;
   }
 
-  public @Nonnull MachineRecipeInput[] getInvAsMachineRecipeInput() {
-    return new MachineRecipeInput[] { new MachineRecipeInput(0, inv.get(0)), new MachineRecipeInput(1, inv.get(1)), new MachineRecipeInput(2, inv.get(2)) };
+  public @Nonnull NNList<MachineRecipeInput> getInvAsMachineRecipeInput() {
+    return new NNList<>(new MachineRecipeInput(0, inv.get(0)), new MachineRecipeInput(1, inv.get(1)), new MachineRecipeInput(2, inv.get(2)));
   }
 
   public void setOutput(@Nonnull ItemStack output) {

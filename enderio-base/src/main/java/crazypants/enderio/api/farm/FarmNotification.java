@@ -2,7 +2,9 @@ package crazypants.enderio.api.farm;
 
 import javax.annotation.Nonnull;
 
-public enum FarmNotification {
+import crazypants.enderio.api.ILocalizable;
+
+public enum FarmNotification implements ILocalizable {
 
   OUTPUT_FULL("outputFull"),
   NO_SEEDS("noSeeds"),
@@ -15,9 +17,10 @@ public enum FarmNotification {
   private final @Nonnull String langStr;
 
   private FarmNotification(@Nonnull String langStr) {
-    this.langStr = "farm.note." + langStr;
+    this.langStr = "enderio.farm.note." + langStr;
   }
 
+  @Override
   public @Nonnull String getUnlocalizedName() {
     return langStr;
   }

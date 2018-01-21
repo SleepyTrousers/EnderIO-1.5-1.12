@@ -32,6 +32,8 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -157,19 +159,21 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     if (tankDirty && canSendClientUpdate()) {
       PacketHandler.sendToAllAround(new PacketTankFluid(this), this);
       world.updateComparatorOutputLevel(pos, getBlockType());
-      final FluidStack fluid = tank.getFluid();
-      int thisFluidLuminosity = fluid == null || fluid.getFluid() == null || tank.isEmpty() ? 0 : fluid.getFluid().getLuminosity(fluid);
-      if (thisFluidLuminosity != lastFluidLuminosity) {
-        world.checkLight(getPos());
-        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 3);
-        // world.notifyLightSet(getPos());
-        // world.checkLightFor(EnumSkyBlock.BLOCK, pos);
-        // updateBlock();
-        lastFluidLuminosity = thisFluidLuminosity;
-      }
+      updateLight();
       tankDirty = false;
     }
     return false;
+  }
+  
+  public void updateLight() {
+    final FluidStack fluid = tank.getFluid();
+    int thisFluidLuminosity = fluid == null || fluid.getFluid() == null || tank.isEmpty() ? 0 : fluid.getFluid().getLuminosity(fluid);
+    if (thisFluidLuminosity != lastFluidLuminosity) {
+      if (world.checkLightFor(EnumSkyBlock.BLOCK, getPos())) {
+        updateBlock();
+      }
+      lastFluidLuminosity = thisFluidLuminosity;
+    }
   }
 
   public int getComparatorOutput() {
@@ -190,9 +194,9 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     if (Prep.isValid(getStackInSlot(2)) && canVoidItems()) {
       getStackInSlot(2).shrink(1);
       if (TankConfig.tankSmeltTrashIntoLava.get() && !tank.isFull() && tank.hasFluid(FluidRegistry.LAVA)) {
-        tank.addFluidAmount(world.rand.nextInt(10) + 1);
+        tank.addFluidAmount((int) MathHelper.clamp(world.rand.nextGaussian() * .75 + 3.5, 1, 10)); // 49% for 3, 22%: for 2 and 4, 2.2% for 1 and 5
       }
-      SoundHelper.playSound(world, pos, SoundHelper.BLOCK_CENTER, SoundRegistry.ITEM_BURN, 0.4F, 2.0F + world.rand.nextFloat() * 0.4F);
+      SoundHelper.playSound(world, pos, SoundHelper.BLOCK_CENTER, SoundRegistry.ITEM_BURN, 0.05F, 2.0F + world.rand.nextFloat() * 0.4F);
       markDirty();
     }
     return drainFullContainer() || fillEmptyContainer() || mendItem();

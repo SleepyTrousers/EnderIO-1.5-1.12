@@ -16,7 +16,6 @@ import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.render.IBlockStateWrapper;
-import crazypants.enderio.base.render.ICacheKey;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
@@ -94,11 +93,6 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   public @Nonnull IItemRenderMapper getItemRenderMapper() {
     // this should never be called as this block's item will always be painted
     return new IItemRenderMapper() {
-      @Override
-      @Nonnull
-      public ICacheKey getCacheKey(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ICacheKey cacheKey) {
-        return cacheKey;
-      }
     };
   }
 

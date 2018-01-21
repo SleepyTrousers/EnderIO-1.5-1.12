@@ -13,7 +13,6 @@ import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.ClientUtil;
@@ -27,7 +26,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -49,17 +47,6 @@ public class BlockAlloy extends BlockEio<TileEntityEio> implements IAdvancedTool
     super(modObject, null, Material.IRON);
     setSoundType(SoundType.METAL);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
-  }
-
-  @Override
-  protected void init() {
-    super.init();
-    NNList.of(Alloy.class).apply(new Callback<Alloy>() {
-      @Override
-      public void apply(@Nonnull Alloy alloy) {
-        TicProxy.registerMetal(alloy);
-      }
-    });
   }
 
   @Override
@@ -115,7 +102,7 @@ public class BlockAlloy extends BlockEio<TileEntityEio> implements IAdvancedTool
   }
 
   @Override
-  public boolean shouldWrench(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
+  public boolean canBeWrenched() {
     return false;
   }
 

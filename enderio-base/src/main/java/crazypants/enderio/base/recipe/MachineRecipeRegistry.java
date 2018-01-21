@@ -61,7 +61,7 @@ public class MachineRecipeRegistry {
     return null;
   }
 
-  public IMachineRecipe getRecipeForInputs(@Nonnull String machineName, @Nonnull MachineRecipeInput... inputs) {
+  public IMachineRecipe getRecipeForInputs(@Nonnull String machineName, @Nonnull NNList<MachineRecipeInput> inputs) {
     for (IMachineRecipe recipe : getRecipesForMachine(machineName).values()) {
       if (recipe.isRecipe(inputs)) {
         return recipe;

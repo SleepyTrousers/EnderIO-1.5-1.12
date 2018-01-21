@@ -1,6 +1,10 @@
 package crazypants.enderio.machines.machine.wired;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
+
+import org.apache.commons.lang3.tuple.Triple;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
@@ -36,28 +40,11 @@ public class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCha
   public void addGhostslots(NNList<GhostSlot> ghostSlots) {
     NNList<ItemStack> empties = new NNList<>();
     NNList<ItemStack> fulls = new NNList<>();
-    ItemHelper.getValidItems().apply(new Callback<ItemStack>() {
+    getValidPair(ItemHelper.getValidItems()).apply(new Callback<Triple<ItemStack, ItemStack, Integer>>() {
       @Override
-      public void apply(@Nonnull ItemStack stack) {
-        if (PowerHandlerUtil.getCapability(stack, null) != null) {
-          ItemStack copy = stack.copy();
-          IEnergyStorage emptyCap = PowerHandlerUtil.getCapability(copy, null);
-          if (emptyCap != null) {
-            int extracted = 1;
-            while (extracted > 0 && emptyCap.canExtract()) {
-              extracted = emptyCap.extractEnergy(Integer.MAX_VALUE, false);
-            }
-            if (emptyCap.canReceive() && emptyCap.getEnergyStored() < emptyCap.getMaxEnergyStored()) {
-              ItemStack empty = copy.copy();
-              int added = 1;
-              while (added > 0) {
-                added = emptyCap.receiveEnergy(Integer.MAX_VALUE, false);
-              }
-              empties.add(empty);
-              fulls.add(copy);
-            }
-          }
-        }
+      public void apply(@Nonnull Triple<ItemStack, ItemStack, Integer> e) {
+        empties.add(e.getLeft());
+        fulls.add(e.getMiddle());
       }
     });
 
@@ -69,6 +56,33 @@ public class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCha
     final GhostBackgroundItemSlot ghost1 = new GhostBackgroundItemSlot(fulls, getSlotFromInventory(1));
     ghost1.displayStdOverlay = true;
     ghostSlots.add(ghost1);
+  }
+
+  public static NNList<Triple<ItemStack, ItemStack, Integer>> getValidPair(List<ItemStack> validItems) {
+    NNList<Triple<ItemStack, ItemStack, Integer>> result = new NNList<>();
+    for (ItemStack stack : validItems) {
+      if (PowerHandlerUtil.getCapability(stack, null) != null) {
+        ItemStack copy = stack.copy();
+        IEnergyStorage emptyCap = PowerHandlerUtil.getCapability(copy, null);
+        if (emptyCap != null) {
+          int extracted = 1, maxloop = 200;
+          while (extracted > 0 && emptyCap.canExtract() && maxloop-- > 0) {
+            extracted = emptyCap.extractEnergy(Integer.MAX_VALUE, false);
+          }
+          if (emptyCap.canReceive() && emptyCap.getEnergyStored() < emptyCap.getMaxEnergyStored()) {
+            ItemStack empty = copy.copy();
+            int added = emptyCap.receiveEnergy(Integer.MAX_VALUE, false);
+            int power = added;
+            maxloop = 200;
+            while (added > 0 && maxloop-- > 0) {
+              power += added = emptyCap.receiveEnergy(Integer.MAX_VALUE, false);
+            }
+            result.add(Triple.of(empty, copy, power));
+          }
+        }
+      }
+    }
+    return result;
   }
 
 }

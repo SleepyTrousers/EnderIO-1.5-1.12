@@ -224,8 +224,8 @@ public abstract class AbstractMachineContainer<E extends AbstractInventoryMachin
       }
     } else if (slotNumber >= startPlayerSlot) {
       List<SlotRange> res = new ArrayList<SlotRange>();
-      addInputSlotRanges(res);
       addUpgradeSlotRanges(res);
+      addInputSlotRanges(res);
       addPlayerSlotRanges(res, slotNumber);
       return res;
     }

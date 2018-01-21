@@ -1,5 +1,7 @@
 package crazypants.enderio.base.recipe.soul;
 
+import static crazypants.enderio.base.init.ModObject.itemSoulVial;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +20,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import static crazypants.enderio.base.init.ModObject.itemSoulVial;
 
 public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
@@ -58,17 +58,17 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   }
 
   @Override
-  public int getEnergyRequired(@Nonnull MachineRecipeInput... inputs) {
+  public int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
     return getEnergyRequired();
   }
 
   @Override
-  public @Nonnull RecipeBonusType getBonusType(@Nonnull MachineRecipeInput... inputs) {
+  public @Nonnull RecipeBonusType getBonusType(@Nonnull NNList<MachineRecipeInput> inputs) {
     return RecipeBonusType.NONE;
   }
 
   @Override
-  public boolean isRecipe(@Nonnull MachineRecipeInput... inputs) {
+  public boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs) {
     int validCount = 0;
     for(MachineRecipeInput input : inputs) {
       if (input != null && isValidInput(input)) {
@@ -81,7 +81,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   }
 
   @Override
-  public @Nonnull ResultStack[] getCompletedResult(float randomChance, @Nonnull MachineRecipeInput... inputs) {
+  public @Nonnull ResultStack[] getCompletedResult(float randomChance, @Nonnull NNList<MachineRecipeInput> inputs) {
     CapturedMob mobType = null;
     ItemStack inputItem = null;
     for(MachineRecipeInput input : inputs) {
@@ -136,8 +136,8 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   }
 
   @Override
-  public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull MachineRecipeInput... inputs) {
-    List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>(inputs.length);
+  public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs) {
+    List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>(inputs.size());
     for(MachineRecipeInput input : inputs) {
       if (input != null && Prep.isValid(input.item)) {
         ItemStack resStack = input.item.copy();

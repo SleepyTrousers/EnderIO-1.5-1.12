@@ -36,8 +36,8 @@ public class Recipe implements IRecipe {
   }
 
   @Override
-  public boolean isInputForRecipe(MachineRecipeInput... machineInputs) {
-    if(machineInputs == null || machineInputs.length == 0) {
+  public boolean isInputForRecipe(NNList<MachineRecipeInput> machineInputs) {
+    if(machineInputs == null || machineInputs.size() == 0) {
       return false;
     }
 

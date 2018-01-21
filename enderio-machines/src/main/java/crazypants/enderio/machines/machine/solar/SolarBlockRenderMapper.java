@@ -1,20 +1,17 @@
 package crazypants.enderio.machines.machine.solar;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
-import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.base.render.rendermapper.ConnectedBlockRenderMapper;
 import crazypants.enderio.base.render.util.QuadCollector;
 import crazypants.enderio.machines.config.config.SolarConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
@@ -29,13 +26,6 @@ public class SolarBlockRenderMapper extends ConnectedBlockRenderMapper {
     skip_top = true;
     skip_side = true;
     skip_top_side = true;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
-      boolean isPainted) {
-    return null;
   }
 
   @Override

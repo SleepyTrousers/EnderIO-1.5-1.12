@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import net.minecraft.item.ItemStack;
 
 public class ManyToOneMachineRecipe extends AbstractMachineRecipe {
@@ -24,7 +26,7 @@ public class ManyToOneMachineRecipe extends AbstractMachineRecipe {
   }
 
   @Override
-  public IRecipe getRecipeForInputs(@Nonnull MachineRecipeInput[] inputs) {
+  public IRecipe getRecipeForInputs(@Nonnull NNList<MachineRecipeInput> inputs) {
     return recipeManager.getRecipeForInputs(inputs);
   }
 

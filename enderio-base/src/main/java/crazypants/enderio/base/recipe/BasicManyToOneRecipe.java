@@ -95,7 +95,7 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   }
 
   @Override
-  public boolean isInputForRecipe(MachineRecipeInput... inputs) {
+  public boolean isInputForRecipe(NNList<MachineRecipeInput> inputs) {
     if (inputs == null) {
       return false;
     }

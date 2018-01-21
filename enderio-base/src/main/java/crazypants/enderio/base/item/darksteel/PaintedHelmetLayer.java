@@ -21,8 +21,9 @@ public class PaintedHelmetLayer implements IRenderUpgrade {
 
   public static final @Nonnull IRenderUpgrade not_an_helmet = new IRenderUpgrade() {
     @Override
-    public void doRenderLayer(@Nonnull RenderPlayer renderPlayer, @Nonnull ItemStack piece, @Nonnull AbstractClientPlayer entitylivingbaseIn, float p_177141_2_,
-        float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
+    public void doRenderLayer(@Nonnull RenderPlayer renderPlayer, EntityEquipmentSlot equipmentSlot, @Nonnull ItemStack piece,
+        @Nonnull AbstractClientPlayer entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_,
+        float p_177141_7_, float scale) {
     }
   };
 
@@ -33,8 +34,11 @@ public class PaintedHelmetLayer implements IRenderUpgrade {
 
   @SuppressWarnings("null")
   @Override
-  public void doRenderLayer(RenderPlayer renderPlayer, ItemStack piece, AbstractClientPlayer entitylivingbaseIn, float p_177141_2_, float p_177141_3_,
-      float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
+  public void doRenderLayer(RenderPlayer renderPlayer, EntityEquipmentSlot equipmentSlot, ItemStack piece, AbstractClientPlayer entitylivingbaseIn,
+      float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
+    if (equipmentSlot != EntityEquipmentSlot.HEAD) {
+      return;
+    }
 
     ItemStack itemstack = entitylivingbaseIn.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     if (!itemstack.hasTagCompound() || !itemstack.getTagCompound().hasKey("DSPAINT")) {

@@ -29,7 +29,7 @@ public class Entity implements RecipeConfigElement {
     } else {
       mob = CapturedMob.create(new ResourceLocation(name.trim()));
       if (mob == null) {
-        Log.warn("Could not find an entity for '" + name + "'");
+        Log.info("Could not find an entity for '" + name + "'");
       }
     }
     return this;
@@ -44,8 +44,7 @@ public class Entity implements RecipeConfigElement {
         Log.warn(" -> " + possible.getEntityName() + " (" + possible.getDisplayName() + ")");
         // Log.warn(" <entity name=\"" + possible.getEntityName() + "\" costMultiplier=\"1\" disabled=\"false\"/> <!-- " + possible.getDisplayName() + " -->");
       }
-      throw new InvalidRecipeConfigException(
-          "Could not find an entity for '" + name + "'");
+      throw new InvalidRecipeConfigException("Could not find an entity for '" + name + "'");
     }
   }
 

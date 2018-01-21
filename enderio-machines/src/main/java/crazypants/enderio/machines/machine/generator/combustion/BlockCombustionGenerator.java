@@ -6,9 +6,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.base.block.BlockMachineExtension;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -35,7 +35,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends AbstractMachineBlock<T>
+public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends AbstractGeneratorBlock<T>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   protected boolean isEnhanced = false;
@@ -194,7 +194,7 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
         }
       }
     }
-    
+
     super.neighborChanged(state, world, pos, blockIn, fromPos);
   }
 

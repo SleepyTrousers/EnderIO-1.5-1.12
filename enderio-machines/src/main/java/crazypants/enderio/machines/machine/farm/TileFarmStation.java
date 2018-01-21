@@ -28,6 +28,7 @@ import crazypants.enderio.base.farming.fertilizer.Fertilizer;
 import crazypants.enderio.base.farming.registry.Commune;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.task.ContinuousTask;
 import crazypants.enderio.base.paint.IPaintable;
@@ -61,7 +62,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_POWER_USE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_STACK_LIMIT;
 
 @Storable
-public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged {
+public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged, INotifier {
 
   public static final int NUM_TOOL_SLOTS = 3;
 
@@ -118,7 +119,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   private void sendNotification() {
-    PacketHandler.sendToAllAround(new PacketUpdateNotification(this, getNotification()), this);
+    PacketHandler.sendToAllAround(new PacketUpdateNotification(this, notification), this);
     sendNotification = false;
   }
 
@@ -436,6 +437,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     return super.usePower(wantToUse);
   }
 
+  @Override
   public @Nonnull Set<FarmNotification> getNotification() {
     return notification;
   };

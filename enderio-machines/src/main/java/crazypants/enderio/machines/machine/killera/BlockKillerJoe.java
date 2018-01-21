@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper.IBlockRenderMapper;
@@ -21,6 +21,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.BlockRenderLayer;
@@ -43,7 +44,7 @@ import net.minecraftforge.server.permission.PermissionAPI;
 /**
  * Name proudly created by Xaw4
  */
-public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implements IHaveTESR {
+public class BlockKillerJoe extends AbstractInventoryMachineBlock<TileKillerJoe> implements IHaveTESR {
 
   static final String USERNAME = "KillerJoe";
   public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/killer_joe_head");
@@ -111,6 +112,11 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   @Override
   public boolean isFullCube(@Nonnull IBlockState bs) {
     return false;
+  }
+
+  @Override
+  protected @Nonnull EnumFacing getFacingForHeading(@Nonnull EntityLivingBase player) {
+    return super.getFacingForHeading(player).getOpposite();
   }
 
   @Override

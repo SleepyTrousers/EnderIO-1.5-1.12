@@ -92,7 +92,7 @@ public class MagnetController {
     if (interestingItems != null) {
       for (Entity entity : interestingItems) {
         double x = player.posX - entity.posX;
-        double y = player.posY + player.eyeHeight - entity.posY;
+        double y = player.posY + player.eyeHeight * .75f - entity.posY;
         double z = player.posZ - entity.posZ;
 
         double distance = x * x + y * y + z * z;

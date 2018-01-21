@@ -277,6 +277,7 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
       }
       return;
     case 5:
+      spawn(world, pos, "enderman");
     case 6:
       if (rnd.nextFloat() < .15f) {
         spawn(world, pos, "bat");
@@ -303,12 +304,18 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
     }
   }
 
-  protected void spawn(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull String enitytype) {
+  protected void spawn(@Nonnull World world, @Nonnull BlockPos pos0, @Nonnull String enitytype) {
     CapturedMob capturedMob = CapturedMob.create(new ResourceLocation("minecraft", enitytype));
     if (capturedMob != null) {
-      if (!capturedMob.spawn(world, pos, EnumFacing.DOWN, false)) {
-        capturedMob.spawn(world, pos.down(), EnumFacing.DOWN, false);
-      }
+      NNList.SHELL.apply(new NNList.ShortCallback<BlockPos>() {
+        @Override
+        public boolean apply(@Nonnull BlockPos e) {
+          BlockPos pos = pos0.add(e);
+          return capturedMob.spawn(world, pos.up(), EnumFacing.DOWN, false) || capturedMob.spawn(world, pos, EnumFacing.DOWN, false)
+              || capturedMob.spawn(world, pos.down(), EnumFacing.DOWN, false) || capturedMob.spawn(world, pos.up().up(), EnumFacing.DOWN, false)
+              || capturedMob.spawn(world, pos.up().down().down(), EnumFacing.DOWN, false);
+        }
+      });
     }
   }
 
@@ -320,7 +327,7 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
         entityIn.setRotationYawHead(rand.nextFloat());
       }
       if (rand.nextFloat() < .50f) {
-        entityIn.setVelocity(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
+        entityIn.addVelocity(rand.nextFloat() * 2f - 1f, rand.nextFloat(), rand.nextFloat() * 2f - 1f);
       }
       if (rand.nextFloat() < .10f) {
         entityIn.extinguish();

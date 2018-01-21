@@ -5,6 +5,8 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -37,12 +39,12 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  int getEnergyRequired(@Nonnull MachineRecipeInput... inputs);
+  int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs);
 
   /**
    * Returns the how bonus should be handled for this input
    **/
-  default @Nonnull RecipeBonusType getBonusType(@Nonnull MachineRecipeInput... inputs) {
+  default @Nonnull RecipeBonusType getBonusType(@Nonnull NNList<MachineRecipeInput> inputs) {
     return RecipeBonusType.NONE;
   }
 
@@ -54,7 +56,7 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  public boolean isRecipe(@Nonnull MachineRecipeInput... inputs);
+  public boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs);
 
   /**
    * Returns the output from a single 'cycle' of the recipe (even if the inputs
@@ -70,7 +72,7 @@ public interface IMachineRecipe {
    * @return
    */
   @Nonnull
-  ResultStack[] getCompletedResult(float randomChance, @Nonnull MachineRecipeInput... inputs);
+  ResultStack[] getCompletedResult(float randomChance, @Nonnull NNList<MachineRecipeInput> inputs);
 
   /**
    * Returns the experience a user gains when this recipe has generated the
@@ -108,7 +110,7 @@ public interface IMachineRecipe {
    * @return
    */
   @Nonnull
-  List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull MachineRecipeInput... inputs);
+  List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs);
 
   public static class ResultStack {
 

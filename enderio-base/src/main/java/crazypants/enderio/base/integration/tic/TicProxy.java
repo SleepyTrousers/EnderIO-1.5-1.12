@@ -9,34 +9,23 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.enderio.core.common.fluid.BlockFluidEnder;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.fluid.Fluids;
-import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.util.Prep;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class TicProxy {
 
-  static final ResourceLocation TEX_STILL = new ResourceLocation("tconstruct:blocks/fluids/molten_metal_flow");
-  static final ResourceLocation TEX_FLOWING = new ResourceLocation("tconstruct:blocks/fluids/molten_metal");
   private static boolean isLoaded = false;
   private static Method getMelting;
   private static Method registerAlloy;
@@ -51,11 +40,11 @@ public class TicProxy {
         Class<Object> TinkerRegistry = ReflectionHelper.getClass(TicProxy.class.getClassLoader(), "slimeknights.tconstruct.library.TinkerRegistry");
         getMelting = ReflectionHelper.findMethod(TinkerRegistry, "getMelting", (String) null, ItemStack.class); // MeltingRecipe
         registerAlloy = ReflectionHelper.findMethod(TinkerRegistry, "registerAlloy", (String) null, FluidStack.class, FluidStack[].class); // void
-        registerTableCasting = ReflectionHelper.findMethod(TinkerRegistry, "registerTableCasting", (String) null, ItemStack.class, ItemStack.class,
-            Fluid.class, int.class); // void
+        registerTableCasting = ReflectionHelper.findMethod(TinkerRegistry, "registerTableCasting", (String) null, ItemStack.class, ItemStack.class, Fluid.class,
+            int.class); // void
         registerMelting = ReflectionHelper.findMethod(TinkerRegistry, "registerMelting", (String) null, ItemStack.class, Fluid.class, int.class); // void
-        registerBasinCasting = ReflectionHelper.findMethod(TinkerRegistry, "registerBasinCasting", (String) null, ItemStack.class, ItemStack.class,
-            Fluid.class, int.class); // void
+        registerBasinCasting = ReflectionHelper.findMethod(TinkerRegistry, "registerBasinCasting", (String) null, ItemStack.class, ItemStack.class, Fluid.class,
+            int.class); // void
 
         Class<Object> MeltingRecipe = ReflectionHelper.getClass(TicProxy.class.getClassLoader(), "slimeknights.tconstruct.library.smeltery.MeltingRecipe");
         getResult = ReflectionHelper.findMethod(MeltingRecipe, "getResult", (String) null); // FluidStack
@@ -66,12 +55,6 @@ public class TicProxy {
         Log.error("Failed to load Tinker's Construct integration. Reason:");
         e.printStackTrace();
       }
-    }
-  }
-
-  public static void init(FMLPreInitializationEvent event) {
-    if (isLoaded) {
-      AdditionalFluid.init(event); // TODO 1.11 needs to be called by Registry<Block> event, I'd say
     }
   }
 
@@ -297,36 +280,6 @@ public class TicProxy {
       e.printStackTrace();
     }
     return null;
-  }
-
-  // to be called and executed during preinit
-  public static void registerMetal(final @Nonnull Alloy alloy) {
-    if (!isLoaded) {
-      return;
-    }
-
-    Fluid f = new Fluid(alloy.getFluidName(), TEX_FLOWING, TEX_STILL) {
-      @Override
-      public int getColor() {
-        return 0xFF000000 | alloy.getColor();
-      }
-    };
-    f.setDensity(9000);
-    f.setLuminosity(4);
-    f.setTemperature(alloy.getMeltingPoint() + 273);
-    f.setViscosity(3000);
-    FluidRegistry.registerFluid(f);
-    BlockFluidEnder.MoltenMetal.create(f, Material.LAVA, alloy.getColor());
-    if (!EnderIO.proxy.isDedicatedServer()) {
-      Fluids.registerFluidBlockRendering(f);
-    }
-    FluidRegistry.addBucketForFluid(f);
-
-    NBTTagCompound tag = new NBTTagCompound();
-    tag.setString("fluid", f.getName());
-    tag.setString("ore", alloy.getOreOre());
-    tag.setBoolean("toolforge", true);
-    FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
   }
 
   private static class CastQueue {

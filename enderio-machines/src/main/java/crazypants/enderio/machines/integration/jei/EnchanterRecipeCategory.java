@@ -71,7 +71,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
         final ItemStack slot1 = in1.getDisplayedIngredient();
         final ItemStack slot2 = in2.getDisplayedIngredient();
         if (slot0 != null && slot1 != null && slot2 != null) {
-          int xpCost = rec.getXPCost(new MachineRecipeInput(0, slot0), new MachineRecipeInput(1, slot1), new MachineRecipeInput(1, slot2));
+          int xpCost = rec.getXPCost(new NNList<>(new MachineRecipeInput(0, slot0), new MachineRecipeInput(1, slot1), new MachineRecipeInput(1, slot2)));
 
           if (xpCost != 0) {
             String str = Lang.GUI_VANILLA_REPAIR_COST.get(xpCost);
@@ -92,8 +92,8 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
       List<ItemStack> lapizInputs = new ArrayList<ItemStack>();
       List<ItemStack> itemOutputs = new ArrayList<ItemStack>();
 
-      NNList<List<MachineRecipeInput>> variants = rec.getVariants();
-      for (List<MachineRecipeInput> variant : variants) {
+      NNList<NNList<MachineRecipeInput>> variants = rec.getVariants();
+      for (NNList<MachineRecipeInput> variant : variants) {
         for (MachineRecipeInput machineRecipeInput : variant) {
           if (machineRecipeInput.slotNumber == 0) {
             bookInputs.add(machineRecipeInput.item);
@@ -103,7 +103,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
             lapizInputs.add(machineRecipeInput.item);
           }
         }
-        ResultStack[] completedResult = rec.getCompletedResult(0, NullHelper.notnullJ(variant.toArray(new MachineRecipeInput[0]), "List.toArray()"));
+        ResultStack[] completedResult = rec.getCompletedResult(0, NullHelper.notnullM(variant, "NNList iterated to null"));
         itemOutputs.add(completedResult[0].item);
       }
 
@@ -113,7 +113,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
       inputs.add(lapizInputs);
 
       ingredients.setInputLists(ItemStack.class, inputs);
-      ingredients.setOutputLists(ItemStack.class, Collections.singletonList(itemOutputs));
+      ingredients.setOutputLists(ItemStack.class, NullHelper.notnullJ(Collections.singletonList(itemOutputs), "Collections.singletonList()"));
     }
 
   }
@@ -125,7 +125,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
     registry.addRecipeClickArea(GuiEnchanter.class, 155, 8, 16, 16, EnchanterRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_enchanter.getBlockNN()), EnchanterRecipeCategory.UID);
 
-    registry.addRecipes(MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.ENCHANTER).values(), UID);
+    registry.addRecipes(NullHelper.notnullJ(MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.ENCHANTER).values(), "Map.values()"), UID);
 
     registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerEnchanter.class, EnchanterRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
         FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);

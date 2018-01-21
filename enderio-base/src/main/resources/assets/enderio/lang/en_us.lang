@@ -1,9 +1,11 @@
-//***  Ender IO *****//
+#PARSE_ESCAPES
 
-// Translators, check your ".guess" file to see which keys your
-// language is missing and which keys it has that do not exist anymore.
+#***  Ender IO *****#
 
-// These keys have been confirmed in 1.11
+# Translators, check your ".guess" file to see which keys your
+# language is missing and which keys it has that do not exist anymore.
+
+# These keys have been confirmed in 1.11
 
 # Names for the creative tabs
 
@@ -183,6 +185,15 @@ item.item_material.organic_green_dye.tooltip.detailed.line2=§7Not edible. Avoid
 item.item_material.organic_brown_dye.name=Organic Brown Dye
 item.item_material.organic_brown_dye.tooltip.detailed.line1=Industrially processed plant matter with a "natural" washed-out color.
 item.item_material.organic_brown_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with plenty of water and seek medical advice.
+item.item_material.powder_lapis_lazuli.name=Lapis Lazuli Powder
+item.item_material.powder_quartz.name=Quartz Powder
+item.item_material.machine_dye.name=Organic Machine Powder Coating
+item.item_material.machine_dye.tooltip.detailed.line1=Industrially produced dye with organic and inorganic components. Not biodegradable.
+item.item_material.machine_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with plenty of water and seek medical advice.
+item.item_material.simple_machine_chassi.name=Simple Machine Chassis
+# Note: Misspelling below is on purpose. Trying for "chenglish"
+item.item_material.simple_machine_chassi.tooltip.detailed.line1=High quality enclose toolkit for building your own machines. Made in Germany! High Uality, my friend!
+item.item_material.simple_machine_chassi.tooltip.detailed.line2=§7Not stainless. Keep away from moisture. Made in town of Gemany, China.
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad
@@ -514,26 +525,23 @@ enderio.coolant.tooltip.heading=Coolant
 enderio.coolant.tooltip.degreesPerBucket=%s°C per bucket
 
 
+enderio.tooltip.anvilupgrades=Anvil Upgrades:
 
 enderio.darksteel.upgrade.empowered_one.name=Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D%% damage absorbed
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=by power
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D% damage absorbed by power
 
 enderio.darksteel.upgrade.empowered_two.name=Empowered II
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D%% damage absorbed
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=by power
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D% damage absorbed by power
 
 enderio.darksteel.upgrade.empowered_three.name=Empowered III
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D%% damage absorbed
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=by power
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% damage absorbed by power
 
 enderio.darksteel.upgrade.empowered_four.name=Empowered IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D%% damage absorbed
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% damage absorbed by power
 
 enderio.darksteel.upgrade.travel.name=Travel
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or activate a travel anchor or Ender IO
@@ -551,7 +559,7 @@ enderio.darksteel.upgrade.glider.enabled=Glider Active
 enderio.darksteel.upgrade.glider.disabled=Glider Disabled
 
 enderio.darksteel.upgrade.elytra.name=Elytra
-enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=Enables Elytra flight
+enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=Makes armor work as Elytra
 enderio.darksteel.upgrade.elytra.tooltip.detailed.line2=§4(That means flying as if an Elytra was equipped, NOT "creative" flight!)
 enderio.darksteel.upgrade.elytra.enabled=Elytra Active
 enderio.darksteel.upgrade.elytra.disabled=Elytra Disabled
@@ -617,36 +625,65 @@ enderio.darksteel.upgrade.nightVision.disabled=Night Vision Disabled
 
 enderio.darksteel.upgrade.top.name=The One Probe
 
-// These are used for the "The One Probe" integration
-enderio.top.action.header=%s:
-enderio.top.action.none=nothing
+# These are used for the "The One Probe" integration
+enderio.top.action.header.pre=§e
+enderio.top.action.header.post=:
+enderio.top.action.none=§4nothing
+
+enderio.top.range.header.pre=§eRange: §f
+enderio.top.range.header.post=
+# enderio.top.range is server-side only
+enderio.top.range=%sx%sx%s
+
+enderio.top.machine.side.pre=§eSide: §f
+enderio.top.machine.side.post=
+enderio.top.machine.side.north=North
+enderio.top.machine.side.south=South
+enderio.top.machine.side.west=West
+enderio.top.machine.side.east=East
+enderio.top.machine.side.up=Up
+enderio.top.machine.side.down=Down
+enderio.top.machine.ioMode.pre=§eMode: §f
+enderio.top.machine.ioMode.post=
+enderio.top.machine.outofpower=§4No Power
 enderio.top.machine.active=active
 enderio.top.machine.idle=idle
-enderio.top.progress.idle=idle
-enderio.top.suffix.percent= %
-enderio.top.suffix.rf= RF
-enderio.top.suffix.levels= Levels
-enderio.top.suffix.items= Items
-enderio.top.range.header=Range: %s
-enderio.top.range=%sx%sx%s
-enderio.top.machine.outofpower=No Power
-enderio.top.progress.outofpower=Out of Power
-enderio.top.redstone.header=Currently: %s
+
+enderio.top.progress.outofpower=§4Out of Power
+
+enderio.top.redstone.header.pre=§eCurrently: §f
+enderio.top.redstone.header.post=
 enderio.top.redstone.true=On
 enderio.top.redstone.false=Off
-enderio.top.tank.content=%s/%smb
-enderio.top.tank.content.empty=Empty
-enderio.top.tank.header.input=Input Tank: %s
-enderio.top.tank.header.output=Output Tank: %s
-enderio.top.tank.header.storage=%s
-enderio.top.rf.header.maxin=Max Input:
-enderio.top.rf.header.maxout=Max Output:
-enderio.top.rf.header.avg=I/O:
-enderio.top.rf.value=%s RF/t
-enderio.top.paint.header=Painted with:
-enderio.top.owner.header=Owner:
 
-//Fluids
+enderio.top.paint.header=§ePainted with:
+enderio.top.owner.header=§eOwner:
+enderio.top.rf.header.maxin=§eMax Input:
+enderio.top.rf.header.maxout=§eMax Output:
+enderio.top.rf.header.avg=§eI/O:
+enderio.top.rf.value.pre=§f
+enderio.top.rf.value.post=\u0020µI/t
+
+# All suffixes are server-side
+enderio.top.suffix.rf=\u0020µI
+enderio.top.suffix.levels=\u0020Levels
+enderio.top.suffix.items=\u0020Items
+enderio.top.suffix.percent=\u0020%
+
+enderio.top.tank.content.pre=
+enderio.top.tank.content.middle=/
+enderio.top.tank.content.post=\u0020mB
+enderio.top.tank.content.empty=Empty
+
+enderio.top.tank.header.input.pre=§eInput Tank: §f
+enderio.top.tank.header.input.post=
+enderio.top.tank.header.output.pre=§eOutput Tank: §f
+enderio.top.tank.header.output.post=
+enderio.top.tank.header.storage.pre=§f
+enderio.top.tank.header.storage.post=
+
+
+# Fluids
 fluid.nutrient_distillation=Nutrient Distillation
 tile.fluid.nutrient_distillation.name=Nutrient Distillation
 
@@ -677,6 +714,30 @@ tile.fluid.cloud_seed_concentrated.name=Concentrated Cloud Seed
 fluid.xpjuice=Liquid XP
 tile.fluid.xpjuice.name=Liquid XP
 
+fluid.electrical_steel=Molten Electrical Steel
+tile.fluid.electrical_steel.name=Molten Electrical Steel
+fluid.energetic_alloy=Molten Energetic Alloy
+tile.fluid.energetic_alloy.name=Molten Energetic Alloy
+fluid.vibrant_alloy=Molten Vibrant Alloy
+tile.fluid.vibrant_alloy.name=Molten Vibrant Alloy
+fluid.redstone_alloy=Molten Redstone Alloy
+tile.fluid.redstone_alloy.name=Molten Redstone Alloy
+fluid.conductive_iron=Molten Conductive Iron
+tile.fluid.conductive_iron.name=Molten Conductive Iron
+fluid.pulsating_iron=Molten Pulsating Iron
+tile.fluid.pulsating_iron.name=Molten Pulsating Iron
+fluid.dark_steel=Molten Dark Steel
+tile.fluid.dark_steel.name=Molten Dark Steel
+fluid.soularium=Molten Soularium
+tile.fluid.soularium.name=Molten Soularium
+
+fluid.enderio.glowstone=Glowgas
+tile.fluid.enderio.glowstone.name=Glowgas
+fluid.enderio.redstone=Molten Redstone
+tile.fluid.enderio.redstone.name=Molten Redstone
+fluid.enderio.ender=Liquefied Ender Pearls
+tile.fluid.enderio.ender.name=Liquefied Ender Pearls
+
 enderio.itemConduitFilterUpgrade=Upgrade for item conduits
 
 enderio.itemConduitFilterUpgrade.configured=%sConfigured
@@ -694,30 +755,35 @@ enderio.gui.generic.nocap.line2=Insert any capacitor so
 enderio.gui.generic.nocap.line3=this machine can work!
 
 
-// consumed by EntityAction
+# consumed by EntityAction
 enderio.entity_action.block_attractor_obelisk.action=Attracts
 enderio.entity_action.block_aversion_obelisk.action=Prevents spawning
 enderio.entity_action.block_powered_spawner.action=Spawns
 enderio.entity_action.block_relocator_obelisk.action=Relocates
 
-// Redstone controls
+# Redstone controls
 enderio.gui.tooltip.redstoneControlMode.ignore=Always active
 enderio.gui.tooltip.redstoneControlMode.on=Active with signal
 enderio.gui.tooltip.redstoneControlMode.off=Active without signal
 enderio.gui.tooltip.redstoneControlMode.never=Never active
 
-// IO Modes
+# IO Modes
 enderio.gui.machine.ioMode.none=None
 enderio.gui.machine.ioMode.pull=Pull
 enderio.gui.machine.ioMode.push=Push
 enderio.gui.machine.ioMode.disabled=Disabled
 enderio.gui.machine.ioMode.pullPush=Push / Pull
-enderio.gui.machine.ioMode.pullPush.colored=%sPush %s/ %sPull
+
+enderio.gui.machine.ioMode.none.colored=§7None
+enderio.gui.machine.ioMode.pull.colored=§bPull
+enderio.gui.machine.ioMode.push.colored=§6Push
+enderio.gui.machine.ioMode.disabled.colored=§cDisabled
+enderio.gui.machine.ioMode.pullPush.colored=§6Push §f/ §bPull
 
 enderio.recipe.tooltip.clearConfig=§c§oThis will clear all stored info!
 enderio.block.tooltip.isBeaconBase=Can be used as beacon base
 
-// Colors e.g. for Colored Fused Quartz
+# Colors e.g. for Colored Fused Quartz
 enderio.color.black=Black
 enderio.color.red=Red
 enderio.color.green=Green
@@ -744,7 +810,7 @@ enderio.soulvial.owned.denied=Permission §cdenied§r - only owners may pick up 
 enderio.soulvial.player.denied=§cNo!$r How would you feel if you had to play this game from inside a bottle?
 enderio.soulvial.blacklisted.denied=Permission §cdenied§r - this entity is blacklisted
 
-// There's a 1% change that a soul vial containing a pig is named this:
+# There's a 1% change that a soul vial containing a pig is named this:
 enderio.easteregg.piginabottle=Bacon in a Bottle
 
 ## Names for random capacitors. These are layered ("level"+"type")xN "baselevel", e.g.
@@ -809,8 +875,31 @@ enderio.loot.capacitor.title.19=Thing
 enderio.loot.capacitor.title.20=Something
 enderio.loot.capacitor.title.21=Nothing
 
+enderio.keybind.glidertoggle=Glider/Elytra Toggle
+enderio.keybind.soundlocator=Sound Locator
+enderio.keybind.nightvision=Night Vision
+enderio.keybind.gogglesofrevealing=Goggles of Revealing
+enderio.keybind.stepassist=Step Assist
+enderio.keybind.speed=Speed
+enderio.keybind.jump=Jump
+enderio.keybind.top=Toggle The One Probe (Helmet Upgrade)
+enderio.keybind.yetawrenchmode=Yeta Wrench Mode
+enderio.keybind.magnet=Toggle Electromagnet
+enderio.keybind.fovplus=Camera: Zoom out
+enderio.keybind.fovminus=Camera: Zoom in
+enderio.keybind.fovplusfast=Camera: Zoom out fast
+enderio.keybind.fovminusfast=Camera: Zoom in fast
+enderio.keybind.fovreset=Camera: Reset Zoom
+key.category.darksteelarmor=Dark Steel Armor 
+key.category.tools=Tools
 
-// These keys have not (yet) been confirmed in 1.11
+# unless we want to copy the sound, it will always show this subtitle.
+subtitles.entity.enderman.teleport=Something teleports
+# just because I feel that way...
+container.chestDouble=Double Chest
+
+
+# These keys have not (yet) been confirmed in 1.11
 ;
 ;//Power
 ;enderio.power.maxOutput=Max Output
@@ -1281,23 +1370,6 @@ item.item_power_item_filter.tooltip.detailed.line2=how much RF they have stored
 ;
 ;
 ;//Keybinds/Waila/NEI/Tooltips
-;enderio.category.darksteelarmor=Dark Steel Armor
-;enderio.category.tools=Tools
-;enderio.keybind.glidertoggle=Glider/Elytra Toggle
-;enderio.keybind.gogglesofrevealing=Goggles of Revealing
-;enderio.keybind.nightvision=Night Vision
-;enderio.keybind.soundlocator=Sound Locator
-;enderio.keybind.speed=Speed
-;enderio.keybind.jump=Jump
-;enderio.keybind.stepassist=Step Assist
-;enderio.keybind.yetawrenchmode=Yeta Wrench Mode
-;enderio.keybind.magnet=Toggle Electromagnet
-;enderio.keybind.top=Toggle The One Probe (Helmet Upgrade)
-;enderio.keybind.fovplus=Camera: Zoom out (creative only)
-;enderio.keybind.fovminus=Camera: Zoom in (creative only)
-;enderio.keybind.fovplusfast=Camera: Zoom out fast (creative only)
-;enderio.keybind.fovminusfast=Camera: Zoom in fast (creative only)
-;enderio.keybind.fovreset=Camera: Reset Zoom (creative only)
 ;enderio.nei.alloysmelter=Alloy Smelter
 ;enderio.nei.enchanter=Enchanter
 ;enderio.nei.sagmill=SAG Mill
@@ -1308,7 +1380,6 @@ item.item_power_item_filter.tooltip.detailed.line2=how much RF they have stored
 ;enderio.tooltip.oredict=Ore Dictionary:
 ;enderio.tooltip.meta=Meta:
 ;enderio.tooltip.uid=UID:
-;enderio.tooltip.anvilupgrades=Anvil Upgrades:
 ;enderio.waila.config.hiddenfacades=Sneaky Facades
 ;
 ;enderio.config.capacitor.alloy_smelter_power_buffer=Alloy Smelter: Internal power buffer size (will be scaled by the used upgrade capacitor)
@@ -1361,17 +1432,6 @@ item.item_power_item_filter.tooltip.detailed.line2=how much RF they have stored
 ;tile.blockInventoryChest_warehouse13.name=Inventory System Storage Extended Warehouse
 ;
 
-;fluid.electricalsteel=Molten Electrical Steel
-;fluid.energeticalloy=Molten Energetic Alloy
-;fluid.vibrantalloy=Molten Vibrant Alloy
-;fluid.redstonealloy=Molten Redstone Alloy
-;fluid.conductiveiron=Molten Conductive Iron
-;fluid.pulsatingiron=Molten Pulsating Iron
-;fluid.darksteel=Molten Dark Steel
-;fluid.soularium=Molten Soularium
-;fluid.glowstone=Glowgas
-;fluid.redstone=Molten Redstone
-;fluid.ender=Liquidfied Ender Pearls
 ;
 ;itemGroup.enderio.main=Ender IO
 ;itemGroup.enderio.items=Ender IO Items

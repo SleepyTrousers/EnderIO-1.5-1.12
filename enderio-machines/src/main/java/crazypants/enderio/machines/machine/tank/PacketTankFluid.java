@@ -45,6 +45,7 @@ public class PacketTankFluid extends MessageTileEntity<TileTank> {
       TileTank tile = message.getTileEntity(player.world);
       if (tile != null) {
         tile.tank.readFromNBT(message.nbtRoot);
+        tile.updateLight();
       }
       return null;
     }

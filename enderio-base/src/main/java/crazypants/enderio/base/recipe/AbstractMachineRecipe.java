@@ -1,6 +1,5 @@
 package crazypants.enderio.base.recipe;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -15,8 +14,8 @@ import net.minecraftforge.fluids.FluidStack;
 public abstract class AbstractMachineRecipe implements IMachineRecipe {
 
   @Override
-  public int getEnergyRequired(@Nonnull MachineRecipeInput... inputs) {
-    if (inputs.length <= 0) {
+  public int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
+    if (inputs.size() <= 0) {
       return 0;
     }
     IRecipe recipe = getRecipeForInputs(inputs);
@@ -24,8 +23,8 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   @Override
-  public @Nonnull RecipeBonusType getBonusType(@Nonnull MachineRecipeInput... inputs) {
-    if (inputs.length <= 0) {
+  public @Nonnull RecipeBonusType getBonusType(@Nonnull NNList<MachineRecipeInput> inputs) {
+    if (inputs.size() <= 0) {
       return RecipeBonusType.NONE;
     }
     IRecipe recipe = getRecipeForInputs(inputs);
@@ -36,15 +35,15 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     }
   }
 
-  public abstract IRecipe getRecipeForInputs(@Nonnull MachineRecipeInput[] inputs);
+  public abstract IRecipe getRecipeForInputs(@Nonnull NNList<MachineRecipeInput> inputs);
 
   @Override
-  public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull MachineRecipeInput... inputs) {
+  public @Nonnull NNList<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs) {
     IRecipe recipe = getRecipeForInputs(inputs);
-    List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
+    NNList<MachineRecipeInput> result = new NNList<MachineRecipeInput>();
 
     // Need to make copies so we can reduce their values as we go
-    MachineRecipeInput[] availableInputs = new MachineRecipeInput[inputs.length];
+    MachineRecipeInput[] availableInputs = new MachineRecipeInput[inputs.size()];
     int i = 0;
     for (MachineRecipeInput available : inputs) {
       availableInputs[i] = available.copy();
@@ -112,8 +111,8 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   @Override
-  public boolean isRecipe(@Nonnull MachineRecipeInput... inputs) {
-    if (inputs.length <= 0) {
+  public boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs) {
+    if (inputs.size() <= 0) {
       return false;
     }
     IRecipe recipe = getRecipeForInputs(inputs);
@@ -121,8 +120,8 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   @Override
-  public @Nonnull ResultStack[] getCompletedResult(float chance, @Nonnull MachineRecipeInput... inputs) {
-    if (inputs.length <= 0) {
+  public @Nonnull ResultStack[] getCompletedResult(float chance, @Nonnull NNList<MachineRecipeInput> inputs) {
+    if (inputs.size() <= 0) {
       return new ResultStack[0];
     }
     IRecipe recipe = getRecipeForInputs(inputs);

@@ -14,14 +14,19 @@ import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemOptional implements RecipeConfigElement {
 
   protected String name;
+  protected String nbt;
   protected transient @Nonnull ItemStack stack = Prep.getEmpty();
   protected transient Object recipeObject;
   protected transient boolean nullItem;
   protected transient final @Nonnull Things thing = new Things();
+  protected transient NBTTagCompound tag;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -39,6 +44,22 @@ public class ItemOptional implements RecipeConfigElement {
       throw new InvalidRecipeConfigException("Name \"" + name + "\"> references " + recipeObjects.size() + " different things: " + recipeObjects);
     }
     recipeObject = recipeObjects.isEmpty() ? ItemStack.EMPTY : recipeObjects.get(0);
+    final String nbt_nullchecked = nbt;
+    if (nbt_nullchecked != null) {
+      if (nbt_nullchecked.trim().isEmpty()) {
+        tag = null;
+      } else {
+        try {
+          tag = JsonToNBT.getTagFromJson(nbt_nullchecked);
+          stack.setTagCompound(tag);
+          if (recipeObject instanceof ItemStack) {
+            ((ItemStack) recipeObject).setTagCompound(tag);
+          }
+        } catch (NBTException e) {
+          throw new InvalidRecipeConfigException(nbt_nullchecked + " is not valid NBT json.");
+        }
+      }
+    }
     return this;
   }
 
@@ -71,10 +92,18 @@ public class ItemOptional implements RecipeConfigElement {
     this.name = name;
   }
 
+  public NBTTagCompound getTag() {
+    return tag;
+  }
+
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
     if ("name".equals(name)) {
       this.name = value;
+      return true;
+    }
+    if ("nbt".equals(name)) {
+      this.nbt = value;
       return true;
     }
 

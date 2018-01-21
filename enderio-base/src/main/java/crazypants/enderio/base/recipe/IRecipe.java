@@ -29,7 +29,7 @@ public interface IRecipe {
   @Nonnull
   RecipeBonusType getBonusType();
 
-  boolean isInputForRecipe(MachineRecipeInput... inputs);
+  boolean isInputForRecipe(NNList<MachineRecipeInput> inputs);
 
   boolean isValidInput(int slotNumber, @Nonnull ItemStack item);
 

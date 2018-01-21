@@ -29,7 +29,7 @@ public interface IInternalPoweredItem {
     setEnergyStored(container, getMaxEnergyStored(container));
   }
 
-  default @Nonnull ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+  default @Nullable ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
     return new ItemPowerCapabilityBackend(stack);
   }
 

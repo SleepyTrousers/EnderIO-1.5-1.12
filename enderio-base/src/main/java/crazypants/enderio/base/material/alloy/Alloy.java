@@ -81,20 +81,20 @@ public enum Alloy implements IStringSerializable {
     return new ItemStack(ModObject.blockAlloy.getBlockNN(), size, ordinal());
   }
 
-  public @Nonnull String getOreOre() {
-    return "ore" + StringUtils.capitalize(oreName);
+  public @Nonnull String getOreName() {
+    return oreName;
   }
 
   public @Nonnull String getOreNugget() {
-    return "nugget" + StringUtils.capitalize(oreName);
+    return "nugget" + oreName;
   }
 
   public @Nonnull String getOreIngot() {
-    return "ingot" + StringUtils.capitalize(oreName);
+    return "ingot" + oreName;
   }
 
   public @Nonnull String getOreBlock() {
-    return "block" + StringUtils.capitalize(oreName);
+    return "block" + oreName;
   }
 
   @Override

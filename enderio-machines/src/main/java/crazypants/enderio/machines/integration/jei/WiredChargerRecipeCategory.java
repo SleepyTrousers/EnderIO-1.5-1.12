@@ -5,11 +5,14 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang3.tuple.Triple;
+
+import com.enderio.core.common.util.NNList.Callback;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
-import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.wired.ContainerWiredCharger;
 import crazypants.enderio.machines.machine.wired.GuiWiredCharger;
@@ -26,7 +29,6 @@ import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.energy.IEnergyStorage;
 
 public class WiredChargerRecipeCategory extends BlankRecipeCategory<WiredChargerRecipeCategory.WiredChargerRecipeWrapper> {
 
@@ -66,28 +68,13 @@ public class WiredChargerRecipeCategory extends BlankRecipeCategory<WiredCharger
     List<ItemStack> validItems = registry.getIngredientRegistry().getIngredients(ItemStack.class);
 
     List<WiredChargerRecipeWrapper> result = new ArrayList<WiredChargerRecipeWrapper>();
-    for (ItemStack stack : validItems) {
-      if (PowerHandlerUtil.getCapability(stack, null) != null) {
-        ItemStack copy = stack.copy();
-        IEnergyStorage emptyCap = PowerHandlerUtil.getCapability(copy, null);
-        if (emptyCap != null) {
-          int extracted = 1, maxloop = 200;
-          while (extracted > 0 && emptyCap.canExtract() && maxloop-- > 0) {
-            extracted = emptyCap.extractEnergy(Integer.MAX_VALUE, false);
-          }
-          if (emptyCap.canReceive() && emptyCap.getEnergyStored() < emptyCap.getMaxEnergyStored()) {
-            ItemStack empty = copy.copy();
-            int added = emptyCap.receiveEnergy(Integer.MAX_VALUE, false);
-            int power = added;
-            maxloop = 200;
-            while (added > 0 && maxloop-- > 0) {
-              power += added = emptyCap.receiveEnergy(Integer.MAX_VALUE, false);
-            }
-            result.add(new WiredChargerRecipeWrapper(empty, copy, power));
-          }
-        }
+    ContainerWiredCharger.getValidPair(validItems).apply(new Callback<Triple<ItemStack, ItemStack, Integer>>() {
+      @SuppressWarnings("null")
+      @Override
+      public void apply(@Nonnull Triple<ItemStack, ItemStack, Integer> e) {
+        result.add(new WiredChargerRecipeWrapper(e.getLeft(), e.getMiddle(), e.getRight()));
       }
-    }
+    });
 
     long end = System.nanoTime();
     registry.addRecipes(result, UID);

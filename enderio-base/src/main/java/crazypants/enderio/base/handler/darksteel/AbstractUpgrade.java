@@ -7,10 +7,10 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.util.NbtValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -88,24 +88,22 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
 
   @Override
   public boolean hasUpgrade(@Nonnull ItemStack stack) {
-    final NBTTagCompound tagCompound = stack.getTagCompound();
-    return tagCompound != null && tagCompound.hasKey(id) && tagCompound.getCompoundTag(id).getInteger(KEY_VARIANT) == variant;
+    final NBTTagCompound tagCompound = NbtValue.getRoot(stack);
+    return tagCompound.hasKey(id) && tagCompound.getCompoundTag(id).getInteger(KEY_VARIANT) == variant;
+  }
+
+  public boolean hasAnyUpgradeVariant(@Nonnull ItemStack stack) {
+    final NBTTagCompound tagCompound = NbtValue.getRoot(stack);
+    return tagCompound.hasKey(id) && tagCompound.getCompoundTag(id).hasKey(KEY_VARIANT);
   }
 
   @Override
   public void addToItem(@Nonnull ItemStack stack) {
-    NBTTagCompound upgradeRoot = new NBTTagCompound();
-    upgradeRoot.setInteger(KEY_VARIANT, variant);
-    NBTTagCompound stackRoot = ItemUtil.getOrCreateNBT(stack);
-    stackRoot.setTag(id, upgradeRoot);
-    stack.setTagCompound(stackRoot);
+    getUpgradeNBT(stack).setInteger(KEY_VARIANT, variant);
   }
 
   public @Nonnull NBTTagCompound getUpgradeNBT(@Nonnull ItemStack stack) {
-    NBTTagCompound tagCompound = stack.getTagCompound();
-    if (tagCompound == null) {
-      stack.setTagCompound(tagCompound = new NBTTagCompound());
-    }
+    NBTTagCompound tagCompound = NbtValue.getRoot(stack);
     if (!tagCompound.hasKey(id)) {
       tagCompound.setTag(id, new NBTTagCompound());
     }

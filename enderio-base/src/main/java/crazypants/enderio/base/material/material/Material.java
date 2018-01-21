@@ -18,6 +18,8 @@ import static crazypants.enderio.base.init.ModObject.itemMaterial;
 
 public enum Material {
 
+  // TODO 1.12: Sort this list
+
   MACHINE_CHASSI("machineChassi"),
   CHASSIPARTS("chassiParts"),
 
@@ -77,6 +79,11 @@ public enum Material {
   POWDER_PHOTOVOLTAIC("powderPhotovoltaic", false),
   PLATE_PHOTOVOLTAIC("platePhotovoltaic", false),
 
+  POWDER_LAPIS("powder_lapis_lazuli", "dustLapis"),
+  POWDER_QUARTZ("powder_quartz", "dustQuartz"),
+  DYE_MACHINE("machine_dye", "dyeMachine"),
+  SIMPLE_MACHINE_CHASSI("simpleMachineChassi"),
+
   ;
 
   public final boolean hasEffect;
@@ -116,6 +123,10 @@ public enum Material {
     return baseName;
   }
 
+  /**
+   * 
+   * @return The {@link OreDictionary} name of this material.
+   */
   public @Nonnull String getOreDict() {
     return oreDict;
   }

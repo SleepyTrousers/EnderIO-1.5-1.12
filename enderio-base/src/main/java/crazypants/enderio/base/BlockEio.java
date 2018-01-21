@@ -50,8 +50,10 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
    */
   @Override
   public void init(@Nonnull IModObject modObject, @Nonnull FMLInitializationEvent event) {
-    permissionNodeWrenching = PermissionAPI.registerNode(EnderIO.DOMAIN + ".wrench." + modObject.getUnlocalisedName(), DefaultPermissionLevel.ALL,
-        "Permission to wrench-break the block " + modObject.getUnlocalisedName() + " of Ender IO");
+    if (canBeWrenched()) {
+      permissionNodeWrenching = PermissionAPI.registerNode(EnderIO.DOMAIN + ".wrench." + modObject.getUnlocalisedName(), DefaultPermissionLevel.ALL,
+          "Permission to wrench-break the block " + modObject.getUnlocalisedName() + " of Ender IO");
+    }
   }
 
   @Override
@@ -76,6 +78,15 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
   }
 
   public boolean shouldWrench(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
+    return canBeWrenched();
+  }
+
+  /**
+   * 
+   * @return <code>true</code> if this block can be wrenched at all. If this returns <code>false</code>,
+   *         {@link #shouldWrench(World, BlockPos, EntityPlayer, EnumFacing)} <strong>must never</strong> return <code>true</code>.
+   */
+  protected boolean canBeWrenched() {
     return true;
   }
 

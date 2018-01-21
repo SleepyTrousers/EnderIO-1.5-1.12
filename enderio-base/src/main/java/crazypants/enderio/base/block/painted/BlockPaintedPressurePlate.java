@@ -2,7 +2,6 @@ package crazypants.enderio.base.block.painted;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -31,7 +30,6 @@ import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.itemoverlay.MobNameOverlayRenderHelper;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderPart;
-import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.render.util.QuadCollector;
 import crazypants.enderio.util.CapturedMob;
@@ -70,9 +68,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.base.init.ModObject.blockFusedQuartz;
 
-public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
-    IRenderMapper.IBlockRenderMapper.IRenderLayerAware, INamedSubBlocks, IResourceTooltipProvider, IRenderMapper.IItemRenderMapper.IItemModelMapper,
-    IModObject.WithBlockItem {
+public class BlockPaintedPressurePlate extends BlockBasePressurePlate
+    implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock, IRenderMapper.IBlockRenderMapper.IRenderLayerAware,
+    INamedSubBlocks, IResourceTooltipProvider, IRenderMapper.IItemRenderMapper.IItemModelMapper, IModObject.WithBlockItem {
 
   public static BlockPaintedPressurePlate create(@Nonnull IModObject modObject) {
     BlockPaintedPressurePlate result = new BlockPaintedPressurePlate(modObject);
@@ -495,13 +493,6 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
         && (paintSource == null || paintSource.getBlock() != blockFusedQuartz.getBlock())) {
       quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource, getRotation(world, pos)), paintSource, MathHelper.getPositionRandom(pos));
     }
-    return null;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
-      boolean isPainted) {
     return null;
   }
 

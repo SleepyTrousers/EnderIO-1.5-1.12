@@ -1,13 +1,12 @@
 package crazypants.enderio.base.recipe;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
-import com.enderio.core.common.util.Util;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config;
@@ -16,74 +15,17 @@ import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 
 public class ManyToOneRecipeManager {
-  
+
   private final @Nonnull NNList<IManyToOneRecipe> recipes = new NNList<IManyToOneRecipe>();
 
-  private final @Nonnull String coreFileName;
-  private final @Nonnull String customFileName;
   private final @Nonnull String managerName;
 
-  public ManyToOneRecipeManager(@Nonnull String coreFileName, @Nonnull String custonFileName, @Nonnull String managerName) {
-    this.coreFileName = coreFileName;
-    this.customFileName = custonFileName;
+  public ManyToOneRecipeManager(@Nonnull String managerName) {
     this.managerName = managerName;
-  }
-
-  public void loadRecipesFromConfig() {
-    CustomTagHandler tagHandler = createCustomTagHandler();
-    RecipeConfig config = RecipeConfig.loadRecipeConfig(coreFileName, customFileName, tagHandler);
-    if(config != null) {
-      processConfig(config);
-      if(tagHandler != null) {
-        tagHandler.configProcessed();
-      }
-    } else {
-      Log.error("Could not load recipes for " + managerName + ".");
-      throw new RuntimeException("Could not load recipes for " + managerName + ". See logfile for more information.");
-    }
-  }
-
-  protected CustomTagHandler createCustomTagHandler() {
-    return null;
-  }
-
-  public void addCustomRecipes(@Nonnull String xmlDef) {
-    RecipeConfig config;
-    CustomTagHandler tagHandler = createCustomTagHandler();
-    try {
-      config = RecipeConfigParser.parse(xmlDef, tagHandler);
-    } catch (Exception e) {
-      Log.error("Error parsing custom xml for " + managerName );
-      return;
-    }
-
-    if(config == null) {
-      Log.error("Could not process custom XML " + managerName);
-      return;
-    }
-    processConfig(config);
-    if(tagHandler != null) {
-      tagHandler.configProcessed();
-    }
   }
 
   public @Nonnull NNList<IManyToOneRecipe> getRecipes() {
     return recipes;
-  }
-
-  private void processConfig(@Nonnull RecipeConfig config) {
-    if(config.isDumpItemRegistery()) {
-      Util.dumpModObjects(new File(Config.configDirectory, "modObjectsRegistery.txt"));
-    }
-    if(config.isDumpOreDictionary()) {
-      Util.dumpOreNames(new File(Config.configDirectory, "oreDictionaryRegistery.txt"));
-    }
-    List<Recipe> newRecipes = config.getRecipes(false);
-    Log.info("Found " + newRecipes.size() + " valid " + managerName + " recipes in config.");
-    for (Recipe rec : newRecipes) {
-      addRecipe(rec);
-    }
-    Log.info("Finished processing " + managerName + " recipes. " + recipes.size() + " recipes avaliable.");
   }
 
   public void addRecipe(Recipe rec) {
@@ -91,11 +33,11 @@ public class ManyToOneRecipeManager {
       Log.warn("Invalid null recipe found for " + managerName);
     } else if (Config.createSyntheticRecipes //
         && rec.getInputs().length == 1 && !rec.getInputs()[0].isFluid()
-        && rec.getInputs()[0].getInput().getCount() <= (rec.getInputs()[0].getInput().getMaxStackSize() / 3)
-        && rec.getOutputs().length == 1 && !rec.getOutputs()[0].isFluid() //
+        && rec.getInputs()[0].getInput().getCount() <= (rec.getInputs()[0].getInput().getMaxStackSize() / 3) && rec.getOutputs().length == 1
+        && !rec.getOutputs()[0].isFluid() //
         && rec.getOutputs()[0].getOutput().getCount() <= (rec.getOutputs()[0].getOutput().getMaxStackSize() / 3)) {
 
-      IRecipe dupe = getRecipeForInputs(rec.getInputStacks());
+      IRecipe dupe = getRecipeForStacks(rec.getInputStacks());
       if (dupe != null) {
         // do it here because we will add "dupes" and the check need to be
         // done on the supplied recipe---which is added last
@@ -140,26 +82,26 @@ public class ManyToOneRecipeManager {
   }
 
   public void addRecipe(@Nonnull IManyToOneRecipe recipe) {
-    IRecipe rec = getRecipeForInputs(recipe.getInputStacks());
-    if(rec != null) {
+    IRecipe rec = getRecipeForStacks(recipe.getInputStacks());
+    if (rec != null) {
       Log.warn("The supplied recipe " + recipe + " for " + managerName + " may be a duplicate to: " + rec);
     }
     recipes.add(recipe);
   }
 
-  private IRecipe getRecipeForInputs(@Nonnull NNList<ItemStack> inputs) {
-    MachineRecipeInput[] ins = new MachineRecipeInput[inputs.size()];
+  private IRecipe getRecipeForStacks(@Nonnull NNList<ItemStack> inputs) {
+    NNList<MachineRecipeInput> ins = new NNList<>();
 
-    for (int i = 0; i < inputs.size(); i++) {
-      ins[i] = new MachineRecipeInput(-1, inputs.get(i));
+    for (ItemStack stack : inputs) {
+      ins.add(new MachineRecipeInput(-1, NullHelper.notnullM(stack, "NNList iterated with null")));
     }
     return getRecipeForInputs(ins);
   }
 
-  public IRecipe getRecipeForInputs(@Nonnull MachineRecipeInput[] inputs) {
+  public IRecipe getRecipeForInputs(@Nonnull NNList<MachineRecipeInput> inputs) {
 
     for (IManyToOneRecipe rec : recipes) {
-      if(rec.isInputForRecipe(inputs)) {
+      if (rec.isInputForRecipe(inputs)) {
         return rec;
       }
     }
@@ -172,7 +114,7 @@ public class ManyToOneRecipeManager {
     }
     for (IManyToOneRecipe recipe : recipes) {
       for (IRecipeInput ri : recipe.getInputs()) {
-        if(ri.isInput(input.item) && (ri.getSlotNumber() == -1 || input.slotNumber == ri.getSlotNumber())) {
+        if (ri.isInput(input.item) && (ri.getSlotNumber() == -1 || input.slotNumber == ri.getSlotNumber())) {
           return true;
         }
       }
@@ -185,7 +127,7 @@ public class ManyToOneRecipeManager {
       return false;
     }
     for (IManyToOneRecipe recipe : recipes) {
-      if(recipe.isValidRecipeComponents(inputs)) {
+      if (recipe.isValidRecipeComponents(inputs)) {
         return true;
       }
     }
@@ -207,11 +149,11 @@ public class ManyToOneRecipeManager {
 
   public float getExperianceForOutput(@Nonnull ItemStack output) {
     for (IManyToOneRecipe recipe : recipes) {
-      if(recipe.getOutput().getItem() == output.getItem() && recipe.getOutput().getItemDamage() == output.getItemDamage()) {
+      if (recipe.getOutput().getItem() == output.getItem() && recipe.getOutput().getItemDamage() == output.getItemDamage()) {
         return recipe.getOutputs()[0].getExperiance();
       }
     }
     return 0;
   }
-  
+
 }

@@ -30,13 +30,13 @@ public class KillerJoeRenderer extends ManagedTESR<TileKillerJoe> {
 
   @Override
   protected boolean shouldRender(@Nonnull TileKillerJoe te, @Nonnull IBlockState blockState, int renderPass) {
-    return (renderPass == 0 && Prep.isValid(te.getStackInSlot(0))) || (renderPass == 1 && !te.tank.isEmpty());
+    return (renderPass == 0 && Prep.isValid(te.getWeapon())) || (renderPass == 1 && !te.tank.isEmpty());
   }
 
   @Override
   protected void renderTileEntity(@Nonnull TileKillerJoe te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     if (MinecraftForgeClient.getRenderPass() == 0) {
-      renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(partialTicks), Minecraft.getMinecraft().player.getPrimaryHand() == EnumHandSide.LEFT);
+      renderSword(te.facing, te.getWeapon(), te.getSwingProgress(partialTicks), Minecraft.getMinecraft().player.getPrimaryHand() == EnumHandSide.LEFT);
     } else if (MinecraftForgeClient.getRenderPass() == 1) {
       HalfBakedList buffer = TankRenderHelper.mkTank(te.tank, 2.51, 1, 14, false);
       if (buffer != null) {

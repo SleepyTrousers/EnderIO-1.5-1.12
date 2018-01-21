@@ -41,7 +41,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
     addToolTip(new GuiToolTip(new Rectangle(14, 35, 18, 18), Lang.GUI_TANK_VOID_SLOT.get()) {
       @Override
       public boolean shouldDraw() {
-        return super.shouldDraw() && getTileEntity().canVoidItems();
+        return super.shouldDraw() && getTileEntity().canVoidItems() && !inventorySlots.getSlot(ContainerTank.trashcan).getHasStack();
       }
     });
 

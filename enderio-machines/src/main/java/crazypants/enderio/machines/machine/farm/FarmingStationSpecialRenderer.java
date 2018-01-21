@@ -31,7 +31,7 @@ public class FarmingStationSpecialRenderer extends ManagedTESR<TileFarmStation> 
   protected void renderTileEntity(@Nonnull TileFarmStation te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     float offset = 0;
     for (FarmNotification note : te.getNotification()) {
-      RenderUtil.drawBillboardedText(new Vector3f(0.5, 1.5 + offset, 0.5), EnderIO.lang.localize(note.getUnlocalizedName()), 0.25f);
+      RenderUtil.drawBillboardedText(new Vector3f(0.5, 1.5 + offset, 0.5), EnderIO.lang.localizeExact(note.getUnlocalizedName()), 0.25f);
       offset += 0.375f;
     }
   }

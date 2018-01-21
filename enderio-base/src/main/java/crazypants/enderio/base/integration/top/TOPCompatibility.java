@@ -10,17 +10,19 @@ import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.util.NullHelper;
 import com.google.common.base.Function;
 
+import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.fluid.ItemTankHelper;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.material.material.Material;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
-import info.loenwind.autosave.helpers.SmartTankItemAccess;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.ILayoutStyle;
 import mcjty.theoneprobe.api.IProbeConfig;
@@ -98,6 +100,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
         mkPaint(mode, eiobox, data);
 
+        mkNotificationLine(mode, eiobox, data);
+
         mkProgressLine(mode, eiobox, data);
 
         mkRfLine(mode, eiobox, data);
@@ -171,21 +175,33 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
-  private @Nonnull String loc(String string) {
+  private @Nonnull String locRaw(@Nonnull String string) {
     return STARTLOC + string + ENDLOC;
+  }
+
+  private @Nonnull String loc(String string) {
+    return string == null ? "(???)" : locRaw(EnderIO.lang.addPrefix(string));
+  }
+
+  private @Nonnull String loc(@Nonnull String langKey, @Nonnull String param) {
+    return loc(langKey + ".pre") + param + loc(langKey + ".post");
+  }
+
+  private @Nonnull String loc(@Nonnull String langKey, @Nonnull String param1, @Nonnull String param2) {
+    return loc(langKey + ".pre") + param1 + loc(langKey + ".middle") + param2 + loc(langKey + ".post");
   }
 
   private void mkMobsBox(ProbeMode mode, EioBox mobbox, World world, TOPData data) {
     if (data.hasMobs) {
       if (mode != ProbeMode.NORMAL || topShowMobsByDefault) {
-        mobbox.get().text(TextFormatting.YELLOW + EnderIO.lang.localize("top.action.header", loc(data.mobAction)));
+        mobbox.get().text(loc("top.action.header", loc(data.mobAction)));
 
         if (data.mobs.isEmpty()) {
-          mobbox.get().text(TextFormatting.DARK_RED + loc("top.action.none"));
+          mobbox.get().text(loc("top.action.none"));
         } else if (data.mobs.size() <= 4) {
           for (CapturedMob capturedMob : data.mobs) {
             mobbox.get().horizontal(mobbox.center()).entity(capturedMob.getEntity(world, false))
-                .text(loc("entity." + capturedMob.getTranslationName() + ".name"));
+                .text(locRaw("entity." + capturedMob.getTranslationName() + ".name"));
           }
         } else {
           IProbeInfo mobList = mobbox.get().horizontal(mobbox.center());
@@ -211,10 +227,20 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
         int sizeY = (int) data.bounds.sizeY();
         int sizeZ = (int) data.bounds.sizeZ();
 
-        addIcon(eiobox.get().horizontal(eiobox.center()), IconEIO.SHOW_RANGE).text(
-            TextFormatting.YELLOW + EnderIO.lang.localize("top.range.header", TextFormatting.WHITE + EnderIO.lang.localize("top.range", sizeX, sizeY, sizeZ)));
+        addIcon(eiobox.get().horizontal(eiobox.center()), IconEIO.SHOW_RANGE)
+            .text(loc("top.range.header", EnderIO.lang.localize("top.range", sizeX, sizeY, sizeZ)));
       } else {
         eiobox.addMore();
+      }
+    }
+  }
+
+  private void mkNotificationLine(ProbeMode mode, EioBox eiobox, TOPData data) {
+    if (data.notifications != null && !data.notifications.isEmpty()) {
+      IProbeInfo vertical = addIcon(eiobox.get().horizontal(eiobox.center()), IconEIO.REDSTONE_MODE_NEVER)
+          .vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1));
+      for (ILocalizable notification : data.notifications) {
+        vertical.text(locRaw(notification.getUnlocalizedName()));
       }
     }
   }
@@ -223,9 +249,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     if (data.hasIOMode) {
       if (mode != ProbeMode.NORMAL || topShowSideConfigByDefault) {
         addIcon(eiobox.get().horizontal(eiobox.center()), IconEIO.IO_CONFIG_UP).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1))
-            .text(TextFormatting.YELLOW
-                + EnderIO.lang.localize("gui.machine.side", TextFormatting.WHITE + EnderIO.lang.localize("gui.machine.side." + data.sideName)))
-            .text(TextFormatting.YELLOW + EnderIO.lang.localize("gui.machine.ioMode", data.ioMode.colorLocalisedName()));
+            .text(TextFormatting.YELLOW + loc("top.machine.side", TextFormatting.WHITE + loc("top.machine.side." + data.sideName)))
+            .text(TextFormatting.YELLOW + loc("top.machine.ioMode", loc(data.ioMode.getColorerUnlocalizedName())));
       } else {
         eiobox.addMore();
       }
@@ -236,8 +261,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     if (data.hasRedstone) {
       if (mode != ProbeMode.NORMAL || topShowRedstoneByDefault) {
         addIcon(eiobox.get().horizontal(eiobox.center()), data.redstoneIcon).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1))
-            .text(data.redstoneTooltip).text(TextFormatting.YELLOW
-                + EnderIO.lang.localize("top.redstone.header", TextFormatting.WHITE + EnderIO.lang.localize("top.redstone." + data.redstoneControlStatus)));
+            .text(loc(data.redstoneTooltip)).text(loc("top.redstone.header", loc("top.redstone." + data.redstoneControlStatus)));
       } else {
         eiobox.addMore();
       }
@@ -247,7 +271,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
   private void mkPaint(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.isPainted) {
       IProbeInfo info = eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.PAINTING))
-          .vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(TextFormatting.YELLOW + EnderIO.lang.localize("top.paint.header"));
+          .vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(loc("top.paint.header"));
+      // ItemStack.getDisplayName() should be run on the client, but I don't think we have a way to get the stack there
       if (Prep.isValid(data.paint2)) {
         info.horizontal(eiobox.center()).item(data.paint2).text(data.paint2.getDisplayName());
       }
@@ -263,15 +288,15 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
       NBTTagCompound nbt = new NBTTagCompound();
       nbt.setTag("SkullOwner", NBTUtil.writeGameProfile(new NBTTagCompound(), data.owner.getAsGameProfile()));
       skull.setTagCompound(nbt);
-      eiobox.get().horizontal(eiobox.center()).item(skull).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1))
-          .text(TextFormatting.YELLOW + EnderIO.lang.localize("top.owner.header")).text(data.owner.getPlayerName());
+      eiobox.get().horizontal(eiobox.center()).item(skull).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(loc("top.owner.header"))
+          .text(data.owner.getPlayerName());
     }
   }
 
   private void mkRfLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasRF) {
       if (mode != ProbeMode.NORMAL || topShowPowerByDefault) {
-        IProbeInfo rfLine = eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.REDSTONE));
+        IProbeInfo rfLine = eiobox.get().horizontal(eiobox.center()).item(Material.POWDER_INFINITY.getStack());
         if (data.hasRFIO) {
           rfLine = rfLine.vertical();
         }
@@ -279,19 +304,18 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
           rfLine.progress(data.rf, data.maxrf, eiobox.getProbeinfo().defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.rf"))
               .filledColor(0xffd63223).alternateFilledColor(0xffd63223));
         } else {
-          rfLine.text(TextFormatting.DARK_RED + EnderIO.lang.localize("top.machine.outofpower"));
+          rfLine.text(loc("top.machine.outofpower"));
         }
         if (data.hasRFIO) {
           rfLine = rfLine.horizontal();
           rfLine.vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1))//
-              .text(TextFormatting.YELLOW + EnderIO.lang.localize("top.rf.header.avg"))
-              .text(TextFormatting.YELLOW + EnderIO.lang.localize("top.rf.header.maxin"))
-              .text(TextFormatting.YELLOW + EnderIO.lang.localize("top.rf.header.maxout"));
+              .text(loc("top.rf.header.avg")).text(loc("top.rf.header.maxin")).text(loc("top.rf.header.maxout"));
 
-          String line1 = EnderIO.lang.localize("top.rf.value",
+          // LangPower.format should be run on the client, but we have no way to do that
+          String line1 = loc("top.rf.value",
               (data.avgRF == 0 ? TextFormatting.WHITE : data.avgRF > 0 ? TextFormatting.GREEN + "+" : TextFormatting.RED) + LangPower.format(data.avgRF));
-          String line2 = EnderIO.lang.localize("top.rf.value", TextFormatting.WHITE + LangPower.format(data.maxRFIn));
-          String line3 = EnderIO.lang.localize("top.rf.value", TextFormatting.WHITE + LangPower.format(data.maxRFOut));
+          String line2 = loc("top.rf.value", LangPower.format(data.maxRFIn));
+          String line3 = loc("top.rf.value", LangPower.format(data.maxRFOut));
           rfLine = rfLine.vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(line1).text(line2).text(line3);
         }
       } else {
@@ -333,33 +357,34 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
       if (mode != ProbeMode.NORMAL || topShowTanksByDefault) {
         for (ITankData tank : data.tankData) {
           SmartTank smartTank = new SmartTank(1000);
-          String content1 = null;
-          String content2 = null;
+          String content1;
+          String content2;
           final FluidStack fluid = tank.getContent();
           if (fluid != null) {
             FluidStack fluid2 = fluid.copy();
             fluid2.amount = fluid.amount * 1000 / tank.getCapacity();
             smartTank.setFluid(fluid2);
-            content1 = fluid.getLocalizedName();
-            content2 = EnderIO.lang.localize("top.tank.content", fluid.amount, tank.getCapacity());
+            content1 = NullHelper.first(fluid.getLocalizedName(), "(???)");
+            // TODO lang-format those numbers
+            content2 = loc("top.tank.content", "" + fluid.amount, "" + tank.getCapacity());
           } else {
-            content1 = EnderIO.lang.localize("top.tank.content.empty");
-            content2 = EnderIO.lang.localize("top.tank.content", 0, tank.getCapacity());
+            content1 = loc("top.tank.content.empty");
+            // TODO lang-format those numbers
+            content2 = loc("top.tank.content", "0", "" + tank.getCapacity());
           }
           switch (tank.getTankType()) {
           case INPUT:
-            content1 = TextFormatting.YELLOW + EnderIO.lang.localize("top.tank.header.input", TextFormatting.WHITE + content1);
+            content1 = loc("top.tank.header.input", content1);
             break;
           case OUTPUT:
-            content1 = TextFormatting.YELLOW + EnderIO.lang.localize("top.tank.header.output", TextFormatting.WHITE + content1);
+            content1 = loc("top.tank.header.output", content1);
             break;
           case STORAGE:
-            content1 = TextFormatting.YELLOW + EnderIO.lang.localize("top.tank.header.storage", TextFormatting.WHITE + content1);
+            content1 = loc("top.tank.header.storage", content1);
             break;
           }
-          ItemStack stack = new ItemStack(ModObject.blockFusedQuartz.getBlockNN()); // TODO: we either need the Tank here or another item that can
-                                                                                    // piggyback-render the fluid
-          SmartTankItemAccess.setTank(stack, smartTank);
+          ItemStack stack = new ItemStack(ModObject.blockFusedQuartz.getBlockNN()); // sic!
+          ItemTankHelper.setTank(stack, smartTank);
           NbtValue.FAKE.setBoolean(stack, true);
 
           eiobox.get().horizontal(eiobox.center()).item(stack).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(content1).text(content2);
@@ -381,15 +406,15 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
               .suffix(EnderIO.lang.localize("top.suffix.percent")).filledColor(0xffffb600).alternateFilledColor(0xffffb600));
           break;
         case PROGRESS_NO_POWER:
-          progressLine.text(TextFormatting.DARK_RED + EnderIO.lang.localize("top.progress.outofpower"));
+          progressLine.text(loc("top.progress.outofpower"));
           break;
         case PROGRESS_ACTIVE:
         case NO_PROGRESS_ACTIVE:
-          progressLine.text(EnderIO.lang.localize("top.machine.active"));
+          progressLine.text(loc("top.machine.active"));
           break;
         case PROGRESS_IDLE:
         case NO_PROGRESS_IDLE:
-          progressLine.text(EnderIO.lang.localize("top.machine.idle"));
+          progressLine.text(loc("top.machine.idle"));
           break;
         case NONE:
           break;

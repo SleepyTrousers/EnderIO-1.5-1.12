@@ -2,9 +2,10 @@ package crazypants.enderio.machines.machine.spawner;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.machines.EnderIOMachines;
 
-public enum SpawnerNotification {
+public enum SpawnerNotification implements ILocalizable {
 
   AREA_FULL("areaFull"),
   NO_LOCATION_FOUND("noLocationFound"),
@@ -19,7 +20,13 @@ public enum SpawnerNotification {
   }
 
   public @Nonnull String getDisplayString() {
-    return EnderIOMachines.lang.localize("block_powered_spawner.note." + langStr);
+    return EnderIOMachines.lang.localizeExact(getUnlocalizedName());
+  }
+
+  @Override
+  @Nonnull
+  public String getUnlocalizedName() {
+    return EnderIOMachines.lang.addPrefix("block_powered_spawner.note." + langStr);
   }
 
 }

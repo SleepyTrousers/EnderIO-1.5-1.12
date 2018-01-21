@@ -256,6 +256,37 @@
             "layer0": "enderio:items/item_material_plate_photovoltaic"
          },
         "model": "enderio:item_plate_photovoltaic"
+      },
+      "powder_lapis_lazuli":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_powder_lapis_lazuli"
+        }
+      },
+      "powder_quartz":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_powder_quartz"
+        }
+      },
+      "machine_dye":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_machine_dye"
+        }
+      },
+      "simple_machine_chassi": {
+        "model": "enderio:machine_body",
+        "submodel": {
+          "front": {
+            "model": "enderio:machine_front"
+          }
+        },
+        "textures": {
+          "top": "enderio:items/item_simple_machine_chassi",
+          "bottom": "enderio:items/item_simple_machine_chassi",
+          "side": "enderio:items/item_simple_machine_chassi",
+          "back": "enderio:items/item_simple_machine_chassi",
+          "frontframe": "enderio:items/item_simple_machine_chassi",
+          "front": "enderio:items/item_simple_machine_chassi"
+        }
       }
     }
   }

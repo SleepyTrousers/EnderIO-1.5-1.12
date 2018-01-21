@@ -3,10 +3,12 @@ package crazypants.enderio.base.machine.interfaces;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.RecipeBonusType;
-import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public interface IPoweredTask {
@@ -32,6 +34,6 @@ public interface IPoweredTask {
   @Nullable
   IMachineRecipe getRecipe();
 
-  public abstract @Nonnull MachineRecipeInput[] getInputs();
+  public abstract @Nonnull NNList<MachineRecipeInput> getInputs();
 
 }

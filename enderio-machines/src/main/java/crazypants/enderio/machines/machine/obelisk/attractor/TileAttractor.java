@@ -9,13 +9,17 @@ import javax.annotation.Nonnull;
 
 import com.mojang.authlib.GameProfile;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.machines.init.MachineObject;
-import crazypants.enderio.machines.machine.obelisk.spawn.AbstractMobObelisk;
+import crazypants.enderio.machines.machine.obelisk.attractor.handlers.AttractionHandlers;
+import crazypants.enderio.machines.machine.obelisk.attractor.handlers.IMobAttractionHandler;
+import crazypants.enderio.machines.machine.obelisk.base.AbstractMobObeliskEntity;
 import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
@@ -30,7 +34,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.ATTRACTOR_POWER
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ATTRACTOR_RANGE;
 
 @Storable
-public class TileAttractor extends AbstractMobObelisk {
+public class TileAttractor extends AbstractMobObeliskEntity {
 
   private FakePlayerEIO target;
 
@@ -92,7 +96,7 @@ public class TileAttractor extends AbstractMobObelisk {
     }
   }
 
-  private void collectEntity(EntityLiving ent) {
+  private void collectEntity(@Nonnull EntityLiving ent) {
     for (IMobAttractionHandler handler : AttractionHandlers.instance.getRegistry()) {
       if (handler.canAttract(this, ent)) {
         handler.startAttracting(this, ent);
@@ -102,11 +106,12 @@ public class TileAttractor extends AbstractMobObelisk {
         return;
       }
     }
+    Log.warn("Attractor Obelisk: Don't know how to attract " + EntityList.getKey(ent));
   }
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if (!redstoneCheck || !hasPower()) {
+    if (!redstoneCheck || !hasPower() || !canWork()) {
       untrackAll();
       return false;
     }
@@ -134,7 +139,7 @@ public class TileAttractor extends AbstractMobObelisk {
   }
 
   @Nonnull
-  FakePlayer getTarget() {
+  public FakePlayer getTarget() {
     return target != null ? target : (target = new Target(getWorld()).setOwner(getOwner()));
   }
 

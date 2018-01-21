@@ -23,7 +23,7 @@ plugins {
 apply plugin: 'maven'
 apply plugin: 'eclipse'
 
-// Morge user properties
+// More user properties
 ext.user = parseConfig(file('user.properties'))
 if (ext.user != null) {
     ext.user.each { k, v ->
@@ -157,6 +157,25 @@ allprojects {
     build.dependsOn rmKeyStore
     rmKeyStore.dependsOn signJar
     signJar.dependsOn mkKeyStore
+
+    eclipse {
+      classpath {
+        containers 'org.eclipse.buildship.core.gradleclasspathcontainer'
+        file {
+          whenMerged {
+            entries.each { e ->
+              if (e.path.contains('gradleclasspathcontainer') || e.path.contains('org.eclipse.jdt.launching.JRE_CONTAINER')) {
+                e.entryAttributes['annotationpath'] = '/EnderCore/externalannotations'
+              }
+              if (e.path == 'lib/CoFHLib/src/main/java') {
+                e.entryAttributes['ignore_optional_problems'] = 'true'
+              }
+            }
+          }
+        }
+      }
+    }
+
 }
 
 // Configuration that applies only to modules
@@ -196,8 +215,11 @@ jar.doFirst {
     File target = new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/lang")
     target.mkdirs()
     buildprojects.each { subproject ->
-        new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/lang/').eachFileMatch( ~".*\\.lang\$" ) { langfile ->
-            new File(target, langfile.name) << "\n" << langfile.text
+        File langDir = new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/lang/')
+        if (langDir.exists()) {
+            langDir.eachFileMatch( ~".*\\.lang\$" ) { langfile ->
+                new File(target, langfile.name) << "\n" << langfile.text
+            }
         }
     }
 
@@ -209,7 +231,10 @@ jar.doFirst {
 
     def sound = ""
     buildprojects.each { subproject ->
-        sound += new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/sounds.json').text
+        File soundFile = new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/sounds.json')
+        if (soundFile.exists()) {
+            sound += soundFile.text
+        }
     }
     new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/sounds.json") << sound.replaceAll(/\}\s*\{/, ',')
 
@@ -293,17 +318,26 @@ curseforge {
 
         buildprojects.each { subproject ->
             addArtifact subproject.jar
-            addArtifact subproject.apiJar
-            addArtifact subproject.sourceJar
+
+            if (resolveOption(subproject, 'publish_api'))
+                addArtifact subproject.apiJar
+
+            if (resolveOption(subproject, 'publish_source'))
+                addArtifact subproject.sourceJar
         }
     }
 }
 
 // Part of the temporary fix for not compiling modules
 gradle.taskGraph.whenReady {
+    def tasksToDisable = [
+        'build', 'compileJava', 'assemble', 'sourceJar',
+        'check', 'reobfJar', 'signJar'
+    ]
+
     gradle.taskGraph.allTasks.each {
         if(!it.project.include_in_build) {
-            it.onlyIf { false }
+            if (tasksToDisable.find { n -> it.name == n } != null) it.enabled = false
         }
     }
 }
@@ -338,7 +372,8 @@ String getCN() {
 //   * enderio-base-1.12.2-4.2.1-nightly-4      :: nightly build no. 4 for version 4.2.1
 //   * enderio-base-1.12.2-4.5.1-dev-c91c8ee6e  :: dev (local) build for commit c91c8ee6e
 String getVersionString(Project proj) {
-    def build_server = System.getenv('CI') != null
+    def build_server = System.getenv('CI') != null || System.getenv('BUILD_NUMBER') != null
+
     def version_patch_lc = proj.version_patch
     if (System.getenv('BUILD_NUMBER') != null)
         version_patch_lc = System.getenv('BUILD_NUMBER')
@@ -347,7 +382,7 @@ String getVersionString(Project proj) {
     if (System.getenv('VERSION_CLS') != null)
         version_classifier = System.getenv('VERSION_CLS')
     else if (System.getenv('NIGHTLY') != null)
-        version_classifier = 'NIGHTLY'
+        version_classifier = 'nightly'
 
     def version_hash = ''
     if (!build_server) {
@@ -384,4 +419,12 @@ def parseConfig(File config) {
         prop.load(it)
         return (new ConfigSlurper().parse(prop))
     }
+}
+
+def resolveOption(Project project, String option, boolean defaultValue = false) {
+    def sourceValue = project.hasProperty(option)
+        ? project.property(option)
+        : defaultValue
+
+    return sourceValue == 'true' || sourceValue == true || sourceValue == 1
 }

@@ -19,6 +19,7 @@ XML editor will display that as tooltips when editing this file.
  -->
 
   <alias name="CHASSIS" item="itemMachineChassi" />
+  <alias name="SIMPLE_CHASSIS" item="itemSimpleMachineChassi" />
   <alias name="CHASSIPARTS" item="itemChassiParts" />
 
   <alias name="GEAR_WOOD" item="gearWood" />
@@ -59,6 +60,8 @@ XML editor will display that as tooltips when editing this file.
   <alias name="POWDER_ARDITE" item="dustArdite" />
   <alias name="POWDER_COBALT" item="dustCobalt" />
   <alias name="POWDER_INFINITY" item="dustBedrock" />
+  
+  <!-- Note: ORGANIC_GREEN_DYE and ORGANIC_BROWN_DYE are added automatically -->
   
   <alias name="INGOT_ENDERIUM_BASE" item="ingotEnderiumBase" />
   <alias name="FLOUR" item="dustWheat" />

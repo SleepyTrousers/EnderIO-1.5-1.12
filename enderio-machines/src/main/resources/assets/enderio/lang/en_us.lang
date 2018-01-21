@@ -108,7 +108,8 @@ enderio.gui.travel_accessable.private=Private
 enderio.gui.travel_accessable.protected=Protected
 enderio.gui.travel_accessable.prompt=Access Code Required
 enderio.gui.travel_accessable.promp.login=Authorise
-enderio.chat.travel_accessable.error.private=Only %s may change this block's settings.
+enderio.chat.travel_accessable.error.private=Only §4%s §fmay change this block's settings.
+enderio.chat.travel_accessable.error.harvest=Only §4%s §fmay harvest this block.
 
 enderio.chat.telepad.noFluid=Not enough %s to teleport!
 enderio.gui.telepad.configure.travel=Travel Settings
@@ -154,7 +155,9 @@ tile.block_farm_station.tooltip.detailed.line5=applied when harvesting
 tile.block_farm_station.tooltip.detailed.line6=Upgrade with capacitors to increase
 tile.block_farm_station.tooltip.detailed.line7=range, upgrade also increases power use
 
-;lights
+enderio.gui.obelisk.no_vials=Need Soul Vials!
+
+#lights
 
 tile.block_electric_light.electric.name=Electric Light
 
@@ -168,7 +171,7 @@ tile.block_electric_light.wireless.name=Wireless Light
 
 tile.block_electric_light.wireless.inverted.name=Wireless Light (Inverted)
 
-;generators
+#generators
 
 tile.block_enhanced_combustion_generator.name=Enhanced Combustion Generator
 

@@ -12,6 +12,7 @@ import crazypants.enderio.machines.machine.farm.PacketUpdateNotification;
 import crazypants.enderio.machines.machine.generator.combustion.PacketCombustionTank;
 import crazypants.enderio.machines.machine.generator.stirling.PacketBurnTime;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
+import crazypants.enderio.machines.machine.killera.PacketSwing;
 import crazypants.enderio.machines.machine.obelisk.weather.PacketActivateWeather;
 import crazypants.enderio.machines.machine.obelisk.weather.PacketWeatherTank;
 import crazypants.enderio.machines.machine.sagmill.PacketGrindingBall;
@@ -93,6 +94,7 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketSendRecieveChannel.Handler.class, PacketSendRecieveChannel.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketSendRecieveChannelList.Handler.class, PacketSendRecieveChannelList.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketItemFilter.Handler.class, PacketItemFilter.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketSwing.Handler.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);
 
   }
 

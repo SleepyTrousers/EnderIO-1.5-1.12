@@ -14,7 +14,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.FluidUtil;
-import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
@@ -517,44 +516,46 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
     return true;
   }
 
-  @Override
-  public boolean canInsertItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing j) {
-    if (itemstack.isEmpty()) {
-      return false;
-    }
+  // TODO 1.11 we need this in a capability
 
-    // only allow 1 stack per type
-    if (slotDefinition.isInputSlot(slot)) {
-
-      Set<Channel> chans = getSendChannels().get(ChannelType.ITEM);
-      if (chans == null || chans.size() == 0) {
-        return false;
-      }
-      if (!getSendItemFilter().doesItemPassFilter(null, itemstack)) {
-        return false;
-      }
-
-      for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
-        if (i != slot) {
-          if (ItemUtil.areStacksEqual(itemstack, getStackInSlot(i))) {
-            return false;
-          }
-        }
-      }
-    } else if (slotDefinition.isOutputSlot(slot)) {
-      if (!getRecieveItemFilter().doesItemPassFilter(null, itemstack)) {
-        return false;
-      }
-      for (int i = slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot(); i++) {
-        if (i != slot) {
-          if (ItemUtil.areStacksEqual(itemstack, getStackInSlot(i))) {
-            return false;
-          }
-        }
-      }
-    }
-    return super.canInsertItem(slot, itemstack, j);
-  }
+  // @Override
+  // public boolean canInsertItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing j) {
+  // if (itemstack.isEmpty()) {
+  // return false;
+  // }
+  //
+  // // only allow 1 stack per type
+  // if (slotDefinition.isInputSlot(slot)) {
+  //
+  // Set<Channel> chans = getSendChannels().get(ChannelType.ITEM);
+  // if (chans == null || chans.size() == 0) {
+  // return false;
+  // }
+  // if (!getSendItemFilter().doesItemPassFilter(null, itemstack)) {
+  // return false;
+  // }
+  //
+  // for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
+  // if (i != slot) {
+  // if (ItemUtil.areStacksEqual(itemstack, getStackInSlot(i))) {
+  // return false;
+  // }
+  // }
+  // }
+  // } else if (slotDefinition.isOutputSlot(slot)) {
+  // if (!getRecieveItemFilter().doesItemPassFilter(null, itemstack)) {
+  // return false;
+  // }
+  // for (int i = slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot(); i++) {
+  // if (i != slot) {
+  // if (ItemUtil.areStacksEqual(itemstack, getStackInSlot(i))) {
+  // return false;
+  // }
+  // }
+  // }
+  // }
+  // return super.canInsertItem(slot, itemstack, j);
+  // }
 
   @Override
   public int usePower(int wantToUse) {

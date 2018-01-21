@@ -87,6 +87,7 @@ public enum Lang implements ILang {
   GUI_AUTH_PROMPT(".gui.travel_accessable.prompt"),
   GUI_AUTH_PROMPT_BUTTON(".gui.travel_accessable.promp.login"),
   GUI_AUTH_ERROR_PRIVATE(".chat.travel_accessable.error.private"),
+  GUI_AUTH_ERROR_HARVEST(".chat.travel_accessable.error.harvest"),
   STATUS_TELEPAD_UNFORMED(".status.telepad.unformed"),
   GUI_TELEPAD_NOFLUID(".chat.telepad.noFluid"),
   GUI_TELEPAD_TO_TRAVEL(".gui.telepad.configure.travel"),
@@ -103,6 +104,7 @@ public enum Lang implements ILang {
   JEI_SOLAR_OUTPUT(".jei.solar_panel.output"),
   JEI_SOLAR_RANGE(".jei.solar_panel.range"),
   GUI_BUFFER_MAXIO(".gui.buffer.maxio"),
+  GUI_OBELISK_NO_VIALS(".gui.obelisk.no_vials"),
 
   ;
 

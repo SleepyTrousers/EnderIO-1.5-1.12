@@ -11,7 +11,7 @@ import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineBlock;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
@@ -41,7 +41,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTank extends AbstractMachineBlock<TileTank>
+public class BlockTank extends AbstractInventoryMachineBlock<TileTank>
     implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
   public static BlockTank create(@Nonnull IModObject modObject) {

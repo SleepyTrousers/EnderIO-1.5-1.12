@@ -22,24 +22,18 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 public class PowerBarOverlayRenderHelper {
 
   /*
-   * These flags are not suited for the config file, but we might decide later
-   * to use different values.
+   * These flags are not suited for the config file, but we might decide later to use different values.
    * 
-   * MIMIC_VANILLA_RENDERBUG: Vanilla renders the bars 1 pixel too wide. If set
-   * to true, we'll do also.
+   * MIMIC_VANILLA_RENDERBUG: Vanilla renders the bars 1 pixel too wide. If set to true, we'll do also.
    * 
-   * HIDE_VANILLA_RENDERBUG: Overpaint vanilla's mistake instead. Don't use
-   * together with MIMIC_VANILLA_RENDERBUG.
+   * HIDE_VANILLA_RENDERBUG: Overpaint vanilla's mistake instead. Don't use together with MIMIC_VANILLA_RENDERBUG.
    * 
-   * SHOW_ON_FULL: Show power bar when energy storage is full. (Vanilla damage
-   * bar is hidden when full)
+   * SHOW_ON_FULL: Show power bar when energy storage is full. (Vanilla damage bar is hidden when full)
    * 
-   * SHOW_ON_FULL_UPGRADEABLE: Same but for items that can be upgraded to have
-   * an energy storage. This will give a visual difference between unupgraded
-   * and full items.
+   * SHOW_ON_FULL_UPGRADEABLE: Same but for items that can be upgraded to have an energy storage. This will give a visual difference between unupgraded and full
+   * items.
    * 
-   * SHOW_ON_EMPTY: Show power bar when energy storage is empty. Should not be
-   * false if SHOW_ON_FULL is false, too.
+   * SHOW_ON_EMPTY: Show power bar when energy storage is empty. Should not be false if SHOW_ON_FULL is false, too.
    * 
    * SHOW_ON_EMPTY_UPGRADEABLE: Same for upgradable items.
    */
@@ -66,6 +60,16 @@ public class PowerBarOverlayRenderHelper {
    */
   public static final @Nonnull PowerBarOverlayRenderHelper instance_upgradeable = new PowerBarOverlayRenderHelper(true);
 
+  /**
+   * Instance for machine items
+   */
+  public static final @Nonnull PowerBarOverlayRenderHelper instance_machine = new PowerBarOverlayRenderHelper(false) {
+    @Override
+    protected boolean shouldShowBar(int maxEnergy, int energy) {
+      return maxEnergy > 0 && energy > 0;
+    }
+  };
+
   public static final @Nonnull FluidBarOverlayRenderHelper instance_fluid = new FluidBarOverlayRenderHelper();
 
   private final boolean isUpgradeableItem;
@@ -77,11 +81,11 @@ public class PowerBarOverlayRenderHelper {
   public boolean render(@Nonnull ItemStack stack, int xPosition, int yPosition) {
     return render(stack, xPosition, yPosition, false);
   }
-  
+
   public boolean render(@Nonnull ItemStack stack, int xPosition, int yPosition, boolean alwaysShow) {
     IEnergyStorage energyItem = PowerHandlerUtil.getCapability(stack, null);
-    
-    if(energyItem != null) {
+
+    if (energyItem != null) {
       int maxEnergy = energyItem.getMaxEnergyStored();
       if (maxEnergy > 0) {
         int energy = energyItem.getEnergyStored();
@@ -197,7 +201,7 @@ public class PowerBarOverlayRenderHelper {
     public boolean render(@Nonnull ItemStack stack, int xPosition, int yPosition, int barOffset) {
       return render(stack, xPosition, yPosition, barOffset, false);
     }
-    
+
     @Override
     public boolean render(@Nonnull ItemStack stack, int xPosition, int yPosition, boolean alwaysShow) {
       return render(stack, xPosition, yPosition, 0, alwaysShow);

@@ -130,7 +130,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  protected @Nonnull MachineRecipeInput[] getRecipeInputs() {
+  protected @Nonnull NNList<MachineRecipeInput> getRecipeInputs() {
     NNList<MachineRecipeInput> res = new NNList<>();
     for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot - 2; slot++) {
       final ItemStack item = getStackInSlot(slot);
@@ -138,7 +138,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
         res.add(new MachineRecipeInput(slot, item));
       }
     }
-    return res.toArray(new MachineRecipeInput[res.size()]);
+    return res;
   }
 
   @Override
