@@ -5,6 +5,7 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.registry.Registry;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.EnderIOConduits;
 import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
@@ -44,7 +45,8 @@ public enum ConduitObject implements IModObject.Registerable {
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
-    crazypants.enderio.base.registry.Registry.registerConduitBlock(block_conduit_bundle);
+    Registry.registerConduitBlock(block_conduit_bundle);
+    ModObjectRegistry.addModObjects(ConduitObject.class);
   }
 
   final @Nonnull String unlocalisedName;
@@ -59,11 +61,6 @@ public enum ConduitObject implements IModObject.Registerable {
   private ConduitObject(@Nonnull Class<?> clazz, Class<? extends TileEntity>... teClazz) {
     this(clazz, "create", teClazz);
   }
-
-  private ConduitObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
-    this(clazz, methodName, (Class<? extends TileEntity>) null);
-  }
-
 
   @SafeVarargs
   private ConduitObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity>... teClazz) {
@@ -81,38 +78,72 @@ public enum ConduitObject implements IModObject.Registerable {
     this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
   }
 
+  @SafeVarargs
+  private ConduitObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity>... teClazz) {
+    this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
+    this.clazz = clazz;
+    this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
+    this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
+    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
+  }
+
   @Override
+  public @Nonnull Class<?> getClazz() {
+    return clazz;
+  }
+
+  @Override
+  public void setItem(@Nullable Item obj) {
+    this.item = obj;
+  }
+
+  @Override
+  public void setBlock(@Nullable Block obj) {
+    this.block = obj;
+  }
+
   @Nonnull
+  @Override
   public String getUnlocalisedName() {
     return unlocalisedName;
   }
 
-  @Override
   @Nonnull
+  @Override
   public ResourceLocation getRegistryName() {
     return new ResourceLocation(EnderIO.DOMAIN, getUnlocalisedName());
   }
 
+  @Nullable
   @Override
-  @Nonnull
-  public <B extends Block> B apply(@Nonnull B blockIn) {
+  public Block getBlock() {
+    return block;
+  }
+
+  @Nullable
+  @Override
+  public Item getItem() {
+    return item;
+  }
+
+  @Nullable
+  @Override
+  public final List<Class<? extends TileEntity>> getTileClass() {
+    return teClazzes;
+  }
+
+  @Override
+  public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
     blockIn.setUnlocalizedName(getUnlocalisedName());
     blockIn.setRegistryName(getRegistryName());
     return blockIn;
   }
 
   @Override
-  @Nonnull
-  public <I extends Item> I apply(@Nonnull I itemIn) {
+  public final @Nonnull <I extends Item> I apply(@Nonnull I itemIn) {
     itemIn.setUnlocalizedName(getUnlocalisedName());
     itemIn.setRegistryName(getRegistryName());
     return itemIn;
-  }
-
-  @Override
-  @Nonnull
-  public Class<?> getClazz() {
-    return clazz;
   }
 
   @Override
@@ -125,22 +156,6 @@ public enum ConduitObject implements IModObject.Registerable {
   @Nullable
   public String getItemMethodName() {
     return itemMethodName;
-  }
-
-  @Nullable
-  @Override
-  public final List<Class<? extends TileEntity>> getTileClass() {
-    return teClazzes;
-  }
-
-  @Override
-  public void setItem(@Nullable Item obj) {
-    this.item = obj;
-  }
-
-  @Override
-  public void setBlock(@Nullable Block obj) {
-    this.block = obj;
   }
 
 }
