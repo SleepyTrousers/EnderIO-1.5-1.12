@@ -56,11 +56,7 @@ public enum ConduitObject implements IModObject.Registerable {
   protected final @Nullable String blockMethodName, itemMethodName;
   protected final @Nullable List<Class<? extends TileEntity>> teClazzes;
 
-  private ConduitObject(@Nonnull Class<?> clazz) {
-    this(clazz, "create", (Class<? extends TileEntity>) null);
-  }
-
-  private ConduitObject(@Nonnull Class<?> clazz, Class<? extends TileEntity> teClazz) {
+  private ConduitObject(@Nonnull Class<?> clazz, Class<? extends TileEntity>... teClazz) {
     this(clazz, "create", teClazz);
   }
 
@@ -68,10 +64,8 @@ public enum ConduitObject implements IModObject.Registerable {
     this(clazz, methodName, (Class<? extends TileEntity>) null);
   }
 
-  private ConduitObject(@Nonnull Class<?> clazz, @Nonnull String blockMethodName, @Nonnull String itemMethodName) {
-    this(clazz, blockMethodName, itemMethodName, null);
-  }
 
+  @SafeVarargs
   private ConduitObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity>... teClazz) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
@@ -84,14 +78,6 @@ public enum ConduitObject implements IModObject.Registerable {
     } else {
       throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
     }
-    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
-  }
-
-  private ConduitObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity>... teClazz) {
-    this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-    this.clazz = clazz;
-    this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
-    this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
     this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
   }
 

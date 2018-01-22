@@ -30,16 +30,16 @@ public class ConfigHandler {
   }
 
   public static void init(FMLPreInitializationEvent event) {
-    File configDirectory = getConfigDirectoryRaw();
-    if (configDirectory == null) {
-      Log.warn(EnderIOConduits.MOD_NAME + " was initialized before " + EnderIO.MOD_NAME + ". This should not happen.");
-      crazypants.enderio.base.config.Config.init(event);
-      configDirectory = getConfigDirectory();
-    }
-
-    File configFile = new File(configDirectory, EnderIOConduits.MODID + ".cfg");
-    config = new Configuration(configFile);
-    syncConfig(false);
+//    File configDirectory = getConfigDirectoryRaw();
+//    if (configDirectory == null) {
+//      Log.warn(EnderIOConduits.MOD_NAME + " was initialized before " + EnderIO.MOD_NAME + ". This should not happen.");
+//      crazypants.enderio.base.config.Config.init(event);
+//      configDirectory = getConfigDirectory();
+//    }
+//
+//    File configFile = new File(configDirectory, EnderIOConduits.MODID + ".cfg");
+//    config = new Configuration(configFile);
+//    syncConfig(false);
   }
 
   public static void init(FMLInitializationEvent event) {
@@ -49,19 +49,19 @@ public class ConfigHandler {
   }
 
   public static void syncConfig(boolean load) {
-    try {
-      if (load) {
-        config.load();
-      }
-      processConfig();
-    } catch (Exception e) {
-      Log.error(EnderIOConduits.MOD_NAME + " has a problem loading its configuration:");
-      e.printStackTrace();
-    } finally {
-      if (config.hasChanged()) {
-        config.save();
-      }
-    }
+//    try {
+//      if (load) {
+//        config.load();
+//      }
+//      processConfig();
+//    } catch (Exception e) {
+//      Log.error(EnderIOConduits.MOD_NAME + " has a problem loading its configuration:");
+//      e.printStackTrace();
+//    } finally {
+//      if (config.hasChanged()) {
+//        config.save();
+//      }
+//    }
   }
 
   @SubscribeEvent
