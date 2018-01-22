@@ -1,14 +1,12 @@
 package crazypants.enderio.conduit.item;
 
-import javax.annotation.Nonnull;
-
 import com.enderio.core.common.util.ItemUtil;
-
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitItem;
+import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.conduit.ItemConduitSubtype;
@@ -21,11 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -33,7 +27,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
+import javax.annotation.Nonnull;
 
 public abstract class AbstractItemConduit extends Item implements IConduitItem,IHaveRenderers {
 
@@ -41,10 +35,10 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
 
   protected ItemConduitSubtype[] subtypes;
 
-  protected AbstractItemConduit(IModObject modObj, ItemConduitSubtype... subtypes) {
+  protected AbstractItemConduit(@Nonnull IModObject modObj, ItemConduitSubtype... subtypes) {
     this.modObj = modObj;
     this.subtypes = subtypes;
-    setCreativeTab(EnderIOTab.tabEnderIOItems);
+    setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(modObj.getUnlocalisedName());
     setMaxStackSize(64);
     setHasSubtypes(true);
@@ -72,10 +66,10 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
    
     ItemStack held = player.getHeldItem(hand);
 
-    BlockPos placeAt = canPlaceItem(held, block_conduit_bundle.getBlock().getDefaultState(), player, world, pos, side);
+    BlockPos placeAt = canPlaceItem(held, ConduitRegistry.getConduitModObjectNN().getBlock().getDefaultState(), player, world, pos, side);
     if(placeAt != null) {
       if(!world.isRemote) {
-        if (world.setBlockState(placeAt, block_conduit_bundle.getBlock().getDefaultState(), 1)) {
+        if (world.setBlockState(placeAt, ConduitRegistry.getConduitModObjectNN().getBlock().getDefaultState(), 1)) {
           TileEntity te = world.getTileEntity(placeAt);
           if(te instanceof IConduitBundle) {
             IConduitBundle bundle = (IConduitBundle) te;
@@ -94,7 +88,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
       
       BlockPos place = pos.offset(side);
 
-      if (world.getBlockState(place).getBlock() == block_conduit_bundle.getBlock()) {
+      if (world.getBlockState(place).getBlock() == ConduitRegistry.getConduitModObjectNN().getBlock()) {
 
         IConduitBundle bundle = (IConduitBundle) world.getTileEntity(place);
         if(bundle == null) {          

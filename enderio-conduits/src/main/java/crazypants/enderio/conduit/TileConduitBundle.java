@@ -7,6 +7,7 @@ import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.conduit.*;
 import crazypants.enderio.base.conduit.facade.EnumFacadeType;
 import crazypants.enderio.base.conduit.geom.*;
+import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -33,7 +34,6 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static crazypants.enderio.base.config.Config.transparentFacadesLetThroughBeaconBeam;
-import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
 
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent {
 
@@ -66,7 +66,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   private ConduitDisplayMode lastMode = ConduitDisplayMode.ALL;
 
   public TileConduitBundle() {
-    this.blockType = block_conduit_bundle.getBlock();
+    this.blockType = ConduitRegistry.getConduitModObjectNN().getBlock();
   }
 
   @Nonnull

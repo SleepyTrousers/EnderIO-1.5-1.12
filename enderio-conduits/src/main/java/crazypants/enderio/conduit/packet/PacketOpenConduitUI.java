@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.packet;
 
 import com.enderio.core.common.network.MessageTileEntity;
+import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -11,7 +12,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
 
 public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketOpenConduitUI, IMessage> {
 
@@ -44,7 +44,7 @@ public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implement
   @Override
   public IMessage onMessage(PacketOpenConduitUI message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().player;
-    block_conduit_bundle.openGui(player.world, message.getPos(), player, message.dir);
+    ConduitRegistry.getConduitModObjectNN().openGui(player.world, message.getPos(), player, message.dir);
     return null;
   }
 
