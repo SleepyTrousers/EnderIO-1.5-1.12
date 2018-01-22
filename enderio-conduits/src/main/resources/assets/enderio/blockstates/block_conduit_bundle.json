@@ -1,0 +1,13 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "enderio:null",
+        "textures": {
+            "particle": "enderio:blocks/blockReinforcedObsidian"
+        },
+    },
+	"variants": {
+        "normal": [{}],
+        "inventory": [{}]
+	}
+}
