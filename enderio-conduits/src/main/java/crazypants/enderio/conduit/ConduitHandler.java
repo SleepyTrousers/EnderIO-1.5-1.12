@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.Set;
 
-public class ConduitHandler implements IHandler<ConduitHandler> {
+public class ConduitHandler implements IHandler<IConduit> {
 
   private IConduit conduit;
 
@@ -46,11 +46,11 @@ public class ConduitHandler implements IHandler<ConduitHandler> {
   }
 
   @Nullable
-  public static ConduitHandler readFromNBT(NBTTagCompound nbtRoot) {
+  public static IConduit readFromNBT(NBTTagCompound nbtRoot) {
     if (!NbtValue.CONDUIT.hasTag(nbtRoot)) {
       return null;
     }
-    return new ConduitHandler(ConduitUtil.readConduitFromNBT(nbtRoot));
+    return ConduitUtil.readConduitFromNBT(nbtRoot);
   }
 
   @Override
@@ -60,7 +60,7 @@ public class ConduitHandler implements IHandler<ConduitHandler> {
 
   @Override
   public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
-      @Nonnull ConduitHandler object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+      @Nonnull IConduit object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     NBTTagCompound root = new NBTTagCompound();
     object.writeToNBT(root);
     nbt.setTag(name, root);
@@ -68,17 +68,17 @@ public class ConduitHandler implements IHandler<ConduitHandler> {
   }
 
   @Override
-  public ConduitHandler read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
-      @Nonnull String name, @Nullable ConduitHandler object)
+  public IConduit read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
+      @Nonnull String name, @Nullable IConduit object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {
       NBTTagCompound root = nbt.getCompoundTag(name);
       return readFromNBT(root);
     }
-    return new ConduitHandler();
+    return null;
   }
 
-  public static class ConduitArrayListHandler extends HandleArrayList<ConduitHandler>
+  public static class ConduitArrayListHandler extends HandleArrayList<IConduit>
   {
     public ConduitArrayListHandler() {
       super(new ConduitHandler());
