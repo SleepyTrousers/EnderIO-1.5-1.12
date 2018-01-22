@@ -1,28 +1,12 @@
 package crazypants.enderio.conduit;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
 import com.enderio.core.common.util.NNList;
-
-import crazypants.enderio.base.conduit.ConduitUtil;
-import crazypants.enderio.base.conduit.ConnectionMode;
-import crazypants.enderio.base.conduit.IConduit;
-import crazypants.enderio.base.conduit.IConduitBundle;
-import crazypants.enderio.base.conduit.IConduitNetwork;
-import crazypants.enderio.base.conduit.RaytraceResult;
+import crazypants.enderio.base.conduit.*;
 import crazypants.enderio.base.conduit.geom.CollidableCache;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import net.minecraft.block.Block;
@@ -37,7 +21,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
+import javax.annotation.Nonnull;
+import java.util.*;
 
 public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
 
@@ -517,7 +502,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
     // NB: No need to check externals if the neighbour that changed was a
     // conduit bundle as this
     // can't effect external connections.
-    if (block == block_conduit_bundle.getBlock()) {
+    if (block == ConduitRegistry.getConduitModObjectNN().getBlock()) {
       return false;
     }
 

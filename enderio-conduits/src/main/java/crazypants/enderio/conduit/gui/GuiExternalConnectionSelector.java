@@ -28,8 +28,6 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
-
 public class GuiExternalConnectionSelector extends GuiScreen {
 
   private static int BUTTON_HEIGHT = 20;
@@ -96,7 +94,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     if (!world.isAirBlock(blockPos)) {
       IBlockState bs = world.getBlockState(blockPos);
       Block b = bs.getBlock();
-      if (b != null && b != block_conduit_bundle.getBlock()) {
+      if (b != null && b != ConduitRegistry.getConduitModObjectNN().getBlock()) {
         try {// TODO: This seems wrong. pickBlock?
           Item item = b.getItemDropped(bs.getActualState(world, blockPos), world.rand, 0);
           if (item != null) {

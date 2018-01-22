@@ -16,6 +16,7 @@ import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.redstone.signals.SignalSource;
+import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.tool.ToolUtil;
@@ -47,7 +48,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
 import static crazypants.enderio.conduit.init.ConduitObject.item_redstone_conduit;
 
 public class InsulatedRedstoneConduit extends AbstractConduit implements IRedstoneConduit, IConduitComponent {
@@ -267,7 +267,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
             BlockPos pos = getBundle().getLocation().offset(faceHit);
             Block id = world.getBlockState(pos).getBlock();
-            if (id == block_conduit_bundle.getBlock()) {
+            if (id == ConduitRegistry.getConduitModObjectNN().getBlock()) {
               IRedstoneConduit neighbour = ConduitUtil.getConduit(world, pos.getX(), pos.getY(), pos.getZ(), IRedstoneConduit.class);
               if (neighbour != null && neighbour.getConnectionMode(faceHit.getOpposite()) == ConnectionMode.DISABLED) {
                 neighbour.setConnectionMode(faceHit.getOpposite(), ConnectionMode.NOT_SET);
@@ -425,7 +425,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     Block block = bs.getBlock();
     TileEntity te = world.getTileEntity(pos);
 
-    if (block == null || block == block_conduit_bundle.getBlock()) {
+    if (block == null || block == ConduitRegistry.getConduitModObjectNN().getBlock()) {
       return false;
     }
 
@@ -650,7 +650,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     if (network == null || network.updatingNetwork) {
       return false;
     }
-    if (blockId != block_conduit_bundle.getBlock()) {
+    if (blockId != ConduitRegistry.getConduitModObjectNN().getBlock()) {
       computeSpecialConnections();
       if (hasExternalConnections()) {
         network.updateInputsFromConduit(this, false);
