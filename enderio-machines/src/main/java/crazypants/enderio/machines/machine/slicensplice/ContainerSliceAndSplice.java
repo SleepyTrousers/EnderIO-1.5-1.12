@@ -63,7 +63,7 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
 
   public void createGhostSlots(List<GhostSlot> slots) {
     for (Slot slot : inventorySlots) {
-      if (slot instanceof InvSlot) {
+      if (slot instanceof InventorySlot) {
         if (slot.getSlotIndex() == TileSliceAndSplice.axeIndex) {
           slots.add(new GhostBackgroundItemSlot(slotItems1.getItemStacks(), slot));
         } else if (slot.getSlotIndex() == TileSliceAndSplice.shearsIndex) {
