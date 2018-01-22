@@ -65,7 +65,7 @@ public class Ender {
       Things cast = new Things("tconstruct:cast_custom:2");
       NNList<ItemStack> casts = cast.getItemStacks();
       if (!casts.isEmpty()) {
-        TicHandler.instance.registerTableCast(new ItemStack(Items.ENDER_PEARL), casts.get(0), f, 250);
+        TicHandler.instance.registerTableCast(new ItemStack(Items.ENDER_PEARL), casts.get(0), f, 250, false);
       }
     }
     TicHandler.instance.registerSmelterySmelting(POWDER_ENDER.getStack(), f, 250 / 9);

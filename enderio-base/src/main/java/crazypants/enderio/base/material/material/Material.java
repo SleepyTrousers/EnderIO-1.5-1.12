@@ -25,7 +25,7 @@ public enum Material {
 
   GEAR_WOOD("gear_wood", "gearWood"),
   GEAR_STONE("gear_stone", "gearStone"),
-  GEAR_IRON("gear_iron", "gearIron"),
+  GEAR_IRON("gear_iron", "gearIronInfinity"),
   GEAR_ENERGIZED("gear_energized", "gearEnergized"),
   GEAR_VIBRANT("gear_vibrant", "gearVibrant"),
 

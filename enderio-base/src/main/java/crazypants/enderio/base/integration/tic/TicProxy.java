@@ -17,15 +17,16 @@ public class TicProxy {
     return handler != null;
   }
 
-  public static void registerTableCast(@Nonnull ItemStack result, @Nonnull ItemStack cast, Fluid fluid, float amount) {
+  public static void registerTableCast(@Nonnull ItemStack result, @Nonnull ItemStack cast, Fluid fluid, float amount, boolean consumeCast) {
     if (isLoaded()) {
-      handler.registerTableCast(result, cast, fluid, amount);
+      handler.registerTableCast(result, cast, fluid, amount, consumeCast);
     }
   }
 
-  public static String registerTableCast(@Nonnull ItemStack result, @Nonnull ItemStack cast, @Nonnull ItemStack item, float amount, boolean simulate) {
+  public static String registerTableCast(@Nonnull ItemStack result, @Nonnull ItemStack cast, @Nonnull ItemStack item, float amount, boolean consumeCast,
+      boolean simulate) {
     if (isLoaded()) {
-      return handler.registerTableCast(result, cast, item, amount, simulate);
+      return handler.registerTableCast(result, cast, item, amount, consumeCast, simulate);
     } else {
       return null;
     }

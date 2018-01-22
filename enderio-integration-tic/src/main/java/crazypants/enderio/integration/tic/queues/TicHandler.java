@@ -14,16 +14,17 @@ public class TicHandler implements ITicHandler {
   public static final @Nonnull TicHandler instance = new TicHandler();
 
   @Override
-  public void registerTableCast(@Nonnull ItemStack result, @Nonnull ItemStack cast, Fluid fluid, float amount) {
+  public void registerTableCast(@Nonnull ItemStack result, @Nonnull ItemStack cast, Fluid fluid, float amount, boolean consumeCast) {
     if (Prep.isInvalid(result) || Prep.isInvalid(cast) || fluid == null) {
       return;
     }
 
-    TiCQueues.getCastQueue().add(new CastQueue(result, cast, fluid, amount));
+    TiCQueues.getCastQueue().add(new CastQueue(result, cast, fluid, amount, consumeCast));
   }
 
   @Override
-  public String registerTableCast(@Nonnull ItemStack result, @Nonnull ItemStack cast, @Nonnull ItemStack item, float amount, boolean simulate) {
+  public String registerTableCast(@Nonnull ItemStack result, @Nonnull ItemStack cast, @Nonnull ItemStack item, float amount, boolean consumeCast,
+      boolean simulate) {
     if (Prep.isInvalid(result)) {
       return "Result item not found";
     }
@@ -39,7 +40,7 @@ public class TicHandler implements ITicHandler {
     if (!simulate) {
       item = item.copy();
       item.setCount(1);
-      TiCQueues.getCastQueue().add(new CastQueue(result, cast, item, amount));
+      TiCQueues.getCastQueue().add(new CastQueue(result, cast, item, amount, consumeCast));
     }
 
     return null;

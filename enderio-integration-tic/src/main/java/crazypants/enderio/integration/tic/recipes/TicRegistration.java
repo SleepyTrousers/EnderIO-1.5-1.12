@@ -7,7 +7,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.integration.tic.EnderIOIntegrationTic;
 import crazypants.enderio.integration.tic.queues.BasinQueue;
 import crazypants.enderio.integration.tic.queues.CastQueue;
 import crazypants.enderio.integration.tic.queues.SmeltQueue;
@@ -21,7 +20,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.TinkerRegistry;
+import slimeknights.tconstruct.library.smeltery.CastingRecipe;
 import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
 
 public class TicRegistration {
@@ -104,7 +105,8 @@ public class TicRegistration {
       if (cast.getFluid() == null) {
         Log.warn("Item used in cast recipe '" + cast.getItem() + "' doesn't smelt into a fluid");
       } else {
-        TinkerRegistry.registerTableCasting(cast.getResult(), cast.getCast(), cast.getFluid(), (int) Math.ceil(cast.getAmount()));
+        TinkerRegistry.registerTableCasting(new CastingRecipe(cast.getResult(), Prep.isValid(cast.getCast()) ? RecipeMatch.ofNBT(cast.getCast()) : null,
+            cast.getFluid(), (int) Math.ceil(cast.getAmount()), cast.isConsumeCast(), false));
         Log.debug("Tinkers.registerTableCasting: " + cast.getResult() + ", " + cast.getCast() + ", " + cast.getFluid().getName() + ", " + cast.getAmount());
       }
     }
@@ -160,34 +162,26 @@ public class TicRegistration {
   }
 
   private static FluidStack getFluidForItems(@Nonnull ItemStack input) {
-    if (!EnderIOIntegrationTic.isLoaded()) {
+    ItemStack itemStack = input.copy();
+    itemStack.setCount(1);
+    MeltingRecipe melting = TinkerRegistry.getMelting(itemStack);
+    if (melting == null) {
+      // For some reason this recipe isn't yet available in postInit...
+      if (itemStack.getItem() == Item.getItemFromBlock(Blocks.OBSIDIAN)) {
+        Fluid fluid = FluidRegistry.getFluid("obsidian");
+        if (fluid != null) {
+          return new FluidStack(fluid, 288 * input.getCount());
+        }
+      }
+      Log.info("Failed to get Tinker's Construct melting recipe for " + itemStack);
       return null;
     }
-    try {
-      ItemStack itemStack = input.copy();
-      itemStack.setCount(1);
-      MeltingRecipe melting = TinkerRegistry.getMelting(itemStack);
-      if (melting == null) {
-        // For some reason this recipe isn't yet available in postInit...
-        if (itemStack.getItem() == Item.getItemFromBlock(Blocks.OBSIDIAN)) {
-          Fluid fluid = FluidRegistry.getFluid("obsidian");
-          if (fluid != null) {
-            return new FluidStack(fluid, 288 * input.getCount());
-          }
-        }
-        Log.info("Failed to get Tinker's Construct melting recipe for " + itemStack);
-        return null;
-      }
-      FluidStack result = melting.getResult();
-      if (result != null) {
-        result.amount *= input.getCount();
-        return result;
-      } else {
-        Log.info("Failed to get Tinker's Construct melting recipe result for " + itemStack + " -> " + result);
-      }
-    } catch (IllegalArgumentException e) {
-      Log.error("Failed to access Tinker's Construct integration. Reason:");
-      e.printStackTrace();
+    FluidStack result = melting.getResult();
+    if (result != null) {
+      result.amount *= input.getCount();
+      return result;
+    } else {
+      Log.info("Failed to get Tinker's Construct melting recipe result for " + itemStack + " -> " + result);
     }
     return null;
   }
