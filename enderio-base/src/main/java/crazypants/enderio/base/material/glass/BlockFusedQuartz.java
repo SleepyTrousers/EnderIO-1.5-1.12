@@ -8,9 +8,9 @@ import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.PaintUtil.IWithPaintName;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.ITintedBlock;
 import crazypants.enderio.base.render.ITintedItem;
-import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
@@ -156,7 +156,7 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
       }
     }
 
-    if (otherState.getBlock() == this) {
+    if (otherState.getBlock() instanceof BlockFusedQuartz) {
       IBlockState ourState = blockStateIn.getActualState(world, pos);
       return !ourState.getValue(FusedQuartzType.KIND).connectTo(otherState.getValue(FusedQuartzType.KIND))
           || (!glassConnectToTheirColorVariants && ourState.getValue(BlockColored.COLOR) != otherState.getValue(BlockColored.COLOR));
