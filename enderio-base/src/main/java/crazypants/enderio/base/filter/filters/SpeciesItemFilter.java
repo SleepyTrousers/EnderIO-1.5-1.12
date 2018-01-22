@@ -27,6 +27,8 @@ import net.minecraft.util.text.TextComponentTranslation;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+// TODO: Move to integration-forestry after big conduit merge
+
 public class SpeciesItemFilter implements IInventory, IItemFilter {
 
   private static final boolean DEFAULT_BLACKLIST = false;

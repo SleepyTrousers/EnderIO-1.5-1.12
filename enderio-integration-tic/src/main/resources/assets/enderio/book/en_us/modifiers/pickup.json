@@ -1,0 +1,17 @@
+{
+  "modifier": "enderpickup",
+  "text": [
+    {
+      "text": "It's mine, all mine!"
+    }
+  ],
+  "effects": [
+    "Chance to teleport mined things directly into your inventory",
+    "Conflicts with with the trait of the same name",
+    "Conflicts with 'Vanishing'"
+  ],
+  "demoTool": [
+    "tconstruct:pickaxe",
+    "tconstruct:hammer"
+  ]
+}

@@ -12,7 +12,6 @@ import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.teleport.RandomTeleportUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.BlockLiquid;
@@ -46,7 +45,7 @@ public final class BlockFluidEio {
 
   static class FireWater extends BlockFluidEnder {
 
-    protected FireWater(Fluid fluid, Material material, int fogColor) {
+    protected FireWater(@Nonnull Fluid fluid, @Nonnull Material material, int fogColor) {
       super(fluid, material, fogColor);
     }
 
@@ -84,7 +83,7 @@ public final class BlockFluidEio {
 
   static class Hootch extends BlockFluidEnder {
 
-    protected Hootch(Fluid fluid, Material material, int fogColor) {
+    protected Hootch(@Nonnull Fluid fluid, @Nonnull Material material, int fogColor) {
       super(fluid, material, fogColor);
     }
 
@@ -124,7 +123,7 @@ public final class BlockFluidEio {
 
   static class RocketFuel extends BlockFluidEnder {
 
-    protected RocketFuel(Fluid fluid, Material material, int fogColor) {
+    protected RocketFuel(@Nonnull Fluid fluid, @Nonnull Material material, int fogColor) {
       super(fluid, material, fogColor);
     }
 
@@ -204,7 +203,7 @@ public final class BlockFluidEio {
 
   static class NutrientDistillation extends BlockFluidEnder {
 
-    protected NutrientDistillation(Fluid fluid, Material material, int fogColor) {
+    protected NutrientDistillation(@Nonnull Fluid fluid, @Nonnull Material material, int fogColor) {
       super(fluid, material, fogColor);
     }
 
@@ -229,7 +228,7 @@ public final class BlockFluidEio {
 
   static class LiquidSunshine extends BlockFluidEnder {
 
-    protected LiquidSunshine(Fluid fluid, Material material, int fogColor) {
+    protected LiquidSunshine(@Nonnull Fluid fluid, @Nonnull Material material, int fogColor) {
       super(fluid, material, fogColor);
     }
 
@@ -250,7 +249,7 @@ public final class BlockFluidEio {
 
   static class CloudSeedConcentrated extends BlockFluidEnder {
 
-    protected CloudSeedConcentrated(Fluid fluid, Material material, int fogColor) {
+    protected CloudSeedConcentrated(@Nonnull Fluid fluid, @Nonnull Material material, int fogColor) {
       super(fluid, material, fogColor);
     }
 
@@ -270,7 +269,7 @@ public final class BlockFluidEio {
 
   static class VaporOfLevity extends BlockFluidEnder {
 
-    protected VaporOfLevity(Fluid fluid, Material material, int fogColor) {
+    protected VaporOfLevity(@Nonnull Fluid fluid, @Nonnull Material material, int fogColor) {
       super(fluid, material, fogColor);
     }
 
@@ -381,70 +380,6 @@ public final class BlockFluidEio {
         return 0.995F;
       }
     }
-  }
-
-  /////////////////////////////////////////////////////////////////////////
-  // Molten Glowstone
-  /////////////////////////////////////////////////////////////////////////
-
-  public static class MoltenGlowstone extends BlockFluidEnder {
-
-    public MoltenGlowstone(Fluid fluid, Material material, int fogColor) { // 0xffbc5e
-      super(fluid, material, fogColor);
-    }
-
-    @Override
-    public void onEntityCollidedWithBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Entity entity) {
-      if (!world.isRemote && entity instanceof EntityLivingBase) {
-        ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 200, 0, true, true));
-        ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.GLOWING, 2400, 0, true, true));
-      }
-      super.onEntityCollidedWithBlock(world, pos, state, entity);
-    }
-
-  }
-
-  /////////////////////////////////////////////////////////////////////////
-  // Molten Redstone
-  /////////////////////////////////////////////////////////////////////////
-
-  public static class MoltenRedstone extends BlockFluidEnder {
-
-    public MoltenRedstone(Fluid fluid, Material material, int fogColor) { // 0xff0000
-      super(fluid, material, fogColor);
-    }
-
-    @Override
-    public void onEntityCollidedWithBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Entity entity) {
-      if (!world.isRemote && entity instanceof EntityLivingBase) {
-        ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.HASTE, 20 * 60, 0, true, true));
-        ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 20 * 60, 0, true, true));
-        ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.SPEED, 20 * 60, 0, true, true));
-        ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 20 * 60, 0, true, true));
-      }
-      super.onEntityCollidedWithBlock(world, pos, state, entity);
-    }
-
-  }
-
-  /////////////////////////////////////////////////////////////////////////
-  // Molten Ender
-  /////////////////////////////////////////////////////////////////////////
-
-  public static class MoltenEnder extends BlockFluidEnder {
-
-    public MoltenEnder(Fluid fluid, Material material, int fogColor) { // 0xff0000
-      super(fluid, material, fogColor);
-    }
-
-    @Override
-    public void onEntityCollidedWithBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Entity entity) {
-      if (!world.isRemote && entity.timeUntilPortal == 0) {
-        RandomTeleportUtil.teleportEntity(world, entity, false);
-      }
-      super.onEntityCollidedWithBlock(world, pos, state, entity);
-    }
-
   }
 
 }

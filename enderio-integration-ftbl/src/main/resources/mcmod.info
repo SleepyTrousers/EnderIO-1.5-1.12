@@ -1,13 +1,13 @@
 [
 {
-  "modid": "enderio-integration-ftbl",
-  "name": "Ender IO Integration Ftbl",
+  "modid": "enderiointegrationftbl",
+  "name": "Ender IO Integration with FTBLib",
   "description": "Integration ;)",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "http://enderio.com",
   "updateUrl": "",
-  "authorList": [ "CrazyPants", "tterrag", "HenryLoenwind", "MatthiasM" , "CyanideX"],
+  "authorList": [ "JoduWei"],
   "credits": "By CrazyPants, with the help of many",
   "logoFile": "",
   "screenshots": [
