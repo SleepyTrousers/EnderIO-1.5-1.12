@@ -20,7 +20,6 @@ import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.Log;
@@ -33,9 +32,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -78,16 +75,6 @@ public class ModObjectRegistry {
   }
 
   @SubscribeEvent(priority = EventPriority.LOW)
-  public static void registerAddonBlocks(@Nonnull RegistryEvent.Register<Block> event) {
-    for (ModContainer modContainer : Loader.instance().getModList()) {
-      Object mod = modContainer.getMod();
-      if (mod instanceof IEnderIOAddon) {
-        ((IEnderIOAddon) mod).injectBlocks(NullHelper.notnullF(event.getRegistry(), "RegistryEvent.Register<Block>.getRegistry()"));
-      }
-    }
-  }
-
-  @SubscribeEvent(priority = EventPriority.LOWEST)
   public static void registerTileEntities(@Nonnull RegistryEvent.Register<Block> event) {
     registerTeClasses(); // Note: Lex says this goes into the block register event
   }

@@ -17,16 +17,16 @@
     ]
   },
   {
-    "modid": "enderiobase",
-    "name": "Ender IO Base",
-    "description": "Basic materials and items for all EnderIO modules.",
-    "version": "${version}",
-    "mcversion": "${mcversion}",
-    "url": "http://enderio.com",
-    "authorList": [ "CrazyPants", "tterrag", "HenryLoenwind", "MatthiasM" , "CyanideX"],
-    "parent": "enderio",
-    "dependencies": [
-      "enderio"
-    ]
+  	"modid": "enderiobase",
+  	"name": "Ender IO Base",
+  	"description": "Basic materials and items for all EnderIO modules.",
+  	"version": "${version}",
+  	"mcversion": "${mcversion}",
+  	"url": "http://enderio.com",
+  	"authorList": [ "CrazyPants", "tterrag", "HenryLoenwind", "MatthiasM" , "CyanideX"],
+  	"parent": "enderio",
+  	"dependencies": [
+  		"enderio"
+  	]
   }
 ]

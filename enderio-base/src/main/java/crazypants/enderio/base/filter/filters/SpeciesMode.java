@@ -14,8 +14,6 @@ import crazypants.enderio.base.gui.IconEIO;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-//TODO: Move to integration-forestry after big conduit merge
-
 public enum SpeciesMode {
   BOTH,
   PRIMARY,

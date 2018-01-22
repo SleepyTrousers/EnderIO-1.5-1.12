@@ -135,19 +135,16 @@ public enum Fluids {
 
   private final @Nonnull String name;
   private final boolean hasBlock;
-  protected final @Nonnull Material material;
+  protected final Material material;
   protected final int color;
 
   private Fluids(@Nonnull String name) {
-    this.name = name;
-    this.hasBlock = false;
-    this.material = Material.AIR;
-    this.color = -1;
+    this(name, null, 0);
   }
 
-  private Fluids(@Nonnull String name, @Nonnull Material material, int color) {
+  private Fluids(@Nonnull String name, Material material, int color) {
     this.name = name;
-    this.hasBlock = true;
+    this.hasBlock = material != null;
     this.material = material;
     this.color = color;
   }

@@ -1,8 +1,8 @@
 [
 {
-  "modid": "enderiomachines",
+  "modid": "enderio-machines",
   "name": "Ender IO Machines",
-  "description": "Everything that goes krrrrkrrr and shtshtshtsht and kagrmkagrmkaguddr.",
+  "description": "All sorts of stuff and bling.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "http://enderio.com",

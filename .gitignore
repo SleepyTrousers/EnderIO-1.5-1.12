@@ -44,5 +44,3 @@ user.properties
 
 ## temporary build files
 eiostore.jks
-
-build\.sh

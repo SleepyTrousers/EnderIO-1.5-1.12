@@ -29,6 +29,7 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
 
   @Override
   public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
+    System.out.println(itemstack + " " + itemstack.getTagCompound());
     if (i == getSlotDefinition().minInputSlot) {
       IEnergyStorage storage = PowerHandlerUtil.getCapability(itemstack, null);
       return storage != null && storage.receiveEnergy(1, true) > 0;
