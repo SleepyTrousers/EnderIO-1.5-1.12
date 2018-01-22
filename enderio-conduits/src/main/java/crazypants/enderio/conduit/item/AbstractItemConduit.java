@@ -180,7 +180,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
   }
 
   // TODO Put this somewhere else if necessary
-  private BlockPos canPlaceItem(@Nonnull ItemStack held, @Nonnull IBlockState blockToPlace, @Nonnull EntityPlayer player, @Nonnull World world,
+  private BlockPos canPlaceItem(@Nonnull ItemStack held, IBlockState blockToPlace, @Nonnull EntityPlayer player, @Nonnull World world,
       @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     if (held.isEmpty() || blockToPlace == null) {
       return null;
