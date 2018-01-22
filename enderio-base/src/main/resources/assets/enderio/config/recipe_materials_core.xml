@@ -311,7 +311,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item name="dustLapis"/><item name="dustQuartz"/><item name="ORGANIC_GREEN_DYE"/>
-        <item name="dustQuartz"/><item name="dustCoal"/><item name="dustQuartz"/>
+        <item name="dustQuartz"/><item name="ORGANIC_BLACK_DYE"/><item name="dustQuartz"/>
         <item name="ORGANIC_GREEN_DYE"/><item name="dustQuartz"/><item name="dustLapis"/>
       </grid>
       <output name="dyeMachine" amount="9"/>
@@ -322,7 +322,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item name="ORGANIC_GREEN_DYE"/><item name="dustQuartz"/><item name="dustLapis"/>
-        <item name="dustQuartz"/><item name="dustCoal"/><item name="dustQuartz"/>
+        <item name="dustQuartz"/><item name="ORGANIC_BLACK_DYE"/><item name="dustQuartz"/>
         <item name="dustLapis"/><item name="dustQuartz"/><item name="ORGANIC_GREEN_DYE"/>
       </grid>
       <output name="dyeMachine" amount="9"/>

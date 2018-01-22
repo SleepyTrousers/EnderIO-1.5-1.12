@@ -246,6 +246,11 @@
           "layer0": "enderio:items/item_material_organic_brown_dye"
         }
       },
+      "organic_black_dye": {
+        "textures": {
+          "layer0": "enderio:items/item_material_organic_black_dye"
+        }
+      },
       "powder_photovoltaic":    {
         "textures": {
             "layer0": "enderio:items/item_material_powder_photovoltaic"

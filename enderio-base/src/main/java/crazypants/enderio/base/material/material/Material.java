@@ -84,6 +84,8 @@ public enum Material {
   DYE_MACHINE("machine_dye", "dyeMachine"),
   SIMPLE_MACHINE_CHASSI("simpleMachineChassi"),
 
+  DYE_BLACK("organic_black_dye", "dyeBlack"),
+
   ;
 
   public final boolean hasEffect;
