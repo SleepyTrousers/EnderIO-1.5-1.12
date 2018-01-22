@@ -12,37 +12,13 @@ import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.machines.machine.tank.InventorySlot;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceAndSplice> {
-
-  private class InvSlot extends Slot {
-    private final int slot;
-
-    private InvSlot(@Nonnull IInventory inventoryIn, int index, int xPosition, int yPosition, int slot) {
-      super(inventoryIn, index, xPosition, yPosition);
-      this.slot = slot;
-    }
-
-    @Override
-    public boolean isItemValid(@Nonnull ItemStack itemStack) {
-      return getInv().isItemValidForSlot(slot, itemStack);
-    }
-
-    @Override
-    public void putStack(@Nonnull ItemStack stack) {
-      if (stack.getCount() <= getItemStackLimit(stack)) {
-        super.putStack(stack);
-      } else {
-        throw new RuntimeException("Invalid stacksize. " + stack.getCount() + " is more than the allowed limit of " + getItemStackLimit(stack)
-            + ". THIS IS NOT AN ERROR IN ENDER IO BUT THE CALLING MOD!");
-      }
-    }
-  }
 
   // JEI wants this data without giving us a chance to instantiate a container
   public static int FIRST_RECIPE_SLOT = 0;
@@ -68,8 +44,7 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
   protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
     for (int i = 0; i < INPUT_SLOTS.length; i++) {
       Point p = INPUT_SLOTS[i];
-      final int slot = i;
-      addSlotToContainer(new InvSlot(getInv(), i, p.x, p.y, slot));
+      addSlotToContainer(new InventorySlot(getInv(), i, p.x, p.y));
     }
 
     addSlotToContainer(new Slot(getInv(), 8, OUTPUT_SLOT.x, OUTPUT_SLOT.y) {

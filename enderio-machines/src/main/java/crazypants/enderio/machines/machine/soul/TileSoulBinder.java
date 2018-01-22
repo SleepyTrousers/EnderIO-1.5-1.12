@@ -88,6 +88,11 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
+  public int getInventoryStackLimit(int slot) {
+    return getSlotDefinition().isOutputSlot(slot) ? 64 : super.getInventoryStackLimit(slot);
+  }
+
+  @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
     if (xpCont.isDirty()) {
       PacketHandler.sendToAllAround(new PacketExperienceContainer(this), this);
