@@ -15,6 +15,7 @@ import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.conduitprobe.ItemConduitProbe;
 import crazypants.enderio.base.network.PacketHandler;
@@ -26,7 +27,6 @@ import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.conduit.liquid.PacketFluidLevel;
 import crazypants.enderio.conduit.packet.*;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
@@ -79,7 +79,7 @@ import java.util.*;
 
 public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IEioGuiHandler.WithPos, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  public static BlockConduitBundle create() {
+  public static BlockConduitBundle create(@Nonnull IModObject modObject) {
 
     MinecraftForge.EVENT_BUS.register(ConduitNetworkTickHandler.instance);
 
@@ -97,9 +97,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     PacketHandler.INSTANCE.registerMessage(PacketSlotVisibility.class, PacketSlotVisibility.class, PacketHandler.nextID(), Side.SERVER);
 //    PacketHandler.INSTANCE.registerMessage(PacketOCConduitSignalColor.class, PacketOCConduitSignalColor.class, PacketHandler.nextID(), Side.SERVER);
 
-    BlockConduitBundle result = new BlockConduitBundle();
+    BlockConduitBundle result = new BlockConduitBundle(modObject);
     result.init();
-    MinecraftForge.EVENT_BUS.register(result);
     return result;
   }
 
@@ -110,8 +109,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   private AxisAlignedBB bounds;
 
-  protected BlockConduitBundle() {
-    super(ConduitObject.block_conduit_bundle, TileConduitBundle.class);
+  protected BlockConduitBundle(@Nonnull IModObject modObject) {
+    super(modObject, TileConduitBundle.class);
     setBlockBounds(0.334, 0.334, 0.334, 0.667, 0.667, 0.667);
     setHardness(1.5f);
     setResistance(10.0f);
