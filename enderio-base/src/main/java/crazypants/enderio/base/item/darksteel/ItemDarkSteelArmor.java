@@ -29,8 +29,6 @@ import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.integration.forestry.ApiaristArmorUpgrade;
-import crazypants.enderio.base.integration.forestry.NaturalistEyeUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
@@ -70,6 +68,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.Optional.InterfaceList;
 import net.minecraftforge.fml.common.Optional.Method;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -376,20 +375,31 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     }
   }
 
+  @ObjectHolder("enderiointegrationforestry:apiarist_armor_feet")
+  public static final IDarkSteelUpgrade FORESTRY_FEET = null;
+  @ObjectHolder("enderiointegrationforestry:apiarist_armor_legs")
+  public static final IDarkSteelUpgrade FORESTRY_LEGS = null;
+  @ObjectHolder("enderiointegrationforestry:apiarist_armor_chest")
+  public static final IDarkSteelUpgrade FORESTRY_CHEST = null;
+  @ObjectHolder("enderiointegrationforestry:apiarist_armor_head")
+  public static final IDarkSteelUpgrade FORESTRY_HEAD = null;
+  @ObjectHolder("enderiointegrationforestry:naturalist_eye")
+  public static final IDarkSteelUpgrade FORESTRY_EYES = null;
+
   @Override
   @Method(modid = "forestry")
   public boolean canSeePollination(@Nonnull EntityPlayer player, @Nonnull ItemStack armor, boolean doSee) {
     if (armor.getItem() != ModObject.itemDarkSteelHelmet.getItemNN()) {
       return false;
     }
-    return NaturalistEyeUpgrade.isUpgradeEquipped(player);
+    return FORESTRY_EYES != null && FORESTRY_EYES.hasUpgrade(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD));
   }
 
   @Override
   @Method(modid = "forestry")
   public boolean protectEntity(@Nonnull EntityLivingBase entity, @Nonnull ItemStack armor, @Nullable String cause, boolean doProtect) {
-    return ApiaristArmorUpgrade.HELMET.hasUpgrade(armor) || ApiaristArmorUpgrade.CHEST.hasUpgrade(armor) || ApiaristArmorUpgrade.LEGS.hasUpgrade(armor)
-        || ApiaristArmorUpgrade.BOOTS.hasUpgrade(armor);
+    return (FORESTRY_HEAD != null && FORESTRY_HEAD.hasUpgrade(armor)) || (FORESTRY_CHEST != null && FORESTRY_CHEST.hasUpgrade(armor))
+        || (FORESTRY_FEET != null && FORESTRY_FEET.hasUpgrade(armor)) || (FORESTRY_LEGS != null && FORESTRY_LEGS.hasUpgrade(armor));
   }
 
   @Override

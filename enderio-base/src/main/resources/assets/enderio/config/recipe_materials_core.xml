@@ -221,7 +221,7 @@ XML editor will display that as tooltips when editing this file.
     <dependency item="tconstruct:cast_custom:2"/>
     <casting>
       <input name="ingotGold" amount="2"/>
-      <cast name="DARK_GRINDING_BALL"/>
+      <cast name="DARK_GRINDING_BALL" consumed="true"/>
       <output name="tconstruct:cast_custom:2"/>
     </casting>
   </recipe>
@@ -230,7 +230,7 @@ XML editor will display that as tooltips when editing this file.
     <dependency item="tconstruct:cast_custom:4"/>
     <casting>
       <input name="ingotGold" amount="2"/>
-      <cast name="GEAR_STONE"/>
+      <cast name="GEAR_STONE" consumed="true"/>
       <output name="tconstruct:cast_custom:4"/>
     </casting>
   </recipe>
@@ -239,7 +239,7 @@ XML editor will display that as tooltips when editing this file.
     <dependency item="tconstruct:cast_custom:4"/>
     <casting>
       <input name="ingotGold" amount="2"/>
-      <cast name="GEAR_ENERGIZED"/>
+      <cast name="GEAR_ENERGIZED" consumed="true"/>
       <output name="tconstruct:cast_custom:4"/>
     </casting>
   </recipe>
@@ -248,7 +248,7 @@ XML editor will display that as tooltips when editing this file.
     <dependency item="tconstruct:cast_custom:4"/>
     <casting>
       <input name="ingotGold" amount="2"/>
-      <cast name="GEAR_VIBRANT"/>
+      <cast name="GEAR_VIBRANT" consumed="true"/>
       <output name="tconstruct:cast_custom:4"/>
     </casting>
   </recipe>
@@ -311,7 +311,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item name="dustLapis"/><item name="dustQuartz"/><item name="ORGANIC_GREEN_DYE"/>
-        <item name="dustQuartz"/><item name="dustCoal"/><item name="dustQuartz"/>
+        <item name="dustQuartz"/><item name="ORGANIC_BLACK_DYE"/><item name="dustQuartz"/>
         <item name="ORGANIC_GREEN_DYE"/><item name="dustQuartz"/><item name="dustLapis"/>
       </grid>
       <output name="dyeMachine" amount="9"/>
@@ -322,7 +322,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item name="ORGANIC_GREEN_DYE"/><item name="dustQuartz"/><item name="dustLapis"/>
-        <item name="dustQuartz"/><item name="dustCoal"/><item name="dustQuartz"/>
+        <item name="dustQuartz"/><item name="ORGANIC_BLACK_DYE"/><item name="dustQuartz"/>
         <item name="dustLapis"/><item name="dustQuartz"/><item name="ORGANIC_GREEN_DYE"/>
       </grid>
       <output name="dyeMachine" amount="9"/>
@@ -370,6 +370,14 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Gear, Stone, Casting">
+    <casting>
+      <input name="minecraft:cobblestone" amount="4"/>
+      <cast name="GEAR_WOOD" consumed="true"/>
+      <output name="GEAR_STONE"/>
+    </casting>
+  </recipe>
+
   <recipe name="Gear, Iron" required="true">
     <crafting>
       <grid>
@@ -379,6 +387,14 @@ XML editor will display that as tooltips when editing this file.
       </grid>
       <output name="GEAR_IRON"/>
     </crafting>
+  </recipe>
+
+  <recipe name="Gear, Iron, Casting">
+    <casting>
+      <input name="nuggetIron" amount="40"/>
+      <cast name="POWDER_INFINITY" consumed="true"/>
+      <output name="GEAR_IRON"/>
+    </casting>
   </recipe>
 
   <recipe name="Gear, Energized" required="true">
@@ -392,6 +408,14 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Gear, Energized, Casting">
+    <casting>
+      <input name="ENERGETIC_ALLOY_NUGGET" amount="8"/>
+      <cast name="GEAR_IRON" consumed="true"/>
+      <output name="GEAR_ENERGIZED"/>
+    </casting>
+  </recipe>
+
   <recipe name="Gear, Vibrant" required="true">
     <crafting>
       <grid>
@@ -401,6 +425,14 @@ XML editor will display that as tooltips when editing this file.
       </grid>
       <output name="GEAR_VIBRANT"/>
     </crafting>
+  </recipe>
+
+  <recipe name="Gear, Vibrant, Casting">
+    <casting>
+      <input name="VIBRANT_ALLOY_NUGGET" amount="8"/>
+      <cast name="GEAR_IRON" consumed="true"/>
+      <output name="GEAR_VIBRANT"/>
+    </casting>
   </recipe>
 
   <alias name="CAPACITOR_METAL" item="ingotCopper">

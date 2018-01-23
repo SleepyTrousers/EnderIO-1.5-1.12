@@ -32,7 +32,7 @@ public class FusedQuartzBlockRenderMapper extends ConnectedBlockRenderMapper {
 
   @Override
   protected boolean isSameKind(@Nonnull IBlockState state, @Nonnull IBlockState other) {
-    return state.getBlock() == other.getBlock() && state.getValue(FusedQuartzType.KIND).connectTo(other.getValue(FusedQuartzType.KIND))
+    return other.getBlock() instanceof BlockFusedQuartz && state.getValue(FusedQuartzType.KIND).connectTo(other.getValue(FusedQuartzType.KIND))
         && (glassConnectToTheirColorVariants || (state.getValue(BlockColored.COLOR) == other.getValue(BlockColored.COLOR)));
   }
 

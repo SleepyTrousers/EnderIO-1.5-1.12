@@ -185,6 +185,9 @@ item.item_material.organic_green_dye.tooltip.detailed.line2=§7Not edible. Avoid
 item.item_material.organic_brown_dye.name=Organic Brown Dye
 item.item_material.organic_brown_dye.tooltip.detailed.line1=Industrially processed plant matter with a "natural" washed-out color.
 item.item_material.organic_brown_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with plenty of water and seek medical advice.
+item.item_material.organic_black_dye.name=Organic Black Dye
+item.item_material.organic_black_dye.tooltip.detailed.line1=Industrially processed fossil plant matter with a "natural" washed-out color.
+item.item_material.organic_black_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with plenty of water and seek medical advice.
 item.item_material.powder_lapis_lazuli.name=Lapis Lazuli Powder
 item.item_material.powder_quartz.name=Quartz Powder
 item.item_material.machine_dye.name=Organic Machine Powder Coating
@@ -573,22 +576,6 @@ enderio.darksteel.upgrade.gogglesOfRevealing.name=Revealing
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount: 5%
 enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Magic is being revealed
 enderio.darksteel.upgrade.gogglesOfRevealing.disabled=Magic is hidden from plain sight
-
-enderio.darksteel.upgrade.naturalistEye.name=Naturalist's Eye
-enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Shows pollinated tree leaves
-
-enderio.darksteel.upgrade.apiaristArmor.helmet.name=Apiarist's Hat
-enderio.darksteel.upgrade.apiaristArmor.helmet.tooltip.detailed.line1=Protection against bees
-
-enderio.darksteel.upgrade.apiaristArmor.chestplate.name=Apiarist's Shirt
-enderio.darksteel.upgrade.apiaristArmor.chestplate.tooltip.detailed.line1=Protection against bees
-
-enderio.darksteel.upgrade.apiaristArmor.leggings.name=Apiarist's Pants
-enderio.darksteel.upgrade.apiaristArmor.leggings.tooltip.detailed.line1=Protection against bees
-
-enderio.darksteel.upgrade.apiaristArmor.boots.name=Apiarist's Shoes
-enderio.darksteel.upgrade.apiaristArmor.boots.tooltip.detailed.line1=Protection against bees
-
 
 enderio.darksteel.upgrade.jump.enabled=Jump Enabled
 enderio.darksteel.upgrade.jump.disabled=Jump Disabled

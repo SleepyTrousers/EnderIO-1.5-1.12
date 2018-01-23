@@ -12,6 +12,7 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.base.xp.PacketExperienceContainer;
 import crazypants.enderio.base.xp.XpUtil;
+import crazypants.enderio.machines.machine.tank.InventorySlot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -32,48 +33,28 @@ public class ContainerSoulBinder extends AbstractMachineContainer<TileSoulBinder
 
   @Override
   protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
-    addSlotToContainer(new Slot(getInv(), 0, 38, 34) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack itemStack) {
-        return getInv().isItemValidForSlot(0, itemStack);
-      }
-
-      @Override
-      public void putStack(@Nonnull ItemStack stack) {
-        if (stack.getCount() <= getItemStackLimit(stack)) {
-          super.putStack(stack);
-        } else {
-          throw new RuntimeException("Invalid stacksize. " + stack.getCount() + " is more than the allowed limit of " + getItemStackLimit(stack)
-              + ". THIS IS NOT AN ERROR IN ENDER IO BUT THE CALLING MOD!");
-        }
-      }
-    });
-    addSlotToContainer(new Slot(getInv(), 1, 59, 34) {
-      @Override
-      public boolean isItemValid(@Nonnull ItemStack itemStack) {
-        return getInv().isItemValidForSlot(1, itemStack);
-      }
-
-      @Override
-      public void putStack(@Nonnull ItemStack stack) {
-        if (stack.getCount() <= getItemStackLimit(stack)) {
-          super.putStack(stack);
-        } else {
-          throw new RuntimeException("Invalid stacksize. " + stack.getCount() + " is more than the allowed limit of " + getItemStackLimit(stack)
-              + ". THIS IS NOT AN ERROR IN ENDER IO BUT THE CALLING MOD!");
-        }
-      }
-    });
+    addSlotToContainer(new InventorySlot(getInv(), 0, 38, 34));
+    addSlotToContainer(new InventorySlot(getInv(), 1, 59, 34));
     addSlotToContainer(new Slot(getInv(), 2, 112, 34) {
       @Override
       public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
         return false;
+      }
+
+      @Override
+      public int getSlotStackLimit() {
+        return getTe().getInventoryStackLimit(getSlotIndex());
       }
     });
     addSlotToContainer(new Slot(getInv(), 3, 134, 34) {
       @Override
       public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
         return false;
+      }
+
+      @Override
+      public int getSlotStackLimit() {
+        return getTe().getInventoryStackLimit(getSlotIndex());
       }
     });
   }

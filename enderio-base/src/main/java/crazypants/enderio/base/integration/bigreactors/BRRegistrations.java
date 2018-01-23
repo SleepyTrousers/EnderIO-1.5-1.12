@@ -1,7 +1,7 @@
 package crazypants.enderio.base.integration.bigreactors;
 
 import crazypants.enderio.base.fluid.Fluids;
-import crazypants.enderio.base.integration.tic.AdditionalFluid;
+import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.material.alloy.Alloy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -51,9 +51,9 @@ public class BRRegistrations {
     BRProxy.registerFluid(Fluids.CLOUD_SEED.getFluid().getName(), .39f, 0.05f, 1.33f, conductivityWater);
     BRProxy.registerFluid(Fluids.CLOUD_SEED_CONCENTRATED.getFluid().getName(), .39f, 0.005f, 2f, conductivityWater);
 
-    BRProxy.registerFluid(AdditionalFluid.REDSTONE_FLUID_NAME, 0.75f, 0.55f, 1.60f, conductivityEmerald);
-    BRProxy.registerFluid(AdditionalFluid.GLOWSTONE_FLUID_NAME, 0.20f, 0.60f, 1.75f, conductivityCopper);
-    BRProxy.registerFluid(AdditionalFluid.ENDER_FLUID_NAME, 0.90f, 0.75f, 2.00f, conductivityGold);
+    BRProxy.registerFluid(TicProxy.REDSTONE_FLUID_NAME, 0.75f, 0.55f, 1.60f, conductivityEmerald);
+    BRProxy.registerFluid(TicProxy.GLOWSTONE_FLUID_NAME, 0.20f, 0.60f, 1.75f, conductivityCopper);
+    BRProxy.registerFluid(TicProxy.ENDER_FLUID_NAME, 0.90f, 0.75f, 2.00f, conductivityGold);
 
   }
 

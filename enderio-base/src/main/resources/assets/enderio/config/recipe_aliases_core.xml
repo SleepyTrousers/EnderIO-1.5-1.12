@@ -24,7 +24,7 @@ XML editor will display that as tooltips when editing this file.
 
   <alias name="GEAR_WOOD" item="gearWood" />
   <alias name="GEAR_STONE" item="gearStone" />
-  <alias name="GEAR_IRON" item="gearIron" />
+  <alias name="GEAR_IRON" item="gearIronInfinity" />
   <alias name="GEAR_ENERGIZED" item="gearEnergized" />
   <alias name="GEAR_VIBRANT" item="gearVibrant" />
 

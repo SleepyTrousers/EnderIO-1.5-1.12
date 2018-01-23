@@ -10,7 +10,7 @@ import crazypants.enderio.base.integration.tic.TicProxy;
 public class Casting extends AbstractCrafting {
 
   private ItemFloatAmount input;
-  private Item cast;
+  private ItemConsumable cast;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -33,7 +33,8 @@ public class Casting extends AbstractCrafting {
     super.enforceValidity();
     input.enforceValidity();
 
-    String tableCast = TicProxy.registerTableCast(getOutput().getItemStack(), cast.getItemStack(), input.getItemStack(), input.amount, true);
+    String tableCast = TicProxy.registerTableCast(getOutput().getItemStack(), cast.getItemStack(), input.getItemStack(), input.amount, cast.getConsumed(),
+        true);
     if (tableCast != null) {
       throw new InvalidRecipeConfigException(tableCast);
     }
@@ -48,7 +49,8 @@ public class Casting extends AbstractCrafting {
   public void register() {
     if (isValid() && isActive()) {
 
-      String tableCast = TicProxy.registerTableCast(getOutput().getItemStack(), cast.getItemStack(), input.getItemStack(), input.amount, false);
+      String tableCast = TicProxy.registerTableCast(getOutput().getItemStack(), cast.getItemStack(), input.getItemStack(), input.amount, cast.getConsumed(),
+          false);
       if (tableCast != null) {
         throw new RuntimeException(tableCast);
       }
@@ -65,7 +67,7 @@ public class Casting extends AbstractCrafting {
     }
     if ("cast".equals(name)) {
       if (cast == null) {
-        cast = factory.read(new Item(), startElement);
+        cast = factory.read(new ItemConsumable(), startElement);
         return true;
       }
     }
