@@ -67,6 +67,13 @@ allprojects {
     else
         project.include_in_build = project.include_in_build != 'false'
 
+    if (!project.hasProperty('include_in_combjar'))
+         project.ext.include_in_combjar = true
+    else
+        project.ext.include_in_combjar = project.include_in_combjar != 'false'
+
+    project.ext.include_in_combjar = project.ext.include_in_combjar && project.include_in_build
+
     // Eclipse needs this for some reason
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
     compileJava {
@@ -204,6 +211,7 @@ subprojects {
 
 // Part of the temporary fix for not compiling modules
 def buildprojects = subprojects.findAll { sp -> sp.include_in_build }
+def combjarprojects = subprojects.findAll { sp -> sp.ext.include_in_combjar }
 
 // Make sure all modules are configured
 buildprojects.each { subproject -> evaluationDependsOn( subproject.path ) }
@@ -214,7 +222,7 @@ jar.doFirst {
     // some manifest files are duplicated.
     File target = new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/lang")
     target.mkdirs()
-    buildprojects.each { subproject ->
+    combjarprojects.each { subproject ->
         File langDir = new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/lang/')
         if (langDir.exists()) {
             langDir.eachFileMatch( ~".*\\.lang\$" ) { langfile ->
@@ -224,13 +232,13 @@ jar.doFirst {
     }
 
     def mcmod = ""
-    buildprojects.each { subproject ->
+    combjarprojects.each { subproject ->
         mcmod += new File(subproject.sourceSets.main.output.resourcesDir, 'mcmod.info').text
     }
     new File(project.sourceSets.main.output.resourcesDir, "mcmod.info") << mcmod.replaceAll(/\]\s*\[/, ',')
 
     def sound = ""
-    buildprojects.each { subproject ->
+    combjarprojects.each { subproject ->
         File soundFile = new File(subproject.sourceSets.main.output.resourcesDir, 'assets/enderio/sounds.json')
         if (soundFile.exists()) {
             sound += soundFile.text
@@ -243,10 +251,10 @@ jar.doFirst {
 
 // Collect all sources from the modules and merge them
 // into the all jar.
-jar.dependsOn buildprojects.tasks['classes']
+jar.dependsOn combjarprojects.tasks['classes']
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    buildprojects.each { subproject ->
+    combjarprojects.each { subproject ->
         from subproject.sourceSets.main.output.classesDirs
         from subproject.sourceSets.main.output.resourcesDir
     }
