@@ -2,21 +2,16 @@ package crazypants.enderio.base.conduit;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.DyeColor;
 
-import appeng.api.networking.IGridHost;
 import crazypants.enderio.base.conduit.facade.EnumFacadeType;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.power.ILegacyPowerReceiver;
-import li.cil.oc.api.network.Environment;
-import li.cil.oc.api.network.SidedEnvironment;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -26,48 +21,75 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Optional.Interface;
-import net.minecraftforge.fml.common.Optional.InterfaceList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@InterfaceList({ @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
-    @Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputersAPI|Network"),
-    @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network"), })
-public interface IConduitBundle extends ILegacyPowerReceiver, IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IGridHost, IHasConduitProbeData {
+//@InterfaceList({ @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
+//    @Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputersAPI|Network"),
+//    @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network"), })
+// extends Environment, SidedEnvironment, IGridHost
+public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasConduitProbeData {
 
+  /**
+   * @return Tile Entity of the Conduit Bundle
+   */
   @Nonnull
   TileEntity getEntity();
 
-  @Override
+  /**
+   * Location of the Bundle
+   * 
+   * @return
+   */
   @Nonnull
   BlockPos getLocation();
 
   // conduits
 
+  /**
+   * Checks if the bundle contains the given conduit type
+   * 
+   * @param type
+   *          Class of the conduit to check for the type of
+   * @return true if the bundle has the given type of conduit
+   */
   boolean hasType(Class<? extends IConduit> type);
 
+  /**
+   * Gets a conduit of the given conduit type
+   * 
+   * @param type
+   *          the type of conduit to get
+   * @param <T>
+   *          the conduit type to return
+   * @return the conduit of the given type
+   */
   <T extends IConduit> T getConduit(Class<T> type);
 
+  /**
+   * Adds a conduit to the bundle
+   * 
+   * @param conduit
+   *          the conduit to add
+   */
   void addConduit(IConduit conduit);
 
+  /**
+   * removes a conduit from the bundle
+   * 
+   * @param conduit
+   *          the conduit to remove
+   */
   void removeConduit(IConduit conduit);
 
+  /**
+   * @return Collection of all the conduits in the bundle
+   */
   Collection<IConduit> getConduits();
 
-  Offset getOffset(Class<? extends IConduit> type, EnumFacing dir);
-
-  // connections
-
-  Set<EnumFacing> getConnections(Class<? extends IConduit> type);
-
-  boolean containsConnection(Class<? extends IConduit> type, EnumFacing west);
-
-  Set<EnumFacing> getAllConnections();
-
-  boolean containsConnection(EnumFacing dir);
-
   // geometry
+
+  Offset getOffset(Class<? extends IConduit> type, EnumFacing dir);
 
   List<CollidableComponent> getCollidableComponents();
 
@@ -103,7 +125,7 @@ public interface IConduitBundle extends ILegacyPowerReceiver, IPaintable.IPainta
 
   boolean hasFacade();
 
-  void setFacadeType(EnumFacadeType type);
+  void setFacadeType(@Nonnull EnumFacadeType type);
 
   EnumFacadeType getFacadeType();
 
@@ -117,11 +139,11 @@ public interface IConduitBundle extends ILegacyPowerReceiver, IPaintable.IPainta
    */
   void geometryChanged();
 
-  void setGridNode(Object node);
+  // void setGridNode(Object node);
 
-  int getInternalRedstoneSignalForColor(DyeColor col);
+  // TODO find out what this does
+  int getInternalRedstoneSignalForColor(@Nonnull DyeColor col);
 
   boolean handleFacadeClick(World world, BlockPos placeAt, EntityPlayer player, EnumFacing opposite, ItemStack stack, EnumHand hand, float hitX, float hitY,
       float hitZ);
-
 }

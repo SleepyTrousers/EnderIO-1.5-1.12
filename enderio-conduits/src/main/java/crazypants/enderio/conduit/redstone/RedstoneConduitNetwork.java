@@ -1,19 +1,11 @@
 package crazypants.enderio.conduit.redstone;
 
-import static crazypants.enderio.conduit.init.ConduitObject.block_conduit_bundle;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.redstone.signals.SignalSource;
+import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import net.minecraft.block.state.IBlockState;
@@ -23,6 +15,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
 
@@ -186,13 +183,13 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     for (EnumFacing dir : con.getExternalConnections()) {
       BlockPos bc2 = bc1.offset(dir);
       if (world.isBlockLoaded(bc2)) {
-        world.notifyNeighborsOfStateChange(bc2, block_conduit_bundle.getBlock(), false);
+        world.notifyNeighborsOfStateChange(bc2, ConduitRegistry.getConduitModObjectNN().getBlock(), false);
         IBlockState bs = world.getBlockState(bc2);
         if (bs.isBlockNormalCube()) {
           for (EnumFacing dir2 : EnumFacing.VALUES) {
             BlockPos bc3 = bc2.offset(dir2);
             if (!bc3.equals(bc1) && world.isBlockLoaded(bc3)) {
-              world.notifyNeighborsOfStateChange(bc3, block_conduit_bundle.getBlock(), false);
+              world.notifyNeighborsOfStateChange(bc3, ConduitRegistry.getConduitModObjectNN().getBlock(), false);
             }
           }
         }

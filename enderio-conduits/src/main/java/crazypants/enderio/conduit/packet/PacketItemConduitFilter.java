@@ -2,8 +2,9 @@ package crazypants.enderio.conduit.packet;
 
 import com.enderio.core.common.util.DyeColor;
 
+import crazypants.enderio.base.filter.FilterRegistry;
+import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -52,8 +53,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     buf.writeInt(priority);
     buf.writeShort(colIn.ordinal());
     buf.writeShort(colOut.ordinal());
-    FilterRegister.writeFilter(buf, inputFilter);
-    FilterRegister.writeFilter(buf, outputFilter);
+    FilterRegistry.writeFilter(buf, inputFilter);
+    FilterRegistry.writeFilter(buf, outputFilter);
   }
 
   @Override
@@ -70,8 +71,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     priority = buf.readInt();
     colIn = DyeColor.values()[buf.readShort()];
     colOut = DyeColor.values()[buf.readShort()];
-    inputFilter = FilterRegister.readFilter(buf);
-    outputFilter = FilterRegister.readFilter(buf);
+    inputFilter = FilterRegistry.readFilter(buf);
+    outputFilter = FilterRegistry.readFilter(buf);
   }
 
   @Override

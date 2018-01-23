@@ -1,20 +1,10 @@
 package crazypants.enderio.conduit.item;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.RoundRobinIterator;
-
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.ILimitedItemFilter;
@@ -27,17 +17,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
+
 public class NetworkedInventory implements INetworkedInventory {
 
   private static final boolean SIMULATE = true;
   private static final boolean EXECUTE = false;
 
-  IItemConduit con;
-  EnumFacing conDir;
-  BlockPos location;
-  EnumFacing inventorySide;
+  private IItemConduit con;
+  private EnumFacing conDir;
+  private BlockPos location;
+  private EnumFacing inventorySide;
 
-  List<Target> sendPriority = new ArrayList<Target>();
+  private List<Target> sendPriority = new ArrayList<Target>();
   RoundRobinIterator<Target> rrIter = new RoundRobinIterator<Target>(sendPriority);
 
   private int extractFromSlot = -1;
@@ -45,13 +39,14 @@ public class NetworkedInventory implements INetworkedInventory {
   int tickDeficit;
 
   // TODO Inventory
-//  boolean inventoryPanel = false;
+  //  boolean inventoryPanel = false;
 
-  World world;
-  ItemConduitNetwork network;
-  String invName;
+  private World world;
+  private ItemConduitNetwork network;
+  private String invName;
 
-  NetworkedInventory(@Nonnull ItemConduitNetwork network, @Nonnull IItemConduit con, @Nonnull EnumFacing conDir, @Nonnull IItemHandler inv, @Nonnull BlockPos location) {
+  NetworkedInventory(@Nonnull ItemConduitNetwork network, @Nonnull IItemConduit con, @Nonnull EnumFacing conDir, @Nonnull IItemHandler inv,
+      @Nonnull BlockPos location) {
     this.network = network;
     inventorySide = conDir.getOpposite();
     this.con = con;
@@ -61,56 +56,84 @@ public class NetworkedInventory implements INetworkedInventory {
 
     IBlockState bs = world.getBlockState(location);
     invName = bs.getBlock().getLocalizedName();
-    
-//    TileEntity te = world.getTileEntity(location);
-//    if(te instanceof TileInventoryPanel) {
-//      inventoryPanel = true;
-//    }
+
+    //    TileEntity te = world.getTileEntity(location);
+    //    if(te instanceof TileInventoryPanel) {
+    //      inventoryPanel = true;
+    //    }
   }
 
-  public boolean hasTarget(@Nonnull IItemConduit conduit, @Nonnull EnumFacing dir) {
-    for (Target t : sendPriority) {
-      if(t.inv.con == conduit && t.inv.conDir == dir) {
-        return true;
+  @Override
+  public BlockPos getLocation() {
+    return location;
+  }
+
+  @Override
+  public IItemConduit getCon() {
+    return con;
+  }
+
+  @Override
+  public EnumFacing getConDir() {
+    return conDir;
+  }
+
+  @Override
+  public List<Target> getSendPriority() {
+    return sendPriority;
+  }
+
+  @Override
+  public boolean hasTarget(@Nonnull IConduit conduit, @Nonnull EnumFacing dir) {
+    if (conduit instanceof IItemConduit) {
+      for (Target t : sendPriority) {
+        if (t.inv.getCon() == conduit && t.inv.getConDir() == dir) {
+          return true;
+        }
       }
     }
     return false;
   }
 
-  boolean canExtract() {
+  @Override
+  public boolean canExtract() {
     ConnectionMode mode = con.getConnectionMode(conDir);
     return mode == ConnectionMode.INPUT || mode == ConnectionMode.IN_OUT;
   }
 
-  boolean canInsert() {
-//    if(inventoryPanel) {
-//      return false;
-//    }
+  @Override
+  public boolean canInsert() {
+    //    if(inventoryPanel) {
+    //      return false;
+    //    }
     ConnectionMode mode = con.getConnectionMode(conDir);
     return mode == ConnectionMode.OUTPUT || mode == ConnectionMode.IN_OUT;
   }
 
-//  boolean isInventoryPanel() {
-//    return inventoryPanel;
-//  }
+  //  boolean isInventoryPanel() {
+  //    return inventoryPanel;
+  //  }
 
-  boolean isSticky() {
+  @Override
+  public boolean isSticky() {
     return con.getOutputFilter(conDir) != null && con.getOutputFilter(conDir).isValid() && con.getOutputFilter(conDir).isSticky();
   }
 
-  int getPriority() {
+  @Override
+  public int getPriority() {
     return con.getOutputPriority(conDir);
   }
 
+  @Override
   public void onTick() {
-    if(tickDeficit > 0 || !canExtract() || !con.isExtractionRedstoneConditionMet(conDir)) {
+    if (tickDeficit > 0 || !canExtract() || !con.isExtractionRedstoneConditionMet(conDir)) {
       //do nothing     
     } else {
       transferItems();
     }
 
     tickDeficit--;
-    if(tickDeficit < -1) {
+    if (tickDeficit < -1) {
       //Sleep for a second before checking again.
       tickDeficit = 20;
     }
@@ -118,7 +141,7 @@ public class NetworkedInventory implements INetworkedInventory {
 
   private int nextSlot(int numSlots) {
     ++extractFromSlot;
-    if(extractFromSlot >= numSlots || extractFromSlot < 0) {
+    if (extractFromSlot >= numSlots || extractFromSlot < 0) {
       extractFromSlot = 0;
     }
     return extractFromSlot;
@@ -138,7 +161,7 @@ public class NetworkedInventory implements INetworkedInventory {
     if (numSlots < 1) {
       return false;
     }
-    
+
     final int maxExtracted = con.getMaximumExtracted(conDir);
     final IItemFilter filter = con.getInputFilter(conDir);
 
@@ -149,8 +172,8 @@ public class NetworkedInventory implements INetworkedInventory {
       ItemStack item = inventory.extractItem(slot, maxExtracted, SIMULATE);
       if (Prep.isValid(item)) {
 
-        if (filter instanceof ILimitedItemFilter && ((ILimitedItemFilter) filter).isLimited()) {
-          final int count = ((ILimitedItemFilter) filter).getMaxCountThatPassesFilter(this, item);
+        if (filter instanceof ILimitedItemFilter && filter.isLimited()) {
+          final int count = filter.getMaxCountThatPassesFilter(this, item);
           if (count <= 0) { // doesn't pass filter
             item = Prep.getEmpty();
           } else if (count < Integer.MAX_VALUE) { // some limit
@@ -176,7 +199,7 @@ public class NetworkedInventory implements INetworkedInventory {
 
   private boolean doTransfer(@Nonnull IItemHandler inventory, @Nonnull ItemStack extractedItem, int slot) {
     int numInserted = insertIntoTargets(extractedItem.copy());
-    if(numInserted <= 0) {
+    if (numInserted <= 0) {
       return false;
     }
     ItemStack extracted = inventory.extractItem(slot, numInserted, EXECUTE);
@@ -193,7 +216,8 @@ public class NetworkedInventory implements INetworkedInventory {
     tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
   }
 
-  int insertIntoTargets(@Nonnull ItemStack toExtract) {
+  @Override
+  public int insertIntoTargets(@Nonnull ItemStack toExtract) {
     if (Prep.isInvalid(toExtract)) {
       return 0;
     }
@@ -206,17 +230,17 @@ public class NetworkedInventory implements INetworkedInventory {
 
     //for (Target target : sendPriority) {
     for (Target target : targets) {
-      if(target.stickyInput && !matchedStickyInput) {
-        IItemFilter of = target.inv.con.getOutputFilter(target.inv.conDir);
+      if (target.stickyInput && !matchedStickyInput) {
+        IItemFilter of = ((IItemConduit) target.inv.getCon()).getOutputFilter(target.inv.getConDir());
         matchedStickyInput = of != null && of.isValid() && of.doesItemPassFilter(this, toExtract);
       }
-      if(target.stickyInput || !matchedStickyInput) {        
+      if (target.stickyInput || !matchedStickyInput) {
         int inserted = target.inv.insertItem(toExtract);
-        if(inserted > 0) {
+        if (inserted > 0) {
           toExtract.shrink(inserted);
           leftToInsert -= inserted;
         }
-        if(leftToInsert <= 0) {
+        if (leftToInsert <= 0) {
           return totalToInsert;
         }
       }
@@ -225,19 +249,20 @@ public class NetworkedInventory implements INetworkedInventory {
   }
 
   private Iterable<Target> getTargetIterator() {
-    if(con.isRoundRobinEnabled(conDir)) {
+    if (con.isRoundRobinEnabled(conDir)) {
       return rrIter;
     }
     return sendPriority;
   }
 
-  private int insertItem(@Nonnull ItemStack item) {
+  @Override
+  public int insertItem(@Nonnull ItemStack item) {
     if (!canInsert() || Prep.isInvalid(item)) {
       return 0;
     }
     IItemFilter filter = con.getOutputFilter(conDir);
-    if (filter instanceof ILimitedItemFilter && ((ILimitedItemFilter) filter).isLimited()) {
-      final int count = ((ILimitedItemFilter) filter).getMaxCountThatPassesFilter(this, item);
+    if (filter instanceof ILimitedItemFilter && filter.isLimited()) {
+      final int count = filter.getMaxCountThatPassesFilter(this, item);
       if (count <= 0) {
         return 0;
       } else {
@@ -255,19 +280,20 @@ public class NetworkedInventory implements INetworkedInventory {
     return ItemTools.doInsertItem(getInventory(), item);
   }
 
-  void updateInsertOrder() {
+  @Override
+  public void updateInsertOrder() {
     sendPriority.clear();
-    if(!canExtract()) {
+    if (!canExtract()) {
       return;
     }
     List<Target> result = new ArrayList<NetworkedInventory.Target>();
 
-    for (NetworkedInventory other : network.inventories) {
-      if((con.isSelfFeedEnabled(conDir) || (other != this))
+    for (INetworkedInventory other : network.inventories) {
+      if ((con.isSelfFeedEnabled(conDir) || (other != this))
           && other.canInsert()
-          && con.getInputColor(conDir) == other.con.getOutputColor(other.conDir)) {
+          && con.getInputColor(conDir) == ((IItemConduit) other.getCon()).getOutputColor(other.getConDir())) {
 
-        if(Config.itemConduitUsePhyscialDistance) {
+        if (Config.itemConduitUsePhyscialDistance) {
           sendPriority.add(new Target(other, distanceTo(other), other.isSticky(), other.getPriority()));
         } else {
           result.add(new Target(other, 9999999, other.isSticky(), other.getPriority()));
@@ -275,10 +301,10 @@ public class NetworkedInventory implements INetworkedInventory {
       }
     }
 
-    if(Config.itemConduitUsePhyscialDistance) {
+    if (Config.itemConduitUsePhyscialDistance) {
       Collections.sort(sendPriority);
     } else {
-      if(!result.isEmpty()) {
+      if (!result.isEmpty()) {
         Map<BlockPos, Integer> visited = new HashMap<BlockPos, Integer>();
         List<BlockPos> steps = new ArrayList<BlockPos>();
         steps.add(con.getBundle().getLocation());
@@ -293,7 +319,7 @@ public class NetworkedInventory implements INetworkedInventory {
   }
 
   private void calculateDistances(@Nonnull List<Target> targets, @Nonnull Map<BlockPos, Integer> visited, @Nonnull List<BlockPos> steps, int distance) {
-    if(steps == null || steps.isEmpty()) {
+    if (steps == null || steps.isEmpty()) {
       return;
     }
 
@@ -303,16 +329,16 @@ public class NetworkedInventory implements INetworkedInventory {
       if (con1 != null) {
         for (EnumFacing dir : con1.getExternalConnections()) {
           Target target = getTarget(targets, con1, dir);
-          if(target != null && target.distance > distance) {
+          if (target != null && target.distance > distance) {
             target.distance = distance;
           }
         }
 
-        if(!visited.containsKey(pos)) {
+        if (!visited.containsKey(pos)) {
           visited.put(pos, distance);
         } else {
           int prevDist = visited.get(pos);
-          if(prevDist <= distance) {
+          if (prevDist <= distance) {
             continue;
           }
           visited.put(pos, distance);
@@ -332,9 +358,9 @@ public class NetworkedInventory implements INetworkedInventory {
     }
     for (Target target : targets) {
       BlockPos targetConLoc = null;
-      if(target != null && target.inv != null && target.inv.con != null) {
-        targetConLoc = target.inv.con.getBundle().getLocation();
-        if (targetConLoc != null && target.inv.conDir == dir && targetConLoc.equals(con1.getBundle().getLocation())) {
+      if (target != null && target.inv != null && target.inv.getCon() != null) {
+        targetConLoc = target.inv.getCon().getBundle().getLocation();
+        if (targetConLoc != null && target.inv.getConDir() == dir && targetConLoc.equals(con1.getBundle().getLocation())) {
           return target;
         }
       }
@@ -342,9 +368,9 @@ public class NetworkedInventory implements INetworkedInventory {
     return null;
   }
 
-  private int distanceTo(NetworkedInventory other) {
+  private int distanceTo(INetworkedInventory other) {
     // TODO Check if this should be a double or int
-    return (int) con.getBundle().getLocation().distanceSq(other.con.getBundle().getLocation());
+    return (int) con.getBundle().getLocation().distanceSq(other.getCon().getBundle().getLocation());
   }
 
   public @Nullable IItemHandler getInventory() {
@@ -359,13 +385,16 @@ public class NetworkedInventory implements INetworkedInventory {
     this.inventorySide = inventorySide;
   }
 
+  /**
+   * Class for storing the Target Inventory
+   */
   static class Target implements Comparable<Target> {
-    NetworkedInventory inv;
+    INetworkedInventory inv;
     int distance;
     boolean stickyInput;
     int priority;
 
-    Target(@Nonnull NetworkedInventory inv, int distance, boolean stickyInput, int priority) {
+    Target(@Nonnull INetworkedInventory inv, int distance, boolean stickyInput, int priority) {
       this.inv = inv;
       this.distance = distance;
       this.stickyInput = stickyInput;
@@ -373,14 +402,14 @@ public class NetworkedInventory implements INetworkedInventory {
     }
 
     @Override
-    public int compareTo(Target o) {
-      if(stickyInput && !o.stickyInput) {
+    public int compareTo(@Nonnull Target o) {
+      if (stickyInput && !o.stickyInput) {
         return -1;
       }
-      if(!stickyInput && o.stickyInput) {
+      if (!stickyInput && o.stickyInput) {
         return 1;
       }
-      if(priority != o.priority) {
+      if (priority != o.priority) {
         return ItemConduitNetwork.compare(o.priority, priority);
       }
       return ItemConduitNetwork.compare(distance, o.distance);
@@ -388,6 +417,7 @@ public class NetworkedInventory implements INetworkedInventory {
 
   }
 
+  @Override
   public String getLocalizedInventoryName() {
     return invName;
   }

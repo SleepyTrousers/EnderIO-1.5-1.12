@@ -1,20 +1,23 @@
 package crazypants.enderio.base.filter;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.NNList;
-
+import crazypants.enderio.base.filter.gui.IItemFilterContainer;
+import crazypants.enderio.base.filter.gui.IItemFilterGui;
+import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public interface IItemFilter {
 
-  // TODO
-  // @SideOnly(Side.CLIENT)
-  // IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput);
+   @SideOnly(Side.CLIENT)
+   IItemFilterGui getGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable);
 
   void readFromNBT(@Nonnull NBTTagCompound nbtRoot);
 

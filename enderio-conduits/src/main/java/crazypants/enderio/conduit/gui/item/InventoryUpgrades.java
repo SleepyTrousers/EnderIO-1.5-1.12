@@ -1,173 +1,134 @@
 package crazypants.enderio.conduit.gui.item;
 
-import static crazypants.enderio.base.ModObject.itemExtractSpeedUpgrade;
-
-import javax.annotation.Nullable;
-
-import crazypants.enderio.conduit.item.FunctionUpgrade;
+import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
-import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.items.IItemHandler;
 
-public class InventoryUpgrades implements IInventory {
+import javax.annotation.Nonnull;
 
-  IItemConduit itemConduit;
-  EnumFacing dir;
+import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_upgrade;
 
-  public InventoryUpgrades(IItemConduit itemConduit, EnumFacing dir) {
+/**
+ * The Inventory for Holding Conduit Upgrades
+ */
+public class InventoryUpgrades implements IItemHandler {
+
+  private IItemConduit itemConduit;
+  private EnumFacing dir;
+
+  public InventoryUpgrades(@Nonnull IItemConduit itemConduit, @Nonnull EnumFacing dir) {
     this.itemConduit = itemConduit;
     this.dir = dir;
   }
 
   @Override
-  public int getSizeInventory() {
-    return 4;
-  }
-
-  @Override
+  @Nonnull
   public ItemStack getStackInSlot(int slot) {
     switch (slot) {
     case 0:
       return itemConduit.getSpeedUpgrade(dir);
-    case 1:
-      return itemConduit.getFunctionUpgrade(dir);
+      // TODO Inventory
+//    case 1:
+//      return itemConduit.getFunctionUpgrade(dir);
     case 2:
       return itemConduit.getInputFilterUpgrade(dir);
     case 3:
       return itemConduit.getOutputFilterUpgrade(dir);
     default:
-      return null;
+      return ItemStack.EMPTY;
     }
   }
 
+  @Nonnull
   @Override
-  public ItemStack decrStackSize(int slot, int num) {
+  public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+    switch (slot) {
+    case 0:
+      itemConduit.setSpeedUpgrade(dir, stack);
+      break;
+    // TODO Inventory
+    //    case 1:
+    //      itemConduit.setFunctionUpgrade(dir, stack);
+    //      break;
+    case 2:
+      itemConduit.setInputFilterUpgrade(dir, stack);
+      break;
+    case 3:
+      itemConduit.setOutputFilterUpgrade(dir, stack);
+      break;
+    }
+    return ItemStack.EMPTY;
+  }
+
+  @Nonnull
+  @Override
+  public ItemStack extractItem(int slot, int amount, boolean simulate) {
     ItemStack current = getStackInSlot(slot);
-    if (current == null) {
+    if (current.isEmpty()) {
       return current;
     }
     ItemStack result;
     ItemStack remaining;
-    if (num >= current.stackSize) {
+    if (amount >= current.getCount()) {
       result = current.copy();
-      remaining = null;
+      remaining = ItemStack.EMPTY;
     } else {
       result = current.copy();
-      result.stackSize = num;
+      result.setCount(amount);
       remaining = current.copy();
-      remaining.stackSize -= num;
+      remaining.shrink(amount);
     }
     setInventorySlotContents(slot, remaining);
     return result;
   }
 
-  @Override
-  public void setInventorySlotContents(int slot, @Nullable ItemStack var2) {
+  private void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
     switch (slot) {
     case 0:
-      itemConduit.setSpeedUpgrade(dir, var2);
+      itemConduit.setSpeedUpgrade(dir, stack);
       break;
-    case 1:
-      itemConduit.setFunctionUpgrade(dir, var2);
-      break;
+      // TODO Inventory
+//    case 1:
+//      itemConduit.setFunctionUpgrade(dir, stack);
+//      break;
     case 2:
-      itemConduit.setInputFilterUpgrade(dir, var2);
+      itemConduit.setInputFilterUpgrade(dir, stack);
       break;
     case 3:
-      itemConduit.setOutputFilterUpgrade(dir, var2);
+      itemConduit.setOutputFilterUpgrade(dir, stack);
       break;
     }
   }
 
   @Override
-  public void clear() {
-    for (int i = 0; i < 4; i++) {
-      setInventorySlotContents(i, null);
-    }
+  public int getSlots() {
+    return 4;
   }
 
   @Override
-  public ItemStack removeStackFromSlot(int index) {
-    ItemStack res = getStackInSlot(index);
-    setInventorySlotContents(index, null);
-    return res;
+  public int getSlotLimit(int slot) {
+    return slot == 1 ? 15 : 1;
   }
 
-  @Override
-  public String getName() {
-    return "Upgrades";
-  }
-
-  @Override
-  public boolean hasCustomName() {
-    return false;
-  }
-
-  @Override
-  public int getInventoryStackLimit() {
-    return 15;
-  }
-
-  @Override
-  public void markDirty() {
-  }
-
-  @Override
-  public boolean isUseableByPlayer(EntityPlayer var1) {
-    return true;
-  }
-
-  @Override
-  public void openInventory(EntityPlayer e) {
-  }
-
-  @Override
-  public void closeInventory(EntityPlayer e) {
-  }
-
-  @Override
-  public boolean isItemValidForSlot(int slot, ItemStack item) {
-    if (item == null) {
+  public boolean isItemValidForSlot(int slot, @Nonnull ItemStack item) {
+    if (item.isEmpty()) {
       return false;
     }
     switch (slot) {
     case 0:
-      return item.getItem() == itemExtractSpeedUpgrade.getItem();
-    case 1:
-      final FunctionUpgrade functionUpgrade = ItemFunctionUpgrade.getFunctionUpgrade(item);
-      return functionUpgrade != null
-          && (functionUpgrade != FunctionUpgrade.INVENTORY_PANEL || !itemConduit.isConnectedToNetworkAwareBlock(dir));
+      return item.getItem() == item_extract_speed_upgrade.getItem();
+      // TODO Inventory
+//    case 1:
+//      final FunctionUpgrade functionUpgrade = ItemFunctionUpgrade.getFunctionUpgrade(item);
+//      return functionUpgrade != null
+//          && (functionUpgrade != FunctionUpgrade.INVENTORY_PANEL || !itemConduit.isConnectedToNetworkAwareBlock(dir));
     case 2:
     case 3:
       return item.getItem() instanceof IItemFilterUpgrade;
     }
     return false;
-  }
-
-  @Override
-  public ITextComponent getDisplayName() {
-    return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
-  }
-
-  @Override
-  public int getField(int id) {
-    return 0;
-  }
-
-  @Override
-  public void setField(int id, int value) {
-  }
-
-  @Override
-  public int getFieldCount() {
-    return 0;
   }
 
 }

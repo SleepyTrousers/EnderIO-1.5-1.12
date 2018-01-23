@@ -1,13 +1,7 @@
 package crazypants.enderio.conduit.item;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory.Target;
 import net.minecraft.item.ItemStack;
@@ -18,11 +12,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IItemConduit> {
 
-  final List<NetworkedInventory> inventories = new ArrayList<NetworkedInventory>();
-  private final Map<BlockPos, List<NetworkedInventory>> invMap = new HashMap<BlockPos, List<NetworkedInventory>>();
+  final List<INetworkedInventory> inventories = new ArrayList<INetworkedInventory>();
+  private final Map<BlockPos, List<INetworkedInventory>> invMap = new HashMap<BlockPos, List<INetworkedInventory>>();
 
   final Map<BlockPos, IItemConduit> conMap = new HashMap<BlockPos, IItemConduit>();
 
@@ -56,15 +54,15 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   }
 
   public void inventoryAdded(@Nonnull IItemConduit itemConduit, @Nonnull EnumFacing direction, @Nonnull BlockPos pos, @Nonnull IItemHandler externalInventory) {
-    NetworkedInventory inv = new NetworkedInventory(this, itemConduit, direction, externalInventory, pos);
+    INetworkedInventory inv = new NetworkedInventory(this, itemConduit, direction, externalInventory, pos);
     inventories.add(inv);
     getOrCreate(pos).add(inv);
     requiresSort = true;
   }
   
-  public NetworkedInventory getInventory(@Nonnull IItemConduit conduit, @Nonnull EnumFacing dir) {
-    for(NetworkedInventory inv : inventories) {
-      if(inv.con == conduit && inv.conDir == dir) {
+  public INetworkedInventory getInventory(@Nonnull IItemConduit conduit, @Nonnull EnumFacing dir) {
+    for(INetworkedInventory inv : inventories) {
+      if(inv.getCon() == conduit && inv.getConDir() == dir) {
         return inv;
       }
     }
@@ -81,20 +79,20 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 //    return res;
 //  }
 
-  private List<NetworkedInventory> getOrCreate(@Nonnull BlockPos pos) {
-    List<NetworkedInventory> res = invMap.get(pos);
+  private List<INetworkedInventory> getOrCreate(@Nonnull BlockPos pos) {
+    List<INetworkedInventory> res = invMap.get(pos);
     if(res == null) {
-      res = new ArrayList<NetworkedInventory>();
+      res = new ArrayList<INetworkedInventory>();
       invMap.put(pos, res);
     }
     return res;
   }
 
   public void inventoryRemoved(@Nonnull ItemConduit itemConduit, @Nonnull BlockPos pos) {
-    List<NetworkedInventory> invs = getOrCreate(pos);
-    NetworkedInventory remove = null;
-    for (NetworkedInventory ni : invs) {
-      if(ni.con.getBundle().getLocation().equals(itemConduit.getBundle().getLocation())) {
+    List<INetworkedInventory> invs = getOrCreate(pos);
+    INetworkedInventory remove = null;
+    for (INetworkedInventory ni : invs) {
+      if(ni.getCon().getBundle().getLocation().equals(itemConduit.getBundle().getLocation())) {
         remove = ni;
         break;
       }
@@ -161,10 +159,10 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       BlockPos loc = itemConduit.getBundle().getLocation().offset(side);
 
       ItemStack result = item.copy();
-      List<NetworkedInventory> invs = getOrCreate(loc);
-      for (NetworkedInventory inv : invs) {
+      List<INetworkedInventory> invs = getOrCreate(loc);
+      for (INetworkedInventory inv : invs) {
 
-        if(inv.con.getBundle().getLocation().equals(itemConduit.getBundle().getLocation())) {
+        if(inv.getCon().getBundle().getLocation().equals(itemConduit.getBundle().getLocation())) {
           int numInserted = inv.insertIntoTargets(item.copy());
           if(numInserted >= item.getCount()) {
             return ItemStack.EMPTY;
@@ -181,15 +179,16 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   public List<String> getTargetsForExtraction(@Nonnull BlockPos extractFrom, @Nonnull IItemConduit con, @Nonnull ItemStack input) {
     List<String> result = new ArrayList<String>();
 
-    List<NetworkedInventory> invs = getOrCreate(extractFrom);
-    for (NetworkedInventory source : invs) {
+    List<INetworkedInventory> invs = getOrCreate(extractFrom);
+    for (INetworkedInventory source : invs) {
 
-      if(source.con.getBundle().getLocation().equals(con.getBundle().getLocation())) {
-        if(source.sendPriority != null) {
-          for (Target t : source.sendPriority) {
-            IItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
+      if(source.getCon().getBundle().getLocation().equals(con.getBundle().getLocation())) {
+        List<Target> sendPriority = (List<Target>) source.getSendPriority();
+        if(sendPriority != null) {
+          for (Target t : sendPriority) {
+            IItemFilter f = ((IItemConduit) t.inv.getCon()).getOutputFilter(t.inv.getConDir());
             if(input.isEmpty() || f == null || f.doesItemPassFilter(t.inv, input)) {
-              String s = t.inv.getLocalizedInventoryName() + " " + t.inv.location.toString() + " Distance [" + t.distance + "] ";
+              String s = t.inv.getLocalizedInventoryName() + " " + t.inv.getLocation().toString() + " Distance [" + t.distance + "] ";
               result.add(s);
             }
           }
@@ -202,11 +201,11 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
   public List<String> getInputSourcesFor(@Nonnull IItemConduit con, @Nonnull EnumFacing dir, @Nonnull ItemStack input) {
     List<String> result = new ArrayList<String>();
-    for (NetworkedInventory inv : inventories) {
+    for (INetworkedInventory inv : inventories) {
       if(inv.hasTarget(con, dir)) {
-        IItemFilter f = inv.con.getInputFilter(inv.conDir);
+        IItemFilter f = ((IItemConduit) inv.getCon()).getInputFilter(inv.getConDir());
         if(input.isEmpty()|| f == null || f.doesItemPassFilter(inv, input)) {
-          result.add(inv.getLocalizedInventoryName() + " " + inv.location.toString());
+          result.add(inv.getLocalizedInventoryName() + " " + inv.getLocation().toString());
         }
       }
     }
@@ -215,7 +214,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
   @Override
   public void doNetworkTick(Profiler theProfiler) {
-    for (NetworkedInventory ni : inventories) {
+    for (INetworkedInventory ni : inventories) {
       if(requiresSort) {
         theProfiler.startSection("updateInsertOrder");
         ni.updateInsertOrder();

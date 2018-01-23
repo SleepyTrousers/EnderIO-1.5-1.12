@@ -9,7 +9,9 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -56,6 +58,7 @@ public class TextureRegistry {
     @SideOnly(Side.CLIENT)
     protected void init() {
       sprites = new HashMap<String, TextureAtlasSprite>();
+      sprites.put(TextureMap.LOCATION_MISSING_TEXTURE.toString(), null);
       MinecraftForge.EVENT_BUS.register(instance);
     }
 
@@ -83,7 +86,12 @@ public class TextureRegistry {
         @Override
         public <T> T get(@Nonnull Class<T> clazz) {
           if (clazz == TextureAtlasSprite.class) {
-            return (T) sprites.get(keyF);
+            if (sprites.get(keyF) != null) {
+              return (T) sprites.get(keyF);
+            } else {
+              Log.error("Missing texture: " + keyF);
+              return (T) sprites.get(TextureMap.LOCATION_MISSING_TEXTURE.toString());
+            }
           } else {
             return null;
           }

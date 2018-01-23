@@ -1,8 +1,26 @@
 [
 {
-  "modid": "EnderIO",
-  "name": "Ender IO",
-  "description": "Compact conduits, painted things and all sorts of stuff and bling.",
+  "modid": "enderioconduits",
+  "name": "Ender IO Conduits",
+  "description": "Compact conduits.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://enderio.com",
+  "updateUrl": "",
+  "authorList": [ "CrazyPants", "tterrag", "HenryLoenwind", "MatthiasM" , "CyanideX", "EpicSquid"],
+  "credits": "By CrazyPants, with the help of many",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"enderio",
+  "dependencies": [
+    "enderio"
+  ]
+},
+{
+  "modid": "enderiopowertools",
+  "name": "Ender IO Powertools",
+  "description": "Capacitor Bank and Power Monitor.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "http://enderio.com",
@@ -12,8 +30,9 @@
   "logoFile": "",
   "screenshots": [
   ],
-  "parent":"",
+  "parent":"enderio",
   "dependencies": [
+    "enderio", "enderioconduits"
   ]
 }
 ]
