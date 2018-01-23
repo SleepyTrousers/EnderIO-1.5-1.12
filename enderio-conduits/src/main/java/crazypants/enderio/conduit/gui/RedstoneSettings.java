@@ -1,12 +1,9 @@
 package crazypants.enderio.conduit.gui;
 
-import java.awt.Color;
-
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.DyeColor;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.gui.IconEIO;
@@ -15,6 +12,9 @@ import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import net.minecraft.client.gui.GuiButton;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
 
 public class RedstoneSettings extends BaseSettingsPanel {
 
@@ -30,7 +30,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
 
   private int stongLabelX;
 
-  public RedstoneSettings(GuiExternalConnection gui, IConduit con) {
+  public RedstoneSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_REDSTONE, EnderIO.lang.localize("itemRedstoneConduitInsulated.name"), gui, con);
 
     int x = 0;
@@ -58,7 +58,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
   }
 
   @Override
-  public void actionPerformed(GuiButton guiButton) {
+  public void actionPerformed(@Nonnull GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if(guiButton.id == ID_COLOR_BUTTON && cb != null) {
       insCon.setSignalColor(gui.getDir(), DyeColor.values()[cb.getColorIndex()]);

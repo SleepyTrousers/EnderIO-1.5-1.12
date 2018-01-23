@@ -1,14 +1,5 @@
 package crazypants.enderio.conduit.gui.item;
 
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-
-import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
-import crazypants.enderio.base.machine.modes.RedstoneControlMode;
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -17,15 +8,18 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.DyeColor;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IFilterChangeListener;
+import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.gui.IItemFilterGui;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
+import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
+import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.BaseSettingsPanel;
-import crazypants.enderio.conduit.gui.FilterChangeListener;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
@@ -33,8 +27,11 @@ import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class ItemSettings extends BaseSettingsPanel {
 
@@ -103,7 +100,7 @@ public class ItemSettings extends BaseSettingsPanel {
     filterUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18 * 2, customTop + 3 + 16, 18, 18), EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
       @Override
       public boolean shouldDraw() {
-        return !gui.getContainer().hasFilterUpgrades(isInputVisible()) && super.shouldDraw();
+        return !gui.getContainer().hasFilter(isInputVisible()) && super.shouldDraw();
       }
     };
     speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18, customTop + 3 + 16, 18, 18), EnderIO.lang.localize("gui.conduit.item.speedupgrade"), EnderIO.lang.localize("gui.conduit.item.speedupgrade2")) {
@@ -121,7 +118,7 @@ public class ItemSettings extends BaseSettingsPanel {
     functionUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18*2, customTop + 3 + 34, 18, 18), list) {
       @Override
       public boolean shouldDraw() {
-        return !gui.getContainer().hasFunctionUpgrades() && super.shouldDraw();
+        return !gui.getContainer().hasFunctionUpgrade() && super.shouldDraw();
       }
     };
 
@@ -175,7 +172,7 @@ public class ItemSettings extends BaseSettingsPanel {
     priUpB = MultiIconButton.createAddButton(gui, ID_PRIORITY_UP, x, y);
     priDownB = MultiIconButton.createMinusButton(gui, ID_PRIORITY_DOWN, x, y+8);
 
-    gui.getContainer().addFilterListener(new FilterChangeListener() {
+    gui.getContainer().addFilterListener(new IFilterChangeListener() {
       @Override
       public void onFilterChanged() {
         filtersChanged();
@@ -230,16 +227,16 @@ public class ItemSettings extends BaseSettingsPanel {
     } else if(showInput) {
       activeFilter = itemConduit.getInputFilter(gui.getDir());
       gui.getContainer().setInventorySlotsVisible(true);
-      gui.getContainer().setInoutSlotsVisible(true, false);
+      gui.getContainer().setInOutSlotsVisible(true, false);
       if(activeFilter != null) {
-        filterGui = activeFilter.getGui(gui,itemConduit,true);
+        filterGui = activeFilter.getGui(gui,new ItemConduitFilterContainer(itemConduit, gui.getDir(), true),true);
       }
     } else if(showOutput) {
       activeFilter = itemConduit.getOutputFilter(gui.getDir());
-      gui.getContainer().setInoutSlotsVisible(false, true);
+      gui.getContainer().setInOutSlotsVisible(false, true);
       gui.getContainer().setInventorySlotsVisible(true);
       if(activeFilter != null) {
-        filterGui = activeFilter.getGui(gui,itemConduit,false);
+        filterGui = activeFilter.getGui(gui,new ItemConduitFilterContainer(itemConduit, gui.getDir(), false),false);
       }
     }
   }
@@ -410,7 +407,7 @@ public class ItemSettings extends BaseSettingsPanel {
   @Override
   public void deactivate() {
     gui.getContainer().setInventorySlotsVisible(false);
-    gui.getContainer().setInoutSlotsVisible(false, false);
+    gui.getContainer().setInOutSlotsVisible(false, false);
     rsB.detach();
     colorB.detach();
     roundRobinB.detach();

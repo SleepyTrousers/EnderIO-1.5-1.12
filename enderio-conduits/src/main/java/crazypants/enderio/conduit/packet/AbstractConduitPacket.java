@@ -1,9 +1,6 @@
 package crazypants.enderio.conduit.packet;
 
-import java.util.UUID;
-
 import com.enderio.core.common.BlockEnder;
-
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
@@ -12,6 +9,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import java.util.UUID;
 
 public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBundlePacket {
 
@@ -43,7 +42,7 @@ public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBu
   }
 
   @SuppressWarnings("unchecked")
-  protected T getTileCasted(MessageContext ctx) {
+  public T getTileCasted(MessageContext ctx) {
     World world = getWorld(ctx);
     if (world == null) {
       return null;

@@ -1,20 +1,10 @@
 package crazypants.enderio.powertools.machine.capbank;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
-
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.conduit.ConduitUtil;
@@ -29,12 +19,7 @@ import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.IPowerStorage;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.powertools.init.PowerToolObject;
-import crazypants.enderio.powertools.machine.capbank.network.CapBankClientNetwork;
-import crazypants.enderio.powertools.machine.capbank.network.ClientNetworkManager;
-import crazypants.enderio.powertools.machine.capbank.network.EnergyReceptor;
-import crazypants.enderio.powertools.machine.capbank.network.ICapBankNetwork;
-import crazypants.enderio.powertools.machine.capbank.network.InventoryImpl;
-import crazypants.enderio.powertools.machine.capbank.network.NetworkUtil;
+import crazypants.enderio.powertools.machine.capbank.network.*;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkIdRequest;
 import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
@@ -43,6 +28,7 @@ import info.loenwind.autosave.handlers.enderio.HandleIOMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -52,8 +38,16 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 @Storable
-public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IIoConfigurable, IPowerStorage {
+public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IIoConfigurable, IPowerStorage, IInventory {
 
   @Store(handler = HandleIOMode.class)
   private Map<EnumFacing, IoMode> faceModes;
@@ -304,7 +298,8 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
     EnergyReceptor er = getEnergyReceptorForFace(faceHit);
     /*
      * TODO conduits if (er == null || er.getConduit() != null) { setIoMode(faceHit, IoMode.NONE); } else
-     */ if (er.getReceptor().canReceive()) {
+     */
+    if (er.getReceptor().canReceive()) {
       setIoMode(faceHit, IoMode.PUSH);
     } else {
       setIoMode(faceHit, IoMode.PULL);
@@ -743,7 +738,32 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
     return true;
   }
 
-  // ------------------- Inventory
+  // ------------------- Inventory TODO Move to capabilities
+
+  @Override
+  public void closeInventory(EntityPlayer player) {
+
+  }
+
+  @Override
+  public void openInventory(EntityPlayer player) {
+
+  }
+
+  @Override
+  public int getField(int id) {
+    return 0;
+  }
+
+  @Override
+  public void setField(int id, int value) {
+
+  }
+
+  @Override
+  public int getFieldCount() {
+    return 0;
+  }
 
   @Override
   public ItemStack getStackInSlot(int slot) {
@@ -843,6 +863,16 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
     }
     dropItems = false;
     markDirty();
+  }
+
+  @Override
+  public String getName() {
+    return getName();
+  }
+
+  @Override
+  public boolean hasCustomName() {
+    return true;
   }
 
   // ---------------- NBT

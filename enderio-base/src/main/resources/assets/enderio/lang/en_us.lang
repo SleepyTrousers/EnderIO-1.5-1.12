@@ -577,6 +577,22 @@ enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount
 enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Magic is being revealed
 enderio.darksteel.upgrade.gogglesOfRevealing.disabled=Magic is hidden from plain sight
 
+enderio.darksteel.upgrade.naturalistEye.name=Naturalist's Eye
+enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Shows pollinated tree leaves
+
+enderio.darksteel.upgrade.apiaristArmor.helmet.name=Apiarist's Hat
+enderio.darksteel.upgrade.apiaristArmor.helmet.tooltip.detailed.line1=Protection against bees
+
+enderio.darksteel.upgrade.apiaristArmor.chestplate.name=Apiarist's Shirt
+enderio.darksteel.upgrade.apiaristArmor.chestplate.tooltip.detailed.line1=Protection against bees
+
+enderio.darksteel.upgrade.apiaristArmor.leggings.name=Apiarist's Pants
+enderio.darksteel.upgrade.apiaristArmor.leggings.tooltip.detailed.line1=Protection against bees
+
+enderio.darksteel.upgrade.apiaristArmor.boots.name=Apiarist's Shoes
+enderio.darksteel.upgrade.apiaristArmor.boots.tooltip.detailed.line1=Protection against bees
+
+
 enderio.darksteel.upgrade.jump.enabled=Jump Enabled
 enderio.darksteel.upgrade.jump.disabled=Jump Disabled
 

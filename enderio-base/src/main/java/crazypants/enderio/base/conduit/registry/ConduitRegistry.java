@@ -1,21 +1,7 @@
 package crazypants.enderio.base.conduit.registry;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
-
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitRenderer;
@@ -25,6 +11,10 @@ import crazypants.enderio.base.init.IModObject;
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class ConduitRegistry {
 

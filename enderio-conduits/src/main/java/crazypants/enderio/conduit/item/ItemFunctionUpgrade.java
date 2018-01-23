@@ -5,7 +5,6 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.ClientUtil;
-import crazypants.enderio.util.Prep;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,8 +14,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
-
-import static crazypants.enderio.conduit.init.ConduitObject.item_function_upgrade;
 
 public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvider, IHaveRenderers {
 
@@ -40,7 +37,7 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
   public void registerRenderers(@Nonnull IModObject modObject) {
     for (FunctionUpgrade c : FunctionUpgrade.values()) {
       ClientUtil.regRenderer(this, c.ordinal(), c.baseName);
-    }     
+    }
   }
 
   @Override
@@ -58,12 +55,8 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
   }
 
   public static FunctionUpgrade getFunctionUpgrade(@Nonnull ItemStack par1ItemStack) {
-    if (Prep.isValid(par1ItemStack) && par1ItemStack.getItem() == item_function_upgrade.getItem()) {
-      int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, UPGRADES.length - 1);
-      return UPGRADES[i];
-    } else {
-      return null;
-    }
+    int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, UPGRADES.length - 1);
+    return UPGRADES[i];
   }
 
   @Override

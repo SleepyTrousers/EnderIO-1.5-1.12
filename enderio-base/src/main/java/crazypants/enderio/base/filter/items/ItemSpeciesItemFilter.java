@@ -26,8 +26,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-//TODO: Move to integration-forestry after big conduit merge
-
 public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade, IHaveRenderers {
 
   public static ItemSpeciesItemFilter create(@Nonnull IModObject modObject) {

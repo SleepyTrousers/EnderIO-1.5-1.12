@@ -1,7 +1,7 @@
 package crazypants.enderio.conduit.packet;
 
+import crazypants.enderio.base.filter.filters.ModItemFilter;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.filter.ModItemFilter;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketModItemFilter extends AbstractConduitPacket<IItemConduit> implements IMessageHandler<PacketModItemFilter, IMessage> {
 
-  private EnumFacing dir;  
+  private EnumFacing dir;
   private boolean isInput;
   private int index;
   private String name;

@@ -1,18 +1,10 @@
 package crazypants.enderio.conduit.liquid;
 
-import static crazypants.enderio.conduit.init.ConduitObject.item_liquid_conduit;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.vecmath.Vector4f;
-
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
@@ -20,7 +12,6 @@ import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -32,12 +23,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
+
+import static crazypants.enderio.conduit.init.ConduitObject.item_liquid_conduit;
 
 public class LiquidConduit extends AbstractTankConduit implements IConduitComponent {
 
@@ -87,61 +85,62 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   private EnumFacing startPushDir = EnumFacing.DOWN;
 
-  private final Set<BlockPos> filledFromThisTick = new HashSet<BlockPos>();
+  //  private final Set<BlockPos> filledFromThisTick = new HashSet<BlockPos>();
 
   private long ticksSinceFailedExtract = 0;
 
   @Override
   public void updateEntity(@Nonnull World world) {
     super.updateEntity(world);
-    if(world.isRemote) {
+    if (world.isRemote) {
       return;
     }
-    filledFromThisTick.clear();
+    //filledFromThisTick.clear();
     updateStartPushDir();
     doExtract();
 
-    if(stateDirty) {
+    if (stateDirty) {
       getBundle().dirty();
       stateDirty = false;
       lastSyncRatio = tank.getFilledRatio();
 
-    } else if((lastSyncRatio != tank.getFilledRatio() && world.getTotalWorldTime() % 2 == 0)) {
+    } else if ((lastSyncRatio != tank.getFilledRatio() && world.getTotalWorldTime() % 2 == 0)) {
 
       //need to send a custom packet as we don't want want to trigger a full chunk update, just
       //need to get the required  values to the entity renderer
       BlockPos pos = getBundle().getLocation();
-      PacketHandler.INSTANCE.sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
+      PacketHandler.INSTANCE
+          .sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
       lastSyncRatio = tank.getFilledRatio();
     }
   }
 
   private void doExtract() {
-    if(!hasExtractableMode()) {
+    if (!hasExtractableMode()) {
       return;
     }
 
     // assume failure, reset to 0 if we do extract
     ticksSinceFailedExtract++;
-    if(ticksSinceFailedExtract > 9 && ticksSinceFailedExtract % 10 != 0) {
+    if (ticksSinceFailedExtract > 9 && ticksSinceFailedExtract % 10 != 0) {
       // after 10 ticks of failing, only check every 10 ticks
       return;
     }
 
     for (EnumFacing dir : externalConnections) {
-      if(autoExtractForDir(dir)) {
+      if (autoExtractForDir(dir)) {
 
         IFluidWrapper extTank = getExternalHandler(dir);
-        if(extTank != null) {
+        if (extTank != null) {
 
           FluidStack couldDrain = extTank.getAvailableFluid();
-          if (couldDrain != null && couldDrain.amount > 0 && canFill(dir, couldDrain.getFluid())) {
+          if (couldDrain != null && couldDrain.amount > 0 && canFill(dir, couldDrain)) {
             couldDrain = couldDrain.copy();
             if (couldDrain.amount > MAX_EXTRACT_PER_TICK) {
               couldDrain.amount = MAX_EXTRACT_PER_TICK;
             }
             int used = pushLiquid(dir, couldDrain, true, network == null ? -1 : network.getNextPushToken());
-            if(used > 0) {
+            if (used > 0) {
               couldDrain.amount = used;
               extTank.drain(couldDrain);
               if (network != null && network.getFluidType() == null) {
@@ -156,58 +155,37 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   }
 
-  // TODO Confirm from use
+  // --------------- Fluid Capability ------------
 
   @Override
-  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-
-    if(network == null || resource == null) {
-      return 0;
+  public IFluidTankProperties[] getTankProperties() {
+    if (network == null) {
+      return new FluidTankProperties[0];
     }
-    if(!canFill(from, resource.getFluid())) {
-      return 0;
-    }
-
-    // Note: This is just a guard against mekansims pipes that will continuously
-    // call
-    // fill on us if we push liquid to them.
-    if(filledFromThisTick.contains(getBundle().getLocation().offset(from))) {
-      return 0;
-    }
-
-    if(network.lockNetworkForFill()) {
-      if(doFill) {
-        filledFromThisTick.add(getBundle().getLocation().offset(from));
-      }
-      try {
-        int res = fill(from, resource, doFill, true, network == null ? -1 : network.getNextPushToken());
-        if(doFill && externalConnections.contains(from) && network != null) {
-          network.addedFromExternal(res);
-        }
-        return res;
-      } finally {
-        network.unlockNetworkFromFill();
-
-      }
-    } else {
-      return 0;
-    }
-
+    return new FluidTankProperties[] { new FluidTankProperties(tank.getFluid(), tank.getCapacity()) };
   }
 
-  public int fill(@Nonnull EnumFacing from, FluidStack resource, boolean doFill, boolean doPush, int pushToken) {
-    if(resource == null || resource.amount <= 0) {
-      return 0;
-    }
+  @Override
+  public int fill(FluidStack resource, boolean doFill) {
+    return 0;
+  }
 
-    if(!canFill(from, resource.getFluid())) {
-      return 0;
-    }
+  @Nullable
+  @Override
+  public FluidStack drain(FluidStack resource, boolean doDrain) {
+    return drain(resource.amount, doDrain);
+  }
 
-    if(network == null) {
-      return 0;
-    }
-    if(network.canAcceptLiquid(resource)) {
+  @Nullable
+  @Override
+  public FluidStack drain(int maxDrain, boolean doDrain) {
+    return tank.drain(maxDrain, doDrain);
+  }
+
+  // --------------- End -------------------------
+
+  public int fill(EnumFacing from, FluidStack resource, boolean doFill, boolean doPush, int pushToken) {
+    if (network.canAcceptLiquid(resource)) {
       network.setFluidType(resource);
     } else {
       return 0;
@@ -215,7 +193,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
     resource = resource.copy();
     resource.amount = Math.min(MAX_IO_PER_TICK, resource.amount);
 
-    if(doPush) {
+    if (doPush) {
       return pushLiquid(from, resource, doFill, pushToken);
     } else {
       return tank.fill(resource, doFill);
@@ -234,14 +212,14 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   }
 
   private EnumFacing getNextDir(@Nonnull EnumFacing dir) {
-    if(dir.ordinal() >= EnumFacing.VALUES.length - 1) {
+    if (dir.ordinal() >= EnumFacing.VALUES.length - 1) {
       return EnumFacing.VALUES[0];
     }
     return EnumFacing.VALUES[dir.ordinal() + 1];
   }
 
-  private int pushLiquid(@Nonnull EnumFacing from, FluidStack pushStack, boolean doPush, int token) {
-    if(token == currentPushToken || pushStack == null || pushStack.amount <= 0 || network == null) {
+  private int pushLiquid(@Nullable EnumFacing from, FluidStack pushStack, boolean doPush, int token) {
+    if (token == currentPushToken || pushStack == null || pushStack.amount <= 0 || network == null) {
       return 0;
     }
     currentPushToken = token;
@@ -256,21 +234,21 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
     pushed += filledLocal;
 
     do {
-      if(dir != from && canOutputToDir(dir) && !autoExtractForDir(dir)) {
-        if(getConduitConnections().contains(dir)) {
+      if (dir != from && canOutputToDir(dir) && !autoExtractForDir(dir)) {
+        if (getConduitConnections().contains(dir)) {
           ILiquidConduit conduitCon = getFluidConduit(dir);
-          if(conduitCon != null) {
+          if (conduitCon != null) {
             int toCon = ((LiquidConduit) conduitCon).pushLiquid(dir.getOpposite(), toPush, doPush, token);
             toPush.amount -= toCon;
             pushed += toCon;
           }
-        } else if(getExternalConnections().contains(dir)) {
+        } else if (getExternalConnections().contains(dir)) {
           IFluidWrapper con = getExternalHandler(dir);
-          if(con != null) {
+          if (con != null) {
             int toExt = doPush ? con.fill(toPush) : con.offer(toPush);
             toPush.amount -= toExt;
             pushed += toExt;
-            if(doPush) {
+            if (doPush) {
               network.outputedToExternal(toExt);
             }
           }
@@ -288,50 +266,26 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   }
 
   @Override
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    if(getConnectionMode(from) == ConnectionMode.INPUT || getConnectionMode(from) == ConnectionMode.DISABLED) {
-      return null;
-    }
-    return tank.drain(maxDrain, doDrain);
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
-      return null;
-    }
-    return drain(from, resource.amount, doDrain);
-  }
-
-  @Override
-  public boolean canFill(EnumFacing from, Fluid fluid) {
-    if(getConnectionMode(from) == ConnectionMode.OUTPUT || getConnectionMode(from) == ConnectionMode.DISABLED) {
+  public boolean canFill(EnumFacing from, FluidStack fluid) {
+    if (!getConnectionMode(from).acceptsInput() || network == null || fluid == null || fluid.amount <= 0) {
       return false;
     }
-    if(tank.getFluid() == null) {
+    if (tank.getFluid() == null) {
       return true;
-    }    
-    if (fluid != null && FluidUtil.areFluidsTheSame(fluid, tank.getFluid().getFluid())) {
+    }
+    if (fluid != null && FluidUtil.areFluidsTheSame(fluid.getFluid(), tank.getFluid().getFluid())) {
       return true;
     }
     return false;
   }
 
   @Override
-  public boolean canDrain(EnumFacing from, Fluid fluid) {
-    if(getConnectionMode(from) == ConnectionMode.INPUT || getConnectionMode(from) == ConnectionMode.DISABLED
-        || tank.getFluid() == null || fluid == null) {
+  public boolean canDrain(EnumFacing from, FluidStack fluid) {
+    if (!getConnectionMode(from).acceptsOutput() || tank.getFluid() == null || fluid == null) {
       return false;
     }
-    return FluidUtil.areFluidsTheSame(tank.getFluid().getFluid(), fluid);
+    return FluidUtil.areFluidsTheSame(tank.getFluid().getFluid(), fluid.getFluid());
   }
-
-  @Override
-  public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    return new FluidTankInfo[] { tank.getInfo() };
-  }
-
-  // -----------------------------
 
   @Override
   public void connectionsChanged() {
@@ -353,20 +307,16 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   @Override
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
-    if(network == null) {
-      this.network = null;
-      return true;
-    }
-    if(!(network instanceof AbstractTankConduitNetwork)) {
+    if (!(network instanceof AbstractTankConduitNetwork)) {
       return false;
     }
 
     AbstractTankConduitNetwork<?> n = (AbstractTankConduitNetwork<?>) network;
-    if(tank.getFluid() == null) {
+    if (tank.getFluid() == null) {
       tank.setLiquid(n.getFluidType() == null ? null : n.getFluidType().copy());
-    } else if(n.getFluidType() == null) {
+    } else if (n.getFluidType() == null) {
       n.setFluidType(tank.getFluid());
-    } else if(!tank.getFluid().isFluidEqual(n.getFluidType())) {
+    } else if (!tank.getFluid().isFluidEqual(n.getFluidType())) {
       return false;
     }
     this.network = (LiquidConduitNetwork) network;
@@ -375,13 +325,13 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   @Override
   public boolean canConnectToConduit(@Nonnull EnumFacing direction, @Nonnull IConduit con) {
-    if(!super.canConnectToConduit(direction, con)) {
+    if (!super.canConnectToConduit(direction, con)) {
       return false;
     }
-    if(!(con instanceof LiquidConduit)) {
+    if (!(con instanceof LiquidConduit)) {
       return false;
     }
-    if(getFluidType() != null && ((LiquidConduit) con).getFluidType() == null) {
+    if (getFluidType() != null && ((LiquidConduit) con).getFluidType() == null) {
       return false;
     }
     return LiquidConduitNetwork.areFluidsCompatable(getFluidType(), ((LiquidConduit) con).getFluidType());
@@ -391,13 +341,13 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   @Override
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
-    if(component.dir == null) {
+    if (component.dir == null) {
       return ICONS.get(ICON_CORE_KEY);
     }
-    if(getConnectionMode(component.dir) == ConnectionMode.INPUT) {
+    if (getConnectionMode(component.dir) == ConnectionMode.INPUT) {
       return ICONS.get(getFluidType() == null ? ICON_EMPTY_EXTRACT_KEY : ICON_EXTRACT_KEY);
     }
-    if(getConnectionMode(component.dir) == ConnectionMode.OUTPUT) {
+    if (getConnectionMode(component.dir) == ConnectionMode.OUTPUT) {
       return ICONS.get(getFluidType() == null ? ICON_EMPTY_INSERT_KEY : ICON_INSERT_KEY);
     }
     return fluidTypeLocked ? ICONS.get(ICON_KEY_LOCKED) : ICONS.get(ICON_KEY);
@@ -405,7 +355,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   @Override
   public TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
-    if(tank.getFluid() != null && tank.getFluid().getFluid() != null) {
+    if (tank.getFluid() != null && tank.getFluid().getFluid() != null) {
       return RenderUtil.getStillTexture(tank.getFluid());
     }
     return null;
@@ -443,9 +393,42 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   }
 
   @Override
+  public IFluidHandler getFluidDir(EnumFacing dir) {
+    if (dir != null) {
+      return new ConnectionLiquidConduitSide(dir);
+    }
+    return this;
+  }
+
+  @Override
   @Nonnull
   public LiquidConduitNetwork createNetworkForType() {
     return new LiquidConduitNetwork();
+  }
+
+  protected class ConnectionLiquidConduitSide extends ConnectionLiquidSide {
+
+    public ConnectionLiquidConduitSide(EnumFacing side) {
+      super(side);
+    }
+
+    @Override
+    public int fill(FluidStack resource, boolean doFill) {
+      if (canFill(side, resource) && network.lockNetworkForFill()) {
+        try {
+          int res = LiquidConduit.this.fill(side, resource, doFill, true, network == null ? -1 : network.getNextPushToken());
+          if (doFill && externalConnections.contains(side) && network != null) {
+            network.addedFromExternal(res);
+          }
+          return res;
+        } finally {
+          network.unlockNetworkFromFill();
+
+        }
+      } else {
+        return 0;
+      }
+    }
   }
 
 }

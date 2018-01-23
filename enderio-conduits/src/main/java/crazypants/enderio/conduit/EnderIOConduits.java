@@ -1,15 +1,13 @@
 package crazypants.enderio.conduit;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 
-import static crazypants.enderio.conduit.EnderIOConduits.MODID;
-import static crazypants.enderio.conduit.EnderIOConduits.MOD_NAME;
-import static crazypants.enderio.conduit.EnderIOConduits.VERSION;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import static crazypants.enderio.conduit.EnderIOConduits.*;
 
 @Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:" + crazypants.enderio.base.EnderIO.MODID)
 public class EnderIOConduits implements IEnderIOAddon {
@@ -22,8 +20,7 @@ public class EnderIOConduits implements IEnderIOAddon {
   @Override
   @Nullable
   public Configuration getConfiguration() {
-    // TODO Create Conduits Config
-    return null;
+    return ConfigHandler.config;
   }
 
 }

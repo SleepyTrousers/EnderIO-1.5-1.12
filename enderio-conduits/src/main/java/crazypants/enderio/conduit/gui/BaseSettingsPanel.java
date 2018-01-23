@@ -1,14 +1,9 @@
 package crazypants.enderio.conduit.gui;
 
-import java.awt.Color;
-
-import javax.annotation.Nonnull;
-
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
@@ -19,6 +14,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
 
 public class BaseSettingsPanel implements ITabPanel {
 
@@ -43,7 +41,7 @@ public class BaseSettingsPanel implements ITabPanel {
 
   protected int customTop = 0;
 
-  protected BaseSettingsPanel(IconEIO icon, String typeName, GuiExternalConnection gui, IConduit con) {
+  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IConduit con) {
     this.icon = icon;
     this.typeName = typeName;
     this.gui = gui;

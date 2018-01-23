@@ -1,14 +1,13 @@
 package crazypants.enderio.util;
 
-import java.util.Locale;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Locale;
 
 public enum NbtValue { // TODO: DONE111
   GLINT("glinted"),
@@ -43,6 +42,7 @@ public enum NbtValue { // TODO: DONE111
   FILTER_ADVANCED("isAdvanced"),
   FILTER_LIMITED("isLimited"),
   FILTER_DAMAGE("damageMode"),
+  CONDUIT("conduit"),
 
   ;
 

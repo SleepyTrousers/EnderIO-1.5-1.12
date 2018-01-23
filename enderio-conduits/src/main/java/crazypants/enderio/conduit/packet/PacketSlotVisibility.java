@@ -35,10 +35,10 @@ public class PacketSlotVisibility implements IMessage, IMessageHandler<PacketSlo
 
   @Override
   public IMessage onMessage(PacketSlotVisibility message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+    EntityPlayerMP player = ctx.getServerHandler().player;
     if(player.openContainer instanceof ExternalConnectionContainer) {
       ExternalConnectionContainer ecc = (ExternalConnectionContainer) player.openContainer;
-      ecc.setInoutSlotsVisible(message.inputVisible, message.outputVisible);
+      ecc.setInOutSlotsVisible(message.inputVisible, message.outputVisible);
     }
     return null;
   }

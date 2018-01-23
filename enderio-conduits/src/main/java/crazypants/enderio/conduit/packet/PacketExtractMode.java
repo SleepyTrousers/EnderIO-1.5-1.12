@@ -1,9 +1,8 @@
 package crazypants.enderio.conduit.packet;
 
 import com.enderio.core.common.util.DyeColor;
-
 import crazypants.enderio.base.conduit.IExtractor;
-import crazypants.enderio.base.machine.RedstoneControlMode;
+import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;

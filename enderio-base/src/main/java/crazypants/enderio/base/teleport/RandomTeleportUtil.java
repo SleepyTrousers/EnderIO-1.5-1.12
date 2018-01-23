@@ -7,12 +7,9 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.sound.SoundRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityEndermite;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -22,26 +19,6 @@ public class RandomTeleportUtil {
   private static final Random rand = new Random();
 
   private RandomTeleportUtil() {
-  }
-
-  public static void teleportSpawnItem(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ItemStack stack) {
-    EntityItem entity = new EntityItem(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, stack);
-    entity.setDefaultPickupDelay();
-    double origX = entity.posX, origY = entity.posY, origZ = entity.posZ;
-    for (int i = 0; i < 5; i++) {
-      double targetX = origX + rand.nextGaussian() * 16f;
-      double targetY = -1;
-      while (targetY < 1.1) {
-        targetY = origY + rand.nextGaussian() * 8f;
-      }
-      double targetZ = origZ + rand.nextGaussian() * 16f;
-      if (isClear(world, entity, targetX, targetY, targetZ) && doTeleport(world, entity, targetX, targetY, targetZ)) {
-        world.spawnEntity(entity);
-        entity.timeUntilPortal = 5;
-        return;
-      }
-    }
-    world.spawnEntity(entity);
   }
 
   public static void teleportEntity(@Nonnull World world, @Nonnull Entity entity, boolean isItem) {
@@ -100,7 +77,7 @@ public class RandomTeleportUtil {
     }
     EnderTeleportEvent event = new EnderTeleportEvent(entity, targetX, targetY, targetZ, damage);
     if (!MinecraftForge.EVENT_BUS.post(event)) {
-      if (rand.nextFloat() < 0.15F && world.getGameRules().getBoolean("doMobSpawning") && !(entity instanceof EntityEndermite)) {
+      if (rand.nextFloat() < 0.15F && world.getGameRules().getBoolean("doMobSpawning")) {
         EntityEndermite entityendermite = new EntityEndermite(world);
         entityendermite.setSpawnedByPlayer(true);
         entityendermite.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
