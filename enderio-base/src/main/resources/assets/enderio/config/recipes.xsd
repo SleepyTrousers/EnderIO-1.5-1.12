@@ -399,6 +399,10 @@
                           </annotation>
                           <complexType>
                             <attribute use="required" name="name" type="string" />
+                            <attribute name="consumed" type="boolean" use="optional" default="false">
+                              <annotation>
+                                <documentation>Should the cast be consumed?</documentation>
+                              </annotation></attribute>
                           </complexType>
                         </element>
                         <element minOccurs="1" maxOccurs="unbounded" name="output">

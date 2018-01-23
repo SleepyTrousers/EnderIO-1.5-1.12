@@ -369,7 +369,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       .add(Blocks.SANDSTONE_STAIRS).add(Blocks.STAINED_HARDENED_CLAY).add(Blocks.STONE_BRICK_STAIRS).add(Blocks.STONE_STAIRS).add(Blocks.STONEBRICK)
       .add(Blocks.STONE_SLAB).add(Blocks.STONE_SLAB2).add(Blocks.DOUBLE_STONE_SLAB).add(Blocks.DOUBLE_STONE_SLAB2);
   private static final Things DIRTS = new Things().add(Blocks.DIRT).add(Blocks.GRAVEL).add(Blocks.GRASS).add(Blocks.SOUL_SAND).add(Blocks.MYCELIUM)
-      .add(Blocks.GRASS_PATH).add(Blocks.FARMLAND).add(Blocks.CLAY);
+      .add(Blocks.GRASS_PATH).add(Blocks.FARMLAND).add(Blocks.CLAY).add(Blocks.SAND);
 
   private void doExplosiveAction(@Nonnull ItemStack item, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayerMP player) {
     boolean hasDoneSomething = false;

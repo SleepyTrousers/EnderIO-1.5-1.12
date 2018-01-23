@@ -45,6 +45,8 @@ public class MaterialRecipes {
         itemMaterial.getItemNN().getRegistryName() + ":" + Material.DYE_GREEN.ordinal());
     Things.addAlias(Material.DYE_BROWN.getBaseName().toUpperCase(Locale.ENGLISH),
         itemMaterial.getItemNN().getRegistryName() + ":" + Material.DYE_BROWN.ordinal());
+    Things.addAlias(Material.DYE_BLACK.getBaseName().toUpperCase(Locale.ENGLISH),
+        itemMaterial.getItemNN().getRegistryName() + ":" + Material.DYE_BLACK.ordinal());
   }
 
   public static void init(@Nonnull FMLPreInitializationEvent event) {

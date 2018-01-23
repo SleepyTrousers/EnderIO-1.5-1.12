@@ -48,8 +48,12 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
     for (int dx = -1; dx <= 1; dx++) {
       for (int dy = -1; dy <= 1; dy++) {
         for (int dz = -1; dz <= 1; dz++) {
-          BlockPos npos = pos.add(dx, dy, dz);
-          setNeighbor(pos, npos, isSameKind(state, world, pos, npos));
+          if (dx == 0 && dy == 0 && dz == 0) {
+            setNeighbor(pos, pos, true);
+          } else {
+            BlockPos npos = pos.add(dx, dy, dz);
+            setNeighbor(pos, npos, isSameKind(state, world, pos, npos));
+          }
         }
       }
     }
