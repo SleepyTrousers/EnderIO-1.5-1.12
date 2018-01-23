@@ -4,7 +4,7 @@
         "model": "enderio:null",
         "textures": {
             "particle": "enderio:blocks/blockReinforcedObsidian"
-        },
+        }
     },
 	"variants": {
         "normal": [{}],
