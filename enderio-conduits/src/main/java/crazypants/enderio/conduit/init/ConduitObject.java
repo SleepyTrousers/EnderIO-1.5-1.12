@@ -1,7 +1,13 @@
 package crazypants.enderio.conduit.init;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -22,10 +28,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
 
 @EventBusSubscriber(modid = EnderIOConduits.MODID)
 public enum ConduitObject implements IModObject.Registerable {
@@ -58,6 +60,7 @@ public enum ConduitObject implements IModObject.Registerable {
   protected final @Nullable String blockMethodName, itemMethodName;
   protected final @Nullable List<Class<? extends TileEntity>> teClazzes;
 
+  @SafeVarargs
   private ConduitObject(@Nonnull Class<?> clazz, Class<? extends TileEntity>... teClazz) {
     this(clazz, "create", teClazz);
   }

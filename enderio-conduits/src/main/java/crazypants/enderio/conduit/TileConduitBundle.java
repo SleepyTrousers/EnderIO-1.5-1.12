@@ -1,12 +1,33 @@
 package crazypants.enderio.conduit;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.TileEntityEio;
-import crazypants.enderio.base.conduit.*;
+import crazypants.enderio.base.conduit.ConduitDisplayMode;
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.facade.EnumFacadeType;
-import crazypants.enderio.base.conduit.geom.*;
+import crazypants.enderio.base.conduit.geom.CollidableCache;
+import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
+import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.conduit.geom.Offset;
+import crazypants.enderio.base.conduit.geom.Offsets;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.paint.YetaUtil;
@@ -28,11 +49,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import static crazypants.enderio.base.config.Config.transparentFacadesLetThroughBeaconBeam;
 
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent {
@@ -41,7 +57,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   // TODO Fix duct-tape
   // TODO Check store
-  @Store(handler = ConduitHandler.ConduitArrayListHandler.class)
+  @Store(handler = ConduitHandler.ConduitCopyOnWriteArrayListHandler.class)
   private final List<IConduit> conduits = new CopyOnWriteArrayList<IConduit>(); // <- duct-tape fix
 
   @Store
@@ -66,7 +82,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   private ConduitDisplayMode lastMode = ConduitDisplayMode.ALL;
 
   public TileConduitBundle() {
-    this.blockType = ConduitRegistry.getConduitModObjectNN().getBlock();
+    this.blockType = ConduitRegistry.getConduitModObjectNN().getBlockNN();
   }
 
   @Nonnull
@@ -100,8 +116,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   @Override
-  public boolean handleFacadeClick(World world, BlockPos placeAt, EntityPlayer player, EnumFacing opposite, ItemStack stack, EnumHand hand,
-      float hitX, float hitY, float hitZ) {
+  public boolean handleFacadeClick(World world1, BlockPos placeAt, EntityPlayer player, EnumFacing opposite, ItemStack stack, EnumHand hand, float hitX,
+      float hitY, float hitZ) {
     // TODO make this more useful
     return false;
   }
@@ -113,58 +129,58 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     return new String[0];
   }
   //
-  //  @Override
-  //  protected void writeCustomNBT(NBTTagCompound nbtRoot) {
-  //    NBTTagList conduitTags = new NBTTagList();
-  //    for (IConduit conduit : conduits) {
-  //      NBTTagCompound conduitRoot = new NBTTagCompound();
-  //      ConduitUtil.writeToNBT(conduit, conduitRoot);
-  //      conduitTags.appendTag(conduitRoot);
-  //    }
-  //    nbtRoot.setTag("conduits", conduitTags);
-  //    if (facade != null) {
-  //      PaintUtil.writeNbt(nbtRoot, facade);
-  //      nbtRoot.setString("facadeType", facadeType.name());
-  //    }
+  // @Override
+  // protected void writeCustomNBT(NBTTagCompound nbtRoot) {
+  // NBTTagList conduitTags = new NBTTagList();
+  // for (IConduit conduit : conduits) {
+  // NBTTagCompound conduitRoot = new NBTTagCompound();
+  // ConduitUtil.writeToNBT(conduit, conduitRoot);
+  // conduitTags.appendTag(conduitRoot);
+  // }
+  // nbtRoot.setTag("conduits", conduitTags);
+  // if (facade != null) {
+  // PaintUtil.writeNbt(nbtRoot, facade);
+  // nbtRoot.setString("facadeType", facadeType.name());
+  // }
   //
-  //    nbtRoot.setShort("nbtVersion", NBT_VERSION);
-  //  }
+  // nbtRoot.setShort("nbtVersion", NBT_VERSION);
+  // }
   //
-  //  @Override
-  //  public synchronized void readCustomNBT(NBTTagCompound nbtRoot) {
-  //    short nbtVersion = nbtRoot.getShort("nbtVersion");
+  // @Override
+  // public synchronized void readCustomNBT(NBTTagCompound nbtRoot) {
+  // short nbtVersion = nbtRoot.getShort("nbtVersion");
   //
-  //    conduits.clear();
-  //    cachedCollidables.clear();
-  //    NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
-  //    if (conduitTags != null) {
-  //      for (int i = 0; i < conduitTags.tagCount(); i++) {
-  //        NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
-  //        IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
-  //        if (conduit != null) {
-  //          conduit.setBundle(this);
-  //          conduits.add(conduit);
-  //          // keep conduits sorted so the client side cache key is stable
-  //          ConduitRegistry.sort(conduits);
-  //        }
-  //      }
-  //    }
-  //    facade = PaintUtil.readNbt(nbtRoot);
-  //    if (facade != null) {
-  //      if (nbtRoot.hasKey("facadeType")) { // backwards compat, never true in freshly placed bundles
-  //        facadeType = EnumFacadeType.valueOf(nbtRoot.getString("facadeType"));
-  //      } else {
-  //        facadeType = EnumFacadeType.BASIC;
-  //      }
-  //    } else {
-  //      facade = null;
-  //      facadeType = EnumFacadeType.BASIC;
-  //    }
+  // conduits.clear();
+  // cachedCollidables.clear();
+  // NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
+  // if (conduitTags != null) {
+  // for (int i = 0; i < conduitTags.tagCount(); i++) {
+  // NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
+  // IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
+  // if (conduit != null) {
+  // conduit.setBundle(this);
+  // conduits.add(conduit);
+  // // keep conduits sorted so the client side cache key is stable
+  // ConduitRegistry.sort(conduits);
+  // }
+  // }
+  // }
+  // facade = PaintUtil.readNbt(nbtRoot);
+  // if (facade != null) {
+  // if (nbtRoot.hasKey("facadeType")) { // backwards compat, never true in freshly placed bundles
+  // facadeType = EnumFacadeType.valueOf(nbtRoot.getString("facadeType"));
+  // } else {
+  // facadeType = EnumFacadeType.BASIC;
+  // }
+  // } else {
+  // facade = null;
+  // facadeType = EnumFacadeType.BASIC;
+  // }
   //
-  //    if (world != null && world.isRemote) {
-  //      clientUpdated = true;
-  //    }
-  //  }
+  // if (world != null && world.isRemote) {
+  // clientUpdated = true;
+  // }
+  // }
 
   @Override
   public boolean hasFacade() {
@@ -185,7 +201,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   @Override
-  @Nonnull
   public IBlockState getPaintSource() {
     return facade;
   }
@@ -221,7 +236,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @SuppressWarnings("deprecation")
   @Override
   public int getLightOpacity() {
-    if (world != null && world.isRemote && lightOpacityOverride != -1) {
+    if (world.isRemote && lightOpacityOverride != -1) {
       return lightOpacityOverride;
     }
     if (facade != null) {
@@ -265,7 +280,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
     getWorld().profiler.endSection();
 
-    //client side only, check for changes in rendering of the bundle
+    // client side only, check for changes in rendering of the bundle
     if (world.isRemote) {
       getWorld().profiler.startSection("clientTick");
       updateEntityClient();
@@ -290,8 +305,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   private void updateEntityClient() {
     boolean markForUpdate = false;
     if (clientUpdated) {
-      //TODO: This is not the correct solution here but just marking the block for a render update server side
-      //seems to get out of sync with the client sometimes so connections are not rendered correctly
+      // TODO: This is not the correct solution here but just marking the block for a render update server side
+      // seems to get out of sync with the client sometimes so connections are not rendered correctly
       markForUpdate = true;
       clientUpdated = false;
     }
@@ -506,7 +521,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       }
     }
 
-    //TODO: Remove the core geometries covered up by this as no point in rendering these
+    // TODO: Remove the core geometries covered up by this as no point in rendering these
     if (!collidingTypes.isEmpty()) {
       List<CollidableComponent> colCores = new ArrayList<CollidableComponent>();
       for (Class<IConduit> c : collidingTypes) {
@@ -532,7 +547,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       }
     }
 
-    //2nd algorithm
+    // 2nd algorithm
     for (IConduit con : conduits) {
 
       if (con.hasConnections()) {
@@ -647,107 +662,107 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public void geometryChanged() {
   }
 
-  //  // AE2
+  // // AE2
   //
-  //  private Object node; // IGridNode object, untyped to avoid crash w/o AE2
+  // private Object node; // IGridNode object, untyped to avoid crash w/o AE2
   //
-  //  @Override
-  //  @Method(modid = "appliedenergistics2")
-  //  public IGridNode getGridNode(AEPartLocation loc) {
-  //    IMEConduit cond = getConduit(IMEConduit.class);
-  //    if (cond != null) {
-  //      if (loc == null || loc == AEPartLocation.INTERNAL || cond.getConnectionMode(loc.getOpposite().getFacing()) == ConnectionMode.IN_OUT) {
-  //        return (IGridNode) node;
-  //      }
-  //    }
-  //    return null;
-  //  }
+  // @Override
+  // @Method(modid = "appliedenergistics2")
+  // public IGridNode getGridNode(AEPartLocation loc) {
+  // IMEConduit cond = getConduit(IMEConduit.class);
+  // if (cond != null) {
+  // if (loc == null || loc == AEPartLocation.INTERNAL || cond.getConnectionMode(loc.getOpposite().getFacing()) == ConnectionMode.IN_OUT) {
+  // return (IGridNode) node;
+  // }
+  // }
+  // return null;
+  // }
   //
-  //  @SuppressWarnings("cast")
-  //  @Override
-  //  @Method(modid = "appliedenergistics2")
-  //  public void setGridNode(Object node) {
-  //    this.node = (IGridNode) node;
-  //  }
+  // @SuppressWarnings("cast")
+  // @Override
+  // @Method(modid = "appliedenergistics2")
+  // public void setGridNode(Object node) {
+  // this.node = (IGridNode) node;
+  // }
   //
-  //  @Override
-  //  @Method(modid = "appliedenergistics2")
-  //  public AECableType getCableConnectionType(AEPartLocation loc) {
-  //    IMEConduit cond = getConduit(IMEConduit.class);
-  //    if (cond == null || loc == AEPartLocation.INTERNAL) {
-  //      return AECableType.NONE;
-  //    } else {
-  //      return cond.isConnectedTo(loc.getFacing()) ? cond.isDense() ? AECableType.DENSE : AECableType.SMART : AECableType.NONE;
-  //    }
-  //  }
+  // @Override
+  // @Method(modid = "appliedenergistics2")
+  // public AECableType getCableConnectionType(AEPartLocation loc) {
+  // IMEConduit cond = getConduit(IMEConduit.class);
+  // if (cond == null || loc == AEPartLocation.INTERNAL) {
+  // return AECableType.NONE;
+  // } else {
+  // return cond.isConnectedTo(loc.getFacing()) ? cond.isDense() ? AECableType.DENSE : AECableType.SMART : AECableType.NONE;
+  // }
+  // }
   //
-  //  @Override
-  //  @Method(modid = "appliedenergistics2")
-  //  public void securityBreak() {
-  //  }
+  // @Override
+  // @Method(modid = "appliedenergistics2")
+  // public void securityBreak() {
+  // }
   //
-  //  // OpenComputers
+  // // OpenComputers
   //
-  //  @Override
-  //  @Method(modid = "OpenComputersAPI|Network")
-  //  public Node node() {
-  //    IOCConduit cond = getConduit(IOCConduit.class);
-  //    if (cond != null) {
-  //      return cond.node();
-  //    } else {
-  //      return null;
-  //    }
-  //  }
+  // @Override
+  // @Method(modid = "OpenComputersAPI|Network")
+  // public Node node() {
+  // IOCConduit cond = getConduit(IOCConduit.class);
+  // if (cond != null) {
+  // return cond.node();
+  // } else {
+  // return null;
+  // }
+  // }
   //
-  //  @Override
-  //  @Method(modid = "OpenComputersAPI|Network")
-  //  public void onConnect(Node node) {
-  //    IOCConduit cond = getConduit(IOCConduit.class);
-  //    if (cond != null) {
-  //      cond.onConnect(node);
-  //    }
-  //  }
+  // @Override
+  // @Method(modid = "OpenComputersAPI|Network")
+  // public void onConnect(Node node) {
+  // IOCConduit cond = getConduit(IOCConduit.class);
+  // if (cond != null) {
+  // cond.onConnect(node);
+  // }
+  // }
   //
-  //  @Override
-  //  @Method(modid = "OpenComputersAPI|Network")
-  //  public void onDisconnect(Node node) {
-  //    IOCConduit cond = getConduit(IOCConduit.class);
-  //    if (cond != null) {
-  //      cond.onDisconnect(node);
-  //    }
-  //  }
+  // @Override
+  // @Method(modid = "OpenComputersAPI|Network")
+  // public void onDisconnect(Node node) {
+  // IOCConduit cond = getConduit(IOCConduit.class);
+  // if (cond != null) {
+  // cond.onDisconnect(node);
+  // }
+  // }
   //
-  //  @Override
-  //  @Method(modid = "OpenComputersAPI|Network")
-  //  public void onMessage(Message message) {
-  //    IOCConduit cond = getConduit(IOCConduit.class);
-  //    if (cond != null) {
-  //      cond.onMessage(message);
-  //    }
-  //  }
+  // @Override
+  // @Method(modid = "OpenComputersAPI|Network")
+  // public void onMessage(Message message) {
+  // IOCConduit cond = getConduit(IOCConduit.class);
+  // if (cond != null) {
+  // cond.onMessage(message);
+  // }
+  // }
   //
-  //  @Override
-  //  @Method(modid = "OpenComputersAPI|Network")
-  //  public Node sidedNode(EnumFacing side) {
-  //    IOCConduit cond = getConduit(IOCConduit.class);
-  //    if (cond != null) {
-  //      return cond.sidedNode(side);
-  //    } else {
-  //      return null;
-  //    }
-  //  }
+  // @Override
+  // @Method(modid = "OpenComputersAPI|Network")
+  // public Node sidedNode(EnumFacing side) {
+  // IOCConduit cond = getConduit(IOCConduit.class);
+  // if (cond != null) {
+  // return cond.sidedNode(side);
+  // } else {
+  // return null;
+  // }
+  // }
   //
-  //  @Override
-  //  @Method(modid = "OpenComputersAPI|Network")
-  //  @SideOnly(Side.CLIENT)
-  //  public boolean canConnect(EnumFacing side) {
-  //    IOCConduit cond = getConduit(IOCConduit.class);
-  //    if (cond != null) {
-  //      return cond.canConnect(side);
-  //    } else {
-  //      return false;
-  //    }
-  //  }
+  // @Override
+  // @Method(modid = "OpenComputersAPI|Network")
+  // @SideOnly(Side.CLIENT)
+  // public boolean canConnect(EnumFacing side) {
+  // IOCConduit cond = getConduit(IOCConduit.class);
+  // if (cond != null) {
+  // return cond.canConnect(side);
+  // } else {
+  // return false;
+  // }
+  // }
 
   @Override
   public void invalidate() {

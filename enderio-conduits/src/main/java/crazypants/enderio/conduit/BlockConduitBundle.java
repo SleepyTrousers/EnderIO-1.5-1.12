@@ -1,15 +1,30 @@
 package crazypants.enderio.conduit;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.Util;
+
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.conduit.*;
+import crazypants.enderio.base.conduit.ConduitDisplayMode;
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
+import crazypants.enderio.base.conduit.IConduitItem;
+import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.facade.EnumFacadeType;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
@@ -52,7 +67,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -70,34 +89,32 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-
 public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     implements IEioGuiHandler.WithPos, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockConduitBundle create(@Nonnull IModObject modObject) {
 
-//    MinecraftForge.EVENT_BUS.register(ConduitNetworkTickHandler.instance);
-//
-//    PacketHandler.INSTANCE.registerMessage(PacketFluidLevel.class, PacketFluidLevel.class, PacketHandler.nextID(), Side.CLIENT);
-//    PacketHandler.INSTANCE.registerMessage(PacketExtractMode.class, PacketExtractMode.class, PacketHandler.nextID(), Side.SERVER);
-//    PacketHandler.INSTANCE.registerMessage(PacketConnectionMode.class, PacketConnectionMode.class, PacketHandler.nextID(), Side.SERVER);
-//    PacketHandler.INSTANCE.registerMessage(PacketItemConduitFilter.class, PacketItemConduitFilter.class, PacketHandler.nextID(), Side.SERVER);
-//    PacketHandler.INSTANCE.registerMessage(PacketExistingItemFilterSnapshot.class, PacketExistingItemFilterSnapshot.class, PacketHandler.nextID(), Side.SERVER);
-//    PacketHandler.INSTANCE.registerMessage(PacketModItemFilter.class, PacketModItemFilter.class, PacketHandler.nextID(), Side.SERVER);
-//    PacketHandler.INSTANCE.registerMessage(PacketFluidFilter.class, PacketFluidFilter.class, PacketHandler.nextID(), Side.SERVER);
-//    PacketHandler.INSTANCE.registerMessage(PacketRedstoneConduitSignalColor.class, PacketRedstoneConduitSignalColor.class, PacketHandler.nextID(), Side.SERVER);
-//    PacketHandler.INSTANCE.registerMessage(PacketRedstoneConduitOutputStrength.class, PacketRedstoneConduitOutputStrength.class, PacketHandler.nextID(),
-//        Side.SERVER);
-//    PacketHandler.INSTANCE.registerMessage(PacketOpenConduitUI.class, PacketOpenConduitUI.class, PacketHandler.nextID(), Side.SERVER);
-//    PacketHandler.INSTANCE.registerMessage(PacketSlotVisibility.class, PacketSlotVisibility.class, PacketHandler.nextID(), Side.SERVER);
-//    PacketHandler.INSTANCE.registerMessage(PacketOCConduitSignalColor.class, PacketOCConduitSignalColor.class, PacketHandler.nextID(), Side.SERVER);
-//
+    // MinecraftForge.EVENT_BUS.register(ConduitNetworkTickHandler.instance);
+    //
+    // PacketHandler.INSTANCE.registerMessage(PacketFluidLevel.class, PacketFluidLevel.class, PacketHandler.nextID(), Side.CLIENT);
+    // PacketHandler.INSTANCE.registerMessage(PacketExtractMode.class, PacketExtractMode.class, PacketHandler.nextID(), Side.SERVER);
+    // PacketHandler.INSTANCE.registerMessage(PacketConnectionMode.class, PacketConnectionMode.class, PacketHandler.nextID(), Side.SERVER);
+    // PacketHandler.INSTANCE.registerMessage(PacketItemConduitFilter.class, PacketItemConduitFilter.class, PacketHandler.nextID(), Side.SERVER);
+    // PacketHandler.INSTANCE.registerMessage(PacketExistingItemFilterSnapshot.class, PacketExistingItemFilterSnapshot.class, PacketHandler.nextID(),
+    // Side.SERVER);
+    // PacketHandler.INSTANCE.registerMessage(PacketModItemFilter.class, PacketModItemFilter.class, PacketHandler.nextID(), Side.SERVER);
+    // PacketHandler.INSTANCE.registerMessage(PacketFluidFilter.class, PacketFluidFilter.class, PacketHandler.nextID(), Side.SERVER);
+    // PacketHandler.INSTANCE.registerMessage(PacketRedstoneConduitSignalColor.class, PacketRedstoneConduitSignalColor.class, PacketHandler.nextID(),
+    // Side.SERVER);
+    // PacketHandler.INSTANCE.registerMessage(PacketRedstoneConduitOutputStrength.class, PacketRedstoneConduitOutputStrength.class, PacketHandler.nextID(),
+    // Side.SERVER);
+    // PacketHandler.INSTANCE.registerMessage(PacketOpenConduitUI.class, PacketOpenConduitUI.class, PacketHandler.nextID(), Side.SERVER);
+    // PacketHandler.INSTANCE.registerMessage(PacketSlotVisibility.class, PacketSlotVisibility.class, PacketHandler.nextID(), Side.SERVER);
+    // PacketHandler.INSTANCE.registerMessage(PacketOCConduitSignalColor.class, PacketOCConduitSignalColor.class, PacketHandler.nextID(), Side.SERVER);
+    //
     BlockConduitBundle result = new BlockConduitBundle(modObject);
     result.init();
-//    MinecraftForge.EVENT_BUS.register(result);
+    // MinecraftForge.EVENT_BUS.register(result);
     return result;
   }
 
@@ -117,7 +134,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     setDefaultState(blockState.getBaseState().withProperty(OPAQUE, false));
   }
 
-  public static final IProperty<Boolean> OPAQUE = PropertyBool.create("opaque");
+  public static final @Nonnull IProperty<Boolean> OPAQUE = PropertyBool.create("opaque");
 
   @Override
   protected @Nonnull BlockStateContainer createBlockState() {
@@ -208,7 +225,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   @Override
   public boolean addLandingEffects(@Nonnull IBlockState state, @Nonnull net.minecraft.world.WorldServer world, @Nonnull BlockPos bp,
       @Nonnull IBlockState iblockstate, @Nonnull EntityLivingBase entity, int numberOfParticles) {
-    //TODO: Should probably register a dummy state for this, but this is an easy fix for the blockTank that allows testing to begin
+    // TODO: Should probably register a dummy state for this, but this is an easy fix for the blockTank that allows testing to begin
     int stateId = Block.getStateId(ModObject.block_machine_base.getBlock().getDefaultState());
     TileConduitBundle te = getTileEntity(world, bp);
     if (te != null) {
@@ -217,9 +234,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
         stateId = Block.getStateId(ps);
       }
     }
-    world
-        .spawnParticle(EnumParticleTypes.BLOCK_DUST, bp.getX() + 0.5, bp.getY() + 1, bp.getZ() + 0.5, numberOfParticles, 0.0D, 0.0D, 0.0D, 0.15000000596046448D,
-            new int[] { stateId });
+    world.spawnParticle(EnumParticleTypes.BLOCK_DUST, bp.getX() + 0.5, bp.getY() + 1, bp.getZ() + 0.5, numberOfParticles, 0.0D, 0.0D, 0.0D,
+        0.15000000596046448D, new int[] { stateId });
     return true;
   }
 
@@ -612,8 +628,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
 
   @Override
   public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer player, @Nonnull EnumHand hand,
-      @Nonnull EnumFacing side,
-      float hitX, float hitY, float hitZ) {
+      @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
 
     int x = pos.getX();
     int y = pos.getY();
@@ -678,7 +693,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
         }
       } else {
         if (!world.isRemote) {
-          //          GuiID.facing2guiid(closest.component.dir).openGui(world, pos, player, side);
+          // GuiID.facing2guiid(closest.component.dir).openGui(world, pos, player, side);
           openGui(world, pos, player, side);
         }
         return true;
@@ -768,8 +783,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   }
 
   public boolean handleFacadeClick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, @Nonnull EnumFacing side,
-      @Nonnull IConduitBundle bundle, @Nonnull ItemStack stack, @Nonnull EnumHand hand,
-      float hitX, float hitY, float hitZ) {
+      @Nonnull IConduitBundle bundle, @Nonnull ItemStack stack, @Nonnull EnumHand hand, float hitX, float hitY, float hitZ) {
 
     // Add facade
     if (player.isSneaking()) {
@@ -825,11 +839,10 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
 
   @Nullable
   @Override
-  public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
-      @Nullable EnumFacing facing, int param1) {
-    //    if (GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.is(id)) {
-    //      return null;
-    //    }
+  public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
+    // if (GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.is(id)) {
+    // return null;
+    // }
     // The server needs the container as it manages the adding and removing of
     // items, which are then sent to the client for display
     TileEntity te = world.getTileEntity(pos);
@@ -842,13 +855,12 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   @SideOnly(Side.CLIENT)
   @Nullable
   @Override
-  public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
-      @Nullable EnumFacing facing, int param1) {
+  public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof IConduitBundle) {
-      //      if (GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.is(id)) {
-      //        return new GuiExternalConnectionSelector((IConduitBundle) te);
-      //      }
+      // if (GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.is(id)) {
+      // return new GuiExternalConnectionSelector((IConduitBundle) te);
+      // }
       return new GuiExternalConnection(player.inventory, (IConduitBundle) te, facing);
     }
     return null;

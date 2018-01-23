@@ -1,6 +1,12 @@
 package crazypants.enderio.base.conduit;
 
+import java.util.Collection;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.base.conduit.facade.EnumFacadeType;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.Offset;
@@ -18,10 +24,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.List;
-
 //@InterfaceList({ @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
 //    @Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputersAPI|Network"),
 //    @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network"), })
@@ -36,6 +38,7 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
 
   /**
    * Location of the Bundle
+   * 
    * @return
    */
   @Nonnull
@@ -45,28 +48,37 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
 
   /**
    * Checks if the bundle contains the given conduit type
-   * @param type Class of the conduit to check for the type of
+   * 
+   * @param type
+   *          Class of the conduit to check for the type of
    * @return true if the bundle has the given type of conduit
    */
   boolean hasType(Class<? extends IConduit> type);
 
   /**
    * Gets a conduit of the given conduit type
-   * @param type the type of conduit to get
-   * @param <T> the conduit type to return
+   * 
+   * @param type
+   *          the type of conduit to get
+   * @param <T>
+   *          the conduit type to return
    * @return the conduit of the given type
    */
   <T extends IConduit> T getConduit(Class<T> type);
 
   /**
    * Adds a conduit to the bundle
-   * @param conduit the conduit to add
+   * 
+   * @param conduit
+   *          the conduit to add
    */
   void addConduit(IConduit conduit);
 
   /**
    * removes a conduit from the bundle
-   * @param conduit the conduit to remove
+   * 
+   * @param conduit
+   *          the conduit to remove
    */
   void removeConduit(IConduit conduit);
 
@@ -113,7 +125,7 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
 
   boolean hasFacade();
 
-  void setFacadeType(EnumFacadeType type);
+  void setFacadeType(@Nonnull EnumFacadeType type);
 
   EnumFacadeType getFacadeType();
 
@@ -127,10 +139,10 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
    */
   void geometryChanged();
 
-//  void setGridNode(Object node);
+  // void setGridNode(Object node);
 
   // TODO find out what this does
-  int getInternalRedstoneSignalForColor(DyeColor col);
+  int getInternalRedstoneSignalForColor(@Nonnull DyeColor col);
 
   boolean handleFacadeClick(World world, BlockPos placeAt, EntityPlayer player, EnumFacing opposite, ItemStack stack, EnumHand hand, float hitX, float hitY,
       float hitZ);

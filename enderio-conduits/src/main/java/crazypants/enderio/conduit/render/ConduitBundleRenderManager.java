@@ -21,11 +21,11 @@ public class ConduitBundleRenderManager {
 
   private final ConduitBundleRenderer cbr = new ConduitBundleRenderer();
 
-  public static final TextureSupplier connectorIconExternal = TextureRegistry.registerTexture("blocks/conduitConnector");
+  public static final TextureSupplier connectorIconExternal = TextureRegistry.registerTexture("blocks/conduit_connector");
 
-  public static final TextureSupplier connectorIcon = TextureRegistry.registerTexture("blocks/conduitConnector"); // TODO: is this even used?
+  public static final TextureSupplier connectorIcon = TextureRegistry.registerTexture("blocks/conduit_connector"); // TODO: is this even used?
 
-  public static final TextureSupplier wireFrameIcon = TextureRegistry.registerTexture("blocks/wireFrame");
+  public static final TextureSupplier wireFrameIcon = TextureRegistry.registerTexture("blocks/wire_frame");
 
   public void init(FMLPreInitializationEvent event) {
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
@@ -44,7 +44,7 @@ public class ConduitBundleRenderManager {
     return (data == ConduitConnectorType.EXTERNAL ? connectorIconExternal : connectorIcon).get(TextureAtlasSprite.class);
   }
 
-  public TextureAtlasSprite getWireFrameIcon() {    
+  public TextureAtlasSprite getWireFrameIcon() {
     return wireFrameIcon.get(TextureAtlasSprite.class);
   }
 

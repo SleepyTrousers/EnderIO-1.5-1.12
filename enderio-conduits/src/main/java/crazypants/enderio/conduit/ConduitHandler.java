@@ -1,19 +1,22 @@
 package crazypants.enderio.conduit;
 
+import java.lang.reflect.Field;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.NBTAction;
+
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
-import info.loenwind.autosave.handlers.java.HandleArrayList;
+import info.loenwind.autosave.handlers.java.HandleAbstractCollection;
 import net.minecraft.nbt.NBTTagCompound;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.lang.reflect.Field;
-import java.util.Set;
 
 public class ConduitHandler implements IHandler<IConduit> {
 
@@ -46,7 +49,7 @@ public class ConduitHandler implements IHandler<IConduit> {
   }
 
   @Nullable
-  public static IConduit readFromNBT(NBTTagCompound nbtRoot) {
+  public static IConduit readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     if (!NbtValue.CONDUIT.hasTag(nbtRoot)) {
       return null;
     }
@@ -54,13 +57,13 @@ public class ConduitHandler implements IHandler<IConduit> {
   }
 
   @Override
-  public boolean canHandle(Class clazz) {
+  public boolean canHandle(Class<?> clazz) {
     return ConduitHandler.class.isAssignableFrom(clazz);
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
-      @Nonnull IConduit object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull IConduit object)
+      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     NBTTagCompound root = new NBTTagCompound();
     object.writeToNBT(root);
     nbt.setTag(name, root);
@@ -68,9 +71,8 @@ public class ConduitHandler implements IHandler<IConduit> {
   }
 
   @Override
-  public IConduit read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
-      @Nonnull String name, @Nullable IConduit object)
-      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+  public IConduit read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+      @Nullable IConduit object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {
       NBTTagCompound root = nbt.getCompoundTag(name);
       return readFromNBT(root);
@@ -78,10 +80,28 @@ public class ConduitHandler implements IHandler<IConduit> {
     return null;
   }
 
-  public static class ConduitArrayListHandler extends HandleArrayList<IConduit>
-  {
-    public ConduitArrayListHandler() {
+  public static class ConduitCopyOnWriteArrayListHandler extends HandleAbstractCollection<IConduit, CopyOnWriteArrayList<IConduit>> {
+    public ConduitCopyOnWriteArrayListHandler() {
       super(new ConduitHandler());
     }
+
+    @Override
+    protected @Nonnull CopyOnWriteArrayList<IConduit> makeCollection() {
+      return new CopyOnWriteArrayList<IConduit>();
+    }
+
+    @Override
+    public CopyOnWriteArrayList<IConduit> read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
+        @Nonnull String name, @Nullable CopyOnWriteArrayList<IConduit> object)
+        throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+      final CopyOnWriteArrayList<IConduit> result = super.read(registry, phase, nbt, field, name, object);
+      if (result != null) {
+        while (result.remove(null)) {
+        }
+      }
+      return result;
+    }
+
   }
+
 }
