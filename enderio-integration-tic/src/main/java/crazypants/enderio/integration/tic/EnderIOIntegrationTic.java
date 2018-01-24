@@ -7,17 +7,24 @@ import com.enderio.core.common.Lang;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.integration.tic.init.TicObject;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
 @Mod(modid = EnderIOIntegrationTic.MODID, name = EnderIOIntegrationTic.MOD_NAME, version = EnderIOIntegrationTic.VERSION, dependencies = EnderIOIntegrationTic.DEPENDENCIES)
+@EventBusSubscriber
 public class EnderIOIntegrationTic implements IEnderIOAddon {
 
   public static final @Nonnull String MODID = "enderiointegrationtic";
@@ -64,6 +71,15 @@ public class EnderIOIntegrationTic implements IEnderIOAddon {
   public void injectBlocks(@Nonnull IForgeRegistry<Block> registry) {
     if (isLoaded()) {
       TicControl.injectBlocks(registry);
+    }
+  }
+
+  static boolean enableBook = false; // TODO: Move book to its own submod that only depends on Mantle
+
+  @SubscribeEvent(priority = EventPriority.HIGHEST)
+  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
+    if (enableBook && isLoaded()) {
+      ModObjectRegistry.addModObjects(TicObject.class);
     }
   }
 

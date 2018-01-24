@@ -8,6 +8,7 @@ import com.enderio.core.common.util.NNList.Callback;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.material.alloy.Alloy;
+import crazypants.enderio.integration.tic.book.EioBook;
 import crazypants.enderio.integration.tic.book.TicBook;
 import crazypants.enderio.integration.tic.fluids.Ender;
 import crazypants.enderio.integration.tic.fluids.Glowstone;
@@ -45,6 +46,7 @@ public class TicControl {
     TicModifiers.register();
     if (!EnderIO.proxy.isDedicatedServer()) {
       TicBook.integrate();
+      EioBook.integrate();
     }
   }
 

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "p1",
+    "type": "text",
+    "data": "starting/p1_intro.json"
+  },
+  {
+    "name": "p2",
+    "type": "structure",
+    "data": "starting/p2_infinity.json"
+  },
+  {
+    "name": "p3",
+    "type": "text",
+    "data": "starting/p3_chassis.json"
+  },
+  {
+    "type": "blank"
+  }
+]

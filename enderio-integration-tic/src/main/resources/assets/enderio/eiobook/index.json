@@ -1,0 +1,22 @@
+[
+  {
+    "name": "intro",
+    "data": "sections/intro.json",
+    "icon": {
+      "item": {
+        "id": "enderio:item_material",
+        "damage": 0
+      }
+    }
+  },
+  {
+    "name": "starting",
+    "data": "sections/starting.json",
+    "icon": {
+      "item": {
+        "id": "minecraft:iron_pickaxe",
+        "damage": 0
+      }
+    }
+  }
+]

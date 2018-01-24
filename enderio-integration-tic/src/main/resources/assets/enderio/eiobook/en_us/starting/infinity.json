@@ -1,0 +1,15 @@
+{
+  "size": [1, 2, 1],
+  "structure": [
+    {
+      "pos": [0, 0, 0],
+      "endPos": [0, 0, 0],
+      "block": "minecraft:bedrock"
+    },
+    {
+      "pos": [0, 1, 0],
+      "endPos": [0, 1, 0],
+      "block": "minecraft:fire"
+    }
+  ]
+}
