@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.conduit.IConduit;
 import net.minecraft.util.EnumFacing;
@@ -15,7 +16,7 @@ public class CollidableCache {
 
   private final Map<CacheKey, Collection<CollidableComponent>> cache = new HashMap<CollidableCache.CacheKey, Collection<CollidableComponent>>();
 
-  public CacheKey createKey(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset offset, @Nonnull EnumFacing dir, boolean isStub) {
+  public CacheKey createKey(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset offset, @Nullable EnumFacing dir, boolean isStub) {
     return new CacheKey(baseType, offset, dir, isStub);
   }
 
@@ -33,10 +34,10 @@ public class CollidableCache {
     public final @Nonnull Class<? extends IConduit> baseType;
     public final @Nonnull String className; // used to generate reliable equals / hashcode
     public final @Nonnull Offset offset;
-    public final @Nonnull EnumFacing dir;
+    public final @Nullable EnumFacing dir;
     public final boolean isStub;
 
-    public CacheKey(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset offset, @Nonnull EnumFacing dir, boolean isStub) {
+    public CacheKey(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset offset, @Nullable EnumFacing dir, boolean isStub) {
       this.baseType = baseType;
       className = baseType.getCanonicalName();
       this.offset = offset;
@@ -49,7 +50,7 @@ public class CollidableCache {
       final int prime = 31;
       int result = 1;
       result = prime * result + className.hashCode();
-      result = prime * result + dir.hashCode();
+      result = prime * result + ((dir != null) ? dir.hashCode() : 0);
       result = prime * result + (isStub ? 1231 : 1237);
       result = prime * result + offset.hashCode();
       return result;
