@@ -1,16 +1,16 @@
 package crazypants.enderio.conduit.packet;
 
-import com.enderio.core.common.BlockEnder;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
-import crazypants.enderio.conduit.TileConduitBundle;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import java.util.UUID;
 
 public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBundlePacket {
 
@@ -19,8 +19,14 @@ public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBu
   public AbstractConduitPacket() {
   }
 
-  public AbstractConduitPacket(TileEntity tile, T conduit) {
+  @Deprecated
+  public AbstractConduitPacket(@Nonnull TileEntity tile, @Nonnull T conduit) {
     super(tile);
+    this.uuid = ConduitRegistry.get(conduit).getNetworkUUID();
+  }
+
+  public AbstractConduitPacket(@Nonnull T conduit) {
+    super(conduit.getBundle().getEntity());
     this.uuid = ConduitRegistry.get(conduit).getNetworkUUID();
   }
 
@@ -41,16 +47,12 @@ public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBu
     uuid = new UUID(buf.readLong(), buf.readLong());
   }
 
-  @SuppressWarnings("unchecked")
-  public T getTileCasted(MessageContext ctx) {
+  public T getConduit(MessageContext ctx) {
     World world = getWorld(ctx);
-    if (world == null) {
-      return null;
+    TileEntity tileEntity = getTileEntity(world);
+    if (tileEntity instanceof IConduitBundle) {
+      ((IConduitBundle) tileEntity).getConduit(getConType());
     }
-    IConduitBundle te = BlockEnder.getAnyTileEntitySafe(world, getPos(), TileConduitBundle.class);
-    if (te == null) {
-      return null;
-    }
-    return (T) te.getConduit(getConType());
+    return null;
   }
 }

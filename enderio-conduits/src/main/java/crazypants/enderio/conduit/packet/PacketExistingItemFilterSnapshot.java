@@ -53,7 +53,7 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
 
   @Override
   public PacketExistingItemFilterSnapshot onMessage(PacketExistingItemFilterSnapshot message, MessageContext ctx) {
-    IItemConduit conduit = message.getTileCasted(ctx);
+    IItemConduit conduit = message.getConduit(ctx);
     if(conduit == null) {
       return null;
     }

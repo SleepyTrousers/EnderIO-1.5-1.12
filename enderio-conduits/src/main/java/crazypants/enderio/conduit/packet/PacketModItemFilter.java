@@ -64,7 +64,7 @@ public class PacketModItemFilter extends AbstractConduitPacket<IItemConduit> imp
 
   @Override
   public IMessage onMessage(PacketModItemFilter message, MessageContext ctx) {
-    IItemConduit conduit = message.getTileCasted(ctx);
+    IItemConduit conduit = message.getConduit(ctx);
     if(conduit == null) {
       return null;
     }

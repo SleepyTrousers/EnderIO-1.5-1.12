@@ -50,7 +50,7 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> implem
 
   @Override
   public IMessage onMessage(PacketConnectionMode message, MessageContext ctx) {
-    IConduit conduit = message.getTileCasted(ctx);
+    IConduit conduit = message.getConduit(ctx);
     if(conduit == null) {
       return null;
     }

@@ -4,8 +4,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
+import crazypants.enderio.conduit.packet.PacketHandler;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 @Mod(modid = EnderIOConduits.MODID, name = EnderIOConduits.MOD_NAME, version = EnderIOConduits.VERSION, dependencies = EnderIOConduits.DEPENDENCIES)
 public class EnderIOConduits implements IEnderIOAddon {
@@ -22,6 +25,11 @@ public class EnderIOConduits implements IEnderIOAddon {
   @Nullable
   public Configuration getConfiguration() {
     return ConfigHandler.config;
+  }
+
+  @EventHandler
+  public void init(FMLInitializationEvent event) {
+    PacketHandler.init(event);
   }
 
 }

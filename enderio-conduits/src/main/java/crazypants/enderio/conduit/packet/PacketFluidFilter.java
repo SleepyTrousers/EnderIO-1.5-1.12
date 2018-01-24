@@ -59,7 +59,7 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> imp
 
   @Override
   public IMessage onMessage(PacketFluidFilter message, MessageContext ctx) {
-    ILiquidConduit conduit = message.getTileCasted(ctx);
+    ILiquidConduit conduit = message.getConduit(ctx);
     if(! (conduit instanceof EnderLiquidConduit)) {
       return null;
     }    

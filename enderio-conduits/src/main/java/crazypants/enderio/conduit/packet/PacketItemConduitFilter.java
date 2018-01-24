@@ -77,7 +77,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
 
   @Override
   public IMessage onMessage(PacketItemConduitFilter message, MessageContext ctx) {
-    IItemConduit conduit = message.getTileCasted(ctx);
+    IItemConduit conduit = message.getConduit(ctx);
     conduit.setSelfFeedEnabled(message.dir, message.loopMode);
     conduit.setRoundRobinEnabled(message.dir, message.roundRobin);
     conduit.setInputColor(message.dir, message.colIn);

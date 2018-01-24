@@ -110,7 +110,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
       //need to get the required  values to the entity renderer
       BlockPos pos = getBundle().getLocation();
       PacketHandler.INSTANCE
-          .sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
+          .sendToAllAround(new PacketConduitFluidLevel(this), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
       lastSyncRatio = tank.getFilledRatio();
     }
   }

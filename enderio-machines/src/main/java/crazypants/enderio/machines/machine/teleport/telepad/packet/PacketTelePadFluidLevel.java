@@ -1,25 +1,26 @@
 package crazypants.enderio.machines.machine.teleport.telepad.packet;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketFluidLevel extends MessageTileEntity<TileEntity> {
+public class PacketTelePadFluidLevel extends MessageTileEntity<TileTelePad> {
 
   private int level;
 
-  public PacketFluidLevel() {
+  public PacketTelePadFluidLevel() {
     super();
   }
 
-  public PacketFluidLevel(TileTelePad te) {
-    super(te.getTileEntity());
+  public PacketTelePadFluidLevel(@Nonnull TileTelePad te) {
+    super(te);
     level = te.getFluidAmount();
   }
 
@@ -36,14 +37,13 @@ public class PacketFluidLevel extends MessageTileEntity<TileEntity> {
     level = buf.readInt();
   }
 
-  public static class Handler implements IMessageHandler<PacketFluidLevel, IMessage> {
+  public static class Handler implements IMessageHandler<PacketTelePadFluidLevel, IMessage> {
 
     @Override
-    public IMessage onMessage(PacketFluidLevel message, MessageContext ctx) {
-      TileEntity te = message.getTileEntity(ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx));
-      if (te instanceof TileTelePad) {
-        TileTelePad tp = (TileTelePad) te;
-        tp.setFluidAmount(message.level);
+    public IMessage onMessage(PacketTelePadFluidLevel message, MessageContext ctx) {
+      TileTelePad te = message.getTileEntity(ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx));
+      if (te != null) {
+        te.setFluidAmount(message.level);
       }
       return null;
     }

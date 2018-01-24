@@ -20,7 +20,7 @@ import crazypants.enderio.machines.machine.spawner.PacketSpawnerUpdateNotificati
 import crazypants.enderio.machines.machine.tank.PacketTankFluid;
 import crazypants.enderio.machines.machine.tank.PacketTankVoidMode;
 import crazypants.enderio.machines.machine.teleport.packet.PacketDrainStaff;
-import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketFluidLevel;
+import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTelePadFluidLevel;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketOpenServerGui;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetList;
@@ -90,7 +90,7 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketSetTarget.HandlerClient.class, PacketSetTarget.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketTeleportTrigger.Handler.class, PacketTeleportTrigger.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketTeleport.Handler.class, PacketTeleport.class, PacketHandler.nextID(), Side.CLIENT);
-    INSTANCE.registerMessage(PacketFluidLevel.Handler.class, PacketFluidLevel.class, PacketHandler.nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketTelePadFluidLevel.Handler.class, PacketTelePadFluidLevel.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketSendRecieveChannel.Handler.class, PacketSendRecieveChannel.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketSendRecieveChannelList.Handler.class, PacketSendRecieveChannelList.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketItemFilter.Handler.class, PacketItemFilter.class, PacketHandler.nextID(), Side.SERVER);

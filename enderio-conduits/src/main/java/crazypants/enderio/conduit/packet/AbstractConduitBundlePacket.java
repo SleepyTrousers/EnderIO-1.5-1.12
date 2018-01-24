@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.packet;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import net.minecraft.tileentity.TileEntity;
@@ -9,7 +11,8 @@ public abstract class AbstractConduitBundlePacket extends MessageTileEntity<Tile
   public AbstractConduitBundlePacket() {
   }
 
-  public AbstractConduitBundlePacket(TileEntity tile) {
+  public AbstractConduitBundlePacket(@Nonnull TileEntity tile) {
     super(tile);
   }
+
 }
