@@ -1,0 +1,28 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures": {
+        "bottom": "enderio:blocks/block_dark_steel_door_lower",
+        "top": "enderio:blocks/block_dark_steel_door_upper"
+        }
+     ,
+        "model":"iron_door_bottom"
+    },
+    "variants": {
+        "inventory": [{}],
+        "half":{
+	        "top": {},
+          "bottom": {}
+        },
+        "facing":{
+        	"east":{},
+        	"west":{},
+        	"north":{},
+        	"south":{}
+        },
+        "open":{
+        	"true":{},
+        	"false":{}
+        }
+    }
+}
