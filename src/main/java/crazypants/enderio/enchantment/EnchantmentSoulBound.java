@@ -103,7 +103,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
 
     // Galacticraft. Again we are too early for those items. We just dump the
     // stuff into the normal inventory to not have to keep a separate list.
-    /*if (evt.entityPlayer instanceof EntityPlayerMP) {
+    if (evt.entityPlayer instanceof EntityPlayerMP) {
       IInventory galacticraft = GalacticraftUtil.getGCInventoryForPlayer((EntityPlayerMP) evt.entityPlayer);
       if (galacticraft != null) {
         for (int i = 0; i < galacticraft.getSizeInventory(); i++) {
@@ -115,7 +115,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
           }
         }
       }
-    }*/
+    }
 
   }
 
