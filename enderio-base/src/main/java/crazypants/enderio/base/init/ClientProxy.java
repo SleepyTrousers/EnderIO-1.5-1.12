@@ -93,7 +93,6 @@ public class ClientProxy extends CommonProxy {
 
     // Custom state mappers
     EnderIOGlassesStateMapper.create();
-    // TODO 1.11 ConduitBundleStateMapper.create();
     ColdFireStateMapper.create();
     LeverStateMapper.create();
 

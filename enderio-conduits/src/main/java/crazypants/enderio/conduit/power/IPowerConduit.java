@@ -12,11 +12,11 @@ public interface IPowerConduit extends IEnergyStorage, IExtractor {
 
   // TODO Lang
 
-  public static final String ICON_KEY = "enderio:blocks/powerConduit";
-  public static final String ICON_KEY_INPUT = "enderio:blocks/powerConduitInput";
-  public static final String ICON_KEY_OUTPUT = "enderio:blocks/powerConduitOutput";
-  public static final String ICON_CORE_KEY = "enderio:blocks/powerConduitCore";
-  public static final String ICON_TRANSMISSION_KEY = "enderio:blocks/powerConduitTransmission";
+  public static final String ICON_KEY = "enderio:blocks/power_conduit";
+  public static final String ICON_KEY_INPUT = "enderio:blocks/power_conduit_input";
+  public static final String ICON_KEY_OUTPUT = "enderio:blocks/power_conduit_output";
+  public static final String ICON_CORE_KEY = "enderio:blocks/power_conduit_core";
+  public static final String ICON_TRANSMISSION_KEY = "enderio:blocks/power_conduit_transmission";
 
   public static final String COLOR_CONTROLLER_ID = "ColorController";
 

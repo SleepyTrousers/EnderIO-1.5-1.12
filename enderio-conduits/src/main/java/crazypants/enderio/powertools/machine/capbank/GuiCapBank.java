@@ -85,7 +85,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   @SuppressWarnings("rawtypes")
   public GuiCapBank(Entity player, InventoryPlayer playerInv, @Nonnull TileCapBank te, @Nonnull ContainerCapBank container) {
-    super(container, "capacitorBank");
+    super(container, "capacitor_bank");
     capBank = te;
     this.container = (ContainerCapBank) inventorySlots;
 

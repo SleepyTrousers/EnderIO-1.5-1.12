@@ -40,7 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipProvider, ISmartRenderAwareBlock, IHaveTESR {
 
-  public static final TextureSupplier gaugeIcon = TextureRegistry.registerTexture("blocks/blockGaugeOverlay");
+  public static final TextureSupplier gaugeIcon = TextureRegistry.registerTexture("blocks/block_gauge_overlay");
 
   public static BlockGauge create(@Nonnull IModObject modObject) {
     BlockGauge result = new BlockGauge(modObject);

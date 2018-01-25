@@ -1,8 +1,8 @@
 package crazypants.enderio.powertools.machine.capbank.network;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.power.PowerHandlerUtil;
@@ -26,19 +26,19 @@ public class InventoryImpl implements IInventory {
     return true;
   }
 
-  public static boolean isInventoryEmtpy(ItemStack[] inv) {
+  public static boolean isInventoryEmtpy(NNList<ItemStack> inv) {
     if (inv == null) {
       return true;
     }
     for (ItemStack st : inv) {
-      if (st != null) {
+      if (!st.isEmpty()) {
         return false;
       }
     }
     return true;
   }
 
-  private ItemStack[] inventory;
+  private NNList<ItemStack> inventory;
 
   private TileCapBank capBank;
 
@@ -62,19 +62,19 @@ public class InventoryImpl implements IInventory {
     return isInventoryEmtpy(inventory);
   }
 
-  public ItemStack[] getStacks() {
+  public NNList<ItemStack> getStacks() {
     return inventory;
   }
 
   @Override
   public @Nonnull ItemStack getStackInSlot(int slot) {
     if (inventory == null) {
-      return null;
+      return ItemStack.EMPTY;
     }
-    if (slot < 0 || slot >= inventory.length) {
-      return null;
+    if (slot < 0 || slot >= inventory.size()) {
+      return ItemStack.EMPTY;
     }
-    return inventory[slot];
+    return inventory.get(slot);
   }
 
   @Override
@@ -83,23 +83,23 @@ public class InventoryImpl implements IInventory {
   }
 
   @Override
-  public void setInventorySlotContents(int slot, @Nullable ItemStack itemstack) {
+  public void setInventorySlotContents(int slot, @Nonnull ItemStack itemstack) {
     if (inventory == null) {
       return;
     }
-    if (slot < 0 || slot >= inventory.length) {
+    if (slot < 0 || slot >= inventory.size()) {
       return;
     }
-    inventory[slot] = itemstack;
+    inventory.set(slot, itemstack);
   }
 
   @Override
   public @Nonnull ItemStack removeStackFromSlot(int index) {
     if (inventory == null) {
-      return null;
+      return ItemStack.EMPTY;
     }
     ItemStack res = getStackInSlot(index);
-    setInventorySlotContents(index, null);
+    setInventorySlotContents(index, ItemStack.EMPTY);
     return res;
   }
 
@@ -108,8 +108,8 @@ public class InventoryImpl implements IInventory {
     if (inventory == null) {
       return;
     }
-    for (int i = 0; i < inventory.length; i++) {
-      inventory[i] = null;
+    for (int i = 0; i < inventory.size(); i++) {
+      inventory.set(i, ItemStack.EMPTY);
     }
   }
 

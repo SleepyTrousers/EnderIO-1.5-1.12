@@ -61,19 +61,19 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   public static final String EXTERNAL_INTERFACE_GEOM = "ExternalInterface";
 
-  public static final String ICON_KEY = "enderio:blocks/itemConduit";
+  public static final String ICON_KEY = "enderio:blocks/item_conduit";
 
-  public static final String ICON_KEY_CORE = "enderio:blocks/itemConduitCore";
+  public static final String ICON_KEY_CORE = "enderio:blocks/item_conduit_core";
 
-  public static final String ICON_KEY_INPUT = "enderio:blocks/itemConduitInput";
+  public static final String ICON_KEY_INPUT = "enderio:blocks/item_conduit_input";
 
-  public static final String ICON_KEY_OUTPUT = "enderio:blocks/itemConduitOutput";
+  public static final String ICON_KEY_OUTPUT = "enderio:blocks/item_conduit_output";
 
-  public static final String ICON_KEY_IN_OUT_OUT = "enderio:blocks/itemConduitInOut_Out";
+  public static final String ICON_KEY_IN_OUT_OUT = "enderio:blocks/item_conduit_in_out_out";
 
-  public static final String ICON_KEY_IN_OUT_IN = "enderio:blocks/itemConduitInOut_In";
+  public static final String ICON_KEY_IN_OUT_IN = "enderio:blocks/item_conduit_in_out_in";
 
-  public static final String ICON_KEY_IN_OUT_BG = "enderio:blocks/itemConduitIoConnector";
+  public static final String ICON_KEY_IN_OUT_BG = "enderio:blocks/item_conduit_io_connector";
 
   public static final String ICON_KEY_ENDER = "enderio:blocks/ender_still";
 

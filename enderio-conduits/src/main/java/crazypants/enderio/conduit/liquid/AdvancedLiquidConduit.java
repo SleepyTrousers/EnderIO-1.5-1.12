@@ -40,13 +40,13 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
   public static final int CONDUIT_VOLUME = Fluid.BUCKET_VOLUME;
 
   // TODO Lang
-  public static final String ICON_KEY = "enderio:blocks/liquidConduitAdvanced";
-  public static final String ICON_KEY_LOCKED = "enderio:blocks/liquidConduitAdvancedLocked";
-  public static final String ICON_CORE_KEY = "enderio:blocks/liquidConduitCoreAdvanced";
-  public static final String ICON_EXTRACT_KEY = "enderio:blocks/liquidConduitAdvancedInput";
-  public static final String ICON_INSERT_KEY = "enderio:blocks/liquidConduitAdvancedOutput";
+  public static final String ICON_KEY = "enderio:blocks/liquid_conduit_advanced";
+  public static final String ICON_KEY_LOCKED = "enderio:blocks/liquid_conduit_advanced_locked";
+  public static final String ICON_CORE_KEY = "enderio:blocks/liquid_conduit_core_advanced";
+  public static final String ICON_EXTRACT_KEY = "enderio:blocks/liquid_conduit_advanced_input";
+  public static final String ICON_INSERT_KEY = "enderio:blocks/liquid_conduit_advanced_output";
 
-  public static final String ICON_EMPTY_EDGE = "enderio:blocks/liquidConduitAdvancedEdge";
+  public static final String ICON_EMPTY_EDGE = "enderio:blocks/liquid_conduit_advanced_edge";
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 

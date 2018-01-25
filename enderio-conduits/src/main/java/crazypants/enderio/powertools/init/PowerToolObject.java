@@ -1,7 +1,13 @@
 package crazypants.enderio.powertools.init;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -13,11 +19,10 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOPowerTools.MODID)
 public enum PowerToolObject implements IModObject.Registerable {
@@ -29,11 +34,10 @@ public enum PowerToolObject implements IModObject.Registerable {
 
   ;
 
-  // TODO
-//  @SubscribeEvent(priority = EventPriority.HIGHEST)
-//  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
-//    ModObjectRegistry.addModObjects(PowerToolObject.class);
-//  }
+  @SubscribeEvent(priority = EventPriority.HIGHEST)
+  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
+    ModObjectRegistry.addModObjects(PowerToolObject.class);
+  }
 
   final @Nonnull String unlocalisedName;
 
@@ -125,7 +129,7 @@ public enum PowerToolObject implements IModObject.Registerable {
   @Nullable
   @Override
   public List<Class<? extends TileEntity>> getTileClass() {
-    return new NNList<>(teClazz);
+    return teClazz != null ? new NNList<>(teClazz) : null;
   }
 
   @Override

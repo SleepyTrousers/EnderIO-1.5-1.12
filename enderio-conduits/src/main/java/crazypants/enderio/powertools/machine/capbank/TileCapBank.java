@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.EntityUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -40,6 +41,7 @@ import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.enderio.HandleIOMode;
+import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -80,8 +82,8 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   private ICapBankNetwork network;
 
-  @Store
-  private final @Nonnull ItemStack[] inventory = new ItemStack[4];
+  @Store(handler = HandleItemStackNNList.class)
+  private final @Nonnull NNList<ItemStack> inventory = new NNList<>(4, ItemStack.EMPTY);
 
   // Client side reference to look up network state
   private int networkId = -1;
@@ -158,9 +160,9 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
     if (network.getInventory().getCapBank() == this && !InventoryImpl.isInventoryEmtpy(inventory)) {
       for (TileCapBank cb : network.getMembers()) {
         if (cb != this) {
-          for (int i = 0; i < inventory.length; i++) {
-            cb.inventory[i] = inventory[i];
-            inventory[i] = null;
+          for (int i = 0; i < inventory.size(); i++) {
+            cb.inventory.set(i, inventory.get(i));
+            inventory.set(i, ItemStack.EMPTY);
           }
           network.getInventory().setCapBank(cb);
           markDirty();
@@ -773,23 +775,23 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   }
 
   @Override
-  public ItemStack getStackInSlot(int slot) {
+  public @Nonnull ItemStack getStackInSlot(int slot) {
     if (network == null) {
-      return null;
+      return ItemStack.EMPTY;
     }
     return network.getInventory().getStackInSlot(slot);
   }
 
   @Override
-  public ItemStack decrStackSize(int fromSlot, int amount) {
+  public @Nonnull ItemStack decrStackSize(int fromSlot, int amount) {
     if (network == null) {
-      return null;
+      return ItemStack.EMPTY;
     }
     return network.getInventory().decrStackSize(fromSlot, amount);
   }
 
   @Override
-  public void setInventorySlotContents(int slot, @Nullable ItemStack itemstack) {
+  public void setInventorySlotContents(int slot, @Nonnull ItemStack itemstack) {
     if (network == null) {
       return;
     }
@@ -797,9 +799,9 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   }
 
   @Override
-  public ItemStack removeStackFromSlot(int index) {
+  public @Nonnull ItemStack removeStackFromSlot(int index) {
     if (network == null) {
-      return null;
+      return ItemStack.EMPTY;
     }
     return network.getInventory().removeStackFromSlot(index);
   }
@@ -845,7 +847,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
     return PowerHandlerUtil.getCapability(itemstack, null) != null;
   }
 
-  public @Nonnull ItemStack[] getInventory() {
+  public @Nonnull NNList<ItemStack> getInventory() {
     return inventory;
   }
 
@@ -864,16 +866,16 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
     } else {
       dropLocation = new Vector3d(getPos());
     }
-    Util.dropItems(world, inventory, (int) dropLocation.x, (int) dropLocation.y, (int) dropLocation.z, false);
-    for (int i = 0; i < inventory.length; i++) {
-      inventory[i] = null;
+    Util.dropItems(world, inventory.toArray(new ItemStack[inventory.size()]), (int) dropLocation.x, (int) dropLocation.y, (int) dropLocation.z, false);
+    for (int i = 0; i < inventory.size(); i++) {
+      inventory.set(i, ItemStack.EMPTY);
     }
     dropItems = false;
     markDirty();
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return getName();
   }
 

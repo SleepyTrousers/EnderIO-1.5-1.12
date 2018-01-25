@@ -76,8 +76,8 @@ public class BlockCapBank extends BlockEio<TileCapBank>
     return res;
   }
 
-  private static final TextureSupplier gaugeIcon = TextureRegistry.registerTexture("blocks/capacitorBankOverlays");
-  private static final TextureSupplier infoPanelIcon = TextureRegistry.registerTexture("blocks/capBankInfoPanel");
+  private static final TextureSupplier gaugeIcon = TextureRegistry.registerTexture("blocks/capacitor_bank_overlays");
+  private static final TextureSupplier infoPanelIcon = TextureRegistry.registerTexture("blocks/cap_bank_info_panel");
 
   protected BlockCapBank(@Nonnull IModObject modObject) {
     super(modObject, TileCapBank.class);

@@ -39,9 +39,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   // TODO Lang
 
-  public static final String ICON_KEY = "enderio:blocks/liquidConduitEnder";
-  public static final String ICON_CORE_KEY = "enderio:blocks/liquidConduitCoreEnder"; 
-  public static final String ICON_IN_OUT_KEY = "enderio:blocks/liquidConduitAdvancedInOut";
+  public static final String ICON_KEY = "enderio:blocks/liquid_conduit_ender";
+  public static final String ICON_CORE_KEY = "enderio:blocks/liquid_conduit_core_ender"; 
+  public static final String ICON_IN_OUT_KEY = "enderio:blocks/liquid_conduit_advanced_in_out";
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 

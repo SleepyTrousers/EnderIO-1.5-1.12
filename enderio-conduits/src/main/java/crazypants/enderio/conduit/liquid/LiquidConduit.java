@@ -45,13 +45,13 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   // TODO Lang
 
-  public static final String ICON_KEY = "enderio:blocks/liquidConduit";
-  public static final String ICON_KEY_LOCKED = "enderio:blocks/liquidConduitLocked";
-  public static final String ICON_CORE_KEY = "enderio:blocks/liquidConduitCore";
-  public static final String ICON_EXTRACT_KEY = "enderio:blocks/liquidConduitExtract";
-  public static final String ICON_EMPTY_EXTRACT_KEY = "enderio:blocks/emptyLiquidConduitExtract";
-  public static final String ICON_INSERT_KEY = "enderio:blocks/liquidConduitInsert";
-  public static final String ICON_EMPTY_INSERT_KEY = "enderio:blocks/emptyLiquidConduitInsert";
+  public static final String ICON_KEY = "enderio:blocks/liquid_conduit";
+  public static final String ICON_KEY_LOCKED = "enderio:blocks/liquid_conduit_locked";
+  public static final String ICON_CORE_KEY = "enderio:blocks/liquid_conduit_core";
+  public static final String ICON_EXTRACT_KEY = "enderio:blocks/liquid_conduit_extract";
+  public static final String ICON_EMPTY_EXTRACT_KEY = "enderio:blocks/empty_liquid_conduit_extract";
+  public static final String ICON_INSERT_KEY = "enderio:blocks/liquid_conduit_insert";
+  public static final String ICON_EMPTY_INSERT_KEY = "enderio:blocks/empty_liquid_conduit_insert";
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 

@@ -53,7 +53,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 
-  static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender" };
+  static final String[] POSTFIX = new String[] { "", "_enhanced", "_ender" };
 
   @Nonnull
   static ItemStack createItemStackForSubtype(int subtype) {

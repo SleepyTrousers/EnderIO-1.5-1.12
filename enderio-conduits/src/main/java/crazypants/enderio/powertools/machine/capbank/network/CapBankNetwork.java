@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.RoundRobinIterator;
 
 import crazypants.enderio.base.Log;
@@ -306,7 +307,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
     return result;
   }
 
-  public boolean chargeItems(ItemStack[] items) {
+  public boolean chargeItems(NNList<ItemStack> items) {
     if (items == null) {
       return false;
     }
