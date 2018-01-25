@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
@@ -54,7 +55,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
 
   // NB: This is a transient field controlled by the owning bundle. It is not
   // written to the NBT etc
-  protected IConduitBundle bundle;
+  protected @Nullable IConduitBundle bundle;
 
   protected boolean active;
 
@@ -113,7 +114,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
 
   protected NBTTagCompound getNbtRootForType(@Nonnull NBTTagCompound nbt, boolean createIfNull) {
     Class<? extends IConduit> bt = getBaseConduitType();
-    String dataRootName = bt.getSimpleName();
+    String dataRootName = NullHelper.notnullJ(bt.getSimpleName(), "Class#getSimpleName");
     NBTTagCompound dataRoot = null;
     if (nbt.hasKey(dataRootName)) {
       dataRoot = nbt.getCompoundTag(dataRootName);
@@ -443,7 +444,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
   }
 
   protected void updateNetwork(World world) {
-    BlockPos pos = bundle.getLocation();
+    BlockPos pos = getBundle().getLocation();
     if (getNetwork() == null && world.isBlockLoaded(pos)) {
       ConduitUtil.ensureValidNetwork(this);
       if (getNetwork() != null) {
@@ -483,7 +484,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
 
   @Override
   public void onRemovedFromBundle() {
-    TileEntity te = bundle.getEntity();
+    TileEntity te = getBundle().getEntity();
     World world = te.getWorld();
 
     for (EnumFacing dir : conduitConnections) {
@@ -552,8 +553,9 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
   @Override
   @Nonnull
   public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
-    return Collections.singletonList(new CollidableComponent(getCollidableType(),
-        ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir, key.isStub, key.offset), key.dir, null));
+    return NullHelper.notnullJ(Collections.singletonList(new CollidableComponent(getCollidableType(),
+        ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir, key.isStub, key.offset), key.dir, null)), 
+        "Collections#singletonList");
   }
 
   @Override
@@ -619,7 +621,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
       if (bundle == null) {
         return 0;
       }
-      TileEntity te = bundle.getEntity();
+      TileEntity te = getBundle().getEntity();
       lastExternalRedstoneLevel = ConduitUtil.isBlockIndirectlyGettingPoweredIfLoaded(te.getWorld(), te.getPos());
     }
     return lastExternalRedstoneLevel;

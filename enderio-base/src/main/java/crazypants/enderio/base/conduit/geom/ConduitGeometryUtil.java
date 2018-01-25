@@ -119,7 +119,7 @@ public class ConduitGeometryUtil {
     return EXTERNAL_CONNECTOR_BOUNDS.get(dir);
   }
 
-  public BoundingBox getBoundingBox(Class<? extends IConduit> type, EnumFacing dir, boolean isStub, Offset offset) {
+  public @Nonnull BoundingBox getBoundingBox(Class<? extends IConduit> type, EnumFacing dir, boolean isStub, Offset offset) {
     GeometryKey key = new GeometryKey(dir, isStub, offset, type);
     BoundingBox result = boundsCache.get(key);
     if (result == null) {
@@ -159,11 +159,11 @@ public class ConduitGeometryUtil {
     return bb;
   }
 
-  private BoundingBox createConduitBounds(Class<? extends IConduit> type, GeometryKey key) {
+  private @Nonnull BoundingBox createConduitBounds(Class<? extends IConduit> type, GeometryKey key) {
     return createConduitBounds(type, key.dir, key.isStub, key.offset);
   }
 
-  private BoundingBox createConduitBounds(Class<? extends IConduit> type, EnumFacing dir, boolean isStub, Offset offset) {
+  private @Nonnull BoundingBox createConduitBounds(Class<? extends IConduit> type, EnumFacing dir, boolean isStub, Offset offset) {
     BoundingBox bb = CORE_BOUNDS;
 
     Vector3d min = bb.getMin();

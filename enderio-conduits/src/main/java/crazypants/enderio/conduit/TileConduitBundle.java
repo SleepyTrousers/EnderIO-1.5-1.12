@@ -614,13 +614,13 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     Class<? extends IConduit> type = con.getCollidableType();
     if (con.hasConnections()) {
       for (EnumFacing dir : con.getExternalConnections()) {
-        result.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), dir), null, false), con));
+        result.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), dir), dir, false), con));
       }
       for (EnumFacing dir : con.getConduitConnections()) {
-        result.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), dir), null, false), con));
+        result.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), dir), dir, false), con));
       }
     } else {
-      result.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), null), null, false), con));
+      result.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), EnumFacing.DOWN /* FIXME what to do here? */), EnumFacing.DOWN, false), con));
     }
   }
 

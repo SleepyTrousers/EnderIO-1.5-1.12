@@ -66,10 +66,10 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
    
     ItemStack held = player.getHeldItem(hand);
 
-    BlockPos placeAt = canPlaceItem(held, ConduitRegistry.getConduitModObjectNN().getBlock().getDefaultState(), player, world, pos, side);
+    BlockPos placeAt = canPlaceItem(held, ConduitRegistry.getConduitModObjectNN().getBlockNN().getDefaultState(), player, world, pos, side);
     if(placeAt != null) {
       if(!world.isRemote) {
-        if (world.setBlockState(placeAt, ConduitRegistry.getConduitModObjectNN().getBlock().getDefaultState(), 1)) {
+        if (world.setBlockState(placeAt, ConduitRegistry.getConduitModObjectNN().getBlockNN().getDefaultState(), 1)) {
           TileEntity te = world.getTileEntity(placeAt);
           if(te instanceof IConduitBundle) {
             IConduitBundle bundle = (IConduitBundle) te;

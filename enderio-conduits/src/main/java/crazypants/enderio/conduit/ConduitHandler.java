@@ -20,29 +20,11 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class ConduitHandler implements IHandler<IConduit> {
 
-  private IConduit conduit;
-
   static {
     Registry.GLOBAL_REGISTRY.register(new ConduitHandler());
   }
 
-  public ConduitHandler() {
-    this(null);
-  }
-
-  public ConduitHandler(IConduit conduit) {
-    this.conduit = conduit;
-  }
-
-  public IConduit getConduit() {
-    return conduit;
-  }
-
-  public void setConduit(IConduit conduit) {
-    this.conduit = conduit;
-  }
-
-  public void writeToNBT(NBTTagCompound nbtRoot) {
+  public void writeToNBT(IConduit conduit, NBTTagCompound nbtRoot) {
     NBTTagCompound conduitRoot = new NBTTagCompound();
     ConduitUtil.writeToNBT(conduit, conduitRoot);
     NbtValue.CONDUIT.setTag(nbtRoot, conduitRoot);
@@ -50,10 +32,11 @@ public class ConduitHandler implements IHandler<IConduit> {
 
   @Nullable
   public static IConduit readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
-    if (!NbtValue.CONDUIT.hasTag(nbtRoot)) {
+    NBTTagCompound conduitTag = NbtValue.CONDUIT.getTag(nbtRoot);
+    if (conduitTag == null) {
       return null;
     }
-    return ConduitUtil.readConduitFromNBT(nbtRoot);
+    return ConduitUtil.readConduitFromNBT(conduitTag);
   }
 
   @Override
@@ -65,7 +48,7 @@ public class ConduitHandler implements IHandler<IConduit> {
   public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull IConduit object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     NBTTagCompound root = new NBTTagCompound();
-    object.writeToNBT(root);
+    writeToNBT(object, root);
     nbt.setTag(name, root);
     return true;
   }

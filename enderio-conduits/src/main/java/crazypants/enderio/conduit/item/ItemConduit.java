@@ -163,8 +163,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   }
 
   @Override
-  public NNList<ItemStack> getDrops() {
-    NNList<ItemStack> res = NNList.emptyList();
+  public @Nonnull NNList<ItemStack> getDrops() {
+    NNList<ItemStack> res = new NNList<>();
     res.add(createItem());
     for (ItemStack stack : speedUpgrades.values()) {
       res.add(stack);
