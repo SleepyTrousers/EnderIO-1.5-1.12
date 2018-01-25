@@ -56,11 +56,17 @@ public class HelmetPainterTemplate extends AbstractPainterTemplate<ItemDarkSteel
 
   @Override
   public boolean isPartialRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
-    return isValidTarget(target) || isValidPaint(paintSource);
+    if (Prep.isInvalid(paintSource)) {
+      return isValidTarget(target);
+    }
+    if (Prep.isInvalid(target)) {
+      return isValidPaint(paintSource);
+    }
+    return isValidTarget(target) && isValidPaint(paintSource);
   }
 
   protected boolean isValidPaint(@Nonnull ItemStack paintSource) {
-    return paintSource.getItem() instanceof ItemBlock || isValidTarget(paintSource);
+    return Prep.isValid(paintSource) && (paintSource.getItem() instanceof ItemBlock || isValidTarget(paintSource));
   }
 
   @Override

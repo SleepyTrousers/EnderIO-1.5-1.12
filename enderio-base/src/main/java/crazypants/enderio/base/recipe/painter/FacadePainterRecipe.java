@@ -9,7 +9,6 @@ import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class FacadePainterRecipe extends AbstractPainterTemplate<ItemConduitFacade> {
@@ -52,11 +51,17 @@ public class FacadePainterRecipe extends AbstractPainterTemplate<ItemConduitFaca
 
   @Override
   public boolean isPartialRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
-    return isValidTarget(target) || isValidPaint(paintSource);
+    if (Prep.isInvalid(paintSource)) {
+      return isValidTarget(target);
+    }
+    if (Prep.isInvalid(target)) {
+      return isValidPaint(paintSource);
+    }
+    return isValidTarget(target) && isValidPaint(paintSource);
   }
 
   protected boolean isValidPaint(@Nonnull ItemStack paintSource) {
-    return Prep.isValid(paintSource) && paintSource.getItem() instanceof ItemBlock;
+    return Prep.isValid(paintSource) && PaintUtil.isValid(paintSource, null);
   }
 
   @Override
