@@ -2,7 +2,7 @@
  	"forge_marker": 1,
 	"defaults": {
         "textures": {
-        "bottom": "enderio:blocks/block_dark_steel_door_upper",
+        "bottom": "enderio:blocks/block_dark_steel_door_lower",
         "top": "enderio:blocks/block_dark_steel_door_upper"
         }
 	},

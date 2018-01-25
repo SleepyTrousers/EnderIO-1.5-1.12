@@ -35,7 +35,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
 
   @Override
   public boolean isRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
-    return isValidTarget(target) && PaintUtil.isValid(paintSource, getTargetBlock(target));
+    return isValidTarget(target) && Prep.isValid(paintSource) && PaintUtil.isValid(paintSource, getTargetBlock(target));
   }
 
   @Override

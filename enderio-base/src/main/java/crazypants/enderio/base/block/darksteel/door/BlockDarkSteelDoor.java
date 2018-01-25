@@ -6,8 +6,6 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.item.darksteel.ItemDarkSteelDoor;
 import crazypants.enderio.base.render.IDefaultRenderers;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.SoundType;
@@ -26,6 +24,8 @@ public class BlockDarkSteelDoor extends BlockDoor implements IDefaultRenderers, 
     return new BlockDarkSteelDoor(modObject, Material.IRON, true);
   }
 
+  private final @Nonnull IModObject modobject;
+
   public BlockDarkSteelDoor(@Nonnull IModObject modObject, Material materialIn, boolean isBlastResistant) {
     super(materialIn);
     if (isBlastResistant) {
@@ -41,11 +41,12 @@ public class BlockDarkSteelDoor extends BlockDoor implements IDefaultRenderers, 
     disableStats();
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIO);
+    this.modobject = modObject;
   }
 
   @Override
   public Item createBlockItem(@Nonnull IModObject modObject) {
-    return modObject.apply(new ItemDarkSteelDoor(this));
+    return modObject.apply(new BlockItemDarkSteelDoor(this));
   }
 
   @Override
@@ -55,17 +56,16 @@ public class BlockDarkSteelDoor extends BlockDoor implements IDefaultRenderers, 
   }
 
   @Override
-  public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+  public @Nonnull ItemStack getItem(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
     return new ItemStack(getItem());
   }
 
-  private Item getItem() {
-    // TODO Item.getItemFromBlock
-    return ModObject.blockDarkSteelDoor.getItem();
+  private @Nonnull Item getItem() {
+    return modobject.getItemNN();
   }
 
   @Override
-  public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+  public @Nonnull Item getItemDropped(@Nonnull IBlockState state, @Nonnull Random rand, int fortune) {
     return getItem();
   }
 }

@@ -38,6 +38,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -59,14 +60,24 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
   public static BlockPaintedDoor create_wooden(@Nonnull IModObject modObject) {
     BlockPaintedDoor result = new BlockPaintedDoor(modObject, Material.WOOD, false);
     result.init(modObject);
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedDoor>(result, Blocks.OAK_DOOR));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedDoor>(result, Blocks.OAK_DOOR) {
+      @Override
+      public boolean isValidTarget(@Nonnull ItemStack target) {
+        return target.getItem() == Items.OAK_DOOR;
+      }
+    });
     return result;
   }
 
   public static BlockPaintedDoor create_iron(@Nonnull IModObject modObject) {
     BlockPaintedDoor result = new BlockPaintedDoor(modObject, Material.IRON, false);
     result.init(modObject);
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedDoor>(result, Blocks.IRON_DOOR));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedDoor>(result, Blocks.IRON_DOOR) {
+      @Override
+      public boolean isValidTarget(@Nonnull ItemStack target) {
+        return target.getItem() == Items.IRON_DOOR;
+      }
+    });
     return result;
   }
 
@@ -74,7 +85,12 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
     BlockPaintedDoor result = new BlockPaintedDoor(modObject, Material.IRON, true);
     result.init(modObject);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER,
-        new BasicPainterTemplate<BlockPaintedDoor>(result, ModObject.blockPaintedDarkSteelDoor.getBlock()));
+        new BasicPainterTemplate<BlockPaintedDoor>(result, ModObject.blockDarkSteelDoor.getBlockNN()) {
+          @Override
+          public boolean isValidTarget(@Nonnull ItemStack target) {
+            return target.getItem() == ModObject.blockDarkSteelDoor.getItemNN();
+          }
+        });
     return result;
   }
 
@@ -106,8 +122,7 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
       @Nonnull ItemStack stack) {
     setPaintSource(state, world, pos, PaintUtil.getSourceBlock(stack));
     if (!world.isRemote) {
-
-      BlockPos pos2 = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
+      BlockPos pos2 = pos.up();
       world.setBlockState(pos2, this.getDefaultState().withProperty(HALF, EnumDoorHalf.UPPER));
       world.notifyBlockUpdate(pos, state, state, 3);
     }
