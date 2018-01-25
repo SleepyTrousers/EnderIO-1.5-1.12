@@ -136,6 +136,9 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     for (IConduit c : conduits) {
       c.setBundle(this);
     }
+    if(getWorld() != null && getWorld().isRemote) {
+      clientUpdated = true;
+    }
   }
   
   //
