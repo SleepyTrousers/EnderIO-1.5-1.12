@@ -1,6 +1,7 @@
 package crazypants.enderio.base.paint;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.base.EnderIO;
@@ -64,7 +65,7 @@ public class YetaUtil {
     }
   }
 
-  public static @Nonnull ConduitDisplayMode getDisplayMode(EntityPlayer player) {
+  public static @Nonnull ConduitDisplayMode getDisplayMode(@Nullable EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
     if (player == null) {
       return ConduitDisplayMode.ALL;
@@ -86,7 +87,7 @@ public class YetaUtil {
     return bundle.hasFacade() && !isFacadeHidden(bundle, player);
   }
 
-  public static boolean renderConduit(EntityPlayer player, @Nonnull Class<? extends IConduit> conduitType) {
+  public static boolean renderConduit(EntityPlayer player, @Nullable Class<? extends IConduit> conduitType) {
     if (player == null || player.world.isRemote) {
       return lastCheckResult.renderConduit(conduitType);
     }
@@ -125,7 +126,7 @@ public class YetaUtil {
       this.displayMode = displayMode;
     }
 
-    public boolean renderConduit(@Nonnull Class<? extends IConduit> conduitType) {
+    public boolean renderConduit(@Nullable Class<? extends IConduit> conduitType) {
       return displayMode.renderConduit(conduitType);
     }
 

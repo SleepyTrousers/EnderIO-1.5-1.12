@@ -1,12 +1,16 @@
 package crazypants.enderio.base.paint;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.BlockEnder;
+import com.enderio.core.common.util.NullHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -104,6 +108,13 @@ public interface IPaintable {
 
     @Nullable
     IBlockState getPaintSource();
+    
+    /**
+     * @return AIR if no paint source is found.
+     */
+    default @Nonnull IBlockState getPaintSourceNN() {
+      return NullHelper.notnullJ(Optional.ofNullable(getPaintSource()).orElseGet(Blocks.AIR::getDefaultState), "Optional orElseGet returned null!");
+    }
   }
 
   /**

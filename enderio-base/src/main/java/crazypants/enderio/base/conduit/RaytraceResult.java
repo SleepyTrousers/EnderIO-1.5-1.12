@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import net.minecraft.util.math.RayTraceResult;
@@ -13,7 +14,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class RaytraceResult {
 
-  public static RaytraceResult getClosestHit(@Nonnull Vec3d origin, @Nonnull Collection<RaytraceResult> candidates) {
+  public static @Nullable RaytraceResult getClosestHit(@Nonnull Vec3d origin, @Nonnull Collection<RaytraceResult> candidates) {
     double minLengthSquared = Double.POSITIVE_INFINITY;
     RaytraceResult closest = null;
 
@@ -37,10 +38,10 @@ public class RaytraceResult {
     });
   }
 
-  public final @Nonnull CollidableComponent component;
+  public final @Nullable CollidableComponent component;
   public final @Nonnull RayTraceResult movingObjectPosition;
 
-  public RaytraceResult(@Nonnull CollidableComponent component, @Nonnull RayTraceResult movingObjectPosition) {
+  public RaytraceResult(@Nullable CollidableComponent component, @Nonnull RayTraceResult movingObjectPosition) {
     this.component = component;
     this.movingObjectPosition = movingObjectPosition;
   }

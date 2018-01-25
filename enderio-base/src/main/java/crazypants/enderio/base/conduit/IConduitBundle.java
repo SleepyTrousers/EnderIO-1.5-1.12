@@ -128,7 +128,7 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
 
   void setFacadeType(@Nonnull EnumFacadeType type);
 
-  EnumFacadeType getFacadeType();
+  @Nonnull EnumFacadeType getFacadeType();
 
   // NB: this has to be named differently to the TE method due to obf
   @Nonnull
