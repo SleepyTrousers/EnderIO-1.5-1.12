@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.liquid;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -8,7 +10,7 @@ public class AbstractTankConduitNetwork<T extends AbstractTankConduit> extends A
   protected FluidStack liquidType;
   protected boolean fluidTypeLocked = false;
 
-  protected AbstractTankConduitNetwork(Class<T> cl) {
+  protected AbstractTankConduitNetwork(@Nonnull Class<T> cl) {
     super(cl, ILiquidConduit.class);
   }
 
@@ -17,19 +19,19 @@ public class AbstractTankConduitNetwork<T extends AbstractTankConduit> extends A
   }
 
   @Override
-  public void addConduit(T con) {
+  public void addConduit(@Nonnull T con) {
     super.addConduit(con);
     con.setFluidType(liquidType);
-    if(con.fluidTypeLocked && !fluidTypeLocked) {
+    if (con.fluidTypeLocked && !fluidTypeLocked) {
       setFluidTypeLocked(true);
     }
   }
 
   public boolean setFluidType(FluidStack newType) {
-    if(liquidType != null && liquidType.isFluidEqual(newType)) {
+    if (liquidType != null && liquidType.isFluidEqual(newType)) {
       return false;
     }
-    if(newType != null) {
+    if (newType != null) {
       liquidType = newType.copy();
       liquidType.amount = 0;
     } else {
@@ -42,7 +44,7 @@ public class AbstractTankConduitNetwork<T extends AbstractTankConduit> extends A
   }
 
   public void setFluidTypeLocked(boolean fluidTypeLocked) {
-    if(this.fluidTypeLocked == fluidTypeLocked) {
+    if (this.fluidTypeLocked == fluidTypeLocked) {
       return;
     }
     this.fluidTypeLocked = fluidTypeLocked;
@@ -56,7 +58,7 @@ public class AbstractTankConduitNetwork<T extends AbstractTankConduit> extends A
   }
 
   public static boolean areFluidsCompatable(FluidStack a, FluidStack b) {
-    if(a == null || b == null) {
+    if (a == null || b == null) {
       return true;
     }
     return a.isFluidEqual(b);

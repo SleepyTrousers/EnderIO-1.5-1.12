@@ -44,11 +44,11 @@ public enum DamageModeIconHolder implements ICycleEnum {
     return Collections.singletonList(EnderIO.lang.localize("gui.conduit.item.damage.".concat(name().toLowerCase(Locale.ENGLISH))));
   }
 
-  public DamageMode getMode() {
+  public @Nonnull DamageMode getMode() {
     return DamageMode.values()[this.ordinal()];
   }
 
-  public static DamageModeIconHolder getFromMode(DamageMode mode) {
+  public static @Nonnull DamageModeIconHolder getFromMode(DamageMode mode) {
     if (mode != null) {
       return values()[mode.ordinal()];
     }

@@ -1,11 +1,21 @@
 package crazypants.enderio.base.filter.filters;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+// TODO Move to Capabilities
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.base.filter.filters.ItemFilter.HandleFilter;
@@ -30,14 +40,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.oredict.OreDictionary;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-// TODO Move to Capabilities
 
 @Storable(handler = HandleFilter.class)
 public class ItemFilter implements IInventory, IItemFilter {
@@ -614,7 +616,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public IItemFilterGui getGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
+  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
     return new BasicItemFilterGui(gui, filterContainer, isStickyModeAvailable);
   }
 }

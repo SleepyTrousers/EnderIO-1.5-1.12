@@ -1,8 +1,15 @@
 package crazypants.enderio.conduit.liquid;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
@@ -26,11 +33,6 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-
 import static crazypants.enderio.conduit.init.ConduitObject.item_liquid_conduit;
 
 public class AdvancedLiquidConduit extends AbstractTankConduit implements IConduitComponent {
@@ -53,7 +55,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
-      public void registerIcons(TextureMap register) {
+      public void registerIcons(@Nonnull TextureMap register) {
         ICONS.put(ICON_KEY, register.registerSprite(new ResourceLocation(ICON_KEY)));
         ICONS.put(ICON_CORE_KEY, register.registerSprite(new ResourceLocation(ICON_CORE_KEY)));
         ICONS.put(ICON_EMPTY_EDGE, register.registerSprite(new ResourceLocation(ICON_EMPTY_EDGE)));
@@ -203,9 +205,9 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
     refreshInputs(fromDirection);
   }
 
-  //-------------------------------------
+  // -------------------------------------
   // TEXTURES
-  //-------------------------------------
+  // -------------------------------------
 
   @SideOnly(Side.CLIENT)
   @Override
@@ -228,7 +230,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
   }
 
   @SideOnly(Side.CLIENT)
-  public TextureAtlasSprite getNotSetEdgeTexture() {
+  public @Nonnull TextureAtlasSprite getNotSetEdgeTexture() {
     return ICONS.get(ICON_EMPTY_EDGE);
   }
 

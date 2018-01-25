@@ -2,6 +2,8 @@ package crazypants.enderio.conduit.item;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.DyeColor;
 
@@ -17,12 +19,10 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 
-import javax.annotation.Nonnull;
-
 public class ItemConduitRenderer extends DefaultConduitRenderer {
 
   @Override
-  public boolean isRendererForConduit(IConduit conduit) {
+  public boolean isRendererForConduit(@Nonnull IConduit conduit) {
     if (conduit instanceof IItemConduit) {
       return true;
     }
@@ -30,8 +30,8 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, BlockRenderLayer layer,
-      List<BakedQuad> quads) {
+  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,
+      @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
     super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
 
     if (layer == null || component.dir == null) {

@@ -1,5 +1,19 @@
 package crazypants.enderio.conduit.redstone;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
@@ -8,9 +22,15 @@ import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.conduit.*;
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IGuiExternalConnection;
+import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
@@ -44,10 +64,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-
 import static crazypants.enderio.conduit.init.ConduitObject.item_redstone_conduit;
 
 public class InsulatedRedstoneConduit extends AbstractConduit implements IRedstoneConduit, IConduitComponent {
@@ -59,7 +75,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
-      public void registerIcons(TextureMap register) {
+      public void registerIcons(@Nonnull TextureMap register) {
         ICONS.put(KEY_INS_CORE_OFF_ICON, register.registerSprite(new ResourceLocation(KEY_INS_CORE_OFF_ICON)));
         ICONS.put(KEY_INS_CORE_ON_ICON, register.registerSprite(new ResourceLocation(KEY_INS_CORE_ON_ICON)));
         ICONS.put(KEY_INS_CONDUIT_ICON, register.registerSprite(new ResourceLocation(KEY_INS_CONDUIT_ICON)));
@@ -154,9 +170,9 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   private final List<Set<Signal>> externalSignals = new ArrayList<Set<Signal>>();
 
   private RedstoneConduitNetwork network;
-  
+
   private int activeUpdateCooldown = 0;
-  
+
   private boolean activeDirty = false;
 
   @SuppressWarnings("unused")
@@ -191,12 +207,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       updateNetwork(world);
     }
   }
-  
+
   @Override
   public void updateEntity(@Nonnull World world) {
     super.updateEntity(world);
 
-    if (!world.isRemote) {     
+    if (!world.isRemote) {
       if (activeUpdateCooldown > 0) {
         --activeUpdateCooldown;
         updateActiveState();
@@ -216,7 +232,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   private void updateActiveState() {
-    if (Config.redstoneConduitsShowState && activeDirty && activeUpdateCooldown == 0) {      
+    if (Config.redstoneConduitsShowState && activeDirty && activeUpdateCooldown == 0) {
       setClientStateDirty();
       activeDirty = false;
       activeUpdateCooldown = 4;
@@ -356,7 +372,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   @Nonnull
   public ItemStack createItem() {
-    return new ItemStack(item_redstone_conduit.getItem(), 1, 0);
+    return new ItemStack(item_redstone_conduit.getItemNN(), 1, 0);
   }
 
   @Override
@@ -478,10 +494,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
           continue SIDE;
         }
       }
-      for(ISignalProvider provider : SIGNAL_PROVIDERS) {
-        if(provider != null && provider.connectsToNetwork(world, pos, dir.getOpposite())) {
+      for (ISignalProvider provider : SIGNAL_PROVIDERS) {
+        if (provider != null && provider.connectsToNetwork(world, pos, dir.getOpposite())) {
           temp.put(dir, true);
-		  continue SIDE;
+          continue SIDE;
         }
       }
       temp.put(dir, false);
@@ -498,12 +514,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     if (network == null || !network.isNetworkEnabled()) {
       return 0;
     }
-    int result = 0;    
+    int result = 0;
     for (Signal signal : getNetworkOutputs(toDirection)) {
       // don't return signals back to where they came from
       if (!signal.getSource().equals(getPos().offset(toDirection))) {
         result = Math.max(result, signal.getStrength());
-      } 
+      }
     }
     return result;
   }
@@ -572,20 +588,20 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     }
 
     HashSet<Signal> signals = new HashSet<Signal>();
-    if(acceptSignalsForDir(side)) {
-      if(isSpecialConnection(side)) {
+    if (acceptSignalsForDir(side)) {
+      if (isSpecialConnection(side)) {
         BlockPos pos = getBundle().getLocation().offset(side);
         World world = getBundle().getEntity().getWorld();
-        for(ISignalProvider provider : SIGNAL_PROVIDERS) {
+        for (ISignalProvider provider : SIGNAL_PROVIDERS) {
           Set<Signal> inputs = provider.getNetworkInputs(world, pos, side.getOpposite());
-          if(inputs != null) {
+          if (inputs != null) {
             signals.addAll(inputs);
           }
         }
       } else {
         int input = getExternalPowerLevel(side);
-        if(input > 1) { // need to degrade external signals by one as they
-                        // enter
+        if (input > 1) { // need to degrade external signals by one as they
+                         // enter
           BlockPos pos = getBundle().getLocation().offset(side);
           Signal signal = new Signal(pos, side, input - 1, getSignalColor(side));
           signals.add(signal);
@@ -598,8 +614,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     }
 
     Map<DyeColor, Signal> res = new HashMap<DyeColor, Signal>();
-    for(Signal signal : signals) {
-      if(signal != null && (!res.containsKey(signal.getColor()) || signal.getStrength()> res.get(signal.getColor()).getStrength())) {
+    for (Signal signal : signals) {
+      if (signal != null && (!res.containsKey(signal.getColor()) || signal.getStrength() > res.get(signal.getColor()).getStrength())) {
         res.put(signal.getColor(), signal);
       }
     }
@@ -639,7 +655,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     return res;
   }
 
-  
   @Override
   public boolean onNeighborBlockChange(@Nonnull Block blockId) {
     World world = getBundle().getEntity().getWorld();
@@ -685,10 +700,9 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     return result;
   }
 
-  //---------------------
+  // ---------------------
   // TEXTURES
-  //---------------------
-
+  // ---------------------
 
   @Override
   @Nonnull
@@ -848,11 +862,11 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     return new RedstoneConduitNetwork();
   }
 
-//  @SideOnly(Side.CLIENT)
-//  @Override
-//  public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
-//    return new RedstoneSettings(gui, con);
-//  }
+  // @SideOnly(Side.CLIENT)
+  // @Override
+  // public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
+  // return new RedstoneSettings(gui, con);
+  // }
 
   @SideOnly(Side.CLIENT)
   @Nonnull
@@ -860,7 +874,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IConduit con) {
     return new RedstoneSettings((GuiExternalConnection) gui, con);
   }
-
 
   @SideOnly(Side.CLIENT)
   @Override

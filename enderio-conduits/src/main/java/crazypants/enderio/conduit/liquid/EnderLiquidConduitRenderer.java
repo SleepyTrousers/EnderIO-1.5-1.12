@@ -2,6 +2,8 @@ package crazypants.enderio.conduit.liquid;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
@@ -14,35 +16,33 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 
-import javax.annotation.Nonnull;
-
 public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
 
   @Override
-  public boolean isRendererForConduit(IConduit conduit) {
-    if(conduit instanceof EnderLiquidConduit) {      
+  public boolean isRendererForConduit(@Nonnull IConduit conduit) {
+    if (conduit instanceof EnderLiquidConduit) {
       return true;
     }
     return false;
   }
 
   @Override
-  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex, @Nonnull CollidableComponent component, float selfIllum, @Nonnull BlockRenderLayer layer,
-      List<BakedQuad> quads) {
-  
+  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,
+      @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
+
     super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
-    
+
     EnderLiquidConduit pc = (EnderLiquidConduit) conduit;
     for (EnumFacing dir : conduit.getExternalConnections()) {
       TextureAtlasSprite daTex = null;
-      if(conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
+      if (conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
         daTex = pc.getTextureForInputMode();
-      } else if(conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
+      } else if (conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
         daTex = pc.getTextureForOutputMode();
-      } else if(conduit.getConnectionMode(dir) == ConnectionMode.IN_OUT) {
+      } else if (conduit.getConnectionMode(dir) == ConnectionMode.IN_OUT) {
         daTex = pc.getTextureForInOutMode();
       }
-      if(daTex != null) {
+      if (daTex != null) {
         Offset offset = bundle.getOffset(ILiquidConduit.class, dir);
         ConnectionModeGeometry.addModeConnectorQuads(dir, offset, daTex, null, quads);
       }
@@ -53,6 +53,5 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
   public void initIcons() {
     EnderLiquidConduit.initIcons();
   }
-  
 
 }

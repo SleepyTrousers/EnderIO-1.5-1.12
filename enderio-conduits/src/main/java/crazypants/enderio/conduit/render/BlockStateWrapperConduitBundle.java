@@ -53,7 +53,7 @@ public class BlockStateWrapperConduitBundle extends BlockStateWrapperBase {
   }
 
   @Override
-  protected void putIntoCache(QuadCollector quads) {
+  protected void putIntoCache(@Nonnull QuadCollector quads) {
     cache.put(cachekey, quads);
   }
 
@@ -71,7 +71,7 @@ public class BlockStateWrapperConduitBundle extends BlockStateWrapperBase {
     super.addCacheKeyInternal(addlCacheKey);
     if (addlCacheKey instanceof IConduitComponent) {
       ((IConduitComponent) addlCacheKey).hashCodeForModelCaching(this, cachekey);
-    } else if (addlCacheKey instanceof IBlockState) {      
+    } else if (addlCacheKey instanceof IBlockState) {
       cachekey.add(Block.BLOCK_STATE_IDS.get((IBlockState) addlCacheKey));
     } else {
       cachekey.add(addlCacheKey);

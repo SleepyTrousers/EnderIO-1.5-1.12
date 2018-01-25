@@ -1,6 +1,16 @@
 package crazypants.enderio.conduit.gui;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.ITabPanel;
+
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
@@ -13,13 +23,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-
-import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiExternalConnection {
 
@@ -56,16 +59,16 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
     Collections.sort(cons, new Comparator<IConduit>() {
 
       @Override
-      public int compare(@Nonnull IConduit o1, @Nonnull IConduit o2) {
+      public int compare(@Nullable IConduit o1, @Nullable IConduit o2) {
         return Integer.compare(o1.getGuiPanelTabOrder(), o2.getGuiPanelTabOrder());
 
       }
     });
 
     for (IConduit con : cons) {
-      if(con.containsExternalConnection(dir) || con.canConnectToExternal(dir, true)) {
+      if (con.containsExternalConnection(dir) || con.canConnectToExternal(dir, true)) {
         ITabPanel tab = con.createGuiPanel(this, con);
-        if(tab != null) {
+        if (tab != null) {
           conduits.add(con);
           tabs.add(tab);
         }
@@ -82,7 +85,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
     buttonList.clear();
     ((ExternalConnectionContainer) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
     for (int i = 0; i < tabs.size(); i++) {
-      if(i == activeTab) {
+      if (i == activeTab) {
         tabs.get(i).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);
       } else {
         tabs.get(i).deactivate();
@@ -110,7 +113,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
     y = (y - guiTop);
 
     if (activeTab < tabs.size())
-    tabs.get(activeTab).mouseClicked(x, y, par3);
+      tabs.get(activeTab).mouseClicked(x, y, par3);
 
   }
 
@@ -123,7 +126,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
   protected void actionPerformed(@Nonnull GuiButton guiButton) throws IOException {
     super.actionPerformed(guiButton);
     if (activeTab < tabs.size())
-    tabs.get(activeTab).actionPerformed(guiButton);
+      tabs.get(activeTab).actionPerformed(guiButton);
   }
 
   @Override
@@ -135,14 +138,14 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
 
     bindGuiTexture();
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
-    
+
     startTabs();
     for (int i = 0; i < tabs.size(); i++) {
       renderStdTab(sx, sy, i, tabs.get(i).getIcon(), i == activeTab);
     }
 
     if (activeTab < tabs.size())
-    tabs.get(activeTab).render(par1, par2, par3);
+      tabs.get(activeTab).render(par1, par2, par3);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
@@ -156,19 +159,19 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
     return container;
   }
 
-//  @Override
-//  @Optional.Method(modid = "NotEnoughItems")
-//  public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
-//    if(tabs.size() > 0) {
-//      int sx = (width - xSize) / 2;
-//      int sy = (height - ySize) / 2;
-//      int tabX = sx + xSize - 3;
-//      int tabY = sy + tabYOffset;
-//
-//      return (x+w) >= tabX && x < (tabX + 14) && (y+h) >= tabY && y < (tabY + tabs.size()*TAB_HEIGHT);
-//    }
-//    return false;
-//  }
+  // @Override
+  // @Optional.Method(modid = "NotEnoughItems")
+  // public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
+  // if(tabs.size() > 0) {
+  // int sx = (width - xSize) / 2;
+  // int sy = (height - ySize) / 2;
+  // int tabX = sx + xSize - 3;
+  // int tabY = sy + tabYOffset;
+  //
+  // return (x+w) >= tabX && x < (tabX + 14) && (y+h) >= tabY && y < (tabY + tabs.size()*TAB_HEIGHT);
+  // }
+  // return false;
+  // }
 
   @Override
   public void drawFakeItemStack(int x, int y, @Nonnull ItemStack stack) {

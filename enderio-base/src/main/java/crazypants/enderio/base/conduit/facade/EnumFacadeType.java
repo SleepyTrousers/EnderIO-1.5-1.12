@@ -32,7 +32,7 @@ public enum EnumFacadeType implements IStringSerializable {
     return me.getUnlocalizedName() + namePostfix;
   }
 
-  public static EnumFacadeType getTypeFromMeta(int meta) {
+  public static @Nonnull EnumFacadeType getTypeFromMeta(int meta) {
     return values()[meta >= 0 && meta < values().length ? meta : 0];
   }
 

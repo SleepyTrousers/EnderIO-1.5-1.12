@@ -50,11 +50,11 @@ public enum SpeciesMode {
       return Collections.singletonList(EnderIO.lang.localize("gui.conduit.item.species.".concat(name().toLowerCase(Locale.US))));
     }
 
-    public SpeciesMode getMode() {
+    public @Nonnull SpeciesMode getMode() {
       return mode;
     }
 
-    public static SpeciesMode.IconHolder getFromMode(SpeciesMode mode) {
+    public static @Nonnull SpeciesMode.IconHolder getFromMode(SpeciesMode mode) {
       for (SpeciesMode.IconHolder holder : values()) {
         if (holder.mode == mode) {
           return holder;

@@ -18,7 +18,6 @@ import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -49,7 +48,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  public boolean isRendererForConduit(IConduit conduit) {
+  public boolean isRendererForConduit(@Nonnull IConduit conduit) {
     if (conduit instanceof LiquidConduit) {
       return true;
     }
@@ -74,8 +73,8 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  public void renderDynamicEntity(TileEntitySpecialRenderer conduitBundleRenderer, IConduitBundle te, IConduit.WithDefaultRendering conduit, double x, double y, double z,
-      float partialTick, float worldLight) {
+  public void renderDynamicEntity(@Nonnull TileEntitySpecialRenderer conduitBundleRenderer, @Nonnull IConduitBundle te,
+      @Nonnull IConduit.WithDefaultRendering conduit, double x, double y, double z, float partialTick, float worldLight) {
     calculateRatios((LiquidConduit) conduit);
     super.renderDynamicEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight);
   }
@@ -98,7 +97,6 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     }
   }
 
-
   public static void renderFluidOutline(CollidableComponent component, FluidStack fluid) {
     renderFluidOutline(component, fluid, 1 - ConduitGeometryUtil.HEIGHT, 1f / 16f);
   }
@@ -113,18 +111,18 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
   public static List<CachableRenderStatement> computeFluidOutlineToCache(CollidableComponent component, Fluid fluid, double scaleFactor, float outlineWidth) {
 
-     Map<Fluid, List<CachableRenderStatement>> cache0 = cache.get(component);
-    
-     if (cache0 == null) {
-     cache0 = new HashMap<Fluid, List<CachableRenderStatement>>();
-     cache.put(component, cache0);
-     }
-     List<CachableRenderStatement> data = cache0.get(fluid);
-     if (data != null) {
-     return data;
-     }
-     data = new ArrayList<CachableRenderStatement>();
-     cache0.put(fluid, data);
+    Map<Fluid, List<CachableRenderStatement>> cache0 = cache.get(component);
+
+    if (cache0 == null) {
+      cache0 = new HashMap<Fluid, List<CachableRenderStatement>>();
+      cache.put(component, cache0);
+    }
+    List<CachableRenderStatement> data = cache0.get(fluid);
+    if (data != null) {
+      return data;
+    }
+    data = new ArrayList<CachableRenderStatement>();
+    cache0.put(fluid, data);
 
     TextureAtlasSprite texture = RenderUtil.getStillTexture(fluid);
     if (texture == null) {
@@ -252,7 +250,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  public void onResourceManagerReload(IResourceManager p_110549_1_) {
+  public void onResourceManagerReload(@Nonnull IResourceManager p_110549_1_) {
     cache.clear();
   }
 

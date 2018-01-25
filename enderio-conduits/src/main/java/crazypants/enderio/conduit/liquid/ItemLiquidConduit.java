@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.liquid;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
@@ -15,24 +16,22 @@ import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.conduit.item.AbstractItemConduit;
-import crazypants.enderio.conduit.ItemConduitSubtype;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-
 
 public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedTooltipProvider {
 
   private final ConduitRegistry.ConduitInfo conduitInfo;
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-    new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name(), "enderio:itemLiquidConduit"),
-    new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name() + "Advanced", "enderio:itemLiquidConduitAdvanced"),
-    new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name() + "Ender", "enderio:itemLiquidConduitEnder")
+      new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name(), "enderio:itemLiquidConduit"),
+      new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name() + "Advanced", "enderio:itemLiquidConduitAdvanced"),
+      new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name() + "Ender", "enderio:itemLiquidConduitEnder")
 
   };
 
@@ -66,9 +65,9 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
   @Override
   public IConduit createConduit(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
-    if(stack.getItemDamage() == 1) {
+    if (stack.getItemDamage() == 1) {
       return new AdvancedLiquidConduit();
-    } else if(stack.getItemDamage() == 2) {
+    } else if (stack.getItemDamage() == 2) {
       return new EnderLiquidConduit();
     }
     return new LiquidConduit();
@@ -76,25 +75,25 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
 
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     int extractRate;
     int maxIo;
 
-    if(itemstack.getItemDamage() == 0) {
+    if (itemstack.getItemDamage() == 0) {
       extractRate = Config.fluidConduitExtractRate;
       maxIo = Config.fluidConduitMaxIoRate;
-    } else if(itemstack.getItemDamage() == 1){
+    } else if (itemstack.getItemDamage() == 1) {
       extractRate = Config.advancedFluidConduitExtractRate;
       maxIo = Config.advancedFluidConduitMaxIoRate;
     } else {
@@ -108,10 +107,10 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
     list.add(EnderIO.lang.localize("itemLiquidConduit.tooltip.maxExtract") + " " + extractRate + mbt);
     list.add(EnderIO.lang.localize("itemLiquidConduit.tooltip.maxIo") + " " + maxIo + mbt);
 
-    if(itemstack.getItemDamage() == 0) {
+    if (itemstack.getItemDamage() == 0) {
       SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduit");
-    } else if(itemstack.getItemDamage() == 2) {
-      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduitEnder");      
+    } else if (itemstack.getItemDamage() == 2) {
+      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduitEnder");
     }
 
   }

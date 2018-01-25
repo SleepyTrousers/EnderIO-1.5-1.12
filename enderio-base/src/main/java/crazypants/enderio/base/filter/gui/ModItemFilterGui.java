@@ -1,7 +1,15 @@
 package crazypants.enderio.base.filter.gui;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.render.ColorUtil;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.ModItemFilter;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
@@ -10,10 +18,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
 
 public class ModItemFilterGui implements IItemFilterGui {
 
@@ -57,11 +61,7 @@ public class ModItemFilterGui implements IItemFilterGui {
       tfTextureY = 238;
     }
 
-    inputBounds = new Rectangle[] {
-        new Rectangle(inputOffsetX, 47, 16, 16),
-        new Rectangle(inputOffsetX, 68, 16, 16),
-        new Rectangle(inputOffsetX, 89, 16, 16)
-    };
+    inputBounds = new Rectangle[] { new Rectangle(inputOffsetX, 47, 16, 16), new Rectangle(inputOffsetX, 68, 16, 16), new Rectangle(inputOffsetX, 89, 16, 16) };
 
     deleteButs = new IconButton[inputBounds.length];
     for (int i = 0; i < deleteButs.length; i++) {
@@ -99,7 +99,7 @@ public class ModItemFilterGui implements IItemFilterGui {
   }
 
   @Override
-  public void actionPerformed(GuiButton guiButton) {
+  public void actionPerformed(@Nonnull GuiButton guiButton) {
     for (int i = 0; i < deleteButs.length; i++) {
       IconButton but = deleteButs[i];
       if (but.id == guiButton.id) {
@@ -117,9 +117,9 @@ public class ModItemFilterGui implements IItemFilterGui {
     GL11.glColor3f(1, 1, 1);
     gui.bindGuiTexture();
     for (Rectangle r : inputBounds) {
-      //slot
+      // slot
       gui.drawTexturedModalRect(gui.getGuiLeft() + r.x - 1, gui.getGuiTop() + r.y - 1, 24, 214, 18, 18);
-      //text box
+      // text box
       gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 38, gui.getGuiTop() + r.y - 1, tfTextureX, tfTextureY, tfWidth, 18);
     }
 
@@ -152,14 +152,14 @@ public class ModItemFilterGui implements IItemFilterGui {
   // TODO Decouple from conduits?
   private void setMod(int i, ItemStack st) {
     String mod = filter.setMod(i, st);
-//    PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(), isInput, i, mod));
+    // PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(), isInput, i, mod));
 
   }
 
   private void toggleBlacklist() {
     filter.setBlacklist(!filter.isBlacklist());
-//    PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(), isInput, -1, filter.isBlacklist() ? "1"
-//        : "0"));
+    // PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(), isInput, -1, filter.isBlacklist() ? "1"
+    // : "0"));
   }
 
 }

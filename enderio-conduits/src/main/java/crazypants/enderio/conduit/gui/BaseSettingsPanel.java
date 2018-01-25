@@ -1,9 +1,14 @@
 package crazypants.enderio.conduit.gui;
 
+import java.awt.Color;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
@@ -14,9 +19,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
 
 public class BaseSettingsPanel implements ITabPanel {
 
@@ -60,7 +62,7 @@ public class BaseSettingsPanel implements ITabPanel {
 
     customTop = top + gap * 5 + fr.FONT_HEIGHT * 2;
     customTop -= 16;
-    //customTop = top;
+    // customTop = top;
 
   }
 
@@ -85,9 +87,9 @@ public class BaseSettingsPanel implements ITabPanel {
   @Override
   public void deactivate() {
   }
-  
+
   @Override
-  public void mouseClicked(int x, int y, int par3) {    
+  public void mouseClicked(int x, int y, int par3) {
   }
 
   @Override
@@ -95,7 +97,7 @@ public class BaseSettingsPanel implements ITabPanel {
   }
 
   @Override
-  public void updateScreen() {    
+  public void updateScreen() {
   }
 
   @Override
@@ -106,19 +108,19 @@ public class BaseSettingsPanel implements ITabPanel {
 
   @Override
   public void actionPerformed(@Nonnull GuiButton guiButton) {
-    if(guiButton.id == PREV_MODE_B) {
+    if (guiButton.id == PREV_MODE_B) {
       con.setConnectionMode(gui.getDir(), con.getPreviousConnectionMode(gui.getDir()));
       PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
       connectionModeChanged(con.getConnectionMode(gui.getDir()));
 
-    } else if(guiButton.id == NEXT_MODE_B) {
+    } else if (guiButton.id == NEXT_MODE_B) {
       con.setConnectionMode(gui.getDir(), con.getNextConnectionMode(gui.getDir()));
       PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
       connectionModeChanged(con.getConnectionMode(gui.getDir()));
     }
   }
 
-  protected void connectionModeChanged(ConnectionMode conectionMode) {
+  protected void connectionModeChanged(@Nonnull ConnectionMode conectionMode) {
   }
 
   @Override
@@ -126,15 +128,16 @@ public class BaseSettingsPanel implements ITabPanel {
     FontRenderer fr = gui.getFontRenderer();
 
     int rgb = ColorUtil.getRGB(Color.darkGray);
-    int x = left;    
+    int x = left;
     int y = gui.getGuiTop() + 13;
     gui.getFontRenderer().drawString(modeLabel, x, y, rgb);
 
     String modeString = con.getConnectionMode(gui.getDir()).getLocalisedName();
     x += gap + leftArrow.getWidth() + fr.getStringWidth(modeLabel) + gap;
 
-    GlStateManager.color(1, 1, 1);    
-    IconEIO.MODE_BACKGROUND.getMap().render(IconEIO.MODE_BACKGROUND, x - gap, y - (fr.FONT_HEIGHT / 2) - 1, getLongestModeStringWidth() + gap * 2, leftArrow.getHeight(), 0, true);
+    GlStateManager.color(1, 1, 1);
+    IconEIO.MODE_BACKGROUND.getMap().render(IconEIO.MODE_BACKGROUND, x - gap, y - (fr.FONT_HEIGHT / 2) - 1, getLongestModeStringWidth() + gap * 2,
+        leftArrow.getHeight(), 0, true);
 
     int move = (getLongestModeStringWidth() - fr.getStringWidth(modeString)) / 2;
     x += move;
@@ -152,7 +155,7 @@ public class BaseSettingsPanel implements ITabPanel {
     int maxWidth = 0;
     for (ConnectionMode mode : ConnectionMode.values()) {
       int stringWidth = gui.getFontRenderer().getStringWidth(mode.getLocalisedName());
-      if(stringWidth > maxWidth) {
+      if (stringWidth > maxWidth) {
         maxWidth = stringWidth;
       }
     }

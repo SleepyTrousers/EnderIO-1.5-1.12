@@ -89,7 +89,8 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
 
   // geometry
 
-  Offset getOffset(Class<? extends IConduit> type, EnumFacing dir);
+  @Nonnull
+  Offset getOffset(@Nonnull Class<? extends IConduit> type, @Nonnull EnumFacing dir);
 
   List<CollidableComponent> getCollidableComponents();
 
@@ -97,9 +98,9 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
 
   // events
 
-  void onNeighborBlockChange(Block blockId);
+  void onNeighborBlockChange(@Nonnull Block blockId);
 
-  void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor);
+  void onNeighborChange(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull BlockPos neighbor);
 
   void onBlockRemoved();
 
@@ -130,6 +131,7 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
   EnumFacadeType getFacadeType();
 
   // NB: this has to be named differently to the TE method due to obf
+  @Nonnull
   World getBundleworld();
 
   /**

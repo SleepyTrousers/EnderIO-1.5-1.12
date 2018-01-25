@@ -1,6 +1,18 @@
 package crazypants.enderio.conduit.gui;
 
+import java.awt.Color;
+import java.awt.Point;
+import java.io.IOException;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.render.ColorUtil;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
@@ -20,13 +32,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.io.IOException;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.Set;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
 
@@ -45,13 +50,13 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     for (IConduit con : cb.getConduits()) {
       if (ConduitRegistry.get(con).canConnectToAnything()) {
         Set<EnumFacing> conCons = con.getConduitConnections();
-        for(EnumFacing dir : EnumFacing.VALUES) {
-          if(!conCons.contains(dir)) {
+        for (EnumFacing dir : EnumFacing.VALUES) {
+          if (!conCons.contains(dir)) {
             cons.add(dir);
           }
         }
-        
-      } else {        
+
+      } else {
         cons.addAll(con.getExternalConnections());
       }
     }
@@ -79,7 +84,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) {
+  protected void actionPerformed(@Nonnull GuiButton b) {
     EnumFacing dir = EnumFacing.values()[b.id];
     go(dir);
   }
@@ -116,7 +121,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
       stackPositions.put(dir, new Point(p.x + 2, p.y + 2));
       b = new GuiButton(dir.ordinal(), p.x, p.y, BUTTON_WIDTH, BUTTON_HEIGHT, (stacks.containsKey(dir) ? "  " : "") + dir.toString());
       buttonList.add(b);
-      if(!cons.contains(dir)) {
+      if (!cons.contains(dir)) {
         b.enabled = false;
       }
     }

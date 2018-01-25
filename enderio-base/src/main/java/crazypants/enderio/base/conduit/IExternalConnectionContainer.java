@@ -1,5 +1,7 @@
 package crazypants.enderio.base.conduit;
 
+import javax.annotation.Nonnull;
+
 public interface IExternalConnectionContainer {
 
   /**
@@ -24,13 +26,17 @@ public interface IExternalConnectionContainer {
 
   /**
    * Returns true if the given direction has a filter
-   * @param input true to check the input filter, false to check the output
+   * 
+   * @param input
+   *          true to check the input filter, false to check the output
    */
   boolean hasFilter(boolean input);
 
   /**
    * Adds a filter listener to the list
-   * @param listener Filter Listener
+   * 
+   * @param listener
+   *          Filter Listener
    */
-  void addFilterListener(IFilterChangeListener listener);
+  void addFilterListener(@Nonnull IFilterChangeListener listener);
 }

@@ -12,9 +12,9 @@ import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.conduit.item.AbstractItemConduit;
-import crazypants.enderio.conduit.ItemConduitSubtype;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,11 +25,9 @@ public class ItemPowerConduit extends AbstractItemConduit {
   private static String PREFIX;
   private static String POSTFIX;
 
-  static ItemConduitSubtype[] SUBTYPES = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ConduitObject.item_power_conduit.name(), "enderio:itemPowerConduit"),
+  static ItemConduitSubtype[] SUBTYPES = new ItemConduitSubtype[] { new ItemConduitSubtype(ConduitObject.item_power_conduit.name(), "enderio:itemPowerConduit"),
       new ItemConduitSubtype(ConduitObject.item_power_conduit.name() + "Enhanced", "enderio:itemPowerConduitEnhanced"),
-      new ItemConduitSubtype(ConduitObject.item_power_conduit.name() + "Ender", "enderio:itemPowerConduitEnder")
-  };
+      new ItemConduitSubtype(ConduitObject.item_power_conduit.name() + "Ender", "enderio:itemPowerConduitEnder") };
 
   private final ConduitRegistry.ConduitInfo conduitInfo;
 
@@ -60,23 +58,23 @@ public class ItemPowerConduit extends AbstractItemConduit {
   }
 
   @Override
-  public IConduit createConduit(ItemStack stack, EntityPlayer player) {
+  public IConduit createConduit(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
     return new PowerConduit(stack.getItemDamage());
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
-    if(PREFIX == null) {
+  public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
+    if (PREFIX == null) {
       PREFIX = EnderIO.lang.localize("power.maxOutput") + " ";
     }
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
     int cap = PowerConduit.getMaxEnergyIO(itemStack.getMetadata());
     list.add(PREFIX + LangPower.RFt(cap));
   }
-  
+
   @Override
-  public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+  public boolean shouldHideFacades(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
     return true;
   }
 }

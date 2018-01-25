@@ -1,10 +1,17 @@
 package crazypants.enderio.conduit.liquid;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
@@ -30,11 +37,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-
 import static crazypants.enderio.conduit.init.ConduitObject.item_liquid_conduit;
 
 public class LiquidConduit extends AbstractTankConduit implements IConduitComponent {
@@ -58,7 +60,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
-      public void registerIcons(TextureMap register) {
+      public void registerIcons(@Nonnull TextureMap register) {
         ICONS.put(ICON_KEY, register.registerSprite(new ResourceLocation(ICON_KEY)));
         ICONS.put(ICON_CORE_KEY, register.registerSprite(new ResourceLocation(ICON_CORE_KEY)));
         ICONS.put(ICON_EXTRACT_KEY, register.registerSprite(new ResourceLocation(ICON_EXTRACT_KEY)));
@@ -85,7 +87,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   private EnumFacing startPushDir = EnumFacing.DOWN;
 
-  //  private final Set<BlockPos> filledFromThisTick = new HashSet<BlockPos>();
+  // private final Set<BlockPos> filledFromThisTick = new HashSet<BlockPos>();
 
   private long ticksSinceFailedExtract = 0;
 
@@ -95,7 +97,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
     if (world.isRemote) {
       return;
     }
-    //filledFromThisTick.clear();
+    // filledFromThisTick.clear();
     updateStartPushDir();
     doExtract();
 
@@ -106,11 +108,11 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
     } else if ((lastSyncRatio != tank.getFilledRatio() && world.getTotalWorldTime() % 2 == 0)) {
 
-      //need to send a custom packet as we don't want want to trigger a full chunk update, just
-      //need to get the required  values to the entity renderer
+      // need to send a custom packet as we don't want want to trigger a full chunk update, just
+      // need to get the required values to the entity renderer
       BlockPos pos = getBundle().getLocation();
-      PacketHandler.INSTANCE
-          .sendToAllAround(new PacketConduitFluidLevel(this), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
+      PacketHandler.INSTANCE.sendToAllAround(new PacketConduitFluidLevel(this),
+          new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
       lastSyncRatio = tank.getFilledRatio();
     }
   }
@@ -393,7 +395,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   }
 
   @Override
-  public IFluidHandler getFluidDir(EnumFacing dir) {
+  public IFluidHandler getFluidDir(@Nullable EnumFacing dir) {
     if (dir != null) {
       return new ConnectionLiquidConduitSide(dir);
     }

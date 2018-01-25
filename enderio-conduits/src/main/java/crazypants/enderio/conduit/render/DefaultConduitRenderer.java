@@ -3,6 +3,8 @@ package crazypants.enderio.conduit.render;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
@@ -46,7 +48,7 @@ public abstract class DefaultConduitRenderer implements IConduitRenderer {
   protected float transmissionScaleFactor;
 
   @Override
-  public boolean isRendererForConduit(IConduit conduit) {
+  public boolean isRendererForConduit(@Nonnull IConduit conduit) {
     return true;
   }
 
@@ -57,8 +59,8 @@ public abstract class DefaultConduitRenderer implements IConduitRenderer {
   // ------------ Static Model ---------------------------------------------
 
   @Override
-  public void addBakedQuads(TileEntitySpecialRenderer<?> conduitBundleRenderer, IConduitBundle bundle, IConduit.WithDefaultRendering conduit, float brightness, BlockRenderLayer layer,
-      List<BakedQuad> quads) {
+  public void addBakedQuads(@Nonnull TileEntitySpecialRenderer<?> conduitBundleRenderer, @Nonnull IConduitBundle bundle,
+      @Nonnull IConduit.WithDefaultRendering conduit, float brightness, @Nonnull BlockRenderLayer layer, List<BakedQuad> quads) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
@@ -79,12 +81,13 @@ public abstract class DefaultConduitRenderer implements IConduitRenderer {
     }
   }
 
-  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, BlockRenderLayer layer, List<BakedQuad> quads) {
+  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,
+      @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
     if (isNSEWUD(component.dir)) {
       if (layer == null) {
-        return;
+        return; // TODO? null is the blockbreaking animation
       }
-      
+
       float scaleFactor = 0.75f;
       float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
       float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
@@ -126,7 +129,7 @@ public abstract class DefaultConduitRenderer implements IConduitRenderer {
 
   protected void addTransmissionQuads(TextureAtlasSprite tex, Vector4f color, IConduit conduit, CollidableComponent component, float selfIllum,
       List<BakedQuad> quads) {
-        
+
     float scaleFactor = 0.6f;
     float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
     float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
@@ -136,16 +139,13 @@ public abstract class DefaultConduitRenderer implements IConduitRenderer {
     BoundingBox bb = cube.scale(xLen, yLen, zLen);
     addQuadsForSection(bb, tex, component.dir, quads, color);
   }
-  
-  
 
   // ------------ Dynamic ---------------------------------------------
 
   @Override
-  public void renderDynamicEntity(TileEntitySpecialRenderer conduitBundleRenderer, IConduitBundle te, IConduit.WithDefaultRendering conduit, double x, double y, double z,
-      float partialTick,
-      float worldLight) {
-        
+  public void renderDynamicEntity(@Nonnull TileEntitySpecialRenderer conduitBundleRenderer, @Nonnull IConduitBundle te,
+      @Nonnull IConduit.WithDefaultRendering conduit, double x, double y, double z, float partialTick, float worldLight) {
+
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
     for (CollidableComponent component : components) {

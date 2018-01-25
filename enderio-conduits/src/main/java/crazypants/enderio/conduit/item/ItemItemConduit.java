@@ -20,8 +20,7 @@ public class ItemItemConduit extends AbstractItemConduit {
   private final ConduitRegistry.ConduitInfo conduitInfo;
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ConduitObject.item_item_conduit.name(), "enderio:itemItemConduit")
-  };
+      new ItemConduitSubtype(ConduitObject.item_item_conduit.name(), "enderio:itemItemConduit") };
 
   public static ItemItemConduit create(@Nonnull IModObject modObject) {
     return new ItemItemConduit(modObject);
@@ -48,12 +47,12 @@ public class ItemItemConduit extends AbstractItemConduit {
   }
 
   @Override
-  public IConduit createConduit(ItemStack item, EntityPlayer player) {
+  public IConduit createConduit(@Nonnull ItemStack item, @Nonnull EntityPlayer player) {
     return new ItemConduit(item.getItemDamage());
   }
 
   @Override
-  public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+  public boolean shouldHideFacades(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
     return true;
   }
 }

@@ -1,13 +1,14 @@
 package crazypants.enderio.base.filter.gui;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.gui.button.ToggleButton;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.PowerItemFilter;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import net.minecraft.client.gui.GuiButton;
-
-import javax.annotation.Nonnull;
 
 public class PowerItemFilterGui implements IItemFilterGui {
 
@@ -16,16 +17,16 @@ public class PowerItemFilterGui implements IItemFilterGui {
   private static final int ID_MORE = FilterGuiUtil.nextButtonId();
   private static final int ID_LEVEL = FilterGuiUtil.nextButtonId();
 
-  private final IItemFilterContainer filterContainer;
-  private final GuiContainerBaseEIO gui;
+  private final @Nonnull IItemFilterContainer filterContainer;
+  private final @Nonnull GuiContainerBaseEIO gui;
 
-  private final ToggleButton stickyB;
+  private final @Nonnull ToggleButton stickyB;
   private final boolean isStickModeAvailable;
 
-  private final GuiButton modeB;
-  private final GuiButton levelB;
+  private final @Nonnull GuiButton modeB;
+  private final @Nonnull GuiButton levelB;
 
-  private final PowerItemFilter filter;
+  private final @Nonnull PowerItemFilter filter;
 
   public PowerItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
     this.gui = gui;
@@ -55,7 +56,7 @@ public class PowerItemFilterGui implements IItemFilterGui {
 
   @Override
   public void updateButtons() {
-    if(isStickModeAvailable) {
+    if (isStickModeAvailable) {
       stickyB.onGuiInit();
       stickyB.setSelected(filter.isSticky());
     }
@@ -70,13 +71,25 @@ public class PowerItemFilterGui implements IItemFilterGui {
     levelB.xPosition = x1;
     levelB.yPosition = y0;
 
-    switch(filter.getMode()) {
-      case LESS:       modeB.displayString = "<";  break;
-      case LESS_EQUAL: modeB.displayString = "<="; break;
-      case EQUAL:      modeB.displayString = "=";  break;
-      case MORE_EQUAL: modeB.displayString = ">="; break;
-      case MORE:       modeB.displayString = ">";  break;
-      default:         modeB.displayString = "??"; break;
+    switch (filter.getMode()) {
+    case LESS:
+      modeB.displayString = "<";
+      break;
+    case LESS_EQUAL:
+      modeB.displayString = "<=";
+      break;
+    case EQUAL:
+      modeB.displayString = "=";
+      break;
+    case MORE_EQUAL:
+      modeB.displayString = ">=";
+      break;
+    case MORE:
+      modeB.displayString = ">";
+      break;
+    default:
+      modeB.displayString = "??";
+      break;
     }
 
     levelB.displayString = String.format("%d%%", filter.getLevel() * 100 / PowerItemFilter.MAX_LEVEL);
@@ -87,13 +100,13 @@ public class PowerItemFilterGui implements IItemFilterGui {
 
   @Override
   public void actionPerformed(@Nonnull GuiButton guiButton) {
-    if(guiButton.id == ID_STICKY) {
+    if (guiButton.id == ID_STICKY) {
       filter.setSticky(stickyB.isSelected());
       sendFilterChange();
-    } else if(guiButton.id == ID_MORE) {
+    } else if (guiButton.id == ID_MORE) {
       filter.setMode(filter.getMode().next());
       sendFilterChange();
-    } else if(guiButton.id == ID_LEVEL) {
+    } else if (guiButton.id == ID_LEVEL) {
       filter.setLevel((filter.getLevel() + 1) % (PowerItemFilter.MAX_LEVEL + 1));
       sendFilterChange();
     }
@@ -102,7 +115,7 @@ public class PowerItemFilterGui implements IItemFilterGui {
   private void sendFilterChange() {
     updateButtons();
     filterContainer.onFilterChanged();
-    //PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
+    // PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
   }
 
   @Override
@@ -114,11 +127,11 @@ public class PowerItemFilterGui implements IItemFilterGui {
 
   @Override
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
-//    GL11.glColor3f(1, 1, 1);
-//    RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
-//    gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 68, 0, 238, 18 * 5, 18);
-//    if(filter.isAdvanced()) {
-//      gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 86, 0, 238, 18 * 5, 18);
-//    }
+    // GL11.glColor3f(1, 1, 1);
+    // RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
+    // gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 68, 0, 238, 18 * 5, 18);
+    // if(filter.isAdvanced()) {
+    // gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 86, 0, 238, 18 * 5, 18);
+    // }
   }
 }

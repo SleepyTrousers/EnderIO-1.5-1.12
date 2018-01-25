@@ -1,9 +1,16 @@
 package crazypants.enderio.conduit.gui;
 
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.util.ItemUtil;
+
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.network.PacketHandler;
@@ -22,11 +29,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import static crazypants.enderio.base.init.ModObject.itemItemFilter;
 import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_upgrade;
@@ -162,14 +164,14 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   @Override
   @Nonnull
-  public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, @Nonnull EntityPlayer player) {
+  public ItemStack slotClick(int slotId, int dragType, @Nonnull ClickType clickTypeIn, @Nonnull EntityPlayer player) {
     ItemStack st = player.inventory.getItemStack();
     setSpeedUpgradeSlotLimit(st);
     try {
       return super.slotClick(slotId, dragType, clickTypeIn, player);
     } catch (Exception e) {
-      //TODO Horrible work around for a bug when double clicking on a stack in inventory which matches a filter item
-      //This does does double clicking to fill a stack from working with this GUI open.
+      // TODO Horrible work around for a bug when double clicking on a stack in inventory which matches a filter item
+      // This does does double clicking to fill a stack from working with this GUI open.
       return ItemStack.EMPTY;
     }
   }

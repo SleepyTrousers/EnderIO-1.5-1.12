@@ -1,12 +1,27 @@
 package crazypants.enderio.conduit.item;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.base.capability.ItemTools;
-import crazypants.enderio.base.conduit.*;
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IGuiExternalConnection;
+import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
@@ -36,14 +51,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import static crazypants.enderio.base.init.ModObject.itemItemFilter;
 import static crazypants.enderio.conduit.init.ConduitObject.item_item_conduit;
@@ -77,7 +84,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
-      public void registerIcons(TextureMap register) {
+      public void registerIcons(@Nonnull TextureMap register) {
         ICONS.put(ICON_KEY, register.registerSprite(new ResourceLocation(ICON_KEY)));
         ICONS.put(ICON_KEY_CORE, register.registerSprite(new ResourceLocation(ICON_KEY_CORE)));
         ICONS.put(ICON_KEY_INPUT, register.registerSprite(new ResourceLocation(ICON_KEY_INPUT)));
@@ -219,7 +226,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   }
 
   @Override
-  public void setInputFilter(@Nonnull EnumFacing dir, IItemFilter filter) {
+  public void setInputFilter(@Nonnull EnumFacing dir, @Nonnull IItemFilter filter) {
     inputFilters.put(dir, filter);
     if (network != null) {
       network.routesChanged();
@@ -228,7 +235,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   }
 
   @Override
-  public void setOutputFilter(@Nonnull EnumFacing dir, IItemFilter filter) {
+  public void setOutputFilter(@Nonnull EnumFacing dir, @Nonnull IItemFilter filter) {
     outputFilters.put(dir, filter);
     if (network != null) {
       network.routesChanged();
@@ -284,52 +291,52 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   @Nonnull
-  public ItemStack getSpeedUpgrade(EnumFacing dir) {
+  public ItemStack getSpeedUpgrade(@Nonnull EnumFacing dir) {
     return speedUpgrades.get(dir);
   }
   //
-  //  @Override
-  //  public void setFunctionUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade) {
-  //    boolean hadIPU = hasInventoryPanelUpgrade(dir);
-  //    if(!upgrade.isEmpty()) {
-  //      functionUpgrades.put(dir, upgrade);
-  //    } else {
-  //      functionUpgrades.remove(dir);
-  //    }
-  //    setClientStateDirty();
-  //    if(network != null && hadIPU != hasInventoryPanelUpgrade(dir)) {
-  //      network.inventoryPanelSourcesChanged();
-  //    }
-  //  }
+  // @Override
+  // public void setFunctionUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade) {
+  // boolean hadIPU = hasInventoryPanelUpgrade(dir);
+  // if(!upgrade.isEmpty()) {
+  // functionUpgrades.put(dir, upgrade);
+  // } else {
+  // functionUpgrades.remove(dir);
+  // }
+  // setClientStateDirty();
+  // if(network != null && hadIPU != hasInventoryPanelUpgrade(dir)) {
+  // network.inventoryPanelSourcesChanged();
+  // }
+  // }
   //
-  //  @Override
-  //  @Nonnull
-  //  public ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir) {
-  //    return functionUpgrades.get(dir);
-  //  }
+  // @Override
+  // @Nonnull
+  // public ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir) {
+  // return functionUpgrades.get(dir);
+  // }
 
-  //  @Override
-  //  public boolean hasInventoryPanelUpgrade(@Nonnull EnumFacing dir) {
-  //    ItemStack upgrade = functionUpgrades.get(dir);
-  //    return (!upgrade.isEmpty() && ItemFunctionUpgrade.getFunctionUpgrade(upgrade) == FunctionUpgrade.INVENTORY_PANEL) || isConnectedToNetworkAwareBlock(dir);
-  //  }
+  // @Override
+  // public boolean hasInventoryPanelUpgrade(@Nonnull EnumFacing dir) {
+  // ItemStack upgrade = functionUpgrades.get(dir);
+  // return (!upgrade.isEmpty() && ItemFunctionUpgrade.getFunctionUpgrade(upgrade) == FunctionUpgrade.INVENTORY_PANEL) || isConnectedToNetworkAwareBlock(dir);
+  // }
   //
-  //  @Override
-  //  public boolean isConnectedToNetworkAwareBlock(@Nonnull EnumFacing dir) {
-  //    if (!externalConnections.contains(dir)) {
-  //      return false;
-  //    }
-  //    World world = getBundle().getBundleworld();
-  //    if (world == null) {
-  //      return false;
-  //    }
-  //    BlockPos loc = getBundle().getLocation().offset(dir);
-  //    if (!world.isBlockLoaded(loc)) {
-  //      return false;
-  //    }
-  //    TileEntity tileEntity = world.getTileEntity(loc);
-  //    return tileEntity instanceof TileInventoryChest;
-  //  }
+  // @Override
+  // public boolean isConnectedToNetworkAwareBlock(@Nonnull EnumFacing dir) {
+  // if (!externalConnections.contains(dir)) {
+  // return false;
+  // }
+  // World world = getBundle().getBundleworld();
+  // if (world == null) {
+  // return false;
+  // }
+  // BlockPos loc = getBundle().getLocation().offset(dir);
+  // if (!world.isBlockLoaded(loc)) {
+  // return false;
+  // }
+  // TileEntity tileEntity = world.getTileEntity(loc);
+  // return tileEntity instanceof TileInventoryChest;
+  // }
 
   @Override
   public int getMetaData() {
@@ -583,7 +590,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     return true;
   }
 
-  //-------------------------------------------
+  // -------------------------------------------
   // Textures
   // ------------------------------------------
 
@@ -875,7 +882,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     }
 
     if (!nbtRoot.hasKey("conModes")) {
-      //all externals where on default so need to switch them to the old default
+      // all externals where on default so need to switch them to the old default
       for (EnumFacing dir : externalConnections) {
         conectionModes.put(dir, ConnectionMode.OUTPUT);
       }
@@ -884,13 +891,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   }
 
   // TODO Inventory
-  //  @Override
-  //  public boolean onNeighborChange(@Nonnull BlockPos neighbourPos) {
-  //    if (neighbourPos != null && network != null && network.hasDatabase()) {
-  //      network.getDatabase().onNeighborChange(neighbourPos);
-  //    }
-  //    return super.onNeighborChange(neighbourPos);
-  //  }
+  // @Override
+  // public boolean onNeighborChange(@Nonnull BlockPos neighbourPos) {
+  // if (neighbourPos != null && network != null && network.hasDatabase()) {
+  // network.getDatabase().onNeighborChange(neighbourPos);
+  // }
+  // return super.onNeighborChange(neighbourPos);
+  // }
 
   @SideOnly(Side.CLIENT)
   @Override
@@ -922,11 +929,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     return new ItemConduitNetwork();
   }
 
-  //  @SideOnly(Side.CLIENT)
-  //  @Override
-  //  public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
-  //    return new ItemSettings(gui, con);
-  //  }
+  // @SideOnly(Side.CLIENT)
+  // @Override
+  // public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
+  // return new ItemSettings(gui, con);
+  // }
 
   @SideOnly(Side.CLIENT)
   @Nonnull

@@ -2,6 +2,8 @@ package crazypants.enderio.conduit.power;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
@@ -23,52 +25,53 @@ import net.minecraft.util.BlockRenderLayer;
 public class PowerConduitRenderer extends DefaultConduitRenderer {
 
   @Override
-  public boolean isRendererForConduit(IConduit conduit) {
+  public boolean isRendererForConduit(@Nonnull IConduit conduit) {
     return conduit instanceof IPowerConduit;
   }
 
   @Override
-  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, BlockRenderLayer layer, List<BakedQuad> quads) {
+  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,
+      @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
 
     if (IPowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
       IPowerConduit pc = (IPowerConduit) conduit;
       ConnectionMode conMode = pc.getConnectionMode(component.dir);
-      
+
       if (conduit.containsExternalConnection(component.dir) && pc.getExtractionRedstoneMode(component.dir) != RedstoneControlMode.IGNORE
           && conMode != ConnectionMode.DISABLED) {
-        
+
         int cInt = ((IPowerConduit) conduit).getExtractionSignalColor(component.dir).getColor();
-        Vector4f col = ColorUtil.toFloat4(cInt);               
+        Vector4f col = ColorUtil.toFloat4(cInt);
 
         BoundingBox bound = component.bound;
         if (conMode != ConnectionMode.IN_OUT && conMode != ConnectionMode.NOT_SET) {
           Vector3d trans = ForgeDirectionOffsets.offsetScaled(component.dir, -0.12);
           bound = bound.translate(trans);
         }
-        addQuadsForSection(bound,tex,component.dir, quads, col); 
+        addQuadsForSection(bound, tex, component.dir, quads, col);
       }
       return;
-    } 
-    
+    }
+
     super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
-    
-    if(component.dir  == null) {
+
+    if (component.dir == null) {
       return;
     }
-    IPowerConduit pc = (IPowerConduit)conduit;
+    IPowerConduit pc = (IPowerConduit) conduit;
     ConnectionMode mode = pc.getConnectionMode(component.dir);
-    if(mode != ConnectionMode.INPUT && mode != ConnectionMode.OUTPUT) {
+    if (mode != ConnectionMode.INPUT && mode != ConnectionMode.OUTPUT) {
       return;
     }
-    
-    if(mode == ConnectionMode.INPUT) {
+
+    if (mode == ConnectionMode.INPUT) {
       tex = pc.getTextureForInputMode();
     } else {
       tex = pc.getTextureForOutputMode();
     }
     Offset offset = bundle.getOffset(IPowerConduit.class, component.dir);
     ConnectionModeGeometry.addModeConnectorQuads(component.dir, offset, tex, null, quads);
-    
+
   }
 
   @Override

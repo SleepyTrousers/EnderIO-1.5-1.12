@@ -22,11 +22,11 @@ public interface IConduitNetwork<T extends IConduit, I extends T> {
   // TODO: Tidy and edit Javadocs
   public void init(@Nonnull IConduitBundle tile, Collection<I> connections, @Nonnull World world);
 
-  public Class<T> getBaseConduitType();
-  
+  public @Nonnull Class<T> getBaseConduitType();
+
   public void setNetwork(@Nonnull World world, @Nonnull IConduitBundle tile);
 
-  public void addConduit(I newConduit);
+  public void addConduit(@Nonnull I newConduit);
 
   public void destroyNetwork();
 
@@ -34,6 +34,6 @@ public interface IConduitNetwork<T extends IConduit, I extends T> {
 
   public void sendBlockUpdatesForEntireNetwork();
 
-  public void doNetworkTick(Profiler profiler);
+  public void doNetworkTick(@Nonnull Profiler profiler);
 
 }

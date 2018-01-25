@@ -1,7 +1,26 @@
 package crazypants.enderio.conduit;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.NNList;
-import crazypants.enderio.base.conduit.*;
+import com.enderio.core.common.util.NNList.NNIterator;
+import com.enderio.core.common.util.NullHelper;
+
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
@@ -21,14 +40,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.*;
-
 public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
 
-  protected final Set<EnumFacing> conduitConnections = EnumSet.noneOf(EnumFacing.class);
+  protected final @Nonnull Set<EnumFacing> conduitConnections = EnumSet.noneOf(EnumFacing.class);
 
-  protected final Set<EnumFacing> externalConnections = EnumSet.noneOf(EnumFacing.class);
+  protected final @Nonnull Set<EnumFacing> externalConnections = EnumSet.noneOf(EnumFacing.class);
 
   public static final float STUB_WIDTH = 0.2f;
 
@@ -44,8 +60,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
 
   protected List<CollidableComponent> collidables;
 
-  protected final EnumMap<EnumFacing, ConnectionMode> conectionModes = new EnumMap<EnumFacing, ConnectionMode>(
-      EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, ConnectionMode> conectionModes = new EnumMap<EnumFacing, ConnectionMode>(EnumFacing.class);
 
   protected boolean collidablesDirty = true;
 
@@ -83,7 +98,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
       return false;
     }
     if (dataRoot.hasKey("connectionMode")) {
-      ConnectionMode mode = ConnectionMode.values()[dataRoot.getShort("connectionMode")];
+      ConnectionMode mode = NullHelper.first(ConnectionMode.values()[dataRoot.getShort("connectionMode")], getDefaultConnectionMode());
       setConnectionMode(dir, mode);
     }
     readTypeSettings(dir, dataRoot);
@@ -137,8 +152,8 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
     ConnectionMode oldVal = conectionModes.get(dir);
     if (oldVal == mode) {
       return;
-    }    
-    if (mode == null) {
+    }
+    if (mode == getDefaultConnectionMode()) {
       conectionModes.remove(dir);
     } else {
       conectionModes.put(dir, mode);
@@ -199,7 +214,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
   @Override
   @Nonnull
   public IConduitBundle getBundle() {
-    return bundle;
+    return NullHelper.notnull(bundle, "Logic error in conduit---no bundle set");
   }
 
   // Connections
@@ -226,11 +241,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
 
   @Override
   public boolean canConnectToConduit(@Nonnull EnumFacing direction, @Nonnull IConduit conduit) {
-    if (conduit == null) {
-      return false;
-    }
-    return getConnectionMode(direction) != ConnectionMode.DISABLED
-        && conduit.getConnectionMode(direction.getOpposite()) != ConnectionMode.DISABLED;
+    return getConnectionMode(direction) != ConnectionMode.DISABLED && conduit.getConnectionMode(direction.getOpposite()) != ConnectionMode.DISABLED;
   }
 
   @Override
@@ -312,8 +323,8 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
     if (conectionModes.size() > 0) {
       byte[] modes = new byte[6];
       int i = 0;
-      for (EnumFacing dir : EnumFacing.VALUES) {
-        modes[i] = (byte) getConnectionMode(dir).ordinal();
+      for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+        modes[i] = (byte) getConnectionMode(itr.next()).ordinal();
         i++;
       }
       conduitBody.setByteArray("conModes", modes);
@@ -337,7 +348,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
 
     conectionModes.clear();
     byte[] modes = conduitBody.getByteArray("conModes");
-    if (modes != null && modes.length == 6) {
+    if (modes.length == 6) {
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
         conectionModes.put(dir, ConnectionMode.values()[modes[i]]);
@@ -383,7 +394,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
     updateNetwork(world);
     updateConnections();
     readFromNbt = false; // the two update*()s react to this on their first run
-    if (clientStateDirty && getBundle() != null) {
+    if (clientStateDirty) {
       getBundle().dirty();
       clientStateDirty = false;
     }
@@ -541,8 +552,8 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
   @Override
   @Nonnull
   public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
-    return Collections.singletonList(new CollidableComponent(getCollidableType(), ConduitGeometryUtil.instance.getBoundingBox(
-        getBaseConduitType(), key.dir, key.isStub, key.offset), key.dir, null));
+    return Collections.singletonList(new CollidableComponent(getCollidableType(),
+        ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir, key.isStub, key.offset), key.dir, null));
   }
 
   @Override
@@ -605,7 +616,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
   @Override
   public int getExternalRedstoneLevel() {
     if (lastExternalRedstoneLevel == null) {
-      if (bundle == null || bundle.getEntity() == null) {
+      if (bundle == null) {
         return 0;
       }
       TileEntity te = bundle.getEntity();

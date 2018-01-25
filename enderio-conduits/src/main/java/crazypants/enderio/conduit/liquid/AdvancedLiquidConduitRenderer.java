@@ -1,10 +1,16 @@
 package crazypants.enderio.conduit.liquid;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
+
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
@@ -20,10 +26,6 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-
 public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
 
   @Override
@@ -32,8 +34,8 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex, @Nonnull CollidableComponent component, float selfIllum, @Nonnull BlockRenderLayer layer,
-      List<BakedQuad> quads) {
+  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,
+      @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
     super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
 
     if (!isNSEWUD(component.dir)) {
@@ -41,8 +43,8 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
     }
 
     AdvancedLiquidConduit lc = (AdvancedLiquidConduit) conduit;
-    
-    for (EnumFacing dir : conduit.getExternalConnections()) {      
+
+    for (EnumFacing dir : conduit.getExternalConnections()) {
       TextureAtlasSprite ioTex = null;
       if (conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
         ioTex = lc.getTextureForInputMode();
@@ -51,15 +53,13 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
       }
       if (ioTex != null) {
         Offset offset = bundle.getOffset(ILiquidConduit.class, dir);
-        ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ioTex, new Vector4f(1,1,1,1), quads);
+        ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ioTex, new Vector4f(1, 1, 1, 1), quads);
       }
     }
 
     FluidStack fluid = lc.getFluidType();
-    TextureAtlasSprite texture = RenderUtil.getStillTexture(fluid);
-    if (texture == null) {
-      texture = lc.getNotSetEdgeTexture();
-    }
+    @Nonnull
+    TextureAtlasSprite texture = fluid != null ? RenderUtil.getStillTexture(fluid) : lc.getNotSetEdgeTexture();
 
     float scaleFactor = 0.75f;
     float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
@@ -118,7 +118,7 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
         vertices.add(c);
       }
     }
-    
+
     BakedQuadBuilder.addBakedQuads(quads, vertices, texture, null);
 
   }

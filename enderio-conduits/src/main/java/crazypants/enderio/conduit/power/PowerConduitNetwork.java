@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.enderio.core.common.util.BlockCoord;
+import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.power.IPowerInterface;
@@ -17,9 +17,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
 
 public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, IPowerConduit> {
 
@@ -45,7 +42,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
     for (IPowerConduit con : getConduits()) {
       con.setActive(false);
     }
-    if(powerManager != null) {
+    if (powerManager != null) {
       powerManager.onNetworkDestroyed();
     }
     super.destroyNetwork();
@@ -61,29 +58,30 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
     Set<EnumFacing> externalDirs = con.getExternalConnections();
     for (EnumFacing dir : externalDirs) {
       IPowerInterface pr = con.getExternalPowerReceptor(dir);
-      if(pr != null) {
+      if (pr != null) {
         TileEntity te = con.getBundle().getEntity();
         BlockPos p = te.getPos().offset(dir);
         powerReceptorAdded(con, dir, p.getX(), p.getY(), p.getZ(), pr);
       }
     }
-    if(powerManager != null) {
+    if (powerManager != null) {
       con.setActive(powerManager.isActive());
     }
   }
 
-  public void powerReceptorAdded(@Nonnull IPowerConduit powerConduit, @Nonnull EnumFacing direction, int x, int y, int z, @Nonnull IPowerInterface powerReceptor) {
-    if(powerReceptor == null) {
+  public void powerReceptorAdded(@Nonnull IPowerConduit powerConduit, @Nonnull EnumFacing direction, int x, int y, int z,
+      @Nonnull IPowerInterface powerReceptor) {
+    if (powerReceptor == null) {
       return;
     }
     BlockPos pos = new BlockPos(x, y, z);
     ReceptorKey key = new ReceptorKey(pos, direction);
     ReceptorEntry re = powerReceptors.get(key);
-    if(re == null) {
+    if (re == null) {
       re = new ReceptorEntry(powerReceptor, pos, powerConduit, direction);
       powerReceptors.put(key, re);
     }
-    if(powerManager != null) {
+    if (powerManager != null) {
       powerManager.receptorsChanged();
     }
   }
@@ -92,7 +90,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
     BlockPos pos = new BlockPos(x, y, z);
     List<ReceptorKey> remove = new ArrayList<ReceptorKey>();
     for (ReceptorKey key : powerReceptors.keySet()) {
-      if(key != null && key.pos.equals(pos)) {
+      if (key != null && key.pos.equals(pos)) {
         remove.add(key);
       }
     }
@@ -107,7 +105,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
   }
 
   @Override
-  public void doNetworkTick(Profiler theProfiler) {
+  public void doNetworkTick(@Nonnull Profiler theProfiler) {
     powerManager.applyRecievedPower(theProfiler);
   }
 
@@ -148,24 +146,24 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
 
     @Override
     public boolean equals(Object obj) {
-      if(this == obj) {
+      if (this == obj) {
         return true;
       }
-      if(obj == null) {
+      if (obj == null) {
         return false;
       }
-      if(getClass() != obj.getClass()) {
+      if (getClass() != obj.getClass()) {
         return false;
       }
       ReceptorKey other = (ReceptorKey) obj;
-      if(pos == null) {
-        if(other.pos != null) {
+      if (pos == null) {
+        if (other.pos != null) {
           return false;
         }
-      } else if(!pos.equals(other.pos)) {
+      } else if (!pos.equals(other.pos)) {
         return false;
       }
-      if(direction != other.direction) {
+      if (direction != other.direction) {
         return false;
       }
       return true;

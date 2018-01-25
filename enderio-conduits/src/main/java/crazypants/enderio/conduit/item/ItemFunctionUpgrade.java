@@ -1,6 +1,9 @@
 package crazypants.enderio.conduit.item;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -12,8 +15,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
 
 public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvider, IHaveRenderers {
 
@@ -41,14 +42,14 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
   }
 
   @Override
-  public String getUnlocalizedName(@Nonnull ItemStack par1ItemStack) {
+  public @Nonnull String getUnlocalizedName(@Nonnull ItemStack par1ItemStack) {
     return getFunctionUpgrade(par1ItemStack).unlocName;
   }
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList par3List) {
+  public void getSubItems(@Nonnull Item par1, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList par3List) {
     for (int j = 0; j < UPGRADES.length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }
@@ -60,7 +61,7 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName(itemStack);
   }
 

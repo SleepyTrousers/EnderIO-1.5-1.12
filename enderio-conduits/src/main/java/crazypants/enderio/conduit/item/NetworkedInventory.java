@@ -1,6 +1,16 @@
 package crazypants.enderio.conduit.item;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.util.RoundRobinIterator;
+
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.conduit.ConnectionMode;
@@ -16,10 +26,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class NetworkedInventory implements INetworkedInventory {
 
@@ -39,7 +45,7 @@ public class NetworkedInventory implements INetworkedInventory {
   int tickDeficit;
 
   // TODO Inventory
-  //  boolean inventoryPanel = false;
+  // boolean inventoryPanel = false;
 
   private World world;
   private ItemConduitNetwork network;
@@ -57,10 +63,10 @@ public class NetworkedInventory implements INetworkedInventory {
     IBlockState bs = world.getBlockState(location);
     invName = bs.getBlock().getLocalizedName();
 
-    //    TileEntity te = world.getTileEntity(location);
-    //    if(te instanceof TileInventoryPanel) {
-    //      inventoryPanel = true;
-    //    }
+    // TileEntity te = world.getTileEntity(location);
+    // if(te instanceof TileInventoryPanel) {
+    // inventoryPanel = true;
+    // }
   }
 
   @Override
@@ -103,16 +109,16 @@ public class NetworkedInventory implements INetworkedInventory {
 
   @Override
   public boolean canInsert() {
-    //    if(inventoryPanel) {
-    //      return false;
-    //    }
+    // if(inventoryPanel) {
+    // return false;
+    // }
     ConnectionMode mode = con.getConnectionMode(conDir);
     return mode == ConnectionMode.OUTPUT || mode == ConnectionMode.IN_OUT;
   }
 
-  //  boolean isInventoryPanel() {
-  //    return inventoryPanel;
-  //  }
+  // boolean isInventoryPanel() {
+  // return inventoryPanel;
+  // }
 
   @Override
   public boolean isSticky() {
@@ -127,14 +133,14 @@ public class NetworkedInventory implements INetworkedInventory {
   @Override
   public void onTick() {
     if (tickDeficit > 0 || !canExtract() || !con.isExtractionRedstoneConditionMet(conDir)) {
-      //do nothing     
+      // do nothing
     } else {
       transferItems();
     }
 
     tickDeficit--;
     if (tickDeficit < -1) {
-      //Sleep for a second before checking again.
+      // Sleep for a second before checking again.
       tickDeficit = 20;
     }
   }
@@ -228,7 +234,7 @@ public class NetworkedInventory implements INetworkedInventory {
 
     Iterable<Target> targets = getTargetIterator();
 
-    //for (Target target : sendPriority) {
+    // for (Target target : sendPriority) {
     for (Target target : targets) {
       if (target.stickyInput && !matchedStickyInput) {
         IItemFilter of = ((IItemConduit) target.inv.getCon()).getOutputFilter(target.inv.getConDir());
@@ -289,8 +295,7 @@ public class NetworkedInventory implements INetworkedInventory {
     List<Target> result = new ArrayList<NetworkedInventory.Target>();
 
     for (INetworkedInventory other : network.inventories) {
-      if ((con.isSelfFeedEnabled(conDir) || (other != this))
-          && other.canInsert()
+      if ((con.isSelfFeedEnabled(conDir) || (other != this)) && other.canInsert()
           && con.getInputColor(conDir) == ((IItemConduit) other.getCon()).getOutputColor(other.getConDir())) {
 
         if (Config.itemConduitUsePhyscialDistance) {
@@ -402,7 +407,7 @@ public class NetworkedInventory implements INetworkedInventory {
     }
 
     @Override
-    public int compareTo(@Nonnull Target o) {
+    public int compareTo(Target o) {
       if (stickyInput && !o.stickyInput) {
         return -1;
       }

@@ -1,5 +1,12 @@
 package crazypants.enderio.base.filter.gui;
 
+import java.awt.Rectangle;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.IconButton;
@@ -7,6 +14,7 @@ import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.button.TooltipButton;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.ExistingItemFilter;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
@@ -16,11 +24,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
-import java.util.List;
 
 public class ExistingItemFilterGui implements IItemFilterGui {
 
@@ -28,30 +31,30 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   private static final int ID_META = FilterGuiUtil.nextButtonId();
   private static final int ID_ORE_DICT = FilterGuiUtil.nextButtonId();
   private static final int ID_STICKY = FilterGuiUtil.nextButtonId();
-  
+
   private static final int ID_SNAPSHOT = FilterGuiUtil.nextButtonId();
   private static final int ID_CLEAR = FilterGuiUtil.nextButtonId();
   private static final int ID_SHOW = FilterGuiUtil.nextButtonId();
   private static final int ID_MERGE = FilterGuiUtil.nextButtonId();
 
-  private final GuiContainerBaseEIO gui;
-  private final IItemFilterContainer filterContainer;
+  private final @Nonnull GuiContainerBaseEIO gui;
+  private final @Nonnull IItemFilterContainer filterContainer;
 
-  private ToggleButton useMetaB;
-  private ToggleButton useNbtB;
-  private ToggleButton useOreDictB;
-  private ToggleButton stickyB;
-  
-  private final IconButton whiteListB;
+  private @Nonnull ToggleButton useMetaB;
+  private @Nonnull ToggleButton useNbtB;
+  private @Nonnull ToggleButton useOreDictB;
+  private @Nonnull ToggleButton stickyB;
 
-  private TooltipButton snapshotB;
-  private GuiButton clearB;
-  private GuiButton showB;
-  private GuiButton mergeB;
-  private SnapshotOverlay snapshotOverlay;
+  private final @Nonnull IconButton whiteListB;
+
+  private @Nonnull TooltipButton snapshotB;
+  private @Nonnull GuiButton clearB;
+  private @Nonnull GuiButton showB;
+  private @Nonnull GuiButton mergeB;
+  private @Nonnull SnapshotOverlay snapshotOverlay;
   private boolean isInput;
 
-  private ExistingItemFilter filter;
+  private @Nonnull ExistingItemFilter filter;
 
   // TODO Remove isInput
   public ExistingItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isInput) {
@@ -105,12 +108,11 @@ public class ExistingItemFilterGui implements IItemFilterGui {
 
     snapshotOverlay = new SnapshotOverlay();
     gui.addOverlay(snapshotOverlay);
-    
-    
+
   }
-  
+
   @Override
-  public void mouseClicked(int x, int y, int par3) {      
+  public void mouseClicked(int x, int y, int par3) {
   }
 
   @Override
@@ -124,7 +126,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     useOreDictB.onGuiInit();
     useOreDictB.setSelected(activeFilter.isUseOreDict());
 
-    if(!isInput) {
+    if (!isInput) {
       stickyB.onGuiInit();
       stickyB.setSelected(activeFilter.isSticky());
     }
@@ -167,54 +169,54 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   }
 
   @Override
-  public void actionPerformed(GuiButton guiButton) {
-    if(guiButton.id == ID_META) {
+  public void actionPerformed(@Nonnull GuiButton guiButton) {
+    if (guiButton.id == ID_META) {
       filter.setMatchMeta(useMetaB.isSelected());
       sendFilterChange();
-    } else if(guiButton.id == ID_NBT) {
+    } else if (guiButton.id == ID_NBT) {
       filter.setMatchNBT(useNbtB.isSelected());
       sendFilterChange();
-    } else if(guiButton.id == ID_STICKY) {
+    } else if (guiButton.id == ID_STICKY) {
       filter.setSticky(stickyB.isSelected());
       sendFilterChange();
-    } else if(guiButton.id == ID_ORE_DICT) {
+    } else if (guiButton.id == ID_ORE_DICT) {
       filter.setUseOreDict(useOreDictB.isSelected());
       sendFilterChange();
-    } else if(guiButton.id == ID_SNAPSHOT) {
-//      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.SET);
-    } else if(guiButton.id == ID_CLEAR) {
-//      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.CLEAR);
-    } else if(guiButton.id == ID_MERGE) {
-//      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.MERGE);
-    } else if(guiButton.id == ID_SHOW) {
-      showSnapshotOverlay();  
+    } else if (guiButton.id == ID_SNAPSHOT) {
+      // sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.SET);
+    } else if (guiButton.id == ID_CLEAR) {
+      // sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.CLEAR);
+    } else if (guiButton.id == ID_MERGE) {
+      // sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.MERGE);
+    } else if (guiButton.id == ID_SHOW) {
+      showSnapshotOverlay();
     } else if (guiButton == whiteListB) {
       filter.setBlacklist(!filter.isBlacklist());
-//      sendSnapshotPacket(filter.isBlacklist() ? PacketExistingItemFilterSnapshot.Opcode.SET_BLACK
-//          : PacketExistingItemFilterSnapshot.Opcode.UNSET_BLACK);
+      // sendSnapshotPacket(filter.isBlacklist() ? PacketExistingItemFilterSnapshot.Opcode.SET_BLACK
+      // : PacketExistingItemFilterSnapshot.Opcode.UNSET_BLACK);
     }
   }
 
   private void showSnapshotOverlay() {
-    snapshotOverlay.setIsVisible(true);    
+    snapshotOverlay.setIsVisible(true);
   }
 
   // TODO Decouple from Conduits?
-//  private void sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode opcode) {
-//    PacketHandler.INSTANCE.sendToServer(new PacketExistingItemFilterSnapshot(itemConduit, gui.getDir(),isInput,opcode));
-//  }
+  // private void sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode opcode) {
+  // PacketHandler.INSTANCE.sendToServer(new PacketExistingItemFilterSnapshot(itemConduit, gui.getDir(),isInput,opcode));
+  // }
 
   private void sendFilterChange() {
     updateButtons();
     filterContainer.onFilterChanged();
-    //PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
+    // PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
   }
 
   @Override
   public void deactivate() {
     useNbtB.detach();
     useMetaB.detach();
-    useOreDictB.detach();    
+    useOreDictB.detach();
     stickyB.detach();
     whiteListB.detach();
     snapshotB.detach();
@@ -225,59 +227,59 @@ public class ExistingItemFilterGui implements IItemFilterGui {
 
   @Override
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
-//    GL11.glColor3f(1, 1, 1);
-//    RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
-//    gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 68, 0, 238, 18 * 5, 18);
-//    if(filter.isAdvanced()) {
-//      gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 86, 0, 238, 18 * 5, 18);
-//    }
+    // GL11.glColor3f(1, 1, 1);
+    // RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
+    // gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 68, 0, 238, 18 * 5, 18);
+    // if(filter.isAdvanced()) {
+    // gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 86, 0, 238, 18 * 5, 18);
+    // }
   }
-  
+
   class SnapshotOverlay implements IGuiOverlay {
 
     boolean visible;
-    
+
     @Override
-    public void init(IGuiScreen screen) {           
+    public void init(@Nonnull IGuiScreen screen) {
     }
 
     @Override
-    public Rectangle getBounds() {     
-      return new Rectangle(0,0,gui.width,gui.height);
+    public @Nonnull Rectangle getBounds() {
+      return new Rectangle(0, 0, gui.width, gui.height);
     }
 
     @Override
-    public void draw(int mouseX, int mouseY, float partialTick) {      
+    public void draw(int mouseX, int mouseY, float partialTick) {
       RenderHelper.enableGUIStandardItemLighting();
       GL11.glEnable(GL11.GL_BLEND);
-      RenderUtil.renderQuad2D(4, 4, 0, gui.getXSize() - 9, gui.getYSize() - 8, new Vector4f(0,0,0,1));
-      RenderUtil.renderQuad2D(6, 6, 0, gui.getXSize() - 13, gui.getYSize() - 12, new Vector4f(0.6,0.6,0.6,1));
-      
+      RenderUtil.renderQuad2D(4, 4, 0, gui.getXSize() - 9, gui.getYSize() - 8, new Vector4f(0, 0, 0, 1));
+      RenderUtil.renderQuad2D(6, 6, 0, gui.getXSize() - 13, gui.getYSize() - 12, new Vector4f(0.6, 0.6, 0.6, 1));
+
       Minecraft mc = Minecraft.getMinecraft();
       RenderItem itemRenderer = mc.getRenderItem();
-            
+
       GL11.glEnable(GL11.GL_DEPTH_TEST);
-      
+
       List<ItemStack> snapshot = filter.getSnapshot();
       int x = 15;
       int y = 10;
       int count = 0;
-      for(ItemStack st : snapshot) {
-        if(st != null) {          
-          itemRenderer.renderItemAndEffectIntoGUI(st, x,y);            
-        }        
+      for (ItemStack st : snapshot) {
+        if (st != null) {
+          itemRenderer.renderItemAndEffectIntoGUI(st, x, y);
+        }
         x += 20;
         count++;
-        if(count % 9 == 0) {
+        if (count % 9 == 0) {
           x = 15;
           y += 20;
         }
-      }            
+      }
     }
 
     @Override
     public void setIsVisible(boolean visible) {
-      this.visible = visible;      
+      this.visible = visible;
     }
 
     @Override
@@ -291,13 +293,13 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     }
 
     @Override
-    public boolean isMouseInBounds(int mouseX, int mouseY) {      
+    public boolean isMouseInBounds(int mouseX, int mouseY) {
       return getBounds().contains(mouseX, mouseY);
     }
 
     @Override
-    public void guiClosed() {            
+    public void guiClosed() {
     }
-    
+
   }
 }

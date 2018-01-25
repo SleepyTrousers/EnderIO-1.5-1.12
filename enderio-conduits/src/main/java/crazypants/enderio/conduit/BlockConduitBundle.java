@@ -41,6 +41,7 @@ import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.GuiExternalConnectionSelector;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
@@ -171,26 +172,22 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   @Override
   @Nonnull
   public IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperConduitBundle(state, world, pos, ConduitRenderMapper.instance);
-      TileConduitBundle bundle = getTileEntitySafe(world, pos);
-      if (bundle != null) {
-        synchronized (bundle) {
-          blockStateWrapper.addCacheKey(bundle);
-          blockStateWrapper.bakeModel();
-        }
-      } else {
+    IBlockStateWrapper blockStateWrapper = new BlockStateWrapperConduitBundle(state, world, pos, ConduitRenderMapper.instance);
+    TileConduitBundle bundle = getTileEntitySafe(world, pos);
+    if (bundle != null) {
+      synchronized (bundle) {
+        blockStateWrapper.addCacheKey(bundle);
         blockStateWrapper.bakeModel();
       }
-      return blockStateWrapper;
     } else {
-      return state;
+      blockStateWrapper.bakeModel();
     }
+    return blockStateWrapper;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public BlockRenderLayer getBlockLayer() {
+  public @Nonnull BlockRenderLayer getBlockLayer() {
     return BlockRenderLayer.CUTOUT;
   }
 
@@ -200,7 +197,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
 
     TextureAtlasSprite tex = null;
 
-    TileConduitBundle cb = (TileConduitBundle) world.getTileEntity(target.getBlockPos());
+    TileConduitBundle cb = getTileEntity(world, target.getBlockPos());
     if (YetaUtil.isSolidFacadeRendered(cb, Minecraft.getMinecraft().player)) {
       IBlockState paintSource = cb.getPaintSource();
       if (paintSource != null) {
@@ -214,7 +211,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       }
     }
     if (tex == null) {
-      tex = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(ModObject.block_machine_base.getBlock().getDefaultState());
+      tex = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(ModObject.block_machine_base.getBlockNN().getDefaultState());
     }
     lastHitIcon = tex;
     BlockPos p = target.getBlockPos();
@@ -226,7 +223,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   public boolean addLandingEffects(@Nonnull IBlockState state, @Nonnull net.minecraft.world.WorldServer world, @Nonnull BlockPos bp,
       @Nonnull IBlockState iblockstate, @Nonnull EntityLivingBase entity, int numberOfParticles) {
     // TODO: Should probably register a dummy state for this, but this is an easy fix for the blockTank that allows testing to begin
-    int stateId = Block.getStateId(ModObject.block_machine_base.getBlock().getDefaultState());
+    int stateId = Block.getStateId(ModObject.block_machine_base.getBlockNN().getDefaultState());
     TileConduitBundle te = getTileEntity(world, bp);
     if (te != null) {
       IBlockState ps = te.getPaintSource();
@@ -244,16 +241,16 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   public boolean addDestroyEffects(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ParticleManager effectRenderer) {
     if (lastHitIcon == null) {
       lastHitIcon = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes()
-          .getTexture(ModObject.block_machine_base.getBlock().getDefaultState());
+          .getTexture(ModObject.block_machine_base.getBlockNN().getDefaultState());
     }
 
     IBlockState state = world.getBlockState(pos);
-    if (state == null || state.getBlock() != this || lastHitIcon == null) {
+    TextureAtlasSprite tex = lastHitIcon;
+    if (state.getBlock() != this || tex == null) {
       return false;
     }
     state = state.getActualState(world, pos);
     int i = 4;
-    TextureAtlasSprite tex = lastHitIcon;
     for (int j = 0; j < i; ++j) {
       for (int k = 0; k < i; ++k) {
         for (int l = 0; l < i; ++l) {
@@ -308,7 +305,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       @Nonnull EntityPlayer player) {
     ItemStack ret = ItemStack.EMPTY;
 
-    if (target != null && target.hitInfo instanceof CollidableComponent) {
+    if (target.hitInfo instanceof CollidableComponent) {
       CollidableComponent cc = (CollidableComponent) target.hitInfo;
       TileConduitBundle bundle = getTileEntity(world, pos);
       if (bundle != null) {
@@ -318,7 +315,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
         } else if (cc.conduitType == null && bundle.hasFacade()) {
           bundle.getFacadeType();
           // use the facade
-          ret = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, EnumFacadeType.getMetaFromType(bundle.getFacadeType()));
+          ret = new ItemStack(ModObject.itemConduitFacade.getItemNN(), 1, EnumFacadeType.getMetaFromType(bundle.getFacadeType()));
           PaintUtil.setSourceBlock(ret, bundle.getPaintSource());
         }
       }
@@ -328,7 +325,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
 
   @Override
   public int damageDropped(@Nonnull IBlockState state) {
-    return state == null ? 0 : state.getBlock().getMetaFromState(state);
+    return state.getBlock().getMetaFromState(state);
   }
 
   @Override
@@ -523,7 +520,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     NNList<ItemStack> drop = new NNList<>();
     if (YetaUtil.isSolidFacadeRendered(te, player)) {
       breakBlock = false;
-      ItemStack fac = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, EnumFacadeType.getMetaFromType(te.getFacadeType()));
+      ItemStack fac = new ItemStack(ModObject.itemConduitFacade.getItemNN(), 1, EnumFacadeType.getMetaFromType(te.getFacadeType()));
       PaintUtil.setSourceBlock(fac, te.getPaintSource());
       drop.add(fac);
 
@@ -562,7 +559,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   }
 
   private boolean breakConduit(IConduitBundle te, List<ItemStack> drop, RaytraceResult rt, EntityPlayer player) {
-    if (rt == null || rt.component == null) {
+    if (rt == null) {
       return false;
     }
     Class<? extends IConduit> type = rt.component.conduitType;
@@ -674,7 +671,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       all = doRayTraceAll(world, x, y, z, player);
     }
 
-    if (closest != null && closest.component != null && closest.component.data instanceof ConduitConnectorType) {
+    if (closest != null && closest.component.data instanceof ConduitConnectorType) {
 
       ConduitConnectorType conType = (ConduitConnectorType) closest.component.data;
       if (conType == ConduitConnectorType.INTERNAL) {
@@ -700,7 +697,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       }
     }
 
-    if (closest == null || closest.component == null || closest.component.conduitType == null && all == null) {
+    if (closest == null || closest.component.conduitType == null && all == null) {
       // Nothing of interest hit
       return false;
     }
@@ -760,7 +757,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       return false; // not in copy paste mode
     }
     RaytraceResult rr = doRayTrace(world, x, y, z, player);
-    if (rr == null || rr.component == null) {
+    if (rr == null) {
       return false;
     }
     return ItemConduitProbe.copyPasteSettings(player, stack, bundle, rr.component.dir);
@@ -802,7 +799,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
         return false;
       }
       if (!world.isRemote && !player.capabilities.isCreativeMode) {
-        ItemStack drop = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, EnumFacadeType.getMetaFromType(bundle.getFacadeType()));
+        ItemStack drop = new ItemStack(ModObject.itemConduitFacade.getItemNN(), 1, EnumFacadeType.getMetaFromType(bundle.getFacadeType()));
         PaintUtil.setSourceBlock(drop, bundle.getPaintSource());
         if (!player.inventory.addItemStackToInventory(drop)) {
           ItemUtil.spawnItemInWorldWithRandomMotion(world, drop, pos, hitX, hitY, hitZ, 1.2f);
@@ -840,14 +837,14 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   @Nullable
   @Override
   public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    // if (GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.is(id)) {
-    // return null;
-    // }
+    if (facing == null) {
+      return null;
+    }
     // The server needs the container as it manages the adding and removing of
     // items, which are then sent to the client for display
-    TileEntity te = world.getTileEntity(pos);
-    if (te instanceof IConduitBundle) {
-      return new ExternalConnectionContainer(player.inventory, facing, (TileConduitBundle) te);
+    TileConduitBundle te = getTileEntity(world, pos);
+    if (te != null) {
+      return new ExternalConnectionContainer(player.inventory, facing, te);
     }
     return null;
   }
@@ -856,19 +853,19 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   @Nullable
   @Override
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    TileEntity te = world.getTileEntity(pos);
-    if (te instanceof IConduitBundle) {
-      // if (GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.is(id)) {
-      // return new GuiExternalConnectionSelector((IConduitBundle) te);
-      // }
-      return new GuiExternalConnection(player.inventory, (IConduitBundle) te, facing);
+    TileConduitBundle te = getTileEntity(world, pos);
+    if (te != null) {
+      if (facing == null) {
+        return new GuiExternalConnectionSelector(te);
+      }
+      return new GuiExternalConnection(player.inventory, te, facing);
     }
     return null;
   }
 
   private RaytraceResult getHitForConduitType(List<RaytraceResult> all, Class<? extends IConduit> collidableType) {
     for (RaytraceResult rr : all) {
-      if (rr.component != null && rr.component.conduitType == collidableType) {
+      if (rr.component.conduitType == collidableType) {
         return rr;
       }
     }
@@ -932,9 +929,9 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   @Nonnull
   public AxisAlignedBB getSelectedBoundingBox(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos) {
 
-    TileEntity te = world.getTileEntity(pos);
+    TileConduitBundle te = getTileEntity(world, pos);
     EntityPlayer player = Minecraft.getMinecraft().player;
-    if (!(te instanceof IConduitBundle)) {
+    if (te == null) {
       // TODO: Fix
       return null;
     }
@@ -948,7 +945,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       Iterator<RaytraceResult> iter = results.iterator();
       while (iter.hasNext()) {
         CollidableComponent component = iter.next().component;
-        if (component == null || (component.conduitType == null && component.data != ConduitConnectorType.EXTERNAL)) {
+        if (component.conduitType == null && component.data != ConduitConnectorType.EXTERNAL) {
           iter.remove();
         }
       }
@@ -956,7 +953,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       // This is an ugly special case, TODO fix this
       for (RaytraceResult hit : results) {
         IRedstoneConduit cond = con.getConduit(IRedstoneConduit.class);
-        if (cond != null && hit.component != null && cond.getExternalConnections().contains(hit.component.dir) && !cond.isSpecialConnection(hit.component.dir)
+        if (cond != null && cond.getExternalConnections().contains(hit.component.dir) && !cond.isSpecialConnection(hit.component.dir)
             && hit.component.data == InsulatedRedstoneConduit.COLOR_CONTROLLER_ID) {
           minBB = hit.component.bound;
         }
@@ -964,7 +961,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
 
       if (minBB == null) {
         RaytraceResult hit = RaytraceResult.getClosestHit(Util.getEyePosition(player), results);
-        if (hit != null && hit.component != null && hit.component.bound != null) {
+        if (hit != null && hit.component.bound != null) {
           minBB = hit.component.bound;
           if (hit.component.conduitType == null) {
             EnumFacing dir = hit.component.dir.getOpposite();
@@ -998,9 +995,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     RayTraceResult ret = null;
     if (raytraceResult != null) {
       ret = raytraceResult.movingObjectPosition;
-      if (ret != null) {
-        ret.hitInfo = raytraceResult.component;
-      }
+      ret.hitInfo = raytraceResult.component;
     }
 
     return ret;
@@ -1049,10 +1044,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     }
     IConduitBundle bundle = (IConduitBundle) te;
     List<RaytraceResult> hits = new ArrayList<RaytraceResult>();
-
-    if (player == null) {
-      player = EnderIO.proxy.getClientPlayer();
-    }
 
     if (YetaUtil.isSolidFacadeRendered(bundle, player)) {
       setBlockBounds(0, 0, 0, 1, 1, 1);
@@ -1105,7 +1096,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (tab != null) {
       super.getSubBlocks(itemIn, tab, list);
     }

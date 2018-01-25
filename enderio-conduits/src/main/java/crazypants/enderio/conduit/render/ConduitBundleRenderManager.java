@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.render;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.conduit.IConduitRenderer;
 import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
@@ -40,7 +42,7 @@ public class ConduitBundleRenderManager {
     }
   }
 
-  public TextureAtlasSprite getConnectorIcon(Object data) {
+  public @Nonnull TextureAtlasSprite getConnectorIcon(Object data) {
     return (data == ConduitConnectorType.EXTERNAL ? connectorIconExternal : connectorIcon).get(TextureAtlasSprite.class);
   }
 

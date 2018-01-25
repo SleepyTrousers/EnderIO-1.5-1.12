@@ -8,9 +8,9 @@ import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.conduit.item.AbstractItemConduit;
-import crazypants.enderio.conduit.ItemConduitSubtype;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,8 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemRedstoneConduit extends AbstractItemConduit {
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ConduitObject.item_redstone_conduit.name() + "Insulated", "enderio:itemRedstoneInsulatedConduit")
-  };
+      new ItemConduitSubtype(ConduitObject.item_redstone_conduit.name() + "Insulated", "enderio:itemRedstoneInsulatedConduit") };
 
   public static ItemRedstoneConduit create(@Nonnull IModObject modObject) {
     return new ItemRedstoneConduit(modObject);
@@ -50,12 +49,12 @@ public class ItemRedstoneConduit extends AbstractItemConduit {
   }
 
   @Override
-  public IConduit createConduit(ItemStack stack, EntityPlayer player) {    
-    return new InsulatedRedstoneConduit();          
+  public IConduit createConduit(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+    return new InsulatedRedstoneConduit();
   }
 
   @Override
-  public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+  public boolean shouldHideFacades(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
     return true;
   }
 }

@@ -2,6 +2,8 @@ package crazypants.enderio.conduit.redstone;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.conduit.IConduit;
@@ -16,13 +18,13 @@ import net.minecraft.util.BlockRenderLayer;
 public class InsulatedRedstoneConduitRenderer extends DefaultConduitRenderer {
 
   @Override
-  public boolean isRendererForConduit(IConduit conduit) {
+  public boolean isRendererForConduit(@Nonnull IConduit conduit) {
     return conduit instanceof IRedstoneConduit;
   }
 
   @Override
-  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, BlockRenderLayer layer,
-      List<BakedQuad> quads) {
+  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,
+      @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
     if (IRedstoneConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
       if (conduit.containsExternalConnection(component.dir) && !((IRedstoneConduit) conduit).isSpecialConnection(component.dir)) {
         int c = ((IRedstoneConduit) conduit).getSignalColor(component.dir).getColor();

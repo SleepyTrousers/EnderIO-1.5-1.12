@@ -2,6 +2,8 @@ package crazypants.enderio.base.conduit;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 
@@ -23,20 +25,20 @@ public enum ConnectionMode {
     return unlocalisedName;
   }
 
-  public static ConnectionMode getNext(ConnectionMode mode) {
+  public static @Nonnull ConnectionMode getNext(@Nonnull ConnectionMode mode) {
     int ord = mode.ordinal() + 1;
     if (ord >= ConnectionMode.values().length) {
       ord = 0;
     }
-    return ConnectionMode.values()[ord];
+    return NullHelper.first(ConnectionMode.values()[ord], NOT_SET);
   }
 
-  public static ConnectionMode getPrevious(ConnectionMode mode) {
+  public static @Nonnull ConnectionMode getPrevious(@Nonnull ConnectionMode mode) {
     int ord = mode.ordinal() - 1;
     if (ord < 0) {
       ord = ConnectionMode.values().length - 1;
     }
-    return ConnectionMode.values()[ord];
+    return NullHelper.first(ConnectionMode.values()[ord], NOT_SET);
   }
 
   public boolean acceptsInput() {

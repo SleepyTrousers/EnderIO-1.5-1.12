@@ -106,7 +106,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   @Override
-  public World getBundleworld() {
+  public @Nonnull World getBundleworld() {
     return getWorld();
   }
 
@@ -353,7 +353,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   @Override
-  public void onNeighborChange(@Nonnull IBlockAccess world, @Nonnull BlockPos posIn, @Nonnull BlockPos neighbor) {
+  public void onNeighborChange(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos posIn, @Nonnull BlockPos neighbor) {
     boolean needsUpdate = false;
     for (IConduit conduit : conduits) {
       needsUpdate |= conduit.onNeighborChange(neighbor);
@@ -438,7 +438,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   // Geometry
 
   @Override
-  public Offset getOffset(Class<? extends IConduit> type, EnumFacing dir) {
+  public @Nonnull Offset getOffset(@Nonnull Class<? extends IConduit> type, @Nonnull EnumFacing dir) {
     if (getConnectionCount(dir) < 2) {
       return Offset.NONE;
     }

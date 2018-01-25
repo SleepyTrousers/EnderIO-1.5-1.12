@@ -16,7 +16,7 @@ public class CollidableCache {
 
   private final Map<CacheKey, Collection<CollidableComponent>> cache = new HashMap<CollidableCache.CacheKey, Collection<CollidableComponent>>();
 
-  public CacheKey createKey(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset offset, @Nullable EnumFacing dir, boolean isStub) {
+  public @Nonnull CacheKey createKey(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset offset, @Nullable EnumFacing dir, boolean isStub) {
     return new CacheKey(baseType, offset, dir, isStub);
   }
 
