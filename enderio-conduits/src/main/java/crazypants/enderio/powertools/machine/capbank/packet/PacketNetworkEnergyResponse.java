@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketNetworkEnergyResponse implements IMessage, IMessageHandler<PacketNetworkEnergyResponse, IMessage> {
+public class PacketNetworkEnergyResponse implements IMessage {
 
   private int id;
   private long energyStored;
@@ -41,11 +41,14 @@ public class PacketNetworkEnergyResponse implements IMessage, IMessageHandler<Pa
     avgInput = buf.readFloat();
     avgOutput = buf.readFloat();
   }
+  
+  public static class Handler implements IMessageHandler<PacketNetworkEnergyResponse, IMessage> {
 
-  @Override
-  public IMessage onMessage(PacketNetworkEnergyResponse message, MessageContext ctx) {
-    ClientNetworkManager.getInstance().updateEnergy(message.id, message.energyStored, message.avgInput, message.avgOutput);
-    return null;
+    @Override
+    public IMessage onMessage(PacketNetworkEnergyResponse message, MessageContext ctx) {
+      ClientNetworkManager.getInstance().updateEnergy(message.id, message.energyStored, message.avgInput, message.avgOutput);
+      return null;
+    }
   }
 
 }

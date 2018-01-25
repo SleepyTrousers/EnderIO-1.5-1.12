@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketNetworkStateResponse implements IMessage, IMessageHandler<PacketNetworkStateResponse, IMessage> {
+public class PacketNetworkStateResponse implements IMessage {
 
   private int id;
   private NetworkState state;
@@ -51,15 +51,17 @@ public class PacketNetworkStateResponse implements IMessage, IMessageHandler<Pac
       state = null;
     }
   }
+  
+  public static class Handler implements IMessageHandler<PacketNetworkStateResponse, IMessage> {
 
-  @Override
-  public IMessage onMessage(PacketNetworkStateResponse message, MessageContext ctx) {
-    if (message.state != null) {
-      ClientNetworkManager.getInstance().updateState(EnderIO.proxy.getClientWorld(), message.id, message.state);
-    } else {
-      ClientNetworkManager.getInstance().destroyNetwork(message.id);
+    @Override
+    public IMessage onMessage(PacketNetworkStateResponse message, MessageContext ctx) {
+      if (message.state != null) {
+        ClientNetworkManager.getInstance().updateState(EnderIO.proxy.getClientWorld(), message.id, message.state);
+      } else {
+        ClientNetworkManager.getInstance().destroyNetwork(message.id);
+      }
+      return null;
     }
-    return null;
   }
-
 }

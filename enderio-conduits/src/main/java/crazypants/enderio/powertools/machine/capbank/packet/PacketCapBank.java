@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMessage> extends MessageTileEntity<TileCapBank> implements IMessageHandler<T, Q> {
+public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMessage> extends MessageTileEntity<TileCapBank> {
 
   public PacketCapBank() {
     super();
@@ -20,15 +20,6 @@ public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMe
 
   public PacketCapBank(@Nonnull TileCapBank capBank) {
     super(capBank);
-  }
-
-  @Override
-  public Q onMessage(T message, MessageContext ctx) {
-    TileCapBank te = message.getTileEntity(message.getWorld(ctx));
-    if (te == null) {
-      return null;
-    }
-    return handleMessage(te, message, ctx);
   }
 
   protected abstract Q handleMessage(TileCapBank te, T message, MessageContext ctx);
@@ -42,5 +33,17 @@ public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMe
       return EnderIO.proxy.getClientWorld();
     }
   }
+  
+  public static final class Handler<T extends PacketCapBank<?, ?>> implements IMessageHandler<T, IMessage> {
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    public IMessage onMessage(T message, MessageContext ctx) {
+      TileCapBank te = message.getTileEntity(message.getWorld(ctx));
+      if (te == null) {
+        return null;
+      }
+      return ((PacketCapBank)message).handleMessage(te, message, ctx);
+    }
+  }
 }

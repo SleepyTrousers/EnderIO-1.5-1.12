@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.powertools.EnderIOPowerTools;
+import crazypants.enderio.powertools.machine.capbank.packet.PacketCapBank;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketGuiChange;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkEnergyRequest;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkEnergyResponse;
@@ -48,13 +49,13 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketPowerMonitorStatData.ClientHandler.class, PacketPowerMonitorStatData.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketPowerMonitorStatData.ServerHandler.class, PacketPowerMonitorStatData.class, nextID(), Side.SERVER);
 
-    INSTANCE.registerMessage(PacketNetworkStateResponse.class, PacketNetworkStateResponse.class, nextID(), Side.CLIENT);
-    INSTANCE.registerMessage(PacketNetworkStateRequest.class, PacketNetworkStateRequest.class, nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketNetworkIdRequest.class, PacketNetworkIdRequest.class, nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketNetworkIdResponse.class, PacketNetworkIdResponse.class, nextID(), Side.CLIENT);
-    INSTANCE.registerMessage(PacketNetworkEnergyRequest.class, PacketNetworkEnergyRequest.class, nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketNetworkEnergyResponse.class, PacketNetworkEnergyResponse.class, nextID(), Side.CLIENT);
-    INSTANCE.registerMessage(PacketGuiChange.class, PacketGuiChange.class, nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketNetworkStateResponse.Handler.class, PacketNetworkStateResponse.class, nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(new PacketCapBank.Handler<>(), PacketNetworkStateRequest.class, nextID(), Side.SERVER);
+    INSTANCE.registerMessage(new PacketCapBank.Handler<>(), PacketNetworkIdRequest.class, nextID(), Side.SERVER);
+    INSTANCE.registerMessage(new PacketCapBank.Handler<>(), PacketNetworkIdResponse.class, nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(new PacketCapBank.Handler<>(), PacketNetworkEnergyRequest.class, nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketNetworkEnergyResponse.Handler.class, PacketNetworkEnergyResponse.class, nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(new PacketCapBank.Handler<>(), PacketGuiChange.class, nextID(), Side.SERVER);
 
   }
 
