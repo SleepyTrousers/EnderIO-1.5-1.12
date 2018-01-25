@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.DyeColor;
+import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.TileEntityEio;
@@ -58,7 +59,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   // TODO Fix duct-tape
   // TODO Check store
   @Store(handler = ConduitHandler.ConduitCopyOnWriteArrayListHandler.class)
-  private final List<IConduit> conduits = new CopyOnWriteArrayList<IConduit>(); // <- duct-tape fix
+  private final @Nonnull List<IConduit> conduits = new CopyOnWriteArrayList<IConduit>(); // <- duct-tape fix
 
   @Store
   private IBlockState facade = null;
@@ -128,6 +129,15 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
     return new String[0];
   }
+  
+  @Override
+  protected void onAfterNbtRead() {
+    super.onAfterNbtRead();
+    for (IConduit c : conduits) {
+      c.setBundle(this);
+    }
+  }
+  
   //
   // @Override
   // protected void writeCustomNBT(NBTTagCompound nbtRoot) {
