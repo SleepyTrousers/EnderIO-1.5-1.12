@@ -71,6 +71,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor>
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
       int param1, @Nonnull TilePowerMonitor te) {
     return new GuiPowerMonitor(player.inventory, te);
