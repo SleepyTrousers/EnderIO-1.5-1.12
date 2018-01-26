@@ -1177,14 +1177,6 @@ item.item_power_item_filter.tooltip.detailed.line2=how much RF they have stored
 ;enderio.gui.mjReader.receiveItem2=from:
 ;
 ;//CapactorBank
-;enderio.gui.capBank.inputRs=Input Redstone Mode
-;enderio.gui.capBank.outputRs=Output Redstone Mode
-;enderio.gui.capBank.maxIo=Max I/O
-;enderio.gui.capBank.maxInput=Max Input
-;enderio.gui.capBank.maxOutput=Max Output
-;enderio.gui.capBank.inputMode=Input
-;enderio.gui.capBank.outputMode=Output
-;
 
 ;//Travel Blocks
 ;enderio.gui.travelAccessable.unauthorised=You are not allowed to access this block.

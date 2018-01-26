@@ -46,7 +46,8 @@ tile.block_cap_bank.tooltip.detailed.line4=to change information display
 tile.block_cap_bank.tooltip.has_items={0,number,integer} {0,choice,1#item|1<items} in inventory
 tile.block_cap_bank.tooltip_prefix=Contains
 
-enderio.capbank.max_i_o=Max I/O
+# TODO dedupe these?
+enderio.capbank.max_io=Max I/O
 enderio.capbank.max_in=Max Input
 enderio.capbank.max_out=Max Output
 enderio.capbank.change=I/O
@@ -55,6 +56,14 @@ enderio.capbank.iodisplay.gain=In
 enderio.capbank.iodisplay.loss=Out
 enderio.capbank.iodisplay.input=Input
 enderio.capbank.iodisplay.output=Output
+
+enderio.gui.cap_bank.input_rs=Input Redstone Mode
+enderio.gui.cap_bank.output_rs=Output Redstone Mode
+enderio.gui.cap_bank.max_io=Max I/O
+enderio.gui.cap_bank.max_input=Max Input
+enderio.gui.cap_bank.max_output=Max Output
+enderio.gui.cap_bank.input_mode=Input
+enderio.gui.cap_bank.output_mode=Output
 
 # Power Monitor
 tile.block_power_monitor.name=Power Monitor

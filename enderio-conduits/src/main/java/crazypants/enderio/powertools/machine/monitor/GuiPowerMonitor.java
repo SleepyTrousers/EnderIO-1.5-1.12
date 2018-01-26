@@ -106,7 +106,7 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
     addToolTip(tooltipAverageOutput = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.power_monitor.mon_heading4")));
     addToolTip(tooltipAverageInput = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.power_monitor.mon_heading5")));
 
-    addDrawingElement(new PowerBar<TilePowerMonitor>(te, this, 8, 10, 4, 66) {
+    addDrawingElement(new PowerBar<TilePowerMonitor>(te, this, 7, 10, 4, 66) {
       @Override
       public void drawGuiContainerBackgroundLayer(float partialTicks, int par2, int par3) {
         if (tab == Tab.GRAPH) {

@@ -28,7 +28,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
 
   public class PowerBarTooltip extends GuiToolTip {
     public PowerBarTooltip() {
-      super(new Rectangle(x, y, width, height));
+      super(new Rectangle(x + 1, y, width, height));
     }
 
     @Override
