@@ -199,7 +199,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return facing != null; // TODO Is this right?
+      return facing == null || getExternalConnections().contains(facing);
     }
     return false;
   }
