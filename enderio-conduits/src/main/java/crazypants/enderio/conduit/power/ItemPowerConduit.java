@@ -22,12 +22,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemPowerConduit extends AbstractItemConduit {
 
-  private static String PREFIX;
-  private static String POSTFIX;
-
   static ItemConduitSubtype[] SUBTYPES = new ItemConduitSubtype[] { new ItemConduitSubtype(ConduitObject.item_power_conduit.name(), "enderio:itemPowerConduit"),
-      new ItemConduitSubtype(ConduitObject.item_power_conduit.name() + "Enhanced", "enderio:itemPowerConduitEnhanced"),
-      new ItemConduitSubtype(ConduitObject.item_power_conduit.name() + "Ender", "enderio:itemPowerConduitEnder") };
+      new ItemConduitSubtype(ConduitObject.item_power_conduit.name() + "_enhanced", "enderio:itemPowerConduitEnhanced"),
+      new ItemConduitSubtype(ConduitObject.item_power_conduit.name() + "_ender", "enderio:itemPowerConduitEnder") };
 
   private final ConduitRegistry.ConduitInfo conduitInfo;
 
@@ -65,12 +62,10 @@ public class ItemPowerConduit extends AbstractItemConduit {
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
-    if (PREFIX == null) {
-      PREFIX = EnderIO.lang.localize("power.maxOutput") + " ";
-    }
+    String prefix = EnderIO.lang.localize("power.max_output") + " ";
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
     int cap = PowerConduit.getMaxEnergyIO(itemStack.getMetadata());
-    list.add(PREFIX + LangPower.RFt(cap));
+    list.add(prefix + LangPower.RFt(cap));
   }
 
   @Override

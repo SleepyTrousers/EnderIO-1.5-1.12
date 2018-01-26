@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemRedstoneConduit extends AbstractItemConduit {
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ConduitObject.item_redstone_conduit.name() + "Insulated", "enderio:itemRedstoneInsulatedConduit") };
+      new ItemConduitSubtype(ConduitObject.item_redstone_conduit.name() + "_insulated", "enderio:itemRedstoneInsulatedConduit") };
 
   public static ItemRedstoneConduit create(@Nonnull IModObject modObject) {
     return new ItemRedstoneConduit(modObject);

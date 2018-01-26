@@ -1,1 +1,79 @@
 # Conduits
+enderio.block_conduit_bundle=Conduit Bundle
+
+enderio.item_power_conduit.name=Energy Conduit
+enderio.item_power_conduit_enhanced.name=Enhanced Energy Conduit
+enderio.item_power_conduit_ender.name=Ender Energy Conduit
+enderio.power.max_output=Max Output
+
+enderio.item_redstone_conduit_insulated.name=Redstone Conduit
+
+enderio.item_liquid_conduit.name=Fluid Conduit
+enderio.item_liquid_conduit_advanced.name=Pressurized Fluid Conduit
+enderio.item_liquid_conduit_ender.name=Ender Fluid Conduit
+enderio.item_liquid_conduit.locked_type=Fluid type locked to
+enderio.item_liquid_conduit.unlocked_type=Fluid type unlocked
+enderio.item_liquid_conduit.locked_waila=Locked to 
+
+enderio.fluid.millibuckets_tick=mB/t
+enderio.item_liquid_conduit.tooltip.max_extract=Max Extract:
+enderio.item_liquid_conduit.tooltip.max_io=Max IO:
+enderio.item_liquid_conduit.tooltip.detailed.line1=Fluid flow respects gravity
+enderio.item_liquid_conduit.tooltip.detailed.line2=Flow rate dependent on fluid
+enderio.item_liquid_conduit.tooltip.detailed.line3=viscosity
+
+enderio.item_liquid_conduit_ender.tooltip.detailed.line1=Instant fluid teleportation
+enderio.item_liquid_conduit_ender.tooltip.detailed.line2=allows multiple fluids to be
+enderio.item_liquid_conduit_ender.tooltip.detailed.line3=transported on the same line
+
+enderio.item_item_conduit.name=Item Conduit
+
+# CapBanks
+tile.block_capacitor_bank.name=Capacitor Bank (Deprecated)
+tile.block_capacitor_bank.creative.name=Creative Capacitor Bank (Deprecated)
+tile.block_capacitor_bank.tooltip.detailed.line1=Convert to new block by placing
+tile.block_capacitor_bank.tooltip.detailed.line2=in a crafting grid
+tile.block_capacitor_bank.tooltip_prefix=Contains
+
+tile.block_cap_bank.creative.name=Creative Capacitor Bank
+tile.block_cap_bank.simple.name=Basic Capacitor Bank
+tile.block_cap_bank.activated.name=Capacitor Bank
+tile.block_cap_bank.vibrant.name=Vibrant Capacitor Bank
+tile.block_cap_bank.tooltip.detailed.line1=Multi-block energy storage.
+tile.block_cap_bank.tooltip.detailed.line2=Can charge RF powered items.
+tile.block_cap_bank.tooltip.detailed.line3=Shift-R-Click on a face with an empty hand
+tile.block_cap_bank.tooltip.detailed.line4=to change information display
+tile.block_cap_bank.tooltip.has_items={0,number,integer} {0,choice,1#item|1<items} in inventory
+tile.block_cap_bank.tooltip_prefix=Contains
+
+enderio.capbank.max_i_o=Max I/O
+enderio.capbank.max_in=Max Input
+enderio.capbank.max_out=Max Output
+enderio.capbank.change=I/O
+enderio.capbank.iodisplay.stable=I/O
+enderio.capbank.iodisplay.gain=In
+enderio.capbank.iodisplay.loss=Out
+enderio.capbank.iodisplay.input=Input
+enderio.capbank.iodisplay.output=Output
+
+# Power Monitor
+tile.block_power_monitor.name=Power Monitor
+tile.block_power_monitor.tooltip.detailed.line1=Displays details of power use and
+tile.block_power_monitor.tooltip.detailed.line2=storage
+tile.block_power_monitor.tooltip.detailed.line3=Can be used to emit redstone
+tile.block_power_monitor.tooltip.detailed.line4=based on stored power levels
+tile.block_power_monitor.tooltip.detailed.line5=Must be attached to an EnderIO
+tile.block_power_monitor.tooltip.detailed.line6=conduit
+
+tile.block_advanced_power_monitor.name=Graphical Power Monitor
+tile.block_advanced_power_monitor.tooltip.detailed.line1=Displays details of power use and
+tile.block_advanced_power_monitor.tooltip.detailed.line2=storage
+tile.block_advanced_power_monitor.tooltip.detailed.line3=Can be used to emit redstone
+tile.block_advanced_power_monitor.tooltip.detailed.line4=based on stored power levels
+tile.block_advanced_power_monitor.tooltip.detailed.line5=Must be attached to an EnderIO
+tile.block_advanced_power_monitor.tooltip.detailed.line6=conduit
+
+# Gauge
+tile.block_gauge.name=RF Gauge
+tile.block_gauge.tooltip.detailed.line1=Displays RF levels of adjacent
+tile.block_gauge.tooltip.detailed.line2=blocks.

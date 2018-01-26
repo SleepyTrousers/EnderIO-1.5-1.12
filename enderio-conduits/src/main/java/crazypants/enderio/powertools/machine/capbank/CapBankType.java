@@ -14,15 +14,15 @@ import net.minecraft.util.IStringSerializable;
 
 public enum CapBankType implements IStringSerializable {
 
-  CREATIVE("CREATIVE", "tile.blockCapBank.creative", 500000, Config.capacitorBankTierTwoMaxStorageRF, false, true),
+  CREATIVE("CREATIVE", "tile.block_cap_bank.creative", 500000, Config.capacitorBankTierTwoMaxStorageRF, false, true),
 
-  SIMPLE("SIMPLE", "tile.blockCapBank.simple", Config.capacitorBankTierOneMaxIoRF, Config.capacitorBankTierOneMaxStorageRF, true, false),
+  SIMPLE("SIMPLE", "tile.block_cap_bank.simple", Config.capacitorBankTierOneMaxIoRF, Config.capacitorBankTierOneMaxStorageRF, true, false),
 
-  ACTIVATED("ACTIVATED", "tile.blockCapBank.activated", Config.capacitorBankTierTwoMaxIoRF, Config.capacitorBankTierTwoMaxStorageRF, true, false),
+  ACTIVATED("ACTIVATED", "tile.block_cap_bank.activated", Config.capacitorBankTierTwoMaxIoRF, Config.capacitorBankTierTwoMaxStorageRF, true, false),
 
-  VIBRANT("VIBRANT", "tile.blockCapBank.vibrant", Config.capacitorBankTierThreeMaxIoRF, Config.capacitorBankTierThreeMaxStorageRF, true, false),
+  VIBRANT("VIBRANT", "tile.block_cap_bank.vibrant", Config.capacitorBankTierThreeMaxIoRF, Config.capacitorBankTierThreeMaxStorageRF, true, false),
 
-  NONE("NONE", "tile.blockCapBank.none", 0, 0, false, true),
+  NONE("NONE", "tile.block_cap_bank.none", 0, 0, false, true),
 
   ;
 

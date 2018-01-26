@@ -1,0 +1,24 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+		    "particle":"enderio:blocks/machine_bottom",
+			"texture": "enderio:blocks/block_pm_on_frame",
+			"fakeface": "enderio:blocks/block_pm_on"
+        }
+    },
+    "variants":{
+        "render":{
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
+            "front":{          "submodel":{ "front":{ "model":"enderio:block_advanced_power_monitor" }, "face":{ "model":"enderio:block_advanced_power_monitor_itemfront" } }, "y":180 },
+            "front_east":{     "submodel":{ "front":{ "model":"enderio:block_advanced_power_monitor" }, "face":{ "model":"enderio:block_advanced_power_monitor_itemfront" } }, "y":270 },
+            "front_south":{    "submodel":{ "front":{ "model":"enderio:block_advanced_power_monitor" }, "face":{ "model":"enderio:block_advanced_power_monitor_itemfront" } }, "y":0 },
+            "front_west":{     "submodel":{ "front":{ "model":"enderio:block_advanced_power_monitor" }, "face":{ "model":"enderio:block_advanced_power_monitor_itemfront" } }, "y":90 },
+            "front_on":{       "submodel":{ "front":{ "model":"enderio:block_advanced_power_monitor" } }, "y":180 },
+            "front_on_east":{  "submodel":{ "front":{ "model":"enderio:block_advanced_power_monitor" } }, "y":270 },
+            "front_on_south":{ "submodel":{ "front":{ "model":"enderio:block_advanced_power_monitor" } }, "y":0 },
+            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:block_advanced_power_monitor" } }, "y":90 }
+        }
+    }
+}

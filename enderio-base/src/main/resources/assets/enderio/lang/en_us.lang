@@ -889,41 +889,8 @@ container.chestDouble=Double Chest
 
 
 # These keys have not (yet) been confirmed in 1.11
-;
-;//Power
-;enderio.power.maxOutput=Max Output
-;
 ;//Enderface
 ;item.enderio.itemEnderface.name=Enderface
-;
-;//Conduits
-;enderio.blockConduitBundle=Conduit Bundle
-;enderio.item.itemConduitFacade.tooltip.notpainted=Not Painted
-;
-;enderio.itemPowerConduit.name=Energy Conduit
-;enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
-;enderio.itemPowerConduitEnder.name=Ender Energy Conduit
-;
-;enderio.itemRedstoneConduitInsulated.name=Redstone Conduit
-;
-;enderio.itemLiquidConduit.name=Fluid Conduit
-;enderio.itemLiquidConduitAdvanced.name=Pressurized Fluid Conduit
-;enderio.itemLiquidConduitEnder.name=Ender Fluid Conduit
-;enderio.itemLiquidConduit.lockedType=Fluid type locked to
-;enderio.itemLiquidConduit.unlockedType=Fluid type unlocked
-;enderio.itemLiquidConduit.lockedWaila=Locked to 
-;
-;enderio.itemLiquidConduit.tooltip.maxExtract=Max Extract:
-;enderio.itemLiquidConduit.tooltip.maxIo=Max IO:
-;enderio.itemLiquidConduit.tooltip.detailed.line1=Fluid flow respects gravity
-;enderio.itemLiquidConduit.tooltip.detailed.line2=Flow rate dependent on fluid
-;enderio.itemLiquidConduit.tooltip.detailed.line3=viscosity
-;
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Instant fluid teleportation
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line2=allows multiple fluids to be
-;enderio.itemLiquidConduitEnder.tooltip.detailed.line3=transported on the same line
-;
-;enderio.itemItemConduit.name=Item Conduit
 ;
 item.item_item_filter_filterUpgradeBasic.name=Basic Item Filter
 item.item_item_filter_filterUpgradeAdvanced.name=Advanced Item Filter
@@ -992,7 +959,7 @@ item.item_power_item_filter.tooltip.detailed.line2=how much RF they have stored
 ;
 ;
 ;
-;enderio.fluid.millibucketsTick=mB/t
+;
 ;enderio.gas.gasTick=Gas/t
 ;
 ;//Materials
@@ -1037,32 +1004,6 @@ item.item_power_item_filter.tooltip.detailed.line2=how much RF they have stored
 ;item.itemWirelessLightInverted.tooltip.detailed.line3=Turn off with a redstone signal.
 ;item.itemWirelessLightInverted.tooltip.detailed.line4=Can receive power from wireless chargers.
 ;
-;tile.blockCapacitorBank.name=Capacitor Bank (Deprecated)
-;tile.blockCapacitorBank.creative.name=Creative Capacitor Bank (Deprecated)
-;tile.blockCapacitorBank.tooltip.detailed.line1=Convert to new block by placing
-;tile.blockCapacitorBank.tooltip.detailed.line2=in a crafting grid
-;tile.blockCapacitorBank.tooltipPrefix=Contains
-;
-;tile.blockCapBank.creative.name=Creative Capacitor Bank
-;tile.blockCapBank.simple.name=Basic Capacitor Bank
-;tile.blockCapBank.activated.name=Capacitor Bank
-;tile.blockCapBank.vibrant.name=Vibrant Capacitor Bank
-;tile.blockCapBank.tooltip.detailed.line1=Multi-block energy storage.
-;tile.blockCapBank.tooltip.detailed.line2=Can charge RF powered items.
-;tile.blockCapBank.tooltip.detailed.line3=Shift-R-Click on a face with an empty hand
-;tile.blockCapBank.tooltip.detailed.line4=to change information display
-;tile.blockCapBank.tooltip.hasItems={0,number,integer} {0,choice,1#item|1<items} in inventory
-;tile.blockCapBank.tooltipPrefix=Contains
-;
-;enderio.capbank.maxIO=Max I/O
-;enderio.capbank.maxIn=Max Input
-;enderio.capbank.maxOut=Max Output
-;enderio.capbank.change=I/O
-;enderio.capbank.iodisplay.stable=I/O
-;enderio.capbank.iodisplay.gain=In
-;enderio.capbank.iodisplay.loss=Out
-;enderio.capbank.iodisplay.input=Input
-;enderio.capbank.iodisplay.output=Output
 ;
 ;
 ;tile.blockHyperCube.name=Dimensional Transceiver (Deprecated)
@@ -1089,25 +1030,6 @@ item.item_power_item_filter.tooltip.detailed.line2=how much RF they have stored
 ;enderio.trans.receiving=Receiving
 ;enderio.trans.sending=Sending
 ;
-;tile.blockPowerMonitor.name=Power Monitor
-;tile.blockPowerMonitor.tooltip.detailed.line1=Displays details of power use and
-;tile.blockPowerMonitor.tooltip.detailed.line2=storage
-;tile.blockPowerMonitor.tooltip.detailed.line3=Can be used to emit redstone
-;tile.blockPowerMonitor.tooltip.detailed.line4=based on stored power levels
-;tile.blockPowerMonitor.tooltip.detailed.line5=Must be attached to an EnderIO
-;tile.blockPowerMonitor.tooltip.detailed.line6=conduit
-;
-;tile.blockPowerMonitorv2.name=Graphical Power Monitor
-;tile.blockPowerMonitorv2.tooltip.detailed.line1=Displays details of power use and
-;tile.blockPowerMonitorv2.tooltip.detailed.line2=storage
-;tile.blockPowerMonitorv2.tooltip.detailed.line3=Can be used to emit redstone
-;tile.blockPowerMonitorv2.tooltip.detailed.line4=based on stored power levels
-;tile.blockPowerMonitorv2.tooltip.detailed.line5=Must be attached to an EnderIO
-;tile.blockPowerMonitorv2.tooltip.detailed.line6=conduit
-;
-;tile.blockGauge.name=RF Gauge
-;tile.blockGauge.tooltip.detailed.line1=Displays RF levels of adjacent
-;tile.blockGauge.tooltip.detailed.line2=blocks.
 ;
 
 ;
