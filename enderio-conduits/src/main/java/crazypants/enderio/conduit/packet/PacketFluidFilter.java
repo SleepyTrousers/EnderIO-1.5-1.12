@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> implements IMessageHandler<PacketFluidFilter, IMessage>{
+public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> {
 
   private EnumFacing dir;
   private boolean isInput;
@@ -57,18 +57,21 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> imp
     filter.readFromNBT(tag);
   }
 
-  @Override
-  public IMessage onMessage(PacketFluidFilter message, MessageContext ctx) {
-    ILiquidConduit conduit = message.getConduit(ctx);
-    if(! (conduit instanceof EnderLiquidConduit)) {
+  public static class Handler implements IMessageHandler<PacketFluidFilter, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketFluidFilter message, MessageContext ctx) {
+      ILiquidConduit conduit = message.getConduit(ctx);
+      if (!(conduit instanceof EnderLiquidConduit)) {
+        return null;
+      }
+      EnderLiquidConduit eCon = (EnderLiquidConduit) conduit;
+      eCon.setFilter(message.dir, message.filter, message.isInput);
+
+      IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
+      message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
       return null;
-    }    
-    EnderLiquidConduit eCon = (EnderLiquidConduit)conduit;
-    eCon.setFilter(message.dir, message.filter, message.isInput);
-        
-    IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
-    message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);    
-    return null;
+    }
   }
 
 }

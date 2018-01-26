@@ -1,1 +1,123 @@
 # Conduits
+enderio.block_conduit_bundle=Conduit Bundle
+tile.block_conduit_bundle.name=Conduit Connector
+
+enderio.item_power_conduit.name=Energy Conduit
+enderio.item_power_conduit_enhanced.name=Enhanced Energy Conduit
+enderio.item_power_conduit_ender.name=Ender Energy Conduit
+enderio.power.max_output=Max Output
+
+enderio.item_redstone_conduit_insulated.name=Redstone Conduit
+
+enderio.item_liquid_conduit.name=Fluid Conduit
+enderio.item_liquid_conduit_advanced.name=Pressurized Fluid Conduit
+enderio.item_liquid_conduit_ender.name=Ender Fluid Conduit
+enderio.item_liquid_conduit.locked_type=Fluid type locked to
+enderio.item_liquid_conduit.unlocked_type=Fluid type unlocked
+enderio.item_liquid_conduit.locked_waila=Locked to 
+
+enderio.fluid.millibuckets_tick=mB/t
+enderio.item_liquid_conduit.tooltip.max_extract=Max Extract:
+enderio.item_liquid_conduit.tooltip.max_io=Max IO:
+enderio.item_liquid_conduit.tooltip.detailed.line1=Fluid flow respects gravity
+enderio.item_liquid_conduit.tooltip.detailed.line2=Flow rate dependent on fluid
+enderio.item_liquid_conduit.tooltip.detailed.line3=viscosity
+
+enderio.item_liquid_conduit_ender.tooltip.detailed.line1=Instant fluid teleportation
+enderio.item_liquid_conduit_ender.tooltip.detailed.line2=allows multiple fluids to be
+enderio.item_liquid_conduit_ender.tooltip.detailed.line3=transported on the same line
+
+enderio.item_item_conduit.name=Item Conduit
+
+# Conduit GUIs
+
+enderio.gui.conduit.io_mode=Mode
+
+enderio.gui.conduit.redstone.signal_color=Signal Color
+enderio.gui.conduit.redstone.color=Color
+enderio.gui.conduit.redstone.signal_strength=Strong Signal
+enderio.gui.conduit.redstone.signal_strength.tooltip=Output a strong redstone signal 
+
+enderio.gui.conduit.fluid.auto_extract=Auto Extract
+enderio.gui.conduit.fluid.filter=Filter
+enderio.gui.conduit.fluid.whitelist=Whitelist
+enderio.gui.conduit.fluid.blacklist=Blacklist
+
+enderio.gui.conduit.redstone.signal_color=Signal Color
+enderio.gui.conduit.redstone.color=Color
+enderio.gui.conduit.redstone.signal_strengh=Strong Signal
+enderio.gui.conduit.redstone.signal_strengh.tooltip=Output a strong redstone signal 
+
+# CapBanks
+tile.block_capacitor_bank.name=Capacitor Bank (Deprecated)
+tile.block_capacitor_bank.creative.name=Creative Capacitor Bank (Deprecated)
+tile.block_capacitor_bank.tooltip.detailed.line1=Convert to new block by placing
+tile.block_capacitor_bank.tooltip.detailed.line2=in a crafting grid
+tile.block_capacitor_bank.tooltip_prefix=Contains
+
+tile.block_cap_bank.creative.name=Creative Capacitor Bank
+tile.block_cap_bank.simple.name=Basic Capacitor Bank
+tile.block_cap_bank.activated.name=Capacitor Bank
+tile.block_cap_bank.vibrant.name=Vibrant Capacitor Bank
+tile.block_cap_bank.tooltip.detailed.line1=Multi-block energy storage.
+tile.block_cap_bank.tooltip.detailed.line2=Can charge RF powered items.
+tile.block_cap_bank.tooltip.detailed.line3=Shift-R-Click on a face with an empty hand
+tile.block_cap_bank.tooltip.detailed.line4=to change information display
+tile.block_cap_bank.tooltip.has_items={0,number,integer} {0,choice,1#item|1<items} in inventory
+tile.block_cap_bank.tooltip_prefix=Contains
+
+# TODO dedupe these?
+enderio.capbank.max_io=Max I/O
+enderio.capbank.max_in=Max Input
+enderio.capbank.max_out=Max Output
+enderio.capbank.change=I/O
+enderio.capbank.iodisplay.stable=I/O
+enderio.capbank.iodisplay.gain=In
+enderio.capbank.iodisplay.loss=Out
+enderio.capbank.iodisplay.input=Input
+enderio.capbank.iodisplay.output=Output
+
+enderio.gui.cap_bank.input_rs=Input Redstone Mode
+enderio.gui.cap_bank.output_rs=Output Redstone Mode
+enderio.gui.cap_bank.max_io=Max I/O
+enderio.gui.cap_bank.max_input=Max Input
+enderio.gui.cap_bank.max_output=Max Output
+enderio.gui.cap_bank.input_mode=Input
+enderio.gui.cap_bank.output_mode=Output
+
+# Power Monitor
+tile.block_power_monitor.name=Power Monitor
+tile.block_power_monitor.tooltip.detailed.line1=Displays details of power use and
+tile.block_power_monitor.tooltip.detailed.line2=storage
+tile.block_power_monitor.tooltip.detailed.line3=Can be used to emit redstone
+tile.block_power_monitor.tooltip.detailed.line4=based on stored power levels
+tile.block_power_monitor.tooltip.detailed.line5=Must be attached to an EnderIO
+tile.block_power_monitor.tooltip.detailed.line6=conduit
+
+tile.block_advanced_power_monitor.name=Graphical Power Monitor
+tile.block_advanced_power_monitor.tooltip.detailed.line1=Displays details of power use and
+tile.block_advanced_power_monitor.tooltip.detailed.line2=storage
+tile.block_advanced_power_monitor.tooltip.detailed.line3=Can be used to emit redstone
+tile.block_advanced_power_monitor.tooltip.detailed.line4=based on stored power levels
+tile.block_advanced_power_monitor.tooltip.detailed.line5=Must be attached to an EnderIO
+tile.block_advanced_power_monitor.tooltip.detailed.line6=conduit
+
+enderio.gui.power_monitor.engine_control=Engine Control
+enderio.gui.power_monitor.emit=Emit
+enderio.gui.power_monitor.engine_section1=Emit signal when storage less
+enderio.gui.power_monitor.engine_section2=than
+enderio.gui.power_monitor.engine_section3=% full.
+enderio.gui.power_monitor.engine_section4= Stop when storage greater than
+enderio.gui.power_monitor.engine_section5=or equal to
+enderio.gui.power_monitor.of=of
+enderio.gui.power_monitor.mon_heading1=Conduit Storage
+enderio.gui.power_monitor.mon_heading2=Capacitor Bank Storage
+enderio.gui.power_monitor.mon_heading3=Machine Buffers
+enderio.gui.power_monitor.mon_heading4=Average output over 5 seconds
+enderio.gui.power_monitor.mon_heading5=Average input over 5 seconds
+enderio.gui.power_monitor.no_network_error=No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
+
+# Gauge
+tile.block_gauge.name=RF Gauge
+tile.block_gauge.tooltip.detailed.line1=Displays RF levels of adjacent
+tile.block_gauge.tooltip.detailed.line2=blocks.

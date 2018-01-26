@@ -57,7 +57,7 @@ public class PowerSettings extends BaseSettingsPanel {
 
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-    colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signalColor"));
+    colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signal_color"));
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
 
   }

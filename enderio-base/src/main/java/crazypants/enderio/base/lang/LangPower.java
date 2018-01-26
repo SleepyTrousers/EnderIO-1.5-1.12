@@ -28,14 +28,22 @@ public final class LangPower {
 
   @Deprecated // use RF(a, b)
   public static @Nonnull String ofStr() {
-    return EnderIO.lang.localize("gui.powerMonitor.of");
+    return EnderIO.lang.localize("gui.power_monitor.of");
   }
 
   public static @Nonnull String RFt(int amountPerTick) {
     return POWER_PERTICK.get(format(amountPerTick));
   }
+  
+  public static @Nonnull String RFt(float amountPerTick) {
+    return POWER_PERTICK.get(format(amountPerTick));
+  }
 
   public static @Nonnull String RF(int amount, int capacity) {
+    return POWER_OF.get(format(amount), format(capacity));
+  }
+  
+  public static @Nonnull String RF(long amount, long capacity) {
     return POWER_OF.get(format(amount), format(capacity));
   }
 

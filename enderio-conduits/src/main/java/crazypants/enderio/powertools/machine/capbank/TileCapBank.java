@@ -305,10 +305,9 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   public void setDefaultIoMode(@Nonnull EnumFacing faceHit) {
     EnergyReceptor er = getEnergyReceptorForFace(faceHit);
-    /*
-     * TODO conduits if (er == null || er.getConduit() != null) { setIoMode(faceHit, IoMode.NONE); } else
-     */
-    if (er.getReceptor().canReceive()) {
+    if (er == null || er.getConduit() != null) { 
+      setIoMode(faceHit, IoMode.NONE); 
+    } else if (er.getReceptor().canReceive()) {
       setIoMode(faceHit, IoMode.PUSH);
     } else {
       setIoMode(faceHit, IoMode.PULL);

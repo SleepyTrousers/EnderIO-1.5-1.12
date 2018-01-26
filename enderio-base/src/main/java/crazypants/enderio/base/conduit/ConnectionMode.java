@@ -9,11 +9,11 @@ import crazypants.enderio.base.Log;
 
 public enum ConnectionMode {
 
-  IN_OUT("gui.conduit.ioMode.inOut"),
-  INPUT("gui.conduit.ioMode.input"),
-  OUTPUT("gui.conduit.ioMode.output"),
-  DISABLED("gui.conduit.ioMode.disabled"),
-  NOT_SET("gui.conduit.ioMode.notSet");
+  IN_OUT("gui.conduit.io_mode.in_out"),
+  INPUT("gui.conduit.io_mode.input"),
+  OUTPUT("gui.conduit.io_mode.output"),
+  DISABLED("gui.conduit.io_mode.disabled"),
+  NOT_SET("gui.conduit.io_mode.not_set");
 
   private final @Nonnull String unlocalisedName;
 

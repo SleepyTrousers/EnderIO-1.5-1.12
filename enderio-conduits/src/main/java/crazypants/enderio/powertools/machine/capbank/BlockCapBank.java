@@ -271,6 +271,7 @@ public class BlockCapBank extends BlockEio<TileCapBank>
 
   @Override
   @Nullable
+  @SideOnly(Side.CLIENT)
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     TileCapBank te = getTileEntity(world, pos);
     if (te != null) {

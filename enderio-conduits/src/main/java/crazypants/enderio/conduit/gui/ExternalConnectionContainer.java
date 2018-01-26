@@ -56,6 +56,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   public ExternalConnectionContainer(@Nonnull InventoryPlayer playerInv, @Nonnull EnumFacing dir, @Nonnull TileConduitBundle bundle) {
     super(playerInv, new InventoryUpgrades(bundle.getConduit(IItemConduit.class), dir), bundle);
     this.itemConduit = bundle.getConduit(IItemConduit.class);
+    addSlots();
   }
 
   @Override
@@ -90,10 +91,12 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   }
 
   public void createGhostSlots(@Nonnull List<GhostSlot> ghostSlots) {
-    ghostSlots.add(new GhostBackgroundItemSlot(itemItemFilter.getItemNN(), slotOutputFilter));
-    ghostSlots.add(new GhostBackgroundItemSlot(itemItemFilter.getItemNN(), slotInputFilter));
-    ghostSlots.add(new GhostBackgroundItemSlot(item_extract_speed_upgrade.getItemNN(), slotSpeedUpgrades));
-    ghostSlots.add(new GhostBackgroundItemSlot(item_function_upgrade.getItemNN(), slotFunctionUpgrades));
+    if (itemConduit != null) {
+      ghostSlots.add(new GhostBackgroundItemSlot(itemItemFilter.getItemNN(), slotOutputFilter));
+      ghostSlots.add(new GhostBackgroundItemSlot(itemItemFilter.getItemNN(), slotInputFilter));
+      ghostSlots.add(new GhostBackgroundItemSlot(item_extract_speed_upgrade.getItemNN(), slotSpeedUpgrades));
+      ghostSlots.add(new GhostBackgroundItemSlot(item_function_upgrade.getItemNN(), slotFunctionUpgrades));
+    }
   }
 
   @Override

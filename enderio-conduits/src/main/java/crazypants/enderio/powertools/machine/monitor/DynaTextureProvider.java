@@ -36,11 +36,11 @@ public class DynaTextureProvider {
   protected static final @Nonnull Queue<ResourceLocation> toFree = new ConcurrentLinkedQueue<ResourceLocation>();
   protected static final @Nonnull List<DynaTextureProvider> instances = new ArrayList<DynaTextureProvider>();
 
-  protected static final @Nonnull ResourceLocation pmon_screen = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMonScreen.png");
+  protected static final @Nonnull ResourceLocation pmon_screen = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pm_on_screen.png");
   protected static final @Nonnull int[] pmon_screen_data = new int[TEXSIZE * TEXSIZE];
-  protected static final @Nonnull ResourceLocation pmon_color = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMonColor.png");
+  protected static final @Nonnull ResourceLocation pmon_color = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pm_on_color.png");
   protected static final @Nonnull int[] pmon_color_data = new int[TEXSIZE * TEXSIZE];
-  protected static final @Nonnull ResourceLocation pmon_fallback = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMon.png");
+  protected static final @Nonnull ResourceLocation pmon_fallback = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pm_on.png");
 
   protected final @Nonnull TilePowerMonitor owner;
   protected final @Nonnull String id;

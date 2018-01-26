@@ -531,7 +531,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityEnergy.ENERGY)
-      return facing == null;
+      return facing == null || getExternalConnections().contains(facing);
     return false;
   }
 

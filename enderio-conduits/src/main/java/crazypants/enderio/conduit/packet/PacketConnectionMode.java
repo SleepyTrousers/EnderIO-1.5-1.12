@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketConnectionMode extends AbstractConduitPacket<IConduit> implements IMessageHandler<PacketConnectionMode, IMessage>{
+public class PacketConnectionMode extends AbstractConduitPacket<IConduit> {
 
   private EnumFacing dir;
   private ConnectionMode mode;
@@ -47,21 +47,24 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> implem
     mode = ConnectionMode.values()[buf.readShort()];
 
   }
+  
+  public static class Handler implements IMessageHandler<PacketConnectionMode, IMessage> {
 
-  @Override
-  public IMessage onMessage(PacketConnectionMode message, MessageContext ctx) {
-    IConduit conduit = message.getConduit(ctx);
-    if(conduit == null) {
+    @Override
+    public IMessage onMessage(PacketConnectionMode message, MessageContext ctx) {
+      IConduit conduit = message.getConduit(ctx);
+      if (conduit == null) {
+        return null;
+      }
+      if (conduit instanceof IRedstoneConduit) {
+        ((IRedstoneConduit) conduit).forceConnectionMode(message.dir, message.mode);
+      } else {
+        conduit.setConnectionMode(message.dir, message.mode);
+      }
+      IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
+      message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
       return null;
     }
-    if(conduit instanceof IRedstoneConduit) {
-      ((IRedstoneConduit)conduit).forceConnectionMode(message.dir, message.mode);
-    } else {
-      conduit.setConnectionMode(message.dir, message.mode);
-    }
-    IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
-    message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);    
-    return null;
   }
 
 }

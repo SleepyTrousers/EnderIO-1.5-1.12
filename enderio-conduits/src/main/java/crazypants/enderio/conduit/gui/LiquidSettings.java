@@ -46,7 +46,9 @@ public class LiquidSettings extends BaseSettingsPanel {
   private final RedstoneModeButton rsB;
   private final ColorButton colorB;
 
-  private static final String autoExtractStr = EnderIO.lang.localize("gui.conduit.fluid.autoExtract");
+  @Nonnull
+  private static final String autoExtractStr = EnderIO.lang.localize("gui.conduit.fluid.auto_extract");
+  @Nonnull
   private static final String filterStr = EnderIO.lang.localize("gui.conduit.fluid.filter");
 
   private final ILiquidConduit conduit;
@@ -101,7 +103,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       }
 
       @Override
-      public RedstoneControlMode getRedstoneControlMode() {
+      public @Nonnull RedstoneControlMode getRedstoneControlMode() {
         return conduit.getExtractionRedstoneMode(gui.getDir());
       }
 
@@ -113,7 +115,7 @@ public class LiquidSettings extends BaseSettingsPanel {
 
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-    colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signalColor"));
+    colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signal_color"));
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
   }
 
@@ -267,7 +269,7 @@ public class LiquidSettings extends BaseSettingsPanel {
     if(isEnder && isFilterVisible()) {
 
       if(conduit.getConnectionMode(gui.getDir()) == ConnectionMode.IN_OUT) {
-        String inOutStr = inOutShowIn ? EnderIO.lang.localize("gui.conduit.ioMode.input") : EnderIO.lang.localize("gui.conduit.ioMode.output");
+        String inOutStr = inOutShowIn ? EnderIO.lang.localize("gui.conduit.io_mode.input") : EnderIO.lang.localize("gui.conduit.io_mode.output");
         int x = gui.getGuiLeft() + gui.getXSize() - 20 - 5 - gui.getFontRenderer().getStringWidth(inOutStr);
         int y = top;
         gui.getFontRenderer().drawString(inOutStr, x, y, ColorUtil.getRGB(Color.DARK_GRAY));
@@ -336,23 +338,22 @@ public class LiquidSettings extends BaseSettingsPanel {
 
     int index;
 
-    public FilterToolTip(Rectangle bounds, int index) {
+    public FilterToolTip(@Nonnull Rectangle bounds, int index) {
       super(bounds, (String[]) null);
       this.index = index;
     }
 
-    // TODO Fix Nullness
     @Override
-    public List<String> getToolTipText() {
+    public @Nonnull List<String> getToolTipText() {
       if(!isFilterVisible()) {
-        return null;
+        return Collections.emptyList();
       }
       FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput());
       if(filter == null) {
-        return null;
+        return Collections.emptyList();
       }
       if (filter.getFluidStackAt(index) == null) {
-        return null;
+        return Collections.emptyList();
       }
       return Collections.singletonList(filter.getFluidStackAt(index).getLocalizedName());
     }

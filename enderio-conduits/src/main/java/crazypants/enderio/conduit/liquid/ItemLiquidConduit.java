@@ -30,8 +30,8 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
       new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name(), "enderio:itemLiquidConduit"),
-      new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name() + "Advanced", "enderio:itemLiquidConduitAdvanced"),
-      new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name() + "Ender", "enderio:itemLiquidConduitEnder")
+      new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name() + "_advanced", "enderio:itemLiquidConduitAdvanced"),
+      new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name() + "_ender", "enderio:itemLiquidConduitEnder")
 
   };
 
@@ -103,14 +103,14 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
     // TODO Lang
 
-    String mbt = " " + EnderIO.lang.localize("fluid.millibucketsTick");
-    list.add(EnderIO.lang.localize("itemLiquidConduit.tooltip.maxExtract") + " " + extractRate + mbt);
-    list.add(EnderIO.lang.localize("itemLiquidConduit.tooltip.maxIo") + " " + maxIo + mbt);
+    String mbt = " " + EnderIO.lang.localize("fluid.millibuckets_tick");
+    list.add(EnderIO.lang.localize("item_liquid_conduit.tooltip.max_extract") + " " + extractRate + mbt);
+    list.add(EnderIO.lang.localize("item_liquid_conduit.tooltip.max_io") + " " + maxIo + mbt);
 
     if (itemstack.getItemDamage() == 0) {
-      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduit");
+      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.item_liquid_conduit");
     } else if (itemstack.getItemDamage() == 2) {
-      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduitEnder");
+      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.item_liquid_conduit_ender");
     }
 
   }

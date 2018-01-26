@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import javax.annotation.Nonnull;
 
 
-public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketOpenConduitUI, IMessage> {
+public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> {
 
   private @Nonnull EnumFacing dir = EnumFacing.DOWN;
 
@@ -41,11 +41,13 @@ public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implement
     }
   }
 
-  @Override
-  public IMessage onMessage(PacketOpenConduitUI message, MessageContext ctx) {
-    EntityPlayer player = ctx.getServerHandler().player;
-    ConduitRegistry.getConduitModObjectNN().openGui(player.world, message.getPos(), player, message.dir);
-    return null;
-  }
+  public static class Handler implements IMessageHandler<PacketOpenConduitUI, IMessage> {
 
+    @Override
+    public IMessage onMessage(PacketOpenConduitUI message, MessageContext ctx) {
+      EntityPlayer player = ctx.getServerHandler().player;
+      ConduitRegistry.getConduitModObjectNN().openGui(player.world, message.getPos(), player, message.dir);
+      return null;
+    }
+  }
 }

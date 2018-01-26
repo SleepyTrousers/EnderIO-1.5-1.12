@@ -25,14 +25,14 @@ public class BaseSettingsPanel implements ITabPanel {
   static final int PREV_MODE_B = 327;
   static final int NEXT_MODE_B = 328;
 
-  protected final IconEIO icon;
+  protected final @Nonnull IconEIO icon;
   protected final GuiExternalConnection gui;
   protected final IConduit con;
   protected final String typeName;
 
   protected MultiIconButton leftArrow;
   protected MultiIconButton rightArrow;
-  protected String modeLabel;
+  protected @Nonnull String modeLabel = EnderIO.lang.localize("gui.conduit.io_mode");
 
   protected int left = 0;
   protected int top = 0;
@@ -48,8 +48,6 @@ public class BaseSettingsPanel implements ITabPanel {
     this.typeName = typeName;
     this.gui = gui;
     this.con = con;
-
-    modeLabel = EnderIO.lang.localize("gui.conduit.ioMode");
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     int x = gap * 3 + fr.getStringWidth(modeLabel);

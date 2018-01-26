@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit> implements IMessageHandler<PacketItemConduitFilter, IMessage> {
+public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit> {
 
   private EnumFacing dir;
   private boolean loopMode;
@@ -75,29 +75,31 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     outputFilter = FilterRegistry.readFilter(buf);
   }
 
-  @Override
-  public IMessage onMessage(PacketItemConduitFilter message, MessageContext ctx) {
-    IItemConduit conduit = message.getConduit(ctx);
-    conduit.setSelfFeedEnabled(message.dir, message.loopMode);
-    conduit.setRoundRobinEnabled(message.dir, message.roundRobin);
-    conduit.setInputColor(message.dir, message.colIn);
-    conduit.setOutputColor(message.dir, message.colOut);
-    conduit.setOutputPriority(message.dir, message.priority);
-    applyFilter(message.dir, conduit, message.inputFilter, true);
-    applyFilter(message.dir, conduit, message.outputFilter, false);
+  public static class Handler implements IMessageHandler<PacketItemConduitFilter, IMessage> {
 
-    IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
-    message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
-    return null;
-  }
+    @Override
+    public IMessage onMessage(PacketItemConduitFilter message, MessageContext ctx) {
+      IItemConduit conduit = message.getConduit(ctx);
+      conduit.setSelfFeedEnabled(message.dir, message.loopMode);
+      conduit.setRoundRobinEnabled(message.dir, message.roundRobin);
+      conduit.setInputColor(message.dir, message.colIn);
+      conduit.setOutputColor(message.dir, message.colOut);
+      conduit.setOutputPriority(message.dir, message.priority);
+      applyFilter(message.dir, conduit, message.inputFilter, true);
+      applyFilter(message.dir, conduit, message.outputFilter, false);
 
-  private void applyFilter(EnumFacing dir, IItemConduit conduit, IItemFilter filter, boolean isInput) {
-    if(isInput) {
-      conduit.setInputFilter(dir, filter);
-    } else {
-      conduit.setOutputFilter(dir, filter);
+      IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
+      message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
+      return null;
     }
-    return;
-  }
 
+    private void applyFilter(EnumFacing dir, IItemConduit conduit, IItemFilter filter, boolean isInput) {
+      if (isInput) {
+        conduit.setInputFilter(dir, filter);
+      } else {
+        conduit.setOutputFilter(dir, filter);
+      }
+      return;
+    }
+  }
 }

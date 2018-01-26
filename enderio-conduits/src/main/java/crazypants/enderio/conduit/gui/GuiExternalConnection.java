@@ -34,7 +34,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
 
   final InventoryPlayer playerInv;
   final IConduitBundle bundle;
-  private final EnumFacing dir;
+  private final @Nonnull EnumFacing dir;
 
   private final List<IConduit> conduits = new ArrayList<IConduit>();
   private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
@@ -43,7 +43,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
   private final IExternalConnectionContainer container;
 
   public GuiExternalConnection(@Nonnull InventoryPlayer playerInv, @Nonnull IConduitBundle bundle, @Nonnull EnumFacing dir) {
-    super(new ExternalConnectionContainer(playerInv, dir, (TileConduitBundle) bundle.getEntity()), "externalConduitConnection", "itemFilter");
+    super(new ExternalConnectionContainer(playerInv, dir, (TileConduitBundle) bundle.getEntity()), "external_conduit_connection", "item_filter");
     container = (ExternalConnectionContainer) inventorySlots;
     this.playerInv = playerInv;
     this.bundle = bundle;
@@ -151,6 +151,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
   }
 
   @Override
+  @Nonnull
   public EnumFacing getDir() {
     return dir;
   }
