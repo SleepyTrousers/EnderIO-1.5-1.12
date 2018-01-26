@@ -73,6 +73,21 @@ tile.block_advanced_power_monitor.tooltip.detailed.line4=based on stored power l
 tile.block_advanced_power_monitor.tooltip.detailed.line5=Must be attached to an EnderIO
 tile.block_advanced_power_monitor.tooltip.detailed.line6=conduit
 
+enderio.gui.power_monitor.engine_control=Engine Control
+enderio.gui.power_monitor.emit=Emit
+enderio.gui.power_monitor.engine_section1=Emit signal when storage less
+enderio.gui.power_monitor.engine_section2=than
+enderio.gui.power_monitor.engine_section3=% full.
+enderio.gui.power_monitor.engine_section4= Stop when storage greater than
+enderio.gui.power_monitor.engine_section5=or equal to
+enderio.gui.power_monitor.of=of
+enderio.gui.power_monitor.mon_heading1=Conduit Storage
+enderio.gui.power_monitor.mon_heading2=Capacitor Bank Storage
+enderio.gui.power_monitor.mon_heading3=Machine Buffers
+enderio.gui.power_monitor.mon_heading4=Average output over 5 seconds
+enderio.gui.power_monitor.mon_heading5=Average input over 5 seconds
+enderio.gui.power_monitor.no_network_error=No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
+
 # Gauge
 tile.block_gauge.name=RF Gauge
 tile.block_gauge.tooltip.detailed.line1=Displays RF levels of adjacent

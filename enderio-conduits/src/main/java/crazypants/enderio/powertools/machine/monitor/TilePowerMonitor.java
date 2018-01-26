@@ -1,5 +1,12 @@
 package crazypants.enderio.powertools.machine.monitor;
 
+import static com.enderio.core.common.NBTAction.CLIENT;
+import static com.enderio.core.common.NBTAction.ITEM;
+import static com.enderio.core.common.NBTAction.SAVE;
+import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
+import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
+import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -28,26 +35,19 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static com.enderio.core.common.NBTAction.CLIENT;
-import static com.enderio.core.common.NBTAction.ITEM;
-import static com.enderio.core.common.NBTAction.SAVE;
-import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
-import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
-import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;
-
 @Storable
 public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {
 
   private static final int iconUpdateRate = 30 * 60 * 20 / 24; // ticks per pixel
 
-  protected @Store({ SAVE, ITEM }) StatCollector stats10s = new StatCollector(2);
-  protected @Store({ SAVE, ITEM }) StatCollector stats01m = new StatCollector(12);
-  protected @Store({ SAVE, ITEM }) StatCollector stats10m = new StatCollector(120);
-  protected @Store({ SAVE, ITEM }) StatCollector stats01h = new StatCollector(720);
-  protected @Store({ SAVE, ITEM }) StatCollector stats06h = new StatCollector(7200);
-  protected @Store({ SAVE, ITEM }) StatCollector stats24h = new StatCollector(17280);
-  protected @Store({ SAVE, ITEM }) StatCollector stats07d = new StatCollector(120960);
-  protected @Store({ SAVE, ITEM }) StatCollector statsIcn = new StatCollector(iconUpdateRate, 28);
+  protected @Store(value = { SAVE, ITEM }, handler = HandleStatCollector.class) StatCollector stats10s = new StatCollector(2);
+  protected @Store(value = { SAVE, ITEM }, handler = HandleStatCollector.class) StatCollector stats01m = new StatCollector(12);
+  protected @Store(value = { SAVE, ITEM }, handler = HandleStatCollector.class) StatCollector stats10m = new StatCollector(120);
+  protected @Store(value = { SAVE, ITEM }, handler = HandleStatCollector.class) StatCollector stats01h = new StatCollector(720);
+  protected @Store(value = { SAVE, ITEM }, handler = HandleStatCollector.class) StatCollector stats06h = new StatCollector(7200);
+  protected @Store(value = { SAVE, ITEM }, handler = HandleStatCollector.class) StatCollector stats24h = new StatCollector(17280);
+  protected @Store(value = { SAVE, ITEM }, handler = HandleStatCollector.class) StatCollector stats07d = new StatCollector(120960);
+  protected @Store(value = { SAVE, ITEM }, handler = HandleStatCollector.class) StatCollector statsIcn = new StatCollector(iconUpdateRate, 28);
 
   protected StatCollector[] stats = { stats10s, stats01m, stats10m, stats01h, stats06h, stats24h, stats07d, statsIcn };
 

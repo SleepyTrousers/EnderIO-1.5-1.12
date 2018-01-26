@@ -1155,20 +1155,7 @@ item.item_power_item_filter.tooltip.detailed.line2=how much RF they have stored
 ;
 ;
 ;//Power Monitor
-;enderio.gui.powerMonitor.engineControl=Engine Control
-;enderio.gui.powerMonitor.emit=Emit
-;enderio.gui.powerMonitor.engineSection1=Emit signal when storage less
-;enderio.gui.powerMonitor.engineSection2=than
-;enderio.gui.powerMonitor.engineSection3=% full.
-;enderio.gui.powerMonitor.engineSection4= Stop when storage greater than
-;enderio.gui.powerMonitor.engineSection5=or equal to
-;enderio.gui.powerMonitor.of=of
-;enderio.gui.powerMonitor.monHeading1=Conduit Storage
-;enderio.gui.powerMonitor.monHeading2=Capacitor Bank Storage
-;enderio.gui.powerMonitor.monHeading3=Machine Buffers
-;enderio.gui.powerMonitor.monHeading4=Average output over 5 seconds
-;enderio.gui.powerMonitor.monHeading5=Average input over 5 seconds
-;enderio.gui.powerMonitor.noNetworkError=No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
+
 ;
 ;//MJ Reader
 ;enderio.gui.mjReader.networkHeading=Power Network

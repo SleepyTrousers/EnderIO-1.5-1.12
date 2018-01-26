@@ -100,11 +100,11 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
     engineControlStop.setMaxStringLength(3);
     textFields.add(engineControlStop);
 
-    addToolTip(tooltipConduitStorage = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.powerMonitor.monHeading1")));
-    addToolTip(tooltipCapacitorBankStorage = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.powerMonitor.monHeading2")));
-    addToolTip(tooltipMachineBuffers = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.powerMonitor.monHeading3")));
-    addToolTip(tooltipAverageOutput = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.powerMonitor.monHeading4")));
-    addToolTip(tooltipAverageInput = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.powerMonitor.monHeading5")));
+    addToolTip(tooltipConduitStorage = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.power_monitor.mon_heading1")));
+    addToolTip(tooltipCapacitorBankStorage = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.power_monitor.mon_heading2")));
+    addToolTip(tooltipMachineBuffers = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.power_monitor.mon_heading3")));
+    addToolTip(tooltipAverageOutput = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.power_monitor.mon_heading4")));
+    addToolTip(tooltipAverageInput = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.power_monitor.mon_heading5")));
 
     addDrawingElement(new PowerBar<TilePowerMonitor>(te, this, 8, 10, 4, 66) {
       @Override
@@ -312,11 +312,11 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
     int x0 = sx + TEXT_MARGIN_LEFT;
     int y0 = sy + TEXT_MARGIN_TOP;
 
-    String engineTxt1 = EnderIO.lang.localize("gui.powerMonitor.engineSection1").trim(); // Emit signal when storage less
-    String engineTxt2 = EnderIO.lang.localize("gui.powerMonitor.engineSection2").trim(); // than
-    String engineTxt3 = EnderIO.lang.localize("gui.powerMonitor.engineSection3").trim(); // % full.
-    String engineTxt4 = EnderIO.lang.localize("gui.powerMonitor.engineSection4").trim(); // Stop when storage greater than
-    String engineTxt5 = EnderIO.lang.localize("gui.powerMonitor.engineSection5").trim(); // or equal to
+    String engineTxt1 = EnderIO.lang.localize("gui.power_monitor.engine_section1").trim(); // Emit signal when storage less
+    String engineTxt2 = EnderIO.lang.localize("gui.power_monitor.engine_section2").trim(); // than
+    String engineTxt3 = EnderIO.lang.localize("gui.power_monitor.engine_section3").trim(); // % full.
+    String engineTxt4 = EnderIO.lang.localize("gui.power_monitor.engine_section4").trim(); // Stop when storage greater than
+    String engineTxt5 = EnderIO.lang.localize("gui.power_monitor.engine_section5").trim(); // or equal to
 
     List<Object> elems = new ArrayList<Object>();
     elems.add(engineControlEnabled);
@@ -374,7 +374,7 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
 
     StatData statData = getTileEntity().getStatData();
     if (statData == null || statData.maxPowerInConduits == 0) {
-      fr.drawSplitString(EnderIO.lang.localize("gui.powerMonitor.noNetworkError"), x, y, TEXT_WIDTH, errorCol);
+      fr.drawSplitString(EnderIO.lang.localize("gui.power_monitor.no_network_error"), x, y, TEXT_WIDTH, errorCol);
       return;
     }
 
@@ -407,49 +407,20 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
     drawTexturedModalRect(x + TEXT_WIDTH / 2, y + 2 * LINE_Y_OFFSET, 196, 31, 16, 16);
     tooltipAverageInput.setBounds(new Rectangle(TEXT_MARGIN_LEFT + TEXT_WIDTH / 2, TEXT_MARGIN_TOP + 2 * LINE_Y_OFFSET, TEXT_WIDTH / 2, 16));
 
-    StringBuilder sb = new StringBuilder();
-    sb.append(LangPower.format(statData.powerInConduits));
-    sb.append(" ");
-    sb.append(LangPower.ofStr());
-    sb.append(" ");
-    sb.append(LangPower.format(statData.maxPowerInConduits));
-    sb.append(" ");
-    sb.append(LangPower.abrevation());
-    fr.drawString(sb.toString(), x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET, valuesCol, false);
+    String s = LangPower.RF(statData.powerInConduits, statData.maxPowerInConduits);
+    fr.drawString(s, x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET, valuesCol, false);
+    
+    s = LangPower.RF(statData.powerInCapBanks, statData.maxPowerInCapBanks);
+    fr.drawString(s, x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET + LINE_Y_OFFSET, valuesCol, false);
+    
+    s = LangPower.RF(statData.powerInMachines, statData.maxPowerInMachines);
+    fr.drawString(s, x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET + 3 * LINE_Y_OFFSET, valuesCol, false);
+    
+    s = LangPower.RFt(statData.aveRfSent);
+    fr.drawString(s, x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET + 2 * LINE_Y_OFFSET, valuesCol, false);
 
-    sb = new StringBuilder();
-    sb.append(LangPower.format(statData.powerInCapBanks));
-    sb.append(" ");
-    sb.append(LangPower.ofStr());
-    sb.append(" ");
-    sb.append(LangPower.format(statData.maxPowerInCapBanks));
-    sb.append(" ");
-    sb.append(LangPower.abrevation());
-    fr.drawString(sb.toString(), x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET + LINE_Y_OFFSET, valuesCol, false);
-
-    sb = new StringBuilder();
-    sb.append(LangPower.format(statData.powerInMachines));
-    sb.append(" ");
-    sb.append(LangPower.ofStr());
-    sb.append(" ");
-    sb.append(LangPower.format(statData.maxPowerInMachines));
-    sb.append(" ");
-    sb.append(LangPower.abrevation());
-    fr.drawString(sb.toString(), x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET + 3 * LINE_Y_OFFSET, valuesCol, false);
-
-    sb = new StringBuilder();
-    sb.append(LangPower.format(statData.aveRfSent));
-    sb.append(" ");
-    sb.append(LangPower.abrevation());
-    sb.append(LangPower.perTickStr());
-    fr.drawString(sb.toString(), x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET + 2 * LINE_Y_OFFSET, valuesCol, false);
-
-    sb = new StringBuilder();
-    sb.append(LangPower.format(statData.aveRfReceived));
-    sb.append(" ");
-    sb.append(LangPower.abrevation());
-    sb.append(LangPower.perTickStr());
-    fr.drawString(sb.toString(), x + TEXT_X_OFFSET + TEXT_WIDTH / 2, y + TEXT_Y_OFFSET + 2 * LINE_Y_OFFSET, valuesCol, false);
+    s = LangPower.RFt(statData.aveRfReceived);
+    fr.drawString(s, x + TEXT_X_OFFSET + TEXT_WIDTH / 2, y + TEXT_Y_OFFSET + 2 * LINE_Y_OFFSET, valuesCol, false);
 
   }
 

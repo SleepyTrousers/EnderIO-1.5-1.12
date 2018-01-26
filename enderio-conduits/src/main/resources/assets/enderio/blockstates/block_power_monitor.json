@@ -2,7 +2,7 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle":"enderio:blocks/machine_bottom",
+            "particle":"enderio:blocks/block_machine_bottom",
             "front":"enderio:blocks/power_monitor",
             "fronton":"enderio:blocks/power_monitor"            
         }
