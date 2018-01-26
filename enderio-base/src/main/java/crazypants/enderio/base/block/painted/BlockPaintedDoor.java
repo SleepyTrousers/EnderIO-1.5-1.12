@@ -10,6 +10,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.block.darksteel.door.BlockDarkSteelDoor;
+import crazypants.enderio.base.block.darksteel.door.BlockItemDarkSteelDoor;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.paint.IPaintable;
@@ -28,6 +29,7 @@ import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.render.util.QuadCollector;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDoor;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -102,14 +104,15 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
   protected BlockDarkSteelDoor init(@Nonnull IModObject modObject) {
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("door_bottom", new ResourceLocation("minecraft", "block/iron_door_bottom"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("door_top", new ResourceLocation("minecraft", "block/iron_door_bottom"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("door_open", new ResourceLocation("minecraft", "block/iron_door_bottom"), PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel("door_top", new ResourceLocation("minecraft", "block/iron_door_top"), PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel("door_bottom_rh", new ResourceLocation("minecraft", "block/iron_door_bottom_rh"), PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel("door_top_rh", new ResourceLocation("minecraft", "block/iron_door_top_rh"), PaintRegistry.PaintMode.ALL_TEXTURES);
     return this;
   }
 
   @Override
   public Item createBlockItem(@Nonnull IModObject modObject) {
-    return modObject.apply(new BlockItemPaintedBlock(this));
+    return modObject.apply(new BlockItemDarkSteelDoor(this, null));
   }
 
   @Override
@@ -122,8 +125,8 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
       @Nonnull ItemStack stack) {
     setPaintSource(state, world, pos, PaintUtil.getSourceBlock(stack));
     if (!world.isRemote) {
-      BlockPos pos2 = pos.up();
-      world.setBlockState(pos2, this.getDefaultState().withProperty(HALF, EnumDoorHalf.UPPER));
+      // BlockPos pos2 = pos.up();
+      // world.setBlockState(pos2, this.getDefaultState().withProperty(HALF, EnumDoorHalf.UPPER));
       world.notifyBlockUpdate(pos, state, state, 3);
     }
   }
@@ -177,30 +180,113 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
 
   @SideOnly(Side.CLIENT)
   private IBakedModel mapRender(IBlockState state, @Nullable IBlockState paint) {
-    EnumFacing facing = state.getValue(FACING);
-    Boolean open = state.getValue(OPEN);
+    EnumFacing facing = state.getValue(BlockDoor.FACING);
+    Boolean open = state.getValue(BlockDoor.OPEN);
+    EnumHingePosition hinge = state.getValue(BlockDoor.HINGE);
+    EnumDoorHalf half = state.getValue(BlockDoor.HALF);
 
     String model;
-    ModelRotation modelState;
+    ModelRotation modelState = null;
 
-    if (open) {
-      model = "door_open";
-      switch (facing) {
-      case EAST:
-        modelState = ModelRotation.X0_Y90;
-        break;
-      case SOUTH:
-        modelState = ModelRotation.X0_Y180;
-        break;
-      case WEST:
-        modelState = ModelRotation.X0_Y270;
-        break;
-      default:
-        modelState = null;
-      }
+    final EnumFacing east = EnumFacing.EAST;
+    final EnumFacing south = EnumFacing.SOUTH;
+    final EnumFacing west = EnumFacing.WEST;
+    final EnumFacing north = EnumFacing.NORTH;
+    final EnumDoorHalf lower = EnumDoorHalf.LOWER;
+    final EnumDoorHalf upper = EnumDoorHalf.UPPER;
+    final EnumHingePosition left = EnumHingePosition.LEFT;
+    final EnumHingePosition right = EnumHingePosition.RIGHT;
+
+    if (facing == east && half == lower && hinge == left && open == false) {
+      model = "iron_door_bottom";
+    } else if (facing == south && half == lower && hinge == left && open == false) {
+      model = "iron_door_bottom";
+      modelState = ModelRotation.X0_Y90;
+    } else if (facing == west && half == lower && hinge == left && open == false) {
+      model = "iron_door_bottom";
+      modelState = ModelRotation.X0_Y180;
+    } else if (facing == north && half == lower && hinge == left && open == false) {
+      model = "iron_door_bottom";
+      modelState = ModelRotation.X0_Y270;
+    } else if (facing == east && half == lower && hinge == right && open == false) {
+      model = "iron_door_bottom_rh";
+    } else if (facing == south && half == lower && hinge == right && open == false) {
+      model = "iron_door_bottom_rh";
+      modelState = ModelRotation.X0_Y90;
+    } else if (facing == west && half == lower && hinge == right && open == false) {
+      model = "iron_door_bottom_rh";
+      modelState = ModelRotation.X0_Y180;
+    } else if (facing == north && half == lower && hinge == right && open == false) {
+      model = "iron_door_bottom_rh";
+      modelState = ModelRotation.X0_Y270;
+    } else if (facing == east && half == lower && hinge == left && open == true) {
+      model = "iron_door_bottom_rh";
+      modelState = ModelRotation.X0_Y90;
+    } else if (facing == south && half == lower && hinge == left && open == true) {
+      model = "iron_door_bottom_rh";
+      modelState = ModelRotation.X0_Y180;
+    } else if (facing == west && half == lower && hinge == left && open == true) {
+      model = "iron_door_bottom_rh";
+      modelState = ModelRotation.X0_Y270;
+    } else if (facing == north && half == lower && hinge == left && open == true) {
+      model = "iron_door_bottom_rh";
+    } else if (facing == east && half == lower && hinge == right && open == true) {
+      model = "iron_door_bottom";
+      modelState = ModelRotation.X0_Y270;
+    } else if (facing == south && half == lower && hinge == right && open == true) {
+      model = "iron_door_bottom";
+    } else if (facing == west && half == lower && hinge == right && open == true) {
+      model = "iron_door_bottom";
+      modelState = ModelRotation.X0_Y90;
+    } else if (facing == north && half == lower && hinge == right && open == true) {
+      model = "iron_door_bottom";
+      modelState = ModelRotation.X0_Y180;
+    } else if (facing == east && half == upper && hinge == left && open == false) {
+      model = "iron_door_top";
+    } else if (facing == south && half == upper && hinge == left && open == false) {
+      model = "iron_door_top";
+      modelState = ModelRotation.X0_Y90;
+    } else if (facing == west && half == upper && hinge == left && open == false) {
+      model = "iron_door_top";
+      modelState = ModelRotation.X0_Y180;
+    } else if (facing == north && half == upper && hinge == left && open == false) {
+      model = "iron_door_top";
+      modelState = ModelRotation.X0_Y270;
+    } else if (facing == east && half == upper && hinge == right && open == false) {
+      model = "iron_door_top_rh";
+    } else if (facing == south && half == upper && hinge == right && open == false) {
+      model = "iron_door_top_rh";
+      modelState = ModelRotation.X0_Y90;
+    } else if (facing == west && half == upper && hinge == right && open == false) {
+      model = "iron_door_top_rh";
+      modelState = ModelRotation.X0_Y180;
+    } else if (facing == north && half == upper && hinge == right && open == false) {
+      model = "iron_door_top_rh";
+      modelState = ModelRotation.X0_Y270;
+    } else if (facing == east && half == upper && hinge == left && open == true) {
+      model = "iron_door_top_rh";
+      modelState = ModelRotation.X0_Y90;
+    } else if (facing == south && half == upper && hinge == left && open == true) {
+      model = "iron_door_top_rh";
+      modelState = ModelRotation.X0_Y180;
+    } else if (facing == west && half == upper && hinge == left && open == true) {
+      model = "iron_door_top_rh";
+      modelState = ModelRotation.X0_Y270;
+    } else if (facing == north && half == upper && hinge == left && open == true) {
+      model = "iron_door_top_rh";
+    } else if (facing == east && half == upper && hinge == right && open == true) {
+      model = "iron_door_top";
+      modelState = ModelRotation.X0_Y270;
+    } else if (facing == south && half == upper && hinge == right && open == true) {
+      model = "iron_door_top";
+    } else if (facing == west && half == upper && hinge == right && open == true) {
+      model = "iron_door_top";
+      modelState = ModelRotation.X0_Y90;
+    } else if (facing == north && half == upper && hinge == right && open == true) {
+      model = "iron_door_top";
+      modelState = ModelRotation.X0_Y180;
     } else {
-      model = "door_bottom";
-      modelState = null;
+      return null;
     }
 
     return PaintRegistry.getModel(IBakedModel.class, model, paint, modelState);

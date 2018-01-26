@@ -86,7 +86,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
           world.setBlockState(placeAt, conduitBlock.getDefaultState());
           IConduitBundle bundle = NullHelper.notnullM((IConduitBundle) world.getTileEntity(placeAt), "placing block yielded no tileentity");
           IBlockState bs = PaintUtil.getSourceBlock(stack);
-          bundle.setFacadeType(EnumFacadeType.values()[stack.getItemDamage()]);
+          bundle.setFacadeType(EnumFacadeType.getTypeFromMeta(stack.getItemDamage()));
           bundle.setPaintSource(bs);
           ConduitUtil.playPlaceSound(bs.getBlock().getSoundType(), world, pos.getX(), pos.getY(), pos.getZ());
           if (!player.capabilities.isCreativeMode) {

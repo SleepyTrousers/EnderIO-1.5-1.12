@@ -4,8 +4,11 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
+
 import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.MathHelper;
 
 public enum EnumFacadeType implements IStringSerializable {
 
@@ -33,7 +36,7 @@ public enum EnumFacadeType implements IStringSerializable {
   }
 
   public static @Nonnull EnumFacadeType getTypeFromMeta(int meta) {
-    return values()[meta >= 0 && meta < values().length ? meta : 0];
+    return NullHelper.first(values()[MathHelper.clamp(meta, 0, values().length - 1)], BASIC);
   }
 
   public static int getMetaFromType(@Nonnull EnumFacadeType value) {

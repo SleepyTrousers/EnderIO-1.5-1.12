@@ -8,9 +8,11 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton.ICycleEnum;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -45,12 +47,12 @@ public enum DamageModeIconHolder implements ICycleEnum {
   }
 
   public @Nonnull DamageMode getMode() {
-    return DamageMode.values()[this.ordinal()];
+    return NullHelper.first(DamageMode.values()[MathHelper.clamp(this.ordinal(), 0, DamageMode.values().length - 1)], DamageMode.DISABLED);
   }
 
   public static @Nonnull DamageModeIconHolder getFromMode(DamageMode mode) {
     if (mode != null) {
-      return values()[mode.ordinal()];
+      return NullHelper.first(values()[MathHelper.clamp(mode.ordinal(), 0, values().length - 1)], DISABLED);
     }
     return DISABLED;
   }

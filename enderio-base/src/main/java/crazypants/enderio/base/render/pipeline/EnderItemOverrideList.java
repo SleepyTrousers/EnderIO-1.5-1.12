@@ -12,14 +12,16 @@ import com.enderio.core.common.util.NullHelper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
+import crazypants.enderio.base.init.IModObject.Registerable;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.paint.YetaUtil;
+import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.base.paint.IPaintable.IWrenchHideablePaint;
+import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.ITESRItemBlock;
-import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.model.CollectedItemQuadBakedBlockModel;
 import crazypants.enderio.base.render.model.RelayingBakedModel;
 import crazypants.enderio.base.render.property.EnumRenderPart;
@@ -56,7 +58,13 @@ public class EnderItemOverrideList extends ItemOverrideList {
     }
     Block block = Block.getBlockFromItem(stack.getItem());
     if (block == Blocks.AIR) {
-      throw new NullPointerException("Wrong parameter 'ItemStack stack', not an ItemBlock");
+      Registerable modObject = ModObjectRegistry.getModObject(stack.getItem());
+      if (modObject != null) {
+        block = modObject.getBlock();
+      }
+      if (block == null || block == Blocks.AIR) {
+        throw new NullPointerException("Wrong parameter 'ItemStack stack', not an ItemBlock and not registered with ModObjectRegistry");
+      }
     }
 
     if (block instanceof ITESRItemBlock) {
