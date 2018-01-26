@@ -779,7 +779,11 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     if (component == null) {
       return false;
     }
-    return ItemConduitProbe.copyPasteSettings(player, stack, bundle, component.dir);
+    EnumFacing dir = component.dir;
+    if (dir == null) {
+      return false;
+    }
+    return ItemConduitProbe.copyPasteSettings(player, stack, bundle, dir);
   }
 
   private boolean handleConduitClick(@Nonnull World world, int x, int y, int z, @Nonnull EntityPlayer player, @Nonnull IConduitBundle bundle,
@@ -974,7 +978,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       for (RaytraceResult hit : results) {
         IRedstoneConduit cond = con.getConduit(IRedstoneConduit.class);
         CollidableComponent component = hit.component;
-        if (cond != null && component != null && cond.getExternalConnections().contains(component.dir) && !cond.isSpecialConnection(component.dir)
+        EnumFacing dir = component == null ? null : component.dir;
+        if (cond != null && component != null && dir != null && cond.getExternalConnections().contains(dir) && !cond.isSpecialConnection(dir)
             && component.data == InsulatedRedstoneConduit.COLOR_CONTROLLER_ID) {
           minBB = component.bound;
         }
@@ -984,9 +989,10 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
         RaytraceResult hit = RaytraceResult.getClosestHit(Util.getEyePosition(player), results);
         CollidableComponent component = hit == null ? null : hit.component;
         if (component != null) {
+          EnumFacing dir = component.dir;
           minBB = component.bound;
-          if (component.conduitType == null) {
-            EnumFacing dir = component.dir.getOpposite();
+          if (dir != null && component.conduitType == null) {
+            dir = dir.getOpposite();
             float trans = 0.0125f;
             minBB = minBB.translate(dir.getFrontOffsetX() * trans, dir.getFrontOffsetY() * trans, dir.getFrontOffsetZ() * trans);
             float scale = 0.7f;

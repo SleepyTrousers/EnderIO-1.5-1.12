@@ -19,6 +19,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -111,7 +113,7 @@ public interface IConduit extends ICapabilityProvider {
    *
    * @param tileConduitBundle bundle that this conduit belongs to
    */
-  void setBundle(@Nonnull IConduitBundle tileConduitBundle);
+  void setBundle(@Nullable IConduitBundle tileConduitBundle);
 
   /**
    * @return the bundle the conduit belongs to

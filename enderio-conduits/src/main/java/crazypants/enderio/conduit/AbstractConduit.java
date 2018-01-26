@@ -208,7 +208,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
   }
 
   @Override
-  public void setBundle(@Nonnull IConduitBundle tileConduitBundle) {
+  public void setBundle(@Nullable IConduitBundle tileConduitBundle) {
     bundle = tileConduitBundle;
   }
 

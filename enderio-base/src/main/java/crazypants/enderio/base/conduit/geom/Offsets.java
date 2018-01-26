@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.conduit.IConduit;
 import net.minecraft.util.EnumFacing;
 
@@ -59,7 +61,7 @@ public class Offsets {
 
   // new ConduitRegistry.ConduitInfo(getBaseConduitType(), Offset.SOUTH_DOWN, Offset.SOUTH_DOWN, Offset.SOUTH_EAST, Offset.EAST_DOWN);
 
-  public static Offset get(Class<? extends IConduit> type, EnumFacing dir) {
+  public static @Nonnull Offset get(Class<? extends IConduit> type, EnumFacing dir) {
     Offset res = OFFSETS.get(key(type, getAxisForDir(dir)));
     if (res == null) {
       res = Offset.NONE;

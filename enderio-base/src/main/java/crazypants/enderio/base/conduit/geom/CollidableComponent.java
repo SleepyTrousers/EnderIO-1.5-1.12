@@ -13,10 +13,10 @@ public class CollidableComponent {
 
   public final @Nullable Class<? extends IConduit> conduitType;
   public final BoundingBox bound;
-  public final EnumFacing dir;
+  public final @Nullable EnumFacing dir;
   public final @Nullable Object data;
 
-  public CollidableComponent(@Nullable Class<? extends IConduit> conduitType, BoundingBox bound, EnumFacing id, @Nullable Object data) {
+  public CollidableComponent(@Nullable Class<? extends IConduit> conduitType, BoundingBox bound, @Nullable EnumFacing id, @Nullable Object data) {
     this.conduitType = conduitType;
     this.bound = bound;
     this.dir = id;
@@ -44,7 +44,8 @@ public class CollidableComponent {
     result = prime * result + bound.hashCode();
     final Class<?> cls = conduitType;
     result = prime * result + (cls == null ? 0 : cls.getName().hashCode());
-    result = prime * result + dir.hashCode();
+    final EnumFacing f = dir;
+    result = prime * result + (f == null ? 0 : f.hashCode());
     return result;
   }
 }
