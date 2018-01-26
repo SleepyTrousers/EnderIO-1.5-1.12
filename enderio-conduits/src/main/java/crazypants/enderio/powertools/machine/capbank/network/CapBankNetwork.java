@@ -101,8 +101,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
     }
     setNetwork(world, cap);
     addEnergy(0); // ensure energy level is within bounds
-    // TODO requires conduits !!
-    // ConduitNetworkTickHandler.instance.addListener(this);
+    ServerTickHandler.addListener(this);
   }
 
   protected void setNetwork(World world, TileCapBank cap) {
@@ -132,8 +131,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
 
   @Override
   public void destroyNetwork() {
-    // TODO requires conduits !!
-    // ConduitNetworkTickHandler.instance.removeListener(this);
+    ServerTickHandler.removeListener(this);
     distributeEnergyToBanks();
     TileCapBank cap = null;
     for (TileCapBank cb : capBanks) {
