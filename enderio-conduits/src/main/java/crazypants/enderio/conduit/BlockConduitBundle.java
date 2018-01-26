@@ -96,25 +96,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     implements IEioGuiHandler.WithPos, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockConduitBundle create(@Nonnull IModObject modObject) {
-
-    // MinecraftForge.EVENT_BUS.register(ConduitNetworkTickHandler.instance);
-    //
-    // PacketHandler.INSTANCE.registerMessage(PacketFluidLevel.class, PacketFluidLevel.class, PacketHandler.nextID(), Side.CLIENT);
-    // PacketHandler.INSTANCE.registerMessage(PacketExtractMode.class, PacketExtractMode.class, PacketHandler.nextID(), Side.SERVER);
-    // PacketHandler.INSTANCE.registerMessage(PacketConnectionMode.class, PacketConnectionMode.class, PacketHandler.nextID(), Side.SERVER);
-    // PacketHandler.INSTANCE.registerMessage(PacketItemConduitFilter.class, PacketItemConduitFilter.class, PacketHandler.nextID(), Side.SERVER);
-    // PacketHandler.INSTANCE.registerMessage(PacketExistingItemFilterSnapshot.class, PacketExistingItemFilterSnapshot.class, PacketHandler.nextID(),
-    // Side.SERVER);
-    // PacketHandler.INSTANCE.registerMessage(PacketModItemFilter.class, PacketModItemFilter.class, PacketHandler.nextID(), Side.SERVER);
-    // PacketHandler.INSTANCE.registerMessage(PacketFluidFilter.class, PacketFluidFilter.class, PacketHandler.nextID(), Side.SERVER);
-    // PacketHandler.INSTANCE.registerMessage(PacketRedstoneConduitSignalColor.class, PacketRedstoneConduitSignalColor.class, PacketHandler.nextID(),
-    // Side.SERVER);
-    // PacketHandler.INSTANCE.registerMessage(PacketRedstoneConduitOutputStrength.class, PacketRedstoneConduitOutputStrength.class, PacketHandler.nextID(),
-    // Side.SERVER);
-    // PacketHandler.INSTANCE.registerMessage(PacketOpenConduitUI.class, PacketOpenConduitUI.class, PacketHandler.nextID(), Side.SERVER);
-    // PacketHandler.INSTANCE.registerMessage(PacketSlotVisibility.class, PacketSlotVisibility.class, PacketHandler.nextID(), Side.SERVER);
-    // PacketHandler.INSTANCE.registerMessage(PacketOCConduitSignalColor.class, PacketOCConduitSignalColor.class, PacketHandler.nextID(), Side.SERVER);
-    //
     BlockConduitBundle result = new BlockConduitBundle(modObject);
     result.init();
     // MinecraftForge.EVENT_BUS.register(result);

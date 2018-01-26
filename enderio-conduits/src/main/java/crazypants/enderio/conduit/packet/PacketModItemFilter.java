@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketModItemFilter extends AbstractConduitPacket<IItemConduit> implements IMessageHandler<PacketModItemFilter, IMessage> {
+public class PacketModItemFilter extends AbstractConduitPacket<IItemConduit> {
 
   private EnumFacing dir;
   private boolean isInput;
@@ -62,31 +62,34 @@ public class PacketModItemFilter extends AbstractConduitPacket<IItemConduit> imp
     }
   }
 
-  @Override
-  public IMessage onMessage(PacketModItemFilter message, MessageContext ctx) {
-    IItemConduit conduit = message.getConduit(ctx);
-    if(conduit == null) {
+  public static class Handler implements IMessageHandler<PacketModItemFilter, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketModItemFilter message, MessageContext ctx) {
+      IItemConduit conduit = message.getConduit(ctx);
+      if (conduit == null) {
+        return null;
+      }
+      ModItemFilter filter;
+      if (message.isInput) {
+        filter = (ModItemFilter) conduit.getInputFilter(message.dir);
+      } else {
+        filter = (ModItemFilter) conduit.getOutputFilter(message.dir);
+      }
+
+      if (message.index == -1) {
+        filter.setBlacklist("1".equals(message.name));
+      } else {
+        filter.setMod(message.index, message.name);
+      }
+
+      if (message.isInput) {
+        conduit.setInputFilter(message.dir, filter);
+      } else {
+        conduit.setOutputFilter(message.dir, filter);
+      }
+
       return null;
     }
-    ModItemFilter filter;
-    if(message.isInput) {
-      filter = (ModItemFilter)conduit.getInputFilter(message.dir);  
-    } else {
-      filter = (ModItemFilter)conduit.getOutputFilter(message.dir);
-    }
-    
-    if (message.index == -1) {
-      filter.setBlacklist("1".equals(message.name));
-    } else {
-      filter.setMod(message.index, message.name);
-    }
-    
-    if(message.isInput) {
-      conduit.setInputFilter(message.dir, filter);  
-    } else {
-      conduit.setOutputFilter(message.dir, filter);
-    }
-    
-    return null;
   }
 }

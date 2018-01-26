@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IRedstoneConduit> implements IMessageHandler<PacketRedstoneConduitSignalColor, IMessage> {
+public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IRedstoneConduit> {
 
   private EnumFacing dir;
   private DyeColor col;
@@ -47,12 +47,15 @@ public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IRed
     col = DyeColor.values()[buf.readShort()];
   }
 
-  @Override
-  public IMessage onMessage(PacketRedstoneConduitSignalColor message, MessageContext ctx) {
-    message.getConduit(ctx).setSignalColor(message.dir, message.col);
-    IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
-    message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
-    return null;
+  public static class Handler implements IMessageHandler<PacketRedstoneConduitSignalColor, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketRedstoneConduitSignalColor message, MessageContext ctx) {
+      message.getConduit(ctx).setSignalColor(message.dir, message.col);
+      IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
+      message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
+      return null;
+    }
   }
 
 }

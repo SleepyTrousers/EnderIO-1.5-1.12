@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSlotVisibility implements IMessage, IMessageHandler<PacketSlotVisibility, IMessage> {
+public class PacketSlotVisibility implements IMessage {
 
   private boolean inputVisible;
   private boolean outputVisible;
@@ -33,13 +33,16 @@ public class PacketSlotVisibility implements IMessage, IMessageHandler<PacketSlo
     bb.writeByte(value);
   }
 
-  @Override
-  public IMessage onMessage(PacketSlotVisibility message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().player;
-    if(player.openContainer instanceof ExternalConnectionContainer) {
-      ExternalConnectionContainer ecc = (ExternalConnectionContainer) player.openContainer;
-      ecc.setInOutSlotsVisible(message.inputVisible, message.outputVisible);
+  public static class Handler implements IMessageHandler<PacketSlotVisibility, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketSlotVisibility message, MessageContext ctx) {
+      EntityPlayerMP player = ctx.getServerHandler().player;
+      if (player.openContainer instanceof ExternalConnectionContainer) {
+        ExternalConnectionContainer ecc = (ExternalConnectionContainer) player.openContainer;
+        ecc.setInOutSlotsVisible(message.inputVisible, message.outputVisible);
+      }
+      return null;
     }
-    return null;
   }
 }

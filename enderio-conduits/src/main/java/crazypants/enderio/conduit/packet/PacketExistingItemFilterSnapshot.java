@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IItemConduit> implements IMessageHandler<PacketExistingItemFilterSnapshot, IMessage> {
+public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IItemConduit> {
 
   public static enum Opcode {
     CLEAR,
@@ -51,56 +51,59 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
     buf.writeByte(opcode.ordinal());
   }
 
-  @Override
-  public PacketExistingItemFilterSnapshot onMessage(PacketExistingItemFilterSnapshot message, MessageContext ctx) {
-    IItemConduit conduit = message.getConduit(ctx);
-    if(conduit == null) {
-      return null;
-    }
-    ExistingItemFilter filter;
-    if(message.isInput) {
-      filter = (ExistingItemFilter)conduit.getInputFilter(message.dir);  
-    } else {
-      filter = (ExistingItemFilter)conduit.getOutputFilter(message.dir);
-    }
-    
-    switch (message.opcode) {
+  public static class Handler implements IMessageHandler<PacketExistingItemFilterSnapshot, IMessage> {
+
+    @Override
+    public PacketExistingItemFilterSnapshot onMessage(PacketExistingItemFilterSnapshot message, MessageContext ctx) {
+      IItemConduit conduit = message.getConduit(ctx);
+      if (conduit == null) {
+        return null;
+      }
+      ExistingItemFilter filter;
+      if (message.isInput) {
+        filter = (ExistingItemFilter) conduit.getInputFilter(message.dir);
+      } else {
+        filter = (ExistingItemFilter) conduit.getOutputFilter(message.dir);
+      }
+
+      switch (message.opcode) {
       case CLEAR:
         filter.setSnapshot(NNList.emptyList());
         break;
 
       case SET: {
-        ItemConduitNetwork icn = (ItemConduitNetwork)conduit.getNetwork();
+        ItemConduitNetwork icn = (ItemConduitNetwork) conduit.getNetwork();
         INetworkedInventory inv = icn.getInventory(conduit, message.dir);
         filter.setSnapshot(inv);
         break;
       }
 
       case MERGE: {
-        ItemConduitNetwork icn = (ItemConduitNetwork)conduit.getNetwork();
+        ItemConduitNetwork icn = (ItemConduitNetwork) conduit.getNetwork();
         INetworkedInventory inv = icn.getInventory(conduit, message.dir);
         filter.mergeSnapshot(inv);
         break;
       }
 
-    case SET_BLACK:
-      filter.setBlacklist(true);
-      break;
-    case UNSET_BLACK:
-      filter.setBlacklist(false);
-      break;
+      case SET_BLACK:
+        filter.setBlacklist(true);
+        break;
+      case UNSET_BLACK:
+        filter.setBlacklist(false);
+        break;
 
       default:
         throw new AssertionError();
-    }
+      }
 
-    if(message.isInput) {
-      conduit.setInputFilter(message.dir, filter);  
-    } else {
-      conduit.setOutputFilter(message.dir, filter);
+      if (message.isInput) {
+        conduit.setInputFilter(message.dir, filter);
+      } else {
+        conduit.setOutputFilter(message.dir, filter);
+      }
+
+      return null;
     }
-    
-    return null;
   }
 
 }

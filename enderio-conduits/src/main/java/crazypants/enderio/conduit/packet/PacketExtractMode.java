@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketExtractMode extends AbstractConduitPacket<IExtractor> implements IMessageHandler<PacketExtractMode, IMessage> {
+public class PacketExtractMode extends AbstractConduitPacket<IExtractor> {
 
   private EnumFacing dir;
   private RedstoneControlMode mode;
@@ -51,13 +51,14 @@ public class PacketExtractMode extends AbstractConduitPacket<IExtractor> impleme
     color = DyeColor.values()[buf.readShort()];
   }
 
-  @Override
-  public IMessage onMessage(PacketExtractMode message, MessageContext ctx) {
-    message.getConduit(ctx).setExtractionRedstoneMode(message.mode, message.dir);
-    message.getConduit(ctx).setExtractionSignalColor(message.dir, message.color);
-    IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
-    message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);    
-    return null;
+  public static class Handler implements IMessageHandler<PacketExtractMode, IMessage> {
+    @Override
+    public IMessage onMessage(PacketExtractMode message, MessageContext ctx) {
+      message.getConduit(ctx).setExtractionRedstoneMode(message.mode, message.dir);
+      message.getConduit(ctx).setExtractionSignalColor(message.dir, message.color);
+      IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
+      message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
+      return null;
+    }
   }
-
 }

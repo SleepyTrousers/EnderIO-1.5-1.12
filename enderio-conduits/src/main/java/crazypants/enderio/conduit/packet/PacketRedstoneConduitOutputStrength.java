@@ -7,8 +7,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketRedstoneConduitOutputStrength extends AbstractConduitPacket<IRedstoneConduit> implements
-    IMessageHandler<PacketRedstoneConduitOutputStrength, IMessage> {
+public class PacketRedstoneConduitOutputStrength extends AbstractConduitPacket<IRedstoneConduit> {
 
   private EnumFacing dir;
   private boolean isStrong;
@@ -45,13 +44,16 @@ public class PacketRedstoneConduitOutputStrength extends AbstractConduitPacket<I
     isStrong = buf.readBoolean();
   }
 
-  @Override
-  public IMessage onMessage(PacketRedstoneConduitOutputStrength message, MessageContext ctx) {
-    IRedstoneConduit tile = message.getConduit(ctx);
-    if(tile != null) {
-      tile.setOutputStrength(message.dir, message.isStrong);
-      //message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);
+  public static class Handler implements IMessageHandler<PacketRedstoneConduitOutputStrength, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketRedstoneConduitOutputStrength message, MessageContext ctx) {
+      IRedstoneConduit tile = message.getConduit(ctx);
+      if (tile != null) {
+        tile.setOutputStrength(message.dir, message.isStrong);
+        // message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);
+      }
+      return null;
     }
-    return null;
   }
 }
