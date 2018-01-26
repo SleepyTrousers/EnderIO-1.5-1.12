@@ -24,7 +24,7 @@ public class ConduitRegistry {
     private final @Nonnull Offset none, x, y, z;
     private boolean canConnectToAnything;
     @SideOnly(Side.CLIENT)
-    private @Nonnull NNList<IConduitRenderer> renderers = new NNList<>();
+    private @Nullable NNList<IConduitRenderer> renderers;
     private @Nonnull NNList<Class<? extends IConduit>> members = new NNList<Class<? extends IConduit>>();
 
     /**
@@ -85,7 +85,7 @@ public class ConduitRegistry {
      */
     @SideOnly(Side.CLIENT)
     public void addRenderer(@Nonnull IConduitRenderer renderer) {
-      renderers.add(renderer);
+      getRenderers().add(renderer);
     }
 
     /**
@@ -95,7 +95,11 @@ public class ConduitRegistry {
      */
     @SideOnly(Side.CLIENT)
     public @Nonnull Collection<IConduitRenderer> getRenderers() {
-      return renderers;
+      NNList<IConduitRenderer> ret = renderers;
+      if (ret == null) {
+        ret = renderers = new NNList<>();
+      }
+      return ret;
     }
 
     /**
