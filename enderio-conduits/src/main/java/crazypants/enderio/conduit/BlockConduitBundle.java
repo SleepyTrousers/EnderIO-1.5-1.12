@@ -686,7 +686,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       } else {
         if (!world.isRemote) {
           // GuiID.facing2guiid(closest.component.dir).openGui(world, pos, player, side);
-          openGui(world, pos, player, side);
+          openGui(world, pos, player, side, closestComponent.dir.ordinal());
         }
         return true;
       }
@@ -862,7 +862,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       if (facing == null) {
         return new GuiExternalConnectionSelector(te);
       }
-      return new GuiExternalConnection(player.inventory, te, facing);
+      return new GuiExternalConnection(player.inventory, te, EnumFacing.getFront(param1));
     }
     return null;
   }

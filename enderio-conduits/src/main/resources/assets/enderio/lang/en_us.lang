@@ -1,5 +1,6 @@
 # Conduits
 enderio.block_conduit_bundle=Conduit Bundle
+tile.block_conduit_bundle.name=Conduit Connector
 
 enderio.item_power_conduit.name=Energy Conduit
 enderio.item_power_conduit_enhanced.name=Enhanced Energy Conduit
@@ -27,6 +28,25 @@ enderio.item_liquid_conduit_ender.tooltip.detailed.line2=allows multiple fluids 
 enderio.item_liquid_conduit_ender.tooltip.detailed.line3=transported on the same line
 
 enderio.item_item_conduit.name=Item Conduit
+
+# Conduit GUIs
+
+enderio.gui.conduit.io_mode=Mode
+
+enderio.gui.conduit.redstone.signal_color=Signal Color
+enderio.gui.conduit.redstone.color=Color
+enderio.gui.conduit.redstone.signal_strength=Strong Signal
+enderio.gui.conduit.redstone.signal_strength.tooltip=Output a strong redstone signal 
+
+enderio.gui.conduit.fluid.auto_extract=Auto Extract
+enderio.gui.conduit.fluid.filter=Filter
+enderio.gui.conduit.fluid.whitelist=Whitelist
+enderio.gui.conduit.fluid.blacklist=Blacklist
+
+enderio.gui.conduit.redstone.signal_color=Signal Color
+enderio.gui.conduit.redstone.color=Color
+enderio.gui.conduit.redstone.signal_strengh=Strong Signal
+enderio.gui.conduit.redstone.signal_strengh.tooltip=Output a strong redstone signal 
 
 # CapBanks
 tile.block_capacitor_bank.name=Capacitor Bank (Deprecated)

@@ -452,11 +452,11 @@ enderio.grindingball.tooltip.line4=%sPower Use %s
 
 enderio.gui.permission.denied=Permission denied
 
-enderio.gui.conduit.ioMode.inOut=In / Out
-enderio.gui.conduit.ioMode.input=Extract
-enderio.gui.conduit.ioMode.output=Insert
-enderio.gui.conduit.ioMode.disabled=Disabled
-enderio.gui.conduit.ioMode.notSet=Default
+enderio.gui.conduit.io_mode.in_out=In / Out
+enderio.gui.conduit.io_mode.input=Extract
+enderio.gui.conduit.io_mode.output=Insert
+enderio.gui.conduit.io_mode.disabled=Disabled
+enderio.gui.conduit.io_mode.not_set=Default
 
 enderio.gui.tooltip.redstoneControlMode=Redstone Mode
 
@@ -1188,7 +1188,6 @@ item.item_power_item_filter.tooltip.detailed.line2=how much RF they have stored
 ;//Spawn Gurad [sic]
 ;
 ;//conduits
-;enderio.gui.conduit.ioMode=Mode
 ;tile.blockConduitBundle.name=Conduit Connector
 ;
 ;enderio.gui.conduit.button.clear=Clear
@@ -1237,15 +1236,6 @@ item.item_power_item_filter.tooltip.detailed.line2=how much RF they have stored
 ;enderio.gui.conduit.item.speedupgrade2=Max upgrades is 15; Max downgrades is 1
 ;enderio.gui.conduit.item.functionupgrade.line1=Possible function upgrades:
 ;
-;enderio.gui.conduit.redstone.signalColor=Signal Color
-;enderio.gui.conduit.redstone.color=Color
-;enderio.gui.conduit.redstone.signalStrengh=Strong Signal
-;enderio.gui.conduit.redstone.signalStrengh.tooltip=Output a strong redstone signal 
-;
-;enderio.gui.conduit.fluid.autoExtract=Auto Extract
-;enderio.gui.conduit.fluid.filter=Filter
-;enderio.gui.conduit.fluid.whitelist=Whitelist
-;enderio.gui.conduit.fluid.blacklist=Blacklist
 ;
 ;enderio.gui.conduit.gas.autoExtract=Auto Extract
 ;
