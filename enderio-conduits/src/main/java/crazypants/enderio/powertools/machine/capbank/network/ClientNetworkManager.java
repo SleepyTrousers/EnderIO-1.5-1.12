@@ -13,8 +13,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
-@EventBusSubscriber(modid = EnderIOPowerTools.MODID)
+@EventBusSubscriber(modid = EnderIOPowerTools.MODID, value = Side.CLIENT)
 public class ClientNetworkManager {
 
   private static final @Nonnull ClientNetworkManager instance = new ClientNetworkManager();
