@@ -2,28 +2,70 @@
 #
 # Please wait until the en_us lang file has been completed before translating.
 #
-enderio.block_powered_spawner.note.areaFull=Слишком много мобов
+enderio.block_powered_spawner.note.areaFull=
 #                                       en: Too many mobs
-enderio.block_powered_spawner.note.badSoul=Плохая душа не может создать существо
+enderio.block_powered_spawner.note.badSoul=
 #                                      en: Bad soul, cannot create entity
-enderio.block_powered_spawner.note.noLocationAtAll=Нет жизнеспособного пространства
+enderio.block_powered_spawner.note.noLocationAtAll=
 #                                              en: No viable space
-enderio.block_powered_spawner.note.noLocationFound=Не достаточно пространства
+enderio.block_powered_spawner.note.noLocationFound=
 #                                              en: No space found
-enderio.block_powered_spawner.note.noPlayer=Нет игроков в диапазоне
+enderio.block_powered_spawner.note.noPlayer=
 #                                       en: No player in range
 enderio.block_powered_spawner.tooltip.empty=Пустой
 #                                       en: Empty
 enderio.block_solar_panel.tooltip.maxoutput=
 #                                       en: Max Output: %s
-enderio.chat.telepad.noFluid=Недостаточно %s для телепортации!
+enderio.chat.telepad.noFluid=
 #                        en: Not enough %s to teleport!
+enderio.chat.travel_accessable.error.harvest=
+#                                        en: Only §4%s §fmay harvest this block.
 enderio.chat.travel_accessable.error.private=
-#                                        en: Only %s may change this block's settings.
+#                                        en: Only §4%s §fmay change this block's settings.
 enderio.chat.vat.dump.active=Не удалось сбросить, невозможно переместить жидкость в выход чана во время его работы
 #                        en: Dumping failed, cannot put liquids into the output tank while the Vat is working
 enderio.chat.vat.dump.fail=Не удалось сбросить, выход чана заполнен
 #                      en: Dumping failed, output tank is not empty
+enderio.config.capacitor=
+#                    en: Capacitor Settings
+enderio.config.client=
+#                 en: Client Settings
+enderio.config.combustiongenerator=
+#                              en: Combustion Generator Settings
+enderio.config.farm.tooltip="Коммуна - это на всю жизнь!"
+#                       en: "The commune is for life!"
+enderio.config.farm=Настройки ферм
+#               en: Farm Settings
+enderio.config.killerjoe=
+#                    en: Killer Joe Settings
+enderio.config.solar=
+#                en: Solar Panel Settings
+enderio.config.soulbinder=
+#                     en: Soulbinder Settings
+enderio.config.spawner.tooltip=У меня закончились остроумные подсказки.
+#                          en: I ran out of witty tooltips.
+enderio.config.spawner=Настройки электрического спаунера
+#                  en: Powered Spawner Settings
+enderio.config.telepad=
+#                  en: TelePad Settings
+enderio.config.vacuum=
+#                 en: Vacuum Chest/XP Vacuum Settings
+enderio.config.vat=
+#              en: Vat Settings
+enderio.config.zombiegenerator=
+#                          en: Zombie Generator Settings
+enderio.darksteel.upgrade.solar_1.name=Солнечная батарея I
+#                                  en: Solar I
+enderio.darksteel.upgrade.solar_1.tooltip.detailed.line1=Генерирует энергию от солнца.
+#                                                    en: Generates power from the sun.
+enderio.darksteel.upgrade.solar_2.name=Солнечная батарея II
+#                                  en: Solar II
+enderio.darksteel.upgrade.solar_2.tooltip.detailed.line1=Генерирует энергию от солнца.
+#                                                    en: Generates power from the sun.
+enderio.darksteel.upgrade.solar_3.name=Солнечная батарея III
+#                                  en: Solar III
+enderio.darksteel.upgrade.solar_3.tooltip.detailed.line1=Генерирует энергию от солнца.
+#                                                    en: Generates power from the sun.
 enderio.gui.alloy.mode.all=Выплавка всех материалов
 #                      en: All Smelting
 enderio.gui.alloy.mode.alloy=Только сплавы
@@ -34,6 +76,8 @@ enderio.gui.alloy.mode.heading=Режим печи
 #                          en: Furnace Mode
 enderio.gui.buffer.in=Макс. вход:
 #                 en: Max In:
+enderio.gui.buffer.maxio=
+#                    en: In/Out Max: %d
 enderio.gui.buffer.out=Макс. выход:
 #                  en: Max Out:
 enderio.gui.combustion_generator.coolantTank.empty=Охладитель
@@ -52,22 +96,26 @@ enderio.gui.killerJoe.fluid.minReq=Для активации требуется:
 #                              en: %s Required for activation
 enderio.gui.killerJoe.fuelTank=Питательный резервуар
 #                          en: Nutrient Tank
+enderio.gui.obelisk.no_vials=
+#                        en: Need Soul Vials!
 enderio.gui.powered_spawner.capture=Захватить
 #                               en: Capture
 enderio.gui.powered_spawner.spawn=Призывать
 #                             en: Spawn
 enderio.gui.ranged.hideRange=Спрятать радиус действия
 #                        en: Hide Range
-enderio.gui.ranged.range=Диапазон: %s
+enderio.gui.ranged.range=
 #                    en: Range: %s
 enderio.gui.ranged.showRange=Показать радиус действия
 #                        en: Show Range
+enderio.gui.soul_binder.useplayerxp=
+#                               en: Use Player XP
 enderio.gui.stirling_generator.burnRate=
 #                                   en: Burn Rate: %s%%
 enderio.gui.stirling_generator.output=
 #                                 en: Generating: %s
-enderio.gui.stirling_generator.remaining=Осталось {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
-#                                    en: Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
+enderio.gui.stirling_generator.remaining=
+#                                    en: Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} µI
 enderio.gui.stirling_generator.upgrades={0} даёт {2}{1,number,#.#}x{3} эффективности
 #                                   en: {0} gives {2}{1,number,#.#}x{3} efficiency
 enderio.gui.stirling_generator.upgradeslot=Слот улучшения
@@ -172,6 +220,10 @@ enderio.gui.xp_obelisk.button.retrieve.all.line1=Забрать все
 #                                            en: Retrieve all
 enderio.gui.xp_obelisk.button.retrieve.all.line2=уровни опыта игрока
 #                                            en: player XP levels
+enderio.gui.xp_obelisk.button.retrieve.all.line3=
+#                                            en: §aGets you to level %d
+enderio.gui.xp_obelisk.button.retrieve.empty=
+#                                        en: §4XP Obelisk is empty
 enderio.gui.xp_obelisk.button.store.1.line1=Отдать 1
 #                                       en: Store 1
 enderio.gui.xp_obelisk.button.store.1.line2=уровень опыта игрока
@@ -184,24 +236,64 @@ enderio.gui.xp_obelisk.button.store.all.line1=Отдать весь
 #                                         en: Store all
 enderio.gui.xp_obelisk.button.store.all.line2=опыт игрока
 #                                         en: player XP
+enderio.gui.xp_obelisk.button.store.empty=
+#                                     en: §4You don't have any XP
 enderio.gui.zombie_generator.fluid.minReq=Для активации требуется: %s
 #                                     en: %s Required for activation
 enderio.gui.zombie_generator.fuelTank=Питательный резервуар
 #                                 en: Nutrient Tank
 enderio.gui.zombie_generator.output=
 #                               en: Generating: %s
-item.itemLocationPrintout.chat.addTarget=Добавлена цель
-#                                    en: Added target
-item.itemLocationPrintout.chat.noPaper=Нет бумаги в инвентаре
-#                                  en: No Paper in Inventory
-item.itemLocationPrintout.chat.setTarget=Цель установлена на
-#                                    en: Target set to
-item.itemLocationPrintout.name=Распечаток местонахождения
-#                          en: Location Printout
-item.itemLocationPrintout.tooltip.detailed.line1=Создан с использованием настройщика координат
-#                                            en: Created using the Coordinate Selector
-item.itemLocationPrintout.tooltip.detailed.line2=Используется для добавления мест назначения к телепорту
-#                                            en: Used to add destinations to a Telepad
+enderio.jei.combustion_generator.range.line1=
+#                                        en: Depending on capacitor and generator model
+enderio.jei.combustion_generator.range.line2=
+#                                        en: Better capacitor gives higher output at higher fuel cost.
+enderio.jei.combustion_generator.range.line3=
+#                                        en: Better model gives more output at same fuel cost.
+enderio.jei.combustion_generator.range.line4=
+#                                        en: Some ancient capacitors that can be found in the world can give even better results than shown here.
+enderio.jei.sagmill.outputchance=Шанс: {0,choice,0#'<1'|0<{0,number}}%
+#                            en: Chance: {0,choice,0#'<1'|0<{0,number}}%
+enderio.jei.solar_panel.output=
+#                          en: Generating up to
+enderio.jei.solar_panel.range.line1=
+#                               en: Actual power generated depends on
+enderio.jei.solar_panel.range.line2=
+#                               en: the weather and the angle of Sun
+enderio.jei.stirling_generator.notSimple.line1=
+#                                          en: This fuel cannot be used in
+enderio.jei.stirling_generator.notSimple.line2=
+#                                          en: Simple Stirling generator
+enderio.jei.stirling_generator.range.line1=
+#                                      en: Actual power generated depends
+enderio.jei.stirling_generator.range.line2=
+#                                      en: on capacitor and generator model.
+enderio.loot.capacitor.aa=
+#                     en: Hiding %s
+enderio.loot.capacitor.area=
+#                       en: Big %s
+enderio.loot.capacitor.cleancut=
+#                           en: Clean Cut %s
+enderio.loot.capacitor.crushed=
+#                          en: Crushed %s
+enderio.loot.capacitor.fatman=
+#                         en: Atomic %s
+enderio.loot.capacitor.green=
+#                        en: Planting %s
+enderio.loot.capacitor.kaboom=
+#                         en: Explosive %s
+enderio.loot.capacitor.mobby=
+#                        en: Villainous %s
+enderio.loot.capacitor.red=
+#                      en: Hot %s
+enderio.loot.capacitor.smelting=
+#                           en: Smelting %s
+enderio.loot.capacitor.tight=
+#                        en: Tight %s
+enderio.loot.capacitor.wet=
+#                      en: Cooking %s
+enderio.status.telepad.unformed=
+#                           en: §4Telepad must be a 3x3 structure
 tile.block_alloy_smelter.name=Завод сплавов
 #                         en: Alloy Smelter
 tile.block_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
@@ -220,7 +312,7 @@ tile.block_attractor_obelisk.tooltip.detailed.line1=Притягивает мо�
 #                                               en: Draws mobs towards it
 tile.block_attractor_obelisk.tooltip.detailed.line2=Укажите мобов для притягивания,
 #                                               en: Specify the mobs to effect
-tile.block_attractor_obelisk.tooltip.detailed.line3=поместив их души
+tile.block_attractor_obelisk.tooltip.detailed.line3=положив их души
 #                                               en: by placing their souls
 tile.block_attractor_obelisk.tooltip.detailed.line4=внутрь механизма
 #                                               en: within the device
@@ -236,7 +328,7 @@ tile.block_buffer.item.name=Предметный буфер
 #                       en: Item Buffer
 tile.block_buffer.omni.name=Универсальный буфер
 #                       en: Omni Buffer
-tile.block_buffer.power.name=Энергетический буфер
+tile.block_buffer.power.name=Энергобуфер
 #                        en: Power Buffer
 tile.block_combustion_generator.name=Генератор внутреннего сгорания
 #                                en: Combustion Generator
@@ -252,24 +344,38 @@ tile.block_crafter.tooltip.detailed.line1=Электрический авто-с
 #                                     en: A powered auto-crafter
 tile.block_crafter.tooltip.detailed.line2=Потребляет энергию за операцию
 #                                     en: Consumes power per operation
-tile.block_crafter.tooltip.detailed.line3=Может быть улучшен конденсаторами, чтобы
+tile.block_crafter.tooltip.detailed.line3=Может быть улучшен, чтобы увеличить скорость
 #                                     en: Can be upgraded to increase speed
-tile.block_crafter.tooltip.detailed.line4=увеличить скорость и хранилище энергии
+tile.block_crafter.tooltip.detailed.line4=и хранилище энергии с помощью конденсаторов
 #                                     en: and energy storage with capacitors
-tile.block_dialing_device.name=Наборное устройство
+tile.block_dialing_device.name=
 #                          en: Dialing Device
-tile.block_dialing_device.tooltip.detailed.line1=Располагается рядом с телепортом
+tile.block_dialing_device.tooltip.detailed.line1=
 #                                            en: Place near a Telepad
-tile.block_dialing_device.tooltip.detailed.line2=Хранит и устанавливает места назначения.
+tile.block_dialing_device.tooltip.detailed.line2=
 #                                            en: Stores and sets destinations.
+tile.block_electric_light.electric.inverted.name=
+#                                            en: Electric Light (Inverted)
+tile.block_electric_light.electric.name=
+#                                   en: Electric Light
+tile.block_electric_light.inverted.name=Светильник (Инвертированный)
+#                                   en: Light (Inverted)
+tile.block_electric_light.name=Светильник
+#                          en: Light
+tile.block_electric_light.wireless.inverted.name=
+#                                            en: Wireless Light (Inverted)
+tile.block_electric_light.wireless.name=
+#                                   en: Wireless Light
 tile.block_enchanter.name=Зачарователь
 #                     en: Enchanter
 tile.block_enchanter.tooltip.detailed.line1=Использует опыт, чтобы объединять
 #                                       en: Uses XP to combine items
-tile.block_enchanter.tooltip.detailed.line2=предметы с книгой и пером для создания
-#                                       en: and a book and quill to
-tile.block_enchanter.tooltip.detailed.line3=зачарованных книг
-#                                       en: created enchanted books
+tile.block_enchanter.tooltip.detailed.line2=
+#                                       en: and a §6book and quill§r to
+tile.block_enchanter.tooltip.detailed.line3=
+#                                       en: create enchanted books
+tile.block_enhanced_combustion_generator.name=
+#                                         en: Enhanced Combustion Generator
 tile.block_experience_obelisk.name=Обелиск опыта
 #                              en: Experience Obelisk
 tile.block_experience_obelisk.tooltip.detailed.line1=Содержит опыт
@@ -316,7 +422,7 @@ tile.block_powered_spawner.empty.tooltip.detailed.line2=спаунером в н
 #                                                   en: spawner in an anvil
 tile.block_powered_spawner.name=Электрический спаунер
 #                           en: Powered Spawner
-tile.block_powered_spawner.tooltip.detailed.line1=Подайте энергию, чтобы
+tile.block_powered_spawner.tooltip.detailed.line1=Подайте питание, чтобы
 #                                             en: Supply with power to
 tile.block_powered_spawner.tooltip.detailed.line2=активировать
 #                                             en: activate
@@ -358,6 +464,16 @@ tile.block_sag_mill.tooltip.detailed.line5=скорость и хранилищ�
 #                                      en: speed and energy storage
 tile.block_sag_mill.tooltipPrefix=Содержит
 #                             en: Contains
+tile.block_simple_alloy_smelter.name=
+#                                en: Simple Alloy Smelter
+tile.block_simple_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
+#                                                  en: Used to create EnderIO alloys
+tile.block_simple_sag_mill.name=
+#                           en: Simple SAG Mill
+tile.block_simple_sag_mill.tooltip.detailed.line1=Дробит руду и другие предметы
+#                                             en: Grinds ore and other items
+tile.block_simple_stirling_generator.name=
+#                                     en: Simple Stirling Generator
 tile.block_slice_and_splice.name=«Отрубатель и сращиватель»
 #                            en: Slice'N'Splice
 tile.block_slice_and_splice.tooltip.detailed.line1=Отрубает головы и превращает их
@@ -368,6 +484,8 @@ tile.block_solar_panel.advanced.name=Продвинутая фотовольто
 #                                en: Advanced Photovoltaic Cell
 tile.block_solar_panel.name=Фотовольтовая ячейка
 #                       en: Photovoltaic Cell
+tile.block_solar_panel.simple.name=
+#                              en: Simple Photovoltaic Cell
 tile.block_solar_panel.tooltip.common.line1=Солнечная энергия!
 #                                       en: Solar Power!
 tile.block_solar_panel.tooltip.detailed.line1=Производит энергию в светлое время суток
@@ -388,9 +506,9 @@ tile.block_stirling_generator.name=Генератор Стирлинга
 #                              en: Stirling Generator
 tile.block_stirling_generator.tooltip.detailed.line1=Сжигает твёрдое топливо для производства энергии
 #                                                en: Burns solid fuel to generate power
-tile.block_stirling_generator.tooltip.detailed.line2=Может быть улучшен конденсаторами,
+tile.block_stirling_generator.tooltip.detailed.line2=Может быть улучшен, чтобы увеличить выход
 #                                                en: Can be upgraded to increase output
-tile.block_stirling_generator.tooltip.detailed.line3=чтобы увеличить выход и эффективность
+tile.block_stirling_generator.tooltip.detailed.line3=и эффективность
 #                                                en: and efficiency with capacitors
 tile.block_tank.advanced.name=Жидкостный резервуар под давлением
 #                         en: Pressurized Fluid Tank
@@ -450,19 +568,23 @@ tile.block_weather_obelisk.tooltip.detailed.line2=Требует много эн
 #                                             en: Requires a lot of power and
 tile.block_weather_obelisk.tooltip.detailed.line3=предмет в качестве катализатора
 #                                             en: a catalyst item
+tile.block_wired_charger.name=
+#                         en: Wired Charger
+tile.block_wired_charger.tooltip.detailed.line1=
+#                                           en: Charges items with µI
 tile.block_wireless_charger.name=Беспроводной зарядник
 #                            en: Wireless Charger
 tile.block_wireless_charger.tooltip.detailed.line1=Заряжает ближайшие предметы
 #                                              en: Charges items in nearby
 tile.block_wireless_charger.tooltip.detailed.line2=в инвентарях игроков
 #                                              en: players inventories
-tile.block_xp_vacuum.name=Вакуум опыта
+tile.block_xp_vacuum.name=
 #                     en: XP Vacuum
-tile.block_xp_vacuum.tooltip.detailed.line1=Втягивает ближайшие сферы опыта и выталкивает
+tile.block_xp_vacuum.tooltip.detailed.line1=
 #                                       en: Pulls nearby XP orbs and pushes
-tile.block_xp_vacuum.tooltip.detailed.line2=их в прилегающие резервуары/трубы.
+tile.block_xp_vacuum.tooltip.detailed.line2=
 #                                       en: them into adjacent tanks/conduits.
-tile.block_xp_vacuum.tooltip.detailed.line3=Должен быть активирован с помощью жидкого опыта.
+tile.block_xp_vacuum.tooltip.detailed.line3=
 #                                       en: Needs to be activated with liquid XP.
 tile.block_zombie_generator.name=Зомби генератор
 #                            en: Zombie Generator

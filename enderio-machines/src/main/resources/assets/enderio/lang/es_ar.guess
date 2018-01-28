@@ -12,18 +12,60 @@ enderio.block_powered_spawner.note.noLocationFound=
 #                                              en: No space found
 enderio.block_powered_spawner.note.noPlayer=
 #                                       en: No player in range
-enderio.block_powered_spawner.tooltip.empty=
+enderio.block_powered_spawner.tooltip.empty=Vacío
 #                                       en: Empty
 enderio.block_solar_panel.tooltip.maxoutput=
 #                                       en: Max Output: %s
 enderio.chat.telepad.noFluid=
 #                        en: Not enough %s to teleport!
+enderio.chat.travel_accessable.error.harvest=
+#                                        en: Only §4%s §fmay harvest this block.
 enderio.chat.travel_accessable.error.private=
-#                                        en: Only %s may change this block's settings.
+#                                        en: Only §4%s §fmay change this block's settings.
 enderio.chat.vat.dump.active=
 #                        en: Dumping failed, cannot put liquids into the output tank while the Vat is working
 enderio.chat.vat.dump.fail=
 #                      en: Dumping failed, output tank is not empty
+enderio.config.capacitor=
+#                    en: Capacitor Settings
+enderio.config.client=
+#                 en: Client Settings
+enderio.config.combustiongenerator=
+#                              en: Combustion Generator Settings
+enderio.config.farm.tooltip="¡La comuna es para toda la vida!"
+#                       en: "The commune is for life!"
+enderio.config.farm=Ajustes de Cultivo
+#               en: Farm Settings
+enderio.config.killerjoe=
+#                    en: Killer Joe Settings
+enderio.config.solar=
+#                en: Solar Panel Settings
+enderio.config.soulbinder=
+#                     en: Soulbinder Settings
+enderio.config.spawner.tooltip=Me he quedado sin descripciones ingeniosas.
+#                          en: I ran out of witty tooltips.
+enderio.config.spawner=Ajustes del Spawner Eléctrico
+#                  en: Powered Spawner Settings
+enderio.config.telepad=
+#                  en: TelePad Settings
+enderio.config.vacuum=
+#                 en: Vacuum Chest/XP Vacuum Settings
+enderio.config.vat=
+#              en: Vat Settings
+enderio.config.zombiegenerator=
+#                          en: Zombie Generator Settings
+enderio.darksteel.upgrade.solar_1.name=Solar I
+#                                  en: Solar I
+enderio.darksteel.upgrade.solar_1.tooltip.detailed.line1=
+#                                                    en: Generates power from the sun.
+enderio.darksteel.upgrade.solar_2.name=Solar II
+#                                  en: Solar II
+enderio.darksteel.upgrade.solar_2.tooltip.detailed.line1=
+#                                                    en: Generates power from the sun.
+enderio.darksteel.upgrade.solar_3.name=
+#                                  en: Solar III
+enderio.darksteel.upgrade.solar_3.tooltip.detailed.line1=
+#                                                    en: Generates power from the sun.
 enderio.gui.alloy.mode.all=Fundir Todo
 #                      en: All Smelting
 enderio.gui.alloy.mode.alloy=Solo Aleaciones
@@ -34,6 +76,8 @@ enderio.gui.alloy.mode.heading=Modo Horno
 #                          en: Furnace Mode
 enderio.gui.buffer.in=Entrada máx.:
 #                 en: Max In:
+enderio.gui.buffer.maxio=
+#                    en: In/Out Max: %d
 enderio.gui.buffer.out=Salida máx.:
 #                  en: Max Out:
 enderio.gui.combustion_generator.coolantTank.empty=Refrigerante
@@ -52,6 +96,8 @@ enderio.gui.killerJoe.fluid.minReq=%s requeridos para la activación.
 #                              en: %s Required for activation
 enderio.gui.killerJoe.fuelTank=Tanque de Nutriente
 #                          en: Nutrient Tank
+enderio.gui.obelisk.no_vials=
+#                        en: Need Soul Vials!
 enderio.gui.powered_spawner.capture=Capturar
 #                               en: Capture
 enderio.gui.powered_spawner.spawn=Engendrar
@@ -62,12 +108,14 @@ enderio.gui.ranged.range=
 #                    en: Range: %s
 enderio.gui.ranged.showRange=Muestra el alcance
 #                        en: Show Range
+enderio.gui.soul_binder.useplayerxp=
+#                               en: Use Player XP
 enderio.gui.stirling_generator.burnRate=
 #                                   en: Burn Rate: %s%%
 enderio.gui.stirling_generator.output=
 #                                 en: Generating: %s
-enderio.gui.stirling_generator.remaining={0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF Restantes.
-#                                    en: Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
+enderio.gui.stirling_generator.remaining=
+#                                    en: Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} µI
 enderio.gui.stirling_generator.upgrades={0} proporciona {2}{1,number,#.#}x{3} de eficiencia
 #                                   en: {0} gives {2}{1,number,#.#}x{3} efficiency
 enderio.gui.stirling_generator.upgradeslot=Ranura de Mejora
@@ -172,6 +220,10 @@ enderio.gui.xp_obelisk.button.retrieve.all.line1=Recuperar todo
 #                                            en: Retrieve all
 enderio.gui.xp_obelisk.button.retrieve.all.line2=
 #                                            en: player XP levels
+enderio.gui.xp_obelisk.button.retrieve.all.line3=
+#                                            en: §aGets you to level %d
+enderio.gui.xp_obelisk.button.retrieve.empty=
+#                                        en: §4XP Obelisk is empty
 enderio.gui.xp_obelisk.button.store.1.line1=Almacenar 1
 #                                       en: Store 1
 enderio.gui.xp_obelisk.button.store.1.line2=Nivel de XP del jugador
@@ -184,24 +236,64 @@ enderio.gui.xp_obelisk.button.store.all.line1=Almacenar toda
 #                                         en: Store all
 enderio.gui.xp_obelisk.button.store.all.line2=XP del jugador
 #                                         en: player XP
+enderio.gui.xp_obelisk.button.store.empty=
+#                                     en: §4You don't have any XP
 enderio.gui.zombie_generator.fluid.minReq=%s requeridos para la activación.
 #                                     en: %s Required for activation
 enderio.gui.zombie_generator.fuelTank=Tanque de Nutriente
 #                                 en: Nutrient Tank
 enderio.gui.zombie_generator.output=
 #                               en: Generating: %s
-item.itemLocationPrintout.chat.addTarget=
-#                                    en: Added target
-item.itemLocationPrintout.chat.noPaper=
-#                                  en: No Paper in Inventory
-item.itemLocationPrintout.chat.setTarget=
-#                                    en: Target set to
-item.itemLocationPrintout.name=
-#                          en: Location Printout
-item.itemLocationPrintout.tooltip.detailed.line1=
-#                                            en: Created using the Coordinate Selector
-item.itemLocationPrintout.tooltip.detailed.line2=
-#                                            en: Used to add destinations to a Telepad
+enderio.jei.combustion_generator.range.line1=
+#                                        en: Depending on capacitor and generator model
+enderio.jei.combustion_generator.range.line2=
+#                                        en: Better capacitor gives higher output at higher fuel cost.
+enderio.jei.combustion_generator.range.line3=
+#                                        en: Better model gives more output at same fuel cost.
+enderio.jei.combustion_generator.range.line4=
+#                                        en: Some ancient capacitors that can be found in the world can give even better results than shown here.
+enderio.jei.sagmill.outputchance=Probabilidad: {0,choice,0#'<1'|0<{0,number}}%
+#                            en: Chance: {0,choice,0#'<1'|0<{0,number}}%
+enderio.jei.solar_panel.output=
+#                          en: Generating up to
+enderio.jei.solar_panel.range.line1=
+#                               en: Actual power generated depends on
+enderio.jei.solar_panel.range.line2=
+#                               en: the weather and the angle of Sun
+enderio.jei.stirling_generator.notSimple.line1=
+#                                          en: This fuel cannot be used in
+enderio.jei.stirling_generator.notSimple.line2=
+#                                          en: Simple Stirling generator
+enderio.jei.stirling_generator.range.line1=
+#                                      en: Actual power generated depends
+enderio.jei.stirling_generator.range.line2=
+#                                      en: on capacitor and generator model.
+enderio.loot.capacitor.aa=
+#                     en: Hiding %s
+enderio.loot.capacitor.area=
+#                       en: Big %s
+enderio.loot.capacitor.cleancut=
+#                           en: Clean Cut %s
+enderio.loot.capacitor.crushed=
+#                          en: Crushed %s
+enderio.loot.capacitor.fatman=
+#                         en: Atomic %s
+enderio.loot.capacitor.green=
+#                        en: Planting %s
+enderio.loot.capacitor.kaboom=
+#                         en: Explosive %s
+enderio.loot.capacitor.mobby=
+#                        en: Villainous %s
+enderio.loot.capacitor.red=
+#                      en: Hot %s
+enderio.loot.capacitor.smelting=
+#                           en: Smelting %s
+enderio.loot.capacitor.tight=
+#                        en: Tight %s
+enderio.loot.capacitor.wet=
+#                      en: Cooking %s
+enderio.status.telepad.unformed=
+#                           en: §4Telepad must be a 3x3 structure
 tile.block_alloy_smelter.name=Fundición de Aleaciones
 #                         en: Alloy Smelter
 tile.block_alloy_smelter.tooltip.detailed.line1=Se usa para crear aleaciones EnderIO o como horno eléctrico común.
@@ -262,14 +354,28 @@ tile.block_dialing_device.tooltip.detailed.line1=
 #                                            en: Place near a Telepad
 tile.block_dialing_device.tooltip.detailed.line2=
 #                                            en: Stores and sets destinations.
+tile.block_electric_light.electric.inverted.name=
+#                                            en: Electric Light (Inverted)
+tile.block_electric_light.electric.name=
+#                                   en: Electric Light
+tile.block_electric_light.inverted.name=Lámpara (Invertida)
+#                                   en: Light (Inverted)
+tile.block_electric_light.name=Lámpara
+#                          en: Light
+tile.block_electric_light.wireless.inverted.name=
+#                                            en: Wireless Light (Inverted)
+tile.block_electric_light.wireless.name=
+#                                   en: Wireless Light
 tile.block_enchanter.name=Encantador
 #                     en: Enchanter
 tile.block_enchanter.tooltip.detailed.line1=Usa XP para combinar objetos, y un Libro y pluma para crear libros encantados.
 #                                       en: Uses XP to combine items
 tile.block_enchanter.tooltip.detailed.line2=
-#                                       en: and a book and quill to
+#                                       en: and a §6book and quill§r to
 tile.block_enchanter.tooltip.detailed.line3=
-#                                       en: created enchanted books
+#                                       en: create enchanted books
+tile.block_enhanced_combustion_generator.name=
+#                                         en: Enhanced Combustion Generator
 tile.block_experience_obelisk.name=Obelisco de Experiencia
 #                              en: Experience Obelisk
 tile.block_experience_obelisk.tooltip.detailed.line1=Almacena experiencia.
@@ -358,6 +464,16 @@ tile.block_sag_mill.tooltip.detailed.line5=
 #                                      en: speed and energy storage
 tile.block_sag_mill.tooltipPrefix=Contiene
 #                             en: Contains
+tile.block_simple_alloy_smelter.name=
+#                                en: Simple Alloy Smelter
+tile.block_simple_alloy_smelter.tooltip.detailed.line1=Se usa para crear aleaciones EnderIO o como horno eléctrico común.
+#                                                  en: Used to create EnderIO alloys
+tile.block_simple_sag_mill.name=
+#                           en: Simple SAG Mill
+tile.block_simple_sag_mill.tooltip.detailed.line1=Muele menas y otros objetos.
+#                                             en: Grinds ore and other items
+tile.block_simple_stirling_generator.name=
+#                                     en: Simple Stirling Generator
 tile.block_slice_and_splice.name=Rebanayempalma
 #                            en: Slice'N'Splice
 tile.block_slice_and_splice.tooltip.detailed.line1=Rebana cabezas y las empalma en todo tipo de cosas útiles.
@@ -368,6 +484,8 @@ tile.block_solar_panel.advanced.name=Célula Fotovoltaica Avanzada
 #                                en: Advanced Photovoltaic Cell
 tile.block_solar_panel.name=Célula Fotovoltaica
 #                       en: Photovoltaic Cell
+tile.block_solar_panel.simple.name=
+#                              en: Simple Photovoltaic Cell
 tile.block_solar_panel.tooltip.common.line1=¡Energía Solar!
 #                                       en: Solar Power!
 tile.block_solar_panel.tooltip.detailed.line1=Produce energía durante las horas de luz
@@ -450,6 +568,10 @@ tile.block_weather_obelisk.tooltip.detailed.line2=Requiere mucha energía y un o
 #                                             en: Requires a lot of power and
 tile.block_weather_obelisk.tooltip.detailed.line3=
 #                                             en: a catalyst item
+tile.block_wired_charger.name=
+#                         en: Wired Charger
+tile.block_wired_charger.tooltip.detailed.line1=
+#                                           en: Charges items with µI
 tile.block_wireless_charger.name=Cargador Inalámbrico
 #                            en: Wireless Charger
 tile.block_wireless_charger.tooltip.detailed.line1=Carga los objetos recargables de los inventarios de los jugadores cercanos.
