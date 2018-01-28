@@ -21,4 +21,4 @@ modifier.enderport.name=Vanishing
 modifier.enderport.desc=§oOut of my way!§r\nChance to teleport enemies away.
 
 modifier.enderpickup.name=Direct
-modifier.enderpickup.desc=§oIt's mine, all mine!§r\nChance to teleport mined things directly into your inventory.
+modifier.enderpickup.desc=§oIt's mine, all mine!§r\nTeleports mined things directly into your inventory.

@@ -35,7 +35,7 @@ material.vibrant_alloy.name=Вибрирующий сплав
 material.vibrant_alloy.prefix=
 #                         en: Vibrant %s
 modifier.enderpickup.desc=
-#                     en: §oIt's mine, all mine!§r\nChance to teleport mined things directly into your inventory.
+#                     en: §oIt's mine, all mine!§r\nTeleports mined things directly into your inventory.
 modifier.enderpickup.name=
 #                     en: Direct
 modifier.enderport.desc=
