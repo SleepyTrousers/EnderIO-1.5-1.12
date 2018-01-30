@@ -172,14 +172,14 @@ public class DarkSteelController {
       if (costedDistance > 1) { // Elytra flight will limit fall distance to 1.0F in normal flight
         int energyCost = costedDistance * Config.darkSteelFallDistanceCost;
         int totalEnergy = getPlayerEnergy(player, EntityEquipmentSlot.FEET);
-        if (totalEnergy > 0 && totalEnergy >= energyCost) {
+        if (totalEnergy >= energyCost) {
           usePlayerEnergy(player, EntityEquipmentSlot.FEET, energyCost);
           player.fallDistance -= costedDistance;
         }
       }
     }
 
-    if (JumpUpgrade.isEquipped(player) && isStepAssistActive(player)) {
+    if (!player.isSneaking() && JumpUpgrade.isEquipped(player) && isStepAssistActive(player)) {
       player.stepHeight = 1.0023F;
     } else if (player.stepHeight == 1.0023F) {
       player.stepHeight = 0.6F;
