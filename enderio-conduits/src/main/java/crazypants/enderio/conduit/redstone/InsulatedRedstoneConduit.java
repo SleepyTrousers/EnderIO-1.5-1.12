@@ -650,7 +650,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public ConnectionMode getConnectionMode(@Nonnull EnumFacing dir) {
     ConnectionMode res = conectionModes.get(dir);
     if (res == null) {
-      return ConnectionMode.NOT_SET;
+      return ConnectionMode.IN_OUT;
     }
     return res;
   }

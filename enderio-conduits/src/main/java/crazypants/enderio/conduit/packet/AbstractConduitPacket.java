@@ -47,11 +47,12 @@ public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBu
     uuid = new UUID(buf.readLong(), buf.readLong());
   }
 
+  @SuppressWarnings("unchecked")
   public T getConduit(MessageContext ctx) {
     World world = getWorld(ctx);
     TileEntity tileEntity = getTileEntity(world);
     if (tileEntity instanceof IConduitBundle) {
-      ((IConduitBundle) tileEntity).getConduit(getConType());
+      return (T) ((IConduitBundle) tileEntity).getConduit(getConType());
     }
     return null;
   }
