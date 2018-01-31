@@ -18,12 +18,54 @@ enderio.block_solar_panel.tooltip.maxoutput=
 #                                       en: Max Output: %s
 enderio.chat.telepad.noFluid=
 #                        en: Not enough %s to teleport!
+enderio.chat.travel_accessable.error.harvest=
+#                                        en: Only §4%s §fmay harvest this block.
 enderio.chat.travel_accessable.error.private=
-#                                        en: Only %s may change this block's settings.
-enderio.chat.vat.dump.active=导出失败，不能在酿液桶工作时导出。
+#                                        en: Only §4%s §fmay change this block's settings.
+enderio.chat.vat.dump.active=
 #                        en: Dumping failed, cannot put liquids into the output tank while the Vat is working
-enderio.chat.vat.dump.fail=导出失败，输出槽非空
+enderio.chat.vat.dump.fail=
 #                      en: Dumping failed, output tank is not empty
+enderio.config.capacitor=
+#                    en: Capacitor Settings
+enderio.config.client=
+#                 en: Client Settings
+enderio.config.combustiongenerator=
+#                              en: Combustion Generator Settings
+enderio.config.farm.tooltip="公社万岁!"
+#                       en: "The commune is for life!"
+enderio.config.farm=种植设置
+#               en: Farm Settings
+enderio.config.killerjoe=
+#                    en: Killer Joe Settings
+enderio.config.solar=
+#                en: Solar Panel Settings
+enderio.config.soulbinder=
+#                     en: Soulbinder Settings
+enderio.config.spawner.tooltip=我已经想不出什么有趣的提示文本了.
+#                          en: I ran out of witty tooltips.
+enderio.config.spawner=电动刷怪笼设置
+#                  en: Powered Spawner Settings
+enderio.config.telepad=
+#                  en: TelePad Settings
+enderio.config.vacuum=
+#                 en: Vacuum Chest/XP Vacuum Settings
+enderio.config.vat=
+#              en: Vat Settings
+enderio.config.zombiegenerator=
+#                          en: Zombie Generator Settings
+enderio.darksteel.upgrade.solar_1.name=太阳能 I
+#                                  en: Solar I
+enderio.darksteel.upgrade.solar_1.tooltip.detailed.line1=
+#                                                    en: Generates power from the sun.
+enderio.darksteel.upgrade.solar_2.name=太阳能 II
+#                                  en: Solar II
+enderio.darksteel.upgrade.solar_2.tooltip.detailed.line1=
+#                                                    en: Generates power from the sun.
+enderio.darksteel.upgrade.solar_3.name=
+#                                  en: Solar III
+enderio.darksteel.upgrade.solar_3.tooltip.detailed.line1=
+#                                                    en: Generates power from the sun.
 enderio.gui.alloy.mode.all=全部烧炼
 #                      en: All Smelting
 enderio.gui.alloy.mode.alloy=仅限合金
@@ -34,6 +76,8 @@ enderio.gui.alloy.mode.heading=熔炉模式
 #                          en: Furnace Mode
 enderio.gui.buffer.in=最大输入:
 #                 en: Max In:
+enderio.gui.buffer.maxio=
+#                    en: In/Out Max: %d
 enderio.gui.buffer.out=最大输出:
 #                  en: Max Out:
 enderio.gui.combustion_generator.coolantTank.empty=冷却剂
@@ -52,22 +96,26 @@ enderio.gui.killerJoe.fluid.minReq=激活需要 %s
 #                              en: %s Required for activation
 enderio.gui.killerJoe.fuelTank=营养液槽
 #                          en: Nutrient Tank
+enderio.gui.obelisk.no_vials=
+#                        en: Need Soul Vials!
 enderio.gui.powered_spawner.capture=收获
 #                               en: Capture
 enderio.gui.powered_spawner.spawn=生成
 #                             en: Spawn
 enderio.gui.ranged.hideRange=隐藏范围
 #                        en: Hide Range
-enderio.gui.ranged.range=范围：%s
+enderio.gui.ranged.range=
 #                    en: Range: %s
 enderio.gui.ranged.showRange=显示范围
 #                        en: Show Range
+enderio.gui.soul_binder.useplayerxp=
+#                               en: Use Player XP
 enderio.gui.stirling_generator.burnRate=
 #                                   en: Burn Rate: %s%%
 enderio.gui.stirling_generator.output=
 #                                 en: Generating: %s
-enderio.gui.stirling_generator.remaining=残余 {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
-#                                    en: Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
+enderio.gui.stirling_generator.remaining=
+#                                    en: Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} µI
 enderio.gui.stirling_generator.upgrades={0} 提供 {2}{1,number,#.#}x{3} 的效率
 #                                   en: {0} gives {2}{1,number,#.#}x{3} efficiency
 enderio.gui.stirling_generator.upgradeslot=升级栏
@@ -166,12 +214,16 @@ enderio.gui.xp_obelisk.button.retrieve.1.line2=玩家XP级数
 #                                          en: player XP level
 enderio.gui.xp_obelisk.button.retrieve.10.line1=取出10级
 #                                           en: Retrieve 10
-enderio.gui.xp_obelisk.button.retrieve.10.line2=玩家XP级数
+enderio.gui.xp_obelisk.button.retrieve.10.line2=
 #                                           en: player XP levels
 enderio.gui.xp_obelisk.button.retrieve.all.line1=取出全部
 #                                            en: Retrieve all
-enderio.gui.xp_obelisk.button.retrieve.all.line2=玩家XP级数
+enderio.gui.xp_obelisk.button.retrieve.all.line2=
 #                                            en: player XP levels
+enderio.gui.xp_obelisk.button.retrieve.all.line3=
+#                                            en: §aGets you to level %d
+enderio.gui.xp_obelisk.button.retrieve.empty=
+#                                        en: §4XP Obelisk is empty
 enderio.gui.xp_obelisk.button.store.1.line1=储存1级
 #                                       en: Store 1
 enderio.gui.xp_obelisk.button.store.1.line2=玩家XP
@@ -184,24 +236,64 @@ enderio.gui.xp_obelisk.button.store.all.line1=储存玩家
 #                                         en: Store all
 enderio.gui.xp_obelisk.button.store.all.line2=全部XP
 #                                         en: player XP
+enderio.gui.xp_obelisk.button.store.empty=
+#                                     en: §4You don't have any XP
 enderio.gui.zombie_generator.fluid.minReq=激活需要 %s
 #                                     en: %s Required for activation
 enderio.gui.zombie_generator.fuelTank=营养液槽
 #                                 en: Nutrient Tank
 enderio.gui.zombie_generator.output=
 #                               en: Generating: %s
-item.itemLocationPrintout.chat.addTarget=
-#                                    en: Added target
-item.itemLocationPrintout.chat.noPaper=
-#                                  en: No Paper in Inventory
-item.itemLocationPrintout.chat.setTarget=
-#                                    en: Target set to
-item.itemLocationPrintout.name=坐标记录仪
-#                          en: Location Printout
-item.itemLocationPrintout.tooltip.detailed.line1=使用坐标记录仪制作
-#                                            en: Created using the Coordinate Selector
-item.itemLocationPrintout.tooltip.detailed.line2=可为传送台添加坐标
-#                                            en: Used to add destinations to a Telepad
+enderio.jei.combustion_generator.range.line1=
+#                                        en: Depending on capacitor and generator model
+enderio.jei.combustion_generator.range.line2=
+#                                        en: Better capacitor gives higher output at higher fuel cost.
+enderio.jei.combustion_generator.range.line3=
+#                                        en: Better model gives more output at same fuel cost.
+enderio.jei.combustion_generator.range.line4=
+#                                        en: Some ancient capacitors that can be found in the world can give even better results than shown here.
+enderio.jei.sagmill.outputchance=概率: {0,choice,0#'<1'|0<{0,number}}%
+#                            en: Chance: {0,choice,0#'<1'|0<{0,number}}%
+enderio.jei.solar_panel.output=
+#                          en: Generating up to
+enderio.jei.solar_panel.range.line1=
+#                               en: Actual power generated depends on
+enderio.jei.solar_panel.range.line2=
+#                               en: the weather and the angle of Sun
+enderio.jei.stirling_generator.notSimple.line1=
+#                                          en: This fuel cannot be used in
+enderio.jei.stirling_generator.notSimple.line2=
+#                                          en: Simple Stirling generator
+enderio.jei.stirling_generator.range.line1=
+#                                      en: Actual power generated depends
+enderio.jei.stirling_generator.range.line2=
+#                                      en: on capacitor and generator model.
+enderio.loot.capacitor.aa=
+#                     en: Hiding %s
+enderio.loot.capacitor.area=
+#                       en: Big %s
+enderio.loot.capacitor.cleancut=
+#                           en: Clean Cut %s
+enderio.loot.capacitor.crushed=
+#                          en: Crushed %s
+enderio.loot.capacitor.fatman=
+#                         en: Atomic %s
+enderio.loot.capacitor.green=
+#                        en: Planting %s
+enderio.loot.capacitor.kaboom=
+#                         en: Explosive %s
+enderio.loot.capacitor.mobby=
+#                        en: Villainous %s
+enderio.loot.capacitor.red=
+#                      en: Hot %s
+enderio.loot.capacitor.smelting=
+#                           en: Smelting %s
+enderio.loot.capacitor.tight=
+#                        en: Tight %s
+enderio.loot.capacitor.wet=
+#                      en: Cooking %s
+enderio.status.telepad.unformed=
+#                           en: §4Telepad must be a 3x3 structure
 tile.block_alloy_smelter.name=合金炉
 #                         en: Alloy Smelter
 tile.block_alloy_smelter.tooltip.detailed.line1=用于生产末影接口里的
@@ -228,7 +320,7 @@ tile.block_aversion_obelisk.name=生物排除方尖碑
 #                            en: Aversion Obelisk
 tile.block_aversion_obelisk.tooltip.detailed.line1=在它的工作范围
 #                                              en: Prevents mobs from spawning
-tile.block_aversion_obelisk.tooltip.detailed.line2=的生物重定向
+tile.block_aversion_obelisk.tooltip.detailed.line2=
 #                                              en: within its area of effect
 tile.block_buffer.creative.name=创造缓存器
 #                           en: Creative Buffer
@@ -262,14 +354,28 @@ tile.block_dialing_device.tooltip.detailed.line1=
 #                                            en: Place near a Telepad
 tile.block_dialing_device.tooltip.detailed.line2=
 #                                            en: Stores and sets destinations.
+tile.block_electric_light.electric.inverted.name=
+#                                            en: Electric Light (Inverted)
+tile.block_electric_light.electric.name=
+#                                   en: Electric Light
+tile.block_electric_light.inverted.name=灯(反相)
+#                                   en: Light (Inverted)
+tile.block_electric_light.name=灯
+#                          en: Light
+tile.block_electric_light.wireless.inverted.name=
+#                                            en: Wireless Light (Inverted)
+tile.block_electric_light.wireless.name=
+#                                   en: Wireless Light
 tile.block_enchanter.name=附魔器
 #                     en: Enchanter
 tile.block_enchanter.tooltip.detailed.line1=使用XP让物品与
 #                                       en: Uses XP to combine items
-tile.block_enchanter.tooltip.detailed.line2=来制作附魔书
-#                                       en: and a book and quill to
+tile.block_enchanter.tooltip.detailed.line2=
+#                                       en: and a §6book and quill§r to
 tile.block_enchanter.tooltip.detailed.line3=
-#                                       en: created enchanted books
+#                                       en: create enchanted books
+tile.block_enhanced_combustion_generator.name=
+#                                         en: Enhanced Combustion Generator
 tile.block_experience_obelisk.name=经验交换方尖碑
 #                              en: Experience Obelisk
 tile.block_experience_obelisk.tooltip.detailed.line1=用于储存经验
@@ -294,11 +400,11 @@ tile.block_farm_station.tooltip.detailed.line6=使用电容器升级可
 #                                          en: Upgrade with capacitors to increase
 tile.block_farm_station.tooltip.detailed.line7=增加范围与能量消耗
 #                                          en: range, upgrade also increases power use
-tile.block_inhibitor_obelisk.name=传送抑制方尖碑
+tile.block_inhibitor_obelisk.name=
 #                             en: Inhibitor Obelisk
-tile.block_inhibitor_obelisk.tooltip.detailed.line1=阻止工作范围
+tile.block_inhibitor_obelisk.tooltip.detailed.line1=
 #                                               en: Prevents teleporting within
-tile.block_inhibitor_obelisk.tooltip.detailed.line2=内的一切传送
+tile.block_inhibitor_obelisk.tooltip.detailed.line2=
 #                                               en: its area of effect
 tile.block_killer_joe.name=杀手乔
 #                      en: Killer Joe
@@ -324,11 +430,11 @@ tile.block_powered_spawner.tooltip.detailed.line3=使用电容器升级可
 #                                             en: Upgrade with capacitors to increase
 tile.block_powered_spawner.tooltip.detailed.line4=增加速度与能量存储
 #                                             en: speed and energy storage
-tile.block_relocator_obelisk.name=重定向方尖碑
+tile.block_relocator_obelisk.name=
 #                             en: Relocator Obelisk
-tile.block_relocator_obelisk.tooltip.detailed.line1=将工作范围内
+tile.block_relocator_obelisk.tooltip.detailed.line1=
 #                                               en: Relocates mobs that spawn
-tile.block_relocator_obelisk.tooltip.detailed.line2=的生物重定向
+tile.block_relocator_obelisk.tooltip.detailed.line2=
 #                                               en: within its area of effect
 tile.block_reservoir.name=蓄水库
 #                     en: Reservoir
@@ -358,6 +464,16 @@ tile.block_sag_mill.tooltip.detailed.line5=增加速度与能量存储
 #                                      en: speed and energy storage
 tile.block_sag_mill.tooltipPrefix=包含
 #                             en: Contains
+tile.block_simple_alloy_smelter.name=
+#                                en: Simple Alloy Smelter
+tile.block_simple_alloy_smelter.tooltip.detailed.line1=用于生产末影接口里的
+#                                                  en: Used to create EnderIO alloys
+tile.block_simple_sag_mill.name=
+#                           en: Simple SAG Mill
+tile.block_simple_sag_mill.tooltip.detailed.line1=研磨矿物与其它物品
+#                                             en: Grinds ore and other items
+tile.block_simple_stirling_generator.name=
+#                                     en: Simple Stirling Generator
 tile.block_slice_and_splice.name=头颅装配机
 #                            en: Slice'N'Splice
 tile.block_slice_and_splice.tooltip.detailed.line1=切开头颅并装入
@@ -368,6 +484,8 @@ tile.block_solar_panel.advanced.name=高级光伏板
 #                                en: Advanced Photovoltaic Cell
 tile.block_solar_panel.name=光伏板
 #                       en: Photovoltaic Cell
+tile.block_solar_panel.simple.name=
+#                              en: Simple Photovoltaic Cell
 tile.block_solar_panel.tooltip.common.line1=太阳能!
 #                                       en: Solar Power!
 tile.block_solar_panel.tooltip.detailed.line1=白天产生能量
@@ -376,7 +494,7 @@ tile.block_solar_panel.tooltip.detailed.line2=顶部必须
 #                                         en: Must have a clear line of sight to
 tile.block_solar_panel.tooltip.detailed.line3=直面天空
 #                                         en: the sky
-tile.block_solar_panel.vibrant.name=脉冲光伏板
+tile.block_solar_panel.vibrant.name=
 #                               en: Vibrant Photovoltaic Cell
 tile.block_soul_binder.name=灵魂绑定器
 #                       en: Soul Binder
@@ -450,6 +568,10 @@ tile.block_weather_obelisk.tooltip.detailed.line2=需要大量能量
 #                                             en: Requires a lot of power and
 tile.block_weather_obelisk.tooltip.detailed.line3=和催化物品
 #                                             en: a catalyst item
+tile.block_wired_charger.name=
+#                         en: Wired Charger
+tile.block_wired_charger.tooltip.detailed.line1=
+#                                           en: Charges items with µI
 tile.block_wireless_charger.name=无线充能器
 #                            en: Wireless Charger
 tile.block_wireless_charger.tooltip.detailed.line1=给附近玩家物品

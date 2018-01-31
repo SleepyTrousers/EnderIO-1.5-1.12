@@ -107,6 +107,7 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
     PaintRegistry.registerModel("door_top", new ResourceLocation("minecraft", "block/iron_door_top"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("door_bottom_rh", new ResourceLocation("minecraft", "block/iron_door_bottom_rh"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("door_top_rh", new ResourceLocation("minecraft", "block/iron_door_top_rh"), PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel("door_inventory", new ResourceLocation("minecraft", "item/iron_door"), PaintRegistry.PaintMode.ALL_TEXTURES);
     return this;
   }
 
@@ -304,8 +305,8 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
     IBlockState paintSource = getPaintSource(block, stack);
     IBlockState stdOverlay = ModObject.block_machine_base.getBlockNN().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
 
-    IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "door_bottom", paintSource, null);
-    IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "door_bottom", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION3);
+    IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "door_inventory", paintSource, null);
+    IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "door_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION3);
     List<IBakedModel> list = new ArrayList<IBakedModel>();
     list.add(model1);
     list.add(model2);

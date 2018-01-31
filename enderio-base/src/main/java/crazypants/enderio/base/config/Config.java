@@ -20,6 +20,7 @@ import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
@@ -451,6 +452,12 @@ public final class Config {
   @SubscribeEvent
   public void onPlayerLoggon(PlayerLoggedInEvent evt) {
     PacketHandler.INSTANCE.sendTo(new PacketConfigSync(), (EntityPlayerMP) evt.player);
+    if (EnderIO.VERSION.contains("-") || EnderIO.VERSION.contains("@")) { // e.g. 1.2.3-nightly
+      evt.player.sendMessage(new TextComponentString("§4This is an §0Ender IO §4development build!"));
+      evt.player.sendMessage(new TextComponentString("§4It may trash your world at any time!"));
+      evt.player.sendMessage(new TextComponentString("§4Do not use it for anything but testing!"));
+      evt.player.sendMessage(new TextComponentString("You have been warned..."));
+    }
   }
 
   public static void processConfig(@SuppressWarnings("hiding") Configuration config) {

@@ -39,7 +39,10 @@ import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.teleport.TravelController;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDoor;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -53,6 +56,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -95,6 +99,11 @@ public class ClientProxy extends CommonProxy {
     EnderIOGlassesStateMapper.create();
     ColdFireStateMapper.create();
     LeverStateMapper.create();
+    final StateMap doorMapper = (new StateMap.Builder()).ignore(new IProperty[] { BlockDoor.POWERED }).build();
+    ModelLoader.setCustomStateMapper(ModObject.blockDarkSteelDoor.getBlockNN(), doorMapper);
+    ModelLoader.setCustomStateMapper(ModObject.blockPaintedDarkSteelDoor.getBlockNN(), doorMapper);
+    ModelLoader.setCustomStateMapper(ModObject.blockPaintedIronDoor.getBlockNN(), doorMapper);
+    ModelLoader.setCustomStateMapper(ModObject.blockPaintedWoodenDoor.getBlockNN(), doorMapper);
 
     // Items of blocks that use smart rendering
     SmartModelAttacher.registerBlockItemModels();
