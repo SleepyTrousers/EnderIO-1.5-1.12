@@ -1,15 +1,27 @@
 package crazypants.enderio.base.item.darksteel.upgrade.jump;
 
+import java.util.Random;
+
 import javax.annotation.Nonnull;
+
+import com.enderio.core.client.ClientUtil;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.sound.SoundHelper;
+import crazypants.enderio.base.sound.SoundRegistry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class JumpUpgrade extends AbstractUpgrade {
 
@@ -57,6 +69,21 @@ public class JumpUpgrade extends AbstractUpgrade {
 
   public short getLevel() {
     return level;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void doMultiplayerSFX(@Nonnull EntityPlayer player) {
+    SoundHelper.playSound(player.world, player, SoundRegistry.JUMP, 1.0f, player.world.rand.nextFloat() * 0.5f + 0.75f);
+
+    Random rand = player.world.rand;
+    for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
+      Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.REDSTONE.getParticleID(),
+          player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.getYOffset(), player.posZ + (rand.nextDouble() * 0.5 - 0.25), 1, 1, 1);
+      ClientUtil.setParticleVelocity(fx, player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),
+          player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
+      Minecraft.getMinecraft().effectRenderer.addEffect(NullHelper.notnullM(fx, "spawnEffectParticle() failed unexptedly"));
+    }
   }
 
 }

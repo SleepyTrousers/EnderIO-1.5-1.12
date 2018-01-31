@@ -9,6 +9,7 @@ import crazypants.enderio.base.config.PacketConfigSync;
 import crazypants.enderio.base.config.PacketConfigSyncNew;
 import crazypants.enderio.base.config.PacketConfigSyncNew.PacketConfigSyncNewHandler;
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelPowerPacket;
+import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFXPacket;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbeMode;
@@ -80,6 +81,8 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketSpawnParticles.Handler.class, PacketSpawnParticles.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketPowerStorage.Handler.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketPassword.Handler.class, PacketPassword.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketDarkSteelSFXPacket.ServerHandler.class, PacketDarkSteelSFXPacket.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketDarkSteelSFXPacket.ClientHandler.class, PacketDarkSteelSFXPacket.class, PacketHandler.nextID(), Side.CLIENT);
 
   }
 

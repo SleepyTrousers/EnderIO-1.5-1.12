@@ -3,12 +3,10 @@ package crazypants.enderio.base.handler.darksteel;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.client.ClientUtil;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
@@ -29,11 +27,8 @@ import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpg
 import crazypants.enderio.base.item.darksteel.upgrade.speed.SpeedController;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerHandlerUtil;
-import crazypants.enderio.base.sound.SoundHelper;
-import crazypants.enderio.base.sound.SoundRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -41,7 +36,6 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MovementInput;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -310,18 +304,13 @@ public class DarkSteelController {
       jumpCount++;
       player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * (jumpCount - autoJumpOffset);
       ticksSinceLastJump = 0;
-      usePlayerEnergy(player, EntityEquipmentSlot.FEET, requiredPower);
-      SoundHelper.playSound(player.world, player, SoundRegistry.JUMP, 1.0f, player.world.rand.nextFloat() * 0.5f + 0.75f);
 
-      Random rand = player.world.rand;
-      for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
-        Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.REDSTONE.getParticleID(),
-            player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.getYOffset(), player.posZ + (rand.nextDouble() * 0.5 - 0.25), 1, 1, 1);
-        ClientUtil.setParticleVelocity(fx, player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),
-            player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
-        Minecraft.getMinecraft().effectRenderer.addEffect(NullHelper.notnullM(fx, "spawnEffectParticle() failed unexptedly"));
-      }
+      usePlayerEnergy(player, EntityEquipmentSlot.FEET, requiredPower);
       PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, EntityEquipmentSlot.FEET));
+
+      jumpUpgrade.doMultiplayerSFX(player);
+      PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelSFXPacket(jumpUpgrade, player));
+
       return true;
     }
     return false;

@@ -2,11 +2,14 @@ package crazypants.enderio.api.upgrades;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFXPacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * This class is an upgrade that can be applied to Dark Steel items.
@@ -94,6 +97,17 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
    *          The player.
    */
   default void onPlayerTick(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+  }
+
+  /**
+   * Called via server when another player activates the SFX for this upgrade. That activation has to send a {@link PacketDarkSteelSFXPacket} to the server if
+   * it wants this to fire on other clients, that is not happening auto-magically.
+   * 
+   * @param otherPlayer
+   *          The player that needs SFX.
+   */
+  @SideOnly(Side.CLIENT)
+  default void doMultiplayerSFX(@Nonnull EntityPlayer otherPlayer) {
   }
 
 }
