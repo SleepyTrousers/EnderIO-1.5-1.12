@@ -1,5 +1,5 @@
 repositories {
-	ivy { name "com.latmod.mods"; artifactPattern "http://mods.latmod.com/[module]/[revision]/[module]-1.1x-[revision](-[classifier]).[ext]" }
+	ivy { name "com.latmod.mods"; artifactPattern "http://mods.latmod.com/[module]/[revision]/[module]-[revision](-[classifier]).[ext]" }
 }
 
 dependencies {
