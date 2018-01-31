@@ -183,13 +183,13 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     for (EnumFacing dir : con.getExternalConnections()) {
       BlockPos bc2 = bc1.offset(dir);
       if (world.isBlockLoaded(bc2)) {
-        world.notifyNeighborsOfStateChange(bc2, ConduitRegistry.getConduitModObjectNN().getBlock(), false);
+        world.neighborChanged(bc2, ConduitRegistry.getConduitModObjectNN().getBlock(), bc1);
         IBlockState bs = world.getBlockState(bc2);
         if (bs.isBlockNormalCube()) {
           for (EnumFacing dir2 : EnumFacing.VALUES) {
             BlockPos bc3 = bc2.offset(dir2);
             if (!bc3.equals(bc1) && world.isBlockLoaded(bc3)) {
-              world.notifyNeighborsOfStateChange(bc3, ConduitRegistry.getConduitModObjectNN().getBlock(), false);
+              world.neighborChanged(bc3, ConduitRegistry.getConduitModObjectNN().getBlock(), bc1);
             }
           }
         }
