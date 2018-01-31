@@ -1,7 +1,23 @@
 package crazypants.enderio.conduit.redstone;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.Validate;
+
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
+import com.enderio.core.common.util.NNList.NNIterator;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.redstone.signals.SignalSource;
@@ -13,13 +29,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
 
@@ -166,9 +176,6 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   private void notifyConduitNeighbours(@Nonnull IRedstoneConduit con) {
-    if (con.getBundle() == null) {
-      return;
-    }
     TileEntity te = con.getBundle().getEntity();
 
     World world = te.getWorld();
@@ -180,21 +187,29 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     }
 
     // Done manually to avoid orphaning chunks
-    for (EnumFacing dir : con.getExternalConnections()) {
-      BlockPos bc2 = bc1.offset(dir);
-      if (world.isBlockLoaded(bc2)) {
-        world.neighborChanged(bc2, ConduitRegistry.getConduitModObjectNN().getBlock(), bc1);
-        IBlockState bs = world.getBlockState(bc2);
-        if (bs.isBlockNormalCube()) {
-          for (EnumFacing dir2 : EnumFacing.VALUES) {
-            BlockPos bc3 = bc2.offset(dir2);
-            if (!bc3.equals(bc1) && world.isBlockLoaded(bc3)) {
-              world.neighborChanged(bc3, ConduitRegistry.getConduitModObjectNN().getBlock(), bc1);
+    EnumSet<EnumFacing> cons = EnumSet.copyOf(con.getExternalConnections());
+    if (!neighborNotifyEvent(world, bc1, null, cons)) {
+      for (EnumFacing dir : con.getExternalConnections()) {
+        BlockPos bc2 = bc1.offset(NullHelper.notnull(dir, "Conduit external connections contains null"));
+        if (world.isBlockLoaded(bc2)) {
+          world.neighborChanged(bc2, ConduitRegistry.getConduitModObjectNN().getBlockNN(), bc1);
+          IBlockState bs = world.getBlockState(bc2);
+          if (bs.isBlockNormalCube() && !neighborNotifyEvent(world, bc2, bs, EnumSet.allOf(EnumFacing.class))) {
+            for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+              EnumFacing dir2 = itr.next();
+              BlockPos bc3 = bc2.offset(dir2);
+              if (!bc3.equals(bc1) && world.isBlockLoaded(bc3)) {
+                world.neighborChanged(bc3, ConduitRegistry.getConduitModObjectNN().getBlockNN(), bc1);
+              }
             }
           }
         }
       }
     }
+  }
+  
+  private boolean neighborNotifyEvent(World world, @Nonnull BlockPos pos, @Nullable IBlockState state, EnumSet<EnumFacing> dirs) {
+    return ForgeEventFactory.onNeighborNotify(world, pos, state == null ? world.getBlockState(pos) : state, dirs, false).isCanceled();
   }
 
   /**
