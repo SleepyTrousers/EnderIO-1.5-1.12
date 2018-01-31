@@ -34,7 +34,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
     }
 
     private EnergyUpgradeHolder(@Nonnull ItemStack stack) {
-      this.energy = getUpgradeNBT(stack).getInteger(EnergyUpgradeManager.KEY_ENERGY);
+      this.energy = getOrCreateUpgradeNBT(stack).getInteger(EnergyUpgradeManager.KEY_ENERGY);
     }
 
     public int getEnergy() {
@@ -67,7 +67,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
     public void writeToItem(@Nonnull ItemStack stack) {
       EnergyUpgrade.this.addToItem(stack);
-      getUpgradeNBT(stack).setInteger(EnergyUpgradeManager.KEY_ENERGY, energy);
+      getOrCreateUpgradeNBT(stack).setInteger(EnergyUpgradeManager.KEY_ENERGY, energy);
     }
 
     public int getCapacity() {

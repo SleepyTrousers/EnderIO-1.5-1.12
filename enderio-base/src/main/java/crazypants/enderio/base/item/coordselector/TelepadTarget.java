@@ -191,7 +191,7 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
   // ----------------------- I/O -------------- :(
 
   public void writeToNBT(@Nonnull ItemStack stack) {
-    writeToNBT(NbtValue.getRoot(stack));
+    writeToNBT(NbtValue.getOrCreateRoot(stack));
     if (!getName().isEmpty()) {
       stack.setStackDisplayName(getName());
     } else {
@@ -207,7 +207,7 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
   }
 
   public static @Nullable TelepadTarget readFromNBT(@Nonnull ItemStack stack) {
-    return readFromNBT(NbtValue.getRoot(stack));
+    return readFromNBT(NbtValue.getReadOnlyRoot(stack));
   }
 
   public static @Nullable TelepadTarget readFromNBT(@Nonnull NBTTagCompound tag) {

@@ -86,7 +86,7 @@ public abstract class TileEntityEio extends TileEntityBase {
   }
 
   public void readFromItemStack(@Nonnull ItemStack stack) {
-    NBTTagCompound tagCompound = NbtValue.getRoot(stack);
+    NBTTagCompound tagCompound = NbtValue.getReadOnlyRoot(stack);
     readCustomNBT(NBTAction.ITEM, tagCompound);
     IBlockState stackPaint = PaintUtil.getSourceBlock(stack);
     if (stackPaint != null) {
@@ -95,7 +95,7 @@ public abstract class TileEntityEio extends TileEntityBase {
   }
 
   public void writeToItemStack(@Nonnull ItemStack stack) {
-    NBTTagCompound tagCompound = NbtValue.getRoot(stack);
+    NBTTagCompound tagCompound = NbtValue.getOrCreateRoot(stack);
     writeCustomNBT(NBTAction.ITEM, tagCompound);
     stack.setStackDisplayName(Lang.MACHINE_CONFIGURED.get(stack.getDisplayName()));
     if (paintSource != null) {
@@ -126,6 +126,7 @@ public abstract class TileEntityEio extends TileEntityBase {
 
   private final static NNList<TileEntity> notTickingTileEntitiesS = new NNList<TileEntity>();
   private final static NNList<TileEntity> notTickingTileEntitiesC = new NNList<TileEntity>();
+
   /**
    * Called on each tick. Do not call super from any subclass, that will disable ticking this TE again.
    */
