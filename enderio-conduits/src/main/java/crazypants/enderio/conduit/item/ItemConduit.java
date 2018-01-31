@@ -13,6 +13,7 @@ import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.capability.ItemTools;
@@ -127,6 +128,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   public ItemConduit(int itemDamage) {
     metaData = itemDamage;
+    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+      EnumFacing dir = itr.next();
+      outputFilterUpgrades.put(dir, ItemStack.EMPTY);
+      inputFilterUpgrades.put(dir, ItemStack.EMPTY);
+      speedUpgrades.put(dir, ItemStack.EMPTY);
+      functionUpgrades.put(dir, ItemStack.EMPTY);
+    }
   }
 
   @Override

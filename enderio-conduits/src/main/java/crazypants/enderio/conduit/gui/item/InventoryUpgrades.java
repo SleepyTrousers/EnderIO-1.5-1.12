@@ -16,7 +16,7 @@ import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_u
 public class InventoryUpgrades implements IItemHandler {
 
   private IItemConduit itemConduit;
-  private EnumFacing dir;
+  private @Nonnull EnumFacing dir;
 
   public InventoryUpgrades(@Nonnull IItemConduit itemConduit, @Nonnull EnumFacing dir) {
     this.itemConduit = itemConduit;
