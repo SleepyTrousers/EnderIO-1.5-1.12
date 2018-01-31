@@ -106,6 +106,7 @@ public class CapacitorHelper {
     case OWNER_TYPE:
       NBTTagCompound subtag = tag.getCompoundTag(key.getOwner().getUnlocalisedName());
       subtag.setFloat(key.getValueType().getName(), value);
+      tag.setTag(key.getOwner().getUnlocalisedName(), subtag);
       break;
     case TYPE:
       tag.setFloat(key.getValueType().getName(), value);
