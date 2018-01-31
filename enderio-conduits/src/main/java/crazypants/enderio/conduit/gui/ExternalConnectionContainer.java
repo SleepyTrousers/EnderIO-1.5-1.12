@@ -65,7 +65,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
       addSlotToContainer(slotInputFilter = new FilterSlot(getItemHandler(), 2, 10, 47));
       addSlotToContainer(slotOutputFilter = new FilterSlot(getItemHandler(), 3, 10, 47));
-      addSlotToContainer(slotSpeedUpgrades = new SlotItemHandler(getItemHandler(), 0, 10, 47) {
+      addSlotToContainer(slotSpeedUpgrades = new SlotItemHandler(getItemHandler(), 0, 28, 47) {
         @Override
         public boolean isItemValid(@Nonnull ItemStack itemStack) {
           return inventory.isItemValidForSlot(0, itemStack);
@@ -76,7 +76,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
           return speedUpgradeSlotLimit;
         }
       });
-      addSlotToContainer(slotFunctionUpgrades = new SlotItemHandler(getItemHandler(), 1, 10, 47) {
+      addSlotToContainer(slotFunctionUpgrades = new SlotItemHandler(getItemHandler(), 1, 10, 65) {
         @Override
         public boolean isItemValid(@Nonnull ItemStack itemStack) {
           return inventory.isItemValidForSlot(1, itemStack);
@@ -156,8 +156,8 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     for (int i = startIndex; i < endIndex; i++) {
       Slot s = getSlot(i);
       if (visible) {
-        s.xPos = getSlot(i).xPos;
-        s.yPos = getSlot(i).yPos;
+        s.xPos = slotLocations.get(s).x;
+        s.yPos = slotLocations.get(s).y;
       } else {
         s.xPos = -3000;
         s.yPos = -3000;

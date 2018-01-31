@@ -289,11 +289,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   public void setSpeedUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade) {
-    if (!upgrade.isEmpty()) {
-      speedUpgrades.put(dir, upgrade);
-    } else {
-      speedUpgrades.remove(dir);
-    }
+    speedUpgrades.put(dir, upgrade);
     setClientStateDirty();
   }
 

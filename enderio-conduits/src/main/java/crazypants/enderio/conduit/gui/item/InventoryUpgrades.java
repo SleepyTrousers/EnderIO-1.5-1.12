@@ -5,6 +5,7 @@ import crazypants.enderio.conduit.item.IItemConduit;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import javax.annotation.Nonnull;
 
@@ -13,7 +14,7 @@ import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_u
 /**
  * The Inventory for Holding Conduit Upgrades
  */
-public class InventoryUpgrades implements IItemHandler {
+public class InventoryUpgrades implements IItemHandlerModifiable {
 
   private IItemConduit itemConduit;
   private @Nonnull EnumFacing dir;
@@ -129,6 +130,11 @@ public class InventoryUpgrades implements IItemHandler {
       return item.getItem() instanceof IItemFilterUpgrade;
     }
     return false;
+  }
+
+  @Override
+  public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+    setInventorySlotContents(slot, stack);
   }
 
 }
