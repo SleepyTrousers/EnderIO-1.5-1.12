@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiExternalConnection {
 
@@ -43,17 +44,16 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
   private final IExternalConnectionContainer container;
 
   public GuiExternalConnection(@Nonnull InventoryPlayer playerInv, @Nonnull IConduitBundle bundle, @Nonnull EnumFacing dir) {
-    super(new ExternalConnectionContainer(playerInv, dir, (TileConduitBundle) bundle.getEntity()), "external_conduit_connection", "item_filter");
+    super(new ExternalConnectionContainer(playerInv, dir, (TileConduitBundle) bundle.getEntity()), "item_filter");
     container = (ExternalConnectionContainer) inventorySlots;
     this.playerInv = playerInv;
     this.bundle = bundle;
     this.dir = dir;
 
-    ySize = 166 + 29;
+    ySize = 194;
     xSize = 206;
 
     container.setInOutSlotsVisible(false, false);
-    container.setInventorySlotsVisible(false);
 
     List<IConduit> cons = new ArrayList<IConduit>(bundle.getConduits());
     Collections.sort(cons, new Comparator<IConduit>() {
@@ -92,6 +92,13 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
       }
     }
   }
+  
+  private @Nullable ITabPanel getActiveTab() {
+    if (activeTab < tabs.size() && activeTab >= 0) {
+      return tabs.get(activeTab);
+    }
+    return null;
+  }
 
   @Override
   public boolean doesGuiPauseGame() {
@@ -112,9 +119,14 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
     x = (x - guiLeft);
     y = (y - guiTop);
 
-    if (activeTab < tabs.size())
+    ITabPanel tab = getActiveTab();
+    if (tab != null)
       tabs.get(activeTab).mouseClicked(x, y, par3);
-
+  }
+  
+  @Override
+  protected @Nonnull ResourceLocation getGuiTexture() {
+    return tabs.get(activeTab).getTexture();
   }
 
   public void setSize(int x, int y) {
@@ -135,9 +147,13 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
 
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
-
-    bindGuiTexture();
-    drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
+    
+    ITabPanel tab = getActiveTab();
+    
+    if (tab != null) {
+      Minecraft.getMinecraft().getTextureManager().bindTexture(tab.getTexture());
+      drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
+    }
 
     startTabs();
     for (int i = 0; i < tabs.size(); i++) {

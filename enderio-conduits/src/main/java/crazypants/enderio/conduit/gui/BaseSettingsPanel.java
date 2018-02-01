@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.gui;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
 import javax.annotation.Nonnull;
 
@@ -17,10 +18,12 @@ import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 
-public class BaseSettingsPanel implements ITabPanel {
+public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   static final int PREV_MODE_B = 327;
   static final int NEXT_MODE_B = 328;
@@ -29,6 +32,7 @@ public class BaseSettingsPanel implements ITabPanel {
   protected final GuiExternalConnection gui;
   protected final IConduit con;
   protected final String typeName;
+  protected final @Nonnull ResourceLocation texture;
 
   protected MultiIconButton leftArrow;
   protected MultiIconButton rightArrow;
@@ -43,11 +47,12 @@ public class BaseSettingsPanel implements ITabPanel {
 
   protected int customTop = 0;
 
-  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IConduit con) {
+  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IConduit con, @Nonnull String texture) {
     this.icon = icon;
     this.typeName = typeName;
     this.gui = gui;
     this.con = con;
+    this.texture = EnderIO.proxy.getGuiTexture(texture);
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     int x = gap * 3 + fr.getStringWidth(modeLabel);
@@ -102,6 +107,12 @@ public class BaseSettingsPanel implements ITabPanel {
   @Nonnull
   public IWidgetIcon getIcon() {
     return icon;
+  }
+  
+  @Override
+  @Nonnull
+  public ResourceLocation getTexture() {
+    return texture;
   }
 
   @Override

@@ -26,7 +26,7 @@ public class PowerSettings extends BaseSettingsPanel {
   private ColorButton colorB;
 
   public PowerSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_POWER, EnderIO.lang.localize("itemPowerConduit.name"), gui, con);
+    super(IconEIO.WRENCH_OVERLAY_POWER, EnderIO.lang.localize("itemPowerConduit.name"), gui, con, "power_settings");
     conduit = (IPowerConduit) con;
 
     int x = 38;

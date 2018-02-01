@@ -65,7 +65,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   private IconButton whiteListB;
 
   public LiquidSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_FLUID, EnderIO.lang.localize("itemLiquidConduit.name"), gui, con);
+    super(IconEIO.WRENCH_OVERLAY_FLUID, EnderIO.lang.localize("itemLiquidConduit.name"), gui, con, "liquid_settings");
 
     conduit = (ILiquidConduit) con;
     if(con instanceof EnderLiquidConduit) {
@@ -84,7 +84,6 @@ public class LiquidSettings extends BaseSettingsPanel {
       whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.fluid.whitelist"));
     } else {
       isEnder = false;
-      gui.getContainer().setInventorySlotsVisible(false);
     }
 
     int x = gap + gui.getFontRenderer().getStringWidth(autoExtractStr) + gap * 2;
@@ -215,13 +214,10 @@ public class LiquidSettings extends BaseSettingsPanel {
     }
 
     if(isFilterVisible()) {
-      gui.getContainer().setInventorySlotsVisible(true);
       addFilterTooltips();
 
       whiteListB.onGuiInit();
       updateWhiteListButton(eConduit.getFilter(gui.getDir(), isInput()));
-    } else {
-      gui.getContainer().setInventorySlotsVisible(false);
     }
 
     ConnectionMode mode = con.getConnectionMode(gui.getDir());
@@ -246,7 +242,6 @@ public class LiquidSettings extends BaseSettingsPanel {
     rsB.detach();
     colorB.detach();
     if(isEnder) {
-      gui.getContainer().setInventorySlotsVisible(false);
       if(filterToolTips != null) {
         for (GuiToolTip tt : filterToolTips) {
           if(tt != null) {
@@ -275,10 +270,6 @@ public class LiquidSettings extends BaseSettingsPanel {
         gui.getFontRenderer().drawString(inOutStr, x, y, ColorUtil.getRGB(Color.DARK_GRAY));
       }
 
-      GL11.glColor3f(1, 1, 1);
-      gui.bindGuiTexture(1);
-      gui.drawTexturedModalRect(gui.getGuiLeft(), gui.getGuiTop() + 55, 0, 55, gui.getXSize(), 145);
-
       FontRenderer fr = gui.getFontRenderer();
       int sw = fr.getStringWidth(filterStr);
       int x = (gui.width / 2) - sw / 2;
@@ -289,7 +280,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       y = gui.getGuiTop() + filterY;
       GL11.glColor3f(1, 1, 1);
       gui.bindGuiTexture();
-      gui.drawTexturedModalRect(x, y, 24, 238, 90, 18);
+      gui.drawTexturedModalRect(x, y, 0, 238, 90, 18);
 
       FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput);
       if(filter != null && !filter.isEmpty()) {

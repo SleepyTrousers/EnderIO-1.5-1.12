@@ -12,12 +12,14 @@ import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 
 public class GeneralTab implements ITabPanel {
 
@@ -159,4 +161,9 @@ public class GeneralTab implements ITabPanel {
     parent.doDefaultKeyTyped(par1, par2);
   }
 
+  @Override
+  @Nonnull
+  public ResourceLocation getTexture() {
+    return EnderIO.proxy.getGuiTexture("transceiver");
+  }
 }

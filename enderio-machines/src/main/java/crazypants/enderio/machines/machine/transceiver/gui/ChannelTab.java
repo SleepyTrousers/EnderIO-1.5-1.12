@@ -28,6 +28,7 @@ import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.util.ResourceLocation;
 
 public class ChannelTab implements ITabPanel {
 
@@ -285,6 +286,12 @@ public class ChannelTab implements ITabPanel {
   @Override
   public void mouseClicked(int x, int y, int par3) {
     newChannelTF.mouseClicked(x, y, par3);
+  }
+
+  @Override
+  @Nonnull
+  public ResourceLocation getTexture() {
+    return EnderIO.proxy.getGuiTexture("transceiver");
   }
 
 }

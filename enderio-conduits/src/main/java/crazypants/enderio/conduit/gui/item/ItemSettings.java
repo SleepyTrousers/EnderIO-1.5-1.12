@@ -36,6 +36,7 @@ import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.util.ResourceLocation;
 
 public class ItemSettings extends BaseSettingsPanel {
 
@@ -84,7 +85,7 @@ public class ItemSettings extends BaseSettingsPanel {
   private IItemFilterGui filterGui;
 
   public ItemSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_ITEM, EnderIO.lang.localize("itemItemConduit.name"), gui, con);
+    super(IconEIO.WRENCH_OVERLAY_ITEM, EnderIO.lang.localize("itemItemConduit.name"), gui, con, "item_settings");
     itemConduit = (IItemConduit) con;
 
     // TODO Lang
@@ -231,7 +232,6 @@ public class ItemSettings extends BaseSettingsPanel {
       activeFilter = null;
     } else if (showInput) {
       activeFilter = itemConduit.getInputFilter(gui.getDir());
-      gui.getContainer().setInventorySlotsVisible(true);
       gui.getContainer().setInOutSlotsVisible(true, false);
       if (activeFilter != null) {
         filterGui = activeFilter.getGui(gui, new ItemConduitFilterContainer(itemConduit, gui.getDir(), true), true);
@@ -239,7 +239,6 @@ public class ItemSettings extends BaseSettingsPanel {
     } else if (showOutput) {
       activeFilter = itemConduit.getOutputFilter(gui.getDir());
       gui.getContainer().setInOutSlotsVisible(false, true);
-      gui.getContainer().setInventorySlotsVisible(true);
       if (activeFilter != null) {
         filterGui = activeFilter.getGui(gui, new ItemConduitFilterContainer(itemConduit, gui.getDir(), false), false);
       }
@@ -373,9 +372,6 @@ public class ItemSettings extends BaseSettingsPanel {
       return;
     }
 
-    gui.bindGuiTexture(1);
-    gui.drawTexturedModalRect(gui.getGuiLeft(), gui.getGuiTop() + 55, 0, 55, gui.getXSize(), 145);
-
     FontRenderer fr = gui.getFontRenderer();
     String heading = getHeading();
     int x = 0;
@@ -389,20 +385,7 @@ public class ItemSettings extends BaseSettingsPanel {
       String str = itemConduit.getOutputPriority(gui.getDir()) + "";
       int sw = fr.getStringWidth(str);
       fr.drawString(str, left + priLeft + priWidth - sw - gap, top, ColorUtil.getRGB(Color.black));
-    } else {
-      // draw speed upgrade slot
-      GL11.glColor3f(1, 1, 1);
-      gui.bindGuiTexture(1);
-      gui.drawTexturedModalRect(gui.getGuiLeft() + 9 + 18, gui.getGuiTop() + 46, 94, 238, 18, 18);
     }
-
-    // filter upgrade slot
-    GL11.glColor3f(1, 1, 1);
-    gui.bindGuiTexture(1);
-    gui.drawTexturedModalRect(gui.getGuiLeft() + 9, gui.getGuiTop() + 46, 94, 220, 18, 18);
-
-    // function upgrade slot
-    gui.drawTexturedModalRect(gui.getGuiLeft() + 9, gui.getGuiTop() + 46 + 18, 112, 238, 18, 18);
 
     if (filterGui != null) {
       filterGui.renderCustomOptions(top, par1, par2, par3);
@@ -411,7 +394,6 @@ public class ItemSettings extends BaseSettingsPanel {
 
   @Override
   public void deactivate() {
-    gui.getContainer().setInventorySlotsVisible(false);
     gui.getContainer().setInOutSlotsVisible(false, false);
     rsB.detach();
     colorB.detach();
@@ -427,13 +409,24 @@ public class ItemSettings extends BaseSettingsPanel {
     channelB.detach();
     deactiveFilterGUI();
   }
+  
+  @Override
+  @Nonnull
+  public ResourceLocation getTexture() {
+    if (con.getConnectionMode(gui.getDir()) == ConnectionMode.DISABLED) {
+      return super.getTexture();
+    }
+    String s = "item_settings_";
+    s += isInputVisible() ? "input" : "output";
+    return EnderIO.proxy.getGuiTexture(s);
+  }
 
   private void deactiveFilterGUI() {
     if (filterGui != null) {
       filterGui.deactivate();
       filterGui = null;
     }
-    gui.getGhostSlotHandler().getGhostSlots().clear();
+//    gui.getGhostSlotHandler().getGhostSlots().clear();
   }
 
 }
