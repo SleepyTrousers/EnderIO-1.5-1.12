@@ -349,9 +349,9 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
     private final Runnable cb;
 
     ItemFilterGhostSlot(int slot, int x, int y, Runnable cb) {
-      this.x = x;
-      this.y = y;
-      this.slot = slot;
+      this.setX(x);
+      this.setY(y);
+      this.setSlot(slot);
       this.cb = cb;
     }
 
@@ -360,9 +360,9 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
       if (AlleleManager.alleleRegistry.getSpeciesRoot(stack) != null) {
         stack = stack.copy();
         stack.setCount(1);
-        setItem(slot, stack);
+        setItem(getSlot(), stack);
       } else {
-        setItem(slot, ItemStack.EMPTY);
+        setItem(getSlot(), ItemStack.EMPTY);
       }
 
       cb.run();
@@ -370,7 +370,7 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
 
     @Override
     public @Nonnull ItemStack getStack() {
-      return getStackInSlot(slot);
+      return getStackInSlot(getSlot());
     }
   }
 

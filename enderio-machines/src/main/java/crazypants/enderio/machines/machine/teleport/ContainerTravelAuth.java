@@ -119,24 +119,24 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
     private AuthInventory inv;
 
     public AuthGhostSlot(AuthInventory ta, int slotIndex, int x, int y) {
-      this.slot = slotIndex;
-      this.x = x;
-      this.y = y;
-      this.displayStdOverlay = false;
-      this.grayOut = true;
-      this.stackSizeLimit = 1;
+      this.setSlot(slotIndex);
+      this.setX(x);
+      this.setY(y);
+      this.setDisplayStdOverlay(false);
+      this.setGrayOut(true);
+      this.setStackSizeLimit(1);
       this.inv = ta;
     }
 
     @Override
     public @Nonnull ItemStack getStack() {
-      ItemStack stack = inv.getStackInSlot(slot);
+      ItemStack stack = inv.getStackInSlot(getSlot());
       return stack;
     }
 
     @Override
     public void putStack(@Nonnull ItemStack stack, int realsize) {
-      inv.setInventorySlotContents(slot, stack);
+      inv.setInventorySlotContents(getSlot(), stack);
     }
 
   }

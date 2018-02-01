@@ -512,27 +512,27 @@ public class ItemFilter implements IInventory, IItemFilter {
     private final Runnable cb;
 
     ItemFilterGhostSlot(int slot, int x, int y, Runnable cb) {
-      this.x = x;
-      this.y = y;
-      this.slot = slot;
+      this.setX(x);
+      this.setY(y);
+      this.setSlot(slot);
       this.cb = cb;
-      this.displayStdOverlay = isLimited;
-      this.stackSizeLimit = isLimited ? 64 * 3 : 1;
+      this.setDisplayStdOverlay(isLimited);
+      this.setStackSizeLimit(isLimited ? 64 * 3 : 1);
     }
 
     @Override
     public void putStack(@Nonnull ItemStack stack, int realsize) {
       if (Prep.isValid(stack)) {
         stack = stack.copy();
-        stack.setCount(MathHelper.clamp(realsize, 1, stackSizeLimit));
+        stack.setCount(MathHelper.clamp(realsize, 1, getStackSizeLimit()));
       }
-      items.set(slot, stack);
+      items.set(getSlot(), stack);
       cb.run();
     }
 
     @Override
     public @Nonnull ItemStack getStack() {
-      return items.get(slot);
+      return items.get(getSlot());
     }
   }
 

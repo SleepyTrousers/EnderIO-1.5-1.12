@@ -51,10 +51,10 @@ public class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCha
     ghostSlots.removeAllByClass(GhostBackgroundItemSlot.class); // JEI will cause initGui to be re-run after closing the recipe view, causing duplicate ghost
                                                                 // slots
     final GhostBackgroundItemSlot ghost0 = new GhostBackgroundItemSlot(empties, getSlotFromInventory(0));
-    ghost0.displayStdOverlay = true;
+    ghost0.setDisplayStdOverlay(true);
     ghostSlots.add(ghost0);
     final GhostBackgroundItemSlot ghost1 = new GhostBackgroundItemSlot(fulls, getSlotFromInventory(1));
-    ghost1.displayStdOverlay = true;
+    ghost1.setDisplayStdOverlay(true);
     ghostSlots.add(ghost1);
   }
 

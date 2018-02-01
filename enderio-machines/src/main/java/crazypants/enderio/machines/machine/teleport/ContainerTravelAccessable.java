@@ -69,16 +69,16 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
 
   private static class CtaGhostSlot extends GhostSlot {
 
-    private ITravelAccessable ta;
+    private @Nonnull ITravelAccessable ta;
     boolean isAuth;
 
-    public CtaGhostSlot(ITravelAccessable ta, int slotIndex, int x, int y, boolean isAuth) {
-      this.slot = slotIndex;
-      this.x = x;
-      this.y = y;
-      this.displayStdOverlay = false;
-      this.grayOut = true;
-      this.stackSizeLimit = 1;
+    public CtaGhostSlot(@Nonnull ITravelAccessable ta, int slotIndex, int x, int y, boolean isAuth) {
+      this.setSlot(slotIndex);
+      this.setX(x);
+      this.setY(y);
+      this.setDisplayStdOverlay(false);
+      this.setGrayOut(true);
+      this.setStackSizeLimit(1);
       this.ta = ta;
       this.isAuth = isAuth;
     }
@@ -86,7 +86,7 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
     @Override
     public @Nonnull ItemStack getStack() {
       if (isAuth) {
-        return ta.getPassword().get(slot);
+        return ta.getPassword().get(getSlot());
       } else {
         return ta.getItemLabel();
       }
@@ -96,7 +96,7 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
     public void putStack(@Nonnull ItemStack stack, int realsize) {
       if (isAuth) {
         if (ta instanceof TileEntityBase) {
-          PacketHandler.INSTANCE.sendToServer(PacketPassword.setPassword((TileEntityBase) ta, slot, stack));
+          PacketHandler.INSTANCE.sendToServer(PacketPassword.setPassword((TileEntityBase) ta, getSlot(), stack));
         }
       } else {
         if (ta instanceof TileEntityBase) {

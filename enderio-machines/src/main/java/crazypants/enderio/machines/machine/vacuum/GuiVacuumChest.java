@@ -217,9 +217,9 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
   class FilterGhostSlot extends GhostSlot {
 
     FilterGhostSlot(int slot, int x, int y) {
-      this.slot = slot;
-      this.x = x;
-      this.y = y;
+      this.setSlot(slot);
+      this.setX(x);
+      this.setY(y);
     }
 
     @Override
@@ -229,14 +229,15 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
 
     @Override
     public void putStack(@Nonnull ItemStack stack, int realsize) {
-      PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterSlot(GuiVacuumChest.this.te, slot, stack));
+      // TODO: super.putStack() can do this already...
+      PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterSlot(GuiVacuumChest.this.te, getSlot(), stack));
     }
 
     @Override
     public @Nonnull ItemStack getStack() {
       ItemFilter itemFilter = GuiVacuumChest.this.te.getItemFilter();
       if (itemFilter != null) {
-        return itemFilter.getStackInSlot(slot);
+        return itemFilter.getStackInSlot(getSlot());
       }
       return Prep.getEmpty();
     }

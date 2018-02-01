@@ -37,7 +37,6 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
 
   public void createGhostSlots(List<GhostSlot> slots) {
     final GhostBackgroundItemSlot ghostBackgroundItemSlot = new GhostBackgroundItemSlot(ModObject.itemSoulVial.getItemNN(), getSlotFromInventory(0));
-    ghostBackgroundItemSlot.y = 42;
     slots.add(ghostBackgroundItemSlot);
   }
 

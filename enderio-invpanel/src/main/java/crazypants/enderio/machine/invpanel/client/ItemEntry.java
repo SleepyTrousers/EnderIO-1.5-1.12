@@ -1,13 +1,15 @@
 package crazypants.enderio.machine.invpanel.client;
 
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machine.invpanel.ItemEntryBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
-
-import java.util.Locale;
 
 public class ItemEntry extends ItemEntryBase {
   String name;
@@ -29,7 +31,7 @@ public class ItemEntry extends ItemEntryBase {
     stack = null;
   }
 
-  public ItemStack makeItemStack() {
+  public @Nonnull ItemStack makeItemStack() {
     if (stack == null) {
       stack = new ItemStack(getItem(), getCount(), meta);
       stack.setTagCompound(nbt);
