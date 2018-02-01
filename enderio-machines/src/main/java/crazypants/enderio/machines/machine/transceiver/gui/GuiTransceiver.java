@@ -12,8 +12,6 @@ import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.ITabPanel;
 
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
-import crazypants.enderio.base.sound.SoundHelper;
-import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.base.transceiver.ChannelType;
 import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
 import net.minecraft.client.gui.GuiButton;
@@ -111,21 +109,21 @@ public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> imp
   protected void mouseClicked(int x, int y, int par3) throws IOException {
     super.mouseClicked(x, y, par3);
 
-    int tabFromCoords = getTabFromCoords(x, y);
-    if (tabFromCoords >= 0) {
-      if (tabFromCoords != activeTab) {
-        SoundHelper.playSound(mc.world, mc.player, SoundRegistry.TAB_SWITCH, 1, 1);
-      }
-      activeTab = tabFromCoords;
-      hideOverlays();
-      initGui();
-      return;
-    }
-
     x = (x - guiLeft);
     y = (y - guiTop);
 
     tabs.get(activeTab).mouseClicked(x, y, par3);
+  }
+
+  @Override
+  protected boolean doSwitchTab(int tab) {
+    if (tab != activeTab) {
+      activeTab = tab;
+      hideOverlays();
+      initGui();
+      return true;
+    }
+    return super.doSwitchTab(tab);
   }
 
   @Override
