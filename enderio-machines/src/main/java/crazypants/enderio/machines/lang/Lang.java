@@ -84,6 +84,7 @@ public enum Lang implements ILang {
   GUI_AUTH_PUBLIC(".gui.travel_accessable.public"),
   GUI_AUTH_PRIVATE(".gui.travel_accessable.private"),
   GUI_AUTH_PROTECTED(".gui.travel_accessable.protected"),
+  GUI_AUTH_VISIBLE(".gui.travel_accessable.visible"),
   GUI_AUTH_PROMPT(".gui.travel_accessable.prompt"),
   GUI_AUTH_PROMPT_BUTTON(".gui.travel_accessable.promp.login"),
   GUI_AUTH_ERROR_PRIVATE(".chat.travel_accessable.error.private"),

@@ -35,8 +35,8 @@ import crazypants.enderio.machines.config.config.TelePadConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.anchor.TileTravelAnchor;
-import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTelePadFluidLevel;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
+import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTelePadFluidLevel;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTeleport;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTeleportTrigger;
 import crazypants.enderio.machines.machine.teleport.telepad.render.BlockType;
@@ -703,8 +703,13 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
   }
 
   @Override
-  public boolean isTravelTarget() {
+  public boolean isTravelSource() {
     return isMaster() && inNetwork() && TelePadConfig.telepadIsTravelAnchor.get();
+  }
+
+  @Override
+  public boolean isVisible() {
+    return super.isVisible() && isTravelSource();
   }
 
   @Override

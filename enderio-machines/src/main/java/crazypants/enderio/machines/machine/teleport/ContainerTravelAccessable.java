@@ -143,4 +143,16 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
     return null;
   }
 
+  @SuppressWarnings("null") // gah, Eclipse thinks a final field can go null from one side of the comma to the next
+  @Override
+  public IMessage doSetVisible(boolean visible) {
+    ta.setVisible(visible);
+    if (te != null) { // TODO what's this? overkill?
+      IBlockState bs = te.getWorld().getBlockState(te.getPos());
+      te.getWorld().notifyBlockUpdate(te.getPos(), bs, bs, 3);
+      te.getWorld().markChunkDirty(te.getPos(), te);
+    }
+    return null;
+  }
+
 }

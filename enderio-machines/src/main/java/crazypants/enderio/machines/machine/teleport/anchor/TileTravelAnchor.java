@@ -68,6 +68,9 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
   @Store(handler = HandleUserIdent.HandleUserIdentArrayList.class)
   private List<UserIdent> authorisedUsers = new ArrayList<UserIdent>();
 
+  @Store
+  private boolean visible = true;
+
   private boolean isAuthorisedUser(UserIdent ident) {
     return authorisedUsers.contains(ident);
   }
@@ -217,6 +220,16 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
   @Override
   public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
     return mode == IoMode.NONE;
+  }
+
+  @Override
+  public boolean isVisible() {
+    return visible;
+  }
+
+  @Override
+  public void setVisible(boolean visible) {
+    this.visible = visible;
   }
 
 }

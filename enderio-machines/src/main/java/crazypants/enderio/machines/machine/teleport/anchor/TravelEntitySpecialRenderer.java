@@ -59,7 +59,7 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Man
 
   @Override
   public boolean shouldRender(@Nonnull T te, @Nonnull IBlockState blockState, int renderPass) {
-    return TravelController.instance.showTargets()
+    return TravelController.instance.showTargets() && te.isVisible()
         && (TravelController.instance.getPosPlayerOn() == null || BlockCoord.getDist(TravelController.instance.getPosPlayerOn(), te.getLocation()) > 2)
         && te.canSeeBlock(Minecraft.getMinecraft().player);
   }

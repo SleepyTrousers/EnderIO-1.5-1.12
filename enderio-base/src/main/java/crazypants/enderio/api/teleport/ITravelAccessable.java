@@ -59,8 +59,15 @@ public interface ITravelAccessable {
   /**
    * Is this block a travel target for the staff or a travel anchor?
    */
-  default boolean isTravelTarget() {
+  default boolean isTravelSource() {
     return true;
+  }
+
+  default boolean isVisible() {
+    return true;
+  }
+
+  default void setVisible(boolean visible) {
   }
 
 }

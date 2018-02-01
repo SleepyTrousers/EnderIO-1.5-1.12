@@ -110,6 +110,8 @@ enderio.gui.travel_accessable.prompt=Access Code Required
 enderio.gui.travel_accessable.promp.login=Authorise
 enderio.chat.travel_accessable.error.private=Only §4%s §fmay change this block's settings.
 enderio.chat.travel_accessable.error.harvest=Only §4%s §fmay harvest this block.
+enderio.gui.travel_accessable.visible.line1=Visibility
+enderio.gui.travel_accessable.visible.line2=When on, this block can be seen when holding a Staff of Traveling or standing on a Travel Anchor
 
 enderio.chat.telepad.noFluid=Not enough %s to teleport!
 enderio.gui.telepad.configure.travel=Travel Settings

@@ -157,6 +157,8 @@ public enum IconEIO implements IWidgetIcon {
 
   GENERIC_VERBOTEN(192, 160),
   CAPACITOR(208, 160),
+  VISIBLE_NO(224, 160),
+  VISIBLE_YES(240, 160),
 
   YETA_GEAR(48, 224);
 

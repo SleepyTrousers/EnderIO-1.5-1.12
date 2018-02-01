@@ -8,12 +8,14 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.CheckBox;
+import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
+import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -31,6 +33,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   private final @Nonnull CheckBox publicCB;
   private final @Nonnull CheckBox privateCB;
   private final @Nonnull CheckBox protectedCB;
+  private final @Nonnull ToggleButton visibleCB;
 
   private final @Nonnull TextFieldEnder tf;
 
@@ -82,6 +85,10 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     publicCB = new CheckBox(this, ID_PUBLIC, x, y);
     publicCB.setSelected(te.getAccessMode() == AccessMode.PUBLIC);
 
+    visibleCB = new ToggleButton(this, -1, 150, 10, IconEIO.VISIBLE_NO, IconEIO.VISIBLE_YES);
+    visibleCB.setSelected(te.isVisible());
+    visibleCB.setToolTip(Lang.GUI_AUTH_VISIBLE.getLines().toArray(new String[0]));
+
     ySize = 185;
 
     textFields.add(tf);
@@ -89,14 +96,19 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
 
   @Override
   protected void actionPerformed(@Nonnull GuiButton b) {
-    privateCB.setSelected(b.id == ID_PRIVATE);
-    protectedCB.setSelected(b.id == ID_PROTECTED);
-    publicCB.setSelected(b.id == ID_PUBLIC);
+    if (b.id >= 0) {
+      privateCB.setSelected(b.id == ID_PRIVATE);
+      protectedCB.setSelected(b.id == ID_PROTECTED);
+      publicCB.setSelected(b.id == ID_PUBLIC);
 
-    AccessMode curMode = b.id == ID_PRIVATE ? AccessMode.PRIVATE : b.id == ID_PROTECTED ? AccessMode.PROTECTED : AccessMode.PUBLIC;
-    te.setAccessMode(curMode);
+      AccessMode curMode = b.id == ID_PRIVATE ? AccessMode.PRIVATE : b.id == ID_PROTECTED ? AccessMode.PROTECTED : AccessMode.PUBLIC;
+      te.setAccessMode(curMode);
 
-    doSetAccessMode(curMode);
+      doSetAccessMode(curMode);
+    } else if (b == visibleCB) {
+      te.setVisible(visibleCB.isSelected());
+      doSetVisible(visibleCB.isSelected());
+    }
   }
 
   @Override
@@ -108,6 +120,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     publicCB.onGuiInit();
     privateCB.onGuiInit();
     protectedCB.onGuiInit();
+    visibleCB.onGuiInit();
 
     tf.setMaxStringLength(32);
     tf.setFocused(true);
@@ -152,6 +165,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
 
     x = sx + col2x - fr.getStringWidth(publicStr) / 2;
     fr.drawStringWithShadow(publicStr, x, y, col);
+
     checkLabelForChange();
 
     super.drawGuiContainerBackgroundLayer(f, i, j);
