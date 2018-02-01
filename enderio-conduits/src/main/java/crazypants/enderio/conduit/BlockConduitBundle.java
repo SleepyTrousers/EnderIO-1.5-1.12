@@ -590,9 +590,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       }
     }
 
-    BlockPos bc = te.getLocation();
-    ConduitUtil.playBreakSound(SoundType.METAL, te.getBundleworld(), bc.getX(), bc.getY(), bc.getZ());
-
     return true;
   }
 
