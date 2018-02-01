@@ -23,6 +23,7 @@ public enum SoundRegistry implements IModSound {
   TRAVEL_SOURCE_BLOCK(SoundCategory.BLOCKS, new ResourceLocation("entity.endermen.teleport")),
   TRAVEL_SOURCE_ITEM(SoundCategory.PLAYERS, new ResourceLocation("entity.endermen.teleport")),
   ITEM_BURN(SoundCategory.BLOCKS, new ResourceLocation("entity.generic.burn")),
+  TAB_SWITCH(SoundCategory.MASTER, "tab.switch"),
 
   ;
 

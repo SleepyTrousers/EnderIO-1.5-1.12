@@ -20,11 +20,14 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
+import crazypants.enderio.base.sound.SoundHelper;
+import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.powertools.init.PowerToolObject;
 import crazypants.enderio.powertools.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.powertools.machine.monitor.TilePowerMonitor.StatData;
 import net.minecraft.block.Block;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -79,7 +82,12 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
     minus.setToolTip("-");
 
     for (Tab drawTab : Tab.values()) {
-      drawTab.button = new InvisibleButton(this, 3, 0, 0);
+      drawTab.button = new InvisibleButton(this, 3, 0, 0) {
+        @Override
+        public void playPressSound(@Nonnull SoundHandler soundHandlerIn) {
+          SoundHelper.playSound(mc.world, mc.player, SoundRegistry.TAB_SWITCH, 1, 1);
+        }
+      };
     }
 
     if (!te.isAdvanced()) {

@@ -16,11 +16,15 @@ import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
+import crazypants.enderio.base.sound.SoundHelper;
+import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.conduit.TileConduitBundle;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -111,6 +115,9 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
 
     int tabFromCoords = getTabFromCoords(x, y);
     if (tabFromCoords >= 0) {
+      if (tabFromCoords != activeTab) {
+        SoundHelper.playSound(mc.world, mc.player, SoundRegistry.TAB_SWITCH, 1, 1);
+      }
       activeTab = tabFromCoords;
       initGui();
       return;

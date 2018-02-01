@@ -12,6 +12,8 @@ import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.ITabPanel;
 
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
+import crazypants.enderio.base.sound.SoundHelper;
+import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.base.transceiver.ChannelType;
 import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
 import net.minecraft.client.gui.GuiButton;
@@ -111,6 +113,9 @@ public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> imp
 
     int tabFromCoords = getTabFromCoords(x, y);
     if (tabFromCoords >= 0) {
+      if (tabFromCoords != activeTab) {
+        SoundHelper.playSound(mc.world, mc.player, SoundRegistry.TAB_SWITCH, 1, 1);
+      }
       activeTab = tabFromCoords;
       hideOverlays();
       initGui();

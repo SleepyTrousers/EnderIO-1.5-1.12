@@ -32,5 +32,11 @@
     "sounds": [
       "enderio:silence"
     ]
+  },
+  "tab.switch": {
+    "category": "master",
+	"sounds": [
+	  "enderio:tabswitch"
+	]
   }
 }
