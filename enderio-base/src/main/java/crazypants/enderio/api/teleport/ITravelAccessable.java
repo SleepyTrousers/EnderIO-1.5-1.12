@@ -57,12 +57,15 @@ public interface ITravelAccessable {
   BlockPos getLocation();
 
   /**
-   * Is this block a travel target for the staff or a travel anchor?
+   * Is this block a travel source for traveling to other travel anchors?
    */
   default boolean isTravelSource() {
     return true;
   }
 
+  /**
+   * Is this block a visible travel target for the staff or a travel anchor?
+   */
   default boolean isVisible() {
     return true;
   }
