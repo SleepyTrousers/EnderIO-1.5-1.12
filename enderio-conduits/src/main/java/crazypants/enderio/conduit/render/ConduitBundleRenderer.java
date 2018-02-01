@@ -1,9 +1,23 @@
 package crazypants.enderio.conduit.render;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduit.WithDefaultRendering;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitRenderer;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
@@ -29,10 +43,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nonnull;
-import java.util.*;
 
 @SideOnly(Side.CLIENT)
 public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduitBundle> {
@@ -44,9 +54,9 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
   };
 
-  public ConduitBundleRenderer() {    
+  public ConduitBundleRenderer() {
   }
-  
+
   public void registerRenderer(IConduitRenderer renderer) {
     conduitRenderers.add(renderer);
   }
@@ -55,7 +65,6 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
   @Override
   public void renderTileEntityAt(@Nonnull TileConduitBundle te, double x, double y, double z, float partialTick, int b) {
-    
 
     IConduitBundle bundle = te;
     EntityPlayerSP player = Minecraft.getMinecraft().player;
@@ -75,10 +84,10 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
             BlockPos loc = bundle.getLocation();
             brightness = bundle.getEntity().getWorld().getLightFor(EnumSkyBlock.SKY, loc);
 
-            RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());            
+            RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
             RenderUtil.bindBlockTexture();
             GlStateManager.enableNormalize();
-            GlStateManager.enableBlend();            
+            GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GlStateManager.shadeModel(GL11.GL_SMOOTH);
 
@@ -88,7 +97,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
             Tessellator tessellator = Tessellator.getInstance();
             VertexBuffer tes = tessellator.getBuffer();
             tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-            
+
           }
           renderer.renderDynamicEntity(this, bundle, con, x, y, z, partialTick, brightness);
 
@@ -99,7 +108,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     if (hasDynamic) {
       Tessellator.getInstance().draw();
       GlStateManager.disableNormalize();
-      GlStateManager.disableBlend();      
+      GlStateManager.disableBlend();
       GlStateManager.shadeModel(GL11.GL_FLAT);
       GlStateManager.popMatrix();
     }
@@ -109,26 +118,34 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
   public List<BakedQuad> getGeneralQuads(IBlockStateWrapper state, BlockRenderLayer layer) {
 
-    if(layer != null && layer != BlockRenderLayer.CUTOUT) {
+    if (layer != null && layer != BlockRenderLayer.CUTOUT) {
       return Collections.emptyList();
     }
 
     List<BakedQuad> result = new ArrayList<BakedQuad>();
     IConduitBundle bundle = (IConduitBundle) state.getTileEntity();
-    float brightness;
-    if (!Config.updateLightingWhenHidingFacades && bundle.hasFacade()) {
-      brightness = 15 << 20 | 15 << 4;
-    } else {
-      brightness = bundle.getEntity().getWorld().getLightFor(EnumSkyBlock.SKY, bundle.getLocation());
+
+    if (bundle != null) {
+      if (layer == null) {
+        addBreakingQuads(bundle, result);
+      } else {
+        float brightness;
+        if (!Config.updateLightingWhenHidingFacades && bundle.hasFacade()) {
+          brightness = 15 << 20 | 15 << 4;
+        } else {
+          brightness = bundle.getEntity().getWorld().getLightFor(EnumSkyBlock.SKY, bundle.getLocation());
+        }
+
+        // TODO: check if this is the client thread, if not, make a copy of the bundle and its conduits in a thread-safe way
+        addConduitQuads(state, bundle, brightness, layer, result);
+      }
     }
-    
-    // TODO: check if this is the client thread, if not, make a copy of the bundle and its conduits in a thread-safe way
-    addConduitQuads(state, bundle, brightness, layer, result);
 
     return result;
   }
 
-  private void addConduitQuads(IBlockStateWrapper state, IConduitBundle bundle, float brightness, BlockRenderLayer layer, List<BakedQuad> quads) {
+  private void addConduitQuads(@Nonnull IBlockStateWrapper state, @Nonnull IConduitBundle bundle, float brightness, @Nonnull BlockRenderLayer layer,
+      @Nonnull List<BakedQuad> quads) {
 
     // Conduits
     Set<EnumFacing> externals = new HashSet<EnumFacing>();
@@ -144,20 +161,16 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
       if (state.getYetaDisplayMode().renderConduit(con)) {
         IConduitRenderer renderer = getRendererForConduit(con);
         renderer.addBakedQuads(this, bundle, con, brightness, layer, quads);
-        if (layer != null) {
-          Set<EnumFacing> extCons = con.getExternalConnections();
-          for (EnumFacing dir : extCons) {
-            if (con.getConnectionMode(dir) != ConnectionMode.DISABLED && con.getConnectionMode(dir) != ConnectionMode.NOT_SET) {
-              externals.add(dir);
-            }
+        Set<EnumFacing> extCons = con.getExternalConnections();
+        for (EnumFacing dir : extCons) {
+          if (con.getConnectionMode(dir) != ConnectionMode.DISABLED && con.getConnectionMode(dir) != ConnectionMode.NOT_SET) {
+            externals.add(dir);
           }
         }
       } else if (con != null) {
         Collection<CollidableComponent> components = con.getCollidableComponents();
         for (CollidableComponent component : components) {
-          if (layer != null || component.dir == null) {
-            addWireBounds(wireBounds, component);
-          }
+          addWireBounds(wireBounds, component);
         }
       }
     }
@@ -167,14 +180,6 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     for (CollidableComponent component : connectors) {
       if (component != null) {
         if (component.conduitType != null) {
-          if (layer == null) {
-            // This is a breaking animation, so check that this is the currently targeted conduit
-            RayTraceResult hit = Minecraft.getMinecraft().objectMouseOver;
-            if (hit == null || !(hit.hitInfo instanceof CollidableComponent) || ((CollidableComponent)hit.hitInfo).conduitType != component.conduitType) {
-              continue; // FIXME this is a bit ugly
-            }
-          }
-
           // TODO Make an actual check before assuming a default render
           IConduit.WithDefaultRendering conduit = (IConduit.WithDefaultRendering) bundle.getConduit(component.conduitType);
           if (conduit != null) {
@@ -215,11 +220,45 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
   }
 
+  private boolean breakingAnimOnWholeConduit = false;
+
+  private void addBreakingQuads(@Nonnull IConduitBundle bundle, @Nonnull List<BakedQuad> quads) {
+
+    Class<? extends IConduit> conduitType = null;
+    RayTraceResult hit = Minecraft.getMinecraft().objectMouseOver;
+    if (NullHelper.untrust(hit) != null && (hit.hitInfo instanceof CollidableComponent)) {
+      conduitType = ((CollidableComponent) hit.hitInfo).conduitType;
+    }
+
+    if (breakingAnimOnWholeConduit) {
+      for (IConduit c : bundle.getConduits().toArray(new IConduit[0])) {
+        if (conduitType == c.getClass() || conduitType == c.getBaseConduitType()) {
+          IConduitRenderer renderer = getRendererForConduit(c);
+          renderer.addBakedQuads(this, bundle, (WithDefaultRendering) c, 1, BlockRenderLayer.CUTOUT, quads);
+        }
+      }
+    }
+
+    List<CollidableComponent> connectors = bundle.getConnectors();
+    for (CollidableComponent component : connectors) {
+      if (component != null) {
+        if (component.conduitType == conduitType || conduitType == null) {
+          IConduit.WithDefaultRendering conduit = (IConduit.WithDefaultRendering) bundle.getConduit(component.conduitType);
+          if (conduit != null) {
+            TextureAtlasSprite tex = conduit.getTextureForState(component);
+            BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
+          }
+        }
+      }
+    }
+
+  }
+
   private void addWireBounds(List<BoundingBox> wireBounds, CollidableComponent component) {
-    if(component.dir != null) {              
+    if (component.dir != null) {
       double sx = component.dir.getFrontOffsetX() != 0 ? 1 : 0.7;
       double sy = component.dir.getFrontOffsetY() != 0 ? 1 : 0.7;
-      double sz = component.dir.getFrontOffsetZ() != 0 ? 1 : 0.7;                            
+      double sz = component.dir.getFrontOffsetZ() != 0 ? 1 : 0.7;
       wireBounds.add(component.bound.scale(sx, sy, sz));
     } else {
       wireBounds.add(component.bound);
