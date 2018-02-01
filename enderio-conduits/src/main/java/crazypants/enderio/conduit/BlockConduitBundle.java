@@ -72,6 +72,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
@@ -185,7 +186,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     if (cb == null) {
       return false;
     }
-    
+
     if (YetaUtil.isSolidFacadeRendered(cb, Minecraft.getMinecraft().player)) {
       IBlockState paintSource = cb.getPaintSource();
       if (paintSource != null) {
@@ -202,8 +203,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       tex = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(ModObject.block_machine_base.getBlockNN().getDefaultState());
     }
     lastHitIcon = tex;
-    BlockPos p = target.getBlockPos();
-    addBlockHitEffects(world, effectRenderer, p.getX(), p.getY(), p.getZ(), target.sideHit, tex);
+    addBlockHitEffects(world, effectRenderer, target.hitVec.xCoord, target.hitVec.yCoord, target.hitVec.zCoord, target.sideHit, tex);
     return true;
   }
 
@@ -258,27 +258,20 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   }
 
   @SideOnly(Side.CLIENT)
-  private void addBlockHitEffects(@Nonnull World world, @Nonnull ParticleManager effectRenderer, int x, int y, int z, @Nonnull EnumFacing sideEnum,
-     @Nonnull TextureAtlasSprite tex) {
+  private void addBlockHitEffects(@Nonnull World world, @Nonnull ParticleManager effectRenderer, double xCoord, double yCoord, double zCoord,
+      @Nonnull EnumFacing sideEnum, @Nonnull TextureAtlasSprite tex) {
 
-    float f = 0.1F;
-
-    double d0 = x + rand.nextDouble() * (bounds.maxX - bounds.minX - f * 2.0F) + f + bounds.minX;
-    double d1 = y + rand.nextDouble() * (bounds.maxY - bounds.minY - f * 2.0F) + f + bounds.minY;
-    double d2 = z + rand.nextDouble() * (bounds.maxZ - bounds.minZ - f * 2.0F) + f + bounds.minZ;
-    int side = sideEnum.ordinal();
-    if (side == 0) {
-      d1 = y + bounds.minY - f;
-    } else if (side == 1) {
-      d1 = y + bounds.maxY + f;
-    } else if (side == 2) {
-      d2 = z + bounds.minZ - f;
-    } else if (side == 3) {
-      d2 = z + bounds.maxZ + f;
-    } else if (side == 4) {
-      d0 = x + bounds.minX - f;
-    } else if (side == 5) {
-      d0 = x + bounds.maxX + f;
+    double d0 = xCoord;
+    double d1 = yCoord;
+    double d2 = zCoord;
+    if (sideEnum.getAxis() != Axis.X) {
+      d0 += rand.nextDouble() * 0.4 - rand.nextDouble() * 0.4;
+    }
+    if (sideEnum.getAxis() != Axis.Y) {
+      d1 += rand.nextDouble() * 0.4 - rand.nextDouble() * 0.4;
+    }
+    if (sideEnum.getAxis() != Axis.Z) {
+      d2 += rand.nextDouble() * 0.4 - rand.nextDouble() * 0.4;
     }
 
     ParticleDigging digFX = (ParticleDigging) Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.BLOCK_CRACK.getParticleID(), d0, d1,
@@ -660,7 +653,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
 
     // Check conduit defined actions
     RaytraceResult closest = doRayTrace(world, x, y, z, player);
-    @Nonnull List<RaytraceResult> all = NullHelper.notnullJ(Collections.emptyList(), "Collections#emptyList");
+    @Nonnull
+    List<RaytraceResult> all = NullHelper.notnullJ(Collections.emptyList(), "Collections#emptyList");
     if (closest != null) {
       all = doRayTraceAll(world, x, y, z, player);
     }
@@ -713,7 +707,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       }
     } else {
       IConduit closestConduit = bundle.getConduit(closestComponent.conduitType);
-      if (closest != null && closestConduit != null && YetaUtil.renderConduit(player, closestConduit) && closestConduit.onBlockActivated(player, hand, closest, all)) {
+      if (closest != null && closestConduit != null && YetaUtil.renderConduit(player, closestConduit)
+          && closestConduit.onBlockActivated(player, hand, closest, all)) {
         bundle.getEntity().markDirty();
         return true;
       }
@@ -869,7 +864,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
 
   private RaytraceResult getHitForConduitType(List<RaytraceResult> all, Class<? extends IConduit> collidableType) {
     for (RaytraceResult rr : all) {
-      CollidableComponent component = rr == null ? null : rr.component; 
+      CollidableComponent component = rr == null ? null : rr.component;
       if (component != null && component.conduitType == collidableType) {
         return rr;
       }
