@@ -16,15 +16,11 @@ import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
-import crazypants.enderio.base.sound.SoundHelper;
-import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.conduit.TileConduitBundle;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -96,7 +92,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
       }
     }
   }
-  
+
   private @Nullable ITabPanel getActiveTab() {
     if (activeTab < tabs.size() && activeTab >= 0) {
       return tabs.get(activeTab);
@@ -113,16 +109,6 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
   protected void mouseClicked(int x, int y, int par3) throws IOException {
     super.mouseClicked(x, y, par3);
 
-    int tabFromCoords = getTabFromCoords(x, y);
-    if (tabFromCoords >= 0) {
-      if (tabFromCoords != activeTab) {
-        SoundHelper.playSound(mc.world, mc.player, SoundRegistry.TAB_SWITCH, 1, 1);
-      }
-      activeTab = tabFromCoords;
-      initGui();
-      return;
-    }
-
     x = (x - guiLeft);
     y = (y - guiTop);
 
@@ -130,7 +116,17 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
     if (tab != null)
       tabs.get(activeTab).mouseClicked(x, y, par3);
   }
-  
+
+  @Override
+  protected boolean doSwitchTab(int tab) {
+    if (tab != activeTab) {
+      activeTab = tab;
+      initGui();
+      return true;
+    }
+    return super.doSwitchTab(tab);
+  }
+
   @Override
   protected @Nonnull ResourceLocation getGuiTexture() {
     return tabs.get(activeTab).getTexture();
@@ -154,9 +150,9 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
 
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
-    
+
     ITabPanel tab = getActiveTab();
-    
+
     if (tab != null) {
       Minecraft.getMinecraft().getTextureManager().bindTexture(tab.getTexture());
       drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);

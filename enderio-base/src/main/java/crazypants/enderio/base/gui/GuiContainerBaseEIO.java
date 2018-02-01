@@ -1,6 +1,7 @@
 package crazypants.enderio.base.gui;
 
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,8 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.network.IRemoteExec;
+import crazypants.enderio.base.sound.SoundHelper;
+import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -89,6 +92,22 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     return -1;
   }
 
+  @Override
+  protected void mouseClicked(int x, int y, int button) throws IOException {
+    if (button == 0) {
+      int tabFromCoords = getTabFromCoords(x, y);
+      if (tabFromCoords >= 0 && doSwitchTab(tabFromCoords)) {
+        SoundHelper.playSound(mc.world, mc.player, SoundRegistry.TAB_SWITCH, 1, 1);
+        return;
+      }
+    }
+    super.mouseClicked(x, y, button);
+  }
+
+  protected boolean doSwitchTab(int tab) {
+    return false;
+  }
+
   public @Nonnull Rectangle renderStdTab(int sx, int sy, int tabNo, boolean isActive) {
     return renderStdTab(sx, sy, tabNo, Prep.getEmpty(), null, null, isActive);
   }
@@ -117,14 +136,14 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
       boolean isActive) {
     int tabX = sx + xSize + -3;
     int tabY = sy + 4 + 24 * tabNo;
-  
+
     Rectangle result = renderTab(tabX, tabY, 24, stack, icon, isActive);
 
     while (tabAreas.size() <= tabNo) {
       tabAreas.add(NO_TAB);
     }
     tabAreas.set(tabNo, result);
-  
+
     if (button != null) {
       button.xPosition = result.x;
       button.yPosition = result.y;
@@ -132,7 +151,7 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
       button.height = result.height;
       button.enabled = !isActive;
     }
-  
+
     GlStateManager.color(1, 1, 1, 1);
     return result;
   }
@@ -145,13 +164,13 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     int r_x = 3;
     int r_w = w - r_x;
     int r_u = IconEIO.TAB_FRAME_LEFT.width - r_w;
-  
+
     if (isActive) {
       GlStateManager.color(1, 1, 1, 1);
     } else {
       GlStateManager.color(.9f, .9f, .9f, 1);
     }
-    
+
     VertexBuffer tes = Tessellator.getInstance().getBuffer();
     RenderUtil.bindTexture(IconEIO.map.getTexture());
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
@@ -170,7 +189,7 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
       itemRender.renderItemIntoGUI(stack, x + w / 2 - 8, y + IconEIO.TAB_BG.getHeight() / 2 - 8);
       RenderHelper.disableStandardItemLighting();
     }
-  
+
     return new Rectangle(x + bg_x, y - 1, bg_w + 3 + 1, IconEIO.TAB_BG.getHeight() + 2);
   }
 
@@ -179,7 +198,7 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     double maxU = (double) (u + w) / IconEIO.map.getSize();
     double minV = (double) v / IconEIO.map.getSize();
     double maxV = (double) (v + h) / IconEIO.map.getSize();
-  
+
     tes.pos(x, y + h, 0).tex(minU, maxV).endVertex();
     tes.pos(x + w, y + h, 0).tex(maxU, maxV).endVertex();
     tes.pos(x + w, y + 0, 0).tex(maxU, minV).endVertex();

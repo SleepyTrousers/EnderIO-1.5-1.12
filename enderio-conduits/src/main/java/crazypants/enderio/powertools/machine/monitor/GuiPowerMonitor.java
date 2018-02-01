@@ -20,14 +20,11 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
-import crazypants.enderio.base.sound.SoundHelper;
-import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.powertools.init.PowerToolObject;
 import crazypants.enderio.powertools.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.powertools.machine.monitor.TilePowerMonitor.StatData;
 import net.minecraft.block.Block;
-import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -48,7 +45,6 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
     int tabNo;
     @Nonnull
     ItemStack itemStack;
-    InvisibleButton button;
 
     private Tab(int tabNo, @Nonnull ItemStack itemStack) {
       this.tabNo = tabNo;
@@ -80,15 +76,6 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
     plus.setToolTip("+");
     minus = new InvisibleButton(this, 2, 154, 52);
     minus.setToolTip("-");
-
-    for (Tab drawTab : Tab.values()) {
-      drawTab.button = new InvisibleButton(this, 3, 0, 0) {
-        @Override
-        public void playPressSound(@Nonnull SoundHandler soundHandlerIn) {
-          SoundHelper.playSound(mc.world, mc.player, SoundRegistry.TAB_SWITCH, 1, 1);
-        }
-      };
-    }
 
     if (!te.isAdvanced()) {
       tab = Tab.STAT;
@@ -131,11 +118,6 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
     configB.visible = false;
     plus.onGuiInit();
     minus.onGuiInit();
-
-    for (Tab drawTab : Tab.values()) {
-      drawTab.button.onGuiInit();
-    }
-
     engineControlEnabled.onGuiInit();
   }
 
@@ -201,9 +183,6 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
 
       break;
     }
-    for (Tab drawTab : Tab.values()) {
-      drawTab.button.enabled = drawTab != tab;
-    }
   }
 
   @Override
@@ -220,14 +199,20 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
       }
       timebase--;
       timebaseOffset += 16;
-    } else {
+    }
+  }
+
+  @Override
+  protected boolean doSwitchTab(int newTab) {
+    if (tab.tabNo != newTab) {
       for (Tab drawTab : Tab.values()) {
-        if (btn == drawTab.button) {
+        if (newTab == drawTab.tabNo) {
           tab = drawTab;
-          return;
+          return true;
         }
       }
     }
+    return super.doSwitchTab(newTab);
   }
 
   @Override
@@ -299,7 +284,7 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
     startTabs();
     for (Tab drawTab : Tab.values()) {
       if (drawTab != Tab.GRAPH || getTileEntity().isAdvanced()) {
-        renderStdTab(sx, sy, drawTab.tabNo - (getTileEntity().isAdvanced() ? 0 : 1), drawTab.itemStack, drawTab.button, drawTab == tab);
+        renderStdTab(sx, sy, drawTab.tabNo - (getTileEntity().isAdvanced() ? 0 : 1), drawTab.itemStack, drawTab == tab);
       }
     }
   }
@@ -417,13 +402,13 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
 
     String s = LangPower.RF(statData.powerInConduits, statData.maxPowerInConduits);
     fr.drawString(s, x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET, valuesCol, false);
-    
+
     s = LangPower.RF(statData.powerInCapBanks, statData.maxPowerInCapBanks);
     fr.drawString(s, x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET + LINE_Y_OFFSET, valuesCol, false);
-    
+
     s = LangPower.RF(statData.powerInMachines, statData.maxPowerInMachines);
     fr.drawString(s, x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET + 3 * LINE_Y_OFFSET, valuesCol, false);
-    
+
     s = LangPower.RFt(statData.aveRfSent);
     fr.drawString(s, x + TEXT_X_OFFSET, y + TEXT_Y_OFFSET + 2 * LINE_Y_OFFSET, valuesCol, false);
 
