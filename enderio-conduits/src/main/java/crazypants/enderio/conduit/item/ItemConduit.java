@@ -885,12 +885,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
       }
     }
 
-    if (!nbtRoot.hasKey("conModes")) {
-      // all externals where on default so need to switch them to the old default
-      for (EnumFacing dir : externalConnections) {
-        conectionModes.put(dir, ConnectionMode.OUTPUT);
-      }
-    }
     connectionsDirty = true;
   }
 
