@@ -1,22 +1,24 @@
-package crazypants.enderio.conduit;
+package crazypants.enderio.conduit.config;
+
+import java.io.File;
+
+import javax.annotation.Nonnull;
 
 import com.enderio.core.common.event.ConfigFileChangedEvent;
 import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.powertools.config.Config;
+import crazypants.enderio.conduit.EnderIOConduits;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import javax.annotation.Nonnull;
-import java.io.File;
-
-@Mod.EventBusSubscriber(modid = EnderIOConduits.MODID)
+@EventBusSubscriber(modid = EnderIOConduits.MODID)
 public class ConfigHandler {
 
   public static Configuration config;
@@ -30,16 +32,16 @@ public class ConfigHandler {
   }
 
   public static void init(FMLPreInitializationEvent event) {
-//    File configDirectory = getConfigDirectoryRaw();
-//    if (configDirectory == null) {
-//      Log.warn(EnderIOConduits.MOD_NAME + " was initialized before " + EnderIO.MOD_NAME + ". This should not happen.");
-//      crazypants.enderio.base.config.Config.init(event);
-//      configDirectory = getConfigDirectory();
-//    }
-//
-//    File configFile = new File(configDirectory, EnderIOConduits.MODID + ".cfg");
-//    config = new Configuration(configFile);
-//    syncConfig(false);
+    File configDirectory = getConfigDirectoryRaw();
+    if (configDirectory == null) {
+      Log.warn(EnderIOConduits.MOD_NAME + " was initialized before " + EnderIO.MOD_NAME + ". This should not happen.");
+      crazypants.enderio.base.config.Config.init(event);
+      configDirectory = getConfigDirectory();
+    }
+
+    File configFile = new File(configDirectory, EnderIOConduits.MODID + ".cfg");
+    config = new Configuration(configFile);
+    syncConfig(false);
   }
 
   public static void init(FMLInitializationEvent event) {
@@ -49,23 +51,23 @@ public class ConfigHandler {
   }
 
   public static void syncConfig(boolean load) {
-//    try {
-//      if (load) {
-//        config.load();
-//      }
-//      processConfig();
-//    } catch (Exception e) {
-//      Log.error(EnderIOConduits.MOD_NAME + " has a problem loading its configuration:");
-//      e.printStackTrace();
-//    } finally {
-//      if (config.hasChanged()) {
-//        config.save();
-//      }
-//    }
+    try {
+      if (load) {
+        config.load();
+      }
+      processConfig();
+    } catch (Exception e) {
+      Log.error(EnderIOConduits.MOD_NAME + " has a problem loading its configuration:");
+      e.printStackTrace();
+    } finally {
+      if (config.hasChanged()) {
+        config.save();
+      }
+    }
   }
 
   @SubscribeEvent
-  public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+  public static void onConfigChanged(OnConfigChangedEvent event) {
     if (event.getModID().equals(EnderIOConduits.MODID) || event.getModID().equals(EnderIO.MODID)) {
       // need to listen for EnderIO.MODID, too, as our config gets chained to the root mod for the GUI config
       Log.info("Updating config...");
@@ -90,5 +92,8 @@ public class ConfigHandler {
   private static void processConfig() {
     Config.load();
     Config.F.setConfig(config);
+
+    // CapacitorKey.processConfig(config);
   }
+
 }

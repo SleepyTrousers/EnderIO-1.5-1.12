@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the build-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+To make changes to the recipes, copy the recipes you want to change to
+the matching _user.xml. To disabled a recipe, add an attribute "disabled"
+and set it to true, e.g.: <recipe name="Gear" disabled="true" />
+
+Item specifications can reference an alias, an ore dictionary name, a
+block or an item. You can force the type by prefixing the value with
+"oredict:", "block:" or "item:". Recipes that have items that cannot be
+found in-game are either skipped or an error, depending on their "required"
+attribute.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe name="Capacitor Bank, simple" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron" /><item name="CAPACITOR1" /><item name="ingotIron" />
+        <item name="CAPACITOR1" /><item name="blockRedstone" /><item name="CAPACITOR1" />
+        <item name="ingotIron" /><item name="CAPACITOR1" /><item name="ingotIron" />
+      </grid>
+      <output name="CAP_BANK_1" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Bank, activated" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="CAPACITOR2" /><item name="ELECTRICAL_STEEL" />
+        <item name="CAPACITOR2" /><item name="blockRedstone" /><item name="CAPACITOR2" />
+        <item name="ELECTRICAL_STEEL" /><item name="CAPACITOR2" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="CAP_BANK_2" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Bank, vibrant" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="CAPACITOR3" /><item name="ELECTRICAL_STEEL" />
+        <item name="CAPACITOR3" /><item name="VIBRANT_CRYSTAL" /><item name="CAPACITOR3" />
+        <item name="ELECTRICAL_STEEL" /><item name="CAPACITOR3" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="CAP_BANK_3" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Energy Monitor" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="CONDUIT_PROBE" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="enderio:item_power_conduit:0" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:block_power_monitor" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Energy Monitor 2" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="minecraft:wool:15" /><item name="minecraft:wool:15" /><item name="minecraft:wool:15" />
+        <item name="minecraft:wool:15" /><item name="enderio:block_power_monitor" /><item name="minecraft:wool:15" />
+        <item name="dyeRed" /><item name="dyeYellow" /><item name="dyeGreen" />
+      </grid>
+      <output name="enderio:block_advanced_power_monitor" />
+    </crafting>
+  </recipe>
+
+  <recipe name="RF Gauge" required="true">
+    <crafting>
+      <level maxlevel="0" />
+      <grid size="3x3">
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="CONDUIT_PROBE" /><item name="ingotIron" />
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:block_gauge" amount="2" />
+    </crafting>
+    <crafting>
+      <level minlevel="1" maxlevel="1" />
+      <grid size="3x3">
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="CONDUIT_PROBE" /><item name="ingotIron" />
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:block_gauge" />
+    </crafting>
+    <crafting>
+      <level minlevel="2" maxlevel="2" />
+      <grid size="3x3">
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+        <item name="ELECTRICAL_STEEL" /><item name="CONDUIT_PROBE" /><item name="ELECTRICAL_STEEL" />
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:block_gauge" />
+    </crafting>
+    <crafting>
+      <level minlevel="3" />
+      <grid size="3x3">
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+        <item name="ELECTRICAL_STEEL" /><item name="CONDUIT_PROBE" /><item name="ELECTRICAL_STEEL" />
+        <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:block_gauge" />
+    </crafting>
+  </recipe>
+
+
+</enderio:recipes>

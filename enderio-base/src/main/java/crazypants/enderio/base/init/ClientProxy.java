@@ -132,9 +132,6 @@ public class ClientProxy extends CommonProxy {
         ((IHaveTESR) block).bindTileEntitySpecialRenderer();
       }
     }
-
-    // TODO 1.11 ObeliskRenderManager.INSTANCE.registerRenderers();
-
   }
 
   @Override
@@ -149,9 +146,6 @@ public class ClientProxy extends CommonProxy {
     PaintTooltipUtil.create();
 
     IoConfigRenderer.init(event);
-
-    // conduits
-    // TODO 1.11 ConduitBundleRenderManager.instance.init(event);
 
     // Overlays
     MinecraftForge.EVENT_BUS.register(new YetaWrenchOverlayRenderer());
@@ -168,20 +162,17 @@ public class ClientProxy extends CommonProxy {
     MinecraftForge.EVENT_BUS.register(TravelController.instance);
     MinecraftForge.EVENT_BUS.register(KeyTracker.instance);
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
-    // TODO 1.11 MinecraftForge.EVENT_BUS.register(new TeleportEntityRenderHandler());
   }
 
   @Override
   public void init(@Nonnull FMLInitializationEvent event) {
     super.init(event);
     SmartModelAttacher.registerColoredBlocksAndItems();
-    // TODO 1.11 MinecraftForge.EVENT_BUS.register(ClientNetworkManager.getInstance());
   }
 
   @Override
   public void init(@Nonnull FMLPostInitializationEvent event) {
     super.init(event);
-    // TODO 1.11 ConduitBundleRenderManager.instance.init(event);
   }
 
   @Override

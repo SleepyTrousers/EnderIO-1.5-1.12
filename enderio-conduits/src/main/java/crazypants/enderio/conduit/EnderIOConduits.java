@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
+import crazypants.enderio.conduit.config.ConfigHandler;
+import crazypants.enderio.conduit.config.RecipeLoaderConduits;
 import crazypants.enderio.conduit.init.CommonProxy;
 import crazypants.enderio.conduit.packet.PacketHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,7 +27,7 @@ public class EnderIOConduits implements IEnderIOAddon {
 
   private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:" + crazypants.enderio.base.EnderIO.MODID;
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
-  
+
   @SidedProxy(clientSide = "crazypants.enderio.conduit.init.ClientProxy", serverSide = "crazypants.enderio.conduit.init.CommonProxy")
   public static CommonProxy proxy;
 
@@ -34,21 +36,25 @@ public class EnderIOConduits implements IEnderIOAddon {
   public Configuration getConfiguration() {
     return ConfigHandler.config;
   }
-  
+
   @EventHandler
   public void preInit(@Nonnull FMLPreInitializationEvent event) {
+    ConfigHandler.init(event);
     proxy.init(event);
   }
 
   @EventHandler
   public void init(@Nonnull FMLInitializationEvent event) {
+    ConfigHandler.init(event);
     proxy.init(event);
     PacketHandler.init(event);
     MinecraftForge.EVENT_BUS.register(ConduitNetworkTickHandler.instance);
   }
-  
+
   @EventHandler
   public void postInit(@Nonnull FMLPostInitializationEvent event) {
+    ConfigHandler.init(event);
+    RecipeLoaderConduits.addRecipes();
     proxy.init(event);
   }
 
