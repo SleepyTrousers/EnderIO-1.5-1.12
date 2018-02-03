@@ -88,7 +88,7 @@ allprojects {
         maven { url = "http://files.minecraftforge.net/maven" }
         maven { url = "http://maven.cil.li/" }
         maven { url = "http://maven.ic2.player.to" }
-        maven { url = "http://maven.epoxide.xyz" }
+        maven { url = "http://maven.mcmoddev.com" }
         ivy {
             url "http://ae-mod.info/builds"
             layout "pattern", {
