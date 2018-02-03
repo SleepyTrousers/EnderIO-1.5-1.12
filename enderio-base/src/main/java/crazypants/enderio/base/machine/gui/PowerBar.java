@@ -99,6 +99,8 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     RenderUtil.bindTexture(EnderIO.DOMAIN + ":textures/gui/overlay.png");
     GlStateManager.enableBlend();
     GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    GlStateManager.enableAlpha();
+    GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
     int guiX0 = owner.getGuiLeft();
     int guiY0 = owner.getGuiTop();
 

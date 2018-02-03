@@ -27,6 +27,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_USE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_SAG_MILL_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_SAG_MILL_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_SAG_MILL_POWER_LOSS;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_SAG_MILL_POWER_USE;
 
 @Storable
@@ -36,6 +37,7 @@ public abstract class TileSagMill extends AbstractPoweredTaskEntity implements I
   public static class Simple extends TileSagMill {
     public Simple() {
       super(new SlotDefinition(2, 4, 0), SIMPLE_SAG_MILL_POWER_INTAKE, SIMPLE_SAG_MILL_POWER_BUFFER, SIMPLE_SAG_MILL_POWER_USE);
+      setEnergyLoss(SIMPLE_SAG_MILL_POWER_LOSS);
     }
 
     @Override

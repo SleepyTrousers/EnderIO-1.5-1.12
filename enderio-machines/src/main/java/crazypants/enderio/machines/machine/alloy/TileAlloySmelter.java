@@ -26,6 +26,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_P
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_USE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_LOSS;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_USE;
 
 @Storable
@@ -35,6 +36,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
 
     public Simple() {
       super(new SlotDefinition(3, 1, 0), SIMPLE_ALLOY_SMELTER_POWER_INTAKE, SIMPLE_ALLOY_SMELTER_POWER_BUFFER, SIMPLE_ALLOY_SMELTER_POWER_USE);
+      setEnergyLoss(SIMPLE_ALLOY_SMELTER_POWER_LOSS);
       mode = Mode.ALLOY;
     }
 

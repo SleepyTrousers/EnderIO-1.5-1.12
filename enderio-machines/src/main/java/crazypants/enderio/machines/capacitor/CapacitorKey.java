@@ -11,6 +11,7 @@ import crazypants.enderio.base.capacitor.CapacitorKeyType;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.Scaler;
 import crazypants.enderio.base.config.Config.Section;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.loot.WeightedUpgrade;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.init.MachineObject;
@@ -23,6 +24,7 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   SIMPLE_ALLOY_SMELTER_POWER_INTAKE(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 10),
   SIMPLE_ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 1000),
   SIMPLE_ALLOY_SMELTER_POWER_USE(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 5),
+  SIMPLE_ALLOY_SMELTER_POWER_LOSS(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 1),
 
   ALLOY_SMELTER_POWER_INTAKE(MachineObject.block_alloy_smelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
   ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
@@ -97,9 +99,10 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   SAG_MILL_POWER_BUFFER(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
   SAG_MILL_POWER_USE(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
 
-  SIMPLE_SAG_MILL_POWER_INTAKE(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 10),
-  SIMPLE_SAG_MILL_POWER_BUFFER(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 1000),
-  SIMPLE_SAG_MILL_POWER_USE(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 5),
+  SIMPLE_SAG_MILL_POWER_INTAKE(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 10),
+  SIMPLE_SAG_MILL_POWER_BUFFER(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 1000),
+  SIMPLE_SAG_MILL_POWER_USE(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 5),
+  SIMPLE_SAG_MILL_POWER_LOSS(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 1),
 
   SLICE_POWER_INTAKE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.QUADRATIC, 160),
   SLICE_POWER_BUFFER(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
@@ -144,7 +147,7 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   // /////////////////////////////////////////////////////////////////// //
   // /////////////////////////////////////////////////////////////////// //
 
-  private final @Nonnull MachineObject owner;
+  private final @Nonnull IModObject owner;
   private final @Nonnull CapacitorKeyType valueType;
   private @Nonnull Scaler scaler;
   private final @Nonnull String configKey;
@@ -153,11 +156,11 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   private final int defaultBaseValue;
   private int baseValue;
 
-  private CapacitorKey(@Nonnull MachineObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull Scaler scaler, int defaultBaseValue) {
+  private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull Scaler scaler, int defaultBaseValue) {
     this(owner, valueType, scaler, defaultBaseValue, sectionCapacitor, null);
   }
 
-  private CapacitorKey(@Nonnull MachineObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull Scaler scaler, int defaultBaseValue,
+  private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull Scaler scaler, int defaultBaseValue,
       @Nonnull Section configSection, @Nullable String configKey) {
     this.owner = owner;
     this.valueType = valueType;
@@ -169,7 +172,7 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   }
 
   @Override
-  public @Nonnull MachineObject getOwner() {
+  public @Nonnull IModObject getOwner() {
     return owner;
   }
 

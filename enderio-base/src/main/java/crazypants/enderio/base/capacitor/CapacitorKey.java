@@ -13,6 +13,8 @@ import net.minecraftforge.common.config.Configuration;
 import static crazypants.enderio.base.config.Config.sectionCapacitor;
 
 public enum CapacitorKey implements ICapacitorKey.Computable {
+  NO_POWER_INTAKE(ModObject.block_machine_base, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 0),
+
   LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
   LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
   LEGACY_ENERGY_USE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),

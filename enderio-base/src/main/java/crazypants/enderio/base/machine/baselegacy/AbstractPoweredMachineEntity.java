@@ -24,6 +24,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   // Power
   private @Nonnull ICapacitorData capacitorData = DefaultCapacitorData.NONE;
   protected final @Nonnull ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
+  private ICapacitorKey energyLoss = null;
 
   @Store({ NBTAction.SAVE, NBTAction.CLIENT })
   // Not NBTAction.ITEM to keep the storedEnergy tag out in the open
@@ -52,11 +53,16 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     if (world.isRemote) {
       return;
     }
+    usePower(getPowerLossPerTick());
     boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(5));
     if (powerChanged) {
       lastSyncPowerStored = storedEnergyRF;
       PacketHandler.sendToAllAround(new PacketLegacyPowerStorage(this), this);
     }
+  }
+
+  public int getPowerLossPerTick() {
+    return energyLoss != null ? energyLoss.get(getCapacitorData()) : 0;
   }
 
   // RF API Power
@@ -195,6 +201,14 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     int used = Math.min(getEnergyStored(), wantToUse);
     setEnergyStored(Math.max(0, getEnergyStored() - used));
     return used;
+  }
+
+  public ICapacitorKey getEnergyLoss() {
+    return energyLoss;
+  }
+
+  public void setEnergyLoss(ICapacitorKey energyLoss) {
+    this.energyLoss = energyLoss;
   }
 
 }

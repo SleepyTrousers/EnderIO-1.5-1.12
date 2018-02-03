@@ -58,7 +58,8 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   private boolean inPause;
 
   public TileZombieGenerator() {
-    super(new SlotDefinition(0, 0, 0), ZOMBIE_POWER_LOSS, ZOMBIE_POWER_BUFFER, ZOMBIE_POWER_GEN);
+    super(new SlotDefinition(0, 0, 0), ZOMBIE_POWER_BUFFER, ZOMBIE_POWER_GEN);
+    setEnergyLoss(ZOMBIE_POWER_LOSS);
     tank.setTileEntity(this);
     tank.setCanDrain(false);
   }

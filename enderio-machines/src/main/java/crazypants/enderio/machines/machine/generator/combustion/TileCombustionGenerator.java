@@ -52,7 +52,8 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   public static class Enhanced extends TileCombustionGenerator {
 
     public Enhanced() {
-      super(new SlotDefinition(0, 0, 1), ENHANCED_COMBUSTION_POWER_LOSS, ENHANCED_COMBUSTION_POWER_BUFFER, ENHANCED_COMBUSTION_POWER_GEN);
+      super(new SlotDefinition(0, 0, 1), ENHANCED_COMBUSTION_POWER_BUFFER, ENHANCED_COMBUSTION_POWER_GEN);
+      setEnergyLoss(ENHANCED_COMBUSTION_POWER_LOSS);
     }
 
     @Override
@@ -101,12 +102,12 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   }
 
   public TileCombustionGenerator() {
-    this(new SlotDefinition(0, 0, 1), COMBUSTION_POWER_LOSS, COMBUSTION_POWER_BUFFER, COMBUSTION_POWER_GEN);
+    this(new SlotDefinition(0, 0, 1), COMBUSTION_POWER_BUFFER, COMBUSTION_POWER_GEN);
+    setEnergyLoss(COMBUSTION_POWER_LOSS);
   }
 
-  protected TileCombustionGenerator(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
-      @Nonnull ICapacitorKey maxEnergyUsed) {
-    super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+  protected TileCombustionGenerator(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
+    super(slotDefinition, maxEnergyStored, maxEnergyUsed);
     coolantTank = new CoolantTank(Math.round(CombustionGenConfig.combGenTankSize.get() * getMachineQuality()));
     fuelTank = new FuelTank(Math.round(CombustionGenConfig.combGenTankSize.get() * getMachineQuality()));
     coolantTank.setTileEntity(this);
@@ -188,7 +189,6 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
       }
 
       transmitEnergy();
-      usePower(getPowerLossPerTick());
     }
 
     if (tanksDirty && shouldDoWorkThisTick(10)) {

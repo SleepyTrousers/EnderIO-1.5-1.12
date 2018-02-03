@@ -46,7 +46,8 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
   public static class Simple extends TileStirlingGenerator {
 
     public Simple() {
-      super(new SlotDefinition(1, 0, 0), SIMPLE_STIRLING_POWER_LOSS, SIMPLE_STIRLING_POWER_BUFFER, SIMPLE_STIRLING_POWER_GEN);
+      super(new SlotDefinition(1, 0, 0), SIMPLE_STIRLING_POWER_BUFFER, SIMPLE_STIRLING_POWER_GEN);
+      setEnergyLoss(SIMPLE_STIRLING_POWER_LOSS);
     }
 
     @Override
@@ -69,12 +70,12 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
   private PowerDistributor powerDis;
 
   public TileStirlingGenerator() {
-    super(new SlotDefinition(1, 0, 1), STIRLING_POWER_LOSS, STIRLING_POWER_BUFFER, STIRLING_POWER_GEN);
+    super(new SlotDefinition(1, 0, 1), STIRLING_POWER_BUFFER, STIRLING_POWER_GEN);
+    setEnergyLoss(STIRLING_POWER_LOSS);
   }
 
-  protected TileStirlingGenerator(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
-      @Nonnull ICapacitorKey maxEnergyUsed) {
-    super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+  protected TileStirlingGenerator(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
+    super(slotDefinition, maxEnergyStored, maxEnergyUsed);
   }
 
   @Override
@@ -152,7 +153,6 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
     }
 
     transmitEnergy();
-    usePower(getPowerLossPerTick());
 
     if (redstoneCheck && burnTime <= 0 && getEnergyStored() < getMaxEnergyStored()) {
       final ItemStack fuelStack = inventory[0];
