@@ -96,7 +96,6 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture(EnderIO.DOMAIN + ":textures/gui/overlay.png");
     GlStateManager.enableBlend();
-    GlStateManager.color(1, 1, 1, 1);
     int guiX0 = owner.getGuiLeft();
     int guiY0 = owner.getGuiTop();
 
