@@ -13,6 +13,7 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.init.ModObject;
@@ -137,6 +138,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     final int drawU = barFrame * 10;
     final int drawV = 128;
     owner.drawTexturedModalRect(drawX, drawY, drawU, drawV, barWidth, barHeight);
+    Log.debug("drwaing ", drawX, " ", drawY, " ", drawU, " ", drawV, " ", barWidth, " ", barHeight); // FIXME DELME
 
     final int overlayFrame = (int) ((EnderIO.proxy.getTickCount()) % 128);
     int drawUoverlay = 128;
