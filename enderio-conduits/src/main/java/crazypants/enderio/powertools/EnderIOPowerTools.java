@@ -10,6 +10,7 @@ import crazypants.enderio.conduit.EnderIOConduits;
 import crazypants.enderio.powertools.config.ConfigHandler;
 import crazypants.enderio.powertools.config.RecipeLoaderPowerTools;
 import crazypants.enderio.powertools.network.PacketHandler;
+import crazypants.enderio.powertools.recipes.PowerToolRecipes;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -48,6 +49,7 @@ public class EnderIOPowerTools implements IEnderIOAddon {
   public static void postinit(FMLPostInitializationEvent event) {
     ConfigHandler.init(event);
     RecipeLoaderPowerTools.addRecipes();
+    PowerToolRecipes.addRecipes();
   }
 
 }

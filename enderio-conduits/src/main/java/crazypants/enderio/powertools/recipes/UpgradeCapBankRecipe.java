@@ -27,7 +27,7 @@ public class UpgradeCapBankRecipe extends ShapedOreRecipe {
       for (int x = 0; x < 3; x++) {
         ItemStack st = inv.getStackInRowAndColumn(x, y);
         final NBTTagCompound tagCompound = st.getTagCompound();
-        if (tagCompound != null && tagCompound.hasKey("Items")) {
+        if (tagCompound != null && tagCompound.hasKey("Items")) { // FIXME: Check that that still is the correct key
           return false;
         }
       }

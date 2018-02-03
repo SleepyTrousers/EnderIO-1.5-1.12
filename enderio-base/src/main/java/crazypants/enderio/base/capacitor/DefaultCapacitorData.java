@@ -9,8 +9,8 @@ public enum DefaultCapacitorData implements ICapacitorData {
   BASIC_CAPACITOR("basic", 1),
   ACTIVATED_CAPACITOR("activated", 2),
   ENDER_CAPACITOR("ender", 3),
-  SPECIAL_CAPACITOR("special", 1),
-  SPECIAL2_CAPACITOR("special2", 1);
+  SPECIAL_CAPACITOR("special"),
+  SPECIAL2_CAPACITOR("special2");
 
   public static final @Nonnull ICapacitorData NONE = new ICapacitorData() {
 
