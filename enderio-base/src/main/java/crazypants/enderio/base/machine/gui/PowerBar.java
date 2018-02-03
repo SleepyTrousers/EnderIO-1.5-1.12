@@ -8,12 +8,13 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.IDrawingElement;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.init.ModObject;
@@ -97,6 +98,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture(EnderIO.DOMAIN + ":textures/gui/overlay.png");
     GlStateManager.enableBlend();
+    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     int guiX0 = owner.getGuiLeft();
     int guiY0 = owner.getGuiTop();
 
@@ -138,7 +140,6 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     final int drawU = barFrame * 10;
     final int drawV = 128;
     owner.drawTexturedModalRect(drawX, drawY, drawU, drawV, barWidth, barHeight);
-    Log.debug("drwaing ", drawX, " ", drawY, " ", drawU, " ", drawV, " ", barWidth, " ", barHeight); // FIXME DELME
 
     final int overlayFrame = (int) ((EnderIO.proxy.getTickCount()) % 128);
     int drawUoverlay = 128;
