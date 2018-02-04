@@ -5,13 +5,13 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.ChatUtil;
 
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.IHaveRenderers;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -73,7 +73,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     }
 
     if (isCopy && performedAction) {
-      ChatUtil.sendNoSpam(player, "Copied conduit settings"); // TODO lang
+      player.sendStatusMessage(Lang.GUI_PROBE_COPIED.toChatServer(), true);
     }
 
     return performedAction;

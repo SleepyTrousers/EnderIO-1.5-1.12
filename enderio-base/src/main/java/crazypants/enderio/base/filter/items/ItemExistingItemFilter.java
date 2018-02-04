@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.util.ChatUtil;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capability.ItemTools;
@@ -53,20 +52,20 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
     return filter;
   }
 
-  
   @Override
   public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
       @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
-    if(world.isRemote) {
+    if (world.isRemote) {
       return EnumActionResult.SUCCESS;
-    }    
+    }
 
-    if(player.isSneaking()) {
+    if (player.isSneaking()) {
       IItemHandler externalInventory = ItemTools.getExternalInventory(world, pos, side);
       if (externalInventory != null) {
         ItemStack heldItem = player.getHeldItem(hand);
         ExistingItemFilter filter = (ExistingItemFilter) createFilterFromStack(heldItem);
-        ChatUtil.sendNoSpam(player, filter.mergeSnapshot(externalInventory) ? Lang.CONDUIT_FILTER_UPDATED.get() : Lang.CONDUIT_FILTER_NOTUPDATED.get());
+        player.sendStatusMessage(
+            filter.mergeSnapshot(externalInventory) ? Lang.CONDUIT_FILTER_UPDATED.toChatServer() : Lang.CONDUIT_FILTER_NOTUPDATED.toChatServer(), true);
         FilterRegistry.writeFilterToStack(filter, heldItem);
         return EnumActionResult.SUCCESS;
       }
@@ -83,8 +82,8 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack par1ItemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean par4) {
-    if(FilterRegistry.isFilterSet(par1ItemStack)) {
-      if(SpecialTooltipHandler.showAdvancedTooltips()) {
+    if (FilterRegistry.isFilterSet(par1ItemStack)) {
+      if (SpecialTooltipHandler.showAdvancedTooltips()) {
         par3List.add(Lang.CONDUIT_FILTER_CONFIGURED.get(TextFormatting.ITALIC));
         par3List.add(Lang.CONDUIT_FILTER_CLEAR.get(TextFormatting.ITALIC));
       }

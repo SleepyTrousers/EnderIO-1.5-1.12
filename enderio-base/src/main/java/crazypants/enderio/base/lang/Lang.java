@@ -83,7 +83,7 @@ public enum Lang implements ILang {
   SOUL_VIAL_DENIED_AALISTED(".soulvial.blacklisted.denied"),
   CONFIG_TITLE(".config.title"),
   GUI_NOCAP(".gui.generic.nocap"),
-  XXXXX13(""),
+  GUI_PROBE_COPIED(".gui.probe.copied"),
   XXXXX14(""),
   XXXXX15(""),
   XXXXX16(""),

@@ -1,7 +1,12 @@
 package crazypants.enderio.conduit.liquid;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.ChatUtil;
 import com.enderio.core.common.util.FluidUtil;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
@@ -17,12 +22,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
@@ -126,7 +129,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
             network.setFluidType(fluid);
             network.setFluidTypeLocked(true);
 
-            ChatUtil.sendNoSpam(player, EnderIO.lang.localize("itemLiquidConduit.lockedType"), fluid.getLocalizedName());
+            player.sendStatusMessage(new TextComponentTranslation(EnderIO.lang.addPrefix("itemLiquidConduit.lockedType"), fluid.getLocalizedName()), true);
           }
         }
         return true;
