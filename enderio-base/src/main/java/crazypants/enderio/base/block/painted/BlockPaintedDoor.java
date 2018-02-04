@@ -7,10 +7,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
+import com.enderio.core.common.util.stackable.IProducer;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.block.darksteel.door.BlockDarkSteelDoor;
-import crazypants.enderio.base.block.darksteel.door.BlockItemDarkSteelDoor;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.paint.IPaintable;
@@ -18,7 +18,7 @@ import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.paint.render.PaintRegistry;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
-import crazypants.enderio.base.recipe.painter.BasicPainterTemplate;
+import crazypants.enderio.base.recipe.painter.DoorPainterTemplate;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.ICacheKey;
 import crazypants.enderio.base.render.IRenderMapper;
@@ -62,24 +62,56 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
   public static BlockPaintedDoor create_wooden(@Nonnull IModObject modObject) {
     BlockPaintedDoor result = new BlockPaintedDoor(modObject, Material.WOOD, false);
     result.init(modObject);
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedDoor>(result, Blocks.OAK_DOOR) {
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new DoorPainterTemplate(result, new IProducer() {
       @Override
-      public boolean isValidTarget(@Nonnull ItemStack target) {
-        return target.getItem() == Items.OAK_DOOR;
+      public @Nonnull Item getItem() {
+        return Items.OAK_DOOR;
       }
-    });
+    }, Blocks.OAK_DOOR));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new DoorPainterTemplate(result, new IProducer() {
+      @Override
+      public @Nonnull Item getItem() {
+        return Items.ACACIA_DOOR;
+      }
+    }, Blocks.ACACIA_DOOR));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new DoorPainterTemplate(result, new IProducer() {
+      @Override
+      public @Nonnull Item getItem() {
+        return Items.BIRCH_DOOR;
+      }
+    }, Blocks.BIRCH_DOOR));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new DoorPainterTemplate(result, new IProducer() {
+      @Override
+      public @Nonnull Item getItem() {
+        return Items.DARK_OAK_DOOR;
+      }
+    }, Blocks.DARK_OAK_DOOR));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new DoorPainterTemplate(result, new IProducer() {
+      @Override
+      public @Nonnull Item getItem() {
+        return Items.JUNGLE_DOOR;
+      }
+    }, Blocks.JUNGLE_DOOR));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new DoorPainterTemplate(result, new IProducer() {
+      @Override
+      public @Nonnull Item getItem() {
+        return Items.SPRUCE_DOOR;
+      }
+    }, Blocks.SPRUCE_DOOR));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new DoorPainterTemplate(result, modObject, result));
     return result;
   }
 
   public static BlockPaintedDoor create_iron(@Nonnull IModObject modObject) {
     BlockPaintedDoor result = new BlockPaintedDoor(modObject, Material.IRON, false);
     result.init(modObject);
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedDoor>(result, Blocks.IRON_DOOR) {
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new DoorPainterTemplate(result, new IProducer() {
       @Override
-      public boolean isValidTarget(@Nonnull ItemStack target) {
-        return target.getItem() == Items.IRON_DOOR;
+      public @Nonnull Item getItem() {
+        return Items.IRON_DOOR;
       }
-    });
+    }, Blocks.IRON_DOOR));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new DoorPainterTemplate(result, modObject, result));
     return result;
   }
 
@@ -87,12 +119,8 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
     BlockPaintedDoor result = new BlockPaintedDoor(modObject, Material.IRON, true);
     result.init(modObject);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER,
-        new BasicPainterTemplate<BlockPaintedDoor>(result, ModObject.blockDarkSteelDoor.getBlockNN()) {
-          @Override
-          public boolean isValidTarget(@Nonnull ItemStack target) {
-            return target.getItem() == ModObject.blockDarkSteelDoor.getItemNN();
-          }
-        });
+        new DoorPainterTemplate(result, ModObject.blockDarkSteelDoor, ModObject.blockDarkSteelDoor.getBlockNN()));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new DoorPainterTemplate(result, modObject, result));
     return result;
   }
 
@@ -103,17 +131,17 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
 
   protected BlockDarkSteelDoor init(@Nonnull IModObject modObject) {
     SmartModelAttacher.registerNoProps(this);
-    PaintRegistry.registerModel("door_bottom", new ResourceLocation("minecraft", "block/iron_door_bottom"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("door_top", new ResourceLocation("minecraft", "block/iron_door_top"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("door_bottom_rh", new ResourceLocation("minecraft", "block/iron_door_bottom_rh"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("door_top_rh", new ResourceLocation("minecraft", "block/iron_door_top_rh"), PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel("iron_door_bottom", new ResourceLocation("minecraft", "block/iron_door_bottom"), PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel("iron_door_top", new ResourceLocation("minecraft", "block/iron_door_top"), PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel("iron_door_bottom_rh", new ResourceLocation("minecraft", "block/iron_door_bottom_rh"), PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel("iron_door_top_rh", new ResourceLocation("minecraft", "block/iron_door_top_rh"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("door_inventory", new ResourceLocation("minecraft", "item/iron_door"), PaintRegistry.PaintMode.ALL_TEXTURES);
     return this;
   }
 
   @Override
   public Item createBlockItem(@Nonnull IModObject modObject) {
-    return modObject.apply(new BlockItemDarkSteelDoor(this, null));
+    return modObject.apply(new BlockItemPaintedDoor(this));
   }
 
   @Override
@@ -126,15 +154,13 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
       @Nonnull ItemStack stack) {
     setPaintSource(state, world, pos, PaintUtil.getSourceBlock(stack));
     if (!world.isRemote) {
-      // BlockPos pos2 = pos.up();
-      // world.setBlockState(pos2, this.getDefaultState().withProperty(HALF, EnumDoorHalf.UPPER));
       world.notifyBlockUpdate(pos, state, state, 3);
     }
   }
 
   @Override
   public boolean removedByPlayer(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, boolean willHarvest) {
-    if (willHarvest) {
+    if (willHarvest && state.getValue(HALF) == BlockDoor.EnumDoorHalf.LOWER) {
       return true;
     }
     return super.removedByPlayer(state, world, pos, player, willHarvest);
@@ -144,7 +170,42 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
   public void harvestBlock(@Nonnull World worldIn, @Nonnull EntityPlayer player, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nullable TileEntity te,
       @Nonnull ItemStack stack) {
     super.harvestBlock(worldIn, player, pos, state, te, stack);
-    super.removedByPlayer(state, worldIn, pos, player, true);
+    if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.LOWER) {
+      worldIn.setBlockState(pos, net.minecraft.init.Blocks.AIR.getDefaultState(), worldIn.isRemote ? 11 : 3);
+      // This would be more correct but also drop an extra item:
+      // super.removedByPlayer(state, worldIn, pos, player, true);
+    }
+  }
+
+  @Override
+  public void neighborChanged(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull Block blockIn, @Nonnull BlockPos fromPos) {
+    // partial copy from BlockDoor. Only those cases that destroy the lower door half---they've been modified to allow the drop to contain paint data.
+    // Note: The upper half never drops an item.
+    if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.LOWER) {
+      boolean flag1 = false;
+      BlockPos blockpos1 = pos.up();
+      IBlockState iblockstate1 = worldIn.getBlockState(blockpos1);
+
+      if (iblockstate1.getBlock() != this) {
+        flag1 = true;
+      }
+
+      if (!worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP)) {
+        flag1 = true;
+        if (iblockstate1.getBlock() == this) {
+          // worldIn.setBlockToAir(blockpos1);
+        }
+      }
+
+      if (flag1) {
+        if (!worldIn.isRemote) {
+          this.dropBlockAsItem(worldIn, pos, state, 0);
+        }
+        worldIn.setBlockToAir(pos);
+        return;
+      }
+    }
+    super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
   }
 
   @Override
@@ -168,7 +229,7 @@ public class BlockPaintedDoor extends BlockDarkSteelDoor implements ITileEntityP
   public @Nonnull IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, this);
     blockStateWrapper.addCacheKey(getPaintSource(state, world, pos)).addCacheKey(state.getValue(FACING)).addCacheKey(state.getValue(OPEN))
-        .addCacheKey(state.getValue(HALF));
+        .addCacheKey(state.getValue(HALF)).addCacheKey(state.getValue(HINGE));
     blockStateWrapper.bakeModel();
     return blockStateWrapper;
   }

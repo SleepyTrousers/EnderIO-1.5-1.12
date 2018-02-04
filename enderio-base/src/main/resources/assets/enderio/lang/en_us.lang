@@ -423,6 +423,10 @@ tile.block_painted_stone_stair.name=Painted Stone Stairs
 tile.block_painted_wall.name=Painted Wall
 tile.block_painted_wooden_trapdoor.name=Painted Wooden Trapdoor
 
+tile.block_painted_wooden_door.name=Painted Wooden Door
+tile.block_painted_iron_door.name=Painted Iron Door
+tile.block_painted_dark_steel_door.name=Painted Dark Steel Door
+
 tile.block_reinforced_obsidian.name=Reinforced Obsidian
 tile.block_reinforced_obsidian.tooltip.common.line1=Wither Proof
 
