@@ -40,7 +40,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
   // server is a bad idea as Baubles does some very bad things...
   protected IInventory baubles;
 
-  public static @Nonnull ContainerCapBank create(InventoryPlayer playerInv, TileCapBank cb, final int baublesSize) {
+  public static @Nonnull ContainerCapBank create(@Nonnull InventoryPlayer playerInv, @Nonnull TileCapBank cb, final int baublesSize) {
     return new ContainerCapBank(playerInv, cb) {
       @Override
       protected int getBaublesSize() {
@@ -49,7 +49,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
     };
   }
 
-  private ContainerCapBank(InventoryPlayer playerInv, TileCapBank cb) {
+  private ContainerCapBank(@Nonnull InventoryPlayer playerInv, @Nonnull TileCapBank cb) {
     super(playerInv, cb);
   }
 
@@ -87,12 +87,12 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
         @Override
         public @Nonnull ItemStack decrStackSize(int slot, int amount) {
-          return null;
+          return ItemStack.EMPTY;
         }
 
         @Override
         public @Nonnull ItemStack removeStackFromSlot(int index) {
-          return null;
+          return ItemStack.EMPTY;
         }
 
       };
@@ -115,7 +115,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
           }
 
           @Override
-          public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
+          public boolean isItemValid(@Nonnull ItemStack par1ItemStack) {
             if (par1ItemStack.isEmpty()) {
               return false;
             }
@@ -144,14 +144,14 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
         addSlotToContainer(new Slot(baubles, i, baublesOffset, sideSlotY(i)) {
           @Override
-          public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
+          public boolean isItemValid(@Nonnull ItemStack par1ItemStack) {
             return inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
           }
 
           @Override
           public boolean canTakeStack(@Nonnull EntityPlayer playerIn) {
             ItemStack stackInSlot = inventory.getStackInSlot(getSlotIndex());
-            if (stackInSlot != null && stackInSlot.getItem() == Item.getItemFromBlock(Blocks.BARRIER)) {
+            if (stackInSlot.getItem() == Item.getItemFromBlock(Blocks.BARRIER)) {
               return false;
             }
             return super.canTakeStack(playerIn);
@@ -180,7 +180,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
     int startBaublesSlot = otherSlots;
     int endBaublesSlot = hasBaublesSlots() ? 0 : startBaublesSlot + getBaublesSize();
 
-    ItemStack copystack = null;
+    ItemStack copystack = ItemStack.EMPTY;
     Slot slot = inventorySlots.get(slotIndex);
     if (slot != null && slot.getHasStack()) {
 
@@ -196,7 +196,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
             && /*
                 * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
                 */!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
-          return null;
+          return ItemStack.EMPTY;
         }
 
       } else {
@@ -205,19 +205,19 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
           if (slotIndex >= startBaublesSlot && slotIndex < endBaublesSlot) {
             if (!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false) && !mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
-              return null;
+              return ItemStack.EMPTY;
             }
           } else if (slotIndex < endPlayerSlot) {
             if (/*
                  * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
                  */!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
-              return null;
+              return ItemStack.EMPTY;
             }
           } else if (slotIndex >= startHotBarSlot && slotIndex < endHotBarSlot) {
             if (/*
                  * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
                  */!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
-              return null;
+              return ItemStack.EMPTY;
             }
           }
 
@@ -225,7 +225,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
       }
 
       if (origStack.getCount() == 0) {
-        slot.putStack((ItemStack) null);
+        slot.putStack(ItemStack.EMPTY);
       } else {
         slot.onSlotChanged();
       }
@@ -233,7 +233,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
       slot.onSlotChanged();
 
       if (origStack.getCount() == copystack.getCount()) {
-        return null;
+        return ItemStack.EMPTY;
       }
 
       return slot.onTake(entityPlayer, origStack);
@@ -257,12 +257,12 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
   }
 
   private static class SlotImpl extends Slot {
-    public SlotImpl(IInventory inv, int idx, int x, int y) {
+    public SlotImpl(@Nonnull IInventory inv, int idx, int x, int y) {
       super(inv, idx, x, y);
     }
 
     @Override
-    public boolean isItemValid(@Nullable ItemStack itemStack) {
+    public boolean isItemValid(@Nonnull ItemStack itemStack) {
       return inventory.isItemValidForSlot(getSlotIndex(), itemStack);
     }
   }
