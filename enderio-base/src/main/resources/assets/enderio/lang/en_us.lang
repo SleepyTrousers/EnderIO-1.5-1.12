@@ -804,7 +804,7 @@ enderio.loot.capacitor.level.25=Nice %s
 enderio.loot.capacitor.level.30=Good %s
 enderio.loot.capacitor.level.35=Enhanced %s
 enderio.loot.capacitor.level.40=Premium %s
-enderio.loot.capacitor.level.42=Incredibly %s 
+enderio.loot.capacitor.level.42=Incredibly %s
 enderio.loot.capacitor.level.45=Unstable %s
 
 enderio.loot.capacitor.entry.count=9
