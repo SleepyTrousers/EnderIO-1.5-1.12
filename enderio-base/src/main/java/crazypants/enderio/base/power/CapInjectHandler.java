@@ -4,8 +4,6 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.power.forge.ForgeAdapter;
-import crazypants.enderio.base.power.tesla.TeslaAdapter;
-import net.darkhax.tesla.api.ITeslaHolder;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -30,17 +28,6 @@ public class CapInjectHandler {
       Log.error("Forge Energy failed to load. Forge Energy integration disabled. Reason: ");
       e.printStackTrace();
     }
-  }
-
-  @CapabilityInject(ITeslaHolder.class)
-  private static void capRegistered2(@Nonnull Capability<ITeslaHolder> cap) {
-    try {
-      TeslaAdapter.capRegistered(cap);
-    } catch (Throwable e) {
-      Log.error("Tesla API failed to load. Tesla integration disabled. Reason:");
-      e.printStackTrace();
-    }
-
   }
 
 }

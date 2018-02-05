@@ -13,7 +13,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameData;
 
 public class ItemHelper {
 
@@ -23,7 +22,7 @@ public class ItemHelper {
   public static @Nonnull NNList<ItemStack> getValidItems() {
     final NNList<ItemStack> list = new NNList<ItemStack>();
     final NNList<ItemStack> sublist = new NNList<ItemStack>();
-    for (final Item item : GameData.getItemRegistry()) {
+    for (final Item item : Item.REGISTRY) {
       for (CreativeTabs tab : item.getCreativeTabs()) {
         EnderIO.proxy.getSubItems(NullHelper.notnullM(item, "Null item in game registry"), tab, sublist);
         sublist.apply(new Callback<ItemStack>() {

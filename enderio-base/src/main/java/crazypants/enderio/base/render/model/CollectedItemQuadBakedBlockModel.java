@@ -21,9 +21,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
 
-public class CollectedItemQuadBakedBlockModel implements IPerspectiveAwareModel {
+public class CollectedItemQuadBakedBlockModel implements IBakedModel {
 
   private final @Nonnull IBakedModel parent;
   private final @Nonnull ItemQuadCollector quads;
@@ -73,12 +72,8 @@ public class CollectedItemQuadBakedBlockModel implements IPerspectiveAwareModel 
   }
 
   @Override
-  public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-    if (parent instanceof IPerspectiveAwareModel) {
-      Pair<? extends IBakedModel, Matrix4f> perspective = ((IPerspectiveAwareModel) parent).handlePerspective(cameraTransformType);
-      return Pair.of(this, perspective.getRight());
-    }
-    return Pair.of(this, null);
+  public @Nonnull Pair<? extends IBakedModel, Matrix4f> handlePerspective(@Nonnull ItemCameraTransforms.TransformType cameraTransformType) {
+    return Pair.of(this, parent.handlePerspective(cameraTransformType).getRight());
   }
 
   @Override

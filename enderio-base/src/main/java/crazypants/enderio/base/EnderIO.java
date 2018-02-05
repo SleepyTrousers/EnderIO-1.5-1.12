@@ -26,7 +26,6 @@ import crazypants.enderio.base.gui.handler.GuiHelper;
 import crazypants.enderio.base.handler.ServerTickHandler;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.init.CommonProxy;
-import crazypants.enderio.base.init.MigrationMapper;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.integration.bigreactors.BRProxy;
 import crazypants.enderio.base.integration.buildcraft.BuildcraftIntegration;
@@ -63,7 +62,6 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
@@ -269,11 +267,6 @@ public class EnderIO implements IEnderIOAddon {
     } catch (Exception e) {
       Log.error("Could not write mob types file: " + e);
     }
-  }
-
-  @EventHandler
-  public static void handleMappings(FMLMissingMappingsEvent event) {
-    MigrationMapper.handleMappings(event);
   }
 
   public static @Nonnull EnderIO getInstance() {

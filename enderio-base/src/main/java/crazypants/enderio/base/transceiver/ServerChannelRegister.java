@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
@@ -32,7 +33,7 @@ public class ServerChannelRegister extends ChannelRegister implements ICapabilit
   private long gen = 0;
 
   @SubscribeEvent
-  public static void onWorldCaps(AttachCapabilitiesEvent.World event) {
+  public static void onWorldCaps(AttachCapabilitiesEvent<World> event) {
     event.addCapability(CAP_KEY, instance);
   }
 
@@ -57,6 +58,7 @@ public class ServerChannelRegister extends ChannelRegister implements ICapabilit
       public NBTBase writeNBT(Capability<IServerChannelRegister> capability, IServerChannelRegister instanceIn, EnumFacing side) {
         return instanceIn.serializeNBT();
       }
+
       @Override
       public void readNBT(Capability<IServerChannelRegister> capability, IServerChannelRegister instanceIn, EnumFacing side, NBTBase nbt) {
         instanceIn.deserializeNBT(nbt);

@@ -35,7 +35,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry.Impl;
+import net.minecraftforge.registries.IForgeRegistryEntry.Impl;
 
 public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
 
@@ -248,8 +248,8 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
       }
     }
     for (EntityItem drop : res.getDrops()) {
-      if (Prep.isInvalid(allowedSeed) || ItemStack.areItemsEqual(allowedSeed, drop.getEntityItem())) {
-        if (canPlant(drop.getEntityItem()) && plant(farm, world, bc, drop.getEntityItem())) {
+      if (Prep.isInvalid(allowedSeed) || ItemStack.areItemsEqual(allowedSeed, drop.getItem())) {
+        if (canPlant(drop.getItem()) && plant(farm, world, bc, drop.getItem())) {
           res.getDrops().remove(drop);
           return;
         }

@@ -50,7 +50,6 @@ import net.minecraft.world.IWorldEventListener;
 import net.minecraft.world.MinecraftException;
 import net.minecraft.world.NextTickListEntry;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
@@ -63,6 +62,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldInfo;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraft.world.storage.loot.LootTableManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.capabilities.Capability;
@@ -84,11 +84,11 @@ public class PickupWorld extends World {
   public boolean spawnEntity(@Nonnull Entity entityIn) {
     if (entityIn instanceof EntityItem) {
       final EntityItem entityItem = (EntityItem) entityIn;
-      ItemStack itemstack = entityItem.getEntityItem();
-      int hook = ForgeEventFactory.onItemPickup(entityItem, player, itemstack);
+      ItemStack itemstack = entityItem.getItem();
+      int hook = ForgeEventFactory.onItemPickup(entityItem, player);
       if (hook >= 0) {
         if (hook == 1 || player.inventory.addItemStackToInventory(itemstack)) {
-          FMLCommonHandler.instance().firePlayerItemPickupEvent(player, entityItem);
+          FMLCommonHandler.instance().firePlayerItemPickupEvent(player, entityItem, itemstack);
 
           if (Prep.isInvalid(itemstack)) {
             entityItem.setDead();
@@ -1328,8 +1328,8 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public boolean func_191503_g(@Nonnull Entity p_191503_1_) {
-    return wrapped.func_191503_g(p_191503_1_);
+  public boolean isInsideWorldBorder(@Nonnull Entity p_191503_1_) {
+    return wrapped.isInsideWorldBorder(p_191503_1_);
   }
 
   @Override

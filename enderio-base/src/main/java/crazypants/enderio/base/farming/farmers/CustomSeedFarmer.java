@@ -27,7 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry.Impl;
+import net.minecraftforge.registries.IForgeRegistryEntry.Impl;
 
 public class CustomSeedFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
 

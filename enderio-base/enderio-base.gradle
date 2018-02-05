@@ -11,13 +11,9 @@ sourceSets {
 }
 
 dependencies {
-	deobfCompile "mcp.mobius.waila:Hwyla:${waila_version}"
 	deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
-	deobfCompile "li.cil.oc:OpenComputers:${oc_version}:api"
 	deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}:api"
 	deobfCompile "team.chisel.ctm:CTM:${ctm_version}:api"
 	
-	compile "mcjty.theoneprobe:TheOneProbe:${top_version}:api"
-	compile "appeng:appliedenergistics2:${ae_version}:api"
-	compile "net.darkhax.tesla:Tesla:${tesla_version}"
+	compile "mcjty.theoneprobe:TheOneProbe-1.12:${top_version}:api"
 }

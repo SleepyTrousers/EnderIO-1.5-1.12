@@ -32,7 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry.Impl;
+import net.minecraftforge.registries.IForgeRegistryEntry.Impl;
 
 public class ChorusFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
 

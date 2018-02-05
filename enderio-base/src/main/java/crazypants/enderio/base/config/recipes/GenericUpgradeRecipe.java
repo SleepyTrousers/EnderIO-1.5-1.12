@@ -8,26 +8,20 @@ import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.RecipeSorter.Category;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class GenericUpgradeRecipe extends ShapedOreRecipe {
 
-  static {
-    RecipeSorter.register("EnderIO:genericUpgradeRecipe", GenericUpgradeRecipe.class, Category.SHAPED, "after:minecraft:shaped");
-  }
-
   public GenericUpgradeRecipe(Block result, Object... recipe) {
-    super(result, recipe);
+    super(null, result, recipe);
   }
 
   public GenericUpgradeRecipe(Item result, Object... recipe) {
-    super(result, recipe);
+    super(null, result, recipe);
   }
 
   public GenericUpgradeRecipe(@Nonnull ItemStack result, Object... recipe) {
-    super(result, recipe);
+    super(null, result, recipe);
   }
 
   @SuppressWarnings("null")

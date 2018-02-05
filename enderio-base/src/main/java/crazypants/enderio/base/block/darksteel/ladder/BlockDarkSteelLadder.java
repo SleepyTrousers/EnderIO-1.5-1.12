@@ -40,7 +40,7 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
 
   @Override
   public void onEntityCollidedWithBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Entity entity) {
-    if (entity.onGround || entity.isCollidedVertically) {
+    if (entity.onGround || entity.collidedVertically) {
       return;
     }
 

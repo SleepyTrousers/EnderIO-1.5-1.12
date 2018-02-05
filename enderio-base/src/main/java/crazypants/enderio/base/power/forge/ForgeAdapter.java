@@ -23,9 +23,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class ForgeAdapter implements IPowerApiAdapter {
 
   private final @Nonnull Capability<IEnergyStorage> ENERGY_HANDLER;
-  
+
   private static final ResourceLocation KEY = new ResourceLocation(EnderIO.DOMAIN, "forgeadapter");
-  
+
   public static void capRegistered(@Nonnull Capability<IEnergyStorage> cap) {
     PowerHandlerUtil.addAdapter(new ForgeAdapter(cap));
     MinecraftForge.EVENT_BUS.register(ForgeAdapter.class);
@@ -57,11 +57,11 @@ public class ForgeAdapter implements IPowerApiAdapter {
   }
 
   @SubscribeEvent
-  public static void attachCapabilities(net.minecraftforge.event.AttachCapabilitiesEvent.TileEntity evt) {
-    if(evt.getCapabilities().containsKey(KEY)) {
+  public static void attachCapabilities(net.minecraftforge.event.AttachCapabilitiesEvent<TileEntity> evt) {
+    if (evt.getCapabilities().containsKey(KEY)) {
       return;
     }
-    TileEntity te = evt.getTileEntity();
+    TileEntity te = evt.getObject();
     if (te instanceof ILegacyPowerReceiver) {
       evt.addCapability(KEY, new InternalRecieverTileWrapper.RecieverTileCapabilityProvider((ILegacyPowerReceiver) te));
     } else if (te instanceof ILegacyPoweredTile) {

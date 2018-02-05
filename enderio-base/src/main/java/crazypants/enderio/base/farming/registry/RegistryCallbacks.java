@@ -1,33 +1,31 @@
 package crazypants.enderio.base.farming.registry;
 
-import java.util.Map;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
-import com.google.common.collect.BiMap;
 
 import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.base.farming.farmers.CustomSeedFarmer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryInternal;
+import net.minecraftforge.registries.RegistryManager;
 
 class RegistryCallbacks implements IForgeRegistry.AddCallback<IFarmerJoe>, IForgeRegistry.ClearCallback<IFarmerJoe>, IForgeRegistry.CreateCallback<IFarmerJoe> {
 
-  @SuppressWarnings("unchecked")
   @Override
-  public void onCreate(Map<ResourceLocation, ?> slaveset, BiMap<ResourceLocation, ? extends IForgeRegistry<?>> doNotTouch) {
-    ((Map<ResourceLocation, NNList<ResourceLocation>>) slaveset).put(Registry.PRIOLIST, new NNList<ResourceLocation>());
+  public void onCreate(IForgeRegistryInternal<IFarmerJoe> owner, RegistryManager stage) {
+    owner.setSlaveMap(Registry.PRIOLIST, new NNList<ResourceLocation>());
   }
 
-  @SuppressWarnings("unchecked")
   @Override
-  public void onClear(IForgeRegistry<IFarmerJoe> joe, Map<ResourceLocation, ?> slaveset) {
-    ((Map<ResourceLocation, NNList<ResourceLocation>>) slaveset).get(Registry.PRIOLIST).clear();
+  public void onClear(IForgeRegistryInternal<IFarmerJoe> owner, RegistryManager stage) {
+    owner.getSlaveMap(Registry.PRIOLIST, NNList.class).clear();
   }
 
-  @SuppressWarnings("unchecked")
   @Override
-  public void onAdd(IFarmerJoe joe, int id, Map<ResourceLocation, ?> slaveset) {
-    ((Map<ResourceLocation, NNList<ResourceLocation>>) slaveset).get(Registry.PRIOLIST).add(joe.getRegistryName());
+  public void onAdd(IForgeRegistryInternal<IFarmerJoe> owner, RegistryManager stage, int id, IFarmerJoe joe, @Nullable IFarmerJoe oldObj) {
+    owner.getSlaveMap(Registry.PRIOLIST, NNList.class).add(joe.getRegistryName());
     if (joe instanceof CustomSeedFarmer) {
       CustomSeedFarmer customSeedFarmer = (CustomSeedFarmer) joe;
       if (customSeedFarmer.doesDisableTreeFarm())

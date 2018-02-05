@@ -2,6 +2,7 @@ package crazypants.enderio.base.config.recipes.xml;
 
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
@@ -16,7 +17,7 @@ import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.integration.jei.JeiAccessor;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -64,34 +65,38 @@ public class Crafting extends AbstractCrafting {
       if (grid != null) {
         if (upgrade) {
           Log.debug("Registering GenericUpgradeRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(grid.getElements()));
-          GameRegistry.addRecipe(new GenericUpgradeRecipe(getOutput().getItemStack(), grid.getElements()));
+          ForgeRegistries.RECIPES
+              .register(new GenericUpgradeRecipe(getOutput().getItemStack(), grid.getElements()).setRegistryName(UUID.randomUUID().toString()));
         } else {
           Log.debug("Registering ShapedOreRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(grid.getElements()));
-          GameRegistry.addRecipe(new ShapedOreRecipe(getOutput().getItemStack(), grid.getElements()));
+          ForgeRegistries.RECIPES
+              .register(new ShapedOreRecipe(null, getOutput().getItemStack(), grid.getElements()).setRegistryName(UUID.randomUUID().toString()));
         }
         if (getOutput().hasAlternatives()) {
           getOutput().getAlternatives().apply(new Callback<ItemStack>() {
             @Override
             public void apply(@Nonnull ItemStack alternative) {
               Log.debug("Providing synthetic alternative recipe to JEI for oredicted output: " + alternative + ": " + Arrays.toString(grid.getElements()));
-              JeiAccessor.addAlternativeRecipe(new ShapedOreRecipe(alternative, grid.getElements()));
+              JeiAccessor.addAlternativeRecipe(new ShapedOreRecipe(null, alternative, grid.getElements()));
             }
           });
         }
       } else {
         if (upgrade) {
           Log.debug("Registering GenericUpgradeRecipeShapeless: " + getOutput().getItemStack() + ": " + Arrays.toString(shapeless.getElements()));
-          GameRegistry.addRecipe(new GenericUpgradeRecipeShapeless(getOutput().getItemStack(), shapeless.getElements()));
+          ForgeRegistries.RECIPES
+              .register(new GenericUpgradeRecipeShapeless(getOutput().getItemStack(), shapeless.getElements()).setRegistryName(UUID.randomUUID().toString()));
         } else {
           Log.debug("Registering ShapelessOreRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(shapeless.getElements()));
-          GameRegistry.addRecipe(new ShapelessOreRecipe(getOutput().getItemStack(), shapeless.getElements()));
+          ForgeRegistries.RECIPES
+              .register(new ShapelessOreRecipe(null, getOutput().getItemStack(), shapeless.getElements()).setRegistryName(UUID.randomUUID().toString()));
         }
         if (getOutput().hasAlternatives()) {
           getOutput().getAlternatives().apply(new Callback<ItemStack>() {
             @Override
             public void apply(@Nonnull ItemStack alternative) {
               Log.debug("Providing synthetic alternative recipe to JEI for oredicted output: " + alternative + ": " + Arrays.toString(shapeless.getElements()));
-              JeiAccessor.addAlternativeRecipe(new ShapelessOreRecipe(alternative, shapeless.getElements()));
+              JeiAccessor.addAlternativeRecipe(new ShapelessOreRecipe(null, alternative, shapeless.getElements()));
             }
           });
         }
