@@ -101,11 +101,13 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   protected int usePower(int wantToUse) {
-    if (random.nextFloat() < slicenspliceToolDamageChance) {
-      damageTool(getAxe(), axeIndex);
-    }
-    if (random.nextFloat() < slicenspliceToolDamageChance) {
-      damageTool(getShears(), shearsIndex);
+    if (wantToUse > 0) {
+      if (random.nextFloat() < slicenspliceToolDamageChance) {
+        damageTool(getAxe(), axeIndex);
+      }
+      if (random.nextFloat() < slicenspliceToolDamageChance) {
+        damageTool(getShears(), shearsIndex);
+      }
     }
     return super.usePower(wantToUse);
   }
