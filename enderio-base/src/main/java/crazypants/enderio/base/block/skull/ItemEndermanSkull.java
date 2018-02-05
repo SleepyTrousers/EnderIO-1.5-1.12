@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.EnderIOTab;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -31,10 +30,10 @@ public class ItemEndermanSkull extends ItemBlock {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item par1, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+  public void getSubItems(@Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     for (int j = 0; j < SkullType.values().length; ++j) {
       if (!SkullType.values()[j].showEyes()) {
-        par3List.add(new ItemStack(par1, 1, j));
+        par3List.add(new ItemStack(this, 1, j));
       }
     }
   }

@@ -6,6 +6,7 @@ import crazypants.enderio.base.block.darksteel.door.BlockItemDarkSteelDoor;
 import crazypants.enderio.base.paint.PaintUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -72,6 +73,11 @@ public class BlockItemPaintedDoor extends BlockItemDarkSteelDoor {
   @Override
   public @Nonnull String getUnlocalizedName() {
     return this.block.getUnlocalizedName();
+  }
+
+  @Override
+  public int getItemBurnTime(@Nonnull ItemStack itemStack) {
+    return block.getDefaultState().getMaterial() == Material.WOOD ? -1 : 0;
   }
 
 }

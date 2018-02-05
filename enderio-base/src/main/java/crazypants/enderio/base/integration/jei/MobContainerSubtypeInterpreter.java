@@ -18,8 +18,10 @@ public class MobContainerSubtypeInterpreter implements ISubtypeInterpreter {
   }
 
   @Override
-  @Nullable
-  public String getSubtypeInfo(@Nonnull ItemStack itemStack) {
+  public @Nonnull String apply(@Nullable ItemStack itemStack) {
+    if (itemStack == null) {
+      throw new NullPointerException("You want me to return something Nonnull for a null ItemStack? F.U.");
+    }
     CapturedMob capturedMob = CapturedMob.create(itemStack);
     if (capturedMob != null) {
       return capturedMob.getDisplayName();

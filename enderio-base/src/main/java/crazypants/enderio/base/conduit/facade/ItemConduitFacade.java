@@ -23,6 +23,7 @@ import crazypants.enderio.base.render.registry.ItemModelRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -110,8 +111,9 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(@Nonnull ItemStack item, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
-    super.addInformation(item, par2EntityPlayer, list, par4);
+  public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
+    super.addInformation(stack, worldIn, tooltip, flagIn);
+    // TOD? why is this here? Paint data?
   }
 
   @Override
@@ -143,9 +145,9 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
+  public void getSubItems(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
     for (EnumFacadeType type : EnumFacadeType.values()) {
-      subItems.add(new ItemStack(itemIn, 1, type.ordinal()));
+      subItems.add(new ItemStack(this, 1, type.ordinal()));
     }
   }
 

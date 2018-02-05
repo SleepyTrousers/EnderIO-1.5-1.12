@@ -128,7 +128,7 @@ public class MagnetController {
 
   private static boolean isBlackListed(EntityItem entity) {
     for (Item blacklisted : blacklist) {
-      if (blacklisted == entity.getEntityItem().getItem()) {
+      if (blacklisted == entity.getItem().getItem()) {
         return true;
       }
     }
@@ -160,7 +160,7 @@ public class MagnetController {
           for (Entity entity : entityLists[chunkY]) {
             if (!entity.isDead) {
               boolean isValidTarget = false;
-              if (entity.getEntityBoundingBox().intersectsWith(bb)) {
+              if (entity.getEntityBoundingBox().intersects(bb)) {
                 if (entity instanceof EntityItem) {
                   isValidTarget = !hasSolegnoliaAround(entity) && !isBlackListed((EntityItem) entity);
                 } else if (entity instanceof EntityXPOrb) {

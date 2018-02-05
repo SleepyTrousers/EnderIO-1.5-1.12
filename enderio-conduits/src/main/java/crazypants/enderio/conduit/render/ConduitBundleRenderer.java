@@ -29,9 +29,9 @@ import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.TileConduitBundle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -64,7 +64,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
   // TESR rendering
 
   @Override
-  public void renderTileEntityAt(@Nonnull TileConduitBundle te, double x, double y, double z, float partialTick, int b) {
+  public void render(@Nonnull TileConduitBundle te, double x, double y, double z, float partialTick, int b, float alpha) {
 
     IConduitBundle bundle = te;
     EntityPlayerSP player = Minecraft.getMinecraft().player;
@@ -95,7 +95,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
             GlStateManager.translate(x, y, z);
 
             Tessellator tessellator = Tessellator.getInstance();
-            VertexBuffer tes = tessellator.getBuffer();
+            BufferBuilder tes = tessellator.getBuffer();
             tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 
           }

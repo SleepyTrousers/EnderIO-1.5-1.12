@@ -150,14 +150,14 @@ public class ExistingItemFilterGui implements IItemFilterGui {
 
     snapshotB.onGuiInit();
 
-    mergeB.xPosition = x1;
-    mergeB.yPosition = y0;
+    mergeB.height = x1;
+    mergeB.packedFGColour = y0;
 
-    clearB.xPosition = x0;
-    clearB.yPosition = y1;
+    clearB.height = x0;
+    clearB.packedFGColour = y1;
 
-    showB.xPosition = x1;
-    showB.yPosition = y1;
+    showB.height = x1;
+    showB.packedFGColour = y1;
 
     clearB.enabled = filter.getSnapshot() != null;
     showB.enabled = clearB.enabled;

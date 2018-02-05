@@ -10,14 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.RecipeSorter.Category;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class CopyFilterRecipe implements IRecipe {
-
-  static {
-    RecipeSorter.register("EnderIO:copyFilter", CopyFilterRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
-  }
+public class CopyFilterRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
   private @Nonnull ItemStack output = ItemStack.EMPTY;
 
@@ -64,11 +59,6 @@ public class CopyFilterRecipe implements IRecipe {
   }
 
   @Override
-  public int getRecipeSize() {
-    return 1;
-  }
-
-  @Override
   public @Nonnull ItemStack getRecipeOutput() {
     return output;
   }
@@ -76,6 +66,11 @@ public class CopyFilterRecipe implements IRecipe {
   @Override
   public @Nonnull NonNullList<ItemStack> getRemainingItems(@Nonnull InventoryCrafting inv) {
     return NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+  }
+
+  @Override
+  public boolean canFit(int width, int height) {
+    return width * height >= 2;
   }
 
 }

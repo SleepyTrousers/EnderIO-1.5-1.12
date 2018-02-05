@@ -8,21 +8,16 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class UpgradeCapBankRecipe extends ShapedOreRecipe {
 
-  static {
-    RecipeSorter.register("enderio:upgrade_cap_bank_recipe", UpgradeCapBankRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped");
-  }
-
   public UpgradeCapBankRecipe(@Nonnull ItemStack result, Object... recipe) {
-    super(result, recipe);
+    super(null, result, recipe);
   }
 
   @Override
-  public boolean matches(InventoryCrafting inv, World world) {
+  public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world) {
     for (int y = 0; y < 3; y++) {
       for (int x = 0; x < 3; x++) {
         ItemStack st = inv.getStackInRowAndColumn(x, y);

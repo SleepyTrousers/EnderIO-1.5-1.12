@@ -15,9 +15,9 @@ import crazypants.enderio.base.config.Config;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.player.EntityPlayer;
@@ -117,7 +117,7 @@ public class YetaWrenchOverlayRenderer {
 
       VertexFormat vf = DefaultVertexFormats.POSITION_COLOR;
       Tessellator tess = Tessellator.getInstance();
-      VertexBuffer wr = tess.getBuffer();
+      BufferBuilder wr = tess.getBuffer();
       wr.begin(GL11.GL_QUADS, vf);
       wr.pos(x, y, -5).color(0, 0, 0, 0.2f).endVertex();
       ;

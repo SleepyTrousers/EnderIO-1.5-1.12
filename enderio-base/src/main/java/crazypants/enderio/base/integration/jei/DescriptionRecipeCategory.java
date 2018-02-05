@@ -25,7 +25,7 @@ public class DescriptionRecipeCategory {
         if (item != null) {
           final CreativeTabs creativeTab = item.getCreativeTab();
           if (creativeTab != null) {
-            item.getSubItems(item, creativeTab, items);
+            item.getSubItems(creativeTab, items);
           }
         }
       }

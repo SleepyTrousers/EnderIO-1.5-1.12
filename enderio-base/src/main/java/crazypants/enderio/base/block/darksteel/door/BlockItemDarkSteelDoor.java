@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 import crazypants.enderio.base.EnderIOTab;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemDoor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -28,12 +27,15 @@ public class BlockItemDarkSteelDoor extends ItemDoor {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
-    if (tab != null) {
-      subItems.add(new ItemStack(itemIn));
+  public void getSubItems(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
+    if (tab == EnderIOTab.tabNoTab) {
+      subItems.add(new ItemStack(this));
     }
   }
 
-}
+  @Override
+  public int getItemBurnTime(@Nonnull ItemStack itemStack) {
+    return 0;
+  }
 
-// TODO 1.12 add getBurnTime() {return 0; }
+}

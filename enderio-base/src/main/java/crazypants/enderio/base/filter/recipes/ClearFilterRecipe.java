@@ -14,14 +14,9 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.RecipeSorter.Category;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class ClearFilterRecipe implements IRecipe {
-
-  static {
-    RecipeSorter.register("EnderIO:clearFilter", ClearFilterRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
-  }
+public class ClearFilterRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
   private @Nonnull ItemStack output = ItemStack.EMPTY;
 
@@ -60,11 +55,6 @@ public class ClearFilterRecipe implements IRecipe {
   }
 
   @Override
-  public int getRecipeSize() {
-    return 1;
-  }
-
-  @Override
   public @Nonnull ItemStack getRecipeOutput() {
     return output;
   }
@@ -79,6 +69,11 @@ public class ClearFilterRecipe implements IRecipe {
   @Override
   public @Nonnull NonNullList<ItemStack> getRemainingItems(@Nonnull InventoryCrafting inv) {
     return NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+  }
+
+  @Override
+  public boolean canFit(int width, int height) {
+    return width >= 1 && height >= 1;
   }
 
 }

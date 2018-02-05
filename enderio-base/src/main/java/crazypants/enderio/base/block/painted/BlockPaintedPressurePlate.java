@@ -45,6 +45,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelRotation;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -410,12 +411,12 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   @Override
-  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     for (EnumPressurePlateType type : EnumPressurePlateType.values()) {
       if (tab == EnderIOTab.tabNoTab || type.ordinal() >= EnumPressurePlateType.DARKSTEEL.ordinal()) {
-        list.add(new ItemStack(itemIn, 1, EnumPressurePlateType.getMetaFromType(type, false)));
+        list.add(new ItemStack(this, 1, EnumPressurePlateType.getMetaFromType(type, false)));
       }
-      list.add(new ItemStack(itemIn, 1, EnumPressurePlateType.getMetaFromType(type, true)));
+      list.add(new ItemStack(this, 1, EnumPressurePlateType.getMetaFromType(type, true)));
     }
   }
 
@@ -458,8 +459,8 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(@Nonnull ItemStack stack, @Nonnull EntityPlayer playerIn, @Nonnull List<String> tooltip, boolean advanced) {
-      super.addInformation(stack, playerIn, tooltip, advanced);
+    public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
+      super.addInformation(stack, worldIn, tooltip, flagIn);
       CapturedMob capturedMob = CapturedMob.create(stack);
       if (capturedMob != null) {
         tooltip.add(Lang.PRESSURE_PLATE_TUNED.get(capturedMob.getDisplayName()));

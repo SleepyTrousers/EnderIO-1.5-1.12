@@ -114,4 +114,9 @@ public class InfinityRecipeCategory extends BlankRecipeCategory<InfinityRecipeCa
     minecraft.fontRenderer.drawString(text, 59 - stringWidth / 2, 36, 0xFFFFFF, false);
   }
 
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIO.MODID;
+  }
+
 }

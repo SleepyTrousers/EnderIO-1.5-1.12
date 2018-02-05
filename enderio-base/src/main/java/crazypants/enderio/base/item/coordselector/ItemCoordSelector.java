@@ -37,8 +37,8 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
   }
 
   @Override
-  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
-    ItemStack stack = new ItemStack(item);
+  public void getSubItems(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
+    ItemStack stack = new ItemStack(this);
     subItems.add(stack);
   }
 
@@ -57,7 +57,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
     Vec3d start = headVec.getVec3();
     Vec3d lookVec = player.getLook(1.0F);
     double reach = 500;
-    headVec.add(lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
+    headVec.add(lookVec.x * reach, lookVec.y * reach, lookVec.z * reach);
     RayTraceResult mop = world.rayTraceBlocks(start, headVec.getVec3());
     if (mop == null) {
       return false;

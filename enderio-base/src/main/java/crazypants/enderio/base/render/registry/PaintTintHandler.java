@@ -20,7 +20,7 @@ import net.minecraft.world.IBlockAccess;
 public class PaintTintHandler implements IBlockColor, IItemColor {
 
   @Override
-  public int getColorFromItemstack(@Nonnull ItemStack stack, int tintIndex) {
+  public int colorMultiplier(@Nonnull ItemStack stack, int tintIndex) {
     if (Prep.isInvalid(stack)) {
       return -1;
     }
@@ -31,18 +31,18 @@ public class PaintTintHandler implements IBlockColor, IItemColor {
       if (paintSource != null) {
         final ItemStack paintStack = new ItemStack(paintSource.getBlock(), 1, paintSource.getBlock().getMetaFromState(paintSource));
         if (paintStack.getItem() != item) {
-          return Minecraft.getMinecraft().getItemColors().getColorFromItemstack(paintStack, tintIndex);
+          return Minecraft.getMinecraft().getItemColors().colorMultiplier(paintStack, tintIndex);
         }
       }
     }
     if (item instanceof IItemColor) {
-      return ((IItemColor) item).getColorFromItemstack(stack, tintIndex);
+      return ((IItemColor) item).colorMultiplier(stack, tintIndex);
     }
     if (item instanceof ITintedItem) {
       return ((ITintedItem) item).getItemTint(stack, tintIndex);
     }
     if (block instanceof IItemColor) {
-      return ((IItemColor) block).getColorFromItemstack(stack, tintIndex);
+      return ((IItemColor) block).colorMultiplier(stack, tintIndex);
     }
     if (block instanceof ITintedItem) {
       return ((ITintedItem) block).getItemTint(stack, tintIndex);

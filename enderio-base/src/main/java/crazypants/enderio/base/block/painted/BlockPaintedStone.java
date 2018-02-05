@@ -137,9 +137,9 @@ public class BlockPaintedStone extends Block implements ITileEntityProvider, IPa
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (tab == EnderIOTab.tabNoTab) {
-      super.getSubBlocks(itemIn, tab, list);
+      super.getSubBlocks(tab, list);
     }
   }
 

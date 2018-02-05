@@ -18,9 +18,9 @@ import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitRenderer;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -435,7 +435,7 @@ public abstract class DefaultConduitRenderer implements IConduitRenderer {
   }
 
   protected void addVecWithUV(Vector3d vec, double u, double v, Vector4f color) {
-    VertexBuffer tes = Tessellator.getInstance().getBuffer();
+    BufferBuilder tes = Tessellator.getInstance().getBuffer();
     tes.pos(vec.x, vec.y, vec.z).tex(u, v).color(color.x, color.y, color.z, color.w).endVertex();
   }
 

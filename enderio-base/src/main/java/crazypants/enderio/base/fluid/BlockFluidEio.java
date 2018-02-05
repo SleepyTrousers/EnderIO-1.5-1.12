@@ -372,7 +372,7 @@ public final class BlockFluidEio {
     }
 
     @Override
-    public float getFluidHeightForRender(IBlockAccess world, BlockPos pos) {
+    public float getFluidHeightForRender(IBlockAccess world, BlockPos pos, @Nonnull IBlockState up) {
       IBlockState down = world.getBlockState(pos.down());
       if (down.getMaterial().isLiquid() || down.getBlock() instanceof IFluidBlock) {
         return 1;

@@ -45,8 +45,7 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public @Nonnull MapColor getMapColor(@Nonnull IBlockState state) {
+  public @Nonnull MapColor getMapColor(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     return MapColor.OBSIDIAN;
   }
 

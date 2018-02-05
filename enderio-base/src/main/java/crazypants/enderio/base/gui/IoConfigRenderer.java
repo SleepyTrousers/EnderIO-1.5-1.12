@@ -38,10 +38,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -281,7 +281,7 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     GlStateManager.disableLighting();
 
     RenderUtil.bindBlockTexture();
-    VertexBuffer tes = Tessellator.getInstance().getBuffer();
+    BufferBuilder tes = Tessellator.getInstance().getBuffer();
 
     GlStateManager.color(1, 1, 1);
     Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
@@ -446,7 +446,7 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
                 at.z--;
               }
             }
-            TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
+            TileEntityRendererDispatcher.instance.render(tile, at.x, at.y, at.z, 0);
           }
         }
       }
@@ -455,7 +455,7 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
 
   private void doWorldRenderPass(@Nonnull Vector3d trans, @Nonnull NNList<BlockPos> blocks, final @Nonnull BlockRenderLayer layer) {
 
-    VertexBuffer wr = Tessellator.getInstance().getBuffer();
+    BufferBuilder wr = Tessellator.getInstance().getBuffer();
     wr.begin(7, DefaultVertexFormats.BLOCK);
 
     Tessellator.getInstance().getBuffer().setTranslation(trans.x, trans.y, trans.z);
@@ -477,7 +477,7 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
   }
 
-  public void renderBlock(@Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull IBlockAccess blockAccess, @Nonnull VertexBuffer worldRendererIn) {
+  public void renderBlock(@Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull IBlockAccess blockAccess, @Nonnull BufferBuilder worldRendererIn) {
 
     try {
       BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();

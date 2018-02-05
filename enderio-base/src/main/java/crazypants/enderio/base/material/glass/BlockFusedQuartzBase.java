@@ -3,6 +3,7 @@ package crazypants.enderio.base.material.glass;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIOTab;
@@ -18,8 +19,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -122,17 +123,17 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(@Nonnull ItemStack par1ItemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean par4) {
-      super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-      FusedQuartzType type = determineQuartzType(par1ItemStack);
+    public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
+      super.addInformation(stack, worldIn, tooltip, flagIn);
+      FusedQuartzType type = determineQuartzType(stack);
       if (type.isBlastResistant()) {
-        par3List.add(Lang.BLOCK_BLAST_RESISTANT.get());
+        tooltip.add(Lang.BLOCK_BLAST_RESISTANT.get());
       }
       if (type.isEnlightened()) {
-        par3List.add(Lang.BLOCK_LIGHT_EMITTER.get());
+        tooltip.add(Lang.BLOCK_LIGHT_EMITTER.get());
       }
       if (type.getLightOpacity() > 0) {
-        par3List.add(Lang.BLOCK_LIGHT_BLOCKER.get());
+        tooltip.add(Lang.BLOCK_LIGHT_BLOCKER.get());
       }
     }
 

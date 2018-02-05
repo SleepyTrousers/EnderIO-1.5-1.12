@@ -22,7 +22,6 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.Attributes;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.client.model.ModelProcessingHelper;
 import net.minecraftforge.client.model.ModelStateComposition;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
@@ -157,7 +156,7 @@ public class PaintRegistry {
       IModelState state = sourceModel.getDefaultState();
       state = combine(state, rotation);
       if (state instanceof UVLock) {
-        sourceModel = ModelProcessingHelper.uvlock(sourceModel, true);
+        sourceModel = sourceModel.uvlock(true);
         state = ((UVLock) state).getParent();
       }
       return sourceModel.bake(state, Attributes.DEFAULT_BAKED_FORMAT, new Function<ResourceLocation, TextureAtlasSprite>() {

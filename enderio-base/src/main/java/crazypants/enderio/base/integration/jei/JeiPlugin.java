@@ -1,10 +1,10 @@
 package crazypants.enderio.base.integration.jei;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.Fluids;
@@ -51,10 +51,10 @@ public class JeiPlugin extends BlankModPlugin {
     registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
 
     // Add a couple of example recipes for the nut.dist stick as the custom recipe isn't picked up
-    List<ItemStack> inputs = new ArrayList<ItemStack>();
+    NNList<ItemStack> inputs = new NNList<ItemStack>();
     inputs.add(new ItemStack(Items.STICK));
     inputs.add(Fluids.NUTRIENT_DISTILLATION.getBucket());
-    ShapelessRecipes res = new ShapelessRecipes(new ItemStack(itemMaterial.getItemNN(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
+    ShapelessRecipes res = new ShapelessRecipes(null, new ItemStack(itemMaterial.getItemNN(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
     registry.addRecipes(Collections.singletonList(res), VanillaRecipeCategoryUid.CRAFTING);
 
     if (!JeiAccessor.ALTERNATIVES.isEmpty()) {

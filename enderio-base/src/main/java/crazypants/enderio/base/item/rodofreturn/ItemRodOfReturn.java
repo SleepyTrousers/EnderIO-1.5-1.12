@@ -35,11 +35,11 @@ import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TeleportUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -235,15 +235,15 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
-    super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    list.add(Lang.RETURN_ROD_FLUID.get(LangFluid.MB(FLUIDAMOUNT.getInt(itemStack, 0), Config.rodOfReturnFluidStorage)));
-    list.add(Lang.RETURN_ROD_POWER.get(LangPower.RF(getEnergyStored(itemStack), Config.rodOfReturnPowerStorage)));
+  public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
+    super.addInformation(stack, worldIn, tooltip, flagIn);
+    tooltip.add(Lang.RETURN_ROD_FLUID.get(LangFluid.MB(FLUIDAMOUNT.getInt(stack, 0), Config.rodOfReturnFluidStorage)));
+    tooltip.add(Lang.RETURN_ROD_POWER.get(LangPower.RF(getEnergyStored(stack), Config.rodOfReturnPowerStorage)));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 

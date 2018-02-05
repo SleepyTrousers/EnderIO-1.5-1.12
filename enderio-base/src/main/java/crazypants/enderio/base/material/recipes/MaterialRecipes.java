@@ -1,6 +1,7 @@
 package crazypants.enderio.base.material.recipes;
 
 import java.util.Locale;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
@@ -17,7 +18,7 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -98,21 +99,24 @@ public class MaterialRecipes {
   public static void addRecipes() {
 
     for (Alloy alloy : Alloy.values()) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(alloy.getStackBlock(), "iii", "iii", "iii", 'i', alloy.getOreIngot()));
-      GameRegistry.addRecipe(new ShapelessOreRecipe(alloy.getStackIngot(9), alloy.getOreBlock()));
+      ForgeRegistries.RECIPES.register(
+          new ShapedOreRecipe(null, alloy.getStackBlock(), "iii", "iii", "iii", 'i', alloy.getOreIngot()).setRegistryName(UUID.randomUUID().toString()));
+      ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(null, alloy.getStackIngot(9), alloy.getOreBlock()).setRegistryName(UUID.randomUUID().toString()));
 
-      GameRegistry.addRecipe(new ShapedOreRecipe(alloy.getStackIngot(), "nnn", "nnn", "nnn", 'n', alloy.getOreNugget()));
-      GameRegistry.addRecipe(new ShapelessOreRecipe(alloy.getStackNugget(9), alloy.getStackIngot()));
+      ForgeRegistries.RECIPES.register(
+          new ShapedOreRecipe(null, alloy.getStackIngot(), "nnn", "nnn", "nnn", 'n', alloy.getOreNugget()).setRegistryName(UUID.randomUUID().toString()));
+      ForgeRegistries.RECIPES
+          .register(new ShapelessOreRecipe(null, alloy.getStackNugget(9), alloy.getStackIngot()).setRegistryName(UUID.randomUUID().toString()));
     }
 
     for (EnumDyeColor color : EnumDyeColor.values()) {
       for (FusedQuartzType type : FusedQuartzType.values()) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G', type.getOreDictName(), 'C',
-            "dye" + dyes[color.getDyeDamage()]));
+        ForgeRegistries.RECIPES.register(new ShapedOreRecipe(null, new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G',
+            type.getOreDictName(), 'C', "dye" + dyes[color.getDyeDamage()]).setRegistryName(UUID.randomUUID().toString()));
       }
     }
 
-    GameRegistry.addRecipe(new NutritiousStickRecipe());
+    ForgeRegistries.RECIPES.register(new NutritiousStickRecipe().setRegistryName(UUID.randomUUID().toString()));
   }
 
 }

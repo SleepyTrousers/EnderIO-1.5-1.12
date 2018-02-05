@@ -16,6 +16,7 @@ import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.util.FacadeUtil;
 import net.minecraft.block.BlockColored;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -127,9 +128,9 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(@Nonnull Item par1, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+  public void getSubBlocks(@Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     for (EnumDyeColor enumdyecolor : EnumDyeColor.values()) {
-      par3List.add(new ItemStack(par1, 1, enumdyecolor.getMetadata()));
+      par3List.add(new ItemStack(this, 1, enumdyecolor.getMetadata()));
     }
   }
 
@@ -166,7 +167,7 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
 
   @Override
   public int getBlockTint(@Nonnull IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
-    return state.getValue(BlockColored.COLOR).getMapColor().colorValue;
+    return MapColor.getBlockColor(state.getValue(BlockColored.COLOR)).colorValue;
   }
 
   @Override
@@ -188,7 +189,7 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
 
     @Override
     public int getItemTint(@Nonnull ItemStack stack, int tintIndex) {
-      return EnumDyeColor.byMetadata(stack.getMetadata()).getMapColor().colorValue;
+      return MapColor.getBlockColor(EnumDyeColor.byMetadata(stack.getMetadata())).colorValue;
     }
 
     @Override

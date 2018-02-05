@@ -159,7 +159,7 @@ public class FakeNetHandlerPlayServer extends NetHandlerPlayServer {
   }
 
   @Override
-  public void disconnect(@Nonnull String reason) {
+  public void disconnect(@Nonnull ITextComponent textComponent) {
   }
 
   @Override

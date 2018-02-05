@@ -181,7 +181,7 @@ public class BlockMachineExtension extends BlockEio<TileEntityEio> {
   }
 
   @Override
-  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     // none
   }
 

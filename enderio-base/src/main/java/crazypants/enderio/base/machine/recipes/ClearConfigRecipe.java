@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.interfaces.IClearableConfiguration;
 import crazypants.enderio.util.Prep;
@@ -20,14 +19,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.RecipeSorter.Category;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class ClearConfigRecipe implements IRecipe {
-
-  static {
-    RecipeSorter.register(EnderIO.DOMAIN + ":clear_config", ClearConfigRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
-  }
+public class ClearConfigRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
   @Override
   public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world) {
@@ -82,11 +76,6 @@ public class ClearConfigRecipe implements IRecipe {
   }
 
   @Override
-  public int getRecipeSize() {
-    return 1;
-  }
-
-  @Override
   public @Nonnull ItemStack getRecipeOutput() {
     return Prep.getEmpty();
   }
@@ -106,6 +95,11 @@ public class ClearConfigRecipe implements IRecipe {
   @Override
   public @Nonnull NonNullList<ItemStack> getRemainingItems(@Nonnull InventoryCrafting inv) {
     return NNList.withSize(inv.getSizeInventory(), Prep.getEmpty());
+  }
+
+  @Override
+  public boolean canFit(int width, int height) {
+    return width >= 1 && height >= 1;
   }
 
 }

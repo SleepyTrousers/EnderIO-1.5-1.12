@@ -33,7 +33,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -89,7 +88,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
@@ -286,8 +285,8 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
     @Override
     public int compare(Entity paramT1, Entity paramT2) {
-      double distanceSqToEntity1 = paramT1 == null ? 0 : refPoint.getDistanceSqToEntity(paramT1);
-      double distanceSqToEntity2 = paramT2 == null ? 0 : refPoint.getDistanceSqToEntity(paramT2);
+      double distanceSqToEntity1 = paramT1 == null ? 0 : refPoint.getDistanceSq(paramT1);
+      double distanceSqToEntity2 = paramT2 == null ? 0 : refPoint.getDistanceSq(paramT2);
       if (distanceSqToEntity1 < distanceSqToEntity2)
         return -1;
       if (distanceSqToEntity1 > distanceSqToEntity2)

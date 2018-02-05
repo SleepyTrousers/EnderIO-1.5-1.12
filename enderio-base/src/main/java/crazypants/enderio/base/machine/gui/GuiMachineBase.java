@@ -89,7 +89,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     for (int i = 0; i < buttonList.size(); ++i) {
       GuiButton guibutton = buttonList.get(i);
-      guibutton.drawButton(mc, 0, 0);
+      guibutton.drawButton(mc, 0, 0, 0);
     }
 
     if (showRecipeButton()) {

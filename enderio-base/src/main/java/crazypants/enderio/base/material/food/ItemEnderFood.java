@@ -17,7 +17,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -44,7 +43,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
   }
 
   @Override
-  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubItems(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     for (EnderFood f : EnderFood.VALUES) {
       list.add(f.getStack());
     }

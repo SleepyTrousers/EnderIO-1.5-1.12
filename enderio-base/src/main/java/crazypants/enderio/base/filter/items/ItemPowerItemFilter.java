@@ -12,7 +12,6 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  *
@@ -30,10 +29,6 @@ public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade, IRe
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @Override

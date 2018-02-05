@@ -57,11 +57,11 @@ public class TeleportUtil {
     int from = entity.dimension;
     if (from != targetDim) {
       MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-      WorldServer fromDim = server.worldServerForDimension(from);
-      WorldServer toDim = server.worldServerForDimension(targetDim);
+      WorldServer fromDim = server.getWorld(from);
+      WorldServer toDim = server.getWorld(targetDim);
       Teleporter teleporter = new TeleporterEIO(toDim);
       // play sound at the dimension we are leaving for others to hear
-      SoundHelper.playSound(server.worldServerForDimension(entity.dimension), entity, source.sound, 1.0F, 1.0F);
+      SoundHelper.playSound(server.getWorld(entity.dimension), entity, source.sound, 1.0F, 1.0F);
       if (player != null) {
         server.getPlayerList().transferPlayerToDimension(player, targetDim, teleporter);
         if (from == 1 && entity.isEntityAlive()) { // get around vanilla End

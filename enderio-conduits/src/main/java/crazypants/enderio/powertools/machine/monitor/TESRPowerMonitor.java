@@ -13,8 +13,8 @@ import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.powertools.init.PowerToolObject;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
@@ -46,7 +46,7 @@ public class TESRPowerMonitor extends ManagedTESR<TilePowerMonitor> {
     te.bindTexture();
     Helper helper = threadLocalHelper.get();
 
-    VertexBuffer tes = Tessellator.getInstance().getBuffer();
+    BufferBuilder tes = Tessellator.getInstance().getBuffer();
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
     if (isPainted) {
       helper.setupVertices(bb2, xform);
@@ -122,12 +122,12 @@ public class TESRPowerMonitor extends ManagedTESR<TilePowerMonitor> {
       return dir;
     }
 
-    void addVecWithUV(VertexBuffer tes, Vector3d vec, double u, double v, float cm, EnumFacing normal) {
+    void addVecWithUV(BufferBuilder tes, Vector3d vec, double u, double v, float cm, EnumFacing normal) {
       tes.pos(vec.x, vec.y, vec.z).tex(u, v).color(cm, cm, cm, 1)
           .normal(normal.getDirectionVec().getX(), normal.getDirectionVec().getY(), normal.getDirectionVec().getZ()).endVertex();
     }
 
-    void renderSingleFace(VertexBuffer tes, EnumFacing face, float minU, float maxU, float minV, float maxV, VertexTransform xForm, float[] brightnessPerSide,
+    void renderSingleFace(BufferBuilder tes, EnumFacing face, float minU, float maxU, float minV, float maxV, VertexTransform xForm, float[] brightnessPerSide,
         boolean inside) {
       EnumFacing normal = rotate(xForm, inside ? face.getOpposite() : face);
 

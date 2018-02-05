@@ -1,12 +1,14 @@
 package crazypants.enderio.base.filter.recipes;
 
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import java.util.UUID;
+
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class FilterRecipes {
 
   public static void addRecipes() {
-    GameRegistry.addRecipe(new ClearFilterRecipe());
-    GameRegistry.addRecipe(new CopyFilterRecipe());
+    ForgeRegistries.RECIPES.register(new ClearFilterRecipe().setRegistryName(UUID.randomUUID().toString()));
+    ForgeRegistries.RECIPES.register(new CopyFilterRecipe().setRegistryName(UUID.randomUUID().toString()));
   }
 
 }

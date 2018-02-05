@@ -28,6 +28,7 @@ import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -285,8 +286,8 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public @Nonnull MapColor getMapColor() {
-    return state.getMapColor();
+  public @Nonnull MapColor getMapColor(@Nonnull IBlockAccess p_185909_1_, @Nonnull BlockPos p_185909_2_) {
+    return state.getMapColor(p_185909_1_, p_185909_2_);
   }
 
   @Override
@@ -399,12 +400,6 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     return state.collisionRayTrace(worldIn, pos1, start, end);
   }
 
-  @SuppressWarnings("deprecation")
-  @Override
-  public boolean isFullyOpaque() {
-    return state.isFullyOpaque();
-  }
-
   @Override
   public boolean doesSideBlockRendering(@Nonnull IBlockAccess world1, @Nonnull BlockPos pos1, @Nonnull EnumFacing side) {
     return state.doesSideBlockRendering(world1, pos1, side);
@@ -460,6 +455,16 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   @Override
   public boolean causesSuffocation() {
     return state.causesSuffocation();
+  }
+
+  @Override
+  public boolean isTopSolid() {
+    return state.isTopSolid();
+  }
+
+  @Override
+  public @Nonnull BlockFaceShape getBlockFaceShape(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos1, @Nonnull EnumFacing facing) {
+    return state.getBlockFaceShape(worldIn, pos1, facing);
   }
 
 }

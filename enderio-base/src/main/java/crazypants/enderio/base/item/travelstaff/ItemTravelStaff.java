@@ -105,7 +105,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 

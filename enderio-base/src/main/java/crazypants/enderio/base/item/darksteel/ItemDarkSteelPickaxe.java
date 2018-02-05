@@ -50,7 +50,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -95,7 +94,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     @Nonnull
     ItemStack is = new ItemStack(this);
     par3List.add(is);
@@ -216,21 +215,21 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   @Override
-  public float getStrVsBlock(@Nonnull ItemStack stack, @Nonnull IBlockState state) {
+  public float getDestroySpeed(@Nonnull ItemStack stack, @Nonnull IBlockState state) {
     if (state.getMaterial() == Material.GLASS) {
-      return toolMaterial.getEfficiencyOnProperMaterial();
+      return toolMaterial.getEfficiency();
     }
     if (useObsidianEffeciency(stack, state)) {
-      return toolMaterial.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered + Config.darkSteelPickEffeciencyObsidian;
+      return toolMaterial.getEfficiency() + Config.darkSteelPickEffeciencyBoostWhenPowered + Config.darkSteelPickEffeciencyObsidian;
     }
     if (isToolEffective(state, stack)) {
       if (Config.darkSteelPickPowerUsePerDamagePoint <= 0 ? EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
           : EnergyUpgradeManager.getEnergyStored(stack) > 0) {
-        return toolMaterial.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered;
+        return toolMaterial.getEfficiency() + Config.darkSteelPickEffeciencyBoostWhenPowered;
       }
-      return toolMaterial.getEfficiencyOnProperMaterial();
+      return toolMaterial.getEfficiency();
     }
-    return super.getStrVsBlock(stack, state);
+    return super.getDestroySpeed(stack, state);
   }
 
   public static boolean isToolEffective(@Nonnull IBlockState state, @Nonnull ItemStack stack) {

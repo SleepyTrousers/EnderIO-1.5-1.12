@@ -95,7 +95,7 @@ public class Commune implements IFarmerJoe {
   }
 
   @Override
-  public Class<? super IFarmerJoe> getRegistryType() {
+  public Class<IFarmerJoe> getRegistryType() {
     return null;
   }
 

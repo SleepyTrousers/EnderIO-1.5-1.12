@@ -39,7 +39,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -96,7 +95,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     @Nonnull
     ItemStack is = new ItemStack(this);
     par3List.add(is);
@@ -208,15 +207,15 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   }
 
   @Override
-  public float getStrVsBlock(@Nonnull ItemStack stack, @Nonnull IBlockState state) {
+  public float getDestroySpeed(@Nonnull ItemStack stack, @Nonnull IBlockState state) {
     if (ItemDarkSteelPickaxe.isToolEffective(state, stack)) {
       if (Config.darkSteelAxePowerUsePerDamagePoint <= 0 ? EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
           : EnergyUpgradeManager.getEnergyStored(stack) > 0) {
-        return toolMaterial.getEfficiencyOnProperMaterial() + Config.darkSteelAxeEffeciencyBoostWhenPowered;
+        return toolMaterial.getEfficiency() + Config.darkSteelAxeEffeciencyBoostWhenPowered;
       }
-      return toolMaterial.getEfficiencyOnProperMaterial();
+      return toolMaterial.getEfficiency();
     }
-    return super.getStrVsBlock(stack, state);
+    return super.getDestroySpeed(stack, state);
   }
 
   @Override

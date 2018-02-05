@@ -50,11 +50,11 @@ public class ItemAlloy extends Item implements IHaveRenderers {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull final Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull final NonNullList<ItemStack> list) {
+  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull final NonNullList<ItemStack> list) {
     NNList.of(Alloy.class).apply(new Callback<Alloy>() {
       @Override
       public void apply(@Nonnull Alloy alloy) {
-        list.add(new ItemStack(item, 1, Alloy.getMetaFromType(alloy)));
+        list.add(new ItemStack(ItemAlloy.this, 1, Alloy.getMetaFromType(alloy)));
       }
     });
   }

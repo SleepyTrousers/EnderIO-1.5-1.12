@@ -472,8 +472,8 @@ public class TravelController {
           return true;
         }
         // need to step
-        Vector3d sv = new Vector3d(start.xCoord, start.yCoord, start.zCoord);
-        Vector3d rayDir = new Vector3d(target.xCoord, target.yCoord, target.zCoord);
+        Vector3d sv = new Vector3d(start.x, start.y, start.z);
+        Vector3d rayDir = new Vector3d(target.x, target.y, target.z);
         rayDir.sub(sv);
         rayDir.normalize();
         rayDir.add(sv);
@@ -689,7 +689,7 @@ public class TravelController {
     }
     return null;
   }
-  
+
   public BlockPos getPosPlayerOn() {
     return onBlockCoord;
   }

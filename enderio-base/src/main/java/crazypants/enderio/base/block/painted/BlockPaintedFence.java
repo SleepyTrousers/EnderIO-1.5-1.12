@@ -100,8 +100,8 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
-  public boolean canConnectTo(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
-    if (super.canConnectTo(worldIn, pos)) {
+  public boolean canBeConnectedTo(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing facing) {
+    if (super.canBeConnectedTo(worldIn, pos, facing)) {
       return true;
     }
     final IBlockState blockState2 = worldIn.getBlockState(pos);
@@ -250,9 +250,9 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (tab == EnderIOTab.tabNoTab) {
-      super.getSubBlocks(itemIn, tab, list);
+      super.getSubBlocks(tab, list);
     }
   }
 

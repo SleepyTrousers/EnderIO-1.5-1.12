@@ -19,14 +19,9 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.RecipeSorter.Category;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class NutritiousStickRecipe implements IRecipe {
-
-  static {
-    RecipeSorter.register("EnderIO:nutritiousStick", NutritiousStickRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
-  }
+public class NutritiousStickRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
   @Override
   public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World worldIn) {
@@ -63,11 +58,6 @@ public class NutritiousStickRecipe implements IRecipe {
   @Override
   public @Nonnull ItemStack getCraftingResult(@Nonnull InventoryCrafting inv) {
     return Material.NUTRITIOUS_STICK.getStack();
-  }
-
-  @Override
-  public int getRecipeSize() {
-    return 2;
   }
 
   @Override
@@ -113,5 +103,10 @@ public class NutritiousStickRecipe implements IRecipe {
     public void setTanksDirty() {
     }
 
+  }
+
+  @Override
+  public boolean canFit(int width, int height) {
+    return width >= 2 && height >= 2;
   }
 }

@@ -46,7 +46,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
@@ -107,7 +106,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
@@ -140,7 +139,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public void onEntityDrop(LivingDropsEvent evt) {
 
-    final Entity entity = evt.getSource().getEntity();
+    final Entity entity = evt.getSource().getTrueSource();
     final EntityLivingBase entityLiving = evt.getEntityLiving();
     if (!(entity instanceof EntityPlayer) || entityLiving == null) {
       return;
@@ -187,8 +186,8 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
         int existing = 0;
         for (EntityItem stack : evt.getDrops()) {
-          if (stack.getEntityItem().getItem() == Items.ENDER_PEARL) {
-            existing += stack.getEntityItem().getCount();
+          if (stack.getItem().getItem() == Items.ENDER_PEARL) {
+            existing += stack.getItem().getCount();
           }
         }
         int toDrop = numPearls - existing;
@@ -273,7 +272,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   private boolean containsDrop(LivingDropsEvent evt, @Nonnull ItemStack skull) {
     for (EntityItem ei : evt.getDrops()) {
-      if (ei != null && ei.getEntityItem().getItem() == skull.getItem() && ei.getEntityItem().getItemDamage() == skull.getItemDamage()) {
+      if (ei != null && ei.getItem().getItem() == skull.getItem() && ei.getItem().getItemDamage() == skull.getItemDamage()) {
         return true;
       }
     }

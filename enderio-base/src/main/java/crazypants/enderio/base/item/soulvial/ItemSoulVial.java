@@ -3,6 +3,7 @@ package crazypants.enderio.base.item.soulvial;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
@@ -17,6 +18,7 @@ import crazypants.enderio.base.render.itemoverlay.MobNameOverlayRenderHelper;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -211,13 +213,13 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
   }
 
   @Override
-  public void getSubItems(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
     if (tab == getCreativeTab() || tab == EnderIOTab.tabNoTab) {
-      super.getSubItems(itemIn, tab, subItems);
+      super.getSubItems(tab, subItems);
     }
     if (tab == EnderIOTab.tabEnderIO || tab == EnderIOTab.tabNoTab) {
       for (CapturedMob capturedMob : CapturedMob.getAllSouls()) {
-        subItems.add(capturedMob.toStack(itemIn, 1, 1));
+        subItems.add(capturedMob.toStack(this, 1, 1));
       }
     }
   }
@@ -234,18 +236,19 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(@Nonnull ItemStack par1ItemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean par4) {
-    CapturedMob capturedMob = CapturedMob.create(par1ItemStack);
+  public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
+    super.addInformation(stack, worldIn, tooltip, flagIn);
+    CapturedMob capturedMob = CapturedMob.create(stack);
     if (capturedMob != null) {
-      par3List.add(capturedMob.getDisplayName());
+      tooltip.add(capturedMob.getDisplayName());
 
       float health = capturedMob.getHealth();
       if (health >= 0) {
         float maxHealth = capturedMob.getMaxHealth();
         if (maxHealth >= 0) {
-          par3List.add(Lang.SOUL_VIAL_HEALTH.get(String.format("%3.1f/%3.1f", health, maxHealth)));
+          tooltip.add(Lang.SOUL_VIAL_HEALTH.get(String.format("%3.1f/%3.1f", health, maxHealth)));
         } else {
-          par3List.add(Lang.SOUL_VIAL_HEALTH.get(String.format("%3.1f", health)));
+          tooltip.add(Lang.SOUL_VIAL_HEALTH.get(String.format("%3.1f", health)));
         }
       }
 
@@ -254,16 +257,16 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
         Fluid fluid = FluidRegistry.getFluid(fluidName);
         if (fluid != null) {
           String localizedName = fluid.getLocalizedName(new FluidStack(fluid, 1));
-          par3List.add(Lang.SOUL_VIAL_FLUID.get(localizedName));
+          tooltip.add(Lang.SOUL_VIAL_FLUID.get(localizedName));
         }
       }
 
       DyeColor color = capturedMob.getColor();
       if (color != null) {
-        par3List.add(Lang.SOUL_VIAL_COLOR.get(color.getLocalisedName()));
+        tooltip.add(Lang.SOUL_VIAL_COLOR.get(color.getLocalisedName()));
       }
     } else {
-      par3List.add(Lang.SOUL_VIAL_EMPTY.get());
+      tooltip.add(Lang.SOUL_VIAL_EMPTY.get());
     }
   }
 

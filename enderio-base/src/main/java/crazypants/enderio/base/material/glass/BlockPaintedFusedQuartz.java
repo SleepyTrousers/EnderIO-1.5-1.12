@@ -28,7 +28,6 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -98,10 +97,10 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(@Nonnull Item par1, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+  public void getSubBlocks(@Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     if (par2CreativeTabs == EnderIOTab.tabNoTab) {
       for (FusedQuartzType fqt : FusedQuartzType.values()) {
-        par3List.add(new ItemStack(par1, 1, fqt.ordinal()));
+        par3List.add(new ItemStack(this, 1, fqt.ordinal()));
       }
     }
   }

@@ -22,6 +22,7 @@ import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredMachineEntity;
 import info.loenwind.scheduler.Celeb;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -105,7 +106,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     int guiY0 = owner.getGuiTop();
 
     if (machine.getCapacitorData() == DefaultCapacitorData.NONE) {
-      paintCapacitorError(partialTicks, guiX0, guiY0);
+      paintCapacitorError(guiX0, guiY0);
     } else {
       paintPowerBar(guiX0, guiY0);
       if (Celeb.C24.isOn()) {
@@ -153,7 +154,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     owner.drawTexturedModalRect(drawX, drawY, drawUoverlay, drawVoverlay, barWidth, barHeight);
   }
 
-  private void paintCapacitorError(float partialTicks, int guiX0, int guiY0) {
+  private void paintCapacitorError(int guiX0, int guiY0) {
     final int drawX = guiX0 + x + 1; // >Dirty hack, that fixes wrong fake capacitor position.
     final int drawY = guiY0 + y + 16 - 6;
 
@@ -174,7 +175,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     int stackY = drawY + barHeight - textureHeight - 13;
 
     GlStateManager.pushMatrix();
-    float f1 = MathHelper.sin((EnderIO.proxy.getTickCount() + partialTicks) / 10.0F) * 4F;
+    float f1 = MathHelper.sin((EnderIO.proxy.getTickCount() + Minecraft.getMinecraft().getRenderPartialTicks()) / 10.0F) * 4F;
     GlStateManager.translate(0, f1, 0);
 
     owner.drawFakeItemStack(stackX, stackY, new ItemStack(ModObject.itemBasicCapacitor.getItemNN()));

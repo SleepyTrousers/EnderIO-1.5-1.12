@@ -35,17 +35,15 @@ public class HandlerSoulBound {
   /*
    * This is called the moment the player dies and drops his stuff.
    * 
-   * We go early, so we can get our items before other mods put them into some
-   * grave. Also remove them from the list so they won't get duped. If the
-   * inventory overflows, e.g. because everything there and the armor is
-   * soulbound, let the remainder be dropped/graved.
+   * We go early, so we can get our items before other mods put them into some grave. Also remove them from the list so they won't get duped. If the inventory
+   * overflows, e.g. because everything there and the armor is soulbound, let the remainder be dropped/graved.
    */
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public void onPlayerDeath(PlayerDropsEvent evt) {
     if (evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer || evt.isCanceled()) {
       return;
     }
-    if(evt.getEntityPlayer().world.getGameRules().getBoolean("keepInventory")) {
+    if (evt.getEntityPlayer().world.getGameRules().getBoolean("keepInventory")) {
       return;
     }
 
@@ -54,8 +52,8 @@ public class HandlerSoulBound {
     ListIterator<EntityItem> iter = evt.getDrops().listIterator();
     while (iter.hasNext()) {
       EntityItem ei = iter.next();
-      ItemStack item = ei.getEntityItem();
-      if(isSoulBound(item)) {
+      ItemStack item = ei.getItem();
+      if (isSoulBound(item)) {
         if (addToPlayerInventory(evt.getEntityPlayer(), item)) {
           iter.remove();
         }
@@ -70,7 +68,7 @@ public class HandlerSoulBound {
     if (baubles != null) {
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
         ItemStack item = baubles.getStackInSlot(i);
-        if(isSoulBound(item)) {
+        if (isSoulBound(item)) {
           if (addToPlayerInventory(evt.getEntityPlayer(), item)) {
             baubles.setInventorySlotContents(i, Prep.getEmpty());
           }
@@ -114,7 +112,7 @@ public class HandlerSoulBound {
     ListIterator<EntityItem> iter = evt.getDrops().listIterator();
     while (iter.hasNext()) {
       EntityItem ei = iter.next();
-      ItemStack item = ei.getEntityItem();
+      ItemStack item = ei.getItem();
       if (isSoulBound(item)) {
         if (addToPlayerInventory(evt.getEntityPlayer(), item)) {
           iter.remove();
@@ -136,15 +134,15 @@ public class HandlerSoulBound {
     if (!evt.isWasDeath() || evt.isCanceled()) {
       return;
     }
-    if(evt.getOriginal() == null || evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer) {
+    if (evt.getOriginal() == null || evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer) {
       return;
     }
-    if(evt.getEntityPlayer().world.getGameRules().getBoolean("keepInventory")) {
+    if (evt.getEntityPlayer().world.getGameRules().getBoolean("keepInventory")) {
       return;
     }
-    if (evt.getOriginal() == evt.getEntityPlayer()
-        || evt.getOriginal().inventory == evt.getEntityPlayer().inventory
-        || (evt.getOriginal().inventory.armorInventory == evt.getEntityPlayer().inventory.armorInventory && evt.getOriginal().inventory.mainInventory == evt.getEntityPlayer().inventory.mainInventory)) {
+    if (evt.getOriginal() == evt.getEntityPlayer() || evt.getOriginal().inventory == evt.getEntityPlayer().inventory
+        || (evt.getOriginal().inventory.armorInventory == evt.getEntityPlayer().inventory.armorInventory
+            && evt.getOriginal().inventory.mainInventory == evt.getEntityPlayer().inventory.mainInventory)) {
       Log.warn("Player " + evt.getEntityPlayer().getName() + " just died and respawned in their old body. Did someone fire a PlayerEvent.Clone(death=true) "
           + "for a teleportation? Supressing Soulbound enchantment for zombie player.");
       return;
@@ -154,7 +152,7 @@ public class HandlerSoulBound {
 
     for (int i = 0; i < evt.getOriginal().inventory.armorInventory.size(); i++) {
       ItemStack item = evt.getOriginal().inventory.armorInventory.get(i);
-      if(isSoulBound(item)) {
+      if (isSoulBound(item)) {
         if (addToPlayerInventory(evt.getEntityPlayer(), item)) {
           evt.getOriginal().inventory.armorInventory.set(i, Prep.getEmpty());
         }
@@ -162,7 +160,7 @@ public class HandlerSoulBound {
     }
     for (int i = 0; i < evt.getOriginal().inventory.mainInventory.size(); i++) {
       ItemStack item = evt.getOriginal().inventory.mainInventory.get(i);
-      if(isSoulBound(item)) {
+      if (isSoulBound(item)) {
         if (addToPlayerInventory(evt.getEntityPlayer(), item)) {
           evt.getOriginal().inventory.mainInventory.set(i, Prep.getEmpty());
         }
@@ -185,9 +183,9 @@ public class HandlerSoulBound {
     if (evt.getEntityPlayer().world.getGameRules().getBoolean("keepInventory")) {
       return;
     }
-    if (evt.getOriginal() == evt.getEntityPlayer()
-        || evt.getOriginal().inventory == evt.getEntityPlayer().inventory
-        || (evt.getOriginal().inventory.armorInventory == evt.getEntityPlayer().inventory.armorInventory && evt.getOriginal().inventory.mainInventory == evt.getEntityPlayer().inventory.mainInventory)) {
+    if (evt.getOriginal() == evt.getEntityPlayer() || evt.getOriginal().inventory == evt.getEntityPlayer().inventory
+        || (evt.getOriginal().inventory.armorInventory == evt.getEntityPlayer().inventory.armorInventory
+            && evt.getOriginal().inventory.mainInventory == evt.getEntityPlayer().inventory.mainInventory)) {
       return;
     }
 
@@ -242,10 +240,10 @@ public class HandlerSoulBound {
   }
 
   private boolean addToPlayerInventory(EntityPlayer entityPlayer, ItemStack item) {
-    if(item == null || entityPlayer == null) {
+    if (item == null || entityPlayer == null) {
       return false;
     }
-    if(item.getItem() instanceof ItemArmor) {
+    if (item.getItem() instanceof ItemArmor) {
       ItemArmor arm = (ItemArmor) item.getItem();
       int index = arm.armorType.getIndex();
       if (Prep.isInvalid(entityPlayer.inventory.armorInventory.get(index))) {

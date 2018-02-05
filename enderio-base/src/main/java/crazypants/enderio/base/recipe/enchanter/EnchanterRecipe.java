@@ -14,6 +14,7 @@ import crazypants.enderio.util.Prep;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 
 public class EnchanterRecipe implements IMachineRecipe {
@@ -79,7 +80,7 @@ public class EnchanterRecipe implements IMachineRecipe {
     int level = getLevelForStackSize(slot1.getCount());
     EnchantmentData enchantmentData = new EnchantmentData(enchantment, level);
     ItemStack output = new ItemStack(Items.ENCHANTED_BOOK);
-    Items.ENCHANTED_BOOK.addEnchantment(output, enchantmentData);
+    ItemEnchantedBook.addEnchantment(output, enchantmentData);
     return new ResultStack[] { new ResultStack(output) };
   }
 
@@ -126,8 +127,8 @@ public class EnchanterRecipe implements IMachineRecipe {
           item.setCount(stackSizePerLevel * level);
           lapis.setCount(getLapizForLevel(level));
           if (item.getCount() <= item.getMaxStackSize() && lapis.getCount() <= lapis.getMaxStackSize()) {
-            result.add(getQuantitiesConsumed(new NNList<>(new MachineRecipeInput(0, BOOK.getItemStacks().get(0)), new MachineRecipeInput(1, item),
-                new MachineRecipeInput(2, lapis))));
+            result.add(getQuantitiesConsumed(
+                new NNList<>(new MachineRecipeInput(0, BOOK.getItemStacks().get(0)), new MachineRecipeInput(1, item), new MachineRecipeInput(2, lapis))));
           }
         }
       }

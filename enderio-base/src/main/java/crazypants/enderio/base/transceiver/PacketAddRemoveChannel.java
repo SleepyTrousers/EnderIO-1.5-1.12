@@ -6,6 +6,7 @@ import com.enderio.core.common.util.UserIdent;
 import crazypants.enderio.base.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -45,7 +46,7 @@ public class PacketAddRemoveChannel implements IMessage {
     public IMessage onMessage(PacketAddRemoveChannel message, MessageContext ctx) {
       if (ctx.side == Side.SERVER) {
         if (!message.channel.getUser().equals(UserIdent.NOBODY) && !message.channel.getUser().equals(ctx.getServerHandler().player.getGameProfile())) {
-          ctx.getServerHandler().player.connection.disconnect("Don't mess with other players' channels, you cheat.");
+          ctx.getServerHandler().player.connection.disconnect(new TextComponentString("Don't mess with other players' channels, you cheat."));
           return null;
         }
         if (message.isAdd) {

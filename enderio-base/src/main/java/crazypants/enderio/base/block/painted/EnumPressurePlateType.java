@@ -82,7 +82,7 @@ public enum EnumPressurePlateType implements IStringSerializable {
         int result = 0;
         for (Entity entity : list) {
           if (entity instanceof EntityItem) {
-            ItemStack stack = ((EntityItem) entity).getEntityItem();
+            ItemStack stack = ((EntityItem) entity).getItem();
             result += stack.getCount();
             if (result >= 15) {
               return 15;
@@ -106,8 +106,7 @@ public enum EnumPressurePlateType implements IStringSerializable {
     this.whiteClasses = Collections.emptyList();
   }
 
-  private EnumPressurePlateType(@Nonnull Class<? extends Entity> searchClass,
-      @SuppressWarnings("unchecked") Class<? extends Entity>... whiteClasses) {
+  private EnumPressurePlateType(@Nonnull Class<? extends Entity> searchClass, @SuppressWarnings("unchecked") Class<? extends Entity>... whiteClasses) {
     this.countingMode = CountingMode.BINARY;
     this.searchClass = searchClass;
     this.whiteClasses = Arrays.<Class<? extends Entity>> asList(whiteClasses);
@@ -130,11 +129,11 @@ public enum EnumPressurePlateType implements IStringSerializable {
   public @Nonnull String getName() {
     return name().toLowerCase(Locale.ENGLISH);
   }
-  
+
   public @Nonnull String getUnlocName(@Nonnull Item me) {
     return me.getUnlocalizedName() + "." + getName();
   }
-  
+
   public static @Nonnull EnumPressurePlateType getTypeFromMeta(int meta) {
     int meta1 = meta >> 1;
     return NullHelper.notnullJ(values()[meta1 >= 0 && meta1 < values().length ? meta1 : 0], "Enum.values()");
@@ -171,9 +170,8 @@ public enum EnumPressurePlateType implements IStringSerializable {
         if (entity == null) {
           return false;
         }
-        if (!entity.isEntityAlive() || entity.doesEntityNotTriggerPressurePlate() || 
-            ((entity instanceof EntityPlayer) && ((EntityPlayer) entity).isSpectator()) ||
-            (capturedMob != null && !capturedMob.isSameType(entity))) {
+        if (!entity.isEntityAlive() || entity.doesEntityNotTriggerPressurePlate() || ((entity instanceof EntityPlayer) && ((EntityPlayer) entity).isSpectator())
+            || (capturedMob != null && !capturedMob.isSameType(entity))) {
           return false;
         }
         if (searchClass.isInstance(entity) && whiteClasses.isEmpty()) {

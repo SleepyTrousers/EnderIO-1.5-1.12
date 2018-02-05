@@ -3,6 +3,7 @@ package crazypants.enderio.base.filter.items;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
@@ -16,14 +17,15 @@ import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.ClientUtil;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -65,7 +67,7 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item par1, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+  public void getSubItems(@Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     for (BasicFilterTypes filterType : BasicFilterTypes.values()) {
       par3List.add(new ItemStack(this, 1, filterType.ordinal()));
     }
@@ -73,17 +75,18 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(@Nonnull ItemStack par1ItemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean par4) {
-    if (FilterRegistry.isFilterSet(par1ItemStack)) {
+  public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
+    super.addInformation(stack, worldIn, tooltip, flagIn);
+    if (FilterRegistry.isFilterSet(stack)) {
       if (!SpecialTooltipHandler.showAdvancedTooltips()) {
-        par3List.add(Lang.CONDUIT_FILTER.get());
-        SpecialTooltipHandler.addShowDetailsTooltip(par3List);
+        tooltip.add(Lang.CONDUIT_FILTER.get());
+        SpecialTooltipHandler.addShowDetailsTooltip(tooltip);
       } else {
-        par3List.add(Lang.CONDUIT_FILTER_CONFIGURED.get(TextFormatting.ITALIC));
-        par3List.add(Lang.CONDUIT_FILTER_CLEAR.get(TextFormatting.ITALIC));
+        tooltip.add(Lang.CONDUIT_FILTER_CONFIGURED.get(TextFormatting.ITALIC));
+        tooltip.add(Lang.CONDUIT_FILTER_CLEAR.get(TextFormatting.ITALIC));
       }
     } else {
-      par3List.add(Lang.CONDUIT_FILTER.get());
+      tooltip.add(Lang.CONDUIT_FILTER.get());
     }
   }
 

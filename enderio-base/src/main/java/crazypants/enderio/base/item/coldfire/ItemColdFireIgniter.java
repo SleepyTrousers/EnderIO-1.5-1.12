@@ -18,6 +18,7 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -213,9 +214,9 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
-    super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    list.add(LangFluid.MB(FLUIDAMOUNT.getInt(itemStack, 0), FLUID_CAPACITY, getFluidType(itemStack)));
+  public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
+    super.addInformation(stack, worldIn, tooltip, flagIn);
+    tooltip.add(LangFluid.MB(FLUIDAMOUNT.getInt(stack, 0), FLUID_CAPACITY, getFluidType(stack)));
   }
 
   @Override
@@ -239,8 +240,8 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
   }
 
   @Override
-  public void getSubItems(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
-    final ItemStack stack = new ItemStack(itemIn);
+  public void getSubItems(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
+    final ItemStack stack = new ItemStack(this);
     subItems.add(stack.copy());
     FLUIDAMOUNT.setInt(stack, FLUID_CAPACITY);
     subItems.add(stack);

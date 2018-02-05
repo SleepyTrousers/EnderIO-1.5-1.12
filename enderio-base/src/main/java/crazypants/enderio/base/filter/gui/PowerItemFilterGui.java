@@ -65,11 +65,11 @@ public class PowerItemFilterGui implements IItemFilterGui {
     int y0 = gui.getGuiTop() + 65;
     int x1 = x0 + 45;
 
-    modeB.xPosition = x0;
-    modeB.yPosition = y0;
+    modeB.width = x0;
+    modeB.id = y0;
 
-    levelB.xPosition = x1;
-    levelB.yPosition = y0;
+    levelB.width = x1;
+    levelB.id = y0;
 
     switch (filter.getMode()) {
     case LESS:

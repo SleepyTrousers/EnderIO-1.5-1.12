@@ -19,10 +19,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.BlockRenderLayer;
@@ -120,7 +120,7 @@ public class BlockSceneRenderer {
   }
 
   private void doWorldRenderPass(@Nonnull Vector3d trans, @Nonnull NNList<Pair<BlockPos, IBlockState>> blocks, final @Nonnull BlockRenderLayer layer) {
-    VertexBuffer wr = Tessellator.getInstance().getBuffer();
+    BufferBuilder wr = Tessellator.getInstance().getBuffer();
     wr.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
     wr.setTranslation(trans.x, trans.y, trans.z);
     blocks.apply(new Callback<Pair<BlockPos, IBlockState>>() {
@@ -138,7 +138,7 @@ public class BlockSceneRenderer {
     wr.setTranslation(0, 0, 0);
   }
 
-  public void renderBlock(@Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull VertexBuffer worldRendererIn) {
+  public void renderBlock(@Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull BufferBuilder worldRendererIn) {
     try {
       BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
       EnumBlockRenderType type = state.getRenderType();

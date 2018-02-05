@@ -3,6 +3,7 @@ package crazypants.enderio.base.filter.items;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
@@ -16,6 +17,7 @@ import crazypants.enderio.base.filter.filters.ExistingItemFilter;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -81,11 +83,12 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(@Nonnull ItemStack par1ItemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean par4) {
-    if (FilterRegistry.isFilterSet(par1ItemStack)) {
+  public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
+    super.addInformation(stack, worldIn, tooltip, flagIn);
+    if (FilterRegistry.isFilterSet(stack)) {
       if (SpecialTooltipHandler.showAdvancedTooltips()) {
-        par3List.add(Lang.CONDUIT_FILTER_CONFIGURED.get(TextFormatting.ITALIC));
-        par3List.add(Lang.CONDUIT_FILTER_CLEAR.get(TextFormatting.ITALIC));
+        tooltip.add(Lang.CONDUIT_FILTER_CONFIGURED.get(TextFormatting.ITALIC));
+        tooltip.add(Lang.CONDUIT_FILTER_CLEAR.get(TextFormatting.ITALIC));
       }
     }
   }

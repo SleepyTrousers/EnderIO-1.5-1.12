@@ -20,11 +20,11 @@ import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.power.AbstractPoweredItem;
 import crazypants.enderio.base.power.IInternalPoweredItem;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -77,7 +77,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
@@ -88,9 +88,9 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
-    super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    list.add(LangPower.RF(getEnergyStored(itemStack), Config.magnetPowerCapacityRF));
+  public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
+    super.addInformation(stack, worldIn, tooltip, flagIn);
+    tooltip.add(LangPower.RF(getEnergyStored(stack), Config.magnetPowerCapacityRF));
   }
 
   @Override

@@ -22,10 +22,10 @@ import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -145,8 +145,8 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     tabAreas.set(tabNo, result);
 
     if (button != null) {
-      button.xPosition = result.x;
-      button.yPosition = result.y;
+      button.x = result.x;
+      button.y = result.y;
       button.width = result.width;
       button.height = result.height;
       button.enabled = !isActive;
@@ -171,7 +171,7 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
       GlStateManager.color(.9f, .9f, .9f, 1);
     }
 
-    VertexBuffer tes = Tessellator.getInstance().getBuffer();
+    BufferBuilder tes = Tessellator.getInstance().getBuffer();
     RenderUtil.bindTexture(IconEIO.map.getTexture());
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
@@ -193,7 +193,7 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     return new Rectangle(x + bg_x, y - 1, bg_w + 3 + 1, IconEIO.TAB_BG.getHeight() + 2);
   }
 
-  private void renderTabPart(@Nonnull VertexBuffer tes, int x, int y, int u, int v, int w, int h) {
+  private void renderTabPart(@Nonnull BufferBuilder tes, int x, int y, int u, int v, int w, int h) {
     double minU = (double) u / IconEIO.map.getSize();
     double maxU = (double) (u + w) / IconEIO.map.getSize();
     double minV = (double) v / IconEIO.map.getSize();

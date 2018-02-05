@@ -17,6 +17,7 @@ import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -72,10 +73,10 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item par1, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     for (DefaultCapacitorData dcd : DefaultCapacitorData.values()) {
       if (dcd.isRegular()) {
-        par3List.add(new ItemStack(par1, 1, dcd.ordinal()));
+        par3List.add(new ItemStack(this, 1, dcd.ordinal()));
       }
     }
   }
@@ -87,15 +88,16 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(@Nonnull ItemStack stack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean advanced) {
-    par3List.add(Lang.MACHINE_UPGRADE.get());
+  public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
+    super.addInformation(stack, worldIn, tooltip, flagIn);
+    tooltip.add(Lang.MACHINE_UPGRADE.get());
     if (SpecialTooltipHandler.showAdvancedTooltips()) {
-      SpecialTooltipHandler.addDetailedTooltipFromResources(par3List, Lang.MACHINE_UPGRADE.getKey());
+      SpecialTooltipHandler.addDetailedTooltipFromResources(tooltip, Lang.MACHINE_UPGRADE.getKey());
     } else {
-      SpecialTooltipHandler.addShowDetailsTooltip(par3List);
+      SpecialTooltipHandler.addShowDetailsTooltip(tooltip);
     }
     if (NbtValue.GLINT.hasTag(stack)) {
-      par3List.add(EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack), NbtValue.CAPNAME.getString(stack, "(!%$&§*&%*???")));
+      tooltip.add(EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack), NbtValue.CAPNAME.getString(stack, "(!%$&§*&%*???")));
     }
   }
 

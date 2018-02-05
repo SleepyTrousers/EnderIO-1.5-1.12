@@ -14,6 +14,7 @@ import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.lang.Lang;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -109,15 +110,15 @@ public class ItemLocationPrintout extends Item implements IEioGuiHandler {
   }
 
   @Override
-  public void addInformation(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull List<String> list, boolean p_77624_4_) {
+  public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
+    super.addInformation(stack, worldIn, tooltip, flagIn);
     TelepadTarget target = TelepadTarget.readFromNBT(stack);
     if (target != null) {
       if (target.isValid()) {
-        list.add(BlockCoord.chatString(new BlockPos(target.getLocation()), TextFormatting.GRAY));
-        list.add(TelepadTarget.getDimenionName(target.getDimension()));
+        tooltip.add(BlockCoord.chatString(new BlockPos(target.getLocation()), TextFormatting.GRAY));
+        tooltip.add(TelepadTarget.getDimenionName(target.getDimension()));
       }
     }
-    super.addInformation(stack, player, list, p_77624_4_);
   }
 
   @Override
@@ -159,7 +160,7 @@ public class ItemLocationPrintout extends Item implements IEioGuiHandler {
   }
 
   @Override
-  public void getSubItems(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
+  public void getSubItems(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
     return;
   }
 

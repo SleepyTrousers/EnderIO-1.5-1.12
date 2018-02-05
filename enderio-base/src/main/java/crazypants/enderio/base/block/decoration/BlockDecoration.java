@@ -71,11 +71,11 @@ public class BlockDecoration extends Block implements IHaveRenderers, IModObject
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     NNIterator<EnumDecoBlock> iterator = NNList.of(EnumDecoBlock.class).iterator();
     while (iterator.hasNext()) {
       EnumDecoBlock type = iterator.next();
-      list.add(new ItemStack(itemIn, 1, EnumDecoBlock.getMetaFromType(type)));
+      list.add(new ItemStack(this, 1, EnumDecoBlock.getMetaFromType(type)));
       if (type == maxMeta) {
         return;
       }

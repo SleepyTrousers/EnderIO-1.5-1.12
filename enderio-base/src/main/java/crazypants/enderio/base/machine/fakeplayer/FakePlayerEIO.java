@@ -22,7 +22,7 @@ public class FakePlayerEIO extends FakePlayer {
   ItemStack prevWeapon = Prep.getEmpty();
 
   public FakePlayerEIO(World world, BlockPos pos, GameProfile profile) {
-    super(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(world.provider.getDimension()), profile);
+    super(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(world.provider.getDimension()), profile);
     posX = pos.getX() + 0.5;
     posY = pos.getY() + 0.5;
     posZ = pos.getZ() + 0.5;

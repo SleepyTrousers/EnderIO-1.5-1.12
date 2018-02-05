@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
@@ -58,7 +57,7 @@ public class DarkSteelUpgradeRecipeCategory {
 
     NNList<ItemStack> blacklist = new NNList<>();
     for (UpgradePath rec : allRecipes) {
-      rec.getOutput().getItem().getSubItems(rec.getOutput().getItem(), getCreativeTab(rec), blacklist);
+      rec.getOutput().getItem().getSubItems(getCreativeTab(rec), blacklist);
     }
 
     NNList<ItemStack> seen = new NNList<>();
@@ -128,8 +127,10 @@ public class DarkSteelUpgradeRecipeCategory {
   public static class DarkSteelUpgradeSubtypeInterpreter implements ISubtypeInterpreter {
 
     @Override
-    @Nullable
-    public String getSubtypeInfo(@Nonnull ItemStack itemStack) {
+    public @Nonnull String apply(ItemStack itemStack) {
+      if (itemStack == null) {
+        throw new NullPointerException("You want me to return something Nonnull for a null ItemStack? F.U.");
+      }
       String result = DarkSteelRecipeManager.getUpgradesAsString(itemStack);
       Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemStack);
       final List<Enchantment> keyList = new NNList<>(enchantments.keySet());
@@ -142,6 +143,9 @@ public class DarkSteelUpgradeRecipeCategory {
       });
       for (Enchantment enchantment : keyList) {
         result += "/" + safeString(enchantment);
+      }
+      if (result == null) {
+        throw new NullPointerException("That stack doesn't have subtype data. Ask someone else.");
       }
       return result;
     }

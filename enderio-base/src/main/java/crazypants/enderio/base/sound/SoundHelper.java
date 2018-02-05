@@ -123,7 +123,7 @@ public class SoundHelper {
    * 
    */
   public static void playSound(World world, BlockPos soundLocation, Vec3d offset, IModSound sound, float volume, float pitch) {
-    playSound(world, soundLocation.getX() + offset.xCoord, soundLocation.getY() + offset.yCoord, soundLocation.getZ() + offset.zCoord, sound, volume, pitch);
+    playSound(world, soundLocation.getX() + offset.x, soundLocation.getY() + offset.y, soundLocation.getZ() + offset.z, sound, volume, pitch);
   }
 
   /**

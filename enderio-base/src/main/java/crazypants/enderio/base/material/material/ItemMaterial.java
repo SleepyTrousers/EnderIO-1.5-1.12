@@ -51,15 +51,14 @@ public class ItemMaterial extends Item implements IHaveRenderers, IResourceToolt
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull final Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull final NonNullList<ItemStack> list) {
+  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull final NonNullList<ItemStack> list) {
     Material.getActiveMaterials().apply(new Callback<Material>() {
       @Override
       public void apply(@Nonnull Material alloy) {
-        list.add(new ItemStack(item, 1, Material.getMetaFromType(alloy)));
+        list.add(new ItemStack(ItemMaterial.this, 1, Material.getMetaFromType(alloy)));
       }
     });
   }
-
 
   @Override
   @SideOnly(Side.CLIENT)
