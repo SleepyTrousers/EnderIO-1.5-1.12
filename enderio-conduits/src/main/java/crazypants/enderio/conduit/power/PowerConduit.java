@@ -576,7 +576,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
     private boolean isExtract() {
       switch (getConnectionMode(side)) {
-      case INPUT:
+      case OUTPUT:
       case IN_OUT:
         return isRedstoneEnabled(side);
       default:
@@ -586,7 +586,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
     private boolean isReceive() {
       switch (getConnectionMode(side)) {
-      case OUTPUT:
+      case INPUT:
       case IN_OUT:
         return isRedstoneEnabled(side);
       default:
