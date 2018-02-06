@@ -11,7 +11,7 @@
         "inventory": [{ "model": "enderio:item_dark_steel_door" }],
         "half":{
           "upper": {},
-          "bottom": {}
+          "lower": {}
         },
         "hinge":{
           "left": {},
