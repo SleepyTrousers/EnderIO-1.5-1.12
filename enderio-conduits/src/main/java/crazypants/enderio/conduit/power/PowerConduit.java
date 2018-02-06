@@ -1,12 +1,34 @@
 package crazypants.enderio.conduit.power;
 
+import static crazypants.enderio.base.conduit.ConnectionMode.INPUT;
+import static crazypants.enderio.base.conduit.ConnectionMode.OUTPUT;
+import static crazypants.enderio.conduit.init.ConduitObject.item_power_conduit;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
-import crazypants.enderio.base.conduit.*;
+
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IGuiExternalConnection;
+import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
@@ -39,15 +61,6 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.Map.Entry;
-
-import static crazypants.enderio.base.conduit.ConnectionMode.INPUT;
-import static crazypants.enderio.base.conduit.ConnectionMode.OUTPUT;
-import static crazypants.enderio.conduit.init.ConduitObject.item_power_conduit;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit, IConduitComponent {
 
@@ -312,7 +325,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   /**
    * Used to get the capability of the conduit for the given direction
    *
-   * @param dir side for the capability
+   * @param dir
+   *          side for the capability
    * @return returns the connection with reference to the relevant side
    */
   private IEnergyStorage getEnergyDir(EnumFacing dir) {
@@ -509,11 +523,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     return new PowerConduitNetwork();
   }
 
-  //  @SideOnly(Side.CLIENT)
-  //  @Override
-  //  public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
-  //    return new PowerSettings(gui, con);
-  //  }
+  // @SideOnly(Side.CLIENT)
+  // @Override
+  // public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
+  // return new PowerSettings(gui, con);
+  // }
 
   @SideOnly(Side.CLIENT)
   @Nonnull
@@ -576,7 +590,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
     private boolean isExtract() {
       switch (getConnectionMode(side)) {
-      case INPUT:
+      case OUTPUT:
       case IN_OUT:
         return isRedstoneEnabled(side);
       default:
@@ -586,7 +600,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
     private boolean isReceive() {
       switch (getConnectionMode(side)) {
-      case OUTPUT:
+      case INPUT:
       case IN_OUT:
         return isRedstoneEnabled(side);
       default:
