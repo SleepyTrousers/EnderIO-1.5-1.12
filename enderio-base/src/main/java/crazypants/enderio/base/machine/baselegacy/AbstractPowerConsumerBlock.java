@@ -9,12 +9,12 @@ import net.minecraft.item.Item;
 
 public abstract class AbstractPowerConsumerBlock<T extends AbstractPowerConsumerEntity> extends AbstractPoweredMachineBlock<T> {
 
-  protected AbstractPowerConsumerBlock(@Nonnull IModObject mo, Class<T> teClass, @Nonnull Material mat) {
-    super(mo, teClass, mat);
+  protected AbstractPowerConsumerBlock(@Nonnull IModObject mo, @Nonnull Material mat) {
+    super(mo, mat);
   }
 
-  protected AbstractPowerConsumerBlock(@Nonnull IModObject mo, Class<T> teClass) {
-    super(mo, teClass);
+  protected AbstractPowerConsumerBlock(@Nonnull IModObject mo) {
+    super(mo);
   }
 
   @Override

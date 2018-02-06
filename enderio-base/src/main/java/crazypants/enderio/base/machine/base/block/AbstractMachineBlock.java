@@ -51,8 +51,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   protected final @Nonnull Random random;
 
-  protected AbstractMachineBlock(@Nonnull IModObject mo, @Nullable Class<T> teClass, @Nonnull Material mat) {
-    super(mo, teClass, mat);
+  protected AbstractMachineBlock(@Nonnull IModObject mo, @Nonnull Material mat) {
+    super(mo, mat);
     setHardness(2.0F);
     setSoundType(SoundType.METAL);
     setHarvestLevel("pickaxe", 0);
@@ -64,8 +64,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
-  protected AbstractMachineBlock(@Nonnull IModObject mo, @Nullable Class<T> teClass) {
-    this(mo, teClass, new Material(MapColor.IRON));
+  protected AbstractMachineBlock(@Nonnull IModObject mo) {
+    this(mo, new Material(MapColor.IRON));
   }
 
   @Override

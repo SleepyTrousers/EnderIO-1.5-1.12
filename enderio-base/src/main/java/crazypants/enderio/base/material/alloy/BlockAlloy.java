@@ -44,7 +44,7 @@ public class BlockAlloy extends BlockEio<TileEntityEio> implements IAdvancedTool
   public static final @Nonnull PropertyEnum<Alloy> VARIANT = PropertyEnum.<Alloy> create("variant", Alloy.class);
 
   private BlockAlloy(@Nonnull IModObject modObject) {
-    super(modObject, null, Material.IRON);
+    super(modObject, Material.IRON);
     setSoundType(SoundType.METAL);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
   }

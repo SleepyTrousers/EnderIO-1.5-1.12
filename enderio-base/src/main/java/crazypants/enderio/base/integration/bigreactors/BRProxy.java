@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 
 import crazypants.enderio.base.Log;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class BRProxy {
@@ -28,7 +28,7 @@ public class BRProxy {
 
   private static Method getTurbineBlockData;
 
-  public static void init(FMLPreInitializationEvent event) {
+  public static void init(FMLInitializationEvent event) {
     if (Loader.isModLoaded("bigreactors")) {
       try {
         ReactorInterior = ReflectionHelper.getClass(BRProxy.class.getClassLoader(), "erogenousbeef.bigreactors.api.registry.ReactorInterior");

@@ -61,7 +61,7 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
   }
 
   protected BlockInfinity(@Nonnull IModObject modObject, boolean silent) {
-    super(modObject, null, Material.BARRIER);
+    super(modObject, Material.BARRIER);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
     // volume -1 gives effective volume of 0 when used by ItemBlock
     setSoundType(new SoundType(-1.0F, 1.0F, SoundEvents.BLOCK_CLOTH_BREAK, SoundEvents.BLOCK_CLOTH_STEP, SoundEvents.BLOCK_CLOTH_PLACE,

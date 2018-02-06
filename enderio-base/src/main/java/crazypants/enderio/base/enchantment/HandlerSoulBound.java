@@ -4,11 +4,15 @@ import java.util.ListIterator;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
+
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.integration.galacticraft.GalacticraftUtil;
 import crazypants.enderio.util.Prep;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,15 +26,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 import static crazypants.enderio.util.NbtValue.FLUIDAMOUNT;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class HandlerSoulBound {
-
-  private HandlerSoulBound() {
-  }
 
   /*
    * This is called the moment the player dies and drops his stuff.
@@ -39,7 +43,7 @@ public class HandlerSoulBound {
    * overflows, e.g. because everything there and the armor is soulbound, let the remainder be dropped/graved.
    */
   @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public void onPlayerDeath(PlayerDropsEvent evt) {
+  public static void onPlayerDeath(PlayerDropsEvent evt) {
     if (evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer || evt.isCanceled()) {
       return;
     }
@@ -99,7 +103,7 @@ public class HandlerSoulBound {
    * removed drops, we'll get nothing here.
    */
   @SubscribeEvent(priority = EventPriority.LOWEST)
-  public void onPlayerDeathLate(PlayerDropsEvent evt) {
+  public static void onPlayerDeathLate(PlayerDropsEvent evt) {
     if (evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer || evt.isCanceled()) {
       return;
     }
@@ -130,7 +134,7 @@ public class HandlerSoulBound {
    * mod may move stuff out of the old inventory, too.
    */
   @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public void onPlayerClone(PlayerEvent.Clone evt) {
+  public static void onPlayerClone(PlayerEvent.Clone evt) {
     if (!evt.isWasDeath() || evt.isCanceled()) {
       return;
     }
@@ -173,7 +177,7 @@ public class HandlerSoulBound {
    * be deleted. Note the dropping at the old location, because the new player object's location has not yet been set.
    */
   @SubscribeEvent(priority = EventPriority.LOWEST)
-  public void onPlayerCloneLast(PlayerEvent.Clone evt) {
+  public static void onPlayerCloneLast(PlayerEvent.Clone evt) {
     if (!evt.isWasDeath() || evt.isCanceled()) {
       return;
     }
@@ -221,7 +225,7 @@ public class HandlerSoulBound {
     }
   }
 
-  private boolean tryToSpawnItemInWorld(EntityPlayer entityPlayer, @Nonnull ItemStack item) {
+  private static boolean tryToSpawnItemInWorld(EntityPlayer entityPlayer, @Nonnull ItemStack item) {
     if (entityPlayer != null) {
       EntityItem entityitem = new EntityItem(entityPlayer.world, entityPlayer.posX, entityPlayer.posY + 0.5, entityPlayer.posZ, item);
       entityitem.setPickupDelay(40);
@@ -235,11 +239,14 @@ public class HandlerSoulBound {
     return false;
   }
 
-  private boolean isSoulBound(@Nonnull ItemStack item) {
-    return EnchantmentHelper.getEnchantmentLevel(Enchantments.getSoulbound(), item) > 0;
+  @ObjectHolder(EnderIO.DOMAIN + ":soulbound")
+  public static final Enchantment SOULBOUND = null;
+
+  private static boolean isSoulBound(@Nonnull ItemStack item) {
+    return EnchantmentHelper.getEnchantmentLevel(NullHelper.notnullF(SOULBOUND, "Soulbound went unbound"), item) > 0;
   }
 
-  private boolean addToPlayerInventory(EntityPlayer entityPlayer, ItemStack item) {
+  private static boolean addToPlayerInventory(EntityPlayer entityPlayer, ItemStack item) {
     if (item == null || entityPlayer == null) {
       return false;
     }

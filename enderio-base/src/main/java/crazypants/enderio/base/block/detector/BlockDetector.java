@@ -67,7 +67,7 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
   private final boolean silent;
 
   protected BlockDetector(@Nonnull IModObject modObject, boolean silent) {
-    super(modObject, TileEntityPaintedBlock.class);
+    super(modObject);
     this.silent = silent;
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
     initDefaultState();

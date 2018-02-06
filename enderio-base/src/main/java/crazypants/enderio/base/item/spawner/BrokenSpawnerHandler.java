@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNMap;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.SpawnerConfig;
 import crazypants.enderio.base.init.ModObject;
@@ -21,16 +22,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class BrokenSpawnerHandler {
 
-  public static void init(@Nonnull FMLPreInitializationEvent event) {
+  static {
     try {
       getEntityIdMethod = ReflectionHelper.findMethod(MobSpawnerBaseLogic.class, "getEntityId", "func_190895_g");
     } catch (Exception e) {
@@ -41,15 +42,10 @@ public class BrokenSpawnerHandler {
     } catch (Exception e) {
       Log.error("Broken Spawner: Could not find field: spawnDelay/field_98286_b");
     }
-
-    MinecraftForge.EVENT_BUS.register(BrokenSpawnerHandler.class);
   }
 
   private static Method getEntityIdMethod;
   private static Field spawnDelayField;
-
-  private BrokenSpawnerHandler() {
-  }
 
   private static final @Nonnull NNMap<BlockPos, ItemStack> dropCache = new NNMap.Brutal<BlockPos, ItemStack>();
 

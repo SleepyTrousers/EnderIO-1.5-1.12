@@ -19,7 +19,6 @@ import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.recipes.RecipeLoader;
-import crazypants.enderio.base.enchantment.Enchantments;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.gui.handler.GuiHelper;
@@ -31,8 +30,6 @@ import crazypants.enderio.base.integration.bigreactors.BRProxy;
 import crazypants.enderio.base.integration.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.base.integration.chiselsandbits.CABIMC;
 import crazypants.enderio.base.integration.te.TEUtil;
-import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradePowerAdapter;
-import crazypants.enderio.base.item.spawner.BrokenSpawnerHandler;
 import crazypants.enderio.base.loot.Loot;
 import crazypants.enderio.base.loot.LootManager;
 import crazypants.enderio.base.material.OreDictionaryPreferences;
@@ -101,22 +98,9 @@ public class EnderIO implements IEnderIOAddon {
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
-    FluidFuelRegister.init(event);
-    Fluids.registerFluids();
-
-    ModObjectRegistry.init(event);
-
-    EnergyUpgradePowerAdapter.init(event);
-
     DarkSteelController.init(event);
 
-    MaterialRecipes.init(event);
-
     Loot.init(event);
-
-    BrokenSpawnerHandler.init(event);
-
-    BRProxy.init(event);
 
     ServerChannelRegister.init(event);
 
@@ -127,7 +111,12 @@ public class EnderIO implements IEnderIOAddon {
   public void load(@Nonnull FMLInitializationEvent event) {
     Config.init(event);
 
+    FluidFuelRegister.init(event);
+    Fluids.registerFluids();
+
     ModObjectRegistry.init(event);
+
+    BRProxy.init(event);
 
     CABIMC.init(event);
 
@@ -136,9 +125,6 @@ public class EnderIO implements IEnderIOAddon {
     GuiHelper.init(event);
 
     MaterialRecipes.init(event); // handles oredict registration
-
-    // Register the enchants
-    Enchantments.init(event);
 
     proxy.init(event);
   }

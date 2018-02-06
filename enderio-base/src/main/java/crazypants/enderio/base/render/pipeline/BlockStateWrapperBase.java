@@ -467,4 +467,9 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     return state.getBlockFaceShape(worldIn, pos1, facing);
   }
 
+  @Override
+  public boolean doesSideBlockChestOpening(@Nonnull IBlockAccess world1, @Nonnull BlockPos pos1, @Nonnull EnumFacing side) {
+    return state.doesSideBlockChestOpening(world1, pos1, side);
+  }
+
 }

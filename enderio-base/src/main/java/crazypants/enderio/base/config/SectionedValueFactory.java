@@ -2,7 +2,7 @@ package crazypants.enderio.base.config;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.stackable.RebuildableThings;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.base.config.ValueFactory.IValue;
@@ -38,7 +38,7 @@ public class SectionedValueFactory {
     return parent.make(section, keyname, defaultValue, text);
   }
 
-  public @Nonnull IValue<RebuildableThings> make(@Nonnull String keyname, @Nonnull RebuildableThings defaultValue, @Nonnull String text) {
+  public @Nonnull IValue<Things> make(@Nonnull String keyname, @Nonnull Things defaultValue, @Nonnull String text) {
     return parent.make(section, keyname, defaultValue, text);
   }
 

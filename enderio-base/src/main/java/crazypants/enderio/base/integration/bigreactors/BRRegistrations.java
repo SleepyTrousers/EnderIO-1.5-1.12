@@ -3,7 +3,7 @@ package crazypants.enderio.base.integration.bigreactors;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.material.alloy.Alloy;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 public class BRRegistrations {
 
@@ -17,7 +17,7 @@ public class BRRegistrations {
   @SuppressWarnings("unused")
   private static final float conductivityGraphene = 5f;
 
-  public static void init(FMLPreInitializationEvent event) {
+  public static void init(FMLInitializationEvent event) {
 
     BRProxy.registerTurbineBlock(Alloy.ELECTRICAL_STEEL.getOreBlock(), 1.8f, 1f, 1.6f);
     BRProxy.registerTurbineBlock(Alloy.ENERGETIC_ALLOY.getOreBlock(), 1.9f, 1f, 2.5f);

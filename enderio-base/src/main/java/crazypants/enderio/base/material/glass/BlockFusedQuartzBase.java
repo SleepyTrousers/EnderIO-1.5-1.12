@@ -35,8 +35,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends BlockEio<T> implements ISmartRenderAwareBlock {
 
   @SuppressWarnings("null")
-  public BlockFusedQuartzBase(@Nonnull IModObject modObject, Class<T> teClass) {
-    super(modObject, teClass, Material.GLASS);
+  public BlockFusedQuartzBase(@Nonnull IModObject modObject) {
+    super(modObject, Material.GLASS);
     setSoundType(SoundType.GLASS);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
@@ -87,10 +87,11 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
     return getMetaFromState(state);
   }
 
-  @Override
-  public boolean isBlockSolid(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
-    return true;
-  }
+  // TODO 1.12
+  // @Override
+  // public boolean isBlockSolid(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
+  // return true;
+  // }
 
   @Override
   public boolean isSideSolid(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {

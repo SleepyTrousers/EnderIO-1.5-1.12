@@ -20,7 +20,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -146,14 +145,15 @@ public abstract class AbstractMachineContainer<E extends AbstractInventoryMachin
 
   private boolean hasAlreadyJustSuccessfullyTransferedAStack = false;
 
-  @Override
-  protected void retrySlotClick(int slotId, int clickedButton, boolean mode, @Nonnull EntityPlayer playerIn) {
-    if (!hasAlreadyJustSuccessfullyTransferedAStack) {
-      this.slotClick(slotId, clickedButton, ClickType.QUICK_MOVE, playerIn);
-    } else {
-      hasAlreadyJustSuccessfullyTransferedAStack = false;
-    }
-  }
+  // TODO 1.12
+  // @Override
+  // protected void retrySlotClick(int slotId, int clickedButton, boolean mode, @Nonnull EntityPlayer playerIn) {
+  // if (!hasAlreadyJustSuccessfullyTransferedAStack) {
+  // this.slotClick(slotId, clickedButton, ClickType.QUICK_MOVE, playerIn);
+  // } else {
+  // hasAlreadyJustSuccessfullyTransferedAStack = false;
+  // }
+  // }
 
   protected int getIndexOfFirstPlayerInvSlot(@Nonnull SlotDefinition slotDef) {
     return slotDef.getNumSlots();

@@ -1,7 +1,5 @@
 package crazypants.enderio.base.init;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -34,6 +32,16 @@ public interface IModObject extends IProducer {
   @Nonnull
   <I extends Item> I apply(@Nonnull I item);
 
+  default @Nullable Class<? extends TileEntity> getTEClass() {
+    if (this instanceof Registerable) {
+      IModTileEntity tileEntity = ((Registerable) this).getTileEntity();
+      if (tileEntity != null) {
+        return tileEntity.getTileEntityClass();
+      }
+    }
+    return null;
+  }
+
   public static interface Registerable extends IModObject {
 
     @Nonnull
@@ -46,7 +54,7 @@ public interface IModObject extends IProducer {
     String getItemMethodName();
 
     @Nullable
-    List<Class<? extends TileEntity>> getTileClass();
+    IModTileEntity getTileEntity();
 
     void setItem(@Nullable Item obj);
 

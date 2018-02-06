@@ -9,12 +9,12 @@ import net.minecraft.item.Item;
 
 public abstract class AbstractGeneratorBlock<T extends AbstractGeneratorEntity> extends AbstractPoweredMachineBlock<T> {
 
-  protected AbstractGeneratorBlock(@Nonnull IModObject mo, Class<T> teClass, @Nonnull Material mat) {
-    super(mo, teClass, mat);
+  protected AbstractGeneratorBlock(@Nonnull IModObject mo, @Nonnull Material mat) {
+    super(mo, mat);
   }
 
-  protected AbstractGeneratorBlock(@Nonnull IModObject mo, Class<T> teClass) {
-    super(mo, teClass);
+  protected AbstractGeneratorBlock(@Nonnull IModObject mo) {
+    super(mo);
   }
 
   @Override

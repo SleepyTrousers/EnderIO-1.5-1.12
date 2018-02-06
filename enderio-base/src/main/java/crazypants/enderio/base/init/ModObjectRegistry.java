@@ -2,21 +2,16 @@ package crazypants.enderio.base.init;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.IdentityHashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
@@ -29,7 +24,6 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
@@ -38,7 +32,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -54,8 +47,10 @@ public class ModObjectRegistry {
     objects.addAll(Arrays.asList(enumClass.getEnumConstants()));
   }
 
-  public static void init(@Nonnull FMLPreInitializationEvent event) {
-    Log.info("ModObjectRegistry:FMLPreInitializationEvent");
+  private static final NNList<IModTileEntity> tileEntities = new NNList<>();
+
+  public static <T extends Enum<T> & IModTileEntity> void addModTileEntities(Class<T> enumClass) {
+    tileEntities.addAll(Arrays.asList(enumClass.getEnumConstants()));
   }
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -152,48 +147,9 @@ public class ModObjectRegistry {
   }
 
   private static void registerTeClasses() {
-    Map<Class<? extends TileEntity>, List<String>> clazzes = new HashMap<Class<? extends TileEntity>, List<String>>();
-
-    for (IModObject elem : objects) {
-      List<Class<? extends TileEntity>> teClazzes = (elem instanceof IModObject.Registerable) ? ((IModObject.Registerable) elem).getTileClass() : null;
-      if (teClazzes == null || teClazzes.isEmpty()) {
-        final Block block = elem.getBlock();
-        if (block instanceof BlockEnder) {
-          Class<? extends TileEntity> teClazz = ((BlockEnder<?>) block).getTeClass();
-          if (teClazz != null) {
-            teClazzes = new NNList<Class<? extends TileEntity>>(teClazz);
-          }
-        }
-      }
-      if (teClazzes != null && !teClazzes.isEmpty()) {
-        int i = 0;
-        for (Class<? extends TileEntity> teClazz : teClazzes) {
-          if (!clazzes.containsKey(teClazz)) {
-            clazzes.put(teClazz, new ArrayList<String>());
-          }
-          clazzes.get(teClazz).add(elem.getUnlocalisedName() + "_tileentity" + (i == 0 ? "" : i));
-          i++;
-        }
-      }
-    }
-
-    // TODO 1.12: remove the non-domain variants
-
-    for (Entry<Class<? extends TileEntity>, List<String>> entry : clazzes.entrySet()) {
-      if (entry.getValue().size() == 1) {
-        GameRegistry.registerTileEntityWithAlternatives(entry.getKey(), EnderIO.DOMAIN + ":" + entry.getValue().get(0), entry.getValue().get(0));
-      } else {
-        Collections.sort(entry.getValue());
-        String[] params = new String[(entry.getValue().size() - 1) * 2 + 1];
-        params[0] = entry.getValue().get(0);
-        for (int i = 0; i < entry.getValue().size() - 1; i++) {
-          params[i * 2 + 1] = EnderIO.DOMAIN + ":" + entry.getValue().get(i + 1);
-          params[i * 2 + 2] = entry.getValue().get(i + 1);
-        }
-        Log.debug(
-            "Registering TileEntity " + entry.getKey() + " as " + EnderIO.DOMAIN + ":" + entry.getValue().get(0) + " with aliases " + Arrays.asList(params));
-        GameRegistry.registerTileEntityWithAlternatives(entry.getKey(), EnderIO.DOMAIN + ":" + entry.getValue().get(0), params);
-      }
+    for (IModTileEntity te : tileEntities) {
+      Log.debug("Registering TileEntity " + te.getUnlocalisedName() + " as " + te.getRegistryName().toString());
+      GameRegistry.registerTileEntity(te.getTileEntityClass(), te.getRegistryName().toString());
     }
   }
 
@@ -278,7 +234,7 @@ public class ModObjectRegistry {
   }
 
   public static @Nonnull String sanitizeName(@Nonnull String name) {
-    return name.replaceAll("([A-Z])", "_$0").toLowerCase(Locale.ENGLISH);
+    return name.replaceAll("([A-Z])", "_$0").replaceFirst("^_", "").toLowerCase(Locale.ENGLISH);
   }
 
   public static NNList<IModObject.Registerable> getObjects() {

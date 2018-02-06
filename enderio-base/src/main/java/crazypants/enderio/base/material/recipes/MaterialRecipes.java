@@ -17,7 +17,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -48,9 +47,6 @@ public class MaterialRecipes {
         itemMaterial.getItemNN().getRegistryName() + ":" + Material.DYE_BROWN.ordinal());
     Things.addAlias(Material.DYE_BLACK.getBaseName().toUpperCase(Locale.ENGLISH),
         itemMaterial.getItemNN().getRegistryName() + ":" + Material.DYE_BLACK.ordinal());
-  }
-
-  public static void init(@Nonnull FMLPreInitializationEvent event) {
   }
 
   private static void old_early() {

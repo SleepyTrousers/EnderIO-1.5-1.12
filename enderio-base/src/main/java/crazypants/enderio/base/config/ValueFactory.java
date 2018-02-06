@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
-import com.enderio.core.common.util.stackable.RebuildableThings;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config.Section;
@@ -90,8 +90,7 @@ public class ValueFactory {
     return new BooleanValue(section.name, keyname, defaultValue, text).preload();
   }
 
-  public @Nonnull IValue<RebuildableThings> make(@Nonnull Section section, @Nonnull String keyname, @Nonnull RebuildableThings defaultValue,
-      @Nonnull String text) {
+  public @Nonnull IValue<Things> make(@Nonnull Section section, @Nonnull String keyname, @Nonnull Things defaultValue, @Nonnull String text) {
     return new ThingsValue(section.name, keyname, defaultValue, text).preload();
   }
 
@@ -416,15 +415,15 @@ public class ValueFactory {
 
   }
 
-  public class ThingsValue extends AbstractValue<RebuildableThings> {
+  public class ThingsValue extends AbstractValue<Things> {
 
-    protected ThingsValue(@Nonnull String section, @Nonnull String keyname, @Nonnull RebuildableThings defaultValue, @Nonnull String text) {
+    protected ThingsValue(@Nonnull String section, @Nonnull String keyname, @Nonnull Things defaultValue, @Nonnull String text) {
       super(section, keyname, defaultValue, text);
     }
 
     @Override
-    protected @Nullable RebuildableThings makeValue() {
-      return new RebuildableThings(config.getStringList(keyname, section, defaultValue.getNameList().toArray(new String[0]), text));
+    protected @Nullable Things makeValue() {
+      return new Things(config.getStringList(keyname, section, defaultValue.getNameList().toArray(new String[0]), text));
     }
 
     @Override

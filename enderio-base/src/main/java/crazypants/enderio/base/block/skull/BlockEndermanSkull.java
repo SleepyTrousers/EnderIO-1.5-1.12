@@ -48,7 +48,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   public static final @Nonnull AxisAlignedBB AABB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
 
   private BlockEndermanSkull(@Nonnull IModObject modObject) {
-    super(modObject, TileEndermanSkull.class, Material.CIRCUITS);
+    super(modObject, Material.CIRCUITS);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
   }
 

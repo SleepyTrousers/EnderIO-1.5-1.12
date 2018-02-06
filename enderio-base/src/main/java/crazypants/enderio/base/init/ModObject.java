@@ -1,11 +1,8 @@
 package crazypants.enderio.base.init;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
@@ -33,9 +30,6 @@ import crazypants.enderio.base.block.painted.BlockPaintedStairs;
 import crazypants.enderio.base.block.painted.BlockPaintedStone;
 import crazypants.enderio.base.block.painted.BlockPaintedTrapDoor;
 import crazypants.enderio.base.block.painted.BlockPaintedWall;
-import crazypants.enderio.base.block.painted.TileEntityPaintedBlock;
-import crazypants.enderio.base.block.painted.TileEntityTwicePaintedBlock;
-import crazypants.enderio.base.block.painted.TilePaintedPressurePlate;
 import crazypants.enderio.base.block.rail.BlockExitRail;
 import crazypants.enderio.base.block.skull.BlockEndermanSkull;
 import crazypants.enderio.base.capacitor.ItemCapacitor;
@@ -73,7 +67,6 @@ import crazypants.enderio.base.render.dummy.BlockMachineBase;
 import crazypants.enderio.base.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 public enum ModObject implements IModObject.Registerable {
@@ -115,29 +108,29 @@ public enum ModObject implements IModObject.Registerable {
   blockDecoration3(BlockDecorationFacing.class, "create2"),
 
   // Painter
-  blockPaintedFence(BlockPaintedFence.class),
-  blockPaintedStoneFence(BlockPaintedFence.class, "create_stone"),
-  blockPaintedFenceGate(BlockPaintedFenceGate.class),
-  blockPaintedWall(BlockPaintedWall.class),
-  blockPaintedStair(BlockPaintedStairs.class),
-  blockPaintedStoneStair(BlockPaintedStairs.class, "create_stone"),
-  blockPaintedSlab(BlockPaintedSlabManager.class, "create_wood", "create_item"),
-  blockPaintedDoubleSlab(BlockPaintedSlabManager.class, "create_wood_double", "", TileEntityTwicePaintedBlock.class),
-  blockPaintedStoneSlab(BlockPaintedSlabManager.class, "create_stone", "create_item"),
-  blockPaintedStoneDoubleSlab(BlockPaintedSlabManager.class, "create_stone_double", "", TileEntityTwicePaintedBlock.class),
-  blockPaintedGlowstone(BlockPaintedGlowstone.class),
-  blockPaintedGlowstoneSolid(BlockPaintedGlowstone.class, "create_solid"),
-  blockPaintedCarpet(BlockPaintedCarpet.class, TileEntityPaintedBlock.class),
-  blockPaintedPressurePlate(BlockPaintedPressurePlate.class, TilePaintedPressurePlate.class),
-  blockPaintedRedstone(BlockPaintedRedstone.class),
-  blockPaintedRedstoneSolid(BlockPaintedRedstone.class, "create_solid"),
-  blockPaintedStone(BlockPaintedStone.class),
-  blockPaintedWoodenTrapdoor(BlockPaintedTrapDoor.class, "create_wooden"),
-  blockPaintedIronTrapdoor(BlockPaintedTrapDoor.class, "create_iron"),
-  blockPaintedDarkSteelTrapdoor(BlockPaintedTrapDoor.class, "create_dark"),
-  blockPaintedWoodenDoor(BlockPaintedDoor.class, "create_wooden"),
-  blockPaintedIronDoor(BlockPaintedDoor.class, "create_iron"),
-  blockPaintedDarkSteelDoor(BlockPaintedDoor.class, "create_dark"),
+  blockPaintedFence(BlockPaintedFence.class, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedStoneFence(BlockPaintedFence.class, "create_stone", ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedFenceGate(BlockPaintedFenceGate.class, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedWall(BlockPaintedWall.class, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedStair(BlockPaintedStairs.class, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedStoneStair(BlockPaintedStairs.class, "create_stone", ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedSlab(BlockPaintedSlabManager.class, "create_wood", "create_item", ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedDoubleSlab(BlockPaintedSlabManager.class, "create_wood_double", null, ModTileEntity.TileEntityTwicePaintedBlock),
+  blockPaintedStoneSlab(BlockPaintedSlabManager.class, "create_stone", "create_item", ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedStoneDoubleSlab(BlockPaintedSlabManager.class, "create_stone_double", null, ModTileEntity.TileEntityTwicePaintedBlock),
+  blockPaintedGlowstone(BlockPaintedGlowstone.class, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedGlowstoneSolid(BlockPaintedGlowstone.class, "create_solid", ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedCarpet(BlockPaintedCarpet.class, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedPressurePlate(BlockPaintedPressurePlate.class, ModTileEntity.TilePaintedPressurePlate),
+  blockPaintedRedstone(BlockPaintedRedstone.class, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedRedstoneSolid(BlockPaintedRedstone.class, "create_solid", ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedStone(BlockPaintedStone.class, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedWoodenTrapdoor(BlockPaintedTrapDoor.class, "create_wooden", ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedIronTrapdoor(BlockPaintedTrapDoor.class, "create_iron", ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedDarkSteelTrapdoor(BlockPaintedTrapDoor.class, "create_dark", ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedWoodenDoor(BlockPaintedDoor.class, "create_wooden", ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedIronDoor(BlockPaintedDoor.class, "create_iron", ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedDarkSteelDoor(BlockPaintedDoor.class, "create_dark", ModTileEntity.TileEntityPaintedBlock),
 
   blockExitRail(BlockExitRail.class),
 
@@ -151,7 +144,7 @@ public enum ModObject implements IModObject.Registerable {
   itemTravelStaff(ItemTravelStaff.class),
   itemRodOfReturn(ItemRodOfReturn.class),
   itemMagnet(ItemMagnet.class),
-  blockEndermanSkull(BlockEndermanSkull.class),
+  blockEndermanSkull(BlockEndermanSkull.class, ModTileEntity.TileEndermanSkull),
   itemEnderFood(ItemEnderFood.class),
   itemItemFilter(ItemBasicItemFilter.class),
   itemExistingItemFilter(ItemExistingItemFilter.class),
@@ -165,12 +158,12 @@ public enum ModObject implements IModObject.Registerable {
   blockEnlightenedFusedGlass(BlockFusedQuartz.class, "createEnlightenedFusedGlass"),
   blockDarkFusedQuartz(BlockFusedQuartz.class, "createDarkFusedQuartz"),
   blockDarkFusedGlass(BlockFusedQuartz.class, "createDarkFusedGlass"),
-  blockPaintedFusedQuartz(BlockPaintedFusedQuartz.class),
+  blockPaintedFusedQuartz(BlockPaintedFusedQuartz.class, ModTileEntity.TileEntityPaintedBlock),
 
   itemSoulVial(ItemSoulVial.class),
 
-  block_detector_block(BlockDetector.class),
-  block_detector_block_silent(BlockDetector.class, "createSilent"),
+  block_detector_block(BlockDetector.class, ModTileEntity.TileEntityPaintedBlock),
+  block_detector_block_silent(BlockDetector.class, "createSilent", ModTileEntity.TileEntityPaintedBlock),
 
   itemDarkSteelHelmet(ItemDarkSteelArmor.class, "createDarkSteelHelmet"),
   itemDarkSteelChestplate(ItemDarkSteelArmor.class, "createDarkSteelChestplate"),
@@ -191,7 +184,7 @@ public enum ModObject implements IModObject.Registerable {
 
   protected final @Nonnull Class<?> clazz;
   protected final @Nullable String blockMethodName, itemMethodName;
-  protected final @Nullable List<Class<? extends TileEntity>> teClazzes;
+  protected final @Nullable IModTileEntity modTileEntity;
 
   /*
    * A modObject can be defined in a couple of different ways.
@@ -214,34 +207,31 @@ public enum ModObject implements IModObject.Registerable {
    * together with the ModObject enum, which can cause weird errors. Implement the IModObject lifecycle interfaces on the block/item instead.
    */
 
-  @SafeVarargs
-  private ModObject(@Nonnull Class<?> clazz, Class<? extends TileEntity>... teClazz) {
-    this(clazz, "create", teClazz);
+  private ModObject(@Nonnull Class<?> clazz) {
+    this(clazz, "create", null);
   }
 
-  @SafeVarargs
-  private ModObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity>... teClazz) {
-    this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-    this.clazz = clazz;
-    if (Block.class.isAssignableFrom(clazz)) {
-      this.blockMethodName = methodName;
-      this.itemMethodName = null;
-    } else if (Item.class.isAssignableFrom(clazz)) {
-      this.blockMethodName = null;
-      this.itemMethodName = methodName;
-    } else {
-      throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
-    }
-    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
+  private ModObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
+    this(clazz, "create", modTileEntity);
   }
 
-  @SafeVarargs
-  private ModObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity>... teClazz) {
+  private ModObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
+    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, null);
+  }
+
+  private ModObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nullable IModTileEntity modTileEntity) {
+    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, modTileEntity);
+  }
+
+  private ModObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, @Nullable IModTileEntity modTileEntity) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
     this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
+    if (blockMethodName == null && itemMethodName == null) {
+      throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
+    }
+    this.modTileEntity = modTileEntity;
   }
 
   @Override
@@ -257,12 +247,6 @@ public enum ModObject implements IModObject.Registerable {
   @Override
   public final @Nullable Item getItem() {
     return item;
-  }
-
-  @Nullable
-  @Override
-  public final List<Class<? extends TileEntity>> getTileClass() {
-    return teClazzes;
   }
 
   @Override
@@ -308,6 +292,12 @@ public enum ModObject implements IModObject.Registerable {
     itemIn.setUnlocalizedName(getUnlocalisedName());
     itemIn.setRegistryName(getRegistryName());
     return itemIn;
+  }
+
+  @Override
+  @Nullable
+  public IModTileEntity getTileEntity() {
+    return modTileEntity;
   }
 
 }

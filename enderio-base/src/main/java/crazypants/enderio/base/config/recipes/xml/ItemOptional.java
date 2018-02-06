@@ -1,7 +1,5 @@
 package crazypants.enderio.base.config.recipes.xml;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -39,11 +37,7 @@ public class ItemOptional implements RecipeConfigElement {
     thing.add(name);
     NNList<ItemStack> itemStacks = thing.getItemStacks();
     stack = itemStacks.isEmpty() ? Prep.getEmpty() : itemStacks.get(0);
-    List<Object> recipeObjects = thing.getRecipeObjects();
-    if (recipeObjects.size() > 1) {
-      throw new InvalidRecipeConfigException("Name \"" + name + "\"> references " + recipeObjects.size() + " different things: " + recipeObjects);
-    }
-    recipeObject = recipeObjects.isEmpty() ? ItemStack.EMPTY : recipeObjects.get(0);
+    recipeObject = thing; // TODO 1.12: streamline
     final String nbt_nullchecked = nbt;
     if (nbt_nullchecked != null) {
       if (nbt_nullchecked.trim().isEmpty()) {

@@ -32,7 +32,7 @@ public class EnchanterRecipe implements IMachineRecipe {
     this.stackSizePerLevel = stackSizePerLevel;
     this.enchantment = enchantment;
     this.costMultiplier = costMultiplier;
-    this.uuid = NullHelper.first(input.getRecipeObjects().get(0).toString(), "invalid Recipe");
+    this.uuid = NullHelper.first(input.getItemStacksRaw().get(0).toString(), "invalid Recipe");
   }
 
   public @Nonnull Enchantment getEnchantment() {

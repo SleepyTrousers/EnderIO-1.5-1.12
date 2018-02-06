@@ -6,16 +6,12 @@ import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class EnergyUpgradePowerAdapter {
-
-  public static void init(@Nonnull FMLPreInitializationEvent event) {
-    MinecraftForge.EVENT_BUS.register(EnergyUpgradePowerAdapter.class);
-  }
 
   private static final @Nonnull ResourceLocation KEY = new ResourceLocation(EnderIO.DOMAIN, "powerhandler");
 
@@ -24,8 +20,9 @@ public class EnergyUpgradePowerAdapter {
     if (evt.getCapabilities().containsKey(KEY)) {
       return;
     }
-    if (evt.getObject().getItem() instanceof IDarkSteelItem) {
-      EnergyUpgadeCap cap = new EnergyUpgadeCap(evt.getObject());
+    final ItemStack stack = evt.getObject();
+    if (stack != null && stack.getItem() instanceof IDarkSteelItem) {
+      EnergyUpgadeCap cap = new EnergyUpgadeCap(stack);
       evt.addCapability(KEY, cap);
     }
 

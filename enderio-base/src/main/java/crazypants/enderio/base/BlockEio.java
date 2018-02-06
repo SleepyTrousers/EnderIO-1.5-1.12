@@ -11,6 +11,7 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.tool.ToolUtil;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,14 +28,23 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
 
   protected @Nonnull String permissionNodeWrenching = "(block not initialized)";
 
-  protected BlockEio(@Nonnull IModObject modObject, @Nullable Class<T> teClass) {
-    super(teClass);
+  @SuppressWarnings("unchecked")
+  protected BlockEio(@Nonnull IModObject modObject) {
+    super((Class<? extends T>) modObject.getTEClass());
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
   }
 
-  protected BlockEio(@Nonnull IModObject modObject, @Nullable Class<T> teClass, @Nonnull Material mat) {
-    super(teClass, mat);
+  @SuppressWarnings("unchecked")
+  protected BlockEio(@Nonnull IModObject modObject, @Nonnull Material mat) {
+    super((Class<? extends T>) modObject.getTEClass(), mat);
+    modObject.apply(this);
+    setCreativeTab(EnderIOTab.tabEnderIOMachines);
+  }
+
+  @SuppressWarnings("unchecked")
+  protected BlockEio(@Nonnull IModObject modObject, @Nonnull Material mat, MapColor mapColor) {
+    super((Class<? extends T>) modObject.getTEClass(), mat, mapColor);
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
   }

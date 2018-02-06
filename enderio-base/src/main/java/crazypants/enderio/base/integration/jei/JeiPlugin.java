@@ -5,6 +5,7 @@ import java.util.Collections;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.Fluids;
@@ -23,6 +24,7 @@ import mezz.jei.api.ingredients.IModIngredientRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapelessRecipes;
 
 import static crazypants.enderio.base.init.ModObject.itemMaterial;
@@ -51,10 +53,10 @@ public class JeiPlugin extends BlankModPlugin {
     registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
 
     // Add a couple of example recipes for the nut.dist stick as the custom recipe isn't picked up
-    NNList<ItemStack> inputs = new NNList<ItemStack>();
-    inputs.add(new ItemStack(Items.STICK));
-    inputs.add(Fluids.NUTRIENT_DISTILLATION.getBucket());
-    ShapelessRecipes res = new ShapelessRecipes(null, new ItemStack(itemMaterial.getItemNN(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
+    NNList<Ingredient> inputs = new NNList<>();
+    inputs.add(new Things().add(Items.STICK));
+    inputs.add(new Things().add(Fluids.NUTRIENT_DISTILLATION.getBucket()));
+    ShapelessRecipes res = new ShapelessRecipes("", new ItemStack(itemMaterial.getItemNN(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
     registry.addRecipes(Collections.singletonList(res), VanillaRecipeCategoryUid.CRAFTING);
 
     if (!JeiAccessor.ALTERNATIVES.isEmpty()) {

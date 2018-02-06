@@ -16,12 +16,12 @@ import net.minecraft.world.World;
 
 public abstract class AbstractInventoryMachineBlock<T extends AbstractInventoryMachineEntity> extends AbstractMachineBlock<T> {
 
-  protected AbstractInventoryMachineBlock(@Nonnull IModObject mo, Class<T> teClass, @Nonnull Material mat) {
-    super(mo, teClass, mat);
+  protected AbstractInventoryMachineBlock(@Nonnull IModObject mo, @Nonnull Material mat) {
+    super(mo, mat);
   }
 
-  protected AbstractInventoryMachineBlock(@Nonnull IModObject mo, Class<T> teClass) {
-    super(mo, teClass);
+  protected AbstractInventoryMachineBlock(@Nonnull IModObject mo) {
+    super(mo);
   }
 
   @Override
