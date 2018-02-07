@@ -1,7 +1,6 @@
 package crazypants.enderio.conduit.redstone;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -23,8 +22,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
@@ -34,6 +31,7 @@ import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.redstone.signals.SignalSource;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
@@ -54,7 +52,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -86,76 +83,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     });
   }
 
-  private static final List<Block> CONECTABLE_BLOCKS = Arrays.asList(Blocks.REDSTONE_LAMP, Blocks.LIT_REDSTONE_LAMP, Blocks.REDSTONE_TORCH,
-      Blocks.REDSTONE_WIRE, Blocks.REDSTONE_BLOCK, Blocks.DISPENSER, Blocks.LEVER, Blocks.WOODEN_BUTTON, Blocks.STONE_BUTTON, Blocks.WOODEN_PRESSURE_PLATE,
-      Blocks.STONE_PRESSURE_PLATE, Blocks.DROPPER, Blocks.DAYLIGHT_DETECTOR, Blocks.DAYLIGHT_DETECTOR_INVERTED, Blocks.COMMAND_BLOCK, Blocks.GOLDEN_RAIL,
-      Blocks.TRAPPED_CHEST, Blocks.PISTON, Blocks.STICKY_PISTON, Blocks.NOTEBLOCK);
-
-  private static Map<Class<?>, Boolean> CONNECTABLE_CLASSES = null;
-  private static final List<ISignalProvider> SIGNAL_PROVIDERS = new ArrayList<ISignalProvider>();
-
-  public static void addConnectableBlock(@Nonnull NBTTagCompound nbt) {
-    if (nbt == null) {
-      Log.warn("InsulatedRedstoneConduit: An attempt was made to register a redstone connectable using a null NBT");
-      return;
-    }
-    boolean connectable = true;
-    if (nbt.hasKey("isConnectable")) {
-      connectable = nbt.getBoolean("isConnectable");
-    }
-    String className = nbt.getString("className");
-    addConnectableInterface(className, connectable);
-  }
-
-  public static void addConnectableBlock(@Nonnull Block block) {
-    if (block == null) {
-      Log.warn("InsulatedRedstoneConduit: An attempt was made to register a redstone connectable using a null Block");
-      return;
-    }
-    CONECTABLE_BLOCKS.add(block);
-  }
-
-  public static void addConnectableInterface(String className, boolean connectable) {
-    try {
-      Class<?> clz = Class.forName(className);
-      addConnectableInterface(clz, connectable);
-    } catch (Exception e) {
-      Log.warn("InsulatedRedstoneConduit: An attempt was made to register " + className + " as connectable but it could not be loaded");
-    }
-  }
-
-  public static void addConnectableInterface(Class<?> clazz, boolean connectable) {
-    if (clazz == null) {
-      Log.warn("InsulatedRedstoneConduit: An attempt was made to register a null class as a connectable");
-      return;
-    }
-    getConnectableInterfaces().put(clazz, connectable);
-  }
-
-  private static Map<Class<?>, Boolean> getConnectableInterfaces() {
-    if (CONNECTABLE_CLASSES == null) {
-      CONNECTABLE_CLASSES = new HashMap<Class<?>, Boolean>();
-      // CONNECTABLE_CLASSES.put(IRedstoneControl.class, false);
-      try {
-        Class<?> conInterface = Class.forName("powercrystals.minefactoryreloaded.api.rednet.connectivity.IRedNetConnection");
-        CONNECTABLE_CLASSES.put(conInterface, false);
-      } catch (Throwable e) {
-        // NO-OP
-      }
-      try {
-        Class<?> ccInterface = Class.forName("dan200.computercraft.shared.computer.blocks.IComputerTile");
-        CONNECTABLE_CLASSES.put(ccInterface, true);
-      } catch (Throwable e) {
-        // NO-OP
-      }
-    }
-    return CONNECTABLE_CLASSES;
-  }
-
-  public static void addSignalProvider(ISignalProvider provider) {
-    SIGNAL_PROVIDERS.add(provider);
-  }
-
   // --------------------------------- Class Start
   // -------------------------------------------
 
@@ -164,8 +91,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   private Map<EnumFacing, DyeColor> signalColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
   private Map<EnumFacing, Boolean> signalStrengths = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
-
-  private volatile Map<EnumFacing, Boolean> specialConnections = null;
 
   private final List<Set<Signal>> externalSignals = new ArrayList<Set<Signal>>();
 
@@ -435,74 +360,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return true;
     }
     // Not set so figure it out
-    BlockPos pos = getBundle().getLocation().offset(direction);
     World world = getBundle().getEntity().getWorld();
+    BlockPos pos = getBundle().getLocation().offset(direction);
     IBlockState bs = world.getBlockState(pos);
-    Block block = bs.getBlock();
-    TileEntity te = world.getTileEntity(pos);
-
-    if (block == null || block == ConduitRegistry.getConduitModObjectNN().getBlock()) {
-      return false;
-    }
-
-    if (block instanceof IRedstoneConnectable) {
-      return ((IRedstoneConnectable) block).shouldRedstoneConduitConnect(world, pos, direction);
-    }
-
-    if (te instanceof IRedstoneConnectable) {
-      return ((IRedstoneConnectable) te).shouldRedstoneConduitConnect(world, pos, direction);
-    }
-
-    if (block.canConnectRedstone(bs, world, pos, direction.getOpposite()) || CONECTABLE_BLOCKS.contains(block)) {
-      return true;
-    }
-
-    if (bs.canProvidePower()) {
-      return true;
-    }
-
-    Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
-    for (Class<?> connectable : connectableInterfaces.keySet()) {
-      if ((te != null && connectable.isAssignableFrom(te.getClass())) || (connectable.isAssignableFrom(block.getClass()))) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  @Override
-  public boolean isSpecialConnection(@Nonnull EnumFacing dir) {
-    if (specialConnections == null) {
-      computeSpecialConnections();
-    }
-    return specialConnections.get(dir);
-  }
-
-  protected void computeSpecialConnections() {
-    Map<EnumFacing, Boolean> temp = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
-    SIDE: for (EnumFacing dir : EnumFacing.values()) {
-      BlockPos pos = getBundle().getLocation().offset(dir);
-      Block block = getBundle().getEntity().getWorld().getBlockState(pos).getBlock();
-      World world = getBundle().getEntity().getWorld();
-      TileEntity te = world.getTileEntity(pos);
-
-      Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
-      for (Class<?> connectable : connectableInterfaces.keySet()) {
-        if ((te != null && connectable.isAssignableFrom(te.getClass())) || (block != null && connectable.isAssignableFrom(block.getClass()))) {
-          temp.put(dir, connectableInterfaces.get(connectable));
-          continue SIDE;
-        }
-      }
-      for (ISignalProvider provider : SIGNAL_PROVIDERS) {
-        if (provider != null && provider.connectsToNetwork(world, pos, dir.getOpposite())) {
-          temp.put(dir, true);
-          continue SIDE;
-        }
-      }
-      temp.put(dir, false);
-    }
-    specialConnections = temp; // atomic assign for threading so no thread ever sees a half-filled map
+    return ConnectivityTool.shouldAutoConnectRedstone(world, bs, pos, direction.getOpposite());
   }
 
   @Override
@@ -565,7 +426,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return Collections.emptySet();
     }
     Collection<Signal> allSigs = network.getSignals().values();
-    if (allSigs.isEmpty() || isSpecialConnection(side)) {
+    if (allSigs.isEmpty()) {
       return allSigs;
     }
 
@@ -589,23 +450,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
     HashSet<Signal> signals = new HashSet<Signal>();
     if (acceptSignalsForDir(side)) {
-      if (isSpecialConnection(side)) {
+      int input = getExternalPowerLevel(side);
+      if (input > 1) { // need to degrade external signals by one as they
+                       // enter
         BlockPos pos = getBundle().getLocation().offset(side);
-        World world = getBundle().getEntity().getWorld();
-        for (ISignalProvider provider : SIGNAL_PROVIDERS) {
-          Set<Signal> inputs = provider.getNetworkInputs(world, pos, side.getOpposite());
-          if (inputs != null) {
-            signals.addAll(inputs);
-          }
-        }
-      } else {
-        int input = getExternalPowerLevel(side);
-        if (input > 1) { // need to degrade external signals by one as they
-                         // enter
-          BlockPos pos = getBundle().getLocation().offset(side);
-          Signal signal = new Signal(pos, side, input - 1, getSignalColor(side));
-          signals.add(signal);
-        }
+        Signal signal = new Signal(pos, side, input - 1, getSignalColor(side));
+        signals.add(signal);
       }
     }
 
@@ -666,7 +516,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return false;
     }
     if (blockId != ConduitRegistry.getConduitModObjectNN().getBlock()) {
-      computeSpecialConnections();
       if (hasExternalConnections()) {
         network.updateInputsFromConduit(this, false);
       }
@@ -848,10 +697,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     super.hashCodeForModelCaching(wrapper, hashCodes);
     hashCodes.addEnum(signalColors);
-    if (specialConnections == null) {
-      computeSpecialConnections();
-    }
-    hashCodes.addBoolean(specialConnections);
     if (Config.redstoneConduitsShowState && isActive()) {
       hashCodes.add(1);
     }

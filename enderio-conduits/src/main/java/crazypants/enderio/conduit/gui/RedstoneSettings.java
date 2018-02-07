@@ -1,9 +1,14 @@
 package crazypants.enderio.conduit.gui;
 
+import java.awt.Color;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.gui.IconEIO;
@@ -12,9 +17,6 @@ import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import net.minecraft.client.gui.GuiButton;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
 
 public class RedstoneSettings extends BaseSettingsPanel {
 
@@ -36,20 +38,18 @@ public class RedstoneSettings extends BaseSettingsPanel {
     int x = 0;
     int y = customTop;
 
-    if(con instanceof IRedstoneConduit) {
+    if (con instanceof IRedstoneConduit) {
       insCon = (IRedstoneConduit) con;
     }
 
-    if(insCon != null) {
-      if(!insCon.isSpecialConnection(gui.getDir())) {
-        x += gap + gap + 2 + gui.getFontRenderer().getStringWidth(signalColorStr);
-        cb = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-        cb.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signal_color"));
-        DyeColor sigCol = insCon.getSignalColor(gui.getDir());
-        cb.setColorIndex(sigCol.ordinal());
-        x += cb.getButtonWidth();
+    if (insCon != null) {
+      x += gap + gap + 2 + gui.getFontRenderer().getStringWidth(signalColorStr);
+      cb = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
+      cb.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signal_color"));
+      DyeColor sigCol = insCon.getSignalColor(gui.getDir());
+      cb.setColorIndex(sigCol.ordinal());
+      x += cb.getButtonWidth();
 
-      }
       stongLabelX = x;
       x += gap + gui.getFontRenderer().getStringWidth(signalStringthStr) + gap + 3;
       strongCB = new CheckBox(gui, ID_STRONG_BUTTON, x, y);
@@ -60,10 +60,10 @@ public class RedstoneSettings extends BaseSettingsPanel {
   @Override
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     super.actionPerformed(guiButton);
-    if(guiButton.id == ID_COLOR_BUTTON && cb != null) {
+    if (guiButton.id == ID_COLOR_BUTTON && cb != null) {
       insCon.setSignalColor(gui.getDir(), DyeColor.values()[cb.getColorIndex()]);
       PacketHandler.INSTANCE.sendToServer(new PacketRedstoneConduitSignalColor(insCon, gui.getDir()));
-    } else if(guiButton.id == ID_STRONG_BUTTON && strongCB != null) {
+    } else if (guiButton.id == ID_STRONG_BUTTON && strongCB != null) {
       insCon.setOutputStrength(gui.getDir(), strongCB.isSelected());
       PacketHandler.INSTANCE.sendToServer(new PacketRedstoneConduitOutputStrength(insCon, gui.getDir()));
     }
@@ -71,8 +71,8 @@ public class RedstoneSettings extends BaseSettingsPanel {
 
   @Override
   protected void initCustomOptions() {
-    if(insCon != null) {
-      if(cb != null) {
+    if (insCon != null) {
+      if (cb != null) {
         cb.setColorIndex(cb.getColorIndex());
         cb.onGuiInit();
       }
@@ -84,21 +84,21 @@ public class RedstoneSettings extends BaseSettingsPanel {
   @Override
   public void deactivate() {
     super.deactivate();
-    if(cb != null) {
+    if (cb != null) {
       cb.detach();
     }
-    if(strongCB != null) {
+    if (strongCB != null) {
       strongCB.detach();
     }
   }
 
   @Override
   protected void renderCustomOptions(int top, float par1, int par2, int par3) {
-    if(insCon != null) {
-      if(cb != null) {
+    if (insCon != null) {
+      if (cb != null) {
         gui.getFontRenderer().drawString(signalColorStr, left, top, ColorUtil.getRGB(Color.darkGray));
       }
-      if(strongCB != null) {
+      if (strongCB != null) {
         gui.getFontRenderer().drawString(signalStringthStr, left + stongLabelX, top, ColorUtil.getRGB(Color.darkGray));
       }
     }

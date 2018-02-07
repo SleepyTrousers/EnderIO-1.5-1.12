@@ -26,7 +26,7 @@ public class InsulatedRedstoneConduitRenderer extends DefaultConduitRenderer {
   protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,
       @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
     if (IRedstoneConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
-      if (conduit.containsExternalConnection(component.dir) && !((IRedstoneConduit) conduit).isSpecialConnection(component.dir)) {
+      if (conduit.containsExternalConnection(component.dir)) {
         int c = ((IRedstoneConduit) conduit).getSignalColor(component.dir).getColor();
         BakedQuadBuilder.addBakedQuads(quads, component.bound, tex, ColorUtil.toFloat4(c));
       }

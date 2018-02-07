@@ -75,12 +75,6 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     return new BlockStateContainer(this, new IProperty[] { EnumRenderMode6.RENDER });
   }
 
-  @SideOnly(Side.CLIENT)
-  @Override
-  public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-    return getFacing(worldIn, pos) == side.getOpposite();
-  }
-
   @Override
   public boolean isOpaqueCube(IBlockState bs) {
     return false;
@@ -97,22 +91,22 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {   
+  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
     EnumFacing facing = getFacing(world, pos);
     return getBoundingBox(facing);
   }
 
   public AxisAlignedBB getBoundingBox(EnumFacing facing) {
-    int x=0;
-    int y=0;
-    int z=0;
+    int x = 0;
+    int y = 0;
+    int z = 0;
     switch (facing) {
     case DOWN:
       return new AxisAlignedBB(x, y + (1 - BLOCK_SIZE), z, x + 1, y + 1, z + 1);
     case UP:
       return new AxisAlignedBB(x, y, z, x + 1, y + BLOCK_SIZE, z + 1);
     case NORTH:
-      return new AxisAlignedBB(x, y, z + (1- BLOCK_SIZE), x + 1, y + 1, z + 1);
+      return new AxisAlignedBB(x, y, z + (1 - BLOCK_SIZE), x + 1, y + 1, z + 1);
     case SOUTH:
       return new AxisAlignedBB(x, y, z, x + 1, y + 1, z + BLOCK_SIZE);
     case WEST:
@@ -126,7 +120,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   private EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
     TileEntity te = getTileEntitySafe(world, pos);
-    if(te instanceof TileInventoryPanel) {
+    if (te instanceof TileInventoryPanel) {
       return ((TileInventoryPanel) te).getFacing();
     }
     return EnumFacing.NORTH;

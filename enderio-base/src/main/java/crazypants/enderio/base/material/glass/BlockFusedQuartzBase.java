@@ -87,11 +87,6 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
 
   @Override
-  public boolean isBlockSolid(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
-    return true;
-  }
-
-  @Override
   public boolean isSideSolid(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     if (side == EnumFacing.UP) { // stop drips
       return false;
