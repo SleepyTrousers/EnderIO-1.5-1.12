@@ -27,7 +27,8 @@ public class TargetAttractionHandler implements IMobAttractionHandler {
     if (distance > 2) {
       EntityMob mob = (EntityMob) entity;
       mob.faceEntity(attractor.getTarget(), 180, 0);
-      mob.getMoveHelper().strafe(1, 0);
+      // TODO are these values right?
+      mob.moveRelative(0, 0, 1, 0);
       if (mob.posY < attractor.getPos().getY()) {
         mob.setJumping(true);
       } else {
