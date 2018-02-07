@@ -1,6 +1,6 @@
 package crazypants.enderio.api;
 
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_dont_crash_us_mcjty;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
@@ -80,7 +80,7 @@ public final class IMC {
 
   /**
    * Key for an string message to register a block as connectable to insulated redstone conduits. Calls {@link ConnectivityTool#registerRedstoneAware(String)}
-   * with the value of the message. The value has the same syntax that is used in the xml config files. Using {@link IRedstoneConnectable} is generally
+   * with the value of the message. The value has the same syntax that is used in the xml config files. Using {@link IRedstoneConnectable_dont_crash_us_mcjty} is generally
    * preferred to this because it allows location-, state- and side-awareness.
    */
   public static final String REDSTONE_CONNECTABLE_ADD = "redstone:connectable:add";

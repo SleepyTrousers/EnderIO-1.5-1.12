@@ -49,8 +49,6 @@ public interface IRedstoneConduit extends IConduit {
 
   void setSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);
 
-  boolean isSpecialConnection(@Nonnull EnumFacing dir);
-
   boolean isOutputStrong(@Nonnull EnumFacing dir);
 
   void setOutputStrength(@Nonnull EnumFacing dir, boolean isStrong);

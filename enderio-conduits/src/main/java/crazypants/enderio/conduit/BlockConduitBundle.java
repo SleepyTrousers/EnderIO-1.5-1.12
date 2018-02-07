@@ -952,7 +952,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
         IRedstoneConduit cond = con.getConduit(IRedstoneConduit.class);
         CollidableComponent component = hit.component;
         EnumFacing dir = component == null ? null : component.dir;
-        if (cond != null && component != null && dir != null && cond.getExternalConnections().contains(dir) && !cond.isSpecialConnection(dir)
+        if (cond != null && component != null && dir != null && cond.getExternalConnections().contains(dir)
             && component.data == InsulatedRedstoneConduit.COLOR_CONTROLLER_ID) {
           minBB = component.bound;
         }
