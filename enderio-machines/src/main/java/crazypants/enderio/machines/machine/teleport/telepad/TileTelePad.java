@@ -496,7 +496,7 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
   }
 
   private boolean isEntityInRange(Entity entity) {
-    return getRange().isVecInside(new Vec3d(entity.posX, entity.posY, entity.posZ));
+    return getRange().contains(new Vec3d(entity.posX, entity.posY, entity.posZ));
   }
 
   private @Nonnull AxisAlignedBB getRange() {

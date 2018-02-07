@@ -53,7 +53,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   }
 
   private BlockReservoir(@Nonnull IModObject modObject) {
-    super(modObject, TileReservoir.class, new Material(MapColor.WATER) {
+    super(modObject, new Material(MapColor.WATER) {
 
       @Override
       public boolean isToolNotRequired() {

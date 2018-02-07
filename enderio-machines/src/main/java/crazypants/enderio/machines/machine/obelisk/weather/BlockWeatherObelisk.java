@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.obelisk.base.AbstractBlockObelisk;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -17,31 +18,31 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIOMachines.MODID)
 public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk> {
 
   public static BlockWeatherObelisk create(@Nonnull IModObject modObject) {
     BlockWeatherObelisk ret = new BlockWeatherObelisk(modObject);
     ret.init();
-    MinecraftForge.EVENT_BUS.register(ret);
     return ret;
   }
 
   @SubscribeEvent
-  public void onEntityRegister(RegistryEvent.Register<EntityEntry> event) {
+  public static void onEntityRegister(RegistryEvent.Register<EntityEntry> event) {
     EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.DOMAIN, "weather_rocket"), EntityWeatherRocket.class, "weather_rocket", 33, EnderIO.MODID, 64,
         3, false);
   }
 
   private BlockWeatherObelisk(@Nonnull IModObject modObject) {
-    super(modObject, TileWeatherObelisk.class);
+    super(modObject);
   }
 
   @Override

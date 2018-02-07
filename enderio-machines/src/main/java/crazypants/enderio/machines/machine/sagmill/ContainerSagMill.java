@@ -49,7 +49,7 @@ public class ContainerSagMill<E extends TileSagMill> extends AbstractMachineCont
     addSlotToContainer(new InventorySlot(getInv(), 1, 122, 23) {
       @Override
       @SideOnly(Side.CLIENT)
-      public boolean canBeHovered() {
+      public boolean isEnabled() {
         return getTe() instanceof TileSagMill.Normal;
       }
     });

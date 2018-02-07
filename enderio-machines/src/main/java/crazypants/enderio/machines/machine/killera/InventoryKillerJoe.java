@@ -87,7 +87,7 @@ public class InventoryKillerJoe extends InventoryPlayer {
   }
 
   @Override
-  public float getStrVsBlock(@Nonnull IBlockState state) {
+  public float getDestroySpeed(@Nonnull IBlockState state) {
     return 1;
   }
 

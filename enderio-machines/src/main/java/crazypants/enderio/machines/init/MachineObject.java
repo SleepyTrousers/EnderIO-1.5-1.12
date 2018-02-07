@@ -1,20 +1,16 @@
 package crazypants.enderio.machines.init;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machines.machine.buffer.BlockBuffer;
-import crazypants.enderio.machines.machine.buffer.TileBuffer;
 import crazypants.enderio.machines.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machines.machine.farm.BlockFarmStation;
 import crazypants.enderio.machines.machine.generator.combustion.BlockCombustionGenerator;
@@ -48,8 +44,6 @@ import crazypants.enderio.machines.machine.wired.BlockWiredCharger;
 import crazypants.enderio.machines.machine.wireless.BlockWirelessCharger;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -60,9 +54,7 @@ public enum MachineObject implements IModObject.Registerable {
 
   block_simple_alloy_smelter(BlockAlloySmelter.class, "create_simple"),
   block_alloy_smelter(BlockAlloySmelter.class),
-  block_buffer(BlockBuffer.class, TileBuffer.TileBufferItem.class, TileBuffer.TileBufferPower.class, TileBuffer.TileBufferOmni.class,
-      TileBuffer.TileBufferCreative.class),
-  // blockCapBank(BlockCapBank.class),
+  block_buffer(BlockBuffer.class, MachineTileEntity.TileBufferAbstract),
   block_enchanter(BlockEnchanter.class),
   block_farm_station(BlockFarmStation.class),
   block_combustion_generator(BlockCombustionGenerator.class),
@@ -70,22 +62,22 @@ public enum MachineObject implements IModObject.Registerable {
   block_enhanced_combustion_generator_top(BlockCombustionGenerator.class, "create_extension"),
   block_simple_stirling_generator(BlockStirlingGenerator.class, "create_simple"),
   block_stirling_generator(BlockStirlingGenerator.class),
-  block_zombie_generator(BlockZombieGenerator.class),
+  block_zombie_generator(BlockZombieGenerator.class, MachineTileEntity.TileZombieGenerator),
 
   block_killer_joe(BlockKillerJoe.class),
-  block_electric_light(BlockElectricLight.class),
-  block_light_node(BlockLightNode.class),
+  block_electric_light(BlockElectricLight.class, MachineTileEntity.TileElectricLight),
+  block_light_node(BlockLightNode.class, MachineTileEntity.TileLightNode),
 
   // Obelisks
-  block_attractor_obelisk(BlockAttractor.class),
-  block_aversion_obelisk(BlockAversionObelisk.class),
-  block_inhibitor_obelisk(BlockInhibitorObelisk.class),
+  block_attractor_obelisk(BlockAttractor.class, MachineTileEntity.TileAttractor),
+  block_aversion_obelisk(BlockAversionObelisk.class, MachineTileEntity.TileAversionObelisk),
+  block_inhibitor_obelisk(BlockInhibitorObelisk.class, MachineTileEntity.TileInhibitorObelisk),
   block_relocator_obelisk(BlockRelocatorObelisk.class),
-  block_weather_obelisk(BlockWeatherObelisk.class),
-  block_experience_obelisk(BlockExperienceObelisk.class),
+  block_weather_obelisk(BlockWeatherObelisk.class, MachineTileEntity.TileWeatherObelisk),
+  block_experience_obelisk(BlockExperienceObelisk.class, MachineTileEntity.TileExperienceObelisk),
 
   block_painter(BlockPainter.class),
-  block_reservoir(BlockReservoir.class),
+  block_reservoir(BlockReservoir.class, MachineTileEntity.TileReservoir),
   block_simple_sag_mill(BlockSagMill.class, "create_simple"),
   block_sag_mill(BlockSagMill.class),
   block_slice_and_splice(BlockSliceAndSplice.class),
@@ -102,7 +94,9 @@ public enum MachineObject implements IModObject.Registerable {
 
   block_travel_anchor(BlockTravelAnchor.class),
   block_tele_pad(BlockTelePad.class, "create_telepad"),
-  block_dialing_device(BlockDialingDevice.class),;
+  block_dialing_device(BlockDialingDevice.class, MachineTileEntity.TileDialingDevice),
+
+  ;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
@@ -116,107 +110,79 @@ public enum MachineObject implements IModObject.Registerable {
 
   protected final @Nonnull Class<?> clazz;
   protected final @Nullable String blockMethodName, itemMethodName;
-  protected final @Nullable List<Class<? extends TileEntity>> teClazzes;
+  protected final @Nullable IModTileEntity modTileEntity;
 
-  @SafeVarargs
-  private MachineObject(@Nonnull Class<?> clazz, Class<? extends TileEntity>... teClazz) {
-    this(clazz, "create", teClazz);
+  private MachineObject(@Nonnull Class<?> clazz) {
+    this(clazz, "create", null);
   }
 
-  @SafeVarargs
-  private MachineObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity>... teClazz) {
-    this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-    this.clazz = clazz;
-    if (Block.class.isAssignableFrom(clazz)) {
-      this.blockMethodName = methodName;
-      this.itemMethodName = null;
-    } else if (Item.class.isAssignableFrom(clazz)) {
-      this.blockMethodName = null;
-      this.itemMethodName = methodName;
-    } else {
-      throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
-    }
-    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
+  private MachineObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
+    this(clazz, "create", modTileEntity);
   }
 
-  @SafeVarargs
-  private MachineObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity>... teClazz) {
+  private MachineObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
+    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, null);
+  }
+
+  private MachineObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nullable IModTileEntity modTileEntity) {
+    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, modTileEntity);
+  }
+
+  private MachineObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, @Nullable IModTileEntity modTileEntity) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
     this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
+    if (blockMethodName == null && itemMethodName == null) {
+      throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
+    }
+    this.modTileEntity = modTileEntity;
   }
 
   @Override
-  public @Nonnull Class<?> getClazz() {
+  public final @Nonnull String getUnlocalisedName() {
+    return unlocalisedName;
+  }
+
+  @Override
+  public final @Nullable Block getBlock() {
+    return block;
+  }
+
+  @Override
+  public final @Nullable Item getItem() {
+    return item;
+  }
+
+  @Override
+  public final @Nonnull Class<?> getClazz() {
     return clazz;
   }
 
   @Override
-  public void setItem(@Nullable Item obj) {
-    this.item = obj;
-  }
-
-  @Override
-  public void setBlock(@Nullable Block obj) {
-    this.block = obj;
-  }
-
-  @Nonnull
-  @Override
-  public String getUnlocalisedName() {
-    return unlocalisedName;
-  }
-
-  @Nonnull
-  @Override
-  public ResourceLocation getRegistryName() {
-    return new ResourceLocation(EnderIO.DOMAIN, getUnlocalisedName());
-  }
-
-  @Nullable
-  @Override
-  public Block getBlock() {
-    return block;
-  }
-
-  @Nullable
-  @Override
-  public Item getItem() {
-    return item;
-  }
-
-  @Nullable
-  @Override
-  public final List<Class<? extends TileEntity>> getTileClass() {
-    return teClazzes;
-  }
-
-  @Override
-  public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
-    blockIn.setUnlocalizedName(getUnlocalisedName());
-    blockIn.setRegistryName(getRegistryName());
-    return blockIn;
-  }
-
-  @Override
-  public final @Nonnull <I extends Item> I apply(@Nonnull I itemIn) {
-    itemIn.setUnlocalizedName(getUnlocalisedName());
-    itemIn.setRegistryName(getRegistryName());
-    return itemIn;
-  }
-
-  @Override
-  @Nullable
-  public String getBlockMethodName() {
+  public final String getBlockMethodName() {
     return blockMethodName;
   }
 
   @Override
-  @Nullable
-  public String getItemMethodName() {
+  public final String getItemMethodName() {
     return itemMethodName;
+  }
+
+  @Override
+  public final void setItem(@Nullable Item obj) {
+    item = obj;
+  }
+
+  @Override
+  public final void setBlock(@Nullable Block obj) {
+    block = obj;
+  }
+
+  @Override
+  @Nullable
+  public IModTileEntity getTileEntity() {
+    return modTileEntity;
   }
 
 }

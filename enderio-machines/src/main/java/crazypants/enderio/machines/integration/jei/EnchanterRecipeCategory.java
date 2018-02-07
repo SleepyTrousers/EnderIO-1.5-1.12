@@ -15,6 +15,7 @@ import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.enchanter.EnchanterRecipe;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machines.machine.enchanter.GuiEnchanter;
@@ -125,7 +126,8 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
     registry.addRecipeClickArea(GuiEnchanter.class, 155, 8, 16, 16, EnchanterRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_enchanter.getBlockNN()), EnchanterRecipeCategory.UID);
 
-    registry.addRecipes(NullHelper.notnullJ(MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.ENCHANTER).values(), "Map.values()"), UID);
+    registry.addRecipes(NullHelper.notnullJ(MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.ENCHANTER).values(), "Map.values()"),
+        UID);
 
     registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerEnchanter.class, EnchanterRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
         FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
@@ -181,6 +183,11 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
     guiItemStacks.init(3, false, 144 - xOff - 1, 34 - yOff);
 
     guiItemStacks.set(ingredients);
+  }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
   }
 
 }

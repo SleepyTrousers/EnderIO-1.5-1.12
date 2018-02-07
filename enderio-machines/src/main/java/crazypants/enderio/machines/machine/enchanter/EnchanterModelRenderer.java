@@ -15,9 +15,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -63,7 +63,7 @@ public class EnchanterModelRenderer extends ManagedTESR<TileEnchanter> {
     GlStateManager.pushMatrix();
 
     Tessellator tessellator = Tessellator.getInstance();
-    VertexBuffer vertexbuffer = tessellator.getBuffer();
+    BufferBuilder vertexbuffer = tessellator.getBuffer();
     vertexbuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
 
     for (EnumFacing enumfacing : EnumFacing.values()) {
@@ -77,7 +77,7 @@ public class EnchanterModelRenderer extends ManagedTESR<TileEnchanter> {
     GlStateManager.disableRescaleNormal();
   }
 
-  private void renderQuads(VertexBuffer renderer, List<BakedQuad> quads) {
+  private void renderQuads(@Nonnull BufferBuilder renderer, @Nonnull List<BakedQuad> quads) {
     for (BakedQuad quad : quads) {
       LightUtil.renderQuadColor(renderer, quad, -1);
     }

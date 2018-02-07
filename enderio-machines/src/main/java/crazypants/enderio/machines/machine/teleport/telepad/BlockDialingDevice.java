@@ -43,7 +43,7 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice>
   public static final @Nonnull PropertyEnum<DialerFacing> FACING = PropertyEnum.create("facing", DialerFacing.class);
 
   public BlockDialingDevice(@Nonnull IModObject modObject) {
-    super(modObject, TileDialingDevice.class);
+    super(modObject);
     setLightOpacity(255);
     useNeighborBrightness = true;
     setDefaultState(blockState.getBaseState().withProperty(FACING, DialerFacing.UP_TONORTH));

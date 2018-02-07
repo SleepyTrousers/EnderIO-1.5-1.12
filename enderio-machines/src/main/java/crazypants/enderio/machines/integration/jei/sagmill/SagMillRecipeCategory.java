@@ -12,6 +12,7 @@ import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.sagmill.GuiSagMill;
 import mezz.jei.api.IGuiHelper;
@@ -148,6 +149,11 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagRecipe> implem
 
   @Override
   public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, @Nonnull List<String> tooltip) {
+  }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
   }
 
 }

@@ -42,7 +42,7 @@ public abstract class AbstractMobObeliskEntity extends AbstractRangedObeliskEnti
   }
 
   protected boolean isMobInRange(EntityLivingBase mob) {
-    return mob != null && getBounds().isVecInside(new Vec3d(mob.posX, mob.posY, mob.posZ));
+    return mob != null && getBounds().contains(new Vec3d(mob.posX, mob.posY, mob.posZ));
   }
 
   @Override

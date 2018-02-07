@@ -12,6 +12,7 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.solar.SolarType;
@@ -136,4 +137,10 @@ public class SolarPanelRecipeCategory extends BlankRecipeCategory<SolarPanelReci
     guiItemStacks.set(ingredients);
     group.set(ingredients);
   }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
+  }
+
 }

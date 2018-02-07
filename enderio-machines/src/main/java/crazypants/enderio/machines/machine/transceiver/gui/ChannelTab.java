@@ -153,8 +153,8 @@ public class ChannelTab implements ITabPanel {
 
     y = parent.getGuiTop() + 12;
     x = parent.getGuiLeft() + 8;
-    newChannelTF.xPosition = x;
-    newChannelTF.yPosition = y;
+    newChannelTF.x = x;
+    newChannelTF.y = y;
     newChannelTF.setCanLoseFocus(false);
     newChannelTF.setMaxStringLength(32);
     newChannelTF.setFocused(true);

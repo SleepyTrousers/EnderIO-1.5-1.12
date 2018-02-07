@@ -15,8 +15,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractBlockRangedObelisk<T extends AbstractRangedObeliskEntity> extends AbstractBlockObelisk<T> {
 
-  protected AbstractBlockRangedObelisk(@Nonnull IModObject mo, Class<T> teClass) {
-    super(mo, teClass);
+  protected AbstractBlockRangedObelisk(@Nonnull IModObject mo) {
+    super(mo);
   }
 
   @Override

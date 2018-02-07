@@ -287,7 +287,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
         @Override
         public void apply(@Nonnull EntityItem ei) {
           if (!ei.isDead) {
-            ItemStack stack = ei.getEntityItem();
+            ItemStack stack = ei.getItem();
             if (Prep.isValid(stack)) {
               getFarmer().handleExtraItem(stack, farmingPos);
             }

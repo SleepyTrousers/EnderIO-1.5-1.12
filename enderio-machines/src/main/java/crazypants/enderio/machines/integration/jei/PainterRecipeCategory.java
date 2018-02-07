@@ -11,12 +11,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.stackable.Things;
 
-import static crazypants.enderio.machines.init.MachineObject.block_painter;
-import static crazypants.enderio.machines.machine.painter.ContainerPainter.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.painter.ContainerPainter.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machines.machine.painter.ContainerPainter.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.painter.ContainerPainter.NUM_RECIPE_SLOT;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
@@ -26,6 +20,7 @@ import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.AbstractPainterTemplate;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.ClientConfig;
 import crazypants.enderio.machines.machine.painter.ContainerPainter;
 import crazypants.enderio.machines.machine.painter.GuiPainter;
@@ -48,6 +43,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import static crazypants.enderio.machines.init.MachineObject.block_painter;
+import static crazypants.enderio.machines.machine.painter.ContainerPainter.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.painter.ContainerPainter.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machines.machine.painter.ContainerPainter.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.painter.ContainerPainter.NUM_RECIPE_SLOT;
 
 public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCategory.PainterRecipeWrapper> {
 
@@ -261,4 +262,10 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
     }
     return paintStacks;
   }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
+  }
+
 }

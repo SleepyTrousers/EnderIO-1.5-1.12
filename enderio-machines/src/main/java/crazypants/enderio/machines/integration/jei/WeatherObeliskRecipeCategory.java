@@ -11,6 +11,7 @@ import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.config.config.WeatherConfig;
 import crazypants.enderio.machines.init.MachineObject;
@@ -153,6 +154,11 @@ public class WeatherObeliskRecipeCategory extends BlankRecipeCategory<WeatherObe
     guiItemStacks.set(ingredients);
     fluidStacks.set(ingredients);
     group.set(ingredients);
+  }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
   }
 
 }

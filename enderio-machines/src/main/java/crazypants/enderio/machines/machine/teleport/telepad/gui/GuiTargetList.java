@@ -15,7 +15,7 @@ import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetL
 import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 
 public class GuiTargetList extends GuiScrollableList<TelepadTarget> {
 
@@ -41,7 +41,7 @@ public class GuiTargetList extends GuiScrollableList<TelepadTarget> {
   }
 
   @Override
-  protected void drawElement(int elementIndex, int x, int y, int heightIn, @Nonnull VertexBuffer renderer) {
+  protected void drawElement(int elementIndex, int x, int y, int heightIn, @Nonnull BufferBuilder renderer) {
     TelepadTarget targ = getElementAt(elementIndex);
     String name = targ.getName();
     if (name.trim().length() == 0) {

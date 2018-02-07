@@ -13,10 +13,10 @@ import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
@@ -75,7 +75,7 @@ public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer<TileTele
   public void render(@Nonnull TileEntity tileEntity, final @Nonnull IBlockState state) {
     final BlockPos pos = tileEntity.getPos();
     final Tessellator tessellator = Tessellator.getInstance();
-    final VertexBuffer vertexBuffer = tessellator.getBuffer();
+    final BufferBuilder vertexBuffer = tessellator.getBuffer();
     final BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
     final IBakedModel ibakedmodel = blockrendererdispatcher.getBlockModelShapes().getModelForState(state);
 

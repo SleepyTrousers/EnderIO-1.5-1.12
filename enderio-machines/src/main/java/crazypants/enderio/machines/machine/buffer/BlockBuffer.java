@@ -38,7 +38,7 @@ public class BlockBuffer extends AbstractPowerConsumerBlock<TileBuffer> implemen
   }
 
   private BlockBuffer(@Nonnull IModObject modObject) {
-    super(modObject, TileBuffer.class);
+    super(modObject);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BufferType.TYPE, BufferType.ITEM));
   }
 
@@ -89,7 +89,7 @@ public class BlockBuffer extends AbstractPowerConsumerBlock<TileBuffer> implemen
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(@Nonnull Item item, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     for (BufferType type : BufferType.values()) {
       list.add(BufferType.getStack(type));
     }

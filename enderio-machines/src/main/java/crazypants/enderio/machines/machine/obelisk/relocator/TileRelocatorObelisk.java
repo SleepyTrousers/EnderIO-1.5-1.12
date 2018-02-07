@@ -65,7 +65,7 @@ public class TileRelocatorObelisk extends AbstractSpawningObeliskEntity {
           iterator.remove();
         } else if (hasPower() && rand.nextFloat() < .025f) {
           AxisAlignedBB mobbb = mob.getEntityBoundingBox();
-          if (targetBB.intersectsWith(mobbb)) {
+          if (targetBB.intersects(mobbb)) {
             iterator.remove();
           } else {
             double x = getPos().getX() + .5 + Math.random() * 8d - 4.0;

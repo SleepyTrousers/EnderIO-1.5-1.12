@@ -49,7 +49,7 @@ public class BlockZombieGenerator extends AbstractGeneratorBlock<TileZombieGener
   }
 
   protected BlockZombieGenerator(@Nonnull IModObject modObject) {
-    super(modObject, TileZombieGenerator.class, new Material(MapColor.IRON) {
+    super(modObject, new Material(MapColor.IRON) {
 
       @Override
       public boolean isOpaque() {

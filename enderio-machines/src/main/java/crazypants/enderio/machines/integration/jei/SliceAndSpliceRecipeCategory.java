@@ -12,6 +12,7 @@ import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice;
 import crazypants.enderio.machines.machine.slicensplice.GuiSliceAndSplice;
 import mezz.jei.api.IGuiHelper;
@@ -158,6 +159,11 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
     res.add(new ItemStack(Items.SHEARS));
     res.add(new ItemStack(ModObject.itemDarkSteelShears.getItemNN()));
     return res;
+  }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
   }
 
 }

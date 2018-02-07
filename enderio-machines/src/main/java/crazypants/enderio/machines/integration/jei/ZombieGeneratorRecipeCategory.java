@@ -14,6 +14,7 @@ import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.lang.LangFluid;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
 import crazypants.enderio.machines.init.MachineObject;
@@ -127,4 +128,10 @@ public class ZombieGeneratorRecipeCategory extends BlankRecipeCategory<ZombieGen
     guiFluidStacks.set(ingredients);
     group.set(ingredients);
   }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
+  }
+
 }

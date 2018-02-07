@@ -138,8 +138,8 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
         final int maxChunkYClamped = MathHelper.clamp(maxChunkY, 0, entityLists.length - 1);
         for (int chunkY = minChunkYClamped; chunkY <= maxChunkYClamped; ++chunkY) {
           for (Entity entity : entityLists[chunkY]) {
-            if (!entity.isDead && (entity instanceof EntityItem) && entity.getEntityBoundingBox().intersectsWith(bb)
-                && (filter == null || filter.doesItemPassFilter(null, ((EntityItem) entity).getEntityItem())) && MagnetUtil.shouldAttract(getPos(), entity)) {
+            if (!entity.isDead && (entity instanceof EntityItem) && entity.getEntityBoundingBox().intersects(bb)
+                && (filter == null || filter.doesItemPassFilter(null, ((EntityItem) entity).getItem())) && MagnetUtil.shouldAttract(getPos(), entity)) {
               result.add((EntityItem) entity);
               if (maxItems > 0 && maxItems <= result.size()) {
                 return result;
@@ -179,12 +179,12 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
     if (!world.isRemote) {
       if (entity instanceof EntityItem && !entity.isDead) {
         EntityItem item = (EntityItem) entity;
-        ItemStack stack = item.getEntityItem().copy();
+        ItemStack stack = item.getItem().copy();
 
         int numInserted = ItemTools.doInsertItem(getInventory().getView(Type.INPUT), stack);
 
         stack.shrink(numInserted);
-        item.setEntityItemStack(stack);
+        item.setItem(stack);
         if (Prep.isInvalid(stack)) {
           item.setDead();
         }

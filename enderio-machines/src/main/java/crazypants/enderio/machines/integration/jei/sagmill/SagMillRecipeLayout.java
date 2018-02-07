@@ -8,6 +8,7 @@ import mezz.jei.api.gui.IGuiIngredientGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.IFocus;
+import mezz.jei.api.recipe.IRecipeCategory;
 
 public class SagMillRecipeLayout implements IRecipeLayout {
 
@@ -47,4 +48,10 @@ public class SagMillRecipeLayout implements IRecipeLayout {
   public void setShapeless() {
     recipeLayout.setShapeless();
   }
+
+  @Override
+  public @Nonnull IRecipeCategory<?> getRecipeCategory() {
+    return recipeLayout.getRecipeCategory();
+  }
+
 }

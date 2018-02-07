@@ -44,7 +44,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   public BlockElectricLight(@Nonnull IModObject modObject) {
-    super(modObject, TileElectricLight.class);
+    super(modObject);
     setLightOpacity(0);
     setDefaultState(blockState.getBaseState().withProperty(TYPE, LightType.ELECTRIC).withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
   }

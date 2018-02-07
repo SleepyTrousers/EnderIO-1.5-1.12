@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.machines.config.config.ClientConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -89,7 +89,7 @@ public class ParticleBloodDrip extends Particle {
   }
 
   @Override
-  public void renderParticle(@Nonnull VertexBuffer buffer, @Nonnull Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ,
+  public void renderParticle(@Nonnull BufferBuilder buffer, @Nonnull Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ,
       float rotationXY, float rotationXZ) {
     // Move the particle against the face of the block, and counteract the scaling so that it grows from the center
     buffer.setTranslation(-0.08 * facing.getDirectionVec().getX() * offset, -particleScale * height, -0.08 * facing.getDirectionVec().getZ() * offset);

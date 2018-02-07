@@ -144,7 +144,7 @@ public class TileAttractor extends AbstractMobObeliskEntity {
   }
 
   public boolean canAttract(EntityLiving mob) {
-    return isMobInFilter(mob) && getBounds().intersectsWith(mob.getEntityBoundingBox());
+    return isMobInFilter(mob) && getBounds().intersects(mob.getEntityBoundingBox());
   }
 
   @Override

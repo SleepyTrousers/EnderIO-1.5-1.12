@@ -30,8 +30,8 @@ public abstract class AbstractBlockObelisk<T extends AbstractInventoryMachineEnt
 
   public static final @Nonnull AxisAlignedBB AABB = new AxisAlignedBB(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
 
-  protected AbstractBlockObelisk(@Nonnull IModObject mo, Class<T> teClass) {
-    super(mo, teClass, new Material(MapColor.IRON) {
+  protected AbstractBlockObelisk(@Nonnull IModObject mo) {
+    super(mo, new Material(MapColor.IRON) {
 
       @Override
       public boolean isOpaque() {

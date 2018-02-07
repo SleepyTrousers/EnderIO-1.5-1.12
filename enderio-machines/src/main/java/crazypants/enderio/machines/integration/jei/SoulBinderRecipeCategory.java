@@ -9,20 +9,13 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import static crazypants.enderio.base.init.ModObject.itemBrokenSpawner;
-import static crazypants.enderio.base.init.ModObject.itemSoulVial;
-import static crazypants.enderio.machines.init.MachineObject.block_soul_binder;
-import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.NUM_RECIPE_SLOT;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.soul.ISoulBinderRecipe;
 import crazypants.enderio.base.recipe.soul.SoulBinderTunedPressurePlateRecipe;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.soul.ContainerSoulBinder;
 import crazypants.enderio.machines.machine.soul.GuiSoulBinder;
@@ -45,6 +38,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import static crazypants.enderio.base.init.ModObject.itemBrokenSpawner;
+import static crazypants.enderio.base.init.ModObject.itemSoulVial;
+import static crazypants.enderio.machines.init.MachineObject.block_soul_binder;
+import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.soul.ContainerSoulBinder.NUM_RECIPE_SLOT;
 
 public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderRecipeCategory.SoulBinderRecipeWrapper> {
 
@@ -214,4 +215,10 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
 
     group.set(ingredients);
   }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
+  }
+
 }

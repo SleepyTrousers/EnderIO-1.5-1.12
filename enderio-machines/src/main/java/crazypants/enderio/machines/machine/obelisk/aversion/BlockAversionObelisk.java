@@ -19,7 +19,7 @@ public class BlockAversionObelisk extends AbstractBlockRangedObelisk<TileAversio
   }
 
   protected BlockAversionObelisk(@Nonnull IModObject modObject) {
-    super(modObject, TileAversionObelisk.class);
+    super(modObject);
   }
 
 }

@@ -18,6 +18,7 @@ import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
@@ -218,6 +219,11 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
 
     guiItemStacks.set(ingredients);
     group.set(ingredients);
+  }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
   }
 
 }

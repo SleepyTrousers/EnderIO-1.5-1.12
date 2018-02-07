@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.EnderIO;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
@@ -13,8 +14,9 @@ public interface IModTileEntity {
   @Nonnull
   String getUnlocalisedName();
 
-  @Nonnull
-  ResourceLocation getRegistryName();
+  default @Nonnull ResourceLocation getRegistryName() {
+    return new ResourceLocation(EnderIO.DOMAIN, getUnlocalisedName());
+  }
 
   @Nonnull
   Class<? extends TileEntity> getTileEntityClass();

@@ -11,6 +11,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.xp.XpUtil;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.tank.ContainerTank;
 import crazypants.enderio.machines.machine.tank.GuiTank;
 import crazypants.enderio.machines.machine.tank.TileTank;
@@ -222,4 +223,10 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
       fluidStacks.set(0, recipeWrapper.fluidInput);
     }
   }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
+  }
+
 }

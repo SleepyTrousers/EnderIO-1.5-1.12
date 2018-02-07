@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.block.coldfire.BlockColdFire;
 import crazypants.enderio.base.block.darksteel.anvil.BlockDarkSteelAnvil;
 import crazypants.enderio.base.block.darksteel.bars.BlockDarkIronBars;
@@ -67,7 +66,6 @@ import crazypants.enderio.base.render.dummy.BlockMachineBase;
 import crazypants.enderio.base.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 
 public enum ModObject implements IModObject.Registerable {
 
@@ -271,26 +269,6 @@ public enum ModObject implements IModObject.Registerable {
   @Override
   public final void setBlock(@Nullable Block obj) {
     block = obj;
-  }
-
-  @Override
-  @Nonnull
-  public final ResourceLocation getRegistryName() {
-    return new ResourceLocation(EnderIO.DOMAIN, unlocalisedName);
-  }
-
-  @Override
-  public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
-    blockIn.setUnlocalizedName(getUnlocalisedName());
-    blockIn.setRegistryName(getRegistryName());
-    return blockIn;
-  }
-
-  @Override
-  public final @Nonnull <I extends Item> I apply(@Nonnull I itemIn) {
-    itemIn.setUnlocalizedName(getUnlocalisedName());
-    itemIn.setRegistryName(getRegistryName());
-    return itemIn;
   }
 
   @Override

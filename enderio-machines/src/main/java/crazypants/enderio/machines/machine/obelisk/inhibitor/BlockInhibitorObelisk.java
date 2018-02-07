@@ -40,7 +40,7 @@ public class BlockInhibitorObelisk extends AbstractBlockRangedObelisk<TileInhibi
   }
 
   protected BlockInhibitorObelisk(@Nonnull IModObject modObject) {
-    super(modObject, TileInhibitorObelisk.class);
+    super(modObject);
   }
 
   @Override
@@ -84,11 +84,11 @@ public class BlockInhibitorObelisk extends AbstractBlockRangedObelisk<TileInhibi
     if (!activeInhibitors.isEmpty()) {
       Vec3d pos = new Vec3d(d, f, g);
       for (Entry<BlockPos, BoundingBox> e : activeInhibitors.entrySet()) {
-        if (e.getValue().isVecInside(pos)) {
+        if (e.getValue().contains(pos)) {
           BlockPos bc = NullHelper.notnull(e.getKey(), "activeInhibitors has invalid bc");
           if (entityWorld.isBlockLoaded(bc)) {
             TileEntity te = entityWorld.getTileEntity(bc);
-            if (te instanceof TileInhibitorObelisk && ((TileInhibitorObelisk) te).isActive() && ((TileInhibitorObelisk) te).getBounds().isVecInside(pos)) {
+            if (te instanceof TileInhibitorObelisk && ((TileInhibitorObelisk) te).isActive() && ((TileInhibitorObelisk) te).getBounds().contains(pos)) {
               return true;
             }
           }

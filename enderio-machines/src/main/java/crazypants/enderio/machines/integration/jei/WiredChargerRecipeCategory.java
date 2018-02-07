@@ -13,6 +13,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.wired.ContainerWiredCharger;
 import crazypants.enderio.machines.machine.wired.GuiWiredCharger;
@@ -129,6 +130,11 @@ public class WiredChargerRecipeCategory extends BlankRecipeCategory<WiredCharger
 
     guiItemStacks.set(ingredients);
     group.set(ingredients);
+  }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
   }
 
 }

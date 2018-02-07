@@ -19,6 +19,7 @@ import crazypants.enderio.base.fluid.IFluidFuel;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.lang.LangFluid;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.config.config.CombustionGenConfig;
 import crazypants.enderio.machines.init.MachineObject;
@@ -188,6 +189,11 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     group.init(3, false, EnergyIngredientRenderer.INSTANCE, 54 + 47 - xOff, 9 - yOff, 40, 10, 0, 0);
     group.set(ingredients);
 
+  }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
   }
 
 }

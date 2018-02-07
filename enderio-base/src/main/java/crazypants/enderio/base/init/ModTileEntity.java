@@ -11,7 +11,6 @@ import crazypants.enderio.base.block.painted.TilePaintedPressurePlate;
 import crazypants.enderio.base.block.skull.TileEndermanSkull;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -38,12 +37,6 @@ public enum ModTileEntity implements IModTileEntity {
   @Nonnull
   public String getUnlocalisedName() {
     return unlocalisedName;
-  }
-
-  @Override
-  @Nonnull
-  public ResourceLocation getRegistryName() {
-    return new ResourceLocation(EnderIO.DOMAIN, unlocalisedName);
   }
 
   @Override

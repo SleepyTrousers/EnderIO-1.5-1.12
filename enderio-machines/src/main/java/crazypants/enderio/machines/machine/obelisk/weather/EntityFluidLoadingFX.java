@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.ParticleDrip;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -46,7 +46,7 @@ public class EntityFluidLoadingFX extends ParticleDrip {
   }
 
   @Override
-  public void renderParticle(@Nonnull VertexBuffer worldRendererIn, @Nonnull Entity entityIn, float partialTicks, float rotationX, float rotationZ,
+  public void renderParticle(@Nonnull BufferBuilder worldRendererIn, @Nonnull Entity entityIn, float partialTicks, float rotationX, float rotationZ,
       float rotationYZ, float rotationXY, float rotationXZ) {
     if (particleAge >= 2) {
       super.renderParticle(worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);

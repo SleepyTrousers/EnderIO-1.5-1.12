@@ -13,6 +13,7 @@ import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.IManyToOneRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter;
 import crazypants.enderio.machines.machine.alloy.GuiAlloySmelter;
 import mezz.jei.api.IGuiHelper;
@@ -146,4 +147,10 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
 
     group.set(ingredients);
   }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
+  }
+
 }

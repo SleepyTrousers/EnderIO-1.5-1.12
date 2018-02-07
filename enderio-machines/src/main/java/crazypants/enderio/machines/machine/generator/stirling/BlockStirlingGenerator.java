@@ -54,8 +54,8 @@ public class BlockStirlingGenerator<T extends TileStirlingGenerator> extends Abs
     return gen;
   }
 
-  protected BlockStirlingGenerator(@Nonnull IModObject modObject, @Nonnull Class<T> teClass) {
-    super(modObject, teClass);
+  protected BlockStirlingGenerator(@Nonnull IModObject modObject) {
+    super(modObject);
   }
 
   @Override

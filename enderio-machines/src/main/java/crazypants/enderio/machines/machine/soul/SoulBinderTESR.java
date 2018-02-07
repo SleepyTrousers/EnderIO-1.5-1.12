@@ -17,9 +17,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Blocks;
@@ -61,7 +61,7 @@ public class SoulBinderTESR extends ManagedTESR<TileSoulBinder> {
 
   @SuppressWarnings("null")
   public static void renderBlockModel(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, boolean translateToOrigin, boolean relight) {
-    VertexBuffer wr = Tessellator.getInstance().getBuffer();
+    BufferBuilder wr = Tessellator.getInstance().getBuffer();
     wr.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
     if (translateToOrigin) {
       wr.setTranslation(-pos.getX(), -pos.getY(), -pos.getZ());

@@ -8,9 +8,9 @@ import com.enderio.core.common.vecmath.Vector4i;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.TelePadConfig;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -67,7 +67,7 @@ public class TeleportEntityRenderHandler {
       GlStateManager.rotate(rot + Minecraft.getMinecraft().getRenderPartialTicks() + e.ticksExisted, 0, 1, 0);
 
       Tessellator tes = Tessellator.getInstance();
-      VertexBuffer vertexBuffer = tes.getBuffer();
+      BufferBuilder vertexBuffer = tes.getBuffer();
       vertexBuffer.setTranslation(-e.posX, -e.posY, -e.posZ);
 
       vertexBuffer.begin(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION_COLOR);

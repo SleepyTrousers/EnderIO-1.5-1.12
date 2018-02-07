@@ -15,10 +15,10 @@ import crazypants.enderio.base.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -77,7 +77,7 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     GlStateManager.enableRescaleNormal();
     RenderUtil.bindBlockTexture();
-    VertexBuffer tes = Tessellator.getInstance().getBuffer();
+    BufferBuilder tes = Tessellator.getInstance().getBuffer();
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
     for (BakedQuad quad : bakedQuads) {
       tes.addVertexData(quad.getVertexData());
@@ -91,7 +91,7 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
     if (ei == null) {
       this.enityItem = ei = new EntityItem(world, 0, 0, 0, getFloatingItem(te));
     }
-    ei.setEntityItemStack(getFloatingItem(te));
+    ei.setItem(getFloatingItem(te));
     ei.hoverStart = (float) ((EnderIO.proxy.getTickCount() * 0.05f + (tick * 0.05f)) % (Math.PI * 2));
 
     RenderUtil.bindBlockTexture();
@@ -152,7 +152,7 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
     @SuppressWarnings("null")
     @Override
     public void doRender(@Nonnull EntityItem entity, double x, double y, double z, float entityYaw, float partialTicks) {
-      ItemStack itemstack = entity.getEntityItem();
+      ItemStack itemstack = entity.getItem();
       random.setSeed(187L);
       boolean flag = false;
 
@@ -209,7 +209,7 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
 
     @SuppressWarnings({ "null", "unused" })
     private int func_177077_a(EntityItem itemIn, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_) {
-      ItemStack itemstack = itemIn.getEntityItem();
+      ItemStack itemstack = itemIn.getItem();
       Item item = itemstack.getItem();
 
       if (item == null) {

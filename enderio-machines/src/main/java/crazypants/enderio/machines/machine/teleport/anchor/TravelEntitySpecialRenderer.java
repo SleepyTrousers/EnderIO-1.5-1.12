@@ -20,11 +20,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -145,7 +145,7 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Man
   }
 
   public void renderBlock(@Nonnull BlockPos pos, IBlockAccess blockAccess, double globalScale, boolean highlight) {
-    VertexBuffer tes = Tessellator.getInstance().getBuffer();
+    BufferBuilder tes = Tessellator.getInstance().getBuffer();
     BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 
     GlStateManager.pushMatrix();

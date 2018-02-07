@@ -229,10 +229,10 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     String[] text = { "X", "Y", "Z", "DIM" };
     for (int i = 0; i < text.length; i++) {
       TextFieldEnder f = textFields.get(i);
-      fnt.drawString(NullHelper.first(text[i]), f.xPosition - (fnt.getStringWidth(NullHelper.first(text[i], "")) / 2) - 10,
-          f.yPosition + ((f.height - fnt.FONT_HEIGHT) / 2) + 1, 0x000000);
+      fnt.drawString(NullHelper.first(text[i]), f.x - (fnt.getStringWidth(NullHelper.first(text[i], "")) / 2) - 10,
+          f.y + ((f.height - fnt.FONT_HEIGHT) / 2) + 1, 0x000000);
       if (!f.getCanLoseFocus()) {
-        IconEIO.map.render(IconEIO.LOCK_LOCKED, f.xPosition + f.width - 2, f.yPosition - 2, true);
+        IconEIO.map.render(IconEIO.LOCK_LOCKED, f.x + f.width - 2, f.y - 2, true);
       }
     }
 

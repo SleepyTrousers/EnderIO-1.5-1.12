@@ -28,7 +28,7 @@ public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceO
   }
 
   private BlockExperienceObelisk(@Nonnull IModObject modObject) {
-    super(modObject, TileExperienceObelisk.class);
+    super(modObject);
   }
 
   @Override

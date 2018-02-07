@@ -1,5 +1,9 @@
 package crazypants.enderio.machines.machine.obelisk.attractor.handlers;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machines.machine.obelisk.attractor.TileAttractor;
@@ -7,10 +11,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class AIAttractionHandler implements IMobAttractionHandler {
 
@@ -33,7 +33,7 @@ public class AIAttractionHandler implements IMobAttractionHandler {
     for (EntityAITaskEntry entry : entity.tasks.taskEntries) {
       if (entry.action instanceof AttractTask) {
         AttractTask at = (AttractTask) entry.action;
-        if (attractor == null || at.coord.equals(BlockCoord.get(attractor)) || !at.continueExecuting()) {
+        if (attractor == null || at.coord.equals(BlockCoord.get(attractor)) || !at.shouldContinueExecuting()) {
           return entry.action;
         } else {
           return null;
@@ -60,7 +60,6 @@ public class AIAttractionHandler implements IMobAttractionHandler {
       ent.tasks.addTask(task.priority, task.action);
     }
   }
-
 
   @Override
   public void tick(TileAttractor attractor, EntityLiving entity) {

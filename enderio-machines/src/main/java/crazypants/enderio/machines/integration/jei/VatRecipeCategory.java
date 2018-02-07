@@ -4,12 +4,6 @@ import java.awt.Rectangle;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.machines.init.MachineObject.block_vat;
-import static crazypants.enderio.machines.machine.vat.ContainerVat.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.vat.ContainerVat.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machines.machine.vat.ContainerVat.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.vat.ContainerVat.NUM_RECIPE_SLOT;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.integration.jei.RecipeWrapper;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
@@ -18,6 +12,7 @@ import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.vat.VatRecipe;
 import crazypants.enderio.base.recipe.vat.VatRecipe.RecipeMatch;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.vat.ContainerVat;
 import crazypants.enderio.machines.machine.vat.GuiVat;
 import crazypants.enderio.util.Prep;
@@ -34,6 +29,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+
+import static crazypants.enderio.machines.init.MachineObject.block_vat;
+import static crazypants.enderio.machines.machine.vat.ContainerVat.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.vat.ContainerVat.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machines.machine.vat.ContainerVat.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.vat.ContainerVat.NUM_RECIPE_SLOT;
 
 public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.VatRecipeWrapper> {
 
@@ -144,4 +145,10 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
     fluidStacks.set(ingredients);
     group.set(ingredients);
   }
+
+  @Override
+  public @Nonnull String getModName() {
+    return EnderIOMachines.MODID;
+  }
+
 }

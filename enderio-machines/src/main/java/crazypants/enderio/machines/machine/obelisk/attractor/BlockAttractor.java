@@ -23,7 +23,7 @@ public class BlockAttractor extends AbstractBlockRangedObelisk<TileAttractor> {
   }
 
   protected BlockAttractor(@Nonnull IModObject modObject) {
-    super(modObject, TileAttractor.class);
+    super(modObject);
   }
 
   protected static @Nonnull String permissionAttracting = "(unititialized)";

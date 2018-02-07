@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.stackable.IProducer;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.handler.GuiHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,14 +24,21 @@ public interface IModObject extends IProducer {
   @Nonnull
   String getUnlocalisedName();
 
-  @Nonnull
-  ResourceLocation getRegistryName();
+  default @Nonnull ResourceLocation getRegistryName() {
+    return new ResourceLocation(EnderIO.DOMAIN, getUnlocalisedName());
+  }
 
-  @Nonnull
-  <B extends Block> B apply(@Nonnull B block);
+  default @Nonnull <B extends Block> B apply(@Nonnull B block) {
+    block.setUnlocalizedName(getUnlocalisedName());
+    block.setRegistryName(getRegistryName());
+    return block;
+  }
 
-  @Nonnull
-  <I extends Item> I apply(@Nonnull I item);
+  default @Nonnull <I extends Item> I apply(@Nonnull I item) {
+    item.setUnlocalizedName(getUnlocalisedName());
+    item.setRegistryName(getRegistryName());
+    return item;
+  }
 
   default @Nullable Class<? extends TileEntity> getTEClass() {
     if (this instanceof Registerable) {

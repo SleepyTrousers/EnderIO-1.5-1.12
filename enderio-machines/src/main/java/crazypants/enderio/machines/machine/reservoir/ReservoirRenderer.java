@@ -17,10 +17,10 @@ import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.vecmath.Vertex;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.CullFace;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
@@ -46,7 +46,7 @@ public class ReservoirRenderer extends ManagedTESR<TileReservoir> {
   @Override
   protected void renderTileEntity(@Nonnull TileReservoir te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     Tessellator tessellator = Tessellator.getInstance();
-    VertexBuffer tes = tessellator.getBuffer();
+    BufferBuilder tes = tessellator.getBuffer();
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
     Set<EnumFacing> mergers = getMergers(te.getWorld(), te.getPos());
     renderTankFluid(te.tank, mergers, te.getWorld(), te.getPos());
@@ -194,7 +194,7 @@ public class ReservoirRenderer extends ManagedTESR<TileReservoir> {
 
       boolean[][][] merge = getMergers9(world, pos);
 
-      VertexBuffer tes = Tessellator.getInstance().getBuffer();
+      BufferBuilder tes = Tessellator.getInstance().getBuffer();
 
       float minU = icon.getMinU(), maxU = icon.getMaxU(), minV = icon.getMinV(), maxV = icon.getMaxV();
 
@@ -230,7 +230,7 @@ public class ReservoirRenderer extends ManagedTESR<TileReservoir> {
     }
   }
 
-  public static void renderFace(@Nonnull VertexBuffer tes, @Nonnull BoundingBox bb, @Nonnull EnumFacing face, float minU, float maxU, float minV, float maxV,
+  public static void renderFace(@Nonnull BufferBuilder tes, @Nonnull BoundingBox bb, @Nonnull EnumFacing face, float minU, float maxU, float minV, float maxV,
       int color) {
     float d = 1f; // LightUtil.diffuseLight(face);
     float r = d * ((color >> 16) & 0xFF) / 255f, g = d * ((color >> 8) & 0xFF) / 255f, b = d * (color & 0xFF) / 255f, a = ((color >> 24) & 0xFF) / 255f;

@@ -57,8 +57,8 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
     return new BlockMachineExtension(modObject, MachineObject.block_enhanced_combustion_generator, new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 11D / 16D, 1.0D));
   }
 
-  protected BlockCombustionGenerator(@Nonnull IModObject modObject, @Nonnull Class<T> teClass) {
-    super(modObject, teClass);
+  protected BlockCombustionGenerator(@Nonnull IModObject modObject) {
+    super(modObject);
   }
 
   @Override

@@ -55,7 +55,7 @@ public class PoweredSpawnerSpecialRenderer extends ManagedTESR<TilePoweredSpawne
       GlStateManager.translate(0.0F, -0.2F, 0.0F);
       GlStateManager.rotate(-30.0F, 1.0F, 0.0F, 0.0F);
       GlStateManager.scale(f, f, f);
-      Minecraft.getMinecraft().getRenderManager().doRenderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, partialTicks, false);
+      Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, partialTicks, false);
       GlStateManager.popMatrix();
     }
   }

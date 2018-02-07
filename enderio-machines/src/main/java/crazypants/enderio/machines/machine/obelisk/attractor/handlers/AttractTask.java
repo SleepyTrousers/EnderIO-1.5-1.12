@@ -27,7 +27,7 @@ class AttractTask extends EntityAIBase {
 
   @Override
   public boolean shouldExecute() {
-    return continueExecuting();
+    return shouldContinueExecuting();
   }
 
   @Override
@@ -37,7 +37,7 @@ class AttractTask extends EntityAIBase {
   }
 
   @Override
-  public boolean continueExecuting() {
+  public boolean shouldContinueExecuting() {
     boolean res = false;
     TileEntity te = mob.world.getTileEntity(coord);
     if (te instanceof TileAttractor) {

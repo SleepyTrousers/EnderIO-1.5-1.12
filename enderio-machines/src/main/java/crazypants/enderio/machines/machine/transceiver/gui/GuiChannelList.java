@@ -14,7 +14,7 @@ import com.google.common.collect.Sets;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.transceiver.Channel;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 
 public class GuiChannelList extends GuiScrollableList<Channel> {
 
@@ -52,7 +52,7 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
   }
 
   @Override
-  protected void drawElement(int index, int xPosition, int yPosition, int rowHeight, @Nonnull VertexBuffer renderer) {
+  protected void drawElement(int index, int xPosition, int yPosition, int rowHeight, @Nonnull BufferBuilder renderer) {
     if (index < 0 || index >= channels.size()) {
       return;
     }
