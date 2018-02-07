@@ -363,6 +363,9 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     World world = getBundle().getEntity().getWorld();
     BlockPos pos = getBundle().getLocation().offset(direction);
     IBlockState bs = world.getBlockState(pos);
+    if (bs.getBlock() == ConduitRegistry.getConduitModObjectNN().getBlock()) {
+      return false;
+    }
     return ConnectivityTool.shouldAutoConnectRedstone(world, bs, pos, direction.getOpposite());
   }
 
