@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.api.redstone.IRedstoneConnectable_dont_crash_us_mcjty;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -31,10 +31,10 @@ public class ConnectivityTool {
     if (state.getBlock().canConnectRedstone(state, world, pos, from) || shouldAutoConnectRedstone(state)) {
       return true;
     }
-    if (state.getBlock() instanceof IRedstoneConnectable) {
-      return ((IRedstoneConnectable) state.getBlock()).shouldRedstoneConduitConnect(world, pos, from);
+    if (state.getBlock() instanceof IRedstoneConnectable_dont_crash_us_mcjty) {
+      return ((IRedstoneConnectable_dont_crash_us_mcjty) state.getBlock()).shouldRedstoneConduitConnect(world, pos, from);
     }
-    IRedstoneConnectable redstoneConnectable = BlockEnder.getAnyTileEntitySafe(world, pos, IRedstoneConnectable.class);
+    IRedstoneConnectable_dont_crash_us_mcjty redstoneConnectable = BlockEnder.getAnyTileEntitySafe(world, pos, IRedstoneConnectable_dont_crash_us_mcjty.class);
     if (redstoneConnectable != null) {
       redstoneConnectable.shouldRedstoneConduitConnect(world, pos, from);
     }
