@@ -111,7 +111,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   private @Nonnull AxisAlignedBB bounds;
 
   protected BlockConduitBundle(@Nonnull IModObject modObject) {
-    super(modObject, TileConduitBundle.class);
+    super(modObject);
     bounds = setBlockBounds(0.334, 0.334, 0.334, 0.667, 0.667, 0.667);
     setHardness(1.5f);
     setResistance(10.0f);
@@ -203,7 +203,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       tex = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(ModObject.block_machine_base.getBlockNN().getDefaultState());
     }
     lastHitIcon = tex;
-    addBlockHitEffects(world, effectRenderer, target.hitVec.xCoord, target.hitVec.yCoord, target.hitVec.zCoord, target.sideHit, tex);
+    addBlockHitEffects(world, effectRenderer, target.hitVec.x, target.hitVec.y, target.hitVec.z, target.sideHit, tex);
     return true;
   }
 
@@ -1092,9 +1092,9 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (tab != null) {
-      super.getSubBlocks(itemIn, tab, list);
+      super.getSubBlocks(tab, list);
     }
   }
 

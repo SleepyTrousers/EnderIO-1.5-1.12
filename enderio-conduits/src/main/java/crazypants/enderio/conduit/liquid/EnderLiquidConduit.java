@@ -1,20 +1,31 @@
 package crazypants.enderio.conduit.liquid;
 
-import com.enderio.core.client.render.IconUtil;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.vecmath.Vector4f;
-import crazypants.enderio.base.conduit.*;
+
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
+import crazypants.enderio.base.render.registry.TextureRegistry;
+import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.IConduitComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -25,39 +36,15 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import static crazypants.enderio.conduit.init.ConduitObject.item_liquid_conduit;
 
 public class EnderLiquidConduit extends AbstractLiquidConduit implements IConduitComponent {
 
   // TODO Lang
 
-  public static final String ICON_KEY = "enderio:blocks/liquid_conduit_ender";
-  public static final String ICON_CORE_KEY = "enderio:blocks/liquid_conduit_core_ender"; 
-  public static final String ICON_IN_OUT_KEY = "enderio:blocks/liquid_conduit_advanced_in_out";
-
-  static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
-
-  @SideOnly(Side.CLIENT)
-  public static void initIcons() {
-    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
-      @Override
-      public void registerIcons(@Nonnull TextureMap register) {
-        ICONS.put(ICON_KEY, register.registerSprite(new ResourceLocation(ICON_KEY)));
-        ICONS.put(ICON_CORE_KEY, register.registerSprite(new ResourceLocation(ICON_CORE_KEY)));
-        ICONS.put(ICON_IN_OUT_KEY, register.registerSprite(new ResourceLocation(ICON_IN_OUT_KEY)));
-      }
-
-    });
-  }
+  public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_ender");
+  public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core_ender"); 
+  public static final TextureSupplier ICON_IN_OUT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_in_out");
 
   private EnderLiquidConduitNetwork network;
   private int ticksSinceFailedExtract;
@@ -158,24 +145,24 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
     if(component.dir ==null) {
-      return ICONS.get(ICON_CORE_KEY);
+      return ICON_CORE_KEY.get(TextureAtlasSprite.class);
     }
-    return ICONS.get(ICON_KEY);
+    return ICON_KEY.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForInputMode() {
-    return AdvancedLiquidConduit.ICONS.get(AdvancedLiquidConduit.ICON_EXTRACT_KEY);
+    return AdvancedLiquidConduit.ICON_EXTRACT_KEY.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForOutputMode() {
-    return AdvancedLiquidConduit.ICONS.get(AdvancedLiquidConduit.ICON_INSERT_KEY);    
+    return AdvancedLiquidConduit.ICON_INSERT_KEY.get(TextureAtlasSprite.class);    
   }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForInOutMode() {
-    return ICONS.get(ICON_IN_OUT_KEY);
+    return ICON_IN_OUT_KEY.get(TextureAtlasSprite.class);
   }
 
   @Override

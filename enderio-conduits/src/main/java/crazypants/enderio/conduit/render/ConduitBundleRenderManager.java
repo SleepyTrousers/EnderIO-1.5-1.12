@@ -32,11 +32,10 @@ public class ConduitBundleRenderManager {
   public void init(FMLPreInitializationEvent event) {
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
   }
-
+  
   public void init(FMLPostInitializationEvent event) {
     for (ConduitInfo conduitInfo : ConduitRegistry.getAll()) {
       for (IConduitRenderer renderer : conduitInfo.getRenderers()) {
-        renderer.initIcons();
         cbr.registerRenderer(renderer);
       }
     }

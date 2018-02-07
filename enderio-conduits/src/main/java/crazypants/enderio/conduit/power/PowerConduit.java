@@ -15,6 +15,8 @@ import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.registry.TextureRegistry;
+import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.IConduitComponent;
@@ -51,31 +53,24 @@ import static crazypants.enderio.conduit.init.ConduitObject.item_power_conduit;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit, IConduitComponent {
 
-  static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
+  static final Map<String, TextureSupplier> ICONS = new HashMap<>();
 
   static final String[] POSTFIX = new String[] { "", "_enhanced", "_ender" };
+
+  static {
+    for (String pf : POSTFIX) {
+      ICONS.put(ICON_KEY + pf, TextureRegistry.registerTexture(ICON_KEY + pf));
+      ICONS.put(ICON_KEY_INPUT + pf,  TextureRegistry.registerTexture(ICON_KEY_INPUT + pf));
+      ICONS.put(ICON_KEY_OUTPUT + pf, TextureRegistry.registerTexture(ICON_KEY_OUTPUT + pf));
+      ICONS.put(ICON_CORE_KEY + pf, TextureRegistry.registerTexture(ICON_CORE_KEY + pf));
+    }
+    ICONS.put(ICON_TRANSMISSION_KEY, TextureRegistry.registerTexture(ICON_TRANSMISSION_KEY));
+  }
 
   @Nonnull
   static ItemStack createItemStackForSubtype(int subtype) {
     ItemStack result = new ItemStack(item_power_conduit.getItem(), 1, subtype);
     return result;
-  }
-
-  public static void initIcons() {
-    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
-      @Override
-      public void registerIcons(@Nonnull TextureMap register) {
-
-        for (String pf : POSTFIX) {
-          ICONS.put(ICON_KEY + pf, register.registerSprite(new ResourceLocation(ICON_KEY + pf)));
-          ICONS.put(ICON_KEY_INPUT + pf, register.registerSprite(new ResourceLocation(ICON_KEY_INPUT + pf)));
-          ICONS.put(ICON_KEY_OUTPUT + pf, register.registerSprite(new ResourceLocation(ICON_KEY_OUTPUT + pf)));
-          ICONS.put(ICON_CORE_KEY + pf, register.registerSprite(new ResourceLocation(ICON_CORE_KEY + pf)));
-        }
-        ICONS.put(ICON_TRANSMISSION_KEY, register.registerSprite(new ResourceLocation(ICON_TRANSMISSION_KEY)));
-      }
-    });
   }
 
   public static final float WIDTH = 0.075f;
@@ -446,22 +441,22 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
     if (component.dir == null) {
-      return ICONS.get(ICON_CORE_KEY + POSTFIX[subtype]);
+      return ICONS.get(ICON_CORE_KEY + POSTFIX[subtype]).get(TextureAtlasSprite.class);
     }
     if (COLOR_CONTROLLER_ID.equals(component.data)) {
       return IconUtil.instance.whiteTexture;
     }
-    return ICONS.get(ICON_KEY + POSTFIX[subtype]);
+    return ICONS.get(ICON_KEY + POSTFIX[subtype]).get(TextureAtlasSprite.class);
   }
 
   @Override
   public TextureAtlasSprite getTextureForInputMode() {
-    return ICONS.get(ICON_KEY_INPUT + POSTFIX[subtype]);
+    return ICONS.get(ICON_KEY_INPUT + POSTFIX[subtype]).get(TextureAtlasSprite.class);
   }
 
   @Override
   public TextureAtlasSprite getTextureForOutputMode() {
-    return ICONS.get(ICON_KEY_OUTPUT + POSTFIX[subtype]);
+    return ICONS.get(ICON_KEY_OUTPUT + POSTFIX[subtype]).get(TextureAtlasSprite.class);
   }
 
   @Override

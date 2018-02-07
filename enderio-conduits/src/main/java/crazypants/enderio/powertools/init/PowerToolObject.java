@@ -10,6 +10,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.powertools.EnderIOPowerTools;
 import crazypants.enderio.powertools.machine.capbank.BlockCapBank;
@@ -27,10 +28,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIOPowerTools.MODID)
 public enum PowerToolObject implements IModObject.Registerable {
 
-  block_cap_bank(BlockCapBank.class),
-  block_gauge(BlockGauge.class),
-  block_power_monitor(BlockPowerMonitor.class, "createPowerMonitor"),
-  block_advanced_power_monitor(BlockPowerMonitor.class, "createAdvancedPowerMonitor"),
+  block_cap_bank(BlockCapBank.class, PowerToolTileEntity.TileCapBank),
+  block_gauge(BlockGauge.class, PowerToolTileEntity.TileGauge),
+  block_power_monitor(BlockPowerMonitor.class, "createPowerMonitor", PowerToolTileEntity.TilePowerMonitor),
+  block_advanced_power_monitor(BlockPowerMonitor.class, "createAdvancedPowerMonitor", PowerToolTileEntity.TilePowerMonitor),
 
   ;
 
@@ -46,25 +47,25 @@ public enum PowerToolObject implements IModObject.Registerable {
 
   protected final @Nonnull Class<?> clazz;
   protected final @Nullable String blockMethodName, itemMethodName;
-  protected final @Nullable Class<? extends TileEntity> teClazz;
+  protected final @Nullable IModTileEntity modTileEntity;
 
   private PowerToolObject(@Nonnull Class<?> clazz) {
-    this(clazz, "create", (Class<? extends TileEntity>) null);
+    this(clazz, "create", (IModTileEntity) null);
   }
 
-  private PowerToolObject(@Nonnull Class<?> clazz, Class<? extends TileEntity> teClazz) {
-    this(clazz, "create", teClazz);
+  private PowerToolObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
+    this(clazz, "create", modTileEntity);
   }
 
   private PowerToolObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
-    this(clazz, methodName, (Class<? extends TileEntity>) null);
+    this(clazz, methodName, (IModTileEntity) null);
   }
 
   private PowerToolObject(@Nonnull Class<?> clazz, @Nonnull String blockMethodName, @Nonnull String itemMethodName) {
     this(clazz, blockMethodName, itemMethodName, null);
   }
 
-  private PowerToolObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity> teClazz) {
+  private PowerToolObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nullable IModTileEntity modTileEntity) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     if (Block.class.isAssignableFrom(clazz)) {
@@ -76,15 +77,15 @@ public enum PowerToolObject implements IModObject.Registerable {
     } else {
       throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
     }
-    this.teClazz = teClazz;
+    this.modTileEntity = modTileEntity;
   }
 
-  private PowerToolObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity> teClazz) {
+  private PowerToolObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, @Nullable IModTileEntity modTileEntity) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
     this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    this.teClazz = teClazz;
+    this.modTileEntity = modTileEntity;
   }
 
   @Override
@@ -125,11 +126,11 @@ public enum PowerToolObject implements IModObject.Registerable {
   public Item getItem() {
     return item;
   }
-
-  @Nullable
+  
   @Override
-  public List<Class<? extends TileEntity>> getTileClass() {
-    return teClazz != null ? new NNList<>(teClazz) : null;
+  @Nullable
+  public IModTileEntity getTileEntity() {
+    return modTileEntity;
   }
 
   @Override

@@ -35,7 +35,7 @@ import static net.minecraft.util.EnumFacing.SOUTH;
 import static net.minecraft.util.EnumFacing.UP;
 import static net.minecraft.util.EnumFacing.WEST;
 
-public abstract class DefaultConduitRenderer implements IConduitRenderer {
+public class DefaultConduitRenderer implements IConduitRenderer {
 
   static final Vector3d[] verts = new Vector3d[8];
 

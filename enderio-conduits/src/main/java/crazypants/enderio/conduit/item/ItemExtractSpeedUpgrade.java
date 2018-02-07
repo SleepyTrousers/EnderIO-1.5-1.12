@@ -51,9 +51,9 @@ public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipPro
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item par1, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList par3List) {
+  public void getSubItems(@Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList par3List) {
     for (int j = 0; j < UPGRADES.length; ++j) {
-      par3List.add(new ItemStack(par1, 1, j));
+      par3List.add(new ItemStack(this, 1, j));
     }
   }
 

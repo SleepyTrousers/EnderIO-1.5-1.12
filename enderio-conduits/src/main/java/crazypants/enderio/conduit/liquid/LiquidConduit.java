@@ -19,6 +19,8 @@ import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.render.registry.TextureRegistry;
+import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.conduit.IConduitComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -45,33 +47,13 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   // TODO Lang
 
-  public static final String ICON_KEY = "enderio:blocks/liquid_conduit";
-  public static final String ICON_KEY_LOCKED = "enderio:blocks/liquid_conduit_locked";
-  public static final String ICON_CORE_KEY = "enderio:blocks/liquid_conduit_core";
-  public static final String ICON_EXTRACT_KEY = "enderio:blocks/liquid_conduit_extract";
-  public static final String ICON_EMPTY_EXTRACT_KEY = "enderio:blocks/empty_liquid_conduit_extract";
-  public static final String ICON_INSERT_KEY = "enderio:blocks/liquid_conduit_insert";
-  public static final String ICON_EMPTY_INSERT_KEY = "enderio:blocks/empty_liquid_conduit_insert";
-
-  static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
-
-  @SideOnly(Side.CLIENT)
-  public static void initIcons() {
-    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
-      @Override
-      public void registerIcons(@Nonnull TextureMap register) {
-        ICONS.put(ICON_KEY, register.registerSprite(new ResourceLocation(ICON_KEY)));
-        ICONS.put(ICON_CORE_KEY, register.registerSprite(new ResourceLocation(ICON_CORE_KEY)));
-        ICONS.put(ICON_EXTRACT_KEY, register.registerSprite(new ResourceLocation(ICON_EXTRACT_KEY)));
-        ICONS.put(ICON_EMPTY_EXTRACT_KEY, register.registerSprite(new ResourceLocation(ICON_EMPTY_EXTRACT_KEY)));
-        ICONS.put(ICON_EMPTY_INSERT_KEY, register.registerSprite(new ResourceLocation(ICON_EMPTY_INSERT_KEY)));
-        ICONS.put(ICON_INSERT_KEY, register.registerSprite(new ResourceLocation(ICON_INSERT_KEY)));
-        ICONS.put(ICON_KEY_LOCKED, register.registerSprite(new ResourceLocation(ICON_KEY_LOCKED)));
-      }
-
-    });
-  }
+  public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit");
+  public static final TextureSupplier ICON_KEY_LOCKED = TextureRegistry.registerTexture("blocks/liquid_conduit_locked");
+  public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core");
+  public static final TextureSupplier ICON_EXTRACT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_extract");
+  public static final TextureSupplier ICON_EMPTY_EXTRACT_KEY = TextureRegistry.registerTexture("blocks/empty_liquid_conduit_extract");
+  public static final TextureSupplier ICON_INSERT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_insert");
+  public static final TextureSupplier ICON_EMPTY_INSERT_KEY = TextureRegistry.registerTexture("blocks/empty_liquid_conduit_insert");
 
   private LiquidConduitNetwork network;
 
@@ -344,15 +326,15 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
     if (component.dir == null) {
-      return ICONS.get(ICON_CORE_KEY);
+      return ICON_CORE_KEY.get(TextureAtlasSprite.class);
     }
     if (getConnectionMode(component.dir) == ConnectionMode.INPUT) {
-      return ICONS.get(getFluidType() == null ? ICON_EMPTY_EXTRACT_KEY : ICON_EXTRACT_KEY);
+      return (getFluidType() == null ? ICON_EMPTY_EXTRACT_KEY : ICON_EXTRACT_KEY).get(TextureAtlasSprite.class);
     }
     if (getConnectionMode(component.dir) == ConnectionMode.OUTPUT) {
-      return ICONS.get(getFluidType() == null ? ICON_EMPTY_INSERT_KEY : ICON_INSERT_KEY);
+      return (getFluidType() == null ? ICON_EMPTY_INSERT_KEY : ICON_INSERT_KEY).get(TextureAtlasSprite.class);
     }
-    return fluidTypeLocked ? ICONS.get(ICON_KEY_LOCKED) : ICONS.get(ICON_KEY);
+    return fluidTypeLocked ? ICON_KEY_LOCKED.get(TextureAtlasSprite.class) : ICON_KEY.get(TextureAtlasSprite.class);
   }
 
   @Override

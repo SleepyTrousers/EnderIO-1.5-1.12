@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -22,6 +23,7 @@ import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
@@ -49,7 +51,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -68,7 +69,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCapBank extends BlockEio<TileCapBank>
-    implements IEioGuiHandler.WithPos, IAdvancedTooltipProvider, IRedstoneConnectable, ISmartRenderAwareBlock, IHaveTESR {
+    implements IEioGuiHandler.WithPos, IAdvancedTooltipProvider, IRedstoneConnectable, ISmartRenderAwareBlock, IHaveTESR, ICustomSubItems {
 
   public static BlockCapBank create(@Nonnull IModObject modObject) {
     BlockCapBank res = new BlockCapBank(modObject);
@@ -80,7 +81,7 @@ public class BlockCapBank extends BlockEio<TileCapBank>
   private static final TextureSupplier infoPanelIcon = TextureRegistry.registerTexture("blocks/cap_bank_info_panel");
 
   protected BlockCapBank(@Nonnull IModObject modObject) {
-    super(modObject, TileCapBank.class);
+    super(modObject);
     setHardness(2.0F);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
         .withProperty(CapBankType.KIND, CapBankType.NONE));
@@ -143,8 +144,14 @@ public class BlockCapBank extends BlockEio<TileCapBank>
   }
 
   @Override
+  @Nonnull
+  public NNList<ItemStack> getSubItems() {
+    return getSubItems(this, CapBankType.values().length - 1);
+  }
+
+  @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(@Nonnull Item p_149666_1_, @Nonnull CreativeTabs p_149666_2_, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull CreativeTabs p_149666_2_, @Nonnull NonNullList<ItemStack> list) {
     for (CapBankType type : CapBankType.types()) {
       if (type.isCreative()) {
         list.add(BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(type), type.getMaxEnergyStored() / 2));
@@ -513,5 +520,4 @@ public class BlockCapBank extends BlockEio<TileCapBank>
   public void bindTileEntitySpecialRenderer() {
     ClientRegistry.bindTileEntitySpecialRenderer(TileCapBank.class, new CapBankRenderer(this));
   }
-
 }

@@ -17,6 +17,8 @@ import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.registry.TextureRegistry;
+import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitComponent;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
@@ -40,32 +42,13 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
   public static final int CONDUIT_VOLUME = Fluid.BUCKET_VOLUME;
 
   // TODO Lang
-  public static final String ICON_KEY = "enderio:blocks/liquid_conduit_advanced";
-  public static final String ICON_KEY_LOCKED = "enderio:blocks/liquid_conduit_advanced_locked";
-  public static final String ICON_CORE_KEY = "enderio:blocks/liquid_conduit_core_advanced";
-  public static final String ICON_EXTRACT_KEY = "enderio:blocks/liquid_conduit_advanced_input";
-  public static final String ICON_INSERT_KEY = "enderio:blocks/liquid_conduit_advanced_output";
+  public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced");
+  public static final TextureSupplier ICON_KEY_LOCKED = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_locked");
+  public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core_advanced");
+  public static final TextureSupplier ICON_EXTRACT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_input");
+  public static final TextureSupplier ICON_INSERT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_output");
 
-  public static final String ICON_EMPTY_EDGE = "enderio:blocks/liquid_conduit_advanced_edge";
-
-  static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
-
-  @SideOnly(Side.CLIENT)
-  public static void initIcons() {
-    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
-      @Override
-      public void registerIcons(@Nonnull TextureMap register) {
-        ICONS.put(ICON_KEY, register.registerSprite(new ResourceLocation(ICON_KEY)));
-        ICONS.put(ICON_CORE_KEY, register.registerSprite(new ResourceLocation(ICON_CORE_KEY)));
-        ICONS.put(ICON_EMPTY_EDGE, register.registerSprite(new ResourceLocation(ICON_EMPTY_EDGE)));
-        ICONS.put(ICON_KEY_LOCKED, register.registerSprite(new ResourceLocation(ICON_KEY_LOCKED)));
-        ICONS.put(ICON_INSERT_KEY, register.registerSprite(new ResourceLocation(ICON_INSERT_KEY)));
-        ICONS.put(ICON_EXTRACT_KEY, register.registerSprite(new ResourceLocation(ICON_EXTRACT_KEY)));
-      }
-
-    });
-  }
+  public static final TextureSupplier ICON_EMPTY_EDGE = TextureRegistry.registerTexture("textures/blocks/liquid_conduit_advanced_edge");
 
   private AdvancedLiquidConduitNetwork network;
 
@@ -214,24 +197,24 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
     if (component.dir == null) {
-      return ICONS.get(ICON_CORE_KEY);
+      return ICON_CORE_KEY.get(TextureAtlasSprite.class);
     }
-    return fluidTypeLocked ? ICONS.get(ICON_KEY_LOCKED) : ICONS.get(ICON_KEY);
+    return fluidTypeLocked ? ICON_KEY_LOCKED.get(TextureAtlasSprite.class) : ICON_KEY.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForInputMode() {
-    return ICONS.get(ICON_EXTRACT_KEY);
+    return ICON_EXTRACT_KEY.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForOutputMode() {
-    return ICONS.get(ICON_INSERT_KEY);
+    return ICON_INSERT_KEY.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   public @Nonnull TextureAtlasSprite getNotSetEdgeTexture() {
-    return ICONS.get(ICON_EMPTY_EDGE);
+    return ICON_EMPTY_EDGE.get(TextureAtlasSprite.class);
   }
 
   @Override
