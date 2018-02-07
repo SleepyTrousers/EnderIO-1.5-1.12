@@ -14,7 +14,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_dont_crash_us_mcjty;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
@@ -69,7 +69,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCapBank extends BlockEio<TileCapBank>
-    implements IEioGuiHandler.WithPos, IAdvancedTooltipProvider, IRedstoneConnectable, ISmartRenderAwareBlock, IHaveTESR, ICustomSubItems {
+    implements IEioGuiHandler.WithPos, IAdvancedTooltipProvider, IRedstoneConnectable_dont_crash_us_mcjty, ISmartRenderAwareBlock, IHaveTESR, ICustomSubItems {
 
   public static BlockCapBank create(@Nonnull IModObject modObject) {
     BlockCapBank res = new BlockCapBank(modObject);
