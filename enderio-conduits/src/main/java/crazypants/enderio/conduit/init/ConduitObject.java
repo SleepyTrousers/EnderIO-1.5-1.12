@@ -1,15 +1,13 @@
 package crazypants.enderio.conduit.init;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.registry.Registry;
 import crazypants.enderio.conduit.BlockConduitBundle;
@@ -22,7 +20,6 @@ import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -33,7 +30,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public enum ConduitObject implements IModObject.Registerable {
 
   // Conduits
-  block_conduit_bundle(BlockConduitBundle.class),
+  block_conduit_bundle(BlockConduitBundle.class, ConduitTileEntity.TileConduitBundle),
 
   item_item_conduit(ItemItemConduit.class),
   item_liquid_conduit(ItemLiquidConduit.class),
@@ -58,15 +55,17 @@ public enum ConduitObject implements IModObject.Registerable {
 
   protected final @Nonnull Class<?> clazz;
   protected final @Nullable String blockMethodName, itemMethodName;
-  protected final @Nullable List<Class<? extends TileEntity>> teClazzes;
+  protected final @Nullable IModTileEntity modTileEntity;
 
-  @SafeVarargs
-  private ConduitObject(@Nonnull Class<?> clazz, Class<? extends TileEntity>... teClazz) {
-    this(clazz, "create", teClazz);
+  private ConduitObject(@Nonnull Class<?> clazz) {
+    this(clazz, null);
+  }
+  
+  private ConduitObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
+    this(clazz, "create", modTileEntity);
   }
 
-  @SafeVarargs
-  private ConduitObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity>... teClazz) {
+  private ConduitObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nullable IModTileEntity modTileEntity) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     if (Block.class.isAssignableFrom(clazz)) {
@@ -78,16 +77,15 @@ public enum ConduitObject implements IModObject.Registerable {
     } else {
       throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
     }
-    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
+    this.modTileEntity = modTileEntity;
   }
 
-  @SafeVarargs
-  private ConduitObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity>... teClazz) {
+  private ConduitObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, @Nullable IModTileEntity modTileEntity) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
     this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    this.teClazzes = teClazz.length > 0 ? new NNList<>(teClazz) : null;
+    this.modTileEntity = modTileEntity;
   }
 
   @Override
@@ -129,10 +127,10 @@ public enum ConduitObject implements IModObject.Registerable {
     return item;
   }
 
-  @Nullable
   @Override
-  public final List<Class<? extends TileEntity>> getTileClass() {
-    return teClazzes;
+  @Nullable
+  public IModTileEntity getTileEntity() {
+    return modTileEntity;
   }
 
   @Override

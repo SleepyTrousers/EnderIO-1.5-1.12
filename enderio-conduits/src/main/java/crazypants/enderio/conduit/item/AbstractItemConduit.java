@@ -45,11 +45,6 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
     setRegistryName(modObj.getUnlocalisedName());
   }
 
-  // TODO Check necessity
-  protected void init() {
-    GameRegistry.register(this);
-  }
-
   @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers(@Nonnull IModObject modObject) {
@@ -167,13 +162,11 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
   public String getUnlocalizedName(@Nonnull ItemStack stack) {
     int i = MathHelper.clamp(stack.getItemDamage(), 0, subtypes.length - 1);
     return subtypes[i].unlocalisedName;
-
   }
 
   @Override
-  @SuppressWarnings({ "rawtypes", "unchecked" })
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item item, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> stacks) {
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> stacks) {
     for (int j = 0; j < subtypes.length; ++j) {
       stacks.add(new ItemStack(this, 1, j));
     }

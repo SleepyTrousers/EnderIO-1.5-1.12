@@ -1,14 +1,15 @@
 package crazypants.enderio.powertools.recipes;
 
-import crazypants.enderio.powertools.machine.capbank.BlockItemCapBank;
-import crazypants.enderio.powertools.machine.capbank.CapBankType;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import static crazypants.enderio.base.init.ModObject.itemBasicCapacitor;
 import static crazypants.enderio.base.material.alloy.Alloy.ENERGETIC_ALLOY;
 import static crazypants.enderio.base.material.alloy.Alloy.VIBRANT_ALLOY;
 import static crazypants.enderio.base.material.material.Material.VIBRANT_CYSTAL;
+
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.powertools.machine.capbank.BlockItemCapBank;
+import crazypants.enderio.powertools.machine.capbank.CapBankType;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class PowerToolRecipes {
 
@@ -23,8 +24,8 @@ public class PowerToolRecipes {
     ItemStack capBank2 = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.ACTIVATED), 0);
     ItemStack capBank3 = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.VIBRANT), 0);
 
-    GameRegistry.addRecipe(new UpgradeCapBankRecipe(capBank2, "eee", "bcb", "eee", 'e', energeticAlloy, 'b', capBank1, 'c', capacitor2));
-    GameRegistry.addRecipe(new UpgradeCapBankRecipe(capBank3, "vov", "NcN", "vov", 'v', phasedGold, 'o', capacitor3, 'N', capBank2, 'c', vibCry));
+    ForgeRegistries.RECIPES.register(new UpgradeCapBankRecipe(capBank2, "eee", "bcb", "eee", 'e', energeticAlloy, 'b', capBank1, 'c', capacitor2).setRegistryName(EnderIO.DOMAIN, "capbank_basic2normal"));
+    ForgeRegistries.RECIPES.register(new UpgradeCapBankRecipe(capBank3, "vov", "NcN", "vov", 'v', phasedGold, 'o', capacitor3, 'N', capBank2, 'c', vibCry).setRegistryName(EnderIO.DOMAIN, "capbank_normal2vibrant"));
     // Note: These cannot be handled with a xml upgrade recipe. They combine 2 items with NBT.
   }
 

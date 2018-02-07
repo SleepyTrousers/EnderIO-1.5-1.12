@@ -11,7 +11,7 @@ import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.conduit.TileConduitBundle;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -31,9 +31,6 @@ public class ConduitBundleRenderManager {
 
   public void init(FMLPreInitializationEvent event) {
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
-  }
-
-  public void init(FMLPostInitializationEvent event) {
     for (ConduitInfo conduitInfo : ConduitRegistry.getAll()) {
       for (IConduitRenderer renderer : conduitInfo.getRenderers()) {
         renderer.initIcons();

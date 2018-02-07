@@ -50,7 +50,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor>
   }
 
   public BlockPowerMonitor(@Nonnull IModObject mo, boolean advanced) {
-    super(mo, TilePowerMonitor.class);
+    super(mo);
     this.advanced = advanced;
   }
 
@@ -60,7 +60,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor>
   }
 
   @Override
-  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     list.add(new ItemStack(this, 1, 0));
   }
 

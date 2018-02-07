@@ -49,7 +49,7 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
   }
 
   private BlockGauge(@Nonnull IModObject modObject) {
-    super(modObject, TileGauge.class, Material.GLASS);
+    super(modObject, Material.GLASS);
     setLightOpacity(255);
     useNeighborBrightness = true;
   }
@@ -61,9 +61,9 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
   }
 
   @Override
-  public void getSubBlocks(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (tab != null) {
-      super.getSubBlocks(itemIn, tab, list);
+      super.getSubBlocks(tab, list);
     }
   }
 

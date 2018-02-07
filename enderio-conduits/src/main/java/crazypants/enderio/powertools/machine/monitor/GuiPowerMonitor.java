@@ -345,11 +345,11 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
       if (elem instanceof String) {
         fr.drawString((String) elem, x0 + x, y0 + y + TEXT_Y_OFFSET, textColor);
       } else if (elem instanceof CheckBox) {
-        ((CheckBox) elem).xPosition = x0 + x;
-        ((CheckBox) elem).yPosition = y0 + y;
+        ((CheckBox) elem).x = x0 + x;
+        ((CheckBox) elem).y = y0 + y;
       } else if (elem instanceof TextFieldEnder) {
-        ((TextFieldEnder) elem).xPosition = x0 + x;
-        ((TextFieldEnder) elem).yPosition = y0 + y;
+        ((TextFieldEnder) elem).x = x0 + x;
+        ((TextFieldEnder) elem).y = y0 + y;
       }
 
       x += elemWidth + fr.getStringWidth(" ");
