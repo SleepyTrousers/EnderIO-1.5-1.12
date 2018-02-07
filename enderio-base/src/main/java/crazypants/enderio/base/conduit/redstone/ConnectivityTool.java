@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.api.redstone.IRedstoneConnectable_dont_crash_us_mcjty;
+import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_dont_crash_us_mcjty;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
