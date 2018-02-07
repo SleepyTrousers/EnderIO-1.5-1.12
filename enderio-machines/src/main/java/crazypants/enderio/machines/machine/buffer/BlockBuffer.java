@@ -3,11 +3,14 @@ package crazypants.enderio.machines.machine.buffer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode;
@@ -29,7 +32,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockBuffer extends AbstractPowerConsumerBlock<TileBuffer> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
+public class BlockBuffer extends AbstractPowerConsumerBlock<TileBuffer>
+    implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, ICustomSubItems {
 
   public static BlockBuffer create(@Nonnull IModObject modObject) {
     BlockBuffer res = new BlockBuffer(modObject);
@@ -93,6 +97,12 @@ public class BlockBuffer extends AbstractPowerConsumerBlock<TileBuffer> implemen
     for (BufferType type : BufferType.values()) {
       list.add(BufferType.getStack(type));
     }
+  }
+
+  @Override
+  @Nonnull
+  public NNList<ItemStack> getSubItems() {
+    return getSubItems(this, BufferType.values().length - 1);
   }
 
   @Override

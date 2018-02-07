@@ -16,6 +16,7 @@ import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineBlock;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
@@ -46,7 +47,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTank extends AbstractInventoryMachineBlock<TileTank>
-    implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
+    implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR, ICustomSubItems {
 
   public static BlockTank create(@Nonnull IModObject modObject) {
     BlockTank res = new BlockTank(modObject);
@@ -211,6 +212,12 @@ public class BlockTank extends AbstractInventoryMachineBlock<TileTank>
         list.add(new ItemStack(BlockTank.this, 1, EnumTankType.getMeta(e)));
       }
     });
+  }
+
+  @Override
+  @Nonnull
+  public NNList<ItemStack> getSubItems() {
+    return getSubItems(this, EnumTankType.values().length - 1);
   }
 
 }

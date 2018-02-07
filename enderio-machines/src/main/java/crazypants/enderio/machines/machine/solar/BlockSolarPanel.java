@@ -11,6 +11,7 @@ import com.enderio.core.common.util.NNList.Callback;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
@@ -33,7 +34,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResourceTooltipProvider, ISmartRenderAwareBlock {
+public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResourceTooltipProvider, ISmartRenderAwareBlock, ICustomSubItems {
 
   public static BlockSolarPanel create(@Nonnull IModObject modObject) {
     BlockSolarPanel result = new BlockSolarPanel(modObject);
@@ -144,6 +145,12 @@ public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResour
         list.add(new ItemStack(BlockSolarPanel.this, 1, SolarType.getMetaFromType(solarType)));
       }
     });
+  }
+
+  @Override
+  @Nonnull
+  public NNList<ItemStack> getSubItems() {
+    return getSubItems(this, SolarType.values().length - 1);
   }
 
   @Override

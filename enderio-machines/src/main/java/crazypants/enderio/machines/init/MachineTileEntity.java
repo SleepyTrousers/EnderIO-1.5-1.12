@@ -6,7 +6,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
-import crazypants.enderio.base.init.ModTileEntity;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.alloy.TileAlloySmelter;
 import crazypants.enderio.machines.machine.buffer.TileBuffer;
 import crazypants.enderio.machines.machine.enchanter.TileEnchanter;
@@ -43,9 +43,11 @@ import crazypants.enderio.machines.machine.wireless.TileWirelessCharger;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIOMachines.MODID)
 public enum MachineTileEntity implements IModTileEntity {
 
   TileBufferAbstract(TileBuffer.class),
@@ -114,7 +116,7 @@ public enum MachineTileEntity implements IModTileEntity {
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
-    ModObjectRegistry.addModTileEntities(ModTileEntity.class);
+    ModObjectRegistry.addModTileEntities(MachineTileEntity.class);
   }
 
 }

@@ -10,11 +10,10 @@ import crazypants.enderio.machines.machine.alloy.TileAlloySmelter.Mode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.AchievementList;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public abstract class ContainerAlloySmelter<T extends TileAlloySmelter> extends AbstractMachineContainer<T> implements IAlloySmelterRemoteExec.Container {
@@ -120,13 +119,7 @@ public abstract class ContainerAlloySmelter<T extends TileAlloySmelter> extends 
         Util.giveExperience(player, experience);
       }
       numResults = 0;
-
-      if (output.getItem() == Items.IRON_INGOT) {
-        player.addStat(AchievementList.ACQUIRE_IRON, 1);
-      }
-      if (output.getItem() == Items.COOKED_FISH) {
-        player.addStat(AchievementList.COOK_FISH, 1);
-      }
+      FMLCommonHandler.instance().firePlayerSmeltedEvent(player, output);
     }
   }
 
