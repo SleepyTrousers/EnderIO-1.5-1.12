@@ -71,7 +71,7 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
   private Field fieldpersistenceRequired;
 
   protected BlockPoweredSpawner(@Nonnull IModObject modObject) {
-    super(modObject, TilePoweredSpawner.class);
+    super(modObject);
 
     try {
       fieldpersistenceRequired = ReflectionHelper.findField(EntityLiving.class, "field_82179_bU", "persistenceRequired");

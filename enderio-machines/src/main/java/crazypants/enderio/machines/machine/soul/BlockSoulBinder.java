@@ -40,7 +40,7 @@ public class BlockSoulBinder extends AbstractPoweredTaskBlock<TileSoulBinder>
   }
 
   protected BlockSoulBinder(@Nonnull IModObject modObject) {
-    super(modObject, TileSoulBinder.class);
+    super(modObject);
   }
 
   @Override

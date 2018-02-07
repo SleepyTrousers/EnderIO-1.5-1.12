@@ -51,7 +51,7 @@ public class BlockTransceiver extends AbstractPoweredTaskBlock<TileTransceiver>
   private TextureSupplier portalIcon = TextureRegistry.registerTexture("blocks/ender_still");
 
   private BlockTransceiver(@Nonnull IModObject modObject) {
-    super(modObject, TileTransceiver.class);
+    super(modObject);
   }
 
   @SideOnly(Side.CLIENT)

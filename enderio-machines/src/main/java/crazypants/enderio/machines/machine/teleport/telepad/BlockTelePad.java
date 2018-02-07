@@ -54,7 +54,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   public static final PropertyEnum<BlockType> BLOCK_TYPE = PropertyEnum.<BlockType> create("blocktype", BlockType.class);
 
   public BlockTelePad(@Nonnull IModObject modObject) {
-    super(modObject, TileTelePad.class);
+    super(modObject);
     setLightOpacity(255);
     useNeighborBrightness = true;
   }

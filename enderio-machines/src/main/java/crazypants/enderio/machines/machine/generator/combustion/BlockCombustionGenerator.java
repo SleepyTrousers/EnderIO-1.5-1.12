@@ -41,13 +41,13 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
   protected boolean isEnhanced = false;
 
   public static BlockCombustionGenerator<TileCombustionGenerator> create(@Nonnull IModObject modObject) {
-    BlockCombustionGenerator<TileCombustionGenerator> gen = new BlockCombustionGenerator<>(modObject, TileCombustionGenerator.class);
+    BlockCombustionGenerator<TileCombustionGenerator> gen = new BlockCombustionGenerator<>(modObject);
     gen.init();
     return gen;
   }
 
   public static BlockCombustionGenerator<TileCombustionGenerator.Enhanced> create_enhanced(@Nonnull IModObject modObject) {
-    BlockCombustionGenerator<TileCombustionGenerator.Enhanced> gen = new BlockCombustionGenerator<>(modObject, TileCombustionGenerator.Enhanced.class);
+    BlockCombustionGenerator<TileCombustionGenerator.Enhanced> gen = new BlockCombustionGenerator<>(modObject);
     gen.init();
     gen.isEnhanced = true;
     return gen;

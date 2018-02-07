@@ -28,7 +28,7 @@ public class BlockPainter extends AbstractPoweredTaskBlock<TileEntityPainter> im
   }
 
   private BlockPainter(@Nonnull IModObject modObject) {
-    super(modObject, TileEntityPainter.class);
+    super(modObject);
   }
 
   @SuppressWarnings("rawtypes")

@@ -19,7 +19,7 @@ public class BlockRelocatorObelisk extends AbstractBlockRangedObelisk<TileReloca
   }
 
   protected BlockRelocatorObelisk(@Nonnull IModObject modObject) {
-    super(modObject, TileRelocatorObelisk.class);
+    super(modObject);
   }
 
 }

@@ -27,13 +27,13 @@ public class BlockSagMill<T extends TileSagMill> extends AbstractPoweredTaskBloc
     implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockSagMill<TileSagMill.Normal> create(@Nonnull IModObject modObject) {
-    BlockSagMill<TileSagMill.Normal> res = new BlockSagMill<>(modObject, TileSagMill.Normal.class);
+    BlockSagMill<TileSagMill.Normal> res = new BlockSagMill<>(modObject);
     res.init();
     return res;
   }
 
   public static BlockSagMill<TileSagMill.Simple> create_simple(@Nonnull IModObject modObject) {
-    BlockSagMill<TileSagMill.Simple> res = new BlockSagMill<TileSagMill.Simple>(modObject, TileSagMill.Simple.class) {
+    BlockSagMill<TileSagMill.Simple> res = new BlockSagMill<TileSagMill.Simple>(modObject) {
       @Override
       @SideOnly(Side.CLIENT)
       public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
@@ -50,8 +50,8 @@ public class BlockSagMill<T extends TileSagMill> extends AbstractPoweredTaskBloc
     return res;
   }
 
-  private BlockSagMill(@Nonnull IModObject modObject, @Nullable Class<T> teClass) {
-    super(modObject, teClass);
+  private BlockSagMill(@Nonnull IModObject modObject) {
+    super(modObject);
   }
 
   @Override

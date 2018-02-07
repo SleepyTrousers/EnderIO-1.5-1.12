@@ -29,7 +29,7 @@ public class BlockWiredCharger extends AbstractPowerConsumerBlock<TileWiredCharg
   }
 
   private BlockWiredCharger(@Nonnull IModObject modObject) {
-    super(modObject, TileWiredCharger.class);
+    super(modObject);
   }
 
   @Override

@@ -38,13 +38,13 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends AbstractMachi
   protected static final int GUI_ID_TRAVEL_ACCESSABLE = 0;
 
   public static BlockTravelAnchor<TileTravelAnchor> create(@Nonnull IModObject modObject) {
-    BlockTravelAnchor<TileTravelAnchor> result = new BlockTravelAnchor<TileTravelAnchor>(modObject, TileTravelAnchor.class);
+    BlockTravelAnchor<TileTravelAnchor> result = new BlockTravelAnchor<TileTravelAnchor>(modObject);
     result.init();
     return result;
   }
 
-  protected BlockTravelAnchor(@Nonnull IModObject mo, Class<T> teClass) {
-    super(mo, teClass);
+  protected BlockTravelAnchor(@Nonnull IModObject mo) {
+    super(mo);
   }
 
   @Override

@@ -25,13 +25,13 @@ public class BlockAlloySmelter<T extends TileAlloySmelter> extends AbstractPower
     implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockAlloySmelter<TileAlloySmelter> create(@Nonnull IModObject modObject) {
-    BlockAlloySmelter<TileAlloySmelter> res = new BlockAlloySmelter<TileAlloySmelter>(modObject, TileAlloySmelter.class);
+    BlockAlloySmelter<TileAlloySmelter> res = new BlockAlloySmelter<TileAlloySmelter>(modObject);
     res.init();
     return res;
   }
 
   public static BlockAlloySmelter<TileAlloySmelter.Simple> create_simple(@Nonnull IModObject modObject) {
-    BlockAlloySmelter<TileAlloySmelter.Simple> res = new BlockAlloySmelter<TileAlloySmelter.Simple>(modObject, TileAlloySmelter.Simple.class) {
+    BlockAlloySmelter<TileAlloySmelter.Simple> res = new BlockAlloySmelter<TileAlloySmelter.Simple>(modObject) {
       @Override
       @SideOnly(Side.CLIENT)
       public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
@@ -52,8 +52,8 @@ public class BlockAlloySmelter<T extends TileAlloySmelter> extends AbstractPower
   public static final TextureSupplier vanillaSmeltingOff = TextureRegistry.registerTexture("blocks/furnace_smelting_off");
   public static final TextureSupplier vanillaSmeltingOnly = TextureRegistry.registerTexture("blocks/furnace_smelting_only");
 
-  protected BlockAlloySmelter(@Nonnull IModObject modObject, @Nonnull Class<T> te) {
-    super(modObject, te);
+  protected BlockAlloySmelter(@Nonnull IModObject modObject) {
+    super(modObject);
   }
 
   @Override

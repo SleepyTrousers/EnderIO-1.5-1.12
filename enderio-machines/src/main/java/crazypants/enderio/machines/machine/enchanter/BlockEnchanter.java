@@ -38,7 +38,7 @@ public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implemen
   }
 
   protected BlockEnchanter() {
-    super(MachineObject.block_enchanter, TileEnchanter.class);
+    super(MachineObject.block_enchanter);
     setLightOpacity(0);
   }
 

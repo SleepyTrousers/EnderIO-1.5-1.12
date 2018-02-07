@@ -42,7 +42,7 @@ public class BlockFarmStation extends AbstractPoweredTaskBlock<TileFarmStation>
   }
 
   protected BlockFarmStation(@Nonnull IModObject modObject) {
-    super(modObject, TileFarmStation.class);
+    super(modObject);
   }
 
   @Override

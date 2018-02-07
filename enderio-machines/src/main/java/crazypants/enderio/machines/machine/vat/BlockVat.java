@@ -38,7 +38,7 @@ public class BlockVat extends AbstractPoweredTaskBlock<TileVat> implements IPain
   }
 
   public BlockVat(@Nonnull IModObject modObject) {
-    super(modObject, TileVat.class);
+    super(modObject);
   }
 
   @Override

@@ -30,14 +30,13 @@ public class BlockStirlingGenerator<T extends TileStirlingGenerator> extends Abs
     implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockStirlingGenerator<TileStirlingGenerator> create(@Nonnull IModObject modObject) {
-    BlockStirlingGenerator<TileStirlingGenerator> gen = new BlockStirlingGenerator<>(modObject, TileStirlingGenerator.class);
+    BlockStirlingGenerator<TileStirlingGenerator> gen = new BlockStirlingGenerator<>(modObject);
     gen.init();
     return gen;
   }
 
   public static BlockStirlingGenerator<TileStirlingGenerator.Simple> create_simple(@Nonnull IModObject modObject) {
-    BlockStirlingGenerator<TileStirlingGenerator.Simple> gen = new BlockStirlingGenerator<TileStirlingGenerator.Simple>(modObject,
-        TileStirlingGenerator.Simple.class) {
+    BlockStirlingGenerator<TileStirlingGenerator.Simple> gen = new BlockStirlingGenerator<TileStirlingGenerator.Simple>(modObject) {
       @Override
       @SideOnly(Side.CLIENT)
       public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {

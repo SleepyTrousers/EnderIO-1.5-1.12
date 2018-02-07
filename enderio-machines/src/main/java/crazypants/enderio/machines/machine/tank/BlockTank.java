@@ -51,7 +51,7 @@ public class BlockTank extends AbstractInventoryMachineBlock<TileTank>
   }
 
   protected BlockTank(@Nonnull IModObject modObject) {
-    super(modObject, TileTank.class);
+    super(modObject);
     setSoundType(SoundType.GLASS);
     setLightOpacity(0);
     setDefaultState(

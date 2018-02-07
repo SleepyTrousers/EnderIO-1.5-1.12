@@ -62,7 +62,7 @@ public class BlockKillerJoe extends AbstractInventoryMachineBlock<TileKillerJoe>
   }
 
   protected BlockKillerJoe(@Nonnull IModObject modObject) {
-    super(modObject, TileKillerJoe.class, new Material(MapColor.IRON) {
+    super(modObject, new Material(MapColor.IRON) {
 
       @Override
       public boolean isOpaque() {

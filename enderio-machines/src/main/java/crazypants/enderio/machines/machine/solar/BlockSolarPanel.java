@@ -44,7 +44,7 @@ public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResour
   private static final float BLOCK_HEIGHT = 2.5f / 16f;
 
   private BlockSolarPanel(@Nonnull IModObject modObject) {
-    super(modObject, TileSolarPanel.class);
+    super(modObject);
     setLightOpacity(255);
     useNeighborBrightness = true;
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO).withProperty(SolarType.KIND,

@@ -49,7 +49,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
   }
 
   protected BlockVacuumChest(@Nonnull IModObject modObject) {
-    super(modObject, TileVacuumChest.class);
+    super(modObject);
     initDefaultState();
   }
 

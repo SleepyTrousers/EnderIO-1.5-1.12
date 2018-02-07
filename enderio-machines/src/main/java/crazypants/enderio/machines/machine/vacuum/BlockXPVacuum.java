@@ -41,7 +41,7 @@ public class BlockXPVacuum extends BlockEio<TileXPVacuum>
   }
 
   protected BlockXPVacuum(@Nonnull IModObject modObject) {
-    super(modObject, TileXPVacuum.class);
+    super(modObject);
     initDefaultState();
   }
 

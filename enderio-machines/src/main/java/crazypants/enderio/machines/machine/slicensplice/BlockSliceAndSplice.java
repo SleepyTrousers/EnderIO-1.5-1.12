@@ -38,7 +38,7 @@ public class BlockSliceAndSplice extends AbstractPoweredTaskBlock<TileSliceAndSp
   }
 
   protected BlockSliceAndSplice(@Nonnull IModObject modObject) {
-    super(modObject, TileSliceAndSplice.class);
+    super(modObject);
   }
 
   @Override
