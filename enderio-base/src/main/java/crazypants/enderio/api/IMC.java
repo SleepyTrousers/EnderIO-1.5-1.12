@@ -1,6 +1,6 @@
 package crazypants.enderio.api;
 
-import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_dont_crash_us_mcjty;
+import crazypants.enderio.api.redstone.IRedstoneConnectable_dont_crash_us_mcjty;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.FluidFuelRegister;

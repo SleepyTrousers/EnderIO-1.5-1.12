@@ -1,4 +1,4 @@
-package crazypants.enderio.api.redstone_dont_crash_us_mcjty;
+package crazypants.enderio.api.redstone;
 
 import javax.annotation.Nonnull;
 
