@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.UserIdent;
 
-import crazypants.enderio.api.redstone.IRedstoneConnectable_dont_crash_us_mcjty;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.capability.ItemTools.Limit;
 import crazypants.enderio.base.config.Config;
@@ -38,7 +38,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public abstract class AbstractMachineEntity extends TileEntityEio implements IMachine, IRedstoneModeControlable, IRedstoneConnectable_dont_crash_us_mcjty, IIoConfigurable {
+public abstract class AbstractMachineEntity extends TileEntityEio implements IMachine, IRedstoneModeControlable, IRedstoneConnectable, IIoConfigurable {
 
   private static final @Nonnull Limit PULL_PUSH_LIMIT = new Limit(1, 64);
 
