@@ -6,12 +6,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.config.recipes.RecipeLoader;
-import crazypants.enderio.base.filter.recipes.FilterRecipes;
 import crazypants.enderio.base.integration.top.TOPUtil;
-import crazypants.enderio.base.machine.recipes.MachineRecipes;
-import crazypants.enderio.base.material.recipes.MaterialRecipes;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -59,14 +54,6 @@ public class CommonProxy {
 
   public void init(@Nonnull FMLInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(tickTimer);
-
-    if (Config.registerRecipes) {
-      MaterialRecipes.addRecipes();
-      // TODO 1.11 ConduitRecipes.addRecipes();
-      FilterRecipes.addRecipes();
-      MachineRecipes.addRecipes();
-      RecipeLoader.addRecipes();
-    }
 
     // registerCommands(); // debug command disabled because it is not needed at the moment
   }

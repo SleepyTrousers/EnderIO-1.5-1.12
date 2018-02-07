@@ -1,15 +1,9 @@
 package crazypants.enderio.base;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.Lang;
-import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.ImmutableList;
 
@@ -91,7 +85,6 @@ public class EnderIO implements IEnderIOAddon {
 
   @EventHandler
   public void preInit(@Nonnull FMLPreInitializationEvent event) {
-
     Config.init(event);
 
     proxy.loadIcons();
@@ -109,10 +102,7 @@ public class EnderIO implements IEnderIOAddon {
 
   @EventHandler
   public void load(@Nonnull FMLInitializationEvent event) {
-    Config.init(event);
-
-    FluidFuelRegister.init(event);
-    Fluids.registerFluids();
+    Fluids.registerFuels();
 
     ModObjectRegistry.init(event);
 
@@ -138,23 +128,21 @@ public class EnderIO implements IEnderIOAddon {
 
     LootManager.init(event);
 
+    MaterialRecipes.init(event); // handles oredict registration for dependent entries
+
     // This must be loaded before parsing the recipes so we get the preferred
     // outputs
     OreDictionaryPreferences.init(event);
 
+    RecipeLoader.addRecipes();
+
     SagMillRecipeManager.getInstance().loadRecipesFromConfig();
-    AlloyRecipeManager.getInstance().loadRecipesFromConfig();
-    SliceAndSpliceRecipeManager.getInstance().loadRecipesFromConfig();
+    AlloyRecipeManager.getInstance().create();
+    SliceAndSpliceRecipeManager.getInstance().create();
     VatRecipeManager.getInstance().loadRecipesFromConfig();
-    // TODO 1.11 EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
 
-    if (Config.dumpMobNames) {
-      dumpMobNamesToFile();
-    }
-
-    // ThaumcraftCompat.load();
     BuildcraftIntegration.init(event);
     TEUtil.init(event);
 
@@ -235,23 +223,6 @@ public class EnderIO implements IEnderIOAddon {
         e.printStackTrace();
         Log.error("Error occurred handling IMC message " + key + " from " + msg.getSender());
       }
-    }
-  }
-
-  private void dumpMobNamesToFile() {
-    File dumpFile = new File(Config.configDirectory, "mobTypes.txt");
-    List<ResourceLocation> names = EntityUtil.getAllRegisteredMobNames();
-
-    try {
-      BufferedWriter br = new BufferedWriter(new FileWriter(dumpFile, false));
-      for (ResourceLocation name : names) {
-        br.append(name.toString());
-        br.newLine();
-      }
-      br.flush();
-      br.close();
-    } catch (Exception e) {
-      Log.error("Could not write mob types file: " + e);
     }
   }
 

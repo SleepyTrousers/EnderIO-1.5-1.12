@@ -1,20 +1,16 @@
 package crazypants.enderio.integration.tic.init;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.integration.tic.book.ItemEioBook;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 
 public enum TicObject implements IModObject.Registerable {
 
@@ -43,12 +39,6 @@ public enum TicObject implements IModObject.Registerable {
     return item;
   }
 
-  @Nullable
-  @Override
-  public final List<Class<? extends TileEntity>> getTileClass() {
-    return null;
-  }
-
   @Override
   public final @Nonnull Class<?> getClazz() {
     return clazz;
@@ -74,23 +64,9 @@ public enum TicObject implements IModObject.Registerable {
   }
 
   @Override
-  @Nonnull
-  public final ResourceLocation getRegistryName() {
-    return new ResourceLocation(EnderIO.DOMAIN, unlocalisedName);
-  }
-
-  @Override
-  public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
-    blockIn.setUnlocalizedName(getUnlocalisedName());
-    blockIn.setRegistryName(getRegistryName());
-    return blockIn;
-  }
-
-  @Override
-  public final @Nonnull <I extends Item> I apply(@Nonnull I itemIn) {
-    itemIn.setUnlocalizedName(getUnlocalisedName());
-    itemIn.setRegistryName(getRegistryName());
-    return itemIn;
+  @Nullable
+  public IModTileEntity getTileEntity() {
+    return null;
   }
 
 }

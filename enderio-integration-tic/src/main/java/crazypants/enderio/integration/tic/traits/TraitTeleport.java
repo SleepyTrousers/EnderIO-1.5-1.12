@@ -2,6 +2,8 @@ package crazypants.enderio.integration.tic.traits;
 
 import java.util.Iterator;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.teleport.RandomTeleportUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -14,6 +16,13 @@ import slimeknights.tconstruct.library.utils.TinkerUtil;
 import slimeknights.tconstruct.library.utils.ToolHelper;
 
 public class TraitTeleport extends AbstractTraitLeveled {
+
+  // MUST create them in ascending order of levels, otherwise TiC will throw itself out the window
+  public static final @Nonnull TraitTeleport instance1 = new TraitTeleport(1, 1);
+  public static final @Nonnull TraitTeleport instance2 = new TraitTeleport(1, 2);
+  public static final @Nonnull TraitTeleport instance3 = new TraitTeleport(1, 3);
+  public static final @Nonnull TraitTeleport instance4 = new TraitTeleport(2, 4);
+  public static final @Nonnull TraitTeleport instance0 = new TraitTeleport(3, 0);
 
   // the "variant" allows multiple traits of the same level to be added
   public TraitTeleport(int level, int variant) {

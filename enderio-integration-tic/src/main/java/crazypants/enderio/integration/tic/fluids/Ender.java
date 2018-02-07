@@ -17,6 +17,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.base.material.material.Material.POWDER_ENDER;
 
@@ -25,35 +27,38 @@ public class Ender {
   private static final ResourceLocation TEX_STILL = new ResourceLocation("tconstruct:blocks/fluids/molten_metal_flow");
   private static final ResourceLocation TEX_FLOWING = new ResourceLocation("tconstruct:blocks/fluids/molten_metal");
 
-  public static Block createEnder() {
-    Fluid f = new Fluid(TicProxy.ENDER_FLUID_NAME, TEX_FLOWING, TEX_STILL) {
+  private static Fluid fluid;
+
+  public static void createFluid() {
+    fluid = new Fluid(TicProxy.ENDER_FLUID_NAME, TEX_FLOWING, TEX_STILL) {
       @Override
       public int getColor() {
         return 0xFF000000 | 0x1b7b6b;
       }
-    };
-    f.setUnlocalizedName(EnderIO.DOMAIN + "." + f.getName());
-    f.setDensity(4000);
-    f.setLuminosity(3);
-    f.setTemperature(1000 + 273);
-    f.setViscosity(35);
-    if (FluidRegistry.registerFluid(f) && FluidRegistry.isUniversalBucketEnabled()) {
-      FluidRegistry.addBucketForFluid(f);
+    }.setUnlocalizedName(EnderIO.DOMAIN + "." + TicProxy.ENDER_FLUID_NAME).setDensity(4000);
+    fluid.setLuminosity(3).setTemperature(1000 + 273).setViscosity(35);
+    if (FluidRegistry.registerFluid(fluid)) {
+      FluidRegistry.addBucketForFluid(fluid);
     }
+  }
 
-    MoltenEnder block = new MoltenEnder(f, Material.WATER, 0x1b7b6b);
-    if (!EnderIO.proxy.isDedicatedServer()) {
-      Fluids.registerFluidBlockRendering(f);
-    }
-    block.setFluidStack(new FluidStack(FluidRegistry.getFluid(f.getName()), Fluid.BUCKET_VOLUME));
+  public static Block createFluidBlock() {
+    @SuppressWarnings("null")
+    MoltenEnder block = new MoltenEnder(fluid, Material.WATER, 0x1b7b6b);
+    block.setFluidStack(new FluidStack(FluidRegistry.getFluid(fluid.getName()), Fluid.BUCKET_VOLUME));
 
     NBTTagCompound tag = new NBTTagCompound();
-    tag.setString("fluid", f.getName());
+    tag.setString("fluid", fluid.getName());
     tag.setString("ore", "Ender");
     tag.setBoolean("toolforge", true);
     FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
 
     return block;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public static void registerRenderers() {
+    Fluids.registerFluidBlockRendering(fluid);
   }
 
   public static void registerEnderRecipes() {

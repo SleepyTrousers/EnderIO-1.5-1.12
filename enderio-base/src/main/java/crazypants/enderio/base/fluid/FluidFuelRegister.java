@@ -14,7 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 public class FluidFuelRegister implements IFluidRegister {
 
@@ -29,10 +28,6 @@ public class FluidFuelRegister implements IFluidRegister {
   private final Map<String, IFluidFuel> fuels = new HashMap<String, IFluidFuel>();
 
   private final List<IFluidRegister> otherRegisters = new ArrayList<IFluidRegister>();
-
-  public static void init(@Nonnull FMLInitializationEvent event) {
-    // NOP, just load the class
-  }
 
   private FluidFuelRegister() {
     addCoolant(FluidRegistry.WATER, 0.0023f);

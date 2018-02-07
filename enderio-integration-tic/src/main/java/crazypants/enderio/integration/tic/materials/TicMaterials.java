@@ -5,13 +5,12 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.integration.tic.traits.TraitPickup;
 import crazypants.enderio.integration.tic.traits.TraitTeleport;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-import slimeknights.tconstruct.library.MaterialIntegration;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.materials.BowMaterialStats;
 import slimeknights.tconstruct.library.materials.BowStringMaterialStats;
@@ -28,6 +27,28 @@ import static slimeknights.tconstruct.library.utils.HarvestLevels.STONE;
 public class TicMaterials {
 
   private static final Map<Alloy, Data> TRAITS = new EnumMap<>(Alloy.class);
+  private static final Map<Alloy, Fluid> FLUIDS = new EnumMap<>(Alloy.class);
+  private static final Map<Alloy, Material> MATERIALS = new EnumMap<>(Alloy.class);
+
+  public static @Nonnull Data getData(Alloy alloy) {
+    return NullHelper.notnull(TRAITS.get(alloy), "TRAIT AWOL");
+  }
+
+  public static @Nonnull Fluid getFluid(Alloy alloy) {
+    return NullHelper.notnull(FLUIDS.get(alloy), "FLUID AWOL");
+  }
+
+  public static @Nonnull Material getMaterial(Alloy alloy) {
+    return NullHelper.notnull(MATERIALS.get(alloy), "MATERIAL AWOL");
+  }
+
+  public static void setFluid(Alloy alloy, Fluid fluid) {
+    FLUIDS.put(alloy, fluid);
+  }
+
+  public static void setMaterial(Alloy alloy, Material material) {
+    MATERIALS.put(alloy, material);
+  }
 
   static {
     TRAITS.put(Alloy.ELECTRICAL_STEEL, new Data() {
@@ -63,7 +84,7 @@ public class TicMaterials {
       @Override
       public void traits(@Nonnull Material material) {
         material.addTrait(TraitPickup.instance);
-        material.addTrait(new TraitTeleport(2, 4), MaterialTypes.HEAD);
+        material.addTrait(TraitTeleport.instance4, MaterialTypes.HEAD);
       }
 
       @Override
@@ -105,10 +126,10 @@ public class TicMaterials {
     TRAITS.put(Alloy.PULSATING_IRON, new Data() {
       @Override
       public void traits(@Nonnull Material material) {
-        material.addTrait(new TraitTeleport(1, 1));
-        material.addTrait(new TraitTeleport(1, 2), MaterialTypes.HANDLE);
-        material.addTrait(new TraitTeleport(1, 3), MaterialTypes.EXTRA);
-        material.addTrait(new TraitTeleport(3, 0), MaterialTypes.HEAD);
+        material.addTrait(TraitTeleport.instance1);
+        material.addTrait(TraitTeleport.instance2, MaterialTypes.HANDLE);
+        material.addTrait(TraitTeleport.instance3, MaterialTypes.EXTRA);
+        material.addTrait(TraitTeleport.instance0, MaterialTypes.HEAD);
         material.addTrait(TinkerTraits.poisonous, MaterialTypes.PROJECTILE);
       }
 
@@ -154,23 +175,7 @@ public class TicMaterials {
 
   }
 
-  public static void integrate(Alloy alloy, Fluid fluid) {
-    if (TRAITS.get(alloy) != null) {
-      Material material = new Material(alloy.getBaseName(), alloy.getColor());
-      material.addCommonItems(alloy.getOreName());
-      TRAITS.get(alloy).traits(material);
-      TinkerRegistry.integrate(new MaterialIntegration(material, fluid, alloy.getOreName()).toolforge());
-      TRAITS.get(alloy).stats(material);
-    } else {
-      NBTTagCompound tag = new NBTTagCompound();
-      tag.setString("fluid", fluid.getName());
-      tag.setString("ore", alloy.getOreName());
-      tag.setBoolean("toolforge", true);
-      FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
-    }
-  }
-
-  private static interface Data {
+  public static interface Data {
     void traits(@Nonnull Material material);
 
     void stats(@Nonnull Material material);

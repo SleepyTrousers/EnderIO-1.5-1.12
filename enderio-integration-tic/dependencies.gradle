@@ -6,6 +6,6 @@ modDependencies {
 def localDependencies = project(':enderio-base')
 localDependencies.each { dep ->
 	modDependencies {
-		"${dep.module_mod_id}" { requireAfter(dep.version) }
+		"${dep.module_mod_id}" { requireBefore(dep.version) }
 	}
 }

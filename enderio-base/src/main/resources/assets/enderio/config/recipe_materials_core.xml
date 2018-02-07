@@ -547,28 +547,28 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Copper" required="false">
     <smelting>
-      <input name="enderio:itemPowderIngot:3"/>
+      <input name="dustCopper"/>
       <output name="ingotCopper"/>
     </smelting>
   </recipe>
 
   <recipe name="Tin" required="false">
     <smelting>
-      <input name="enderio:itemPowderIngot:4"/>
+      <input name="dustTin"/>
       <output name="ingotTin"/>
     </smelting>
   </recipe>
 
   <recipe name="Ardite" required="false">
     <smelting>
-      <input name="enderio:itemPowderIngot:9"/>
+      <input name="dustArdite"/>
       <output name="ingotArdite"/>
     </smelting>
   </recipe>
 
   <recipe name="Cobalt" required="false">
     <smelting>
-      <input name="enderio:itemPowderIngot:10"/>
+      <input name="dustCobalt"/>
       <output name="ingotCobalt"/>
     </smelting>
   </recipe>

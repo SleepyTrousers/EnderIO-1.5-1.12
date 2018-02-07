@@ -10,6 +10,7 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.integration.tic.init.TicObject;
 import net.minecraft.block.Block;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -21,7 +22,9 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
 @Mod(modid = EnderIOIntegrationTic.MODID, name = EnderIOIntegrationTic.MOD_NAME, version = EnderIOIntegrationTic.VERSION, dependencies = EnderIOIntegrationTic.DEPENDENCIES)
 @EventBusSubscriber
@@ -32,13 +35,13 @@ public class EnderIOIntegrationTic implements IEnderIOAddon {
   public static final @Nonnull String MOD_NAME = "Ender IO Integration with Tinkers' Construct";
   public static final @Nonnull String VERSION = "@VERSION@";
 
-  private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:tconstruct;after:" + crazypants.enderio.base.EnderIO.MODID;
+  private static final @Nonnull String DEFAULT_DEPENDENCIES = "before:tconstruct;before:" + crazypants.enderio.base.EnderIO.MODID;
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
 
   @EventHandler
   public static void init(FMLPreInitializationEvent event) {
     if (isLoaded()) {
-      TicControl.init(event);
+      TicControl.initPreTic(event);
       Log.warn("TConstruct, you fail again, muhaha! The world is mine, mine!");
     } else {
       Log.warn("Tinkers' Construct integration NOT loaded. Tinkers' Construct is not installed");
@@ -48,14 +51,14 @@ public class EnderIOIntegrationTic implements IEnderIOAddon {
   @EventHandler
   public static void init(FMLInitializationEvent event) {
     if (isLoaded()) {
-      TicControl.init(event);
+      TicControl.initPreTic(event);
     }
   }
 
   @EventHandler
   public static void init(FMLPostInitializationEvent event) {
     if (isLoaded()) {
-      TicControl.init(event);
+      TicControl.initPreTic(event);
     }
   }
 
@@ -80,6 +83,14 @@ public class EnderIOIntegrationTic implements IEnderIOAddon {
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
     if (enableBook && isLoaded()) {
       ModObjectRegistry.addModObjects(TicObject.class);
+    }
+  }
+
+  @SideOnly(Side.CLIENT)
+  @SubscribeEvent
+  public static void registerRenderers(@Nonnull ModelRegistryEvent event) {
+    if (isLoaded()) {
+      TicControl.registerRenderers(event);
     }
   }
 

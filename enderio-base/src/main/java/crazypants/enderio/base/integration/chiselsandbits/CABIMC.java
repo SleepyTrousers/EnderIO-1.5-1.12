@@ -19,6 +19,7 @@ public class CABIMC {
     /* they do work with only minor visual anomalies (direction is different, reverse quads are missing */
     whitelist(ModObject.blockDecoration1);
     whitelist(ModObject.blockDecoration2);
+    whitelist(ModObject.blockDecoration3);
   }
 
   private static void whitelist(@Nonnull ModObject modObject) {

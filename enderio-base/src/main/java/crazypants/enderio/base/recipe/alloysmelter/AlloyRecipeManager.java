@@ -32,7 +32,7 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
     return vanillaRecipe;
   }
 
-  public void loadRecipesFromConfig() {
+  public void create() {
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.ALLOYSMELTER,
         new ManyToOneMachineRecipe("AlloySmelterRecipe", MachineRecipeRegistry.ALLOYSMELTER, this));
     // vanilla alloy furnace recipes

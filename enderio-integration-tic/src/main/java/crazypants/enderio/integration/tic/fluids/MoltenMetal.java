@@ -14,8 +14,8 @@ import net.minecraftforge.fluids.Fluid;
 
 public class MoltenMetal extends BlockFluidEnder {
 
-  public static MoltenMetal create(@Nonnull Fluid fluid, @Nonnull Material material, int fogColor) {
-    return new MoltenMetal(fluid, material, fogColor);
+  public static MoltenMetal create(@Nonnull Fluid fluid, int fogColor) {
+    return new MoltenMetal(fluid, Material.LAVA, fogColor);
   }
 
   protected MoltenMetal(@Nonnull Fluid fluid, @Nonnull Material material, int fogColor) {

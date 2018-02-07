@@ -257,8 +257,6 @@ public class SmartModelAttacher {
 
     OverlayHolder.collectOverlayQuads(event);
     BlockStateWrapperBase.invalidate();
-    // TODO 1.11 move this to conduit sub-mod
-    // BlockStateWrapperConduitBundle.invalidate();
   }
 
   @SuppressWarnings("null")

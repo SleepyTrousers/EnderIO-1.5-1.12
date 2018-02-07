@@ -27,7 +27,6 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -72,8 +71,6 @@ public final class Config {
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 
   public static final float EXPLOSION_RESISTANT = 2000f * 3.0f / 5.0f; // obsidian
-
-  public static boolean registerRecipes = true;
 
   public static double conduitScale = DEFAULT_CONDUIT_SCALE;
 
@@ -351,8 +348,6 @@ public final class Config {
   public static boolean spawnGuardStopAllSlimesDebug = false;
   public static boolean spawnGuardStopAllSquidSpawning = false;
 
-  public static boolean dumpMobNames = false;
-
   public static int xpObeliskMaxXpLevel = Integer.MAX_VALUE;
 
   public static boolean clearGlassConnectToFusedQuartz = false;
@@ -434,7 +429,6 @@ public final class Config {
     if (event.getModID().equals(EnderIO.MODID)) {
       Log.info("Updating config...");
       syncConfig(false);
-      init((FMLInitializationEvent) null);
       init((FMLPostInitializationEvent) null);
     }
   }
@@ -445,7 +439,6 @@ public final class Config {
       Log.info("Updating config...");
       syncConfig(true);
       event.setSuccessful();
-      init((FMLInitializationEvent) null);
       init((FMLPostInitializationEvent) null);
     }
   }
@@ -454,7 +447,8 @@ public final class Config {
   public void onPlayerLoggon(PlayerLoggedInEvent evt) {
     PacketHandler.INSTANCE.sendTo(new PacketConfigSync(), (EntityPlayerMP) evt.player);
     if (EnderIO.VERSION.contains("-") || EnderIO.VERSION.contains("@")) { // e.g. 1.2.3-nightly
-      evt.player.sendMessage(new TextComponentString(TextFormatting.DARK_RED + "This is an " + TextFormatting.BLACK + "Ender IO " + TextFormatting.DARK_RED + "development build!"));
+      evt.player.sendMessage(new TextComponentString(
+          TextFormatting.DARK_RED + "This is an " + TextFormatting.BLACK + "Ender IO " + TextFormatting.DARK_RED + "development build!"));
       evt.player.sendMessage(new TextComponentString(TextFormatting.DARK_RED + "It may trash your world at any time!"));
       evt.player.sendMessage(new TextComponentString(TextFormatting.DARK_RED + "Do not use it for anything but testing!"));
       evt.player.sendMessage(new TextComponentString("You have been warned..."));
@@ -506,10 +500,6 @@ public final class Config {
     recipeLevel = config
         .get(sectionRecipe.name, "recipeLevel", recipeLevel, "How expensive should the crafting recipes be? 0=cheapest, 1=cheaper, 2=normal, 3=expensive")
         .getInt(recipeLevel);
-
-    registerRecipes = config.get(sectionRecipe.name, "registerRecipes", registerRecipes,
-        "If set to false: No crafting recipes (crafting table and furnace) will be registered. You need to use Creative mode or something like minetweaker to add them yourself.")
-        .getBoolean(registerRecipes);
 
     addPeacefulRecipes = config
         .get(sectionRecipe.name, "addPeacefulRecipes", addPeacefulRecipes, "When enabled peaceful recipes are added for soulbinder based crafting components.")
@@ -1178,9 +1168,6 @@ public final class Config {
       Log.warn("Both useSneakMouseWheelYetaWrench and useSneakRightClickYetaWrench are set to false. Enabling right click.");
       useSneakRightClickYetaWrench = true;
     }
-  }
-
-  public static void init(FMLInitializationEvent event) {
   }
 
   public static void init(FMLPostInitializationEvent event) {

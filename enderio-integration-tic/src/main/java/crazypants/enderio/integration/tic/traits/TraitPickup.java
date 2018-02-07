@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
-import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.modifiers.IToolMod;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
 import slimeknights.tconstruct.library.utils.ToolHelper;
@@ -12,10 +11,6 @@ import slimeknights.tconstruct.library.utils.ToolHelper;
 public class TraitPickup extends ModifierTrait {
 
   public static TraitPickup instance = new TraitPickup();
-
-  static {
-    TinkerRegistry.registerModifier(instance);
-  }
 
   public TraitPickup() {
     super("enderpickup", 0x8F2ccdb1, 1, 1);

@@ -16,7 +16,7 @@ public class SliceAndSpliceRecipeManager extends ManyToOneRecipeManager {
     super("Slice'N'Splice");
   }
 
-  public void loadRecipesFromConfig() {
+  public void create() {
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SLICENSPLICE,
         new ManyToOneMachineRecipe("SpliceAndSpliceRecipe", MachineRecipeRegistry.SLICENSPLICE, this));
   }

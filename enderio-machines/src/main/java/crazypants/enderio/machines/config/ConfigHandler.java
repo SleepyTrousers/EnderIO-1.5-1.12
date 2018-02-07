@@ -14,8 +14,6 @@ import crazypants.enderio.machines.capacitor.CapacitorKey;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -45,12 +43,6 @@ public class ConfigHandler {
     syncConfig(false);
   }
 
-  public static void init(FMLInitializationEvent event) {
-  }
-
-  public static void init(FMLPostInitializationEvent event) {
-  }
-
   public static void syncConfig(boolean load) {
     try {
       if (load) {
@@ -73,8 +65,6 @@ public class ConfigHandler {
       // need to listen for EnderIO.MODID, too, as our config gets chained to the root mod for the GUI config
       Log.info("Updating config...");
       syncConfig(false);
-      init((FMLInitializationEvent) null);
-      init((FMLPostInitializationEvent) null);
     }
   }
 
@@ -84,8 +74,6 @@ public class ConfigHandler {
       Log.info("Updating config...");
       syncConfig(true);
       event.setSuccessful();
-      init((FMLInitializationEvent) null);
-      init((FMLPostInitializationEvent) null);
       // TODO: if this is a server we should re-send the config sync packet to all connected players
     }
   }

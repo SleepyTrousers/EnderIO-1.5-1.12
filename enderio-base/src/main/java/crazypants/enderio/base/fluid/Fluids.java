@@ -226,7 +226,7 @@ public enum Fluids {
     }
   }
 
-  public static void registerFluids() {
+  public static void registerFuels() {
     FluidFuelRegister.instance.addFuel(HOOTCH.getFluid(), Config.hootchPowerPerCycleRF, Config.hootchPowerTotalBurnTime);
     FluidFuelRegister.instance.addFuel(ROCKET_FUEL.getFluid(), Config.rocketFuelPowerPerCycleRF, Config.rocketFuelPowerTotalBurnTime);
     FluidFuelRegister.instance.addFuel(FIRE_WATER.getFluid(), Config.fireWaterPowerPerCycleRF, Config.fireWaterPowerTotalBurnTime);

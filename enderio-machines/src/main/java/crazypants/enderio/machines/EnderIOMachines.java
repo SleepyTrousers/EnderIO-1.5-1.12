@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.Lang;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
-import crazypants.enderio.machines.config.Config;
 import crazypants.enderio.machines.config.ConfigHandler;
 import crazypants.enderio.machines.config.RecipeLoaderMachines;
 import crazypants.enderio.machines.machine.obelisk.render.ObeliskRenderManager;
@@ -48,17 +47,12 @@ public class EnderIOMachines implements IEnderIOAddon {
 
   @EventHandler
   public static void init(FMLInitializationEvent event) {
-    ConfigHandler.init(event);
     PacketHandler.init(event);
-
-    if (Config.registerRecipes.get()) {
-      RecipeLoaderMachines.addRecipes();
-    }
   }
 
   @EventHandler
   public static void init(FMLPostInitializationEvent event) {
-    ConfigHandler.init(event);
+    RecipeLoaderMachines.addRecipes();
   }
 
   public static final @Nonnull Lang lang = new Lang(DOMAIN);

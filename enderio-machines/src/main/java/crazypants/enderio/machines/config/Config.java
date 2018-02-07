@@ -27,13 +27,6 @@ public final class Config {
 
   public static final ValueFactory F = new ValueFactory(EnderIOMachines.MODID);
 
-  public static final IValue<Boolean> registerRecipes = new IValue<Boolean>() {
-    @Override
-    public @Nonnull Boolean get() {
-      return crazypants.enderio.base.config.Config.registerRecipes;
-    }
-  };
-
   public static final IValue<Float> explosionResistantBlockHardness = new IValue<Float>() {
     @Override
     public @Nonnull Float get() {

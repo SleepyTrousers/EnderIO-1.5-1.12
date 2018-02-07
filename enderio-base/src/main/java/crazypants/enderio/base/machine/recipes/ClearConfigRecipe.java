@@ -82,7 +82,7 @@ public class ClearConfigRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
 
   @SubscribeEvent
   public void onTooltip(ItemTooltipEvent event) {
-    if (ItemStack.areItemStacksEqual(lastOutput, event.getItemStack())) {
+    if (event.getEntityPlayer() != null && ItemStack.areItemStacksEqual(lastOutput, event.getItemStack())) {
       if ((event.getEntityPlayer().openContainer instanceof ContainerWorkbench
           && ((ContainerWorkbench) event.getEntityPlayer().openContainer).craftResult.getStackInSlot(0) == event.getItemStack())
           || (event.getEntityPlayer().openContainer instanceof ContainerPlayer
