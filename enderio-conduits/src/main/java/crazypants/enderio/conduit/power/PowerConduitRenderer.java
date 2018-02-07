@@ -73,9 +73,4 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
     ConnectionModeGeometry.addModeConnectorQuads(component.dir, offset, tex, null, quads);
 
   }
-
-  @Override
-  public void initIcons() {
-    PowerConduit.initIcons();
-  }
 }

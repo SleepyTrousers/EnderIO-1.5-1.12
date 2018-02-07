@@ -34,10 +34,4 @@ public class InsulatedRedstoneConduitRenderer extends DefaultConduitRenderer {
       super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
     }
   }
-
-  @Override
-  public void initIcons() {
-    InsulatedRedstoneConduit.initIcons();
-  }
-
 }

@@ -30,6 +30,8 @@ import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.registry.TextureRegistry;
+import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -62,42 +64,21 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   public static final String EXTERNAL_INTERFACE_GEOM = "ExternalInterface";
 
-  public static final String ICON_KEY = "enderio:blocks/item_conduit";
+  public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/item_conduit");
 
-  public static final String ICON_KEY_CORE = "enderio:blocks/item_conduit_core";
+  public static final TextureSupplier ICON_KEY_CORE = TextureRegistry.registerTexture("blocks/item_conduit_core");
 
-  public static final String ICON_KEY_INPUT = "enderio:blocks/item_conduit_input";
+  public static final TextureSupplier ICON_KEY_INPUT = TextureRegistry.registerTexture("blocks/item_conduit_input");
 
-  public static final String ICON_KEY_OUTPUT = "enderio:blocks/item_conduit_output";
+  public static final TextureSupplier ICON_KEY_OUTPUT = TextureRegistry.registerTexture("blocks/item_conduit_output");
 
-  public static final String ICON_KEY_IN_OUT_OUT = "enderio:blocks/item_conduit_in_out_out";
+  public static final TextureSupplier ICON_KEY_IN_OUT_OUT = TextureRegistry.registerTexture("blocks/item_conduit_in_out_out");
 
-  public static final String ICON_KEY_IN_OUT_IN = "enderio:blocks/item_conduit_in_out_in";
+  public static final TextureSupplier ICON_KEY_IN_OUT_IN = TextureRegistry.registerTexture("blocks/item_conduit_in_out_in");
 
-  public static final String ICON_KEY_IN_OUT_BG = "enderio:blocks/item_conduit_io_connector";
+  public static final TextureSupplier ICON_KEY_IN_OUT_BG = TextureRegistry.registerTexture("blocks/item_conduit_io_connector");
 
-  public static final String ICON_KEY_ENDER = "enderio:blocks/ender_still";
-
-  static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
-
-  @SideOnly(Side.CLIENT)
-  public static void initIcons() {
-    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
-      @Override
-      public void registerIcons(@Nonnull TextureMap register) {
-        ICONS.put(ICON_KEY, register.registerSprite(new ResourceLocation(ICON_KEY)));
-        ICONS.put(ICON_KEY_CORE, register.registerSprite(new ResourceLocation(ICON_KEY_CORE)));
-        ICONS.put(ICON_KEY_INPUT, register.registerSprite(new ResourceLocation(ICON_KEY_INPUT)));
-        ICONS.put(ICON_KEY_OUTPUT, register.registerSprite(new ResourceLocation(ICON_KEY_OUTPUT)));
-        ICONS.put(ICON_KEY_IN_OUT_OUT, register.registerSprite(new ResourceLocation(ICON_KEY_IN_OUT_OUT)));
-        ICONS.put(ICON_KEY_IN_OUT_IN, register.registerSprite(new ResourceLocation(ICON_KEY_IN_OUT_IN)));
-        ICONS.put(ICON_KEY_IN_OUT_BG, register.registerSprite(new ResourceLocation(ICON_KEY_IN_OUT_BG)));
-        ICONS.put(ICON_KEY_ENDER, register.registerSprite(new ResourceLocation(ICON_KEY_ENDER)));
-      }
-
-    });
-  }
+  public static final TextureSupplier ICON_KEY_ENDER = TextureRegistry.registerTexture("blocks/ender_still");
 
   ItemConduitNetwork network;
 
@@ -601,36 +582,36 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getTextureForInputMode() {
-    return ICONS.get(ICON_KEY_INPUT);
+    return ICON_KEY_INPUT.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getTextureForOutputMode() {
-    return ICONS.get(ICON_KEY_OUTPUT);
+    return ICON_KEY_OUTPUT.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getTextureForInOutMode(boolean input) {
-    return input ? ICONS.get(ICON_KEY_IN_OUT_IN) : ICONS.get(ICON_KEY_IN_OUT_OUT);
+    return input ? ICON_KEY_IN_OUT_IN.get(TextureAtlasSprite.class) : ICON_KEY_IN_OUT_OUT.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getTextureForInOutBackground() {
-    return ICONS.get(ICON_KEY_IN_OUT_BG);
+    return ICON_KEY_IN_OUT_BG.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getEnderIcon() {
-    return ICONS.get(ICON_KEY_ENDER);
+    return ICON_KEY_ENDER.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getCoreIcon() {
-    return ICONS.get(ICON_KEY_CORE);
+    return ICON_KEY_CORE.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
@@ -643,7 +624,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     if (EXTERNAL_INTERFACE_GEOM.equals(component.data)) {
       return getCoreIcon();
     }
-    return ICONS.get(ICON_KEY);
+    return ICON_KEY.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)

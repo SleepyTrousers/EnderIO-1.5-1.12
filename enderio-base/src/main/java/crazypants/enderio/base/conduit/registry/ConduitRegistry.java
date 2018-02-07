@@ -175,6 +175,13 @@ public class ConduitRegistry {
     conduitUUIDMap.put(info.getNetworkUUID(), info);
     conduitCLassMap.put(info.getBaseType(), info);
     for (Class<? extends IConduit> member : info.getMembers()) {
+      // Heyo, forcing clinit!
+      // This is all I can seem to do with a class object to force it, nothing else works. TODO make this unnecessary
+      try {
+        member.newInstance();
+      } catch (InstantiationException | IllegalAccessException e) {
+        throw new RuntimeException(e);
+      }
       conduitCLassMap.put(member, info);
       final UUID uuid = UUID.nameUUIDFromBytes(member.getName().getBytes());
       conduitMemberMapF.put(member, uuid);

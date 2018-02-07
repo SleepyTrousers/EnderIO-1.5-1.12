@@ -16,12 +16,12 @@ import net.minecraft.util.EnumFacing;
 
 public interface IRedstoneConduit extends IConduit {
 
-  public static final String KEY_CONDUIT_ICON = "enderio:blocks/redstone_conduit";
-  public static final String KEY_TRANSMISSION_ICON = "enderio:blocks/redstone_conduit_transmission";
+  public static final String KEY_CONDUIT_ICON = "blocks/redstone_conduit";
+  public static final String KEY_TRANSMISSION_ICON = "blocks/redstone_conduit_transmission";
 
-  public static final String KEY_INS_CONDUIT_ICON = "enderio:blocks/redstone_insulated_conduit";
-  public static final String KEY_INS_CORE_OFF_ICON = "enderio:blocks/redstone_insulated_conduit_core_off";
-  public static final String KEY_INS_CORE_ON_ICON = "enderio:blocks/redstone_insulated_conduit_core_on";
+  public static final String KEY_INS_CONDUIT_ICON = "blocks/redstone_insulated_conduit";
+  public static final String KEY_INS_CORE_OFF_ICON = "blocks/redstone_insulated_conduit_core_off";
+  public static final String KEY_INS_CORE_ON_ICON = "blocks/redstone_insulated_conduit_core_on";
 
   // External redstone interface
 

@@ -37,6 +37,8 @@ import crazypants.enderio.base.conduit.redstone.signals.SignalSource;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.registry.TextureRegistry;
+import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.IConduitComponent;
@@ -47,16 +49,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.b3d.B3DModel.Texture;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -65,22 +66,14 @@ import static crazypants.enderio.conduit.init.ConduitObject.item_redstone_condui
 
 public class InsulatedRedstoneConduit extends AbstractConduit implements IRedstoneConduit, IConduitComponent {
 
-  static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
+  static final Map<String, TextureSupplier> ICONS = new HashMap<>();
 
-  @SideOnly(Side.CLIENT)
-  public static void initIcons() {
-    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
-      @Override
-      public void registerIcons(@Nonnull TextureMap register) {
-        ICONS.put(KEY_INS_CORE_OFF_ICON, register.registerSprite(new ResourceLocation(KEY_INS_CORE_OFF_ICON)));
-        ICONS.put(KEY_INS_CORE_ON_ICON, register.registerSprite(new ResourceLocation(KEY_INS_CORE_ON_ICON)));
-        ICONS.put(KEY_INS_CONDUIT_ICON, register.registerSprite(new ResourceLocation(KEY_INS_CONDUIT_ICON)));
-        ICONS.put(KEY_CONDUIT_ICON, register.registerSprite(new ResourceLocation(KEY_CONDUIT_ICON)));
-        ICONS.put(KEY_TRANSMISSION_ICON, register.registerSprite(new ResourceLocation(KEY_TRANSMISSION_ICON)));
-      }
-
-    });
+  static {
+    ICONS.put(KEY_INS_CORE_OFF_ICON, TextureRegistry.registerTexture(KEY_INS_CORE_OFF_ICON));
+    ICONS.put(KEY_INS_CORE_ON_ICON, TextureRegistry.registerTexture(KEY_INS_CORE_ON_ICON));
+    ICONS.put(KEY_INS_CONDUIT_ICON, TextureRegistry.registerTexture(KEY_INS_CONDUIT_ICON));
+    ICONS.put(KEY_CONDUIT_ICON, TextureRegistry.registerTexture(KEY_CONDUIT_ICON));
+    ICONS.put(KEY_TRANSMISSION_ICON, TextureRegistry.registerTexture(KEY_TRANSMISSION_ICON));
   }
 
   // --------------------------------- Class Start
@@ -560,18 +553,18 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
     if (component.dir == null) {
-      return Config.redstoneConduitsShowState && isActive() ? ICONS.get(KEY_INS_CORE_ON_ICON) : ICONS.get(KEY_INS_CORE_OFF_ICON);
+      return Config.redstoneConduitsShowState && isActive() ? ICONS.get(KEY_INS_CORE_ON_ICON).get(TextureAtlasSprite.class) : ICONS.get(KEY_INS_CORE_OFF_ICON).get(TextureAtlasSprite.class);
     }
     if (COLOR_CONTROLLER_ID.equals(component.data)) {
       return IconUtil.instance.whiteTexture;
     }
-    return ICONS.get(KEY_INS_CONDUIT_ICON);
+    return ICONS.get(KEY_INS_CONDUIT_ICON).get(TextureAtlasSprite.class);
   }
 
   @Override
   @Nonnull
   public TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
-    return Config.redstoneConduitsShowState && isActive() ? ICONS.get(KEY_TRANSMISSION_ICON) : ICONS.get(KEY_CONDUIT_ICON);
+    return Config.redstoneConduitsShowState && isActive() ? ICONS.get(KEY_TRANSMISSION_ICON).get(TextureAtlasSprite.class) : ICONS.get(KEY_CONDUIT_ICON).get(TextureAtlasSprite.class);
   }
 
   @Override
