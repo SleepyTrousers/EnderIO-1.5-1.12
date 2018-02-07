@@ -7,18 +7,13 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.base.EnderIOTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockItemElectricLight extends ItemBlock implements IResourceTooltipProvider {
 
@@ -32,14 +27,6 @@ public class BlockItemElectricLight extends ItemBlock implements IResourceToolti
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack par1ItemStack) {
     return getUnlocalizedName() + LightType.fromMetadata(par1ItemStack.getMetadata()).getUnlocalizedSuffix();
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item par1, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    for (LightType type : LightType.values()) {
-      par3List.add(new ItemStack(this, 1, type.getMetadata()));
-    }
   }
 
   @Override

@@ -80,7 +80,7 @@ public class BlockKillerJoe extends AbstractInventoryMachineBlock<TileKillerJoe>
   }
 
   @Override
-  public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity exploder, @Nonnull Explosion explosion) {
+  public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nullable Entity exploder, @Nonnull Explosion explosion) {
     return Config.explosionResistantBlockHardness.get();
   }
 

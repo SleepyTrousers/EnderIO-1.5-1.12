@@ -35,7 +35,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -173,21 +172,21 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
   @SuppressWarnings("null")
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(@Nonnull Item item, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
-    super.getSubBlocks(item, tab, list);
+  public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    super.getSubBlocks(tab, list);
     if (SpawnerConfig.poweredSpawnerAddAllMobsCreative.get()) {
       CapturedMob.getAllSouls().apply(new Callback<CapturedMob>() {
         @Override
         public void apply(CapturedMob mob) {
-          list.add(mob.toStack(item, 0, 1));
+          list.add(mob.toStack(BlockPoweredSpawner.this, 0, 1));
         }
       });
     } else {
-      list.add(CapturedMob.create(new ResourceLocation("enderman")).toStack(item, 0, 1));
-      list.add(CapturedMob.create(new ResourceLocation("chicken")).toStack(item, 0, 1));
-      list.add(CapturedMob.create(new ResourceLocation("skeleton")).toStack(item, 0, 1));
-      list.add(CapturedMob.create(new ResourceLocation("wither_skeleton")).toStack(item, 0, 1));
-      list.add(CapturedMob.create(new ResourceLocation("stray")).toStack(item, 0, 1));
+      list.add(CapturedMob.create(new ResourceLocation("enderman")).toStack(this, 0, 1));
+      list.add(CapturedMob.create(new ResourceLocation("chicken")).toStack(this, 0, 1));
+      list.add(CapturedMob.create(new ResourceLocation("skeleton")).toStack(this, 0, 1));
+      list.add(CapturedMob.create(new ResourceLocation("wither_skeleton")).toStack(this, 0, 1));
+      list.add(CapturedMob.create(new ResourceLocation("stray")).toStack(this, 0, 1));
     }
   }
 

@@ -77,6 +77,7 @@ public class EnchanterModelRenderer extends ManagedTESR<TileEnchanter> {
     GlStateManager.disableRescaleNormal();
   }
 
+  @SuppressWarnings("null")
   private void renderQuads(@Nonnull BufferBuilder renderer, @Nonnull List<BakedQuad> quads) {
     for (BakedQuad quad : quads) {
       LightUtil.renderQuadColor(renderer, quad, -1);

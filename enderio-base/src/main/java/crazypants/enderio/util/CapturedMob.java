@@ -133,6 +133,12 @@ public class CapturedMob { // TODO: DONE111
     return stack;
   }
 
+  public @Nonnull ItemStack toStack(@Nonnull Block block, int meta, int amount) {
+    ItemStack stack = new ItemStack(block, amount, meta);
+    stack.setTagCompound(toNbt(null));
+    return stack;
+  }
+
   public @Nonnull ItemStack toGenericStack(@Nonnull Item item, int meta, int amount) {
     NBTTagCompound data = new NBTTagCompound();
     if (isUnspawnable(entityId)) {

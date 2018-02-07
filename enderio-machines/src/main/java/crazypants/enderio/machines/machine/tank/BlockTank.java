@@ -8,6 +8,8 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.BlockEnder;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.Lang;
@@ -24,6 +26,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -31,6 +34,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.Explosion;
@@ -133,12 +137,12 @@ public class BlockTank extends AbstractInventoryMachineBlock<TileTank>
   }
 
   @Override
-  public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity par1Entity, @Nonnull Explosion explosion) {
+  public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nullable Entity par1Entity, @Nonnull Explosion explosion) {
     IBlockState state = world.getBlockState(pos);
     if (state.getValue(EnumTankType.KIND).isExplosionResistant()) {
       return Config.explosionResistantBlockHardness.get();
     } else {
-      return super.getExplosionResistance(par1Entity);
+      return super.getExplosionResistance(world, pos, par1Entity, explosion);
     }
   }
 
@@ -197,6 +201,16 @@ public class BlockTank extends AbstractInventoryMachineBlock<TileTank>
   @SideOnly(Side.CLIENT)
   public void bindTileEntitySpecialRenderer() {
     ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new TankFluidRenderer());
+  }
+
+  @Override
+  public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    NNList.of(EnumTankType.class).apply(new Callback<EnumTankType>() {
+      @Override
+      public void apply(@Nonnull EnumTankType e) {
+        list.add(new ItemStack(BlockTank.this, 1, EnumTankType.getMeta(e)));
+      }
+    });
   }
 
 }

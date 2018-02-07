@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.FluidUtil;
-import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.init.IModObject;
@@ -22,15 +21,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -69,13 +65,6 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   protected void init() {
     super.init();
     SmartModelAttacher.register(this, EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.DEFAULTS, EnumMergingBlockRenderMode.AUTO);
-  }
-
-  @Override
-  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
-    if (NullHelper.untrust(tab) != null) {
-      super.getSubBlocks(itemIn, tab, list);
-    }
   }
 
   @Override

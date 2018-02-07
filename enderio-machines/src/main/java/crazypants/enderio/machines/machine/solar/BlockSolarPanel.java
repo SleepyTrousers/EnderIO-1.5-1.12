@@ -137,11 +137,11 @@ public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResour
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+  public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     NNList.of(SolarType.class).apply(new Callback<SolarType>() {
       @Override
       public void apply(@Nonnull SolarType solarType) {
-        list.add(new ItemStack(itemIn, 1, SolarType.getMetaFromType(solarType)));
+        list.add(new ItemStack(BlockSolarPanel.this, 1, SolarType.getMetaFromType(solarType)));
       }
     });
   }

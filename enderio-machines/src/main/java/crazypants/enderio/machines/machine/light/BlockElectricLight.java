@@ -14,10 +14,13 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -189,6 +192,13 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   @Override
   public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
     return true;
+  }
+
+  @Override
+  public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    for (LightType type : LightType.values()) {
+      list.add(new ItemStack(this, 1, type.getMetadata()));
+    }
   }
 
 }
