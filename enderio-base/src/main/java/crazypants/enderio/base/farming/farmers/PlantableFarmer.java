@@ -1,7 +1,6 @@
 package crazypants.enderio.base.farming.farmers;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -164,7 +163,8 @@ public class PlantableFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
 
     ItemStack removedPlantable = Prep.getEmpty();
 
-    List<ItemStack> drops = block.getDrops(world, pos, meta, fortune);
+    NNList<ItemStack> drops = new NNList<>();
+    block.getDrops(drops, world, pos, meta, fortune);
     float chance = ForgeEventFactory.fireBlockHarvesting(drops, world, pos, meta, fortune, 1.0F, false, fakePlayer);
     farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, meta, pos);
     for (ItemStack stack : drops) {

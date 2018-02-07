@@ -94,18 +94,20 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    @Nonnull
-    ItemStack is = new ItemStack(this);
-    par3List.add(is);
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (isInCreativeTab(tab)) {
+      @Nonnull
+      ItemStack is = new ItemStack(this);
+      list.add(is);
 
-    is = new ItemStack(this);
-    EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
-    EnergyUpgradeManager.setPowerFull(is);
-    TravelUpgrade.INSTANCE.addToItem(is);
-    SpoonUpgrade.INSTANCE.addToItem(is);
-    ExplosiveUpgrade.INSTANCE.addToItem(is);
-    par3List.add(is);
+      is = new ItemStack(this);
+      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
+      EnergyUpgradeManager.setPowerFull(is);
+      TravelUpgrade.INSTANCE.addToItem(is);
+      SpoonUpgrade.INSTANCE.addToItem(is);
+      ExplosiveUpgrade.INSTANCE.addToItem(is);
+      list.add(is);
+    }
   }
 
   @Override

@@ -240,11 +240,13 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
   }
 
   @Override
-  public void getSubItems(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
-    final ItemStack stack = new ItemStack(this);
-    subItems.add(stack.copy());
-    FLUIDAMOUNT.setInt(stack, FLUID_CAPACITY);
-    subItems.add(stack);
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (isInCreativeTab(tab)) {
+      final ItemStack stack = new ItemStack(this);
+      list.add(stack.copy());
+      FLUIDAMOUNT.setInt(stack, FLUID_CAPACITY);
+      list.add(stack);
+    }
   }
 
 }

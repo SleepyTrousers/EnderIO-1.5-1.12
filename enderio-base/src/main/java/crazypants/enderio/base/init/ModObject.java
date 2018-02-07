@@ -71,11 +71,9 @@ import net.minecraft.util.ResourceLocation;
 
 public enum ModObject implements IModObject.Registerable {
 
+  // Dummies
   block_machine_io(BlockMachineIO.class),
   block_machine_base(BlockMachineBase.class),
-  block_infinity_fog(BlockInfinity.class),
-
-  // Enderface
   itemEnderface(ItemEnderface.class),
 
   // Conduits
@@ -89,6 +87,7 @@ public enum ModObject implements IModObject.Registerable {
   itemMaterial(ItemMaterial.class),
 
   itemBrokenSpawner(ItemBrokenSpawner.class),
+  block_infinity_fog(BlockInfinity.class),
 
   // Blocks
   blockColdFire(BlockColdFire.class),

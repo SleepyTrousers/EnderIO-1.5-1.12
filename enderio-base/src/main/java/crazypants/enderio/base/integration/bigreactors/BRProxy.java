@@ -28,6 +28,7 @@ public class BRProxy {
 
   private static Method getTurbineBlockData;
 
+  @SuppressWarnings("null")
   public static void init(FMLInitializationEvent event) {
     if (Loader.isModLoaded("bigreactors")) {
       try {

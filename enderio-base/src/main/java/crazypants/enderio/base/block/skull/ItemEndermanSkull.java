@@ -30,10 +30,12 @@ public class ItemEndermanSkull extends ItemBlock {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    for (int j = 0; j < SkullType.values().length; ++j) {
-      if (!SkullType.values()[j].showEyes()) {
-        par3List.add(new ItemStack(this, 1, j));
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (isInCreativeTab(tab)) {
+      for (int j = 0; j < SkullType.values().length; ++j) {
+        if (!SkullType.values()[j].showEyes()) {
+          list.add(new ItemStack(this, 1, j));
+        }
       }
     }
   }

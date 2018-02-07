@@ -43,7 +43,7 @@ public class BlockMachineExtension extends BlockEio<TileEntityEio> {
   private final @Nonnull EnumFacing parentOffset;
 
   public BlockMachineExtension(@Nonnull IModObject modObject, @Nonnull IModObject parent, @Nonnull AxisAlignedBB AABB) {
-    super(modObject, null);
+    super(modObject);
     setCreativeTab(null);
     setHardness(2f);
     setSoundType(SoundType.METAL);

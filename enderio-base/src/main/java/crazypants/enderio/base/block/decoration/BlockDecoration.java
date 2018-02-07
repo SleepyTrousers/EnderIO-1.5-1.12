@@ -107,7 +107,9 @@ public class BlockDecoration extends Block implements IHaveRenderers, IModObject
       EnumDecoBlock type = iterator.next();
       IBlockState state = getDefaultState().withProperty(EnumDecoBlock.TYPE, type);
       ModelResourceLocation mrl = locations.get(state);
-      ModelLoader.setCustomModelResourceLocation(item, EnumDecoBlock.getMetaFromType(type), mrl);
+      if (mrl != null) {
+        ModelLoader.setCustomModelResourceLocation(item, EnumDecoBlock.getMetaFromType(type), mrl);
+      }
     }
   }
 

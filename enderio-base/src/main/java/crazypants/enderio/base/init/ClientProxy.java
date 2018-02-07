@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.EnderCore;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
@@ -30,6 +29,7 @@ import crazypants.enderio.base.material.glass.EnderIOGlassesStateMapper;
 import crazypants.enderio.base.paint.PaintTooltipUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.paint.render.PaintRegistry;
+import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IDefaultRenderers;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.render.IHaveTESR;
@@ -52,7 +52,6 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -116,16 +115,20 @@ public class ClientProxy extends CommonProxy {
      */
     for (IModObject mo : ModObjectRegistry.getObjects()) {
       final Block block = mo.getBlock();
-      if (block instanceof IHaveRenderers) {
+      if (block instanceof ICustomSubItems) {
+        // NOP, handled by SmartModelAttacher
+      } else if (block instanceof IHaveRenderers) {
         ((IHaveRenderers) block).registerRenderers(mo);
       } else if (block instanceof IDefaultRenderers) {
         ClientUtil.registerDefaultItemRenderer(mo);
       } else if (block == null || block == Blocks.AIR) {
         final Item item = mo.getItem();
-        if (item instanceof IHaveRenderers) {
+        if (item instanceof ICustomSubItems) {
+          // NOP, handled by SmartModelAttacher
+        } else if (item instanceof IHaveRenderers) {
           ((IHaveRenderers) item).registerRenderers(mo);
         } else if (item != null && item != Items.AIR) {
-          ClientUtil.registerRenderer(item, mo.getUnlocalisedName());
+          ClientUtil.registerDefaultItemRenderer(mo);
         }
       }
       if (block instanceof IHaveTESR) {
@@ -219,12 +222,6 @@ public class ClientProxy extends CommonProxy {
   @Override
   public CreativeTabs getCreativeTab(@Nonnull ItemStack stack) {
     return stack.getItem().getCreativeTab();
-  }
-
-  @SuppressWarnings("null")
-  @Override
-  public void getSubItems(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
-    itemIn.getSubItems(tab, subItems);
   }
 
   @SuppressWarnings("null")

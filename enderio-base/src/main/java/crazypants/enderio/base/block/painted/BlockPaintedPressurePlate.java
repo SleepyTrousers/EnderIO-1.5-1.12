@@ -1,7 +1,6 @@
 package crazypants.enderio.base.block.painted;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -25,6 +24,7 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.PressurePlatePainterTemplate;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.ICacheKey;
+import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.itemoverlay.MobNameOverlayRenderHelper;
@@ -71,7 +71,7 @@ import static crazypants.enderio.base.init.ModObject.blockFusedQuartz;
 
 public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock, IRenderMapper.IBlockRenderMapper.IRenderLayerAware,
-    INamedSubBlocks, IResourceTooltipProvider, IRenderMapper.IItemRenderMapper.IItemModelMapper, IModObject.WithBlockItem {
+    INamedSubBlocks, IResourceTooltipProvider, IRenderMapper.IItemRenderMapper.IItemModelMapper, IModObject.WithBlockItem, ICustomSubItems {
 
   public static BlockPaintedPressurePlate create(@Nonnull IModObject modObject) {
     BlockPaintedPressurePlate result = new BlockPaintedPressurePlate(modObject);
@@ -251,8 +251,8 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   @Override
-  public @Nonnull List<ItemStack> getDrops(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
-    return Collections.singletonList(getDrop(world, pos));
+  public void getDrops(@Nonnull NonNullList<ItemStack> drops, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
+    drops.add(getDrop(world, pos));
   }
 
   protected @Nonnull ItemStack getDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
@@ -413,11 +413,22 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   @Override
   public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     for (EnumPressurePlateType type : EnumPressurePlateType.values()) {
-      if (tab == EnderIOTab.tabNoTab || type.ordinal() >= EnumPressurePlateType.DARKSTEEL.ordinal()) {
+      if (!type.isShadowsVanilla()) {
         list.add(new ItemStack(this, 1, EnumPressurePlateType.getMetaFromType(type, false)));
       }
       list.add(new ItemStack(this, 1, EnumPressurePlateType.getMetaFromType(type, true)));
     }
+  }
+
+  @Override
+  @Nonnull
+  public NNList<ItemStack> getSubItems() {
+    NNList<ItemStack> list = new NNList<>();
+    for (EnumPressurePlateType type : EnumPressurePlateType.values()) {
+      list.add(new ItemStack(this, 1, EnumPressurePlateType.getMetaFromType(type, false)));
+      list.add(new ItemStack(this, 1, EnumPressurePlateType.getMetaFromType(type, true)));
+    }
+    return list;
   }
 
   @Override

@@ -159,6 +159,9 @@ public class PaintRegistry {
         sourceModel = sourceModel.uvlock(true);
         state = ((UVLock) state).getParent();
       }
+      if (state == null) {
+        state = sourceModel.getDefaultState();
+      }
       return sourceModel.bake(state, Attributes.DEFAULT_BAKED_FORMAT, new Function<ResourceLocation, TextureAtlasSprite>() {
         @Override
         public TextureAtlasSprite apply(@Nullable ResourceLocation location) {

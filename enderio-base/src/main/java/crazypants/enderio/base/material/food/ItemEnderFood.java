@@ -1,7 +1,6 @@
 package crazypants.enderio.base.material.food;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.NNList;
@@ -43,9 +42,11 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
   }
 
   @Override
-  public void getSubItems(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
-    for (EnderFood f : EnderFood.VALUES) {
-      list.add(f.getStack());
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (isInCreativeTab(tab)) {
+      for (EnderFood f : EnderFood.VALUES) {
+        list.add(f.getStack());
+      }
     }
   }
 

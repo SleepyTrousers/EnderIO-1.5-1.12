@@ -145,7 +145,7 @@ public class DarkSteelUpgradeRecipeCategory {
         result += "/" + safeString(enchantment);
       }
       if (result == null) {
-        throw new NullPointerException("That stack doesn't have subtype data. Ask someone else.");
+        return "";
       }
       return result;
     }

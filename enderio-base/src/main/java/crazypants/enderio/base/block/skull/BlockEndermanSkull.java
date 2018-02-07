@@ -137,7 +137,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
     NNList.of(SkullType.class).apply(new Callback<SkullType>() {
       @Override
       public void apply(@Nonnull SkullType alloy) {
-        ModelLoader.setCustomModelResourceLocation(modObject.getItem(), alloy.ordinal(),
+        ModelLoader.setCustomModelResourceLocation(modObject.getItemNN(), alloy.ordinal(),
             new ModelResourceLocation(modObject.getRegistryName(), "variant=" + alloy.getName()));
       }
     });

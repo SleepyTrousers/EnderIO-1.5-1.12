@@ -135,36 +135,38 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    @Nonnull
-    ItemStack is = new ItemStack(this);
-    par3List.add(is);
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> par3List) {
+    if (isInCreativeTab(tab)) {
+      @Nonnull
+      ItemStack is = new ItemStack(this);
+      par3List.add(is);
 
-    is = new ItemStack(this);
-    EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
-    EnergyUpgradeManager.setPowerFull(is);
+      is = new ItemStack(this);
+      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
+      EnergyUpgradeManager.setPowerFull(is);
 
-    Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.recipeIterator();
-    while (iter.hasNext()) {
-      IDarkSteelUpgrade upgrade = iter.next();
-      if (!(upgrade instanceof EnergyUpgrade || upgrade instanceof GliderUpgrade || upgrade instanceof ElytraUpgrade) && upgrade.canAddToItem(is)) {
-        upgrade.addToItem(is);
+      Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.recipeIterator();
+      while (iter.hasNext()) {
+        IDarkSteelUpgrade upgrade = iter.next();
+        if (!(upgrade instanceof EnergyUpgrade || upgrade instanceof GliderUpgrade || upgrade instanceof ElytraUpgrade) && upgrade.canAddToItem(is)) {
+          upgrade.addToItem(is);
+        }
       }
-    }
 
-    if (GliderUpgrade.INSTANCE.canAddToItem(is)) {
-      ItemStack is2 = is.copy();
-      GliderUpgrade.INSTANCE.addToItem(is2);
-      par3List.add(is2);
-      if (ElytraUpgrade.INSTANCE.canAddToItem(is)) {
-        ItemStack is3 = is.copy();
-        ElytraUpgrade.INSTANCE.addToItem(is3);
-        par3List.add(is3);
+      if (GliderUpgrade.INSTANCE.canAddToItem(is)) {
+        ItemStack is2 = is.copy();
+        GliderUpgrade.INSTANCE.addToItem(is2);
+        par3List.add(is2);
+        if (ElytraUpgrade.INSTANCE.canAddToItem(is)) {
+          ItemStack is3 = is.copy();
+          ElytraUpgrade.INSTANCE.addToItem(is3);
+          par3List.add(is3);
+        }
+        return;
       }
-      return;
-    }
 
-    par3List.add(is);
+      par3List.add(is);
+    }
   }
 
   @Override

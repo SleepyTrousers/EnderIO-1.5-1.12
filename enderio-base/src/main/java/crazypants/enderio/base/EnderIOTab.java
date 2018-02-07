@@ -11,14 +11,14 @@ import static crazypants.enderio.base.init.ModObject.itemEnderface;
 
 public class EnderIOTab extends CreativeTabs {
 
-  public static final @Nonnull CreativeTabs tabNoTab, tabEnderIO, tabEnderIOItems, tabEnderIOMaterials, tabEnderIOMachines;
+  public static final @Nonnull CreativeTabs tabEnderIO, tabEnderIOItems, tabEnderIOMaterials, tabEnderIOMachines, tabEnderIOMobs;
 
   static {
-    tabNoTab = new EnderIOTab(0, "invalid");
-    tabEnderIOMachines = new EnderIOTab(3, CreativeTabs.CREATIVE_TAB_ARRAY.length - 1, "machines");
+    tabEnderIOMachines = new EnderIOTab(3, "machines");
     tabEnderIOItems = new EnderIOTab(1, "items");
     tabEnderIOMaterials = new EnderIOTab(2, "materials");
     tabEnderIO = new EnderIOTab(0, "main");
+    tabEnderIOMobs = new EnderIOTab(4, "mobs");
   }
 
   private final int meta;
@@ -32,7 +32,7 @@ public class EnderIOTab extends CreativeTabs {
     super(index, getUnloc(name));
     this.meta = meta;
   }
-  
+
   private static String getUnloc(String name) {
     return EnderIO.DOMAIN + "." + name;
   }

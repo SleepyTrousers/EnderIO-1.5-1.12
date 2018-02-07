@@ -213,20 +213,19 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
   }
 
   @Override
-  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
-    if (tab == getCreativeTab() || tab == EnderIOTab.tabNoTab) {
-      super.getSubItems(tab, subItems);
-    }
-    if (tab == EnderIOTab.tabEnderIO || tab == EnderIOTab.tabNoTab) {
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (tab == getCreativeTab()) {
+      super.getSubItems(tab, list);
+    } else if (tab == EnderIOTab.tabEnderIOMobs) {
       for (CapturedMob capturedMob : CapturedMob.getAllSouls()) {
-        subItems.add(capturedMob.toStack(this, 1, 1));
+        list.add(capturedMob.toStack(this, 1, 1));
       }
     }
   }
 
   @Override
   public @Nonnull CreativeTabs[] getCreativeTabs() {
-    return new CreativeTabs[] { getCreativeTab(), EnderIOTab.tabEnderIO };
+    return new CreativeTabs[] { getCreativeTab(), EnderIOTab.tabEnderIOMobs };
   }
 
   @Override

@@ -5,6 +5,11 @@
   },
   "variants": {
     "variant": {
+      "mobs": {
+        "textures": {
+          "layer0": "enderio:items/item_enderface_mobs"
+        }
+      },
       "items": {
         "textures": {
           "layer0": "enderio:items/item_enderface_items"

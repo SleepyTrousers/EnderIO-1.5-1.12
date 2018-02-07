@@ -2,7 +2,6 @@ package crazypants.enderio.base.farming.farmers;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -69,7 +68,8 @@ public class StemFarmer extends CustomSeedFarmer {
       final IBlockState harvestState = farm.getBlockState(harvestCoord);
       if (hasHoe && plantedBlock == harvestState.getBlock()) {
         result.getHarvestedBlocks().add(harvestCoord);
-        List<ItemStack> drops = plantedBlock.getDrops(world, harvestCoord, meta, fortune);
+        NNList<ItemStack> drops = new NNList<>();
+        plantedBlock.getDrops(drops, world, harvestCoord, meta, fortune);
         float chance = ForgeEventFactory.fireBlockHarvesting(drops, joe.world, harvestCoord, meta, fortune, 1.0F, false, joe);
 
         BlockPos farmPos = farm.getLocation();

@@ -1,7 +1,6 @@
 package crazypants.enderio.base.material.alloy;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
@@ -34,13 +33,15 @@ public class ItemBlockAlloy extends ItemBlock {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull final NonNullList<ItemStack> list) {
-    NNList.of(Alloy.class).apply(new Callback<Alloy>() {
-      @Override
-      public void apply(@Nonnull Alloy alloy) {
-        list.add(new ItemStack(ItemBlockAlloy.this, 1, Alloy.getMetaFromType(alloy)));
-      }
-    });
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull final NonNullList<ItemStack> list) {
+    if (isInCreativeTab(tab)) {
+      NNList.of(Alloy.class).apply(new Callback<Alloy>() {
+        @Override
+        public void apply(@Nonnull Alloy alloy) {
+          list.add(new ItemStack(ItemBlockAlloy.this, 1, Alloy.getMetaFromType(alloy)));
+        }
+      });
+    }
   }
 
 }

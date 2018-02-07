@@ -17,14 +17,11 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.init.IModObject.Registerable;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.Loader;
@@ -113,22 +110,6 @@ public class ModObjectRegistry {
       Item item = mo.getItem();
       if (item instanceof IModObject.LifecycleInit) {
         ((IModObject.LifecycleInit) item).init(mo, event);
-      }
-
-      // TODO 1.11: The following code should go once we're done porting.
-      if (block != null) {
-        Log.debug("Block " + block.getRegistryName() + " has localized name " + block.getLocalizedName());
-      }
-      if (item != null) {
-        NonNullList<ItemStack> list = new NNList<>();
-        EnderIO.proxy.getSubItems(item, EnderIOTab.tabNoTab, list);
-        if (list.isEmpty()) {
-          Log.debug("Item " + item.getRegistryName() + " has localized name " + new ItemStack(item).getDisplayName());
-        } else {
-          for (ItemStack itemStack : list) {
-            Log.debug("Item " + item.getRegistryName() + ":" + itemStack.getItemDamage() + " has localized name " + itemStack.getDisplayName());
-          }
-        }
       }
     }
   }

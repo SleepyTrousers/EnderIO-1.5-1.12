@@ -72,7 +72,10 @@ public class EnergyIngredientHelper implements IIngredientHelper<EnergyIngredien
   }
 
   @Override
-  public @Nonnull String getErrorInfo(@Nonnull EnergyIngredient ingredient) {
+  public @Nonnull String getErrorInfo(@Nullable EnergyIngredient ingredient) {
+    if (ingredient == null) {
+      return "Obviously 'null' is not a valid ingredient...";
+    }
     return LangPower.RF(ingredient.getAmount());
   }
 

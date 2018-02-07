@@ -67,9 +67,11 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    for (BasicFilterTypes filterType : BasicFilterTypes.values()) {
-      par3List.add(new ItemStack(this, 1, filterType.ordinal()));
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (isInCreativeTab(tab)) {
+      for (BasicFilterTypes filterType : BasicFilterTypes.values()) {
+        list.add(new ItemStack(this, 1, filterType.ordinal()));
+      }
     }
   }
 

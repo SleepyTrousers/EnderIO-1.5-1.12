@@ -27,9 +27,9 @@ public class BlockItemDarkSteelDoor extends ItemDoor {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
-    if (tab == EnderIOTab.tabNoTab) {
-      subItems.add(new ItemStack(this));
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (this.isInCreativeTab(tab)) {
+      list.add(new ItemStack(this));
     }
   }
 

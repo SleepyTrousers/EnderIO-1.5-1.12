@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.util.ITooltipFlag;
 
 public class EnergyIngredientRenderer implements IIngredientRenderer<EnergyIngredient> {
 
@@ -45,7 +46,7 @@ public class EnergyIngredientRenderer implements IIngredientRenderer<EnergyIngre
   }
 
   @Override
-  public @Nonnull List<String> getTooltip(@Nonnull Minecraft minecraft, @Nonnull EnergyIngredient ingredient) {
+  public @Nonnull List<String> getTooltip(@Nonnull Minecraft minecraft, @Nonnull EnergyIngredient ingredient, @Nonnull ITooltipFlag tooltipFlag) {
     return Collections.singletonList(asString(ingredient));
   }
 

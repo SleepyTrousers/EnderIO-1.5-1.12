@@ -81,7 +81,9 @@ public class BlockDecorationFacing extends BlockDecoration {
       EnumDecoBlock type = iterator.next();
       IBlockState state = getDefaultState().withProperty(EnumDecoBlock.TYPE, type).withProperty(FACING, EnumFacing.NORTH).withProperty(ACTIVE, false);
       ModelResourceLocation mrl = locations.get(state);
-      ModelLoader.setCustomModelResourceLocation(item, EnumDecoBlock.getMetaFromType(type), mrl);
+      if (mrl != null) {
+        ModelLoader.setCustomModelResourceLocation(item, EnumDecoBlock.getMetaFromType(type), mrl);
+      }
     }
   }
 

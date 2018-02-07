@@ -18,10 +18,17 @@ import static crazypants.enderio.base.init.ModObject.itemMaterial;
 
 public enum Material {
 
-  // TODO 1.12: Sort this list
-
+  SIMPLE_MACHINE_CHASSI("simpleMachineChassi"),
   MACHINE_CHASSI("machineChassi"),
   CHASSIPARTS("chassiParts"),
+
+  PLATE_PHOTOVOLTAIC("platePhotovoltaic"),
+  CONDUIT_BINDER("conduitBinder"),
+  SILICON("silicon"),
+  DARK_GRINDING_BALL("darkGrindingBall"),
+  GLIDER_WING("gliderWing"),
+  GLIDER_WINGS("gliderWings"),
+  NUTRITIOUS_STICK("nutritiousStick"),
 
   GEAR_WOOD("gear_wood", "gearWood"),
   GEAR_STONE("gear_stone", "gearStone"),
@@ -29,29 +36,16 @@ public enum Material {
   GEAR_ENERGIZED("gear_energized", "gearEnergized"),
   GEAR_VIBRANT("gear_vibrant", "gearVibrant"),
 
-  GLIDER_WING("gliderWing"),
-  GLIDER_WINGS("gliderWings"),
-
-  DARK_GRINDING_BALL("darkGrindingBall"),
-  SILICON("silicon"),
-  CONDUIT_BINDER("conduitBinder"),
-  BINDER_COMPOSITE("binderComposite"),
-
   PULSATING_CYSTAL("pulsatingCrystal", true),
   VIBRANT_CYSTAL("vibrantCrystal", true),
   ENDER_CRYSTAL("enderCrystal", true),
   ATTRACTOR_CRYSTAL("attractorCrystal", true),
   WEATHER_CRYSTAL("weatherCrystal", true),
   PRECIENT_CRYSTAL("precientCrystal", true),
-  PRECIENT_POWDER("precientPowder", true),
-  VIBRANT_POWDER("vibrantPowder", true),
-  PULSATING_POWDER("pulsatingPowder", true),
-  ENDER_CYSTAL_POWDER("enderCrystalPowder", true),
-  NUTRITIOUS_STICK("nutritiousStick", false),
 
-  PLANTGREEN("plantgreen", false),
-  PLANTBROWN("plantbrown", false),
-
+  POWDER_INFINITY("powder_infinity", "dustBedrock"),
+  POWDER_FLOUR("dust_wheat", "dustWheat"),
+  POWDER_BINDER_COMPOSITE("binderComposite"),
   POWDER_COAL("powder_coal", "dustCoal"),
   POWDER_IRON("powder_iron", "dustIron"),
   POWDER_GOLD("powder_gold", "dustGold"),
@@ -61,10 +55,15 @@ public enum Material {
   POWDER_OBSIDIAN("powder_obsidian", "dustObsidian"),
   POWDER_ARDITE("powder_ardite", "dustArdite", "oreArdite"),
   POWDER_COBALT("powder_cobalt", "dustCobalt", "oreCobalt"),
-  POWDER_INFINITY("powder_infinity", "dustBedrock"),
+  POWDER_LAPIS("powder_lapis_lazuli", "dustLapis"),
+  POWDER_QUARTZ("powder_quartz", "dustQuartz"),
+  POWDER_PRECIENT("precientPowder", true),
+  POWDER_VIBRANT("vibrantPowder", true),
+  POWDER_PULSATING("pulsatingPowder", true),
+  POWDER_ENDER_CYSTAL("enderCrystalPowder", true),
+  POWDER_PHOTOVOLTAIC("powderPhotovoltaic"),
 
   INGOT_ENDERIUM_BASE("ingot_enderium_base", "ingotEnderiumBase", "ingotEnderium"),
-  FLOUR("dust_wheat", "dustWheat"),
 
   ZOMBIE_ELECTRODE("skullZombieElectrode", "skullZombieElectrode"),
   ZOMBIE_CONTROLLER("skullZombieController", "skullZombieController"),
@@ -73,18 +72,13 @@ public enum Material {
   SENTIENT_ENDER("skullSentientEnder", "skullSentientEnder", true),
   SKELETAL_CONTRACTOR("skullSkeletalContractor", "skullSkeletalContractor"),
 
+  PLANT_GREEN("plantgreen"),
+  PLANT_BROWN("plantbrown"),
+
   DYE_GREEN("organic_green_dye", "dyeGreen"),
   DYE_BROWN("organic_brown_dye", "dyeBrown"),
-
-  POWDER_PHOTOVOLTAIC("powderPhotovoltaic", false),
-  PLATE_PHOTOVOLTAIC("platePhotovoltaic", false),
-
-  POWDER_LAPIS("powder_lapis_lazuli", "dustLapis"),
-  POWDER_QUARTZ("powder_quartz", "dustQuartz"),
-  DYE_MACHINE("machine_dye", "dyeMachine"),
-  SIMPLE_MACHINE_CHASSI("simpleMachineChassi"),
-
   DYE_BLACK("organic_black_dye", "dyeBlack"),
+  DYE_MACHINE("machine_dye", "dyeMachine"),
 
   ;
 

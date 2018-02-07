@@ -56,6 +56,8 @@ public class JeiPlugin extends BlankModPlugin {
     NNList<Ingredient> inputs = new NNList<>();
     inputs.add(new Things().add(Items.STICK));
     inputs.add(new Things().add(Fluids.NUTRIENT_DISTILLATION.getBucket()));
+    final ItemStack itemStack = new Things().add(Fluids.NUTRIENT_DISTILLATION.getBucket()).getMatchingStacks()[0];
+    System.out.println(itemStack + "FOOO");
     ShapelessRecipes res = new ShapelessRecipes("", new ItemStack(itemMaterial.getItemNN(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
     registry.addRecipes(Collections.singletonList(res), VanillaRecipeCategoryUid.CRAFTING);
 

@@ -94,14 +94,16 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    ItemStack is = new ItemStack(this);
-    par3List.add(is);
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (isInCreativeTab(tab)) {
+      ItemStack is = new ItemStack(this);
+      list.add(is);
 
-    is = new ItemStack(this);
-    EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
-    EnergyUpgradeManager.setPowerFull(is);
-    par3List.add(is);
+      is = new ItemStack(this);
+      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
+      EnergyUpgradeManager.setPowerFull(is);
+      list.add(is);
+    }
   }
 
   @Override

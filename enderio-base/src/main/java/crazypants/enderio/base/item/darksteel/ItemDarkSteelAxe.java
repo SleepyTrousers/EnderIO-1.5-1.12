@@ -95,15 +95,17 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    @Nonnull
-    ItemStack is = new ItemStack(this);
-    par3List.add(is);
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (isInCreativeTab(tab)) {
+      @Nonnull
+      ItemStack is = new ItemStack(this);
+      list.add(is);
 
-    is = new ItemStack(this);
-    EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
-    EnergyUpgradeManager.setPowerFull(is);
-    par3List.add(is);
+      is = new ItemStack(this);
+      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
+      EnergyUpgradeManager.setPowerFull(is);
+      list.add(is);
+    }
   }
 
   @Override
@@ -142,13 +144,14 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     bs = bs.getActualState(world, bc);
     ItemStack held = player.getHeldItemMainhand();
 
-    List<ItemStack> itemDrops = block.getDrops(world, bc, bs, 0);
-    float chance = ForgeEventFactory.fireBlockHarvesting(itemDrops, world, bc, bs, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, held), 1,
+    NNList<ItemStack> drops = new NNList<>();
+    block.getDrops(drops, world, bc, bs, 0);
+    float chance = ForgeEventFactory.fireBlockHarvesting(drops, world, bc, bs, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, held), 1,
         EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, held) != 0, player);
 
     world.setBlockToAir(bc);
     boolean usedPower = false;
-    for (ItemStack stack : itemDrops) {
+    for (ItemStack stack : drops) {
       if (world.rand.nextFloat() <= chance) {
         world.spawnEntity(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
         if (block == refBlock) { // other wise leaves

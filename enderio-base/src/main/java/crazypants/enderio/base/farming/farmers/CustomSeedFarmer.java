@@ -1,7 +1,5 @@
 package crazypants.enderio.base.farming.farmers;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
@@ -159,7 +157,8 @@ public class CustomSeedFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
     final int fortune = farm.getLootingValue(FarmingTool.HOE);
     final NNList<EntityItem> result = new NNList<EntityItem>();
 
-    List<ItemStack> drops = block.getDrops(world, pos, state, fortune);
+    NNList<ItemStack> drops = new NNList<>();
+    block.getDrops(drops, world, pos, state, fortune);
     float chance = ForgeEventFactory.fireBlockHarvesting(drops, joe.world, pos, state, fortune, 1.0F, false, joe);
     farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, state, pos);
     boolean removed = false;

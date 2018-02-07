@@ -1,7 +1,6 @@
 package crazypants.enderio.base.init;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -16,10 +15,8 @@ import crazypants.enderio.base.material.recipes.MaterialRecipes;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -55,11 +52,11 @@ public class CommonProxy {
 
   public void loadIcons() {
   }
-  
+
   public void init(@Nonnull FMLPreInitializationEvent event) {
     TOPUtil.create();
   }
-  
+
   public void init(@Nonnull FMLInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(tickTimer);
 
@@ -114,14 +111,14 @@ public class CommonProxy {
 
     @SubscribeEvent
     public void onTick(@Nonnull ServerTickEvent evt) {
-      if(evt.phase == Phase.END) {
+      if (evt.phase == Phase.END) {
         onServerTick();
       }
     }
 
     @SubscribeEvent
     public void onTick(@Nonnull ClientTickEvent evt) {
-      if(evt.phase == Phase.END) {
+      if (evt.phase == Phase.END) {
         onClientTick();
       }
     }
@@ -143,10 +140,6 @@ public class CommonProxy {
 
   public CreativeTabs getCreativeTab(@Nonnull ItemStack stack) {
     return null;
-  }
-
-  public void getSubItems(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
-    subItems.add(new ItemStack(itemIn));
   }
 
 }

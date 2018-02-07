@@ -3,11 +3,14 @@ package crazypants.enderio.base.material.glass;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.PaintUtil.IWithPaintName;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.ITintedBlock;
 import crazypants.enderio.base.render.ITintedItem;
@@ -36,7 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.base.config.Config.glassConnectToTheirColorVariants;
 
-public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implements ITintedBlock {
+public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implements ITintedBlock, ICustomSubItems {
 
   protected static final @Nonnull EnumDyeColor DEFAULT_COLOR = EnumDyeColor.WHITE;
 
@@ -132,6 +135,12 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
     for (EnumDyeColor enumdyecolor : EnumDyeColor.values()) {
       par3List.add(new ItemStack(this, 1, enumdyecolor.getMetadata()));
     }
+  }
+
+  @Override
+  @Nonnull
+  public NNList<ItemStack> getSubItems() {
+    return getSubItems(this, 0, 15);
   }
 
   @Override

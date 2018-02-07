@@ -20,8 +20,8 @@ import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityShulker;
 import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntitySkeletonHorse;
+import net.minecraft.entity.passive.EntityZombieHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,14 +29,15 @@ import net.minecraft.util.IStringSerializable;
 
 public enum EnumPressurePlateType implements IStringSerializable {
 
-  WOOD(Entity.class),
-  STONE(EntityLivingBase.class),
-  IRON(CountingMode.ENTITIES, Entity.class),
-  GOLD(CountingMode.ITEMS, EntityItem.class),
-  DARKSTEEL(EntityPlayer.class),
+  WOOD(true, Entity.class),
+  STONE(true, EntityLivingBase.class),
+  IRON(true, CountingMode.ENTITIES, Entity.class),
+  GOLD(true, CountingMode.ITEMS, EntityItem.class),
+  DARKSTEEL(false, EntityPlayer.class),
   @SuppressWarnings("unchecked")
-  SOULARIUM(EntityLiving.class, EntitySlime.class, EntityGhast.class, EntityMob.class, EntitySkeletonHorse.class, EntityZombie.class, EntityShulker.class),
-  TUNED(EntityLivingBase.class) {
+  SOULARIUM(false, EntityLiving.class, EntitySlime.class, EntityGhast.class, EntityMob.class, EntitySkeletonHorse.class, EntityZombieHorse.class,
+      EntityShulker.class),
+  TUNED(false, EntityLivingBase.class) {
     @Override
     public @Nonnull Predicate<Entity> getPredicate(final @Nullable CapturedMob capturedMob) {
       return new Predicate<Entity>() {
@@ -96,30 +97,36 @@ public enum EnumPressurePlateType implements IStringSerializable {
     public abstract int count(List<Entity> list);
   }
 
+  private final boolean shadowsVanilla;
   private final @Nonnull CountingMode countingMode;
   private final @Nonnull Class<? extends Entity> searchClass;
   private final @Nonnull List<Class<? extends Entity>> whiteClasses;
 
-  private EnumPressurePlateType(@Nonnull Class<? extends Entity> searchClass) {
+  private EnumPressurePlateType(boolean shadowsVanilla, @Nonnull Class<? extends Entity> searchClass) {
+    this.shadowsVanilla = shadowsVanilla;
     this.countingMode = CountingMode.BINARY;
     this.searchClass = searchClass;
     this.whiteClasses = Collections.emptyList();
   }
 
-  private EnumPressurePlateType(@Nonnull Class<? extends Entity> searchClass, @SuppressWarnings("unchecked") Class<? extends Entity>... whiteClasses) {
+  private EnumPressurePlateType(boolean shadowsVanilla, @Nonnull Class<? extends Entity> searchClass,
+      @SuppressWarnings("unchecked") Class<? extends Entity>... whiteClasses) {
+    this.shadowsVanilla = shadowsVanilla;
     this.countingMode = CountingMode.BINARY;
     this.searchClass = searchClass;
     this.whiteClasses = Arrays.<Class<? extends Entity>> asList(whiteClasses);
   }
 
-  private EnumPressurePlateType(@Nonnull CountingMode countingMode, @Nonnull Class<? extends Entity> searchClass) {
+  private EnumPressurePlateType(boolean shadowsVanilla, @Nonnull CountingMode countingMode, @Nonnull Class<? extends Entity> searchClass) {
+    this.shadowsVanilla = shadowsVanilla;
     this.countingMode = countingMode;
     this.searchClass = searchClass;
     this.whiteClasses = Collections.<Class<? extends Entity>> emptyList();
   }
 
-  private EnumPressurePlateType(@Nonnull CountingMode countingMode, @Nonnull Class<? extends Entity> searchClass,
+  private EnumPressurePlateType(boolean shadowsVanilla, @Nonnull CountingMode countingMode, @Nonnull Class<? extends Entity> searchClass,
       @SuppressWarnings("unchecked") Class<? extends Entity>... whiteClasses) {
+    this.shadowsVanilla = shadowsVanilla;
     this.countingMode = countingMode;
     this.searchClass = searchClass;
     this.whiteClasses = Arrays.<Class<? extends Entity>> asList(whiteClasses);
@@ -195,6 +202,10 @@ public enum EnumPressurePlateType implements IStringSerializable {
         return super.equals(obj);
       }
     };
+  }
+
+  public boolean isShadowsVanilla() {
+    return shadowsVanilla;
   }
 
 }

@@ -1,7 +1,6 @@
 package crazypants.enderio.base.material.material;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.NNList;
@@ -51,13 +50,15 @@ public class ItemMaterial extends Item implements IHaveRenderers, IResourceToolt
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull final NonNullList<ItemStack> list) {
-    Material.getActiveMaterials().apply(new Callback<Material>() {
-      @Override
-      public void apply(@Nonnull Material alloy) {
-        list.add(new ItemStack(ItemMaterial.this, 1, Material.getMetaFromType(alloy)));
-      }
-    });
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull final NonNullList<ItemStack> list) {
+    if (isInCreativeTab(tab)) {
+      Material.getActiveMaterials().apply(new Callback<Material>() {
+        @Override
+        public void apply(@Nonnull Material alloy) {
+          list.add(new ItemStack(ItemMaterial.this, 1, Material.getMetaFromType(alloy)));
+        }
+      });
+    }
   }
 
   @Override

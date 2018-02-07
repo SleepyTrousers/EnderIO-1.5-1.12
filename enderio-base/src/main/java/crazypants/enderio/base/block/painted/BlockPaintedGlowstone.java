@@ -1,14 +1,10 @@
 package crazypants.enderio.base.block.painted;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.IPaintable;
@@ -18,6 +14,7 @@ import crazypants.enderio.base.paint.render.PaintRegistry;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.BasicPainterTemplate;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.util.Prep;
@@ -49,7 +46,8 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockPaintedGlowstone extends BlockGlowstone implements ITileEntityProvider, IPaintable.IBlockPaintableBlock, IModObject.WithBlockItem {
+public abstract class BlockPaintedGlowstone extends BlockGlowstone
+    implements ITileEntityProvider, IPaintable.IBlockPaintableBlock, IModObject.WithBlockItem, ICustomSubItems {
 
   public static BlockPaintedGlowstone create(@Nonnull IModObject modObject) {
     BlockPaintedGlowstone result = new BlockPaintedGlowstoneNonSolid(modObject);
@@ -118,17 +116,15 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
   }
 
   @Override
-  public @Nonnull List<ItemStack> getDrops(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
+  public void getDrops(@Nonnull NonNullList<ItemStack> drops, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
 
     // if silk touch is required, the painted drop is handled in harvestBlock as that has the required te
     if (Config.paintedGlowstoneRequireSilkTouch) {
-      return super.getDrops(world, pos, state, fortune);
+      super.getDrops(drops, world, pos, state, fortune);
     }
 
-    List<ItemStack> res = new ArrayList<ItemStack>();
     TileEntity te = world.getTileEntity(pos);
-    res.add(createPaintedDrop(te));
-    return res;
+    drops.add(createPaintedDrop(te));
   }
 
   private ItemStack createPaintedDrop(TileEntity te) {
@@ -208,9 +204,13 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
-    if (tab == EnderIOTab.tabNoTab) {
-      super.getSubBlocks(tab, list);
-    }
+    // Painted blocks don't show in the Creative Inventory or JEI
+  }
+
+  @Override
+  @Nonnull
+  public NNList<ItemStack> getSubItems() {
+    return getSubItems(this, 0);
   }
 
   @SideOnly(Side.CLIENT)

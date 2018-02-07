@@ -10,7 +10,8 @@
 itemGroup.enderio.machines=EnderIO Machines
 itemGroup.enderio.items=EnderIO Items
 itemGroup.enderio.materials=EnderIO Materials
-itemGroup.enderio.main=EnderIO Main
+itemGroup.enderio.main=EnderIO Blocks
+itemGroup.enderio.mobs=EnderIO Souls
 
 item.item_alloy_ingot_conductive_iron.name=Conductive Iron Ingot
 item.item_alloy_ingot_dark_steel.name=Dark Steel Ingot

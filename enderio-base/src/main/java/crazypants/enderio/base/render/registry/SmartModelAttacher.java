@@ -10,10 +10,14 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.init.IModObject.Registerable;
+import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.ICustomItemResourceLocation;
+import crazypants.enderio.base.render.ICustomSubItems;
+import crazypants.enderio.base.render.IDefaultRenderers;
+import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.render.ITintedBlock;
 import crazypants.enderio.base.render.ITintedItem;
 import crazypants.enderio.base.render.model.RelayingBakedModel;
@@ -94,30 +98,54 @@ public class SmartModelAttacher {
   /**
    * Registers the default ModelResourceLocation for the items of all blocks that have registered for MachineSmartModel-based rendering.
    * <p>
-   * For items that have subtypes, all subtypes that are exposed to the creative inventory are registered. All subtypes are registered to the same model, as the
-   * smart model can be damage-aware.
+   * For items that have subtypes, all subtypes are registered. All subtypes are registered to the same model, as the smart model can be damage-aware.
    */
   @SideOnly(Side.CLIENT)
   public static void registerBlockItemModels() {
     for (RegistrationHolder<?, ?> holder : blocks) {
       Block block = holder.block;
-      Item item = Item.getItemFromBlock(block);
-      if (item != Items.AIR) {
-        final @Nonnull ResourceLocation registryName = item instanceof ICustomItemResourceLocation
-            ? ((ICustomItemResourceLocation) item).getRegistryNameForCustomModelResourceLocation()
-            : NullHelper.notnullF(item.getRegistryName(), "Item.getItemFromBlock() returned an unregistered item");
-        ModelResourceLocation location = new ModelResourceLocation(registryName, "inventory");
-        if (item.getHasSubtypes()) {
-          NNList<ItemStack> list = new NNList<ItemStack>();
-          item.getSubItems(EnderIOTab.tabNoTab, list);
-          for (ItemStack itemStack : list) {
-            ModelLoader.setCustomModelResourceLocation(item, itemStack.getItemDamage(), location);
+      Registerable modObject = ModObjectRegistry.getModObject(holder.block);
+      if (modObject == null) {
+        Log.debug("Block " + block + " has no modObject. What?");
+      } else {
+        Item item = modObject.getItem();
+        if (item instanceof IHaveRenderers || block instanceof IHaveRenderers) {
+          // Nothing to do for us, the item/block handles it for itself
+          Log.debug(block.getClass() + " handles its item registrations itself");
+          if (item instanceof ICustomSubItems || block instanceof ICustomSubItems) {
+            throw new RuntimeException(block.getClass() + " implements both IHaveRenderers and ICustomSubItems");
+          }
+        } else if (block instanceof IDefaultRenderers) {
+          // Nothing to do for us, the block wants ClientProxy to handle it
+          Log.debug(block.getClass() + " handles has default item registrations");
+          if (item instanceof ICustomSubItems || block instanceof ICustomSubItems) {
+            throw new RuntimeException(block.getClass() + " implements both IDefaultRenderers and ICustomSubItems");
+          }
+        } else if (item != null && item != Items.AIR) {
+          final @Nonnull ResourceLocation registryName = item instanceof ICustomItemResourceLocation
+              ? ((ICustomItemResourceLocation) item).getRegistryNameForCustomModelResourceLocation()
+              : NullHelper.notnullF(item.getRegistryName(), "Item.getItemFromBlock() returned an unregistered item");
+          ModelResourceLocation location = new ModelResourceLocation(registryName, "inventory");
+          if (item.getHasSubtypes()) {
+            NNList<ItemStack> subItems;
+            if (item instanceof ICustomSubItems) {
+              subItems = ((ICustomSubItems) item).getSubItems();
+            } else if (block instanceof ICustomSubItems) {
+              subItems = ((ICustomSubItems) block).getSubItems();
+            } else {
+              throw new RuntimeException(block.getClass() + " has subitems but it does not implement ICustomSubItems");
+            }
+            for (ItemStack itemStack : subItems) {
+              Log.debug("Registering RL " + location + " for " + itemStack);
+              ModelLoader.setCustomModelResourceLocation(item, itemStack.getItemDamage(), location);
+            }
+          } else {
+            Log.debug("Registering RL " + location + " for " + item);
+            ModelLoader.setCustomModelResourceLocation(item, 0, location);
           }
         } else {
-          ModelLoader.setCustomModelResourceLocation(item, 0, location);
+          Log.debug("Block " + block + " has no item, is it intended?");
         }
-      } else {
-        Log.debug("Block " + block + " has no item, is it intended?");
       }
     }
   }

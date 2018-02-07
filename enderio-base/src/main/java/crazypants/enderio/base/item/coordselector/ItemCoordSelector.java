@@ -1,7 +1,6 @@
 package crazypants.enderio.base.item.coordselector;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.BlockCoord;
@@ -37,9 +36,11 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
   }
 
   @Override
-  public void getSubItems(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
-    ItemStack stack = new ItemStack(this);
-    subItems.add(stack);
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (isInCreativeTab(tab)) {
+      ItemStack stack = new ItemStack(this);
+      list.add(stack);
+    }
   }
 
   @Override

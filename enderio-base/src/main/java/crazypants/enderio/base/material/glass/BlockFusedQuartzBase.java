@@ -58,11 +58,11 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
 
   @Override
-  public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity par1Entity, @Nonnull Explosion explosion) {
+  public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nullable Entity exploder, @Nonnull Explosion explosion) {
     if (world.getBlockState(pos).getValue(FusedQuartzType.KIND).isBlastResistant()) {
       return Config.EXPLOSION_RESISTANT;
     } else {
-      return super.getExplosionResistance(par1Entity);
+      return super.getExplosionResistance(world, pos, exploder, explosion);
     }
   }
 
@@ -86,12 +86,6 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   public int damageDropped(@Nonnull IBlockState state) {
     return getMetaFromState(state);
   }
-
-  // TODO 1.12
-  // @Override
-  // public boolean isBlockSolid(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
-  // return true;
-  // }
 
   @Override
   public boolean isSideSolid(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {

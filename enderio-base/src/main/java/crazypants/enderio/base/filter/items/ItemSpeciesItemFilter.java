@@ -64,8 +64,10 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade, I
   }
 
   @Override
-  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
-    subItems.add(new ItemStack(this, 1, 0));
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (isInCreativeTab(tab)) {
+      list.add(new ItemStack(this, 1, 0));
+    }
   }
 
   @Override

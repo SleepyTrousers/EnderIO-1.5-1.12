@@ -187,12 +187,12 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
 
   void harvestSingleBlock(@Nonnull IFarmer farm, final @Nonnull World world, final @Nonnull HarvestResult result, final @Nonnull BlockPos harvestPos) {
     float chance = 1.0F;
-    List<ItemStack> drops;
+    NNList<ItemStack> drops = new NNList<>();
     final IBlockState state = farm.getBlockState(harvestPos);
     final Block blk = state.getBlock();
 
     if (blk instanceof IShearable && hasShears && ((shearCount / result.getHarvestedBlocks().size() + noShearingPercentage) < 100)) {
-      drops = ((IShearable) blk).onSheared(farm.getTool(FarmingTool.SHEARS), world, harvestPos, 0);
+      drops.addAll(((IShearable) blk).onSheared(farm.getTool(FarmingTool.SHEARS), world, harvestPos, 0));
       shearCount += 100;
       farm.registerAction(FarmingAction.HARVEST, FarmingTool.SHEARS, state, harvestPos);
       hasShears = farm.hasTool(FarmingTool.SHEARS);
@@ -201,7 +201,7 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
       }
     } else {
       FarmingTool tool = isWood(blk) || !hasHoe ? FarmingTool.AXE : FarmingTool.HOE;
-      drops = blk.getDrops(world, harvestPos, state, fortune);
+      blk.getDrops(drops, world, harvestPos, state, fortune);
       EntityPlayerMP joe = farm.startUsingItem(tool);
       chance = ForgeEventFactory.fireBlockHarvesting(drops, joe.world, harvestPos, state, fortune, chance, false, joe);
       farm.registerAction(FarmingAction.HARVEST, tool, state, harvestPos);
@@ -224,12 +224,10 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
       }
     }
 
-    if (drops != null) {
-      BlockPos farmPos = farm.getLocation();
-      for (ItemStack drop : drops) {
-        if (world.rand.nextFloat() <= chance) {
-          result.getDrops().add(new EntityItem(world, farmPos.getX() + 0.5, farmPos.getY() + 0.5, farmPos.getZ() + 0.5, drop.copy()));
-        }
+    BlockPos farmPos = farm.getLocation();
+    for (ItemStack drop : drops) {
+      if (world.rand.nextFloat() <= chance) {
+        result.getDrops().add(new EntityItem(world, farmPos.getX() + 0.5, farmPos.getY() + 0.5, farmPos.getZ() + 0.5, drop.copy()));
       }
     }
 

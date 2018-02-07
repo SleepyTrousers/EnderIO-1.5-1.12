@@ -1,7 +1,5 @@
 package crazypants.enderio.base.farming.farmers;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
@@ -135,7 +133,8 @@ public class ChorusFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   private void doHarvest(@Nonnull final IFarmer farm, @Nonnull final World world, @Nonnull IBlockState blockState, @Nonnull final BlockPos pos, int fortune,
       @Nonnull final HarvestResult result) {
     FakePlayer joe = farm.startUsingItem(FarmingTool.AXE);
-    List<ItemStack> drops = blockState.getBlock().getDrops(world, pos, blockState, fortune);
+    NNList<ItemStack> drops = new NNList<>();
+    blockState.getBlock().getDrops(drops, world, pos, blockState, fortune);
     final float chance = ForgeEventFactory.fireBlockHarvesting(drops, world, pos, blockState, fortune, 1f, false, joe);
 
     // flowers drop here by spawning their drops into the world (joe's world captures those)

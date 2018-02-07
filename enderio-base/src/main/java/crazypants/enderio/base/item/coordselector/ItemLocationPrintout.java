@@ -9,11 +9,11 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ChatUtil;
 import com.enderio.core.common.util.UserIdent;
 
-import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.util.Prep;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,7 +43,7 @@ public class ItemLocationPrintout extends Item implements IEioGuiHandler {
   }
 
   protected ItemLocationPrintout(@Nonnull IModObject modObject) {
-    setCreativeTab(EnderIOTab.tabEnderIOItems);
+    Prep.setNoCreativeTab(this);
     modObject.apply(this);
     setMaxStackSize(1);
   }
@@ -160,8 +160,7 @@ public class ItemLocationPrintout extends Item implements IEioGuiHandler {
   }
 
   @Override
-  public void getSubItems(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
-    return;
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
   }
 
 }

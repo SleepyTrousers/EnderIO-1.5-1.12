@@ -1,13 +1,11 @@
 package crazypants.enderio.base.material.glass;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
+import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.base.block.painted.TileEntityPaintedBlock;
 import crazypants.enderio.base.init.IModObject;
@@ -16,6 +14,7 @@ import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
@@ -41,7 +40,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPaintedBlock>
-    implements ITileEntityProvider, IPaintable.IBlockPaintableBlock, INamedSubBlocks {
+    implements ITileEntityProvider, IPaintable.IBlockPaintableBlock, INamedSubBlocks, ICustomSubItems {
 
   public static BlockPaintedFusedQuartz create(@Nonnull IModObject modObject) {
     BlockPaintedFusedQuartz result = new BlockPaintedFusedQuartz(modObject);
@@ -98,11 +97,13 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(@Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    if (par2CreativeTabs == EnderIOTab.tabNoTab) {
-      for (FusedQuartzType fqt : FusedQuartzType.values()) {
-        par3List.add(new ItemStack(this, 1, fqt.ordinal()));
-      }
-    }
+    // Painted blocks don't show in the Creative Inventory or JEI
+  }
+
+  @Override
+  @Nonnull
+  public NNList<ItemStack> getSubItems() {
+    return getSubItems(this, 0, FusedQuartzType.values().length - 1);
   }
 
   @Override
@@ -132,14 +133,13 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   }
 
   @Override
-  public @Nonnull List<ItemStack> getDrops(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
-    List<ItemStack> drops = super.getDrops(world, pos, state, fortune);
-    for (ItemStack drop : drops) {
-      if (drop != null) {
-        PaintUtil.setSourceBlock(drop, getPaintSource(state, world, pos));
-      }
+  public void getDrops(@Nonnull NonNullList<ItemStack> drops, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
+    NNList<ItemStack> drops2 = new NNList<>();
+    super.getDrops(drops2, world, pos, state, fortune);
+    for (ItemStack drop : drops2) {
+      PaintUtil.setSourceBlock(NullHelper.notnullM(drop, "null stack from getDrops()"), getPaintSource(state, world, pos));
     }
-    return drops;
+    drops.addAll(drops2);
   }
 
   @Override

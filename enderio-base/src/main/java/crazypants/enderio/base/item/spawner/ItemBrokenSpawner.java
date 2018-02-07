@@ -24,13 +24,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBrokenSpawner extends Item implements IOverlayRenderAware {
 
-  private static final ResourceLocation[] CREATIVE_TYPES = new ResourceLocation[] { new ResourceLocation("minecraft", "chicken"),
-      new ResourceLocation("minecraft", "llama"), new ResourceLocation("minecraft", "vex"), new ResourceLocation("minecraft", "zombie"),
-      new ResourceLocation("minecraft", "husk"), new ResourceLocation("minecraft", "skeleton"), new ResourceLocation("minecraft", "wither_skeleton"),
-      new ResourceLocation("minecraft", "stray"), new ResourceLocation("minecraft", "spider"), new ResourceLocation("minecraft", "cave_spider"),
-      new ResourceLocation("minecraft", "enderman"), new ResourceLocation("minecraft", "endermite"), new ResourceLocation("minecraft", "witch"),
-      new ResourceLocation("minecraft", "shulker") };
-
   public static ItemBrokenSpawner create(@Nonnull IModObject modObject) {
     return new ItemBrokenSpawner(modObject);
   }
@@ -50,11 +43,19 @@ public class ItemBrokenSpawner extends Item implements IOverlayRenderAware {
 
   @SuppressWarnings("null")
   @Override
-  @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    for (ResourceLocation mobType : CREATIVE_TYPES) {
-      par3List.add(CapturedMob.create(mobType).toStack(this, 0, 1));
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (tab == getCreativeTab()) {
+      list.add(CapturedMob.create(new ResourceLocation("minecraft", "chicken")).toStack(this, 0, 1));
+    } else if (tab == EnderIOTab.tabEnderIOMobs) {
+      for (CapturedMob capturedMob : CapturedMob.getAllSouls()) {
+        list.add(capturedMob.toStack(this, 0, 1));
+      }
     }
+  }
+
+  @Override
+  public @Nonnull CreativeTabs[] getCreativeTabs() {
+    return new CreativeTabs[] { getCreativeTab(), EnderIOTab.tabEnderIOMobs };
   }
 
   @Override

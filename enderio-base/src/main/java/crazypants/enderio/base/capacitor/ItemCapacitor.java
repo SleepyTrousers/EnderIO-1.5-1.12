@@ -73,10 +73,12 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    for (DefaultCapacitorData dcd : DefaultCapacitorData.values()) {
-      if (dcd.isRegular()) {
-        par3List.add(new ItemStack(this, 1, dcd.ordinal()));
+  public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (isInCreativeTab(tab)) {
+      for (DefaultCapacitorData dcd : DefaultCapacitorData.values()) {
+        if (dcd.isRegular()) {
+          list.add(new ItemStack(this, 1, dcd.ordinal()));
+        }
       }
     }
   }

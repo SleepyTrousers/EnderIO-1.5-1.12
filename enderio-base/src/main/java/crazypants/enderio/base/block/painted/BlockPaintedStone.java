@@ -1,14 +1,11 @@
 package crazypants.enderio.base.block.painted;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PaintUtil;
@@ -17,6 +14,7 @@ import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.BasicPainterTemplate;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.util.Prep;
@@ -42,7 +40,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockPaintedStone extends Block implements ITileEntityProvider, IPaintable.ISolidBlockPaintableBlock, IModObject.WithBlockItem {
+public class BlockPaintedStone extends Block implements ITileEntityProvider, IPaintable.ISolidBlockPaintableBlock, IModObject.WithBlockItem, ICustomSubItems {
 
   public static BlockPaintedStone create(@Nonnull IModObject modObject) {
     BlockPaintedStone result = new BlockPaintedStone(modObject);
@@ -92,12 +90,13 @@ public class BlockPaintedStone extends Block implements ITileEntityProvider, IPa
   }
 
   @Override
-  public @Nonnull List<ItemStack> getDrops(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
-    List<ItemStack> drops = super.getDrops(world, pos, state, fortune);
-    for (ItemStack drop : drops) {
+  public void getDrops(@Nonnull NonNullList<ItemStack> drops, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
+    NNList<ItemStack> drops2 = new NNList<>();
+    super.getDrops(drops2, world, pos, state, fortune);
+    for (ItemStack drop : drops2) {
       PaintUtil.setSourceBlock(NullHelper.notnullM(drop, "null stack from getDrops()"), getPaintSource(state, world, pos));
     }
-    return drops;
+    drops.addAll(drops2);
   }
 
   @Override
@@ -138,9 +137,13 @@ public class BlockPaintedStone extends Block implements ITileEntityProvider, IPa
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
-    if (tab == EnderIOTab.tabNoTab) {
-      super.getSubBlocks(tab, list);
-    }
+    // Painted blocks don't show in the Creative Inventory or JEI
+  }
+
+  @Override
+  @Nonnull
+  public NNList<ItemStack> getSubItems() {
+    return getSubItems(this, 0);
   }
 
   @SideOnly(Side.CLIENT)

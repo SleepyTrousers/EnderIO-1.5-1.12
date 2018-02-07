@@ -91,7 +91,7 @@ public class BlockAlloy extends BlockEio<TileEntityEio> implements IAdvancedTool
   }
 
   @Override
-  public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity exploder, @Nonnull Explosion explosion) {
+  public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nullable Entity exploder, @Nonnull Explosion explosion) {
     return getBlockHardness(world.getBlockState(pos), world, pos) * 2.0f; // vanilla default is / 5.0f, this means hardness*2 = resistance
     // TODO 1.9 um, I cannot follow that comment above. Shouldn't this be /5f?
   }

@@ -1,7 +1,5 @@
 package crazypants.enderio.base.farming.farmers;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
@@ -56,7 +54,7 @@ public class FlowerPicker extends Impl<IFarmerJoe> implements IFarmerJoe {
   @Override
   public IHarvestResult harvestBlock(@Nonnull final IFarmer farm, @Nonnull final BlockPos pos, @Nonnull Block block, @Nonnull IBlockState meta) {
     final World world = farm.getWorld();
-    List<ItemStack> drops = null;
+    NNList<ItemStack> drops = new NNList<>();
 
     if (block instanceof IShearable) {
       if (!farm.hasTool(FarmingTool.SHEARS)) {
@@ -67,14 +65,14 @@ public class FlowerPicker extends Impl<IFarmerJoe> implements IFarmerJoe {
       if (!((IShearable) block).isShearable(shears, world, pos)) {
         return null;
       }
-      drops = ((IShearable) block).onSheared(shears, world, pos, farm.getLootingValue(FarmingTool.SHEARS));
+      drops.addAll(((IShearable) block).onSheared(shears, world, pos, farm.getLootingValue(FarmingTool.SHEARS)));
       farm.registerAction(FarmingAction.HARVEST, FarmingTool.SHEARS, meta, pos);
     } else {
       if (!farm.hasTool(FarmingTool.HOE)) {
         farm.setNotification(FarmNotification.NO_HOE);
         return null;
       }
-      drops = block.getDrops(world, pos, meta, farm.getLootingValue(FarmingTool.HOE));
+      block.getDrops(drops, world, pos, meta, farm.getLootingValue(FarmingTool.HOE));
       farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, meta, pos);
     }
 
