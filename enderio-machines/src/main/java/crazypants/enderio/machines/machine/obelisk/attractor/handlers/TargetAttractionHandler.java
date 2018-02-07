@@ -25,13 +25,13 @@ public class TargetAttractionHandler implements IMobAttractionHandler {
     double z = (attractor.getPos().getZ() + 0.5D - entity.posZ);
     double distance = Math.sqrt(x * x + y * y + z * z);
     if (distance > 2) {
-      EntityMob mod = (EntityMob) entity;
-      mod.faceEntity(attractor.getTarget(), 180, 0);
-      mod.moveEntityWithHeading(0, 1);
-      if (mod.posY < attractor.getPos().getY()) {
-        mod.setJumping(true);
+      EntityMob mob = (EntityMob) entity;
+      mob.faceEntity(attractor.getTarget(), 180, 0);
+      mob.getMoveHelper().strafe(1, 0);
+      if (mob.posY < attractor.getPos().getY()) {
+        mob.setJumping(true);
       } else {
-        mod.setJumping(false);
+        mob.setJumping(false);
       }
     }
   }
