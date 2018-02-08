@@ -33,6 +33,7 @@ public class GenericUpgradeRecipe extends ShapedOreRecipe {
       ItemStack slot = inv.getStackInSlot(x);
       if (Prep.isValid(slot) && result.getItem() == slot.getItem() && slot.hasTagCompound()) {
         result.setTagCompound(slot.getTagCompound().copy());
+        result.clearCustomName();
         return result;
       }
     }
@@ -42,6 +43,7 @@ public class GenericUpgradeRecipe extends ShapedOreRecipe {
         ItemStack slot = inv.getStackInSlot(x);
         if (ModObjectRegistry.getModObject(slot.getItem()) != null && slot.hasTagCompound()) {
           result.setTagCompound(slot.getTagCompound().copy());
+          result.clearCustomName();
           return result;
         }
       }
