@@ -335,7 +335,7 @@ public class ConduitUtil {
     if (cons.size() == 1) {
       EnumFacing facing = cons.iterator().next();
       if (facing != null) {
-        ConduitRegistry.getConduitModObjectNN().openGui(world, new BlockPos(x, y, z), player, facing, 0);
+        ConduitRegistry.getConduitModObjectNN().openGui(world, new BlockPos(x, y, z), player, facing, facing.ordinal());
       }
       return;
     }
