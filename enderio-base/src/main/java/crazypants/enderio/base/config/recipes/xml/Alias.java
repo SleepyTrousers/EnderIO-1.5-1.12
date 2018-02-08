@@ -1,5 +1,6 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
@@ -32,7 +33,7 @@ public class Alias extends AbstractConditional {
   }
 
   @Override
-  public void register() {
+  public void register(@Nonnull String recipeName) {
   }
 
   @Override

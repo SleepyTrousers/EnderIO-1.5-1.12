@@ -20,6 +20,7 @@ import crazypants.enderio.integration.tic.recipes.TicRegistration;
 import net.minecraft.block.Block;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -75,6 +76,14 @@ public class TicControl {
   }
 
   public static void initPostTic(FMLPostInitializationEvent event) {
+    TicRegistration.registerSmeltings();
+    TicRegistration.registerAlloys();
+    TicRegistration.registerTableCasting();
+    TicRegistration.registerBasinCasting();
+  }
+
+  public static void initPostTic(FMLLoadCompleteEvent event) {
+    // Second pass after Ender IO XML recipe processing
     TicRegistration.registerSmeltings();
     TicRegistration.registerAlloys();
     TicRegistration.registerTableCasting();

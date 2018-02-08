@@ -1,5 +1,6 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
@@ -46,7 +47,7 @@ public class Casting extends AbstractCrafting {
   }
 
   @Override
-  public void register() {
+  public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
 
       String tableCast = TicProxy.registerTableCast(getOutput().getItemStack(), cast.getItemStack(), input.getItemStack(), input.amount, cast.getConsumed(),

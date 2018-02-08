@@ -85,6 +85,8 @@ public class EnderIO implements IEnderIOAddon {
 
   @EventHandler
   public void preInit(@Nonnull FMLPreInitializationEvent event) {
+    Log.debug("PHASE PRE-INIT START");
+
     Config.init(event);
 
     proxy.loadIcons();
@@ -98,10 +100,14 @@ public class EnderIO implements IEnderIOAddon {
     ServerChannelRegister.init(event);
 
     proxy.init(event);
+
+    Log.debug("PHASE PRE-INIT END");
   }
 
   @EventHandler
   public void load(@Nonnull FMLInitializationEvent event) {
+    Log.debug("PHASE INIT START");
+
     Fluids.registerFuels();
 
     ModObjectRegistry.init(event);
@@ -117,10 +123,13 @@ public class EnderIO implements IEnderIOAddon {
     MaterialRecipes.init(event); // handles oredict registration
 
     proxy.init(event);
+
+    Log.debug("PHASE INIT END");
   }
 
   @EventHandler
   public void postInit(@Nonnull FMLPostInitializationEvent event) {
+    Log.debug("PHASE POST-INIT START");
 
     Config.init(event);
 
@@ -150,12 +159,18 @@ public class EnderIO implements IEnderIOAddon {
 
     Celeb.init(event);
     Scheduler.instance.start();
+
+    Log.debug("PHASE POST-INIT END");
   }
 
   @EventHandler
   public void loadComplete(@Nonnull FMLLoadCompleteEvent event) {
+    Log.debug("PHASE LOAD COMPLETE START");
+
     // Some mods send IMCs during PostInit, so we catch them here.
     processImc(FMLInterModComms.fetchRuntimeMessages(this));
+
+    Log.debug("PHASE LOAD COMPLETE END");
   }
 
   @EventHandler

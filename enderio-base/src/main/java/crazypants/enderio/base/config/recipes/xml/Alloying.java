@@ -62,7 +62,7 @@ public class Alloying extends AbstractCrafting {
   }
 
   @Override
-  public void register() {
+  public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
       NNList<IRecipeInput> inputStacks = new NNList<>();
       for (NNIterator<ItemIntegerAmount> itr = input.fastIterator(); itr.hasNext();) {

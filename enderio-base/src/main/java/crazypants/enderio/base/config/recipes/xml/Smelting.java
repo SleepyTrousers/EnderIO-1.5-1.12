@@ -1,5 +1,6 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
@@ -58,7 +59,7 @@ public class Smelting extends AbstractCrafting {
   }
 
   @Override
-  public void register() {
+  public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
       if (vanilla) {
         GameRegistry.addSmelting(input.getItemStack(), getOutput().getItemStack(), exp);

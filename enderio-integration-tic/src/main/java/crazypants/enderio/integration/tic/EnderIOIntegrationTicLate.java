@@ -6,6 +6,7 @@ import crazypants.enderio.api.addon.IEnderIOAddon;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 @Mod(modid = EnderIOIntegrationTicLate.MODID, name = EnderIOIntegrationTicLate.MOD_NAME, version = EnderIOIntegrationTicLate.VERSION, dependencies = EnderIOIntegrationTicLate.DEFAULT_DEPENDENCIES)
@@ -21,6 +22,13 @@ public class EnderIOIntegrationTicLate implements IEnderIOAddon {
 
   @EventHandler
   public static void init(FMLPostInitializationEvent event) {
+    if (EnderIOIntegrationTic.isLoaded()) {
+      TicControl.initPostTic(event);
+    }
+  }
+
+  @EventHandler
+  public void loadComplete(@Nonnull FMLLoadCompleteEvent event) {
     if (EnderIOIntegrationTic.isLoaded()) {
       TicControl.initPostTic(event);
     }

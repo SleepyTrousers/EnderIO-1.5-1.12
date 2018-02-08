@@ -76,12 +76,12 @@ public class Recipe extends AbstractConditional {
   }
 
   @Override
-  public void register() {
+  public void register(@Nonnull String recipeName) {
     if (!disabled && valid && active) {
       Log.debug("Registering XML recipe '" + getName() + "'");
       for (AbstractConditional crafting : craftings) {
         if (crafting.isValid() && crafting.isActive()) {
-          crafting.register();
+          crafting.register(recipeName);
           return;
         }
       }
@@ -90,7 +90,7 @@ public class Recipe extends AbstractConditional {
     }
   }
 
-  public String getName() {
+  public @Nonnull String getName() {
     if (name != null && !name.trim().isEmpty()) {
       return name.trim();
     }

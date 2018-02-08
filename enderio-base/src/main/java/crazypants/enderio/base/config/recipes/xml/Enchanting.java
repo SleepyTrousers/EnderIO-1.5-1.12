@@ -1,5 +1,6 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
@@ -44,7 +45,7 @@ public class Enchanting extends AbstractConditional {
   }
 
   @Override
-  public void register() {
+  public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
       final Things thing = input.getThing();
       final net.minecraft.enchantment.Enchantment enchantment2 = enchantment.getEnchantment();

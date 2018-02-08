@@ -1,9 +1,11 @@
 package crazypants.enderio.base.config.recipes;
 
+import javax.annotation.Nonnull;
+
 public interface RecipeGameRecipe extends RecipeConfigElement {
 
   boolean isActive();
 
-  void register();
+  void register(@Nonnull String recipeName);
 
 }

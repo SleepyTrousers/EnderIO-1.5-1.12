@@ -1,5 +1,8 @@
 package crazypants.enderio.integration.tic.recipes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -37,15 +40,17 @@ public class TicRegistration {
     }
 
     FluidStack[] fluids = new FluidStack[input.length];
+    List<String> debug = new ArrayList<>();
     for (int i = 0; i < input.length; i++) {
       if ((fluids[i] = getFluidForItems(NullHelper.notnull(input[i], "missing input item stack in alloy recipe"))) == null) {
         return;
       }
+      debug.add(toString(fluids[i]));
     }
 
     gcd(fluidResult, fluids);
     TinkerRegistry.registerAlloy(fluidResult, fluids);
-    Log.debug("Tinkers.registerAlloy: " + fluidResult + ", " + fluids);
+    Log.debug("Tinkers.registerAlloy: " + toString(fluidResult) + ", " + debug);
   }
 
   private static void tryBasinAloying(@Nonnull ItemStack result, ItemStack... inputs) {
@@ -85,9 +90,12 @@ public class TicRegistration {
           basin.setAmount(basin.getAmount() * fluid.amount);
         }
       }
-      if (basin.getFluid() != null) {
+      if (basin.getFluid() == null) {
+        Log.warn("Item used in basin cast recipe '" + toString(basin.getFluidItem()) + "' doesn't smelt into a fluid");
+      } else {
         TinkerRegistry.registerBasinCasting(basin.getOutput(), basin.getCast(), basin.getFluid(), basin.getAmount());
-        Log.debug("Tinkers.registerBasinCasting: " + basin.getOutput() + ", " + basin.getCast() + ", " + basin.getFluid().getName() + ", " + basin.getAmount());
+        Log.debug("Tinkers.registerBasinCasting: " + toString(basin.getOutput()) + ", " + toString(basin.getCast()) + ", " + basin.getFluid().getName() + ", "
+            + basin.getAmount());
       }
     }
     TiCQueues.getBasinQueue().clear();
@@ -103,11 +111,12 @@ public class TicRegistration {
         }
       }
       if (cast.getFluid() == null) {
-        Log.warn("Item used in cast recipe '" + cast.getItem() + "' doesn't smelt into a fluid");
+        Log.warn("Item used in cast recipe '" + toString(cast.getItem()) + "' doesn't smelt into a fluid");
       } else {
         TinkerRegistry.registerTableCasting(new CastingRecipe(cast.getResult(), Prep.isValid(cast.getCast()) ? RecipeMatch.ofNBT(cast.getCast()) : null,
             cast.getFluid(), (int) Math.ceil(cast.getAmount()), cast.isConsumeCast(), false));
-        Log.debug("Tinkers.registerTableCasting: " + cast.getResult() + ", " + cast.getCast() + ", " + cast.getFluid().getName() + ", " + cast.getAmount());
+        Log.debug("Tinkers.registerTableCasting: " + toString(cast.getResult()) + ", " + toString(cast.getCast()) + ", " + cast.getFluid().getName() + ", "
+            + cast.getAmount());
       }
     }
     TiCQueues.getCastQueue().clear();
@@ -125,7 +134,7 @@ public class TicRegistration {
       if (smelt.getFluidOutput() == null) {
         FluidStack fluid = getFluidForItems(smelt.getOutput());
         if (fluid == null) {
-          Log.warn("Item used in Smeltery recipe '" + smelt.getOutput() + "' doesn't smelt into a fluid");
+          Log.warn("Item used in Smeltery recipe '" + toString(smelt.getOutput()) + "' doesn't smelt into a fluid");
         } else {
           smelt.setFluidOutput(fluid.getFluid());
           smelt.setAmount(smelt.getAmount() * fluid.amount);
@@ -133,7 +142,7 @@ public class TicRegistration {
       }
       if (smelt.getFluidOutput() != null) {
         TinkerRegistry.registerMelting(smelt.getInput(), smelt.getFluidOutput(), (int) Math.max(1, Math.floor(smelt.getAmount())));
-        Log.debug("Tinkers.registerMelting: " + smelt.getInput() + ", " + smelt.getFluidOutput().getName() + ", " + smelt.getAmount());
+        Log.debug("Tinkers.registerMelting: " + toString(smelt.getInput()) + ", " + smelt.getFluidOutput().getName() + ", " + smelt.getAmount());
       }
     }
     TiCQueues.getSmeltQueue().clear();
@@ -173,7 +182,7 @@ public class TicRegistration {
           return new FluidStack(fluid, 288 * input.getCount());
         }
       }
-      Log.info("Failed to get Tinker's Construct melting recipe for " + itemStack);
+      Log.debug("Failed to get Tinker's Construct melting recipe for " + toString(itemStack));
       return null;
     }
     FluidStack result = melting.getResult();
@@ -181,9 +190,17 @@ public class TicRegistration {
       result.amount *= input.getCount();
       return result;
     } else {
-      Log.info("Failed to get Tinker's Construct melting recipe result for " + itemStack + " -> " + result);
+      Log.info("Failed to get Tinker's Construct melting recipe result for " + toString(itemStack) + " -> " + toString(result));
+      return null;
     }
-    return null;
+  }
+
+  private static @Nonnull String toString(@Nonnull ItemStack o) {
+    return Prep.isInvalid(o) ? "(empty)" : (o + " (" + o.getDisplayName() + ")");
+  }
+
+  private static @Nonnull String toString(FluidStack o) {
+    return o == null ? "(null)" : (o + " (" + o.getLocalizedName() + ")");
   }
 
 }

@@ -182,12 +182,12 @@ public class BlockCapBank extends BlockEio<TileCapBank>
       if (stacks != null) {
         int count = 0;
         for (ItemStack stack : stacks) {
-          if (stack != null) {
+          if (stack != null) {// FIXME
             count++;
           }
         }
         if (count > 0) {
-          String msg = EnderIO.lang.localizeExact("tile.blockCapBank.tooltip.hasItems");
+          String msg = EnderIO.lang.localizeExact("tile.blockCapBank.tooltip.hasItems");// FIXME
           Object[] objects = { count };
           list.add(TextFormatting.GOLD + MessageFormat.format(msg, objects));
         }

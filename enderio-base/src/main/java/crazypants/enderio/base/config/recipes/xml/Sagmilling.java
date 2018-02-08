@@ -54,7 +54,7 @@ public class Sagmilling extends AbstractCrafting {
   }
 
   @Override
-  public void register() {
+  public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
       ThingsRecipeInput recipeInput = new ThingsRecipeInput(input.getThing());
       NNList<RecipeOutput> recipeOutputs = new NNList<>();

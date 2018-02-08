@@ -2,6 +2,7 @@ package crazypants.enderio.base.config.recipes.xml;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
@@ -42,7 +43,7 @@ public class Spawning extends AbstractConditional {
   }
 
   @Override
-  public void register() {
+  public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
       for (Entity entity : entities) {
         if (entity.isDefault()) {
@@ -61,7 +62,7 @@ public class Spawning extends AbstractConditional {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("entity".equals(name)) {
       entities.add(factory.read(new Entity(), startElement));
-        return true;
+      return true;
     }
 
     return super.setElement(factory, name, startElement);

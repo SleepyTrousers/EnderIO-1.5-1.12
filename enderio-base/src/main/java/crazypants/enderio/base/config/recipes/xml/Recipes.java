@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
@@ -35,11 +36,11 @@ public class Recipes implements RecipeRoot {
   }
 
   @Override
-  public void register() {
+  public void register(@Nonnull String recipeName) {
     Log.debug("Starting registering XML recipes");
     if (recipes != null) {
       for (Recipe recipe : recipes) {
-        recipe.register();
+        recipe.register(recipeName + ": " + recipe.getName());
       }
     }
     Log.debug("Done registering XML recipes");

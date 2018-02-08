@@ -31,7 +31,7 @@ public class RecipeLoader {
       Recipes recipes = RecipeFactory.readStax(new Recipes(), "recipes", is);
       if (recipes.isValid()) {
         recipes.enforceValidity();
-        recipes.register();
+        recipes.register("IMC recipes");
         return;
       }
       throw new InvalidRecipeConfigException("empty XML");
@@ -44,7 +44,7 @@ public class RecipeLoader {
         Recipes recipes = recipeFactory.readFile(new Recipes(), "recipes", "recipe_" + filename);
         if (recipes.isValid()) {
           recipes.enforceValidity();
-          recipes.register();
+          recipes.register(NullHelper.first(filename, "(unnamed)"));
         } else {
           recipeError(filename, "File is empty or invalid");
         }

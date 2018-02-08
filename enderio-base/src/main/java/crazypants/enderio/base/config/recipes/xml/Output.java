@@ -121,7 +121,7 @@ public class Output extends AbstractConditional {
   }
 
   @Override
-  public void register() {
+  public void register(@Nonnull String recipeName) {
   }
 
 }

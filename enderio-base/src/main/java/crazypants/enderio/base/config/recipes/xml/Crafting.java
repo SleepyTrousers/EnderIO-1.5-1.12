@@ -2,7 +2,6 @@ package crazypants.enderio.base.config.recipes.xml;
 
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
@@ -17,6 +16,9 @@ import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.integration.jei.JeiAccessor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -59,18 +61,36 @@ public class Crafting extends AbstractCrafting {
     }
   }
 
+  private @Nonnull ResourceLocation mkRL(@Nonnull String recipeName) {
+    String s = recipeName.replaceAll("[^A-Za-z]", "_").replaceAll("([A-Z])", "_$0").replaceAll("__+", "_").replaceFirst("^_", "").replaceFirst("_$", "")
+        .toLowerCase(Locale.ENGLISH);
+    ModContainer activeMod = Loader.instance().activeModContainer();
+    if (activeMod == null) {
+      throw new RuntimeException("I really doubt Mojang would ever use our recipe handler, so something just went really wrong because "
+          + "Forge just told us that we were called by vanilla code...");
+    }
+    String modId = activeMod.getModId();
+    if (modId == null) {
+      throw new RuntimeException("Why does a mod without an ID use our recipe handler?");
+    }
+    return new ResourceLocation(modId, s);
+  }
+
+  private void log(String recipeType, String recipeName, ResourceLocation recipeRL, ItemStack result, Object[] inputs) {
+    Log.debug("Registering " + recipeType + " for '" + recipeName + "' as '" + recipeRL + "': " + result + ": " + Arrays.toString(inputs));
+  }
+
   @Override
-  public void register() {
+  public void register(@Nonnull String recipeName) {
     if (valid && active) {
+      final ResourceLocation recipeRL = mkRL(recipeName);
       if (grid != null) {
         if (upgrade) {
-          Log.debug("Registering GenericUpgradeRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(grid.getElements()));
-          ForgeRegistries.RECIPES
-              .register(new GenericUpgradeRecipe(getOutput().getItemStack(), grid.getElements()).setRegistryName(UUID.randomUUID().toString()));
+          log("GenericUpgradeRecipe", recipeName, recipeRL, getOutput().getItemStack(), grid.getElements());
+          ForgeRegistries.RECIPES.register(new GenericUpgradeRecipe(getOutput().getItemStack(), grid.getElements()).setRegistryName(recipeRL));
         } else {
-          Log.debug("Registering ShapedOreRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(grid.getElements()));
-          ForgeRegistries.RECIPES
-              .register(new ShapedOreRecipe(null, getOutput().getItemStack(), grid.getElements()).setRegistryName(UUID.randomUUID().toString()));
+          log("ShapedOreRecipe", recipeName, recipeRL, getOutput().getItemStack(), grid.getElements());
+          ForgeRegistries.RECIPES.register(new ShapedOreRecipe(null, getOutput().getItemStack(), grid.getElements()).setRegistryName(recipeRL));
         }
         if (getOutput().hasAlternatives()) {
           getOutput().getAlternatives().apply(new Callback<ItemStack>() {
@@ -83,13 +103,11 @@ public class Crafting extends AbstractCrafting {
         }
       } else {
         if (upgrade) {
-          Log.debug("Registering GenericUpgradeRecipeShapeless: " + getOutput().getItemStack() + ": " + Arrays.toString(shapeless.getElements()));
-          ForgeRegistries.RECIPES
-              .register(new GenericUpgradeRecipeShapeless(getOutput().getItemStack(), shapeless.getElements()).setRegistryName(UUID.randomUUID().toString()));
+          log("GenericUpgradeRecipeShapeless", recipeName, recipeRL, getOutput().getItemStack(), shapeless.getElements());
+          ForgeRegistries.RECIPES.register(new GenericUpgradeRecipeShapeless(getOutput().getItemStack(), shapeless.getElements()).setRegistryName(recipeRL));
         } else {
-          Log.debug("Registering ShapelessOreRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(shapeless.getElements()));
-          ForgeRegistries.RECIPES
-              .register(new ShapelessOreRecipe(null, getOutput().getItemStack(), shapeless.getElements()).setRegistryName(UUID.randomUUID().toString()));
+          log("ShapelessOreRecipe", recipeName, recipeRL, getOutput().getItemStack(), shapeless.getElements());
+          ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(null, getOutput().getItemStack(), shapeless.getElements()).setRegistryName(recipeRL));
         }
         if (getOutput().hasAlternatives()) {
           getOutput().getAlternatives().apply(new Callback<ItemStack>() {
