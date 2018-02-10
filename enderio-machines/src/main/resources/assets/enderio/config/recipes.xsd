@@ -7,35 +7,39 @@
         <choice maxOccurs="1" minOccurs="1">
           <element name="alias">
             <annotation>
-              <documentation>Adds an alias into the system. The alias can be used in following elements just like the value itself.
-                Aliases can be replaced.
+              <documentation>
+                Adds an alias into the system. The alias can be used in following elements just like the value itself. Aliases can
+                be replaced.
               </documentation>
             </annotation>
             <complexType>
               <sequence>
                 <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
                   <annotation>
-                    <documentation>Restricts this alias to only be used if the given config value has the given value.
+                    <documentation>
+                      Restricts this alias to only be used if the given config value has the given value.
                     </documentation>
-                  </annotation>
+                  </annotation>
                 </element>
                 <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
                   <annotation>
-                    <documentation>Restricts this alias to only be used if the given elements descriptor can (not) be found in the
-                      game. Use this to prevent replacing good aliases with bad ones.
+                    <documentation>
+                      Restricts this alias to only be used if the given elements descriptor can (not) be found in the game. Use this
+                      to prevent replacing good aliases with bad ones.
                     </documentation>
-                  </annotation>
+                  </annotation>
                 </element>
                 <element minOccurs="0" maxOccurs="1" name="level" type="enderio:levelComplexType">
                   <annotation>
                     <documentation>Restricts this alias to only be used if the recipe level is in the given range.</documentation>
-                  </annotation>
+                  </annotation>
                 </element>
               </sequence>
               <attribute name="name" type="string" use="required">
                 <annotation>
-                  <documentation>The name of the alias. You can use anything here, but be aware that you share the namespace with
-                    all other game elements.
+                  <documentation>
+                    The name of the alias. You can use anything here, but be aware that you share the namespace with all other game
+                    elements.
                   </documentation>
                 </annotation>
               </attribute>
@@ -48,29 +52,33 @@
           </element>
           <element name="recipe">
             <annotation>
-              <documentation>A single recipe. It can have any number of crafting or any number of smelting variants (no mixing), but
-                at any time only one of them may be active.
+              <documentation>
+                A single recipe. It can have any number of crafting or any number of smelting variants (no mixing), but at any time
+                only one of them may be active.
               </documentation>
             </annotation>
             <complexType>
               <sequence>
                 <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
                   <annotation>
-                    <documentation>Restricts this recipe to only be used if the given config value has the given value.
+                    <documentation>
+                      Restricts this recipe to only be used if the given config value has the given value.
                     </documentation>
-                  </annotation>
+                  </annotation>
                 </element>
                 <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
                   <annotation>
-                    <documentation>Restricts this recipe to only be used if the given game element can (not) be found in the game.
+                    <documentation>
+                      Restricts this recipe to only be used if the given game element can (not) be found in the game.
                     </documentation>
-                  </annotation>
+                  </annotation>
                 </element>
                 <element minOccurs="0" maxOccurs="1" name="level" type="enderio:levelComplexType">
                   <annotation>
-                    <documentation>Restricts this recipe to only be used if the recipe level is within the given bounds.
+                    <documentation>
+                      Restricts this recipe to only be used if the recipe level is within the given bounds.
                     </documentation>
-                  </annotation>
+                  </annotation>
                 </element>
                 <choice minOccurs="1" maxOccurs="1">
                   <element minOccurs="1" maxOccurs="unbounded" name="crafting">
@@ -399,6 +407,11 @@
                           </annotation>
                           <complexType>
                             <attribute use="required" name="name" type="string" />
+                            <attribute name="consumed" type="boolean" use="optional" default="false">
+                              <annotation>
+                                <documentation>Should the cast be consumed?</documentation>
+                              </annotation>
+                            </attribute>
                           </complexType>
                         </element>
                         <element minOccurs="1" maxOccurs="unbounded" name="output">
@@ -592,21 +605,21 @@
                                   <documentation>
                                     Restricts this output to only be used if the given config value has the given value.
                                   </documentation>
-                                </annotation>
+                                </annotation>
                               </element>
                               <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
                                 <annotation>
                                   <documentation>
                                     Restricts this output to only be used if the given game element can (not) be found in the game.
                                   </documentation>
-                                </annotation>
+                                </annotation>
                               </element>
                               <element minOccurs="0" maxOccurs="unbounded" name="level" type="enderio:levelComplexType">
                                 <annotation>
                                   <documentation>
                                     Restricts this output to only be used if the recipe level is within the given bounds.
                                   </documentation>
-                                </annotation>
+                                </annotation>
                               </element>
                             </sequence>
                             <attribute use="required" name="name" type="string" />
@@ -638,7 +651,7 @@
                           </restriction>
                         </simpleType>
                       </attribute>
-                      <attribute name="energy" use="optional">
+                      <attribute name="energy" use="required">
                         <annotation>
                           <documentation>The amount of energy running this recipe takes.</documentation>
                         </annotation>
@@ -651,44 +664,38 @@
                     </complexType>
                   </element>
                   <element name="sagmilling" maxOccurs="unbounded" minOccurs="1">
-                                        <annotation>
-                                          <documentation>Sagmilling recipes are used in a Sag Mill.</documentation>
-                                        </annotation>
-                                        <complexType>
-                                          <sequence>
-                                            <element name="config" type="enderio:configComplexType" maxOccurs="unbounded"
-                                              minOccurs="0">
-                                              <annotation>
-                                                <documentation>
-                                                  Restricts this variant to only be used if the given config value has the given
-                                                  value.
-                                                </documentation>
-                                              </annotation>
-                                            </element>
-                                            <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded"
-                                              minOccurs="0">
-                                              <annotation>
-                                                <documentation>
-                                                  Restricts this variant to only be used if the given game element can (not) be
-                                                  found in the game.
-                                                </documentation>
-                                              </annotation>
-                                            </element>
-                                            <element name="level" type="enderio:levelComplexType" maxOccurs="unbounded"
-                                              minOccurs="0">
-                                              <annotation>
-                                                <documentation>
-                                                  Restricts this variant to only be used if the recipe level is within the given
-                                                  bounds.
-                                                </documentation>
-                                              </annotation>
-                                            </element>
-                                          <element minOccurs="1" maxOccurs="1" name="input">
+                    <annotation>
+                      <documentation>Sagmilling recipes are used in a Sag Mill.</documentation>
+                    </annotation>
+                    <complexType>
+                      <sequence>
+                        <element name="config" type="enderio:configComplexType" maxOccurs="unbounded" minOccurs="0">
+                          <annotation>
+                            <documentation>
+                              Restricts this variant to only be used if the given config value has the given value.
+                            </documentation>
+                          </annotation>
+                        </element>
+                        <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded" minOccurs="0">
+                          <annotation>
+                            <documentation>
+                              Restricts this variant to only be used if the given game element can (not) be found in the game.
+                            </documentation>
+                          </annotation>
+                        </element>
+                        <element name="level" type="enderio:levelComplexType" maxOccurs="unbounded" minOccurs="0">
+                          <annotation>
+                            <documentation>
+                              Restricts this variant to only be used if the recipe level is within the given bounds.
+                            </documentation>
+                          </annotation>
+                        </element>
+                        <element minOccurs="1" maxOccurs="1" name="input">
                           <complexType>
                             <attribute use="required" name="name" type="string" />
                           </complexType>
                         </element>
-                                          <element minOccurs="1" maxOccurs="unbounded" name="output">
+                        <element minOccurs="1" maxOccurs="unbounded" name="output">
                           <annotation>
                             <documentation>The result of the sagmilling.</documentation>
                           </annotation>
@@ -744,27 +751,35 @@
                             </attribute>
                             <attribute name="required" type="boolean" use="optional" default="true">
                               <annotation>
-                                <documentation>If required is false, an output for something that doesn't exist in the game is silently skipped. Use this for optional additional outputs, as the whole recipe still needs at least one output (unless the whole recipe is optional).</documentation>
-                              </annotation></attribute>
+                                <documentation>
+                                  If required is false, an output for something that doesn't exist in the game is silently skipped.
+                                  Use this for optional additional outputs, as the whole recipe still needs at least one output
+                                  (unless the whole recipe is optional).
+                                </documentation>
+                              </annotation>
+                            </attribute>
                           </complexType>
-                                          </element>
-                                          </sequence>
-                                          <attribute name="bonus" use="optional" default="multiply_output">
-                                                <annotation>
-                                                  <documentation>Use of grinding balls is restricted by the bonus type of the recipe. If it is set to "none", it will not have any grinding
-  ball bonuses applied and will not reduce the durability of any balls in the mill at the time it is  processed. If it is set
-  to "chance_only", the chance and power multipliers of the grinding balls are applied, but not the grinding multiplier. If it
-  is set to "multiply_output" (default), all multipliers apply.</documentation>
-                                                </annotation>
-                                                <simpleType>
-                                              <restriction base="string">
-                                                <enumeration value="multiply_output"></enumeration>
-                                                <enumeration value="chance_only"></enumeration>
-                                                <enumeration value="none"></enumeration>
-                                              </restriction>
-                                            </simpleType>
-                                          </attribute>
-                                          <attribute name="energy" use="optional">
+                        </element>
+                      </sequence>
+                      <attribute name="bonus" use="optional" default="multiply_output">
+                        <annotation>
+                          <documentation>
+                            Use of grinding balls is restricted by the bonus type of the recipe. If it is set to "none", it will not
+                            have any grinding ball bonuses applied and will not reduce the durability of any balls in the mill at
+                            the time it is processed. If it is set to "chance_only", the chance and power multipliers of the
+                            grinding balls are applied, but not the grinding multiplier. If it is set to "multiply_output"
+                            (default), all multipliers apply.
+                          </documentation>
+                        </annotation>
+                        <simpleType>
+                          <restriction base="string">
+                            <enumeration value="multiply_output"></enumeration>
+                            <enumeration value="chance_only"></enumeration>
+                            <enumeration value="none"></enumeration>
+                          </restriction>
+                        </simpleType>
+                      </attribute>
+                      <attribute name="energy" use="required">
                         <annotation>
                           <documentation>The amount of energy running this recipe takes.</documentation>
                         </annotation>
@@ -774,7 +789,13 @@
                           </restriction>
                         </simpleType>
                       </attribute>
-                                        </complexType></element>
+                    </complexType>
+                  </element>
+                  <element name="slicing" type="enderio:slicingType" maxOccurs="unbounded" minOccurs="1">
+                    <annotation>
+                      <documentation>Recipe for the Slice'n'Splice</documentation>
+                    </annotation>
+                  </element>
                 </choice>
               </sequence>
               <attribute use="optional" name="required" type="boolean">
@@ -789,13 +810,15 @@
               </attribute>
               <attribute name="disabled" type="boolean" use="optional">
                 <annotation>
-                  <documentation>If a recipe is disabled it will not be registered and it will not check the validity of its
-                    content. Use this in the user file to disable core recipes.
+                  <documentation>
+                    If a recipe is disabled it will not be registered and it will not check the validity of its content. Use this in
+                    the user file to disable core recipes.
                   </documentation>
                 </annotation>
               </attribute>
             </complexType>
           </element>
+          <element name="grindingball" type="enderio:GrindingType"></element>
         </choice>
       </sequence>
     </complexType>
@@ -812,5 +835,122 @@
   <complexType name="levelComplexType">
     <attribute use="optional" name="minlevel" type="int"></attribute>
     <attribute use="optional" name="maxlevel" type="int"></attribute>
+  </complexType>
+
+  <complexType name="slicingType">
+    <sequence>
+      <element name="config" type="enderio:configComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="level" type="enderio:levelComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="input" minOccurs="6" maxOccurs="6">
+        <complexType>
+          <attribute use="required" name="name" type="string" />
+          <attribute name="nbt" type="string" use="optional"></attribute>
+        </complexType>
+      </element>
+      <element name="output" minOccurs="1" maxOccurs="1"><complexType>
+        <sequence>
+                              <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
+                                <annotation>
+                                  <documentation>
+                                    Restricts this output to only be used if the given config value has the given value.
+                                  </documentation>
+                                </annotation>
+                              </element>
+                              <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
+                                <annotation>
+                                  <documentation>
+                                    Restricts this output to only be used if the given game element can (not) be found in the game.
+                                  </documentation>
+                                </annotation>
+                              </element>
+                              <element minOccurs="0" maxOccurs="unbounded" name="level" type="enderio:levelComplexType">
+                                <annotation>
+                                  <documentation>
+                                    Restricts this output to only be used if the recipe level is within the given bounds.
+                                  </documentation>
+                                </annotation>
+                              </element>
+                            </sequence>
+                            <attribute use="required" name="name" type="string" />
+      </complexType></element>
+    </sequence>
+    <attribute name="energy" use="required">
+      <annotation>
+        <documentation>The amount of energy running this recipe takes.</documentation>
+      </annotation>
+      <simpleType>
+        <restriction base="int">
+          <minExclusive value="0"></minExclusive>
+        </restriction>
+      </simpleType>
+    </attribute>
+  </complexType>
+
+  <complexType name="GrindingType">
+        <annotation>
+          <documentation>  Grinding balls provide bonus outputs and reduced power use. Using the user config new grinding balls may be added and
+  existing ones removed.
+
+  Use of the grinding ball is restricted by the bonusType of the recipe. If it is set to &quot;none&quot;, it will not have any grinding
+  ball bonuses applied and will not reduce the durability of any balls in the mill at the time it is  processed. If it is set
+  to &quot;chance_only&quot;, the chance and power multipliers of the grinding balls are applied, but not the grinding multiplier. If it
+  is set to &quot;multiply_output&quot; (default), all multipliers apply.
+</documentation></annotation>
+        <sequence>
+      <element name="config" type="enderio:configComplexType" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="dependency" type="enderio:dependencyComplexType" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="item" minOccurs="1" maxOccurs="1">
+        <complexType>
+          <attribute name="name" type="string" use="required"></attribute>
+        </complexType>
+      </element>
+    </sequence>
+    <attribute name="name" type="string" use="required"></attribute>
+    <attribute name="required" type="boolean" use="optional" default="true"></attribute>
+    <attribute name="disabled" type="boolean" use="optional" default="false"></attribute>
+    <attribute name="grinding" use="optional" default="1.0">
+            <annotation>
+              <documentation>The recipe output will be produced this many times. e.g. &quot;3.14&quot; would produce 3 copies of the complete
+                        output set and a 14% chance for a forth copy.</documentation></annotation>
+            <simpleType>
+        <restriction base="float">
+          <minExclusive value="0"></minExclusive>
+          <maxInclusive value="2"></maxInclusive>
+        </restriction>
+      </simpleType>
+    </attribute>
+    <attribute name="chance" use="optional" default="1.0">
+            <annotation>
+              <documentation>The chances for the different outputs of the recipe are multiplied with this. e.g. if a recipe specifies
+                        &lt;output name=&quot;cobblestone&quot; chance=&quot;0.15&quot; /&gt; a chance multiplier of &quot;3.14&quot; would make it a 47.1% chance
+                        of getting one cobblestone. Results of more than 100% do not give multiples.</documentation></annotation>
+            <simpleType>
+        <restriction base="float">
+          <minExclusive value="0"></minExclusive>
+          <maxInclusive value="2"></maxInclusive>
+        </restriction>
+      </simpleType>
+    </attribute>
+    <attribute name="power" use="optional" default="1.0">
+            <annotation>
+              <documentation>The &quot;energy cost&quot; of the recipe is multiplied with this.</documentation></annotation>
+            <simpleType>
+        <restriction base="float">
+          <minExclusive value="0"></minExclusive>
+          <maxInclusive value="5"></maxInclusive>
+        </restriction>
+      </simpleType>
+    </attribute>
+    <attribute name="durability" use="required">
+            <annotation>
+              <documentation>This specifies how long one grinding ball will last before it is used up. The unit is the amount of
+                        power used by the SAG Mill.</documentation></annotation>
+            <simpleType>
+        <restriction base="int">
+          <minExclusive value="0"></minExclusive>
+        </restriction>
+      </simpleType>
+    </attribute>
   </complexType>
 </schema>

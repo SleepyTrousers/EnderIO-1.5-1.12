@@ -18,7 +18,7 @@ public class Recipes implements RecipeRoot {
 
   private List<Alias> aliases;
 
-  private List<Recipe> recipes;
+  private final @Nonnull List<AbstractConditional> recipes = new ArrayList<AbstractConditional>();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -27,7 +27,7 @@ public class Recipes implements RecipeRoot {
 
   @Override
   public boolean isValid() {
-    return recipes != null || aliases != null;
+    return !recipes.isEmpty() || aliases != null;
   }
 
   @Override
@@ -37,38 +37,32 @@ public class Recipes implements RecipeRoot {
 
   @Override
   public void register(@Nonnull String recipeName) {
-    Log.debug("Starting registering XML recipes");
-    if (recipes != null) {
-      for (Recipe recipe : recipes) {
-        recipe.register(recipeName + ": " + recipe.getName());
-      }
+    Log.debug("Starting registering XML recipes (" + recipeName + ")");
+    for (AbstractConditional recipe : recipes) {
+      recipe.register(recipeName + ": " + recipe.getName());
     }
     Log.debug("Done registering XML recipes");
-  }
-
-  void initEmpty() {
-    recipes = new ArrayList<Recipe>();
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public <T extends RecipeRoot> T addRecipes(RecipeRoot other) {
     if (other instanceof Recipes) {
-      if (((Recipes) other).recipes == null) {
+      if (((Recipes) other).recipes.isEmpty()) {
         // NOP
-      } else if (recipes != null) {
+      } else if (!recipes.isEmpty()) {
         Set<String> recipeNames = new HashSet<String>();
-        for (Recipe recipe : recipes) {
+        for (AbstractConditional recipe : recipes) {
           recipeNames.add(recipe.getName());
         }
 
-        for (Recipe recipe : ((Recipes) other).recipes) {
+        for (AbstractConditional recipe : ((Recipes) other).recipes) {
           if (!recipeNames.contains(recipe.getName())) {
             recipes.add(recipe);
           }
         }
       } else {
-        recipes = ((Recipes) other).recipes;
+        recipes.addAll(((Recipes) other).recipes);
       }
 
       if (((Recipes) other).aliases == null) {
@@ -116,29 +110,32 @@ public class Recipes implements RecipeRoot {
       return true;
     }
     if ("recipe".equals(name)) {
-      final Recipe recipe = factory.read(new Recipe(), startElement);
-      if (recipes == null) {
-        recipes = new ArrayList<Recipe>();
-      } else {
-        for (Recipe existingRecipe : recipes) {
-          if (existingRecipe.getName().equals(recipe.getName())) {
-            throw new InvalidRecipeConfigException("Duplicate recipe " + recipe.getName());
-          }
-        }
-      }
-      recipes.add(recipe);
+      addRecipe(new Recipe(), factory, startElement);
+      return true;
+    }
+    if ("grindingball".equals(name)) {
+      addRecipe(new Grindingball(), factory, startElement);
       return true;
     }
 
     return false;
   }
 
+  private <T extends AbstractConditional> void addRecipe(T element, StaxFactory factory, StartElement startElement)
+      throws InvalidRecipeConfigException, XMLStreamException {
+    final AbstractConditional recipe = factory.read(element, startElement);
+    for (AbstractConditional existingRecipe : recipes) {
+      if (existingRecipe.getName().equals(recipe.getName())) {
+        throw new InvalidRecipeConfigException("Duplicate recipe " + recipe.getName());
+      }
+    }
+    recipes.add(recipe);
+  }
+
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
-    if (recipes != null) {
-      for (Recipe recipe : recipes) {
-        recipe.enforceValidity();
-      }
+    for (AbstractConditional recipe : recipes) {
+      recipe.enforceValidity();
     }
   }
 
@@ -150,9 +147,7 @@ public class Recipes implements RecipeRoot {
       if (this.aliases != null) {
         result.aliases = new ArrayList<Alias>(this.aliases);
       }
-      if (this.recipes != null) {
-        result.recipes = new ArrayList<Recipe>(this.recipes);
-      }
+      result.recipes.addAll(this.recipes);
       return (T) result;
     } else {
       return null;
