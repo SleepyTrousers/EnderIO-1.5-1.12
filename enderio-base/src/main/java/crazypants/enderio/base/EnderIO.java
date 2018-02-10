@@ -27,7 +27,7 @@ import crazypants.enderio.base.integration.te.TEUtil;
 import crazypants.enderio.base.loot.Loot;
 import crazypants.enderio.base.loot.LootManager;
 import crazypants.enderio.base.material.OreDictionaryPreferences;
-import crazypants.enderio.base.material.recipes.MaterialRecipes;
+import crazypants.enderio.base.material.recipes.MaterialOredicts;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintSourceValidator;
 import crazypants.enderio.base.power.CapInjectHandler;
@@ -120,11 +120,36 @@ public class EnderIO implements IEnderIOAddon {
 
     GuiHelper.init(event);
 
-    MaterialRecipes.init(event); // handles oredict registration
-
     proxy.init(event);
 
     Log.debug("PHASE INIT END");
+  }
+
+  @EventHandler
+  public void onImc(@Nonnull IMCEvent event) {
+    Log.debug("PHASE IMC START");
+
+    /*
+     * This is a mess.
+     * 
+     * Items are registered in the registry event between preInit and Init. OreDicts are registered in Init (because Lex says so). MaterialRecipes.init() must
+     * run after all oreDict registrations. RecipeLoader.addRecipes() should run in the registry event.
+     * 
+     * At the moment we can delay RecipeLoader.addRecipes(), but still PostInit is too late as there's code that depends on it being done for all submods.
+     */
+
+    MaterialOredicts.init(event); // handles oredict registration for dependent entries
+
+    // This must be loaded before parsing the recipes so we get the preferred
+    // outputs
+    OreDictionaryPreferences.init(event);
+
+    RecipeLoader.addRecipes();
+
+    // END mess
+
+    processImc(event.getMessages());
+    Log.debug("PHASE IMC END");
   }
 
   @EventHandler
@@ -137,15 +162,7 @@ public class EnderIO implements IEnderIOAddon {
 
     LootManager.init(event);
 
-    MaterialRecipes.init(event); // handles oredict registration for dependent entries
-
-    // This must be loaded before parsing the recipes so we get the preferred
-    // outputs
-    OreDictionaryPreferences.init(event);
-
-    RecipeLoader.addRecipes();
-
-    SagMillRecipeManager.getInstance().loadRecipesFromConfig();
+    SagMillRecipeManager.getInstance().create();
     AlloyRecipeManager.getInstance().create();
     SliceAndSpliceRecipeManager.getInstance().create();
     VatRecipeManager.getInstance().loadRecipesFromConfig();
@@ -182,11 +199,6 @@ public class EnderIO implements IEnderIOAddon {
   @EventHandler
   public static void onServerStart(FMLServerAboutToStartEvent event) {
     ServerChannelRegister.instance.reset();
-  }
-
-  @EventHandler
-  public void onImc(@Nonnull IMCEvent evt) {
-    processImc(evt.getMessages());
   }
 
   void processImc(ImmutableList<IMCMessage> messages) {

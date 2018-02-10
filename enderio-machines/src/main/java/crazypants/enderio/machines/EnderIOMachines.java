@@ -3,11 +3,14 @@ package crazypants.enderio.machines;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.Triple;
+
 import com.enderio.core.common.Lang;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
+import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.machines.config.ConfigHandler;
-import crazypants.enderio.machines.config.RecipeLoaderMachines;
 import crazypants.enderio.machines.machine.obelisk.render.ObeliskRenderManager;
 import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -52,7 +55,6 @@ public class EnderIOMachines implements IEnderIOAddon {
 
   @EventHandler
   public static void init(FMLPostInitializationEvent event) {
-    RecipeLoaderMachines.addRecipes();
   }
 
   public static final @Nonnull Lang lang = new Lang(DOMAIN);
@@ -61,6 +63,12 @@ public class EnderIOMachines implements IEnderIOAddon {
   @Nullable
   public Configuration getConfiguration() {
     return ConfigHandler.config;
+  }
+
+  @Override
+  @Nonnull
+  public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
+    return new NNList<>(Triple.of(2, null, "machines"));
   }
 
 }

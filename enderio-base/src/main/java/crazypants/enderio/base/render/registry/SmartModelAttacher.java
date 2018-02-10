@@ -117,7 +117,7 @@ public class SmartModelAttacher {
           }
         } else if (block instanceof IDefaultRenderers) {
           // Nothing to do for us, the block wants ClientProxy to handle it
-          Log.debug(block.getClass() + " handles has default item registrations");
+          Log.debug(block.getClass() + " has default item registrations");
           if (item instanceof ICustomSubItems || block instanceof ICustomSubItems) {
             throw new RuntimeException(block.getClass() + " implements both IDefaultRenderers and ICustomSubItems");
           }

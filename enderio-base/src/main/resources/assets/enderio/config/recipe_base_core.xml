@@ -707,8 +707,8 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Alloy: Manyullyn" required="false">
     <alloying energy="10000" exp="0.25">
-      <input name="ingotArdite"/>
       <input name="ingotCobalt"/>
+      <input name="ingotArdite"/>
       <output name="ingotManyullyn"/>
     </alloying>
   </recipe>

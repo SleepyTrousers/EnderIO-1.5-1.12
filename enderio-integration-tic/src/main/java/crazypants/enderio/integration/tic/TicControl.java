@@ -20,7 +20,6 @@ import crazypants.enderio.integration.tic.recipes.TicRegistration;
 import net.minecraft.block.Block;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -29,7 +28,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class TicControl {
 
-  public static void initPreTic(FMLPreInitializationEvent event) {
+  public static void preInitBeforeTic(FMLPreInitializationEvent event) {
     TicProxy.register(TicHandler.instance);
     Glowstone.createFluid();
     Redstone.createFluid();
@@ -54,7 +53,7 @@ public class TicControl {
     });
   }
 
-  public static void initPreTic(FMLInitializationEvent event) {
+  public static void initBeforeTic(FMLInitializationEvent event) {
     NNList.of(Alloy.class).apply(new Callback<Alloy>() {
       @Override
       public void apply(@Nonnull Alloy alloy) {
@@ -69,21 +68,14 @@ public class TicControl {
     }
   }
 
-  public static void initPreTic(FMLPostInitializationEvent event) {
+  public static void postInitBeforeTic(FMLPostInitializationEvent event) {
     Glowstone.registerGlowstoneRecipes();
     Redstone.registerRedstoneRecipes();
     Ender.registerEnderRecipes();
   }
 
-  public static void initPostTic(FMLPostInitializationEvent event) {
-    TicRegistration.registerSmeltings();
-    TicRegistration.registerAlloys();
-    TicRegistration.registerTableCasting();
-    TicRegistration.registerBasinCasting();
-  }
-
-  public static void initPostTic(FMLLoadCompleteEvent event) {
-    // Second pass after Ender IO XML recipe processing
+  public static void postInitAfterTic(FMLPostInitializationEvent event) {
+    // this runs after TiC's PostInit because it queries TiC for fluids
     TicRegistration.registerSmeltings();
     TicRegistration.registerAlloys();
     TicRegistration.registerTableCasting();

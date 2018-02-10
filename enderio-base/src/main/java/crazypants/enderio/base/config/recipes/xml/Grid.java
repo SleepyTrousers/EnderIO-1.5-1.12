@@ -3,12 +3,16 @@ package crazypants.enderio.base.config.recipes.xml;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import net.minecraft.item.crafting.Ingredient;
 
 public class Grid implements RecipeConfigElement {
 
@@ -78,30 +82,19 @@ public class Grid implements RecipeConfigElement {
     return valid;
   }
 
-  public Object[] getElements() {
-    List<Object> rowStrings = new ArrayList<Object>();
-    List<Object> elements = new ArrayList<Object>();
+  public @Nonnull NNList<Ingredient> getIngredients() {
+    NNList<Ingredient> result = new NNList<>();
 
-    char letter = 'A';
-    for (int row = 0; row < height; row++) {
-      String rowString = "";
-      for (int col = 0; col < width; col++) {
-        int idx = row * width + col;
-        Object recipeObject = items.get(idx).getRecipeObject();
-        if (recipeObject == null) {
-          rowString += " ";
-        } else {
-          rowString += letter;
-          elements.add(letter);
-          elements.add(recipeObject);
-          letter++;
-        }
+    for (ItemOptional item : items) {
+      Ingredient ingredient = item.getRecipeObject();
+      if (ingredient == null) {
+        result.add(Ingredient.EMPTY);
+      } else {
+        result.add(ingredient);
       }
-      rowStrings.add(rowString);
     }
 
-    rowStrings.addAll(elements);
-    return rowStrings.toArray();
+    return result;
   }
 
   @Override
@@ -125,6 +118,14 @@ public class Grid implements RecipeConfigElement {
     }
 
     return false;
+  }
+
+  public int getWidth() {
+    return width;
+  }
+
+  public int getHeight() {
+    return height;
   }
 
 }

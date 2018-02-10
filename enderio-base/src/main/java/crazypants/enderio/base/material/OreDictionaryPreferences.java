@@ -4,22 +4,20 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.ShortCallback;
-
-import crazypants.enderio.util.Prep;
-
 import com.enderio.core.common.util.NNMap;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.util.Prep;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 public final class OreDictionaryPreferences {
 
   public static final OreDictionaryPreferences instance = new OreDictionaryPreferences();
 
-  public static void init(@Nonnull FMLPostInitializationEvent event) {
+  public static void init(@Nonnull IMCEvent event) {
     OreDictionaryPreferenceParser.loadConfig();
   }
 
@@ -108,17 +106,17 @@ public final class OreDictionaryPreferences {
 
     @Override
     public boolean equals(Object obj) {
-      if(this == obj) {
+      if (this == obj) {
         return true;
       }
-      if(obj == null) {
+      if (obj == null) {
         return false;
       }
-      if(getClass() != obj.getClass()) {
+      if (getClass() != obj.getClass()) {
         return false;
       }
       StackKey other = (StackKey) obj;
-      if(damage != other.damage) {
+      if (damage != other.damage) {
         return false;
       }
       if (!item.equals(other.item)) {

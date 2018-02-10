@@ -14,6 +14,7 @@ import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidConduit> {
 
@@ -43,9 +44,9 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
   }
 
   @Override
-  public void doNetworkTick(@Nonnull Profiler theProfiler) {
+  public void tickEnd(ServerTickEvent event, Profiler profiler) {
     List<LiquidConduit> cons = getConduits();
-    if (cons == null || cons.isEmpty()) {
+    if (cons.isEmpty()) {
       return;
     }
 
@@ -67,9 +68,9 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     if (liquidType != null && liquidType.getFluid() != null && !isEmpty()) {
       int visc = Math.max(1000, liquidType.getFluid().getViscosity());
       if (curTime % (visc / 500) == 0) {
-        theProfiler.startSection("flow");
+        profiler.startSection("flow");
         doFlow();
-        theProfiler.endSection();
+        profiler.endSection();
       }
     }
   }

@@ -2,23 +2,25 @@ package crazypants.enderio.base.integration.tic;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.item.ItemStack;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.stackable.Things;
+
 import net.minecraftforge.fluids.Fluid;
 
 public interface ITicHandler {
 
-  void registerTableCast(@Nonnull ItemStack result, @Nonnull ItemStack cast, Fluid fluid, float amount, boolean consumeCast);
+  void registerTableCast(@Nonnull Things output, @Nonnull Things cast, Fluid fluid, float amount, boolean consumeCast);
 
-  String registerTableCast(@Nonnull ItemStack result, @Nonnull ItemStack cast, @Nonnull ItemStack item, float amount, boolean consumeCast, boolean simulate);
+  void registerTableCast(@Nonnull Things output, @Nonnull Things cast, @Nonnull Things fluid, float amount, boolean consumeCast);
 
-  void registerBasinCasting(@Nonnull ItemStack output, @Nonnull ItemStack cast, Fluid fluid, int amount);
+  void registerBasinCasting(@Nonnull Things output, @Nonnull Things cast, Fluid fluid, int amount);
 
-  void registerBasinCasting(@Nonnull ItemStack output, @Nonnull ItemStack cast, @Nonnull ItemStack fluid, int amount);
+  void registerBasinCasting(@Nonnull Things output, @Nonnull Things cast, @Nonnull Things fluid, float amount);
 
-  void registerSmelterySmelting(@Nonnull ItemStack input, Fluid output, float amount);
+  void registerSmelterySmelting(@Nonnull Things input, Fluid output, float amount);
 
-  void registerSmelterySmelting(@Nonnull ItemStack input, @Nonnull ItemStack output, float amount);
+  void registerSmelterySmelting(@Nonnull Things input, @Nonnull Things output, float amount);
 
-  void registerAlloyRecipe(@Nonnull ItemStack result, ItemStack... input);
+  void registerAlloyRecipe(@Nonnull Things output, NNList<Things> input);
 
 }

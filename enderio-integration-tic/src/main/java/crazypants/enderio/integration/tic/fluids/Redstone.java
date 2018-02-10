@@ -1,15 +1,15 @@
 package crazypants.enderio.integration.tic.fluids;
 
+import com.enderio.core.common.util.stackable.Things;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.integration.tic.queues.TicHandler;
-import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
@@ -62,9 +62,9 @@ public class Redstone {
     Fluid f = FluidRegistry.getFluid(TicProxy.REDSTONE_FLUID_NAME);
     if (f != null) {
       // Note: We match the old TE amounts
-      TicHandler.instance.registerSmelterySmelting(new ItemStack(Items.REDSTONE), f, 100);
-      TicHandler.instance.registerSmelterySmelting(new ItemStack(Blocks.REDSTONE_BLOCK), f, 900);
-      TicHandler.instance.registerBasinCasting(new ItemStack(Blocks.REDSTONE_BLOCK), Prep.getEmpty(), f, 900);
+      TicHandler.instance.registerSmelterySmelting(new Things().add(Items.REDSTONE), f, 100);
+      TicHandler.instance.registerSmelterySmelting(new Things().add(Blocks.REDSTONE_BLOCK), f, 900);
+      TicHandler.instance.registerBasinCasting(new Things().add(Blocks.REDSTONE_BLOCK), new Things(), f, 900);
     }
   }
 

@@ -136,6 +136,14 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Pulsating Crystal, casting">
+    <casting>
+      <input name="PULSATING_IRON_NUGGET" amount="8"/>
+      <cast name="gemDiamond" consumed="true"/>
+      <output name="PULSATING_CRYSTAL"/>
+    </casting>
+  </recipe>
+
   <recipe name="Vibrant Crystal" required="true">
     <crafting>
       <grid>
@@ -145,6 +153,14 @@ XML editor will display that as tooltips when editing this file.
       </grid>
       <output name="VIBRANT_CRYSTAL"/>
     </crafting>
+  </recipe>
+
+  <recipe name="Vibrant Crystal, casting">
+    <casting>
+      <input name="VIBRANT_ALLOY_NUGGET" amount="8"/>
+      <cast name="gemEmerald" consumed="true"/>
+      <output name="VIBRANT_CRYSTAL"/>
+    </casting>
   </recipe>
 
   <recipe name="Dark Grinding Ball" required="true">
@@ -334,6 +350,20 @@ XML editor will display that as tooltips when editing this file.
       <input name="gemQuartz"/>
       <output name="dustQuartz"/>
       <output name="dustQuartz" chance=".1"/>
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Lapis Dust">
+    <sagmilling bonus="none" energy="2400">
+      <input name="gemLapis"/>
+      <output name="dustLapis"/>
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Lapis Block Dust">
+    <sagmilling bonus="none" energy="3600">
+      <input name="blockLapis"/>
+      <output name="dustLapis" amount="9"/>
     </sagmilling>
   </recipe>
 

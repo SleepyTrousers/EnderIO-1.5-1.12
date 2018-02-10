@@ -29,7 +29,7 @@
   "logoFile": "",
   "screenshots": [
   ],
-  "parent":"enderio",
+  "parent":"enderiointegrationtic",
   "dependencies": [
         "enderio"
   ]

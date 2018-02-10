@@ -3,12 +3,15 @@ package crazypants.enderio.powertools;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.Triple;
+
 import com.enderio.core.common.Lang;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
+import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.conduit.EnderIOConduits;
 import crazypants.enderio.powertools.config.ConfigHandler;
-import crazypants.enderio.powertools.config.RecipeLoaderPowerTools;
 import crazypants.enderio.powertools.network.PacketHandler;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
@@ -33,6 +36,12 @@ public class EnderIOPowerTools implements IEnderIOAddon {
     return ConfigHandler.config;
   }
 
+  @Override
+  @Nonnull
+  public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
+    return new NNList<>(Triple.of(2, null, "powertools"));
+  }
+
   @EventHandler
   public static void preinit(FMLPreInitializationEvent event) {
     ConfigHandler.init(event);
@@ -40,14 +49,11 @@ public class EnderIOPowerTools implements IEnderIOAddon {
 
   @EventHandler
   public static void init(FMLInitializationEvent event) {
-    ConfigHandler.init(event);
     PacketHandler.init(event);
   }
 
   @EventHandler
   public static void postinit(FMLPostInitializationEvent event) {
-    ConfigHandler.init(event);
-    RecipeLoaderPowerTools.addRecipes();
   }
 
 }

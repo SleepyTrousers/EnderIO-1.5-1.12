@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config;
@@ -72,11 +73,23 @@ public class ManyToOneRecipeManager {
     } else {
       addRecipe(new BasicManyToOneRecipe(rec));
       if (managerName.equals("Alloy Smelter") && rec.getInputs().length >= 2) {
-        ItemStack[] ins = new ItemStack[rec.getInputs().length];
+        NNList<Things> inputs = new NNList<>();
         for (int i = 0; i < rec.getInputs().length; i++) {
-          ins[i] = rec.getInputs()[i].getInput();
+          ItemStack input = rec.getInputs()[i].getInput();
+          Things inputThing = new Things();
+          inputThing.add(input);
+          inputThing.setSize(input.getCount());
+          inputThing.setNbt(input.getTagCompound());
+          inputs.add(inputThing);
         }
-        TicProxy.registerAlloyRecipe(rec.getOutputs()[0].getOutput(), ins);
+
+        ItemStack output = rec.getOutputs()[0].getOutput();
+        Things outputThing = new Things();
+        outputThing.add(output);
+        outputThing.setSize(output.getCount());
+        outputThing.setNbt(output.getTagCompound());
+
+        TicProxy.registerAlloyRecipe(outputThing, inputs);
       }
     }
   }

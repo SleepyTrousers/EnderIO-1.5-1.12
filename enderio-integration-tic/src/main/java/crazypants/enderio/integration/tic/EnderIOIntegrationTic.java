@@ -41,7 +41,8 @@ public class EnderIOIntegrationTic implements IEnderIOAddon {
   @EventHandler
   public static void init(FMLPreInitializationEvent event) {
     if (isLoaded()) {
-      TicControl.initPreTic(event);
+      Log.debug("PHASE PRE-INIT EIO TIC E");
+      TicControl.preInitBeforeTic(event);
       Log.warn("TConstruct, you fail again, muhaha! The world is mine, mine!");
     } else {
       Log.warn("Tinkers' Construct integration NOT loaded. Tinkers' Construct is not installed");
@@ -51,14 +52,16 @@ public class EnderIOIntegrationTic implements IEnderIOAddon {
   @EventHandler
   public static void init(FMLInitializationEvent event) {
     if (isLoaded()) {
-      TicControl.initPreTic(event);
+      Log.debug("PHASE INIT EIO TIC E");
+      TicControl.initBeforeTic(event);
     }
   }
 
   @EventHandler
   public static void init(FMLPostInitializationEvent event) {
     if (isLoaded()) {
-      TicControl.initPreTic(event);
+      Log.debug("PHASE POST-INIT EIO TIC E");
+      TicControl.postInitBeforeTic(event);
     }
   }
 
