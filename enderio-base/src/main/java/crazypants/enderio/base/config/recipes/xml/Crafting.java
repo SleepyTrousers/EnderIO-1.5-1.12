@@ -1,27 +1,30 @@
 package crazypants.enderio.base.config.recipes.xml;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.recipes.GenericUpgradeRecipe;
-import crazypants.enderio.base.config.recipes.GenericUpgradeRecipeShapeless;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.base.config.recipes.ShapedRecipe;
+import crazypants.enderio.base.config.recipes.ShapelessRecipe;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.integration.jei.JeiAccessor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public class Crafting extends AbstractCrafting {
 
@@ -61,8 +64,8 @@ public class Crafting extends AbstractCrafting {
     }
   }
 
-  private @Nonnull ResourceLocation mkRL(@Nonnull String recipeName) {
-    String s = recipeName.replaceAll("[^A-Za-z]", "_").replaceAll("([A-Z])", "_$0").replaceAll("__+", "_").replaceFirst("^_", "").replaceFirst("_$", "")
+  public static @Nonnull ResourceLocation mkRL(@Nonnull String recipeName) {
+    String s = recipeName.replaceAll("[^A-Za-z0-9]", "_").replaceAll("([A-Z])", "_$0").replaceAll("__+", "_").replaceFirst("^_", "").replaceFirst("_$", "")
         .toLowerCase(Locale.ENGLISH);
     ModContainer activeMod = Loader.instance().activeModContainer();
     if (activeMod == null) {
@@ -76,45 +79,46 @@ public class Crafting extends AbstractCrafting {
     return new ResourceLocation(modId, s);
   }
 
-  private void log(String recipeType, String recipeName, ResourceLocation recipeRL, ItemStack result, Object[] inputs) {
-    Log.debug("Registering " + recipeType + " for '" + recipeName + "' as '" + recipeRL + "': " + result + ": " + Arrays.toString(inputs));
+  private void log(String recipeType, String recipeName, ResourceLocation recipeRL, ItemStack result, NNList<Ingredient> nnList) {
+    Log.debug("Registering " + recipeType + " for '" + recipeName + "' as '" + recipeRL + "': " + result + ": " + nnList);
   }
 
   @Override
   public void register(@Nonnull String recipeName) {
     if (valid && active) {
       final ResourceLocation recipeRL = mkRL(recipeName);
+      final IForgeRegistry<IRecipe> registry = ForgeRegistries.RECIPES;
       if (grid != null) {
         if (upgrade) {
-          log("GenericUpgradeRecipe", recipeName, recipeRL, getOutput().getItemStack(), grid.getElements());
-          ForgeRegistries.RECIPES.register(new GenericUpgradeRecipe(getOutput().getItemStack(), grid.getElements()).setRegistryName(recipeRL));
+          log("ShapedRecipe.Upgrade", recipeName, recipeRL, getOutput().getItemStack(), grid.getIngredients());
+          registry.register(new ShapedRecipe.Upgrade(recipeRL, grid.getWidth(), grid.getHeight(), grid.getIngredients(), getOutput().getThing()));
         } else {
-          log("ShapedOreRecipe", recipeName, recipeRL, getOutput().getItemStack(), grid.getElements());
-          ForgeRegistries.RECIPES.register(new ShapedOreRecipe(null, getOutput().getItemStack(), grid.getElements()).setRegistryName(recipeRL));
+          log("ShapedRecipe", recipeName, recipeRL, getOutput().getItemStack(), grid.getIngredients());
+          registry.register(new ShapedRecipe(recipeRL, grid.getWidth(), grid.getHeight(), grid.getIngredients(), getOutput().getThing()));
         }
         if (getOutput().hasAlternatives()) {
           getOutput().getAlternatives().apply(new Callback<ItemStack>() {
             @Override
             public void apply(@Nonnull ItemStack alternative) {
-              Log.debug("Providing synthetic alternative recipe to JEI for oredicted output: " + alternative + ": " + Arrays.toString(grid.getElements()));
-              JeiAccessor.addAlternativeRecipe(new ShapedOreRecipe(null, alternative, grid.getElements()));
+              Log.debug("Providing synthetic alternative recipe to JEI for oredicted output: " + alternative + ": " + grid.getIngredients());
+              JeiAccessor.addAlternativeRecipe(new ShapedRecipes("", grid.getWidth(), grid.getHeight(), grid.getIngredients(), alternative));
             }
           });
         }
       } else {
         if (upgrade) {
-          log("GenericUpgradeRecipeShapeless", recipeName, recipeRL, getOutput().getItemStack(), shapeless.getElements());
-          ForgeRegistries.RECIPES.register(new GenericUpgradeRecipeShapeless(getOutput().getItemStack(), shapeless.getElements()).setRegistryName(recipeRL));
+          log("GenericUpgradeRecipeShapeless", recipeName, recipeRL, getOutput().getItemStack(), shapeless.getIngredients());
+          registry.register(new ShapelessRecipe.Upgrade(recipeRL, shapeless.getIngredients(), getOutput().getThing()));
         } else {
-          log("ShapelessOreRecipe", recipeName, recipeRL, getOutput().getItemStack(), shapeless.getElements());
-          ForgeRegistries.RECIPES.register(new ShapelessOreRecipe(null, getOutput().getItemStack(), shapeless.getElements()).setRegistryName(recipeRL));
+          log("ShapelessOreRecipe", recipeName, recipeRL, getOutput().getItemStack(), shapeless.getIngredients());
+          registry.register(new ShapelessRecipe(recipeRL, shapeless.getIngredients(), getOutput().getThing()));
         }
         if (getOutput().hasAlternatives()) {
           getOutput().getAlternatives().apply(new Callback<ItemStack>() {
             @Override
             public void apply(@Nonnull ItemStack alternative) {
-              Log.debug("Providing synthetic alternative recipe to JEI for oredicted output: " + alternative + ": " + Arrays.toString(shapeless.getElements()));
-              JeiAccessor.addAlternativeRecipe(new ShapelessOreRecipe(null, alternative, shapeless.getElements()));
+              Log.debug("Providing synthetic alternative recipe to JEI for oredicted output: " + alternative + ": " + shapeless.getIngredients());
+              JeiAccessor.addAlternativeRecipe(new ShapelessRecipes("", alternative, shapeless.getIngredients()));
             }
           });
         }

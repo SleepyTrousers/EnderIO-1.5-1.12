@@ -3,7 +3,12 @@ package crazypants.enderio.api.addon;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.Triple;
+
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.config.Configuration;
@@ -37,6 +42,24 @@ public interface IEnderIOAddon {
    * 
    */
   default void injectBlocks(@Nonnull IForgeRegistry<Block> registry) {
+  }
+
+  /**
+   * Query an addon for their XML recipe files. The returned files will be loaded at the appropriate time in order of priority (ascending).
+   * <p>
+   * Note: "aliases" is loaded at priority 0.
+   * 
+   * @return A list of (priority, {@link RecipeFactory}, file name) pairs. The {@link RecipeFactory} may be null, in which case the base recipe factory (Ender
+   *         IO's config directory and domain) will be used.
+   */
+  default @Nonnull NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
+    return NNList.emptyList();
+  }
+
+  /**
+   * This is called right after all XML recipes have been registered.
+   */
+  default void postRecipeRegistration() {
   }
 
 }

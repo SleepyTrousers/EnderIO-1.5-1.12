@@ -3,12 +3,16 @@ package crazypants.enderio.base.config.recipes.xml;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import net.minecraft.item.crafting.Ingredient;
 
 public class Shapeless implements RecipeConfigElement {
 
@@ -48,14 +52,19 @@ public class Shapeless implements RecipeConfigElement {
     return valid;
   }
 
-  public Object[] getElements() {
-    List<Object> elements = new ArrayList<Object>();
+  public @Nonnull NNList<Ingredient> getIngredients() {
+    NNList<Ingredient> result = new NNList<>();
 
-    for (Item item : items) {
-      elements.add(item.getRecipeObject());
+    for (ItemOptional item : items) {
+      Ingredient ingredient = item.getRecipeObject();
+      if (ingredient == null) {
+        result.add(Ingredient.EMPTY);
+      } else {
+        result.add(ingredient);
+      }
     }
 
-    return elements.toArray();
+    return result;
   }
 
   @Override

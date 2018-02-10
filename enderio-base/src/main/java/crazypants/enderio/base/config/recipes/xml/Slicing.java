@@ -56,7 +56,7 @@ public class Slicing extends AbstractCrafting {
       NNList<IRecipeInput> inputStacks = new NNList<>();
       for (NNIterator<Item> itr = inputs.fastIterator(); itr.hasNext();) {
         final Item item = itr.next();
-        inputStacks.add(new ThingsRecipeInput(item.getThing(), item.getItemStack(), inputStacks.size()));
+        inputStacks.add(new ThingsRecipeInput(item.getThing(), inputStacks.size()));
       }
       RecipeOutput recipeOutput = new RecipeOutput(getOutput().getItemStack());
       SliceAndSpliceRecipeManager.getInstance()

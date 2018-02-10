@@ -7,7 +7,10 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.NullHelper;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.integration.tic.queues.BasinQueue;
@@ -30,19 +33,19 @@ import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
 
 public class TicRegistration {
 
-  private static void registerAlloyRecipe(Pair<ItemStack, ItemStack[]> alloy) {
-    final ItemStack result = NullHelper.notnull(alloy.getLeft(), "missing result item stack in alloy recipe");
-    final ItemStack[] input = alloy.getRight();
+  private static void registerAlloyRecipe(Pair<Things, NNList<Things>> alloy) {
+    final Things result = NullHelper.notnull(alloy.getLeft(), "missing result item stack in alloy recipe");
+    final NNList<Things> input = alloy.getRight();
     FluidStack fluidResult = getFluidForItems(result);
     if (fluidResult == null) {
       tryBasinAloying(result, input);
       return;
     }
 
-    FluidStack[] fluids = new FluidStack[input.length];
+    FluidStack[] fluids = new FluidStack[input.size()];
     List<String> debug = new ArrayList<>();
-    for (int i = 0; i < input.length; i++) {
-      if ((fluids[i] = getFluidForItems(NullHelper.notnull(input[i], "missing input item stack in alloy recipe"))) == null) {
+    for (int i = 0; i < input.size(); i++) {
+      if ((fluids[i] = getFluidForItems(NullHelper.notnull(input.get(i), "missing input item stack in alloy recipe"))) == null) {
         return;
       }
       debug.add(toString(fluids[i]));
@@ -53,13 +56,13 @@ public class TicRegistration {
     Log.debug("Tinkers.registerAlloy: " + toString(fluidResult) + ", " + debug);
   }
 
-  private static void tryBasinAloying(@Nonnull ItemStack result, ItemStack... inputs) {
-    if (Prep.isInvalid(result) || result.getCount() != 1 || !(result.getItem() instanceof ItemBlock) || inputs.length != 2) {
+  private static void tryBasinAloying(@Nonnull Things result, NNList<Things> inputs) {
+    if (!result.isValid() || result.getItemStack().getCount() != 1 || !(result.getItemStack().getItem() instanceof ItemBlock) || inputs.size() != 2) {
       return;
     }
-    final ItemStack input0 = inputs[0];
-    final ItemStack input1 = inputs[1];
-    if (input0 == null || Prep.isInvalid(input0) || input1 == null || Prep.isInvalid(input1)) {
+    final Things input0 = inputs.get(0);
+    final Things input1 = inputs.get(1);
+    if (!input0.isValid() || !input1.isValid()) {
       return;
     }
     FluidStack a = getFluidForItems(input0);
@@ -67,10 +70,10 @@ public class TicRegistration {
     if ((a == null) == (b == null)) {
       return;
     }
-    if (a == null && !(input0.getCount() == 1 && input0.getItem() instanceof ItemBlock)) {
+    if (a == null && !(input0.getItemStack().getCount() == 1 && input0.getItemStack().getItem() instanceof ItemBlock)) {
       return;
     }
-    if (b == null && !(input1.getCount() == 1 && input1.getItem() instanceof ItemBlock)) {
+    if (b == null && !(input1.getItemStack().getCount() == 1 && input1.getItemStack().getItem() instanceof ItemBlock)) {
       return;
     }
 
@@ -92,10 +95,20 @@ public class TicRegistration {
       }
       if (basin.getFluid() == null) {
         Log.warn("Item used in basin cast recipe '" + toString(basin.getFluidItem()) + "' doesn't smelt into a fluid");
+      }
+      if (!basin.getOutput().isValid()) {
+        Log.warn("Item used in basin cast recipe '" + toString(basin.getOutput()) + "' doesn't exist");
+      }
+      if (!basin.getCast().isEmpty()) {
+        for (NNIterator<ItemStack> itr = basin.getCast().getItemStacks().fastIterator(); itr.hasNext();) {
+          ItemStack castStack = itr.next();
+          TinkerRegistry.registerBasinCasting(basin.getOutput().getItemStack(), castStack, basin.getFluid(), (int) Math.ceil(basin.getAmount()));
+          Log.debug("Tinkers.registerBasinCasting: " + toString(basin.getOutput()) + ", " + toString(castStack) + ", " + basin.getFluid().getName() + ", "
+              + basin.getAmount());
+        }
       } else {
-        TinkerRegistry.registerBasinCasting(basin.getOutput(), basin.getCast(), basin.getFluid(), basin.getAmount());
-        Log.debug("Tinkers.registerBasinCasting: " + toString(basin.getOutput()) + ", " + toString(basin.getCast()) + ", " + basin.getFluid().getName() + ", "
-            + basin.getAmount());
+        TinkerRegistry.registerBasinCasting(basin.getOutput().getItemStack(), Prep.getEmpty(), basin.getFluid(), (int) Math.ceil(basin.getAmount()));
+        Log.debug("Tinkers.registerBasinCasting: " + toString(basin.getOutput()) + ", (empty), " + basin.getFluid().getName() + ", " + basin.getAmount());
       }
     }
     TiCQueues.getBasinQueue().clear();
@@ -112,18 +125,29 @@ public class TicRegistration {
       }
       if (cast.getFluid() == null) {
         Log.warn("Item used in cast recipe '" + toString(cast.getItem()) + "' doesn't smelt into a fluid");
+      } else if (!cast.getResult().isValid()) {
+        Log.warn("Item used in cast recipe '" + toString(cast.getResult()) + "' doesn't exist");
       } else {
-        TinkerRegistry.registerTableCasting(new CastingRecipe(cast.getResult(), Prep.isValid(cast.getCast()) ? RecipeMatch.ofNBT(cast.getCast()) : null,
-            cast.getFluid(), (int) Math.ceil(cast.getAmount()), cast.isConsumeCast(), false));
-        Log.debug("Tinkers.registerTableCasting: " + toString(cast.getResult()) + ", " + toString(cast.getCast()) + ", " + cast.getFluid().getName() + ", "
-            + cast.getAmount());
+        if (!cast.getCast().isEmpty()) {
+          for (NNIterator<ItemStack> itr = cast.getCast().getItemStacks().fastIterator(); itr.hasNext();) {
+            ItemStack castStack = itr.next();
+            TinkerRegistry.registerTableCasting(new CastingRecipe(cast.getResult().getItemStack(), RecipeMatch.ofNBT(castStack), cast.getFluid(),
+                (int) Math.ceil(cast.getAmount()), cast.isConsumeCast(), false));
+            Log.debug("Tinkers.registerTableCasting: " + toString(cast.getResult()) + ", " + toString(castStack) + ", " + cast.getFluid().getName() + ", "
+                + cast.getAmount());
+          }
+        } else {
+          TinkerRegistry.registerTableCasting(
+              new CastingRecipe(cast.getResult().getItemStack(), null, cast.getFluid(), (int) Math.ceil(cast.getAmount()), cast.isConsumeCast(), false));
+          Log.debug("Tinkers.registerTableCasting: " + toString(cast.getResult()) + ", (no cast), " + cast.getFluid().getName() + ", " + cast.getAmount());
+        }
       }
     }
     TiCQueues.getCastQueue().clear();
   }
 
   public static void registerAlloys() {
-    for (Pair<ItemStack, ItemStack[]> alloy : TiCQueues.getAlloyQueue()) {
+    for (Pair<Things, NNList<Things>> alloy : TiCQueues.getAlloyQueue()) {
       registerAlloyRecipe(alloy);
     }
     TiCQueues.getAlloyQueue().clear();
@@ -141,8 +165,10 @@ public class TicRegistration {
         }
       }
       if (smelt.getFluidOutput() != null) {
-        TinkerRegistry.registerMelting(smelt.getInput(), smelt.getFluidOutput(), (int) Math.max(1, Math.floor(smelt.getAmount())));
-        Log.debug("Tinkers.registerMelting: " + toString(smelt.getInput()) + ", " + smelt.getFluidOutput().getName() + ", " + smelt.getAmount());
+        for (ItemStack in : smelt.getInput().getItemStacks()) {
+          TinkerRegistry.registerMelting(in, smelt.getFluidOutput(), (int) Math.max(1, Math.floor(smelt.getAmount())));
+          Log.debug("Tinkers.registerMelting: " + toString(in) + ", " + smelt.getFluidOutput().getName() + ", " + smelt.getAmount());
+        }
       }
     }
     TiCQueues.getSmeltQueue().clear();
@@ -195,8 +221,33 @@ public class TicRegistration {
     }
   }
 
-  private static @Nonnull String toString(@Nonnull ItemStack o) {
-    return Prep.isInvalid(o) ? "(empty)" : (o + " (" + o.getDisplayName() + ")");
+  private static FluidStack getFluidForItems(Things item) {
+    if (item != null) {
+      NNList<ItemStack> itemStacks = item.getItemStacks();
+      for (NNIterator<ItemStack> itr = itemStacks.fastIterator(); itr.hasNext();) {
+        FluidStack fluidStack = getFluidForItems(itr.next());
+        if (fluidStack != null) {
+          return fluidStack;
+        }
+      }
+    }
+    return null;
+  }
+
+  private static @Nonnull String toString(Things o) {
+    return (o == null || o.isEmpty()) ? "(empty)" : (o + " (" + toString(o.getItemStacks()) + ")");
+  }
+
+  private static @Nonnull String toString(@Nonnull List<ItemStack> o) {
+    List<String> result = new NNList<>();
+    for (ItemStack itemStack : o) {
+      result.add(toString(itemStack));
+    }
+    return "" + result.toString();
+  }
+
+  private static @Nonnull String toString(ItemStack o) {
+    return (o == null || Prep.isInvalid(o)) ? "(empty)" : (o + " (" + o.getDisplayName() + ")");
   }
 
   private static @Nonnull String toString(FluidStack o) {

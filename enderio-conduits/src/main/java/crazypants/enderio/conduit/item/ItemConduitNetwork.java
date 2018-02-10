@@ -16,6 +16,7 @@ import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.minecraftforge.items.IItemHandler;
 
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IItemConduit> {
@@ -214,16 +215,16 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   }
 
   @Override
-  public void doNetworkTick(@Nonnull Profiler theProfiler) {
+  public void tickEnd(ServerTickEvent event, Profiler profiler) {
     for (INetworkedInventory ni : inventories) {
       if (requiresSort) {
-        theProfiler.startSection("updateInsertOrder");
+        profiler.startSection("updateInsertOrder");
         ni.updateInsertOrder();
-        theProfiler.endSection();
+        profiler.endSection();
       }
-      theProfiler.startSection("NetworkedInventoryTick");
+      profiler.startSection("NetworkedInventoryTick");
       ni.onTick();
-      theProfiler.endSection();
+      profiler.endSection();
     }
     if (requiresSort) {
       requiresSort = false;

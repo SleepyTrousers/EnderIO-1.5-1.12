@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, IPowerConduit> {
 
@@ -105,8 +106,8 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
   }
 
   @Override
-  public void doNetworkTick(@Nonnull Profiler theProfiler) {
-    powerManager.applyRecievedPower(theProfiler);
+  public void tickEnd(ServerTickEvent event, Profiler profiler) {
+    powerManager.applyRecievedPower(profiler);
   }
 
   public static class ReceptorEntry {

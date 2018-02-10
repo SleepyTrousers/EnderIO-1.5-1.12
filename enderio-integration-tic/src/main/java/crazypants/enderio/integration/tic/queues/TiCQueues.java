@@ -7,14 +7,15 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import net.minecraft.item.ItemStack;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.stackable.Things;
 
 public class TiCQueues {
 
-  private static final @Nonnull List<CastQueue> castQueue = new ArrayList<CastQueue>();
-  private static final @Nonnull List<BasinQueue> basinQueue = new ArrayList<BasinQueue>();
-  private static final @Nonnull List<SmeltQueue> smeltQueue = new ArrayList<SmeltQueue>();
-  private static final @Nonnull List<Pair<ItemStack, ItemStack[]>> alloyQueue = new ArrayList<Pair<ItemStack, ItemStack[]>>();
+  private static final @Nonnull List<CastQueue> castQueue = new ArrayList<>();
+  private static final @Nonnull List<BasinQueue> basinQueue = new ArrayList<>();
+  private static final @Nonnull List<SmeltQueue> smeltQueue = new ArrayList<>();
+  private static final @Nonnull List<Pair<Things, NNList<Things>>> alloyQueue = new ArrayList<>();
 
   public static @Nonnull List<CastQueue> getCastQueue() {
     return castQueue;
@@ -28,7 +29,7 @@ public class TiCQueues {
     return smeltQueue;
   }
 
-  public static @Nonnull List<Pair<ItemStack, ItemStack[]>> getAlloyQueue() {
+  public static @Nonnull List<Pair<Things, NNList<Things>>> getAlloyQueue() {
     return alloyQueue;
   }
 

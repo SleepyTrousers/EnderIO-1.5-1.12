@@ -3,12 +3,15 @@ package crazypants.enderio.conduit;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.Triple;
+
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.api.addon.IEnderIOAddon;
+import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.conduit.config.ConfigHandler;
-import crazypants.enderio.conduit.config.RecipeLoaderConduits;
 import crazypants.enderio.conduit.init.CommonProxy;
 import crazypants.enderio.conduit.packet.PacketHandler;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -45,17 +48,19 @@ public class EnderIOConduits implements IEnderIOAddon {
 
   @EventHandler
   public void init(@Nonnull FMLInitializationEvent event) {
-    ConfigHandler.init(event);
     proxy.init(event);
     PacketHandler.init(event);
-    MinecraftForge.EVENT_BUS.register(ConduitNetworkTickHandler.instance);
   }
 
   @EventHandler
   public void postInit(@Nonnull FMLPostInitializationEvent event) {
-    ConfigHandler.init(event);
-    RecipeLoaderConduits.addRecipes();
     proxy.init(event);
+  }
+
+  @Override
+  @Nonnull
+  public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
+    return new NNList<>(Triple.of(2, null, "conduits"));
   }
 
 }

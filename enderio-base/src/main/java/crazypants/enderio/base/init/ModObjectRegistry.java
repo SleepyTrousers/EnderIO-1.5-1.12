@@ -101,6 +101,11 @@ public class ModObjectRegistry {
     }
   }
 
+  @SubscribeEvent(priority = EventPriority.LOWEST)
+  public static void registerOredict(@Nonnull RegistryEvent.Register<Item> event) {
+    // oredict registration gos here
+  }
+
   public static void init(@Nonnull FMLInitializationEvent event) {
     for (IModObject mo : objects) {
       final Block block = mo.getBlock();

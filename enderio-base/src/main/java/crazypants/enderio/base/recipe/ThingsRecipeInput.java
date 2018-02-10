@@ -4,20 +4,27 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+/**
+ * A RecipeInput that is capable of handling Things and stack sized and nbt.
+ * 
+ * Please note that this input can become suddenly invalid after "load complete" as OreDict Things wait until then to decide if an Oredict name actually exists.
+ * If queried for its input item before "load complete" it may produce an empty stack.
+ * 
+ * @author Henry Loenwind
+ *
+ */
 public class ThingsRecipeInput implements IRecipeInput {
 
   private final @Nonnull Things things;
-  /**
-   * A stack to represent this input in situations where a single stack is needed. It also holds the stackSize for the input. Callers may modify this stack's
-   * size to keep track of things (obviously they need to copy this object first).
-   */
-  private final @Nonnull ItemStack leadStack;
   private final int slot;
   private final float multiplier;
+  /**
+   * Callers may modify this stackSize to keep track of things (obviously they need to copy this object first).
+   */
+  private int stackSize;
 
   public ThingsRecipeInput(@Nonnull Things things) {
     this(things, -1);
@@ -27,29 +34,25 @@ public class ThingsRecipeInput implements IRecipeInput {
     this(things, slot, 1f);
   }
 
-  public ThingsRecipeInput(@Nonnull Things things, @Nonnull ItemStack leadStack, int slot) {
-    this(things, leadStack, slot, 1f);
-  }
-
   public ThingsRecipeInput(@Nonnull Things things, int slot, float multiplier) {
-    this(things, things.getItemStacks().isEmpty() ? Prep.getEmpty() : things.getItemStacks().get(0).copy(), slot, multiplier);
+    this(things, 1, slot, multiplier);
   }
 
-  public ThingsRecipeInput(@Nonnull Things things, @Nonnull ItemStack leadStack, int slot, float multiplier) {
+  public ThingsRecipeInput(@Nonnull Things things, int stackSize, int slot, float multiplier) {
     this.things = things;
-    this.leadStack = leadStack;
+    this.stackSize = stackSize;
     this.slot = slot;
     this.multiplier = multiplier;
   }
 
   public @Nonnull ThingsRecipeInput setCount(int count) {
-    leadStack.setCount(count);
+    stackSize = count;
     return this;
   }
 
   @Override
   public @Nonnull ThingsRecipeInput copy() {
-    return new ThingsRecipeInput(things, leadStack.copy(), slot, multiplier);
+    return new ThingsRecipeInput(things, stackSize, slot, multiplier);
   }
 
   @Override
@@ -59,7 +62,9 @@ public class ThingsRecipeInput implements IRecipeInput {
 
   @Override
   public @Nonnull ItemStack getInput() {
-    return leadStack;
+    ItemStack itemStack = things.getItemStack();
+    itemStack.setCount(stackSize);
+    return itemStack;
   }
 
   @Override
@@ -79,7 +84,7 @@ public class ThingsRecipeInput implements IRecipeInput {
 
   @Override
   public boolean isInput(@Nonnull ItemStack test) {
-    return things.contains(test) && (!leadStack.hasTagCompound() || ItemStack.areItemStackTagsEqual(leadStack, test));
+    return things.contains(test);
   }
 
   @Override
@@ -92,17 +97,14 @@ public class ThingsRecipeInput implements IRecipeInput {
     final ItemStack[] result = things.getItemStacksRaw().toArray(new ItemStack[0]);
     for (int i = 0; i < result.length; i++) {
       result[i] = result[i].copy();
-      result[i].setCount(leadStack.getCount());
-      if (leadStack.hasTagCompound()) {
-        result[i].setTagCompound(leadStack.getTagCompound());
-      }
+      result[i].setCount(stackSize);
     }
     return result;
   }
 
   @Override
   public boolean isValid() {
-    return Prep.isValid(leadStack);
+    return things.isPotentiallyValid();
   }
 
 }

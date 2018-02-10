@@ -2,38 +2,38 @@ package crazypants.enderio.integration.tic.queues;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.util.Prep;
-import net.minecraft.item.ItemStack;
+import com.enderio.core.common.util.stackable.Things;
+
 import net.minecraftforge.fluids.Fluid;
 
 public class BasinQueue {
-  final @Nonnull private ItemStack output;
-  final @Nonnull private ItemStack cast;
-  final @Nonnull private ItemStack fluidItem;
+  final @Nonnull private Things output;
+  final @Nonnull private Things cast;
+  final private Things fluidItem;
   private Fluid fluid;
-  private int amount;
+  private float amount;
 
-  public BasinQueue(@Nonnull ItemStack output, @Nonnull ItemStack cast, @Nonnull ItemStack fluidItem, int amount) {
+  public BasinQueue(@Nonnull Things output, @Nonnull Things cast, @Nonnull Things fluid, float amount) {
     this.output = output;
     this.cast = cast;
-    this.setFluid(null);
-    this.fluidItem = fluidItem;
-    this.setAmount(amount);
+    this.fluid = null;
+    this.fluidItem = fluid;
+    this.amount = amount;
   }
 
-  public BasinQueue(@Nonnull ItemStack output, @Nonnull ItemStack cast, Fluid fluid, int amount) {
+  public BasinQueue(@Nonnull Things output, @Nonnull Things cast, Fluid fluid, float amount) {
     this.output = output;
     this.cast = cast;
     this.setFluid(fluid);
-    this.fluidItem = Prep.getEmpty();
-    this.setAmount(amount);
+    this.fluidItem = null;
+    this.amount = amount;
   }
 
-  public @Nonnull ItemStack getOutput() {
+  public @Nonnull Things getOutput() {
     return output;
   }
 
-  public @Nonnull ItemStack getCast() {
+  public @Nonnull Things getCast() {
     return cast;
   }
 
@@ -45,15 +45,15 @@ public class BasinQueue {
     this.fluid = fluid;
   }
 
-  public @Nonnull ItemStack getFluidItem() {
+  public Things getFluidItem() {
     return fluidItem;
   }
 
-  public int getAmount() {
+  public float getAmount() {
     return amount;
   }
 
-  public void setAmount(int amount) {
+  public void setAmount(float amount) {
     this.amount = amount;
   }
 }

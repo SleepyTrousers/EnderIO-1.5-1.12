@@ -7,6 +7,7 @@ import javax.xml.stream.events.StartElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.integration.tic.TicProxy;
+import crazypants.enderio.util.Prep;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -44,7 +45,7 @@ public class Smelting extends AbstractCrafting {
         throw new InvalidRecipeConfigException("For 'vanilla' setting an input amount is not valid");
       }
 
-      valid = valid && input.isValid();
+      valid = valid && input.isValid() && (!vanilla || Prep.isValid(input.getItemStack()));
 
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <crafting>");
@@ -65,7 +66,7 @@ public class Smelting extends AbstractCrafting {
         GameRegistry.addSmelting(input.getItemStack(), getOutput().getItemStack(), exp);
       }
       if (tinkers) {
-        TicProxy.registerSmelterySmelting(input.getItemStack(), getOutput().getItemStack(), 1f / input.amount);
+        TicProxy.registerSmelterySmelting(input.getThing(), getOutput().getThing(), 1f / input.amount);
       }
     }
   }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.profiler.Profiler;
+import crazypants.enderio.base.handler.ServerTickHandler.ITickListener;
 import net.minecraft.world.World;
 
 /**
@@ -17,7 +17,7 @@ import net.minecraft.world.World;
  * @param <I>
  *          Implementation of the Conduit Class
  */
-public interface IConduitNetwork<T extends IConduit, I extends T> {
+public interface IConduitNetwork<T extends IConduit, I extends T> extends ITickListener {
 
   // TODO: Tidy and edit Javadocs
   public void init(@Nonnull IConduitBundle tile, Collection<I> connections, @Nonnull World world);
@@ -33,7 +33,5 @@ public interface IConduitNetwork<T extends IConduit, I extends T> {
   public @Nonnull List<I> getConduits();
 
   public void sendBlockUpdatesForEntireNetwork();
-
-  public void doNetworkTick(@Nonnull Profiler profiler);
 
 }

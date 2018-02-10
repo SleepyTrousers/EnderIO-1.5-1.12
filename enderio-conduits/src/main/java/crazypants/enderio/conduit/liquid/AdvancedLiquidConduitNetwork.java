@@ -15,6 +15,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 // TODO Javadocs
 public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<AdvancedLiquidConduit> {
@@ -98,11 +99,11 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   @Override
-  public void doNetworkTick(@Nonnull Profiler theProfiler) {
+  public void tickEnd(ServerTickEvent event, Profiler profiler) {
     if (liquidType == null || outputs.isEmpty() || !tank.containsValidLiquid() || tank.isEmpty()) {
-      theProfiler.startSection("updateActiveState");
+      profiler.startSection("updateActiveState");
       updateActiveState();
-      theProfiler.endSection();
+      profiler.endSection();
       return;
     }
 
@@ -110,10 +111,10 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
       outputIterator = outputs.iterator();
     }
 
-    theProfiler.startSection("updateActiveState");
+    profiler.startSection("updateActiveState");
     updateActiveState();
 
-    theProfiler.endStartSection("pushFluid");
+    profiler.endStartSection("pushFluid");
     int numVisited = 0;
     while (!tank.isEmpty() && numVisited < outputs.size()) {
       if (!outputIterator.hasNext()) {
@@ -121,14 +122,14 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
       }
       LiquidOutput output = outputIterator.next();
       if (output != null) {
-        theProfiler.startSection("otherMod_getTankContainer");
+        profiler.startSection("otherMod_getTankContainer");
         IFluidWrapper cont = getTankContainer(output);
-        theProfiler.endSection();
+        profiler.endSection();
         if (cont != null) {
           FluidStack offer = tank.getFluid().copy();
-          theProfiler.startSection("otherMod_fill");
+          profiler.startSection("otherMod_fill");
           int filled = cont.fill(offer);
-          theProfiler.endSection();
+          profiler.endSection();
           if (filled > 0) {
             tank.addAmount(-filled);
 
@@ -138,7 +139,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
       numVisited++;
     }
 
-    theProfiler.endSection();
+    profiler.endSection();
   }
 
   private void updateActiveState() {

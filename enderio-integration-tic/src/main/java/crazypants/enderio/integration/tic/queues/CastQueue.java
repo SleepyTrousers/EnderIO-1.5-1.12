@@ -1,20 +1,21 @@
 package crazypants.enderio.integration.tic.queues;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import crazypants.enderio.util.Prep;
-import net.minecraft.item.ItemStack;
+import com.enderio.core.common.util.stackable.Things;
+
 import net.minecraftforge.fluids.Fluid;
 
 public class CastQueue {
-  final @Nonnull private ItemStack result;
-  final @Nonnull private ItemStack cast;
-  final @Nonnull private ItemStack item;
+  final @Nonnull private Things result;
+  final @Nonnull private Things cast;
+  final @Nullable private Things item;
   final private boolean consumeCast;
   private Fluid fluid;
   private float amount;
 
-  public CastQueue(@Nonnull ItemStack result, @Nonnull ItemStack cast, @Nonnull ItemStack item, float amount, boolean consumeCast) {
+  public CastQueue(@Nonnull Things result, @Nonnull Things cast, @Nonnull Things item, float amount, boolean consumeCast) {
     this.result = result;
     this.cast = cast;
     this.item = item;
@@ -23,24 +24,24 @@ public class CastQueue {
     this.consumeCast = consumeCast;
   }
 
-  public CastQueue(@Nonnull ItemStack result, @Nonnull ItemStack cast, @Nonnull Fluid fluid, float amount, boolean consumeCast) {
+  public CastQueue(@Nonnull Things result, @Nonnull Things cast, @Nonnull Fluid fluid, float amount, boolean consumeCast) {
     this.result = result;
     this.cast = cast;
-    this.item = Prep.getEmpty();
+    this.item = null;
     this.setFluid(fluid);
     this.setAmount(amount);
     this.consumeCast = consumeCast;
   }
 
-  public @Nonnull ItemStack getResult() {
+  public @Nonnull Things getResult() {
     return result;
   }
 
-  public @Nonnull ItemStack getCast() {
+  public @Nonnull Things getCast() {
     return cast;
   }
 
-  public @Nonnull ItemStack getItem() {
+  public @Nullable Things getItem() {
     return item;
   }
 

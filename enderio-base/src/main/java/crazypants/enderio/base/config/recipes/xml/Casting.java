@@ -33,12 +33,6 @@ public class Casting extends AbstractCrafting {
   public void enforceValidity() throws InvalidRecipeConfigException {
     super.enforceValidity();
     input.enforceValidity();
-
-    String tableCast = TicProxy.registerTableCast(getOutput().getItemStack(), cast.getItemStack(), input.getItemStack(), input.amount, cast.getConsumed(),
-        true);
-    if (tableCast != null) {
-      throw new InvalidRecipeConfigException(tableCast);
-    }
   }
 
   @Override
@@ -49,12 +43,7 @@ public class Casting extends AbstractCrafting {
   @Override
   public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
-
-      String tableCast = TicProxy.registerTableCast(getOutput().getItemStack(), cast.getItemStack(), input.getItemStack(), input.amount, cast.getConsumed(),
-          false);
-      if (tableCast != null) {
-        throw new RuntimeException(tableCast);
-      }
+      TicProxy.registerTableCast(getOutput().getThing(), cast.getThing(), input.getThing(), input.amount, cast.getConsumed());
     }
   }
 

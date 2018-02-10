@@ -4,13 +4,14 @@ import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class Output extends AbstractConditional {
 
@@ -22,15 +23,13 @@ public class Output extends AbstractConditional {
 
   private boolean required = true;
 
-  private transient NBTTagCompound tag;
-
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     super.readResolve();
     if (item == null) {
       throw new InvalidRecipeConfigException("Missing name in <output>");
     }
-    if (item.isValid()) {
+    if (isValid()) {
       if (amount < 0) {
         throw new InvalidRecipeConfigException("Invalid negative amount in <output>");
       }
@@ -41,13 +40,12 @@ public class Output extends AbstractConditional {
         amount = 1;
       }
     }
+    item.getThing().setSize(amount);
     final String nbt_nullchecked = nbt;
     if (nbt_nullchecked != null) {
-      if (nbt_nullchecked.trim().isEmpty()) {
-        tag = null;
-      } else {
+      if (!nbt_nullchecked.trim().isEmpty()) {
         try {
-          tag = JsonToNBT.getTagFromJson(nbt_nullchecked);
+          item.getThing().setNbt(JsonToNBT.getTagFromJson(nbt_nullchecked));
         } catch (NBTException e) {
           throw new InvalidRecipeConfigException(nbt_nullchecked + " is not valid NBT json.");
         }
@@ -61,22 +59,21 @@ public class Output extends AbstractConditional {
     item.enforceValidity();
   }
 
+  // Items can be potentially valid with an oredict value that doesn't yet have any items. We cannot use that for the output, so we force it to have at least
+  // one valid stack.
   @Override
   public boolean isValid() {
-    return item != null && item.isValid();
+    return item != null && item.isValid() && Prep.isValid(item.getItemStack());
   }
 
   @Override
   public boolean isActive() {
-    return super.isActive() && (required || item.isValid());
+    return super.isActive() && (required || isValid());
   }
 
   public @Nonnull ItemStack getItemStack() {
     ItemStack itemStack = item.getItemStack().copy();
     itemStack.setCount(amount);
-    if (tag != null) {
-      itemStack.setTagCompound(tag);
-    }
     return itemStack;
   }
 
@@ -89,11 +86,12 @@ public class Output extends AbstractConditional {
     list.remove(0);
     for (ItemStack itemStack : list) {
       itemStack.setCount(amount);
-      if (tag != null) {
-        itemStack.setTagCompound(tag);
-      }
     }
     return list;
+  }
+
+  public @Nonnull Things getThing() {
+    return item.getThing();
   }
 
   @Override
