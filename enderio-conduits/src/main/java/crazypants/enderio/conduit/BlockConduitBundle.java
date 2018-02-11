@@ -717,7 +717,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     ITool tool = ToolUtil.getEquippedTool(player, hand);
     if (tool != null) {
       BlockPos pos = new BlockPos(x, y, z);
-      if (tool.canUse(player.getHeldItem(hand), player, pos)) {
+      if (tool.canUse(hand, player, pos)) {
         if (!world.isRemote) {
           IBlockState bs = world.getBlockState(pos);
           if (!PermissionAPI.hasPermission(player.getGameProfile(), permissionNodeWrenching, new BlockPosContext(player, pos, bs, null))) {
@@ -730,7 +730,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
             return false;
           }
           removedByPlayer(bs, world, pos, player, true);
-          tool.used(player.getHeldItem(hand), player, new BlockPos(x, y, z));
+          tool.used(hand, player, new BlockPos(x, y, z));
         }
         return true;
       }
