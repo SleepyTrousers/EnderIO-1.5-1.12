@@ -195,39 +195,6 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Simple SAG Mill" required="true">
-    <crafting>
-      <grid size="3x3">
-        <item name="itemFlint" /><item name="itemFlint" /><item name="itemFlint" />
-        <item name="ingotIron" /><item name="SIMPLE_CHASSIS"/><item name="ingotIron" />
-        <item name="GEAR_STONE" /><item name="minecraft:piston" /><item name="GEAR_STONE" />
-      </grid>
-      <output name="enderio:block_simple_sag_mill" />
-    </crafting>
-  </recipe>
-
-  <recipe name="SAG Mill" required="true">
-    <crafting>
-      <grid size="3x3">
-        <item name="itemFlint" /><item name="itemFlint" /><item name="itemFlint" />
-        <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
-        <item name="GEAR_ENERGIZED" /><item name="minecraft:piston" /><item name="GEAR_ENERGIZED" />
-      </grid>
-      <output name="enderio:block_sag_mill" />
-    </crafting>
-  </recipe>
-
-  <recipe name="SAG Mill, Upgrade" required="true">
-    <crafting upgrade="true">
-      <grid size="3x3">
-        <item /><item name="enderio:block_simple_sag_mill" /><item />
-        <item /><item name="CHASSIS" /><item />
-        <item name="GEAR_ENERGIZED" /><item /><item name="GEAR_ENERGIZED" />
-      </grid>
-      <output name="enderio:block_sag_mill" />
-    </crafting>
-  </recipe>
-
   <recipe name="Simple Alloy Smelter" required="true">
     <crafting>
       <grid size="3x3">

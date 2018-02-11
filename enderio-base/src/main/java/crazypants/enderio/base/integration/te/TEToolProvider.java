@@ -8,6 +8,7 @@ import crazypants.enderio.base.tool.IToolProvider;
 import crazypants.enderio.base.tool.ToolUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
 public class TEToolProvider implements IToolProvider {
@@ -32,12 +33,14 @@ public class TEToolProvider implements IToolProvider {
   public static class TEHammer implements ITool {
 
     @Override
-    public boolean canUse(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull BlockPos pos) {
+    public boolean canUse(@Nonnull EnumHand hand, @Nonnull EntityPlayer player, @Nonnull BlockPos pos) {
+      ItemStack stack = player.getHeldItem(hand);
       return ((IToolHammer) stack.getItem()).isUsable(stack, player, pos);
     }
 
     @Override
-    public void used(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull BlockPos pos) {
+    public void used(@Nonnull EnumHand hand, @Nonnull EntityPlayer player, @Nonnull BlockPos pos) {
+      ItemStack stack = player.getHeldItem(hand);
       ((IToolHammer) stack.getItem()).toolUsed(stack, player, pos);
     }
 

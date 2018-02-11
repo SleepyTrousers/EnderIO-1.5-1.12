@@ -10,10 +10,15 @@ sourceSets {
     }
 }
 
+repositories {
+    maven { url = "http://mod-buildcraft.com/maven/" }
+}
+
 dependencies {
 	deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
 	deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}:api"
 	deobfCompile "team.chisel.ctm:CTM:${ctm_version}:api"
 	
 	compile "mcjty.theoneprobe:TheOneProbe-1.12:${top_version}:api"
+	compile "com.mod-buildcraft:buildcraft-api:${buildcraft_version}"
 }

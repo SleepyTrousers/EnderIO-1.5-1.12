@@ -3,14 +3,13 @@ package crazypants.enderio.integration.ftbl;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.UserIdent;
+import com.feed_the_beast.ftbl.api.IForgePlayer;
+import com.feed_the_beast.ftbl.api.IForgeTeam;
 import com.feed_the_beast.ftbl.api_impl.ForgePlayer;
-import com.feed_the_beast.ftbl.api_impl.ForgeTeam;
 import com.feed_the_beast.ftbl.api_impl.Universe;
-import com.feed_the_beast.ftbl.client.teamsgui.MyTeamData;
-import com.feed_the_beast.ftbl.client.teamsgui.MyTeamPlayerData;
 
 import crazypants.enderio.base.integration.IIntegration;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class FtblIntegration extends IForgeRegistryEntry.Impl<IIntegration> implements IIntegration {
 
@@ -19,12 +18,10 @@ public class FtblIntegration extends IForgeRegistryEntry.Impl<IIntegration> impl
     Universe universe = Universe.INSTANCE;
     ForgePlayer playerA = universe.getPlayer(identA.getUUID());
     if (playerA != null) {
-      ForgeTeam team = playerA.getTeam();
+      IForgeTeam team = playerA.getTeam();
       if (team != null) {
-        MyTeamData teamData = new MyTeamData(universe, team, playerA);
-
-        for (MyTeamPlayerData pd : teamData.players) {
-          if (pd.playerId.equals(identB.getUUID())) {
+        for (IForgePlayer player : team.getMembers()) {
+          if (player.getId().equals(identB.getUUID())) {
             return true;
           }
         }

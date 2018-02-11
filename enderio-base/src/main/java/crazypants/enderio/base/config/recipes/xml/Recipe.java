@@ -90,6 +90,7 @@ public class Recipe extends AbstractConditional {
     }
   }
 
+  @Override
   public @Nonnull String getName() {
     if (name != null && !name.trim().isEmpty()) {
       return name.trim();

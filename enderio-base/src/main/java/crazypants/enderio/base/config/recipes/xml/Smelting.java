@@ -48,7 +48,7 @@ public class Smelting extends AbstractCrafting {
       valid = valid && input.isValid() && (!vanilla || Prep.isValid(input.getItemStack()));
 
     } catch (InvalidRecipeConfigException e) {
-      throw new InvalidRecipeConfigException(e, "in <crafting>");
+      throw new InvalidRecipeConfigException(e, "in <smelting>");
     }
     return this;
   }

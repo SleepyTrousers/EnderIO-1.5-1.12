@@ -8,4 +8,8 @@ public interface RecipeGameRecipe extends RecipeConfigElement {
 
   void register(@Nonnull String recipeName);
 
+  default @Nonnull String getName() {
+    return "unnamed";
+  }
+
 }

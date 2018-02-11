@@ -37,6 +37,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -153,12 +154,12 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   }
 
   @Override
-  public boolean canUse(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull BlockPos pos) {
+  public boolean canUse(@Nonnull EnumHand hand, @Nonnull EntityPlayer player, @Nonnull BlockPos pos) {
     return true;
   }
 
   @Override
-  public void used(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull BlockPos pos) {
+  public void used(@Nonnull EnumHand hand, @Nonnull EntityPlayer player, @Nonnull BlockPos pos) {
   }
 
   @Override
@@ -194,26 +195,15 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
 
   @Override
   @Optional.Method(modid = "BuildCraftAPI|core")
-  public boolean canWrench(EntityPlayer arg0, BlockPos arg1) {
+  public boolean canWrench(EntityPlayer player, EnumHand hand, ItemStack stack, RayTraceResult res) {
     return true;
-  }
-
-  @Override
-  @Optional.Method(modid = "BuildCraftAPI|core")
-  public boolean canWrench(EntityPlayer arg0, Entity arg1) {
-    return false;
   }
 
   @SuppressWarnings("null")
   @Override
   @Optional.Method(modid = "BuildCraftAPI|core")
-  public void wrenchUsed(EntityPlayer player, BlockPos pos) {
-    used(player.getHeldItemMainhand(), player, pos);
-  }
-
-  @Override
-  @Optional.Method(modid = "BuildCraftAPI|core")
-  public void wrenchUsed(EntityPlayer player, Entity arg1) {
+  public void wrenchUsed(EntityPlayer player, EnumHand hand, ItemStack stack, RayTraceResult res) {
+    used(hand, player, res.getBlockPos());
   }
 
   @Override
@@ -233,7 +223,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   @Optional.Method(modid = "cofhapi|item")
   public void toolUsed(ItemStack item, EntityLivingBase user, BlockPos pos) {
     if (user instanceof EntityPlayer) {
-      used(user.getHeldItemMainhand(), (EntityPlayer) user, pos);
+      used(EnumHand.MAIN_HAND, (EntityPlayer) user, pos);
     }
   }
 
