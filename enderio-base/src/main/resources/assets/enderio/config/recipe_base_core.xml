@@ -290,7 +290,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
   <recipe name="Enchanter: minecraft:efficiency" required="true" disabled="false">
     <enchanting>
-      <input name="minecraft:redstone" amount="12"/>
+      <input name="dustRedstone" amount="12"/>
       <enchantment name="minecraft:efficiency" costMultiplier="1"/>
     </enchanting>
   </recipe>
@@ -314,7 +314,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
   <recipe name="Enchanter: minecraft:fortune" required="true" disabled="false">
     <enchanting>
-      <input name="minecraft:emerald" amount="1"/>
+      <input name="gemEmerald" amount="1"/>
       <enchantment name="minecraft:fortune" costMultiplier="1"/>
     </enchanting>
   </recipe>

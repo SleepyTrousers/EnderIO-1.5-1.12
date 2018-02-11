@@ -64,7 +64,6 @@ public class Recipe extends AbstractConditional {
         if (required) {
           throw new InvalidRecipeConfigException("No valid <crafting>s or <smelting>s");
         } else {
-          Log.debug("No valid <crafting>s or <smelting>s in optional recipe '" + name + "'");
           valid = false;
         }
       } else {
