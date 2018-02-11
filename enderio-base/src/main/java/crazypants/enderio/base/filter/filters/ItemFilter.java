@@ -617,6 +617,8 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   @Override
   public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new BasicItemFilterGui(gui, filterContainer, isStickyModeAvailable);
+    BasicItemFilterGui filterGui = new BasicItemFilterGui(gui, filterContainer, isStickyModeAvailable);
+    filterGui.createFilterSlots();
+    return filterGui;
   }
 }
