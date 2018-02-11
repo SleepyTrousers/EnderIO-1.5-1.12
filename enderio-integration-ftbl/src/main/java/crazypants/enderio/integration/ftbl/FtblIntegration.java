@@ -10,7 +10,7 @@ import com.feed_the_beast.ftbl.client.teamsgui.MyTeamData;
 import com.feed_the_beast.ftbl.client.teamsgui.MyTeamPlayerData;
 
 import crazypants.enderio.base.integration.IIntegration;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class FtblIntegration extends IForgeRegistryEntry.Impl<IIntegration> implements IIntegration {
 
