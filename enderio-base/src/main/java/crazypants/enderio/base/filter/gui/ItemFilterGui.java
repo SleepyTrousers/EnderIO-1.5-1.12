@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
+import org.lwjgl.opengl.GL11;
+
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import net.minecraft.client.gui.GuiButton;
@@ -12,13 +14,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 public class ItemFilterGui extends GuiContainerBaseEIO {
 
   private IItemFilter filter;
-  private InventoryPlayer playerInv;
   private IItemFilterGui filterGui;
 
   public ItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull IItemFilter filter) {
     super(new ContainerItemFilter(playerInv, filter), "item_filter");
     this.filter = filter;
-    this.playerInv = playerInv;
+
+    ySize = 206;
+    xSize = 206;
 
   }
 
@@ -26,6 +29,7 @@ public class ItemFilterGui extends GuiContainerBaseEIO {
   public void initGui() {
     super.initGui();
     filterGui = filter.getGui(this, (IItemFilterContainer) inventorySlots, false);
+    filterGui.updateButtons();
   }
 
   @Override
@@ -46,6 +50,12 @@ public class ItemFilterGui extends GuiContainerBaseEIO {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int x, int y) {
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    bindGuiTexture();
+    int sx = (width - xSize) / 2;
+    int sy = (height - ySize) / 2;
+    drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
+
     if (filterGui != null) {
       filterGui.renderCustomOptions(y + 13, par1, x, y);
     }

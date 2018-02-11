@@ -1,5 +1,7 @@
 package crazypants.enderio.base.filter.gui;
 
+import java.awt.Point;
+
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.ContainerEnderCap;
@@ -32,6 +34,11 @@ public class ContainerItemFilter extends ContainerEnderCap<EnderInventory, TileE
   @Override
   protected void addSlots() {
 
+  }
+
+  @Override
+  public @Nonnull Point getPlayerInventoryOffset() {
+    return new Point(23, 113);
   }
 
 }
