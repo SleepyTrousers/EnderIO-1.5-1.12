@@ -75,7 +75,7 @@ public class EnchanterRecipe implements IMachineRecipe {
 
   @Override
   @Nonnull
-  public ResultStack[] getCompletedResult(float randomChance, @Nonnull NNList<MachineRecipeInput> inputs) {
+  public ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, @Nonnull NNList<MachineRecipeInput> inputs) {
     ItemStack slot1 = MachineRecipeInput.getInputForSlot(1, inputs);
     int level = getLevelForStackSize(slot1.getCount());
     EnchantmentData enchantmentData = new EnchantmentData(enchantment, level);

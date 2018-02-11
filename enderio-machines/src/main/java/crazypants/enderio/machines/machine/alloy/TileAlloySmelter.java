@@ -9,6 +9,7 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
@@ -96,15 +97,19 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   }
 
   @Override
-  protected IMachineRecipe canStartNextTask(float chance) {
+  protected IMachineRecipe canStartNextTask(long nextSeed) {
     if (getMode() == Mode.FURNACE) {
       VanillaSmeltingRecipe vr = AlloyRecipeManager.getInstance().getVanillaRecipe();
       if (vr.isRecipe(getRecipeInputs())) {
-        IMachineRecipe.ResultStack[] res = vr.getCompletedResult(chance, getRecipeInputs());
+        final IPoweredTask task = createTask(vr, nextSeed);
+        if (task == null) {
+          return null;
+        }
+        IMachineRecipe.ResultStack[] res = task.getCompletedResult();
         if (res.length == 0) {
           return null;
         }
-        return canInsertResult(chance, vr) ? vr : null;
+        return canInsertResult(nextSeed, vr) ? vr : null;
       }
       return null;
     }
@@ -117,7 +122,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
       return null; // no template
     }
     // make sure we have room for the next output
-    return canInsertResult(chance, nextRecipe) ? nextRecipe : null;
+    return canInsertResult(nextSeed, nextRecipe) ? nextRecipe : null;
   }
 
   @Override

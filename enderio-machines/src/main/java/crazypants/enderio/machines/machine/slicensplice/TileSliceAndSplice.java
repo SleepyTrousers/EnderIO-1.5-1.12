@@ -65,11 +65,11 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  protected IMachineRecipe canStartNextTask(float chance) {
+  protected IMachineRecipe canStartNextTask(long nextSeed) {
     if (!hasTools()) {
       return null;
     }
-    return super.canStartNextTask(chance);
+    return super.canStartNextTask(nextSeed);
   }
 
   private @Nonnull ItemStack getAxe() {

@@ -1,5 +1,7 @@
 package crazypants.enderio.base.machine.task;
 
+import java.util.Random;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -7,10 +9,10 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.RecipeBonusType;
-import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.util.Prep;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -22,7 +24,9 @@ public class PoweredTask implements IPoweredTask {
 
   public static final @Nonnull String KEY_RECIPE = "recipeUid";
   public static final @Nonnull String KEY_USED_ENERGY = "usedEnergy";
-  private static final @Nonnull String KEY_CHANCE = "chance";
+  private static final @Nonnull String KEY_SEED = "seed";
+  private static final @Nonnull String KEY_CHANCE_OUTPUT = "chance1";
+  private static final @Nonnull String KEY_CHANCE_MULTI = "chance2";
 
   private float usedEnergy = 0;
 
@@ -34,13 +38,21 @@ public class PoweredTask implements IPoweredTask {
 
   private @Nonnull IMachineRecipe recipe;
 
-  private float chance;
+  private long nextSeed;
+  private float outputMultiplier;
+  private float chanceMultiplier;
 
-  public PoweredTask(@Nonnull IMachineRecipe recipe, float chance, @Nonnull NNList<MachineRecipeInput> inputs) {
-    this(recipe, 0, chance, inputs);
+  public PoweredTask(@Nonnull IMachineRecipe recipe, long nextSeed, @Nonnull NNList<MachineRecipeInput> inputs) {
+    this(recipe, 0, nextSeed, 1f, 1f, inputs);
   }
 
-  protected PoweredTask(@Nonnull IMachineRecipe recipe, float usedEnergy, float chance, @Nonnull NNList<MachineRecipeInput> inputsIn) {
+  public PoweredTask(@Nonnull IMachineRecipe recipe, long nextSeed, float outputMultiplier, float chanceMultiplier,
+      @Nonnull NNList<MachineRecipeInput> inputs) {
+    this(recipe, 0, nextSeed, outputMultiplier, chanceMultiplier, inputs);
+  }
+
+  protected PoweredTask(@Nonnull IMachineRecipe recipe, float usedEnergy, long nextSeed, float outputMultiplier, float chanceMultiplier,
+      @Nonnull NNList<MachineRecipeInput> inputsIn) {
     inputs = new NNList<>();
     for (int i = 0; i < inputsIn.size(); i++) {
       if (Prep.isValid(inputsIn.get(i).item)) {
@@ -52,7 +64,9 @@ public class PoweredTask implements IPoweredTask {
 
     this.recipe = recipe;
     this.usedEnergy = usedEnergy;
-    this.chance = MathHelper.clamp(chance, 0, 1);
+    this.nextSeed = nextSeed;
+    this.outputMultiplier = outputMultiplier;
+    this.chanceMultiplier = chanceMultiplier;
     requiredEnergy = recipe.getEnergyRequired(inputsIn);
     bonusType = recipe.getBonusType(inputsIn);
   }
@@ -74,7 +88,19 @@ public class PoweredTask implements IPoweredTask {
 
   @Override
   public @Nonnull ResultStack[] getCompletedResult() {
-    return recipe.getCompletedResult(chance, inputs);
+    Random rand = new Random(nextSeed);
+    NNList<ResultStack> result = new NNList<>();
+    result.addAll(recipe.getCompletedResult(rand.nextLong(), getBonusType().doChances() ? chanceMultiplier : 1f, inputs));
+    if (getBonusType().doMultiply()) {
+      float mul = outputMultiplier - 1f;
+      while (mul > 0) {
+        if (rand.nextFloat() < mul) {
+          result.addAll(recipe.getCompletedResult(rand.nextLong(), getBonusType().doChances() ? chanceMultiplier : 1f, inputs));
+        }
+        mul--;
+      }
+    }
+    return result.toArray(new ResultStack[0]);
   }
 
   @Override
@@ -96,15 +122,6 @@ public class PoweredTask implements IPoweredTask {
   }
 
   @Override
-  public float getChance() {
-    return chance;
-  }
-
-  public void setChance(float chance) {
-    this.chance = chance;
-  }
-
-  @Override
   public @Nonnull RecipeBonusType getBonusType() {
     return bonusType;
   }
@@ -123,14 +140,18 @@ public class PoweredTask implements IPoweredTask {
     nbtRoot.setString(KEY_RECIPE, recipe.getUid());
     nbtRoot.setFloat(KEY_USED_ENERGY, usedEnergy);
 
-    nbtRoot.setFloat(KEY_CHANCE, chance);
+    nbtRoot.setLong(KEY_SEED, nextSeed);
+    nbtRoot.setFloat(KEY_CHANCE_OUTPUT, outputMultiplier);
+    nbtRoot.setFloat(KEY_CHANCE_MULTI, chanceMultiplier);
   }
 
   public static @Nullable IPoweredTask readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     IMachineRecipe recipe;
 
     float usedEnergy = nbtRoot.getFloat(KEY_USED_ENERGY);
-    float chance = nbtRoot.getFloat(KEY_CHANCE);
+    long seed = nbtRoot.getLong(KEY_SEED);
+    float outputMultiplier = nbtRoot.getFloat(KEY_CHANCE_OUTPUT);
+    float chanceMultiplier = nbtRoot.getFloat(KEY_CHANCE_MULTI);
 
     NBTTagList inputItems = (NBTTagList) nbtRoot.getTag(KEY_INPUT_STACKS);
 
@@ -144,7 +165,7 @@ public class PoweredTask implements IPoweredTask {
     String uid = nbtRoot.getString(KEY_RECIPE);
     recipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);
     if (recipe != null) {
-      return new PoweredTask(recipe, usedEnergy, chance, ins);
+      return new PoweredTask(recipe, usedEnergy, seed, outputMultiplier, chanceMultiplier, ins);
     }
     return null;
 

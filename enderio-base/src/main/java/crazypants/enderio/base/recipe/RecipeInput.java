@@ -134,4 +134,9 @@ public class RecipeInput implements IRecipeInput {
 
   }
 
+  @Override
+  public void shrinkStack(int count) {
+    input.shrink(count);
+  }
+
 }

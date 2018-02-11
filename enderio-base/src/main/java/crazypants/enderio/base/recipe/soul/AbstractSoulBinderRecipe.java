@@ -1,7 +1,5 @@
 package crazypants.enderio.base.recipe.soul;
 
-import static crazypants.enderio.base.init.ModObject.itemSoulVial;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,19 +19,21 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import static crazypants.enderio.base.init.ModObject.itemSoulVial;
+
 public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
   private final int energyRequired;
   private final @Nonnull String uid;
   private final int xpLevelsRequired;
   private final int xpRequired;
-  
+
   private final @Nonnull NNList<ResourceLocation> supportedEntities;
-  
+
   protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull Class<? extends Entity> entityClass) {
     this(energyRequired, xpLevelsRequired, uid, EntityList.getKey(entityClass));
   }
-  
+
   protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull ResourceLocation... entityNames) {
     this.energyRequired = energyRequired;
     this.xpLevelsRequired = xpLevelsRequired;
@@ -46,7 +46,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   public @Nonnull String getUid() {
     return uid;
   }
-    
+
   @Override
   public int getExperienceLevelsRequired() {
     return xpLevelsRequired;
@@ -70,7 +70,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   @Override
   public boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs) {
     int validCount = 0;
-    for(MachineRecipeInput input : inputs) {
+    for (MachineRecipeInput input : inputs) {
       if (input != null && isValidInput(input)) {
         validCount++;
       } else {
@@ -81,10 +81,10 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   }
 
   @Override
-  public @Nonnull ResultStack[] getCompletedResult(float randomChance, @Nonnull NNList<MachineRecipeInput> inputs) {
+  public @Nonnull ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, @Nonnull NNList<MachineRecipeInput> inputs) {
     CapturedMob mobType = null;
     ItemStack inputItem = null;
-    for(MachineRecipeInput input : inputs) {
+    for (MachineRecipeInput input : inputs) {
       if (input != null && input.slotNumber == 0 && CapturedMob.containsSoul(input.item)) {
         mobType = CapturedMob.create(input.item);
       } else if (input != null && input.slotNumber == 1 && isValidInputItem(input.item)) {
@@ -96,9 +96,8 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
     }
     ItemStack resultStack = getOutputStack(inputItem, mobType);
     ItemStack soulVessel = new ItemStack(itemSoulVial.getItemNN());
-    return new ResultStack[] {new ResultStack(soulVessel), new ResultStack(resultStack)};
+    return new ResultStack[] { new ResultStack(soulVessel), new ResultStack(resultStack) };
   }
-
 
   @Override
   public float getExperienceForOutput(@Nonnull ItemStack output) {
@@ -115,11 +114,11 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
     if (slot == 0) {
       CapturedMob mobType = CapturedMob.create(item);
       return mobType != null && item.getItem() == itemSoulVial.getItem() && isValidInputSoul(mobType);
-    } 
-    if(slot == 1) {
+    }
+    if (slot == 1) {
       return isValidInputItem(item);
     }
-    return false;    
+    return false;
   }
 
   protected boolean isValidInputSoul(@Nonnull CapturedMob mobType) {
@@ -138,17 +137,17 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   @Override
   public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs) {
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>(inputs.size());
-    for(MachineRecipeInput input : inputs) {
+    for (MachineRecipeInput input : inputs) {
       if (input != null && Prep.isValid(input.item)) {
         ItemStack resStack = input.item.copy();
         resStack.setCount(1);
         MachineRecipeInput mri = new MachineRecipeInput(input.slotNumber, resStack);
         result.add(mri);
-      }      
-    }    
+      }
+    }
     return result;
   }
-  
+
   protected abstract @Nonnull ItemStack getOutputStack(@Nonnull ItemStack input, @Nonnull CapturedMob mobType);
 
   @Override

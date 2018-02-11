@@ -1,7 +1,5 @@
 package crazypants.enderio.base.recipe.painter;
 
-import static crazypants.enderio.base.recipe.MachineRecipeInput.getInputForSlot;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -16,6 +14,8 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
+
+import static crazypants.enderio.base.recipe.MachineRecipeInput.getInputForSlot;
 
 public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
 
@@ -60,7 +60,7 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
   }
 
   @Override
-  public final @Nonnull ResultStack[] getCompletedResult(float chance, @Nonnull NNList<MachineRecipeInput> inputs) {
+  public final @Nonnull ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, @Nonnull NNList<MachineRecipeInput> inputs) {
     return getCompletedResult(getPaintSource(inputs), getTarget(inputs));
   }
 
@@ -88,7 +88,7 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
         consume = new MachineRecipeInput(input.slotNumber, consumed);
       }
     }
-    if(consume != null) {
+    if (consume != null) {
       return Collections.singletonList(consume);
     }
     return Collections.emptyList();

@@ -62,7 +62,7 @@ public class ThingsRecipeInput implements IRecipeInput {
 
   @Override
   public @Nonnull ItemStack getInput() {
-    ItemStack itemStack = things.getItemStack();
+    ItemStack itemStack = things.getItemStack().copy();
     itemStack.setCount(stackSize);
     return itemStack;
   }
@@ -105,6 +105,11 @@ public class ThingsRecipeInput implements IRecipeInput {
   @Override
   public boolean isValid() {
     return things.isPotentiallyValid();
+  }
+
+  @Override
+  public void shrinkStack(int count) {
+    stackSize -= count;
   }
 
 }

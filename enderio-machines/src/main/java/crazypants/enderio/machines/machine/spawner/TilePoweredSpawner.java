@@ -141,7 +141,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  protected IMachineRecipe canStartNextTask(float chance) {
+  protected IMachineRecipe canStartNextTask(long nextSeed) {
     if (!hasEntity()) {
       this.world.destroyBlock(getPos(), true);
       return null;
@@ -170,7 +170,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  protected boolean canInsertResult(float chance, @Nonnull IMachineRecipe nextRecipe) {
+  protected boolean canInsertResult(long nextSeed, @Nonnull IMachineRecipe nextRecipe) {
     return true;
   }
 
@@ -222,8 +222,8 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  protected IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, float chance) {
-    PoweredTask res = new PoweredTask(nextRecipe, chance, getRecipeInputs());
+  protected IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, long nextSeed) {
+    PoweredTask res = new PoweredTask(nextRecipe, nextSeed, getRecipeInputs());
     int ticksDelay;
     if (isSpawnMode) {
       ticksDelay = SpawnerConfig.poweredSpawnerMinDelayTicks.get()

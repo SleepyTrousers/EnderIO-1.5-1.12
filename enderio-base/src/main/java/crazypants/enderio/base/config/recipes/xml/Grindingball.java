@@ -45,7 +45,7 @@ public class Grindingball extends AbstractConditional {
         throw new InvalidRecipeConfigException("'chance' is invalid'");
       }
       if (power <= 0 || power > 5f) {
-        throw new InvalidRecipeConfigException("'grinding' is invalid'");
+        throw new InvalidRecipeConfigException("'power' is invalid'");
       }
 
       valid = item.isValid();

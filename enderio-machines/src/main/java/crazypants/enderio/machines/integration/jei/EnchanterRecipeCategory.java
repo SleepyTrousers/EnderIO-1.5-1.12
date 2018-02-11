@@ -104,7 +104,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
             lapizInputs.add(machineRecipeInput.item);
           }
         }
-        ResultStack[] completedResult = rec.getCompletedResult(0, NullHelper.notnullM(variant, "NNList iterated to null"));
+        ResultStack[] completedResult = rec.getCompletedResult(0, 1F, NullHelper.notnullM(variant, "NNList iterated to null"));
         itemOutputs.add(completedResult[0].item);
       }
 

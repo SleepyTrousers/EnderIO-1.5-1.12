@@ -51,13 +51,13 @@ public class ManyToOneRecipeManager {
       IRecipeInput in = rec.getInputs()[0];
 
       IRecipeInput in2 = in.copy();
-      in2.getInput().grow(in.getInput().getCount());
+      in2.shrinkStack(-in.getInput().getCount());
       RecipeOutput out2 = new RecipeOutput(out.getOutput(), out.getChance(), out.getExperiance());
       out2.getOutput().grow(out.getOutput().getCount());
 
       IRecipeInput in3 = in.copy();
-      in3.getInput().grow(in.getInput().getCount());
-      in3.getInput().grow(in.getInput().getCount());
+      in3.shrinkStack(-in.getInput().getCount());
+      in3.shrinkStack(-in.getInput().getCount());
       RecipeOutput out3 = new RecipeOutput(out.getOutput(), out.getChance(), out.getExperiance());
       out3.getOutput().grow(out.getOutput().getCount());
       out3.getOutput().grow(out.getOutput().getCount());
@@ -75,7 +75,7 @@ public class ManyToOneRecipeManager {
       if (managerName.equals("Alloy Smelter") && rec.getInputs().length >= 2) {
         NNList<Things> inputs = new NNList<>();
         for (int i = 0; i < rec.getInputs().length; i++) {
-          ItemStack input = rec.getInputs()[i].getInput();
+          ItemStack input = rec.getInputs()[i].getInput().copy();
           Things inputThing = new Things();
           inputThing.add(input);
           inputThing.setSize(input.getCount());
@@ -83,7 +83,7 @@ public class ManyToOneRecipeManager {
           inputs.add(inputThing);
         }
 
-        ItemStack output = rec.getOutputs()[0].getOutput();
+        ItemStack output = rec.getOutputs()[0].getOutput().copy();
         Things outputThing = new Things();
         outputThing.add(output);
         outputThing.setSize(output.getCount());

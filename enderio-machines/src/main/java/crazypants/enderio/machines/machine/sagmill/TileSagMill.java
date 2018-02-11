@@ -122,31 +122,15 @@ public abstract class TileSagMill extends AbstractPoweredTaskEntity implements I
   }
 
   @Override
-  protected void taskComplete() {
-    IPoweredTask ct = currentTask;
-    super.taskComplete(); // nulls currentTask
-    // run it again if the ball says so
-    if (grindingBall != null && ct != null && ct.getBonusType().doMultiply()) {
-      float chance = random.nextFloat();
-      float mul = grindingBall.getGrindingMultiplier() - 1;
-      while (mul > 0) {
-        if (chance <= mul) {
-          currentTask = ct;
-          super.taskComplete();
-        }
-        mul--;
-      }
-    }
-  }
-
-  @Override
-  protected IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, float nextRandIn) {
+  protected IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, long nextSeed) {
+    PoweredTask res;
     if (grindingBall != null && nextRecipe.getBonusType(getRecipeInputs()).doChances()) {
-      PoweredTask res = new PoweredTask(nextRecipe, nextRandIn / grindingBall.getChanceMultiplier(), getRecipeInputs());
+      res = new PoweredTask(nextRecipe, nextSeed, grindingBall.getGrindingMultiplier(), grindingBall.getChanceMultiplier(), getRecipeInputs());
       res.setRequiredEnergy(res.getRequiredEnergy() * grindingBall.getPowerMultiplier());
-      return res;
+    } else {
+      res = new PoweredTask(nextRecipe, nextSeed, getRecipeInputs());
     }
-    return new PoweredTask(nextRecipe, nextRandIn, getRecipeInputs());
+    return res;
   }
 
   @Override

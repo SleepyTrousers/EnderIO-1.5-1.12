@@ -58,11 +58,6 @@ public class ContinuousTask implements IPoweredTask {
   }
 
   @Override
-  public float getChance() {
-    return 1;
-  }
-
-  @Override
   public @Nonnull RecipeBonusType getBonusType() {
     return RecipeBonusType.NONE;
   }

@@ -106,8 +106,8 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
-  protected IMachineRecipe canStartNextTask(float chance) {
-    IMachineRecipe recipe = super.canStartNextTask(chance);
+  protected IMachineRecipe canStartNextTask(long nextSeed) {
+    IMachineRecipe recipe = super.canStartNextTask(nextSeed);
     if (recipe == null) {
       return null;
     }
@@ -150,12 +150,12 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
-  protected boolean startNextTask(@Nonnull IMachineRecipe nextRecipe, float chance) {
+  protected boolean startNextTask(@Nonnull IMachineRecipe nextRecipe, long nextSeed) {
     int xpRequired = ((ISoulBinderRecipe) nextRecipe).getExperienceRequired();
     if (xpCont.getExperienceTotal() < xpRequired) {
       return false;
     }
-    if (super.startNextTask(nextRecipe, chance)) {
+    if (super.startNextTask(nextRecipe, nextSeed)) {
       xpCont.drain(null, XpUtil.experienceToLiquid(xpRequired), true);
       forceUpdatePlayers();
       return true;

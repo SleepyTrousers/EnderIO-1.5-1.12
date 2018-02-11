@@ -37,7 +37,7 @@ public class Recipe implements IRecipe {
 
   @Override
   public boolean isInputForRecipe(NNList<MachineRecipeInput> machineInputs) {
-    if(machineInputs == null || machineInputs.size() == 0) {
+    if (machineInputs == null || machineInputs.size() == 0) {
       return false;
     }
 
@@ -49,12 +49,12 @@ public class Recipe implements IRecipe {
     }
 
     List<IRecipeInput> requiredInputs = new ArrayList<>();
-    for(IRecipeInput input : inputs) { 
+    for (IRecipeInput input : inputs) {
       if (input.getFluidInput() != null || Prep.isValid(input.getInput())) {
         requiredInputs.add(input.copy()); // expensive (has ItemStack.copy() inside)
       }
     }
-    
+
     for (MachineRecipeInput input : machineInputs) {
       if (input != null && input.isFluid()) {
         Iterator<IRecipeInput> iterator = requiredInputs.iterator();
@@ -81,7 +81,7 @@ public class Recipe implements IRecipe {
         while (iterator != null && iterator.hasNext()) {
           IRecipeInput required = iterator.next();
           if (required.isInput(input.item)) {
-            required.getInput().shrink(input.item.getCount());
+            required.shrinkStack(input.item.getCount());
             if (Prep.isInvalid(required.getInput())) {
               iterator.remove();
             }
@@ -127,7 +127,7 @@ public class Recipe implements IRecipe {
 
   private IRecipeInput getInputForStack(@Nonnull FluidStack input) {
     for (IRecipeInput ri : inputs) {
-      if(ri.isInput(input)) {
+      if (ri.isInput(input)) {
         return ri;
       }
     }
@@ -136,7 +136,7 @@ public class Recipe implements IRecipe {
 
   private IRecipeInput getInputForStack(@Nonnull ItemStack input) {
     for (IRecipeInput ri : inputs) {
-      if(ri.isInput(input)) {
+      if (ri.isInput(input)) {
         return ri;
       }
     }
@@ -191,7 +191,7 @@ public class Recipe implements IRecipe {
     NNList<FluidStack> res = new NNList<FluidStack>();
     for (int i = 0; i < inputs.length; i++) {
       IRecipeInput in = inputs[i];
-      if(in != null && in.getFluidInput() != null) {
+      if (in != null && in.getFluidInput() != null) {
         res.add(in.getFluidInput());
       }
     }
@@ -217,7 +217,7 @@ public class Recipe implements IRecipe {
     if (Prep.isInvalid(result)) {
       return false;
     }
-    for(RecipeOutput output : outputs) {
+    for (RecipeOutput output : outputs) {
       ItemStack os = output.getOutput();
       if (os.isItemEqual(result)) {
         return true;
@@ -225,7 +225,7 @@ public class Recipe implements IRecipe {
     }
     return false;
   }
-  
+
   @Override
   public int getEnergyRequired() {
     return energyRequired;
@@ -236,13 +236,13 @@ public class Recipe implements IRecipe {
     if (energyRequired <= 0) {
       return false;
     }
-    for(IRecipeInput input : inputs) {
-      if(!input.isValid()) {
+    for (IRecipeInput input : inputs) {
+      if (!input.isValid()) {
         return false;
       }
     }
-    for(RecipeOutput output : outputs) {
-      if(!output.isValid()) {
+    for (RecipeOutput output : outputs) {
+      if (!output.isValid()) {
         return false;
       }
     }
@@ -258,6 +258,5 @@ public class Recipe implements IRecipe {
   public boolean isSynthetic() {
     return false;
   }
-  
 
 }
