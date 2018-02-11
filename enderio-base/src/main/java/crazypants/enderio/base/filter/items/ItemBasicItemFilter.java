@@ -29,6 +29,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -105,12 +106,11 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
 
   @Override
   @Nonnull
-  public EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
-      @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
-    if (ModObjectRegistry.getModObjectNN(this).openGui(worldIn, pos, player)) {
-      return EnumActionResult.SUCCESS;
+  public ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, @Nonnull EntityPlayer playerIn, @Nonnull EnumHand handIn) {
+    if (playerIn.isSneaking() && ModObjectRegistry.getModObjectNN(this).openGui(worldIn, playerIn.getPosition(), playerIn)) {
+      return new ActionResult<ItemStack>(EnumActionResult.PASS, playerIn.getHeldItemMainhand());
     }
-    return EnumActionResult.FAIL;
+    return new ActionResult<ItemStack>(EnumActionResult.FAIL, playerIn.getHeldItemMainhand());
   }
 
   @Override
