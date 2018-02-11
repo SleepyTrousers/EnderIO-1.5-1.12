@@ -6,6 +6,7 @@ import javax.xml.stream.events.StartElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.util.Prep;
 
 public class ConditionDependency implements RecipeConfigElement {
 
@@ -31,7 +32,7 @@ public class ConditionDependency implements RecipeConfigElement {
 
   @Override
   public boolean isValid() {
-    return item.isValid() != reverse;
+    return (item.isValid() && Prep.isValid(item.getItemStack())) != reverse;
   }
 
   @Override
