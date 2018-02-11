@@ -76,7 +76,7 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
     TileEntity te = getTileEntity(world, pos);
     if (te instanceof AbstractMachineEntity) {
       ITool tool = ToolUtil.getEquippedTool(entityPlayer, hand);
-      if (tool != null && !entityPlayer.isSneaking() && tool.canUse(entityPlayer.getHeldItem(hand), entityPlayer, pos)) {
+      if (tool != null && !entityPlayer.isSneaking() && tool.canUse(hand, entityPlayer, pos)) {
         ((AbstractMachineEntity) te).toggleIoModeForFace(side);
         IBlockState bs = world.getBlockState(pos);
         world.notifyBlockUpdate(pos, bs, bs, 3);

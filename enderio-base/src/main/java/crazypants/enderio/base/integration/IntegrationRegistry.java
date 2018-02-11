@@ -27,7 +27,7 @@ public class IntegrationRegistry {
   }
 
   public static boolean isInSameTeam(@Nonnull UserIdent identA, @Nonnull UserIdent identB) {
-    return NNList.wrap(IntegrationRegistry.REGISTRY.getValues()).apply(new ShortCallback<IIntegration>() {
+    return new NNList<>(IntegrationRegistry.REGISTRY.getValuesCollection()).apply(new ShortCallback<IIntegration>() {
       @Override
       public boolean apply(@Nonnull IIntegration e) {
         return e.isInSameTeam(identA, identB);
