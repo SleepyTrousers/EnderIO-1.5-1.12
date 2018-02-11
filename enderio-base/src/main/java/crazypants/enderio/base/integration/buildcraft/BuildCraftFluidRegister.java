@@ -15,6 +15,7 @@ import crazypants.enderio.base.fluid.FluidFuelRegister.FuelImpl;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+/*
 public class BuildCraftFluidRegister implements IFluidRegister {
 
   public BuildCraftFluidRegister() throws Exception {
@@ -93,5 +94,5 @@ public class BuildCraftFluidRegister implements IFluidRegister {
     }
 
   }
-
 }
+*/

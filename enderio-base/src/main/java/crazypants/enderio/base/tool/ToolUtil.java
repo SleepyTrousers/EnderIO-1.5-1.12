@@ -39,13 +39,9 @@ public class ToolUtil {
 
   public static boolean breakBlockWithTool(@Nonnull Block block, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing side,
       @Nonnull EntityPlayer entityPlayer, @Nonnull EnumHand hand, @Nonnull String permissionNode) {
-    return breakBlockWithTool(block, world, pos, side, entityPlayer, entityPlayer.getHeldItem(hand), permissionNode);
-  }
-
-  public static boolean breakBlockWithTool(@Nonnull Block block, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing side,
-      @Nonnull EntityPlayer entityPlayer, @Nonnull ItemStack heldItem, @Nonnull String permissionNode) {
+    ItemStack heldItem = entityPlayer.getHeldItem(hand);
     ITool tool = ToolUtil.getToolFromStack(heldItem);
-    if (tool != null && entityPlayer.isSneaking() && tool.canUse(heldItem, entityPlayer, pos)) {
+    if (tool != null && entityPlayer.isSneaking() && tool.canUse(hand, entityPlayer, pos)) {
       IBlockState bs = world.getBlockState(pos);
       if (!PermissionAPI.hasPermission(entityPlayer.getGameProfile(), permissionNode, new BlockPosContext(entityPlayer, pos, bs, side))) {
         entityPlayer.sendMessage(Lang.WRENCH_DENIED.toChatServer());
@@ -59,7 +55,7 @@ public class ToolUtil {
       if (block.removedByPlayer(bs, world, pos, entityPlayer, true)) {
         block.harvestBlock(world, entityPlayer, pos, world.getBlockState(pos), world.getTileEntity(pos), heldItem);
       }
-      tool.used(heldItem, entityPlayer, pos);
+      tool.used(hand, entityPlayer, pos);
       return true;
     }
     return false;
