@@ -56,8 +56,8 @@ public class ExistingItemFilterGui implements IItemFilterGui {
 
   private @Nonnull ExistingItemFilter filter;
 
-  // TODO Remove isInput
-  public ExistingItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isInput) {
+  // TODO Remove isInput and make use of xOffset and yOffset
+  public ExistingItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isInput, int xOffset, int yOffset) {
     this.gui = gui;
     this.filterContainer = filterContainer;
     this.isInput = isInput;

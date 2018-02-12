@@ -189,9 +189,9 @@ public class BasicItemFilterGui implements IItemFilterGui {
   @Override
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
     GL11.glColor3f(1, 1, 1);
-    gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, gui.getGuiTop() + yOffset, 0, 238, 18 * 5, 18);
+    gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, top + yOffset, 0, 238, 18 * 5, 18);
     if (filter.isAdvanced()) {
-      gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, gui.getGuiTop() + yOffset + 20, 0, 238, 18 * 5, 18);
+      gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, top + yOffset + 20, 0, 238, 18 * 5, 18);
     }
   }
 

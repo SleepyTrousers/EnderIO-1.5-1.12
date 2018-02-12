@@ -151,7 +151,8 @@ public class PowerItemFilter implements IItemFilter {
   }
 
   @Override
-  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new PowerItemFilterGui(gui, filterContainer, isStickyModeAvailable);
+  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable, int xOffset,
+      int yOffset) {
+    return new PowerItemFilterGui(gui, filterContainer, isStickyModeAvailable, xOffset, yOffset);
   }
 }

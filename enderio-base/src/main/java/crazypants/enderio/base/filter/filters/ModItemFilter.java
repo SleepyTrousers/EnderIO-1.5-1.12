@@ -154,7 +154,8 @@ public class ModItemFilter implements IItemFilter {
   }
 
   @Override
-  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new ModItemFilterGui(gui, filterContainer, isStickyModeAvailable);
+  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable, int xOffset,
+      int yOffset) {
+    return new ModItemFilterGui(gui, filterContainer, isStickyModeAvailable, xOffset, yOffset);
   }
 }

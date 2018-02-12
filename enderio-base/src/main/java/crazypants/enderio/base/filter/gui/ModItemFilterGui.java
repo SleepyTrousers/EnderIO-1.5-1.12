@@ -41,8 +41,8 @@ public class ModItemFilterGui implements IItemFilterGui {
   private final int tfTextureX;
   private final int tfTextureY;
 
-  // TODO Remove isInput
-  public ModItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isInput) {
+  // TODO Remove isInput and use xOffset and yOffset
+  public ModItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isInput, int xOffset, int yOffset) {
     this.gui = gui;
     this.isInput = isInput;
     this.filterContainer = filterContainer;
