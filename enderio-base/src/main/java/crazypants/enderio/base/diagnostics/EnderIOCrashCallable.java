@@ -122,9 +122,10 @@ public class EnderIOCrashCallable implements ICrashCallable {
       }
     }
     msg += "\n";
-    msg += "\t!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
-    msg += "\t!!!You are looking at the diagnostics information, not at the crash. Scroll up!!!\n";
-    msg += "\t!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
+    msg += "\t!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
+    msg += "\t!!!You are looking at the diagnostics information, not at the crash.       !!!\n";
+    msg += "\t!!!Scroll up until you see the line with '---- Minecraft Crash Report ----'!!!\n";
+    msg += "\t!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
     return msg;
   }
 

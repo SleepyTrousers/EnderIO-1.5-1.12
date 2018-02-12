@@ -6,6 +6,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.diagnostics.EnderIOCrashCallable;
 import crazypants.enderio.base.integration.top.TOPUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -62,6 +63,7 @@ public class CommonProxy {
   }
 
   public void stopWithErrorScreen(String... message) {
+    EnderIOCrashCallable.registerStopScreenMessage(message);
     for (String string : message) {
       Log.error(string);
     }
