@@ -519,7 +519,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
       </grid>
-      <output name="enderio:block_dark_steel_door" amount="3"/>
+      <output name="item:enderio:block_dark_steel_door" amount="3"/>
     </crafting>
   </recipe>
 
