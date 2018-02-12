@@ -89,6 +89,7 @@ allprojects {
         maven { url = "http://maven.cil.li/" }
         maven { url = "http://maven.ic2.player.to" }
         maven { url = "http://maven.mcmoddev.com" }
+        maven { url = "http://mod-buildcraft.com/maven/" }
         ivy {
             url "http://ae-mod.info/builds"
             layout "pattern", {
