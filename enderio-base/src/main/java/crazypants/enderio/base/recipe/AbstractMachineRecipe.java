@@ -1,11 +1,11 @@
 package crazypants.enderio.base.recipe;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
-import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
@@ -120,7 +120,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   @Override
-  public @Nonnull ResultStack[] getCompletedResult(float chance, @Nonnull NNList<MachineRecipeInput> inputs) {
+  public @Nonnull ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, @Nonnull NNList<MachineRecipeInput> inputs) {
     if (inputs.size() <= 0) {
       return new ResultStack[0];
     }
@@ -133,13 +133,24 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
       return new ResultStack[0];
     }
     NNList<ResultStack> result = new NNList<ResultStack>();
+    Random rand = new Random(nextSeed);
     for (RecipeOutput output : outputs) {
-      if (output.getChance() >= chance) {
-        final FluidStack fluidOutput = output.getFluidOutput();
-        if (output.isFluid() && fluidOutput != null) {
-          result.add(new ResultStack(NullHelper.notnullF(fluidOutput.copy(), "FluidStack.copy()")));
-        } else {
-          result.add(new ResultStack(output.getOutput().copy()));
+      if (output.isFluid()) {
+        FluidStack fluidOutput = output.getFluidOutput();
+        if (fluidOutput != null && (rand.nextFloat() < output.getChance() * chanceMultiplier)) {
+          result.add(new ResultStack(fluidOutput = fluidOutput.copy()));
+        }
+      } else {
+        ItemStack stack = output.getOutput().copy();
+        int stackSize = 0;
+        for (int i = 0; i < stack.getCount(); i++) {
+          if (rand.nextFloat() < output.getChance() * chanceMultiplier) {
+            stackSize++;
+          }
+        }
+        stack.setCount(stackSize);
+        if (Prep.isValid(stack)) {
+          result.add(new ResultStack(stack));
         }
       }
     }

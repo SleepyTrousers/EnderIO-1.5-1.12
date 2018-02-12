@@ -80,7 +80,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   @Override
-  public @Nonnull ResultStack[] getCompletedResult(float chance, @Nonnull NNList<MachineRecipeInput> inputs) {
+  public @Nonnull ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, @Nonnull NNList<MachineRecipeInput> inputs) {
     ItemStack output = null;
     for (MachineRecipeInput ri : inputs) {
       if (ri != null && Prep.isValid(ri.item) && output == null) {

@@ -24,8 +24,6 @@ public interface IPoweredTask {
 
   float getRequiredEnergy();
 
-  float getChance();
-
   @Nonnull
   RecipeBonusType getBonusType();
 

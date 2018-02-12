@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <!-- vanilla item in, modded item out -->
+
+  <!-- Ender IO -->
+
+  <recipe name="Sagmill: Wheat" required="true">
+    <sagmilling energy="800">
+      <input name="item:minecraft:wheat"/>
+      <output name="dustWheat" />
+      <output name="minecraft:wheat_seeds" chance="0.2" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Mod: ? -->
+
+  <recipe name="Sagmill: Charcoal" required="false">
+    <sagmilling energy="2400">
+      <input name="minecraft:coal:1"/>
+      <output name="dustCharcoal" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Mod: Forestry -->
+
+  <recipe name="Sagmill: Log" required="false">
+    <sagmilling energy="2400">
+      <input name="logWood"/>
+      <output name="pulpWood" />
+      <output name="pulpWood" chance="0.9" />
+      <output name="pulpWood" chance="0.5" />
+      <output name="pulpWood" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Plank" required="false">
+    <sagmilling energy="1200">
+      <input name="plankWood"/>
+      <output name="pulpWood" chance="0.9" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Stairs" required="false">
+    <sagmilling energy="1200">
+      <input name="stairsWood"/>
+      <output name="pulpWood" chance="0.8" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Stair" required="false">
+    <sagmilling energy="1200">
+      <input name="stairWood"/>
+      <output name="pulpWood" chance="0.8" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Slab" required="false">
+    <sagmilling energy="1200">
+      <input name="slabWood"/>
+      <output name="pulpWood" chance="0.7" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Stick" required="false">
+    <sagmilling energy="800">
+      <input name="stickWood"/>
+      <output name="pulpWood" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+
+
+</enderio:recipes>

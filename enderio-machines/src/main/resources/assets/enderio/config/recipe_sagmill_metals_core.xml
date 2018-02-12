@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <!-- ElectricalSteel -->
+
+  <recipe name="Sagmill: ElectricalSteel Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotElectricalSteel" />
+      <output name="dustElectricalSteel" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: ElectricalSteel Dust" required="false">
+    <smelting>
+      <input name="dustElectricalSteel" />
+      <output name="ingotElectricalSteel" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: ElectricalSteel Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockElectricalSteel" />
+      <output name="dustElectricalSteel" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- EnergeticAlloy -->
+
+  <recipe name="Sagmill: EnergeticAlloy Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotEnergeticAlloy" />
+      <output name="dustEnergeticAlloy" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: EnergeticAlloy Dust" required="false">
+    <smelting>
+      <input name="dustEnergeticAlloy" />
+      <output name="ingotEnergeticAlloy" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: EnergeticAlloy Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockEnergeticAlloy" />
+      <output name="dustEnergeticAlloy" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- VibrantAlloy -->
+
+  <recipe name="Sagmill: VibrantAlloy Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotVibrantAlloy" />
+      <output name="dustVibrantAlloy" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: VibrantAlloy Dust" required="false">
+    <smelting>
+      <input name="dustVibrantAlloy" />
+      <output name="ingotVibrantAlloy" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: VibrantAlloy Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockVibrantAlloy" />
+      <output name="dustVibrantAlloy" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- RedstoneAlloy -->
+
+  <recipe name="Sagmill: RedstoneAlloy Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotRedstoneAlloy" />
+      <output name="dustRedstoneAlloy" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: RedstoneAlloy Dust" required="false">
+    <smelting>
+      <input name="dustRedstoneAlloy" />
+      <output name="ingotRedstoneAlloy" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: RedstoneAlloy Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockRedstoneAlloy" />
+      <output name="dustRedstoneAlloy" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- ConductiveIron -->
+
+  <recipe name="Sagmill: ConductiveIron Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotConductiveIron" />
+      <output name="dustConductiveIron" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: ConductiveIron Dust" required="false">
+    <smelting>
+      <input name="dustConductiveIron" />
+      <output name="ingotConductiveIron" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: ConductiveIron Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockConductiveIron" />
+      <output name="dustConductiveIron" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- PulsatingIron -->
+
+  <recipe name="Sagmill: PulsatingIron Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotPulsatingIron" />
+      <output name="dustPulsatingIron" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: PulsatingIron Dust" required="false">
+    <smelting>
+      <input name="dustPulsatingIron" />
+      <output name="ingotPulsatingIron" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: PulsatingIron Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockPulsatingIron" />
+      <output name="dustPulsatingIron" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- DarkSteel -->
+
+  <recipe name="Sagmill: DarkSteel Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotDarkSteel" />
+      <output name="dustDarkSteel" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: DarkSteel Dust" required="false">
+    <smelting>
+      <input name="dustDarkSteel" />
+      <output name="ingotDarkSteel" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: DarkSteel Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockDarkSteel" />
+      <output name="dustDarkSteel" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Soularium -->
+
+  <recipe name="Sagmill: Soularium Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotSoularium" />
+      <output name="dustSoularium" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Soularium Dust" required="false">
+    <smelting>
+      <input name="dustSoularium" />
+      <output name="ingotSoularium" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Soularium Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockSoularium" />
+      <output name="dustSoularium" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Bronze -->
+
+  <recipe name="Sagmill: Bronze Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotBronze" />
+      <output name="dustBronze" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Bronze Dust" required="false">
+    <smelting>
+      <input name="dustBronze" />
+      <output name="ingotBronze" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Bronze Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockBronze" />
+      <output name="dustBronze" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Enderium -->
+
+  <recipe name="Sagmill: Enderium Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotEnderium" />
+      <output name="dustEnderium" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Enderium Dust" required="false">
+    <smelting>
+      <input name="dustEnderium" />
+      <output name="ingotEnderium" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Enderium Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockEnderium" />
+      <output name="dustEnderium" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Signalum -->
+
+  <recipe name="Sagmill: Signalum Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotSignalum" />
+      <output name="dustSignalum" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Signalum Dust" required="false">
+    <smelting>
+      <input name="dustSignalum" />
+      <output name="ingotSignalum" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Signalum Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockSignalum" />
+      <output name="dustSignalum" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Lumium -->
+
+  <recipe name="Sagmill: Lumium Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotLumium" />
+      <output name="dustLumium" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Lumium Dust" required="false">
+    <smelting>
+      <input name="dustLumium" />
+      <output name="ingotLumium" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Lumium Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockLumium" />
+      <output name="dustLumium" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Invar -->
+
+  <recipe name="Sagmill: Invar Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotInvar" />
+      <output name="dustInvar" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Invar Dust" required="false">
+    <smelting>
+      <input name="dustInvar" />
+      <output name="ingotInvar" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Invar Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockInvar" />
+      <output name="dustInvar" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Hepatizon (Metallurgy) -->
+
+  <recipe name="Sagmill: Hepatizon Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotHepatizon" />
+      <output name="dustHepatizon" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Hepatizon Dust" required="false">
+    <smelting>
+      <input name="dustHepatizon" />
+      <output name="ingotHepatizon" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Hepatizon Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockHepatizon" />
+      <output name="dustHepatizon" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- DamascusSteel (Metallurgy) -->
+
+  <recipe name="Sagmill: DamascusSteel Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotDamascusSteel" />
+      <output name="dustDamascusSteel" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: DamascusSteel Dust" required="false">
+    <smelting>
+      <input name="dustDamascusSteel" />
+      <output name="ingotDamascusSteel" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: DamascusSteel Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockDamascusSteel" />
+      <output name="dustDamascusSteel" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Angmallen (Metallurgy) -->
+
+  <recipe name="Sagmill: Angmallen Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotAngmallen" />
+      <output name="dustAngmallen" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Angmallen Dust" required="false">
+    <smelting>
+      <input name="dustAngmallen" />
+      <output name="ingotAngmallen" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Angmallen Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockAngmallen" />
+      <output name="dustAngmallen" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Brass (Metallurgy) -->
+
+  <recipe name="Sagmill: Brass Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotBrass" />
+      <output name="dustBrass" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Brass Dust" required="false">
+    <smelting>
+      <input name="dustBrass" />
+      <output name="ingotBrass" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Brass Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockBrass" />
+      <output name="dustBrass" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Electrum (Metallurgy) -->
+
+  <recipe name="Sagmill: Electrum Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotElectrum" />
+      <output name="dustElectrum" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Electrum Dust" required="false">
+    <smelting>
+      <input name="dustElectrum" />
+      <output name="ingotElectrum" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Electrum Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockElectrum" />
+      <output name="dustElectrum" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- ShadowSteel (Metallurgy) -->
+
+  <recipe name="Sagmill: ShadowSteel Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotShadowSteel" />
+      <output name="dustShadowSteel" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: ShadowSteel Dust" required="false">
+    <smelting>
+      <input name="dustShadowSteel" />
+      <output name="ingotShadowSteel" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: ShadowSteel Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockShadowSteel" />
+      <output name="dustShadowSteel" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Inolashite (Metallurgy) -->
+
+  <recipe name="Sagmill: Inolashite Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotInolashite" />
+      <output name="dustInolashite" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Inolashite Dust" required="false">
+    <smelting>
+      <input name="dustInolashite" />
+      <output name="ingotInolashite" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Inolashite Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockInolashite" />
+      <output name="dustInolashite" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Amordrine (Metallurgy) -->
+
+  <recipe name="Sagmill: Amordrine Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotAmordrine" />
+      <output name="dustAmordrine" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Amordrine Dust" required="false">
+    <smelting>
+      <input name="dustAmordrine" />
+      <output name="ingotAmordrine" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Amordrine Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockAmordrine" />
+      <output name="dustAmordrine" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- BlackSteel (Metallurgy) -->
+
+  <recipe name="Sagmill: BlackSteel Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotBlackSteel" />
+      <output name="dustBlackSteel" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: BlackSteel Dust" required="false">
+    <smelting>
+      <input name="dustBlackSteel" />
+      <output name="ingotBlackSteel" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: BlackSteel Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockBlackSteel" />
+      <output name="dustBlackSteel" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Quicksilver (Metallurgy) -->
+
+  <recipe name="Sagmill: Quicksilver Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotQuicksilver" />
+      <output name="dustQuicksilver" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Quicksilver Dust" required="false">
+    <smelting>
+      <input name="dustQuicksilver" />
+      <output name="ingotQuicksilver" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Quicksilver Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockQuicksilver" />
+      <output name="dustQuicksilver" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Haderoth (Metallurgy) -->
+
+  <recipe name="Sagmill: Haderoth Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotHaderoth" />
+      <output name="dustHaderoth" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Haderoth Dust" required="false">
+    <smelting>
+      <input name="dustHaderoth" />
+      <output name="ingotHaderoth" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Haderoth Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockHaderoth" />
+      <output name="dustHaderoth" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Celenegil (Metallurgy) -->
+
+  <recipe name="Sagmill: Celenegil Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotCelenegil" />
+      <output name="dustCelenegil" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Celenegil Dust" required="false">
+    <smelting>
+      <input name="dustCelenegil" />
+      <output name="ingotCelenegil" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Celenegil Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockCelenegil" />
+      <output name="dustCelenegil" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Tartarite (Metallurgy) -->
+
+  <recipe name="Sagmill: Tartarite Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotTartarite" />
+      <output name="dustTartarite" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Tartarite Dust" required="false">
+    <smelting>
+      <input name="dustTartarite" />
+      <output name="ingotTartarite" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Tartarite Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockTartarite" />
+      <output name="dustTartarite" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Cyanite (Tiny Reactors) -->
+
+  <recipe name="Sagmill: Cyanite Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotCyanite" />
+      <output name="dustCyanite" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Cyanite Dust" required="false">
+    <smelting>
+      <input name="dustCyanite" />
+      <output name="ingotCyanite" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Cyanite Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockCyanite" />
+      <output name="dustCyanite" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Blutonium (Tiny Reactors) -->
+
+  <recipe name="Sagmill: Blutonium Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotBlutonium" />
+      <output name="dustBlutonium" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Blutonium Dust" required="false">
+    <smelting>
+      <input name="dustBlutonium" />
+      <output name="ingotBlutonium" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Blutonium Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockBlutonium" />
+      <output name="dustBlutonium" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Graphite (Tiny Reactors) -->
+
+  <recipe name="Sagmill: Graphite Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotGraphite" />
+      <output name="dustGraphite" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Graphite Dust" required="false">
+    <smelting>
+      <input name="dustGraphite" />
+      <output name="ingotGraphite" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Graphite Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockGraphite" />
+      <output name="dustGraphite" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Ludicrite (Tiny Reactors) -->
+
+  <recipe name="Sagmill: Ludicrite Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotLudicrite" />
+      <output name="dustLudicrite" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Ludicrite Dust" required="false">
+    <smelting>
+      <input name="dustLudicrite" />
+      <output name="ingotLudicrite" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Ludicrite Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockLudicrite" />
+      <output name="dustLudicrite" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Manyullyn (TiC) -->
+
+  <recipe name="Sagmill: Manyullyn Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotManyullyn" />
+      <output name="dustManyullyn" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: Manyullyn Dust" required="false">
+    <smelting>
+      <input name="dustManyullyn" />
+      <output name="ingotManyullyn" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: Manyullyn Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockManyullyn" />
+      <output name="dustManyullyn" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- AluminumBrass (TiC) -->
+
+  <recipe name="Sagmill: AluminumBrass Ingot" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="ingotAluminumBrass" />
+      <output name="dustAluminumBrass" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Smelting: AluminumBrass Dust" required="false">
+    <smelting>
+      <input name="dustAluminumBrass" />
+      <output name="ingotAluminumBrass" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Sagmill: AluminumBrass Block" required="false">
+    <sagmilling energy="3600" bonus="none">
+      <input name="blockAluminumBrass" />
+      <output name="dustAluminumBrass" amount="9" />
+    </sagmilling>
+  </recipe>
+
+</enderio:recipes>

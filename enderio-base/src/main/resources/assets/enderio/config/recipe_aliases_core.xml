@@ -60,6 +60,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="POWDER_ARDITE" item="dustArdite" />
   <alias name="POWDER_COBALT" item="dustCobalt" />
   <alias name="POWDER_INFINITY" item="dustBedrock" />
+  <alias name="POWDER_QUARTZ" item="dustNetherQuartz" />
   
   <!-- Note: ORGANIC_GREEN_DYE and ORGANIC_BROWN_DYE are added automatically -->
   

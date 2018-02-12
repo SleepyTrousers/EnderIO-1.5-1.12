@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <!-- modded item in, something out -->
+
+  <!-- AE2 -->
+
+  <recipe name="Sagmill: Certus Quartz Crystal" required="false">
+    <sagmilling energy="800" bonus="none">
+      <input name="crystalCertusQuartz"/>
+      <output name="dustCertusQuartz" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Charged Certus Quartz Crystal" required="false">
+    <sagmilling energy="800" bonus="none">
+      <input name="appliedenergistics2:material:1"/>
+      <output name="dustCertusQuartz" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Fluix Crystal" required="false">
+    <sagmilling energy="800" bonus="none">
+      <input name="crystalFluix"/>
+      <output name="dustFluix" />
+    </sagmilling>
+  </recipe>
+
+  <!-- BoP -->
+
+  <recipe name="Sagmill: Small Bone Segment" required="false">
+    <sagmilling energy="2600">
+      <input name="biomesoplenty:bones:0"/>
+      <output name="minecraft:dye:15" amount="8" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Medium Bone Segment" required="false">
+    <sagmilling energy="3200">
+      <input name="biomesoplenty:bones:1"/>
+      <output name="minecraft:dye:15" amount="12" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Large Bone Segment" required="false">
+    <sagmilling energy="4800">
+      <input name="biomesoplenty:bones:2"/>
+      <output name="minecraft:dye:15" amount="24" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Ex Compressum / Ex Nihilo Creatio / ExU2 -->
+
+  <recipe name="Sagmill: Compressed Cobblestone" required="false">
+    <sagmilling energy="4800" bonus="none">
+      <input name="compressed1xCobblestone"/>
+      <output name="compressed1xGravel" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Double Compressed Cobblestone" required="false">
+    <sagmilling energy="4800" bonus="none">
+      <input name="compressed2xCobblestone"/>
+      <output name="compressed2xGravel" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Tripple Compressed Cobblestone" required="false">
+    <sagmilling energy="4800" bonus="none">
+      <input name="compressed3xCobblestone"/>
+      <output name="compressed2xGravel" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Quadruple Compressed Cobblestone" required="false">
+    <sagmilling energy="4800" bonus="none">
+      <input name="compressed4xCobblestone"/>
+      <output name="compressed2xGravel" amount="64" />
+      <output name="compressed2xGravel" amount="17" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Compressed Gravel" required="false">
+    <sagmilling energy="4800" bonus="none">
+      <input name="compressed1xGravel"/>
+      <output name="compressed1xSand" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Double Compressed Gravel" required="false">
+    <sagmilling energy="4800" bonus="none">
+      <input name="compressed2xGravel"/>
+      <output name="compressed2xSand" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Compressed Sand" required="false">
+    <sagmilling energy="4800" bonus="none">
+      <input name="compressed1xSand"/>
+      <output name="compressed1xDust" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Double Compressed Sand" required="false">
+    <sagmilling energy="4800" bonus="none">
+      <input name="compressed2xSand"/>
+      <output name="compressed2xDust" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Compressed Netherrack" required="false">
+    <sagmilling energy="4800" bonus="none">
+      <input name="compressed1xNetherrack"/>
+      <output name="exnihilocreatio:block_netherrack_crushed" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Double Compressed Netherrack" required="false">
+    <sagmilling energy="4800" bonus="none">
+      <input name="compressed2xNetherrack"/>
+      <output name="exnihilocreatio:block_netherrack_crushed" amount="64" />
+      <output name="exnihilocreatio:block_netherrack_crushed" amount="17" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Compressed End Stone" required="false">
+    <sagmilling energy="4800" bonus="none">
+      <input name="compressed1xEndStone"/>
+      <output name="exnihilocreatio:block_endstone_crushed" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Natura -->
+
+  <recipe name="Sagmill: Barley" required="false">
+    <sagmilling energy="800">
+      <input name="cropBarley"/>
+      <output name="natura:materials:1" amount="2" />
+      <output name="seedBarley" chance="0.2" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Bluebells" required="false">
+    <sagmilling energy="900">
+      <input name="natura:bluebells_flower"/>
+      <output name="natura:materials:8" chance="0.8" />
+      <output name="natura:materials:8" chance="0.6" />
+      <output name="natura:materials:8" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+</enderio:recipes>

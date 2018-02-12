@@ -48,7 +48,7 @@ public class PacketVatProgress extends MessageTileEntity<TileVat> {
     if (rec == null) {
       return;
     }
-    for (ResultStack res : rec.getCompletedResult(1.0f, task.getInputs())) {
+    for (ResultStack res : rec.getCompletedResult(0, 1f, task.getInputs())) {
       final FluidStack fluid = res.fluid;
       if (fluid != null && fluid.getFluid() != null) {
         outputFluidId = fluid.getFluid().getName();

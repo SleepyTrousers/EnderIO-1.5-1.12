@@ -370,11 +370,11 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   @Override
   public void onCapacitorDataChange() {
     super.onCapacitorDataChange();
-    currentTask = createTask(null, 0f);
+    currentTask = createTask(null, 0L);
   }
 
   @Override
-  protected IPoweredTask createTask(@Nullable IMachineRecipe nextRecipe, float chance) {
+  protected IPoweredTask createTask(@Nullable IMachineRecipe nextRecipe, long nextSeed) {
     return new ContinuousTask(getPowerUsePerTick());
   }
 

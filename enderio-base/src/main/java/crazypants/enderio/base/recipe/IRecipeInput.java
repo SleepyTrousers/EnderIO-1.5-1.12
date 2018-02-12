@@ -29,4 +29,6 @@ public interface IRecipeInput {
 
   boolean isValid();
 
+  void shrinkStack(int count);
+
 }

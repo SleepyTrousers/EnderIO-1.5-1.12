@@ -53,7 +53,7 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
   }
 
   @Override
-  public @Nonnull ResultStack[] getCompletedResult(float chance, @Nonnull NNList<MachineRecipeInput> inputs) {
+  public @Nonnull ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, @Nonnull NNList<MachineRecipeInput> inputs) {
     if (inputs.size() <= 0) {
       return new ResultStack[0];
     }

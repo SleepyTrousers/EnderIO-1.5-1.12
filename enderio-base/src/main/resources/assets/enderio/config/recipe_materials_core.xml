@@ -269,20 +269,6 @@ XML editor will display that as tooltips when editing this file.
     </casting>
   </recipe>
 
-  <recipe name="Iron Dust, Smelting" required="true">
-    <smelting>
-      <input name="POWDER_IRON"/>
-      <output name="minecraft:iron_ingot"/>
-    </smelting>
-  </recipe>
-
-  <recipe name="Gold Dust, Smelting" required="true">
-    <smelting>
-      <input name="POWDER_GOLD"/>
-      <output name="minecraft:gold_ingot"/>
-    </smelting>
-  </recipe>
-
   <recipe name="Ender Pearl Nuggets" required="true">
     <crafting>
       <shapeless>
@@ -326,45 +312,12 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Machine Dye">
     <crafting>
       <grid>
-        <item name="dustLapis"/><item name="dustQuartz"/><item name="ORGANIC_GREEN_DYE"/>
-        <item name="dustQuartz"/><item name="ORGANIC_BLACK_DYE"/><item name="dustQuartz"/>
-        <item name="ORGANIC_GREEN_DYE"/><item name="dustQuartz"/><item name="dustLapis"/>
+        <item name="dustLapis"/><item name="POWDER_QUARTZ"/><item name="ORGANIC_GREEN_DYE"/>
+        <item name="POWDER_QUARTZ"/><item name="ORGANIC_BLACK_DYE"/><item name="POWDER_QUARTZ"/>
+        <item name="ORGANIC_GREEN_DYE"/><item name="POWDER_QUARTZ"/><item name="dustLapis"/>
       </grid>
       <output name="dyeMachine" amount="9"/>
     </crafting>
-  </recipe>
-
-  <recipe name="Machine Dye, Mirrored">
-    <crafting>
-      <grid>
-        <item name="ORGANIC_GREEN_DYE"/><item name="dustQuartz"/><item name="dustLapis"/>
-        <item name="dustQuartz"/><item name="ORGANIC_BLACK_DYE"/><item name="dustQuartz"/>
-        <item name="dustLapis"/><item name="dustQuartz"/><item name="ORGANIC_GREEN_DYE"/>
-      </grid>
-      <output name="dyeMachine" amount="9"/>
-    </crafting>
-  </recipe>
-
-  <recipe name="Quartz Dust">
-    <sagmilling bonus="chance_only" energy="2400">
-      <input name="gemQuartz"/>
-      <output name="dustQuartz"/>
-      <output name="dustQuartz" chance=".1"/>
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Lapis Dust">
-    <sagmilling bonus="none" energy="2400">
-      <input name="gemLapis"/>
-      <output name="dustLapis"/>
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Lapis Block Dust">
-    <sagmilling bonus="none" energy="3600">
-      <input name="blockLapis"/>
-      <output name="dustLapis" amount="9"/>
-    </sagmilling>
   </recipe>
 
   <recipe name="Gear, Wood" required="true">
@@ -561,7 +514,7 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Bread" required="true">
     <smelting exp="0.35">
-      <input name="dustWheat"/>
+      <input name="FLOUR"/>
       <output name="minecraft:bread"/>
     </smelting>
   </recipe>

@@ -141,7 +141,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
   private void updateOutput() {
     EnchanterRecipe currentEnchantmentRecipe = getInv().getCurrentEnchantmentRecipe();
     if (currentEnchantmentRecipe != null) {
-      ResultStack[] completedResult = currentEnchantmentRecipe.getCompletedResult(FIRST_INVENTORY_SLOT, getInv().getInvAsMachineRecipeInput());
+      ResultStack[] completedResult = currentEnchantmentRecipe.getCompletedResult(0, 1F, getInv().getInvAsMachineRecipeInput());
       getInv().setOutput(completedResult[0].item);
     } else {
       getInv().setOutput(Prep.getEmpty());

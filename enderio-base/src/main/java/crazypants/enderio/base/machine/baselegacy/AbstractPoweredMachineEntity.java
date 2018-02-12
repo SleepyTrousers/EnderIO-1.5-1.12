@@ -53,7 +53,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     if (world.isRemote) {
       return;
     }
-    usePower(getPowerLossPerTick());
+    losePower(getPowerLossPerTick());
     boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(5));
     if (powerChanged) {
       lastSyncPowerStored = storedEnergyRF;
@@ -198,6 +198,13 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   }
 
   protected int usePower(int wantToUse) {
+    int used = Math.min(getEnergyStored(), wantToUse);
+    setEnergyStored(Math.max(0, getEnergyStored() - used));
+    return used;
+  }
+
+  // extra method because task machines use usePower() to advance their tasks
+  protected int losePower(int wantToUse) {
     int used = Math.min(getEnergyStored(), wantToUse);
     setEnergyStored(Math.max(0, getEnergyStored() - used));
     return used;

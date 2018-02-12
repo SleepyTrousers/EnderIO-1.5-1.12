@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <!-- vanilla item in, vanilla item out (modded byproduct possible) -->
+
+  <recipe name="Sagmill: StoneBricks" required="true">
+    <sagmilling energy="2400" bonus="none">
+      <input name="minecraft:stonebrick:0"/>
+      <output name="oredict:cobblestone" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: CrackedBricks" required="true">
+    <sagmilling energy="2000" bonus="none">
+      <input name="minecraft:stonebrick:2"/>
+      <output name="oredict:cobblestone" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: ChisledBricks" required="true">
+    <sagmilling energy="2800" bonus="none">
+      <input name="minecraft:stonebrick:3"/>
+      <output name="oredict:cobblestone" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Stone" required="true">
+    <sagmilling energy="2400" bonus="none">
+      <input name="minecraft:stone:0"/>
+      <output name="oredict:cobblestone" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Cobblestone" required="true">
+    <sagmilling energy="2400">
+      <input name="oredict:cobblestone"/>
+      <output name="oredict:gravel" chance="0.7" />
+      <output name="oredict:gravel" chance="0.3" />
+      <output name="oredict:sand" chance="0.1" />
+      <output name="oredict:itemFlint" chance="0.05" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Sandstone" required="true">
+    <sagmilling energy="2400" bonus="chance_only">
+      <input name="oredict:sandstone"/>
+      <output name="oredict:sand" amount="2" />
+      <output name="oredict:sand" amount="2" chance="0.4" />
+      <output name="oredict:dustSaltpeter" chance="0.15" required="false" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Glass" required="true">
+    <sagmilling energy="1200" bonus="none">
+      <input name="blockGlass"/>
+      <output name="oredict:sand" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Gravel" required="true">
+    <sagmilling energy="2400">
+      <input name="oredict:gravel"/>
+      <output name="oredict:sand" chance="0.7" />
+      <output name="oredict:sand" chance="0.3" />
+      <output name="oredict:itemFlint" chance="0.3" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Netherrack" required="false">
+    <sagmilling energy="2400">
+      <input name="minecraft:netherrack"/>
+      <output name="dustSulfur" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: BlazeRod" required="true">
+    <sagmilling energy="2400">
+      <input name="minecraft:blaze_rod"/>
+      <output name="minecraft:blaze_powder" amount="4" />
+      <output name="dustSulfur" chance="0.5" required="false" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: GlowStone" required="true">
+    <sagmilling energy="2400" bonus="chance_only">
+      <input name="oredict:glowstone"/>
+      <output name="dustGlowstone" amount="3" />
+      <output name="dustGlowstone" chance="0.8" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Bone" required="true">
+    <sagmilling energy="1200">
+      <input name="minecraft:bone"/>
+      <!-- don't oredict bonemeal -->
+      <output name="minecraft:dye:15" amount="6" />
+      <output name="minecraft:dye:15" amount="2" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Bone Block" required="true">
+    <sagmilling energy="3600" bonus="none">
+      <input name="minecraft:bone_block"/>
+      <output name="minecraft:dye:15" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: ClayBlock" required="true">
+    <sagmilling energy="2400">
+      <input name="minecraft:clay"/>
+      <output name="minecraft:clay_ball" amount="2" />
+      <output name="minecraft:clay_ball" chance="0.1" />
+      <output name="itemSilicon" amount="2" chance="0.8" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Wool" required="true">
+    <sagmilling energy="1200" bonus="chance_only">
+      <input name="minecraft:wool:*"/>
+      <output name="minecraft:string" amount="3" />
+      <output name="minecraft:string" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Block of Quartz" required="true">
+    <sagmilling energy="2400" bonus="chance_only">
+      <input name="blockQuartz"/>
+      <output name="gemQuartz" amount="2" />
+      <output name="gemQuartz" amount="2" chance="0.25" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Quartz Stairs" required="true">
+    <sagmilling energy="1200" bonus="chance_only">
+      <input name="minecraft:quartz_stairs"/>
+      <output name="gemQuartz" amount="2" />
+      <output name="gemQuartz" amount="2" chance="0.25" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Quartz Slab" required="true">
+    <sagmilling energy="1200" bonus="chance_only">
+      <input name="minecraft:stone_slab:7"/>
+      <output name="gemQuartz" amount="1" />
+      <output name="gemQuartz" chance="0.25" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Spider Web" required="true">
+    <sagmilling energy="5000">
+      <input name="minecraft:web"/>
+      <output name="oredict:string" amount="2" />
+      <output name="oredict:string" chance="0.6" />
+      <output name="oredict:string" chance="0.3" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Yellow Flower" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:yellow_flower"/>
+      <output name="dyeYellow" chance="0.8" />
+      <output name="dyeYellow" chance="0.6" />
+      <output name="dyeYellow" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Red Flower" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:red_flower:0"/>
+      <output name="dyeRed" chance="0.8" />
+      <output name="dyeRed" chance="0.6" />
+      <output name="dyeRed" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Blue Flower" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:red_flower:1"/>
+      <output name="dyeLightBlue" chance="0.8" />
+      <output name="dyeLightBlue" chance="0.6" />
+      <output name="dyeLightBlue" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Magenta Flower" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:red_flower:2"/>
+      <output name="dyeMagenta" chance="0.8" />
+      <output name="dyeMagenta" chance="0.6" />
+      <output name="dyeMagenta" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Light Gray Flower" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:red_flower:3"/>
+      <output name="dyeLightGray" chance="0.8" />
+      <output name="dyeLightGray" chance="0.6" />
+      <output name="dyeLightGray" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Red Tulip" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:red_flower:4"/>
+      <output name="dyeRed" chance="0.8" />
+      <output name="dyeRed" chance="0.6" />
+      <output name="dyeRed" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Orange Tulip" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:red_flower:5"/>
+      <output name="dyeOrange" chance="0.8" />
+      <output name="dyeOrange" chance="0.6" />
+      <output name="dyeOrange" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Light Gray Tulip" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:red_flower:6"/>
+      <output name="dyeLightGray" chance="0.8" />
+      <output name="dyeLightGray" chance="0.6" />
+      <output name="dyeLightGray" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Pink Flower" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:red_flower:7"/>
+      <output name="dyePink" chance="0.8" />
+      <output name="dyePink" chance="0.6" />
+      <output name="dyePink" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Daisy" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:red_flower:8"/>
+      <output name="dyeLightGray" chance="0.8" />
+      <output name="dyeLightGray" chance="0.6" />
+      <output name="dyeLightGray" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Shrub" required="true"><!-- hidden item -->
+    <sagmilling energy="1200">
+      <input name="minecraft:tallgrass:0"/>
+      <output name="itemPlantbrown" chance="0.8" />
+      <output name="itemPlantbrown" chance="0.6" />
+      <output name="itemPlantbrown" chance="0.3" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Tall Grass" required="true">
+    <sagmilling energy="1200">
+      <input name="minecraft:tallgrass:1"/>
+      <output name="itemPlantgreen" chance="0.6" />
+      <output name="itemPlantgreen" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+      <output name="itemPlantbrown" chance="0.05" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Fern" required="true">
+    <sagmilling energy="1200">
+      <input name="minecraft:tallgrass:2"/>
+      <output name="itemPlantgreen" chance="0.6" />
+      <output name="itemPlantgreen" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+      <output name="itemPlantbrown" chance="0.05" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Dead Bush" required="true">
+    <sagmilling energy="1200">
+      <input name="minecraft:deadbush"/>
+      <output name="itemPlantbrown" chance="0.2" />
+      <output name="itemPlantbrown" chance="0.1" />
+      <output name="itemPlantbrown" chance="0.05" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Leaves" required="true">
+    <sagmilling energy="600">
+      <input name="treeLeaves"/>
+      <output name="itemPlantgreen" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.1" />
+      <output name="itemPlantbrown" chance="0.025" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Vines" required="true">
+    <sagmilling energy="600">
+      <input name="oredict:vine"/>
+      <output name="itemPlantgreen" chance="0.15" />
+      <output name="itemPlantgreen" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Cactus" required="true">
+    <sagmilling energy="2000">
+      <input name="blockCactus"/>
+      <output name="itemPlantgreen" amount="3" />
+      <output name="itemPlantgreen" amount="3" chance="0.75" />
+      <output name="itemPlantgreen" amount="3" chance="0.5" />
+      <output name="itemPlantgreen" amount="3" chance="0.25" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Water Lily" required="true">
+    <sagmilling energy="800">
+      <input name="minecraft:waterlily"/>
+      <output name="itemPlantgreen" amount="3" chance="0.15" />
+      <output name="itemPlantgreen" amount="3" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Double Plant Yellow" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:double_plant:0"/>
+      <output name="dyeYellow" amount="2" chance="0.8" />
+      <output name="dyeYellow" chance="0.6" />
+      <output name="dyeYellow" amount="2" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.2" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Double Plant Magenta" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:double_plant:1"/>
+      <output name="dyeMagenta" amount="2" chance="0.8" />
+      <output name="dyeMagenta" chance="0.6" />
+      <output name="dyeMagenta" amount="2" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.2" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Double Tall Grass" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:double_plant:2"/>
+      <output name="itemPlantgreen" amount="2" chance="0.6" />
+      <output name="itemPlantgreen" chance="0.3" />
+      <output name="itemPlantgreen" amount="2" chance="0.1" />
+      <output name="itemPlantbrown" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Large Fern" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:double_plant:3"/>
+      <output name="itemPlantgreen" amount="2" chance="0.6" />
+      <output name="itemPlantgreen" chance="0.3" />
+      <output name="itemPlantgreen" amount="2" chance="0.1" />
+      <output name="itemPlantbrown" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Double Plant Red" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:double_plant:4"/>
+      <output name="dyeRed" amount="2" chance="0.8" />
+      <output name="dyeRed" chance="0.6" />
+      <output name="dyeRed" amount="2" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.2" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Double Plant Pink" required="true">
+    <sagmilling energy="900">
+      <input name="minecraft:double_plant:5"/>
+      <output name="dyePink" amount="2" chance="0.8" />
+      <output name="dyePink" chance="0.6" />
+      <output name="dyePink" amount="2" chance="0.3" />
+      <output name="itemPlantgreen" chance="0.2" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Reeds" required="true">
+    <sagmilling energy="2000">
+      <input name="oredict:sugarcane"/>
+      <output name="minecraft:sugar" />
+      <output name="minecraft:sugar" chance="0.5" />
+      <output name="minecraft:sugar" chance="0.5" />
+      <output name="itemPlantgreen" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Flower Pot" required="false">
+    <sagmilling energy="2000">
+      <input name="item:minecraft:flower_pot"/>
+      <output name="itemClay" chance="0.9" />
+      <output name="itemClay" chance="0.3" />
+      <output name="itemClay" chance="0.1" />
+      <output name="dustCoal" chance="0.05" />
+    </sagmilling>
+  </recipe>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</enderio:recipes>

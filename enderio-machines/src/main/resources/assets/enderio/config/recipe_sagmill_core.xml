@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
 
+  <!-- recipes Ender IO needs -->
+
   <recipe name="Simple SAG Mill" required="true">
     <crafting>
       <grid size="3x3">
@@ -73,16 +75,6 @@
     </sagmilling>
   </recipe>
 
-  <recipe name="Sagmill: Coal Ore" required="true">
-    <sagmilling energy="3600">
-      <input name="oreCoal"/>
-      <output name="minecraft:coal" amount="3" />
-      <output name="dustCoal" chance="0.6" />
-      <output name="oredict:cobblestone" chance="0.15" />
-      <output name="gemDiamond" chance="0.001" />
-    </sagmilling>
-  </recipe>
-
   <recipe name="Sagmill: Coal" required="true">
     <sagmilling energy="2400">
       <input name="minecraft:coal:0"/>
@@ -92,47 +84,7 @@
     </sagmilling>
   </recipe>
 
-  <recipe name="Sagmill: Charcoal" required="false">
-    <sagmilling energy="2400">
-      <input name="minecraft:coal:1"/>
-      <output name="dustCharcoal" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Iron Ore" required="true">
-    <sagmilling energy="3600">
-      <input name="oreIron"/>
-      <output name="dustIron" amount="2" />
-      <output name="dustTin" chance="0.05" required="false" />
-      <output name="dustNickel" chance="0.1" required="false" />
-      <output name="oredict:cobblestone" chance="0.15" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Iron Ingot" required="true">
-    <sagmilling energy="2400" bonus="none">
-      <input name="ingotIron"/>
-      <output name="dustIron" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Gold Ore" required="true">
-    <sagmilling energy="3600">
-      <input name="oreGold"/>
-      <output name="dustGold" amount="2" />
-      <output name="dustCopper" chance="0.2" required="false" />
-      <output name="oredict:cobblestone" chance="0.15" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Gold Ingot" required="true">
-    <sagmilling energy="2400" bonus="none">
-      <input name="ingotGold"/>
-      <output name="dustGold" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: EnderPearl" required="true">
+  <recipe name="Sagmill: Ender Pearl" required="true">
     <sagmilling energy="1600" bonus="none">
       <input name="oredict:enderpearl"/>
       <output name="nuggetEnderpearl" amount="9"  />
@@ -160,6 +112,35 @@
     </sagmilling>
   </recipe>
 
+  <recipe name="Sagmill: Obsidian" required="true">
+    <sagmilling energy="4000">
+      <input name="minecraft:obsidian"/>
+      <output name="dustObsidian" amount="4" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Quartz Dust">
+    <sagmilling bonus="chance_only" energy="2400">
+      <input name="gemQuartz"/>
+      <output name="POWDER_QUARTZ"/>
+      <output name="POWDER_QUARTZ" chance=".1"/>
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Lapis Dust">
+    <sagmilling bonus="none" energy="2400">
+      <input name="gemLapis"/>
+      <output name="dustLapis"/>
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Lapis Block Dust">
+    <sagmilling bonus="none" energy="3600">
+      <input name="blockLapis"/>
+      <output name="dustLapis" amount="9"/>
+    </sagmilling>
+  </recipe>
+
   <recipe name="Sagmill: Infinity Powder" required="true">
       <!-- Note: This recipe is not usually available; Ender IO does not add a way to get bedrock.
                  But if another mod does so, this will allow players to "shave off" infinity
@@ -179,201 +160,5 @@
     </sagmilling>
   </recipe>
 
-  <recipe name="Sagmill: StoneBricks" required="true">
-    <sagmilling energy="2400" bonus="none">
-      <input name="minecraft:stonebrick:0"/>
-      <output name="oredict:cobblestone" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: CrackedBricks" required="true">
-    <sagmilling energy="2000" bonus="none">
-      <input name="minecraft:stonebrick:2"/>
-      <output name="oredict:cobblestone" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: ChisledBricks" required="true">
-    <sagmilling energy="2800" bonus="none">
-      <input name="minecraft:stonebrick:3"/>
-      <output name="oredict:cobblestone" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Stone" required="true">
-    <sagmilling energy="2400" bonus="none">
-      <input name="minecraft:stone:0"/>
-      <output name="oredict:cobblestone" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Cobblestone" required="true">
-    <sagmilling energy="2400">
-      <input name="oredict:cobblestone"/>
-      <output name="oredict:gravel" chance="0.7" />
-      <output name="oredict:gravel" chance="0.3" />
-      <output name="oredict:sand" chance="0.1" />
-      <output name="oredict:itemFlint" chance="0.05" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Sandstone" required="true">
-    <sagmilling energy="2400" bonus="chance_only">
-      <input name="oredict:sandstone"/>
-      <output name="oredict:sand" amount="2" />
-      <output name="oredict:sand" amount="2" chance="0.4" />
-      <output name="oredict:dustSaltpeter" chance="0.15" required="false" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Glass" required="true">
-    <sagmilling energy="1200" bonus="none">
-      <input name="blockGlass"/>
-      <output name="oredict:sand" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Gravel" required="true">
-    <sagmilling energy="2400">
-      <input name="oredict:gravel"/>
-      <output name="oredict:sand" chance="0.7" />
-      <output name="oredict:sand" chance="0.3" />
-      <output name="oredict:itemFlint" chance="0.3" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Netherrack" required="false">
-    <sagmilling energy="2400">
-      <input name="minecraft:netherrack"/>
-      <output name="dustSulfur" chance="0.15" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: BlazeRod" required="true">
-    <sagmilling energy="2400">
-      <input name="minecraft:blaze_rod"/>
-      <output name="minecraft:blaze_powder" amount="4" />
-      <output name="dustSulfur" chance="0.5" required="false" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: GlowStone" required="true">
-    <sagmilling energy="2400" bonus="chance_only">
-      <input name="oredict:glowstone"/>
-      <output name="dustGlowstone" amount="3" />
-      <output name="dustGlowstone" chance="0.8" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Bone" required="true">
-    <sagmilling energy="1200">
-      <input name="minecraft:bone"/>
-      <!-- don't oredict bonemeal -->
-      <output name="minecraft:dye:15" amount="6" />
-      <output name="minecraft:dye:15" amount="2" chance="0.1" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Bone Block" required="true">
-    <sagmilling energy="3600" bonus="none">
-      <input name="minecraft:bone_block"/>
-      <output name="minecraft:dye:15" amount="9" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: ClayBlock" required="true">
-    <sagmilling energy="2400">
-      <input name="minecraft:clay"/>
-      <output name="minecraft:clay_ball" amount="2" />
-      <output name="minecraft:clay_ball" chance="0.1" />
-      <output name="itemSilicon" amount="2" chance="0.8" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Wool" required="true">
-    <sagmilling energy="1200" bonus="chance_only">
-      <input name="minecraft:wool:*"/>
-      <output name="minecraft:string" amount="3" />
-      <output name="minecraft:string" chance="0.1" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Wheat" required="true">
-    <sagmilling energy="800">
-      <input name="item:minecraft:wheat"/>
-      <output name="dustWheat" />
-      <output name="minecraft:wheat_seeds" chance="0.2" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Redstone Ore" required="true">
-    <sagmilling energy="3000">
-      <input name="oreRedstone"/>
-      <output name="minecraft:redstone" amount="8" />
-      <output name="minecraft:redstone" chance="0.2" />
-      <output name="itemSilicon" chance="0.8" />
-      <output name="oredict:cobblestone" chance="0.15" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Diamond Ore" required="true">
-    <sagmilling energy="3000">
-      <input name="oreDiamond"/>
-      <output name="gemDiamond" amount="2" />
-      <output name="gemDiamond" chance="0.25" />
-      <output name="dustCoal" chance="0.05" />
-      <output name="oredict:cobblestone" chance="0.15" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Emerald Ore" required="true">
-    <sagmilling energy="3000">
-      <input name="oreEmerald"/>
-      <output name="minecraft:emerald" />
-      <output name="minecraft:emerald" chance="0.25" />
-      <output name="oredict:cobblestone" chance="0.15" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Lapis Lazuli Ore" required="true">
-    <sagmilling energy="3000">
-      <input name="oreLapis"/>
-      <output name="minecraft:dye:4" amount="8" />
-      <output name="minecraft:dye:4" chance="0.2" />
-      <output name="oredict:cobblestone" chance="0.15" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Quartz Ore" required="true">
-    <sagmilling energy="7200">
-      <input name="oreQuartz"/>
-      <output name="gemQuartz" amount="2" />
-      <output name="dustNetherQuartz" chance="0.1" required="false" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Block of Quartz" required="true">
-    <sagmilling energy="2400" bonus="chance_only">
-      <input name="blockQuartz"/>
-      <output name="gemQuartz" amount="2" />
-      <output name="gemQuartz" amount="2" chance="0.25" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Quartz Stairs" required="true">
-    <sagmilling energy="1200" bonus="chance_only">
-      <input name="minecraft:quartz_stairs"/>
-      <output name="gemQuartz" amount="2" />
-      <output name="gemQuartz" amount="2" chance="0.25" />
-    </sagmilling>
-  </recipe>
-
-  <recipe name="Sagmill: Quartz Slab" required="true">
-    <sagmilling energy="1200" bonus="chance_only">
-      <input name="minecraft:stone_slab:7"/>
-      <output name="gemQuartz" amount="1" />
-      <output name="gemQuartz" chance="0.25" />
-    </sagmilling>
-  </recipe>
 
 </enderio:recipes>

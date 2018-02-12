@@ -56,7 +56,7 @@ public enum Material {
   POWDER_ARDITE("powder_ardite", "dustArdite", "oreArdite"),
   POWDER_COBALT("powder_cobalt", "dustCobalt", "oreCobalt"),
   POWDER_LAPIS("powder_lapis_lazuli", "dustLapis"),
-  POWDER_QUARTZ("powder_quartz", "dustQuartz"),
+  POWDER_QUARTZ("powder_quartz", "dustNetherQuartz"),
   POWDER_PRECIENT("precientPowder", true),
   POWDER_VIBRANT("vibrantPowder", true),
   POWDER_PULSATING("pulsatingPowder", true),

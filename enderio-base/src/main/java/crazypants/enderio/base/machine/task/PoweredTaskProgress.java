@@ -6,9 +6,9 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.RecipeBonusType;
-import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -47,11 +47,6 @@ public class PoweredTaskProgress implements IPoweredTask {
 
   @Override
   public float getRequiredEnergy() {
-    return 0;
-  }
-
-  @Override
-  public float getChance() {
     return 0;
   }
 
