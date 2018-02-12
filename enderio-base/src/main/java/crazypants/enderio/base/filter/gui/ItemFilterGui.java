@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 
 public class ItemFilterGui extends GuiContainerBaseEIO {
 
@@ -34,8 +35,8 @@ public class ItemFilterGui extends GuiContainerBaseEIO {
   private IItemFilter filter;
   private IItemFilterGui filterGui;
 
-  public ItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull IItemFilter filter) {
-    super(new ContainerItemFilter(playerInv, filter), "item_filter");
+  public ItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull IItemFilter filter, @Nonnull ItemStack filterStack) {
+    super(new ContainerItemFilter(playerInv, filter, filterStack), "item_filter");
     this.filter = filter;
 
     ySize = 158;

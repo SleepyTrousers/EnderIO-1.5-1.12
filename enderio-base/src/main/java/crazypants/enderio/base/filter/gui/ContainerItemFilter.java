@@ -7,17 +7,21 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.inventory.EnderInventory;
 
+import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public class ContainerItemFilter extends ContainerEnderCap<EnderInventory, TileEntity> implements IItemFilterContainer {
 
-  private IItemFilter filter;
+  private @Nonnull IItemFilter filter;
+  private @Nonnull ItemStack filterStack;
 
-  public ContainerItemFilter(@Nonnull InventoryPlayer playerInv, @Nonnull IItemFilter filter) {
+  public ContainerItemFilter(@Nonnull InventoryPlayer playerInv, @Nonnull IItemFilter filter, @Nonnull ItemStack filterStack) {
     super(playerInv, new EnderInventory(), null);
     this.filter = filter;
+    this.filterStack = filterStack;
   }
 
   @Override
@@ -28,7 +32,7 @@ public class ContainerItemFilter extends ContainerEnderCap<EnderInventory, TileE
 
   @Override
   public void onFilterChanged() {
-
+    FilterRegistry.writeFilterToStack(filter, filterStack);
   }
 
   @Override

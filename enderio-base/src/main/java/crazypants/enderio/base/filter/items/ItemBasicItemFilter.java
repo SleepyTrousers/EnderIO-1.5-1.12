@@ -56,11 +56,12 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
   }
 
   @Override
+  @Nonnull
   public IItemFilter createFilterFromStack(@Nonnull ItemStack stack) {
     int damage = MathHelper.clamp(stack.getItemDamage(), 0, BasicFilterTypes.values().length);
     ItemFilter filter = new ItemFilter(damage);
     NBTTagCompound tag = NbtValue.FILTER.getTag(stack);
-    filter.readFromNBT(tag);
+    FilterRegistry.loadFilterFromNbt(tag);
     return filter;
   }
 
@@ -116,13 +117,21 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
   @Override
   @Nullable
   public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return new ContainerItemFilter(player.inventory, createFilterFromStack(player.getHeldItemMainhand()));
+    ItemStack filterStack = player.getHeldItemMainhand();
+    if (!filterStack.isEmpty()) {
+      return new ContainerItemFilter(player.inventory, createFilterFromStack(filterStack), filterStack);
+    }
+    return null;
   }
 
   @Override
   @Nullable
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return new ItemFilterGui(player.inventory, createFilterFromStack(player.getHeldItemMainhand()));
+    ItemStack filterStack = player.getHeldItemMainhand();
+    if (!filterStack.isEmpty()) {
+      return new ItemFilterGui(player.inventory, createFilterFromStack(filterStack), filterStack);
+    }
+    return null;
   }
 
 }

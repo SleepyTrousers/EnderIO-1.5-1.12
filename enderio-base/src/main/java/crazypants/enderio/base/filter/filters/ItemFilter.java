@@ -334,15 +334,6 @@ public class ItemFilter implements IInventory, IItemFilter {
     nbtRoot.setTag("items", tagList);
   }
 
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
-  // ItemConduitFilterContainer cont = new ItemConduitFilterContainer(itemConduit, gui.getDir(), isInput);
-  // BasicItemFilterGui basicItemFilterGui = new BasicItemFilterGui(gui, cont, !isInput);
-  // basicItemFilterGui.createFilterSlots();
-  // return basicItemFilterGui;
-  // }
-
   @Override
   public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     isBlacklist = NbtValue.FILTER_BLACKLIST.getBoolean(nbtRoot);
