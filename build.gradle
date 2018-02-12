@@ -102,7 +102,7 @@ allprojects {
     // Common dependencies for all modules
     dependencies {
         // Remote / local endercore
-        if (!project.hasProperty('use_local_ender_core')) {
+        if (!project.hasProperty('use_local_ender_core') || !project.getProperty('use_local_ender_core').equalsIgnoreCase('true')) {
             deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
         }
 
