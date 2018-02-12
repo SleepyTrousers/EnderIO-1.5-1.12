@@ -1,11 +1,12 @@
 modDependencies {
 	forge { requireAfter(forge_version) }
 	tconstruct { loadBefore(tic_version) }
+  enderiobase { loadBefore() }
 }
 
 def localDependencies = project(':enderio-base')
 localDependencies.each { dep ->
 	modDependencies {
-		"${dep.module_mod_id}" { requireBefore(dep.version) }
+		"${dep.module_mod_id}" { requireAfter(dep.version) }
 	}
 }

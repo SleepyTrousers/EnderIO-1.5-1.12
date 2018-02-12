@@ -35,7 +35,7 @@ public class EnderIOIntegrationTic implements IEnderIOAddon {
   public static final @Nonnull String MOD_NAME = "Ender IO Integration with Tinkers' Construct";
   public static final @Nonnull String VERSION = "@VERSION@";
 
-  private static final @Nonnull String DEFAULT_DEPENDENCIES = "before:tconstruct;before:" + crazypants.enderio.base.EnderIO.MODID;
+  private static final @Nonnull String DEFAULT_DEPENDENCIES = "before:tconstruct;before:enderiobase";
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
 
   @EventHandler
