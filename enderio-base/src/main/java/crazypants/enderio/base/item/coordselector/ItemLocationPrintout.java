@@ -32,6 +32,8 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemLocationPrintout extends Item implements IEioGuiHandler {
 
@@ -110,6 +112,7 @@ public class ItemLocationPrintout extends Item implements IEioGuiHandler {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
     TelepadTarget target = TelepadTarget.readFromNBT(stack);
