@@ -234,13 +234,13 @@ public class ItemSettings extends BaseSettingsPanel {
       activeFilter = itemConduit.getInputFilter(gui.getDir());
       gui.getContainer().setInOutSlotsVisible(true, false);
       if (activeFilter != null) {
-        filterGui = activeFilter.getGui(gui, new ItemConduitFilterContainer(itemConduit, gui.getDir(), true), true);
+        filterGui = activeFilter.getGui(gui, new ItemConduitFilterContainer(itemConduit, gui.getDir(), true), true, 32, 8);
       }
     } else if (showOutput) {
       activeFilter = itemConduit.getOutputFilter(gui.getDir());
       gui.getContainer().setInOutSlotsVisible(false, true);
       if (activeFilter != null) {
-        filterGui = activeFilter.getGui(gui, new ItemConduitFilterContainer(itemConduit, gui.getDir(), false), false);
+        filterGui = activeFilter.getGui(gui, new ItemConduitFilterContainer(itemConduit, gui.getDir(), false), false, 32, 8);
       }
     }
   }
@@ -409,7 +409,7 @@ public class ItemSettings extends BaseSettingsPanel {
     channelB.detach();
     deactiveFilterGUI();
   }
-  
+
   @Override
   @Nonnull
   public ResourceLocation getTexture() {
@@ -426,7 +426,7 @@ public class ItemSettings extends BaseSettingsPanel {
       filterGui.deactivate();
       filterGui = null;
     }
-//    gui.getGhostSlotHandler().getGhostSlots().clear();
+    // gui.getGhostSlotHandler().getGhostSlots().clear();
   }
 
 }

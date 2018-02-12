@@ -400,7 +400,8 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new SpeciesItemFilterGui(gui, filterContainer, isStickyModeAvailable);
+  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable, int xOffset,
+      int yOffset) {
+    return new SpeciesItemFilterGui(gui, filterContainer, isStickyModeAvailable, xOffset, yOffset, 0);
   }
 }

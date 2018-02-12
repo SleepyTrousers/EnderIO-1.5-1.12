@@ -334,15 +334,6 @@ public class ItemFilter implements IInventory, IItemFilter {
     nbtRoot.setTag("items", tagList);
   }
 
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
-  // ItemConduitFilterContainer cont = new ItemConduitFilterContainer(itemConduit, gui.getDir(), isInput);
-  // BasicItemFilterGui basicItemFilterGui = new BasicItemFilterGui(gui, cont, !isInput);
-  // basicItemFilterGui.createFilterSlots();
-  // return basicItemFilterGui;
-  // }
-
   @Override
   public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     isBlacklist = NbtValue.FILTER_BLACKLIST.getBoolean(nbtRoot);
@@ -616,7 +607,10 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new BasicItemFilterGui(gui, filterContainer, isStickyModeAvailable);
+  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable, int xOffset,
+      int yOffset) {
+    BasicItemFilterGui filterGui = new BasicItemFilterGui(gui, filterContainer, isStickyModeAvailable, xOffset, yOffset, 0);
+    filterGui.createFilterSlots();
+    return filterGui;
   }
 }

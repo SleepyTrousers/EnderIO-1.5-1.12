@@ -280,8 +280,9 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   @Override
-  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new ExistingItemFilterGui(gui, filterContainer, isStickyModeAvailable);
+  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable, int xOffset,
+      int yOffset) {
+    return new ExistingItemFilterGui(gui, filterContainer, isStickyModeAvailable, xOffset, yOffset);
   }
 
   @Override

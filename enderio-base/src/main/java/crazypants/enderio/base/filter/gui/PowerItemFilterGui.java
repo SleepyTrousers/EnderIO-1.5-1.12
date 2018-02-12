@@ -28,7 +28,9 @@ public class PowerItemFilterGui implements IItemFilterGui {
 
   private final @Nonnull PowerItemFilter filter;
 
-  public PowerItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
+  // TODO Use xOffset and yOffset
+  public PowerItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable, int xOffset,
+      int yOffset) {
     this.gui = gui;
     this.filterContainer = filterContainer;
     this.isStickModeAvailable = isStickyModeAvailable;

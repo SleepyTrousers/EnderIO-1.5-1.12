@@ -18,7 +18,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface IItemFilter {
 
   @SideOnly(Side.CLIENT)
-  IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable);
+  IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable, int xOffset,
+      int yOffset);
 
   void readFromNBT(@Nonnull NBTTagCompound nbtRoot);
 

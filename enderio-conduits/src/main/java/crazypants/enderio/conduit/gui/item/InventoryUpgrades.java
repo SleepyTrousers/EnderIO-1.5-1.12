@@ -81,7 +81,9 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
       remaining = current.copy();
       remaining.shrink(amount);
     }
-    setInventorySlotContents(slot, remaining);
+    if (!simulate) {
+      setInventorySlotContents(slot, remaining);
+    }
     return result;
   }
 
