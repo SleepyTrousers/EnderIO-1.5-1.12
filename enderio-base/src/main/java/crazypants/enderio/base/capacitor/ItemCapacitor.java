@@ -99,7 +99,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
       SpecialTooltipHandler.addShowDetailsTooltip(tooltip);
     }
     if (NbtValue.GLINT.hasTag(stack)) {
-      tooltip.add(EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack), NbtValue.CAPNAME.getString(stack, "(!%$&ยง*&%*???")));
+      tooltip.add(EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack), NbtValue.CAPNAME.getString(stack, "(!%$&ง*&%*???")));
     }
   }
 

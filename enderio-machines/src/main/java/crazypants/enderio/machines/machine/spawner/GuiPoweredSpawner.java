@@ -22,6 +22,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 
 public class GuiPoweredSpawner extends GuiInventoryMachineBase<TilePoweredSpawner> implements IPoweredSpawnerRemoteExec.GUI {
 
@@ -125,7 +126,7 @@ public class GuiPoweredSpawner extends GuiInventoryMachineBase<TilePoweredSpawne
     int y = sy + fr.FONT_HEIGHT + 6;
     fr.drawStringWithShadow(header, x, y, ColorUtil.getRGB(Color.WHITE));
 
-    String name = "§o" + (getTileEntity().getEntity() != null ? getTileEntity().getEntity().getDisplayName() : "");
+    String name = TextFormatting.ITALIC + (getTileEntity().getEntity() != null ? getTileEntity().getEntity().getDisplayName() : "");
     x = sx + xSize / 2 - fr.getStringWidth(name) / 2;
     y = sy + 43 + 16 + 2;
     fr.drawStringWithShadow(name, x, y, ColorUtil.getRGB(Color.WHITE));

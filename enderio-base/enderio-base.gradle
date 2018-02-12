@@ -19,6 +19,8 @@ dependencies {
 	deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}:api"
 	deobfCompile "team.chisel.ctm:CTM:${ctm_version}:api"
 	
-	compile "mcjty.theoneprobe:TheOneProbe-1.12:${top_version}:api"
+	compile("mcjty.theoneprobe:TheOneProbe-1.12:${top_version}:api") {
+		transitive = false // Why does TOP API pull in RF? The world may never know...
+	}
 	compile "com.mod-buildcraft:buildcraft-api:${buildcraft_version}"
 }

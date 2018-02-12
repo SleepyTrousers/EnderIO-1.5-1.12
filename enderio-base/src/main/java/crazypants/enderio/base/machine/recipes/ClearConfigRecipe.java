@@ -19,6 +19,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class ClearConfigRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
@@ -81,6 +83,7 @@ public class ClearConfigRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
   }
 
   @SubscribeEvent
+  @SideOnly(Side.CLIENT)
   public void onTooltip(ItemTooltipEvent event) {
     if (event.getEntityPlayer() != null && ItemStack.areItemStacksEqual(lastOutput, event.getItemStack())) {
       if ((event.getEntityPlayer().openContainer instanceof ContainerWorkbench
