@@ -13,6 +13,7 @@ import mezz.jei.api.IModRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
 
 public class DescriptionRecipeCategory {
 
@@ -35,7 +36,7 @@ public class DescriptionRecipeCategory {
       public void apply(@Nonnull ItemStack itemStack) {
         NNList<String> allTooltips = SpecialTooltipHandler.getAllTooltips(itemStack);
         if (!allTooltips.isEmpty()) {
-          allTooltips.add(0, "§1§l" + itemStack.getDisplayName() + "§r");
+          allTooltips.add(0, TextFormatting.WHITE.toString() + TextFormatting.BOLD + itemStack.getDisplayName() + TextFormatting.RESET);
           allTooltips.add(1, "");
           registry.addDescription(itemStack, allTooltips.toArray(new String[0]));
         }
