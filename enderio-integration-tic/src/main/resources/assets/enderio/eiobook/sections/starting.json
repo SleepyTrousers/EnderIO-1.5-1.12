@@ -11,7 +11,7 @@
   },
   {
     "name": "p3",
-    "type": "text",
+    "type": "crafting",
     "data": "starting/p3_chassis.json"
   },
   {
