@@ -61,11 +61,10 @@ public class EnderIOCrashCallable implements ICrashCallable {
       // } else
       if (modContainer.getModId() != null && modContainer.getModId().startsWith("EnderIOAPI")) {
         if (!EnderIOAPIProps.VERSION.equals(apiVersionString)) {
-          result.add(" * Another mod is shipping a version of our API that doesn't match our version (" + apiVersionString
-              + " from " + modContainer.getSource().getName() + "). That may not actually work.");
-        } else if (modContainer.getSource().getName() != null
-            && (!modContainer.getSource().getName().startsWith("EnderIO") && !modContainer.getSource().getName().startsWith("enderio") && !modContainer
-                .getSource().getName().equals("bin"))) {
+          result.add(" * Another mod is shipping a version of our API that doesn't match our version (" + apiVersionString + " from "
+              + modContainer.getSource().getName() + "). That may not actually work.");
+        } else if (modContainer.getSource().getName() != null && (!modContainer.getSource().getName().startsWith("EnderIO")
+            && !modContainer.getSource().getName().startsWith("enderio") && !modContainer.getSource().getName().equals("bin"))) {
           result.add(" * Our API got loaded from " + modContainer.getSource().getName() + ". That's unexpected.");
         }
       }
@@ -103,10 +102,11 @@ public class EnderIOCrashCallable implements ICrashCallable {
       msg += "                 This may (look up the meaning of 'may' in the dictionary if you're not sure what it means) have caused the error. "
           + "Try reproducing the crash WITHOUT this/these mod(s) before reporting it.\n";
     }
-    msg += "\tDetailed Tesla API diagnostics:\n";
-    for (String string : teslaDiagnostics()) {
-      msg += "                 " + string + "\n";
-    }
+    // disabled because we don't support Tesla anymore
+    // msg += "\tDetailed Tesla API diagnostics:\n";
+    // for (String string : teslaDiagnostics()) {
+    // msg += " " + string + "\n";
+    // }
     if (stopScreenMessage != null) {
       for (String s : stopScreenMessage) {
         msg += s + "\n";
@@ -134,18 +134,18 @@ public class EnderIOCrashCallable implements ICrashCallable {
   }
 
   // adapted from http://stackoverflow.com/a/19494116/4105897
-  
+
   public static String whereFrom(String c) {
     if (c == null) {
       return null;
     }
     try {
       return whereFrom(Class.forName(c));
-    }catch(Exception e) {
+    } catch (Exception e) {
       return null;
     }
   }
-  
+
   public static String whereFrom(Class<?> c) {
     if (c == null) {
       return null;
