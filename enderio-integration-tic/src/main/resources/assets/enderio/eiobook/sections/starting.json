@@ -11,8 +11,18 @@
   },
   {
     "name": "p3",
-    "type": "text",
+    "type": "crafting",
     "data": "starting/p3_chassis.json"
+  },
+  {
+    "name": "p11a",
+    "type": "text",
+    "data": "starting/p11a_randalf.json"
+  },
+  {
+    "name": "p11b",
+    "type": "text",
+    "data": "starting/p11b_randalf.json"
   },
   {
     "type": "blank"
