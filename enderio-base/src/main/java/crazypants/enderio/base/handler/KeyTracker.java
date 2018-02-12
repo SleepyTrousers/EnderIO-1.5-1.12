@@ -61,7 +61,7 @@ public class KeyTracker {
 
   public KeyTracker() {
     create("enderio.keybind.glidertoggle      ", Keyboard.KEY_G, "   key.category.darksteelarmor    ", new GlideAction());
-    create("enderio.keybind.soundlocator      ", Keyboard.KEY_L, "   key.category.darksteelarmor    ", new SoundDetectorAction());
+    create("enderio.keybind.soundlocator      ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new SoundDetectorAction());
     create("enderio.keybind.nightvision       ", Keyboard.KEY_P, "   key.category.darksteelarmor    ", new NightVisionAction());
     create("enderio.keybind.gogglesofrevealing", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new GogglesAction());
     create("enderio.keybind.stepassist        ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new StepAssistAction());
