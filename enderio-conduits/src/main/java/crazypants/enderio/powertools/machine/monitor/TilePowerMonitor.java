@@ -182,7 +182,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   }
 
   @Override
-  protected IPoweredTask createTask(@Nullable IMachineRecipe nextRecipe, float chance) {
+  protected IPoweredTask createTask(@Nullable IMachineRecipe nextRecipe, long nextSeed) {
     return new ContinuousTask(getPowerUsePerTick());
   }
 
