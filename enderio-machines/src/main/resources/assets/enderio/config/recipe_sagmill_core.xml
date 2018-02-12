@@ -91,6 +91,24 @@
     </sagmilling>
   </recipe>
 
+  <recipe name="Sagmill: Ender Dust" required="false">
+    <sagmilling energy="800" bonus="none">
+      <input name="dustEnderPearl"/>
+      <output name="nuggetEnderpearl" amount="9"  />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Ender Dust" required="false">
+    <crafting>
+      <grid>
+        <item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/>
+        <item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/>
+        <item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/>
+      </grid>
+      <output name="dustEnderPearl" /><!-- AE2 -->
+    </crafting>
+  </recipe>
+
   <recipe name="Sagmill: Pulsating Powder" required="true">
     <sagmilling energy="1600" bonus="none">
       <input name="itemPulsatingCrystal"/>

@@ -51,13 +51,13 @@ public class Casting extends AbstractCrafting {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("input".equals(name)) {
       if (input == null) {
-        input = factory.read(new ItemFloatAmount(), startElement);
+        input = factory.read(new ItemFloatAmount().setAllowDelaying(true), startElement);
         return true;
       }
     }
     if ("cast".equals(name)) {
       if (cast == null) {
-        cast = factory.read(new ItemConsumable(), startElement);
+        cast = factory.read(new ItemConsumable().setAllowDelaying(true), startElement);
         return true;
       }
     }

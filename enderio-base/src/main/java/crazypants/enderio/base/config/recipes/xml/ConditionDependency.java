@@ -6,7 +6,6 @@ import javax.xml.stream.events.StartElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
-import crazypants.enderio.util.Prep;
 
 public class ConditionDependency implements RecipeConfigElement {
 
@@ -21,7 +20,7 @@ public class ConditionDependency implements RecipeConfigElement {
       if (itemString == null || itemString.trim().isEmpty()) {
         throw new InvalidRecipeConfigException("Missing item");
       }
-      item = new ItemOptional();
+      item = new ItemOptional().setAllowDelaying(false);
       item.setName(itemString);
       item.readResolve();
     } catch (InvalidRecipeConfigException e) {
@@ -32,7 +31,7 @@ public class ConditionDependency implements RecipeConfigElement {
 
   @Override
   public boolean isValid() {
-    return (item.isValid() && Prep.isValid(item.getItemStack())) != reverse;
+    return item.isValid() != reverse;
   }
 
   @Override

@@ -1,5 +1,9 @@
 [
   {
+    "name": "Page1",
+    "type": "blank"
+  },
+  {
     "name": "welcome",
     "type": "text",
     "data": "intro/welcome.json"

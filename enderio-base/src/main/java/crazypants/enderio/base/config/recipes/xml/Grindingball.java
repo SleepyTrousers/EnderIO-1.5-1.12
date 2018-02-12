@@ -125,7 +125,7 @@ public class Grindingball extends AbstractConditional {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("item".equals(name)) {
       if (item == null) {
-        item = factory.read(new Item(), startElement);
+        item = factory.read(new Item().setAllowDelaying(false), startElement);
         return true;
       }
     }

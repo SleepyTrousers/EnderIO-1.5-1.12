@@ -113,7 +113,7 @@ public class Grid implements RecipeConfigElement {
       if (items == null) {
         items = new ArrayList<ItemOptional>();
       }
-      items.add(factory.read(new ItemOptional(), startElement));
+      items.add(factory.read(new ItemOptional().setAllowDelaying(false), startElement));
       return true;
     }
 

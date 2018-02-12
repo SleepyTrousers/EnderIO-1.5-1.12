@@ -90,7 +90,7 @@ public class Alloying extends AbstractCrafting {
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("input".equals(name)) {
-      input.add(factory.read(new ItemIntegerAmount(), startElement));
+      input.add(factory.read(new ItemIntegerAmount().setAllowDelaying(false), startElement));
       return true;
     }
 
