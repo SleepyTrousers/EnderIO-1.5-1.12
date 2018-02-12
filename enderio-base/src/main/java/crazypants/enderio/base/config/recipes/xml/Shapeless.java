@@ -78,7 +78,7 @@ public class Shapeless implements RecipeConfigElement {
       if (items == null) {
         items = new ArrayList<Item>();
       }
-      items.add(factory.read(new Item(), startElement));
+      items.add(factory.read(new Item().setAllowDelaying(false), startElement));
       return true;
     }
 

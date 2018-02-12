@@ -16,10 +16,16 @@ import net.minecraft.nbt.NBTException;
 
 public class ItemOptional implements RecipeConfigElement {
 
+  protected transient boolean allowDelaying = false;
   protected String name;
   protected String nbt;
   protected transient boolean nullItem;
   protected transient final @Nonnull Things thing = new Things();
+
+  public ItemOptional() {
+    super();
+    // TODO Auto-generated constructor stub
+  }
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -50,7 +56,7 @@ public class ItemOptional implements RecipeConfigElement {
 
   @Override
   public boolean isValid() {
-    return nullItem || (thing.isPotentiallyValid());
+    return nullItem || (allowDelaying ? thing.isPotentiallyValid() : thing.isValid());
   }
 
   public Ingredient getRecipeObject() {
@@ -88,6 +94,12 @@ public class ItemOptional implements RecipeConfigElement {
 
   public @Nonnull Things getThing() {
     return thing;
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T extends ItemOptional> T setAllowDelaying(boolean allowDelaying) {
+    this.allowDelaying = allowDelaying;
+    return (T) this;
   }
 
 }

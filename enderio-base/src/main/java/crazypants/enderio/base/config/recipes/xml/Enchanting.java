@@ -60,7 +60,7 @@ public class Enchanting extends AbstractConditional {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("input".equals(name)) {
       if (input == null) {
-        input = factory.read(new ItemIntegerAmount(), startElement);
+        input = factory.read(new ItemIntegerAmount().setAllowDelaying(false), startElement);
         return true;
       }
     }

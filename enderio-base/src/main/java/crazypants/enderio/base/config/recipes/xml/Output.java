@@ -8,7 +8,6 @@ import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
-import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
@@ -63,7 +62,7 @@ public class Output extends AbstractConditional {
   // one valid stack.
   @Override
   public boolean isValid() {
-    return item != null && item.isValid() && Prep.isValid(item.getItemStack());
+    return item != null && item.isValid();
   }
 
   @Override
@@ -105,7 +104,7 @@ public class Output extends AbstractConditional {
       return true;
     }
     if ("name".equals(name)) {
-      item = new Item();
+      item = new Item().setAllowDelaying(false);
       item.setName(value);
       item.readResolve();
       return true;

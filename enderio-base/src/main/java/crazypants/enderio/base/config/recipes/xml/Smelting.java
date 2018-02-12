@@ -93,7 +93,7 @@ public class Smelting extends AbstractCrafting {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("input".equals(name)) {
       if (input == null) {
-        input = factory.read(new ItemFloatAmount(), startElement);
+        input = factory.read(new ItemFloatAmount().setAllowDelaying(false), startElement);
         return true;
       }
     }

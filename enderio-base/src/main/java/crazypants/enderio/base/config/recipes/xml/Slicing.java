@@ -77,7 +77,7 @@ public class Slicing extends AbstractCrafting {
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("input".equals(name)) {
-      inputs.add(factory.read(new ItemIntegerAmount(), startElement));
+      inputs.add(factory.read(new ItemIntegerAmount().setAllowDelaying(false), startElement));
       return true;
     }
 
