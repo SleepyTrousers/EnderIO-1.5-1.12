@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "Twigs and slime give what?",
+      "color": "white"
+    },
+    "title": {
+      "text": "All Natural",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 50
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_material",
+            "data": 50
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderiomachines:sagmill/3_sagmill_bushes"
+}

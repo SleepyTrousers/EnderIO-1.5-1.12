@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "Make your first machine chassis",
+      "color": "white"
+    },
+    "title": {
+      "text": "Get constructive",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 0
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type":"forge:ore_dict",
+            "ore": "itemSimpleMachineChassi"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderio:start/1_infinity_powder_get"
+}

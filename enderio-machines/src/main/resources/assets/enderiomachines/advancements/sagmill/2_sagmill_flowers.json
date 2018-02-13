@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "Put some flowers into the SAG Mill",
+      "color": "white"
+    },
+    "title": {
+      "text": "Purely Organic",
+      "color": "white"
+    },
+    "icon": {
+      "item": "red_flower",
+      "data": 4
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type":"forge:ore_dict",
+            "ore": "itemPlantgreen"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderiomachines:sagmill/1_sagmill_get"
+}

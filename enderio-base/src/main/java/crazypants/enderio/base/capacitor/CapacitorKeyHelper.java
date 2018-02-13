@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.Lang;
 
-import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config.Section;
 import net.minecraftforge.common.config.Configuration;
 
@@ -15,9 +14,6 @@ public class CapacitorKeyHelper {
 
   static @Nonnull public String localizeComment(@Nonnull Lang lang, @Nonnull Section configSection, @Nonnull String configKey) {
     final String langKey = "config.capacitor." + configKey;
-    if (!lang.canLocalize(langKey)) {
-      Log.warn("Missing translation: " + langKey);
-    }
     return lang.localize(langKey);
   }
 

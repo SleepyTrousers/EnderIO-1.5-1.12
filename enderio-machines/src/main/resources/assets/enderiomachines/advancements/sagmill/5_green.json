@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "Very toxic!",
+      "color": "white"
+    },
+    "title": {
+      "text": "Edible",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 49
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_material",
+            "data": 49
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderiomachines:sagmill/2_sagmill_flowers"
+}

@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "Those can go, they are boring...",
+      "color": "white"
+    },
+    "title": {
+      "text": "Bejeweled 2",
+      "color": "white"
+    },
+    "icon": {
+      "item": "minecraft:quartz",
+      "data": 0
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type":"forge:ore_dict",
+            "ore": "dustNetherQuartz"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderiomachines:sagmill/8_blue"
+}

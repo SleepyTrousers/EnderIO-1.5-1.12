@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "It's not round but glows",
+      "color": "white"
+    },
+    "title": {
+      "text": "Round and glowy",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 13
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type":"forge:ore_dict",
+            "ore": "gearEnergized"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 30
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderio:gears/g3_iron_gear"
+}

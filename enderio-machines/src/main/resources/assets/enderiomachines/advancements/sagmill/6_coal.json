@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "Really old wood? Grind it away.",
+      "color": "white"
+    },
+    "title": {
+      "text": "Chewing Dead Wood",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 24
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type":"forge:ore_dict",
+            "ore": "dustCoal"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderiomachines:sagmill/1_sagmill_get"
+}

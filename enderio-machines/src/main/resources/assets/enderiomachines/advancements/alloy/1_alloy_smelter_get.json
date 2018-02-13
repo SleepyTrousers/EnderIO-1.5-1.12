@@ -1,0 +1,42 @@
+{
+  "display": {
+    "description": {
+      "text": "Make a simple alloy smelter",
+      "color": "white"
+    },
+    "title": {
+      "text": "Mix it up",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:block_simple_alloy_smelter",
+      "data": 0
+    },
+    "frame":"challenge"
+  },
+  "criteria": {
+    "inv_changed-enderio:block_simple_alloy_smelter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:block_simple_alloy_smelter",
+            "data": 0
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    
+    [
+    "inv_changed-enderio:block_simple_alloy_smelter"
+  ]],
+  "parent": "enderio:start/2_simple_chassis_get"
+}
