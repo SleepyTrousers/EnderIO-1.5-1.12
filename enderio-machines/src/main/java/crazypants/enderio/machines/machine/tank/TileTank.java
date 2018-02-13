@@ -30,6 +30,7 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Enchantments;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
@@ -164,7 +165,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     }
     return false;
   }
-  
+
   public void updateLight() {
     final FluidStack fluid = tank.getFluid();
     int thisFluidLuminosity = fluid == null || fluid.getFluid() == null || tank.isEmpty() ? 0 : fluid.getFluid().getLuminosity(fluid);
@@ -188,13 +189,16 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     if (!redstoneCheck) {
       return false;
     }
-    if (!shouldDoWorkThisTick(20)) {
+    if (!shouldDoWorkThisTick(getBlockMetadata() > 0 ? 10 : 20)) {
       return false;
     }
-    if (Prep.isValid(getStackInSlot(2)) && canVoidItems()) {
-      getStackInSlot(2).shrink(1);
-      if (TankConfig.tankSmeltTrashIntoLava.get() && !tank.isFull() && tank.hasFluid(FluidRegistry.LAVA)) {
+    final ItemStack stack = getStackInSlot(2);
+    if (Prep.isValid(stack) && canVoidItems()) {
+      if (TankConfig.tankSmeltTrashIntoLava.get() && !tank.isFull() && tank.hasFluid(FluidRegistry.LAVA) && stack.getItem() instanceof ItemBlock) {
         tank.addFluidAmount((int) MathHelper.clamp(world.rand.nextGaussian() * .75 + 3.5, 1, 10)); // 49% for 3, 22%: for 2 and 4, 2.2% for 1 and 5
+        stack.shrink(1);
+      } else {
+        stack.shrink(10);
       }
       SoundHelper.playSound(world, pos, SoundHelper.BLOCK_CENTER, SoundRegistry.ITEM_BURN, 0.05F, 2.0F + world.rand.nextFloat() * 0.4F);
       markDirty();
