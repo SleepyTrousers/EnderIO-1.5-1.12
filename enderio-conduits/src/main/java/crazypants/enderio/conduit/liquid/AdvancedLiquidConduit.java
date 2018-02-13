@@ -48,7 +48,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
   public static final TextureSupplier ICON_EXTRACT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_input");
   public static final TextureSupplier ICON_INSERT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_output");
 
-  public static final TextureSupplier ICON_EMPTY_EDGE = TextureRegistry.registerTexture("textures/blocks/liquid_conduit_advanced_edge");
+  public static final TextureSupplier ICON_EMPTY_EDGE = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_edge");
 
   private AdvancedLiquidConduitNetwork network;
 
