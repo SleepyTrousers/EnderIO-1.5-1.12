@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "It's not round but it's heavy",
+      "color": "white"
+    },
+    "title": {
+      "text": "Round and heavy",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 11
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type":"forge:ore_dict",
+            "ore": "gearStone"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderio:gears/g1_wooden_gear"
+}

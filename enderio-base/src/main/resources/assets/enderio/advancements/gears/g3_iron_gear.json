@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "It's not round but it rusts",
+      "color": "white"
+    },
+    "title": {
+      "text": "Round and rusty",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 12
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type":"forge:ore_dict",
+            "ore": "gearIronInfinity"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 20
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderio:gears/g2_stone_gear"
+}

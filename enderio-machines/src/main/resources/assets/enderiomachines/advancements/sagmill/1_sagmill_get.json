@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "Make a simple alloy SAG mill",
+      "color": "white"
+    },
+    "title": {
+      "text": "Grind it down",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:block_simple_sag_mill",
+      "data": 0
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:block_simple_sag_mill": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:block_simple_sag_mill",
+            "data": 0
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    
+    [
+    "inv_changed-enderio:block_simple_sag_mill"
+  ]],
+  "parent": "enderio:start/2_simple_chassis_get"
+}

@@ -1,0 +1,69 @@
+{
+  "display": {
+    "description": {
+      "text": "Make all simple machines",
+      "color": "white"
+    },
+    "title": {
+      "text": "Simple is simple",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:block_simple_stirling_generator",
+      "data": 0
+    },
+    "frame":"challenge"
+  },
+  "criteria": {
+    "inv_changed-enderio:block_simple_stirling_generator": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:block_simple_stirling_generator",
+            "data": 0
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:block_simple_sag_mill": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:block_simple_sag_mill",
+            "data": 0
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:block_simple_alloy_smelter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:block_simple_alloy_smelter",
+            "data": 0
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 30
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:block_simple_stirling_generator"
+    ],
+    [
+      "inv_changed-enderio:block_simple_sag_mill"
+    ],
+    [
+    "inv_changed-enderio:block_simple_alloy_smelter"
+  ]],
+  "parent": "enderio:start/2_simple_chassis_get"
+}

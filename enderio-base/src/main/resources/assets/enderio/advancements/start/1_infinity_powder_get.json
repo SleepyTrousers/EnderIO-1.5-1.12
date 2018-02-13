@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "Light bedrock on fire and get a reward",
+      "color": "white"
+    },
+    "title": {
+      "text": "It burns",
+      "color": "white"
+    },
+    "icon": {
+      "item": "bedrock",
+      "data": 0
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "dustBedrock"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 20
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderio:root"
+}

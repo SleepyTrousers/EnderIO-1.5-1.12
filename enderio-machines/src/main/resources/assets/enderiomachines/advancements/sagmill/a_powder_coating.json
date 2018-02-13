@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "A nice coating makes a better chassis",
+      "color": "white"
+    },
+    "title": {
+      "text": "Powder Coating",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 52
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type":"forge:ore_dict",
+            "ore": "dyeMachine"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderiomachines:sagmill/9_white"
+}

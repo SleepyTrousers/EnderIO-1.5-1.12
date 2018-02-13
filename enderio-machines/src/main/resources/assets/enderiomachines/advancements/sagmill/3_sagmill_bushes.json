@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "Not green anymore? Grind it anyway.",
+      "color": "white"
+    },
+    "title": {
+      "text": "Chewing Wood",
+      "color": "white"
+    },
+    "icon": {
+      "item": "minecraft:deadbush",
+      "data": 0
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type":"forge:ore_dict",
+            "ore": "itemPlantbrown"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderiomachines:sagmill/2_sagmill_flowers"
+}

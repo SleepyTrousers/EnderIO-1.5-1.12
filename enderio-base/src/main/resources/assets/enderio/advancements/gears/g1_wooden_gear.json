@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "It's not round but it turns anyway",
+      "color": "white"
+    },
+    "title": {
+      "text": "Round and round",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 10
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type":"forge:ore_dict",
+            "ore": "gearWood"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderio:root"
+}

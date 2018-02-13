@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "One moving part",
+      "color": "white"
+    },
+    "title": {
+      "text": "Turns by itself",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 14
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type":"forge:ore_dict",
+            "ore": "gearVibrant"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 40
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderio:gears/g4_energized_gear"
+}

@@ -1,0 +1,41 @@
+{
+  "display": {
+    "description": {
+      "text": "No, it's not food",
+      "color": "white"
+    },
+    "title": {
+      "text": "Cleansing",
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 51
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_material",
+            "data": 51
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    [
+      "inv_changed-enderio:item_material"
+    ]
+  ],
+  "parent": "enderiomachines:sagmill/6_coal"
+}

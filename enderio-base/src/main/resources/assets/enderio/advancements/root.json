@@ -1,0 +1,44 @@
+{
+  "display": {
+    "description": {
+      "text": "How many pipes in one block?",
+      "color": "white"
+    },
+    "title": {
+      "text": "Ender IO",
+      "bold": true,
+      "color": "white"
+    },
+    "icon": {
+      "item": "enderio:item_enderface",
+      "data": 0
+    },
+    "frame": "task",
+    "announce_to_chat": false,
+    "background": "minecraft:textures/blocks/bedrock.png"
+  },
+  "criteria": {
+    "location": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "dimension":"overworld",
+        "position": {
+          "y": {
+            "max": 5
+          }
+        }
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "requirements": [
+    [
+      "location"
+    ]
+  ]
+}
