@@ -20,8 +20,8 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.gui.recipes.RecipeLayout;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -31,9 +31,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
-public class InfinityRecipeCategory extends BlankRecipeCategory<InfinityRecipeCategory.InfinityRecipeWrapper> {
+public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCategory.InfinityRecipeWrapper> {
 
-  public static class InfinityRecipeWrapper extends BlankRecipeWrapper {
+  public static class InfinityRecipeWrapper implements IRecipeWrapper {
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
@@ -42,10 +42,9 @@ public class InfinityRecipeCategory extends BlankRecipeCategory<InfinityRecipeCa
 
   }
 
-  public static void register(IModRegistry registry, IGuiHelper guiHelper) {
-    registry.addRecipeCategories(new InfinityRecipeCategory(guiHelper));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(Blocks.BEDROCK, 1, 0), InfinityRecipeCategory.UUID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(Items.FLINT_AND_STEEL, 1, 0), InfinityRecipeCategory.UUID);
+  public static void registerExtras(IModRegistry registry) {
+    registry.addRecipeCatalyst(new ItemStack(Blocks.BEDROCK, 1, 0), InfinityRecipeCategory.UUID);
+    registry.addRecipeCatalyst(new ItemStack(Items.FLINT_AND_STEEL, 1, 0), InfinityRecipeCategory.UUID);
 
     long start = System.nanoTime();
     List<InfinityRecipeWrapper> result = new ArrayList<InfinityRecipeWrapper>();

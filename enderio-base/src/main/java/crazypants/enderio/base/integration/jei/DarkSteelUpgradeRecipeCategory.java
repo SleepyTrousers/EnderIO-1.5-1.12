@@ -1,25 +1,30 @@
 package crazypants.enderio.base.integration.jei;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
+import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager.UpgradePath;
-import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.ISubtypeRegistry.ISubtypeInterpreter;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.IVanillaRecipeFactory;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -50,10 +55,10 @@ public class DarkSteelUpgradeRecipeCategory {
     }
   }
 
-  public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+  public static void register(IModRegistry registry) {
     long start = System.nanoTime();
 
-    registry.addRecipeCategoryCraftingItem(new ItemStack(blockDarkSteelAnvil.getBlockNN()), VanillaRecipeCategoryUid.ANVIL);
+    registry.addRecipeCatalyst(new ItemStack(blockDarkSteelAnvil.getBlockNN()), VanillaRecipeCategoryUid.ANVIL);
 
     NNList<ItemStack> blacklist = new NNList<>();
     for (UpgradePath rec : allRecipes) {
@@ -68,10 +73,12 @@ public class DarkSteelUpgradeRecipeCategory {
     }
 
     int enchantmentRecipes = registerBookEnchantmentRecipes(registry, seen);
-
-    for (UpgradePath rec : allRecipes) {
-      registry.addAnvilRecipe(rec.getInput(), Collections.singletonList(rec.getUpgrade()), Collections.singletonList(rec.getOutput()));
-    }
+    
+    final IVanillaRecipeFactory factory = registry.getJeiHelpers().getVanillaRecipeFactory();
+    Collection<IRecipeWrapper> anvilRecipes = NullHelper.notnullJ(allRecipes.stream()
+        .map(rec -> factory.createAnvilRecipe(rec.getInput(), Collections.singletonList(rec.getUpgrade()), Collections.singletonList(rec.getOutput())))
+        .collect(Collectors.toList()), "Stream#collect");
+    registry.addRecipes(anvilRecipes, VanillaRecipeCategoryUid.ANVIL);
 
     Log.info(String.format(
         "DarkSteelUpgradeRecipeCategory: Added %d dark steel upgrade recipes and %d enchantment recipes for upgradable items to JEI in %.3f seconds.",
@@ -85,7 +92,9 @@ public class DarkSteelUpgradeRecipeCategory {
 
   private static int registerBookEnchantmentRecipes(@Nonnull IModRegistry registry, @Nonnull NNList<ItemStack> ingredients) {
     int count = 0;
-    List<Enchantment> enchantments = ForgeRegistries.ENCHANTMENTS.getValues();
+    Collection<Enchantment> enchantments = ForgeRegistries.ENCHANTMENTS.getValuesCollection();
+    List<IRecipeWrapper> anvilRecipes = new ArrayList<>();
+    IVanillaRecipeFactory factory = registry.getJeiHelpers().getVanillaRecipeFactory();
     for (ItemStack ingredient : ingredients) {
       if (ingredient.isItemEnchantable()) {
         for (Enchantment enchantment : enchantments) {
@@ -105,13 +114,14 @@ public class DarkSteelUpgradeRecipeCategory {
               }
             }
             if (!perLevelBooks.isEmpty() && !perLevelOutputs.isEmpty()) {
-              registry.addAnvilRecipe(ingredient, perLevelBooks, perLevelOutputs);
+              anvilRecipes.add(factory.createAnvilRecipe(ingredient, perLevelBooks, perLevelOutputs));
               count++;
             }
           }
         }
       }
     }
+    registry.addRecipes(anvilRecipes, VanillaRecipeCategoryUid.ANVIL);
     return count;
   }
 

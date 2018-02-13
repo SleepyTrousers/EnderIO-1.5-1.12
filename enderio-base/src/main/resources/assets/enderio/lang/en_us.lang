@@ -519,6 +519,8 @@ enderio.power.symbol=µI
 enderio.power.format=%s µI
 enderio.power.format.of=%s / %s µI
 enderio.power.format.pertick=%s µI/t
+enderio.power.format.name=Micro Infinity (%s)
+enderio.power.format.details=A unit of energy
 
 enderio.fluid.millibucket.format=%s mB
 enderio.fluid.millibucket.format.name=%s mB of %s

@@ -10,11 +10,11 @@ import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.util.Prep;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class RecipeWrapper extends BlankRecipeWrapper {
+public class RecipeWrapper implements IRecipeWrapper {
 
   protected final IRecipe recipe;
 

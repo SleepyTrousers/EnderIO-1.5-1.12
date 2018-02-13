@@ -38,7 +38,7 @@ public class DescriptionRecipeCategory {
         if (!allTooltips.isEmpty()) {
           allTooltips.add(0, TextFormatting.WHITE.toString() + TextFormatting.BOLD + itemStack.getDisplayName() + TextFormatting.RESET);
           allTooltips.add(1, "");
-          registry.addDescription(itemStack, allTooltips.toArray(new String[0]));
+          registry.addIngredientInfo(itemStack, ItemStack.class, allTooltips.toArray(new String[0]));
         }
       }
     });
