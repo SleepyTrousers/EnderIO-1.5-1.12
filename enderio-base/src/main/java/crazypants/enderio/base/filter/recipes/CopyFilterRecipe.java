@@ -73,4 +73,8 @@ public class CopyFilterRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
     return width * height >= 2;
   }
 
+  @Override
+  public boolean isDynamic() {
+    return true;
+  }
 }

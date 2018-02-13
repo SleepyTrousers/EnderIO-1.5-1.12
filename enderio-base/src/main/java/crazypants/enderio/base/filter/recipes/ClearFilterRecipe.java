@@ -76,4 +76,8 @@ public class ClearFilterRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
     return width >= 1 && height >= 1;
   }
 
+  @Override
+  public boolean isDynamic() {
+    return true;
+  }
 }
