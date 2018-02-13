@@ -11,8 +11,7 @@
     "icon": {
       "item": "enderio:block_simple_alloy_smelter",
       "data": 0
-    },
-    "frame":"challenge"
+    }
   },
   "criteria": {
     "inv_changed-enderio:block_simple_alloy_smelter": {
