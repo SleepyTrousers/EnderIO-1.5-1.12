@@ -80,7 +80,7 @@ public class EnderIOIntegrationTic implements IEnderIOAddon {
     }
   }
 
-  static boolean enableBook = true; // TODO: Move book to its own submod that only depends on Mantle
+  static boolean enableBook = false; // TODO: Move book to its own submod that only depends on Mantle
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
