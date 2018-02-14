@@ -161,7 +161,15 @@ public class LootManager {
       lp.addEntry(createLootCapacitor(0.05F));
       lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBow.getItemNN(), 1, 1, 0.25F));
 
+    } else {
+      return;
     }
+
+    if (table.isFrozen()) {
+      throw new RuntimeException("Some other mod (a list of suspects is printed in the log file) put a frozen loot table into the load event for loot table '"
+          + evt.getName() + "'. This is a bug in that other mod. Ender IO is the victim here. Don't blame the victim!");
+    }
+
     table.addPool(lp);
   }
 
