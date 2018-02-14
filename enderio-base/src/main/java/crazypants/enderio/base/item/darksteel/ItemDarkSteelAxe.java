@@ -110,7 +110,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
 
   @Override
   public boolean onBlockStartBreak(@Nonnull ItemStack itemstack, @Nonnull BlockPos pos, @Nonnull EntityPlayer player) {
-    if (!player.world.isRemote && player.isSneaking()) {
+    if (!player.world.isRemote && !player.isSneaking() && EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
       IBlockState bs = player.world.getBlockState(pos);
       Block block = bs.getBlock();
       if (FarmersRegistry.isLog(block)) {

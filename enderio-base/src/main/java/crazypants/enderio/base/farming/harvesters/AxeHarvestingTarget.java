@@ -34,7 +34,8 @@ public class AxeHarvestingTarget implements IHarvestingTarget {
 
   @Override
   public boolean isWood(@Nonnull IBlockState state) {
-    return state.getBlock() == wood && (variant == null || variant == getVariant(state));
+    // shortcut for same blockstate, then the long check
+    return state == wood || (state.getBlock() == wood.getBlock() && (variant == null || variant == getVariant(state)));
   }
 
   @Override

@@ -87,7 +87,7 @@ item.item_dark_steel_pickaxe.tooltip.cost=%s     (cost %s)
 
 item.item_dark_steel_axe.name=Dark Axe
 item.item_dark_steel_axe.tooltip.effPowered=%sEfficiency when powered: %s
-item.item_dark_steel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
+item.item_dark_steel_axe.tooltip.multiHarvest=Harvests full trees when powered (sneak to prevent this)
 
 item.item_dark_steel_shears.name=Dark Shears
 item.item_dark_steel_shears.tooltip.effPowered=%sEfficiency when powered: %s
