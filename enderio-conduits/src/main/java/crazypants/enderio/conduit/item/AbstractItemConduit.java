@@ -1,6 +1,9 @@
 package crazypants.enderio.conduit.item;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.ItemUtil;
+
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduit;
@@ -19,17 +22,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-
-public abstract class AbstractItemConduit extends Item implements IConduitItem,IHaveRenderers {
+public abstract class AbstractItemConduit extends Item implements IConduitItem, IHaveRenderers {
 
   protected IModObject modObj;
 
@@ -48,56 +52,54 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
   @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers(@Nonnull IModObject modObject) {
-    for(int i=0;i<subtypes.length;i++) {
+    for (int i = 0; i < subtypes.length; i++) {
       ClientUtil.regRenderer(this, i, new ResourceLocation(subtypes[i].modelLocation));
-    }       
+    }
   }
-  
+
   @Override
   @Nonnull
   public EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand, @Nonnull EnumFacing side,
-      float hitX, float hitY,
-      float hitZ) {
-   
+      float hitX, float hitY, float hitZ) {
+
     ItemStack held = player.getHeldItem(hand);
 
     BlockPos placeAt = canPlaceItem(held, ConduitRegistry.getConduitModObjectNN().getBlockNN().getDefaultState(), player, world, pos, side);
-    if(placeAt != null) {
-      if(!world.isRemote) {
+    if (placeAt != null) {
+      if (!world.isRemote) {
         if (world.setBlockState(placeAt, ConduitRegistry.getConduitModObjectNN().getBlockNN().getDefaultState(), 1)) {
           TileEntity te = world.getTileEntity(placeAt);
-          if(te instanceof IConduitBundle) {
+          if (te instanceof IConduitBundle) {
             IConduitBundle bundle = (IConduitBundle) te;
             bundle.addConduit(createConduit(held, player));
             ConduitUtil.playBreakSound(SoundType.METAL, world, placeAt.getX(), placeAt.getY(), placeAt.getZ());
           }
         }
       }
-      if(!player.capabilities.isCreativeMode) {
+      if (!player.capabilities.isCreativeMode) {
         held.shrink(1);
       }
       return EnumActionResult.SUCCESS;
 
     } else {
 
-      
       BlockPos place = pos.offset(side);
 
       if (world.getBlockState(place).getBlock() == ConduitRegistry.getConduitModObjectNN().getBlock()) {
 
         IConduitBundle bundle = (IConduitBundle) world.getTileEntity(place);
-        if(bundle == null) {          
+        if (bundle == null) {
           return EnumActionResult.PASS;
         }
-        if(!bundle.hasType(getBaseConduitType())) {
-          if(!world.isRemote) {
+        if (!bundle.hasType(getBaseConduitType())) {
+          if (!world.isRemote) {
             IConduit con = createConduit(held, player);
-            if(con == null) {
+            if (con == null) {
               return EnumActionResult.PASS;
             }
             bundle.addConduit(con);
             ConduitUtil.playBreakSound(SoundType.METAL, world, place.getX(), place.getY(), place.getZ());
-            if(!player.capabilities.isCreativeMode) {
+            if (!player.capabilities.isCreativeMode) {
               held.shrink(1);
             }
           }
@@ -109,16 +111,15 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
     return EnumActionResult.PASS;
   }
 
-
   @Override
   @Nonnull
   public EnumActionResult onItemUseFirst(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side, float hitX,
       float hitY, float hitZ, @Nonnull EnumHand hand) {
-    
+
     ItemStack held = player.getHeldItem(hand);
 
     // Conduit replacement
-    if (player.isSneaking()) {      
+    if (player.isSneaking()) {
       return EnumActionResult.PASS;
     }
     TileEntity te = world.getTileEntity(pos);
@@ -134,7 +135,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
     if (!ItemUtil.areStacksEqual(existingConduitAsItemStack, held)) {
       if (!world.isRemote) {
         IConduit newConduit = createConduit(held, player);
-        if (newConduit == null) {          
+        if (newConduit == null) {
           return EnumActionResult.PASS;
         }
         bundle.removeConduit(existingConduit);
@@ -155,7 +156,6 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
     }
     return EnumActionResult.PASS;
   }
-  
 
   @Override
   @Nonnull
@@ -165,16 +165,17 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> stacks) {
-    for (int j = 0; j < subtypes.length; ++j) {
-      stacks.add(new ItemStack(this, 1, j));
+    if (isInCreativeTab(tab)) {
+      for (int j = 0; j < subtypes.length; ++j) {
+        stacks.add(new ItemStack(this, 1, j));
+      }
     }
   }
 
   // TODO Put this somewhere else if necessary
-  private BlockPos canPlaceItem(@Nonnull ItemStack held, IBlockState blockToPlace, @Nonnull EntityPlayer player, @Nonnull World world,
-      @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
+  private BlockPos canPlaceItem(@Nonnull ItemStack held, IBlockState blockToPlace, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nonnull EnumFacing side) {
     if (held.isEmpty() || blockToPlace == null) {
       return null;
     }
