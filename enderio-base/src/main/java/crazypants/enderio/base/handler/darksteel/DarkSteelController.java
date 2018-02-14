@@ -39,6 +39,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MovementInput;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -158,21 +159,35 @@ public class DarkSteelController {
     return ElytraUpgrade.INSTANCE.hasUpgrade(chestPlate);
   }
 
-  private void updateStepHeightAndFallDistance(EntityPlayer player) {
-    ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
+  @SubscribeEvent
+  public void onFall(LivingFallEvent event) {
+    float distance = event.getDistance();
+    if (distance > 3) {
+      ItemStack boots = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.FEET);
 
-    if (boots.getItem() == ModObject.itemDarkSteelBoots.getItem() && !player.capabilities.allowFlying) {
-      int costedDistance = (int) player.fallDistance;
-      if (costedDistance > 1) { // Elytra flight will limit fall distance to 1.0F in normal flight
-        int energyCost = costedDistance * Config.darkSteelFallDistanceCost;
-        int totalEnergy = getPlayerEnergy(player, EntityEquipmentSlot.FEET);
-        if (totalEnergy >= energyCost) {
-          usePlayerEnergy(player, EntityEquipmentSlot.FEET, energyCost);
-          player.fallDistance -= costedDistance;
+      if (boots.getItem() == ModObject.itemDarkSteelBoots.getItem()) {
+        int energyStored = EnergyUpgradeManager.getEnergyStored(boots);
+        if (energyStored > 0) {
+          float toMitigate = distance - 3;
+          int energyCost = (int) Math.min(energyStored, Math.ceil(toMitigate * Config.darkSteelFallDistanceCost));
+          float mitigated = energyCost / (float) Config.darkSteelFallDistanceCost;
+          if (!event.getEntity().world.isRemote) {
+            EnergyUpgradeManager.setPowerLevel(boots, energyStored - energyCost);
+          }
+          if (mitigated < toMitigate) {
+            // Log.debug("Mitigating fall damage partially: original=", distance, " mitigated=", mitigated, " remaining=", distance - mitigated, " power used=",
+            // energyCost);
+            event.setDistance(distance - mitigated);
+          } else {
+            // Log.debug("Canceling fall damage: original=", distance, " power used=", energyCost);
+            event.setCanceled(true);
+          }
         }
       }
     }
+  }
 
+  private void updateStepHeightAndFallDistance(EntityPlayer player) {
     if (!player.isSneaking() && JumpUpgrade.isEquipped(player) && isStepAssistActive(player)) {
       player.stepHeight = 1.0023F;
     } else if (player.stepHeight == 1.0023F) {
