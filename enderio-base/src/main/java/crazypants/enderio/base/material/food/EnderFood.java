@@ -1,23 +1,36 @@
 package crazypants.enderio.base.material.food;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.stackable.IProducer;
+
+import crazypants.enderio.util.Prep;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import static crazypants.enderio.base.init.ModObject.itemEnderFood;
 
 public enum EnderFood {
-  ENDERIOS("enderios", 10, 0.8f, true);
+  ENDERIOS("enderios", new IProducer() {
+    @Override
+    public @Nullable Item getItem() {
+      return Items.BOWL;
+    }
+  }, 10, 0.8f, true);
 
   final @Nonnull private String unlocalisedName;
-  public final int hunger;
-  public final float saturation;
-  public final boolean doesTeleport;
+  private final int hunger;
+  private final float saturation;
+  private final boolean doesTeleport;
+  private final IProducer containerItem;
 
   public static final EnderFood[] VALUES = values();
 
-  private EnderFood(@Nonnull String name, int hunger, float saturation, boolean doesTeleport) {
+  private EnderFood(@Nonnull String name, IProducer containerItem, int hunger, float saturation, boolean doesTeleport) {
     this.unlocalisedName = name;
+    this.containerItem = containerItem;
     this.hunger = hunger;
     this.saturation = saturation;
     this.doesTeleport = doesTeleport;
@@ -37,6 +50,22 @@ public enum EnderFood {
 
   public String getUnlocalisedName() {
     return unlocalisedName;
+  }
+
+  public @Nonnull ItemStack getContainerItem() {
+    return containerItem != null ? new ItemStack(containerItem.getItemNN()) : Prep.getEmpty();
+  }
+
+  public int getHunger() {
+    return hunger;
+  }
+
+  public float getSaturation() {
+    return saturation;
+  }
+
+  public boolean doesTeleport() {
+    return doesTeleport;
   }
 
 }

@@ -11,10 +11,12 @@ import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.teleport.RandomTeleportUtil;
+import crazypants.enderio.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -69,12 +71,12 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
 
   @Override
   public int getHealAmount(@Nonnull ItemStack stack) {
-    return EnderFood.get(stack).hunger;
+    return EnderFood.get(stack).getHunger();
   }
 
   @Override
   public float getSaturationModifier(@Nonnull ItemStack stack) {
-    return EnderFood.get(stack).saturation;
+    return EnderFood.get(stack).getSaturation();
   }
 
   @Override
@@ -94,9 +96,37 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
   @Override
   protected void onFoodEaten(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull EntityPlayer player) {
     super.onFoodEaten(stack, worldIn, player);
-    if (!worldIn.isRemote && EnderFood.get(stack).doesTeleport && worldIn.rand.nextFloat() < Config.teleportEffectProbability) {
+    if (!worldIn.isRemote && EnderFood.get(stack).doesTeleport() && worldIn.rand.nextFloat() < Config.teleportEffectProbability) {
       RandomTeleportUtil.teleportEntity(worldIn, player, true);
     }
+  }
+
+  @Override
+  public boolean hasContainerItem(@Nonnull ItemStack stack) {
+    return Prep.isValid(EnderFood.get(stack).getContainerItem());
+  }
+
+  @Override
+  public @Nonnull ItemStack getContainerItem(@Nonnull ItemStack stack) {
+    return EnderFood.get(stack).getContainerItem();
+  }
+
+  @Override
+  public @Nonnull ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull EntityLivingBase entityLiving) {
+    ItemStack remaining = super.onItemUseFinish(stack, worldIn, entityLiving);
+    final ItemStack containerItem = EnderFood.get(stack).getContainerItem();
+    if (Prep.isInvalid(containerItem)) { // no container
+      return remaining;
+    }
+    if (Prep.isInvalid(remaining)) { // not stackable
+      return containerItem;
+    }
+    if (entityLiving instanceof EntityPlayer) { // stackable with container item...
+      ((EntityPlayer) entityLiving).addItemStackToInventory(containerItem);
+    } else {
+      entityLiving.entityDropItem(containerItem, 0);
+    }
+    return remaining;
   }
 
 }
