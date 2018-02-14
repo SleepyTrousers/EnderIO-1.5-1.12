@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "Twigs and slime give what?",
+      "translate": "enderio.advancement.sagmill.4_brown.desc",
       "color": "white"
     },
     "title": {
-      "text": "All Natural",
+      "translate": "enderio.advancement.sagmill.4_brown.name",
       "color": "white"
     },
     "icon": {

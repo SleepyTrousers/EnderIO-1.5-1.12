@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "How many pipes in one block?",
+      "translate": "enderio.advancement.root.desc",
       "color": "white"
     },
     "title": {
-      "text": "Ender IO",
+      "translate": "enderio.advancement.root.name",
       "bold": true,
       "color": "white"
     },

@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "Make a simple alloy smelter",
+      "translate": "enderio.advancement.alloy.1_alloy_smelter_get.desc",
       "color": "white"
     },
     "title": {
-      "text": "Mix it up",
+      "translate": "enderio.advancement.alloy.1_alloy_smelter_get.name",
       "color": "white"
     },
     "icon": {

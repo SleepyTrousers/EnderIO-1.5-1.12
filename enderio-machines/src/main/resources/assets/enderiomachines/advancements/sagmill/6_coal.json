@@ -1,16 +1,16 @@
 {
   "display": {
     "description": {
-      "text": "Really old wood? Grind it away.",
+      "translate": "enderio.advancement.sagmill.6_coal.desc",
       "color": "white"
     },
     "title": {
-      "text": "Chewing Dead Wood",
+      "translate": "enderio.advancement.sagmill.6_coal.name",
       "color": "white"
     },
     "icon": {
-      "item": "enderio:item_material",
-      "data": 24
+      "item": "minecraft:coal",
+      "data": 0
     }
   },
   "criteria": {

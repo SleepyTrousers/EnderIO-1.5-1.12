@@ -869,3 +869,30 @@ enderio.gui.probe.copied=Copied conduit settings
 subtitles.entity.enderman.teleport=Something teleports
 # just because I feel that way...
 container.chestDouble=Double Chest
+
+# Achie...um...Advancements
+
+enderio.advancement.root.name=Ender IO
+enderio.advancement.root.desc=How many pipes in one block?
+
+enderio.advancement.start.1_infinity_powder_get.name=It burns
+enderio.advancement.start.1_infinity_powder_get.desc=Light bedrock on fire and get a reward
+
+enderio.advancement.start.2_simple_chassis_get.name=Get constructive
+enderio.advancement.start.2_simple_chassis_get.desc=Make your first machine chassis
+
+enderio.advancement.gears.g1_wooden_gear.name=Round and round
+enderio.advancement.gears.g1_wooden_gear.desc=It's not round but it turns anyway
+
+enderio.advancement.gear.g2_stone_gear.name=Round and heavy
+enderio.advancement.gear.g2_stone_gear.desc=It's not round but it's heavy
+
+enderio.advancement.gear.g3_iron_gear.name=Round and rusty
+enderio.advancement.gear.g3_iron_gear.desc=It's not round but it rusts
+
+enderio.advancement.gear.g4_energized_gear.name=Round and glowy
+enderio.advancement.gear.g4_energized_gear.desc=It's not round but glows
+
+enderio.advancement.gear.g5_vibrant_gear.name=Turns by itself
+enderio.advancement.gear.g5_vibrant_gear.desc=One moving part
+

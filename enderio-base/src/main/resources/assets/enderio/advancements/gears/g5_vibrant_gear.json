@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "One moving part",
+      "translate": "enderio.advancement.gear.g5_vibrant_gear.desc",
       "color": "white"
     },
     "title": {
-      "text": "Turns by itself",
+      "translate": "enderio.advancement.gear.g5_vibrant_gear.name",
       "color": "white"
     },
     "icon": {

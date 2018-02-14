@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "Light bedrock on fire and get a reward",
+      "translate": "enderio.advancement.start.1_infinity_powder_get.desc",
       "color": "white"
     },
     "title": {
-      "text": "It burns",
+      "translate": "enderio.advancement.start.1_infinity_powder_get.name",
       "color": "white"
     },
     "icon": {

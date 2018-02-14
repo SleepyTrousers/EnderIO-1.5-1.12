@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "Make a simple alloy SAG mill",
+      "translate": "enderio.advancement.sagmill.1_sagmill_get.desc",
       "color": "white"
     },
     "title": {
-      "text": "Grind it down",
+      "translate": "enderio.advancement.sagmill.1_sagmill_get.name",
       "color": "white"
     },
     "icon": {

@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "Very toxic!",
+      "translate": "enderio.advancement.sagmill.5_green.desc",
       "color": "white"
     },
     "title": {
-      "text": "Edible",
+      "translate": "enderio.advancement.sagmill.5_green.name",
       "color": "white"
     },
     "icon": {

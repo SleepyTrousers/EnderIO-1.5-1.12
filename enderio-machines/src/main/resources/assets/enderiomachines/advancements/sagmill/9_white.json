@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "Those can go, they are boring...",
+      "translate": "enderio.advancement.sagmill.9_white.desc",
       "color": "white"
     },
     "title": {
-      "text": "Bejeweled 2",
+      "translate": "enderio.advancement.sagmill.9_white.name",
       "color": "white"
     },
     "icon": {

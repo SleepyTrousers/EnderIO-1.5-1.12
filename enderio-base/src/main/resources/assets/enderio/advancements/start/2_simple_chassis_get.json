@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "Make your first machine chassis",
+      "translate": "enderio.advancement.start.2_simple_chassis_get.desc",
       "color": "white"
     },
     "title": {
-      "text": "Get constructive",
+      "translate": "enderio.advancement.start.2_simple_chassis_get.name",
       "color": "white"
     },
     "icon": {

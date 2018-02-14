@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "No, it's not food",
+      "translate": "enderio.advancement.sagmill.7_black.desc",
       "color": "white"
     },
     "title": {
-      "text": "Cleansing",
+      "translate": "enderio.advancement.sagmill.7_black.name",
       "color": "white"
     },
     "icon": {

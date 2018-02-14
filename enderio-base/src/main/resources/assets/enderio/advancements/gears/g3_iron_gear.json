@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "It's not round but it rusts",
+      "translate": "enderio.advancement.gear.g3_iron_gear.desc",
       "color": "white"
     },
     "title": {
-      "text": "Round and rusty",
+      "translate": "enderio.advancement.gear.g3_iron_gear.name",
       "color": "white"
     },
     "icon": {

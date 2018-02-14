@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "It's not round but it turns anyway",
+      "translate": "enderio.advancement.gears.g1_wooden_gear.desc",
       "color": "white"
     },
     "title": {
-      "text": "Round and round",
+      "translate": "enderio.advancement.gears.g1_wooden_gear.name",
       "color": "white"
     },
     "icon": {

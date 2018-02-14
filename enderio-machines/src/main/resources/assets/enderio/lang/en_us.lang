@@ -1,4 +1,10 @@
-//Machines Lang
+#PARSE_ESCAPES
+# ^ having this in the first line allows us to use "\uXXXX" escapes in this file
+
+#***  Ender IO Machines *****#
+
+# Translators, check your ".guess" file to see which keys your
+# language is missing and which keys it has that do not exist anymore.
 
 enderio.gui.combustion_generator.output=Generating: %s
 enderio.gui.combustion_generator.coolantTank.empty=Coolant
@@ -198,7 +204,7 @@ tile.block_killer_joe.tooltip.detailed.line1=Attacks nearby creatures when
 tile.block_killer_joe.tooltip.detailed.line2=supplied with a sword and
 tile.block_killer_joe.tooltip.detailed.line3=Nutrient Distillation
 
-;Obelisks
+#Obelisks
 
 tile.block_attractor_obelisk.name=Attractor Obelisk
 tile.block_attractor_obelisk.tooltip.detailed.line1=Draws mobs towards it
@@ -228,7 +234,7 @@ tile.block_experience_obelisk.tooltip.detailed.line1=Stores Experience
 tile.block_experience_obelisk.tooltip.detailed.line2=Can output liquid XP to
 tile.block_experience_obelisk.tooltip.detailed.line3=adjacent tanks
 
-; no description
+# no description
 tile.block_painter.name=Painting Machine
 
 tile.block_reservoir.name=Reservoir
@@ -285,7 +291,7 @@ tile.block_tank.tooltip.detailed.line1=Portable fluid tank
 tile.block_tank.tooltip.detailed.line2=Can be used to empty and
 tile.block_tank.tooltip.detailed.line3=fill fluid containers
 
-;//Travel
+#Travel
 tile.block_travel_anchor.name=Travel Anchor
 tile.block_travel_anchor.tooltip.detailed.line1=Allows teleportation between anchors
 tile.block_travel_anchor.tooltip.detailed.line2=Stand on one Anchor, look at
@@ -383,4 +389,42 @@ enderio.config.telepad=TelePad Settings
 enderio.config.weatherWeather Obelisk Settings
 enderio.config.farm=Farm Settings
 enderio.config.farm.tooltip="The commune is for life!"
+
+# Achie...um...Advancements
+
+enderio.advancement.alloy.1_alloy_smelter_get.name=Mix it up
+enderio.advancement.alloy.1_alloy_smelter_get.desc=Make a simple alloy smelter
+
+enderio.advancement.challenge.1_all_simple_get.name=Simple is simple
+enderio.advancement.challenge.1_all_simple_get.desc=Make all simple machines
+
+enderio.advancement.sagmill.1_sagmill_get.name=Grind it down
+enderio.advancement.sagmill.1_sagmill_get.desc=Make a simple SAG Mill
+
+enderio.advancement.sagmill.2_sagmill_flowers.name=Purely Organic
+enderio.advancement.sagmill.2_sagmill_flowers.desc=Put some flowers into the SAG Mill
+
+enderio.advancement.sagmill.3_sagmill_bushes.name=Chewing Wood
+enderio.advancement.sagmill.3_sagmill_bushes.desc=Not green anymore? Grind it anyway.
+
+enderio.advancement.sagmill.4_brown.name=All Natural
+enderio.advancement.sagmill.4_brown.desc=Twigs and slime give what?
+
+enderio.advancement.sagmill.5_green.name=Edible
+enderio.advancement.sagmill.5_green.desc=Very toxic!
+
+enderio.advancement.sagmill.6_coal.name=Chewing Dead Wood
+enderio.advancement.sagmill.6_coal.desc=Really old wood? Grind it away.
+
+enderio.advancement.sagmill.7_black.name=Cleansing
+enderio.advancement.sagmill.7_black.desc=No, it's not food
+
+enderio.advancement.sagmill.8_blue.name=Bejeweled
+enderio.advancement.sagmill.8_blue.desc=They look great, why grind them to dust?
+
+enderio.advancement.sagmill.9_white.name=Bejeweled 2
+enderio.advancement.sagmill.9_white.desc=Those can go, they are boring...
+
+enderio.advancement.sagmill.a_powder_coating.name=Powder Coating
+enderio.advancement.sagmill.a_powder_coating.desc=A nice coating makes a better chassis
 

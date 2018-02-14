@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "Put some flowers into the SAG Mill",
+      "translate": "enderio.advancement.sagmill.2_sagmill_flowers.desc",
       "color": "white"
     },
     "title": {
-      "text": "Purely Organic",
+      "translate": "enderio.advancement.sagmill.2_sagmill_flowers.name",
       "color": "white"
     },
     "icon": {

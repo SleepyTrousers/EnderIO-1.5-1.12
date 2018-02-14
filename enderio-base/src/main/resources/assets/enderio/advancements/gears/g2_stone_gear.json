@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "It's not round but it's heavy",
+      "translate": "enderio.advancement.gear.g2_stone_gear.desc",
       "color": "white"
     },
     "title": {
-      "text": "Round and heavy",
+      "translate": "enderio.advancement.gear.g2_stone_gear.name",
       "color": "white"
     },
     "icon": {

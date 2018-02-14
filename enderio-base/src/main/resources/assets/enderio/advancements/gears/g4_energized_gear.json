@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "It's not round but glows",
+      "translate": "enderio.advancement.gear.g4_energized_gear.desc",
       "color": "white"
     },
     "title": {
-      "text": "Round and glowy",
+      "translate": "enderio.advancement.gear.g4_energized_gear.name",
       "color": "white"
     },
     "icon": {

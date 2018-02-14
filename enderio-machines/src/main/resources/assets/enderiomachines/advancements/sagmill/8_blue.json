@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "They look great, why blow them up?",
+      "translate": "enderio.advancement.sagmill.8_blue.desc",
       "color": "white"
     },
     "title": {
-      "text": "Bejeweled",
+      "translate": "enderio.advancement.sagmill.8_blue.name",
       "color": "white"
     },
     "icon": {

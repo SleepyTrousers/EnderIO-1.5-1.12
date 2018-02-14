@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "Not green anymore? Grind it anyway.",
+      "translate": "enderio.advancement.sagmill.3_sagmill_bushes.desc",
       "color": "white"
     },
     "title": {
-      "text": "Chewing Wood",
+      "translate": "enderio.advancement.sagmill.3_sagmill_bushes.name",
       "color": "white"
     },
     "icon": {

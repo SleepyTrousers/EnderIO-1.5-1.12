@@ -1,11 +1,11 @@
 {
   "display": {
     "description": {
-      "text": "A nice coating makes a better chassis",
+      "translate": "enderio.advancement.sagmill.a_powder_coating.desc",
       "color": "white"
     },
     "title": {
-      "text": "Powder Coating",
+      "translate": "enderio.advancement.sagmill.a_powder_coating.name",
       "color": "white"
     },
     "icon": {
