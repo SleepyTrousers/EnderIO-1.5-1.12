@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
@@ -15,8 +16,9 @@ public class Alias extends AbstractConditional {
 
   private String item;
 
-  public String getName() {
-    return name;
+  @Override
+  public @Nonnull String getName() {
+    return NullHelper.first(name, "(unnamed)");
   }
 
   @Override

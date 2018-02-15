@@ -27,6 +27,12 @@ public class JeiAccessor {
     return "";
   }
 
+  public static void showCraftingRecipes() {
+    if (jeiRuntimeAvailable) {
+      JeiPlugin.showCraftingRecipes();
+    }
+  }
+
   static final @Nonnull NNList<IRecipe> ALTERNATIVES = new NNList<>();
 
   public static void addAlternativeRecipe(@Nonnull IRecipe recipe) {

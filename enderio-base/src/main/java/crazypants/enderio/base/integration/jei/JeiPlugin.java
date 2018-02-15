@@ -4,6 +4,8 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientHelper;
@@ -65,6 +67,10 @@ public class JeiPlugin implements IModPlugin {
 
   public static @Nonnull String getFilterText() {
     return jeiRuntime.getIngredientFilter().getFilterText();
+  }
+
+  public static void showCraftingRecipes() {
+    jeiRuntime.getRecipesGui().showCategories(new NNList<>(VanillaRecipeCategoryUid.CRAFTING));
   }
 
   @Override

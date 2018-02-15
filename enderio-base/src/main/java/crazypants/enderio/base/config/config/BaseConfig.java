@@ -9,6 +9,7 @@ public final class BaseConfig {
 
   public static void load() {
     ChargerConfig.F.getClass();
+    PersonalConfig.F.getClass();
     DarkSteelConfig.F.getClass();
     EnchanterConfig.F.getClass();
     InfinityConfig.F.getClass();
