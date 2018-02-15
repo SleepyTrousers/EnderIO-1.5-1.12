@@ -273,7 +273,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   private boolean isOpen(@Nonnull BlockPos farmingPos, @Nonnull Block block) {
-    return world.isAirBlock(farmingPos) || block.isReplaceable(world, pos);
+    return world.isAirBlock(farmingPos) || block.isReplaceable(world, farmingPos);
   }
 
   private boolean executeHarvest(@Nonnull IFarmer farmer, @Nonnull BlockPos farmingPos, @Nonnull IBlockState bs, @Nonnull Block block) {
