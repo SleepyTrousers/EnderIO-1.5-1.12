@@ -13,7 +13,6 @@ import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.recipes.RecipeLoader;
-import crazypants.enderio.base.diagnostics.ServerLogHandler;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.gui.handler.GuiHelper;
@@ -57,9 +56,7 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = EnderIO.MODID, name = EnderIO.MOD_NAME, version = EnderIO.VERSION, dependencies = EnderIO.DEPENDENCIES, guiFactory = "crazypants.enderio.base.config.ConfigFactoryEIO")
 public class EnderIO implements IEnderIOAddon {
@@ -266,10 +263,4 @@ public class EnderIO implements IEnderIOAddon {
     return Config.config;
   }
 
-  @EventHandler
-  public void serverStarting(FMLServerStartingEvent event) {
-    if (event.getSide() == Side.SERVER) {
-      ServerLogHandler.init();
-    }
-  }
 }
