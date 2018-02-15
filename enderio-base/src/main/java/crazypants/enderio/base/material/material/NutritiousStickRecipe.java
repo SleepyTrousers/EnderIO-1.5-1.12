@@ -2,57 +2,64 @@ package crazypants.enderio.base.material.material;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.util.Prep;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.crafting.IngredientNBT;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.oredict.OreIngredient;
 
-public class NutritiousStickRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+public class NutritiousStickRecipe extends ShapelessRecipes { // sic! JEI won't work if we don't extend that
+
+  public NutritiousStickRecipe() {
+    super("", Prep.getEmpty(), NNList.emptyList());
+  }
+
+  private final @Nonnull NNList<Ingredient> dummyIngredients = new NNList<Ingredient>(new OreIngredient("stickWood"),
+      new IngredientNBT(Fluids.NUTRIENT_DISTILLATION.getBucket()) {
+      });
 
   @Override
   public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World worldIn) {
 
     boolean foundStick = false;
     boolean foundFluid = false;
-    for (int i = 0; i < inv.getSizeInventory() && (!foundStick || !foundFluid); i++) {
+    for (int i = 0; i < inv.getSizeInventory(); i++) {
       ItemStack stack = inv.getStackInSlot(i);
       if (Prep.isValid(stack)) {
-        foundStick |= isStick(stack);
+        if (!foundStick && isStick(stack)) {
+          foundStick = true;
+          continue;
+        }
         if (!foundFluid) {
           final FluidStack fluidStack = FluidUtil.tryDrainContainer(stack, new NutDistTank()).result.fluidStack;
           if (fluidStack != null && fluidStack.amount >= Fluid.BUCKET_VOLUME) {
             foundFluid = true;
+            continue;
           }
         }
-
+        return false;
       }
     }
     return foundStick && foundFluid;
   }
 
   private boolean isStick(@Nonnull ItemStack stack) {
-    int oreId = OreDictionary.getOreID("stickWood");
-    int[] ids = OreDictionary.getOreIDs(stack);
-    if (ids != null) {
-      if (ArrayUtils.contains(ids, oreId)) {
-        return true;
-      }
-    }
-    return false;
+    return OreDictionary.containsMatch(false, OreDictionary.getOres("stickWood"), stack);
   }
 
   @Override
@@ -77,18 +84,21 @@ public class NutritiousStickRecipe extends IForgeRegistryEntry.Impl<IRecipe> imp
   private @Nonnull ItemStack getResult(@Nonnull ItemStack in) {
     if (Prep.isValid(in)) {
       FluidAndStackResult fill = FluidUtil.tryDrainContainer(in, new NutDistTank());
-      return fill.result.itemStack;
+      final FluidStack fluidStack = fill.result.fluidStack;
+      if (fluidStack != null && fluidStack.amount >= Fluid.BUCKET_VOLUME) {
+        return fill.result.itemStack;
+      }
     }
-    return Prep.getEmpty();
+    return ForgeHooks.getContainerItem(in);
   }
 
   private static class NutDistTank implements ITankAccess {
 
-    private FluidTank inputTank = new FluidTank(Fluids.ENDER_DISTILLATION.getFluid(), 0, Fluid.BUCKET_VOLUME);
+    private FluidTank inputTank = new FluidTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), 0, Fluid.BUCKET_VOLUME);
 
     @Override
     public FluidTank getInputTank(FluidStack forFluidType) {
-      if (forFluidType == null || FluidUtil.areFluidsTheSame(Fluids.ENDER_DISTILLATION.getFluid(), forFluidType.getFluid())) {
+      if (forFluidType == null || FluidUtil.areFluidsTheSame(Fluids.NUTRIENT_DISTILLATION.getFluid(), forFluidType.getFluid())) {
         return inputTank;
       }
       return null;
@@ -107,6 +117,17 @@ public class NutritiousStickRecipe extends IForgeRegistryEntry.Impl<IRecipe> imp
 
   @Override
   public boolean canFit(int width, int height) {
-    return width >= 2 && height >= 2;
+    return width * height >= 2;
   }
+
+  @Override
+  public @Nonnull NonNullList<Ingredient> getIngredients() {
+    return dummyIngredients;
+  }
+
+  @Override
+  public boolean isDynamic() {
+    return true;
+  }
+
 }

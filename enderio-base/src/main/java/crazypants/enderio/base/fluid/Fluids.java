@@ -19,11 +19,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.UniversalBucket;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -44,7 +44,7 @@ public enum Fluids {
       return new BlockFluidEio.NutrientDistillation(getFluid(), material, color);
     }
   },
-  ENDER_DISTILLATION("ender_distillation", Material.WATER, 0x149535) {
+  ENDER_DISTILLATION("ender_distillation", Material.WATER, 0x149535) { // Dew of the Void
     @Override
     protected Fluid init(@Nonnull Fluid fluid) {
       return fluid.setDensity(200).setViscosity(1000).setTemperature(175);
@@ -176,11 +176,7 @@ public enum Fluids {
   }
 
   public static @Nonnull ItemStack getBucket(@Nonnull Fluid fluid) {
-    final UniversalBucket universalBucket = ForgeModContainer.getInstance().universalBucket;
-    if (universalBucket == null) {
-      throw new NullPointerException("Forge Universal Bucket is missing");
-    }
-    return UniversalBucket.getFilledBucket(universalBucket, fluid);
+    return FluidUtil.getFilledBucket(new FluidStack(fluid, Fluid.BUCKET_VOLUME));
   }
 
   public static @Nonnull NNList<ItemStack> getBuckets() {

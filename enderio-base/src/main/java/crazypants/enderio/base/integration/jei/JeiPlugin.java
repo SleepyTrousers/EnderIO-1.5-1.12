@@ -4,16 +4,10 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.NNList;
-import com.enderio.core.common.util.NullHelper;
-import com.enderio.core.common.util.stackable.Things;
-
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientHelper;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
-import crazypants.enderio.base.material.material.Material;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IJeiRuntime;
@@ -24,12 +18,6 @@ import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapelessRecipes;
-
-import static crazypants.enderio.base.init.ModObject.itemMaterial;
 
 @JEIPlugin
 public class JeiPlugin implements IModPlugin {
@@ -41,10 +29,9 @@ public class JeiPlugin implements IModPlugin {
     DarkSteelUpgradeRecipeCategory.registerSubtypes(subtypeRegistry);
     MobContainerSubtypeInterpreter.registerSubtypes(subtypeRegistry);
   }
-  
+
   @Override
   public void registerCategories(@Nonnull IRecipeCategoryRegistration registry) {
-
     IJeiHelpers jeiHelpers = registry.getJeiHelpers();
     IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
@@ -56,19 +43,12 @@ public class JeiPlugin implements IModPlugin {
     DarkSteelUpgradeRecipeCategory.register(registry);
     DescriptionRecipeCategory.register(registry);
     InfinityRecipeCategory.registerExtras(registry);
-    
-    registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
 
-    // Add a couple of example recipes for the nut.dist stick as the custom recipe isn't picked up
-    NNList<Ingredient> inputs = new NNList<>();
-    inputs.add(new Things().add(Items.STICK));
-    inputs.add(new Things().add(Fluids.NUTRIENT_DISTILLATION.getBucket()));
-    ShapelessRecipes res = new ShapelessRecipes("", new ItemStack(itemMaterial.getItemNN(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
-    registry.addRecipes(Collections.singletonList(res), VanillaRecipeCategoryUid.CRAFTING);
+    registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
 
     if (!JeiAccessor.ALTERNATIVES.isEmpty()) {
       // These are lookups for the outputs, the real recipes with the same input create a different oredicted variant of the output item.
-      registry.addRecipes(NullHelper.notnull(JeiAccessor.ALTERNATIVES, "JeiAccessor#ALTERNATIVES"), VanillaRecipeCategoryUid.CRAFTING);
+      registry.addRecipes(JeiAccessor.ALTERNATIVES, VanillaRecipeCategoryUid.CRAFTING);
       Log.debug("Provided " + JeiAccessor.ALTERNATIVES.size() + " synthetic crafting recipes to JEI");
     }
   }

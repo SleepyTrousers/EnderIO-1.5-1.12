@@ -27,7 +27,7 @@ public class JeiAccessor {
     return "";
   }
 
-  static NNList<IRecipe> ALTERNATIVES = new NNList<>();
+  static final @Nonnull NNList<IRecipe> ALTERNATIVES = new NNList<>();
 
   public static void addAlternativeRecipe(@Nonnull IRecipe recipe) {
     ALTERNATIVES.add(recipe);
