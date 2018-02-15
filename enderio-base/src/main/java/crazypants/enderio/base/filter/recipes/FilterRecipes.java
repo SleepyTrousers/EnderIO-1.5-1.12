@@ -1,7 +1,5 @@
 package crazypants.enderio.base.filter.recipes;
 
-import java.util.UUID;
-
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
@@ -15,8 +13,7 @@ public class FilterRecipes {
 
   @SubscribeEvent
   public static void register(@Nonnull RegistryEvent.Register<IRecipe> event) {
-    event.getRegistry().register(new ClearFilterRecipe().setRegistryName(UUID.randomUUID().toString()));
-    event.getRegistry().register(new CopyFilterRecipe().setRegistryName(UUID.randomUUID().toString()));
+    event.getRegistry().register(new CopyFilterRecipe().setRegistryName(EnderIO.DOMAIN, "copy-filter"));
   }
 
 }

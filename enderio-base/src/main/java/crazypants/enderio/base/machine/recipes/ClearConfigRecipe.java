@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.interfaces.IClearableConfiguration;
 import crazypants.enderio.util.Prep;
@@ -14,7 +15,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -43,8 +43,7 @@ public class ClearConfigRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
       }
     }
 
-    final NBTTagCompound tagCompound = input.getTagCompound();
-    if (Prep.isValid(input) && tagCompound != null && !tagCompound.hasNoTags()) {
+    if (Prep.isValid(input) && input.hasTagCompound()) {
       final Item item = input.getItem();
       if (item instanceof IClearableConfiguration) {
         return clear((IClearableConfiguration) item, input);
@@ -64,7 +63,7 @@ public class ClearConfigRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
       ((IClearableConfiguration.Handler) owner).clearConfiguration(stack);
       return stack;
     } else {
-      stack.setTagCompound(new NBTTagCompound());
+      stack.setTagCompound(null);
       stack.setCount(1);
       return stack;
     }
@@ -85,13 +84,17 @@ public class ClearConfigRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
   @SubscribeEvent
   @SideOnly(Side.CLIENT)
   public void onTooltip(ItemTooltipEvent event) {
-    if (event.getEntityPlayer() != null && ItemStack.areItemStacksEqual(lastOutput, event.getItemStack())) {
-      if ((event.getEntityPlayer().openContainer instanceof ContainerWorkbench
-          && ((ContainerWorkbench) event.getEntityPlayer().openContainer).craftResult.getStackInSlot(0) == event.getItemStack())
-          || (event.getEntityPlayer().openContainer instanceof ContainerPlayer
-              && ((ContainerPlayer) event.getEntityPlayer().openContainer).craftResult.getStackInSlot(0) == event.getItemStack())) {
-        event.getToolTip().add(Lang.RECIPE_CLEAR.get());
-      }
+    if (event.getEntityPlayer() != null
+        && ((event.getEntityPlayer().openContainer instanceof ContainerWorkbench
+            && ((ContainerWorkbench) event.getEntityPlayer().openContainer).craftResult.getStackInSlot(0) == event.getItemStack())
+            || (event.getEntityPlayer().openContainer instanceof ContainerPlayer
+                && ((ContainerPlayer) event.getEntityPlayer().openContainer).craftResult.getStackInSlot(0) == event.getItemStack()))
+        && ItemStack.areItemStacksEqual(lastOutput, event.getItemStack())) {
+      event.getToolTip().add(Lang.RECIPE_CLEAR.get());
+    }
+
+    if (Log.inDev && event.getItemStack().hasTagCompound()) {
+      event.getToolTip().add("NBT: " + event.getItemStack().getTagCompound() + "(INDEV)");
     }
   }
 
@@ -109,4 +112,5 @@ public class ClearConfigRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
   public boolean isDynamic() {
     return true;
   }
+
 }

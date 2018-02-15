@@ -1,7 +1,5 @@
 package crazypants.enderio.base.machine.recipes;
 
-import java.util.UUID;
-
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
@@ -18,7 +16,7 @@ public class MachineRecipes {
   public static void register(@Nonnull RegistryEvent.Register<IRecipe> event) {
     ClearConfigRecipe inst = new ClearConfigRecipe();
     MinecraftForge.EVENT_BUS.register(inst);
-    event.getRegistry().register(inst.setRegistryName(UUID.randomUUID().toString()));
+    event.getRegistry().register(inst.setRegistryName(EnderIO.DOMAIN, "clear-config"));
   }
 
 }

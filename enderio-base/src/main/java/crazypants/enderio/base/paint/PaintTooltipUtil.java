@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
- * Adds a tooltip with paint information to items thatc an be painted.
+ * Adds a tooltip with paint information to items that can be painted.
  *
  */
 public class PaintTooltipUtil {
