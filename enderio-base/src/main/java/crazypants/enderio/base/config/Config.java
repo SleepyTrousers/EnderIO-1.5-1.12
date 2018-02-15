@@ -482,7 +482,7 @@ public final class Config {
         "The maximum storage for a single tier three capacitor in RF").getInt(capacitorBankTierThreeMaxStorageRF);
 
     capacitorBankRenderPowerOverlayOnItem = config.getBoolean("capacitorBankRenderPowerOverlayOnItem", sectionAesthetic.name,
-        capacitorBankRenderPowerOverlayOnItem, "When true the the capacitor bank item wil get a power bar in addition to the gauge on the bank");
+        capacitorBankRenderPowerOverlayOnItem, "When true the capacitor bank item will get a power bar in addition to the gauge on the bank");
 
     powerConduitTierOneRF = config.get(sectionPower.name, "powerConduitTierOneRF", powerConduitTierOneRF, "The maximum IO for the tier 1 power conduit")
         .getInt(powerConduitTierOneRF);
@@ -512,7 +512,7 @@ public final class Config {
 
     redstoneConduitsShowState = config
         .get(sectionMisc.name, "redstoneConduitsShowState", redstoneConduitsShowState,
-            "If set to false redstone conduits will look the same whether they are recieving a signal or not. This can help with performance.")
+            "If set to false redstone conduits will look the same whether they are receiving a signal or not. This can help with performance.")
         .getBoolean(redstoneConduitsShowState);
 
     conduitScale = config
