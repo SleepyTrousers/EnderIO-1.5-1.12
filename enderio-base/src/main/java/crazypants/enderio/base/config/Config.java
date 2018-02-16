@@ -53,14 +53,11 @@ public final class Config {
   public static final @Nonnull Section sectionStaff = new Section("Staff Settings", "staff");
   public static final @Nonnull Section sectionRod = new Section("Rod of Return Settings", "rod");
   public static final @Nonnull Section sectionDarkSteel = new Section("Dark Steel", "darksteel");
-  public static final @Nonnull Section sectionAesthetic = new Section("Aesthetic Settings", "aesthetic");
   public static final @Nonnull Section sectionAdvanced = new Section("Advanced Settings", "advanced");
   public static final @Nonnull Section sectionMagnet = new Section("Magnet Settings", "magnet");
   public static final @Nonnull Section sectionFluid = new Section("Fluid Settings", "fluid");
-  public static final @Nonnull Section sectionKiller = new Section("Killer Joe Settings", "killerjoe");
   public static final @Nonnull Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
   public static final @Nonnull Section sectionSoulVial = new Section("", "soulvial");
-  public static final @Nonnull Section sectionAttractor = new Section("Mob Attractor Settings", "attractor");
   public static final @Nonnull Section sectionEnchantments = new Section("Enchantments", "enchantments");
   public static final @Nonnull Section sectionMisc = new Section("Misc", "misc");
   public static final @Nonnull Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
@@ -273,36 +270,14 @@ public final class Config {
   public static boolean magnetAllowDeactivatedInBaublesSlot = false;
   public static String magnetBaublesType = "AMULET";
 
-  // public static int crafterRfPerCraft = 2500;
-
-  public static int capacitorBankMaxIoRF = 5000;
-  public static int capacitorBankMaxStorageRF = 5000000;
-
-  public static int capacitorBankTierOneMaxIoRF = 1000;
-  public static int capacitorBankTierOneMaxStorageRF = 1000000;
-
-  public static int capacitorBankTierTwoMaxIoRF = 5000;
-  public static int capacitorBankTierTwoMaxStorageRF = 5000000;
-
-  public static int capacitorBankTierThreeMaxIoRF = 25000;
-  public static int capacitorBankTierThreeMaxStorageRF = 25000000;
-
-  public static boolean capacitorBankRenderPowerOverlayOnItem = false;
-
   public static int painterEnergyPerTaskRF = 2000;
 
   public static long nutrientFoodBoostDelay = 400;
   public static boolean rocketFuelIsExplosive = true;
 
-  public static boolean killerProvokesCreeperExpolosions = false;
-
   public static double xpVacuumRange = 10;
 
   public static boolean allowTileEntitiesAsPaintSource = true;
-
-  public static boolean enableMEConduits = true;
-  public static boolean enableOCConduits = true;
-  public static boolean enableOCConduitsAnimatedTexture = true;
 
   public static NNList<ResourceLocation> soulVesselBlackList = new NNList<ResourceLocation>();
   public static NNList<ResourceLocation> soulVesselUnspawnableList = new NNList<ResourceLocation>();
@@ -326,14 +301,6 @@ public final class Config {
   public static int soulBinderTunedPressurePlateRF = 250000;
 
   public static float slicenspliceToolDamageChance = 0.01f;
-
-  public static boolean powerConduitCanDifferentTiersConnect = false;
-  public static int powerConduitTierOneRF = 640;
-  public static int powerConduitTierTwoRF = 5120;
-  public static int powerConduitTierThreeRF = 20480;
-
-  public static boolean spawnGuardStopAllSlimesDebug = false;
-  public static boolean spawnGuardStopAllSquidSpawning = false;
 
   public static int xpObeliskMaxXpLevel = Integer.MAX_VALUE;
 
@@ -442,42 +409,6 @@ public final class Config {
 
   public static void processConfig(@SuppressWarnings("hiding") Configuration config) {
 
-    capacitorBankMaxIoRF = config.get(sectionPower.name, "capacitorBankMaxIoRF", capacitorBankMaxIoRF, "The maximum IO for a single capacitor in RF/t")
-        .getInt(capacitorBankMaxIoRF);
-    capacitorBankMaxStorageRF = config
-        .get(sectionPower.name, "capacitorBankMaxStorageRF", capacitorBankMaxStorageRF, "The maximum storage for a single capacitor in RF")
-        .getInt(capacitorBankMaxStorageRF);
-
-    capacitorBankTierOneMaxIoRF = config
-        .get(sectionPower.name, "capacitorBankTierOneMaxIoRF", capacitorBankTierOneMaxIoRF, "The maximum IO for a single tier one capacitor in RF/t")
-        .getInt(capacitorBankTierOneMaxIoRF);
-    capacitorBankTierOneMaxStorageRF = config.get(sectionPower.name, "capacitorBankTierOneMaxStorageRF", capacitorBankTierOneMaxStorageRF,
-        "The maximum storage for a single tier one capacitor in RF").getInt(capacitorBankTierOneMaxStorageRF);
-
-    capacitorBankTierTwoMaxIoRF = config
-        .get(sectionPower.name, "capacitorBankTierTwoMaxIoRF", capacitorBankTierTwoMaxIoRF, "The maximum IO for a single tier two capacitor in RF/t")
-        .getInt(capacitorBankTierTwoMaxIoRF);
-    capacitorBankTierTwoMaxStorageRF = config.get(sectionPower.name, "capacitorBankTierTwoMaxStorageRF", capacitorBankTierTwoMaxStorageRF,
-        "The maximum storage for a single tier two capacitor in RF").getInt(capacitorBankTierTwoMaxStorageRF);
-
-    capacitorBankTierThreeMaxIoRF = config
-        .get(sectionPower.name, "capacitorBankTierThreeMaxIoRF", capacitorBankTierThreeMaxIoRF, "The maximum IO for a single tier three capacitor in RF/t")
-        .getInt(capacitorBankTierThreeMaxIoRF);
-    capacitorBankTierThreeMaxStorageRF = config.get(sectionPower.name, "capacitorBankTierThreeMaxStorageRF", capacitorBankTierThreeMaxStorageRF,
-        "The maximum storage for a single tier three capacitor in RF").getInt(capacitorBankTierThreeMaxStorageRF);
-
-    capacitorBankRenderPowerOverlayOnItem = config.getBoolean("capacitorBankRenderPowerOverlayOnItem", sectionAesthetic.name,
-        capacitorBankRenderPowerOverlayOnItem, "When true the capacitor bank item wil get a power bar in addition to the gauge on the bank");
-
-    powerConduitTierOneRF = config.get(sectionPower.name, "powerConduitTierOneRF", powerConduitTierOneRF, "The maximum IO for the tier 1 power conduit")
-        .getInt(powerConduitTierOneRF);
-    powerConduitTierTwoRF = config.get(sectionPower.name, "powerConduitTierTwoRF", powerConduitTierTwoRF, "The maximum IO for the tier 2 power conduit")
-        .getInt(powerConduitTierTwoRF);
-    powerConduitTierThreeRF = config.get(sectionPower.name, "powerConduitTierThreeRF", powerConduitTierThreeRF, "The maximum IO for the tier 3 power conduit")
-        .getInt(powerConduitTierThreeRF);
-    powerConduitCanDifferentTiersConnect = config.getBoolean("powerConduitCanDifferentTiersConnect", sectionPower.name, powerConduitCanDifferentTiersConnect,
-        "If set to false power conduits of different tiers cannot be connected. in this case a block such as a cap. bank is needed to bridge different tiered networks");
-
     painterEnergyPerTaskRF = config
         .get(sectionPower.name, "painterEnergyPerTaskRF", painterEnergyPerTaskRF, "The total amount of RF required to paint one block")
         .getInt(painterEnergyPerTaskRF);
@@ -501,7 +432,7 @@ public final class Config {
         .getBoolean(redstoneConduitsShowState);
 
     conduitScale = config
-        .get(sectionAesthetic.name, "conduitScale", DEFAULT_CONDUIT_SCALE,
+        .get(sectionMisc.name, "conduitScale", DEFAULT_CONDUIT_SCALE,
             "Valid values are between 0-1, smallest conduits at 0, largest at 1.\n" + "In SMP, all clients must be using the same value as the server.")
         .getDouble(DEFAULT_CONDUIT_SCALE);
     conduitScale = VecmathUtil.clamp(conduitScale, 0, 1);
@@ -951,26 +882,13 @@ public final class Config {
             "The BaublesType the magnet should be, 'AMULET', 'RING' or 'BELT' (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)")
         .getString();
 
-    // crafterRfPerCraft = config.get("AutoCrafter Settings", "crafterRfPerCraft", crafterRfPerCraft, "RF used per autocrafted
-    // recipe").getInt(crafterRfPerCraft);
-
     nutrientFoodBoostDelay = config.get(sectionFluid.name, "nutrientFluidFoodBoostDelay", nutrientFoodBoostDelay,
         "The delay in ticks between when nutrient distillation boosts your food value.").getInt((int) nutrientFoodBoostDelay);
     rocketFuelIsExplosive = config
         .get(sectionFluid.name, "rocketFuelIsExplosive", rocketFuelIsExplosive, "If enabled, Rocket Fuel will explode when in contact with fire.").getBoolean();
 
-    killerProvokesCreeperExpolosions = config.get(sectionKiller.name, "killerProvokesCreeperExpolosions", killerProvokesCreeperExpolosions,
-        "If enabled, Creepers will explode for the Killer Joe just like for any player.").getBoolean();
-
     xpVacuumRange = config.get(sectionAdvanced.name, "xpVacuumRange", xpVacuumRange, "The distance from which XP will be gathered by the XP vacuum.")
         .getDouble(xpVacuumRange);
-
-    // Add deprecated comment
-    enableMEConduits = config.getBoolean("enableMEConduits", sectionItems.name, enableMEConduits, "Allows ME conduits. Only has an effect with AE2 installed.");
-    enableOCConduits = config.getBoolean("enableOCConduits", sectionItems.name, enableOCConduits,
-        "Allows OC conduits. Only has an effect with OpenComputers installed.");
-    enableOCConduitsAnimatedTexture = config.getBoolean("enableOCConduitsAnimatedTexture", sectionItems.name, enableOCConduitsAnimatedTexture,
-        "Use the animated texture for OC conduits.");
 
     final NNList<String> temp = new NNList<>();
     soulVesselBlackList.apply(new Callback<ResourceLocation>() {
@@ -1045,11 +963,6 @@ public final class Config {
         "The chance that a tool will take damage each tick while the Slice'n'Splice is running (0 = no chance, 1 = 100% chance). "
             + "Tools will always take damage when the crafting is finished.")
         .getDouble(slicenspliceToolDamageChance);
-
-    spawnGuardStopAllSlimesDebug = config.getBoolean("spawnGuardStopAllSlimesDebug", sectionAttractor.name, spawnGuardStopAllSlimesDebug,
-        "When true slimes wont be allowed to spawn at all. Only added to aid testing in super flat worlds.");
-    spawnGuardStopAllSquidSpawning = config.getBoolean("spawnGuardStopAllSquidSpawning", sectionAttractor.name, spawnGuardStopAllSquidSpawning,
-        "When true no squid will be spawned.");
 
     xpObeliskMaxXpLevel = config.get(sectionMisc.name, "xpObeliskMaxXpLevel", xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
 

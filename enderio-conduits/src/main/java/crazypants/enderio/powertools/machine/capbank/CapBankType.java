@@ -8,21 +8,22 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.powertools.config.CapBankConfig;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.IStringSerializable;
 
 public enum CapBankType implements IStringSerializable {
 
-  CREATIVE("CREATIVE", "tile.block_cap_bank.creative", 500000, Config.capacitorBankTierTwoMaxStorageRF, false, true),
+  CREATIVE("CREATIVE", "tile.block_cap_bank.creative", CapBankConfig.tierC_maxIO, CapBankConfig.tierC_maxStorage, false, true),
 
-  SIMPLE("SIMPLE", "tile.block_cap_bank.simple", Config.capacitorBankTierOneMaxIoRF, Config.capacitorBankTierOneMaxStorageRF, true, false),
+  SIMPLE("SIMPLE", "tile.block_cap_bank.simple", CapBankConfig.tier1_maxIO, CapBankConfig.tier1_maxStorage, true, false),
 
-  ACTIVATED("ACTIVATED", "tile.block_cap_bank.activated", Config.capacitorBankTierTwoMaxIoRF, Config.capacitorBankTierTwoMaxStorageRF, true, false),
+  ACTIVATED("ACTIVATED", "tile.block_cap_bank.activated", CapBankConfig.tier2_maxIO, CapBankConfig.tier2_maxStorage, true, false),
 
-  VIBRANT("VIBRANT", "tile.block_cap_bank.vibrant", Config.capacitorBankTierThreeMaxIoRF, Config.capacitorBankTierThreeMaxStorageRF, true, false),
+  VIBRANT("VIBRANT", "tile.block_cap_bank.vibrant", CapBankConfig.tier3_maxIO, CapBankConfig.tier3_maxStorage, true, false),
 
-  NONE("NONE", "tile.block_cap_bank.none", 0, 0, false, true),
+  NONE("NONE", "tile.block_cap_bank.none", CapBankConfig.tierC_maxIO, CapBankConfig.tierC_maxStorage, false, true),
 
   ;
 
@@ -58,12 +59,13 @@ public enum CapBankType implements IStringSerializable {
 
   private final @Nonnull String uid;
   private final @Nonnull String unlocalizedName;
-  private final int maxIO;
-  private final int maxStored;
+  private final @Nonnull IValue<Integer> maxIO;
+  private final @Nonnull IValue<Integer> maxStored;
   private final boolean isMultiblock;
   private final boolean isCreative;
 
-  private CapBankType(@Nonnull String uid, @Nonnull String unlocalizedName, int maxIO, int maxStored, boolean isMultiblock, boolean isCreative) {
+  private CapBankType(@Nonnull String uid, @Nonnull String unlocalizedName, @Nonnull IValue<Integer> maxIO, @Nonnull IValue<Integer> maxStored,
+      boolean isMultiblock, boolean isCreative) {
     this.uid = uid;
     this.unlocalizedName = unlocalizedName;
     this.maxIO = maxIO;
@@ -73,11 +75,11 @@ public enum CapBankType implements IStringSerializable {
   }
 
   public int getMaxIO() {
-    return maxIO;
+    return maxIO.get();
   }
 
   public int getMaxEnergyStored() {
-    return maxStored;
+    return maxStored.get();
   }
 
   public boolean isMultiblock() {

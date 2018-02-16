@@ -2,7 +2,7 @@ package crazypants.enderio.base.item.darksteel.upgrade.explosive;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.config.config.UpgradeConfig;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -26,7 +26,7 @@ public class ExplosiveUpgrade extends AbstractUpgrade {
 
   @Override
   public int getLevelCost() {
-    return UpgradeConfig.explosiveUpgradeCost.get();
+    return DarkSteelConfig.explosiveUpgradeCost.get();
   }
 
 }

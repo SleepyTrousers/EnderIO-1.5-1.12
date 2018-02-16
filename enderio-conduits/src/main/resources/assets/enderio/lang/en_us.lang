@@ -121,3 +121,8 @@ enderio.gui.power_monitor.no_network_error=No conduit network attached. The Powe
 tile.block_gauge.name=RF Gauge
 tile.block_gauge.tooltip.detailed.line1=Displays RF levels of adjacent
 tile.block_gauge.tooltip.detailed.line2=blocks.
+
+
+enderio.config.capbank=Capacitor Bank
+enderio.config.condit=Conduits
+enderio.config.condit.energy=Energy Conduits

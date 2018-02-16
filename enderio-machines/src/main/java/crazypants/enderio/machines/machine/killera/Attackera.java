@@ -13,11 +13,10 @@ import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.power.wireless.WirelessChargedLocation;
+import crazypants.enderio.machines.config.config.KillerJoeConfig;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-
-import static crazypants.enderio.base.config.Config.killerProvokesCreeperExpolosions;
 
 class Attackera extends FakePlayerEIO implements ICreeperTarget {
 
@@ -68,7 +67,7 @@ class Attackera extends FakePlayerEIO implements ICreeperTarget {
 
   @Override
   public boolean isCreeperTarget(@Nonnull EntityCreeper swellingCreeper) {
-    return killerProvokesCreeperExpolosions;
+    return KillerJoeConfig.killerProvokesCreeperExpolosions.get();
   }
 
 }

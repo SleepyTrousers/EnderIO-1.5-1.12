@@ -1,16 +1,33 @@
 package crazypants.enderio.conduit.power;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
-import crazypants.enderio.base.conduit.*;
+
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IGuiExternalConnection;
+import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.PowerHandlerUtil;
@@ -23,16 +40,15 @@ import crazypants.enderio.conduit.IConduitComponent;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.PowerSettings;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
+import crazypants.enderio.powertools.config.ConduitConfig;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -41,11 +57,6 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.Map.Entry;
 
 import static crazypants.enderio.base.conduit.ConnectionMode.INPUT;
 import static crazypants.enderio.base.conduit.ConnectionMode.OUTPUT;
@@ -60,7 +71,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   static {
     for (String pf : POSTFIX) {
       ICONS.put(ICON_KEY + pf, TextureRegistry.registerTexture(ICON_KEY + pf));
-      ICONS.put(ICON_KEY_INPUT + pf,  TextureRegistry.registerTexture(ICON_KEY_INPUT + pf));
+      ICONS.put(ICON_KEY_INPUT + pf, TextureRegistry.registerTexture(ICON_KEY_INPUT + pf));
       ICONS.put(ICON_KEY_OUTPUT + pf, TextureRegistry.registerTexture(ICON_KEY_OUTPUT + pf));
       ICONS.put(ICON_CORE_KEY + pf, TextureRegistry.registerTexture(ICON_CORE_KEY + pf));
     }
@@ -246,11 +257,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   static int getMaxEnergyIO(int subtype) {
     switch (subtype) {
     case 1:
-      return Config.powerConduitTierTwoRF;
+      return ConduitConfig.tier2_maxIO.get();
     case 2:
-      return Config.powerConduitTierThreeRF;
+      return ConduitConfig.tier3_maxIO.get();
     default:
-      return Config.powerConduitTierOneRF;
+      return ConduitConfig.tier1_maxIO.get();
     }
   }
 
@@ -307,7 +318,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   /**
    * Used to get the capability of the conduit for the given direction
    *
-   * @param dir side for the capability
+   * @param dir
+   *          side for the capability
    * @return returns the connection with reference to the relevant side
    */
   private IEnergyStorage getEnergyDir(EnumFacing dir) {
@@ -377,7 +389,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     if (!res) {
       return false;
     }
-    if (Config.powerConduitCanDifferentTiersConnect) {
+    if (ConduitConfig.canDifferentTiersConnect.get()) {
       return res;
     }
     if (!(conduit instanceof IPowerConduit)) {
@@ -504,11 +516,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     return new PowerConduitNetwork();
   }
 
-  //  @SideOnly(Side.CLIENT)
-  //  @Override
-  //  public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
-  //    return new PowerSettings(gui, con);
-  //  }
+  // @SideOnly(Side.CLIENT)
+  // @Override
+  // public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
+  // return new PowerSettings(gui, con);
+  // }
 
   @SideOnly(Side.CLIENT)
   @Nonnull

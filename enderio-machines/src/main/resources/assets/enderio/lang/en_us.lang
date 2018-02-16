@@ -386,9 +386,11 @@ enderio.config.vacuum=Vacuum Chest/XP Vacuum Settings
 enderio.config.vat=Vat Settings
 enderio.config.zombiegenerator=Zombie Generator Settings
 enderio.config.telepad=TelePad Settings
-enderio.config.weatherWeather Obelisk Settings
+enderio.config.weather=Weather Obelisk Settings
 enderio.config.farm=Farm Settings
 enderio.config.farm.tooltip="The commune is for life!"
+enderio.config.inhibitor=Inhibitor Obelisk Settings
+enderio.config.killerjoe=Killer Joe Settings
 
 # Achie...um...Advancements
 

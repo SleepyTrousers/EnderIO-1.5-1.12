@@ -24,7 +24,7 @@ import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.config.config.UpgradeConfig;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
@@ -378,12 +378,12 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     float referenceHardness = world.getBlockState(pos).getBlockHardness(world, pos);
     final boolean withSpoon = hasSpoonUpgrade(item);
     GameType gameType = player.interactionManager.getGameType();
-    int cost = UpgradeConfig.explosiveUpgradeEnergyPerBlock.get();
+    int cost = DarkSteelConfig.explosiveUpgradeEnergyPerBlock.get();
     for (NNIterator<BlockPos> itr = NNList.SHELL.fastIterator(); getEnergyStored(item) >= cost && itr.hasNext();) {
       final BlockPos target = pos.add(itr.next());
       final IBlockState blockstate = world.getBlockState(target);
       final Block block = blockstate.getBlock();
-      if ((UpgradeConfig.explosiveUpgradeUnlimitedTargets.get() || STONES.contains(block) || (withSpoon && DIRTS.contains(block)))
+      if ((DarkSteelConfig.explosiveUpgradeUnlimitedTargets.get() || STONES.contains(block) || (withSpoon && DIRTS.contains(block)))
           && referenceHardness >= blockstate.getBlockHardness(world, target) && isToolEffective(blockstate, item)) {
         final int exp = ForgeHooks.onBlockBreakEvent(world, gameType, player, target);
         if (exp != -1 && block.canHarvestBlock(world, target, player)) {
@@ -394,7 +394,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
               block.dropXpOnBlockBreak(world, target, exp);
             }
             extractInternal(item, cost);
-            if (itemRand.nextFloat() < UpgradeConfig.explosiveUpgradeDurabilityChance.get()) {
+            if (itemRand.nextFloat() < DarkSteelConfig.explosiveUpgradeDurabilityChance.get()) {
               // damage the item
               super.onBlockDestroyed(item, world, blockstate, target, player);
             }

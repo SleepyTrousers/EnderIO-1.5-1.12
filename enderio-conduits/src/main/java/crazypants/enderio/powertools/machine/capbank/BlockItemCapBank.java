@@ -6,9 +6,9 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.power.IInternalPoweredItem;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
+import crazypants.enderio.powertools.config.PersonalConfig;
 import crazypants.enderio.powertools.init.PowerToolObject;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.item.ItemBlock;
@@ -52,7 +52,7 @@ public class BlockItemCapBank extends ItemBlock implements IOverlayRenderAware, 
 
   @Override
   public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
-    if (Config.capacitorBankRenderPowerOverlayOnItem) {
+    if (PersonalConfig.capacitorBankRenderPowerOverlayOnItem.get()) {
       PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
     }
   }

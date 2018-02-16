@@ -14,7 +14,6 @@ public final class BaseConfig {
     EnchanterConfig.F.getClass();
     InfinityConfig.F.getClass();
     SpawnerConfig.F.getClass();
-    UpgradeConfig.F.getClass();
   }
 
 }

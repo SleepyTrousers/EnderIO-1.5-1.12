@@ -6,6 +6,7 @@ import java.util.List;
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;
@@ -32,7 +33,12 @@ public class GuiConfigFactoryEIO extends GuiConfig {
         if (configuration != null) {
           List<IConfigElement> list = new ArrayList<>();
           for (String section : configuration.getCategoryNames()) {
-            list.add(new ConfigElement(configuration.getCategory(section).setLanguageKey(EnderIO.lang.addPrefix("config." + section))));
+            final ConfigCategory category = configuration.getCategory(section);
+            category.setLanguageKey(EnderIO.lang.addPrefix("config." + category.getQualifiedName()));
+            System.out.println(section + " => " + EnderIO.lang.addPrefix("config." + category.getQualifiedName()));
+            if (!category.isChild()) {
+              list.add(new ConfigElement(category));
+            }
           }
           result.add(new DummyCategoryElement(modContainer.getName(), EnderIO.lang.addPrefix("config.title." + modContainer.getModId()), list));
         }

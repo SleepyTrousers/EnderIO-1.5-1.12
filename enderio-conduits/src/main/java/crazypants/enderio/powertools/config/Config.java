@@ -17,6 +17,8 @@ public final class Config {
 
   public static void load() {
     // force sub-configs to be classloaded with the main config
-    // ClientConfig.F.getClass();
+    CapBankConfig.F.getClass();
+    ConduitConfig.F.getClass();
+    PersonalConfig.F.getClass();
   }
 }
