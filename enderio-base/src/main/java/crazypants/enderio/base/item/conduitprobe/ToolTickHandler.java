@@ -3,7 +3,9 @@ package crazypants.enderio.base.item.conduitprobe;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.tool.IConduitControl;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.item.yetawrench.YetaWrenchPacketProcessor;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.Minecraft;
@@ -12,31 +14,29 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.MouseEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class ToolTickHandler {
-
-  public static void init(@Nonnull FMLPreInitializationEvent event) {
-    MinecraftForge.EVENT_BUS.register(ToolTickHandler.class);
-  }
 
   @SubscribeEvent
   public static void onMouseEvent(MouseEvent event) {
-    EntityPlayerSP player = Minecraft.getMinecraft().player;
-    if (event.getDwheel() != 0 && player.isSneaking()) {
-      ItemStack stack = player.getHeldItemMainhand();
-      Item item = stack.getItem();
-      if (item instanceof IConduitControl) {
-        changeDisplayMode(stack, player, event.getDwheel());
-        event.setCanceled(true);
-      } else if (item instanceof ItemConduitProbe) {
-        changeConduitProbeMode(stack);
-        event.setCanceled(true);
+    if (PersonalConfig.yetaUseSneakMouseWheel.get()) {
+      EntityPlayerSP player = Minecraft.getMinecraft().player;
+      if (event.getDwheel() != 0 && player.isSneaking()) {
+        ItemStack stack = player.getHeldItemMainhand();
+        Item item = stack.getItem();
+        if (item instanceof IConduitControl) {
+          changeDisplayMode(stack, player, event.getDwheel());
+          event.setCanceled(true);
+        } else if (item instanceof ItemConduitProbe) {
+          changeConduitProbeMode(stack);
+          event.setCanceled(true);
+        }
       }
     }
   }

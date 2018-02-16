@@ -504,8 +504,8 @@ enderio.config.top=The One Probe Integration Settings
 enderio.config.upgrades=Dark Steel Upgrade Settings
 enderio.config.wireless=Wireless Charger Settings
 
-enchantment.soulBound=Soulbound
-description.enchantment.enderio.soulBound=Prevents item from being lost on death
+enchantment.soulbound=Soulbound
+description.enchantment.enderio.soulbound=Prevents item from being lost on death
 
 enderio.farm.note.outputFull=Output Full
 enderio.farm.note.noSeeds=No Seeds

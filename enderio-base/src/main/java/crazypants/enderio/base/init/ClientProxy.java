@@ -13,7 +13,6 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.block.coldfire.ColdFireStateMapper;
 import crazypants.enderio.base.block.lever.LeverStateMapper;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.diagnostics.EnderIOCrashCallable;
 import crazypants.enderio.base.gui.IoConfigRenderer;
 import crazypants.enderio.base.gui.tooltip.TooltipHandlerBurnTime;
@@ -22,7 +21,6 @@ import crazypants.enderio.base.gui.tooltip.TooltipHandlerGrinding;
 import crazypants.enderio.base.handler.KeyTracker;
 import crazypants.enderio.base.integration.jei.JeiAccessor;
 import crazypants.enderio.base.item.conduitprobe.ConduitProbeOverlayRenderer;
-import crazypants.enderio.base.item.conduitprobe.ToolTickHandler;
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetector;
 import crazypants.enderio.base.item.yetawrench.YetaWrenchOverlayRenderer;
 import crazypants.enderio.base.material.glass.EnderIOGlassesStateMapper;
@@ -143,9 +141,7 @@ public class ClientProxy extends CommonProxy {
 
     SpecialTooltipHandler.addCallback(new TooltipHandlerGrinding());
     SpecialTooltipHandler.addCallback(new TooltipHandlerBurnTime());
-    if (Config.addFuelTooltipsToAllFluidContainers) {
-      SpecialTooltipHandler.addCallback(new TooltipHandlerFluid());
-    }
+    SpecialTooltipHandler.addCallback(new TooltipHandlerFluid());
     PaintTooltipUtil.create();
 
     IoConfigRenderer.init(event);
@@ -159,9 +155,6 @@ public class ClientProxy extends CommonProxy {
     // ItemModelRegistry.registerRotating("enderCrystal", 2);
 
     // Listeners
-    if (Config.useSneakMouseWheelYetaWrench) {
-      ToolTickHandler.init(event);
-    }
     MinecraftForge.EVENT_BUS.register(TravelController.instance);
     MinecraftForge.EVENT_BUS.register(KeyTracker.instance);
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);

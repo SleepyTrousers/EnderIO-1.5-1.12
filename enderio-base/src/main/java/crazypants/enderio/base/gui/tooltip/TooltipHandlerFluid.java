@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
 import com.enderio.core.common.util.FluidUtil;
 
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.IFluidCoolant;
 import crazypants.enderio.base.fluid.IFluidFuel;
@@ -51,7 +52,7 @@ public class TooltipHandlerFluid implements ITooltipCallback {
 
   @Override
   public boolean shouldHandleItem(@Nonnull ItemStack item) {
-    return FluidUtil.getFluidTypeFromItem(item) != null;
+    return PersonalConfig.tooltipsAddFuelToFluidContainers.get() && FluidUtil.getFluidTypeFromItem(item) != null;
   }
 
 }

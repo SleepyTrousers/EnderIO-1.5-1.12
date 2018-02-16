@@ -9,6 +9,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.util.NbtValue;
@@ -77,7 +78,7 @@ public abstract class TileEntityEio extends TileEntityBase {
   }
 
   protected void onAfterDataPacket() {
-    if (Config.debugUpdatePackets) {
+    if (PersonalConfig.debugUpdatePackets.get()) {
       EnderIO.proxy.markBlock(getWorld(), getPos(), COLOR);
     }
   }

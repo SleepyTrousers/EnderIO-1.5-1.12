@@ -11,7 +11,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -66,7 +66,7 @@ public class YetaWrenchOverlayRenderer {
     int modeCount = ConduitDisplayMode.registrySize();
     Iterable<ConduitDisplayMode> renderable = ConduitDisplayMode.getRenderableModes();
 
-    switch (Config.yetaWrenchOverlayMode) {
+    switch (PersonalConfig.yetaOverlayMode.get()) {
     case 0:
       if (displayTickCount > 0) {
 

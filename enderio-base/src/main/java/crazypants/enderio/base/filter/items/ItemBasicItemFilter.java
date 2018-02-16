@@ -80,7 +80,7 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
   public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
     if (FilterRegistry.isFilterSet(stack)) {
-      if (!SpecialTooltipHandler.showAdvancedTooltips()) {
+      if (!flagIn.isAdvanced()) {
         tooltip.add(Lang.CONDUIT_FILTER.get());
         SpecialTooltipHandler.addShowDetailsTooltip(tooltip);
       } else {

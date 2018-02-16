@@ -49,7 +49,6 @@ public final class Config {
   public static final @Nonnull Section sectionRecipe = new Section("Recipe Settings", "recipe");
   public static final @Nonnull Section sectionItems = new Section("Item Enabling", "item");
   public static final @Nonnull Section sectionEfficiency = new Section("Efficiency Settings", "efficiency");
-  public static final @Nonnull Section sectionPersonal = new Section("Personal Settings", "personal");
   public static final @Nonnull Section sectionAnchor = new Section("Anchor Settings", "anchor");
   public static final @Nonnull Section sectionStaff = new Section("Staff Settings", "staff");
   public static final @Nonnull Section sectionRod = new Section("Rod of Return Settings", "rod");
@@ -88,10 +87,6 @@ public final class Config {
   public static boolean createSyntheticRecipes = true;
 
   public static boolean detailedPowerTrackingEnabled = false;
-
-  public static boolean useSneakMouseWheelYetaWrench = true;
-  public static boolean useSneakRightClickYetaWrench = false;
-  public static int yetaWrenchOverlayMode = 0;
 
   public static boolean itemConduitUsePhyscialDistance = false;
 
@@ -239,10 +234,6 @@ public final class Config {
   public static int fireWaterPowerPerCycleRF = 80;
   public static int fireWaterPowerTotalBurnTime = 15000;
 
-  public static boolean addFuelTooltipsToAllFluidContainers = true;
-  public static boolean addFurnaceFuelTootip = true;
-  public static boolean addDurabilityTootip = true;
-
   public static String[] hoeStrings = new String[] { "minecraft:wooden_hoe", "minecraft:stone_hoe", "minecraft:iron_hoe", "minecraft:diamond_hoe",
       "minecraft:golden_hoe", "MekanismTools:ObsidianHoe", "MekanismTools:LapisLazuliHoe", "MekanismTools:OsmiumHoe", "MekanismTools:BronzeHoe",
       "MekanismTools:GlowstoneHoe", "MekanismTools:SteelHoe", "Steamcraft:hoeBrass", "Steamcraft:hoeGildedGold", "TConstruct:mattock",
@@ -302,10 +293,6 @@ public final class Config {
 
   public static long nutrientFoodBoostDelay = 400;
   public static boolean rocketFuelIsExplosive = true;
-
-  public static boolean machineSoundsEnabled = true;
-
-  public static float machineSoundVolume = 1.0f;
 
   public static boolean killerProvokesCreeperExpolosions = false;
 
@@ -368,8 +355,6 @@ public final class Config {
 
   public static String coldFireIgniterFluidType = "vapor_of_levity";
   public static int coldFireIgniterMbPerUse = 10;
-
-  public static boolean debugUpdatePackets = false;
 
   public static boolean topEnabled = true;
   public static boolean topShowProgressByDefault = true;
@@ -550,24 +535,6 @@ public final class Config {
     detailedPowerTrackingEnabled = config.get(sectionAdvanced.name, "perInterfacePowerTrackingEnabled", detailedPowerTrackingEnabled,
         "Enable per tick sampling on individual power inputs and outputs. This allows slightly more detailed messages from the RF Reader but has a negative impact on server performance.")
         .getBoolean(detailedPowerTrackingEnabled);
-
-    useSneakMouseWheelYetaWrench = config.get(sectionPersonal.name, "useSneakMouseWheelYetaWrench", useSneakMouseWheelYetaWrench,
-        "If true, shift-mouse wheel will change the conduit display mode when the YetaWrench is equipped.").getBoolean(useSneakMouseWheelYetaWrench);
-
-    useSneakRightClickYetaWrench = config
-        .get(sectionPersonal.name, "useSneakRightClickYetaWrench", useSneakRightClickYetaWrench,
-            "If true, shift-clicking the YetaWrench on a null or non wrenchable object will change the conduit display mode.")
-        .getBoolean(useSneakRightClickYetaWrench);
-
-    yetaWrenchOverlayMode = config.getInt("yetaWrenchOverlayMode", sectionPersonal.name, yetaWrenchOverlayMode, 0, 2,
-        "What kind of overlay to use when holding the yeta wrench\n\n" + "0 - Sideways scrolling in ceter of screen\n"
-            + "1 - Vertical icon bar in bottom right\n" + "2 - Old-style group of icons in bottom right");
-
-    machineSoundsEnabled = config.get(sectionPersonal.name, "useMachineSounds", machineSoundsEnabled, "If true, machines will make sounds.")
-        .getBoolean(machineSoundsEnabled);
-
-    machineSoundVolume = (float) config.get(sectionPersonal.name, "machineSoundVolume", machineSoundVolume, "Volume of machine sounds.")
-        .getDouble(machineSoundVolume);
 
     itemConduitUsePhyscialDistance = config
         .get(sectionEfficiency.name, "itemConduitUsePhyscialDistance", itemConduitUsePhyscialDistance,
@@ -811,13 +778,13 @@ public final class Config {
             "The base chance that a skull will be dropped when using a non dark steel sword (0 = no chance, 1 = 100% chance)")
         .getDouble(vanillaSwordSkullChance);
     vanillaSwordSkullLootingModifier = (float) config
-        .get(sectionPersonal.name, "vanillaSwordSkullLootingModifier", vanillaSwordSkullLootingModifier,
+        .get(sectionDarkSteel.name, "vanillaSwordSkullLootingModifier", vanillaSwordSkullLootingModifier,
             "The chance per looting level that a skull will be dropped when using a non-dark steel sword (0 = no chance, 1 = 100% chance)")
         .getDouble(vanillaSwordSkullLootingModifier);
 
     ticCleaverSkullDropChance = (float) config.get(sectionDarkSteel.name, "ticCleaverSkullDropChance", ticCleaverSkullDropChance,
         "The base chance that an Enderman Skull will be dropped when using TiC Cleaver").getDouble(ticCleaverSkullDropChance);
-    ticBeheadingSkullModifier = (float) config.get(sectionPersonal.name, "ticBeheadingSkullModifier", ticBeheadingSkullModifier,
+    ticBeheadingSkullModifier = (float) config.get(sectionDarkSteel.name, "ticBeheadingSkullModifier", ticBeheadingSkullModifier,
         "The chance per level of Beheading that a skull will be dropped when using a TiC weapon").getDouble(ticBeheadingSkullModifier);
 
     fakePlayerSkullChance = (float) config.get(sectionDarkSteel.name, "fakePlayerSkullChance", fakePlayerSkullChance,
@@ -923,17 +890,6 @@ public final class Config {
     fireWaterPowerTotalBurnTime = config
         .get(sectionPower.name, "fireWaterPowerTotalBurnTime", fireWaterPowerTotalBurnTime, "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000")
         .getInt(fireWaterPowerTotalBurnTime);
-
-    addFuelTooltipsToAllFluidContainers = config
-        .get(sectionPersonal.name, "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
-            "If true, the RF/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.")
-        .getBoolean(addFuelTooltipsToAllFluidContainers);
-    addDurabilityTootip = config
-        .get(sectionPersonal.name, "addDurabilityTootip", addFuelTooltipsToAllFluidContainers, "If true, adds durability tooltips to tools and armor")
-        .getBoolean(addDurabilityTootip);
-    addFurnaceFuelTootip = config
-        .get(sectionPersonal.name, "addFurnaceFuelTootip", addFuelTooltipsToAllFluidContainers, "If true, adds burn duration tooltips to furnace fuels")
-        .getBoolean(addFurnaceFuelTootip);
 
     debugTraceNBTActivityExtremelyDetailed = config
         .get(sectionAdvanced.name, "debugTraceNBTActivityExtremelyDetailed", debugTraceNBTActivityExtremelyDetailed,
@@ -1134,9 +1090,6 @@ public final class Config {
     coldFireIgniterMbPerUse = config.get(sectionDarkSteel.name, "coldFireIgniterMbPerUse", coldFireIgniterMbPerUse,
         "The amount of fluid in mb used per usage. If set to <= 0 fluid use will be disabled").getInt();
 
-    debugUpdatePackets = config.getBoolean("debugUpdatePackets", sectionPersonal.name, debugUpdatePackets,
-        "DEBUG: If true, TEs will flash when they recieve an update packet.");
-
     topEnabled = config.getBoolean("topEnabled", sectionTOP.name, topEnabled, "If true, 'The One Probe' by McJty will be supported");
 
     topShowProgressByDefault = config.getBoolean("topShowProgressByDefault", sectionTOP.name, topShowProgressByDefault,
@@ -1161,13 +1114,6 @@ public final class Config {
     CapacitorKey.processConfig(config);
     BaseConfig.load();
     BaseConfig.F.setConfig(config);
-  }
-
-  public static void checkYetaAccess() {
-    if (!useSneakMouseWheelYetaWrench && !useSneakRightClickYetaWrench) {
-      Log.warn("Both useSneakMouseWheelYetaWrench and useSneakRightClickYetaWrench are set to false. Enabling right click.");
-      useSneakRightClickYetaWrench = true;
-    }
   }
 
   public static void init(FMLPostInitializationEvent event) {

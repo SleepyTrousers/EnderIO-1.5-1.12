@@ -66,7 +66,7 @@ public class ItemBrokenSpawner extends Item implements IOverlayRenderAware {
     if (mob != null) {
       tooltip.add(mob.getDisplayName());
     }
-    if (!SpecialTooltipHandler.showAdvancedTooltips()) {
+    if (!flagIn.isAdvanced()) {
       SpecialTooltipHandler.addShowDetailsTooltip(tooltip);
     } else {
       SpecialTooltipHandler.addDetailedTooltipFromResources(tooltip, stack);

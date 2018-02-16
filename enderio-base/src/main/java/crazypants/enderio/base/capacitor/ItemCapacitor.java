@@ -93,13 +93,13 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
   public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
     tooltip.add(Lang.MACHINE_UPGRADE.get());
-    if (SpecialTooltipHandler.showAdvancedTooltips()) {
+    if (flagIn.isAdvanced()) {
       SpecialTooltipHandler.addDetailedTooltipFromResources(tooltip, Lang.MACHINE_UPGRADE.getKey());
     } else {
       SpecialTooltipHandler.addShowDetailsTooltip(tooltip);
     }
     if (NbtValue.GLINT.hasTag(stack)) {
-      tooltip.add(EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack), NbtValue.CAPNAME.getString(stack, "(!%$&§*&%*???")));
+      tooltip.add(EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack), NbtValue.CAPNAME.getString(stack, "(!%$&ï¿½*&%*???")));
     }
   }
 

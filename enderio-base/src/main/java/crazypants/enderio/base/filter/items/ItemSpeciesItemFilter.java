@@ -75,7 +75,7 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade, I
   public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
     if (FilterRegistry.isFilterSet(stack)) {
-      if (!SpecialTooltipHandler.showAdvancedTooltips()) {
+      if (!flagIn.isAdvanced()) {
         tooltip.add(EnderIO.lang.localize("itemConduitFilterUpgrade"));
         SpecialTooltipHandler.addShowDetailsTooltip(tooltip);
       } else {

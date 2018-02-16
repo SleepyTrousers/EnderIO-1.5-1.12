@@ -16,13 +16,13 @@ import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.handler.KeyTracker;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.interfaces.IYetaAwareBlock;
+import crazypants.enderio.base.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
-import crazypants.enderio.base.paint.IPaintable.IBlockPaintableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
@@ -117,7 +117,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   @Override
   public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     ItemStack equipped = player.getHeldItem(hand);
-    if (!Config.useSneakRightClickYetaWrench || !player.isSneaking()) {
+    if (!PersonalConfig.yetaUseSneakRightClick.get() || !player.isSneaking()) {
       return new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
     }
     ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
