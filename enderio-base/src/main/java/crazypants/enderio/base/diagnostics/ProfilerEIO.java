@@ -27,6 +27,7 @@ public class ProfilerEIO extends Profiler {
 
   private List<Element> stack = new LinkedList<>();
   private List<Element> discarded = new LinkedList<>();
+  private List<Element> candidates = new LinkedList<>();
 
   public ProfilerEIO() {
   }
@@ -35,6 +36,7 @@ public class ProfilerEIO extends Profiler {
   public void clearProfiling() {
     stack.clear();
     discarded.clear();
+    candidates.clear();
     super.clearProfiling();
   }
 
@@ -44,8 +46,9 @@ public class ProfilerEIO extends Profiler {
       super.startSection(name);
       if (stack.isEmpty() && name.equals("root")) {
         discarded.clear();
+        candidates.clear();
       }
-      stack.add(0, new Element(name, new RuntimeException()));
+      stack.add(0, new Element(getNameOfLastSection(), new RuntimeException()));
     }
   }
 
@@ -55,7 +58,13 @@ public class ProfilerEIO extends Profiler {
       if (stack.isEmpty()) {
         StringBuilder b = new StringBuilder();
         b.append("Profiler Underrun!\n");
-        b.append("Last 20 endSection()s:\n");
+        b.append("Special mismatching start/end pairs:\n");
+        for (Element element : candidates) {
+          b.append("Section: " + element.name + "\n");
+          b.append("Starter: " + e2s(element.starter) + "\n");
+          b.append("Ender: " + e2s(element.ender) + "\n\n");
+        }
+        b.append("Last endSection()s:\n");
         for (Element element : discarded) {
           b.append("Section: " + element.name + "\n");
           b.append("Starter: " + e2s(element.starter) + "\n");
@@ -67,8 +76,16 @@ public class ProfilerEIO extends Profiler {
       Element element = stack.remove(0);
       element.ender = new RuntimeException();
       discarded.add(element);
-      while (discarded.size() > 1000) {
+      while (discarded.size() > 3000) {
         discarded.remove(0);
+      }
+      if (!getFirst(element.starter).equals(getFirst(element.ender))) {
+        candidates.add(element);
+        Log.warn("Mismatching startSection() and endSection() source for section " + element.name + "\nStarter: " + e2s(element.starter) + "\nEnder: "
+            + e2s(element.ender));
+        while (candidates.size() > 100) {
+          candidates.remove(0);
+        }
       }
       super.endSection();
     }
@@ -78,6 +95,22 @@ public class ProfilerEIO extends Profiler {
     StringWriter errors = new StringWriter();
     ex.printStackTrace(new PrintWriter(errors));
     return errors.toString();
+  }
+
+  private String getFirst(RuntimeException ex) {
+    StackTraceElement[] stackTrace = ex.getStackTrace();
+    for (int i = 0; i < stackTrace.length; i++) {
+      StackTraceElement stackTraceElement = stackTrace[i];
+      String className = stackTraceElement.getClassName();
+      if (!className.equals("crazypants.enderio.base.diagnostics.ProfilerEIO") && !className.equals("net.minecraft.profiler.Profiler")
+          && !className.equals("crazypants.enderio.base.diagnostics.Prof")) {
+        if (className.startsWith("net.minecraft")) {
+          return "minecraft"; // assume vanilla code is clean
+        }
+        return className + "." + stackTraceElement.getMethodName();
+      }
+    }
+    return "";
   }
 
   public static void init(FMLServerAboutToStartEvent event) {
