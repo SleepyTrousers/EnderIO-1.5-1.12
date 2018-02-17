@@ -9,6 +9,14 @@ import net.minecraft.world.World;
 
 public class Prof {
 
+  private static ThreadLocal<Counter> counter = ThreadLocal.withInitial(() -> {
+    return new Counter();
+  });
+
+  private static class Counter {
+    int count = 0;
+  }
+
   public static void start(@Nonnull IBlockAccess world, @Nonnull String section) {
     start(getProfiler(world), section);
   }
@@ -33,6 +41,7 @@ public class Prof {
     if (profiler != null) {
       profiler.startSection(section);
     }
+    counter.get().count++;
   }
 
   public static void start(@Nullable Profiler profiler, @Nonnull String section, @Nullable Object param) {
@@ -54,15 +63,19 @@ public class Prof {
   }
 
   public static void stop(@Nullable Profiler profiler) {
-    if (profiler != null) {
-      profiler.endSection();
+    if (--counter.get().count >= 0) {
+      if (profiler != null) {
+        profiler.endSection();
+      }
+    } else {
+      new RuntimeException("Profiler underflow!").printStackTrace();
     }
   }
 
   public static void stop(@Nullable Profiler profiler, int count) {
     if (profiler != null) {
       for (int i = 0; i < count; i++) {
-        profiler.endSection();
+        stop(profiler);
       }
     }
   }
