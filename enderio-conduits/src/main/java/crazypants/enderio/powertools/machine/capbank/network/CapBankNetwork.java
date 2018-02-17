@@ -15,6 +15,7 @@ import com.enderio.core.common.util.RoundRobinIterator;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
+import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.handler.ServerTickHandler;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -223,22 +224,23 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
   // --------- Tick Handling
 
   @Override
-  public void tickEnd(TickEvent.ServerTickEvent evt, Profiler theProfiler) {
-    theProfiler.startSection("ItemCharging");
+  public void tickEnd(TickEvent.ServerTickEvent evt, Profiler profiler) {
+    Prof.start(profiler, "ItemCharging");
     chargeItems(inventory.getStacks());
-    theProfiler.endStartSection("EnergyTransmitting");
+    Prof.next(profiler, "EnergyTransmitting");
     transmitEnergy();
 
     if (energyStored != prevEnergyStored) {
-      theProfiler.endStartSection("EnergyBalancing");
+      Prof.next(profiler, "EnergyBalancing");
       distributeEnergyToBanks();
     }
-    theProfiler.endSection();
+    Prof.next(profiler, "EnergyTracking");
     powerTrackerIn.tick(energyReceived);
     powerTrackerOut.tick(energySend);
     prevEnergyStored = energyStored;
     energyReceived = 0;
     energySend = 0;
+    Prof.stop(profiler);
 
     if (firstUpate) {
       if (!capBanks.isEmpty()) {

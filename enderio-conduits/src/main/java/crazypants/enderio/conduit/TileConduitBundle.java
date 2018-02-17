@@ -30,6 +30,7 @@ import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.geom.Offsets;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
+import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.config.ConduitConfig;
@@ -278,30 +279,25 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public void doUpdate() {
-    getWorld().profiler.startSection("conduitBundle");
-    getWorld().profiler.startSection("tick");
+    Prof.start(getWorld(), "tick");
 
     for (IConduit conduit : conduits) {
-      getWorld().profiler.startSection(NullHelper.notnullJ(conduit.getClass().toString(), "Class#toString"));
+      Prof.next(getWorld(), "", conduit);
       conduit.updateEntity(world);
-      getWorld().profiler.endSection();
     }
 
     if (conduitsDirty) {
-      getWorld().profiler.startSection("neigborUpdate");
+      Prof.next(getWorld(), "neighborUpdate");
       doConduitsDirty();
-      getWorld().profiler.endSection();
     }
-    getWorld().profiler.endSection();
 
     // client side only, check for changes in rendering of the bundle
     if (world.isRemote) {
-      getWorld().profiler.startSection("clientTick");
+      Prof.next(getWorld(), "clientTick");
       updateEntityClient();
-      getWorld().profiler.endSection();
     }
 
-    getWorld().profiler.endSection();
+    Prof.stop(getWorld());
   }
 
   private void doConduitsDirty() {

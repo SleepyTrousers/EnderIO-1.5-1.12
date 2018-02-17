@@ -27,6 +27,7 @@ import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
+import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import net.minecraft.block.Block;
@@ -392,13 +393,16 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
     if (world.isRemote) {
       return;
     }
+    Prof.start(world, "updateNetwork");
     updateNetwork(world);
+    Prof.next(world, "updateConnections");
     updateConnections();
     readFromNbt = false; // the two update*()s react to this on their first run
     if (clientStateDirty) {
       getBundle().dirty();
       clientStateDirty = false;
     }
+    Prof.stop(world);
   }
 
   private void updateConnections() {
@@ -553,9 +557,11 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
   @Override
   @Nonnull
   public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
-    return NullHelper.notnullJ(Collections.singletonList(new CollidableComponent(getCollidableType(),
-        ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir, key.isStub, key.offset), key.dir, null)), 
-        "Collections#singletonList");
+    return NullHelper
+        .notnullJ(
+            Collections.singletonList(new CollidableComponent(getCollidableType(),
+                ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir, key.isStub, key.offset), key.dir, null)),
+            "Collections#singletonList");
   }
 
   @Override

@@ -35,6 +35,7 @@ import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.redstone.signals.SignalSource;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
+import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
@@ -132,7 +133,9 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     if (!world.isRemote) {
       if (activeUpdateCooldown > 0) {
         --activeUpdateCooldown;
+        Prof.start(world, "updateActiveState");
         updateActiveState();
+        Prof.stop(world);
       }
 
     }

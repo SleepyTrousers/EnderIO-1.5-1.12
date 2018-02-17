@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.diagnostics.Prof;
 import net.minecraft.profiler.Profiler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -27,7 +28,7 @@ public class ServerTickHandler {
   private final static @Nonnull IdentityHashMap<ITickListener, String> listeners = new IdentityHashMap<>();
 
   public static void addListener(@Nonnull ITickListener listener) {
-    listeners.put(listener, listener.getClass().getName().replaceFirst(".*\\.", ""));
+    listeners.put(listener, listener.getClass().getSimpleName());
   }
 
   public static void removeListener(@Nonnull ITickListener listener) {
@@ -41,19 +42,18 @@ public class ServerTickHandler {
   @SubscribeEvent
   public static void onServerTick(@Nonnull TickEvent.ServerTickEvent event) {
     final Profiler profiler = FMLCommonHandler.instance().getMinecraftServerInstance().profiler;
-    profiler.startSection("root"); // this event is fired outside the profiler's normal coverage...
-    profiler.startSection("ServerTickEvent");
+    Prof.start(profiler, "root"); // this event is fired outside the profiler's normal coverage...
+    Prof.start(profiler, "ServerTickEvent_" + event.phase);
     for (Entry<ITickListener, String> entry : listeners.entrySet()) {
-      profiler.startSection(NullHelper.first(entry.getValue(), "(unnamed)"));
+      Prof.start(profiler, NullHelper.first(entry.getValue(), "(unnamed)"));
       if (event.phase == Phase.START) {
         entry.getKey().tickStart(event, profiler);
       } else {
         entry.getKey().tickEnd(event, profiler);
       }
-      profiler.endSection();
+      Prof.stop(profiler);
     }
-    profiler.endSection(); // ServerTickEvent
-    profiler.endSection(); // root
+    Prof.stop(profiler, 2);
   }
 
 }

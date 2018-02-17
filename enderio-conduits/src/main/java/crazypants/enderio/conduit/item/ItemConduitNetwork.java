@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -218,22 +219,22 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   public void tickEnd(ServerTickEvent event, Profiler profiler) {
     for (INetworkedInventory ni : inventories) {
       if (requiresSort) {
-        profiler.startSection("updateInsertOrder");
+        Prof.start(profiler, "updateInsertOrder_", ni.getInventory());
         ni.updateInsertOrder();
-        profiler.endSection();
+        Prof.stop(profiler);
       }
-      profiler.startSection("NetworkedInventoryTick");
+      Prof.start(profiler, "NetworkedInventoryTick_", ni.getInventory());
       ni.onTick();
-      profiler.endSection();
+      Prof.stop(profiler);
     }
     if (requiresSort) {
       requiresSort = false;
       changeCount++;
     }
     // if(database != null) {
-    // theProfiler.startSection("DatabaseTick");
+    // Prof.start(profiler, "DatabaseTick");
     // database.tick();
-    // theProfiler.endSection();
+    // Prof.stop(profiler);
     // }
   }
 

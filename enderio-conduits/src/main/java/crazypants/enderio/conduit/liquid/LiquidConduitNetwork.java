@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.fluid.IFluidWrapper;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.diagnostics.Prof;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -68,9 +69,9 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     if (liquidType != null && liquidType.getFluid() != null && !isEmpty()) {
       int visc = Math.max(1000, liquidType.getFluid().getViscosity());
       if (curTime % (visc / 500) == 0) {
-        profiler.startSection("flow");
+        Prof.start(profiler, "flow");
         doFlow();
-        profiler.endSection();
+        Prof.stop(profiler);
       }
     }
   }

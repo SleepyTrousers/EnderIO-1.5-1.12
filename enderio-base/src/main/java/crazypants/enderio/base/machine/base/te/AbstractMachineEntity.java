@@ -15,6 +15,7 @@ import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.capability.ItemTools.Limit;
 import crazypants.enderio.base.config.config.PersonalConfig;
+import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.machine.interfaces.IIoConfigurable;
 import crazypants.enderio.base.machine.interfaces.IMachine;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
@@ -189,35 +190,30 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   @Override
   public void doUpdate() {
-    getWorld().profiler.startSection(getMachineName());
     if (world.isRemote) {
-      getWorld().profiler.startSection("clientTick");
+      Prof.start(getWorld(), "clientTick");
       updateEntityClient();
-      getWorld().profiler.endSection();
+      Prof.stop(getWorld());
     } else { // else is server, do all logic only on the server
-      getWorld().profiler.startSection("serverTick");
-
+      Prof.start(getWorld(), "redstoneCheck");
       boolean requiresClientSync = forceClientUpdate.peek();
       boolean prevRedCheck = redstoneCheckPassed;
       if (redstoneStateDirty) {
         redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
         redstoneStateDirty = false;
       }
-
-      if (shouldDoWorkThisTick(5)) {
-        getWorld().profiler.startSection("sideIO");
-        requiresClientSync |= doSideIo();
-        getWorld().profiler.endSection();
-      }
-
       requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
-      getWorld().profiler.startSection("tasks");
+      if (shouldDoWorkThisTick(5)) {
+        Prof.next(getWorld(), "sideIO");
+        requiresClientSync |= doSideIo();
+      }
+
+      Prof.next(getWorld(), "tasks");
       requiresClientSync |= processTasks(redstoneCheckPassed);
-      getWorld().profiler.endSection();
 
       if (requiresClientSync) {
-        getWorld().profiler.startSection("clientNotification");
+        Prof.next(getWorld(), "clientNotification");
         // this will cause 'getPacketDescription()' to be called and its result
         // will be sent to the PacketHandler on the other end of
         // client/server connection
@@ -225,19 +221,15 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
         // And this will make sure our current tile entity state is saved
         markDirty();
-        getWorld().profiler.endSection();
       }
 
       if (notifyNeighbours) {
-        getWorld().profiler.startSection("neighborNotification");
+        Prof.next(getWorld(), "neighborNotification");
         world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
         notifyNeighbours = false;
-        getWorld().profiler.endSection();
       }
-
-      getWorld().profiler.endSection();
+      Prof.stop(getWorld());
     }
-    getWorld().profiler.endSection();
   }
 
   protected void updateEntityClient() {
@@ -274,10 +266,14 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     for (Entry<EnumFacing, IoMode> ent : ents) {
       IoMode mode = ent.getValue();
       if (mode.pulls()) {
+        Prof.start(getWorld(), "pull");
         res = res | doPull(ent.getKey());
+        Prof.stop(getWorld());
       }
       if (mode.pushes()) {
+        Prof.start(getWorld(), "push");
         res = res | doPush(ent.getKey());
+        Prof.stop(getWorld());
       }
     }
     return res;

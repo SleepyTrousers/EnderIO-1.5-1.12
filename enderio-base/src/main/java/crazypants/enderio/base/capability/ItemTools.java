@@ -7,15 +7,18 @@ import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.items.IItemHandler;
@@ -91,16 +94,33 @@ public class ItemTools {
     SOURCE_EMPTY;
   }
 
+  // private static void startProfiler(Profiler profiler, @Nonnull String section, String data) {
+  // if (profiler != null) {
+  // profiler.startSection("dummy1"); // the profiler ignore categories with less than 3 entries :-(
+  // profiler.endStartSection("dummy2");
+  // profiler.endStartSection(section + NullHelper.first(data, "(unknown)"));
+  // }
+  // }
+  //
+  // private static void endProfiler(Profiler profiler) {
+  // if (profiler != null) {
+  // profiler.endSection();
+  // }
+  // }
+  //
   public static MoveResult move(@Nonnull Limit limit, @Nonnull IBlockAccess world, @Nonnull BlockPos sourcePos, @Nonnull EnumFacing sourceFacing,
       @Nonnull BlockPos targetPos, @Nonnull EnumFacing targetFacing) {
     if (!limit.canWork()) {
       return MoveResult.LIMITED;
     }
+    Profiler profiler = world instanceof World ? ((World) world).profiler : null;
     boolean movedSomething = false;
     TileEntity source = world.getTileEntity(sourcePos);
     if (source != null && source.hasWorld() && !source.getWorld().isRemote && canPullFrom(source, sourceFacing)) {
+      Prof.start(profiler, "from_", source);
       TileEntity target = world.getTileEntity(targetPos);
       if (target != null && target.hasWorld() && canPutInto(target, targetFacing)) {
+        Prof.start(profiler, "to_", target);
         IItemHandler sourceHandler = getExternalInventory(world, sourcePos, sourceFacing);
         if (sourceHandler != null && hasItems(sourceHandler)) {
           IItemHandler targetHandler = getExternalInventory(world, targetPos, targetFacing);
@@ -120,6 +140,7 @@ public class ItemTools {
                         EntityItem drop = new EntityItem(source.getWorld(), sourcePos.getX() + 0.5, sourcePos.getY() + 0.5, sourcePos.getZ() + 0.5,
                             sourceRejected);
                         source.getWorld().spawnEntity(drop);
+                        Prof.stop(profiler, 2);
                         return MoveResult.MOVED;
                       }
                     }
@@ -127,20 +148,26 @@ public class ItemTools {
                   movedSomething = true;
                   limit.useItems(movable);
                   if (!limit.canWork()) {
+                    Prof.stop(profiler, 2);
                     return MoveResult.MOVED;
                   }
                 }
               }
             }
           } else {
+            Prof.stop(profiler, 2);
             return MoveResult.TARGET_FULL;
           }
         } else {
+          Prof.stop(profiler, 2);
           return MoveResult.SOURCE_EMPTY;
         }
+        Prof.stop(profiler);
       } else {
+        Prof.stop(profiler);
         return MoveResult.TARGET_FULL;
       }
+      Prof.stop(profiler);
     } else {
       return MoveResult.SOURCE_EMPTY;
     }
