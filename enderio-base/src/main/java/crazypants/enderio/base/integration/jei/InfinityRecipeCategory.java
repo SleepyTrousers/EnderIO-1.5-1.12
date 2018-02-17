@@ -48,7 +48,7 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
 
     long start = System.nanoTime();
     List<InfinityRecipeWrapper> result = new ArrayList<InfinityRecipeWrapper>();
-    if (InfinityConfig.infinityCraftingEnabled.get()) {
+    if (InfinityConfig.inWorldCraftingEnabled.get()) {
       result.add(new InfinityRecipeWrapper());
     }
     long end = System.nanoTime();
@@ -108,7 +108,7 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
     bsr.drawScreen(x, y, w, h);
     GlStateManager.popMatrix();
 
-    final String text = "<" + (int) (InfinityConfig.infinityDropChance.get() * 100) + "%";
+    final String text = "<" + (int) (InfinityConfig.dropChance.get() * 100) + "%";
     int stringWidth = minecraft.fontRenderer.getStringWidth(text);
     minecraft.fontRenderer.drawString(text, 59 - stringWidth / 2, 36, 0xFFFFFF, false);
   }

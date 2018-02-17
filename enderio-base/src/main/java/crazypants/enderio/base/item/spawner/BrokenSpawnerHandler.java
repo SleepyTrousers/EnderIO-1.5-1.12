@@ -10,7 +10,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.config.SpawnerConfig;
+import crazypants.enderio.base.config.config.BrokenSpawnerConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
 import crazypants.enderio.util.CapturedMob;
@@ -56,12 +56,12 @@ public class BrokenSpawnerHandler {
         TileEntity tile = evt.getPlayer().world.getTileEntity(NullHelper.notnullF(evt.getPos(), "BlockEvent.BreakEvent.getPos()"));
         if (tile instanceof TileEntityMobSpawner) {
 
-          if (Math.random() > SpawnerConfig.brokenSpawnerDropChance.get()) {
+          if (Math.random() > BrokenSpawnerConfig.brokenSpawnerDropChance.get()) {
             return;
           }
 
           ItemStack equipped = evt.getPlayer().getHeldItemMainhand();
-          if (Prep.isValid(equipped) && SpawnerConfig.brokenSpawnerToolBlacklist.get().contains(equipped)) {
+          if (Prep.isValid(equipped) && BrokenSpawnerConfig.brokenSpawnerToolBlacklist.get().contains(equipped)) {
             return;
           }
 

@@ -81,24 +81,7 @@ public final class Config {
 
   public static int recipeLevel = 2;
   public static boolean addPeacefulRecipes = false;
-  public static boolean createSyntheticRecipes = true;
 
-  public static boolean detailedPowerTrackingEnabled = false;
-
-  public static boolean itemConduitUsePhyscialDistance = false;
-
-  public static boolean redstoneConduitsShowState = true;
-
-  public static int enderFluidConduitExtractRate = 200;
-  public static int enderFluidConduitMaxIoRate = 800;
-  public static int advancedFluidConduitExtractRate = 100;
-  public static int advancedFluidConduitMaxIoRate = 400;
-  public static int fluidConduitExtractRate = 50;
-  public static int fluidConduitMaxIoRate = 200;
-
-  public static boolean fluidConduitDynamicLighting = true;
-
-  public static boolean updateLightingWhenHidingFacades = false;
   public static boolean transparentFacadesLetThroughBeaconBeam = true;
 
   public static int travelAnchorMaximumDistance = 96;
@@ -270,14 +253,10 @@ public final class Config {
   public static boolean magnetAllowDeactivatedInBaublesSlot = false;
   public static String magnetBaublesType = "AMULET";
 
-  public static int painterEnergyPerTaskRF = 2000;
-
   public static long nutrientFoodBoostDelay = 400;
   public static boolean rocketFuelIsExplosive = true;
 
   public static double xpVacuumRange = 10;
-
-  public static boolean allowTileEntitiesAsPaintSource = true;
 
   public static NNList<ResourceLocation> soulVesselBlackList = new NNList<ResourceLocation>();
   public static NNList<ResourceLocation> soulVesselUnspawnableList = new NNList<ResourceLocation>();
@@ -309,7 +288,6 @@ public final class Config {
   public static boolean glassConnectToTheirColorVariants = true;
 
   public static Rarity enchantmentSoulBoundRarity = Rarity.VERY_RARE;
-  public static boolean enchantmentSoulBoundEnabled = true;
 
   public static boolean rodOfReturnCanTargetAnywhere = false;
   public static int rodOfReturnTicksToActivate = 50;
@@ -339,10 +317,6 @@ public final class Config {
   public static boolean enableBaublesIntegration = true;
 
   public static int maxMobsAttracted = 20;
-
-  public static boolean debugTraceNBTActivityExtremelyDetailed = false;
-  public static boolean debugTraceTELivecycleExtremelyDetailed = false;
-  public static boolean debugTraceCapLimitsExtremelyDetailed = false;
 
   public static double teleportEffectProbability = 0.03f;
 
@@ -409,68 +383,27 @@ public final class Config {
 
   public static void processConfig(@SuppressWarnings("hiding") Configuration config) {
 
-    painterEnergyPerTaskRF = config
-        .get(sectionPower.name, "painterEnergyPerTaskRF", painterEnergyPerTaskRF, "The total amount of RF required to paint one block")
-        .getInt(painterEnergyPerTaskRF);
-
+    // TODO remove later
     recipeLevel = config
         .get(sectionRecipe.name, "recipeLevel", recipeLevel, "How expensive should the crafting recipes be? 0=cheapest, 1=cheaper, 2=normal, 3=expensive")
         .getInt(recipeLevel);
 
+    // TODO remove later
     addPeacefulRecipes = config
         .get(sectionRecipe.name, "addPeacefulRecipes", addPeacefulRecipes, "When enabled peaceful recipes are added for soulbinder based crafting components.")
         .getBoolean(addPeacefulRecipes);
-    allowTileEntitiesAsPaintSource = config.get(sectionRecipe.name, "allowTileEntitiesAsPaintSource", allowTileEntitiesAsPaintSource,
-        "When enabled blocks with tile entities (e.g. machines) can be used as paint targets.").getBoolean(allowTileEntitiesAsPaintSource);
-    createSyntheticRecipes = config.get(sectionRecipe.name, "createSyntheticRecipes", createSyntheticRecipes,
-        "Automatically create alloy smelter recipes with double and triple inputs and different slot allocations (1+1+1, 2+1, 1+2, 3 and 2) for single-input recipes.")
-        .getBoolean(createSyntheticRecipes);
 
-    redstoneConduitsShowState = config
-        .get(sectionMisc.name, "redstoneConduitsShowState", redstoneConduitsShowState,
-            "If set to false redstone conduits will look the same whether they are recieving a signal or not. This can help with performance.")
-        .getBoolean(redstoneConduitsShowState);
-
+    // TODO change geometry to be re-baked after server join
     conduitScale = config
         .get(sectionMisc.name, "conduitScale", DEFAULT_CONDUIT_SCALE,
             "Valid values are between 0-1, smallest conduits at 0, largest at 1.\n" + "In SMP, all clients must be using the same value as the server.")
         .getDouble(DEFAULT_CONDUIT_SCALE);
     conduitScale = VecmathUtil.clamp(conduitScale, 0, 1);
 
-    fluidConduitExtractRate = config.get(sectionEfficiency.name, "fluidConduitExtractRate", fluidConduitExtractRate,
-        "Number of millibuckets per tick extracted by a fluid conduits auto extracting").getInt(fluidConduitExtractRate);
-
-    fluidConduitDynamicLighting = config.get(sectionEfficiency.name, "fluidConduitDynamicLighting", fluidConduitDynamicLighting,
-        "If enabled, conduits will change their light levels based on their contents.").getBoolean(false);
-
-    fluidConduitMaxIoRate = config.get(sectionEfficiency.name, "fluidConduitMaxIoRate", fluidConduitMaxIoRate,
-        "Number of millibuckets per tick that can pass through a single connection to a fluid conduit.").getInt(fluidConduitMaxIoRate);
-
-    advancedFluidConduitExtractRate = config.get(sectionEfficiency.name, "advancedFluidConduitExtractRate", advancedFluidConduitExtractRate,
-        "Number of millibuckets per tick extracted by pressurized fluid conduits auto extracting").getInt(advancedFluidConduitExtractRate);
-
-    advancedFluidConduitMaxIoRate = config.get(sectionEfficiency.name, "advancedFluidConduitMaxIoRate", advancedFluidConduitMaxIoRate,
-        "Number of millibuckets per tick that can pass through a single connection to an pressurized fluid conduit.").getInt(advancedFluidConduitMaxIoRate);
-
-    enderFluidConduitExtractRate = config.get(sectionEfficiency.name, "enderFluidConduitExtractRate", enderFluidConduitExtractRate,
-        "Number of millibuckets per tick extracted by ender fluid conduits auto extracting").getInt(enderFluidConduitExtractRate);
-
-    enderFluidConduitMaxIoRate = config.get(sectionEfficiency.name, "enderFluidConduitMaxIoRate", enderFluidConduitMaxIoRate,
-        "Number of millibuckets per tick that can pass through a single connection to an ender fluid conduit.").getInt(enderFluidConduitMaxIoRate);
-
     transceiverEnergyLoss = config.get(sectionPower.name, "transceiverEnergyLoss", transceiverEnergyLoss,
         "Amount of energy lost when transfered by Dimensional Transceiver; 0 is no loss, 1 is 100% loss").getDouble(transceiverEnergyLoss);
     transceiverBucketTransmissionCostRF = config.get(sectionEfficiency.name, "transceiverBucketTransmissionCostRF", transceiverBucketTransmissionCostRF,
         "The cost in RF of transporting a bucket of fluid via a Dimensional Transceiver.").getInt(transceiverBucketTransmissionCostRF);
-
-    detailedPowerTrackingEnabled = config.get(sectionAdvanced.name, "perInterfacePowerTrackingEnabled", detailedPowerTrackingEnabled,
-        "Enable per tick sampling on individual power inputs and outputs. This allows slightly more detailed messages from the RF Reader but has a negative impact on server performance.")
-        .getBoolean(detailedPowerTrackingEnabled);
-
-    itemConduitUsePhyscialDistance = config
-        .get(sectionEfficiency.name, "itemConduitUsePhyscialDistance", itemConduitUsePhyscialDistance,
-            "If true, " + "'line of sight' distance rather than conduit path distance is used to calculate priorities.")
-        .getBoolean(itemConduitUsePhyscialDistance);
 
     travelAnchorMaximumDistance = config.get(sectionAnchor.name, "travelAnchorMaxDistance", travelAnchorMaximumDistance,
         "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaximumDistance);
@@ -548,12 +481,6 @@ public final class Config {
         .get(sectionRod.name, "rodOfReturnFluidUsePerTeleport", rodOfReturnFluidUsePerTeleport, "How much fluid is used per teleport")
         .getInt(rodOfReturnFluidUsePerTeleport);
     rodOfReturnFluidType = config.getString("rodOfReturnFluidType", sectionRod.name, rodOfReturnFluidType, "The type of fluid used by the rod.");
-
-    updateLightingWhenHidingFacades = config.get(sectionEfficiency.name, "updateLightingWhenHidingFacades", updateLightingWhenHidingFacades,
-        "When true: correct lighting is recalculated (client side) for conduit bundles when transitioning to"
-            + " from being hidden behind a facade. This produces "
-            + "better quality rendering but can result in frame stutters when switching to/from a wrench.")
-        .getBoolean(updateLightingWhenHidingFacades);
 
     transparentFacadesLetThroughBeaconBeam = config
         .get(sectionAdvanced.name, "transparentFacadesLetThroughBeaconBeam", transparentFacadesLetThroughBeaconBeam,
@@ -822,21 +749,6 @@ public final class Config {
         .get(sectionPower.name, "fireWaterPowerTotalBurnTime", fireWaterPowerTotalBurnTime, "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000")
         .getInt(fireWaterPowerTotalBurnTime);
 
-    debugTraceNBTActivityExtremelyDetailed = config
-        .get(sectionAdvanced.name, "debugTraceNBTActivityExtremelyDetailed", debugTraceNBTActivityExtremelyDetailed,
-            "This will flood your logfile with gigabytes of data filling up your harddisk very fast. DO NOT enable unless asked by an Ender IO developer!")
-        .getBoolean(debugTraceNBTActivityExtremelyDetailed);
-
-    debugTraceTELivecycleExtremelyDetailed = config
-        .get(sectionAdvanced.name, "debugTraceTELivecycleExtremelyDetailed", debugTraceTELivecycleExtremelyDetailed,
-            "This will flood your logfile with gigabytes of data filling up your harddisk very fast. DO NOT enable unless asked by an Ender IO developer!")
-        .getBoolean(debugTraceTELivecycleExtremelyDetailed);
-
-    debugTraceCapLimitsExtremelyDetailed = config
-        .get(sectionAdvanced.name, "debugTraceCapLimitsExtremelyDetailed", debugTraceCapLimitsExtremelyDetailed,
-            "This will flood your logfile with gigabytes of data filling up your harddisk very fast. DO NOT enable unless asked by an Ender IO developer!")
-        .getBoolean(debugTraceCapLimitsExtremelyDetailed);
-
     // START Hoes
 
     ConfigCategory hoes = config.getCategory(sectionHoes.name);
@@ -981,9 +893,6 @@ public final class Config {
 
     enableBaublesIntegration = config.getBoolean("enableBaublesIntegration", sectionMisc.name, enableBaublesIntegration,
         "If false baubles intergation will be disabled even if Baubles is installed");
-
-    enchantmentSoulBoundEnabled = config.getBoolean("enchantmentSoulBoundEnabled", sectionEnchantments.name, enchantmentSoulBoundEnabled,
-        "If false the soul bound enchantment will not be available");
 
     teleportEffectProbability = config
         .get(sectionAdvanced.name, "teleportEffectProbability", teleportEffectProbability, "The probability that Enderios do what they promise.")

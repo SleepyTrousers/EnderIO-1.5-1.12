@@ -1,12 +1,8 @@
 package crazypants.enderio.conduit.liquid;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.FluidUtil;
@@ -17,17 +13,15 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.conduit.IConduitComponent;
+import crazypants.enderio.conduit.config.ConduitConfig;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -62,10 +56,6 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   private int currentPushToken;
 
   // -----------------------------
-
-  public static final int MAX_EXTRACT_PER_TICK = Config.fluidConduitExtractRate;
-
-  public static final int MAX_IO_PER_TICK = Config.fluidConduitMaxIoRate;
 
   private EnumFacing startPushDir = EnumFacing.DOWN;
 
@@ -120,8 +110,8 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
           FluidStack couldDrain = extTank.getAvailableFluid();
           if (couldDrain != null && couldDrain.amount > 0 && canFill(dir, couldDrain)) {
             couldDrain = couldDrain.copy();
-            if (couldDrain.amount > MAX_EXTRACT_PER_TICK) {
-              couldDrain.amount = MAX_EXTRACT_PER_TICK;
+            if (couldDrain.amount > ConduitConfig.fluid_tier1_extractRate.get()) {
+              couldDrain.amount = ConduitConfig.fluid_tier1_extractRate.get();
             }
             int used = pushLiquid(dir, couldDrain, true, network == null ? -1 : network.getNextPushToken());
             if (used > 0) {
@@ -175,7 +165,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
       return 0;
     }
     resource = resource.copy();
-    resource.amount = Math.min(MAX_IO_PER_TICK, resource.amount);
+    resource.amount = Math.min(ConduitConfig.fluid_tier1_maxIO.get(), resource.amount);
 
     if (doPush) {
       return pushLiquid(from, resource, doFill, pushToken);

@@ -14,7 +14,7 @@ import com.enderio.core.common.util.RoundRobinIterator;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.ConnectionMode;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import crazypants.enderio.base.handler.ServerTickHandler;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -166,7 +166,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
       maxEnergyStored += cap.getMaxEnergyStored();
       if (maxInput == -1) {
         maxInput = cap.getMaxInputOverride();
-        if (Config.debugTraceCapLimitsExtremelyDetailed) {
+        if (DiagnosticsConfig.debugTraceCapLimitsExtremelyDetailed.get()) {
           StringBuilder sb = new StringBuilder("CapBankNetwork ").append(this).append(" intput changed from -1 to ").append(maxInput);
           for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
             sb.append(" at ").append(elem);
@@ -176,7 +176,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
       }
       if (maxOutput == -1) {
         maxOutput = cap.getMaxOutputOverride();
-        if (Config.debugTraceCapLimitsExtremelyDetailed) {
+        if (DiagnosticsConfig.debugTraceCapLimitsExtremelyDetailed.get()) {
           StringBuilder sb = new StringBuilder("CapBankNetwork ").append(this).append(" output changed from -1 to ").append(maxOutput);
           for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
             sb.append(" at ").append(elem);
@@ -467,7 +467,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
 
   @Override
   public void setMaxInput(int max) {
-    if (Config.debugTraceCapLimitsExtremelyDetailed) {
+    if (DiagnosticsConfig.debugTraceCapLimitsExtremelyDetailed.get()) {
       StringBuilder sb = new StringBuilder("CapBankNetwork ").append(this).append(" intput changed from ").append(this.maxInput).append(" to ").append(max);
       for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
         sb.append(" at ").append(elem);
@@ -488,7 +488,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
 
   @Override
   public void setMaxOutput(int max) {
-    if (Config.debugTraceCapLimitsExtremelyDetailed) {
+    if (DiagnosticsConfig.debugTraceCapLimitsExtremelyDetailed.get()) {
       StringBuilder sb = new StringBuilder("CapBankNetwork ").append(this).append(" output changed from ").append(this.maxOutput).append(" to ").append(max);
       for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
         sb.append(" at ").append(elem);

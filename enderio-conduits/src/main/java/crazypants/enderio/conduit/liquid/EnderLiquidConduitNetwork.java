@@ -5,27 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper.ITankInfoWrapper;
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.RoundRobinIterator;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.config.ConduitConfig;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-import javax.annotation.Nonnull;
-
 public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit, EnderLiquidConduit> {
-
-  public static final int MAX_EXTRACT_PER_TICK = Config.enderFluidConduitExtractRate;
-  public static final int MAX_IO_PER_TICK = Config.enderFluidConduitMaxIoRate;
 
   List<NetworkTank> tanks = new ArrayList<NetworkTank>();
   Map<NetworkTankKey, NetworkTank> tankMap = new HashMap<NetworkTankKey, NetworkTank>();
@@ -49,28 +43,28 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
   public boolean extractFrom(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
     NetworkTank tank = getTank(con, conDir);
-    if(tank == null || !tank.isValid()) {
+    if (tank == null || !tank.isValid()) {
       return false;
     }
     FluidStack drained = tank.externalTank.getAvailableFluid();
-    if(drained == null || drained.amount <= 0 || !matchedFilter(drained, con, conDir, true)) {
+    if (drained == null || drained.amount <= 0 || !matchedFilter(drained, con, conDir, true)) {
       return false;
     }
     drained = drained.copy();
-    drained.amount = Math.min(drained.amount, MAX_EXTRACT_PER_TICK);
+    drained.amount = Math.min(drained.amount, ConduitConfig.fluid_tier3_extractRate.get());
     int amountAccepted = fillFrom(tank, drained.copy(), true);
-    if(amountAccepted <= 0) {
+    if (amountAccepted <= 0) {
       return false;
     }
     drained.amount = amountAccepted;
     drained = tank.externalTank.drain(drained);
-    if(drained == null || drained.amount <= 0) {
+    if (drained == null || drained.amount <= 0) {
       return false;
     }
-    //    if(drained.amount != amountAccepted) {
-    //      Log.warn("EnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled="
-    //          + amountAccepted + " Fluid: " + drained + " Accepted=" + amountAccepted);
-    //    }
+    // if(drained.amount != amountAccepted) {
+    // Log.warn("EnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled="
+    // + amountAccepted + " Fluid: " + drained + " Accepted=" + amountAccepted);
+    // }
     return true;
   }
 
@@ -85,7 +79,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
   public int fillFrom(@Nonnull NetworkTank tank, FluidStack resource, boolean doFill) {
 
-    if(filling) {
+    if (filling) {
       return 0;
     }
 
@@ -93,21 +87,21 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
       filling = true;
 
-      if(resource == null || tank == null || !matchedFilter(resource, tank.con, tank.conDir, true)) {
+      if (resource == null || tank == null || !matchedFilter(resource, tank.con, tank.conDir, true)) {
         return 0;
       }
       resource = resource.copy();
-      resource.amount = Math.min(resource.amount, MAX_IO_PER_TICK);
+      resource.amount = Math.min(resource.amount, ConduitConfig.fluid_tier3_maxIO.get());
       int filled = 0;
       int remaining = resource.amount;
-      //TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
+      // TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
 
       for (NetworkTank target : getIteratorForTank(tank)) {
-        if(!target.equals(tank) && target.acceptsOuput && target.isValid() && matchedFilter(resource, target.con, target.conDir, false)) {
+        if (!target.equals(tank) && target.acceptsOuput && target.isValid() && matchedFilter(resource, target.con, target.conDir, false)) {
           int vol = doFill ? target.externalTank.fill(resource.copy()) : target.externalTank.offer(resource.copy());
           remaining -= vol;
           filled += vol;
-          if(remaining <= 0) {
+          if (remaining <= 0) {
             return filled;
           }
           resource.amount = remaining;
@@ -121,22 +115,22 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
   }
 
   private boolean matchedFilter(FluidStack drained, @Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir, boolean isInput) {
-    if(drained == null || con == null || conDir == null) {
+    if (drained == null || con == null || conDir == null) {
       return false;
     }
     FluidFilter filter = con.getFilter(conDir, isInput);
-    if(filter == null || filter.isEmpty()) {
+    if (filter == null || filter.isEmpty()) {
       return true;
     }
     return filter.matchesFilter(drained);
   }
 
   private Iterable<NetworkTank> getIteratorForTank(@Nonnull NetworkTank tank) {
-    if(iterators == null) {
+    if (iterators == null) {
       iterators = new HashMap<NetworkTank, RoundRobinIterator<NetworkTank>>();
     }
     RoundRobinIterator<NetworkTank> res = iterators.get(tank);
-    if(res == null) {
+    if (res == null) {
       res = new RoundRobinIterator<NetworkTank>(tanks);
       iterators.put(tank, res);
     }
@@ -147,7 +141,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     List<IFluidTankProperties> res = new ArrayList<IFluidTankProperties>(tanks.size());
     NetworkTank tank = getTank(con, conDir);
     for (NetworkTank target : tanks) {
-      if(!target.equals(tank) && target.isValid()) {
+      if (!target.equals(tank) && target.isValid()) {
         for (ITankInfoWrapper info : target.externalTank.getTankInfoWrappers()) {
           res.add(info.getIFluidTankProperties());
         }
@@ -181,24 +175,24 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
     @Override
     public boolean equals(Object obj) {
-      if(this == obj) {
+      if (this == obj) {
         return true;
       }
-      if(obj == null) {
+      if (obj == null) {
         return false;
       }
-      if(getClass() != obj.getClass()) {
+      if (getClass() != obj.getClass()) {
         return false;
       }
       NetworkTankKey other = (NetworkTankKey) obj;
-      if(conDir != other.conDir) {
+      if (conDir != other.conDir) {
         return false;
       }
-      if(conduitLoc == null) {
-        if(other.conduitLoc != null) {
+      if (conduitLoc == null) {
+        if (other.conduitLoc != null) {
           return false;
         }
-      } else if(!conduitLoc.equals(other.conduitLoc)) {
+      } else if (!conduitLoc.equals(other.conduitLoc)) {
         return false;
       }
       return true;
@@ -240,24 +234,24 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
     @Override
     public boolean equals(Object obj) {
-      if(this == obj) {
+      if (this == obj) {
         return true;
       }
-      if(obj == null) {
+      if (obj == null) {
         return false;
       }
-      if(getClass() != obj.getClass()) {
+      if (getClass() != obj.getClass()) {
         return false;
       }
       NetworkTank other = (NetworkTank) obj;
-      if(conDir != other.conDir) {
+      if (conDir != other.conDir) {
         return false;
       }
-      if(conduitLoc == null) {
-        if(other.conduitLoc != null) {
+      if (conduitLoc == null) {
+        if (other.conduitLoc != null) {
           return false;
         }
-      } else if(!conduitLoc.equals(other.conduitLoc)) {
+      } else if (!conduitLoc.equals(other.conduitLoc)) {
         return false;
       }
       return true;

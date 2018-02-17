@@ -29,6 +29,8 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnection
 
 public class ValueFactory {
 
+  public static final @Nonnull String SERVER_OVERRIDE = " (synced from server)";
+
   private static final @Nonnull Map<String, ValueFactory> factories = new HashMap<>();
 
   protected final @Nonnull String modid;
@@ -49,6 +51,10 @@ public class ValueFactory {
 
   public static void read(String mod, final ByteBuf buf) {
     factories.get(mod).read(buf);
+  }
+
+  public boolean isServerOverrideInPlace() {
+    return serverConfig != null;
   }
 
   public @Nonnull String getModid() {
@@ -137,10 +143,12 @@ public class ValueFactory {
   public abstract class AbstractValue<T> implements IValue<T> {
 
     protected int valueGeneration = 0;
-    protected final @Nonnull String section, keyname, text;
+    protected final @Nonnull String section, keyname;
+    private final @Nonnull String text;
     protected final @Nonnull T defaultValue;
     protected @Nullable T value = null;
     protected Double minValue, maxValue;
+    private boolean isSynced = false;
 
     protected AbstractValue(@Nonnull String section, @Nonnull String keyname, @Nonnull T defaultValue, @Nonnull String text) {
       this.section = section;
@@ -193,6 +201,7 @@ public class ValueFactory {
     @Override
     @Nonnull
     public IValue<T> sync() {
+      isSynced = true;
       syncValues.add(this);
       return this;
     };
@@ -213,6 +222,10 @@ public class ValueFactory {
     }
 
     protected abstract DataTypes getDataType();
+
+    protected String getText() {
+      return text + (isSynced ? SERVER_OVERRIDE : "");
+    }
   }
 
   private final synchronized void read(final ByteBuf buf) {
@@ -266,7 +279,7 @@ public class ValueFactory {
     @Override
     protected @Nullable Integer makeValue() {
       return config.getInt(keyname, section, defaultValue, minValue != null ? minValue.intValue() : Integer.MIN_VALUE,
-          maxValue != null ? maxValue.intValue() : Integer.MAX_VALUE, text);
+          maxValue != null ? maxValue.intValue() : Integer.MAX_VALUE, getText());
     }
 
     @Override
@@ -284,8 +297,8 @@ public class ValueFactory {
 
     @Override
     protected @Nullable Double makeValue() {
-      String comment = text + " [range: " + (minValue != null ? minValue : Double.NEGATIVE_INFINITY) + " ~ " + (maxValue != null ? maxValue : Double.MAX_VALUE)
-          + ", default: " + defaultValue + "]";
+      String comment = getText() + " [range: " + (minValue != null ? minValue : Double.NEGATIVE_INFINITY) + " ~ "
+          + (maxValue != null ? maxValue : Double.MAX_VALUE) + ", default: " + defaultValue + "]";
       final Property property = config.get(section, keyname, defaultValue, comment);
       if (minValue != null) {
         property.setMinValue(minValue);
@@ -312,7 +325,7 @@ public class ValueFactory {
     @Override
     protected @Nullable Float makeValue() {
       return config.getFloat(keyname, section, defaultValue, minValue == null ? Float.NEGATIVE_INFINITY : minValue.floatValue(),
-          maxValue == null ? Float.MAX_VALUE : maxValue.floatValue(), text);
+          maxValue == null ? Float.MAX_VALUE : maxValue.floatValue(), getText());
     }
 
     @Override
@@ -330,7 +343,7 @@ public class ValueFactory {
 
     @Override
     protected @Nullable String makeValue() {
-      return config.getString(keyname, section, defaultValue, text);
+      return config.getString(keyname, section, defaultValue, getText());
     }
 
     @Override
@@ -365,7 +378,7 @@ public class ValueFactory {
         if (serverConfig != null && serverConfig.containsKey(keyname)) {
           value = FluidRegistry.getFluid((String) serverConfig.get(keyname));
         } else {
-          value = FluidRegistry.getFluid(config.getString(keyname, section, defaultValueName, text));
+          value = FluidRegistry.getFluid(config.getString(keyname, section, defaultValueName, getText()));
           if (!inInit && config.hasChanged()) {
             config.save();
           }
@@ -405,7 +418,7 @@ public class ValueFactory {
 
     @Override
     protected @Nullable Boolean makeValue() {
-      return config.getBoolean(keyname, section, defaultValue, text);
+      return config.getBoolean(keyname, section, defaultValue, getText());
     }
 
     @Override
@@ -423,7 +436,7 @@ public class ValueFactory {
 
     @Override
     protected @Nullable Things makeValue() {
-      return new Things(config.getStringList(keyname, section, defaultValue.getNameList().toArray(new String[0]), text));
+      return new Things(config.getStringList(keyname, section, defaultValue.getNameList().toArray(new String[0]), getText()));
     }
 
     @Override

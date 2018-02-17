@@ -158,14 +158,14 @@ public class EnchanterRecipe implements IMachineRecipe {
     // -1 cause its the index
     double min = Math.max(1, enchantment.getMinEnchantability(level));
     min *= costMultiplier; // per recipe scaling
-    int cost = (int) Math.round(min * EnchanterConfig.enchanterLevelCostFactor.get()); // global scaling
-    cost += EnchanterConfig.enchanterBaseLevelCost.get(); // add base cost
+    int cost = (int) Math.round(min * EnchanterConfig.levelCostFactor.get()); // global scaling
+    cost += EnchanterConfig.baseLevelCost.get(); // add base cost
     return cost;
   }
 
   private int getLapizForLevel(int level) {
     int res = enchantment.getMaxLevel() == 1 ? 5 : level;
-    return (int) Math.max(1, Math.round(res * EnchanterConfig.enchanterLapisCostFactor.get()));
+    return (int) Math.max(1, Math.round(res * EnchanterConfig.lapisCostFactor.get()));
   }
 
   public int getLapizForStackSize(int stackSize) {

@@ -8,7 +8,7 @@ public final class ChargerConfig {
 
   public static final SectionedValueFactory F = new SectionedValueFactory(BaseConfig.F, new Section("", "wireless"));
 
-  public static final IValue<Integer> wirelessChargerRange = F.make("wirelessChargerRange", 24, //
-      "The range of the wireless charger").setRange(1, 160).sync();
+  public static final IValue<Integer> wirelessRange = F.make("wirelessRange", 24, //
+      "The range of wireless chargers.").setRange(1, 160).sync();
 
 }

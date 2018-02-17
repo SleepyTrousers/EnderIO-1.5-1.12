@@ -85,7 +85,7 @@ public class WirelessChargerController {
   }
 
   private boolean inRange(BlockPos a, BlockPos b) {
-    int RANGE = ChargerConfig.wirelessChargerRange.get();
+    int RANGE = ChargerConfig.wirelessRange.get();
     // distSq can overflow int, so check for square coords first.
     int dx = a.getX() - b.getX();
     if (dx > RANGE || dx < -RANGE) {

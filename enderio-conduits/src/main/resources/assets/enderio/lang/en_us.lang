@@ -126,3 +126,6 @@ tile.block_gauge.tooltip.detailed.line2=blocks.
 enderio.config.capbank=Capacitor Bank
 enderio.config.condit=Conduits
 enderio.config.condit.energy=Energy Conduits
+enderio.config.condit.fluid=Fluid Conduits
+enderio.config.condit.item=Item Conduits
+enderio.config.condit.redstone=Redstone Conduits

@@ -10,11 +10,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.Validate;
-
 import com.enderio.core.common.util.NNList;
-import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.NNList.NNIterator;
+import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -22,8 +20,8 @@ import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.redstone.signals.SignalSource;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.config.ConduitConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -57,16 +55,16 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     for (IRedstoneConduit con : getConduits()) {
       con.setActive(false);
     }
-    // Notify neighbours that all signals have been lost    
+    // Notify neighbours that all signals have been lost
     signals.clear();
-    notifyNeigborsOfSignalUpdate();    
+    notifyNeigborsOfSignalUpdate();
     updatingNetwork = false;
     super.destroyNetwork();
   }
 
   @Override
   public void addConduit(@Nonnull IRedstoneConduit con) {
-    super.addConduit(con);    
+    super.addConduit(con);
     updateInputsFromConduit(con, true); // all call paths to here come from updateNetwork() which already notifies all neighbors
   }
 
@@ -78,7 +76,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     notifyConduitNeighbours(con);
     updatingNetwork = false;
 
-    //Then ask them what inputs they have now
+    // Then ask them what inputs they have now
     Set<EnumFacing> externalConnections = con.getExternalConnections();
     for (EnumFacing side : EnumFacing.values()) {
       if (externalConnections.contains(side)) {
@@ -92,13 +90,12 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
       // then tell the whole network about the change
       notifyNeigborsOfSignalUpdate();
     }
-    
-    if(Config.redstoneConduitsShowState) {
+
+    if (ConduitConfig.showState.get()) {
       updateActiveState();
     }
   }
-  
-  
+
   private void updateActiveState() {
     boolean isActive = false;
     for (Signal s : getSignals().values()) {
@@ -106,23 +103,21 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
         isActive = true;
         break;
       }
-    }    
+    }
     for (IRedstoneConduit con : getConduits()) {
-      con.setActive(isActive);      
+      con.setActive(isActive);
     }
   }
-  
+
   private void updateInputsForSource(@Nonnull IRedstoneConduit con, @Nonnull SignalSource source) {
     updatingNetwork = true;
     signals.removeAll(source);
     Set<Signal> sigs = con.getNetworkInputs(source.getDir());
-    if(sigs != null && !sigs.isEmpty()) {      
+    if (sigs != null && !sigs.isEmpty()) {
       signals.putAll(source, sigs);
     }
     updatingNetwork = false;
   }
-  
-  
 
   public Multimap<SignalSource, Signal> getSignals() {
     if (networkEnabled) {
@@ -207,15 +202,13 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
       }
     }
   }
-  
+
   private boolean neighborNotifyEvent(World world, @Nonnull BlockPos pos, @Nullable IBlockState state, EnumSet<EnumFacing> dirs) {
     return ForgeEventFactory.onNeighborNotify(world, pos, state == null ? world.getBlockState(pos) : state, dirs, false).isCanceled();
   }
 
   /**
-   * This is a bit of a hack...avoids the network searching for inputs from
-   * unloaded chunks by only filtering out the invalid signals from the unloaded
-   * chunk.
+   * This is a bit of a hack...avoids the network searching for inputs from unloaded chunks by only filtering out the invalid signals from the unloaded chunk.
    * 
    * @param conduits
    * @param oldSignals
@@ -232,7 +225,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
         c.setNetwork(this);
       }
     }
-    
+
     signals.clear();
     boolean signalsChanged = false;
     for (Entry<SignalSource, Signal> s : oldSignals.entries()) {
@@ -242,8 +235,8 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
         signalsChanged = true;
       }
     }
-    if(signalsChanged) {
-      //broadcast out a change 
+    if (signalsChanged) {
+      // broadcast out a change
       notifyNeigborsOfSignalUpdate();
     }
   }

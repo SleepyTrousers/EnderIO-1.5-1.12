@@ -466,8 +466,6 @@ enderio.gui.tooltip.redstoneControlMode=Redstone Mode
 enderio.config.title=Ender IO Configuration
 enderio.config.power=Power Settings
 enderio.config.power.tooltip=So many numbers to change...
-enderio.config.recipe=Recipe Settings
-enderio.config.recipe.tooltip=Config ALL the things!
 enderio.config.item=Item Settings
 enderio.config.item.tooltip=If you don't like some of my amazing items :(
 enderio.config.efficiency=Efficiency Settings
@@ -499,6 +497,7 @@ enderio.config.soulbinder=Soulbinder Recipes
 enderio.config.soulvial= Soul Vial
 enderio.config.top=The One Probe Integration
 enderio.config.wireless=Wireless Charger
+enderio.config.brokenspawner=Broken Spawner
 
 enderio.config.items=Items
 enderio.config.items.infinitypowder=Infinity Powder
@@ -506,7 +505,16 @@ enderio.config.items.darksteel=Dark Steel Items
 enderio.config.items.darksteel.tooltip=It's not just regular steel, it's §odark§r§e steel.
 enderio.config.items.darksteel.sword=The Ender
 enderio.config.items.darksteel.upgrades=Dark Steel Upgrades
+enderio.config.items.darksteel.upgrades.explosive=Explosive Upgrade
 enderio.config.items.darksteel.upgrades.speed=Speed Upgrade
+
+enderio.config.recipe=Recipe Settings
+enderio.config.recipe.tooltip=Config ALL the things!
+enderio.config.recipe.alloy=Alloy Smelter Recipes
+enderio.config.recipe.painter=Painter Recipes
+
+enderio.config.diagnostics=Diagnostic Settings
+enderio.config.diagnostics.tooltip=Use with care!
 
 enchantment.soulbound=Soulbound
 description.enchantment.enderio.soulbound=Prevents item from being lost on death

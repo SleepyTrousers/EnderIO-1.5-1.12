@@ -38,7 +38,4 @@ public final class PersonalConfig {
   public static final IValue<Boolean> tooltipsAddFurnaceFuel = F.make("tooltipsAddFurnaceFuel", true, //
       "If true, adds burn duration tooltips to furnace fuels.");
 
-  public static final IValue<Boolean> debugUpdatePackets = F.make("debugUpdatePackets", false, //
-      "DEBUG: If true, TEs will flash when they recieve an update packet.");
-
 }

@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.RecipeConfig;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -38,7 +38,7 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
 
   @Override
   public int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
-    return Config.painterEnergyPerTaskRF;
+    return RecipeConfig.energyPerTask.get();
   }
 
   @Override

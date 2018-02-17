@@ -5,21 +5,20 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.ItemUtil;
+
+import crazypants.enderio.base.config.config.RecipeConfig;
+import crazypants.enderio.base.recipe.IRecipeInput;
+import crazypants.enderio.base.recipe.RecipeInput;
+import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.item.ItemStack;
 
-import com.enderio.core.common.util.ItemUtil;
-
-import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.recipe.IRecipeInput;
-import crazypants.enderio.base.recipe.RecipeInput;
-import crazypants.enderio.util.Prep;
-
 public class PaintSourceValidator {
 
   public static PaintSourceValidator instance = new PaintSourceValidator();
-  
+
   private final List<RecipeInput> whitelist = new ArrayList<RecipeInput>();
   private final List<RecipeInput> blacklist = new ArrayList<RecipeInput>();
 
@@ -31,13 +30,13 @@ public class PaintSourceValidator {
     if (block == null) {
       return false;
     }
-    if(isBlacklisted(paintSource)) {
+    if (isBlacklisted(paintSource)) {
       return false;
     }
-    if(isWhitelisted(paintSource)) {
+    if (isWhitelisted(paintSource)) {
       return true;
     }
-    if(!Config.allowTileEntitiesAsPaintSource && block instanceof ITileEntityProvider) {
+    if (!RecipeConfig.allowTileEntitiesAsPaintSource.get() && block instanceof ITileEntityProvider) {
       return false;
     }
     return true;
@@ -80,7 +79,7 @@ public class PaintSourceValidator {
       return false;
     }
     for (IRecipeInput ri : list) {
-      if(ri != null && ri.isInput(paintSource)) {
+      if (ri != null && ri.isInput(paintSource)) {
         return true;
       }
     }
@@ -94,12 +93,12 @@ public class PaintSourceValidator {
     }
     IRecipeInput toRemove = null;
     for (IRecipeInput in : list) {
-      if(ItemUtil.areStacksEqual(inStack, in.getInput())) {
+      if (ItemUtil.areStacksEqual(inStack, in.getInput())) {
         toRemove = in;
         break;
       }
     }
-    if(toRemove != null) {
+    if (toRemove != null) {
       list.remove(toRemove);
     }
   }

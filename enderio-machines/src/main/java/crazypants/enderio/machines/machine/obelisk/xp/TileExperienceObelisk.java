@@ -15,6 +15,7 @@ import crazypants.enderio.base.xp.ExperienceContainer;
 import crazypants.enderio.base.xp.IHaveExperience;
 import crazypants.enderio.base.xp.PacketExperienceContainer;
 import crazypants.enderio.base.xp.XpUtil;
+import crazypants.enderio.machines.config.config.ExperienceConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
@@ -65,7 +66,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
   protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
     if (dir != null && xpCont.getFluidAmount() < xpCont.getCapacity()) {
-      if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), xpCont, Config.fluidConduitMaxIoRate) > 0) {
+      if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), xpCont, ExperienceConfig.maxIO.get()) > 0) {
         setTanksDirty();
       }
     }
@@ -76,7 +77,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
   protected boolean doPush(@Nullable EnumFacing dir) {
     boolean res = super.doPush(dir);
     if (dir != null && xpCont.getFluidAmount() > 0) {
-      if (FluidWrapper.transfer(xpCont, world, getPos().offset(dir), dir.getOpposite(), Config.fluidConduitMaxIoRate) > 0) {
+      if (FluidWrapper.transfer(xpCont, world, getPos().offset(dir), dir.getOpposite(), ExperienceConfig.maxIO.get()) > 0) {
         setTanksDirty();
       }
     }

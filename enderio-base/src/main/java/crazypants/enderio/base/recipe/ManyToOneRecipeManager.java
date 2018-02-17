@@ -10,7 +10,7 @@ import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.RecipeConfig;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
@@ -32,7 +32,7 @@ public class ManyToOneRecipeManager {
   public void addRecipe(Recipe rec) {
     if (rec == null) {
       Log.warn("Invalid null recipe found for " + managerName);
-    } else if (Config.createSyntheticRecipes //
+    } else if (RecipeConfig.createSyntheticRecipes.get() //
         && rec.getInputs().length == 1 && !rec.getInputs()[0].isFluid()
         && rec.getInputs()[0].getInput().getCount() <= (rec.getInputs()[0].getInput().getMaxStackSize() / 3) && rec.getOutputs().length == 1
         && !rec.getOutputs()[0].isFluid() //

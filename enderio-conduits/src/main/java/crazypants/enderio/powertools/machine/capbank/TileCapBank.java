@@ -20,7 +20,7 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduitBundle;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import crazypants.enderio.base.machine.interfaces.IIoConfigurable;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -305,8 +305,8 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   public void setDefaultIoMode(@Nonnull EnumFacing faceHit) {
     EnergyReceptor er = getEnergyReceptorForFace(faceHit);
-    if (er == null || er.getConduit() != null) { 
-      setIoMode(faceHit, IoMode.NONE); 
+    if (er == null || er.getConduit() != null) {
+      setIoMode(faceHit, IoMode.NONE);
     } else if (er.getReceptor().canReceive()) {
       setIoMode(faceHit, IoMode.PUSH);
     } else {
@@ -676,7 +676,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
       return;
     }
 
-    if (Config.debugTraceCapLimitsExtremelyDetailed) {
+    if (DiagnosticsConfig.debugTraceCapLimitsExtremelyDetailed.get()) {
       StringBuilder sb = new StringBuilder("CapBank ").append(this).append(" input changed from ").append(this.maxInput).append(" to ").append(maxInput);
       for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
         sb.append(" at ").append(elem);
@@ -704,7 +704,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
       return;
     }
 
-    if (Config.debugTraceCapLimitsExtremelyDetailed) {
+    if (DiagnosticsConfig.debugTraceCapLimitsExtremelyDetailed.get()) {
       StringBuilder sb = new StringBuilder("CapBank ").append(this).append(" output changed from ").append(this.maxOutput).append(" to ").append(maxOutput);
       for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
         sb.append(" at ").append(elem);

@@ -30,7 +30,6 @@ import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.facade.EnumFacadeType;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
@@ -41,6 +40,7 @@ import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.tool.ToolUtil;
+import crazypants.enderio.conduit.config.ConduitConfig;
 import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.GuiExternalConnectionSelector;
@@ -372,7 +372,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
         return result;
       }
     }
-    if (Config.fluidConduitDynamicLighting) {
+    if (ConduitConfig.dynamicLighting.get()) {
       Collection<IConduit> conduits = con.getConduits();
       for (IConduit conduit : conduits) {
         result += conduit.getLightValue();

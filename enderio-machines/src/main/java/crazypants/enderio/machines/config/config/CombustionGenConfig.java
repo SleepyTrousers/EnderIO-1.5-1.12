@@ -7,7 +7,7 @@ import crazypants.enderio.machines.config.Config;
 
 public final class CombustionGenConfig {
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(Config.F, new Section("", "combustiongenerator"));
+  public static final SectionedValueFactory F = new SectionedValueFactory(Config.F, new Section("", "generator.combustion"));
 
   public static final IValue<Float> enahancedCombGenQuality = F
       .make("enhancedCombGenQuality", 1.5f,

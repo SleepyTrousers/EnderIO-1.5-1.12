@@ -374,23 +374,27 @@ enderio.darksteel.upgrade.solar_2.tooltip.detailed.line1=Generates power from th
 enderio.darksteel.upgrade.solar_3.name=Solar III
 enderio.darksteel.upgrade.solar_3.tooltip.detailed.line1=Generates power from the sun.
 
-enderio.config.capacitor=Capacitor Settings
+enderio.config.capacitor=Capacitor Values
 enderio.config.client=Client Settings
-enderio.config.combustiongenerator=Combustion Generator Settings
-enderio.config.killerjoe=Killer Joe Settings
-enderio.config.solar=Solar Panel Settings
-enderio.config.soulbinder=Soulbinder Settings
-enderio.config.spawner=Powered Spawner Settings
+
+enderio.config.soulbinder=Soulbinder
+enderio.config.spawner=Powered Spawner
 enderio.config.spawner.tooltip=I ran out of witty tooltips.
-enderio.config.vacuum=Vacuum Chest/XP Vacuum Settings
-enderio.config.vat=Vat Settings
-enderio.config.zombiegenerator=Zombie Generator Settings
-enderio.config.telepad=TelePad Settings
-enderio.config.weather=Weather Obelisk Settings
-enderio.config.farm=Farm Settings
+enderio.config.vacuum=Vacuum Chest/XP Vacuum
+enderio.config.vat=Vat
+enderio.config.telepad=TelePad
+enderio.config.weather=Weather Obelisk
+enderio.config.farm=Farming Station
 enderio.config.farm.tooltip="The commune is for life!"
-enderio.config.inhibitor=Inhibitor Obelisk Settings
-enderio.config.killerjoe=Killer Joe Settings
+enderio.config.inhibitor=Inhibitor Obelisk
+enderio.config.killerjoe=Killer Joe
+enderio.config.experience=Experience Obelisk
+enderio.config.tank=Tank
+
+enderio.config.generator=Generators
+enderio.config.generator.combustion=Combustion Generator
+enderio.config.generator.zombie=Zombie Generator
+enderio.config.generator.solar=Solar Panels
 
 # Achie...um...Advancements
 

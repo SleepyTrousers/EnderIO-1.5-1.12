@@ -13,10 +13,10 @@ import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.conduit.ItemConduitSubtype;
+import crazypants.enderio.conduit.config.ConduitConfig;
 import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.conduit.item.AbstractItemConduit;
 import net.minecraft.entity.player.EntityPlayer;
@@ -91,14 +91,14 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
     int maxIo;
 
     if (itemstack.getItemDamage() == 0) {
-      extractRate = Config.fluidConduitExtractRate;
-      maxIo = Config.fluidConduitMaxIoRate;
+      extractRate = ConduitConfig.fluid_tier1_extractRate.get();
+      maxIo = ConduitConfig.fluid_tier1_maxIO.get();
     } else if (itemstack.getItemDamage() == 1) {
-      extractRate = Config.advancedFluidConduitExtractRate;
-      maxIo = Config.advancedFluidConduitMaxIoRate;
+      extractRate = ConduitConfig.fluid_tier2_extractRate.get();
+      maxIo = ConduitConfig.fluid_tier2_maxIO.get();
     } else {
-      extractRate = Config.enderFluidConduitExtractRate;
-      maxIo = Config.enderFluidConduitMaxIoRate;
+      extractRate = ConduitConfig.fluid_tier3_extractRate.get();
+      maxIo = ConduitConfig.fluid_tier3_maxIO.get();
     }
 
     // TODO Lang

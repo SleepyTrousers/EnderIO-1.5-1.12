@@ -23,10 +23,10 @@ import crazypants.enderio.base.conduit.IConduitRenderer;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.TileConduitBundle;
+import crazypants.enderio.conduit.config.ConduitConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -126,7 +126,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
         addBreakingQuads(bundle, result);
       } else {
         float brightness;
-        if (!Config.updateLightingWhenHidingFacades && bundle.hasFacade()) {
+        if (!ConduitConfig.updateLightingWhenHidingFacades.get() && bundle.hasFacade()) {
           brightness = 15 << 20 | 15 << 4;
         } else {
           brightness = bundle.getEntity().getWorld().getLightFor(EnumSkyBlock.SKY, bundle.getLocation());

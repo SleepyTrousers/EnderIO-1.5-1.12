@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import crazypants.enderio.powertools.machine.capbank.network.ICapBankNetwork;
@@ -29,7 +29,7 @@ public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
     maxRec = network.getMaxInput();
     inputMode = network.getInputControlMode();
     outputMode = network.getOutputControlMode();
-    if (Config.debugTraceCapLimitsExtremelyDetailed) {
+    if (DiagnosticsConfig.debugTraceCapLimitsExtremelyDetailed.get()) {
       StringBuilder sb = new StringBuilder("CapBankNetwork ").append(network).append(" sending network package in=").append(maxRec).append(" out=")
           .append(maxSend);
       for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {

@@ -3,7 +3,7 @@ package crazypants.enderio.base;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DiagnosticsConfig;
 
 public final class Log {
 
@@ -38,7 +38,7 @@ public final class Log {
   }
 
   public static void livetraceNBT(Object... msg) {
-    if (Config.debugTraceNBTActivityExtremelyDetailed) {
+    if (DiagnosticsConfig.debugTraceNBTActivityExtremelyDetailed.get()) {
       LOGGER.info(join("", msg));
     }
   }

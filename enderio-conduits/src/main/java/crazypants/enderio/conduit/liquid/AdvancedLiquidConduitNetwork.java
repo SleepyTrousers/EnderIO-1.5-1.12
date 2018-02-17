@@ -10,6 +10,7 @@ import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper;
 
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.conduit.config.ConduitConfig;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -175,7 +176,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     if (resource == null) {
       return 0;
     }
-    resource.amount = Math.min(resource.amount, AdvancedLiquidConduit.MAX_IO_PER_TICK);
+    resource.amount = Math.min(resource.amount, ConduitConfig.fluid_tier2_maxIO.get());
     boolean liquidWasValid = !tank.containsValidLiquid();
     int res = tank.fill(resource, doFill);
     if (doFill && res > 0 && !liquidWasValid) {
@@ -191,7 +192,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
       return null;
     }
     int amount = Math.min(resource.amount, tank.getFluidAmount());
-    amount = Math.min(amount, AdvancedLiquidConduit.MAX_IO_PER_TICK);
+    amount = Math.min(amount, ConduitConfig.fluid_tier2_maxIO.get());
     FluidStack result = resource.copy();
     result.amount = amount;
     if (doDrain) {

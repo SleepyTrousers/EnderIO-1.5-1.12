@@ -1,12 +1,8 @@
 package crazypants.enderio.conduit.liquid;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -14,19 +10,17 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitComponent;
+import crazypants.enderio.conduit.config.ConduitConfig;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -53,10 +47,6 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
   private AdvancedLiquidConduitNetwork network;
 
   private long ticksSinceFailedExtract = 0;
-
-  public static final int MAX_EXTRACT_PER_TICK = Config.advancedFluidConduitExtractRate;
-
-  public static final int MAX_IO_PER_TICK = Config.advancedFluidConduitMaxIoRate;
 
   public AdvancedLiquidConduit() {
     updateTank();
@@ -93,7 +83,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
 
     for (EnumFacing dir : externalConnections) {
       if (autoExtractForDir(dir)) {
-        if (network.extractFrom(this, dir, MAX_EXTRACT_PER_TICK)) {
+        if (network.extractFrom(this, dir, ConduitConfig.fluid_tier2_extractRate.get())) {
           ticksSinceFailedExtract = 0;
         }
       }

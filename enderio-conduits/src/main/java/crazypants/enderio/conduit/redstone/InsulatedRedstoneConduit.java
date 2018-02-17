@@ -35,13 +35,13 @@ import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.redstone.signals.SignalSource;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.IConduitComponent;
+import crazypants.enderio.conduit.config.ConduitConfig;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.RedstoneSettings;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
@@ -57,7 +57,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.b3d.B3DModel.Texture;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -150,7 +149,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   private void updateActiveState() {
-    if (Config.redstoneConduitsShowState && activeDirty && activeUpdateCooldown == 0) {
+    if (ConduitConfig.showState.get() && activeDirty && activeUpdateCooldown == 0) {
       setClientStateDirty();
       activeDirty = false;
       activeUpdateCooldown = 4;
@@ -553,7 +552,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
     if (component.dir == null) {
-      return Config.redstoneConduitsShowState && isActive() ? ICONS.get(KEY_INS_CORE_ON_ICON).get(TextureAtlasSprite.class) : ICONS.get(KEY_INS_CORE_OFF_ICON).get(TextureAtlasSprite.class);
+      return ConduitConfig.showState.get() && isActive() ? ICONS.get(KEY_INS_CORE_ON_ICON).get(TextureAtlasSprite.class)
+          : ICONS.get(KEY_INS_CORE_OFF_ICON).get(TextureAtlasSprite.class);
     }
     if (COLOR_CONTROLLER_ID.equals(component.data)) {
       return IconUtil.instance.whiteTexture;
@@ -564,7 +564,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   @Nonnull
   public TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
-    return Config.redstoneConduitsShowState && isActive() ? ICONS.get(KEY_TRANSMISSION_ICON).get(TextureAtlasSprite.class) : ICONS.get(KEY_CONDUIT_ICON).get(TextureAtlasSprite.class);
+    return ConduitConfig.showState.get() && isActive() ? ICONS.get(KEY_TRANSMISSION_ICON).get(TextureAtlasSprite.class)
+        : ICONS.get(KEY_CONDUIT_ICON).get(TextureAtlasSprite.class);
   }
 
   @Override
@@ -693,7 +694,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     super.hashCodeForModelCaching(wrapper, hashCodes);
     hashCodes.addEnum(signalColors);
-    if (Config.redstoneConduitsShowState && isActive()) {
+    if (ConduitConfig.showState.get() && isActive()) {
       hashCodes.add(1);
     }
   }

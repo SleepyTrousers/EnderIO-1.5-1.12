@@ -8,8 +8,7 @@ import com.enderio.core.common.TileEntityBase;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.config.config.PersonalConfig;
+import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.util.NbtValue;
@@ -30,7 +29,7 @@ public abstract class TileEntityEio extends TileEntityBase {
 
   protected TileEntityEio() {
     super();
-    if (Config.debugTraceTELivecycleExtremelyDetailed) {
+    if (DiagnosticsConfig.debugTraceTELivecycleExtremelyDetailed.get()) {
       StringBuilder sb = new StringBuilder("TE ").append(this).append(" created");
       for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
         sb.append(" at ").append(elem);
@@ -42,7 +41,7 @@ public abstract class TileEntityEio extends TileEntityBase {
   @Override
   public void invalidate() {
     super.invalidate();
-    if (Config.debugTraceTELivecycleExtremelyDetailed) {
+    if (DiagnosticsConfig.debugTraceTELivecycleExtremelyDetailed.get()) {
       StringBuilder sb = new StringBuilder("TE ").append(this).append(" invalidated");
       for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
         sb.append(" at ").append(elem);
@@ -54,7 +53,7 @@ public abstract class TileEntityEio extends TileEntityBase {
   @Override
   public void onChunkUnload() {
     super.onChunkUnload();
-    if (Config.debugTraceTELivecycleExtremelyDetailed) {
+    if (DiagnosticsConfig.debugTraceTELivecycleExtremelyDetailed.get()) {
       StringBuilder sb = new StringBuilder("TE ").append(this).append(" unloaded");
       for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
         sb.append(" at ").append(elem);
@@ -78,7 +77,7 @@ public abstract class TileEntityEio extends TileEntityBase {
   }
 
   protected void onAfterDataPacket() {
-    if (PersonalConfig.debugUpdatePackets.get()) {
+    if (DiagnosticsConfig.debugUpdatePackets.get()) {
       EnderIO.proxy.markBlock(getWorld(), getPos(), COLOR);
     }
   }

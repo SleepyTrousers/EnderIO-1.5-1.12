@@ -15,10 +15,10 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.ILimitedItemFilter;
 import crazypants.enderio.base.filter.INetworkedInventory;
+import crazypants.enderio.conduit.config.ConduitConfig;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -298,7 +298,7 @@ public class NetworkedInventory implements INetworkedInventory {
       if ((con.isSelfFeedEnabled(conDir) || (other != this)) && other.canInsert()
           && con.getInputColor(conDir) == ((IItemConduit) other.getCon()).getOutputColor(other.getConDir())) {
 
-        if (Config.itemConduitUsePhyscialDistance) {
+        if (ConduitConfig.usePhyscialDistance.get()) {
           sendPriority.add(new Target(other, distanceTo(other), other.isSticky(), other.getPriority()));
         } else {
           result.add(new Target(other, 9999999, other.isSticky(), other.getPriority()));
@@ -306,7 +306,7 @@ public class NetworkedInventory implements INetworkedInventory {
       }
     }
 
-    if (Config.itemConduitUsePhyscialDistance) {
+    if (ConduitConfig.usePhyscialDistance.get()) {
       Collections.sort(sendPriority);
     } else {
       if (!result.isEmpty()) {

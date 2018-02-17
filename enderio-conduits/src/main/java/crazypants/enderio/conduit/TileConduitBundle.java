@@ -14,7 +14,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NullHelper;
-import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.TileEntityEio;
@@ -31,9 +30,9 @@ import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.geom.Offsets;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.conduit.config.ConduitConfig;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
@@ -130,18 +129,18 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
     return new String[0];
   }
-  
+
   @Override
   protected void onAfterNbtRead() {
     super.onAfterNbtRead();
     for (IConduit c : conduits) {
       c.setBundle(this);
     }
-    if(getWorld() != null && getWorld().isRemote) {
+    if (getWorld() != null && getWorld().isRemote) {
       clientUpdated = true;
     }
   }
-  
+
   //
   // @Override
   // protected void writeCustomNBT(NBTTagCompound nbtRoot) {
@@ -329,7 +328,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     FacadeRenderState curRS = getFacadeRenderedAs();
     FacadeRenderState rs = ConduitUtil.getRequiredFacadeRenderState(this, NullHelper.notnull(EnderIO.proxy.getClientPlayer(), "Proxy#getClientPlayer"));
 
-    if (Config.updateLightingWhenHidingFacades) {
+    if (ConduitConfig.updateLightingWhenHidingFacades.get()) {
       int shouldBeLO = rs == FacadeRenderState.FULL ? -1 : 0;
       if (lightOpacityOverride != shouldBeLO) {
         setLightOpacityOverride(shouldBeLO);
@@ -627,7 +626,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   private void addConduitCores(List<CollidableComponent> result, IConduit con) {
     CollidableCache cc = CollidableCache.instance;
     Class<? extends IConduit> type = con.getCollidableType();
-    if(con.hasConnections()) {
+    if (con.hasConnections()) {
       for (EnumFacing dir : con.getExternalConnections()) {
         result.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), dir), null, false), con));
       }
