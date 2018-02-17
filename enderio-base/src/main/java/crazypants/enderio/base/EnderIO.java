@@ -13,6 +13,7 @@ import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.recipes.RecipeLoader;
+import crazypants.enderio.base.diagnostics.ProfilerEIO;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.gui.handler.GuiHelper;
@@ -261,6 +262,11 @@ public class EnderIO implements IEnderIOAddon {
   @Nullable
   public Configuration getConfiguration() {
     return Config.config;
+  }
+
+  @EventHandler
+  public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
+    ProfilerEIO.init(event);
   }
 
 }
