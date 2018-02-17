@@ -42,6 +42,9 @@ public class ProfilerEIO extends Profiler {
   public void startSection(@Nonnull String name) {
     if (this.profilingEnabled) {
       super.startSection(name);
+      if (stack.isEmpty() && name.equals("root")) {
+        discarded.clear();
+      }
       stack.add(0, new Element(name, new RuntimeException()));
     }
   }
@@ -64,7 +67,7 @@ public class ProfilerEIO extends Profiler {
       Element element = stack.remove(0);
       element.ender = new RuntimeException();
       discarded.add(element);
-      while (discarded.size() > 20) {
+      while (discarded.size() > 1000) {
         discarded.remove(0);
       }
       super.endSection();
