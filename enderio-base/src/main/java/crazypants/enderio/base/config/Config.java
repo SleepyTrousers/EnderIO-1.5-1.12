@@ -61,7 +61,7 @@ public final class Config {
   public static final @Nonnull Section sectionEnchantments = new Section("Enchantments", "enchantments");
   public static final @Nonnull Section sectionMisc = new Section("Misc", "misc");
   public static final @Nonnull Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
-  public static final @Nonnull Section sectionTOP = new Section("The One Probe integration", "top");
+  // public static final @Nonnull Section sectionTOP = new Section("The One Probe integration", "top");
   public static final @Nonnull Section sectionHoes = new Section("Farm Settings.Hoes", "hoes");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
@@ -214,6 +214,9 @@ public final class Config {
   public static int fireWaterPowerPerCycleRF = 80;
   public static int fireWaterPowerTotalBurnTime = 15000;
 
+  /**
+   * Note: If someone asks you ton include a hoe in this list, the correct answer is "No. Get the other mod author to oredict their hoe(s) as 'toolHoe'"
+   */
   public static String[] hoeStrings = new String[] { "tconstruct:mattock", "thermalfoundation:tool.hoe_invar", "thermalfoundation:tool.hoe_copper",
       "thermalfoundation:tool.hoe_bronze", "thermalfoundation:tool.hoe_silver", "thermalfoundation:tool.hoe_electrum", "thermalfoundation:tool.hoe_tin",
       "thermalfoundation:tool.hoe_lead", "thermalfoundation:tool.hoe_nickel", "thermalfoundation:tool.hoe_platinum", "thermalfoundation:tool.hoe_aluminum",
@@ -284,20 +287,6 @@ public final class Config {
   public static int rodOfReturnFluidUsePerTeleport = 200;
   public static int rodOfReturnFluidStorage = 200;
   public static String rodOfReturnFluidType = "ender_distillation";
-
-  public static String coldFireIgniterFluidType = "vapor_of_levity";
-  public static int coldFireIgniterMbPerUse = 10;
-
-  public static boolean topEnabled = true;
-  public static boolean topShowProgressByDefault = true;
-  public static boolean topShowPowerByDefault = true;
-  public static boolean topShowRedstoneByDefault = false;
-  public static boolean topShowSideConfigByDefault = false;
-  public static boolean topShowRangeByDefault = false;
-  public static boolean topShowMobsByDefault = true;
-  public static boolean topShowTanksByDefault = true;
-  public static boolean topShowXPByDefault = true;
-  public static boolean topShowItemCountDefault = true;
 
   public static boolean paintedGlowstoneRequireSilkTouch = false;
 
@@ -893,32 +882,6 @@ public final class Config {
       Log.warn("Could not set value config entry enchantmentWitherArrowRarity Specified value " + rareStr);
       e.printStackTrace();
     }
-
-    coldFireIgniterFluidType = config.getString("coldFireIgniterFluidType", sectionDarkSteel.name, coldFireIgniterFluidType,
-        "The type of fluid required to ignite cold fire");
-    coldFireIgniterMbPerUse = config.get(sectionDarkSteel.name, "coldFireIgniterMbPerUse", coldFireIgniterMbPerUse,
-        "The amount of fluid in mb used per usage. If set to <= 0 fluid use will be disabled").getInt();
-
-    topEnabled = config.getBoolean("topEnabled", sectionTOP.name, topEnabled, "If true, 'The One Probe' by McJty will be supported");
-
-    topShowProgressByDefault = config.getBoolean("topShowProgressByDefault", sectionTOP.name, topShowProgressByDefault,
-        "If true, the progress will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
-    topShowPowerByDefault = config.getBoolean("topShowPowerByDefault", sectionTOP.name, topShowPowerByDefault,
-        "If true, the power level will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
-    topShowRedstoneByDefault = config.getBoolean("topShowRedstoneByDefault", sectionTOP.name, topShowRedstoneByDefault,
-        "If true, the resdstone status will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
-    topShowSideConfigByDefault = config.getBoolean("topShowSideConfigByDefault", sectionTOP.name, topShowSideConfigByDefault,
-        "If true, the side config will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
-    topShowRangeByDefault = config.getBoolean("topShowRangeByDefault", sectionTOP.name, topShowRangeByDefault,
-        "If true, the range will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
-    topShowMobsByDefault = config.getBoolean("topShowMobsByDefault", sectionTOP.name, topShowMobsByDefault,
-        "If true, the mob list will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
-    topShowTanksByDefault = config.getBoolean("topShowTanksByDefault", sectionTOP.name, topShowTanksByDefault,
-        "If true, the tank content will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
-    topShowXPByDefault = config.getBoolean("topShowXPByDefault", sectionTOP.name, topShowXPByDefault,
-        "If true, the XP level will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
-    topShowItemCountDefault = config.getBoolean("topShowItemCountDefault", sectionTOP.name, topShowItemCountDefault,
-        "If true, the item count will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
 
     CapacitorKey.processConfig(config);
     BaseConfig.load();

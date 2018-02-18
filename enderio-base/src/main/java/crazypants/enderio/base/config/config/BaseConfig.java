@@ -16,6 +16,7 @@ public final class BaseConfig {
     InfinityConfig.F.getClass();
     RecipeConfig.F.getClass();
     BrokenSpawnerConfig.F.getClass();
+    TopConfig.F.getClass();
   }
 
 }

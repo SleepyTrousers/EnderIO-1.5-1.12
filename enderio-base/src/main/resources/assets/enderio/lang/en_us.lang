@@ -501,6 +501,7 @@ enderio.config.brokenspawner=Broken Spawner
 
 enderio.config.items=Items
 enderio.config.items.infinitypowder=Infinity Powder
+enderio.config.items.darksteel.coldfire=Cold Fire Igniter
 enderio.config.items.darksteel=Dark Steel Items
 enderio.config.items.darksteel.tooltip=It's not just regular steel, it's §odark§r§e steel.
 enderio.config.items.darksteel.sword=The Ender

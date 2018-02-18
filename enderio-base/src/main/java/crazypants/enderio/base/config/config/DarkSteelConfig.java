@@ -3,6 +3,7 @@ package crazypants.enderio.base.config.config;
 import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.base.config.SectionedValueFactory;
 import crazypants.enderio.base.config.ValueFactory.IValue;
+import net.minecraftforge.fluids.Fluid;
 
 public final class DarkSteelConfig {
 
@@ -69,5 +70,16 @@ public final class DarkSteelConfig {
       "Should the explosive upgrade blow up any kind of block the pickaxe can mine? If disabled, only a limited list of trash blocks will be blown up. "
           + "Enable this in modpacks that have a large number of modded stone or dirt in their worldgen.")
       .sync();
+
+  public static final SectionedValueFactory F3 = new SectionedValueFactory(BaseConfig.F, new Section("", "items.darksteel.coldfire"));
+
+  public static final IValue<Fluid> fluidType = F3.makeFluid("fluidType", "vapor_of_levity", //
+      "The type of fluid required to ignite cold fire.").sync();
+
+  public static final IValue<Integer> mbCapacity = F3.make("mbCapacity", 1000, //
+      "The amount of fluid in mb the item can hold.").setMin(0).sync();
+
+  public static final IValue<Integer> mbPerUse = F3.make("mbPerUse", 10, //
+      "The amount of fluid in mb used per usage. If set to <= 0 fluid use will be disabled.").setMin(-1).sync();
 
 }

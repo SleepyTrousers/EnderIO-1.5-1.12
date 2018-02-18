@@ -9,10 +9,9 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.FluidUtil;
-import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
@@ -35,7 +34,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -45,8 +43,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static crazypants.enderio.util.NbtValue.FLUIDAMOUNT;
 
 public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvider, IOverlayRenderAware {
-
-  private static final int FLUID_CAPACITY = 1000;
 
   public static ItemColdFireIgniter create(@Nonnull IModObject modObject) {
     return new ItemColdFireIgniter(modObject);
@@ -72,7 +68,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
     }
 
     if (world.isAirBlock(pos)) {
-      if (Config.coldFireIgniterMbPerUse > 0 && !drain(stack, Config.coldFireIgniterMbPerUse)) {
+      if (DarkSteelConfig.mbPerUse.get() > 0 && !drain(stack, DarkSteelConfig.mbPerUse.get())) {
         Fluid fluid = getFluidType(stack);
         String fluidname = fluid.getLocalizedName(new FluidStack(fluid, 1));
         player.sendMessage(Lang.COLD_FIRE_NO_FLUID.toChat(fluidname));
@@ -86,8 +82,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
   }
 
   public @Nonnull Fluid getFluidType(@Nonnull ItemStack container) {
-    return NullHelper.notnull(FluidRegistry.getFluid(Config.coldFireIgniterFluidType),
-        Config.coldFireIgniterFluidType + " is missing (config value 'coldFireIgniterFluidType')");
+    return DarkSteelConfig.fluidType.get();
   }
 
   private FluidStack getFluid(@Nonnull ItemStack container) {
@@ -100,7 +95,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
   }
 
   private int getCapacity(@Nonnull ItemStack container) {
-    return FLUID_CAPACITY;
+    return DarkSteelConfig.mbCapacity.get();
   }
 
   private int fill(@Nonnull ItemStack container, FluidStack resource, boolean doFill) {
@@ -108,7 +103,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
       return 0;
     }
     int amount = FLUIDAMOUNT.getInt(container, 0);
-    int free = FLUID_CAPACITY - amount;
+    int free = DarkSteelConfig.mbCapacity.get() - amount;
     int toFill = Math.min(resource.amount, free);
     if (toFill > 0 && doFill) {
       FLUIDAMOUNT.setInt(container, amount + toFill);
@@ -216,7 +211,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
-    tooltip.add(LangFluid.MB(FLUIDAMOUNT.getInt(stack, 0), FLUID_CAPACITY, getFluidType(stack)));
+    tooltip.add(LangFluid.MB(FLUIDAMOUNT.getInt(stack, 0), DarkSteelConfig.mbCapacity.get(), getFluidType(stack)));
   }
 
   @Override
@@ -244,7 +239,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
     if (isInCreativeTab(tab)) {
       final ItemStack stack = new ItemStack(this);
       list.add(stack.copy());
-      FLUIDAMOUNT.setInt(stack, FLUID_CAPACITY);
+      FLUIDAMOUNT.setInt(stack, DarkSteelConfig.mbCapacity.get());
       list.add(stack);
     }
   }

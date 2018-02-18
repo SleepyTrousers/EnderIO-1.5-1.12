@@ -14,6 +14,7 @@ import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.config.TopConfig;
 import crazypants.enderio.base.fluid.ItemTankHelper;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.ModObject;
@@ -47,16 +48,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
-import static crazypants.enderio.base.config.Config.topEnabled;
-import static crazypants.enderio.base.config.Config.topShowItemCountDefault;
-import static crazypants.enderio.base.config.Config.topShowMobsByDefault;
-import static crazypants.enderio.base.config.Config.topShowPowerByDefault;
-import static crazypants.enderio.base.config.Config.topShowProgressByDefault;
-import static crazypants.enderio.base.config.Config.topShowRangeByDefault;
-import static crazypants.enderio.base.config.Config.topShowRedstoneByDefault;
-import static crazypants.enderio.base.config.Config.topShowSideConfigByDefault;
-import static crazypants.enderio.base.config.Config.topShowTanksByDefault;
-import static crazypants.enderio.base.config.Config.topShowXPByDefault;
 import static mcjty.theoneprobe.api.IProbeInfo.ENDLOC;
 import static mcjty.theoneprobe.api.IProbeInfo.STARTLOC;
 
@@ -67,7 +58,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
   @Nullable
   @Override
   public Void apply(@Nullable ITheOneProbe theOneProbe) {
-    if (topEnabled) {
+    if (TopConfig.enabled.get()) {
       probe = theOneProbe;
       Log.info("Enabled support for The One Probe");
       probe.registerProvider(this);
@@ -193,7 +184,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   private void mkMobsBox(ProbeMode mode, EioBox mobbox, World world, TOPData data) {
     if (data.hasMobs) {
-      if (mode != ProbeMode.NORMAL || topShowMobsByDefault) {
+      if (mode != ProbeMode.NORMAL || TopConfig.showMobsByDefault.get()) {
         mobbox.get().text(loc("top.action.header", loc(data.mobAction)));
 
         if (data.mobs.isEmpty()) {
@@ -222,7 +213,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   private void mkRangeLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasRange) {
-      if (mode != ProbeMode.NORMAL || topShowRangeByDefault) {
+      if (mode != ProbeMode.NORMAL || TopConfig.showRangeByDefault.get()) {
         int sizeX = (int) data.bounds.sizeX();
         int sizeY = (int) data.bounds.sizeY();
         int sizeZ = (int) data.bounds.sizeZ();
@@ -247,7 +238,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   private void mkSideConfigLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasIOMode) {
-      if (mode != ProbeMode.NORMAL || topShowSideConfigByDefault) {
+      if (mode != ProbeMode.NORMAL || TopConfig.showSideConfigByDefault.get()) {
         addIcon(eiobox.get().horizontal(eiobox.center()), IconEIO.IO_CONFIG_UP).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1))
             .text(TextFormatting.YELLOW + loc("top.machine.side", TextFormatting.WHITE + loc("top.machine.side." + data.sideName)))
             .text(TextFormatting.YELLOW + loc("top.machine.ioMode", loc(data.ioMode.getColorerUnlocalizedName())));
@@ -259,7 +250,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   private void mkRedstoneLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasRedstone) {
-      if (mode != ProbeMode.NORMAL || topShowRedstoneByDefault) {
+      if (mode != ProbeMode.NORMAL || TopConfig.showRedstoneByDefault.get()) {
         addIcon(eiobox.get().horizontal(eiobox.center()), data.redstoneIcon).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1))
             .text(loc(data.redstoneTooltip)).text(loc("top.redstone.header", loc("top.redstone." + data.redstoneControlStatus)));
       } else {
@@ -295,7 +286,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   private void mkRfLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasRF) {
-      if (mode != ProbeMode.NORMAL || topShowPowerByDefault) {
+      if (mode != ProbeMode.NORMAL || TopConfig.showPowerByDefault.get()) {
         IProbeInfo rfLine = eiobox.get().horizontal(eiobox.center()).item(Material.POWDER_INFINITY.getStack());
         if (data.hasRFIO) {
           rfLine = rfLine.vertical();
@@ -326,7 +317,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   private void mkXPLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasXP) {
-      if (mode != ProbeMode.NORMAL || topShowXPByDefault) {
+      if (mode != ProbeMode.NORMAL || TopConfig.showXPByDefault.get()) {
         // We need to put the number of levels in as "current" value for it to be displayed as text. To make the progress bar scale to the partial level, we set
         // the "max" value in a way that is in the same ratio to the number of levels as the xp needed for the next level is to the current xp. If the bar
         // should be empty but we do have at least one level in, there will be a small error, as (levels/Integer.MAX_VALUE) > 0.
@@ -342,7 +333,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   private void mkItemFillLevelLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasItemFillLevel) {
-      if (mode != ProbeMode.NORMAL || topShowItemCountDefault) {
+      if (mode != ProbeMode.NORMAL || TopConfig.showItemCountDefault.get()) {
         eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Blocks.CHEST)).progress(data.fillCur, data.fillMax,
             eiobox.getProbeinfo().defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.items")).filledColor(0xfff8f83c)
                 .alternateFilledColor(0xffcfac0b).borderColor(0xffcfac0b));
@@ -354,7 +345,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   private void mkTankLines(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.tankData != null && !data.tankData.isEmpty()) {
-      if (mode != ProbeMode.NORMAL || topShowTanksByDefault) {
+      if (mode != ProbeMode.NORMAL || TopConfig.showTanksByDefault.get()) {
         for (ITankData tank : data.tankData) {
           SmartTank smartTank = new SmartTank(1000);
           String content1;
@@ -398,7 +389,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   private void mkProgressLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.progressResult != TOPData.ProgressResult.NONE) {
-      if (mode != ProbeMode.NORMAL || topShowProgressByDefault || data.progressResult == TOPData.ProgressResult.PROGRESS_NO_POWER) {
+      if (mode != ProbeMode.NORMAL || TopConfig.showProgressByDefault.get() || data.progressResult == TOPData.ProgressResult.PROGRESS_NO_POWER) {
         final IProbeInfo progressLine = eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.CLOCK));
         switch (data.progressResult) {
         case PROGRESS:
