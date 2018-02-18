@@ -214,32 +214,19 @@ public final class Config {
   public static int fireWaterPowerPerCycleRF = 80;
   public static int fireWaterPowerTotalBurnTime = 15000;
 
-  public static String[] hoeStrings = new String[] { "minecraft:wooden_hoe", "minecraft:stone_hoe", "minecraft:iron_hoe", "minecraft:diamond_hoe",
-      "minecraft:golden_hoe", "MekanismTools:ObsidianHoe", "MekanismTools:LapisLazuliHoe", "MekanismTools:OsmiumHoe", "MekanismTools:BronzeHoe",
-      "MekanismTools:GlowstoneHoe", "MekanismTools:SteelHoe", "Steamcraft:hoeBrass", "Steamcraft:hoeGildedGold", "TConstruct:mattock",
-      "ProjRed|Exploration:projectred.exploration.hoeruby", "ProjRed|Exploration:projectred.exploration.hoesapphire",
-      "ProjRed|Exploration:projectred.exploration.hoeperidot", "magicalcrops:magicalcrops_AccioHoe", "magicalcrops:magicalcrops_CrucioHoe",
-      "magicalcrops:magicalcrops_ImperioHoe",
-      // disabled as it is currently not unbreaking as advertised "magicalcrops:magicalcrops_ZivicioHoe",
-      "magicalcrops:magicalcropsarmor_AccioHoe", "magicalcrops:magicalcropsarmor_CrucioHoe", "magicalcrops:magicalcropsarmor_ImperioHoe",
-      "BiomesOPlenty:hoeAmethyst", "BiomesOPlenty:hoeMud", "Eln:Eln.Copper Hoe", "Thaumcraft:ItemHoeThaumium", "Thaumcraft:ItemHoeElemental",
-      "Thaumcraft:ItemHoeVoid", "thermalfoundation:tool.hoeInvar", "thermalfoundation:tool.hoeCopper", "thermalfoundation:tool.hoeBronze",
-      "thermalfoundation:tool.hoeSilver", "thermalfoundation:tool.hoeElectrum", "thermalfoundation:tool.hoeTin", "thermalfoundation:tool.hoeLead",
-      "thermalfoundation:tool.hoeNickel", "thermalfoundation:tool.hoePlatinum", "TwilightForest:item.steeleafHoe", "TwilightForest:item.ironwoodHoe",
-      "IC2:itemToolBronzeHoe", "techreborn:bronzeHoe", "techreborn:rubyHoe", "techreborn:sapphireHoe", "techreborn:peridotHoe", "basemetals:adamantine_hoe",
-      "basemetals:aquarium_hoe", "basemetals:brass_hoe", "basemetals:bronze_hoe", "basemetals:coldiron_hoe", "basemetals:copper_hoe",
-      "basemetals:cupronickel_hoe", "basemetals:electrum_hoe", "basemetals:invar_hoe", "basemetals:lead_hoe", "basemetals:mithril_hoe", "basemetals:nickel_hoe",
-      "basemetals:platinum_hoe", "basemetals:silver_hoe", "basemetals:starsteel_hoe", "basemetals:steel_hoe", "basemetals:tin_hoe",
-      "actuallyadditions:itemHoeQuartz", "actuallyadditions:itemHoeEmerald", "actuallyadditions:itemHoeObsidian", "actuallyadditions:itemHoeCrystalRed",
-      "actuallyadditions:itemHoeCrystalBlue", "actuallyadditions:itemHoeCrystalLightBlue", "actuallyadditions:itemHoeCrystalBlack",
-      "actuallyadditions:itemHoeCrystalGreen", "actuallyadditions:itemHoeCrystalWhite", "silentgems:Hoe", "ic2:bronze_hoe", // IC2exp 1.10
-      "appliedenergistics2:nether_quartz_hoe", "appliedenergistics2:certus_quartz_hoe", // AE2 1.10
-      "railcraft:tool_hoe_steel", // Railcraft 1.10
-      // new in 1.10:
-      "calculator:ReinforcedHoe", "calculator:EnrichedGoldHoe", "calculator:ReinforcedIronHoe", "calculator:RedstoneHoe", "calculator:WeakenedDiamondHoe",
-      "calculator:FlawlessDiamondHoe", "calculator:FireDiamondHoe", "calculator:ElectricHoe", "embers:hoeDawnstone", "embers:hoeCopper", "embers:hoeSilver",
-      "embers:hoeLead", "roots:livingHoe", "mysticalagriculture:inferium_hoe", "mysticalagriculture:prudentium_hoe", "mysticalagriculture:intermedium_hoe",
-      "mysticalagriculture:superium_hoe", "mysticalagriculture:supremium_hoe" };
+  public static String[] hoeStrings = new String[] { "tconstruct:mattock", "thermalfoundation:tool.hoe_invar", "thermalfoundation:tool.hoe_copper",
+      "thermalfoundation:tool.hoe_bronze", "thermalfoundation:tool.hoe_silver", "thermalfoundation:tool.hoe_electrum", "thermalfoundation:tool.hoe_tin",
+      "thermalfoundation:tool.hoe_lead", "thermalfoundation:tool.hoe_nickel", "thermalfoundation:tool.hoe_platinum", "thermalfoundation:tool.hoe_aluminum",
+      "thermalfoundation:tool.hoe_steel", "thermalfoundation:tool.hoe_constantan", "basemetals:adamantine_hoe", "basemetals:aquarium_hoe",
+      "basemetals:brass_hoe", "basemetals:bronze_hoe", "basemetals:coldiron_hoe", "basemetals:copper_hoe", "basemetals:cupronickel_hoe",
+      "basemetals:electrum_hoe", "basemetals:invar_hoe", "basemetals:lead_hoe", "basemetals:mithril_hoe", "basemetals:nickel_hoe", "basemetals:platinum_hoe",
+      "basemetals:silver_hoe", "basemetals:starsteel_hoe", "basemetals:steel_hoe", "basemetals:tin_hoe", "actuallyadditions:item_hoe_quartz",
+      "actuallyadditions:item_hoe_emerald", "actuallyadditions:item_hoe_obsidian", "actuallyadditions:item_hoe_crystal_red",
+      "actuallyadditions:item_hoe_crystal_blue", "actuallyadditions:item_hoe_crystal_light_blue", "actuallyadditions:item_hoe_crystal_black",
+      "actuallyadditions:item_hoe_crystal_green", "actuallyadditions:item_hoe_crystal_white", "ic2:bronze_hoe" /* IC2exp 1.10 */,
+      "appliedenergistics2:nether_quartz_hoe", "appliedenergistics2:certus_quartz_hoe" /* AE2 1.10 */, "railcraft:tool_hoe_steel" /* Railcraft 1.10 */,
+      "mysticalagriculture:inferium_hoe", "mysticalagriculture:prudentium_hoe", "mysticalagriculture:intermedium_hoe", "mysticalagriculture:superium_hoe",
+      "mysticalagriculture:supremium_hoe" };
   public static @Nonnull Things farmHoes = new Things();
 
   public static int magnetPowerUsePerSecondRF = 1;

@@ -11,10 +11,16 @@ import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.oredict.OreDictionary;
 
 public enum FarmingTool implements IFarmingTool {
   HAND,
-  HOE(Config.farmHoes),
+  HOE(Config.farmHoes) {
+    @Override
+    protected boolean match(@Nonnull ItemStack item) {
+      return super.match(item) || OreDictionary.containsMatch(false, OreDictionary.getOres("toolHoe"), item);
+    }
+  },
   AXE {
     @Override
     protected boolean match(@Nonnull ItemStack item) {

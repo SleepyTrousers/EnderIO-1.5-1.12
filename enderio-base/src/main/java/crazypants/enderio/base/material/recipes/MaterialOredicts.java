@@ -89,6 +89,13 @@ public class MaterialOredicts {
         itemMaterial.getItemNN().getRegistryName() + ":" + Material.DYE_BROWN.ordinal());
     Things.addAlias(Material.DYE_BLACK.getBaseName().toUpperCase(Locale.ENGLISH),
         itemMaterial.getItemNN().getRegistryName() + ":" + Material.DYE_BLACK.ordinal());
+
+    // Hoes
+    OreDictionary.registerOre("toolHoe", new ItemStack(Items.WOODEN_HOE, 1, OreDictionary.WILDCARD_VALUE));
+    OreDictionary.registerOre("toolHoe", new ItemStack(Items.IRON_HOE, 1, OreDictionary.WILDCARD_VALUE));
+    OreDictionary.registerOre("toolHoe", new ItemStack(Items.STONE_HOE, 1, OreDictionary.WILDCARD_VALUE));
+    OreDictionary.registerOre("toolHoe", new ItemStack(Items.DIAMOND_HOE, 1, OreDictionary.WILDCARD_VALUE));
+    OreDictionary.registerOre("toolHoe", new ItemStack(Items.GOLDEN_HOE, 1, OreDictionary.WILDCARD_VALUE));
   }
 
 }
