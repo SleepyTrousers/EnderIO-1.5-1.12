@@ -20,8 +20,7 @@ public class ProfilerAntiReactor extends Profiler {
   private boolean isBlacklisted(RuntimeException ex) {
     StackTraceElement[] stackTrace = ex.getStackTrace();
     for (int i = 0; i < stackTrace.length; i++) {
-      if (stackTrace[i].getClassName().equals("erogenousbeef.bigreactors.common.multiblock.MultiblockReactor.updateServer")
-          && stackTrace[i].getLineNumber() == 556) {
+      if (stackTrace[i].getClassName().equals("erogenousbeef.bigreactors.common.multiblock.MultiblockReactor") && stackTrace[i].getLineNumber() == 556) {
         return true;
       }
     }
