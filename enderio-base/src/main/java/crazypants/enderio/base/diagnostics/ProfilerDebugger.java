@@ -13,7 +13,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
-public class ProfilerEIO extends Profiler {
+public class ProfilerDebugger extends Profiler {
 
   private static class Element {
     String name;
@@ -29,7 +29,7 @@ public class ProfilerEIO extends Profiler {
   private List<Element> discarded = new LinkedList<>();
   private List<Element> candidates = new LinkedList<>();
 
-  public ProfilerEIO() {
+  public ProfilerDebugger() {
   }
 
   @Override
@@ -114,7 +114,7 @@ public class ProfilerEIO extends Profiler {
   }
 
   public static void init(FMLServerAboutToStartEvent event) {
-    ReflectionHelper.setPrivateValue(MinecraftServer.class, event.getServer(), new ProfilerEIO(), "profiler", "field_71304_b");
+    ReflectionHelper.setPrivateValue(MinecraftServer.class, event.getServer(), new ProfilerDebugger(), "profiler", "field_71304_b");
   }
 
 }
