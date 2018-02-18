@@ -206,7 +206,9 @@ public class FarmLogic implements IFarmer {
     if (slot != null) {
       ItemStack stack = slot.get(owner);
       if (FarmingTool.isBrokenTinkerTool(stack) || FarmingTool.isDryRfTool(stack)) {
-        handleExtraItem(stack, null);
+        if (!joeInUse) {
+          handleExtraItem(stack, null);
+        }
       } else if (tool.itemMatches(stack)) {
         switch (tool(tool)) {
         case AXE:
@@ -302,6 +304,7 @@ public class FarmLogic implements IFarmer {
         result.add(stack);
       }
     }
+    joeInUse = false;
     return result;
   }
 
@@ -309,7 +312,12 @@ public class FarmLogic implements IFarmer {
   @Nonnull
   public NNList<ItemStack> endUsingItem(@Nonnull IFarmingTool tool) {
     removeJoesTool();
-    return endUsingItem(false);
+    final NNList<ItemStack> items = endUsingItem(false);
+    ItemStack toolStack = getTool(tool);
+    if (FarmingTool.isBrokenTinkerTool(toolStack) || FarmingTool.isDryRfTool(toolStack)) {
+      handleExtraItem(toolStack, null);
+    }
+    return items;
   }
 
   // Result Handling
@@ -381,26 +389,47 @@ public class FarmLogic implements IFarmer {
           toolSlot = slot;
         }
       }
+      boolean damageHandItem = false;
+      ItemStack restoreJoe = Prep.getEmpty();
+      if (joeInUse) {
+        if (toolStack == farmerJoe.getHeldItem(EnumHand.MAIN_HAND)) {
+          // good case
+          damageHandItem = true;
+        } else {
+          // bad case
+          restoreJoe = farmerJoe.getHeldItem(EnumHand.MAIN_HAND);
+          farmerJoe.setHeldItem(EnumHand.MAIN_HAND, Prep.getEmpty());
+        }
+      } else if (Prep.isValid(farmerJoe.getHeldItem(EnumHand.MAIN_HAND))) {
+        handleExtraItem(farmerJoe.getHeldItem(EnumHand.MAIN_HAND), null);
+        farmerJoe.setHeldItem(EnumHand.MAIN_HAND, Prep.getEmpty());
+      }
+      if (!damageHandItem) {
+        farmerJoe.setHeldItem(EnumHand.MAIN_HAND, toolStack);
+      }
 
       boolean canDamage = FarmingTool.canDamage(toolStack);
       switch (tool(tool)) {
       case AXE:
         toolStack.getItem().onBlockDestroyed(toolStack, getWorld(), state, pos, farmerJoe);
-        if (FarmingTool.isBrokenTinkerTool(toolStack) || FarmingTool.isDryRfTool(toolStack)) {
-          handleExtraItem(toolStack, null);
-        }
         break;
       case HAND:
         break;
       case HOE:
         int origDamage = toolStack.getItemDamage();
-        ItemStack heldItem = farmerJoe.getHeldItem(EnumHand.MAIN_HAND);
-        farmerJoe.setHeldItem(EnumHand.MAIN_HAND, toolStack);
         toolStack.getItem().onItemUse(farmerJoe, getWorld(), pos, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
-        toolStack = farmerJoe.getHeldItem(EnumHand.MAIN_HAND);
-        farmerJoe.setHeldItem(EnumHand.MAIN_HAND, heldItem);
-        if (origDamage == toolStack.getItemDamage() && canDamage) {
-          toolStack.damageItem(1, farmerJoe);
+        ItemStack newToolStack = farmerJoe.getHeldItem(EnumHand.MAIN_HAND);
+        if (origDamage == newToolStack.getItemDamage() && canDamage) {
+          newToolStack.damageItem(1, farmerJoe);
+        }
+        if (newToolStack != toolStack) {
+          if (damageHandItem && toolSlot != null) {
+            toolSlot.set(owner, newToolStack);
+            toolStack = getTool(tool);
+            farmerJoe.setHeldItem(EnumHand.MAIN_HAND, toolStack);
+          } else {
+            toolStack = newToolStack;
+          }
         }
         break;
       case NONE:
@@ -414,6 +443,11 @@ public class FarmLogic implements IFarmer {
         break;
       }
 
+      if (damageHandItem) {
+        owner.markDirty();
+        return;
+      }
+      farmerJoe.setHeldItem(EnumHand.MAIN_HAND, restoreJoe);
       if (toolSlot != null) {
         toolSlot.set(owner, toolStack);
         owner.markDirty();
