@@ -153,8 +153,8 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
           setNotification(SpawnerNotification.NO_PLAYER);
           return null;
         }
-        removeNotification(SpawnerNotification.NO_PLAYER);
       }
+      removeNotification(SpawnerNotification.NO_PLAYER);
     } else {
       clearNotification();
       if (Prep.isInvalid(getStackInSlot(0)) || Prep.isValid(getStackInSlot(1))) {

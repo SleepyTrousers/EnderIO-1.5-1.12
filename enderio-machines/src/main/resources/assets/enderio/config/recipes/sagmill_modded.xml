@@ -150,4 +150,14 @@
     </sagmilling>
   </recipe>
 
+  <!-- Mystical Agriculture -->
+
+  <recipe name="Sagmill: Soulstone" required="false">
+    <sagmilling energy="2400">
+      <input name="mysticalagriculture:soulstone"/>
+      <output name="mysticalagriculture:crafting:28" />
+      <output name="mysticalagriculture:crafting:28" chance="0.2" />
+    </sagmilling>
+  </recipe>
+
 </enderio:recipes>

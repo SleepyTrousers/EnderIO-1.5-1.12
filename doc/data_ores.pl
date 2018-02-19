@@ -934,6 +934,47 @@ our $ores = [
 		base => [ 'minecraft:end_stone', 1, 0.15 ],
 	},
 
+  {
+    name => 'Prosperity', mod => 'Mystical Agriculture', requ => 'false',
+
+    dust => 'shard*', amount => 4,
+    base => [ 'minecraft:end_stone', 1, 0.15 ],
+  },
+
+  {
+    name => 'NetherProsperity', mod => 'Mystical Agriculture', requ => 'false',
+
+    dust => 'shardProsperity', amount => 4,
+    base => [ 'minecraft:end_stone', 1, 0.15 ],
+  },
+
+  {
+    name => 'EndProsperity', mod => 'Mystical Agriculture', requ => 'false',
+
+    dust => 'shardProsperity', amount => 4,
+    base => [ 'minecraft:end_stone', 1, 0.15 ],
+  },
+
+  {
+    name => 'Inferium', mod => 'Mystical Agriculture', requ => 'false',
+
+    dust => 'essence*', amount => 4,
+    base => [ 'minecraft:end_stone', 1, 0.15 ],
+  },
+
+  {
+    name => 'NetherInferium', mod => 'Mystical Agriculture', requ => 'false',
+
+    dust => 'essenceInferium', amount => 4,
+    base => [ 'minecraft:end_stone', 1, 0.15 ],
+  },
+
+  {
+    name => 'EndInferium', mod => 'Mystical Agriculture', requ => 'false',
+
+    dust => 'essenceInferium', amount => 4,
+    base => [ 'minecraft:end_stone', 1, 0.15 ],
+  },
 
 
 

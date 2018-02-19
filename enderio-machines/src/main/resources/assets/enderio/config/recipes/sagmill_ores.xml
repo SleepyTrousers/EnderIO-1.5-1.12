@@ -2517,4 +2517,64 @@
     </sagmilling>
   </recipe>
 
+  <!-- Prosperity (Mystical Agriculture) -->
+
+  <recipe name="Sagmill: oreProsperity Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreProsperity" />
+      <output name="shardProsperity" amount="4" />
+      <output name="minecraft:end_stone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <!-- NetherProsperity (Mystical Agriculture) -->
+
+  <recipe name="Sagmill: oreNetherProsperity Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreNetherProsperity" />
+      <output name="shardProsperity" amount="4" />
+      <output name="minecraft:end_stone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <!-- EndProsperity (Mystical Agriculture) -->
+
+  <recipe name="Sagmill: oreEndProsperity Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreEndProsperity" />
+      <output name="shardProsperity" amount="4" />
+      <output name="minecraft:end_stone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Inferium (Mystical Agriculture) -->
+
+  <recipe name="Sagmill: oreInferium Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreInferium" />
+      <output name="essenceInferium" amount="4" />
+      <output name="minecraft:end_stone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <!-- NetherInferium (Mystical Agriculture) -->
+
+  <recipe name="Sagmill: oreNetherInferium Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreNetherInferium" />
+      <output name="essenceInferium" amount="4" />
+      <output name="minecraft:end_stone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <!-- EndInferium (Mystical Agriculture) -->
+
+  <recipe name="Sagmill: oreEndInferium Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreEndInferium" />
+      <output name="essenceInferium" amount="4" />
+      <output name="minecraft:end_stone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
 </enderio:recipes>
