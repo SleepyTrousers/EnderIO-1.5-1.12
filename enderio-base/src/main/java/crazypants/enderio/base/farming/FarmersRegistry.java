@@ -41,7 +41,6 @@ public final class FarmersRegistry {
       .add(Items.PUMPKIN_SEEDS);
   public static final @Nonnull Things slotItemsProduce = new Things("logWood").add(new ItemStack(Blocks.LOG, 1, 0)).add(Blocks.WHEAT)
       .add(new ItemStack(Blocks.LEAVES, 1, 0)).add(Items.APPLE).add(Items.MELON).add(Blocks.PUMPKIN).add(Blocks.YELLOW_FLOWER).add(Blocks.RED_FLOWER);
-  public static final @Nonnull Things slotItemsFertilizer = new Things().add(new ItemStack(Items.DYE, 1, 15));
 
   // TODO 1.11: move those treetaps somewhere else
   // slotItemsStacks3.addAll(TileFarmStation.TREETAPS.getItemStacks());

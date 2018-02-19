@@ -2,6 +2,7 @@ package crazypants.enderio.base.farming.fertilizer;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.farm.IFertilizer;
@@ -10,6 +11,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
@@ -47,6 +49,12 @@ public final class NoFertilizer extends AbstractFertilizer {
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public static void registerFertilizer(@Nonnull RegistryEvent.Register<IFertilizer> event) {
     event.getRegistry().register(NONE = new NoFertilizer());
+  }
+
+  @Override
+  @Nonnull
+  public NonNullList<ItemStack> getGuiItem() {
+    return NNList.emptyList();
   }
 
 }

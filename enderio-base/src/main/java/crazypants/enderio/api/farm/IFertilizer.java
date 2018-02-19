@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
@@ -63,5 +64,12 @@ public interface IFertilizer extends IForgeRegistryEntry<IFertilizer> {
    * @return True if the stack is a fertilizer.
    */
   boolean matches(@Nonnull ItemStack stack);
+
+  /**
+   * @return A list of item stacks to be used as ghost images in the fertilizer slot.
+   */
+  default @Nonnull NonNullList<ItemStack> getGuiItem() {
+    return NonNullList.create();
+  }
 
 }

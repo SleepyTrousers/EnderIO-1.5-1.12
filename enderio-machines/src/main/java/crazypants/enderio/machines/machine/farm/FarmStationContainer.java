@@ -6,9 +6,11 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.farming.FarmersRegistry;
+import crazypants.enderio.base.farming.fertilizer.Fertilizer;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -35,8 +37,8 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
       new SlotPoint(COL_TOOLS + TWO, ROW_TOOLS, FarmersRegistry.slotItemsAxeTools), //
       new SlotPoint(COL_TOOLS + THREE, ROW_TOOLS, FarmersRegistry.slotItemsExtraTools),
 
-      new SlotPoint(COL_FERTILIZER + ONE, ROW_TOOLS, FarmersRegistry.slotItemsFertilizer), //
-      new SlotPoint(COL_FERTILIZER + TWO, ROW_TOOLS, FarmersRegistry.slotItemsFertilizer),
+      new SlotPoint(COL_FERTILIZER + ONE, ROW_TOOLS, Fertilizer.getStacks()), //
+      new SlotPoint(COL_FERTILIZER + TWO, ROW_TOOLS, Fertilizer.getStacks()),
 
       new SlotPoint(COL_INPUT + ONE, ROW_IO + ONE, FarmersRegistry.slotItemsSeeds), //
       new SlotPoint(COL_INPUT + TWO, ROW_IO + ONE, FarmersRegistry.slotItemsSeeds), //
@@ -80,7 +82,7 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
     for (SlotPoint p : points) {
       final Slot slot = p.s;
       if (slot != null) {
-        slots.add(new GhostBackgroundItemSlot(p.ghosts.getItemStacks(), slot));
+        slots.add(new GhostBackgroundItemSlot(p.getGhosts(), slot));
       }
     }
   }
@@ -97,8 +99,8 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
 
   private static class SlotPoint {
     int x, y;
-    @Nonnull
-    Things ghosts;
+    private Things ghosts;
+    private NNList<ItemStack> stacks;
     // It's a bit of a hack having the slot in a static field, but it is only used on the client, and there only one instance of the GUI can exist at any time,
     // so it works.
     Slot s = null;
@@ -107,6 +109,17 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
       this.x = x;
       this.y = y;
       this.ghosts = ghosts;
+    }
+
+    SlotPoint(int x, int y, @Nonnull NNList<ItemStack> stacks) {
+      this.x = x;
+      this.y = y;
+      this.stacks = stacks;
+    }
+
+    @Nonnull
+    NNList<ItemStack> getGhosts() {
+      return ghosts != null ? ghosts.getItemStacks() : stacks != null ? stacks : NNList.emptyList();
     }
 
   }

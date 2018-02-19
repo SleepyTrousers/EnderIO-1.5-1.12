@@ -2,6 +2,8 @@ package crazypants.enderio.base.farming.fertilizer;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.api.farm.IFertilizer;
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.init.Items;
@@ -49,6 +51,14 @@ public class Fertilizer {
    */
   public static boolean isFertilizer(@Nonnull ItemStack stack) {
     return getInstance(stack) != NoFertilizer.getNone();
+  }
+
+  public static @Nonnull NNList<ItemStack> getStacks() {
+    NNList<ItemStack> result = new NNList<>();
+    for (IFertilizer fertilizer : REGISTRY.getValues()) {
+      result.addAll(fertilizer.getGuiItem());
+    }
+    return result;
   }
 
 }
