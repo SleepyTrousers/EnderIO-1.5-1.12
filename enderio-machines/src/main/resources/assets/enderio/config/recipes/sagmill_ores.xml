@@ -2523,7 +2523,7 @@
     <sagmilling energy="3600">
       <input name="oreProsperity" />
       <output name="shardProsperity" amount="4" />
-      <output name="minecraft:end_stone" chance="0.15" />
+      <output name="oredict:cobblestone" chance="0.15" />
     </sagmilling>
   </recipe>
 
@@ -2533,7 +2533,7 @@
     <sagmilling energy="3600">
       <input name="oreNetherProsperity" />
       <output name="shardProsperity" amount="4" />
-      <output name="minecraft:end_stone" chance="0.15" />
+      <output name="minecraft:netherrack" chance="0.15" />
     </sagmilling>
   </recipe>
 
@@ -2553,7 +2553,7 @@
     <sagmilling energy="3600">
       <input name="oreInferium" />
       <output name="essenceInferium" amount="4" />
-      <output name="minecraft:end_stone" chance="0.15" />
+      <output name="oredict:cobblestone" chance="0.15" />
     </sagmilling>
   </recipe>
 
@@ -2563,7 +2563,7 @@
     <sagmilling energy="3600">
       <input name="oreNetherInferium" />
       <output name="essenceInferium" amount="4" />
-      <output name="minecraft:end_stone" chance="0.15" />
+      <output name="minecraft:netherrack" chance="0.15" />
     </sagmilling>
   </recipe>
 

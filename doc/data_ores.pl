@@ -938,14 +938,14 @@ our $ores = [
     name => 'Prosperity', mod => 'Mystical Agriculture', requ => 'false',
 
     dust => 'shard*', amount => 4,
-    base => [ 'minecraft:end_stone', 1, 0.15 ],
+    base => [ 'oredict:cobblestone', 1, 0.15 ],
   },
 
   {
     name => 'NetherProsperity', mod => 'Mystical Agriculture', requ => 'false',
 
     dust => 'shardProsperity', amount => 4,
-    base => [ 'minecraft:end_stone', 1, 0.15 ],
+    base => [ 'minecraft:netherrack', 1, 0.15 ],
   },
 
   {
@@ -959,14 +959,14 @@ our $ores = [
     name => 'Inferium', mod => 'Mystical Agriculture', requ => 'false',
 
     dust => 'essence*', amount => 4,
-    base => [ 'minecraft:end_stone', 1, 0.15 ],
+    base => [ 'oredict:cobblestone', 1, 0.15 ],
   },
 
   {
     name => 'NetherInferium', mod => 'Mystical Agriculture', requ => 'false',
 
     dust => 'essenceInferium', amount => 4,
-    base => [ 'minecraft:end_stone', 1, 0.15 ],
+    base => [ 'minecraft:netherrack', 1, 0.15 ],
   },
 
   {
