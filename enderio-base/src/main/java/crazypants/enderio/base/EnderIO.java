@@ -3,7 +3,10 @@ package crazypants.enderio.base;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.Triple;
+
 import com.enderio.core.common.Lang;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.ImmutableList;
 
@@ -13,6 +16,7 @@ import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
+import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.config.recipes.RecipeLoader;
 import crazypants.enderio.base.diagnostics.ProfilerAntiReactor;
 import crazypants.enderio.base.diagnostics.ProfilerDebugger;
@@ -131,6 +135,7 @@ public class EnderIO implements IEnderIOAddon {
   @EventHandler
   public void onImc(@Nonnull IMCEvent event) {
     Log.debug("PHASE IMC START");
+    processImc(event.getMessages());
 
     /*
      * This is a mess.
@@ -151,7 +156,6 @@ public class EnderIO implements IEnderIOAddon {
 
     // END mess
 
-    processImc(event.getMessages());
     Log.debug("PHASE IMC END");
   }
 
@@ -275,4 +279,15 @@ public class EnderIO implements IEnderIOAddon {
     }
   }
 
+  @Override
+  @Nonnull
+  public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
+    return new NNList<>(Triple.of(0, null, "aliases"), Triple.of(1, null, "materials"), Triple.of(1, null, "items"), Triple.of(1, null, "base"));
+  }
+
+  @Override
+  @Nonnull
+  public NNList<String> getExampleFiles() {
+    return new NNList<>("peaceful", "easy_recipes", "hard_recipes");
+  }
 }

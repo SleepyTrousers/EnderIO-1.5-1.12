@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,6 +19,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import org.apache.commons.io.IOUtils;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.Log;
 import net.minecraft.util.ResourceLocation;
@@ -99,6 +102,89 @@ public class RecipeFactory {
     }
 
     return config;
+  }
+
+  public void placeXSD(String folderName) {
+    final ResourceLocation xsdRL = new ResourceLocation(domain, "config/recipes/recipes.xsd");
+    final File xsdFL = new File(configDirectory, folderName + "/recipes.xsd");
+    copyCore(xsdRL, xsdFL);
+  }
+
+  public void createFolder(String name) {
+    if (!configDirectory.exists()) {
+      configDirectory.mkdir();
+    }
+    File folderF = new File(configDirectory, name);
+    if (!folderF.exists()) {
+      folderF.mkdir();
+    }
+  }
+
+  public NNList<File> listXMLFiles(String pathName) {
+    return new NNList<>(new File(configDirectory, pathName).listFiles(new FilenameFilter() {
+      @Override
+      public final boolean accept(File dir, String name) {
+        return name.endsWith(".xml");
+      }
+    }));
+  }
+
+  public <T extends RecipeRoot> T readCoreFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
+    final ResourceLocation coreRL = new ResourceLocation(domain, "config/" + fileName);
+    final File coreFL = new File(configDirectory, fileName);
+    copyCore(coreRL, coreFL);
+
+    Log.info("Reading core recipe file " + fileName);
+    try (InputStream coreFileStream = getResource(coreRL)) {
+      try {
+        return readStax(target, rootElement, coreFileStream);
+      } catch (XMLStreamException e) {
+        printContentsOnError(getResource(coreRL), coreRL.toString());
+        throw e;
+      } catch (InvalidRecipeConfigException irce) {
+        irce.setFilename(fileName);
+        throw irce;
+      }
+    }
+  }
+
+  public void copyCore(String fileName) {
+    final ResourceLocation coreRL = new ResourceLocation(domain, "config/" + fileName);
+    final File coreFL = new File(configDirectory, fileName);
+    copyCore(coreRL, coreFL);
+  }
+
+  public void createFileUser(String fileName) {
+    final File userFL = new File(configDirectory, fileName);
+
+    if (!userFL.exists()) {
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(userFL, false))) {
+        writer.write(DEFAULT_USER_FILE);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  public static <T extends RecipeRoot> T readFileUser(T target, String rootElement, String fileName, File userFL) throws IOException, XMLStreamException {
+    if (userFL.exists()) {
+      Log.info("Reading user recipe file " + fileName);
+      try (InputStream userFileStream = userFL.exists() ? new FileInputStream(userFL) : null;) {
+        try {
+          return readStax(target, rootElement, userFileStream);
+        } catch (XMLStreamException e) {
+          try (final FileInputStream stream = new FileInputStream(userFL)) {
+            printContentsOnError(stream, userFL.toString());
+          }
+          throw e;
+        } catch (InvalidRecipeConfigException irce) {
+          irce.setFilename(fileName);
+          throw irce;
+        }
+      }
+    }
+    Log.info("Skipping missing user recipe file " + fileName);
+    return target;
   }
 
   protected static void printContentsOnError(InputStream stream, String filename) throws FileNotFoundException, IOException {

@@ -57,6 +57,15 @@ public interface IEnderIOAddon {
   }
 
   /**
+   * Query an addon for their XML recipe example files. The returned files will be copied to the examples folder.
+   * 
+   * @return A list of file names.
+   */
+  default @Nonnull NNList<String> getExampleFiles() {
+    return NNList.emptyList();
+  }
+
+  /**
    * This is called right after all XML recipes have been registered.
    */
   default void postRecipeRegistration() {

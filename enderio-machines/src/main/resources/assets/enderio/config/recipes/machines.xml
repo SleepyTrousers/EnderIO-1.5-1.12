@@ -7,8 +7,11 @@ These are the build-in recipes. You cannot change this file, it is a
 reference for you only and will be generated every time the game starts.
 
 To make changes to the recipes, copy the recipes you want to change to
-the matching _user.xml. To disabled a recipe, add an attribute "disabled"
+a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
 and set it to true, e.g.: <recipe name="Gear" disabled="true" />
+
+You can also disabled all build in recipes, so that only your files in the
+'user' folder will be loaded.
 
 Item specifications can reference an alias, an ore dictionary name, a
 block or an item. You can force the type by prefixing the value with
@@ -133,7 +136,6 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Powered Spawner" required="true">
     <crafting>
-      <level maxlevel="2" />
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="itemSkull" /><item name="ELECTRICAL_STEEL" />
         <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
@@ -141,29 +143,10 @@ XML editor will display that as tooltips when editing this file.
       </grid>
       <output name="enderio:block_powered_spawner" />
     </crafting>
-    <crafting>
-      <level minlevel="3" />
-      <grid size="3x3">
-        <item name="ELECTRICAL_STEEL" /><item name="itemSkull" /><item name="ELECTRICAL_STEEL" />
-        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
-        <item name="VIBRANT_CRYSTAL" /><item name="FRANKEN_ZOMBIE" /><item name="VIBRANT_CRYSTAL" />
-      </grid>
-      <output name="enderio:block_powered_spawner" />
-    </crafting>
   </recipe>
 
   <recipe name="Reservoir" required="true">
     <crafting>
-      <level maxlevel="1" />
-      <grid size="3x3">
-        <item name="blockGlass" /><item name="FUSED_QUARTZ" /><item name="blockGlass" />
-        <item name="blockGlass" /><item name="item:minecraft:cauldron" /><item name="blockGlass" />
-        <item name="blockGlass" /><item name="FUSED_QUARTZ" /><item name="blockGlass" />
-      </grid>
-      <output name="enderio:block_reservoir" amount="4" />
-    </crafting>
-    <crafting>
-      <level minlevel="2" />
       <grid size="3x3">
         <item name="blockGlassHardened" /><item name="FUSED_QUARTZ" /><item name="blockGlassHardened" />
         <item name="blockGlassHardened" /><item name="item:minecraft:cauldron" /><item name="blockGlassHardened" />
@@ -241,7 +224,6 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Painter" required="true">
     <crafting>
-      <level maxlevel="2" />
       <grid size="3x3">
         <item name="gemQuartz" /><item name="gemDiamond" /><item name="gemQuartz" />
         <item name="GEAR_IRON" /><item name="CHASSIS" /><item name="GEAR_IRON" />
@@ -249,29 +231,10 @@ XML editor will display that as tooltips when editing this file.
       </grid>
       <output name="enderio:block_painter" />
     </crafting>
-    <crafting>
-      <level minlevel="3" />
-      <grid size="3x3">
-        <item name="gemQuartz" /><item name="gemQuartz" /><item name="gemQuartz" />
-        <item name="GEAR_VIBRANT" /><item name="blockDiamond" /><item name="GEAR_VIBRANT" />
-        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
-      </grid>
-      <output name="enderio:block_painter" />
-    </crafting>
   </recipe>
 
   <recipe name="Farming Station" required="true">
     <crafting>
-      <level maxlevel="1" />
-      <grid size="3x3">
-        <item name="ELECTRICAL_STEEL" /><item name="minecraft:diamond_hoe" /><item name="ELECTRICAL_STEEL" />
-        <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
-        <item name="GEAR_STONE" /><item name="GEAR_IRON" /><item name="GEAR_STONE" />
-      </grid>
-      <output name="enderio:block_farm_station" />
-    </crafting>
-    <crafting>
-      <level minlevel="2" maxlevel="2" />
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="minecraft:diamond_hoe" /><item name="ELECTRICAL_STEEL" />
         <item name="GEAR_ENERGIZED" /><item name="CHASSIS" /><item name="GEAR_ENERGIZED" />
@@ -279,29 +242,10 @@ XML editor will display that as tooltips when editing this file.
       </grid>
       <output name="enderio:block_farm_station" />
     </crafting>
-    <crafting>
-      <level minlevel="3" />
-      <grid size="3x3">
-        <item name="ELECTRICAL_STEEL" /><item name="minecraft:diamond_hoe" /><item name="ELECTRICAL_STEEL" />
-        <item name="GEAR_VIBRANT" /><item name="CHASSIS" /><item name="GEAR_VIBRANT" />
-        <item name="ENDER_CRYSTAL" /><item name="ZOMBIE_CONTROLLER" /><item name="ATTRACTOR_CRYSTAL" />
-      </grid>
-      <output name="enderio:block_farm_station" />
-    </crafting>
   </recipe>
 
   <recipe name="Transceiver" required="true">
     <crafting>
-      <level maxlevel="1" />
-      <grid size="3x3">
-        <item name="oredict:obsidian" /><item name="pearlEnderEye" /><item name="oredict:obsidian" />
-        <item name="ENERGETIC_ALLOY" /><item name="gemDiamond" /><item name="ENERGETIC_ALLOY" />
-        <item name="oredict:obsidian" /><item name="CAPACITOR3" /><item name="oredict:obsidian" />
-      </grid>
-      <output name="enderio:block_transceiver" />
-    </crafting>
-    <crafting>
-      <level minlevel="2" />
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="ENDER_RESONATOR" /><item name="ELECTRICAL_STEEL" />
         <item name="FUSED_QUARTZ" /><item name="ENDER_CRYSTAL" /><item name="FUSED_QUARTZ" />
@@ -390,20 +334,10 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Enchanter" required="true">
     <crafting>
-      <level maxlevel="2" />
       <grid size="3x3">
         <item name="gemDiamond" /><item name="minecraft:book" /><item name="gemDiamond" />
         <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
         <item /><item name="DARK_STEEL" /><item />
-      </grid>
-      <output name="enderio:block_enchanter" />
-    </crafting>
-    <crafting>
-      <level minlevel="3" />
-      <grid size="3x3">
-        <item name="blockDiamond" /><item name="minecraft:bookshelf" /><item name="blockDiamond" />
-        <item name="blockDarkSteel" /><item name="blockDarkSteel" /><item name="blockDarkSteel" />
-        <item name="" /><item name="DARK_STEEL" /><item name="" />
       </grid>
       <output name="enderio:block_enchanter" />
     </crafting>
@@ -433,16 +367,6 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Soul Binder" required="true">
     <crafting>
-      <level maxlevel="1" />
-      <grid size="3x3">
-        <item name="SOULARIUM" /><item name="PULSATING_CRYSTAL" /><item name="SOULARIUM" />
-        <item name="HEAD_ZOMBIE" /><item name="CHASSIS" /><item name="HEAD_CREEPER" />
-        <item name="SOULARIUM" /><item name="HEAD_SKELETON" /><item name="SOULARIUM" />
-      </grid>
-      <output name="enderio:block_soul_binder" />
-    </crafting>
-    <crafting>
-      <level minlevel="2" />
       <grid size="3x3">
         <item name="SOULARIUM" /><item name="HEAD_ENDERMAN" /><item name="SOULARIUM" />
         <item name="HEAD_ZOMBIE" /><item name="CHASSIS" /><item name="HEAD_CREEPER" />
@@ -476,15 +400,6 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Relocator Obelisk" required="true">
     <crafting>
-      <level maxlevel="1" />
-      <grid size="1x2">
-        <item name="blockPrismarine" />
-        <item name="enderio:block_aversion_obelisk" />
-      </grid>
-      <output name="enderio:block_relocator_obelisk" />
-    </crafting>
-    <crafting>
-      <level minlevel="2" />
       <grid size="3x3">
         <item /><item name="blockPrismarine" /><item />
         <item name="blockPrismarine" /><item name="enderio:block_aversion_obelisk" /><item name="blockPrismarine" />
@@ -559,16 +474,6 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Light, electric" required="true">
     <crafting>
-      <level maxlevel="1" />
-      <grid size="3x3">
-        <item name="blockGlass" /><item name="blockGlass" /><item name="blockGlass" />
-        <item name="SILICON" /><item name="dustGlowstone" /><item name="SILICON" />
-        <item name="SILICON" /><item name="CAPACITOR1" /><item name="SILICON" />
-      </grid>
-      <output name="LIGHT_ELECTRIC" />
-    </crafting>
-    <crafting>
-      <level minlevel="2" />
       <grid size="3x3">
         <item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" />
         <item name="SILICON" /><item name="dustGlowstone" /><item name="SILICON" />

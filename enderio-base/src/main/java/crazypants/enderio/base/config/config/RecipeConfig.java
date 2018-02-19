@@ -20,4 +20,8 @@ public final class RecipeConfig {
       "Automatically create alloy smelter recipes with double and triple inputs and different slot allocations (1+1+1, 2+1, 1+2, 3 and 2) for single-input recipes.")
       .sync();
 
+  public static final IValue<Boolean> loadCoreRecipes = F.make("loadCoreRecipes", true, //
+      "When disabled the XML recipe files that come built-in with Ender IO will not be loaded. Only user supplied files (in the 'recipes/user' folder) will be loaded.")
+      .sync();
+
 }

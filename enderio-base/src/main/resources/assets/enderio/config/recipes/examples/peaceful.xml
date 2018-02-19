@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <!-- This is an example for peaceful recipes. Copy this file into the enderio/config/recipes/user folder to activate it. -->
+
+  <recipe name="Frank'N'Zombie" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotGold" /><item name="gemDiamond" /><item name="ingotGold" />
+        <item name="gemDiamond" /><item name="ZOMBIE_CONTROLLER" /><item name="gemDiamond" />
+        <item name="ingotGold" /><item name="gemDiamond" /><item name="ingotGold" />
+      </grid>
+      <output name="FRANKEN_ZOMBIE" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Sentient Ender" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="gemDiamond" /><item name="gemDiamond" /><item name="gemDiamond" />
+        <item name="gemDiamond" /><item name="ENDER_RESONATOR" /><item name="gemDiamond" />
+        <item name="ingotGold" /><item name="blockGold" /><item name="ingotGold" />
+      </grid>
+      <output name="SENTIENT_ENDER" />
+    </crafting>
+  </recipe>
+
+</enderio:recipes>

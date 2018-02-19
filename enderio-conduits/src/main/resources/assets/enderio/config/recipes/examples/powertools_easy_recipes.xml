@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <!-- This is an example for easy recipes. Copy this file into the enderio/config/recipes/user folder to activate it. -->
+
+  <recipe name="RF Gauge" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="CONDUIT_PROBE" /><item name="ingotIron" />
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:block_gauge" amount="2" />
+    </crafting>
+  </recipe>
+
+</enderio:recipes>

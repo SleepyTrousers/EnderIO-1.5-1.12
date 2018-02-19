@@ -12,8 +12,6 @@ import crazypants.enderio.base.config.recipes.StaxFactory;
 
 public abstract class AbstractConditional implements RecipeGameRecipe {
 
-  private ConditionLevel level;
-
   private List<ConditionConfig> configReferences;
 
   private List<ConditionDependency> dependencies;
@@ -29,11 +27,6 @@ public abstract class AbstractConditional implements RecipeGameRecipe {
         if (!configReference.isValid()) {
           active = false;
         }
-      }
-    }
-    if (level != null) {
-      if (!level.isValid()) {
-        active = false;
       }
     }
     if (dependencies != null) {
@@ -63,12 +56,6 @@ public abstract class AbstractConditional implements RecipeGameRecipe {
 
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
-    if ("level".equals(name)) {
-      if (level == null) {
-        level = factory.read(new ConditionLevel(), startElement);
-        return true;
-      }
-    }
     if ("config".equals(name)) {
       if (configReferences == null) {
         configReferences = new ArrayList<ConditionConfig>();

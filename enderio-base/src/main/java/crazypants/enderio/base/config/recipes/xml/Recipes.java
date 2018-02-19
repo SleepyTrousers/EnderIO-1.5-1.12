@@ -37,9 +37,9 @@ public class Recipes implements RecipeRoot {
 
   @Override
   public void register(@Nonnull String recipeName) {
-    Log.debug("Starting registering XML recipes (" + recipeName + ")");
+    Log.debug("Starting registering XML recipes");
     for (AbstractConditional recipe : recipes) {
-      recipe.register(recipeName + ": " + recipe.getName());
+      recipe.register((recipeName.isEmpty() ? "" : recipeName + ": ") + recipe.getName());
     }
     Log.debug("Done registering XML recipes");
   }
@@ -48,6 +48,10 @@ public class Recipes implements RecipeRoot {
   @Override
   public <T extends RecipeRoot> T addRecipes(RecipeRoot other) {
     if (other instanceof Recipes) {
+      if (!isValid()) {
+        return (T) other;
+      }
+
       if (((Recipes) other).recipes.isEmpty()) {
         // NOP
       } else if (!recipes.isEmpty()) {

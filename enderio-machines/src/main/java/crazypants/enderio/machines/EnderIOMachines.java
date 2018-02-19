@@ -72,4 +72,10 @@ public class EnderIOMachines implements IEnderIOAddon {
         Triple.of(3, null, "sagmill_metals"), Triple.of(3, null, "sagmill_vanilla"), Triple.of(3, null, "sagmill_vanilla2modded"));
   }
 
+  @Override
+  @Nonnull
+  public NNList<String> getExampleFiles() {
+    return new NNList<>("machines_easy_recipes", "machines_easy_recipes");
+  }
+
 }

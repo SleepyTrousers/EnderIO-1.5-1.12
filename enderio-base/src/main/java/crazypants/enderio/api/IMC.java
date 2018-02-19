@@ -23,9 +23,11 @@ public final class IMC {
   public static final String VAT_RECIPE = "recipe:vat";
 
   /**
-   * Key for a string message to add xml recipes. The supplied xml is treated as if it was loaded from one of the 'recipe_xxx.xml's.
+   * Key for a string message to add xml recipes. The supplied xml is treated as if it was loaded from one of the recipe XMLs. IMC recipes are processed after
+   * core recipes but before user recipes. This means they can replace/disable core recipes but can themselves be altered by user recipes.
    * <p>
-   * Note that this does not do the recipe merging you get between core and user xmls. So you cannot disable already processed recipes.
+   * Note that for the recipe merging to work, the IMC message must be sent before the IMC lifecycle event (which is between init and post-init). IMC messages
+   * sent later will still be processed, but then all other recipes will already have been loaded.
    */
   public static final String XML_RECIPE = "recipe:xml";
 
@@ -80,8 +82,8 @@ public final class IMC {
 
   /**
    * Key for an string message to register a block as connectable to insulated redstone conduits. Calls {@link ConnectivityTool#registerRedstoneAware(String)}
-   * with the value of the message. The value has the same syntax that is used in the xml config files. Using {@link IRedstoneConnectable_dont_crash_us_mcjty} is generally
-   * preferred to this because it allows location-, state- and side-awareness.
+   * with the value of the message. The value has the same syntax that is used in the xml config files. Using {@link IRedstoneConnectable_dont_crash_us_mcjty}
+   * is generally preferred to this because it allows location-, state- and side-awareness.
    */
   public static final String REDSTONE_CONNECTABLE_ADD = "redstone:connectable:add";
 

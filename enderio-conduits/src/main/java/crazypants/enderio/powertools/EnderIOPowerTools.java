@@ -42,8 +42,14 @@ public class EnderIOPowerTools implements IEnderIOAddon {
     return new NNList<>(Triple.of(2, null, "powertools"));
   }
 
+  @Override
+  @Nonnull
+  public NNList<String> getExampleFiles() {
+    return new NNList<>("powertools_easy_recipes", "powertools_easy_recipes");
+  }
+
   @EventHandler
-  public static void preinit(FMLPreInitializationEvent event) {
+  public static void preinit(@Nonnull FMLPreInitializationEvent event) {
     ConfigHandler.init(event);
   }
 

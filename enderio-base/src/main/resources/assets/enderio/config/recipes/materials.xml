@@ -7,8 +7,11 @@ These are the build-in recipes. You cannot change this file, it is a
 reference for you only and will be generated every time the game starts.
 
 To make changes to the recipes, copy the recipes you want to change to
-the matching _user.xml. To disabled a recipe, add an attribute "disabled"
+a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
 and set it to true, e.g.: <recipe name="Gear" disabled="true" />
+
+You can also disabled all build in recipes, so that only your files in the
+'user' folder will be loaded.
 
 Item specifications can reference an alias, an ore dictionary name, a
 block or an item. You can force the type by prefixing the value with
@@ -85,16 +88,6 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Binder Composite" required="true">
     <crafting>
-      <level maxlevel="0"/>
-      <grid size="3x3">
-        <item name="oredict:gravel" /><item name="oredict:gravel" /><item name="oredict:gravel" />
-        <item name="oredict:sand" /><item name="oredict:itemClay" /><item name="oredict:sand" />
-        <item name="oredict:gravel" /><item name="oredict:gravel" /><item name="oredict:gravel" />
-      </grid>
-      <output name="BINDER_COMPOSITE" amount="16" />
-    </crafting>
-    <crafting>
-      <level minlevel="1" maxlevel="2"/>
       <grid size="3x3">
         <item name="oredict:gravel" /><item name="oredict:itemClay" /><item name="oredict:gravel" />
         <item name="oredict:sand" /><item name="oredict:gravel" /><item name="oredict:sand" />
@@ -102,26 +95,12 @@ XML editor will display that as tooltips when editing this file.
       </grid>
       <output name="BINDER_COMPOSITE" amount="8" />
     </crafting>
-    <crafting>
-      <level minlevel="3"/>
-      <grid size="3x3">
-        <item name="oredict:gravel" /><item name="minecraft:clay" /><item name="oredict:gravel" />
-        <item name="oredict:sand" /><item name="oredict:gravel" /><item name="oredict:sand" />
-        <item name="oredict:gravel" /><item name="minecraft:clay" /><item name="oredict:gravel" />
-      </grid>
-      <output name="BINDER_COMPOSITE" amount="4" />
-    </crafting>
   </recipe>
 
   <recipe name="Conduit Binder" required="true">
     <smelting exp="0">
       <input name="BINDER_COMPOSITE"/>
-      <output name="CONDUIT_BINDER" amount="4">
-        <level maxlevel="1"/>
-      </output>
-      <output name="CONDUIT_BINDER" amount="2">
-        <level minlevel="2"/>
-      </output>
+      <output name="CONDUIT_BINDER" amount="2" />
     </smelting>
   </recipe>
 
@@ -165,28 +144,10 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Dark Grinding Ball" required="true">
     <crafting>
-      <level maxlevel="1"/>
-      <grid size="2x2">
-        <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
-        <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
-      </grid>
-      <output name="DARK_GRINDING_BALL" amount="25"/>
-    </crafting>
-    <crafting>
-      <level minlevel="2" maxlevel="2"/>
       <grid>
         <item/><item name="DARK_STEEL"/><item/>
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
         <item/><item name="DARK_STEEL"/><item/>
-      </grid>
-      <output name="DARK_GRINDING_BALL" amount="25"/>
-    </crafting>
-    <crafting>
-      <level minlevel="3"/>
-      <grid>
-        <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
-        <item name="DARK_STEEL"/><item/><item name="DARK_STEEL"/>
-        <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
       </grid>
       <output name="DARK_GRINDING_BALL" amount="25"/>
     </crafting>
@@ -195,20 +156,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Dark Grinding Ball Casting" required="true">
     <dependency item="tconstruct:cast_custom:2"/>
     <casting>
-      <level maxlevel="1"/>
-      <input name="DARK_STEEL" amount="0.16"/>
-      <cast name="tconstruct:cast_custom:2"/>
-      <output name="DARK_GRINDING_BALL"/>
-    </casting>
-    <casting>
-      <level minlevel="2" maxlevel="2"/>
       <input name="DARK_STEEL" amount="0.2"/>
-      <cast name="tconstruct:cast_custom:2"/>
-      <output name="DARK_GRINDING_BALL"/>
-    </casting>
-    <casting>
-      <level minlevel="3"/>
-      <input name="DARK_STEEL" amount="0.32"/>
       <cast name="tconstruct:cast_custom:2"/>
       <output name="DARK_GRINDING_BALL"/>
     </casting>
@@ -217,19 +165,8 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Dark Grinding Ball Smelting" required="true">
     <dependency item="tconstruct:cast_custom:2"/>
     <smelting tinkers="true" vanilla="false">
-      <level maxlevel="1"/>
-      <input name="DARK_GRINDING_BALL" amount="25"/>
-      <output name="DARK_STEEL" amount="4"/>
-    </smelting>
-    <smelting tinkers="true" vanilla="false">
-      <level minlevel="2" maxlevel="2"/>
       <input name="DARK_GRINDING_BALL" amount="25"/>
       <output name="DARK_STEEL" amount="5"/>
-    </smelting>
-    <smelting tinkers="true" vanilla="false">
-      <level minlevel="3"/>
-      <input name="DARK_GRINDING_BALL" amount="25"/>
-      <output name="DARK_STEEL" amount="8"/>
     </smelting>
   </recipe>
 

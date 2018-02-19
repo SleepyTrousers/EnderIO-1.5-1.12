@@ -1,27 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
 
-<!-- 
-
-These are the build-in recipes. You cannot change this file, it is a
-reference for you only and will be generated every time the game starts.
-
-To make changes to the recipes, copy the recipes you want to change to
-the matching _user.xml. To disabled a recipe, add an attribute "disabled"
-and set it to true, e.g.: <recipe name="Gear" disabled="true" />
-
-Item specifications can reference an alias, an ore dictionary name, a
-block or an item. You can force the type by prefixing the value with
-"oredict:", "block:" or "item:". Recipes that have items that cannot be
-found in-game are either skipped or an error, depending on their "required"
-attribute.
-
-More information on the syntax can be found in the recipes.xsd file. An
-XML editor will display that as tooltips when editing this file.
-
- -->
-
-
+  <!-- This is an example for easy recipes. Copy this file into the enderio/config/recipes/user folder to activate it. -->
 
   <recipe name="Conduit, Liquid, Basic" required="true">
     <crafting>
@@ -31,13 +12,6 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_liquid_conduit:0" amount="12">
-        <level maxlevel="1"/>
-      </output>
-      <output name="enderio:item_liquid_conduit:0" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="enderio:item_liquid_conduit:0" amount="2">
-        <level minlevel="3"/>
       </output>
     </crafting>
   </recipe>
@@ -50,13 +24,6 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_liquid_conduit:1" amount="12">
-        <level maxlevel="1"/>
-      </output>
-      <output name="enderio:item_liquid_conduit:1" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="enderio:item_liquid_conduit:1" amount="2">
-        <level minlevel="3"/>
       </output>
     </crafting>
   </recipe>
@@ -69,13 +36,6 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_liquid_conduit:1" amount="12">
-        <level maxlevel="1"/>
-      </output>
-      <output name="enderio:item_liquid_conduit:1" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="enderio:item_liquid_conduit:1" amount="2">
-        <level minlevel="3"/>
       </output>
     </crafting>
   </recipe>
@@ -88,13 +48,6 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_liquid_conduit:2" amount="12">
-        <level maxlevel="1"/>
-      </output>
-      <output name="enderio:item_liquid_conduit:2" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="enderio:item_liquid_conduit:2" amount="2">
-        <level minlevel="3"/>
       </output>
     </crafting>
   </recipe>
@@ -107,13 +60,6 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_liquid_conduit:2" amount="12">
-        <level maxlevel="1"/>
-      </output>
-      <output name="enderio:item_liquid_conduit:2" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="enderio:item_liquid_conduit:2" amount="2">
-        <level minlevel="3"/>
       </output>
     </crafting>
   </recipe>
@@ -126,13 +72,6 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_power_conduit:0" amount="12">
-        <level maxlevel="1"/>
-      </output>
-      <output name="enderio:item_power_conduit:0" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="enderio:item_power_conduit:0" amount="2">
-        <level minlevel="3"/>
       </output>
     </crafting>
   </recipe>
@@ -145,13 +84,6 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_power_conduit:1" amount="12">
-        <level maxlevel="1"/>
-      </output>
-      <output name="enderio:item_power_conduit:1" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="enderio:item_power_conduit:1" amount="2">
-        <level minlevel="3"/>
       </output>
     </crafting>
   </recipe>
@@ -164,13 +96,6 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_power_conduit:1" amount="12">
-        <level maxlevel="1"/>
-      </output>
-      <output name="enderio:item_power_conduit:1" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="enderio:item_power_conduit:1" amount="2">
-        <level minlevel="3"/>
       </output>
     </crafting>
   </recipe>
@@ -183,13 +108,6 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_power_conduit:2" amount="12">
-        <level maxlevel="1"/>
-      </output>
-      <output name="enderio:item_power_conduit:2" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="enderio:item_power_conduit:2" amount="2">
-        <level minlevel="3"/>
       </output>
     </crafting>
   </recipe>
@@ -202,13 +120,6 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_power_conduit:2" amount="12">
-        <level maxlevel="1"/>
-      </output>
-      <output name="enderio:item_power_conduit:2" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="enderio:item_power_conduit:2" amount="2">
-        <level minlevel="3"/>
       </output>
     </crafting>
   </recipe>
@@ -221,13 +132,6 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_redstone_conduit:0" amount="12">
-        <level maxlevel="1"/>
-      </output>
-      <output name="enderio:item_redstone_conduit:0" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="enderio:item_redstone_conduit:0" amount="2">
-        <level minlevel="3"/>
       </output>
     </crafting>
   </recipe>
@@ -240,47 +144,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_item_conduit:0" amount="12">
-        <level maxlevel="1"/>
       </output>
-      <output name="enderio:item_item_conduit:0" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="enderio:item_item_conduit:0" amount="2">
-        <level minlevel="3"/>
-      </output>
-    </crafting>
-  </recipe>
-
-  <recipe name="Upgrade, Speed" required="true">
-    <crafting>
-      <grid>
-        <item name="ingotIron" /><item name="ingotIron" /><item name="ingotIron" />
-        <item name="ELECTRICAL_STEEL" /><item name="minecraft:piston" /><item name="ELECTRICAL_STEEL" />
-        <item name="ELECTRICAL_STEEL" /><item name="minecraft:redstone_torch" /><item name="ELECTRICAL_STEEL" />
-      </grid>
-      <output name="enderio:item_extract_speed_upgrade:0" />
-    </crafting>
-  </recipe>
-
-  <recipe name="Upgrade, Slowness" required="true">
-    <crafting>
-      <grid>
-        <item name="ingotIron" /><item name="ingotIron" /><item name="ingotIron" />
-        <item name="ELECTRICAL_STEEL" /><item name="slimeball" /><item name="ELECTRICAL_STEEL" />
-        <item name="ELECTRICAL_STEEL" /><item name="stickWood" /><item name="ELECTRICAL_STEEL" />
-      </grid>
-      <output name="enderio:item_extract_speed_upgrade:1" />
-    </crafting>
-  </recipe>
-
-  <recipe name="Awareness Upgrade" required="true">
-    <crafting>
-      <grid size="3x3">
-        <item name="CONDUIT_BINDER" /><item name="SILICON" /><item name="CONDUIT_BINDER" />
-        <item name="SILICON" /><item name="pearlEnderEye" /><item name="SILICON" />
-        <item name="CONDUIT_BINDER" /><item name="ELECTRICAL_STEEL" /><item name="CONDUIT_BINDER" />
-      </grid>
-      <output name="enderio:item_function_upgrade:0" />
     </crafting>
   </recipe>
 

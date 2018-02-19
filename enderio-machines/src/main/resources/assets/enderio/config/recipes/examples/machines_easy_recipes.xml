@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <!-- This is an example for easy recipes. Copy this file into the enderio/config/recipes/user folder to activate it. -->
+
+  <recipe name="Reservoir" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="blockGlass" /><item name="FUSED_QUARTZ" /><item name="blockGlass" />
+        <item name="blockGlass" /><item name="item:minecraft:cauldron" /><item name="blockGlass" />
+        <item name="blockGlass" /><item name="FUSED_QUARTZ" /><item name="blockGlass" />
+      </grid>
+      <output name="enderio:block_reservoir" amount="4" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Farming Station" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="minecraft:diamond_hoe" /><item name="ELECTRICAL_STEEL" />
+        <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
+        <item name="GEAR_STONE" /><item name="GEAR_IRON" /><item name="GEAR_STONE" />
+      </grid>
+      <output name="enderio:block_farm_station" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Transceiver" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="oredict:obsidian" /><item name="pearlEnderEye" /><item name="oredict:obsidian" />
+        <item name="ENERGETIC_ALLOY" /><item name="gemDiamond" /><item name="ENERGETIC_ALLOY" />
+        <item name="oredict:obsidian" /><item name="CAPACITOR3" /><item name="oredict:obsidian" />
+      </grid>
+      <output name="enderio:block_transceiver" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Soul Binder" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="SOULARIUM" /><item name="PULSATING_CRYSTAL" /><item name="SOULARIUM" />
+        <item name="HEAD_ZOMBIE" /><item name="CHASSIS" /><item name="HEAD_CREEPER" />
+        <item name="SOULARIUM" /><item name="HEAD_SKELETON" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:block_soul_binder" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Relocator Obelisk" required="true">
+    <crafting>
+      <grid size="1x2">
+        <item name="blockPrismarine" />
+        <item name="enderio:block_aversion_obelisk" />
+      </grid>
+      <output name="enderio:block_relocator_obelisk" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Light, electric" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="blockGlass" /><item name="blockGlass" /><item name="blockGlass" />
+        <item name="SILICON" /><item name="dustGlowstone" /><item name="SILICON" />
+        <item name="SILICON" /><item name="CAPACITOR1" /><item name="SILICON" />
+      </grid>
+      <output name="LIGHT_ELECTRIC" />
+    </crafting>
+  </recipe>
+
+</enderio:recipes>

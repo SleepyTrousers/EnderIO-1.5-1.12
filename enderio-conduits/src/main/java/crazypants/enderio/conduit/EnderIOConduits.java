@@ -63,4 +63,10 @@ public class EnderIOConduits implements IEnderIOAddon {
     return new NNList<>(Triple.of(2, null, "conduits"));
   }
 
+  @Override
+  @Nonnull
+  public NNList<String> getExampleFiles() {
+    return new NNList<>("conduits_easy_recipes", "conduits_hard_recipes");
+  }
+
 }

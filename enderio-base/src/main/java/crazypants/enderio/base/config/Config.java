@@ -79,9 +79,6 @@ public final class Config {
     return NullHelper.notnull(configDirectory, "trying to access config before preInit");
   }
 
-  public static int recipeLevel = 2;
-  public static boolean addPeacefulRecipes = false;
-
   public static boolean transparentFacadesLetThroughBeaconBeam = true;
 
   public static int travelAnchorMaximumDistance = 96;
@@ -358,16 +355,6 @@ public final class Config {
   }
 
   public static void processConfig(@SuppressWarnings("hiding") Configuration config) {
-
-    // TODO remove later
-    recipeLevel = config
-        .get(sectionRecipe.name, "recipeLevel", recipeLevel, "How expensive should the crafting recipes be? 0=cheapest, 1=cheaper, 2=normal, 3=expensive")
-        .getInt(recipeLevel);
-
-    // TODO remove later
-    addPeacefulRecipes = config
-        .get(sectionRecipe.name, "addPeacefulRecipes", addPeacefulRecipes, "When enabled peaceful recipes are added for soulbinder based crafting components.")
-        .getBoolean(addPeacefulRecipes);
 
     // TODO change geometry to be re-baked after server join
     conduitScale = config

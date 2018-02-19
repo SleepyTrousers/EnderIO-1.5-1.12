@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <!-- This is an example for hard recipes. Copy this file into the enderio/config/recipes/user folder to activate it. -->
+
+ <recipe name="Powered Spawner" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="itemSkull" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
+        <item name="VIBRANT_CRYSTAL" /><item name="FRANKEN_ZOMBIE" /><item name="VIBRANT_CRYSTAL" />
+      </grid>
+      <output name="enderio:block_powered_spawner" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painter" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="gemQuartz" /><item name="gemQuartz" /><item name="gemQuartz" />
+        <item name="GEAR_VIBRANT" /><item name="blockDiamond" /><item name="GEAR_VIBRANT" />
+        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:block_painter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Farming Station" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="minecraft:diamond_hoe" /><item name="ELECTRICAL_STEEL" />
+        <item name="GEAR_VIBRANT" /><item name="CHASSIS" /><item name="GEAR_VIBRANT" />
+        <item name="ENDER_CRYSTAL" /><item name="ZOMBIE_CONTROLLER" /><item name="ATTRACTOR_CRYSTAL" />
+      </grid>
+      <output name="enderio:block_farm_station" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Enchanter" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="blockDiamond" /><item name="minecraft:bookshelf" /><item name="blockDiamond" />
+        <item name="blockDarkSteel" /><item name="blockDarkSteel" /><item name="blockDarkSteel" />
+        <item name="" /><item name="DARK_STEEL" /><item name="" />
+      </grid>
+      <output name="enderio:block_enchanter" />
+    </crafting>
+  </recipe>
+
+</enderio:recipes>

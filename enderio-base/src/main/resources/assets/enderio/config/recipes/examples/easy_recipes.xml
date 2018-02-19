@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <!-- This is an example for easy recipes. Copy this file into the enderio/config/recipes/user folder to activate it. -->
+
+  <recipe name="Binder Composite" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="oredict:gravel" /><item name="oredict:gravel" /><item name="oredict:gravel" />
+        <item name="oredict:sand" /><item name="oredict:itemClay" /><item name="oredict:sand" />
+        <item name="oredict:gravel" /><item name="oredict:gravel" /><item name="oredict:gravel" />
+      </grid>
+      <output name="BINDER_COMPOSITE" amount="16" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit Binder" required="true">
+    <smelting exp="0">
+      <input name="BINDER_COMPOSITE"/>
+      <output name="CONDUIT_BINDER" amount="4" />
+    </smelting>
+  </recipe>
+
+  <recipe name="Dark Grinding Ball" required="true">
+    <crafting>
+      <grid size="2x2">
+        <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+        <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+      </grid>
+      <output name="DARK_GRINDING_BALL" amount="25"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Grinding Ball Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="DARK_STEEL" amount="0.16"/>
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="DARK_GRINDING_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Dark Grinding Ball Smelting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="DARK_GRINDING_BALL" amount="25"/>
+      <output name="DARK_STEEL" amount="4"/>
+    </smelting>
+  </recipe>
+
+</enderio:recipes>
