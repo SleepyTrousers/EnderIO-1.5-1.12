@@ -7,6 +7,7 @@ import com.enderio.core.common.Lang;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.integration.forestry.config.ConfigHandler;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
@@ -32,8 +33,9 @@ public class EnderIOIntegrationForestry implements IEnderIOAddon {
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
 
   @EventHandler
-  public static void init(FMLPreInitializationEvent event) {
+  public static void init(@Nonnull FMLPreInitializationEvent event) {
     if (isLoaded()) {
+      ConfigHandler.init(event);
       ForestryControl.init(event);
       Log.warn("Forestry integration loaded. Let things grow.");
     } else {
@@ -60,7 +62,7 @@ public class EnderIOIntegrationForestry implements IEnderIOAddon {
   @Override
   @Nullable
   public Configuration getConfiguration() {
-    return null;
+    return isLoaded() ? ConfigHandler.config : null;
   }
 
   @SubscribeEvent

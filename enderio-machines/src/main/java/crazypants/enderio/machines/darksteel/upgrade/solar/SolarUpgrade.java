@@ -50,18 +50,12 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
   }
 
   private final int level;
-  private final @Nonnull IValue<Integer> realLevelCost, rf;
+  private final @Nonnull IValue<Integer> rf;
 
   public SolarUpgrade(@Nonnull ItemStack item, int level, @Nonnull IValue<Integer> levelCost, @Nonnull IValue<Integer> rf) {
-    super(EnderIOMachines.MODID, UPGRADE_NAME, level, NAME + level, item, 99);
+    super(EnderIOMachines.MODID, UPGRADE_NAME, level, NAME + level, item, levelCost);
     this.level = level;
-    this.realLevelCost = levelCost;
     this.rf = rf;
-  }
-
-  @Override
-  public int getLevelCost() {
-    return realLevelCost.get();
   }
 
   @Override

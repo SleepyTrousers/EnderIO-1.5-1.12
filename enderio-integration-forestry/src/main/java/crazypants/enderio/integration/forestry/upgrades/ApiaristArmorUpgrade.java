@@ -4,10 +4,10 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.integration.forestry.EnderIOIntegrationForestry;
 import crazypants.enderio.integration.forestry.ForestryItemStacks;
+import crazypants.enderio.integration.forestry.config.ForestryConfig;
 import crazypants.enderio.util.Prep;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
@@ -42,7 +42,7 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
 
   public ApiaristArmorUpgrade(@Nonnull EntityEquipmentSlot slot) {
     super(EnderIOIntegrationForestry.MODID, UPGRADE_NAME + slot.getName(), "enderio.darksteel.upgrade.apiarist_armor." + slot.getName(), getApiaristArmor(slot),
-        Config.darkSteelApiaristArmorCost);
+        ForestryConfig.apiaristArmorCost);
     this.slot = slot;
   }
 

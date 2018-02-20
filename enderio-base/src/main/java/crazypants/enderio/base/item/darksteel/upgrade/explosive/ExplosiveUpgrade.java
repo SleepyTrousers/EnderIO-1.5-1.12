@@ -16,17 +16,12 @@ public class ExplosiveUpgrade extends AbstractUpgrade {
   public static final @Nonnull ExplosiveUpgrade INSTANCE = new ExplosiveUpgrade();
 
   public ExplosiveUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.tnt", new ItemStack(Blocks.TNT), 99);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.tnt", new ItemStack(Blocks.TNT), DarkSteelConfig.explosiveUpgradeCost);
   }
 
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack) {
     return stack.getItem() == ModObject.itemDarkSteelPickaxe.getItemNN() && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack) && !hasUpgrade(stack);
-  }
-
-  @Override
-  public int getLevelCost() {
-    return DarkSteelConfig.explosiveUpgradeCost.get();
   }
 
 }

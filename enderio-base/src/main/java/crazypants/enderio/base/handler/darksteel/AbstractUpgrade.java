@@ -10,6 +10,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.ValueFactory.IValue;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -25,25 +26,48 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
 
   private static final @Nonnull String KEY_VARIANT = "level";
 
-  protected final int levelCost, variant;
+  protected final int variant;
+  protected final IValue<Integer> levelCost;
   protected final @Nonnull String id;
   protected final @Nonnull String unlocName;
 
   protected @Nonnull ItemStack upgradeItem;
 
+  @Deprecated
   protected AbstractUpgrade(@Nonnull String id, @Nonnull String unlocName, @Nonnull ItemStack upgradeItem, int levelCost) {
     this(id, 0, unlocName, upgradeItem, levelCost);
   }
 
-  protected AbstractUpgrade(@Nonnull String domain, @Nonnull String id, @Nonnull String unlocName, @Nonnull ItemStack upgradeItem, int levelCost) {
-    this(domain, id, 0, unlocName, upgradeItem, levelCost);
-  }
-
+  @Deprecated
   protected AbstractUpgrade(@Nonnull String id, int variant, @Nonnull String unlocName, @Nonnull ItemStack upgradeItem, int levelCost) {
     this(EnderIO.DOMAIN, id, variant, unlocName, upgradeItem, levelCost);
   }
 
+  @Deprecated
   protected AbstractUpgrade(@Nonnull String domain, @Nonnull String id, int variant, @Nonnull String unlocName, @Nonnull ItemStack upgradeItem, int levelCost) {
+    this(domain, id, variant, unlocName, upgradeItem, new IValue<Integer>() {
+      @Override
+      @Nonnull
+      public Integer get() {
+        return levelCost;
+      }
+    });
+  }
+
+  protected AbstractUpgrade(@Nonnull String id, @Nonnull String unlocName, @Nonnull ItemStack upgradeItem, IValue<Integer> levelCost) {
+    this(id, 0, unlocName, upgradeItem, levelCost);
+  }
+
+  protected AbstractUpgrade(@Nonnull String domain, @Nonnull String id, @Nonnull String unlocName, @Nonnull ItemStack upgradeItem, IValue<Integer> levelCost) {
+    this(domain, id, 0, unlocName, upgradeItem, levelCost);
+  }
+
+  protected AbstractUpgrade(@Nonnull String id, int variant, @Nonnull String unlocName, @Nonnull ItemStack upgradeItem, IValue<Integer> levelCost) {
+    this(EnderIO.DOMAIN, id, variant, unlocName, upgradeItem, levelCost);
+  }
+
+  protected AbstractUpgrade(@Nonnull String domain, @Nonnull String id, int variant, @Nonnull String unlocName, @Nonnull ItemStack upgradeItem,
+      IValue<Integer> levelCost) {
     this.id = KEY_UPGRADE_PREFIX + id;
     this.unlocName = unlocName;
     this.upgradeItem = upgradeItem;
@@ -78,7 +102,7 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
 
   @Override
   public int getLevelCost() {
-    return levelCost;
+    return levelCost.get();
   }
 
   @Override

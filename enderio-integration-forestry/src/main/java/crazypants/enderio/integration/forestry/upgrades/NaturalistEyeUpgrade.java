@@ -2,11 +2,11 @@ package crazypants.enderio.integration.forestry.upgrades;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.integration.forestry.EnderIOIntegrationForestry;
 import crazypants.enderio.integration.forestry.ForestryItemStacks;
+import crazypants.enderio.integration.forestry.config.ForestryConfig;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 
@@ -19,7 +19,7 @@ public class NaturalistEyeUpgrade extends AbstractUpgrade {
   }
 
   public NaturalistEyeUpgrade() {
-    super(EnderIOIntegrationForestry.MODID, UPGRADE_NAME, "enderio.darksteel.upgrade.naturalist_eye", getNaturalistEye(), Config.darkSteelApiaristArmorCost);
+    super(EnderIOIntegrationForestry.MODID, UPGRADE_NAME, "enderio.darksteel.upgrade.naturalist_eye", getNaturalistEye(), ForestryConfig.naturalistEyeCost);
   }
 
   @Override
