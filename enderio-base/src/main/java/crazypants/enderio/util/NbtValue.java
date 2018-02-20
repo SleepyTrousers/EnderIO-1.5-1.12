@@ -44,6 +44,7 @@ public enum NbtValue { // TODO: DONE111
   FILTER_LIMITED("isLimited"),
   FILTER_DAMAGE("damageMode"),
   CONDUIT("conduit"),
+  CONTENTCOUNT("contentCount"),
 
   ;
 

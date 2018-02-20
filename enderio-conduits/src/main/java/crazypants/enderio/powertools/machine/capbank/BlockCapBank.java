@@ -16,7 +16,6 @@ import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_dont_crash_us_mcjty;
 import crazypants.enderio.base.BlockEio;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
@@ -33,13 +32,14 @@ import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
+import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.powertools.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.powertools.machine.capbank.network.NetworkUtil;
 import crazypants.enderio.powertools.machine.capbank.render.CapBankBlockRenderMapper;
 import crazypants.enderio.powertools.machine.capbank.render.CapBankItemRenderMapper;
 import crazypants.enderio.powertools.machine.capbank.render.CapBankRenderer;
+import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
-import info.loenwind.autosave.Reader;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -53,7 +53,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -61,7 +60,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -176,22 +174,9 @@ public class BlockCapBank extends BlockEio<TileCapBank>
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     list.add(LangPower.RF(BlockItemCapBank.getStoredEnergyForItem(itemstack), CapBankType.getTypeFromMeta(itemstack.getItemDamage()).getMaxEnergyStored()));
-    final @Nullable NBTTagCompound tagCompound = itemstack.getTagCompound();
-    if (tagCompound != null) {
-      ItemStack[] stacks = Reader.readField(tagCompound, ItemStack[].class, "inventory", new ItemStack[4]);
-      if (stacks != null) {
-        int count = 0;
-        for (ItemStack stack : stacks) {
-          if (stack != null) {// FIXME
-            count++;
-          }
-        }
-        if (count > 0) {
-          String msg = EnderIO.lang.localizeExact("tile.blockCapBank.tooltip.hasItems");// FIXME
-          Object[] objects = { count };
-          list.add(TextFormatting.GOLD + MessageFormat.format(msg, objects));
-        }
-      }
+    int count = NbtValue.CONTENTCOUNT.getInt(itemstack);
+    if (count > 0) {
+      list.add(MessageFormat.format(Lang.CAPBANK_TOOLTIP_WITH_ITEMS.get(), count));
     }
   }
 
@@ -407,7 +392,6 @@ public class BlockCapBank extends BlockEio<TileCapBank>
 
   @Override
   protected void processDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable TileCapBank te, @Nonnull ItemStack drop) {
-    drop.setTagCompound(new NBTTagCompound());
     if (te != null) {
       te.writeToItemStack(drop);
     }

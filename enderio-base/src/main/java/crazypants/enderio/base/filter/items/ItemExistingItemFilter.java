@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capability.ItemTools;
@@ -85,7 +86,7 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
   public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
     if (FilterRegistry.isFilterSet(stack)) {
-      if (flagIn.isAdvanced()) {
+      if (SpecialTooltipHandler.showAdvancedTooltips()) {
         tooltip.add(Lang.CONDUIT_FILTER_CONFIGURED.get(TextFormatting.ITALIC));
         tooltip.add(Lang.CONDUIT_FILTER_CLEAR.get(TextFormatting.ITALIC));
       }

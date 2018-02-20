@@ -38,6 +38,7 @@ import crazypants.enderio.powertools.machine.capbank.network.InventoryImpl;
 import crazypants.enderio.powertools.machine.capbank.network.NetworkUtil;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkIdRequest;
 import crazypants.enderio.util.NbtValue;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.enderio.HandleIOMode;
@@ -895,6 +896,15 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   public void writeToItemStack(@Nonnull ItemStack stack) {
     super.writeToItemStack(stack);
     NbtValue.ENERGY.setInt(stack, energyStored);
+    int count = 0;
+    for (int i = 0; i < inventory.size(); i++) {
+      if (Prep.isValid(inventory.get(i))) {
+        count++;
+      }
+    }
+    if (count > 0) {
+      NbtValue.CONTENTCOUNT.setInt(stack, count);
+    }
   }
 
   @Override

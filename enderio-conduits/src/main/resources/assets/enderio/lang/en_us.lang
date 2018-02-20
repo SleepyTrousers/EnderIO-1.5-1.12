@@ -49,12 +49,6 @@ enderio.gui.conduit.redstone.signal_strengh=Strong Signal
 enderio.gui.conduit.redstone.signal_strengh.tooltip=Output a strong redstone signal 
 
 # CapBanks
-tile.block_capacitor_bank.name=Capacitor Bank (Deprecated)
-tile.block_capacitor_bank.creative.name=Creative Capacitor Bank (Deprecated)
-tile.block_capacitor_bank.tooltip.detailed.line1=Convert to new block by placing
-tile.block_capacitor_bank.tooltip.detailed.line2=in a crafting grid
-tile.block_capacitor_bank.tooltip_prefix=Contains
-
 tile.block_cap_bank.creative.name=Creative Capacitor Bank
 tile.block_cap_bank.simple.name=Basic Capacitor Bank
 tile.block_cap_bank.activated.name=Capacitor Bank
@@ -63,8 +57,7 @@ tile.block_cap_bank.tooltip.detailed.line1=Multi-block energy storage.
 tile.block_cap_bank.tooltip.detailed.line2=Can charge RF powered items.
 tile.block_cap_bank.tooltip.detailed.line3=Shift-R-Click on a face with an empty hand
 tile.block_cap_bank.tooltip.detailed.line4=to change information display
-tile.block_cap_bank.tooltip.has_items={0,number,integer} {0,choice,1#item|1<items} in inventory
-tile.block_cap_bank.tooltip_prefix=Contains
+tile.block_cap_bank.tooltip.has_items=§6Contains §4{0,number,integer}§6 {0,choice,1#item|1<items} in inventory
 
 # TODO dedupe these?
 enderio.capbank.max_io=Max I/O
