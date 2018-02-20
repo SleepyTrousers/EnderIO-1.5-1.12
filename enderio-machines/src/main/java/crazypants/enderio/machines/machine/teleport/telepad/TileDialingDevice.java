@@ -14,6 +14,8 @@ import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.blockiterators.CubicBlockIterator;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.item.coordselector.TelepadTarget.TelepadTargetArrayListHandler;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
@@ -23,6 +25,7 @@ import crazypants.enderio.base.render.ranged.RangeParticle;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetList;
 import crazypants.enderio.machines.network.PacketHandler;
+import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -31,14 +34,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@Storable
 public class TileDialingDevice extends AbstractCapabilityPoweredMachineEntity implements IRanged {
 
   @Store
-  private int storedEnergyRF;
-
-  @SuppressWarnings("hiding")
-  @Store
-  private DialerFacing facing;
+  private DialerFacing dialerFacing;
 
   @Store(handler = TelepadTargetArrayListHandler.class)
   private final ArrayList<TelepadTarget> targets = new ArrayList<TelepadTarget>();
@@ -48,11 +48,11 @@ public class TileDialingDevice extends AbstractCapabilityPoweredMachineEntity im
 
     getInventory().add(Type.INPUT, "INPUT", new InventorySlot(TileTelePad.LOCATION_PRINTOUTS, 1));
     getInventory().add(Type.OUTPUT, "OUTPUT", new InventorySlot(1));
+    getInventory().getSlot(CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
   }
 
   @Override
   public boolean processTasks(boolean redstoneCheck) {
-
     getEnergy().useEnergy();
 
     if (!getInventory().getSlot("INPUT").isEmpty() && getInventory().getSlot("OUTPUT").isEmpty()
@@ -103,11 +103,11 @@ public class TileDialingDevice extends AbstractCapabilityPoweredMachineEntity im
   }
 
   public @Nonnull DialerFacing getDialerFacing() {
-    return facing != null ? facing : DialerFacing.DOWN_TONORTH;
+    return dialerFacing != null ? dialerFacing : DialerFacing.DOWN_TONORTH;
   }
 
   public void setDialerFacing(DialerFacing facing) {
-    this.facing = facing;
+    this.dialerFacing = facing;
     markDirty();
   }
 
@@ -172,6 +172,12 @@ public class TileDialingDevice extends AbstractCapabilityPoweredMachineEntity im
   @Override
   public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
     return mode == IoMode.NONE;
+  }
+
+  @Override
+  protected void onAfterNbtRead() {
+    getInventory().getSlot(CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
+    super.onAfterNbtRead();
   }
 
 }

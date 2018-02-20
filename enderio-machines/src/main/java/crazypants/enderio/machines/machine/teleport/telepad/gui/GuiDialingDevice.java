@@ -2,7 +2,6 @@ package crazypants.enderio.machines.machine.teleport.telepad.gui;
 
 import java.awt.Rectangle;
 import java.io.IOException;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -12,7 +11,7 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
-import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.machine.gui.CapPowerBar;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.telepad.TileDialingDevice;
@@ -29,7 +28,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO implements IDialingDev
 
   private static final int ID_TELEPORT_BUTTON = 96;
 
-  GuiButton teleportButton;
+  private GuiButton teleportButton;
 
   private final @Nonnull TileDialingDevice dialingDevice;
   private final @Nonnull TileTelePad telepad;
@@ -49,14 +48,6 @@ public class GuiDialingDevice extends GuiContainerBaseEIO implements IDialingDev
     this.dialingDevice = te;
     this.telepad = telepad;
     this.ySize = 220;
-
-    addToolTip(new GuiToolTip(new Rectangle(powerX, powerY, 10, powerScale), "") {
-      @Override
-      protected void updateText() {
-        text.clear();
-        updatePowerBarTooltip(text);
-      }
-    });
 
     addToolTip(new GuiToolTip(new Rectangle(progressX, progressY, progressScale, 10), "") {
       @Override
@@ -94,15 +85,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO implements IDialingDev
       }
     });
 
-  }
-
-  protected int getPowerOutputValue() {
-    return dialingDevice.getEnergy().getMaxUsage();
-  }
-
-  protected void updatePowerBarTooltip(List<String> text) {
-    text.add(Lang.GUI_TELEPAD_MAX.get(LangPower.RFt(getPowerOutputValue())));
-    text.add(LangPower.RF(dialingDevice.getEnergy().getEnergyStored(), dialingDevice.getEnergy().getMaxEnergyStored()));
+    addDrawingElement(new CapPowerBar(te.getEnergy(), this, powerX, powerY, 10, powerScale));
   }
 
   @Override
@@ -123,10 +106,6 @@ public class GuiDialingDevice extends GuiContainerBaseEIO implements IDialingDev
     targetList.onGuiInit(this);
   }
 
-  private int getPowerScaled(int scale) {
-    return (int) ((((float) dialingDevice.getEnergy().getEnergyStored()) / (dialingDevice.getEnergy().getMaxEnergyStored())) * scale);
-  }
-
   @Override
   protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -135,9 +114,6 @@ public class GuiDialingDevice extends GuiContainerBaseEIO implements IDialingDev
     int sy = (height - ySize) / 2;
 
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
-
-    int powerScaled = getPowerScaled(powerScale);
-    drawTexturedModalRect(sx + powerX, sy + powerY + powerScale - powerScaled, xSize, 0, 10, powerScaled);
 
     targetList.drawScreen(mouseX, mouseY, partialTick);
 

@@ -35,7 +35,6 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
    * If an inventory is given, it will NOT be stored to nbt/client/save. The subclass must handle that itself.
    */
   protected AbstractCapabilityMachineEntity(EnderInventory subclassInventory) {
-    super();
     this.inventoryDelegate = subclassInventory != null ? subclassInventory : this.inventory;
     upgradeSlots = inventoryDelegate.getView(EnderInventory.Type.UPGRADE);
     inputSlots = inventoryDelegate.getView(EnderInventory.Type.INPUT);
@@ -149,7 +148,6 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
       default:
         return EnderInventory.OFF;
       }
-
     }
 
     @Override

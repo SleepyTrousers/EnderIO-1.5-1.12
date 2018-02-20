@@ -47,17 +47,24 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
 
   @Override
   public void doUpdate() {
-
     super.doUpdate();
 
     if (world.isRemote) {
       return;
     }
     losePower(getPowerLossPerTick());
-    boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(5));
-    if (powerChanged) {
-      lastSyncPowerStored = storedEnergyRF;
+    final int scaledPower = scaledPower();
+    if ((lastSyncPowerStored != scaledPower && (lastSyncPowerStored == 0 || scaledPower == 0 || shouldDoWorkThisTick(20)))) {
+      lastSyncPowerStored = scaledPower;
       PacketHandler.sendToAllAround(new PacketLegacyPowerStorage(this), this);
+    }
+  }
+
+  protected int scaledPower() {
+    if (storedEnergyRF == 0) {
+      return 0;
+    } else {
+      return 1 + storedEnergyRF / 1000;
     }
   }
 

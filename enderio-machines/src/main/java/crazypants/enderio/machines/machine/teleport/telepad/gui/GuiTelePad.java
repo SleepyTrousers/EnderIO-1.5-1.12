@@ -22,6 +22,7 @@ import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.ToggleTravelButton;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.machine.gui.CapPowerBar;
 import crazypants.enderio.machines.config.config.TelePadConfig;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.telepad.BlockTelePad;
@@ -50,7 +51,10 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
   private static final int powerX = 8;
   private static final int powerY = 9;
-  private int powerScale = TelePadConfig.telepadFluidUse.get() > 0 ? 57 : 120; // TODO -> method
+
+  private int getPowerScale() {
+    return TelePadConfig.telepadFluidUse.get() > 0 ? 57 : 120;
+  }
 
   private static final int progressX = 26;
   private static final int progressY = 110;
@@ -67,14 +71,6 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     super(new ContainerTelePad(playerInv, te), "tele_pad");
     this.te = te;
     ySize = 220;
-
-    addToolTip(new GuiToolTip(new Rectangle(powerX, powerY, 10, powerScale), "") {
-      @Override
-      protected void updateText() {
-        text.clear();
-        updatePowerBarTooltip(text);
-      }
-    });
 
     addToolTip(new GuiToolTip(new Rectangle(progressX, progressY, progressScale, 10), "") {
       @Override
@@ -120,6 +116,8 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
     switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, SWITCH_X, SWITCH_Y, IconEIO.IO_WHATSIT);
     switchButton.setToolTip(Lang.GUI_TELEPAD_TO_TRAVEL.get());
+
+    addDrawingElement(new CapPowerBar(te.getEnergy(), this, powerX, powerY, 10, getPowerScale()));
   }
 
   @Override
@@ -219,8 +217,6 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
       drawTexturedModalRect(sx + fluidX, sy + fluidY, 213, v, 10, fluidScale);
     }
 
-    int powerScaled = te.getPowerScaled(powerScale);
-    drawTexturedModalRect(sx + powerX, sy + powerY + powerScale - powerScaled, xSize, 0, 10, powerScaled);
     int progressScaled = Util.getProgressScaled(progressScale, te);
     drawTexturedModalRect(sx + progressX, sy + progressY, 0, ySize, progressScaled, 10);
 

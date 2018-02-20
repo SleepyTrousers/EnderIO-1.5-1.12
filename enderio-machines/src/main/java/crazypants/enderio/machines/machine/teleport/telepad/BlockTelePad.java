@@ -88,15 +88,15 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileTelePad tileEntity) {
-    blockStateWrapper.addCacheKey(tileEntity.inNetwork()).addCacheKey(tileEntity.isMaster());
+    blockStateWrapper.addCacheKey(blockStateWrapper.getValue(BLOCK_TYPE));
   }
 
   /*
    * This makes us "air" for purposes of lighting. Otherwise our model would be much too dark, as it is always surrounded be 8 TelePad blocks.
    */
   @Override
-  public boolean isFullCube(@Nonnull IBlockState bs) {
-    return false;
+  public boolean isFullCube(@Nonnull IBlockState state) {
+    return state.getValue(BLOCK_TYPE) != BlockType.MASTER;
   }
 
   @Deprecated

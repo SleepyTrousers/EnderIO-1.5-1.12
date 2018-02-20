@@ -3,6 +3,7 @@ package crazypants.enderio.base.machine.base.te;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.inventory.Callback;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.Type;
@@ -15,6 +16,7 @@ import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.base.network.PacketPowerStorage;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.EnergyTank;
+import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -30,11 +32,12 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
   public final @Nonnull Callback<ItemStack> CAP_CALLBACK = new Callback<ItemStack>() {
     @Override
     public final void onChange(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack) {
-      onCapacitorDataChange();
+      updateCapacitorFromSlot();
     }
   };
 
-  @Store
+  @Store({ NBTAction.SAVE, NBTAction.CLIENT })
+  // Not NBTAction.ITEM to keep the storedEnergy tag out in the open
   private final @Nonnull EnergyTank energy;
   protected float lastSyncPowerStored = -1;
 
@@ -48,7 +51,7 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
     super(subclassInventory);
     getInventory().add(Type.UPGRADE, CAPSLOT, new InventorySlot(Filters.CAPACITORS, null, 1));
     energy = new EnergyTank(this, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
-    getEnergy().updateCapacitorFromSlot(getInventory().getSlot(CAPSLOT));
+    updateCapacitorFromSlot();
   }
 
   // ----- Common Machine Functions
@@ -57,10 +60,20 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
   public void doUpdate() {
     super.doUpdate();
     if (!world.isRemote) {
-      if ((lastSyncPowerStored != getEnergy().getEnergyStored() && shouldDoWorkThisTick(10))) {
-        lastSyncPowerStored = getEnergy().getEnergyStored();
+      energy.loseEnergy();
+      final int scaledPower = scaledPower();
+      if ((lastSyncPowerStored != scaledPower && (lastSyncPowerStored == 0 || scaledPower == 0 || shouldDoWorkThisTick(20)))) {
+        lastSyncPowerStored = scaledPower;
         PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
       }
+    }
+  }
+
+  protected int scaledPower() {
+    if (getEnergy().getEnergyStored() == 0) {
+      return 0;
+    } else {
+      return 1 + getEnergy().getEnergyStored() / 1000;
     }
   }
 
@@ -95,6 +108,19 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
   }
 
   // --------- NBT
+
+  @Override
+  public void readCustomNBT(@Nonnull ItemStack stack) {
+    super.readCustomNBT(stack);
+    energy.setEnergyStored(NbtValue.ENERGY.getInt(stack));
+  }
+
+  @Override
+  public void writeCustomNBT(@Nonnull ItemStack stack) {
+    super.writeCustomNBT(stack);
+    NbtValue.ENERGY.setInt(stack, energy.getEnergyStored());
+    NbtValue.ENERGY_BUFFER.setInt(stack, energy.getMaxEnergyStored());
+  }
 
   @Override
   protected void onAfterNbtRead() {

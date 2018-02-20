@@ -105,6 +105,8 @@ public class EnergyTank implements IEnergyStorage {
   private @Nonnull ICapacitorData capacitorData = DefaultCapacitorData.NONE;
 
   private @Nonnull final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
+  private ICapacitorKey energyLoss = null;
+
   @Nullable
   TileEntity owner = null;
 
@@ -123,6 +125,10 @@ public class EnergyTank implements IEnergyStorage {
     this.maxEnergyRecieved = CapacitorKey.LEGACY_ENERGY_INTAKE;
     this.maxEnergyStored = CapacitorKey.LEGACY_ENERGY_BUFFER;
     this.maxEnergyUsed = CapacitorKey.LEGACY_ENERGY_USE;
+  }
+
+  public void setEnergyLoss(ICapacitorKey energyLoss) {
+    this.energyLoss = energyLoss;
   }
 
   public boolean updateCapacitorFromSlot(@Nonnull InventorySlot slot) {
@@ -188,6 +194,14 @@ public class EnergyTank implements IEnergyStorage {
 
   public int getMaxUsage(@Nonnull ICapacitorKey key) {
     return key.get(capacitorData);
+  }
+
+  public void loseEnergy() {
+    if (storedEnergy > 0) {
+      if (energyLoss != null) {
+        setEnergyStored(getEnergyStored() - energyLoss.get(capacitorData));
+      }
+    }
   }
 
   public void setEnergyStored(int stored) {
