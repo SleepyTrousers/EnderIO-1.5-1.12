@@ -86,12 +86,6 @@ public enum Lang implements ILang {
   CONFIG_TITLE(".config.title"),
   GUI_NOCAP(".gui.generic.nocap"),
   GUI_PROBE_COPIED(".gui.probe.copied"),
-  XXXXX14(""),
-  XXXXX15(""),
-  XXXXX16(""),
-  XXXXX17(""),
-  XXXXX18(""),
-  XXXXX19(""),
 
   ;
 
