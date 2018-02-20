@@ -34,8 +34,8 @@ public class EnderIOIntegrationForestry implements IEnderIOAddon {
 
   @EventHandler
   public static void init(@Nonnull FMLPreInitializationEvent event) {
+    ConfigHandler.init(event);
     if (isLoaded()) {
-      ConfigHandler.init(event);
       ForestryControl.init(event);
       Log.warn("Forestry integration loaded. Let things grow.");
     } else {
