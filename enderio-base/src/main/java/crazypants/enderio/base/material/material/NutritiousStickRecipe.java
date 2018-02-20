@@ -6,6 +6,7 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.OreDictionaryHelper;
 
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.util.Prep;
@@ -20,7 +21,6 @@ import net.minecraftforge.common.crafting.IngredientNBT;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 
 public class NutritiousStickRecipe extends ShapelessRecipes { // sic! JEI won't work if we don't extend that
@@ -59,7 +59,7 @@ public class NutritiousStickRecipe extends ShapelessRecipes { // sic! JEI won't 
   }
 
   private boolean isStick(@Nonnull ItemStack stack) {
-    return OreDictionary.containsMatch(false, OreDictionary.getOres("stickWood"), stack);
+    return OreDictionaryHelper.hasName(stack, "stickWood");
   }
 
   @Override

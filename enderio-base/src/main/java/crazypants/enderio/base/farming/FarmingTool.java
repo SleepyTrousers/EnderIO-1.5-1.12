@@ -2,6 +2,7 @@ package crazypants.enderio.base.farming;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.OreDictionaryHelper;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.api.farm.IFarmingTool;
@@ -11,14 +12,13 @@ import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.oredict.OreDictionary;
 
 public enum FarmingTool implements IFarmingTool {
   HAND,
   HOE(Config.farmHoes) {
     @Override
     protected boolean match(@Nonnull ItemStack item) {
-      return super.match(item) || OreDictionary.containsMatch(false, OreDictionary.getOres("toolHoe"), item);
+      return super.match(item) || OreDictionaryHelper.hasName(item, "toolHoe");
     }
   },
   AXE {
