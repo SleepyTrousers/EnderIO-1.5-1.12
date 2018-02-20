@@ -60,7 +60,7 @@ public abstract class HandleAbstractCollection<E, C extends Collection<E>> imple
         if (tag.hasKey(i + "")) {
           object.add(elemHandler.read(registry, phase, tag, null, i + "", makeEmptyValueObject()));
         } else {
-          object.add(null);
+          object.add(makeEmptyValueObject());
         }
       }
     }

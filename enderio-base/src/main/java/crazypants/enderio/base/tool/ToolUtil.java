@@ -32,11 +32,6 @@ public class ToolUtil {
     return getInstance().getEquippedToolImpl(player, hand);
   }
 
-  public static boolean breakBlockWithTool(@Nonnull Block block, @Nonnull World world, int x, int y, int z, @Nonnull EntityPlayer entityPlayer,
-      @Nonnull EnumHand hand, @Nonnull String permissionNode) {
-    return breakBlockWithTool(block, world, new BlockPos(x, y, z), null, entityPlayer, hand, permissionNode);
-  }
-
   public static boolean breakBlockWithTool(@Nonnull Block block, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing side,
       @Nonnull EntityPlayer entityPlayer, @Nonnull EnumHand hand, @Nonnull String permissionNode) {
     ItemStack heldItem = entityPlayer.getHeldItem(hand);

@@ -21,7 +21,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -110,13 +109,10 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor>
   }
 
   @Override
-  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
-      @Nonnull ItemStack stack) {
-    super.onBlockPlacedBy(world, pos, state, player, stack);
-    TilePowerMonitor te = getTileEntity(world, pos);
-    if (te != null) {
-      te.setAdvanced(advanced);
-    }
+  public void onBlockPlaced(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
+      @Nonnull TilePowerMonitor te) {
+    super.onBlockPlaced(world, pos, state, player, te);
+    te.setAdvanced(advanced);
   }
 
   @Deprecated

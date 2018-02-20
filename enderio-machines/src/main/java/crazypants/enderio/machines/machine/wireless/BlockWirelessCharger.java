@@ -1,14 +1,12 @@
 package crazypants.enderio.machines.machine.wireless;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -24,7 +22,6 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
@@ -118,29 +115,6 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
   @Override
   public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName();
-  }
-
-  @Override
-  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
-    return false;
-  }
-
-  @Override
-  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
-      @Nonnull ItemStack stack) {
-    TileWirelessCharger te = getTileEntity(world, pos);
-    if (te != null) {
-      te.readFromItemStack(stack);
-      te.setPaintSource(PaintUtil.getSourceBlock(stack));
-    }
-  }
-
-  @Override
-  protected void processDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable TileWirelessCharger te, @Nonnull ItemStack drop) {
-    if (te != null) {
-      te.writeToItemStack(drop);
-    }
-    PaintUtil.setSourceBlock(drop, getPaintSource(world.getBlockState(pos), world, pos));
   }
 
   // ///////////////////////////////////////////////////////////////////////

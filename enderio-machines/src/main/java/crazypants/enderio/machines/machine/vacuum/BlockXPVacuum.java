@@ -1,7 +1,6 @@
 package crazypants.enderio.machines.machine.vacuum;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
@@ -20,9 +19,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -109,30 +106,6 @@ public class BlockXPVacuum extends BlockEio<TileXPVacuum>
   @SideOnly(Side.CLIENT)
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
     return XPRenderMapper.instance;
-  }
-
-  @Override
-  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
-    return false;
-  }
-
-  @Override
-  protected void processDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable TileXPVacuum te, @Nonnull ItemStack drop) {
-    if (te != null) {
-      te.writeToItemStack(drop);
-    }
-  }
-
-  @Override
-  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase placer,
-      @Nonnull ItemStack stack) {
-    if (!world.isRemote) {
-      TileEntity te = world.getTileEntity(pos);
-      if (te instanceof TileXPVacuum) {
-        ((TileXPVacuum) te).readFromItemStack(stack);
-        world.notifyBlockUpdate(pos, state, state, 3);
-      }
-    }
   }
 
   @Override

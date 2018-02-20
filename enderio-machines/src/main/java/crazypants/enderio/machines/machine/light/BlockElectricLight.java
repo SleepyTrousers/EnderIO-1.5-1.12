@@ -190,11 +190,6 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
-    return true;
-  }
-
-  @Override
   public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     for (LightType type : LightType.values()) {
       list.add(new ItemStack(this, 1, type.getMetadata()));

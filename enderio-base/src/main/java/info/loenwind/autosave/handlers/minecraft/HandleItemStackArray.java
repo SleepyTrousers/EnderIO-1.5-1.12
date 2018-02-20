@@ -6,8 +6,10 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import info.loenwind.autosave.Registry;
 import com.enderio.core.common.NBTAction;
+
+import crazypants.enderio.util.Prep;
+import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.item.ItemStack;
@@ -24,13 +26,13 @@ public class HandleItemStackArray implements IHandler<ItemStack[]> {
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull ItemStack[] object)
-      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+      @Nonnull ItemStack[] object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     NBTTagCompound tag = new NBTTagCompound();
     tag.setInteger("size", object.length);
     for (int i = 0; i < object.length; i++) {
       ItemStack itemStack = object[i];
-      if (itemStack != null) {
+      if (itemStack != null && Prep.isValid(itemStack)) {
         NBTTagCompound subtag = new NBTTagCompound();
         itemStack.writeToNBT(subtag);
         tag.setTag(i + "", subtag);
@@ -53,7 +55,7 @@ public class HandleItemStackArray implements IHandler<ItemStack[]> {
         if (tag.hasKey(i + "")) {
           object[i] = new ItemStack(tag.getCompoundTag(i + ""));
         } else {
-          object[i] = null;
+          object[i] = Prep.getEmpty();
         }
       }
     }

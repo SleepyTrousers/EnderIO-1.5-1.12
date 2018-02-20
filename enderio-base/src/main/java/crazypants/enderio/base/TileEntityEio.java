@@ -14,6 +14,7 @@ import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
+import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -23,6 +24,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+@Storable
 public abstract class TileEntityEio extends TileEntityBase {
 
   private static final @Nonnull Vector4f COLOR = new Vector4f(1, 182f / 255f, 0, 0.4f);
@@ -85,29 +87,31 @@ public abstract class TileEntityEio extends TileEntityBase {
   protected void onAfterNbtRead() {
   }
 
-  public void readFromItemStack(@Nonnull ItemStack stack) {
-    NBTTagCompound tagCompound = NbtValue.getReadOnlyRoot(stack);
-    readCustomNBT(NBTAction.ITEM, tagCompound);
-    IBlockState stackPaint = PaintUtil.getSourceBlock(stack);
-    if (stackPaint != null) {
-      paintSource = stackPaint;
+  @Override
+  public void readCustomNBT(@Nonnull ItemStack stack) {
+    if (NbtValue.DATAROOT.hasTag(stack)) {
+      NBTTagCompound tagCompound = NbtValue.DATAROOT.getTag(stack);
+      readCustomNBT(NBTAction.ITEM, tagCompound);
     }
+    setPaintSource(PaintUtil.getSourceBlock(stack));
   }
 
-  public void writeToItemStack(@Nonnull ItemStack stack) {
-    NBTTagCompound tagCompound = NbtValue.getOrCreateRoot(stack);
-    writeCustomNBT(NBTAction.ITEM, tagCompound);
-    stack.setStackDisplayName(Lang.MACHINE_CONFIGURED.get(stack.getDisplayName()));
-    if (paintSource != null) {
-      PaintUtil.setSourceBlock(stack, paintSource);
+  @Override
+  public void writeCustomNBT(@Nonnull ItemStack stack) {
+    final NBTTagCompound tag = new NBTTagCompound();
+    writeCustomNBT(NBTAction.ITEM, tag);
+    if (!tag.hasNoTags()) {
+      NbtValue.DATAROOT.setTag(stack, tag);
+      stack.setStackDisplayName(Lang.MACHINE_CONFIGURED.get(stack.getDisplayName()));
     }
+    PaintUtil.setSourceBlock(stack, getPaintSource());
   }
 
   // ///////////////////////////////////////////////////////////////////////
   // PAINT START
   // ///////////////////////////////////////////////////////////////////////
 
-  @Store
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   private IBlockState paintSource = null;
 
   public void setPaintSource(@Nullable IBlockState paintSource) {

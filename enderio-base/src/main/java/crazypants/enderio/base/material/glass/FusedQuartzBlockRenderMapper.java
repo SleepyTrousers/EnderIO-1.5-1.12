@@ -4,7 +4,10 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
 import crazypants.enderio.base.render.rendermapper.ConnectedBlockRenderMapper;
 import crazypants.enderio.base.render.util.QuadCollector;
 import net.minecraft.block.BlockColored;
@@ -16,6 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.base.config.Config.glassConnectToTheirColorVariants;
+import static crazypants.enderio.base.render.property.EnumMergingBlockRenderMode.RENDER;
 
 public class FusedQuartzBlockRenderMapper extends ConnectedBlockRenderMapper {
 
@@ -27,7 +31,7 @@ public class FusedQuartzBlockRenderMapper extends ConnectedBlockRenderMapper {
   @SideOnly(Side.CLIENT)
   protected List<IBlockState> renderBody(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
       @Nonnull QuadCollector quadCollector) {
-    return null;
+    return blockLayer == null ? new NNList<>(state.withProperty(RENDER, EnumMergingBlockRenderMode.sides)) : null;
   }
 
   @Override

@@ -3,7 +3,6 @@ package crazypants.enderio.base.block.detector;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 
@@ -133,16 +132,6 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
   }
 
   @Override
-  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
-    return false;
-  }
-
-  @Override
-  protected void processDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable TileEntityPaintedBlock te, @Nonnull ItemStack drop) {
-    PaintUtil.setSourceBlock(drop, getPaintSource(world.getBlockState(pos), world, pos));
-  }
-
-  @Override
   public int getWeakPower(@Nonnull IBlockState state, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     return side.getOpposite() != state.getValue(FACING) && state.getValue(IS_ON) ? 15 : 0;
   }
@@ -180,15 +169,6 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
       int meta, @Nonnull EntityLivingBase placer, @Nonnull EnumHand hand) {
     final IBlockState state = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand).withProperty(FACING, facing);
     return state.withProperty(IS_ON, isTargetBlockAir(state, world, pos));
-  }
-
-  @Override
-  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
-      @Nonnull ItemStack stack) {
-    setPaintSource(state, world, pos, PaintUtil.getSourceBlock(stack));
-    if (!world.isRemote) {
-      world.notifyBlockUpdate(pos, state, state, 3);
-    }
   }
 
   @Override

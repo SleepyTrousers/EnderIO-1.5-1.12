@@ -887,14 +887,14 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   // ---------------- NBT
 
   @Override
-  public void readFromItemStack(@Nonnull ItemStack stack) {
-    super.readFromItemStack(stack);
+  public void readCustomNBT(@Nonnull ItemStack stack) {
+    super.readCustomNBT(stack);
     energyStored = NbtValue.ENERGY.getInt(stack);
   }
 
   @Override
-  public void writeToItemStack(@Nonnull ItemStack stack) {
-    super.writeToItemStack(stack);
+  public void writeCustomNBT(@Nonnull ItemStack stack) {
+    super.writeCustomNBT(stack);
     NbtValue.ENERGY.setInt(stack, energyStored);
     int count = 0;
     for (int i = 0; i < inventory.size(); i++) {

@@ -26,7 +26,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -131,30 +130,6 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
   @SideOnly(Side.CLIENT)
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
     return VacuumRenderMapper.instance;
-  }
-
-  @Override
-  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
-    return false;
-  }
-
-  @Override
-  protected void processDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable TileVacuumChest te, @Nonnull ItemStack drop) {
-    if (te != null) {
-      te.writeToItemStack(drop);
-    }
-  }
-
-  @Override
-  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase placer,
-      @Nonnull ItemStack stack) {
-    if (!world.isRemote) {
-      TileVacuumChest te = getTileEntity(world, pos);
-      if (te != null) {
-        te.readFromItemStack(stack);
-        world.notifyBlockUpdate(pos, state, state, 3);
-      }
-    }
   }
 
   @Override

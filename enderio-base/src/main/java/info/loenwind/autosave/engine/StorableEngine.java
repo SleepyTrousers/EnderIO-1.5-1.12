@@ -13,14 +13,14 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.NBTAction;
+
+import crazypants.enderio.base.Log;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.Writer;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import com.enderio.core.common.NBTAction;
-
-import crazypants.enderio.base.Log;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import info.loenwind.autosave.handlers.internal.HandleStorable;
@@ -28,26 +28,18 @@ import info.loenwind.autosave.handlers.internal.NullHandler;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
- * The thread-safe engine that handles (re-)storing {@link Storable} objects by
- * storing their fields. The fields to (re-)store must be annotated
- * {@link Store}.
+ * The thread-safe engine that handles (re-)storing {@link Storable} objects by storing their fields. The fields to (re-)store must be annotated {@link Store}.
  * <p>
- * It will also process the annotated fields of superclasses, as long as there
- * is an unbroken chain of {@link Storable} annotations (without special
- * handlers). Fields that have the same name as a field in a sub-/super-class
- * will be processed independently.
+ * It will also process the annotated fields of superclasses, as long as there is an unbroken chain of {@link Storable} annotations (without special handlers).
+ * Fields that have the same name as a field in a sub-/super-class will be processed independently.
  * <p>
- * If the final superclass has an {@link IHandler} registered in the
- * {@link Registry}, it will also be processed. However, this will <i>not</i>
- * work for handlers that return a new object instead of changing the given one.
- * A handler can check for this case by seeing if its "name" parameter is
+ * If the final superclass has an {@link IHandler} registered in the {@link Registry}, it will also be processed. However, this will <i>not</i> work for
+ * handlers that return a new object instead of changing the given one. A handler can check for this case by seeing if its "name" parameter is
  * {@link StorableEngine#SUPERCLASS_KEY}.
  * <p>
- * Note: If a {@link Storable} object is encountered in a {@link Store} field,
- * it is handled by {@link HandleStorable}---which delegates here.
+ * Note: If a {@link Storable} object is encountered in a {@link Store} field, it is handled by {@link HandleStorable}---which delegates here.
  * <p>
- * Note 2: There are public entrances to this class in {@link Writer} and
- * {@link Reader}.
+ * Note 2: There are public entrances to this class in {@link Writer} and {@link Reader}.
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class StorableEngine {
@@ -59,7 +51,8 @@ public class StorableEngine {
     }
   };
 
-  public static final @Nonnull String NULL_POSTFIX = "__null";
+  public static final @Nonnull String NULL_POSTFIX = "-";
+  public static final @Nonnull String EMPTY_POSTFIX = "+";
   public static final @Nonnull String SUPERCLASS_KEY = "__superclass";
   private final @Nonnull Map<Class<?>, List<Field>> fieldCache = new HashMap<Class<?>, List<Field>>();
   private final @Nonnull Map<Field, Set<NBTAction>> phaseCache = new HashMap<Field, Set<NBTAction>>();

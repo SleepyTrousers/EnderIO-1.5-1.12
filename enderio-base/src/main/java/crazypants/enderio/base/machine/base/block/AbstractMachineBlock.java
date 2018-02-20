@@ -130,28 +130,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
-    return false;
-  }
-
-  @Override
-  protected void processDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable AbstractMachineEntity te, @Nonnull ItemStack drop) {
-    if (te != null) {
-      te.writeToItemStack(drop);
-    }
-  }
-
-  @Override
-  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
-      @Nonnull ItemStack stack) {
-    super.onBlockPlacedBy(world, pos, state, player, stack);
-    AbstractMachineEntity te = getTileEntity(world, pos);
-    if (te != null) {
-      te.readFromItemStack(stack);
-      te.setFacing(getFacingForHeading(player));
-      if (player instanceof EntityPlayer && !world.isRemote) {
-        te.setOwner((EntityPlayer) player);
-      }
+  public void onBlockPlaced(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player, @Nonnull T te) {
+    te.setFacing(getFacingForHeading(player));
+    if (player instanceof EntityPlayer && !world.isRemote) {
+      te.setOwner((EntityPlayer) player);
     }
     if (world.isRemote) {
       return;

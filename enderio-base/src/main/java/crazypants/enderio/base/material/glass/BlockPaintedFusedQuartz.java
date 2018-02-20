@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
-import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.base.block.painted.TileEntityPaintedBlock;
@@ -25,7 +24,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -120,26 +118,6 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   @Override
   public TileEntity createNewTileEntity(@Nonnull World world, int metadata) {
     return new TileEntityPaintedBlock();
-  }
-
-  @Override
-  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
-      @Nonnull ItemStack stack) {
-    setPaintSource(state, world, pos, PaintUtil.getSourceBlock(stack));
-    if (!world.isRemote) {
-      IBlockState bs = world.getBlockState(pos);
-      world.notifyBlockUpdate(pos, bs, bs, 3);
-    }
-  }
-
-  @Override
-  public void getDrops(@Nonnull NonNullList<ItemStack> drops, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
-    NNList<ItemStack> drops2 = new NNList<>();
-    super.getDrops(drops2, world, pos, state, fortune);
-    for (ItemStack drop : drops2) {
-      PaintUtil.setSourceBlock(NullHelper.notnullM(drop, "null stack from getDrops()"), getPaintSource(state, world, pos));
-    }
-    drops.addAll(drops2);
   }
 
   @Override

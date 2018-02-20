@@ -1,33 +1,28 @@
 package crazypants.enderio.base.fluid;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.fluid.SmartTank;
 
+import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemTankHelper {
 
   private ItemTankHelper() {
   }
 
-  public static SmartTank getTank(ItemStack stack) {
-    if (stack != null) {
-      if (stack.hasTagCompound()) {
-        return Reader.readField(stack.getTagCompound(), SmartTank.class, "tank", null);
-      }
+  public static SmartTank getTank(@Nonnull ItemStack stack) {
+    if (NbtValue.DATAROOT.hasTag(stack)) {
+      return Reader.readField(NbtValue.DATAROOT.getTag(stack), SmartTank.class, "tank", null);
     }
     return null;
   }
 
-  public static void setTank(ItemStack stack, SmartTank tank) {
-    if (stack != null) {
-      if (!stack.hasTagCompound()) {
-        stack.setTagCompound(new NBTTagCompound());
-      }
-      Writer.writeField(stack.getTagCompound(), SmartTank.class, "tank", tank);
-    }
+  public static void setTank(@Nonnull ItemStack stack, SmartTank tank) {
+    Writer.writeField(NbtValue.DATAROOT.getTag(stack), SmartTank.class, "tank", tank);
   }
 
 }

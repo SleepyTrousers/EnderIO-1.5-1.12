@@ -164,14 +164,14 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
   }
 
   @Override
-  public void writeToItemStack(@Nonnull ItemStack stack) {
-    super.writeToItemStack(stack);
+  public void writeCustomNBT(@Nonnull ItemStack stack) {
+    super.writeCustomNBT(stack);
     stack.setItemDamage(getType().ordinal());
   }
 
   @Override
-  public void readFromItemStack(@Nonnull ItemStack stack) {
-    super.readFromItemStack(stack);
+  public void readCustomNBT(@Nonnull ItemStack stack) {
+    super.readCustomNBT(stack);
     if (type.isCreative) {
       setEnergyStored(getMaxEnergyStored() / 2);
     }

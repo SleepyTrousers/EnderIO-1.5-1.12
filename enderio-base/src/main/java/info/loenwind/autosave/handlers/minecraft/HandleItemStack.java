@@ -8,7 +8,9 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.Registry;
+import info.loenwind.autosave.engine.StorableEngine;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import info.loenwind.autosave.handlers.endercore.HandleNNList;
@@ -29,9 +31,13 @@ public class HandleItemStack implements IHandler<ItemStack> {
   @Override
   public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull ItemStack object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
-    NBTTagCompound tag = new NBTTagCompound();
-    object.writeToNBT(tag);
-    nbt.setTag(name, tag);
+    if (Prep.isInvalid(object)) {
+      nbt.setBoolean(name + StorableEngine.EMPTY_POSTFIX, true);
+    } else {
+      NBTTagCompound tag = new NBTTagCompound();
+      object.writeToNBT(tag);
+      nbt.setTag(name, tag);
+    }
     return true;
   }
 
@@ -41,6 +47,8 @@ public class HandleItemStack implements IHandler<ItemStack> {
     if (nbt.hasKey(name)) {
       NBTTagCompound tag = nbt.getCompoundTag(name);
       return new ItemStack(tag);
+    } else if (nbt.hasKey(name + StorableEngine.EMPTY_POSTFIX)) {
+      return Prep.getEmpty();
     }
     return object;
   }
@@ -51,12 +59,21 @@ public class HandleItemStack implements IHandler<ItemStack> {
       super(new HandleItemStack());
     }
 
+    @Override
+    protected @Nonnull ItemStack makeEmptyValueObject() {
+      return Prep.getEmpty();
+    }
   }
 
   public static class HandleItemStackNNList extends HandleNNList<ItemStack> {
 
     public HandleItemStackNNList() {
       super(new HandleItemStack());
+    }
+
+    @Override
+    protected @Nonnull ItemStack makeEmptyValueObject() {
+      return Prep.getEmpty();
     }
 
   }

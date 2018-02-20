@@ -175,8 +175,8 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  public void writeToItemStack(@Nonnull ItemStack stack) {
-    super.writeToItemStack(stack);
+  public void writeCustomNBT(@Nonnull ItemStack stack) {
+    super.writeCustomNBT(stack);
     // save mob the same way as the soul binder adds it to the item
     if (hasEntity()) {
       if (!stack.hasTagCompound()) {
@@ -370,8 +370,8 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  public void readFromItemStack(@Nonnull ItemStack stack) {
-    super.readFromItemStack(stack);
+  public void readCustomNBT(@Nonnull ItemStack stack) {
+    super.readCustomNBT(stack);
     capturedMob = CapturedMob.create(stack);
   }
 

@@ -24,7 +24,6 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -174,9 +173,8 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
   }
 
   @Override
-  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
-      @Nonnull ItemStack stack) {
-    super.onBlockPlacedBy(world, pos, state, player, stack);
+  public void onBlockPlaced(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player, @Nonnull T te) {
+    super.onBlockPlaced(world, pos, state, player, te);
     if (isEnhanced) {
       world.setBlockState(pos.up(), MachineObject.block_enhanced_combustion_generator_top.getBlockNN().getDefaultState());
     }

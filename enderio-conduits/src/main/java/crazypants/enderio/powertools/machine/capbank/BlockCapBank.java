@@ -232,11 +232,6 @@ public class BlockCapBank extends BlockEio<TileCapBank>
   }
 
   @Override
-  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
-    return false;
-  }
-
-  @Override
   protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
     return openGui(world, pos, entityPlayer, side, baublesToGuiId(BaublesUtil.instance().getBaubles(entityPlayer)));
   }
@@ -319,29 +314,21 @@ public class BlockCapBank extends BlockEio<TileCapBank>
   }
 
   @Override
-  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
-      @Nonnull ItemStack stack) {
-    super.onBlockPlacedBy(world, pos, state, player, stack);
+  public void onBlockPlaced(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
+      @Nonnull TileCapBank te) {
+    super.onBlockPlaced(world, pos, state, player, te);
 
-    TileCapBank cb = getTileEntity(world, pos);
-    if (cb == null) {
-      return;
-    }
-    if (stack.getTagCompound() != null) {
-      cb.readFromItemStack(stack);
-    }
-
-    Collection<TileCapBank> neigbours = NetworkUtil.getNeigbours(cb);
+    Collection<TileCapBank> neigbours = NetworkUtil.getNeigbours(te);
     if (neigbours.isEmpty()) {
       int heading = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
       EnumFacing dir = getDirForHeading(heading);
-      cb.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);
+      te.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);
     } else {
       boolean modifiedDisplayType;
-      modifiedDisplayType = setDisplayToVerticalFillBar(cb, getTileEntity(world, pos.down()));
-      modifiedDisplayType |= setDisplayToVerticalFillBar(cb, getTileEntity(world, pos.up()));
+      modifiedDisplayType = setDisplayToVerticalFillBar(te, getTileEntity(world, pos.down()));
+      modifiedDisplayType |= setDisplayToVerticalFillBar(te, getTileEntity(world, pos.up()));
       if (modifiedDisplayType) {
-        cb.validateDisplayTypes();
+        te.validateDisplayTypes();
       }
     }
 
@@ -388,13 +375,6 @@ public class BlockCapBank extends BlockEio<TileCapBank>
       }
     }
     return super.removedByPlayer(bs, world, pos, player, willHarvest);
-  }
-
-  @Override
-  protected void processDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable TileCapBank te, @Nonnull ItemStack drop) {
-    if (te != null) {
-      te.writeToItemStack(drop);
-    }
   }
 
   @Override

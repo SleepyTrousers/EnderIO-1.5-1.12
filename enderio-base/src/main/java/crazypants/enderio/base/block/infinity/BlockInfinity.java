@@ -93,11 +93,6 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
     return modObject.apply(new BlockItemPaintedBlock(this));
   }
 
-  @Override
-  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
-    return false;
-  }
-
   private final @Nonnull Random rand = new Random();
 
   @Override
@@ -151,7 +146,7 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
   }
 
   @Override
-  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
+  public void onBlockPlaced(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
       @Nonnull ItemStack stack) {
     if (!world.isRemote) {
       world.scheduleBlockUpdate(pos, this, rand.nextInt(40) + 1, 0);

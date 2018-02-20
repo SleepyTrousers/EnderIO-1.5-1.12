@@ -61,6 +61,11 @@ public class HandleThings implements IHandler<Things> {
       super(new HandleThings());
     }
 
+    @Override
+    protected @Nonnull Things makeEmptyValueObject() {
+      return new Things();
+    }
+
   }
 
 }

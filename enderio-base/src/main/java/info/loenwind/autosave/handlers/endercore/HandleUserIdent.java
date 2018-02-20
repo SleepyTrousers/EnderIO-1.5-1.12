@@ -6,10 +6,10 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.UserIdent;
 
 import info.loenwind.autosave.Registry;
-import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import info.loenwind.autosave.handlers.java.HandleArrayList;
@@ -27,8 +27,7 @@ public class HandleUserIdent implements IHandler<UserIdent> {
 
   @Override
   public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull UserIdent object)
-      throws IllegalArgumentException,
-      IllegalAccessException, InstantiationException, NoHandlerFoundException {
+      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     object.saveToNbt(nbt, name);
     return true;
   }
@@ -43,6 +42,11 @@ public class HandleUserIdent implements IHandler<UserIdent> {
 
     public HandleUserIdentArrayList() {
       super(new HandleUserIdent());
+    }
+
+    @Override
+    protected @Nonnull UserIdent makeEmptyValueObject() {
+      return UserIdent.NOBODY;
     }
 
   }

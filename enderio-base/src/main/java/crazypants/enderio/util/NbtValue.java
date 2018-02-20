@@ -45,6 +45,7 @@ public enum NbtValue { // TODO: DONE111
   FILTER_DAMAGE("damageMode"),
   CONDUIT("conduit"),
   CONTENTCOUNT("contentCount"),
+  DATAROOT("data"),
 
   ;
 
