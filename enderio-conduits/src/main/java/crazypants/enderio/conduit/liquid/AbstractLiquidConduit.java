@@ -73,7 +73,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   public RedstoneControlMode getExtractionRedstoneMode(@Nonnull EnumFacing dir) {
     RedstoneControlMode res = extractionModes.get(dir);
     if (res == null) {
-      res = RedstoneControlMode.NEVER;
+      res = RedstoneControlMode.IGNORE;
     }
     return res;
   }
