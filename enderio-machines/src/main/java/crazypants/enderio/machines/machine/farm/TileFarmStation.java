@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
@@ -41,6 +42,7 @@ import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -81,6 +83,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   @Store
   private int lockedSlots = 0x00;
+
+  @Store(value = { NBTAction.SAVE, NBTAction.ITEM }, handler = HandleItemStackNNList.class)
+  private @Nonnull NNList<ItemStack> overflowQueue = new NNList<>();
 
   private final @Nonnull Set<FarmNotification> notification = EnumSet.noneOf(FarmNotification.class);
   private boolean sendNotification = false;
@@ -316,6 +321,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   private boolean isOutputFull() {
+    if (!overflowQueue.isEmpty()) {
+      NNList<ItemStack> old = overflowQueue;
+      overflowQueue = new NNList<>();
+      getFarmer().handleExtraItems(old, pos);
+    }
+    if (FarmConfig.useOutputQueue.get()) {
+      return !overflowQueue.isEmpty();
+    }
     for (FarmSlots slot : FarmSlots.OUTPUTS) {
       ItemStack curStack = slot.get(this);
       if (Prep.isInvalid(curStack) || (!FarmConfig.farmStopOnNoOutputSlots.get() && curStack.getCount() < curStack.getMaxStackSize())) {
@@ -441,4 +454,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   public @Nonnull Set<FarmNotification> getNotification() {
     return notification;
   };
+
+  public void enQueueOverflow(@Nonnull ItemStack stack) {
+    overflowQueue.add(stack);
+  }
+
 }

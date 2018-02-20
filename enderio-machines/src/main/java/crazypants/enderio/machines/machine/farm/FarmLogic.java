@@ -41,6 +41,7 @@ public class FarmLogic implements IFarmer {
 
   private class InsertCallback implements ShortCallback<FarmSlots> {
     private final @Nonnull ItemStack stack;
+    private FarmSlots emptySlot = null;
 
     public InsertCallback(@Nonnull ItemStack stack) {
       this.stack = stack;
@@ -51,9 +52,9 @@ public class FarmLogic implements IFarmer {
       if (slot.isValid(owner, stack)) {
         ItemStack slotStack = slot.get(owner);
         if (Prep.isInvalid(slotStack)) {
-          slot.set(owner, stack.copy());
-          stack.setCount(0);
-          owner.markDirty();
+          if (emptySlot == null) {
+            emptySlot = slot;
+          }
         } else if (ItemUtil.areStackMergable(stack, slotStack) && !ItemUtil.isStackFull(slotStack)) {
           int addable = Math.max(0, Math.min(slotStack.getMaxStackSize(), slot.getInventoryStackLimit(owner)) - slotStack.getCount());
           if (addable >= stack.getCount()) {
@@ -66,6 +67,16 @@ public class FarmLogic implements IFarmer {
             owner.markDirty();
           }
         }
+      }
+      return Prep.isInvalid(stack);
+    }
+
+    @Override
+    public boolean finish() {
+      if (emptySlot != null) {
+        emptySlot.set(owner, stack.copy());
+        stack.setCount(0);
+        owner.markDirty();
       }
       return Prep.isInvalid(stack);
     }
@@ -242,7 +253,11 @@ public class FarmLogic implements IFarmer {
       FarmSlots.OUTPUTS.apply(insertCallback);
     }
     if (drop != null && Prep.isValid(stack)) {
-      Block.spawnAsEntity(getWorld(), drop, stack.copy());
+      if (FarmConfig.useOutputQueue.get()) {
+        owner.enQueueOverflow(stack.copy());
+      } else {
+        Block.spawnAsEntity(getWorld(), drop, stack.copy());
+      }
       stack.setCount(0);
     }
   }

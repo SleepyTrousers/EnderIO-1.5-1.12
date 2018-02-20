@@ -50,4 +50,7 @@ public final class FarmConfig {
   public static final IValue<Boolean> disableFarmNotification = F.make("disableFarmNotification", false, //
       "Disable the notification text above the farm block.");
 
+  public static final IValue<Boolean> useOutputQueue = F.make("useOutputQueue", true, //
+      "If enabled, output overflow will be queued, otherwise it will spill.");
+
 }
