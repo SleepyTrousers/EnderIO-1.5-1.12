@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.TileEntityBase;
 
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.base.EnderIOTab;
@@ -19,10 +20,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -82,6 +85,15 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
   @Override
   public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer playerIn, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
       @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
+    if (playerIn.isCreative()) {
+      TileEntity tileEntity = world.getTileEntity(pos);
+      if (tileEntity instanceof TileEntityBase) {
+        playerIn.sendMessage(new TextComponentString((world.isRemote ? "CLIENT: " : "SERVER: ") + tileEntity.getUpdateTag().toString()));
+        if (!world.isRemote) {
+          playerIn.sendMessage(new TextComponentString("SAVE: " + tileEntity.writeToNBT(new NBTTagCompound()).toString()));
+        }
+      }
+    }
     ItemStack itemStack = playerIn.getHeldItem(hand);
     if (itemStack.getItemDamage() == 0) {
       if (PacketConduitProbe.canCreatePacket(world, pos)) {
