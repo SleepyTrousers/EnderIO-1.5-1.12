@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.integration.tic.TicProxy;
@@ -25,74 +26,111 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
+import slimeknights.tconstruct.TConstruct;
+import slimeknights.tconstruct.shared.TinkerFluids;
+import slimeknights.tconstruct.smeltery.TinkerSmeltery;
+import slimeknights.tconstruct.tools.TinkerModifiers;
+import slimeknights.tconstruct.tools.TinkerTools;
 
 public class TicControl {
 
+  private static boolean doFluids() {
+    return TConstruct.pulseManager.isPulseLoaded(NullHelper.notnull(TinkerSmeltery.PulseId, "TiC is broken"))
+        && TConstruct.pulseManager.isPulseLoaded(NullHelper.notnull(TinkerFluids.PulseId, "TiC is broken"));
+  }
+
+  private static boolean doToolMaterials() {
+    return TConstruct.pulseManager.isPulseLoaded(NullHelper.notnull(TinkerTools.PulseId, "TiC is broken"))
+        && TConstruct.pulseManager.isPulseLoaded(NullHelper.notnull(TinkerModifiers.PulseId, "TiC is broken"));
+  }
+
   public static void preInitBeforeTic(FMLPreInitializationEvent event) {
     TicProxy.register(TicHandler.instance);
-    Glowstone.createFluid();
-    Redstone.createFluid();
-    Ender.createFluid();
-    NNList.of(Alloy.class).apply(new Callback<Alloy>() {
-      @Override
-      public void apply(@Nonnull Alloy alloy) {
-        Metal.createFluid(alloy);
-      }
-    });
+    if (doFluids()) {
+      Glowstone.createFluid();
+      Redstone.createFluid();
+      Ender.createFluid();
+      NNList.of(Alloy.class).apply(new Callback<Alloy>() {
+        @Override
+        public void apply(@Nonnull Alloy alloy) {
+          Metal.createFluid(alloy);
+        }
+      });
+    } else if (doToolMaterials()) {
+      NNList.of(Alloy.class).apply(new Callback<Alloy>() {
+        @Override
+        public void apply(@Nonnull Alloy alloy) {
+          Metal.createMaterial(alloy);
+        }
+      });
+    }
   }
 
   public static void injectBlocks(@Nonnull IForgeRegistry<Block> registry) {
-    registry.register(Glowstone.createFluidBlock());
-    registry.register(Redstone.createFluidBlock());
-    registry.register(Ender.createFluidBlock());
-    NNList.of(Alloy.class).apply(new Callback<Alloy>() {
-      @Override
-      public void apply(@Nonnull Alloy alloy) {
-        registry.register(Metal.createFluidBlock(alloy));
-      }
-    });
+    if (doFluids()) {
+      registry.register(Glowstone.createFluidBlock());
+      registry.register(Redstone.createFluidBlock());
+      registry.register(Ender.createFluidBlock());
+      NNList.of(Alloy.class).apply(new Callback<Alloy>() {
+        @Override
+        public void apply(@Nonnull Alloy alloy) {
+          registry.register(Metal.createFluidBlock(alloy));
+        }
+      });
+    }
   }
 
   public static void initBeforeTic(FMLInitializationEvent event) {
-    NNList.of(Alloy.class).apply(new Callback<Alloy>() {
-      @Override
-      public void apply(@Nonnull Alloy alloy) {
-        Metal.createTraits(alloy);
-      }
-    });
+    if (doToolMaterials()) {
+      NNList.of(Alloy.class).apply(new Callback<Alloy>() {
+        @Override
+        public void apply(@Nonnull Alloy alloy) {
+          Metal.createTraits(alloy);
+        }
+      });
 
-    TicModifiers.register();
+      TicModifiers.register();
+      if (!EnderIO.proxy.isDedicatedServer()) {
+        TicBook.integrate();
+      }
+    }
+
     if (!EnderIO.proxy.isDedicatedServer()) {
-      TicBook.integrate();
       EioBook.integrate();
     }
   }
 
   public static void postInitBeforeTic(FMLPostInitializationEvent event) {
-    Glowstone.registerGlowstoneRecipes();
-    Redstone.registerRedstoneRecipes();
-    Ender.registerEnderRecipes();
+    if (doFluids()) {
+      Glowstone.registerGlowstoneRecipes();
+      Redstone.registerRedstoneRecipes();
+      Ender.registerEnderRecipes();
+    }
   }
 
   public static void postInitAfterTic(FMLPostInitializationEvent event) {
     // this runs after TiC's PostInit because it queries TiC for fluids
-    TicRegistration.registerSmeltings();
-    TicRegistration.registerAlloys();
-    TicRegistration.registerTableCasting();
-    TicRegistration.registerBasinCasting();
+    if (doFluids()) {
+      TicRegistration.registerSmeltings();
+      TicRegistration.registerAlloys();
+      TicRegistration.registerTableCasting();
+      TicRegistration.registerBasinCasting();
+    }
   }
 
   @SideOnly(Side.CLIENT)
   public static void registerRenderers(ModelRegistryEvent event) {
-    Glowstone.registerRenderers();
-    Redstone.registerRenderers();
-    Ender.registerRenderers();
-    NNList.of(Alloy.class).apply(new Callback<Alloy>() {
-      @Override
-      public void apply(@Nonnull Alloy alloy) {
-        Metal.registerRenderers(alloy);
-      }
-    });
+    if (doFluids()) {
+      Glowstone.registerRenderers();
+      Redstone.registerRenderers();
+      Ender.registerRenderers();
+      NNList.of(Alloy.class).apply(new Callback<Alloy>() {
+        @Override
+        public void apply(@Nonnull Alloy alloy) {
+          Metal.registerRenderers(alloy);
+        }
+      });
+    }
   }
 
 }

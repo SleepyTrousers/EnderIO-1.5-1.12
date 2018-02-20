@@ -42,6 +42,17 @@ public class Metal {
     TicMaterials.getData(alloy).stats(TicMaterials.getMaterial(alloy));
   }
 
+  public static void createMaterial(final @Nonnull Alloy alloy) {
+    TicMaterials.setMaterial(alloy, new Material(alloy.getBaseName(), alloy.getColor()));
+    TicMaterials.getMaterial(alloy).addCommonItems(alloy.getOreName());
+    TinkerRegistry.integrate(new MaterialIntegration(TicMaterials.getMaterial(alloy), null, alloy.getOreName()) {
+      @Override
+      public void registerFluidBlock(IForgeRegistry<Block> registry) {
+      };
+    }).preInit(); // preInit needed only for correct mod identification
+    TicMaterials.getData(alloy).stats(TicMaterials.getMaterial(alloy));
+  }
+
   public static Block createFluidBlock(final @Nonnull Alloy alloy) {
     return MoltenMetal.create(TicMaterials.getFluid(alloy), alloy.getColor());
   }
