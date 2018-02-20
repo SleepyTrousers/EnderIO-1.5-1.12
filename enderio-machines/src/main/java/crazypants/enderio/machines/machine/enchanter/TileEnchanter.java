@@ -23,7 +23,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
 @Storable
-public class TileEnchanter extends AbstractMachineEntity implements ISidedInventory {
+public class TileEnchanter extends AbstractMachineEntity implements ISidedInventory { // TODO: caps not iinventory!
 
   @Store(handler = HandleItemStackNNList.class)
   private NNList<ItemStack> inv = new NNList<>(4, ItemStack.EMPTY);

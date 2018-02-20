@@ -82,7 +82,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   }
 
   public final boolean isItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
-    if (Prep.isInvalid(itemstack)) {
+    if (i < 0 || Prep.isInvalid(itemstack) || i >= slotDefinition.getNumSlots()) {
       return false;
     }
     if (slotDefinition.isUpgradeSlot(i)) {
