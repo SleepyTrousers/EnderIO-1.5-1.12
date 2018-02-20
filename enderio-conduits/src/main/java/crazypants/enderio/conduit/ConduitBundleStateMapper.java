@@ -1,6 +1,11 @@
 package crazypants.enderio.conduit;
 
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.Maps;
+
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -9,14 +14,11 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraftforge.client.model.ModelLoader;
 
-import javax.annotation.Nonnull;
-import java.util.Map;
-
 public class ConduitBundleStateMapper extends StateMapperBase {
 
   public static void create() {
     ConduitBundleStateMapper mapper = new ConduitBundleStateMapper();
-    ModelLoader.setCustomStateMapper(ConduitRegistry.getConduitModObjectNN().getBlock(), mapper);
+    ModelLoader.setCustomStateMapper(ConduitRegistry.getConduitModObjectNN().getBlockNN(), mapper);
   }
 
   @Override

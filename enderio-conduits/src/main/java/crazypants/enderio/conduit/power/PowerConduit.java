@@ -80,7 +80,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   @Nonnull
   static ItemStack createItemStackForSubtype(int subtype) {
-    ItemStack result = new ItemStack(item_power_conduit.getItem(), 1, subtype);
+    ItemStack result = new ItemStack(item_power_conduit.getItemNN(), 1, subtype);
     return result;
   }
 
@@ -366,8 +366,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   }
 
   @Override
-  @Nonnull
-  public IConduitNetwork<?, ?> getNetwork() {
+  public @Nullable IConduitNetwork<?, ?> getNetwork() {
     return network;
   }
 
@@ -375,6 +374,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
     this.network = (PowerConduitNetwork) network;
     return true;
+  }
+
+  @Override
+  public void clearNetwork() {
+    this.network = null;
   }
 
   @Override
@@ -423,9 +427,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   public IPowerInterface getExternalPowerReceptor(@Nonnull EnumFacing direction) {
     TileEntity te = bundle.getEntity();
     World world = te.getWorld();
-    if (world == null) {
-      return null;
-    }
     TileEntity test = world.getTileEntity(te.getPos().offset(direction));
     if (test == null) {
       return null;

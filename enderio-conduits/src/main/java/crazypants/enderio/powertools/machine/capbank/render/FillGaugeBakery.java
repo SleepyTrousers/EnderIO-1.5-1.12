@@ -148,64 +148,72 @@ public class FillGaugeBakery {
   }
 
   private void calculateFillLevel() {
-    TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, pos);
-    if (!(tileEntity instanceof TileCapBank)) {
-      localFillLevel = 0;
-      return;
+    if (world != null && pos != null) {
+      TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, pos);
+      if (!(tileEntity instanceof TileCapBank)) {
+        localFillLevel = 0;
+        return;
+      }
+      ICapBankNetwork network = ((TileCapBank) tileEntity).getNetwork();
+      if (!(network instanceof CapBankClientNetwork)) {
+        localFillLevel = 0;
+        return;
+      }
+      ((CapBankClientNetwork) network).requestPowerUpdate(((TileCapBank) tileEntity), 20);
+      double ratio = Math.min(((CapBankClientNetwork) network).getEnergyStoredRatio(), 1);
+      localFillLevel = Math.max(0, Math.min(ratio * (height * 16 - 6) - myOffset * 16, 13) + 3);
     }
-    ICapBankNetwork network = ((TileCapBank) tileEntity).getNetwork();
-    if (!(network instanceof CapBankClientNetwork)) {
-      localFillLevel = 0;
-      return;
-    }
-    ((CapBankClientNetwork) network).requestPowerUpdate(((TileCapBank) tileEntity), 20);
-    double ratio = Math.min(((CapBankClientNetwork) network).getEnergyStoredRatio(), 1);
-    localFillLevel = Math.max(0, Math.min(ratio * (height * 16 - 6) - myOffset * 16, 13) + 3);
   }
 
   private void countNeighbors() {
-    height = 1;
-    myOffset = 0;
+    if (world != null && pos != null) {
+      height = 1;
+      myOffset = 0;
 
-    BlockPos other = pos;
-    while (true) {
-      other = other.up();
-      IBlockState state = world.getBlockState(other);
-      if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType) {
-        break;
+      BlockPos other = pos;
+      while (true) {
+        other = other.up();
+        IBlockState state = world.getBlockState(other);
+        if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType) {
+          break;
+        }
+        IBlockState infrontOfOther = world.getBlockState(other.offset(face));
+        @SuppressWarnings("null")
+        boolean isCovered = infrontOfOther.isSideSolid(world, other.offset(face), face.getOpposite());
+        if (isCovered) {
+          break;
+        }
+        @SuppressWarnings("null")
+        TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, other);
+        if (!(tileEntity instanceof TileCapBank) || ((TileCapBank) tileEntity).getDisplayType(face) != InfoDisplayType.LEVEL_BAR) {
+          break;
+        }
+        height++;
+        connectUp = true;
       }
-      IBlockState infrontOfOther = world.getBlockState(other.offset(face));
-      boolean isCovered = infrontOfOther.isSideSolid(world, other.offset(face), face.getOpposite());
-      if (isCovered) {
-        break;
-      }
-      TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, other);
-      if (!(tileEntity instanceof TileCapBank) || ((TileCapBank) tileEntity).getDisplayType(face) != InfoDisplayType.LEVEL_BAR) {
-        break;
-      }
-      height++;
-      connectUp = true;
-    }
 
-    other = pos;
-    while (true) {
-      other = other.down();
-      IBlockState state = world.getBlockState(other);
-      if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType) {
-        break;
+      other = pos;
+      while (true) {
+        other = other.down();
+        IBlockState state = world.getBlockState(other);
+        if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType) {
+          break;
+        }
+        IBlockState infrontOfOther = world.getBlockState(other.offset(face));
+        @SuppressWarnings("null")
+        boolean isCovered = infrontOfOther.isSideSolid(world, other.offset(face), face.getOpposite());
+        if (isCovered) {
+          break;
+        }
+        @SuppressWarnings("null")
+        TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, other);
+        if (!(tileEntity instanceof TileCapBank) || ((TileCapBank) tileEntity).getDisplayType(face) != InfoDisplayType.LEVEL_BAR) {
+          break;
+        }
+        height++;
+        myOffset++;
+        connectDown = true;
       }
-      IBlockState infrontOfOther = world.getBlockState(other.offset(face));
-      boolean isCovered = infrontOfOther.isSideSolid(world, other.offset(face), face.getOpposite());
-      if (isCovered) {
-        break;
-      }
-      TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, other);
-      if (!(tileEntity instanceof TileCapBank) || ((TileCapBank) tileEntity).getDisplayType(face) != InfoDisplayType.LEVEL_BAR) {
-        break;
-      }
-      height++;
-      myOffset++;
-      connectDown = true;
     }
   }
 

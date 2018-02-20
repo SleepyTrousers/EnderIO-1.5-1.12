@@ -443,8 +443,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   }
 
   @Override
-  public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Entity par1Entity, @Nonnull Explosion explosion) {
-    float resist = getExplosionResistance(par1Entity);
+  public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nullable Entity par1Entity, @Nonnull Explosion explosion) {
+    float resist = super.getExplosionResistance(world, pos, par1Entity, explosion);
     IConduitBundle te = (IConduitBundle) world.getTileEntity(pos);
     return te != null && te.getFacadeType().isHardened() ? resist * 10 : resist;
   }

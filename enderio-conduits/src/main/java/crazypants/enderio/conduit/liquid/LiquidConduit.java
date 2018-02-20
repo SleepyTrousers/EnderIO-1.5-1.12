@@ -270,12 +270,11 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   @Override
   @Nonnull
   public ItemStack createItem() {
-    return new ItemStack(item_liquid_conduit.getItem(), 1, 0);
+    return new ItemStack(item_liquid_conduit.getItemNN(), 1, 0);
   }
 
   @Override
-  @Nonnull
-  public IConduitNetwork<?, ?> getNetwork() {
+  public @Nonnull IConduitNetwork<?, ?> getNetwork() {
     return network;
   }
 
@@ -295,6 +294,12 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
     }
     this.network = (LiquidConduitNetwork) network;
     return true;
+  }
+
+  @Override
+  public void clearNetwork() {
+    this.network = null;
+    // TODO: spill fluid
   }
 
   @Override

@@ -17,10 +17,10 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> {
   private EnumFacing dir;
   private boolean isInput;
   private FluidFilter filter;
-  
-  public PacketFluidFilter() {    
+
+  public PacketFluidFilter() {
   }
-  
+
   public PacketFluidFilter(EnderLiquidConduit eConduit, EnumFacing dir, FluidFilter filter, boolean isInput) {
     super(eConduit.getBundle().getEntity(), eConduit);
     this.dir = dir;
@@ -31,7 +31,7 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> {
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    if(dir != null) {
+    if (dir != null) {
       buf.writeShort(dir.ordinal());
     } else {
       buf.writeShort(-1);
@@ -41,20 +41,22 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> {
     filter.writeToNBT(tag);
     ByteBufUtils.writeTag(buf, tag);
   }
-  
+
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     short ord = buf.readShort();
-    if(ord < 0) {
+    if (ord < 0) {
       dir = null;
     } else {
       dir = EnumFacing.values()[ord];
     }
-    isInput = buf.readBoolean();    
+    isInput = buf.readBoolean();
     NBTTagCompound tag = ByteBufUtils.readTag(buf);
     filter = new FluidFilter();
-    filter.readFromNBT(tag);
+    if (tag != null) {
+      filter.readFromNBT(tag);
+    }
   }
 
   public static class Handler implements IMessageHandler<PacketFluidFilter, IMessage> {

@@ -1,7 +1,6 @@
 package crazypants.enderio.conduit.item;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.ITabPanel;
-import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
@@ -40,13 +38,11 @@ import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.item.ItemSettings;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -144,7 +140,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     for (Entry<EnumFacing, IItemFilter> entry : sourceFilters.entrySet()) {
       if (entry.getValue() != null) {
         IItemFilter f = entry.getValue();
-        ItemStack up = new ItemStack(itemItemFilter.getItem(), 1, filterMeta);
+        ItemStack up = new ItemStack(itemItemFilter.getItemNN(), 1, filterMeta);
         FilterRegistry.writeFilterToStack(f, up);
         converted.put(entry.getKey(), up);
       }
@@ -433,9 +429,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public IItemHandler getExternalInventory(@Nonnull EnumFacing direction) {
     World world = getBundle().getBundleworld();
-    if (world == null) {
-      return null;
-    }
     BlockPos loc = getBundle().getLocation().offset(direction);
     return ItemTools.getExternalInventory(world, loc, direction.getOpposite());
   }
@@ -560,12 +553,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   @Nonnull
   public ItemStack createItem() {
-    ItemStack result = new ItemStack(item_item_conduit.getItem(), 1, metaData);
+    ItemStack result = new ItemStack(item_item_conduit.getItemNN(), 1, metaData);
     return result;
   }
 
   @Override
-  public AbstractConduitNetwork<?, ?> getNetwork() {
+  public @Nullable AbstractConduitNetwork<?, ?> getNetwork() {
     return network;
   }
 
@@ -573,6 +566,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
     this.network = (ItemConduitNetwork) network;
     return true;
+  }
+
+  @Override
+  public void clearNetwork() {
+    this.network = null;
   }
 
   // -------------------------------------------

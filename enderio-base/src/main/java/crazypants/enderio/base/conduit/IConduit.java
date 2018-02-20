@@ -1,8 +1,16 @@
 package crazypants.enderio.base.conduit;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import net.minecraft.block.Block;
@@ -18,13 +26,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
 public interface IConduit extends ICapabilityProvider {
 
   // stuff that would be on the class, not the object if there were interfaces for classes...
@@ -32,8 +33,10 @@ public interface IConduit extends ICapabilityProvider {
   /**
    * Creates the gui for the conduit within the external connection gui
    *
-   * @param gui the gui to construct the panel inside of
-   * @param con the conduit that the gui references
+   * @param gui
+   *          the gui to construct the panel inside of
+   * @param con
+   *          the conduit that the gui references
    * @return the panel for the conduit's information on the gui
    */
   @SideOnly(Side.CLIENT)
@@ -98,7 +101,8 @@ public interface IConduit extends ICapabilityProvider {
   /**
    * Sets the conduit's state to active. Called when the conduit is operating
    *
-   * @param active true if the conduit is currently doing something
+   * @param active
+   *          true if the conduit is currently doing something
    */
   void setActive(boolean active);
 
@@ -111,7 +115,8 @@ public interface IConduit extends ICapabilityProvider {
   /**
    * Sets the conduit's bundle
    *
-   * @param tileConduitBundle bundle that this conduit belongs to
+   * @param tileConduitBundle
+   *          bundle that this conduit belongs to
    */
   void setBundle(@Nullable IConduitBundle tileConduitBundle);
 
@@ -148,8 +153,10 @@ public interface IConduit extends ICapabilityProvider {
   /**
    * Determines if this conduit can connect to another conduit
    *
-   * @param direction direction of the conduit to connect to
-   * @param conduit   conduit to connect to
+   * @param direction
+   *          direction of the conduit to connect to
+   * @param conduit
+   *          conduit to connect to
    * @return true if the conduit can connect in that direction and if the conduit is of the same or another valid type
    */
   boolean canConnectToConduit(@Nonnull EnumFacing direction, @Nonnull IConduit conduit);
@@ -163,7 +170,8 @@ public interface IConduit extends ICapabilityProvider {
   /**
    * Checks if the conduit has a connection in the direction given
    *
-   * @param dir direction to check for connection
+   * @param dir
+   *          direction to check for connection
    * @return true if the conduit has a connection in the given direction
    */
   default boolean containsConduitConnection(@Nonnull EnumFacing dir) {
@@ -173,14 +181,16 @@ public interface IConduit extends ICapabilityProvider {
   /**
    * Called when a conduit has a connection added
    *
-   * @param fromDirection the direction of the connection
+   * @param fromDirection
+   *          the direction of the connection
    */
   void conduitConnectionAdded(@Nonnull EnumFacing fromDirection);
 
   /**
    * Called when a conduit has a connection removed
    *
-   * @param fromDirection the direction that the connection was removed from
+   * @param fromDirection
+   *          the direction that the connection was removed from
    */
   void conduitConnectionRemoved(@Nonnull EnumFacing fromDirection);
 
@@ -191,25 +201,33 @@ public interface IConduit extends ICapabilityProvider {
 
   /**
    * @return the network of the conduit
-   * @throws NullPointerException
    */
+  @Nullable
   IConduitNetwork<?, ?> getNetwork() throws NullPointerException;
 
   /**
    * Sets the network of this conduit to a new network. Called when the conduit is connected to a new network
    *
-   * @param network the network to make the conduit a part of
+   * @param network
+   *          the network to make the conduit a part of
    * @return true if a new network is successfully set
    */
   boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network);
+
+  /**
+   * Unsets the network of this conduit.
+   */
+  void clearNetwork();
 
   // External Connections
 
   /**
    * Checks if the conduit can connect to non-conduit blocks
    *
-   * @param direction            direction of the non-conduit block
-   * @param ignoreConnectionMode true if the conduit should connect regardless of the block
+   * @param direction
+   *          direction of the non-conduit block
+   * @param ignoreConnectionMode
+   *          true if the conduit should connect regardless of the block
    * @return true if the conduit can connect
    */
   boolean canConnectToExternal(@Nonnull EnumFacing direction, boolean ignoreConnectionMode);
@@ -223,7 +241,8 @@ public interface IConduit extends ICapabilityProvider {
   /**
    * Checks if the conduit is connected to a non-conduit block in the given direction
    *
-   * @param dir the direction to check for an external connection
+   * @param dir
+   *          the direction to check for an external connection
    * @return true if the given direction is an external connection
    */
   default boolean containsExternalConnection(@Nonnull EnumFacing dir) {
@@ -233,21 +252,24 @@ public interface IConduit extends ICapabilityProvider {
   /**
    * Called when a connection to a non-conduit block is added
    *
-   * @param fromDirection the direction of the connection
+   * @param fromDirection
+   *          the direction of the connection
    */
   void externalConnectionAdded(@Nonnull EnumFacing fromDirection);
 
   /**
    * Called whan a connection to a non-conduit block is removed
    *
-   * @param fromDirection the direction of the connection
+   * @param fromDirection
+   *          the direction of the connection
    */
   void externalConnectionRemoved(@Nonnull EnumFacing fromDirection);
 
   /**
    * Checks if the conduit has a connection in the given direction
    *
-   * @param dir the direction to check for a connection
+   * @param dir
+   *          the direction to check for a connection
    * @return true if the conduit has a connection in that direction
    */
   boolean isConnectedTo(@Nonnull EnumFacing dir);
@@ -255,7 +277,8 @@ public interface IConduit extends ICapabilityProvider {
   /**
    * Gets the connection mode in the given direction
    *
-   * @param dir the direction of the connection
+   * @param dir
+   *          the direction of the connection
    * @return the connection mode (IN, OUT, IN_OUT, DISABLED or NONE)
    */
   @Nonnull
@@ -264,15 +287,18 @@ public interface IConduit extends ICapabilityProvider {
   /**
    * Sets the connection mode of the conduit in the given direction
    *
-   * @param dir  direction of the connection
-   * @param mode the connection mode (IN, OUT, IN_OUT, DISABLED or NONE)
+   * @param dir
+   *          direction of the connection
+   * @param mode
+   *          the connection mode (IN, OUT, IN_OUT, DISABLED or NONE)
    */
   void setConnectionMode(@Nonnull EnumFacing dir, @Nonnull ConnectionMode mode);
 
   /**
    * Checks if this conduit can use the given connection mode
    *
-   * @param mode connection mode (IN, OUT, IN_OUT, DISABLED or NONE) to check
+   * @param mode
+   *          connection mode (IN, OUT, IN_OUT, DISABLED or NONE) to check
    * @return true if the conduit can use the given connection mode
    */
   boolean supportsConnectionMode(@Nonnull ConnectionMode mode);
@@ -280,7 +306,8 @@ public interface IConduit extends ICapabilityProvider {
   /**
    * Gets the next connection mode in the cycle
    *
-   * @param dir the direction of the connection for getting its connection mode
+   * @param dir
+   *          the direction of the connection for getting its connection mode
    * @return next connection mode in the list
    */
   @Nonnull
@@ -291,7 +318,8 @@ public interface IConduit extends ICapabilityProvider {
   /**
    * Gets the previous connection mode in the cycle
    *
-   * @param dir the direction of the connection for getting its connection mode
+   * @param dir
+   *          the direction of the connection for getting its connection mode
    * @return previous connection mode in the list
    */
   @Nonnull

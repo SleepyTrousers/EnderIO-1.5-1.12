@@ -38,11 +38,11 @@ public class BlockStateWrapperConduitBundle extends BlockStateWrapperBase {
     return r + "]";
   }
 
-  public BlockStateWrapperConduitBundle(IBlockState state, IBlockAccess world, BlockPos pos, IBlockRenderMapper renderMapper) {
+  public BlockStateWrapperConduitBundle(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, IBlockRenderMapper renderMapper) {
     super(state, world, pos, renderMapper);
   }
 
-  public BlockStateWrapperConduitBundle(BlockStateWrapperBase parent, IBlockState state) {
+  public BlockStateWrapperConduitBundle(@Nonnull BlockStateWrapperBase parent, @Nonnull IBlockState state) {
     super(parent, state);
   }
 

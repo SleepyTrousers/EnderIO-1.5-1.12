@@ -101,8 +101,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  @Nonnull
-  public IConduitNetwork<IRedstoneConduit, IRedstoneConduit> getNetwork() {
+  public @Nullable IConduitNetwork<IRedstoneConduit, IRedstoneConduit> getNetwork() {
     return network;
   }
 
@@ -110,6 +109,11 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
     this.network = (RedstoneConduitNetwork) network;
     return true;
+  }
+
+  @Override
+  public void clearNetwork() {
+    this.network = null;
   }
 
   @Override

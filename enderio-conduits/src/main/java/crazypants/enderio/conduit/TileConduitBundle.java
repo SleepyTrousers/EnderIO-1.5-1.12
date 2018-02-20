@@ -802,7 +802,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public String toString() {
-    return world == null ? super.toString() : world.isRemote ? toStringC(this) : toStringS(this);
+    return !hasWorld() ? super.toString() : world.isRemote ? toStringC(this) : toStringS(this);
   }
 
   @SideOnly(Side.CLIENT)

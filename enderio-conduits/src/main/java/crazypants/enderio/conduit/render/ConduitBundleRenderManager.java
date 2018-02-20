@@ -19,20 +19,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ConduitBundleRenderManager {
 
-  public static final ConduitBundleRenderManager instance = new ConduitBundleRenderManager();
+  public static final @Nonnull ConduitBundleRenderManager instance = new ConduitBundleRenderManager();
 
-  private final ConduitBundleRenderer cbr = new ConduitBundleRenderer();
+  private final @Nonnull ConduitBundleRenderer cbr = new ConduitBundleRenderer();
 
-  public static final TextureSupplier connectorIconExternal = TextureRegistry.registerTexture("blocks/conduit_connector");
+  public static final @Nonnull TextureSupplier connectorIconExternal = TextureRegistry.registerTexture("blocks/conduit_connector");
 
-  public static final TextureSupplier connectorIcon = TextureRegistry.registerTexture("blocks/conduit_connector"); // TODO: is this even used?
+  public static final @Nonnull TextureSupplier connectorIcon = TextureRegistry.registerTexture("blocks/conduit_connector"); // TODO: is this even used?
 
-  public static final TextureSupplier wireFrameIcon = TextureRegistry.registerTexture("blocks/wire_frame");
+  public static final @Nonnull TextureSupplier wireFrameIcon = TextureRegistry.registerTexture("blocks/wire_frame");
 
   public void init(FMLPreInitializationEvent event) {
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
   }
-  
+
   public void init(FMLPostInitializationEvent event) {
     for (ConduitInfo conduitInfo : ConduitRegistry.getAll()) {
       for (IConduitRenderer renderer : conduitInfo.getRenderers()) {
@@ -45,7 +45,7 @@ public class ConduitBundleRenderManager {
     return (data == ConduitConnectorType.EXTERNAL ? connectorIconExternal : connectorIcon).get(TextureAtlasSprite.class);
   }
 
-  public TextureAtlasSprite getWireFrameIcon() {
+  public @Nonnull TextureAtlasSprite getWireFrameIcon() {
     return wireFrameIcon.get(TextureAtlasSprite.class);
   }
 

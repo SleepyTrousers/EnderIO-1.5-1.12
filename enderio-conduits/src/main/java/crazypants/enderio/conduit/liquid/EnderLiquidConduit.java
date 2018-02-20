@@ -20,6 +20,7 @@ import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.IConduitComponent;
+import crazypants.enderio.util.Prep;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -43,7 +44,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   // TODO Lang
 
   public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_ender");
-  public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core_ender"); 
+  public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core_ender");
   public static final TextureSupplier ICON_IN_OUT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_in_out");
 
   private EnderLiquidConduitNetwork network;
@@ -55,44 +56,45 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Override
   @Nonnull
   public ItemStack createItem() {
-    return new ItemStack(item_liquid_conduit.getItem(), 1, 2);
+    return new ItemStack(item_liquid_conduit.getItemNN(), 1, 2);
   }
 
   @Override
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
-    if(player.getHeldItem(hand) == null) {
+    if (Prep.isInvalid(player.getHeldItem(hand))) {
       return false;
     }
 
-    if(ToolUtil.isToolEquipped(player, hand)) {
+    if (ToolUtil.isToolEquipped(player, hand)) {
 
-      if(!getBundle().getEntity().getWorld().isRemote) {
+      if (!getBundle().getEntity().getWorld().isRemote) {
 
-        if(res != null && res.component != null) {
+        final CollidableComponent component = res.component;
+        if (component != null) {
 
-          EnumFacing connDir = res.component.dir;
+          EnumFacing connDir = component.dir;
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
 
-          if(connDir == null || connDir == faceHit) {
+          if (connDir == null || connDir == faceHit) {
 
-            if(getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
+            if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
               return true;
             }
 
             BlockPos pos = getBundle().getLocation().offset(faceHit);
             ILiquidConduit n = ConduitUtil.getConduit(getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), ILiquidConduit.class);
-            if(n == null) {
+            if (n == null) {
               return false;
             }
-            if(!(n instanceof EnderLiquidConduit)) {
+            if (!(n instanceof EnderLiquidConduit)) {
               return false;
             }
             return ConduitUtil.connectConduits(this, faceHit);
-          } else if(containsExternalConnection(connDir)) {
+          } else if (containsExternalConnection(connDir)) {
             // Toggle extraction mode
             setConnectionMode(connDir, getNextConnectionMode(connDir));
-          } else if(containsConduitConnection(connDir)) {
+          } else if (containsConduitConnection(connDir)) {
             ConduitUtil.disconnectConduits(this, connDir);
 
           }
@@ -104,19 +106,19 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   }
 
   @Override
-  public IConduitNetwork<?, ?> getNetwork() {
+  public @Nullable IConduitNetwork<?, ?> getNetwork() {
     return network;
   }
 
   public FluidFilter getFilter(@Nonnull EnumFacing dir, boolean isInput) {
-    if(isInput) {
+    if (isInput) {
       return inputFilters.get(dir);
     }
     return outputFilters.get(dir);
   }
 
   public void setFilter(@Nonnull EnumFacing dir, @Nonnull FluidFilter filter, boolean isInput) {
-    if(isInput) {
+    if (isInput) {
       inputFilters.put(dir, filter);
     } else {
       outputFilters.put(dir, filter);
@@ -125,7 +127,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   @Override
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
-    if(!(network instanceof EnderLiquidConduitNetwork)) {
+    if (!(network instanceof EnderLiquidConduitNetwork)) {
       return false;
     }
     this.network = (EnderLiquidConduitNetwork) network;
@@ -136,15 +138,20 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     return true;
   }
 
-  //--------------------------------
+  @Override
+  public void clearNetwork() {
+    this.network = null;
+  }
+
+  // --------------------------------
   // TEXTURES
-  //--------------------------------
+  // --------------------------------
 
   @SideOnly(Side.CLIENT)
   @Override
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
-    if(component.dir ==null) {
+    if (component.dir == null) {
       return ICON_CORE_KEY.get(TextureAtlasSprite.class);
     }
     return ICON_KEY.get(TextureAtlasSprite.class);
@@ -157,7 +164,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForOutputMode() {
-    return AdvancedLiquidConduit.ICON_INSERT_KEY.get(TextureAtlasSprite.class);    
+    return AdvancedLiquidConduit.ICON_INSERT_KEY.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
@@ -166,22 +173,22 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   }
 
   @Override
-  public TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+  public @Nonnull TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     return null;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
+  public @Nonnull Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     return null;
   }
 
   @Override
   public boolean canConnectToConduit(@Nonnull EnumFacing direction, @Nonnull IConduit con) {
-    if(!super.canConnectToConduit(direction, con)) {
+    if (!super.canConnectToConduit(direction, con)) {
       return false;
     }
-    if(!(con instanceof EnderLiquidConduit)) {
+    if (!(con instanceof EnderLiquidConduit)) {
       return false;
     }
     return true;
@@ -192,7 +199,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     super.setConnectionMode(dir, mode);
     refreshConnections(dir);
   }
-  
+
   @Override
   public void setExtractionRedstoneMode(@Nonnull RedstoneControlMode mode, @Nonnull EnumFacing dir) {
     super.setExtractionRedstoneMode(mode, dir);
@@ -200,7 +207,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   }
 
   private void refreshConnections(@Nonnull EnumFacing dir) {
-    if(network == null) {
+    if (network == null) {
       return;
     }
     network.connectionChanged(this, dir);
@@ -221,30 +228,30 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Override
   public void updateEntity(@Nonnull World world) {
     super.updateEntity(world);
-    if(world.isRemote) {
+    if (world.isRemote) {
       return;
     }
     doExtract();
   }
 
-  private void doExtract() {    
-    if(!hasExtractableMode()) {
+  private void doExtract() {
+    if (!hasExtractableMode()) {
       return;
     }
-    if(network == null) {
+    if (network == null) {
       return;
     }
 
     // assume failure, reset to 0 if we do extract
     ticksSinceFailedExtract++;
-    if(ticksSinceFailedExtract > 25 && ticksSinceFailedExtract % 10 != 0) {
+    if (ticksSinceFailedExtract > 25 && ticksSinceFailedExtract % 10 != 0) {
       // after 25 ticks of failing, only check every 10 ticks
       return;
     }
 
     for (EnumFacing dir : externalConnections) {
-      if(autoExtractForDir(dir)) {
-        if(network.extractFrom(this, dir)) {
+      if (autoExtractForDir(dir)) {
+        if (network.extractFrom(this, dir)) {
           ticksSinceFailedExtract = 0;
         }
       }
@@ -279,11 +286,11 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   // ---------- End ------------------------------
 
-  //Fluid API
+  // Fluid API
 
   @Override
   public boolean canFill(EnumFacing from, FluidStack fluid) {
-    if(network == null) {
+    if (network == null) {
       return false;
     }
     return getConnectionMode(from).acceptsInput();
@@ -293,7 +300,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   public boolean canDrain(EnumFacing from, FluidStack fluid) {
     return false;
   }
-  
+
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     super.readTypeSettings(dir, dataRoot);
@@ -330,9 +337,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
     for (Entry<EnumFacing, FluidFilter> entry : inputFilters.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         FluidFilter f = entry.getValue();
-        if(f != null && !f.isDefault()) {
+        if (f != null && !f.isDefault()) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);
           nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
@@ -340,9 +347,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
       }
     }
     for (Entry<EnumFacing, FluidFilter> entry : outputFilters.entrySet()) {
-      if(entry.getValue() != null) {
+      if (entry.getValue() != null) {
         FluidFilter f = entry.getValue();
-        if(f != null && !f.isDefault()) {
+        if (f != null && !f.isDefault()) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);
           nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
@@ -356,21 +363,21 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     super.readFromNBT(nbtRoot);
     for (EnumFacing dir : EnumFacing.VALUES) {
       String key = "inFilts." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
         FluidFilter f = new FluidFilter();
         f.readFromNBT(filterTag);
-        if(!f.isEmpty()) {
+        if (!f.isEmpty()) {
           inputFilters.put(dir, f);
         }
       }
-      
+
       key = "outFilts." + dir.name();
-      if(nbtRoot.hasKey(key)) {
+      if (nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
         FluidFilter f = new FluidFilter();
         f.readFromNBT(filterTag);
-        if(!f.isEmpty()) {
+        if (!f.isEmpty()) {
           outputFilters.put(dir, f);
         }
       }
@@ -388,23 +395,20 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Nullable
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-    {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) new ConnectionEnderLiquidSide(facing);
     }
     return null;
   }
 
-  protected class ConnectionEnderLiquidSide extends ConnectionLiquidSide
-  {
+  protected class ConnectionEnderLiquidSide extends ConnectionLiquidSide {
     public ConnectionEnderLiquidSide(EnumFacing side) {
       super(side);
     }
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-      if (canFill(side, resource))
-      {
+      if (canFill(side, resource)) {
         return network.fillFrom(EnderLiquidConduit.this, side, resource, doFill);
       }
       return 0;
@@ -412,7 +416,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
     @Override
     public IFluidTankProperties[] getTankProperties() {
-      if(network == null) {
+      if (network == null) {
         return new FluidTankProperties[0];
       }
       return network.getTankProperties(EnderLiquidConduit.this, side);

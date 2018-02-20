@@ -102,11 +102,11 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
   @Override
   @Nonnull
   public ItemStack createItem() {
-    return new ItemStack(item_liquid_conduit.getItem(), 1, 1);
+    return new ItemStack(item_liquid_conduit.getItemNN(), 1, 1);
   }
 
   @Override
-  public AbstractConduitNetwork<?, ?> getNetwork() {
+  public @Nullable AbstractConduitNetwork<?, ?> getNetwork() {
     return network;
   }
 
@@ -127,6 +127,12 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
     this.network = n;
     return true;
 
+  }
+
+  @Override
+  public void clearNetwork() {
+    this.network = null;
+    // TODO: Spill fluid
   }
 
   @Override
@@ -208,7 +214,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
   }
 
   @Override
-  public TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+  public @Nonnull TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     if (isActive() && tank.containsValidLiquid()) {
       return RenderUtil.getStillTexture(tank.getFluid());
     }
@@ -217,7 +223,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
+  public @Nonnull Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     if (isActive() && tank.containsValidLiquid()) {
       int color = tank.getFluid().getFluid().getColor(tank.getFluid());
       return new Vector4f((color >> 16 & 0xFF) / 255d, (color >> 8 & 0xFF) / 255d, (color & 0xFF) / 255d, 1);

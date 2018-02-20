@@ -2,7 +2,7 @@ package crazypants.enderio.powertools.config;
 
 import java.io.File;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.event.ConfigFileChangedEvent;
 import com.enderio.core.common.util.NullHelper;
@@ -20,13 +20,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIOPowerTools.MODID)
 public class ConfigHandler {
 
+  @SuppressWarnings("null")
   public static Configuration config;
 
-  public static @Nonnull File getConfigDirectory() {
+  public static File getConfigDirectory() {
     return NullHelper.notnull(getConfigDirectoryRaw(), EnderIO.MOD_NAME + " configuration failed");
   }
 
-  public static File getConfigDirectoryRaw() {
+  public static @Nullable File getConfigDirectoryRaw() {
     return crazypants.enderio.base.config.Config.configDirectory;
   }
 

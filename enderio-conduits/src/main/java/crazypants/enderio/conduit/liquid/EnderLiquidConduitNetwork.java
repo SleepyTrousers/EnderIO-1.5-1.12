@@ -43,7 +43,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
   public boolean extractFrom(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
     NetworkTank tank = getTank(con, conDir);
-    if (tank == null || !tank.isValid()) {
+    if (!tank.isValid()) {
       return false;
     }
     FluidStack drained = tank.externalTank.getAvailableFluid();
@@ -87,7 +87,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
       filling = true;
 
-      if (resource == null || tank == null || !matchedFilter(resource, tank.con, tank.conDir, true)) {
+      if (resource == null || !matchedFilter(resource, tank.con, tank.conDir, true)) {
         return 0;
       }
       resource = resource.copy();
@@ -115,7 +115,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
   }
 
   private boolean matchedFilter(FluidStack drained, @Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir, boolean isInput) {
-    if (drained == null || con == null || conDir == null) {
+    if (drained == null) {
       return false;
     }
     FluidFilter filter = con.getFilter(conDir, isInput);
@@ -202,13 +202,13 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
   static class NetworkTank {
 
-    EnderLiquidConduit con;
+    final @Nonnull EnderLiquidConduit con;
     // TODO Confirm dir necessity
-    EnumFacing conDir;
-    IFluidWrapper externalTank;
-    EnumFacing tankDir;
-    BlockPos conduitLoc;
-    boolean acceptsOuput;
+    final @Nonnull EnumFacing conDir;
+    final IFluidWrapper externalTank;
+    final @Nonnull EnumFacing tankDir;
+    final @Nonnull BlockPos conduitLoc;
+    final boolean acceptsOuput;
 
     public NetworkTank(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
       this.con = con;
@@ -227,8 +227,8 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     public int hashCode() {
       final int prime = 31;
       int result = 1;
-      result = prime * result + ((conDir == null) ? 0 : conDir.hashCode());
-      result = prime * result + ((conduitLoc == null) ? 0 : conduitLoc.hashCode());
+      result = prime * result + conDir.hashCode();
+      result = prime * result + conduitLoc.hashCode();
       return result;
     }
 
@@ -247,11 +247,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       if (conDir != other.conDir) {
         return false;
       }
-      if (conduitLoc == null) {
-        if (other.conduitLoc != null) {
-          return false;
-        }
-      } else if (!conduitLoc.equals(other.conduitLoc)) {
+      if (!conduitLoc.equals(other.conduitLoc)) {
         return false;
       }
       return true;

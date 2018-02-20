@@ -47,8 +47,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduitBundle> {
 
-  private final List<IConduitRenderer> conduitRenderers = new ArrayList<IConduitRenderer>();
-  private final DefaultConduitRenderer dcr = new DefaultConduitRenderer();
+  private final @Nonnull List<IConduitRenderer> conduitRenderers = new ArrayList<IConduitRenderer>();
+  private final @Nonnull DefaultConduitRenderer dcr = new DefaultConduitRenderer();
 
   public ConduitBundleRenderer() {
   }
@@ -112,7 +112,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
   // ------------ Block Model building
 
-  public List<BakedQuad> getGeneralQuads(IBlockStateWrapper state, BlockRenderLayer layer) {
+  public @Nonnull List<BakedQuad> getGeneralQuads(@Nonnull IBlockStateWrapper state, BlockRenderLayer layer) {
 
     if (layer != null && layer != BlockRenderLayer.CUTOUT) {
       return Collections.emptyList();
@@ -250,7 +250,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
   }
 
-  private void addWireBounds(List<BoundingBox> wireBounds, CollidableComponent component) {
+  private void addWireBounds(@Nonnull List<BoundingBox> wireBounds, @Nonnull CollidableComponent component) {
     if (component.dir != null) {
       double sx = component.dir.getFrontOffsetX() != 0 ? 1 : 0.7;
       double sy = component.dir.getFrontOffsetY() != 0 ? 1 : 0.7;
@@ -261,7 +261,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
   }
 
-  private void addQuadsForExternalConnection(EnumFacing dir, List<BakedQuad> quads) {
+  private void addQuadsForExternalConnection(@Nonnull EnumFacing dir, @Nonnull List<BakedQuad> quads) {
     TextureAtlasSprite tex = ConduitBundleRenderManager.instance.getConnectorIcon(ConduitConnectorType.EXTERNAL);
     BoundingBox[] bbs = ConduitGeometryUtil.instance.getExternalConnectorBoundingBoxes(dir);
     for (BoundingBox bb : bbs) {
@@ -269,7 +269,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
   }
 
-  public IConduitRenderer getRendererForConduit(IConduit conduit) {
+  public @Nonnull IConduitRenderer getRendererForConduit(@Nonnull IConduit conduit) {
     for (IConduitRenderer renderer : conduitRenderers) {
       if (renderer.isRendererForConduit(conduit)) {
         return renderer;

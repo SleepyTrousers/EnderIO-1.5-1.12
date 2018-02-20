@@ -72,10 +72,11 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> im
       TileEntity te = tile.getEntity();
       Collection<T> connections = ConduitUtil.getConnectedConduits(world, te.getPos(), getBaseConduitType());
       for (T con : connections) {
-        if (con.getNetwork() == null) {
+        final IConduitNetwork<?, ?> network = con.getNetwork();
+        if (network == null) {
           setNetwork(world, con.getBundle());
-        } else if (con.getNetwork() != this) {
-          con.getNetwork().destroyNetwork();
+        } else if (network != this) {
+          network.destroyNetwork();
           setNetwork(world, con.getBundle());
         }
       }
@@ -127,7 +128,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> im
       final IConduitBundle oldBundle = oldConduit.getBundle();
       final TileEntity oldTe = oldBundle.getEntity();
       if (oldTe.isInvalid() || !oldTe.hasWorld()) {
-        oldConduit.setNetwork(null);
+        oldConduit.clearNetwork();
         continue; // bad conduit, skip it
       }
       // Step 2.2b: Check if the target position is loaded
@@ -135,12 +136,12 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> im
       final BlockPos oldPos = oldTe.getPos();
       if (!oldWorld.isBlockLoaded(oldPos)) {
         Log.info("Removed unloaded but valid conduit from network: " + oldConduit);
-        oldConduit.setNetwork(null);
+        oldConduit.clearNetwork();
         continue; // bad conduit, skip it
       }
       // Step 2.3: Check if the old conduit's TE matches what its world has
       if (oldWorld.getTileEntity(oldPos) != oldTe) {
-        oldConduit.setNetwork(null);
+        oldConduit.clearNetwork();
         continue; // bad conduit, skip it
       }
       // Step 2.4: Check if the new conduit is for the same position as the old. This should not happen, as the new conduit should have been gotten from the
@@ -162,7 +163,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> im
   @Override
   public void destroyNetwork() {
     for (I con : conduits) {
-      con.setNetwork(null);
+      con.clearNetwork();
     }
     conduits.clear();
     ServerTickHandler.removeListener(this);

@@ -22,12 +22,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TextureRegistry {
 
   public static interface TextureSupplier {
+    @Nonnull
     <T extends Object> T get(@Nonnull Class<T> clazz);
   }
 
-  private static final TextureSupplier noSupplier = new TextureSupplier() {
+  private static final @Nonnull TextureSupplier noSupplier = new TextureSupplier() {
+    @SuppressWarnings("null")
     @Override
+    @Nonnull
     public <T> T get(@Nonnull Class<T> clazz) {
+      Log.error("Client side method TextureSupplier.get() called on server!");
       return null;
     }
   };
@@ -39,7 +43,7 @@ public class TextureRegistry {
     protected void init() {
     }
 
-    public TextureSupplier registerTexture(final @Nonnull String location, boolean prependDomain) {
+    public @Nonnull TextureSupplier registerTexture(final @Nonnull String location, boolean prependDomain) {
       return noSupplier;
     }
 
@@ -71,7 +75,7 @@ public class TextureRegistry {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureSupplier registerTexture(final @Nonnull String location, boolean prependModID) {
+    public @Nonnull TextureSupplier registerTexture(final @Nonnull String location, boolean prependModID) {
       String key = location;
       if (prependModID) {
         key = EnderIO.DOMAIN + ":" + location;
@@ -83,16 +87,18 @@ public class TextureRegistry {
       return new TextureSupplier() {
         @SuppressWarnings("unchecked")
         @Override
+        @Nonnull
         public <T> T get(@Nonnull Class<T> clazz) {
           if (clazz == TextureAtlasSprite.class) {
-            if (sprites.get(keyF) != null) {
-              return (T) sprites.get(keyF);
+            final TextureAtlasSprite sprite = sprites.get(keyF);
+            if (sprite != null) {
+              return (T) sprite;
             } else {
               Log.error("Missing texture: " + keyF);
               return (T) RenderUtil.getMissingSprite();
             }
           } else {
-            return null;
+            throw new UnsupportedOperationException("TextureSupplier can only supply TextureAtlasSprite");
           }
         }
       };
@@ -101,11 +107,11 @@ public class TextureRegistry {
 
   private static TextureRegistryServer instance;
 
-  public static TextureSupplier registerTexture(final @Nonnull String location) {
+  public static @Nonnull TextureSupplier registerTexture(final @Nonnull String location) {
     return registerTexture(location, true);
   }
 
-  public static TextureSupplier registerTexture(final @Nonnull String location, boolean prependDomain) {
+  public static @Nonnull TextureSupplier registerTexture(final @Nonnull String location, boolean prependDomain) {
     if (instance == null) {
       instance = new TextureRegistryClient();
       instance.init();

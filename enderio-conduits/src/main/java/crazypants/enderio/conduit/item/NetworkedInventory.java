@@ -32,24 +32,24 @@ public class NetworkedInventory implements INetworkedInventory {
   private static final boolean SIMULATE = true;
   private static final boolean EXECUTE = false;
 
-  private IItemConduit con;
-  private EnumFacing conDir;
-  private BlockPos location;
-  private EnumFacing inventorySide;
+  private final @Nonnull IItemConduit con;
+  private final @Nonnull EnumFacing conDir;
+  private final @Nonnull BlockPos location;
+  private final @Nonnull EnumFacing inventorySide;
 
-  private List<Target> sendPriority = new ArrayList<Target>();
-  RoundRobinIterator<Target> rrIter = new RoundRobinIterator<Target>(sendPriority);
+  private final @Nonnull List<Target> sendPriority = new ArrayList<Target>();
+  private final @Nonnull RoundRobinIterator<Target> rrIter = new RoundRobinIterator<Target>(sendPriority);
 
   private int extractFromSlot = -1;
 
-  int tickDeficit;
+  private int tickDeficit;
 
   // TODO Inventory
   // boolean inventoryPanel = false;
 
-  private World world;
-  private ItemConduitNetwork network;
-  private String invName;
+  private final @Nonnull World world;
+  private final @Nonnull ItemConduitNetwork network;
+  private final @Nonnull String invName;
 
   NetworkedInventory(@Nonnull ItemConduitNetwork network, @Nonnull IItemConduit con, @Nonnull EnumFacing conDir, @Nonnull IItemHandler inv,
       @Nonnull BlockPos location) {
@@ -70,22 +70,22 @@ public class NetworkedInventory implements INetworkedInventory {
   }
 
   @Override
-  public BlockPos getLocation() {
+  public @Nonnull BlockPos getLocation() {
     return location;
   }
 
   @Override
-  public IItemConduit getCon() {
+  public @Nonnull IItemConduit getCon() {
     return con;
   }
 
   @Override
-  public EnumFacing getConDir() {
+  public @Nonnull EnumFacing getConDir() {
     return conDir;
   }
 
   @Override
-  public List<Target> getSendPriority() {
+  public @Nonnull List<Target> getSendPriority() {
     return sendPriority;
   }
 
@@ -324,7 +324,7 @@ public class NetworkedInventory implements INetworkedInventory {
   }
 
   private void calculateDistances(@Nonnull List<Target> targets, @Nonnull Map<BlockPos, Integer> visited, @Nonnull List<BlockPos> steps, int distance) {
-    if (steps == null || steps.isEmpty()) {
+    if (steps.isEmpty()) {
       return;
     }
 
@@ -358,14 +358,9 @@ public class NetworkedInventory implements INetworkedInventory {
   }
 
   private Target getTarget(@Nonnull List<Target> targets, @Nonnull IItemConduit con1, @Nonnull EnumFacing dir) {
-    if (targets == null || con1 == null || con1.getBundle().getLocation() == null) {
-      return null;
-    }
     for (Target target : targets) {
-      BlockPos targetConLoc = null;
-      if (target != null && target.inv != null && target.inv.getCon() != null) {
-        targetConLoc = target.inv.getCon().getBundle().getLocation();
-        if (targetConLoc != null && target.inv.getConDir() == dir && targetConLoc.equals(con1.getBundle().getLocation())) {
+      if (target != null && target.inv != null) {
+        if (target.inv.getConDir() == dir && target.inv.getCon().getBundle().getLocation().equals(con1.getBundle().getLocation())) {
           return target;
         }
       }
@@ -378,16 +373,13 @@ public class NetworkedInventory implements INetworkedInventory {
     return (int) con.getBundle().getLocation().distanceSq(other.getCon().getBundle().getLocation());
   }
 
+  @Override
   public @Nullable IItemHandler getInventory() {
     return ItemTools.getExternalInventory(world, location, inventorySide);
   }
 
   public EnumFacing getInventorySide() {
     return inventorySide;
-  }
-
-  public void setInventorySide(EnumFacing inventorySide) {
-    this.inventorySide = inventorySide;
   }
 
   /**
@@ -423,11 +415,12 @@ public class NetworkedInventory implements INetworkedInventory {
   }
 
   @Override
-  public String getLocalizedInventoryName() {
+  public @Nonnull String getLocalizedInventoryName() {
     return invName;
   }
 
   public boolean isAt(BlockPos pos) {
-    return location != null && pos != null && location.equals(pos);
+    return location.equals(pos);
   }
+
 }
