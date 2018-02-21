@@ -57,6 +57,7 @@ public abstract class AbstractBlockObelisk<T extends AbstractInventoryMachineEnt
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     if (isActive(world, pos) && shouldDoWorkThisTick(world, pos, 5)) {
       float startX = pos.getX() + 1.0F;
