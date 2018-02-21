@@ -72,7 +72,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem, 
           if (te instanceof IConduitBundle) {
             IConduitBundle bundle = (IConduitBundle) te;
             bundle.addConduit(createConduit(held, player));
-            ConduitUtil.playBreakSound(SoundType.METAL, world, placeAt.getX(), placeAt.getY(), placeAt.getZ());
+            ConduitUtil.playBreakSound(SoundType.METAL, world, placeAt);
           }
         }
       }
@@ -98,7 +98,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem, 
               return EnumActionResult.PASS;
             }
             bundle.addConduit(con);
-            ConduitUtil.playBreakSound(SoundType.METAL, world, place.getX(), place.getY(), place.getZ());
+            ConduitUtil.playBreakSound(SoundType.METAL, world, place);
             if (!player.capabilities.isCreativeMode) {
               held.shrink(1);
             }

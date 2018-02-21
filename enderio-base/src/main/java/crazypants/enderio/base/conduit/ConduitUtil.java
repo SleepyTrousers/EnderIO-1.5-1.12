@@ -1,8 +1,21 @@
 package crazypants.enderio.base.conduit;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
@@ -26,10 +39,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 import static crazypants.enderio.base.init.ModObject.itemConduitProbe;
 
@@ -74,9 +83,13 @@ public class ConduitUtil {
 
   /**
    * Disconnects a conduit from the network in a direction
-   * @param con Conduit to disconnect as selected by the player
-   * @param connDir Direction that is being disconnected
-   * @param <T> Type of Conduit
+   * 
+   * @param con
+   *          Conduit to disconnect as selected by the player
+   * @param connDir
+   *          Direction that is being disconnected
+   * @param <T>
+   *          Type of Conduit
    */
   public static <T extends IConduit> void disconnectConduits(@Nonnull T con, @Nonnull EnumFacing connDir) {
     con.conduitConnectionRemoved(connDir);
@@ -84,14 +97,16 @@ public class ConduitUtil {
     IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), con.getBaseConduitType());
     if (neighbour != null) {
       neighbour.conduitConnectionRemoved(connDir.getOpposite());
-      if (neighbour.getNetwork() != null) {
-        neighbour.getNetwork().destroyNetwork();
+      final IConduitNetwork<?, ?> neighbourNetwork = neighbour.getNetwork();
+      if (neighbourNetwork != null) {
+        neighbourNetwork.destroyNetwork();
       }
     }
-    if (con.getNetwork() != null) { // this should have been destroyed when
+    final IConduitNetwork<?, ?> network = con.getNetwork();
+    if (network != null) { // this should have been destroyed when
       // destroying the neighbour's network but
       // lets just make sure
-      con.getNetwork().destroyNetwork();
+      network.destroyNetwork();
     }
     con.connectionsChanged();
     if (neighbour != null) {
@@ -101,9 +116,13 @@ public class ConduitUtil {
 
   /**
    * Connects two conduits together
-   * @param con Conduit to connect
-   * @param faceHit Direction the conduit is connecting to
-   * @param <T> Type of Conduit
+   * 
+   * @param con
+   *          Conduit to connect
+   * @param faceHit
+   *          Direction the conduit is connecting to
+   * @param <T>
+   *          Type of Conduit
    * @return True if the conduit can be connected, false otherwise
    */
 
@@ -113,11 +132,13 @@ public class ConduitUtil {
     if (neighbour != null && con.canConnectToConduit(faceHit, neighbour) && neighbour.canConnectToConduit(faceHit.getOpposite(), con)) {
       con.conduitConnectionAdded(faceHit);
       neighbour.conduitConnectionAdded(faceHit.getOpposite());
-      if (con.getNetwork() != null) {
-        con.getNetwork().destroyNetwork();
+      final IConduitNetwork<?, ?> network = con.getNetwork();
+      if (network != null) {
+        network.destroyNetwork();
       }
-      if (neighbour.getNetwork() != null) {
-        neighbour.getNetwork().destroyNetwork();
+      final IConduitNetwork<?, ?> neighbourNetwork = neighbour.getNetwork();
+      if (neighbourNetwork != null) {
+        neighbourNetwork.destroyNetwork();
       }
       con.connectionsChanged();
       neighbour.connectionsChanged();
@@ -342,20 +363,20 @@ public class ConduitUtil {
     ConduitRegistry.getConduitModObjectNN().openClientGui(world, new BlockPos(x, y, z), player, null, 0);
   }
 
-  public static void playBreakSound(@Nonnull SoundType snd, @Nonnull World world, int x, int y, int z) {
-    SoundHelper.playSound(world, new BlockPos(x, y, z), new Sound(snd.getBreakSound()), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+  public static void playBreakSound(@Nonnull SoundType snd, @Nonnull World world, @Nonnull BlockPos pos) {
+    SoundHelper.playSound(world, pos, new Sound(snd.getBreakSound()), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
   }
 
-  public static void playHitSound(@Nonnull SoundType snd, @Nonnull World world, int x, int y, int z) {
-    SoundHelper.playSound(world, new BlockPos(x, y, z), new Sound(snd.getHitSound()), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+  public static void playHitSound(@Nonnull SoundType snd, @Nonnull World world, @Nonnull BlockPos pos) {
+    SoundHelper.playSound(world, pos, new Sound(snd.getHitSound()), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
   }
 
-  public static void playStepSound(@Nonnull SoundType snd, @Nonnull World world, int x, int y, int z) {
-    SoundHelper.playSound(world, new BlockPos(x, y, z), new Sound(snd.getStepSound()), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+  public static void playStepSound(@Nonnull SoundType snd, @Nonnull World world, @Nonnull BlockPos pos) {
+    SoundHelper.playSound(world, pos, new Sound(snd.getStepSound()), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
   }
 
-  public static void playPlaceSound(@Nonnull SoundType snd, @Nonnull World world, int x, int y, int z) {
-    SoundHelper.playSound(world, new BlockPos(x, y, z), new Sound(snd.getPlaceSound()), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+  public static void playPlaceSound(@Nonnull SoundType snd, @Nonnull World world, @Nonnull BlockPos pos) {
+    SoundHelper.playSound(world, pos, new Sound(snd.getPlaceSound()), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
   }
 
   private static class Sound implements IModSound {
