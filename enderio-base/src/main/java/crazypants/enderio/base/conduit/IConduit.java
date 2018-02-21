@@ -129,7 +129,10 @@ public interface IConduit extends ICapabilityProvider {
 
   void onAddedToBundle();
 
-  void onRemovedFromBundle();
+  default void onBeforeRemovedFromBundle() {
+  }
+
+  void onAfterRemovedFromBundle();
 
   // Connections
 

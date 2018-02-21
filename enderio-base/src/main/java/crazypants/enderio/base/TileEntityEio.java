@@ -66,6 +66,7 @@ public abstract class TileEntityEio extends TileEntityBase {
 
   @Override
   protected final void writeCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
+    onBeforeNbtWrite();
     Writer.write(action, root, this);
   }
 
@@ -82,6 +83,9 @@ public abstract class TileEntityEio extends TileEntityBase {
     if (DiagnosticsConfig.debugUpdatePackets.get()) {
       EnderIO.proxy.markBlock(getWorld(), getPos(), COLOR);
     }
+  }
+
+  protected void onBeforeNbtWrite() {
   }
 
   protected void onAfterNbtRead() {

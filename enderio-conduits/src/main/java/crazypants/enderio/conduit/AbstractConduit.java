@@ -487,7 +487,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
   }
 
   @Override
-  public void onRemovedFromBundle() {
+  public void onAfterRemovedFromBundle() {
     TileEntity te = getBundle().getEntity();
     World world = te.getWorld();
 
