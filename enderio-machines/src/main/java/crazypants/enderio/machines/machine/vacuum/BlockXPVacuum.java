@@ -16,6 +16,7 @@ import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
@@ -40,6 +41,7 @@ public class BlockXPVacuum extends BlockEio<TileXPVacuum>
   protected BlockXPVacuum(@Nonnull IModObject modObject) {
     super(modObject);
     initDefaultState();
+    setShape(mkShape(BlockFaceShape.BOWL));
   }
 
   protected void initDefaultState() {

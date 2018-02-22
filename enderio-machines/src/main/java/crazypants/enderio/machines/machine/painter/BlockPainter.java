@@ -9,6 +9,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.EveryPaintableRecipe;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -29,6 +30,7 @@ public class BlockPainter extends AbstractPoweredTaskBlock<TileEntityPainter> im
 
   private BlockPainter(@Nonnull IModObject modObject) {
     super(modObject);
+    setShape(mkShape(BlockFaceShape.SOLID));
   }
 
   @SuppressWarnings("rawtypes")

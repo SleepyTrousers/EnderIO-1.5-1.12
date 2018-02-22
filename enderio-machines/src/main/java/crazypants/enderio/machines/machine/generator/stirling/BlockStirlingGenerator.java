@@ -13,6 +13,7 @@ import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,6 +56,7 @@ public class BlockStirlingGenerator<T extends TileStirlingGenerator> extends Abs
 
   protected BlockStirlingGenerator(@Nonnull IModObject modObject) {
     super(modObject);
+    setShape(mkShape(BlockFaceShape.SOLID));
   }
 
   @Override

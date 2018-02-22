@@ -12,6 +12,7 @@ import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -51,6 +52,7 @@ public class BlockMachineExtension extends BlockEio<TileEntityEio> {
     this.parent = parent;
     this.AABB = AABB;
     parentOffset = EnumFacing.DOWN;
+    setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 
   @Override

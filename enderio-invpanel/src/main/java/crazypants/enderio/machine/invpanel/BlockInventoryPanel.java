@@ -15,6 +15,7 @@ import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.invpanel.remote.PacketPrimeInventoryPanelRemote;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -53,6 +54,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   public BlockInventoryPanel() {
     super(MachineObject.blockInventoryPanel, TileInventoryPanel.class);
+    setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 
   @Override

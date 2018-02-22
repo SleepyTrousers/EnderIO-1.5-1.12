@@ -22,6 +22,7 @@ import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -50,6 +51,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
   protected BlockVacuumChest(@Nonnull IModObject modObject) {
     super(modObject);
     initDefaultState();
+    setShape(mkShape(BlockFaceShape.BOWL));
   }
 
   protected void initDefaultState() {

@@ -15,6 +15,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
@@ -51,6 +52,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor>
   public BlockPowerMonitor(@Nonnull IModObject mo, boolean advanced) {
     super(mo);
     this.advanced = advanced;
+    setShape(mkShape(BlockFaceShape.SOLID));
   }
 
   @Override

@@ -20,6 +20,7 @@ import crazypants.enderio.machines.machine.teleport.ContainerTravelAuth;
 import crazypants.enderio.machines.machine.teleport.GuiTravelAccessable;
 import crazypants.enderio.machines.machine.teleport.GuiTravelAuth;
 import crazypants.enderio.machines.machine.teleport.telepad.render.TelePadRenderMapper;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,6 +46,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends AbstractMachi
 
   protected BlockTravelAnchor(@Nonnull IModObject mo) {
     super(mo);
+    setShape(mkShape(BlockFaceShape.BOWL));
   }
 
   @Override

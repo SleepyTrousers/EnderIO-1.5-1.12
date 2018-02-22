@@ -42,6 +42,7 @@ import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -83,6 +84,7 @@ public class BlockCapBank extends BlockEio<TileCapBank>
     setHardness(2.0F);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
         .withProperty(CapBankType.KIND, CapBankType.NONE));
+    setShape(mkShape(BlockFaceShape.SOLID));
   }
 
   @Override

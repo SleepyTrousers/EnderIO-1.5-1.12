@@ -18,6 +18,7 @@ import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -39,6 +40,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
     super(modObject, Material.GLASS);
     setSoundType(SoundType.GLASS);
     setCreativeTab(EnderIOTab.tabEnderIO);
+    setShape(mkShape(BlockFaceShape.SOLID));
   }
 
   @Override

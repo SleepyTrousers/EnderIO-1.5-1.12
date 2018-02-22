@@ -18,6 +18,7 @@ import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -50,6 +51,7 @@ public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResour
     useNeighborBrightness = true;
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO).withProperty(SolarType.KIND,
         SolarType.SIMPLE));
+    setShape(mkShape(BlockFaceShape.SOLID, BlockFaceShape.UNDEFINED, BlockFaceShape.UNDEFINED));
   }
 
   @Override

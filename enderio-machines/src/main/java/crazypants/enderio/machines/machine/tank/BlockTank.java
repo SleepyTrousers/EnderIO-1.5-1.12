@@ -24,6 +24,7 @@ import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.machines.config.Config;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -61,6 +62,7 @@ public class BlockTank extends AbstractInventoryMachineBlock<TileTank>
     setLightOpacity(0);
     setDefaultState(
         this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(EnumTankType.KIND, EnumTankType.NORMAL));
+    setShape(mkShape(BlockFaceShape.SOLID, BlockFaceShape.SOLID, BlockFaceShape.UNDEFINED));
   }
 
   @Override

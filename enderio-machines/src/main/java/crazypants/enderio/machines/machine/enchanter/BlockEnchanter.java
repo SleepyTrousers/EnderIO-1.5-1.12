@@ -13,6 +13,7 @@ import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.ITESRItemBlock;
 import crazypants.enderio.machines.init.MachineObject;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,6 +41,7 @@ public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implemen
   protected BlockEnchanter() {
     super(MachineObject.block_enchanter);
     setLightOpacity(0);
+    setShape(mkShape(BlockFaceShape.SOLID, BlockFaceShape.UNDEFINED, BlockFaceShape.UNDEFINED));
   }
 
   @Override

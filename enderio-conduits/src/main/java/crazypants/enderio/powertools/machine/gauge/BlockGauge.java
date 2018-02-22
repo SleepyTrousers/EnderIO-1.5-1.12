@@ -23,9 +23,9 @@ import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -52,6 +52,7 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
     super(modObject, Material.GLASS);
     setLightOpacity(255);
     useNeighborBrightness = true;
+    setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 
   @Override

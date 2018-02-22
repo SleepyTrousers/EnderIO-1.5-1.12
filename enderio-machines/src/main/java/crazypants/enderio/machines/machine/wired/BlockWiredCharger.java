@@ -8,6 +8,7 @@ import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerBlock;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -30,6 +31,7 @@ public class BlockWiredCharger extends AbstractPowerConsumerBlock<TileWiredCharg
 
   private BlockWiredCharger(@Nonnull IModObject modObject) {
     super(modObject);
+    setShape(mkShape(BlockFaceShape.SOLID, BlockFaceShape.SOLID, BlockFaceShape.UNDEFINED, BlockFaceShape.SOLID));
   }
 
   @Override

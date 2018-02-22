@@ -15,6 +15,7 @@ import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -44,6 +45,7 @@ public class BlockBuffer extends AbstractPowerConsumerBlock<TileBuffer>
   private BlockBuffer(@Nonnull IModObject modObject) {
     super(modObject);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BufferType.TYPE, BufferType.ITEM));
+    setShape(mkShape(BlockFaceShape.SOLID));
   }
 
   @Override

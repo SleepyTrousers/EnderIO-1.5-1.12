@@ -11,6 +11,7 @@ import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -54,6 +55,7 @@ public class BlockAlloySmelter<T extends TileAlloySmelter> extends AbstractPower
 
   protected BlockAlloySmelter(@Nonnull IModObject modObject) {
     super(modObject);
+    setShape(mkShape(BlockFaceShape.SOLID));
   }
 
   @Override

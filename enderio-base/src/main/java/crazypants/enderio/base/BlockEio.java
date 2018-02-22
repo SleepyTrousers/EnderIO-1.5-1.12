@@ -13,12 +13,14 @@ import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.tool.ToolUtil;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
@@ -113,6 +115,107 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
       return ModObjectRegistry.getModObjectNN(this).openGui(world, pos, entityPlayer, side, param);
     }
     return false;
+  }
+
+  @Override
+  protected @Nonnull IShape<T> mkShape(@Nonnull BlockFaceShape allFaces) {
+    return new IShape<T>() {
+      @Override
+      @Nonnull
+      public BlockFaceShape getBlockFaceShape(@Nonnull IBlockAccess worldIn, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EnumFacing face,
+          @Nonnull T te) {
+        IBlockState paintSource = te.getPaintSource();
+        if (paintSource != null) {
+          try {
+            return paintSource.getBlockFaceShape(worldIn, pos, face);
+          } catch (Exception e) {
+          }
+        }
+        return IShape.super.getBlockFaceShape(worldIn, state, pos, face, te);
+      }
+
+      @Override
+      @Nonnull
+      public BlockFaceShape getBlockFaceShape(@Nonnull IBlockAccess worldIn, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
+        return allFaces;
+      }
+    };
+  }
+
+  @Override
+  protected @Nonnull IShape<T> mkShape(@Nonnull BlockFaceShape upDown, @Nonnull BlockFaceShape allSides) {
+    return new IShape<T>() {
+      @Override
+      @Nonnull
+      public BlockFaceShape getBlockFaceShape(@Nonnull IBlockAccess worldIn, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EnumFacing face,
+          @Nonnull T te) {
+        IBlockState paintSource = te.getPaintSource();
+        if (paintSource != null) {
+          try {
+            return paintSource.getBlockFaceShape(worldIn, pos, face);
+          } catch (Exception e) {
+          }
+        }
+        return IShape.super.getBlockFaceShape(worldIn, state, pos, face, te);
+      }
+
+      @Override
+      @Nonnull
+      public BlockFaceShape getBlockFaceShape(@Nonnull IBlockAccess worldIn, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
+        return face == EnumFacing.UP || face == EnumFacing.DOWN ? upDown : allSides;
+      }
+    };
+  }
+
+  @Override
+  protected @Nonnull IShape<T> mkShape(@Nonnull BlockFaceShape down, @Nonnull BlockFaceShape up, @Nonnull BlockFaceShape allSides) {
+    return new IShape<T>() {
+      @Override
+      @Nonnull
+      public BlockFaceShape getBlockFaceShape(@Nonnull IBlockAccess worldIn, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EnumFacing face,
+          @Nonnull T te) {
+        IBlockState paintSource = te.getPaintSource();
+        if (paintSource != null) {
+          try {
+            return paintSource.getBlockFaceShape(worldIn, pos, face);
+          } catch (Exception e) {
+          }
+        }
+        return IShape.super.getBlockFaceShape(worldIn, state, pos, face, te);
+      }
+
+      @Override
+      @Nonnull
+      public BlockFaceShape getBlockFaceShape(@Nonnull IBlockAccess worldIn, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
+        return face == EnumFacing.UP ? up : face == EnumFacing.DOWN ? down : allSides;
+      }
+    };
+  }
+
+  @Override
+  protected @Nonnull IShape<T> mkShape(@Nonnull BlockFaceShape... faces) {
+    return new IShape<T>() {
+      @Override
+      @Nonnull
+      public BlockFaceShape getBlockFaceShape(@Nonnull IBlockAccess worldIn, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EnumFacing face,
+          @Nonnull T te) {
+        IBlockState paintSource = te.getPaintSource();
+        if (paintSource != null) {
+          try {
+            return paintSource.getBlockFaceShape(worldIn, pos, face);
+          } catch (Exception e) {
+          }
+        }
+        return IShape.super.getBlockFaceShape(worldIn, state, pos, face, te);
+      }
+
+      @SuppressWarnings("null")
+      @Override
+      @Nonnull
+      public BlockFaceShape getBlockFaceShape(@Nonnull IBlockAccess worldIn, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
+        return faces[face.ordinal()];
+      }
+    };
   }
 
 }

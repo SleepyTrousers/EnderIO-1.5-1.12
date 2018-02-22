@@ -28,6 +28,7 @@ import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
@@ -71,6 +72,7 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
 
   protected BlockPoweredSpawner(@Nonnull IModObject modObject) {
     super(modObject);
+    setShape(mkShape(BlockFaceShape.SOLID, BlockFaceShape.SOLID, BlockFaceShape.UNDEFINED, BlockFaceShape.SOLID));
 
     try {
       fieldpersistenceRequired = ReflectionHelper.findField(EntityLiving.class, "field_82179_bU", "persistenceRequired");

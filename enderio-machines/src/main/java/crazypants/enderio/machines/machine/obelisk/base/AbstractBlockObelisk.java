@@ -15,6 +15,7 @@ import crazypants.enderio.base.render.ITESRItemBlock;
 import crazypants.enderio.machines.machine.obelisk.render.ObeliskRenderMapper;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -39,6 +40,7 @@ public abstract class AbstractBlockObelisk<T extends AbstractInventoryMachineEnt
       }
 
     });
+    setShape(mkShape(BlockFaceShape.SOLID, BlockFaceShape.UNDEFINED, BlockFaceShape.UNDEFINED));
   }
 
   @Override

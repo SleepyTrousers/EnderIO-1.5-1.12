@@ -24,6 +24,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -67,6 +68,14 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
     setSoundType(new SoundType(-1.0F, 1.0F, SoundEvents.BLOCK_CLOTH_BREAK, SoundEvents.BLOCK_CLOTH_STEP, SoundEvents.BLOCK_CLOTH_PLACE,
         SoundEvents.BLOCK_CLOTH_HIT, SoundEvents.BLOCK_CLOTH_FALL));
     initDefaultState();
+    setShape(new IShape<TileEntityEio>() {
+      @SuppressWarnings("null")
+      @Override
+      @Nonnull
+      public BlockFaceShape getBlockFaceShape(@Nonnull IBlockAccess worldIn, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
+        return BlockFaceShape.values()[rand.nextInt(BlockFaceShape.values().length)];
+      }
+    });
   }
 
   protected void initDefaultState() {

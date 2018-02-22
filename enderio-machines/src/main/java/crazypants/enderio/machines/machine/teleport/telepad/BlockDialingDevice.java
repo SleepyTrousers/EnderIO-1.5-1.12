@@ -15,6 +15,7 @@ import crazypants.enderio.machines.machine.teleport.telepad.gui.GuiDialingDevice
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -47,6 +48,7 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice>
     setLightOpacity(255);
     useNeighborBrightness = true;
     setDefaultState(blockState.getBaseState().withProperty(FACING, DialerFacing.UP_TONORTH));
+    setShape(mkShape(BlockFaceShape.UNDEFINED)); // TODO 'bottom' side SOLID
   }
 
   @Override

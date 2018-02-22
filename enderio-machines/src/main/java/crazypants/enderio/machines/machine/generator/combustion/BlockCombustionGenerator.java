@@ -16,6 +16,7 @@ import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -58,6 +59,7 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
 
   protected BlockCombustionGenerator(@Nonnull IModObject modObject) {
     super(modObject);
+    setShape(mkShape(BlockFaceShape.UNDEFINED, BlockFaceShape.SOLID));
   }
 
   @Override

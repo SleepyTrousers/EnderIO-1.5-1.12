@@ -29,6 +29,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -269,5 +270,30 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @SideOnly(Side.CLIENT)
   public abstract @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
       @Nullable EnumFacing facing, int param1, @Nonnull T te);
+
+  protected final @Nonnull IShape<T> mkShape(@Nonnull BlockFaceShape down, @Nonnull BlockFaceShape up, @Nonnull BlockFaceShape front,
+      @Nonnull BlockFaceShape allSides) {
+    return new IShape<T>() {
+      @Override
+      @Nonnull
+      public BlockFaceShape getBlockFaceShape(@Nonnull IBlockAccess worldIn, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EnumFacing face,
+          @Nonnull T te) {
+        IBlockState paintSource = te.getPaintSource();
+        if (paintSource != null) {
+          try {
+            return paintSource.getBlockFaceShape(worldIn, pos, face);
+          } catch (Exception e) {
+          }
+        }
+        return face == te.getFacing() ? front : IShape.super.getBlockFaceShape(worldIn, state, pos, face, te);
+      }
+
+      @Override
+      @Nonnull
+      public BlockFaceShape getBlockFaceShape(@Nonnull IBlockAccess worldIn, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
+        return face == EnumFacing.UP ? up : face == EnumFacing.DOWN ? down : allSides;
+      }
+    };
+  }
 
 }

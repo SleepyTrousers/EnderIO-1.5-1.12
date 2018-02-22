@@ -12,6 +12,7 @@ import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -50,6 +51,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
     super(modObject);
     setLightOpacity(0);
     setDefaultState(blockState.getBaseState().withProperty(TYPE, LightType.ELECTRIC).withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
+    setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 
   @Override

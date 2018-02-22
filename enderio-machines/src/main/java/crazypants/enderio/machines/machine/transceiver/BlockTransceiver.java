@@ -21,6 +21,7 @@ import crazypants.enderio.base.transceiver.ConnectionHandler;
 import crazypants.enderio.machines.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machines.machine.transceiver.gui.GuiTransceiver;
 import crazypants.enderio.machines.machine.transceiver.render.TransceiverRenderer;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -52,6 +53,7 @@ public class BlockTransceiver extends AbstractPoweredTaskBlock<TileTransceiver>
 
   private BlockTransceiver(@Nonnull IModObject modObject) {
     super(modObject);
+    setShape(mkShape(BlockFaceShape.BOWL));
   }
 
   @SideOnly(Side.CLIENT)

@@ -10,6 +10,7 @@ import crazypants.enderio.base.init.IModObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -38,6 +39,7 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
     setCreativeTab(null);
     setTickRandomly(true);
     setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
+    setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 
   @Override

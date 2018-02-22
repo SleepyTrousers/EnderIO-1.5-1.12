@@ -19,6 +19,7 @@ import crazypants.enderio.machines.config.config.ClientConfig;
 import crazypants.enderio.machines.machine.killera.KillerJoeRenderMapper;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -58,6 +59,7 @@ public class BlockZombieGenerator extends AbstractGeneratorBlock<TileZombieGener
 
     });
     setLightOpacity(5);
+    setShape(mkShape(BlockFaceShape.MIDDLE_POLE_THICK, BlockFaceShape.MIDDLE_POLE_THICK, BlockFaceShape.UNDEFINED));
   }
 
   @Override

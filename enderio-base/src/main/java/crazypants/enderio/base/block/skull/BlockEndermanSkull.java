@@ -13,6 +13,7 @@ import crazypants.enderio.base.render.IHaveTESR;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -49,6 +50,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   private BlockEndermanSkull(@Nonnull IModObject modObject) {
     super(modObject, Material.CIRCUITS);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
+    setShape(mkShape(BlockFaceShape.CENTER_BIG, BlockFaceShape.UNDEFINED, BlockFaceShape.UNDEFINED));
   }
 
   @Override

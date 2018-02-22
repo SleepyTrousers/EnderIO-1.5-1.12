@@ -53,6 +53,7 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -111,6 +112,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     setResistance(10.0f);
     setCreativeTab(null);
     setDefaultState(blockState.getBaseState().withProperty(OPAQUE, false));
+    setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 
   public static final @Nonnull IProperty<Boolean> OPAQUE = PropertyBool.create("opaque");

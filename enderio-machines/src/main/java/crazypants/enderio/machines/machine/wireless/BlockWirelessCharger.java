@@ -19,6 +19,7 @@ import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
@@ -44,6 +45,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
     super(modObject);
     setLightOpacity(1);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
+    setShape(mkShape(BlockFaceShape.SOLID));
   }
 
   @Override
