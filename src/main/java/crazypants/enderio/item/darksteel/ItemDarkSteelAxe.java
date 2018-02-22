@@ -239,7 +239,9 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     if (logOreId == -1) {
       logOreId = OreDictionary.getOreID("logWood");
     }
-    int[] targetOreId = OreDictionary.getOreIDs(new ItemStack(bs.getBlock(), 1, bs.getBlock().getMetaFromState(bs)));
+    Item tItem=Item.getItemFromBlock(bs.getBlock());
+    if(tItem==null) return false;
+    int[] targetOreId = OreDictionary.getOreIDs(new ItemStack(tItem, 1, bs.getBlock().damageDropped(bs)));
     for (int id : targetOreId) {
       if (logOreId == id) {
         return true;
