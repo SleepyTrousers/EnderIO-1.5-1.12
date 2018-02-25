@@ -53,8 +53,6 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
     ySize = 194;
     xSize = 206;
 
-    container.setInOutSlotsVisible(false, false);
-
     List<IConduit> cons = new ArrayList<IConduit>(bundle.getConduits());
     Collections.sort(cons, new Comparator<IConduit>() {
 

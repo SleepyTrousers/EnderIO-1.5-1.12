@@ -63,9 +63,9 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   protected void addSlots() {
     if (itemConduit != null) {
 
-      addSlotToContainer(slotInputFilter = new FilterSlot(getItemHandler(), 2, 10, 47));
-      addSlotToContainer(slotOutputFilter = new FilterSlot(getItemHandler(), 3, 10, 47));
-      addSlotToContainer(slotSpeedUpgrades = new SlotItemHandler(getItemHandler(), 0, 28, 47) {
+      addSlotToContainer(slotInputFilter = new FilterSlot(getItemHandler(), 2, 23, 71));
+      addSlotToContainer(slotOutputFilter = new FilterSlot(getItemHandler(), 3, 113, 71));
+      addSlotToContainer(slotSpeedUpgrades = new SlotItemHandler(getItemHandler(), 0, 131, 71) {
         @Override
         public boolean isItemValid(@Nonnull ItemStack itemStack) {
           return inventory.isItemValidForSlot(0, itemStack);
@@ -76,7 +76,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
           return speedUpgradeSlotLimit;
         }
       });
-      addSlotToContainer(slotFunctionUpgrades = new SlotItemHandler(getItemHandler(), 1, 10, 65) {
+      addSlotToContainer(slotFunctionUpgrades = new SlotItemHandler(getItemHandler(), 1, 157, 71) {
         @Override
         public boolean isItemValid(@Nonnull ItemStack itemStack) {
           return inventory.isItemValidForSlot(1, itemStack);
