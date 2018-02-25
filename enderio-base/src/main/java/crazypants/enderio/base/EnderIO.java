@@ -12,7 +12,6 @@ import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.api.addon.IEnderIOAddon;
-import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
@@ -20,18 +19,17 @@ import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.config.recipes.RecipeLoader;
 import crazypants.enderio.base.diagnostics.ProfilerAntiReactor;
 import crazypants.enderio.base.diagnostics.ProfilerDebugger;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.gui.handler.GuiHelper;
 import crazypants.enderio.base.handler.ServerTickHandler;
-import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.init.CommonProxy;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.integration.bigreactors.BRProxy;
 import crazypants.enderio.base.integration.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.base.integration.chiselsandbits.CABIMC;
 import crazypants.enderio.base.integration.te.TEUtil;
-import crazypants.enderio.base.loot.Loot;
 import crazypants.enderio.base.loot.LootManager;
 import crazypants.enderio.base.material.OreDictionaryPreferences;
 import crazypants.enderio.base.material.recipes.MaterialOredicts;
@@ -49,6 +47,7 @@ import info.loenwind.scheduler.Celeb;
 import info.loenwind.scheduler.Scheduler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -94,17 +93,13 @@ public class EnderIO implements IEnderIOAddon {
   public void preInit(@Nonnull FMLPreInitializationEvent event) {
     Log.debug("PHASE PRE-INIT START");
 
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Config.Pre());
     Config.init(event);
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Config.Post());
 
     proxy.loadIcons();
 
-    ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
-
-    DarkSteelController.init(event);
-
-    Loot.init(event);
-
-    ServerChannelRegister.init(event);
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.PreInit());
 
     proxy.init(event);
 

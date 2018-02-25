@@ -10,9 +10,15 @@ import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class ConduitGeometryUtil {
 
   public static final ConduitGeometryUtil instance = new ConduitGeometryUtil();
@@ -35,12 +41,9 @@ public class ConduitGeometryUtil {
 
   private static Map<EnumFacing, BoundingBox[]> EXTERNAL_CONNECTOR_BOUNDS = new HashMap<EnumFacing, BoundingBox[]>();
 
-  static {
-    setupBounds(0.5f);
-  }
-
-  public static void setupBounds(float scale) {
-    float size = 0.075f + (0.175f * scale);
+  @SubscribeEvent
+  public static void preInit(EnderIOLifecycleEvent.Config.Post event) {
+    float size = (float) (0.075f + (0.175f * Config.conduitScale));
 
     WIDTH = size;
     HEIGHT = size;
@@ -53,7 +56,7 @@ public class ConduitGeometryUtil {
     CORE_MAX = core_max;
     CORE_BOUNDS = new BoundingBox(core_min, core_max);
 
-    float connectorWidth = 0.25f + (scale * 0.5f);
+    float connectorWidth = (float) (0.25f + (Config.conduitScale * 0.5f));
     for (EnumFacing dir : EnumFacing.VALUES) {
       EXTERNAL_CONNECTOR_BOUNDS.put(dir, createExternalConnector(dir, CONNECTOR_DEPTH, connectorWidth));
     }

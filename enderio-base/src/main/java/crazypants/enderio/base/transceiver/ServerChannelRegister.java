@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -14,19 +15,19 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class ServerChannelRegister extends ChannelRegister implements ICapabilityProvider, IServerChannelRegister {
 
-  public static ServerChannelRegister instance = new ServerChannelRegister();
+  public final static @Nonnull ServerChannelRegister instance = new ServerChannelRegister();
 
   private final static @Nonnull ResourceLocation CAP_KEY = new ResourceLocation(EnderIO.DOMAIN, "channels");
 
@@ -34,7 +35,9 @@ public class ServerChannelRegister extends ChannelRegister implements ICapabilit
 
   @SubscribeEvent
   public static void onWorldCaps(AttachCapabilitiesEvent<World> event) {
-    event.addCapability(CAP_KEY, instance);
+    if (SERVER_REGISTER != null) {
+      event.addCapability(CAP_KEY, instance);
+    }
   }
 
   @Override
@@ -52,7 +55,8 @@ public class ServerChannelRegister extends ChannelRegister implements ICapabilit
   @CapabilityInject(IServerChannelRegister.class)
   public static Capability<IServerChannelRegister> SERVER_REGISTER = null;
 
-  public static void init(@Nonnull FMLPreInitializationEvent event) {
+  @SubscribeEvent
+  public static void preInit(EnderIOLifecycleEvent.PreInit event) {
     CapabilityManager.INSTANCE.register(IServerChannelRegister.class, new IStorage<IServerChannelRegister>() {
       @Override
       public NBTBase writeNBT(Capability<IServerChannelRegister> capability, IServerChannelRegister instanceIn, EnumFacing side) {
@@ -69,7 +73,6 @@ public class ServerChannelRegister extends ChannelRegister implements ICapabilit
         return ServerChannelRegister.instance;
       }
     });
-    MinecraftForge.EVENT_BUS.register(ServerChannelRegister.class);
   }
 
   @Override

@@ -21,7 +21,7 @@ public class CapeFilterLayer extends LayerCape {
   public void doRenderLayer(@Nonnull AbstractClientPlayer entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
       float netHeadYaw, float headPitch, float scale) {
 
-    if (!DarkSteelController.instance.isElytraUpgradeEquipped(entitylivingbaseIn.getItemStackFromSlot(EntityEquipmentSlot.CHEST))) {
+    if (!DarkSteelController.isElytraUpgradeEquipped(entitylivingbaseIn.getItemStackFromSlot(EntityEquipmentSlot.CHEST))) {
       parent.doRenderLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
     }
   }
