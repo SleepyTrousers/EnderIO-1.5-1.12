@@ -1,15 +1,11 @@
 package crazypants.enderio.conduit.gui.item;
 
-import crazypants.enderio.base.filter.IItemFilterUpgrade;
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.conduit.item.IItemConduit;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-
-import javax.annotation.Nonnull;
-
-import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_upgrade;
 
 /**
  * The Inventory for Holding Conduit Upgrades
@@ -30,9 +26,9 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     switch (slot) {
     case 0:
       return itemConduit.getSpeedUpgrade(dir);
-      // TODO Inventory
-//    case 1:
-//      return itemConduit.getFunctionUpgrade(dir);
+    // TODO Inventory
+    // case 1:
+    // return itemConduit.getFunctionUpgrade(dir);
     case 2:
       return itemConduit.getInputFilterUpgrade(dir);
     case 3:
@@ -50,9 +46,9 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
       itemConduit.setSpeedUpgrade(dir, stack);
       break;
     // TODO Inventory
-    //    case 1:
-    //      itemConduit.setFunctionUpgrade(dir, stack);
-    //      break;
+    // case 1:
+    // itemConduit.setFunctionUpgrade(dir, stack);
+    // break;
     case 2:
       itemConduit.setInputFilterUpgrade(dir, stack);
       break;
@@ -81,7 +77,10 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
       remaining = current.copy();
       remaining.shrink(amount);
     }
-    setInventorySlotContents(slot, remaining);
+
+    if (!simulate) {
+      setInventorySlotContents(slot, remaining);
+    }
     return result;
   }
 
@@ -90,10 +89,10 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     case 0:
       itemConduit.setSpeedUpgrade(dir, stack);
       break;
-      // TODO Inventory
-//    case 1:
-//      itemConduit.setFunctionUpgrade(dir, stack);
-//      break;
+    // TODO Inventory
+    // case 1:
+    // itemConduit.setFunctionUpgrade(dir, stack);
+    // break;
     case 2:
       itemConduit.setInputFilterUpgrade(dir, stack);
       break;
@@ -110,26 +109,7 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
 
   @Override
   public int getSlotLimit(int slot) {
-    return slot == 1 ? 15 : 1;
-  }
-
-  public boolean isItemValidForSlot(int slot, @Nonnull ItemStack item) {
-    if (item.isEmpty()) {
-      return false;
-    }
-    switch (slot) {
-    case 0:
-      return item.getItem() == item_extract_speed_upgrade.getItem();
-      // TODO Inventory
-//    case 1:
-//      final FunctionUpgrade functionUpgrade = ItemFunctionUpgrade.getFunctionUpgrade(item);
-//      return functionUpgrade != null
-//          && (functionUpgrade != FunctionUpgrade.INVENTORY_PANEL || !itemConduit.isConnectedToNetworkAwareBlock(dir));
-    case 2:
-    case 3:
-      return item.getItem() instanceof IItemFilterUpgrade;
-    }
-    return false;
+    return slot == 0 ? 15 : 1;
   }
 
   @Override
