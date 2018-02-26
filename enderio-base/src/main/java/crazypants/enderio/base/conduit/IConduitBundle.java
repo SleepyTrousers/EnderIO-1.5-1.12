@@ -128,7 +128,8 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
 
   void setFacadeType(@Nonnull EnumFacadeType type);
 
-  @Nonnull EnumFacadeType getFacadeType();
+  @Nonnull
+  EnumFacadeType getFacadeType();
 
   // NB: this has to be named differently to the TE method due to obf
   @Nonnull
@@ -148,4 +149,5 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
 
   boolean handleFacadeClick(World world, BlockPos placeAt, EntityPlayer player, EnumFacing opposite, ItemStack stack, EnumHand hand, float hitX, float hitY,
       float hitZ);
+
 }

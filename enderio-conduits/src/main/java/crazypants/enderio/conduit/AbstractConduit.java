@@ -28,7 +28,6 @@ import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.diagnostics.Prof;
-import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -612,7 +611,7 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
   }
 
   @SideOnly(Side.CLIENT)
-  public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     hashCodes.add(this.getClass());
     hashCodes.add(conduitConnections, externalConnections, conectionModes);
   }

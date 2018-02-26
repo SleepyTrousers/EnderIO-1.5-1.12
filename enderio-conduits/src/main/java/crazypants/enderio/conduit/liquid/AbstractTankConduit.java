@@ -12,7 +12,6 @@ import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.RaytraceResult;
-import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
 import net.minecraft.entity.player.EntityPlayer;
@@ -238,8 +237,8 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
   }
 
   @Override
-  public void hashCodeForModelCaching(IBlockStateWrapper wrapper, ConduitCacheKey hashCodes) {
-    super.hashCodeForModelCaching(wrapper, hashCodes);
+  public void hashCodeForModelCaching(ConduitCacheKey hashCodes) {
+    super.hashCodeForModelCaching(hashCodes);
     if (fluidTypeLocked) {
       hashCodes.add(1);
     }

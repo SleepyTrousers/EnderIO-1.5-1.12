@@ -36,7 +36,6 @@ import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.redstone.signals.SignalSource;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.diagnostics.Prof;
-import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
@@ -499,7 +498,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public ConnectionMode getConnectionMode(@Nonnull EnumFacing dir) {
+  public @Nonnull ConnectionMode getConnectionMode(@Nonnull EnumFacing dir) {
     ConnectionMode res = conectionModes.get(dir);
     if (res == null) {
       return ConnectionMode.IN_OUT;
@@ -577,7 +576,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
+  public @Nonnull Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     return null;
   }
 
@@ -698,8 +697,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
-    super.hashCodeForModelCaching(wrapper, hashCodes);
+  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    super.hashCodeForModelCaching(hashCodes);
     hashCodes.addEnum(signalColors);
     if (ConduitConfig.showState.get() && isActive()) {
       hashCodes.add(1);
@@ -707,7 +706,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public RedstoneConduitNetwork createNetworkForType() {
+  public @Nonnull RedstoneConduitNetwork createNetworkForType() {
     return new RedstoneConduitNetwork();
   }
 

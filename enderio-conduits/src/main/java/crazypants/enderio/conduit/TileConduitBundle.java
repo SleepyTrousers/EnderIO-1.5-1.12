@@ -16,6 +16,7 @@ import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.ConduitUtil;
@@ -36,6 +37,7 @@ import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.config.ConduitConfig;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
+import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
@@ -53,7 +55,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.base.config.Config.transparentFacadesLetThroughBeaconBeam;
 
-public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent {
+public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider {
 
   // TODO Fix duct-tape
   // TODO Check store
@@ -70,8 +72,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   private @Nonnull List<IConduit> realConduits = new CopyOnWriteArrayList<IConduit>();
 
-  @Store
-  private IBlockState facade = null;
   private @Nonnull EnumFacadeType facadeType = EnumFacadeType.BASIC;
 
   private final List<CollidableComponent> cachedCollidables = new CopyOnWriteArrayList<CollidableComponent>(); // <- duct-tape fix
@@ -109,7 +109,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public boolean shouldRenderInPass(int arg0) {
-    if (facade != null && facade.isOpaqueCube() && !YetaUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
+    if (getPaintSource() != null && getPaintSource().isOpaqueCube() && !YetaUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
       return false;
     }
     return super.shouldRenderInPass(arg0);
@@ -151,23 +151,28 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       c.setBundle(this);
     }
     ConduitRegistry.sort(conduits); // keep conduits sorted so the client side cache key is stable
+    final ConduitCacheKey oldHashCode = new ConduitCacheKey(), newHashCode = new ConduitCacheKey();
+    makeConduitHashCode(realConduits, oldHashCode);
+    makeConduitHashCode(conduits, newHashCode);
     realConduits = conduits; // switch over atomically to avoid threading issues
     cachedCollidables.clear();
     conduits = new CopyOnWriteArrayList<IConduit>();
-    if (hasWorld() && getWorld().isRemote) {
+    if (hasWorld() && getWorld().isRemote && oldHashCode.hashCode() != newHashCode.hashCode()) {
       clientUpdated = true;
+      Log.debug("Conduits changed---forcing chunk re-render");
+    } else {
+      Log.debug("Conduits unchanged");
     }
   }
 
   @Override
   public boolean hasFacade() {
-    return facade != null;
+    return getPaintSource() != null;
   }
 
   @Override
   public void setPaintSource(@Nullable IBlockState paintSource) {
-    facade = paintSource;
-    markDirty();
+    super.setPaintSource(paintSource);
     // force re-calc of lighting for both client and server
     IBlockState bs = world.getBlockState(pos);
     IBlockState newBs = bs.withProperty(BlockConduitBundle.OPAQUE, getLightOpacity() > 0);
@@ -175,11 +180,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       world.setBlockState(getPos(), newBs.cycleProperty(BlockConduitBundle.OPAQUE));
     }
     world.setBlockState(getPos(), newBs);
-  }
-
-  @Override
-  public IBlockState getPaintSource() {
-    return facade;
+    forceUpdatePlayers(); // send the packet now so the re-render we just triggered will render with the new data
   }
 
   @Override
@@ -217,11 +218,12 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     if (world.isRemote && lightOpacityOverride != -1) {
       return lightOpacityOverride;
     }
-    if (facade != null) {
+    final IBlockState paintSource = getPaintSource();
+    if (paintSource != null) {
       if (getFacadeType().isTransparent() && transparentFacadesLetThroughBeaconBeam) {
-        return Math.min(facade.getLightOpacity(), 14);
+        return Math.min(paintSource.getLightOpacity(), 14);
       } else {
-        return facade.getLightOpacity();
+        return paintSource.getLightOpacity();
       }
     } else {
       return 0;
@@ -309,8 +311,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
     if (markForUpdate) {
       geometryChanged(); // Q&D
-      IBlockState bs = world.getBlockState(pos);
-      world.notifyBlockUpdate(pos, bs, bs, 3);
+      updateBlock();
     }
   }
 
@@ -753,9 +754,13 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     hashCodes.add(facadeType.ordinal() << 16 | getFacadeRenderedAs().ordinal() << 8 | wrapper.getYetaDisplayMode().getDisplayMode().ordinal() << 1
         | (wrapper.getYetaDisplayMode().isHideFacades() ? 1 : 0));
-    for (IConduit conduit : getConduits()) {
+    makeConduitHashCode(getConduits(), hashCodes);
+  }
+
+  private static void makeConduitHashCode(Collection<IConduit> conduits, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    for (IConduit conduit : conduits) {
       if (conduit instanceof IConduitComponent) {
-        ((IConduitComponent) conduit).hashCodeForModelCaching(wrapper, hashCodes);
+        ((IConduitComponent) conduit).hashCodeForModelCaching(hashCodes);
       } else {
         hashCodes.add(conduit);
       }
@@ -772,8 +777,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     BlockStateWrapperConduitBundle bsw = new BlockStateWrapperConduitBundle(self.world.getBlockState(self.pos), self.world, self.pos,
         ConduitRenderMapper.instance);
     bsw.addCacheKey(self);
-    return "CLIENT: TileConduitBundle [pos=" + self.pos + ", facade=" + self.facade + ", facadeType=" + self.facadeType + ", conduits=" + self.getConduits()
-        + ", cachekey=" + bsw.getCachekey() + ", bsw=" + bsw + "]";
+    return "CLIENT: TileConduitBundle [pos=" + self.pos + ", facade=" + self.getPaintSource() + ", facadeType=" + self.facadeType + ", conduits="
+        + self.getConduits() + ", cachekey=" + bsw.getCachekey() + ", bsw=" + bsw + "]";
   }
 
   public static String toStringS(TileConduitBundle self) {

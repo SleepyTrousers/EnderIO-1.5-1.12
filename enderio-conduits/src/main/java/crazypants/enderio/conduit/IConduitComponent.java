@@ -8,6 +8,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface IConduitComponent {
 
   @SideOnly(Side.CLIENT)
-  public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes);
+  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes);
+
+  public interface IConduitComponentProvider {
+
+    @SideOnly(Side.CLIENT)
+    public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes);
+
+  }
 
 }
