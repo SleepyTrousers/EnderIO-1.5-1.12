@@ -148,6 +148,13 @@ public class ItemSettings extends BaseSettingsPanel {
       public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
         RedstoneControlMode curMode = getRedstoneControlMode();
         itemConduit.setExtractionRedstoneMode(mode, gui.getDir());
+        if (mode == RedstoneControlMode.OFF || mode == RedstoneControlMode.ON) {
+          colorB.onGuiInit();
+          colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
+          colorB.setIsVisible(true);
+        } else {
+          colorB.setIsVisible(false);
+        }
         if (curMode != mode) {
           PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(itemConduit, gui.getDir()));
         }
@@ -240,6 +247,20 @@ public class ItemSettings extends BaseSettingsPanel {
   // }
 
   private void filtersChanged() {
+    insertFilterOptionsB.onGuiInit();
+    extractFilterOptionsB.onGuiInit();
+
+    if (gui.getContainer().hasFilter(true)) {
+      insertFilterOptionsB.setIsVisible(true);
+    } else {
+      insertFilterOptionsB.setIsVisible(false);
+    }
+
+    if (gui.getContainer().hasFilter(false)) {
+      extractFilterOptionsB.setIsVisible(true);
+    } else {
+      extractFilterOptionsB.setIsVisible(false);
+    }
 
     if (filterGui != null) {
       filterGui.updateButtons();
@@ -251,8 +272,6 @@ public class ItemSettings extends BaseSettingsPanel {
     rsB.onGuiInit();
     rsB.setMode(RedstoneControlMode.IconHolder.getFromMode(itemConduit.getExtractionRedstoneMode(gui.getDir())));
 
-    colorB.onGuiInit();
-    colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
     gui.addToolTip(filterUpgradeTooltip);
     gui.addToolTip(functionUpgradeTooltip);
     loopB.onGuiInit();
@@ -269,9 +288,6 @@ public class ItemSettings extends BaseSettingsPanel {
     insertChannelB.setColorIndex(itemConduit.getOutputColor(gui.getDir()).ordinal());
     extractChannelB.onGuiInit();
     extractChannelB.setColorIndex(itemConduit.getInputColor(gui.getDir()).ordinal());
-
-    insertFilterOptionsB.onGuiInit();
-    extractFilterOptionsB.onGuiInit();
 
     if (filterGui != null) {
       filterGui.updateButtons();
