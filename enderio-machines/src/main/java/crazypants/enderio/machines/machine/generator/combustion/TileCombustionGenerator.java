@@ -118,18 +118,22 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
 
   @Override
   protected boolean doPull(@Nullable EnumFacing dir) {
-    boolean res = super.doPull(dir);
+    if (super.doPull(dir)) {
+      return true;
+    }
     if (dir != null && fuelTank.getFluidAmount() < fuelTank.getCapacity()) {
       if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), fuelTank, IO_MB_TICK) > 0) {
         setTanksDirty();
+        return true;
       }
     }
     if (dir != null && coolantTank.getFluidAmount() < coolantTank.getCapacity()) {
       if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), coolantTank, IO_MB_TICK) > 0) {
         setTanksDirty();
+        return true;
       }
     }
-    return res;
+    return false;
   }
 
   @Override

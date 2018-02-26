@@ -1,9 +1,6 @@
 package crazypants.enderio.machines.machine.wireless;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.enderio.core.common.NBTAction;
 
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
@@ -17,7 +14,6 @@ import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -154,21 +150,6 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
 
   @Override
   protected void onAfterDataPacket() {
-    updateBlock();
-  }
-
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
-  protected IBlockState sourceBlock;
-
-  @Override
-  public IBlockState getPaintSource() {
-    return sourceBlock;
-  }
-
-  @Override
-  public void setPaintSource(@Nullable IBlockState sourceBlock) {
-    this.sourceBlock = sourceBlock;
-    markDirty();
     updateBlock();
   }
 

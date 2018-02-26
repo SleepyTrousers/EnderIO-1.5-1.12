@@ -17,7 +17,6 @@ import info.loenwind.autosave.handlers.enderio.HandleChannelList;
 import info.loenwind.autosave.handlers.enderio.HandleExperienceContainer;
 import info.loenwind.autosave.handlers.enderio.HandleIMachineRecipe;
 import info.loenwind.autosave.handlers.enderio.HandlePoweredTask;
-import info.loenwind.autosave.handlers.enderio.HandleResettingFlag;
 import info.loenwind.autosave.handlers.forge.HandleFluid;
 import info.loenwind.autosave.handlers.forge.HandleFluidStack;
 import info.loenwind.autosave.handlers.internal.HandleStorable;
@@ -37,21 +36,17 @@ import info.loenwind.autosave.handlers.minecraft.HandleItemStackArray;
  * A registry for {@link IHandler}s.
  * 
  * <p>
- * Registries use Java-like inheritance. That means any registry, except the
- * base registry {@link Registry#GLOBAL_REGISTRY}, has exactly one
- * super-registry. When looking for handlers, all handlers from this registry
- * and all its super-registries will be returned in order.
+ * Registries use Java-like inheritance. That means any registry, except the base registry {@link Registry#GLOBAL_REGISTRY}, has exactly one super-registry.
+ * When looking for handlers, all handlers from this registry and all its super-registries will be returned in order.
  *
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class Registry {
 
   /**
-   * This is the super-registry of all registries. It contains handlers for Java
-   * primitives, Java classes, Minecraft classes and Forge classes.
+   * This is the super-registry of all registries. It contains handlers for Java primitives, Java classes, Minecraft classes and Forge classes.
    * <p>
-   * You can register new handlers here if you want other mods to be able to
-   * store your objects. Otherwise please use your own registry.
+   * You can register new handlers here if you want other mods to be able to store your objects. Otherwise please use your own registry.
    */
   @Nonnull
   public static final Registry GLOBAL_REGISTRY = new Registry(true);
@@ -84,7 +79,6 @@ public class Registry {
     // Ender IO types
     GLOBAL_REGISTRY.register(new HandleSmartTank());
     GLOBAL_REGISTRY.register(new HandleIMachineRecipe());
-    GLOBAL_REGISTRY.register(new HandleResettingFlag());
     GLOBAL_REGISTRY.register(new HandlePoweredTask());
     GLOBAL_REGISTRY.register(new HandleCapturedMob());
     GLOBAL_REGISTRY.register(new GrindingMultiplierNBT());
@@ -156,26 +150,19 @@ public class Registry {
    * <li>The annotated special handler(s) of its superclass(es)
    * <li>The registered handlers from this registry
    * <li>The registered handlers from this registry's super-registries
-   * <li>{@link HandleStorable} if the class is annotated {@link Storable}
-   * without a special handler
+   * <li>{@link HandleStorable} if the class is annotated {@link Storable} without a special handler
    * </ol>
    * 
-   * Note: If a class is annotated {@link Storable}, then all subclasses must be
-   * annotated {@link Storable}, too.
+   * Note: If a class is annotated {@link Storable}, then all subclasses must be annotated {@link Storable}, too.
    * <p>
-   * Note 2: If a class is annotated {@link Storable} without a special handler,
-   * all subclasses must either also be annotated {@link Storable} without a
-   * special handler or their handlers must be able to handle the inheritance
-   * because {@link HandleStorable} will <i>not</i> be added to this list in
-   * this case.
+   * Note 2: If a class is annotated {@link Storable} without a special handler, all subclasses must either also be annotated {@link Storable} without a special
+   * handler or their handlers must be able to handle the inheritance because {@link HandleStorable} will <i>not</i> be added to this list in this case.
    * <p>
-   * Note 3: If a handler can handle a class but not its subclasses, it will not
-   * be added to this list for the subclasses.
+   * Note 3: If a handler can handle a class but not its subclasses, it will not be added to this list for the subclasses.
    * 
    * @param clazz
    *          The class that should be handled
-   * @return A list of all {@link IHandler}s that can handle the class. If none
-   *         are found, an empty list is returned.
+   * @return A list of all {@link IHandler}s that can handle the class. If none are found, an empty list is returned.
    * @throws InstantiationException
    * @throws IllegalAccessException
    */
@@ -200,8 +187,7 @@ public class Registry {
   }
 
   /**
-   * Helper method for {@link #findHandlers(Class)}. Looks up only registered
-   * handlers and adds them to the end of the given list.
+   * Helper method for {@link #findHandlers(Class)}. Looks up only registered handlers and adds them to the end of the given list.
    * 
    * @param clazz
    * @param result

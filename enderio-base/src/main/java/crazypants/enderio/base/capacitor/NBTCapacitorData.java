@@ -44,4 +44,32 @@ public class NBTCapacitorData implements ICapacitorData {
     return EnderIO.lang.localizeExact(unlocalizedName + ".name");
   }
 
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + Float.floatToIntBits(defaultlevel);
+    result = prime * result + tag.hashCode();
+    result = prime * result + unlocalizedName.hashCode();
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    NBTCapacitorData other = (NBTCapacitorData) obj;
+    if (Float.floatToIntBits(defaultlevel) != Float.floatToIntBits(other.defaultlevel))
+      return false;
+    if (!tag.equals(other.tag))
+      return false;
+    if (!unlocalizedName.equals(other.unlocalizedName))
+      return false;
+    return true;
+  }
+
 }

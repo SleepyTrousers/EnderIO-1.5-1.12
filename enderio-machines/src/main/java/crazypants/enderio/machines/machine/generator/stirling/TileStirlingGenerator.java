@@ -191,12 +191,7 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
     if (!canExtractItem(0, fuelStack, dir)) {
       return false;
     }
-    MoveResult res = ItemTools.move(getPushLimit(), world, getPos(), dir, getPos().offset(dir), dir.getOpposite());
-    if (res == MoveResult.MOVED) {
-      markDirty();
-      return true;
-    }
-    return false;
+    return ItemTools.move(getPushLimit(), world, getPos(), dir, getPos().offset(dir), dir.getOpposite()) == MoveResult.MOVED;
   }
 
   public static float getEnergyMultiplier(@Nonnull ICapacitorData capacitorType) {

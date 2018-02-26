@@ -23,7 +23,6 @@ import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.paint.YetaUtil;
-import crazypants.enderio.util.ResettingFlag;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.enderio.HandleIOMode;
@@ -49,8 +48,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   // Client sync monitoring
   protected int ticksSinceSync = -1;
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
-  protected final @Nonnull ResettingFlag forceClientUpdate = new ResettingFlag();
+  protected boolean updateClients = false;
   protected boolean lastActive;
   protected int ticksSinceActiveChanged = 0;
 
@@ -97,19 +95,23 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     if (faceModes == null) {
       faceModes = new EnumMap<EnumFacing, IoMode>(EnumFacing.class);
     }
-    faceModes.put(faceHit, mode);
-    forceClientUpdate.set();
-    notifyNeighbours = true;
+    if (faceModes.get(faceHit) != mode) {
+      faceModes.put(faceHit, mode);
+      updateClients = true;
+      notifyNeighbours = true;
 
-    updateBlock();
+      markDirty();
+      updateBlock();
+    }
   }
 
   @Override
   public void clearAllIoModes() {
     if (faceModes != null) {
       faceModes = null;
-      forceClientUpdate.set();
+      updateClients = true;
       notifyNeighbours = true;
+      markDirty();
       updateBlock();
     }
   }
@@ -135,7 +137,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   public void setRedstoneControlMode(@Nonnull RedstoneControlMode redstoneControlMode) {
     this.redstoneControlMode = redstoneControlMode;
     redstoneStateDirty = true;
-    updateBlock();
+    markDirty();
   }
 
   public @Nonnull EnumFacing getFacing() {
@@ -196,31 +198,30 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       Prof.stop(getWorld());
     } else { // else is server, do all logic only on the server
       Prof.start(getWorld(), "redstoneCheck");
-      boolean requiresClientSync = forceClientUpdate.peek();
-      boolean prevRedCheck = redstoneCheckPassed;
       if (redstoneStateDirty) {
+        boolean prevRedCheck = redstoneCheckPassed;
         redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
         redstoneStateDirty = false;
+        updateClients |= prevRedCheck != redstoneCheckPassed;
       }
-      requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
       if (shouldDoWorkThisTick(5)) {
         Prof.next(getWorld(), "sideIO");
-        requiresClientSync |= doSideIo();
+        doSideIo();
       }
 
       Prof.next(getWorld(), "tasks");
-      requiresClientSync |= processTasks(redstoneCheckPassed);
+      updateClients |= processTasks(redstoneCheckPassed);
 
-      if (requiresClientSync) {
+      if (updateClients) {
         Prof.next(getWorld(), "clientNotification");
         // this will cause 'getPacketDescription()' to be called and its result
         // will be sent to the PacketHandler on the other end of
         // client/server connection
         forceUpdatePlayers();
-
         // And this will make sure our current tile entity state is saved
         markDirty();
+        updateClients = false;
       }
 
       if (notifyNeighbours) {
@@ -239,7 +240,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       if (lastActive ? ticksSinceActiveChanged > 20 : ticksSinceActiveChanged > 4) {
         ticksSinceActiveChanged = 0;
         lastActive = isActive();
-        forceClientUpdate.set();
+        updateBlock();
       }
     } else {
       ticksSinceActiveChanged = 0;
@@ -249,34 +250,33 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       updateSound();
     }
 
-    if (forceClientUpdate.read()) {
-      IBlockState bs = world.getBlockState(pos);
-      world.notifyBlockUpdate(pos, bs, bs, 3);
-    } else {
-      YetaUtil.refresh(this);
-    }
+    YetaUtil.refresh(this);
   }
 
-  protected boolean doSideIo() {
+  protected final void doSideIo() {
     if (faceModes == null) {
-      return false;
+      return;
     }
-    boolean res = false;
     Set<Entry<EnumFacing, IoMode>> ents = faceModes.entrySet();
     for (Entry<EnumFacing, IoMode> ent : ents) {
       IoMode mode = ent.getValue();
       if (mode.pulls()) {
         Prof.start(getWorld(), "pull");
-        res = res | doPull(ent.getKey());
+        boolean done = doPull(ent.getKey());
         Prof.stop(getWorld());
+        if (done) {
+          return;
+        }
       }
       if (mode.pushes()) {
         Prof.start(getWorld(), "push");
-        res = res | doPush(ent.getKey());
+        boolean done = doPush(ent.getKey());
         Prof.stop(getWorld());
+        if (done) {
+          return;
+        }
       }
     }
-    return res;
   }
 
   protected abstract boolean doPull(EnumFacing dir);

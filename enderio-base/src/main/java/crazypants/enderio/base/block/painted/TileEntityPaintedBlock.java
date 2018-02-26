@@ -12,6 +12,7 @@ public class TileEntityPaintedBlock extends TileEntityEio implements IPaintable.
 
   @Override
   public void onAfterDataPacket() {
+    super.onAfterDataPacket();
     updateBlock();
   }
 

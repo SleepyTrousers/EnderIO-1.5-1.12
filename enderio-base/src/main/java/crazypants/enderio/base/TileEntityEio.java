@@ -20,11 +20,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 @Storable
+@EventBusSubscriber(modid = EnderIO.MODID)
 public abstract class TileEntityEio extends TileEntityBase {
 
   private static final @Nonnull Vector4f COLOR = new Vector4f(1, 182f / 255f, 0, 0.4f);
@@ -119,9 +120,11 @@ public abstract class TileEntityEio extends TileEntityBase {
   private IBlockState paintSource = null;
 
   public void setPaintSource(@Nullable IBlockState paintSource) {
-    this.paintSource = paintSource;
-    markDirty();
-    updateBlock();
+    if (this.paintSource != paintSource) {
+      this.paintSource = paintSource;
+      markDirty();
+      updateBlock();
+    }
   }
 
   public IBlockState getPaintSource() {
@@ -149,10 +152,6 @@ public abstract class TileEntityEio extends TileEntityBase {
     } else {
       notTickingTileEntitiesS.add(this);
     }
-  }
-
-  static {
-    MinecraftForge.EVENT_BUS.register(TileEntityEio.class);
   }
 
   @SubscribeEvent
