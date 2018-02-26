@@ -25,6 +25,7 @@ import crazypants.enderio.base.machine.interfaces.IIoConfigurable;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.IPowerStorage;
@@ -57,7 +58,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IIoConfigurable, IPowerStorage, IInventory {
+public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IIoConfigurable, IPowerStorage, IInventory, IPaintable.IPaintableTileEntity {
 
   @Store(handler = HandleIOMode.class)
   private Map<EnumFacing, IoMode> faceModes;

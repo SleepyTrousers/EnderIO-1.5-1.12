@@ -21,6 +21,8 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.modes.IoMode;
+import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IHaveTESR;
@@ -46,6 +48,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -61,14 +64,15 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCapBank extends BlockEio<TileCapBank>
-    implements IEioGuiHandler.WithPos, IAdvancedTooltipProvider, IRedstoneConnectable_dont_crash_us_mcjty, ISmartRenderAwareBlock, IHaveTESR, ICustomSubItems {
+public class BlockCapBank extends BlockEio<TileCapBank> implements IEioGuiHandler.WithPos, IAdvancedTooltipProvider, IRedstoneConnectable_dont_crash_us_mcjty,
+    ISmartRenderAwareBlock, IHaveTESR, ICustomSubItems, IPaintable.ISolidBlockPaintableBlock {
 
   public static BlockCapBank create(@Nonnull IModObject modObject) {
     BlockCapBank res = new BlockCapBank(modObject);
@@ -82,6 +86,7 @@ public class BlockCapBank extends BlockEio<TileCapBank>
   protected BlockCapBank(@Nonnull IModObject modObject) {
     super(modObject);
     setHardness(2.0F);
+    setLightOpacity(255);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
         .withProperty(CapBankType.KIND, CapBankType.NONE));
     setShape(mkShape(BlockFaceShape.SOLID));
@@ -95,7 +100,6 @@ public class BlockCapBank extends BlockEio<TileCapBank>
   @Override
   protected void init() {
     super.init();
-    setLightOpacity(255);
     SmartModelAttacher.register(this, EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.DEFAULTS, EnumMergingBlockRenderMode.AUTO);
   }
 
@@ -486,4 +490,30 @@ public class BlockCapBank extends BlockEio<TileCapBank>
   public void bindTileEntitySpecialRenderer() {
     ClientRegistry.bindTileEntitySpecialRenderer(TileCapBank.class, new CapBankRenderer(this));
   }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // PAINT START
+  // ///////////////////////////////////////////////////////////////////////
+
+  @Override
+  public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {
+    return true;
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public boolean addHitEffects(@Nonnull IBlockState state, @Nonnull World world, @Nonnull RayTraceResult target, @Nonnull ParticleManager effectRenderer) {
+    return PaintHelper.addHitEffects(state, world, target, effectRenderer);
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public boolean addDestroyEffects(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ParticleManager effectRenderer) {
+    return PaintHelper.addDestroyEffects(world, pos, effectRenderer);
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // PAINT END
+  // ///////////////////////////////////////////////////////////////////////
+
 }
