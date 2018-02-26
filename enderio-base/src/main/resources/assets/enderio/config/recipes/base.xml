@@ -434,6 +434,12 @@ XML editor will display that as tooltips when editing this file.
     </spawning>
   </recipe>
 
+  <recipe name="Spawner, Chickens" required="false">
+    <spawning>
+      <entity name="chickens:chickenschicken"      costMultiplier="30" disabled="false"/>
+    </spawning>
+  </recipe>
+
   <recipe name="Alloy: Electrical Steel" required="true">
     <alloying energy="10000" exp="0.5">
       <input name="ingotIron"/>
