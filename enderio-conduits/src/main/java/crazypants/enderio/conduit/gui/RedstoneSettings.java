@@ -33,9 +33,9 @@ public class RedstoneSettings extends BaseSettingsPanel {
   private int stongLabelX;
 
   public RedstoneSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_REDSTONE, EnderIO.lang.localize("itemRedstoneConduitInsulated.name"), gui, con, "redstone_settings");
+    super(IconEIO.WRENCH_OVERLAY_REDSTONE, EnderIO.lang.localize("itemRedstoneConduitInsulated.name"), gui, con, "redstone_settings", false);
 
-    int x = 0;
+    int x = leftColumn;
     int y = customTop;
 
     if (con instanceof IRedstoneConduit) {
@@ -96,10 +96,10 @@ public class RedstoneSettings extends BaseSettingsPanel {
   protected void renderCustomOptions(int top, float par1, int par2, int par3) {
     if (insCon != null) {
       if (cb != null) {
-        gui.getFontRenderer().drawString(signalColorStr, left, top, ColorUtil.getRGB(Color.darkGray));
+        gui.getFontRenderer().drawString(signalColorStr, left + 20, top + 2, ColorUtil.getRGB(Color.darkGray));
       }
       if (strongCB != null) {
-        gui.getFontRenderer().drawString(signalStringthStr, left + stongLabelX, top, ColorUtil.getRGB(Color.darkGray));
+        gui.getFontRenderer().drawString(signalStringthStr, left + stongLabelX, top + 2, ColorUtil.getRGB(Color.darkGray));
       }
     }
   }

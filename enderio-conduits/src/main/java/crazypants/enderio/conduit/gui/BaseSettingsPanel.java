@@ -26,6 +26,10 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
   static final int ID_INSERT_ENABLED = 327;
   static final int ID_EXTRACT_ENABLED = 328;
 
+  // TODO Lang
+  private static final String ENABLED = "Enabled";
+  private static final String DISABLED = "Disabled";
+
   protected final @Nonnull IconEIO icon;
   protected final GuiExternalConnection gui;
   protected final IConduit con;
@@ -41,6 +45,8 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
   private final CheckBox extractEnabledB;
   private final CheckBox insertEnabledB;
 
+  private final boolean hasInputOutputMode;
+
   protected int left = 0;
   protected int top = 0;
   protected int width = 0;
@@ -53,21 +59,30 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
   protected int customTop = 0;
 
   protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IConduit con, @Nonnull String texture) {
+    this(icon, typeName, gui, con, texture, true);
+  }
+
+  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IConduit con, @Nonnull String texture,
+      boolean hasInputOutputMode) {
     this.icon = icon;
     this.typeName = typeName;
     this.gui = gui;
     this.con = con;
     this.texture = EnderIO.proxy.getGuiTexture(texture);
+    this.hasInputOutputMode = hasInputOutputMode;
 
     // TODO lang
-    inputHeading = "Insert";
+    if (hasInputOutputMode) {
+      inputHeading = "Insert";
+    } else {
+      inputHeading = ENABLED;
+    }
     outputHeading = "Extract";
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
     customTop = top + gap * 5 + fr.FONT_HEIGHT * 2;
     customTop -= 16;
-    // customTop = top;
 
     int x = leftColumn;
     int y = 6;
@@ -88,7 +103,9 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
     this.height = heightIn;
 
     insertEnabledB.onGuiInit();
-    extractEnabledB.onGuiInit();
+    if (hasInputOutputMode) {
+      extractEnabledB.onGuiInit();
+    }
 
     ConnectionMode mode = con.getConnectionMode(gui.getDir());
     switch (mode) {
@@ -178,10 +195,23 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
     // }
     if (guiButton.id == ID_INSERT_ENABLED) {
       insertEnabled = !insertEnabled;
+      if (!hasInputOutputMode) {
+        extractEnabled = !extractEnabled;
+        swapEnabledText();
+      }
       updateConnectionMode();
     } else if (guiButton.id == ID_EXTRACT_ENABLED) {
       extractEnabled = !extractEnabled;
       updateConnectionMode();
+    }
+  }
+
+  // TODO Lang
+  private void swapEnabledText() {
+    if (inputHeading.equals(ENABLED)) {
+      inputHeading = DISABLED;
+    } else {
+      inputHeading = ENABLED;
     }
   }
 
@@ -197,9 +227,10 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
     int y = gui.getGuiTop() + 10;
     fr.drawString(inputHeading, x, y, rgb);
 
-    x += 92;
-    fr.drawString(outputHeading, x, y, rgb);
-
+    if (hasInputOutputMode) {
+      x += 92;
+      fr.drawString(outputHeading, x, y, rgb);
+    }
     renderCustomOptions(y + gap + fr.FONT_HEIGHT + gap, par1, par2, par3);
   }
 
