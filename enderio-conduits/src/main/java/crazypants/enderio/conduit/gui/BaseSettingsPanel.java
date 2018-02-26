@@ -156,9 +156,9 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
     if (insertEnabled && extractEnabled) {
       mode = ConnectionMode.IN_OUT;
     } else if (insertEnabled) {
-      mode = ConnectionMode.INPUT;
-    } else if (extractEnabled) {
       mode = ConnectionMode.OUTPUT;
+    } else if (extractEnabled) {
+      mode = ConnectionMode.INPUT;
     }
     con.setConnectionMode(gui.getDir(), mode);
     PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));

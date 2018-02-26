@@ -29,7 +29,7 @@ public class PowerSettings extends BaseSettingsPanel {
     super(IconEIO.WRENCH_OVERLAY_POWER, EnderIO.lang.localize("itemPowerConduit.name"), gui, con, "power_settings");
     conduit = (IPowerConduit) con;
 
-    int x = 38;
+    int x = rightColumn;
     int y = customTop;
 
     rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
@@ -38,7 +38,7 @@ public class PowerSettings extends BaseSettingsPanel {
       public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
         RedstoneControlMode curMode = getRedstoneControlMode();
         conduit.setExtractionRedstoneMode(mode, gui.getDir());
-        if(curMode != mode) {
+        if (curMode != mode) {
           PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.getDir()));
         }
 
@@ -65,7 +65,7 @@ public class PowerSettings extends BaseSettingsPanel {
   @Override
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     super.actionPerformed(guiButton);
-    if(guiButton.id == ID_COLOR_BUTTON) {
+    if (guiButton.id == ID_COLOR_BUTTON) {
       conduit.setExtractionSignalColor(gui.getDir(), DyeColor.values()[colorB.getColorIndex()]);
       PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.getDir()));
     }
