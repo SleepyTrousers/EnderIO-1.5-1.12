@@ -121,7 +121,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   public void setRange(int range) {
     this.range = limitRange(range);
-    updateBlock();
+    markDirty();
   }
 
   @Override

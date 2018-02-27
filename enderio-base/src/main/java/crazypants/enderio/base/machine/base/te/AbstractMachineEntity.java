@@ -97,7 +97,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     }
     if (faceModes.get(faceHit) != mode) {
       faceModes.put(faceHit, mode);
-      updateClients = true;
       notifyNeighbours = true;
 
       markDirty();
@@ -109,7 +108,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   public void clearAllIoModes() {
     if (faceModes != null) {
       faceModes = null;
-      updateClients = true;
       notifyNeighbours = true;
       markDirty();
       updateBlock();

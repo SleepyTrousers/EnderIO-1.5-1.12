@@ -84,13 +84,13 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
     if (te instanceof AbstractMachineEntity) {
       ITool tool = ToolUtil.getEquippedTool(entityPlayer, hand);
       if (tool != null && !entityPlayer.isSneaking() && tool.canUse(hand, entityPlayer, pos)) {
-        if (!PermissionAPI.hasPermission(entityPlayer.getGameProfile(), permissionNodeIOWrenching, new BlockPosContext(entityPlayer, pos, state, side))) {
-          entityPlayer.sendMessage(Lang.WRENCH_DENIED.toChatServer());
-        } else {
-          ((AbstractMachineEntity) te).toggleIoModeForFace(side);
+        if (!world.isRemote) {
+          if (!PermissionAPI.hasPermission(entityPlayer.getGameProfile(), permissionNodeIOWrenching, new BlockPosContext(entityPlayer, pos, state, side))) {
+            entityPlayer.sendMessage(Lang.WRENCH_DENIED.toChatServer());
+          } else {
+            ((AbstractMachineEntity) te).toggleIoModeForFace(side);
+          }
         }
-        IBlockState bs = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, bs, bs, 3);
         return true;
       }
     }

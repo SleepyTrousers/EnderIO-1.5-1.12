@@ -208,7 +208,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
 
   public void setRange(int range) {
     this.range = limitRange(range);
-    updateBlock();
+    markDirty();
   }
 
   public void setItemFilterSlot(int slot, @Nonnull ItemStack stack) {
