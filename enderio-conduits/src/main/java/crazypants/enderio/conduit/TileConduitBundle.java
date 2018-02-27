@@ -38,6 +38,7 @@ import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
+import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -54,6 +55,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.base.config.Config.transparentFacadesLetThroughBeaconBeam;
 
+@Storable
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider {
 
   // TODO Fix duct-tape
@@ -71,6 +73,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   private @Nonnull List<IConduit> realConduits = new CopyOnWriteArrayList<IConduit>();
 
+  @Store
   private @Nonnull EnumFacadeType facadeType = EnumFacadeType.BASIC;
 
   private final List<CollidableComponent> cachedCollidables = new CopyOnWriteArrayList<CollidableComponent>(); // <- duct-tape fix
