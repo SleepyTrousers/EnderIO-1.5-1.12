@@ -52,7 +52,7 @@ public class SpeedController {
     double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
     int cost = (int) (horzMovement * costModifier);
     setModifiers(player);
-    DarkSteelController.instance.usePlayerEnergy(player, EntityEquipmentSlot.LEGS, cost);
+    DarkSteelController.usePlayerEnergy(player, EntityEquipmentSlot.LEGS, cost);
   }
 
   @SideOnly(Side.CLIENT)
@@ -115,7 +115,7 @@ public class SpeedController {
     if (speedUpgrade == null) {
       return null;
     }
-    if (DarkSteelController.instance.isSpeedActive(player) && DarkSteelController.instance.getPlayerEnergy(player, EntityEquipmentSlot.LEGS) > 0) {
+    if (DarkSteelController.isSpeedActive(player) && DarkSteelController.getPlayerEnergy(player, EntityEquipmentSlot.LEGS) > 0) {
       return speedUpgrade;
     }
     return null;

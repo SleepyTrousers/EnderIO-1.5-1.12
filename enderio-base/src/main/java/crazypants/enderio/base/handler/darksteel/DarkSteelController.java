@@ -15,6 +15,7 @@ import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.base.init.ModObject;
@@ -37,58 +38,60 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MovementInput;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class DarkSteelController {
-
-  public static void init(@Nonnull FMLPreInitializationEvent event) {
-    MinecraftForge.EVENT_BUS.register(instance);
-  }
 
   private static final EnumSet<Type> DEFAULT_ACTIVE = EnumSet.of(Type.SPEED, Type.STEP_ASSIST, Type.JUMP);
 
-  public static final DarkSteelController instance = new DarkSteelController();
+  private static class Data {
+    private boolean jumpPre;
+    private boolean wasJumping;
+    private int jumpCount;
+    private int ticksSinceLastJump;
 
-  private boolean wasJumping;
-  private int jumpCount;
-  private int ticksSinceLastJump;
+    private final @Nonnull Map<UUID, EnumSet<Type>> allActive = new HashMap<UUID, EnumSet<Type>>();
 
-  private final @Nonnull Map<UUID, EnumSet<Type>> allActive = new HashMap<UUID, EnumSet<Type>>();
+    private boolean nightVisionActive = false;
+    private boolean removeNightvision = false;
 
-  private boolean nightVisionActive = false;
-  private boolean removeNightvision = false;
-
-  private DarkSteelController() {
   }
 
-  private EnumSet<Type> getActiveSet(EntityPlayer player) {
+  private static ThreadLocal<Data> DATA = new ThreadLocal<Data>() {
+    @Override
+    protected Data initialValue() {
+      return new Data();
+    }
+  };
+
+  private static EnumSet<Type> getActiveSet(EntityPlayer player) {
     EnumSet<Type> active;
     GameProfile gameProfile = player.getGameProfile();
     UUID id = gameProfile.getId();
-    active = id == null ? null : allActive.get(id);
+    active = id == null ? null : DATA.get().allActive.get(id);
     if (active == null) {
       active = DEFAULT_ACTIVE.clone();
       if (id != null) {
-        allActive.put(id, active);
+        DATA.get().allActive.put(id, active);
       }
     }
     return active;
   }
 
-  public boolean isActive(EntityPlayer player, Type type) {
+  public static boolean isActive(EntityPlayer player, Type type) {
     return getActiveSet(player).contains(type);
   }
 
-  public void setActive(EntityPlayer player, Type type, boolean isActive) {
+  public static void setActive(EntityPlayer player, Type type, boolean isActive) {
     EnumSet<Type> set = getActiveSet(player);
     if (isActive) {
       set.add(type);
@@ -97,28 +100,28 @@ public class DarkSteelController {
     }
   }
 
-  public boolean isGlideActive(EntityPlayer player) {
+  public static boolean isGlideActive(EntityPlayer player) {
     return isActive(player, Type.GLIDE);
   }
 
-  public boolean isSpeedActive(EntityPlayer player) {
+  public static boolean isSpeedActive(EntityPlayer player) {
     return isActive(player, Type.SPEED);
   }
 
-  public boolean isStepAssistActive(EntityPlayer player) {
+  public static boolean isStepAssistActive(EntityPlayer player) {
     return isActive(player, Type.STEP_ASSIST);
   }
 
-  public boolean isJumpActive(EntityPlayer player) {
+  public static boolean isJumpActive(EntityPlayer player) {
     return isActive(player, Type.JUMP);
   }
 
-  public boolean isElytraActive(EntityPlayer player) {
+  public static boolean isElytraActive(EntityPlayer player) {
     return isActive(player, Type.ELYTRA);
   }
 
   @SubscribeEvent
-  public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+  public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
     EntityPlayer player = event.player;
 
     if (event.phase == Phase.START && !player.isSpectator()) {
@@ -145,22 +148,22 @@ public class DarkSteelController {
     }
   }
 
-  public boolean isGliderUpgradeEquipped(EntityPlayer player) {
+  public static boolean isGliderUpgradeEquipped(EntityPlayer player) {
     ItemStack chestPlate = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
     return GliderUpgrade.INSTANCE.hasUpgrade(chestPlate);
   }
 
-  public boolean isElytraUpgradeEquipped(EntityPlayer player) {
+  public static boolean isElytraUpgradeEquipped(EntityPlayer player) {
     ItemStack chestPlate = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
     return isElytraUpgradeEquipped(chestPlate);
   }
 
-  public boolean isElytraUpgradeEquipped(@Nonnull ItemStack chestPlate) {
+  public static boolean isElytraUpgradeEquipped(@Nonnull ItemStack chestPlate) {
     return ElytraUpgrade.INSTANCE.hasUpgrade(chestPlate);
   }
 
   @SubscribeEvent
-  public void onFall(LivingFallEvent event) {
+  public static void onFall(LivingFallEvent event) {
     float distance = event.getDistance();
     if (distance > 3) {
       ItemStack boots = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.FEET);
@@ -187,7 +190,7 @@ public class DarkSteelController {
     }
   }
 
-  private void updateStepHeightAndFallDistance(EntityPlayer player) {
+  private static void updateStepHeightAndFallDistance(EntityPlayer player) {
     if (!player.isSneaking() && JumpUpgrade.isEquipped(player) && isStepAssistActive(player)) {
       player.stepHeight = 1.0023F;
     } else if (player.stepHeight == 1.0023F) {
@@ -195,7 +198,7 @@ public class DarkSteelController {
     }
   }
 
-  public void usePlayerEnergy(EntityPlayer player, EntityEquipmentSlot armorSlot, int cost) {
+  public static void usePlayerEnergy(EntityPlayer player, EntityEquipmentSlot armorSlot, int cost) {
     if (cost == 0) {
       return;
     }
@@ -218,7 +221,7 @@ public class DarkSteelController {
     }
   }
 
-  public int getPlayerEnergy(EntityPlayer player, EntityEquipmentSlot slot) {
+  public static int getPlayerEnergy(EntityPlayer player, EntityEquipmentSlot slot) {
     int res = 0;
 
     if (Config.darkSteelDrainPowerFromInventory) {
@@ -237,7 +240,7 @@ public class DarkSteelController {
   }
 
   @SubscribeEvent
-  public void onStartTracking(PlayerEvent.StartTracking event) {
+  public static void onStartTracking(PlayerEvent.StartTracking event) {
     if (event.getTarget() instanceof EntityPlayerMP) {
       for (PacketUpgradeState.Type type : PacketUpgradeState.Type.values()) {
         PacketHandler.sendTo(new PacketUpgradeState(type, isActive((EntityPlayer) event.getTarget(), type), event.getTarget().getEntityId()),
@@ -246,11 +249,9 @@ public class DarkSteelController {
     }
   }
 
-  private boolean jumpPre;
-
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
-  public void onClientTick(TickEvent.ClientTickEvent event) {
+  public static void onClientTick(TickEvent.ClientTickEvent event) {
     EntityPlayerSP player = Minecraft.getMinecraft().player;
 
     if (NullHelper.untrust(player) == null) {
@@ -263,7 +264,7 @@ public class DarkSteelController {
     }
 
     if (event.phase != TickEvent.Phase.END) {
-      jumpPre = player.movementInput.jump;
+      DATA.get().jumpPre = player.movementInput.jump;
       return;
     }
 
@@ -274,26 +275,25 @@ public class DarkSteelController {
 
     MovementInput input = player.movementInput;
     boolean jumpHandled = false;
-    if (input.jump && (!wasJumping || ticksSinceLastJump > 5)) {
+    if (input.jump && (!DATA.get().wasJumping || DATA.get().ticksSinceLastJump > 5)) {
       jumpHandled = doJump(player);
     }
 
-    if (!jumpHandled && input.jump && !jumpPre && !player.onGround && player.motionY < 0.0D && !player.capabilities.isFlying && isElytraUpgradeEquipped(player)
-        && !isElytraActive(player)) {
-      DarkSteelController.instance.setActive(player, Type.ELYTRA, true);
+    if (!jumpHandled && input.jump && !DATA.get().jumpPre && !player.onGround && player.motionY < 0.0D && !player.capabilities.isFlying
+        && isElytraUpgradeEquipped(player) && !isElytraActive(player)) {
+      setActive(player, Type.ELYTRA, true);
       PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(Type.ELYTRA, true));
     }
 
-    wasJumping = !player.onGround;
-    if (!wasJumping) {
-      jumpCount = 0;
+    DATA.get().wasJumping = !player.onGround;
+    if (!DATA.get().wasJumping) {
+      DATA.get().jumpCount = 0;
     }
-    ticksSinceLastJump++;
-
+    DATA.get().ticksSinceLastJump++;
   }
 
   @SideOnly(Side.CLIENT)
-  private boolean doJump(EntityPlayerSP player) {
+  private static boolean doJump(EntityPlayerSP player) {
     if (!isJumpActive(player)) {
       return false;
     }
@@ -306,19 +306,19 @@ public class DarkSteelController {
     }
 
     boolean autoJump = Minecraft.getMinecraft().gameSettings.getOptionOrdinalValue(GameSettings.Options.AUTO_JUMP);
-    if (autoJump && jumpCount <= 0) {
-      jumpCount++;
+    if (autoJump && DATA.get().jumpCount <= 0) {
+      DATA.get().jumpCount++;
       return false;
     }
 
     int autoJumpOffset = autoJump ? 1 : 0;
-    int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(jumpCount + 1 - autoJumpOffset, 2.5);
+    int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(DATA.get().jumpCount + 1 - autoJumpOffset, 2.5);
     int availablePower = getPlayerEnergy(player, EntityEquipmentSlot.FEET);
     int maxJumps = jumpUpgrade.getLevel() + autoJumpOffset;
-    if (availablePower > 0 && requiredPower <= availablePower && jumpCount < maxJumps) {
-      jumpCount++;
-      player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * (jumpCount - autoJumpOffset);
-      ticksSinceLastJump = 0;
+    if (availablePower > 0 && requiredPower <= availablePower && DATA.get().jumpCount < maxJumps) {
+      DATA.get().jumpCount++;
+      player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * (DATA.get().jumpCount - autoJumpOffset);
+      DATA.get().ticksSinceLastJump = 0;
 
       usePlayerEnergy(player, EntityEquipmentSlot.FEET, requiredPower);
       PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, EntityEquipmentSlot.FEET));
@@ -331,42 +331,42 @@ public class DarkSteelController {
     return false;
   }
 
-  private void updateNightvision(EntityPlayer player) {
-    if (isNightVisionUpgradeEquipped(player) && nightVisionActive) {
+  private static void updateNightvision(EntityPlayer player) {
+    if (isNightVisionUpgradeEquipped(player) && DATA.get().nightVisionActive) {
       player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 210, 0, true, true));
     }
-    if (!isNightVisionUpgradeEquipped(player) && nightVisionActive) {
-      nightVisionActive = false;
-      removeNightvision = true;
+    if (!isNightVisionUpgradeEquipped(player) && DATA.get().nightVisionActive) {
+      DATA.get().nightVisionActive = false;
+      DATA.get().removeNightvision = true;
     }
-    if (removeNightvision) {
+    if (DATA.get().removeNightvision) {
       player.removePotionEffect(MobEffects.NIGHT_VISION);
-      removeNightvision = false;
+      DATA.get().removeNightvision = false;
     }
   }
 
-  public boolean isNightVisionUpgradeEquipped(EntityPlayer player) {
+  public static boolean isNightVisionUpgradeEquipped(EntityPlayer player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     return NightVisionUpgrade.INSTANCE.hasUpgrade(helmet);
   }
 
-  public void setNightVisionActive(boolean isNightVisionActive) {
-    if (nightVisionActive && !isNightVisionActive) {
-      removeNightvision = true;
+  public static void setNightVisionActive(boolean isNightVisionActive) {
+    if (DATA.get().nightVisionActive && !isNightVisionActive) {
+      DATA.get().removeNightvision = true;
     }
-    this.nightVisionActive = isNightVisionActive;
+    DATA.get().nightVisionActive = isNightVisionActive;
   }
 
-  public boolean isNightVisionActive() {
-    return nightVisionActive;
+  public static boolean isNightVisionActive() {
+    return DATA.get().nightVisionActive;
   }
 
-  public boolean isTopUpgradeEquipped(EntityPlayer player) {
+  public static boolean isTopUpgradeEquipped(EntityPlayer player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     return TheOneProbeUpgrade.getInstance().hasUpgrade(helmet);
   }
 
-  public void setTopActive(EntityPlayer player, boolean active) {
+  public static void setTopActive(EntityPlayer player, boolean active) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     if (active) {
       ItemUtil.getOrCreateNBT(helmet).setInteger(TheOneProbeUpgrade.PROBETAG, 1);
@@ -375,7 +375,7 @@ public class DarkSteelController {
     }
   }
 
-  public boolean isTopActive(EntityPlayer player) {
+  public static boolean isTopActive(EntityPlayer player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     return ItemUtil.getOrCreateNBT(helmet).hasKey(TheOneProbeUpgrade.PROBETAG);
   }

@@ -109,9 +109,9 @@ public class KeyTracker {
   }
 
   private static void toggleDarkSteelController(Type type, String messageBase) {
-    boolean isActive = !DarkSteelController.instance.isActive(Minecraft.getMinecraft().player, type);
+    boolean isActive = !DarkSteelController.isActive(Minecraft.getMinecraft().player, type);
     sendEnabledChatMessage(messageBase, isActive);
-    DarkSteelController.instance.setActive(Minecraft.getMinecraft().player, type, isActive);
+    DarkSteelController.setActive(Minecraft.getMinecraft().player, type, isActive);
     PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(type, isActive));
   }
 
@@ -222,9 +222,9 @@ public class KeyTracker {
   private static class GlideAction implements Action {
     @Override
     public void execute() {
-      if (DarkSteelController.instance.isGliderUpgradeEquipped(Minecraft.getMinecraft().player)) {
+      if (DarkSteelController.isGliderUpgradeEquipped(Minecraft.getMinecraft().player)) {
         toggleDarkSteelController(Type.GLIDE, "darksteel.upgrade.glider");
-      } else if (DarkSteelController.instance.isElytraUpgradeEquipped(Minecraft.getMinecraft().player)) {
+      } else if (DarkSteelController.isElytraUpgradeEquipped(Minecraft.getMinecraft().player)) {
         toggleDarkSteelController(Type.ELYTRA, "darksteel.upgrade.elytra");
       }
     }
@@ -234,14 +234,14 @@ public class KeyTracker {
     @Override
     public void execute() {
       EntityPlayer player = Minecraft.getMinecraft().player;
-      if (DarkSteelController.instance.isNightVisionUpgradeEquipped(player)) {
-        boolean isActive = !DarkSteelController.instance.isNightVisionActive();
+      if (DarkSteelController.isNightVisionUpgradeEquipped(player)) {
+        boolean isActive = !DarkSteelController.isNightVisionActive();
         if (isActive) {
           SoundHelper.playSound(player.world, player, SoundRegistry.NIGHTVISION_ON, 0.1f, player.world.rand.nextFloat() * 0.4f - 0.2f + 1.0f);
         } else {
           SoundHelper.playSound(player.world, player, SoundRegistry.NIGHTVISION_OFF, 0.1f, 1.0f);
         }
-        DarkSteelController.instance.setNightVisionActive(isActive);
+        DarkSteelController.setNightVisionActive(isActive);
       }
     }
   }
@@ -250,9 +250,9 @@ public class KeyTracker {
     @Override
     public void execute() {
       EntityPlayer player = Minecraft.getMinecraft().player;
-      if (DarkSteelController.instance.isTopUpgradeEquipped(player)) {
-        boolean isActive = !DarkSteelController.instance.isTopActive(player);
-        DarkSteelController.instance.setTopActive(player, isActive);
+      if (DarkSteelController.isTopUpgradeEquipped(player)) {
+        boolean isActive = !DarkSteelController.isTopActive(player);
+        DarkSteelController.setTopActive(player, isActive);
       }
     }
   }

@@ -64,24 +64,30 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
 
   @Override
   protected boolean doPull(@Nullable EnumFacing dir) {
-    boolean res = super.doPull(dir);
+    if (super.doPull(dir)) {
+      return true;
+    }
     if (dir != null && xpCont.getFluidAmount() < xpCont.getCapacity()) {
       if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), xpCont, ExperienceConfig.maxIO.get()) > 0) {
         setTanksDirty();
+        return true;
       }
     }
-    return res;
+    return false;
   }
 
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {
-    boolean res = super.doPush(dir);
+    if (super.doPush(dir)) {
+      return true;
+    }
     if (dir != null && xpCont.getFluidAmount() > 0) {
       if (FluidWrapper.transfer(xpCont, world, getPos().offset(dir), dir.getOpposite(), ExperienceConfig.maxIO.get()) > 0) {
         setTanksDirty();
+        return true;
       }
     }
-    return res;
+    return false;
   }
 
   @Override

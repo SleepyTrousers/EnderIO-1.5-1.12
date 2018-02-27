@@ -3,6 +3,7 @@ package crazypants.enderio.base.machine.baselegacy;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.NBTAction;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.base.capacitor.CapacitorHelper;
@@ -124,7 +125,6 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   public void onCapacitorDataChange() {
     // Force a check that the new value is in bounds
     setEnergyStored(getEnergyStored());
-    forceClientUpdate.set();
   }
 
   public int getPowerUsePerTick() {
@@ -153,14 +153,13 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
       capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
     } else {
       final ItemStack stack = inventory[slotDefinition.minUpgradeSlot];
-      final ICapacitorData capacitorDataFromItemStack = stack == null ? null : CapacitorHelper.getCapacitorDataFromItemStack(stack);
-      if (capacitorDataFromItemStack == null) {
-        capacitorData = DefaultCapacitorData.NONE;
-      } else {
+      final ICapacitorData capacitorDataFromItemStack = NullHelper
+          .first(CapacitorHelper.getCapacitorDataFromItemStack(NullHelper.first(stack, ItemStack.EMPTY)), DefaultCapacitorData.NONE);
+      if (!capacitorData.equals(capacitorDataFromItemStack)) {
         capacitorData = capacitorDataFromItemStack;
+        onCapacitorDataChange();
       }
     }
-    onCapacitorDataChange();
   }
 
   // --------- NBT

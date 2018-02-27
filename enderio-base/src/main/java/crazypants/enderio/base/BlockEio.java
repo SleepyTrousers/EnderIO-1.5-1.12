@@ -9,6 +9,7 @@ import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.tool.ToolUtil;
 import net.minecraft.block.material.MapColor;
@@ -25,10 +26,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
+import net.minecraftforge.server.permission.context.BlockPosContext;
 
 public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> implements IModObject.LifecycleInit, IModObject.WithBlockItem {
 
   protected @Nonnull String permissionNodeWrenching = "(block not initialized)";
+  protected @Nonnull String permissionNodeIOWrenching = "(block not initialized)";
 
   @SuppressWarnings("unchecked")
   protected BlockEio(@Nonnull IModObject modObject) {
@@ -63,8 +66,10 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
   @Override
   public void init(@Nonnull IModObject modObject, @Nonnull FMLInitializationEvent event) {
     if (canBeWrenched()) {
-      permissionNodeWrenching = PermissionAPI.registerNode(EnderIO.DOMAIN + ".wrench." + modObject.getUnlocalisedName(), DefaultPermissionLevel.ALL,
+      permissionNodeWrenching = PermissionAPI.registerNode(EnderIO.DOMAIN + ".wrench.break." + modObject.getUnlocalisedName(), DefaultPermissionLevel.ALL,
           "Permission to wrench-break the block " + modObject.getUnlocalisedName() + " of Ender IO");
+      permissionNodeIOWrenching = PermissionAPI.registerNode(EnderIO.DOMAIN + ".wrench.iomode." + modObject.getUnlocalisedName(), DefaultPermissionLevel.ALL,
+          "Permission to set IO mode by wrench-clicking the block " + modObject.getUnlocalisedName() + " of Ender IO");
     }
   }
 
@@ -79,9 +84,13 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
     if (te instanceof AbstractMachineEntity) {
       ITool tool = ToolUtil.getEquippedTool(entityPlayer, hand);
       if (tool != null && !entityPlayer.isSneaking() && tool.canUse(hand, entityPlayer, pos)) {
-        ((AbstractMachineEntity) te).toggleIoModeForFace(side);
-        IBlockState bs = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, bs, bs, 3);
+        if (!world.isRemote) {
+          if (!PermissionAPI.hasPermission(entityPlayer.getGameProfile(), permissionNodeIOWrenching, new BlockPosContext(entityPlayer, pos, state, side))) {
+            entityPlayer.sendMessage(Lang.WRENCH_DENIED.toChatServer());
+          } else {
+            ((AbstractMachineEntity) te).toggleIoModeForFace(side);
+          }
+        }
         return true;
       }
     }

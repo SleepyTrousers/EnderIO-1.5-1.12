@@ -35,7 +35,7 @@ public class PacketDarkSteelPowerPacket implements IMessage {
 
     @Override
     public IMessage onMessage(PacketDarkSteelPowerPacket message, MessageContext ctx) {
-      DarkSteelController.instance.usePlayerEnergy(ctx.getServerHandler().player, message.armorType, message.powerUse);
+      DarkSteelController.usePlayerEnergy(ctx.getServerHandler().player, message.armorType, message.powerUse);
       ctx.getServerHandler().player.fallDistance = 0;
       return null;
     }

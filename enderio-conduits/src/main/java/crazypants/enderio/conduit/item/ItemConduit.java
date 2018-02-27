@@ -27,7 +27,6 @@ import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
-import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
@@ -878,8 +877,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
-    super.hashCodeForModelCaching(wrapper, hashCodes);
+  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    super.hashCodeForModelCaching(hashCodes);
     hashCodes.addEnum(outputColors);
     hashCodes.addEnum(inputColors);
   }

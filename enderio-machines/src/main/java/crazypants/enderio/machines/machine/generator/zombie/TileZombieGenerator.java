@@ -76,13 +76,16 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
 
   @Override
   protected boolean doPull(@Nullable EnumFacing dir) {
-    boolean res = super.doPull(dir);
+    if (super.doPull(dir)) {
+      return true;
+    }
     if (dir != null && tank.getFluidAmount() < tank.getCapacity()) {
       if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), tank, IO_MB_TICK) > 0) {
         setTanksDirty();
+        return true;
       }
     }
-    return res;
+    return false;
   }
 
   @Override

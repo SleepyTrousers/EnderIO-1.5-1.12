@@ -33,7 +33,7 @@ public class GliderUpgradeLayer implements IRenderUpgrade {
       return;
     }
 
-    if (entitylivingbaseIn.hasPlayerInfo() && !entitylivingbaseIn.isInvisible() && DarkSteelController.instance.isGlideActive(entitylivingbaseIn)) { // changed
+    if (entitylivingbaseIn.hasPlayerInfo() && !entitylivingbaseIn.isInvisible() && DarkSteelController.isGlideActive(entitylivingbaseIn)) { // changed
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       // removed: this.playerRenderer.bindTexture(entitylivingbaseIn.getLocationCape());
       GlStateManager.pushMatrix();

@@ -10,12 +10,18 @@ import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class ConduitGeometryUtil {
 
-  public static final ConduitGeometryUtil instance = new ConduitGeometryUtil();
+  public static final @Nonnull ConduitGeometryUtil instance = new ConduitGeometryUtil();
 
   public static float STUB_WIDTH = 0.2f;
   public static float STUB_HEIGHT = 0.2f;
@@ -33,14 +39,11 @@ public class ConduitGeometryUtil {
 
   public static final float CONNECTOR_DEPTH = 0.05f;
 
-  private static Map<EnumFacing, BoundingBox[]> EXTERNAL_CONNECTOR_BOUNDS = new HashMap<EnumFacing, BoundingBox[]>();
+  private static final @Nonnull Map<EnumFacing, BoundingBox[]> EXTERNAL_CONNECTOR_BOUNDS = new HashMap<EnumFacing, BoundingBox[]>();
 
-  static {
-    setupBounds(0.5f);
-  }
-
-  public static void setupBounds(float scale) {
-    float size = 0.075f + (0.175f * scale);
+  @SubscribeEvent
+  public static void preInit(EnderIOLifecycleEvent.Config.Post event) {
+    float size = (float) (0.075f + (0.175f * Config.conduitScale));
 
     WIDTH = size;
     HEIGHT = size;
@@ -53,13 +56,13 @@ public class ConduitGeometryUtil {
     CORE_MAX = core_max;
     CORE_BOUNDS = new BoundingBox(core_min, core_max);
 
-    float connectorWidth = 0.25f + (scale * 0.5f);
+    float connectorWidth = (float) (0.25f + (Config.conduitScale * 0.5f));
     for (EnumFacing dir : EnumFacing.VALUES) {
       EXTERNAL_CONNECTOR_BOUNDS.put(dir, createExternalConnector(dir, CONNECTOR_DEPTH, connectorWidth));
     }
   }
 
-  private static BoundingBox[] createExternalConnector(EnumFacing dir, float connectorDepth, float connectorWidth) {
+  private static @Nonnull BoundingBox[] createExternalConnector(@Nonnull EnumFacing dir, float connectorDepth, float connectorWidth) {
 
     BoundingBox[] res = new BoundingBox[2];
 
@@ -80,7 +83,7 @@ public class ConduitGeometryUtil {
     return res;
   }
 
-  private static BoundingBox createConnectorComponent(EnumFacing dir, float cornerMin, float cornerMax, float depthMin, float depthMax) {
+  private static @Nonnull BoundingBox createConnectorComponent(@Nonnull EnumFacing dir, float cornerMin, float cornerMax, float depthMin, float depthMax) {
     float minX = (1 - Math.abs(dir.getFrontOffsetX())) * cornerMin + dir.getFrontOffsetX() * depthMin;
     float minY = (1 - Math.abs(dir.getFrontOffsetY())) * cornerMin + dir.getFrontOffsetY() * depthMin;
     float minZ = (1 - Math.abs(dir.getFrontOffsetZ())) * cornerMin + dir.getFrontOffsetZ() * depthMin;
@@ -106,16 +109,16 @@ public class ConduitGeometryUtil {
     return val < 0 ? 1 + val : val;
   }
 
-  private Map<GeometryKey, BoundingBox> boundsCache = new HashMap<GeometryKey, BoundingBox>();
+  private final @Nonnull Map<GeometryKey, BoundingBox> boundsCache = new HashMap<GeometryKey, BoundingBox>();
 
   private ConduitGeometryUtil() {
   }
 
-  public BoundingBox getExternalConnectorBoundingBox(EnumFacing dir) {
+  public @Nonnull BoundingBox getExternalConnectorBoundingBox(@Nonnull EnumFacing dir) {
     return getExternalConnectorBoundingBoxes(dir)[0];
   }
 
-  public BoundingBox[] getExternalConnectorBoundingBoxes(EnumFacing dir) {
+  public @Nonnull BoundingBox[] getExternalConnectorBoundingBoxes(@Nonnull EnumFacing dir) {
     return EXTERNAL_CONNECTOR_BOUNDS.get(dir);
   }
 
@@ -129,13 +132,13 @@ public class ConduitGeometryUtil {
     return result;
   }
 
-  public @Nonnull Vector3d getTranslation(EnumFacing dir, Offset offset) {
+  public @Nonnull Vector3d getTranslation(EnumFacing dir, @Nonnull Offset offset) {
     Vector3d result = new Vector3d(offset.xOffset, offset.yOffset, offset.zOffset);
     result.scale(WIDTH);
     return result;
   }
 
-  public BoundingBox createBoundsForConnectionController(EnumFacing dir, Offset offset) {
+  public @Nonnull BoundingBox createBoundsForConnectionController(@Nonnull EnumFacing dir, @Nonnull Offset offset) {
 
     Vector3d nonUniformScale = ForgeDirectionOffsets.forDirCopy(dir);
     nonUniformScale.scale(0.5);
@@ -159,11 +162,11 @@ public class ConduitGeometryUtil {
     return bb;
   }
 
-  private @Nonnull BoundingBox createConduitBounds(Class<? extends IConduit> type, GeometryKey key) {
+  private @Nonnull BoundingBox createConduitBounds(@Nonnull Class<? extends IConduit> type, @Nonnull GeometryKey key) {
     return createConduitBounds(type, key.dir, key.isStub, key.offset);
   }
 
-  private @Nonnull BoundingBox createConduitBounds(Class<? extends IConduit> type, EnumFacing dir, boolean isStub, Offset offset) {
+  private @Nonnull BoundingBox createConduitBounds(Class<? extends IConduit> type, EnumFacing dir, boolean isStub, @Nonnull Offset offset) {
     BoundingBox bb = CORE_BOUNDS;
 
     Vector3d min = bb.getMin();

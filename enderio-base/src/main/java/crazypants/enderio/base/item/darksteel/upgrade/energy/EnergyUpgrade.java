@@ -17,6 +17,7 @@ import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.material.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -30,11 +31,11 @@ public class EnergyUpgrade extends AbstractUpgrade {
     private int energy;
 
     private EnergyUpgradeHolder(int energy) {
-      this.energy = energy;
+      setEnergy(energy);
     }
 
     private EnergyUpgradeHolder(@Nonnull ItemStack stack) {
-      this.energy = getOrCreateUpgradeNBT(stack).getInteger(EnergyUpgradeManager.KEY_ENERGY);
+      setEnergy(getOrCreateUpgradeNBT(stack).getInteger(EnergyUpgradeManager.KEY_ENERGY));
     }
 
     public int getEnergy() {
@@ -42,11 +43,11 @@ public class EnergyUpgrade extends AbstractUpgrade {
     }
 
     public void setEnergy(int energy) {
-      this.energy = energy;
+      this.energy = MathHelper.clamp(energy, 0, capacity);
     }
 
     public int receiveEnergy(int maxRF, boolean simulate) {
-      int energyReceived = Math.min(capacity - energy, Math.min(maxInRF, maxRF));
+      int energyReceived = Math.max(0, Math.min(capacity - energy, Math.min(maxInRF, maxRF)));
       if (!simulate) {
         energy += energyReceived;
       }
@@ -54,7 +55,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
     }
 
     public int extractEnergy(int maxExtract, boolean simulate) {
-      int energyExtracted = Math.min(energy, Math.min(maxOutRF, maxExtract));
+      int energyExtracted = Math.max(0, Math.min(energy, Math.min(maxOutRF, maxExtract)));
       if (!simulate) {
         energy -= energyExtracted;
       }

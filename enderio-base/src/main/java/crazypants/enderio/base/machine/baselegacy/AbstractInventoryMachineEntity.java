@@ -98,11 +98,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     if (dir == null || slotDefinition.getNumOutputSlots() <= 0 || !shouldDoWorkThisTick(20) || !hasStuffToPush()) {
       return false;
     }
-    MoveResult res = ItemTools.move(getPushLimit(), world, getPos(), dir, getPos().offset(dir), dir.getOpposite());
-    if (res == MoveResult.MOVED) {
-      return true;
-    }
-    return false;
+    return ItemTools.move(getPushLimit(), world, getPos(), dir, getPos().offset(dir), dir.getOpposite()) == MoveResult.MOVED;
   }
 
   @Override
@@ -110,11 +106,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     if (dir == null || slotDefinition.getNumInputSlots() <= 0 || !shouldDoWorkThisTick(20) || !hasSpaceToPull()) {
       return false;
     }
-    MoveResult res = ItemTools.move(getPullLimit(), world, getPos().offset(dir), dir.getOpposite(), getPos(), dir);
-    if (res == MoveResult.MOVED) {
-      return true;
-    }
-    return false;
+    return ItemTools.move(getPullLimit(), world, getPos().offset(dir), dir.getOpposite(), getPos(), dir) == MoveResult.MOVED;
   }
 
   protected boolean hasStuffToPush() {

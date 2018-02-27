@@ -31,6 +31,16 @@ public enum DefaultCapacitorData implements ICapacitorData {
       return "none";
     }
 
+    @Override
+    public int hashCode() {
+      return 42;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      return this == obj;
+    }
+
   };
 
   private final @Nonnull String unlocalizedName;

@@ -189,27 +189,33 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
 
   @Override
   protected boolean doPull(@Nullable EnumFacing dir) {
-    boolean res = super.doPull(dir);
+    if (super.doPull(dir)) {
+      return true;
+    }
     int req = getXPRequired();
     if (dir != null && req > 0) {
       if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), xpCont,
           Math.min(XpUtil.experienceToLiquid(req), SoulBinderConfig.soulFluidInputRate.get())) > 0) {
         setTanksDirty();
+        return true;
       }
     }
-    return res;
+    return false;
   }
 
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {
-    boolean res = super.doPush(dir);
+    if (super.doPush(dir)) {
+      return true;
+    }
     int maxAmount = Math.min(XpUtil.experienceToLiquid(getExcessXP()), SoulBinderConfig.soulFluidOutputRate.get());
     if (dir != null && maxAmount > 0) {
       if (FluidWrapper.transfer(xpCont, world, getPos().offset(dir), dir.getOpposite(), maxAmount) > 0) {
         setTanksDirty();
+        return true;
       }
     }
-    return res;
+    return false;
   }
 
   /**

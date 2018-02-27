@@ -11,7 +11,6 @@ import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
-import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -272,8 +271,8 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
-    super.hashCodeForModelCaching(wrapper, hashCodes);
+  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    super.hashCodeForModelCaching(hashCodes);
     FluidStack fluidType = getFluidType();
     if (fluidType != null && fluidType.getFluid() != null) {
       hashCodes.add(fluidType.getFluid());

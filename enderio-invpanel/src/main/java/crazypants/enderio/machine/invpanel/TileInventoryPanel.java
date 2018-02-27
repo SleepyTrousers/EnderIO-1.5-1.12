@@ -171,7 +171,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
       scanNetwork();
     }
 
-    if (forceClientUpdate.peek()) {      
+    if (updateClients.peek()) {      
       IBlockState bs = getWorld().getBlockState(pos);
       getWorld().notifyBlockUpdate(pos, bs, bs, 3);            
       markDirty();
@@ -206,11 +206,11 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
       if(active != dbServer.isOperational()) {
         active = dbServer.isOperational();
-        forceClientUpdate.set();
+        updateClients.set();
       }
     } else {
       if(active) {
-        forceClientUpdate.set();
+        updateClients.set();
       }
       dbServer = null;
       active = false;

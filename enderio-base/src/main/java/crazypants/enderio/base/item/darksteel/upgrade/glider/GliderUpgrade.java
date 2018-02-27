@@ -44,7 +44,7 @@ public class GliderUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
 
   @Override
   public void onPlayerTick(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
-    if (!DarkSteelController.instance.isGlideActive(player)) {
+    if (!DarkSteelController.isGlideActive(player)) {
       return;
     }
 

@@ -173,7 +173,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
     }
 
     if (tankDirty && shouldDoWorkThisTick(2)) {
-      updateBlock();
+      // updateBlock(); // um, why?
       tankDirty = false;
     }
   }

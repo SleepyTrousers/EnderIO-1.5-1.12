@@ -365,10 +365,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public boolean isElytraFlying(@Nonnull EntityLivingBase entity, @Nonnull ItemStack itemstack, boolean shouldStop) {
-    if (entity instanceof EntityPlayer && DarkSteelController.instance.isElytraUpgradeEquipped(itemstack)
-        && DarkSteelController.instance.isElytraActive((EntityPlayer) entity)) {
+    if (entity instanceof EntityPlayer && DarkSteelController.isElytraUpgradeEquipped(itemstack) && DarkSteelController.isElytraActive((EntityPlayer) entity)) {
       if (shouldStop && !entity.world.isRemote) {
-        DarkSteelController.instance.setActive((EntityPlayer) entity, Type.ELYTRA, false);
+        DarkSteelController.setActive((EntityPlayer) entity, Type.ELYTRA, false);
         PacketHandler.INSTANCE.sendToDimension(new PacketUpgradeState(Type.ELYTRA, false, entity.getEntityId()), entity.world.provider.getDimension());
       }
       return true;

@@ -1,13 +1,16 @@
 package crazypants.enderio.base.loot;
 
-import javax.annotation.Nonnull;
-
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class Loot {
 
-  public static void init(@Nonnull FMLPreInitializationEvent event) {
+  @SubscribeEvent
+  public static void preInit(EnderIOLifecycleEvent.PreInit event) {
     LootFunctionManager.registerFunction(new LootSelector.Serializer());
     LootFunctionManager.registerFunction(new SetRandomEnergy.Serializer());
     LootFunctionManager.registerFunction(new SetRandomDarkUpgrade.Serializer());

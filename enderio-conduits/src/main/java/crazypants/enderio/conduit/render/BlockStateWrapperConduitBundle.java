@@ -69,8 +69,10 @@ public class BlockStateWrapperConduitBundle extends BlockStateWrapperBase {
   @Override
   protected void addCacheKeyInternal(@Nonnull Object addlCacheKey) {
     super.addCacheKeyInternal(addlCacheKey);
-    if (addlCacheKey instanceof IConduitComponent) {
-      ((IConduitComponent) addlCacheKey).hashCodeForModelCaching(this, cachekey);
+    if (addlCacheKey instanceof IConduitComponent.IConduitComponentProvider) {
+      ((IConduitComponent.IConduitComponentProvider) addlCacheKey).hashCodeForModelCaching(this, cachekey);
+    } else if (addlCacheKey instanceof IConduitComponent) {
+      ((IConduitComponent) addlCacheKey).hashCodeForModelCaching(cachekey);
     } else if (addlCacheKey instanceof IBlockState) {
       cachekey.add(Block.BLOCK_STATE_IDS.get((IBlockState) addlCacheKey));
     } else {
