@@ -171,9 +171,11 @@ allprojects {
         containers 'org.eclipse.buildship.core.gradleclasspathcontainer'
         file {
           whenMerged {
+            // Safety check that EC exists, otherwise we can't add this without breaking eclipse setup
+            def eaExists = new File('../EnderCore/externalannotations').exists()
             entries.each { e ->
-              if (e.path.contains('gradleclasspathcontainer') || e.path.contains('org.eclipse.jdt.launching.JRE_CONTAINER')) {
-                e.entryAttributes['annotationpath'] = '/EnderCore/externalannotations'
+              if (e.path.contains('gradleclasspathcontainer') || e instanceof org.gradle.plugins.ide.eclipse.model.AbstractClasspathEntry) {
+                e.entryAttributes['annotationpath'] = eaExists ? '/EnderCore/externalannotations' : null
               }
               if (e.path == 'lib/CoFHLib/src/main/java') {
                 e.entryAttributes['ignore_optional_problems'] = 'true'
