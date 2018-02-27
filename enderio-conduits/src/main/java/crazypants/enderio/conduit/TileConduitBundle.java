@@ -16,7 +16,6 @@ import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.Log;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.ConduitUtil;
@@ -150,19 +149,18 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     for (IConduit c : conduits) {
       c.setBundle(this);
     }
-    ConduitRegistry.sort(conduits); // keep conduits sorted so the client side cache key is stable
-    final ConduitCacheKey oldHashCode = new ConduitCacheKey(), newHashCode = new ConduitCacheKey();
-    makeConduitHashCode(realConduits, oldHashCode);
-    makeConduitHashCode(conduits, newHashCode);
+    if (world.isRemote) {
+      ConduitRegistry.sort(conduits); // keep conduits sorted so the client side cache key is stable
+      final ConduitCacheKey oldHashCode = new ConduitCacheKey(), newHashCode = new ConduitCacheKey();
+      makeConduitHashCode(realConduits, oldHashCode);
+      makeConduitHashCode(conduits, newHashCode);
+      if (hasWorld() && getWorld().isRemote && oldHashCode.hashCode() != newHashCode.hashCode()) {
+        clientUpdated = true;
+      }
+    }
     realConduits = conduits; // switch over atomically to avoid threading issues
     cachedCollidables.clear();
     conduits = new CopyOnWriteArrayList<IConduit>();
-    if (hasWorld() && getWorld().isRemote && oldHashCode.hashCode() != newHashCode.hashCode()) {
-      clientUpdated = true;
-      Log.debug("Conduits changed---forcing chunk re-render");
-    } else {
-      Log.debug("Conduits unchanged");
-    }
   }
 
   @Override
@@ -757,6 +755,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     makeConduitHashCode(getConduits(), hashCodes);
   }
 
+  @SideOnly(Side.CLIENT)
   private static void makeConduitHashCode(Collection<IConduit> conduits, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     for (IConduit conduit : conduits) {
       if (conduit instanceof IConduitComponent) {
