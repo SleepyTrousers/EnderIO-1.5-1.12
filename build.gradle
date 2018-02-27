@@ -23,6 +23,10 @@ plugins {
 apply plugin: 'maven'
 apply plugin: 'eclipse'
 
+// We use these to mess with the eclipse .classpath file
+import org.gradle.plugins.ide.eclipse.model.AbstractClasspathEntry
+import org.gradle.plugins.ide.eclipse.model.ProjectDependency
+
 // More user properties
 ext.user = parseConfig(file('user.properties'))
 if (ext.user != null) {
@@ -98,11 +102,13 @@ allprojects {
         }
         mavenLocal()
     }
+    
+    def localEnderCore = project.hasProperty('use_local_ender_core') && project.getProperty('use_local_ender_core').equalsIgnoreCase('true')
 
     // Common dependencies for all modules
     dependencies {
         // Remote / local endercore
-        if (!project.hasProperty('use_local_ender_core') || !project.getProperty('use_local_ender_core').equalsIgnoreCase('true')) {
+        if (!localEnderCore) {
             deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
         }
 
@@ -171,15 +177,17 @@ allprojects {
         containers 'org.eclipse.buildship.core.gradleclasspathcontainer'
         file {
           whenMerged {
-            // Safety check that EC exists, otherwise we can't add this without breaking eclipse setup
-            def eaExists = new File('../EnderCore/externalannotations').exists()
             entries.each { e ->
-              if (e.path.contains('gradleclasspathcontainer') || e instanceof org.gradle.plugins.ide.eclipse.model.AbstractClasspathEntry) {
-                e.entryAttributes['annotationpath'] = eaExists ? '/EnderCore/externalannotations' : null
+              if (e.path.contains('gradleclasspathcontainer') || e instanceof AbstractClasspathEntry) {
+                // Safety check that EC exists, otherwise we can't add this without breaking eclipse setup
+                e.entryAttributes['annotationpath'] = localEnderCore ? '/EnderCore/externalannotations' : null
               }
               if (e.path == 'lib/CoFHLib/src/main/java') {
                 e.entryAttributes['ignore_optional_problems'] = 'true'
               }
+            }
+            if (localEnderCore) {
+              entries.add(new ProjectDependency("/EnderCore"))
             }
           }
         }
