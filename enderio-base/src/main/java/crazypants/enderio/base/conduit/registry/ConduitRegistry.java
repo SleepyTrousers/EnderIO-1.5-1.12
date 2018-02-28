@@ -1,7 +1,21 @@
 package crazypants.enderio.base.conduit.registry;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitRenderer;
@@ -11,10 +25,6 @@ import crazypants.enderio.base.init.IModObject;
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class ConduitRegistry {
 
@@ -146,6 +156,8 @@ public class ConduitRegistry {
   private static final Map<Class<? extends IConduit>, UUID> conduitMemberMapF = new IdentityHashMap<Class<? extends IConduit>, UUID>();
   private static final Map<UUID, Class<? extends IConduit>> conduitMemberMapR = new HashMap<UUID, Class<? extends IConduit>>();
 
+  private static final Map<UUID, Class<? extends IConduit>> conduitMemberMapClient = new HashMap<UUID, Class<? extends IConduit>>();
+
   /**
    * Register an old name for a conduit member class after renaming it. Allows conduits of that type to be read from the save game. The aliasName should be the
    * ".getName()" of the old class.
@@ -272,10 +284,36 @@ public class ConduitRegistry {
   }
 
   /**
+   * Returns a new conduit client proxy instance (member) for the given member UUID ( <em>not</em> interface UUID).
+   */
+  public static IConduit getClientInstance(UUID uuid) {
+    if (conduitMemberMapClient.containsKey(uuid)) {
+      try {
+        return conduitMemberMapClient.get(uuid).newInstance();
+      } catch (Exception e) {
+        throw new RuntimeException("Could not create an client proxy instance of the conduit of type " + uuid, e);
+      }
+    } else {
+      return getInstance(uuid);
+    }
+  }
+
+  /**
    * Returns the member UUID for the given conduit instance (member). This is not the interface/network UUID!
    */
   public static UUID getInstanceUUID(IConduit conduit) {
     return conduitMemberMapF.get(conduit.getClass());
+  }
+
+  public static void registerClientProxy(Class<? extends IConduit> serverClass, Class<? extends IConduit> clientClass) {
+    UUID uuid = conduitMemberMapF.get(serverClass);
+    if (uuid == null) {
+      throw new IllegalArgumentException("The specified server-side conduit is not registered");
+    }
+    if (conduitMemberMapClient.containsKey(uuid)) {
+      throw new IllegalArgumentException("The specified server-side conduit already has a client proxy");
+    }
+    conduitMemberMapClient.put(uuid, clientClass);
   }
 
   private static boolean sortingSupported = true;

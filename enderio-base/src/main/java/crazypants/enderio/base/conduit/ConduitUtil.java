@@ -266,22 +266,20 @@ public class ConduitUtil {
       }
       return result;
     }
+    return null;
+  }
 
-    // legacy NBT
-    String typeName = conduitRoot.getString("conduitType");
-    NBTTagCompound conduitBody = conduitRoot.getCompoundTag("conduit");
-    if (typeName.isEmpty() || conduitBody.hasNoTags()) {
-      return null;
+  @SideOnly(Side.CLIENT)
+  public static IConduit readClientConduitFromNBT(@Nonnull NBTTagCompound conduitRoot) {
+    if (conduitRoot.hasKey("UUID")) {
+      String UUIDString = conduitRoot.getString("UUID");
+      IConduit result = ConduitRegistry.getClientInstance(UUID.fromString(UUIDString));
+      if (result != null) {
+        result.readFromNBT(conduitRoot);
+      }
+      return result;
     }
-    IConduit result;
-    try {
-      result = (IConduit) Class.forName(typeName).newInstance();
-    } catch (Exception e) {
-      throw new RuntimeException("Could not create an instance of the conduit with name: " + typeName, e);
-    }
-    result.readFromNBT(conduitBody);
-    return result;
-
+    return null;
   }
 
   public static boolean isRedstoneControlModeMet(@Nonnull IConduit conduit, @Nonnull RedstoneControlMode mode, @Nonnull DyeColor col) {
