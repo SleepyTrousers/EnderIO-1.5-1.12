@@ -100,12 +100,13 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
       public @Nonnull ItemStack onTake(@Nonnull EntityPlayer player, @Nonnull ItemStack stack) {
         EnchanterRecipe currentEnchantmentRecipe = getInv().getCurrentEnchantmentRecipe();
         if (currentEnchantmentRecipe != null) {
+          final int xpCost = currentEnchantmentRecipe.getXPCost(getInv().getInvAsMachineRecipeInput());
           List<MachineRecipeInput> quantitiesConsumed = currentEnchantmentRecipe.getQuantitiesConsumed(getInv().getInvAsMachineRecipeInput());
           for (MachineRecipeInput machineRecipeInput : quantitiesConsumed) {
             te.decrStackSize(machineRecipeInput.slotNumber, machineRecipeInput.item.getCount());
           }
           if (!player.capabilities.isCreativeMode) {
-            player.addExperienceLevel(-currentEnchantmentRecipe.getXPCost(getInv().getInvAsMachineRecipeInput()));
+            player.addExperienceLevel(-xpCost);
           }
         } else {
           Log.error("Enchanting yielded result without resources");
