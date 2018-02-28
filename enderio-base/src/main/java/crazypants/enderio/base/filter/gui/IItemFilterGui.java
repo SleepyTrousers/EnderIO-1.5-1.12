@@ -1,8 +1,10 @@
 package crazypants.enderio.base.filter.gui;
 
-import net.minecraft.client.gui.GuiButton;
+import java.io.IOException;
 
 import javax.annotation.Nonnull;
+
+import net.minecraft.client.gui.GuiButton;
 
 // TODO Javadocs (check)
 public interface IItemFilterGui {
@@ -13,15 +15,14 @@ public interface IItemFilterGui {
   void deactivate();
 
   /**
-   * Called to update the buttons based on user input
-   * or activating/deactivationg the gui
+   * Called to update the buttons based on user input or activating/deactivating the gui
    */
   void updateButtons();
 
-  void actionPerformed(@Nonnull GuiButton guiButton);
-  
+  void actionPerformed(@Nonnull GuiButton guiButton) throws IOException;
+
   void renderCustomOptions(int top, float par1, int par2, int par3);
 
-  void mouseClicked(int x, int y, int par3);
+  void mouseClicked(int x, int y, int par3) throws IOException;
 
 }

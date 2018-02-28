@@ -19,10 +19,10 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.base.filter.filters.ItemFilter.HandleFilter;
-import crazypants.enderio.base.filter.gui.BasicItemFilterGui;
 import crazypants.enderio.base.filter.gui.IItemFilterContainer;
 import crazypants.enderio.base.filter.gui.IItemFilterGui;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
+import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.Registry;
@@ -35,10 +35,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 @Storable(handler = HandleFilter.class)
@@ -617,6 +620,12 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   @Override
   public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new BasicItemFilterGui(gui, filterContainer, isStickyModeAvailable);
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public void openGui(@Nonnull EntityPlayer player, @Nonnull ItemStack filter, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing dir,
+      int param1) {
+    ModObjectRegistry.getModObjectNN(filter.getItem()).openGui(worldIn, pos, player, dir, param1);
   }
 }

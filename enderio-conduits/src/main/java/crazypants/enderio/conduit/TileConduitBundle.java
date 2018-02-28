@@ -31,9 +31,12 @@ import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.geom.Offsets;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.diagnostics.Prof;
+import crazypants.enderio.base.filter.IFilterHolder;
+import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.config.ConduitConfig;
+import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
@@ -54,7 +57,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.base.config.Config.transparentFacadesLetThroughBeaconBeam;
 
-public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider {
+public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider, IFilterHolder {
 
   // TODO Fix duct-tape
   // TODO Check store
@@ -782,6 +785,11 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   public static String toStringS(TileConduitBundle self) {
     return "SERVER: TileConduitBundle [pos=" + self.pos + ", conduits=" + self.getConduits() + "]";
+  }
+
+  @Override
+  public IItemFilter getFilter(int filterId, int param1) {
+    return getConduit(ItemConduit.class).getInputFilter(EnumFacing.getFront(param1));
   }
 
 }

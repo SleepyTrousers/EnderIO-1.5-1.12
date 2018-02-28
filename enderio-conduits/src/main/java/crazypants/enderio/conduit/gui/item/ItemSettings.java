@@ -24,6 +24,7 @@ import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.gui.IItemFilterGui;
+import crazypants.enderio.base.filter.gui.IOpenFilterRemoteExec;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
@@ -38,7 +39,7 @@ import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 
-public class ItemSettings extends BaseSettingsPanel {
+public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemoteExec.GUI {
 
   private static final int ID_REDSTONE_BUTTON = 12614;
   private static final int ID_COLOR_BUTTON = 179816;
@@ -320,24 +321,14 @@ public class ItemSettings extends BaseSettingsPanel {
       DyeColor col = DyeColor.values()[extractChannelB.getColorIndex()];
       itemConduit.setInputColor(gui.getDir(), col);
       sendFilterChange();
-    }
-
-    if (filterGui != null) {
-      filterGui.actionPerformed(guiButton);
+    } else if (guiButton.id == ID_INSERT_FILTER_OPTIONS) {
+      doOpenFilterGui(0);
     }
   }
 
   // TODO Filter Upgrade
   private void sendFilterChange() {
     PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
-  }
-
-  @Override
-  public void mouseClicked(int x, int y, int par3) {
-    super.mouseClicked(x, y, par3);
-    if (filterGui != null) {
-      filterGui.mouseClicked(x, y, par3);
-    }
   }
 
   @Override
@@ -387,6 +378,16 @@ public class ItemSettings extends BaseSettingsPanel {
     extractChannelB.detach();
     insertFilterOptionsB.detach();
     extractFilterOptionsB.detach();
+  }
+
+  @Override
+  public void setGuiID(int id) {
+    gui.setGuiID(id);
+  }
+
+  @Override
+  public int getGuiID() {
+    return gui.getGuiID();
   }
 
   // private void deactiveFilterGUI() {

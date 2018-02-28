@@ -14,6 +14,8 @@ import com.enderio.core.common.util.ItemUtil;
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
+import crazypants.enderio.base.filter.filters.ItemFilter;
+import crazypants.enderio.base.filter.gui.IOpenFilterRemoteExec;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
@@ -28,6 +30,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -35,7 +38,8 @@ import static crazypants.enderio.base.init.ModObject.itemItemFilter;
 import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_upgrade;
 import static crazypants.enderio.conduit.init.ConduitObject.item_function_upgrade;
 
-public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgrades, TileConduitBundle> implements IExternalConnectionContainer {
+public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgrades, TileConduitBundle>
+    implements IExternalConnectionContainer, IOpenFilterRemoteExec.Container {
 
   private final IItemConduit itemConduit;
 
@@ -52,11 +56,16 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   private Slot slotInputFilter;
   private Slot slotOutputFilter;
 
+  private EnumFacing dir;
+  private EntityPlayer player;
+
   final List<IFilterChangeListener> filterListeners = new ArrayList<IFilterChangeListener>();
 
   public ExternalConnectionContainer(@Nonnull InventoryPlayer playerInv, @Nonnull EnumFacing dir, @Nonnull TileConduitBundle bundle) {
     super(playerInv, new InventoryUpgrades(bundle.getConduit(IItemConduit.class), dir), bundle);
     this.itemConduit = bundle.getConduit(IItemConduit.class);
+    this.dir = dir;
+    this.player = playerInv.player;
     addSlots();
   }
 
@@ -282,6 +291,27 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     }
 
     return copyStack;
+  }
+
+  private int guiId = -1;
+
+  @Override
+  public void setGuiID(int id) {
+    guiId = id;
+  }
+
+  @Override
+  public int getGuiID() {
+    return guiId;
+  }
+
+  @Override
+  public IMessage doOpenFilterGui(int param1) {
+    if (itemConduit != null) {
+      ((ItemFilter) itemConduit.getInputFilter(dir)).openGui(player, itemConduit.getInputFilterUpgrade(dir), getTileEntity().getBundleworld(),
+          getTileEntity().getPos(), dir, param1);
+    }
+    return null;
   }
 
   private class FilterSlot extends SlotItemHandler {
