@@ -167,7 +167,7 @@ public class EnderIO implements IEnderIOAddon {
     SagMillRecipeManager.getInstance().create();
     AlloyRecipeManager.getInstance().create();
     SliceAndSpliceRecipeManager.getInstance().create();
-    VatRecipeManager.getInstance().loadRecipesFromConfig();
+    VatRecipeManager.getInstance().create();
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
 
@@ -215,8 +215,6 @@ public class EnderIO implements IEnderIOAddon {
           }
           if (IMC.XML_RECIPE.equals(key)) {
             RecipeLoader.addIMCRecipe(value);
-          } else if (IMC.VAT_RECIPE.equals(key)) {
-            VatRecipeManager.getInstance().addCustomRecipes(value);
           } else if (IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
             Config.TRAVEL_BLACKLIST.add(value);
           } else if (IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {

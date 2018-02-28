@@ -1,7 +1,5 @@
 package crazypants.enderio.base.recipe.vat;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.FluidUtil;
@@ -12,9 +10,6 @@ import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
-import crazypants.enderio.base.recipe.Recipe;
-import crazypants.enderio.base.recipe.RecipeConfig;
-import crazypants.enderio.base.recipe.RecipeConfigParser;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
@@ -23,46 +18,17 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class VatRecipeManager {
 
-  private static final @Nonnull String CORE_FILE_NAME = "vat_recipes_core.xml";
-  private static final @Nonnull String CUSTOM_FILE_NAME = "vat_recipes_user.xml";
-
   static final @Nonnull VatRecipeManager instance = new VatRecipeManager();
 
   public static @Nonnull VatRecipeManager getInstance() {
     return instance;
   }
 
-  private final @Nonnull NNList<IRecipe> recipes = new NNList<IRecipe>();
-
-  public VatRecipeManager() {
-  }
-
-  public void loadRecipesFromConfig() {
-    RecipeConfig config = RecipeConfig.loadRecipeConfig(CORE_FILE_NAME, CUSTOM_FILE_NAME, null);
-    if (config != null) {
-      processConfig(config);
-    } else {
-      Log.error("Could not load recipes for Vat.");
-    }
-
+  public void create() {
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.VAT, new VatMachineRecipe());
   }
 
-  public void addCustomRecipes(@Nonnull String xmlDef) {
-    RecipeConfig config;
-    try {
-      config = RecipeConfigParser.parse(xmlDef, null);
-    } catch (Exception e) {
-      Log.error("Error parsing custom xml");
-      return;
-    }
-
-    if (config == null) {
-      Log.error("Could process custom XML");
-      return;
-    }
-    processConfig(config);
-  }
+  private final @Nonnull NNList<IRecipe> recipes = new NNList<IRecipe>();
 
   public IRecipe getRecipeForInput(@Nonnull NNList<MachineRecipeInput> inputs) {
     if (inputs.size() == 0) {
@@ -74,17 +40,6 @@ public class VatRecipeManager {
       }
     }
     return null;
-  }
-
-  private void processConfig(@Nonnull RecipeConfig config) {
-    List<Recipe> newRecipes = config.getRecipes(false);
-    Log.info("Found " + newRecipes.size() + " valid Vat recipes in config.");
-    for (Recipe rec : newRecipes) {
-      if (rec != null) {
-        addRecipe(rec);
-      }
-    }
-    Log.info("Finished processing Vat recipes. " + recipes.size() + " recipes avaliable.");
   }
 
   public void addRecipe(@Nonnull IRecipe recipe) {

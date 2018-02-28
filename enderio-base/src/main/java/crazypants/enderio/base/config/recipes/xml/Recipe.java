@@ -150,6 +150,10 @@ public class Recipe extends AbstractConditional {
         craftings.add(factory.read(new Slicing(), startElement));
         return true;
       }
+      if ("fermenting".equals(name)) {
+        craftings.add(factory.read(new Fermenting(), startElement));
+        return true;
+      }
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in recipe '" + getName() + "'");
     }

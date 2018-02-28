@@ -88,7 +88,7 @@
                               Restricts this variant to only be used if the given game element can (not) be found in the game.
                             </documentation>
                           </annotation>
-                        </element>
+                        </element>
                         <choice minOccurs="1" maxOccurs="1">
                           <element minOccurs="1" maxOccurs="1" name="grid">
                             <annotation>
@@ -170,7 +170,7 @@
                                   <attribute use="required" name="item" type="string" />
                                   <attribute use="optional" name="reverse" type="boolean" />
                                 </complexType>
-                              </element>
+                              </element>
                             </sequence>
                             <attribute use="required" name="name" type="string" />
                             <attribute use="optional" name="amount">
@@ -213,7 +213,7 @@
                               Restricts this variant to only be used if the given game element can (not) be found in the game.
                             </documentation>
                           </annotation>
-                        </element>
+                        </element>
                         <element minOccurs="1" maxOccurs="1" name="input">
                           <complexType>
                             <attribute use="required" name="name" type="string" />
@@ -254,7 +254,7 @@
                                   <attribute use="required" name="item" type="string" />
                                   <attribute use="optional" name="reverse" type="boolean" />
                                 </complexType>
-                              </element>
+                              </element>
                             </sequence>
                             <attribute use="required" name="name" type="string" />
                             <attribute use="optional" name="amount">
@@ -322,7 +322,7 @@
                               Restricts this variant to only be used if the given game element can (not) be found in the game.
                             </documentation>
                           </annotation>
-                        </element>
+                        </element>
                         <element minOccurs="1" maxOccurs="1" name="input">
                           <annotation>
                             <documentation>
@@ -389,7 +389,7 @@
                               Restricts this variant to only be used if the given game element can (not) be found in the game.
                             </documentation>
                           </annotation>
-                        </element>
+                        </element>
                         <element minOccurs="1" maxOccurs="1" name="input">
                           <annotation>
                             <documentation>When this item is used in the Enchanter it will give this recipe.</documentation>
@@ -453,7 +453,7 @@
                               Restricts this variant to only be used if the given game element can (not) be found in the game.
                             </documentation>
                           </annotation>
-                        </element>
+                        </element>
                         <element minOccurs="1" maxOccurs="unbounded" name="entity">
                           <annotation>
                             <documentation>When this item is used in the Enchanter it will give this recipe.</documentation>
@@ -501,7 +501,7 @@
                               Restricts this variant to only be used if the given game element can (not) be found in the game.
                             </documentation>
                           </annotation>
-                        </element>
+                        </element>
                         <element minOccurs="1" maxOccurs="3" name="input">
                           <complexType>
                             <attribute use="required" name="name" type="string" />
@@ -537,7 +537,7 @@
                                     Restricts this output to only be used if the given game element can (not) be found in the game.
                                   </documentation>
                                 </annotation>
-                              </element>
+                              </element>
                             </sequence>
                             <attribute use="required" name="name" type="string" />
                             <attribute use="optional" name="amount">
@@ -599,7 +599,7 @@
                               Restricts this variant to only be used if the given game element can (not) be found in the game.
                             </documentation>
                           </annotation>
-                        </element>
+                        </element>
                         <element minOccurs="1" maxOccurs="1" name="input">
                           <complexType>
                             <attribute use="required" name="name" type="string" />
@@ -624,7 +624,7 @@
                                     Restricts this output to only be used if the given game element can (not) be found in the game.
                                   </documentation>
                                 </annotation>
-                              </element>
+                              </element>
                             </sequence>
                             <attribute use="required" name="name" type="string" />
                             <attribute use="optional" name="amount">
@@ -699,6 +699,7 @@
                       <documentation>Recipe for the Slice'n'Splice</documentation>
                     </annotation>
                   </element>
+                  <element name="fermenting" type="enderio:fermentingType" maxOccurs="unbounded" minOccurs="1"></element>
                 </choice>
               </sequence>
               <attribute use="optional" name="required" type="boolean">
@@ -838,6 +839,41 @@
               <documentation>This specifies how long one grinding ball will last before it is used up. The unit is the amount of
                         power used by the SAG Mill.</documentation></annotation>
             <simpleType>
+        <restriction base="int">
+          <minExclusive value="0"></minExclusive>
+        </restriction>
+      </simpleType>
+    </attribute>
+  </complexType>
+
+  <complexType name="fermentingType">
+    <sequence>
+      <element name="config" type="enderio:configComplexType" minOccurs="0" maxOccurs="unbounded"></element>
+      <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="inputgroup" minOccurs="1" maxOccurs="2">
+        <complexType>
+          <sequence>
+            <element name="input" minOccurs="1" maxOccurs="unbounded">
+              <complexType>
+                <attribute name="name" type="string" use="required"></attribute>
+                <attribute name="multiplier" type="float" use="optional" default="1.0"></attribute>
+              </complexType></element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="inputfluid" maxOccurs="1" minOccurs="1">
+        <complexType>
+          <attribute name="name" type="string" use="required"></attribute>
+          <attribute name="multiplier" type="float" default="1.0"></attribute>
+        </complexType>
+      </element>
+      <element name="outputfluid" maxOccurs="1" minOccurs="1">
+        <complexType>
+          <attribute name="name" type="string" use="required"></attribute>
+        </complexType></element>
+    </sequence>
+    <attribute name="energy" use="required">
+      <simpleType>
         <restriction base="int">
           <minExclusive value="0"></minExclusive>
         </restriction>

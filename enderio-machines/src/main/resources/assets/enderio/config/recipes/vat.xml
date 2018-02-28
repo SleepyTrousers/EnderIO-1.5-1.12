@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <!-- 
+
+  Vat recipes take two item inputs and one fluid input, and output a fluid.
+  The various values are calculated like this:
+
+  For:
+  ingredient multiplier (IM) = slot0.multiplier * slot1.multiplier;
+
+  input fluid volume (mb) = IM * 1000
+
+  Produce:
+  output fluid volume (mb) = IM * inputFluid.multiplier * 1000.
+
+   -->
+
+  <recipe name="Nutrient Distilation" required="true">
+    <fermenting energy="10000">
+      <inputgroup>
+        <input name="itemSkull" multiplier="2.0"/>
+        <input name="minecraft:rotten_flesh" multiplier="1.5"/>
+        <input name="minecraft:chicken" multiplier="0.75"/>
+        <input name="minecraft:beef" multiplier="0.75"/>
+        <input name="minecraft:porkchop" multiplier="0.75"/>
+        <input name="minecraft:rabbit" multiplier="0.75"/>
+        <input name="minecraft:mutton" multiplier="0.75"/>
+      </inputgroup>
+      <inputgroup>
+        <input name="minecraft:sugar" multiplier="1.0"/>
+        <input name="minecraft:brown_mushroom" multiplier="1.5"/>
+        <input name="minecraft:red_mushroom" multiplier="1.5"/>
+        <input name="minecraft:nether_wart" multiplier="1.5"/>
+        <input name="minecraft:fermented_spider_eye" multiplier="2.0"/>
+      </inputgroup>
+      <inputfluid name="water" multiplier="0.25"/>
+      <outputfluid name="nutrient_distillation"/>
+    </fermenting>
+  </recipe>
+
+  <recipe name="Ender Distilation" required="true">
+    <fermenting energy="15000">
+      <inputgroup>
+        <input name="itemPulsatingPowder" multiplier="2.0"/>
+      </inputgroup>
+      <inputgroup>
+        <input name="itemEnderCrystalPowder" multiplier="2.0"/>
+      </inputgroup>
+      <inputfluid name="nutrient_distillation" multiplier="0.25"/>
+      <outputfluid name="ender_distillation"/>
+    </fermenting>
+  </recipe>
+
+  <recipe name="Vapor of Levity" required="true">
+    <fermenting energy="20000">
+      <inputgroup>
+        <input name="itemPulsatingPowder" multiplier="1.0"/>
+      </inputgroup>
+      <inputgroup>
+        <input name="itemPrecientPowder" multiplier="1.0"/>
+      </inputgroup>
+      <inputfluid name="ender_distillation" multiplier="1.0"/>
+      <outputfluid name="vapor_of_levity"/>
+    </fermenting>
+  </recipe>
+
+  <recipe name="Hootch" required="true">
+    <fermenting energy="10000">
+      <inputgroup>
+        <input name="minecraft:poisonous_potato" multiplier="8.0"/>
+        <input name="minecraft:potato" multiplier="4.0"/>
+        <input name="minecraft:apple" multiplier="3.5"/>
+        <input name="minecraft:wheat" multiplier="3.0"/>
+        <input name="dustWheat" multiplier="3.0"/>
+        <input name="minecraft:wheat_seeds" multiplier="2.0"/>
+        <input name="minecraft:pumpkin_seeds" multiplier="1.6"/>
+        <input name="minecraft:melon_seeds" multiplier="1.6"/>
+        <input name="minecraft:beetroot_seeds" multiplier="1.4"/>
+      </inputgroup>
+      <inputgroup>
+        <input name="minecraft:sugar" multiplier="1.0"/>
+        <input name="minecraft:melon" multiplier="0.2"/>
+      </inputgroup>
+      <inputfluid name="water" multiplier="0.25"/>
+      <outputfluid name="hootch"/>
+    </fermenting>
+  </recipe>
+
+  <recipe name="Rocket Fuel" required="true">
+    <fermenting energy="10000">
+      <inputgroup>
+        <input name="minecraft:gunpowder" multiplier="1.0"/>
+      </inputgroup>
+      <inputgroup>
+        <input name="minecraft:redstone" multiplier="1.0"/>
+      </inputgroup>
+      <inputfluid name="hootch" multiplier="1.0"/>
+      <outputfluid name="rocket_fuel"/>
+    </fermenting>
+  </recipe>
+
+  <recipe name="Fire Water" required="true">
+    <fermenting energy="10000">
+      <inputgroup>
+        <input name="minecraft:blaze_powder" multiplier="1.0"/>
+      </inputgroup>
+      <inputgroup>
+        <input name="minecraft:redstone" multiplier="1.0"/>
+      </inputgroup>
+      <inputfluid name="hootch" multiplier="1.0"/>
+      <outputfluid name="fire_water"/>
+    </fermenting>
+  </recipe>
+
+  <recipe name="Liquid Sunshine" required="true">
+    <fermenting energy="10000">
+      <inputgroup>
+        <input name="minecraft:glowstone_dust" multiplier="0.25"/>
+        <input name="minecraft:glowstone" multiplier="1.0"/>
+      </inputgroup>
+      <inputgroup>
+        <input name="minecraft:double_plant:0" multiplier="1.0"/>
+      </inputgroup>
+      <inputfluid name="fire_water" multiplier="1.0"/>
+      <outputfluid name="liquid_sunshine"/>
+    </fermenting>
+  </recipe>
+
+  <recipe name="Cloud Seed" required="true">
+    <fermenting energy="10000">
+      <inputgroup>
+        <input name="dustSalt" multiplier="2.5"/>
+        <input name="dustSilver" multiplier="3.5"/>
+        <input name="itemClay" multiplier="0.5"/>
+        <input name="minecraft:clay" multiplier="2.0"/>
+      </inputgroup>
+      <inputgroup>
+        <input name="minecraft:snowball" multiplier="0.1"/>
+        <input name="minecraft:snow" multiplier="0.5"/>
+        <input name="oredict:ice" multiplier="0.5"/>
+        <input name="minecraft:packed_ice" multiplier="1.0"/>
+      </inputgroup>
+      <inputfluid name="water" multiplier="1.0"/>
+      <outputfluid name="cloud_seed"/>
+    </fermenting>
+  </recipe>
+
+  <recipe name="Concentrated Cloud Seed" required="true">
+    <fermenting energy="10000">
+      <inputgroup>
+        <input name="dustSalt" multiplier="1.5"/>
+        <input name="dustSilver" multiplier="2.5"/>
+        <input name="dustElectrum" multiplier="3.5"/>
+        <input name="itemClay" multiplier="0.25"/>
+        <input name="minecraft:clay" multiplier="1.0"/>
+      </inputgroup>
+      <inputfluid name="cloud_seed" multiplier="0.5"/>
+      <outputfluid name="cloud_seed_concentrated"/>
+    </fermenting>
+  </recipe>
+
+</enderio:recipes>

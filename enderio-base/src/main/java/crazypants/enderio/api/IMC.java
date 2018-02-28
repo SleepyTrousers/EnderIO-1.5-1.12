@@ -6,7 +6,6 @@ import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.paint.PaintSourceValidator;
 import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
-import crazypants.enderio.base.recipe.vat.VatRecipeManager;
 import crazypants.enderio.util.CapturedMob;
 
 /**
@@ -16,11 +15,6 @@ import crazypants.enderio.util.CapturedMob;
  * Missing some entries? Many recipes were moved over to a new XML parser and can now registered with {@link #XML_RECIPE}.
  */
 public final class IMC {
-
-  /**
-   * Key for a string message to add Vat recipes. Calls {@link VatRecipeManager#addCustomRecipes(String)} with the string value of the message.
-   */
-  public static final String VAT_RECIPE = "recipe:vat";
 
   /**
    * Key for a string message to add xml recipes. The supplied xml is treated as if it was loaded from one of the recipe XMLs. IMC recipes are processed after
