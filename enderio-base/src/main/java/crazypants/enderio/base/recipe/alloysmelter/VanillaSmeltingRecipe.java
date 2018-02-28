@@ -10,7 +10,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.material.OreDictionaryPreferences;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
@@ -91,7 +90,6 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
       return new ResultStack[0];
     }
     int stackSize = output.getCount();
-    output = OreDictionaryPreferences.instance.getPreferred(output);
     ItemStack result = output.copy();
     result.setCount(stackSize * getNumInputs(inputs));
     return new ResultStack[] { new ResultStack(result) };
@@ -144,7 +142,6 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     for (Entry<ItemStack, ItemStack> entry : metaList.entrySet()) {
       ItemStack output = entry.getValue();
       int stackSize = output.getCount();
-      output = OreDictionaryPreferences.instance.getPreferred(output).copy();
       output.setCount(stackSize);
       final ItemStack key = NullHelper.notnullM(entry.getKey(), "null item stack in furnace recipes");
       result.add(new Recipe(new RecipeInput(key), RF_PER_ITEM, RecipeBonusType.NONE, new RecipeOutput(output)));
