@@ -19,7 +19,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-public class BasicItemFilterGui extends AbstractGuiItemFilter implements IItemFilterGui, IFilterGuiRemoteExec.GUI {
+public class BasicItemFilterGui extends AbstractGuiItemFilter implements IItemFilterGui {
 
   private static final int ID_WHITELIST = FilterGuiUtil.nextButtonId();
   private static final int ID_NBT = FilterGuiUtil.nextButtonId();
@@ -179,7 +179,6 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter implements IItemFi
       sendFilterChange();
     } else if (guiButton.id == ID_WHITELIST + buttonIdOffset) {
       filter.setBlacklist(!filter.isBlacklist());
-      doSetWhitelistMode(filter.isBlacklist());
       sendFilterChange();
     }
   }

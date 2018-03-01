@@ -12,13 +12,11 @@ import com.enderio.core.common.inventory.EnderInventory;
 
 import crazypants.enderio.base.filter.IFilterHolder;
 import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntityBase> implements IItemFilterContainer, IFilterGuiRemoteExec.Container {
+public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntityBase> implements IItemFilterContainer {
 
   private EnumFacing dir;
   private IFilterHolder filterHolder;
@@ -66,41 +64,6 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
   @Override
   public void onFilterChanged() {
     PacketHandler.INSTANCE.sendToServer(new PacketFilterUpdate(getTileEntity(), getItemFilter(), filterIndex, dir.ordinal()));
-  }
-
-  private int guiId = -1;
-
-  @Override
-  public void setGuiID(int id) {
-    guiId = id;
-
-  }
-
-  @Override
-  public int getGuiID() {
-    return guiId;
-  }
-
-  @Override
-  public IMessage doSetWhitelistMode(boolean isBlacklist) {
-    if (filterHolder != null) {
-      IItemFilter filter = filterHolder.getFilter(filterIndex, dir.ordinal());
-      if (filter instanceof ItemFilter) {
-        ((ItemFilter) filter).setBlacklist(isBlacklist);
-      }
-    }
-    return null;
-  }
-
-  @Override
-  public IMessage doSetMatchMetaMode(boolean isMatchMeta) {
-    if (filterHolder != null) {
-      IItemFilter filter = filterHolder.getFilter(filterIndex, dir.ordinal());
-      if (filter instanceof ItemFilter) {
-        ((ItemFilter) filter).setMatchMeta(isMatchMeta);
-      }
-    }
-    return null;
   }
 
 }
