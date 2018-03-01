@@ -35,7 +35,6 @@ import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
-import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 
@@ -328,7 +327,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
 
   // TODO Filter Upgrade
   private void sendFilterChange() {
-    PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
   }
 
   @Override

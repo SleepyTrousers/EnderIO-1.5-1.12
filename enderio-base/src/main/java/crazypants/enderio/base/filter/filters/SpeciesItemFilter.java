@@ -30,7 +30,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 
 // TODO: Move to integration-forestry after big conduit merge
 
-public class SpeciesItemFilter implements IInventory, IItemFilter {
+public class SpeciesItemFilter implements IInventory, IItemFilter.WithGhostSlots {
 
   private static final boolean DEFAULT_BLACKLIST = false;
   private static final boolean DEFAULT_STICKY = false;

@@ -7,25 +7,26 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnderCap;
+import com.enderio.core.common.TileEntityBase;
 import com.enderio.core.common.inventory.EnderInventory;
 
 import crazypants.enderio.base.filter.IFilterHolder;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.filters.ItemFilter;
+import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntity> implements IItemFilterContainer, IFilterGuiRemoteExec.Container {
+public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntityBase> implements IItemFilterContainer, IFilterGuiRemoteExec.Container {
 
   private EnumFacing dir;
   private IFilterHolder filterHolder;
 
   // Used to hold extra information about the original filter container (e.g. which filter it is inside a conduit)
-  private int filterIndex;
+  public int filterIndex;
 
-  public ContainerFilter(@Nonnull InventoryPlayer playerInv, int filterIndex, TileEntity te, EnumFacing dir) {
+  public ContainerFilter(@Nonnull InventoryPlayer playerInv, int filterIndex, TileEntityBase te, EnumFacing dir) {
     super(playerInv, new EnderInventory(), te);
     this.dir = dir;
     this.filterIndex = filterIndex;
@@ -33,6 +34,10 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
     if (te instanceof IFilterHolder) {
       filterHolder = (IFilterHolder) te;
     }
+  }
+
+  public int getParam1() {
+    return dir.ordinal();
   }
 
   @Override
@@ -50,7 +55,7 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    // TODO move ghost slot code to here
+    slots.addAll(slots);
   }
 
   @Override
@@ -60,8 +65,7 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
 
   @Override
   public void onFilterChanged() {
-    // TODO Auto-generated method stub
-
+    PacketHandler.INSTANCE.sendToServer(new PacketFilterUpdate(getTileEntity(), getItemFilter(), filterIndex, dir.ordinal()));
   }
 
   private int guiId = -1;

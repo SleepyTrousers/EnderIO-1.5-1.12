@@ -68,7 +68,10 @@ public interface IItemFilter {
     return false;
   };
 
-  void createGhostSlots(@Nonnull NNList<GhostSlot> slots, int xOffset, int yOffset, @Nullable Runnable cb);
+  public interface WithGhostSlots extends IItemFilter {
+
+    void createGhostSlots(@Nonnull NNList<GhostSlot> slots, int xOffset, int yOffset, @Nullable Runnable cb);
+  }
 
   int getSlotCount();
 

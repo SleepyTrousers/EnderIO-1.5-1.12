@@ -787,9 +787,19 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     return "SERVER: TileConduitBundle [pos=" + self.pos + ", conduits=" + self.getConduits() + "]";
   }
 
+  // FILTERS
+
   @Override
   public IItemFilter getFilter(int filterId, int param1) {
     return getConduit(ItemConduit.class).getInputFilter(EnumFacing.getFront(param1));
+  }
+
+  @Override
+  public void setFilter(int filterId, int param1, @Nonnull IItemFilter filter) {
+    ItemConduit itemConduit = getConduit(ItemConduit.class);
+    if (itemConduit != null) {
+      itemConduit.setInputFilter(EnumFacing.getFront(param1), filter);
+    }
   }
 
 }

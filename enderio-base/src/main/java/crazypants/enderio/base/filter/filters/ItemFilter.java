@@ -45,7 +45,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 @Storable(handler = HandleFilter.class)
-public class ItemFilter implements IInventory, IItemFilter {
+public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots {
 
   // Proxies to writetoNBT/readFromNBT
   // TODO ItemFilter could easily be naturally @Storable

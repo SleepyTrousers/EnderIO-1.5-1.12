@@ -3,9 +3,7 @@ package crazypants.enderio.base.filter.filters;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
-import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.INetworkedInventory;
@@ -93,10 +91,6 @@ public class ModItemFilter implements IItemFilter {
   @Override
   public boolean isValid() {
     return true;
-  }
-
-  @Override
-  public void createGhostSlots(@Nonnull NNList<GhostSlot> slots, int xOffset, int yOffset, @Nullable Runnable cb) {
   }
 
   @Override

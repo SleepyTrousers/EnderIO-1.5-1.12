@@ -14,6 +14,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.DamageModeIconHolder;
 import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -37,7 +38,7 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter implements IItemFi
   final boolean isAdvanced, isLimited;
   final boolean isStickyModeAvailable;
 
-  private final IItemFilterContainer filterContainer;
+  private final ContainerFilter filterContainer;
   private final ItemFilter filter;
 
   private int buttonIdOffset;
@@ -103,7 +104,7 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter implements IItemFi
   }
 
   public void createFilterSlots() {
-    filter.createGhostSlots(this.getGhostSlotHandler().getGhostSlots(), xOffset + 1, yOffset + 1, new Runnable() {
+    filter.createGhostSlots(getGhostSlotHandler().getGhostSlots(), xOffset + 1, yOffset + 1, new Runnable() {
       @Override
       public void run() {
         sendFilterChange();
@@ -185,7 +186,8 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter implements IItemFi
 
   private void sendFilterChange() {
     updateButtons();
-    filterContainer.onFilterChanged();
+    PacketHandler.INSTANCE
+        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
   }
 
   @Override

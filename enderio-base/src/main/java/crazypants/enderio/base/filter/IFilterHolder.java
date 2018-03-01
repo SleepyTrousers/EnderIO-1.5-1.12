@@ -1,5 +1,7 @@
 package crazypants.enderio.base.filter;
 
+import javax.annotation.Nonnull;
+
 public interface IFilterHolder {
 
   /**
@@ -12,5 +14,7 @@ public interface IFilterHolder {
    * @return the filter found from the given parameters
    */
   IItemFilter getFilter(int filterId, int param1);
+
+  void setFilter(int filterId, int param1, @Nonnull IItemFilter filter);
 
 }

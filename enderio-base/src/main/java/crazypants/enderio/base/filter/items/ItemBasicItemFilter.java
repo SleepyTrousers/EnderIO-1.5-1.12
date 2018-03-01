@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.TileEntityBase;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.FilterRegistry;
@@ -103,13 +104,13 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
   @Override
   @Nullable
   public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return new ContainerFilter(player.inventory, param1, world.getTileEntity(pos), facing);
+    return new ContainerFilter(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing);
   }
 
   @Override
   @Nullable
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return new BasicItemFilterGui(player.inventory, new ContainerFilter(player.inventory, param1, world.getTileEntity(pos), facing), false,
+    return new BasicItemFilterGui(player.inventory, new ContainerFilter(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing), false,
         world.getTileEntity(pos));
   }
 
