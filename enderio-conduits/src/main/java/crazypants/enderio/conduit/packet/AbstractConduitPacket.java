@@ -29,16 +29,16 @@ public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBu
   @Deprecated
   public AbstractConduitPacket(@Nonnull TileEntity tile, @Nonnull T conduit) {
     super(tile);
-    this.uuid = ConduitRegistry.get(conduit).getNetworkUUID();
+    this.uuid = ConduitRegistry.getNetwork(conduit).getUUID();
   }
 
   public AbstractConduitPacket(@Nonnull T conduit) {
     super(conduit.getBundle().getEntity());
-    this.uuid = ConduitRegistry.get(conduit).getNetworkUUID();
+    this.uuid = ConduitRegistry.getNetwork(conduit).getUUID();
   }
 
   protected Class<? extends IConduit> getConType() {
-    return ConduitRegistry.get(uuid).getBaseType();
+    return ConduitRegistry.getNetwork(uuid).getBaseType();
   }
 
   @Override

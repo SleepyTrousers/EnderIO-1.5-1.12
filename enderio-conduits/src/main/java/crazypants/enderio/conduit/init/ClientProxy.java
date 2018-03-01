@@ -38,7 +38,6 @@ public class ClientProxy extends CommonProxy {
   @Override
   public void init(@Nonnull FMLPostInitializationEvent event) {
     super.init(event);
-    ConduitBundleRenderManager.instance.init(event);
   }
 
 }

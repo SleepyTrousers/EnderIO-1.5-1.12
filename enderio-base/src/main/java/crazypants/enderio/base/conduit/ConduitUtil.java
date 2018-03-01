@@ -252,7 +252,7 @@ public class ConduitUtil {
     if (conduit == null) {
       conduitRoot.setString("UUID", UUID.nameUUIDFromBytes("null".getBytes()).toString());
     } else {
-      conduitRoot.setString("UUID", ConduitRegistry.getInstanceUUID(conduit).toString());
+      conduitRoot.setString("UUID", ConduitRegistry.get(conduit).getUUID().toString());
       conduit.writeToNBT(conduitRoot);
     }
   }
@@ -260,7 +260,7 @@ public class ConduitUtil {
   public static IConduit readConduitFromNBT(@Nonnull NBTTagCompound conduitRoot) {
     if (conduitRoot.hasKey("UUID")) {
       String UUIDString = conduitRoot.getString("UUID");
-      IConduit result = ConduitRegistry.getInstance(UUID.fromString(UUIDString));
+      IConduit result = ConduitRegistry.getServerInstance(UUID.fromString(UUIDString));
       if (result != null) {
         result.readFromNBT(conduitRoot);
       }
@@ -344,7 +344,7 @@ public class ConduitUtil {
     boolean hasInsulated = false;
     for (IConduit con : cb.getConduits()) {
       cons.addAll(con.getExternalConnections());
-      if (ConduitRegistry.get(con).canConnectToAnything()) {
+      if (ConduitRegistry.getNetwork(con).canConnectToAnything()) {
         hasInsulated = true;
       }
     }

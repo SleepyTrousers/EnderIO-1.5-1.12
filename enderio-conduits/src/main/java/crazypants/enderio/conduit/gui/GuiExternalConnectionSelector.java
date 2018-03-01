@@ -48,7 +48,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     this.cb = cb;
     cons = new HashSet<EnumFacing>();
     for (IConduit con : cb.getConduits()) {
-      if (ConduitRegistry.get(con).canConnectToAnything()) {
+      if (ConduitRegistry.getNetwork(con).canConnectToAnything()) {
         Set<EnumFacing> conCons = con.getConduitConnections();
         for (EnumFacing dir : EnumFacing.VALUES) {
           if (!conCons.contains(dir)) {

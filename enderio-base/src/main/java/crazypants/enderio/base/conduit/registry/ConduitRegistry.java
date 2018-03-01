@@ -1,6 +1,5 @@
 package crazypants.enderio.base.conduit.registry;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,210 +12,67 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.Log;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.IConduit;
-import crazypants.enderio.base.conduit.IConduitRenderer;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.geom.Offsets;
 import crazypants.enderio.base.init.IModObject;
 import net.minecraft.block.Block;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ConduitRegistry {
 
-  public static class ConduitInfo {
-    private final @Nonnull UUID networkUUID;
-    private final @Nonnull Class<? extends IConduit> baseType;
-    private final @Nonnull Offset none, x, y, z;
-    private boolean canConnectToAnything;
-    @SideOnly(Side.CLIENT)
-    private @Nullable NNList<IConduitRenderer> renderers;
-    private @Nonnull NNList<Class<? extends IConduit>> members = new NNList<Class<? extends IConduit>>();
+  private static final Map<UUID, ConduitTypeDefinition> UUID_TO_NETWORK = new HashMap<>();
+  private static final Map<UUID, ConduitDefinition> UUID_TO_CONDUIT = new HashMap<>();
 
-    /**
-     * Constructs a new ConduitInfo object.
-     * 
-     * @param baseType
-     *          An interface that identifies this type of conduit.
-     * @param none
-     *          The preferred location of the conduit node in the bundle.
-     * @param x
-     *          The preferred location of the conduit arm in the bundle on the X axis.
-     * @param y
-     *          The preferred location of the conduit arm in the bundle on the Y axis.
-     * @param z
-     *          The preferred location of the conduit arm in the bundle on the Z axis.
-     */
-    public ConduitInfo(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset none, @Nonnull Offset x, @Nonnull Offset y, @Nonnull Offset z) {
-      this.baseType = baseType;
-      this.none = none;
-      this.x = x;
-      this.y = y;
-      this.z = z;
-      this.networkUUID = UUID.nameUUIDFromBytes(baseType.getName().getBytes());
-    }
-
-    /**
-     * Returns the UUID that identifies the conduit type.
-     */
-    public @Nonnull UUID getNetworkUUID() {
-      return networkUUID;
-    }
-
-    /**
-     * Returns the interface that identifies the conduit type.
-     */
-    public @Nonnull Class<? extends IConduit> getBaseType() {
-      return baseType;
-    }
-
-    /**
-     * Conduits that can connect to any block type (but AIR) need to have this enabled so the GUI selector knows to show GUIs for unconnected sides.
-     */
-    public void setCanConnectToAnything() {
-      this.canConnectToAnything = true;
-    }
-
-    /**
-     * Conduits that can connect to any block type (but AIR) need to have this enabled so the GUI selector knows to show GUIs for unconnected sides.
-     */
-    public boolean canConnectToAnything() {
-      return canConnectToAnything;
-    }
-
-    /**
-     * Adds a renderer to the list of conduit renderers. This can called multiple times, and the registered renderers are not linked to this conduit type.
-     * <p>
-     * <em>CLIENT only!</em>
-     */
-    @SideOnly(Side.CLIENT)
-    public void addRenderer(@Nonnull IConduitRenderer renderer) {
-      getRenderers().add(renderer);
-    }
-
-    /**
-     * Returns the registered renderers for this conduit type. Can be an empty list.
-     * <p>
-     * <em>CLIENT only!</em>
-     */
-    @SideOnly(Side.CLIENT)
-    public @Nonnull Collection<IConduitRenderer> getRenderers() {
-      NNList<IConduitRenderer> ret = renderers;
-      if (ret == null) {
-        ret = renderers = new NNList<>();
-      }
-      return ret;
-    }
-
-    /**
-     * Adds a conduit implementation class for this conduit type. The given class <em>must</em> implement the base type (the interface that identifies the
-     * conduit type). This must be called at least once for any conduit type.
-     */
-    public void addMember(@Nonnull Class<? extends IConduit> member) {
-      members.add(member);
-    }
-
-    /**
-     * Returns a collection of registered conduit implementation classes.
-     */
-    public @Nonnull Collection<Class<? extends IConduit>> getMembers() {
-      return members;
-    }
-
-    // internal use only
-    protected @Nonnull Offset getNone() {
-      return none;
-    }
-
-    // internal use only
-    protected @Nonnull Offset getX() {
-      return x;
-    }
-
-    // internal use only
-    protected @Nonnull Offset getY() {
-      return y;
-    }
-
-    // internal use only
-    protected @Nonnull Offset getZ() {
-      return z;
-    }
-
-  }
-
-  private static final List<ConduitInfo> conduitInfos = new ArrayList<ConduitInfo>();
-  private static final Map<Class<? extends IConduit>, ConduitInfo> conduitCLassMap = new IdentityHashMap<Class<? extends IConduit>, ConduitInfo>();
-  private static final Map<UUID, ConduitInfo> conduitUUIDMap = new HashMap<UUID, ConduitInfo>();
-
-  private static final Map<Class<? extends IConduit>, UUID> conduitMemberMapF = new IdentityHashMap<Class<? extends IConduit>, UUID>();
-  private static final Map<UUID, Class<? extends IConduit>> conduitMemberMapR = new HashMap<UUID, Class<? extends IConduit>>();
-
-  private static final Map<UUID, Class<? extends IConduit>> conduitMemberMapClient = new HashMap<UUID, Class<? extends IConduit>>();
-
-  /**
-   * Register an old name for a conduit member class after renaming it. Allows conduits of that type to be read from the save game. The aliasName should be the
-   * ".getName()" of the old class.
-   */
-  public static void registerAlias(Class<? extends IConduit> member, String aliasName) {
-    final UUID uuid = UUID.nameUUIDFromBytes(aliasName.getBytes());
-    conduitMemberMapR.put(uuid, member);
-  }
-
-  /**
-   * Register an old name for a conduit identity interface after renaming it. Allows conduits of that type to be read from the save game. The aliasName should
-   * be the ".getName()" of the old interface. The given ConduitInfo must already be registered.
-   */
-  public static void registerAlias(ConduitInfo info, String aliasName) {
-    final UUID uuid = UUID.nameUUIDFromBytes(aliasName.getBytes());
-    conduitUUIDMap.put(uuid, info);
-  }
+  private static final Map<Class<? extends IConduit>, UUID> CLASS_TO_UUID = new IdentityHashMap<Class<? extends IConduit>, UUID>();
 
   /**
    * Register a new conduit type.
    * <p>
    * Will throw a RuntimeException if no location in the bundle could be found for the conduit.
    */
-  public static void register(ConduitInfo info) {
-    conduitInfos.add(info);
-    Collections.sort(conduitInfos, UUID_COMPERATOR);
-    conduitUUIDMap.put(info.getNetworkUUID(), info);
-    conduitCLassMap.put(info.getBaseType(), info);
-    for (Class<? extends IConduit> member : info.getMembers()) {
-      // Heyo, forcing clinit!
-      // This is all I can seem to do with a class object to force it, nothing else works. TODO make this unnecessary
-      try {
-        member.newInstance();
-      } catch (InstantiationException | IllegalAccessException e) {
-        throw new RuntimeException(e);
+  public static void register(ConduitTypeDefinition info) {
+
+    UUID_TO_NETWORK.put(info.getUUID(), info);
+    for (UUID uuid : info.getAliases()) {
+      UUID_TO_NETWORK.put(uuid, info);
+    }
+    CLASS_TO_UUID.put(info.getBaseType(), info.getUUID());
+
+    for (ConduitDefinition member : info.getMembers()) {
+      UUID_TO_CONDUIT.put(member.getUUID(), member);
+      for (UUID uuid : member.getAliases()) {
+        UUID_TO_CONDUIT.put(uuid, member);
       }
-      conduitCLassMap.put(member, info);
-      final UUID uuid = UUID.nameUUIDFromBytes(member.getName().getBytes());
-      conduitMemberMapF.put(member, uuid);
-      conduitMemberMapR.put(uuid, member);
+      CLASS_TO_UUID.put(member.getServerClass(), member.getUUID());
+      CLASS_TO_UUID.put(member.getClientClass(), member.getUUID());
+
+      // pre-classload the instances
+      getServerInstance(member.getUUID());
+      if (!EnderIO.proxy.isDedicatedServer()) {
+        getClientInstance(member.getUUID());
+      }
     }
 
-    Offset none = info.getNone(), x = info.getX(), y = info.getY(), z = info.getZ();
+    Offset none = info.getPreferedOffsetForNone(), x = info.getPreferedOffsetForX(), y = info.getPreferedOffsetForY(), z = info.getPreferedOffsetForZ();
     while (!Offsets.registerOffsets(info.getBaseType(), none, x, y, z)) {
       z = z.next();
       if (z == null) {
         z = Offset.first();
       }
-      if (z == info.getZ()) {
+      if (z == info.getPreferedOffsetForZ()) {
         y = y.next();
         if (y == null) {
           y = Offset.first();
         }
-        if (y == info.getY()) {
+        if (y == info.getPreferedOffsetForY()) {
           x = x.next();
           if (x == null) {
             x = Offset.first();
           }
-          if (x == info.getX()) {
+          if (x == info.getPreferedOffsetForX()) {
             none = none.next();
             if (none == null) {
               none = Offset.first();
@@ -224,96 +80,69 @@ public class ConduitRegistry {
           }
         }
       }
-      if (z == info.getZ() && y == info.getY() && x == info.getX() && none == info.getNone()) {
+      if (z == info.getPreferedOffsetForZ() && y == info.getPreferedOffsetForY() && x == info.getPreferedOffsetForX()
+          && none == info.getPreferedOffsetForNone()) {
         throw new RuntimeException("Failed to find free offsets for " + info.getBaseType());
       }
     }
   }
 
   /**
-   * Add a member to an already registered conduit type. The given 'info' MUST already be registered, you can access all registered types with getAll().
-   * <p>
-   * Please be advised that is is considered a 'hack' and may or may not work. Especially conduit types where the members need to interact with each other will
-   * not magically work.
-   **/
-  public static void injectMember(ConduitInfo info, Class<? extends IConduit> member) {
-    if (!conduitInfos.contains(info)) {
-      throw new IllegalArgumentException("The specified ConduitInfo has not been added yet");
-    }
-    conduitCLassMap.put(member, info);
-    final UUID uuid = UUID.nameUUIDFromBytes(member.getName().getBytes());
-    conduitMemberMapF.put(member, uuid);
-    conduitMemberMapR.put(uuid, member);
+   * Returns the ConduitDefinition for the given conduit instance (member).
+   */
+  public static ConduitDefinition get(IConduit conduit) {
+    return UUID_TO_CONDUIT.get(CLASS_TO_UUID.get(conduit.getClass()));
   }
 
   /**
-   * Returns the ConduitInfo for the given conduit instance (member).
+   * Returns the ConduitDefinition for the given conduit UUID.
    */
-  public static ConduitInfo get(IConduit conduit) {
-    return conduitCLassMap.get(conduit.getClass());
+  public static ConduitDefinition get(UUID uuid) {
+    return UUID_TO_CONDUIT.get(uuid);
   }
 
   /**
-   * Returns the ConduitInfo for the given conduit interface UUID.
+   * Returns the ConduitTypeDefinition for the given conduit instance (member).
    */
-  public static ConduitInfo get(UUID uuid) {
-    return conduitUUIDMap.get(uuid);
+  public static ConduitTypeDefinition getNetwork(IConduit conduit) {
+    return getNetwork(CLASS_TO_UUID.get(conduit.getClass()));
   }
 
   /**
-   * Returns all registered ConduitInfos. This list is always sorted the same way.
+   * Returns the ConduitTypeDefinition for the given conduit or network/type UUID.
    */
-  public static Collection<ConduitInfo> getAll() {
-    return conduitInfos;
+  public static ConduitTypeDefinition getNetwork(UUID uuid) {
+    final ConduitTypeDefinition network = UUID_TO_NETWORK.get(uuid);
+    return network != null ? network : get(uuid).getNetwork();
   }
 
   /**
-   * Returns a new conduit instance (member) for the given member UUID ( <em>not</em> interface UUID).
+   * Returns all registered ConduitDefinitions.
    */
-  public static IConduit getInstance(UUID uuid) {
-    final Class<? extends IConduit> clazz = conduitMemberMapR.get(uuid);
-    if (clazz == null) {
-      Log.warn("Ignoring unregistered conduit type " + uuid);
-      return null;
-    }
+  public static Collection<ConduitDefinition> getAll() {
+    return UUID_TO_CONDUIT.values();
+  }
+
+  /**
+   * Returns a new conduit instance (member) for the given member UUID (<em>not</em> network/type UUID).
+   */
+  public static IConduit getServerInstance(UUID uuid) {
     try {
-      return clazz.newInstance();
+      return UUID_TO_CONDUIT.get(uuid).getServerClass().newInstance();
     } catch (Exception e) {
       throw new RuntimeException("Could not create an instance of the conduit of type " + uuid, e);
     }
   }
 
   /**
-   * Returns a new conduit client proxy instance (member) for the given member UUID ( <em>not</em> interface UUID).
+   * Returns a new conduit client proxy instance (member) for the given member UUID (<em>not</em> network/type UUID).
    */
   public static IConduit getClientInstance(UUID uuid) {
-    if (conduitMemberMapClient.containsKey(uuid)) {
-      try {
-        return conduitMemberMapClient.get(uuid).newInstance();
-      } catch (Exception e) {
-        throw new RuntimeException("Could not create an client proxy instance of the conduit of type " + uuid, e);
-      }
-    } else {
-      return getInstance(uuid);
+    try {
+      return UUID_TO_CONDUIT.get(uuid).getClientClass().newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException("Could not create an instance of the conduit of type " + uuid, e);
     }
-  }
-
-  /**
-   * Returns the member UUID for the given conduit instance (member). This is not the interface/network UUID!
-   */
-  public static UUID getInstanceUUID(IConduit conduit) {
-    return conduitMemberMapF.get(conduit.getClass());
-  }
-
-  public static void registerClientProxy(Class<? extends IConduit> serverClass, Class<? extends IConduit> clientClass) {
-    UUID uuid = conduitMemberMapF.get(serverClass);
-    if (uuid == null) {
-      throw new IllegalArgumentException("The specified server-side conduit is not registered");
-    }
-    if (conduitMemberMapClient.containsKey(uuid)) {
-      throw new IllegalArgumentException("The specified server-side conduit already has a client proxy");
-    }
-    conduitMemberMapClient.put(uuid, clientClass);
   }
 
   private static boolean sortingSupported = true;
@@ -329,22 +158,11 @@ public class ConduitRegistry {
     }
   }
 
-  private static final Comparator<ConduitInfo> UUID_COMPERATOR = new Comparator<ConduitInfo>() {
-
-    @Override
-    public int compare(ConduitInfo o1, ConduitInfo o2) {
-      return o1.getNetworkUUID().compareTo(o2.getNetworkUUID());
-    }
-
-  };
-
   private static final Comparator<IConduit> CONDUIT_COMPERATOR = new Comparator<IConduit>() {
-
     @Override
     public int compare(IConduit o1, IConduit o2) {
-      return get(o1).getNetworkUUID().compareTo(get(o2).getNetworkUUID());
+      return getNetwork(o1).getUUID().compareTo(getNetwork(o2).getUUID());
     }
-
   };
 
   private static IModObject.Registerable conduitBlock = null;

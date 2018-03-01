@@ -12,40 +12,34 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.geom.Offset;
+import crazypants.enderio.base.conduit.registry.ConduitBuilder;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduit.config.ConduitConfig;
-import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.conduit.item.AbstractItemConduit;
+import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedTooltipProvider {
-
-  private final ConduitRegistry.ConduitInfo conduitInfo;
-
-  private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name(), "enderio:itemLiquidConduit"),
-      new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name() + "_advanced", "enderio:itemLiquidConduitAdvanced"),
-      new ItemConduitSubtype(ConduitObject.item_liquid_conduit.name() + "_ender", "enderio:itemLiquidConduitEnder")
-
-  };
 
   public static ItemLiquidConduit create(@Nonnull IModObject modObject) {
     return new ItemLiquidConduit(modObject);
   }
 
   protected ItemLiquidConduit(@Nonnull IModObject modObject) {
-    super(modObject, subtypes);
-    conduitInfo = new ConduitRegistry.ConduitInfo(getBaseConduitType(), Offset.WEST, Offset.NORTH, Offset.WEST, Offset.WEST);
-    conduitInfo.addMember(LiquidConduit.class);
-    conduitInfo.addMember(AdvancedLiquidConduit.class);
-    conduitInfo.addMember(EnderLiquidConduit.class);
-    ConduitRegistry.register(conduitInfo);
+    super(modObject, new ItemConduitSubtype(modObject.getUnlocalisedName(), modObject.getRegistryName().toString()),
+        new ItemConduitSubtype(modObject.getUnlocalisedName() + "_advanced", modObject.getRegistryName().toString() + "_advanced"),
+        new ItemConduitSubtype(modObject.getUnlocalisedName() + "_ender", modObject.getRegistryName().toString() + "_ender"));
+    ConduitRegistry.register(ConduitBuilder.start().setUUID(new ResourceLocation(EnderIO.DOMAIN, "fluid")).setClass(getBaseConduitType())
+        .setOffsets(Offset.WEST, Offset.NORTH, Offset.WEST, Offset.WEST).build().setUUID(new ResourceLocation(EnderIO.DOMAIN, "liquid_conduit"))
+        .setClass(LiquidConduit.class).build().setUUID(new ResourceLocation(EnderIO.DOMAIN, "advanced_liquid_conduit")).setClass(AdvancedLiquidConduit.class)
+        .build().setUUID(new ResourceLocation(EnderIO.DOMAIN, "ender_liquid_conduit")).setClass(EnderLiquidConduit.class).build().finish());
     ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(getBaseConduitType(), IconEIO.WRENCH_OVERLAY_FLUID, IconEIO.WRENCH_OVERLAY_FLUID_OFF));
   }
 
@@ -53,9 +47,9 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
   @SideOnly(Side.CLIENT)
   public void registerRenderers(@Nonnull IModObject modObject) {
     super.registerRenderers(modObject);
-    conduitInfo.addRenderer(LiquidConduitRenderer.create());
-    conduitInfo.addRenderer(new AdvancedLiquidConduitRenderer());
-    conduitInfo.addRenderer(new EnderLiquidConduitRenderer());
+    ConduitBundleRenderManager.instance.getConduitBundleRenderer().registerRenderer(LiquidConduitRenderer.create());
+    ConduitBundleRenderManager.instance.getConduitBundleRenderer().registerRenderer(new AdvancedLiquidConduitRenderer());
+    ConduitBundleRenderManager.instance.getConduitBundleRenderer().registerRenderer(new EnderLiquidConduitRenderer());
   }
 
   @Override
