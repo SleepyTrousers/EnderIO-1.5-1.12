@@ -23,6 +23,7 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.gui.IItemFilterGui;
 import crazypants.enderio.base.filter.gui.IOpenFilterRemoteExec;
 import crazypants.enderio.base.gui.IconEIO;
@@ -137,8 +138,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
       }
     };
 
-    // x += insertChannelB.getWidth() + 4;
-    // priLeft = x - 8;
     y += insertChannelB.getHeight() + 6;
     x = rightColumn;
 
@@ -213,39 +212,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     updateButtons();
   }
 
-  // private void createFilterGUI() {
-  // boolean showInput = false;
-  // boolean showOutput = false;
-  //
-  // ConnectionMode mode = con.getConnectionMode(gui.getDir());
-  // if (mode == ConnectionMode.INPUT) {
-  // showInput = true;
-  // } else if (mode == ConnectionMode.OUTPUT) {
-  // showOutput = true;
-  // } else if (mode == ConnectionMode.IN_OUT) {
-  // nextFilterB.onGuiInit();
-  // showInput = inOutShowIn;
-  // showOutput = !inOutShowIn;
-  // }
-  //
-  // if (!showInput && !showOutput) {
-  // filterGui = null;
-  // activeFilter = null;
-  // } else if (showInput) {
-  // activeFilter = itemConduit.getInputFilter(gui.getDir());
-  // gui.getContainer().setInOutSlotsVisible(true, false);
-  // if (activeFilter != null) {
-  // filterGui = activeFilter.getGui(gui, new ItemConduitFilterContainer(itemConduit, gui.getDir(), true), true);
-  // }
-  // } else if (showOutput) {
-  // activeFilter = itemConduit.getOutputFilter(gui.getDir());
-  // gui.getContainer().setInOutSlotsVisible(false, true);
-  // if (activeFilter != null) {
-  // filterGui = activeFilter.getGui(gui, new ItemConduitFilterContainer(itemConduit, gui.getDir(), false), false);
-  // }
-  // }
-  // }
-
   private void filtersChanged() {
     insertFilterOptionsB.onGuiInit();
     extractFilterOptionsB.onGuiInit();
@@ -302,31 +268,23 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
       PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(itemConduit, gui.getDir()));
     } else if (guiButton.id == ID_LOOP) {
       itemConduit.setSelfFeedEnabled(gui.getDir(), !itemConduit.isSelfFeedEnabled(gui.getDir()));
-      sendFilterChange();
     } else if (guiButton.id == ID_ROUND_ROBIN) {
       itemConduit.setRoundRobinEnabled(gui.getDir(), !itemConduit.isRoundRobinEnabled(gui.getDir()));
-      sendFilterChange();
     } else if (guiButton.id == ID_PRIORITY_UP) {
       itemConduit.setOutputPriority(gui.getDir(), itemConduit.getOutputPriority(gui.getDir()) + 1);
-      sendFilterChange();
     } else if (guiButton.id == ID_PRIORITY_DOWN) {
       itemConduit.setOutputPriority(gui.getDir(), itemConduit.getOutputPriority(gui.getDir()) - 1);
-      sendFilterChange();
     } else if (guiButton.id == ID_INSERT_CHANNEL) {
       DyeColor col = DyeColor.values()[insertChannelB.getColorIndex()];
       itemConduit.setOutputColor(gui.getDir(), col);
-      sendFilterChange();
     } else if (guiButton.id == ID_EXTRACT_CHANNEL) {
       DyeColor col = DyeColor.values()[extractChannelB.getColorIndex()];
       itemConduit.setInputColor(gui.getDir(), col);
-      sendFilterChange();
     } else if (guiButton.id == ID_INSERT_FILTER_OPTIONS) {
-      doOpenFilterGui(0);
+      doOpenFilterGui(FilterGuiUtil.INDEX_INPUT);
+    } else if (guiButton.id == ID_EXTRACT_FILTER_OPTIONS) {
+      doOpenFilterGui(FilterGuiUtil.INDEX_OUTPUT);
     }
-  }
-
-  // TODO Filter Upgrade
-  private void sendFilterChange() {
   }
 
   @Override
@@ -387,13 +345,5 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
   public int getGuiID() {
     return gui.getGuiID();
   }
-
-  // private void deactiveFilterGUI() {
-  // if (filterGui != null) {
-  // filterGui.deactivate();
-  // filterGui = null;
-  // }
-  // // gui.getGhostSlotHandler().getGhostSlots().clear();
-  // }
 
 }

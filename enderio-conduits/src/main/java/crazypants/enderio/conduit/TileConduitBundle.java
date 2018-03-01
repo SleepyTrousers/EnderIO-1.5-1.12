@@ -33,6 +33,7 @@ import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.filter.IFilterHolder;
 import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.config.ConduitConfig;
@@ -791,14 +792,26 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public IItemFilter getFilter(int filterId, int param1) {
-    return getConduit(ItemConduit.class).getInputFilter(EnumFacing.getFront(param1));
+    ItemConduit itemConduit = getConduit(ItemConduit.class);
+    if (itemConduit != null) {
+      if (filterId == FilterGuiUtil.INDEX_INPUT) {
+        return itemConduit.getInputFilter(EnumFacing.getFront(param1));
+      } else if (filterId == FilterGuiUtil.INDEX_OUTPUT) {
+        return itemConduit.getOutputFilter(EnumFacing.getFront(param1));
+      }
+    }
+    return null;
   }
 
   @Override
   public void setFilter(int filterId, int param1, @Nonnull IItemFilter filter) {
     ItemConduit itemConduit = getConduit(ItemConduit.class);
     if (itemConduit != null) {
-      itemConduit.setInputFilter(EnumFacing.getFront(param1), filter);
+      if (filterId == FilterGuiUtil.INDEX_INPUT) {
+        itemConduit.setInputFilter(EnumFacing.getFront(param1), filter);
+      } else if (filterId == FilterGuiUtil.INDEX_OUTPUT) {
+        itemConduit.setOutputFilter(EnumFacing.getFront(param1), filter);
+      }
     }
   }
 

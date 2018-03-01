@@ -12,7 +12,6 @@ import com.enderio.core.common.inventory.EnderInventory;
 
 import crazypants.enderio.base.filter.IFilterHolder;
 import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumFacing;
 
@@ -44,7 +43,6 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
   }
 
   @Override
-  @Nonnull
   public IItemFilter getItemFilter() {
     if (filterHolder != null) {
       return filterHolder.getFilter(filterIndex, dir.ordinal());
@@ -52,6 +50,7 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
     return null;
   }
 
+  // TODO move ghost slots here
   public void createGhostSlots(List<GhostSlot> slots) {
     slots.addAll(slots);
   }
@@ -63,7 +62,7 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
 
   @Override
   public void onFilterChanged() {
-    PacketHandler.INSTANCE.sendToServer(new PacketFilterUpdate(getTileEntity(), getItemFilter(), filterIndex, dir.ordinal()));
+
   }
 
 }
