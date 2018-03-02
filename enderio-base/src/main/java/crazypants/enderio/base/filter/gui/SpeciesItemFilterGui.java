@@ -71,6 +71,12 @@ public class SpeciesItemFilterGui extends AbstractGuiItemFilter {
     speciesModeB = new CycleButton<SpeciesMode.IconHolder>(this, ID_SPECIES_MODE + buttonIdOffset, x, y, SpeciesMode.IconHolder.class);
   }
 
+  @Override
+  public void initGui() {
+    createFilterSlots();
+    super.initGui();
+  }
+
   public void createFilterSlots() {
     filter.createGhostSlots(getGhostSlotHandler().getGhostSlots(), xOffset + 1, yOffset + 1, new Runnable() {
       @Override

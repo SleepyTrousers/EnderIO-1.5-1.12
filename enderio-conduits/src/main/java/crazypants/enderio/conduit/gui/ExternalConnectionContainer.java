@@ -306,7 +306,6 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     return guiId;
   }
 
-  // TODO move openGui to IItemFilter so that it no longer causes crashes with any other kind of filter
   @Override
   public IMessage doOpenFilterGui(int filterIndex) {
     if (itemConduit != null) {

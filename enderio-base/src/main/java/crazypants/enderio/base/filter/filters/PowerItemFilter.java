@@ -6,12 +6,12 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.network.NetworkUtil;
 
 import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.IItemHandler;
 
 /**
  *
@@ -39,7 +39,7 @@ public class PowerItemFilter implements IItemFilter {
   int level = MAX_LEVEL;
 
   @Override
-  public boolean doesItemPassFilter(@Nullable INetworkedInventory inv, @Nonnull ItemStack item) {
+  public boolean doesItemPassFilter(@Nullable IItemHandler inventory, @Nonnull ItemStack item) {
     IEnergyStorage chargable = PowerHandlerUtil.getCapability(item, null);
     if (chargable != null) {
       int max = chargable.getMaxEnergyStored();
@@ -98,12 +98,6 @@ public class PowerItemFilter implements IItemFilter {
   public void setLevel(int level) {
     this.level = level;
   }
-
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
-  // return new PowerItemFilterGui(gui, itemConduit, isInput);
-  // }
 
   @Override
   public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {

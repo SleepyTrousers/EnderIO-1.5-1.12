@@ -179,7 +179,7 @@ public class NetworkedInventory implements INetworkedInventory {
       if (Prep.isValid(item)) {
 
         if (filter instanceof ILimitedItemFilter && filter.isLimited()) {
-          final int count = filter.getMaxCountThatPassesFilter(this, item);
+          final int count = filter.getMaxCountThatPassesFilter(this.getInventory(), item);
           if (count <= 0) { // doesn't pass filter
             item = Prep.getEmpty();
           } else if (count < Integer.MAX_VALUE) { // some limit
@@ -190,7 +190,7 @@ public class NetworkedInventory implements INetworkedInventory {
               item = inventory.extractItem(slot, stackInSlot.getCount() - count, SIMULATE);
             }
           }
-        } else if (filter != null && !filter.doesItemPassFilter(this, item)) {
+        } else if (filter != null && !filter.doesItemPassFilter(this.getInventory(), item)) {
           item = Prep.getEmpty();
         }
 
@@ -238,7 +238,7 @@ public class NetworkedInventory implements INetworkedInventory {
     for (Target target : targets) {
       if (target.stickyInput && !matchedStickyInput) {
         IItemFilter of = ((IItemConduit) target.inv.getCon()).getOutputFilter(target.inv.getConDir());
-        matchedStickyInput = of != null && of.isValid() && of.doesItemPassFilter(this, toExtract);
+        matchedStickyInput = of != null && of.isValid() && of.doesItemPassFilter(this.getInventory(), toExtract);
       }
       if (target.stickyInput || !matchedStickyInput) {
         int inserted = target.inv.insertItem(toExtract);
@@ -268,7 +268,7 @@ public class NetworkedInventory implements INetworkedInventory {
     }
     IItemFilter filter = con.getOutputFilter(conDir);
     if (filter instanceof ILimitedItemFilter && filter.isLimited()) {
-      final int count = filter.getMaxCountThatPassesFilter(this, item);
+      final int count = filter.getMaxCountThatPassesFilter(this.getInventory(), item);
       if (count <= 0) {
         return 0;
       } else {
@@ -280,7 +280,7 @@ public class NetworkedInventory implements INetworkedInventory {
           item.setCount(maxInsert);
         }
       }
-    } else if (filter != null && !filter.doesItemPassFilter(this, item)) {
+    } else if (filter != null && !filter.doesItemPassFilter(this.getInventory(), item)) {
       return 0;
     }
     return ItemTools.doInsertItem(getInventory(), item);

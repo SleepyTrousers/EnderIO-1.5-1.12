@@ -8,7 +8,6 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;
@@ -29,20 +28,19 @@ public class ExistingItemFilter implements IItemFilter {
   private NNList<ItemStack> snapshot = null;
 
   @Override
-  public boolean doesItemPassFilter(@Nullable INetworkedInventory ni, @Nonnull ItemStack item) {
+  public boolean doesItemPassFilter(@Nullable IItemHandler inventory, @Nonnull ItemStack item) {
     if (Prep.isInvalid(item)) {
       return false;
     }
     if (snapshot != null) {
       return isStackInSnapshot(item) == !blacklist;
-    } else if (ni != null && ni.getInventory() != null) {
-      return isStackInInventory(ni, item) == !blacklist;
+    } else if (inventory != null) {
+      return isStackInInventory(inventory, item) == !blacklist;
     }
     return false;
   }
 
-  private boolean isStackInInventory(@Nonnull INetworkedInventory ni, @Nonnull ItemStack item) {
-    IItemHandler inventory = ni.getInventory();
+  private boolean isStackInInventory(@Nonnull IItemHandler inventory, @Nonnull ItemStack item) {
     if (inventory != null) {
       int numSlots = inventory.getSlots();
       for (int i = 0; i < numSlots; i++) {

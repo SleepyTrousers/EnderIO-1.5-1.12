@@ -87,7 +87,7 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
     for (int i = 0; i < deleteButs.length; i++) {
       IconButton but = deleteButs[i];
       if (but.id == guiButton.id) {
-        setMod(i, null);
+        setMod(i, ItemStack.EMPTY);
         return;
       }
     }
@@ -132,7 +132,7 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
     }
   }
 
-  private void setMod(int i, ItemStack st) {
+  private void setMod(int i, @Nonnull ItemStack st) {
     String mod = filter.setMod(i, st);
     PacketHandler.INSTANCE
         .sendToServer(new PacketModItemFilter(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1(), i, mod));

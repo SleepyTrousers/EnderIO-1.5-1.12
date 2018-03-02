@@ -179,6 +179,13 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     }
   }
 
+  private IItemHandler getTargetInventory(Target target) {
+    if (target.inv != null) {
+      return target.inv.getInventory();
+    }
+    return null;
+  }
+
   public List<String> getTargetsForExtraction(@Nonnull BlockPos extractFrom, @Nonnull IItemConduit con, @Nonnull ItemStack input) {
     List<String> result = new ArrayList<String>();
 
@@ -190,7 +197,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
         if (sendPriority != null) {
           for (Target t : sendPriority) {
             IItemFilter f = ((IItemConduit) t.inv.getCon()).getOutputFilter(t.inv.getConDir());
-            if (input.isEmpty() || f == null || f.doesItemPassFilter(t.inv, input)) {
+            if (input.isEmpty() || f == null || f.doesItemPassFilter(getTargetInventory(t), input)) {
               String s = t.inv.getLocalizedInventoryName() + " " + t.inv.getLocation().toString() + " Distance [" + t.distance + "] ";
               result.add(s);
             }
@@ -207,7 +214,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     for (INetworkedInventory inv : inventories) {
       if (inv.hasTarget(con, dir)) {
         IItemFilter f = ((IItemConduit) inv.getCon()).getInputFilter(inv.getConDir());
-        if (input.isEmpty() || f == null || f.doesItemPassFilter(inv, input)) {
+        if (input.isEmpty() || f == null || f.doesItemPassFilter(inv.getInventory(), input)) {
           result.add(inv.getLocalizedInventoryName() + " " + inv.getLocation().toString());
         }
       }

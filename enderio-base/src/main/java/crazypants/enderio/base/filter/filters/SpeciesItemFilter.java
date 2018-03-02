@@ -8,7 +8,6 @@ import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.util.Prep;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IGenome;
@@ -23,6 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.items.IItemHandler;
 
 // TODO: Move to integration-forestry after big conduit merge
 
@@ -60,7 +60,7 @@ public class SpeciesItemFilter implements IInventory, IItemFilter.WithGhostSlots
   }
 
   @Override
-  public boolean doesItemPassFilter(@Nullable INetworkedInventory inv, @Nonnull ItemStack item) {
+  public boolean doesItemPassFilter(@Nullable IItemHandler inventory, @Nonnull ItemStack item) {
     return doesItemPassFilter(item);
   }
 
@@ -167,15 +167,6 @@ public class SpeciesItemFilter implements IInventory, IItemFilter.WithGhostSlots
     }
 
   }
-
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
-  // ItemConduitFilterContainer cont = new ItemConduitFilterContainer(itemConduit, gui.getDir(), isInput);
-  // SpeciesItemFilterGui itemFilterGui = new SpeciesItemFilterGui(gui, cont, !isInput);
-  // itemFilterGui.createFilterSlots();
-  // return itemFilterGui;
-  // }
 
   @Override
   public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {

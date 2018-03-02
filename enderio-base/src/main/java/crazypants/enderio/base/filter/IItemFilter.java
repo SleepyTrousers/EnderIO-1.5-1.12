@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 
 public interface IItemFilter {
 
@@ -39,7 +40,7 @@ public interface IItemFilter {
    *          the item to check
    * @return true if the item is allowed to pass
    */
-  default boolean doesItemPassFilter(@Nullable INetworkedInventory inv, @Nonnull ItemStack item) {
+  default boolean doesItemPassFilter(@Nullable IItemHandler inv, @Nonnull ItemStack item) {
     return getMaxCountThatPassesFilter(inv, item) > 0;
   };
 
@@ -53,7 +54,7 @@ public interface IItemFilter {
    * @return false if the item is not allowed to pass, otherwise the maximum number of items that pass. If the filter doesn't impose a limit, the item's max
    *         stacksize is returned.
    */
-  default int getMaxCountThatPassesFilter(@Nullable INetworkedInventory inv, @Nonnull ItemStack item) {
+  default int getMaxCountThatPassesFilter(@Nullable IItemHandler inv, @Nonnull ItemStack item) {
     return doesItemPassFilter(inv, item) ? item.getMaxStackSize() : 0;
   };
 
