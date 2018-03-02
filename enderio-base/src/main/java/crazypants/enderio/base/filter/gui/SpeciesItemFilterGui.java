@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -124,8 +122,6 @@ public class SpeciesItemFilterGui extends AbstractGuiItemFilter {
 
   @Override
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
-    GL11.glColor3f(1, 1, 1);
-    bindGuiTexture(0);
     drawTexturedModalRect(getGuiLeft() + xOffset, getGuiTop() + yOffset, 0, 238, 18 * 5, 18);
     drawTexturedModalRect(getGuiLeft() + xOffset, getGuiTop() + yOffset + 20, 0, 238, 18 * 5, 18);
   }

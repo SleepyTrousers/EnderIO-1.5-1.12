@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -58,9 +56,6 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
     this.xOffset = xOffset;
     this.yOffset = yOffset;
     this.buttonIdOffset = buttonIdOffset;
-
-    xSize = 205;
-    ySize = 194;
 
     filter = (ItemFilter) filterContainer.getItemFilter();
 
@@ -187,15 +182,9 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
 
   @Override
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    bindGuiTexture();
-    int sx = (width - xSize) / 2;
-    int sy = (height - ySize) / 2;
-    drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
-
-    this.drawTexturedModalRect(this.getGuiLeft() + xOffset, this.getGuiTop() + yOffset, 0, 238, 18 * 5, 18);
+    drawTexturedModalRect(getGuiLeft() + xOffset, getGuiTop() + yOffset, 0, 238, 18 * 5, 18);
     if (filter.isAdvanced()) {
-      this.drawTexturedModalRect(this.getGuiLeft() + xOffset, this.getGuiTop() + yOffset + 20, 0, 238, 18 * 5, 18);
+      drawTexturedModalRect(getGuiLeft() + xOffset, getGuiTop() + yOffset + 20, 0, 238, 18 * 5, 18);
     }
   }
 

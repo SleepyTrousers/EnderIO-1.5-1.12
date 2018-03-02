@@ -6,8 +6,6 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.render.ColorUtil;
 
@@ -98,8 +96,6 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
 
   @Override
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
-    GL11.glColor3f(1, 1, 1);
-    bindGuiTexture();
     for (Rectangle r : inputBounds) {
       // slot
       drawTexturedModalRect(getGuiLeft() + r.x - 1, getGuiTop() + r.y - 1, 24, 214, 18, 18);
