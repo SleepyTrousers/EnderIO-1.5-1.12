@@ -1,4 +1,4 @@
-package crazypants.enderio.base.filter.gui;
+package crazypants.enderio.base.filter.network;
 
 import javax.annotation.Nonnull;
 
@@ -7,6 +7,7 @@ import com.enderio.core.common.network.MessageTileEntity;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilterHolder;
 import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.gui.ContainerFilter;
 import io.netty.buffer.ByteBuf;
 import jline.internal.Log;
 import net.minecraft.tileentity.TileEntity;
@@ -18,9 +19,9 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketFilterUpdate extends MessageTileEntity<TileEntity> {
 
-  private int filterId;
-  private int param1;
-  private IItemFilter filter;
+  protected int filterId;
+  protected int param1;
+  protected IItemFilter filter;
 
   public PacketFilterUpdate() {
   }

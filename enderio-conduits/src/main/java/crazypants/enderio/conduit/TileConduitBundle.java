@@ -38,6 +38,7 @@ import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.config.ConduitConfig;
 import crazypants.enderio.conduit.item.ItemConduit;
+import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
@@ -55,6 +56,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
 import static crazypants.enderio.base.config.Config.transparentFacadesLetThroughBeaconBeam;
 
@@ -813,6 +815,18 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
         itemConduit.setOutputFilter(EnumFacing.getFront(param1), filter);
       }
     }
+  }
+
+  @Override
+  public IItemHandler getInventoryForSnapshot(int filterId, int param1) {
+    ItemConduit itemConduit = getConduit(ItemConduit.class);
+    if (itemConduit != null) {
+      ItemConduitNetwork icn = itemConduit.getNetwork();
+      if (icn != null) {
+        return icn.getInventory(itemConduit, EnumFacing.getFront(param1)).getInventory();
+      }
+    }
+    return null;
   }
 
 }

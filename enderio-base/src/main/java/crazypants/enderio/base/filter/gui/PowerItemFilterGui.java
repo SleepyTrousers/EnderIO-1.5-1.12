@@ -8,7 +8,9 @@ import com.enderio.core.client.gui.button.ToggleButton;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.PowerItemFilter;
+import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -114,8 +116,8 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
 
   private void sendFilterChange() {
     updateButtons();
-    filterContainer.onFilterChanged();
-    // PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
+    PacketHandler.INSTANCE
+        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
   }
 
   @Override
