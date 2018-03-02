@@ -25,17 +25,18 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
   private final @Nonnull ContainerFilter filterContainer;
 
   private final @Nonnull ToggleButton stickyB;
-  private final boolean isStickModeAvailable;
+  private final boolean isStickyModeAvailable;
 
   private final @Nonnull GuiButton modeB;
   private final @Nonnull GuiButton levelB;
 
   private final @Nonnull PowerItemFilter filter;
 
-  public PowerItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, boolean isStickyModeAvailable, TileEntity te) {
+  public PowerItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
     super(playerInv, filterContainer, te);
     this.filterContainer = filterContainer;
-    this.isStickModeAvailable = isStickyModeAvailable;
+
+    isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_INPUT);
 
     filter = (PowerItemFilter) filterContainer.getItemFilter();
 
@@ -57,7 +58,7 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
   @Override
   public void updateButtons() {
     super.updateButtons();
-    if (isStickModeAvailable) {
+    if (isStickyModeAvailable) {
       stickyB.onGuiInit();
       stickyB.setSelected(filter.isSticky());
     }

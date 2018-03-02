@@ -55,7 +55,13 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
     int damage = MathHelper.clamp(stack.getItemDamage(), 0, BasicFilterTypes.values().length);
     ItemFilter filter = new ItemFilter(damage);
     NBTTagCompound tag = NbtValue.FILTER.getTag(stack);
-    filter.readFromNBT(tag);
+
+    // TODO work out why this works
+    // For some reason Advanced and Limited filters will have their state overridden if they run readFromNBT(),
+    // however the basic filter is not saved to inventory if readFromNBT() is not run
+    if (!tag.hasNoTags() || damage == 0) {
+      filter.readFromNBT(tag);
+    }
     return filter;
   }
 
@@ -102,7 +108,7 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
   @Override
   @Nullable
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return new BasicItemFilterGui(player.inventory, new ContainerFilter(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing), false,
+    return new BasicItemFilterGui(player.inventory, new ContainerFilter(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing),
         world.getTileEntity(pos));
   }
 

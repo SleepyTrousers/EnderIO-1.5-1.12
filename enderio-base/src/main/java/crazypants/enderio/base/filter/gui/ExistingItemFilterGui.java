@@ -2,7 +2,6 @@ package crazypants.enderio.base.filter.gui;
 
 import java.awt.Rectangle;
 import java.io.IOException;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -14,6 +13,7 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.button.TooltipButton;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.EnderIO;
@@ -56,17 +56,18 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
   private @Nonnull GuiButton showB;
   private @Nonnull GuiButton mergeB;
   private @Nonnull SnapshotOverlay snapshotOverlay;
-  private boolean isInput;
+  final boolean isStickyModeAvailable;
 
   private @Nonnull ExistingItemFilter filter;
 
   // TODO Remove isInput
-  public ExistingItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, boolean isInput, TileEntity te) {
+  public ExistingItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
     super(playerInv, filterContainer, te);
     this.filterContainer = filterContainer;
-    this.isInput = isInput;
 
     filter = (ExistingItemFilter) filterContainer.getItemFilter();
+
+    isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_INPUT);
 
     int butLeft = 37;
     int x = butLeft;
@@ -127,7 +128,7 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     useOreDictB.onGuiInit();
     useOreDictB.setSelected(activeFilter.isUseOreDict());
 
-    if (!isInput) {
+    if (isStickyModeAvailable) {
       stickyB.onGuiInit();
       stickyB.setSelected(activeFilter.isSticky());
     }
@@ -194,7 +195,7 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
       showSnapshotOverlay();
     } else if (guiButton == whiteListB) {
       filter.setBlacklist(!filter.isBlacklist());
-      sendSnapshotPacket(filter.isBlacklist() ? PacketExistingItemFilterSnapshot.Opcode.SET_BLACK : PacketExistingItemFilterSnapshot.Opcode.UNSET_BLACK);
+      sendFilterChange();
     }
   }
 
@@ -249,12 +250,12 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
 
       GL11.glEnable(GL11.GL_DEPTH_TEST);
 
-      List<ItemStack> snapshot = filter.getSnapshot();
+      NNList<ItemStack> snapshot = filter.getSnapshot();
       int x = 15;
       int y = 10;
       int count = 0;
       for (ItemStack st : snapshot) {
-        if (st != null) {
+        if (!st.isEmpty()) {
           itemRenderer.renderItemAndEffectIntoGUI(st, x, y);
         }
         x += 20;

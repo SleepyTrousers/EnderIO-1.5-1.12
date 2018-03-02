@@ -38,20 +38,21 @@ public class SpeciesItemFilterGui extends AbstractGuiItemFilter {
   private int yOffset;
 
   // TODO Investigate isStickModAvailable
-  public SpeciesItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, boolean isStickyModeAvailable, TileEntity te) {
-    this(playerInv, filterContainer, isStickyModeAvailable, te, 32, 68, 0);
+  public SpeciesItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
+    this(playerInv, filterContainer, te, 32, 68, 0);
   }
 
-  public SpeciesItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, boolean isStickyModeAvailable, TileEntity te,
-      int xOffset, int yOffset, int buttonIdOffset) {
+  public SpeciesItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, int xOffset, int yOffset,
+      int buttonIdOffset) {
     super(playerInv, filterContainer, te);
-    this.isStickyModeAvailable = isStickyModeAvailable;
     this.filterContainer = filterContainer;
     this.xOffset = xOffset;
     this.yOffset = yOffset;
     this.buttonIdOffset = buttonIdOffset;
 
     filter = (SpeciesItemFilter) filterContainer.getItemFilter();
+
+    isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_INPUT);
 
     int butLeft = xOffset + 92;
     int x = butLeft;

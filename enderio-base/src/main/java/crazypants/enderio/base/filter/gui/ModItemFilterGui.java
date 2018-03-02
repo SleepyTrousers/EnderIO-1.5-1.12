@@ -40,8 +40,7 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
   private final int tfTextureX;
   private final int tfTextureY;
 
-  // TODO Remove isInput
-  public ModItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, boolean isInput, TileEntity te) {
+  public ModItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
     super(playerInv, filterContainer, te);
     this.filterContainer = filterContainer;
 

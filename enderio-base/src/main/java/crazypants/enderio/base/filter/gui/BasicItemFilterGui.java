@@ -44,15 +44,14 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
   private int xOffset;
   private int yOffset;
 
-  public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, boolean isStickyModeAvailable, TileEntity te) {
-    this(playerInv, filterContainer, isStickyModeAvailable, 32, 68, 0, te);
+  public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
+    this(playerInv, filterContainer, 32, 68, 0, te);
   }
   // TODO Lang
 
-  public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, boolean isStickyModeAvailable, int xOffset,
-      int yOffset, int buttonIdOffset, TileEntity te) {
+  public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, int xOffset, int yOffset, int buttonIdOffset,
+      TileEntity te) {
     super(playerInv, filterContainer, te);
-    this.isStickyModeAvailable = isStickyModeAvailable;
     this.filterContainer = filterContainer;
     this.xOffset = xOffset;
     this.yOffset = yOffset;
@@ -62,6 +61,8 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
 
     isAdvanced = filter.isAdvanced();
     isLimited = filter.isLimited();
+
+    isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_INPUT);
 
     int butLeft = xOffset + 92;
     int x = butLeft;
