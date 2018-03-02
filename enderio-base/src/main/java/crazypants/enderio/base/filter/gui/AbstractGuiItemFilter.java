@@ -11,9 +11,13 @@ import net.minecraft.tileentity.TileEntity;
 public abstract class AbstractGuiItemFilter extends GuiContainerBaseEIO implements IItemFilterGui {
 
   public AbstractGuiItemFilter(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
-    super(filterContainer, "item_filter");
-    xSize = 205;
-    ySize = 194;
+    this(playerInv, filterContainer, te, "item_filter");
+  }
+
+  protected AbstractGuiItemFilter(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull String... texture) {
+    super(filterContainer, texture);
+    xSize = 182;
+    ySize = 200;
   }
 
   @Override

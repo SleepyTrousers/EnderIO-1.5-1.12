@@ -11,6 +11,7 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.ModItemFilter;
+import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.filter.network.PacketModItemFilter;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
@@ -41,7 +42,7 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
   private final int tfTextureY;
 
   public ModItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
-    super(playerInv, filterContainer, te);
+    super(playerInv, filterContainer, te, "mod_item_filter");
     this.filterContainer = filterContainer;
 
     filter = (ModItemFilter) filterContainer.getItemFilter();
@@ -50,7 +51,7 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
     tfTextureX = 120;
     tfTextureY = 214;
 
-    inputBounds = new Rectangle[] { new Rectangle(inputOffsetX, 47, 16, 16), new Rectangle(inputOffsetX, 68, 16, 16), new Rectangle(inputOffsetX, 89, 16, 16) };
+    inputBounds = new Rectangle[] { new Rectangle(inputOffsetX, 46, 16, 16), new Rectangle(inputOffsetX, 68, 16, 16), new Rectangle(inputOffsetX, 90, 16, 16) };
 
     deleteButs = new IconButton[inputBounds.length];
     for (int i = 0; i < deleteButs.length; i++) {
@@ -59,7 +60,7 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
       deleteButs[i] = but;
     }
 
-    whiteListB = new IconButton(this, -1, inputOffsetX - 19, 89, IconEIO.FILTER_WHITELIST);
+    whiteListB = new IconButton(this, -1, inputOffsetX - 19, 90, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
   }
 
@@ -91,18 +92,13 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
       }
     }
     if (guiButton == whiteListB) {
-      toggleBlacklist();
+      filter.setBlacklist(!filter.isBlacklist());
+      sendFilterChange();
     }
   }
 
   @Override
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
-    for (Rectangle r : inputBounds) {
-      // slot
-      drawTexturedModalRect(getGuiLeft() + r.x - 1, getGuiTop() + r.y - 1, 24, 214, 18, 18);
-      // text box
-      drawTexturedModalRect(getGuiLeft() + r.x + 38, getGuiTop() + r.y - 1, tfTextureX, tfTextureY, tfWidth, 18);
-    }
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     for (int i = 0; i < inputBounds.length; i++) {
@@ -123,9 +119,12 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
       return;
     }
 
+    int xOffset = getGuiLeft();
+    int yOffset = getGuiTop();
+
     for (int i = 0; i < inputBounds.length; i++) {
       Rectangle bound = inputBounds[i];
-      if (bound.contains(x, y)) {
+      if (bound.contains(x - xOffset, y - yOffset)) {
         setMod(i, st);
       }
     }
@@ -138,10 +137,11 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
 
   }
 
-  private void toggleBlacklist() {
-    filter.setBlacklist(!filter.isBlacklist());
-    PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(filterContainer.getTileEntity(), filter, filterContainer.filterIndex,
-        filterContainer.getParam1(), -1, filter.isBlacklist() ? "1" : "0"));
+  private void sendFilterChange() {
+    updateButtons();
+    filterContainer.onFilterChanged();
+    PacketHandler.INSTANCE
+        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
   }
 
 }

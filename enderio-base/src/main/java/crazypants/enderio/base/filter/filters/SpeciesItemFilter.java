@@ -120,7 +120,7 @@ public class SpeciesItemFilter implements IInventory, IItemFilter.WithGhostSlots
   @Override
   public boolean isValid() {
     for (ItemStack item : items) {
-      if (item != null && AlleleManager.alleleRegistry.getSpeciesRoot(item) != null) {
+      if (!item.isEmpty() && AlleleManager.alleleRegistry.getSpeciesRoot(item) != null) {
         return true;
       }
     }

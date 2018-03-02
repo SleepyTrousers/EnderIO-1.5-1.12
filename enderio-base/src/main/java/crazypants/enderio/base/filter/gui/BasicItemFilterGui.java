@@ -45,13 +45,13 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
   private int yOffset;
 
   public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
-    this(playerInv, filterContainer, 32, 68, 0, te);
+    this(playerInv, filterContainer, 13, 34, 0, te);
   }
   // TODO Lang
 
   public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, int xOffset, int yOffset, int buttonIdOffset,
       TileEntity te) {
-    super(playerInv, filterContainer, te);
+    super(playerInv, filterContainer, te, "basic_item_filter", "advanced_item_filter");
     this.filterContainer = filterContainer;
     this.xOffset = xOffset;
     this.yOffset = yOffset;
@@ -64,7 +64,7 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
 
     isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_INPUT);
 
-    int butLeft = xOffset + 92;
+    int butLeft = xOffset + 98;
     int x = butLeft;
     int y = yOffset + 1;
     whiteListB = new IconButton(this, ID_WHITELIST + buttonIdOffset, x, y, IconEIO.FILTER_WHITELIST);
@@ -183,11 +183,8 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
   }
 
   @Override
-  public void renderCustomOptions(int top, float par1, int par2, int par3) {
-    drawTexturedModalRect(getGuiLeft() + xOffset, getGuiTop() + yOffset, 0, 238, 18 * 5, 18);
-    if (filter.isAdvanced()) {
-      drawTexturedModalRect(getGuiLeft() + xOffset, getGuiTop() + yOffset + 20, 0, 238, 18 * 5, 18);
-    }
+  public void bindGuiTexture() {
+    super.bindGuiTexture(isAdvanced ? 1 : 0);
   }
 
 }

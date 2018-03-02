@@ -40,9 +40,9 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
 
     filter = (PowerItemFilter) filterContainer.getItemFilter();
 
-    int butLeft = 37;
+    int butLeft = 13;
     int x = butLeft;
-    int y = 68;
+    int y = 34;
 
     x += 20;
     stickyB = new ToggleButton(this, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
@@ -51,8 +51,13 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
     stickyB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.stickyDisbaled"));
     stickyB.setPaintSelectedBorder(false);
 
-    modeB = new GuiButton(ID_MORE, 0, 0, 40, 20, "");
-    levelB = new GuiButton(ID_LEVEL, 0, 0, 40, 20, "");
+    x += 28;
+    int x1 = x + 116;
+    int y1 = y + 18;
+    modeB = new GuiButton(ID_MORE, x1, y1, 40, 20, "");
+
+    x1 += 46;
+    levelB = new GuiButton(ID_LEVEL, x1, y1, 40, 20, "");
   }
 
   @Override
@@ -62,16 +67,6 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
       stickyB.onGuiInit();
       stickyB.setSelected(filter.isSticky());
     }
-
-    int x0 = getGuiLeft() + 80;
-    int y0 = getGuiTop() + 65;
-    int x1 = x0 + 45;
-
-    modeB.width = x0;
-    modeB.id = y0;
-
-    levelB.width = x1;
-    levelB.id = y0;
 
     switch (filter.getMode()) {
     case LESS:
@@ -119,15 +114,5 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
     updateButtons();
     PacketHandler.INSTANCE
         .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
-  }
-
-  @Override
-  public void renderCustomOptions(int top, float par1, int par2, int par3) {
-    // GL11.glColor3f(1, 1, 1);
-    // RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
-    // gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 68, 0, 238, 18 * 5, 18);
-    // if(filter.isAdvanced()) {
-    // gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 86, 0, 238, 18 * 5, 18);
-    // }
   }
 }

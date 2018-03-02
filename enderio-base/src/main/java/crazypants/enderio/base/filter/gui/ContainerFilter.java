@@ -57,7 +57,7 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
 
   @Override
   public @Nonnull Point getPlayerInventoryOffset() {
-    return new Point(23, 113);
+    return new Point(14, 119);
   }
 
   @Override

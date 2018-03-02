@@ -58,11 +58,7 @@ public class PacketModItemFilter extends PacketFilterUpdate {
       }
       ModItemFilter filter = (ModItemFilter) filterHolder.getFilter(message.filterId, message.param1);
 
-      if (message.index == -1) {
-        filter.setBlacklist("1".equals(message.name));
-      } else {
-        filter.setMod(message.index, message.name);
-      }
+      filter.setMod(message.index, message.name);
 
       filterHolder.setFilter(message.filterId, message.param1, filter);
 
