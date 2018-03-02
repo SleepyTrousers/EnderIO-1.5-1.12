@@ -13,8 +13,8 @@ import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
+import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
-import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.gui.IOpenFilterRemoteExec;
 import crazypants.enderio.base.network.PacketHandler;
@@ -311,10 +311,10 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   public IMessage doOpenFilterGui(int filterIndex) {
     if (itemConduit != null) {
       if (filterIndex == FilterGuiUtil.INDEX_INPUT) {
-        ((ItemFilter) itemConduit.getInputFilter(dir)).openGui(player, itemConduit.getInputFilterUpgrade(dir), getTileEntity().getBundleworld(),
+        ((IItemFilter) itemConduit.getInputFilter(dir)).openGui(player, itemConduit.getInputFilterUpgrade(dir), getTileEntity().getBundleworld(),
             getTileEntity().getPos(), dir, filterIndex);
       } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT) {
-        ((ItemFilter) itemConduit.getOutputFilter(dir)).openGui(player, itemConduit.getOutputFilterUpgrade(dir), getTileEntity().getBundleworld(),
+        ((IItemFilter) itemConduit.getOutputFilter(dir)).openGui(player, itemConduit.getOutputFilterUpgrade(dir), getTileEntity().getBundleworld(),
             getTileEntity().getPos(), dir, filterIndex);
       }
     }

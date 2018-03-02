@@ -9,10 +9,6 @@ import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.INetworkedInventory;
-import crazypants.enderio.base.filter.gui.ExistingItemFilterGui;
-import crazypants.enderio.base.filter.gui.IItemFilterContainer;
-import crazypants.enderio.base.filter.gui.IItemFilterGui;
-import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;
@@ -197,12 +193,6 @@ public class ExistingItemFilter implements IItemFilter {
     return blacklist;
   }
 
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
-  // return new ExistingItemFilterGui(gui, itemConduit, isInput);
-  // }
-
   @Override
   public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     readSettingsFromNBT(nbtRoot);
@@ -272,11 +262,6 @@ public class ExistingItemFilter implements IItemFilter {
       item.writeToNBT(itemRoot);
       NetworkUtil.writeNBTTagCompound(itemRoot, buf);
     }
-  }
-
-  @Override
-  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new ExistingItemFilterGui(gui, filterContainer, isStickyModeAvailable);
   }
 
   @Override

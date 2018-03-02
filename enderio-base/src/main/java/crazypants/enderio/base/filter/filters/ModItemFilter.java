@@ -7,10 +7,6 @@ import com.enderio.core.common.network.NetworkUtil;
 
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.INetworkedInventory;
-import crazypants.enderio.base.filter.gui.IItemFilterContainer;
-import crazypants.enderio.base.filter.gui.IItemFilterGui;
-import crazypants.enderio.base.filter.gui.ModItemFilterGui;
-import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.Item;
@@ -145,10 +141,5 @@ public class ModItemFilter implements IItemFilter {
   public void readFromByteBuf(@Nonnull ByteBuf buf) {
     NBTTagCompound tag = NetworkUtil.readNBTTagCompound(buf);
     readFromNBT(tag);
-  }
-
-  @Override
-  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new ModItemFilterGui(gui, filterContainer, isStickyModeAvailable);
   }
 }

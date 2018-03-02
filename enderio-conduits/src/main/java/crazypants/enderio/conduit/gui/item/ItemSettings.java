@@ -22,9 +22,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
-import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
-import crazypants.enderio.base.filter.gui.IItemFilterGui;
 import crazypants.enderio.base.filter.gui.IOpenFilterRemoteExec;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
@@ -69,8 +67,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
   private IconButton insertFilterOptionsB;
   private IconButton extractFilterOptionsB;
 
-  private IItemFilter activeFilter;
-
   private int priLeft = 46;
   private int priWidth = 32;
 
@@ -78,8 +74,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
   private final GuiToolTip speedUpgradeTooltip;
   private final GuiToolTip functionUpgradeTooltip;
   private final GuiToolTip filterUpgradeTooltip;
-
-  private IItemFilterGui filterGui;
 
   public ItemSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_ITEM, EnderIO.lang.localize("itemItemConduit.name"), gui, con, "item_settings");
@@ -227,10 +221,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     } else {
       extractFilterOptionsB.setIsVisible(false);
     }
-
-    if (filterGui != null) {
-      filterGui.updateButtons();
-    }
   }
 
   private void updateButtons() {
@@ -254,10 +244,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     insertChannelB.setColorIndex(itemConduit.getOutputColor(gui.getDir()).ordinal());
     extractChannelB.onGuiInit();
     extractChannelB.setColorIndex(itemConduit.getInputColor(gui.getDir()).ordinal());
-
-    if (filterGui != null) {
-      filterGui.updateButtons();
-    }
   }
 
   @Override
@@ -311,10 +297,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     String priority = "Priority";
     fr.drawString(priority, left + 12, top + 25, ColorUtil.getRGB(Color.black));
     fr.drawString(str, left + priLeft + priWidth - sw - gap, top + 25, ColorUtil.getRGB(Color.black));
-
-    if (filterGui != null) {
-      filterGui.renderCustomOptions(top, par1, par2, par3);
-    }
   }
 
   @Override

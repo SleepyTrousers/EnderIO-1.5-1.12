@@ -15,7 +15,6 @@ import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.filter.gui.BasicItemFilterGui;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
-import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -25,7 +24,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,7 +36,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHaveRenderers, IEioGuiHandler.WithPos {
+public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHaveRenderers {
 
   public static ItemBasicItemFilter create(@Nonnull IModObject modObject) {
     return new ItemBasicItemFilter(modObject);
@@ -99,12 +97,6 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
     } else {
       tooltip.add(Lang.CONDUIT_FILTER.get());
     }
-  }
-
-  @Override
-  @Nullable
-  public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return new ContainerFilter(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing);
   }
 
   @Override

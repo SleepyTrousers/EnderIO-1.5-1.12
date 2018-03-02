@@ -9,10 +9,6 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.INetworkedInventory;
-import crazypants.enderio.base.filter.gui.IItemFilterContainer;
-import crazypants.enderio.base.filter.gui.IItemFilterGui;
-import crazypants.enderio.base.filter.gui.SpeciesItemFilterGui;
-import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.util.Prep;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IGenome;
@@ -397,10 +393,5 @@ public class SpeciesItemFilter implements IInventory, IItemFilter.WithGhostSlots
   @Override
   public boolean isEmpty() {
     return items.isEmpty() || items.stream().allMatch(ItemStack::isEmpty);
-  }
-
-  @Override
-  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new SpeciesItemFilterGui(gui, filterContainer, isStickyModeAvailable);
   }
 }

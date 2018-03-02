@@ -7,10 +7,6 @@ import com.enderio.core.common.network.NetworkUtil;
 
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.INetworkedInventory;
-import crazypants.enderio.base.filter.gui.IItemFilterContainer;
-import crazypants.enderio.base.filter.gui.IItemFilterGui;
-import crazypants.enderio.base.filter.gui.PowerItemFilterGui;
-import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
@@ -142,10 +138,5 @@ public class PowerItemFilter implements IItemFilter {
   public void readFromByteBuf(@Nonnull ByteBuf buf) {
     NBTTagCompound settingsTag = NetworkUtil.readNBTTagCompound(buf);
     readSettingsFromNBT(settingsTag);
-  }
-
-  @Override
-  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new PowerItemFilterGui(gui, filterContainer, isStickyModeAvailable);
   }
 }

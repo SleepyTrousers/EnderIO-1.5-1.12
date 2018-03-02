@@ -19,7 +19,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-public class BasicItemFilterGui extends AbstractGuiItemFilter implements IItemFilterGui {
+public class BasicItemFilterGui extends AbstractGuiItemFilter {
 
   private static final int ID_WHITELIST = FilterGuiUtil.nextButtonId();
   private static final int ID_NBT = FilterGuiUtil.nextButtonId();
@@ -114,18 +114,13 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter implements IItemFi
 
   @Override
   public void initGui() {
-    super.initGui();
     createFilterSlots();
-    updateButtons();
-  }
-
-  @Override
-  public void mouseClicked(int x, int y, int par3) throws IOException {
-    super.mouseClicked(x, y, par3);
+    super.initGui();
   }
 
   @Override
   public void updateButtons() {
+    super.updateButtons();
     ItemFilter activeFilter = filter;
 
     if (isAdvanced) {
@@ -161,7 +156,8 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter implements IItemFi
   }
 
   @Override
-  public void actionPerformed(@Nonnull GuiButton guiButton) {
+  public void actionPerformed(@Nonnull GuiButton guiButton) throws IOException {
+    super.actionPerformed(guiButton);
     if (guiButton.id == ID_META + buttonIdOffset) {
       filter.setMatchMeta(useMetaB.isSelected());
       sendFilterChange();
@@ -187,22 +183,6 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter implements IItemFi
     updateButtons();
     PacketHandler.INSTANCE
         .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
-  }
-
-  @Override
-  public void deactivate() {
-    useNbtB.detach();
-    useMetaB.detach();
-    useOreDictB.detach();
-    whiteListB.detach();
-    stickyB.detach();
-    damageB.detach();
-  }
-
-  @Override
-  protected void drawGuiContainerBackgroundLayer(float par1, int mouseX, int mouseY) {
-    renderCustomOptions(getGuiTop() + 13, par1, mouseX, mouseY);
-    super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
   }
 
   @Override
