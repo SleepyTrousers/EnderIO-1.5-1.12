@@ -29,10 +29,10 @@ public class Recipe extends AbstractConditional {
     try {
       super.readResolve();
       if (craftings.isEmpty()) {
-        throw new InvalidRecipeConfigException("No <crafting>s or <smelting>s");
+        throw new InvalidRecipeConfigException("No recipe elements");
       }
     } catch (InvalidRecipeConfigException e) {
-      throw new InvalidRecipeConfigException(e, "in recipe '" + getName() + "'");
+      throw new InvalidRecipeConfigException(e, "in <recipe> '" + getName() + "'");
     }
     return this;
   }
@@ -59,10 +59,10 @@ public class Recipe extends AbstractConditional {
         }
       }
       if (count > 1) {
-        throw new InvalidRecipeConfigException("Multiple active <crafting>s and/or <smelting>s");
+        throw new InvalidRecipeConfigException("Multiple active recipe elements");
       } else if (count < 1) {
         if (required) {
-          throw new InvalidRecipeConfigException("No valid <crafting>s or <smelting>s");
+          throw new InvalidRecipeConfigException("No valid recipe elements");
         } else {
           valid = false;
         }
@@ -70,7 +70,7 @@ public class Recipe extends AbstractConditional {
         valid = true;
       }
     } catch (InvalidRecipeConfigException e) {
-      throw new InvalidRecipeConfigException(e, "in recipe '" + getName() + "'");
+      throw new InvalidRecipeConfigException(e, "in <recipe> '" + getName() + "'");
     }
   }
 
@@ -155,7 +155,7 @@ public class Recipe extends AbstractConditional {
         return true;
       }
     } catch (InvalidRecipeConfigException e) {
-      throw new InvalidRecipeConfigException(e, "in recipe '" + getName() + "'");
+      throw new InvalidRecipeConfigException(e, "in <recipe> '" + getName() + "'");
     }
 
     return super.setElement(factory, name, startElement);

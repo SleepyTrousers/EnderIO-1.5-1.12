@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.integration.tic.TicProxy;
@@ -37,13 +38,17 @@ public class Casting extends AbstractCrafting {
 
   @Override
   public boolean isActive() {
-    return TicProxy.isLoaded() && super.isActive();
+    return super.isActive();
   }
 
   @Override
   public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
-      TicProxy.registerTableCast(getOutput().getThing(), cast.getThing(), input.getThing(), input.amount, cast.getConsumed());
+      if (TicProxy.isLoaded()) {
+        TicProxy.registerTableCast(getOutput().getThing(), cast.getThing(), input.getThing(), input.amount, cast.getConsumed());
+      } else {
+        Log.warn("TiC recipe is active, but TiC integration is not loaded");
+      }
     }
   }
 
