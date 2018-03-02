@@ -34,6 +34,7 @@ import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
+import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 
@@ -252,6 +253,7 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     if (guiButton.id == ID_COLOR_BUTTON) {
       itemConduit.setExtractionSignalColor(gui.getDir(), DyeColor.values()[colorB.getColorIndex()]);
       PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(itemConduit, gui.getDir()));
+      return;
     } else if (guiButton.id == ID_LOOP) {
       itemConduit.setSelfFeedEnabled(gui.getDir(), !itemConduit.isSelfFeedEnabled(gui.getDir()));
     } else if (guiButton.id == ID_ROUND_ROBIN) {
@@ -268,9 +270,12 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
       itemConduit.setInputColor(gui.getDir(), col);
     } else if (guiButton.id == ID_INSERT_FILTER_OPTIONS) {
       doOpenFilterGui(FilterGuiUtil.INDEX_INPUT);
+      return;
     } else if (guiButton.id == ID_EXTRACT_FILTER_OPTIONS) {
       doOpenFilterGui(FilterGuiUtil.INDEX_OUTPUT);
+      return;
     }
+    PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
   }
 
   @Override
