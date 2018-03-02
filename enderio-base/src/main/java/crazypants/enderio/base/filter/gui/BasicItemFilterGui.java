@@ -11,6 +11,7 @@ import com.enderio.core.client.gui.button.ToggleButton;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.DamageModeIconHolder;
 import crazypants.enderio.base.filter.filters.ItemFilter;
+import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;

@@ -11,7 +11,9 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.ModItemFilter;
+import crazypants.enderio.base.filter.network.PacketModItemFilter;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -130,17 +132,17 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
     }
   }
 
-  // TODO Decouple from conduits?
   private void setMod(int i, ItemStack st) {
     String mod = filter.setMod(i, st);
-    // PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(), isInput, i, mod));
+    PacketHandler.INSTANCE
+        .sendToServer(new PacketModItemFilter(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1(), i, mod));
 
   }
 
   private void toggleBlacklist() {
     filter.setBlacklist(!filter.isBlacklist());
-    // PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(itemConduit, gui.getDir(), isInput, -1, filter.isBlacklist() ? "1"
-    // : "0"));
+    PacketHandler.INSTANCE.sendToServer(new PacketModItemFilter(filterContainer.getTileEntity(), filter, filterContainer.filterIndex,
+        filterContainer.getParam1(), -1, filter.isBlacklist() ? "1" : "0"));
   }
 
 }

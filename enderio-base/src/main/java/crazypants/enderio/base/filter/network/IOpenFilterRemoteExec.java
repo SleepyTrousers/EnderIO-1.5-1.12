@@ -1,4 +1,4 @@
-package crazypants.enderio.base.filter.gui;
+package crazypants.enderio.base.filter.network;
 
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.network.IRemoteExec;

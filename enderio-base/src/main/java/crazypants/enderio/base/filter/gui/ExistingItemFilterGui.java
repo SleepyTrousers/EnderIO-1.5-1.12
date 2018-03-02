@@ -18,6 +18,8 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.ExistingItemFilter;
+import crazypants.enderio.base.filter.network.PacketExistingItemFilterSnapshot;
+import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.Minecraft;
@@ -183,17 +185,16 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
       filter.setUseOreDict(useOreDictB.isSelected());
       sendFilterChange();
     } else if (guiButton.id == ID_SNAPSHOT) {
-      // sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.SET);
+      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.SET);
     } else if (guiButton.id == ID_CLEAR) {
-      // sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.CLEAR);
+      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.CLEAR);
     } else if (guiButton.id == ID_MERGE) {
-      // sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.MERGE);
+      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.MERGE);
     } else if (guiButton.id == ID_SHOW) {
       showSnapshotOverlay();
     } else if (guiButton == whiteListB) {
       filter.setBlacklist(!filter.isBlacklist());
-      // sendSnapshotPacket(filter.isBlacklist() ? PacketExistingItemFilterSnapshot.Opcode.SET_BLACK
-      // : PacketExistingItemFilterSnapshot.Opcode.UNSET_BLACK);
+      sendSnapshotPacket(filter.isBlacklist() ? PacketExistingItemFilterSnapshot.Opcode.SET_BLACK : PacketExistingItemFilterSnapshot.Opcode.UNSET_BLACK);
     }
   }
 
@@ -201,10 +202,10 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     snapshotOverlay.setIsVisible(true);
   }
 
-  // TODO Decouple from Conduits?
-  // private void sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode opcode) {
-  // PacketHandler.INSTANCE.sendToServer(new PacketExistingItemFilterSnapshot(itemConduit, gui.getDir(),isInput,opcode));
-  // }
+  private void sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode opcode) {
+    PacketHandler.INSTANCE.sendToServer(
+        new PacketExistingItemFilterSnapshot(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1(), opcode));
+  }
 
   private void sendFilterChange() {
     updateButtons();

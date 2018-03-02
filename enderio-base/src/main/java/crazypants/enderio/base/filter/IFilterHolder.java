@@ -2,6 +2,8 @@ package crazypants.enderio.base.filter;
 
 import javax.annotation.Nonnull;
 
+import net.minecraftforge.items.IItemHandler;
+
 public interface IFilterHolder {
 
   /**
@@ -16,5 +18,7 @@ public interface IFilterHolder {
   IItemFilter getFilter(int filterId, int param1);
 
   void setFilter(int filterId, int param1, @Nonnull IItemFilter filter);
+
+  IItemHandler getInventoryForSnapshot(int filterId, int param1);
 
 }

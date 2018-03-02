@@ -116,16 +116,9 @@ public class ExistingItemFilter implements IItemFilter {
     return 0;
   }
 
-  public void setSnapshot(@Nonnull INetworkedInventory ni) {
+  public void setSnapshot(@Nonnull IItemHandler ni) {
     snapshot = new NNList<ItemStack>();
     mergeSnapshot(ni);
-  }
-
-  public void mergeSnapshot(@Nonnull INetworkedInventory ni) {
-    IItemHandler inventory = ni.getInventory();
-    if (inventory != null) {
-      mergeSnapshot(inventory);
-    }
   }
 
   public boolean mergeSnapshot(@Nonnull IItemHandler inventory) {
