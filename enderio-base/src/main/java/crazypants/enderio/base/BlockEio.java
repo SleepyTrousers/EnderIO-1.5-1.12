@@ -111,6 +111,8 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
     return true;
   }
 
+  // GUI
+
   @Override
   protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
     return openGui(world, pos, entityPlayer, side, 0);
@@ -125,6 +127,8 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
     }
     return false;
   }
+
+  // BlockFaceShape
 
   @Override
   protected @Nonnull IShape<T> mkShape(@Nonnull BlockFaceShape allFaces) {

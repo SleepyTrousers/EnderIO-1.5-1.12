@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public abstract class AbstractInventoryMachineBlock<T extends AbstractInventoryMachineEntity> extends AbstractMachineBlock<T> {
@@ -49,6 +50,32 @@ public abstract class AbstractInventoryMachineBlock<T extends AbstractInventoryM
     }
 
     return super.onBlockActivated(world, pos, state, entityPlayer, hand, side, hitX, hitY, hitZ);
+  }
+
+  // Comparator
+
+  @Override
+  public int getComparatorInputOverride(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos) {
+    // Note: enable with hasComparatorInputOverride()
+    T inv = getTileEntity(worldIn, pos);
+    if (inv == null) {
+      return 0;
+    } else {
+      int i = 0;
+      float f = 0.0F;
+
+      for (int j = 0; j < inv.getSizeInventory(); ++j) {
+        ItemStack itemstack = inv.getStackInSlot(j);
+
+        if (!itemstack.isEmpty()) {
+          f += (float) itemstack.getCount() / (float) Math.min(inv.getInventoryStackLimit(), itemstack.getMaxStackSize());
+          ++i;
+        }
+      }
+
+      f = f / inv.getSizeInventory();
+      return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
+    }
   }
 
 }

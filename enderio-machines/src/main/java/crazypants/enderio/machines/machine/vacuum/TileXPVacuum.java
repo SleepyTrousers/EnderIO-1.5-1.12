@@ -30,7 +30,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 @Storable
 public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb>, IPaintable.IPaintableTileEntity, ITankAccess {
 
-  private static final int IO_MB_TICK = 10000; // no need to speed down the vacuum any more than necessary, let the limit be the piping
+  private static final int IO_MB_TICK = 10000; // no need to slow down the vacuum any more than necessary, let the limit be the piping
 
   private double range = VacuumConfig.vacuumXPRange.get();
 
