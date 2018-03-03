@@ -123,10 +123,10 @@ public class ConduitBuilder {
       baseType = clazz;
       state = State.NETWORK;
     } else {
-      if (serverClass == null && IServerConduit.class.isAssignableFrom(clazz)) {
+      if (IServerConduit.class.isAssignableFrom(clazz)) {
         serverClass = (Class<? extends IServerConduit>) clazz;
       }
-      if (clientClass == null && IClientConduit.class.isAssignableFrom(clazz)) {
+      if (IClientConduit.class.isAssignableFrom(clazz)) {
         clientClass = (Class<? extends IClientConduit>) clazz;
       }
       state = State.CONDUIT;
