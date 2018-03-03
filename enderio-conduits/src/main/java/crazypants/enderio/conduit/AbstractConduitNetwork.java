@@ -14,6 +14,7 @@ import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.diagnostics.ConduitNeighborUpdateTracker;
 import crazypants.enderio.base.handler.ServerTickHandler;
 import net.minecraft.block.Block;
@@ -28,7 +29,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 //I=base type, I is the base class of the implementations accepted by the network 
-public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> implements IConduitNetwork<T, I> {
+public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends T> implements IConduitNetwork<T, I> {
 
   private final @Nonnull List<I> conduits = new ArrayList<I>();
 

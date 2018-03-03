@@ -6,7 +6,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IClientConduit;
+import crazypants.enderio.base.conduit.IServerConduit;
 
 /**
  * Use the {@link ConduitBuilder}
@@ -17,10 +18,11 @@ public class ConduitDefinition {
   private final @Nonnull ConduitTypeDefinition network;
   private final @Nonnull UUID conduitUUID;
   private final @Nonnull NNList<UUID> aliases = new NNList<>();
-  private final @Nonnull Class<? extends IConduit> serverClass, clientClass;
+  private final @Nonnull Class<? extends IServerConduit> serverClass;
+  private final @Nonnull Class<? extends IClientConduit> clientClass;
 
-  public ConduitDefinition(@Nonnull ConduitTypeDefinition network, @Nonnull UUID conduitUUID, @Nonnull Class<? extends IConduit> serverClass,
-      @Nonnull Class<? extends IConduit> clientClass) {
+  public ConduitDefinition(@Nonnull ConduitTypeDefinition network, @Nonnull UUID conduitUUID, @Nonnull Class<? extends IServerConduit> serverClass,
+      @Nonnull Class<? extends IClientConduit> clientClass) {
     this.network = network;
     this.conduitUUID = conduitUUID;
     this.serverClass = serverClass;
@@ -32,7 +34,8 @@ public class ConduitDefinition {
     network.addMember(this);
   }
 
-  public ConduitDefinition(@Nonnull ConduitTypeDefinition network, @Nonnull UUID conduitUUID, @Nonnull Class<? extends IConduit> serverClass) {
+  public <T extends IServerConduit & IClientConduit> ConduitDefinition(@Nonnull ConduitTypeDefinition network, @Nonnull UUID conduitUUID,
+      @Nonnull Class<? extends T> serverClass) {
     this(network, conduitUUID, serverClass, serverClass);
   }
 
@@ -48,11 +51,11 @@ public class ConduitDefinition {
     return aliases;
   }
 
-  public @Nonnull Class<? extends IConduit> getServerClass() {
+  public @Nonnull Class<? extends IServerConduit> getServerClass() {
     return serverClass;
   }
 
-  public @Nonnull Class<? extends IConduit> getClientClass() {
+  public @Nonnull Class<? extends IClientConduit> getClientClass() {
     return clientClass;
   }
 

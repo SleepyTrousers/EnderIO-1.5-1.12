@@ -18,9 +18,11 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
@@ -31,7 +33,6 @@ import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -41,7 +42,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
+public abstract class AbstractConduit implements IServerConduit, IClientConduit.WithDefaultRendering {
 
   protected final @Nonnull Set<EnumFacing> conduitConnections = EnumSet.noneOf(EnumFacing.class);
 
@@ -139,13 +140,6 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
   @Nonnull
   protected ConnectionMode getDefaultConnectionMode() {
     return ConnectionMode.IN_OUT;
-  }
-
-  @Override
-  @Nonnull
-  public NNList<ItemStack> getDrops() {
-    // return Collections.singletonList(createItem());
-    return new NNList<ItemStack>(createItem());
   }
 
   @Override
@@ -262,11 +256,6 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
   }
 
   @Override
-  public boolean hasConnections() {
-    return hasConduitConnections() || hasExternalConnections();
-  }
-
-  @Override
   public boolean hasConduitConnections() {
     return !conduitConnections.isEmpty();
   }
@@ -284,11 +273,6 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
   @Override
   public void externalConnectionRemoved(@Nonnull EnumFacing fromDirection) {
     externalConnections.remove(fromDirection);
-  }
-
-  @Override
-  public boolean isConnectedTo(@Nonnull EnumFacing dir) {
-    return containsConduitConnection(dir) || containsExternalConnection(dir);
   }
 
   @Override
@@ -468,10 +452,10 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
     conduitConnections.clear();
     for (EnumFacing dir : EnumFacing.VALUES) {
       IConduit neighbour = ConduitUtil.getConduit(world, te, dir, getBaseConduitType());
-      if (neighbour != null && neighbour.canConnectToConduit(dir.getOpposite(), this)) {
+      if (neighbour instanceof IServerConduit && ((IServerConduit) neighbour).canConnectToConduit(dir.getOpposite(), this)) {
         conduitConnections.add(dir);
-        neighbour.conduitConnectionAdded(dir.getOpposite());
-        neighbour.connectionsChanged();
+        ((IServerConduit) neighbour).conduitConnectionAdded(dir.getOpposite());
+        ((IServerConduit) neighbour).connectionsChanged();
       }
     }
 
@@ -492,9 +476,9 @@ public abstract class AbstractConduit implements IConduit.WithDefaultRendering {
 
     for (EnumFacing dir : conduitConnections) {
       IConduit neighbour = ConduitUtil.getConduit(world, te, dir, getBaseConduitType());
-      if (neighbour != null) {
-        neighbour.conduitConnectionRemoved(dir.getOpposite());
-        neighbour.connectionsChanged();
+      if (neighbour instanceof IServerConduit) {
+        ((IServerConduit) neighbour).conduitConnectionRemoved(dir.getOpposite());
+        ((IServerConduit) neighbour).connectionsChanged();
       }
     }
     conduitConnections.clear();

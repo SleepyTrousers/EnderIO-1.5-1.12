@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.network.PacketHandler;
@@ -47,7 +47,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   public GuiExternalConnectionSelector(IConduitBundle cb) {
     this.cb = cb;
     cons = new HashSet<EnumFacing>();
-    for (IConduit con : cb.getConduits()) {
+    for (IClientConduit con : cb.getClientConduits()) {
       if (ConduitRegistry.getNetwork(con).canConnectToAnything()) {
         Set<EnumFacing> conCons = con.getConduitConnections();
         for (EnumFacing dir : EnumFacing.VALUES) {

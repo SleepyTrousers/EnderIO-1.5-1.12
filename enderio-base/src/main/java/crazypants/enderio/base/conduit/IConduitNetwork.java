@@ -17,7 +17,7 @@ import net.minecraft.world.World;
  * @param <I>
  *          Implementation of the Conduit Class
  */
-public interface IConduitNetwork<T extends IConduit, I extends T> extends ITickListener {
+public interface IConduitNetwork<T extends IServerConduit, I extends T> extends ITickListener {
 
   // TODO: Tidy and edit Javadocs
   public void init(@Nonnull IConduitBundle tile, Collection<I> connections, @Nonnull World world);

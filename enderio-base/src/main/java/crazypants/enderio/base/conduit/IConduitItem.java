@@ -11,6 +11,6 @@ public interface IConduitItem extends IHideFacades {
   @Nonnull
   Class<? extends IConduit> getBaseConduitType();
 
-  IConduit createConduit(@Nonnull ItemStack item, @Nonnull EntityPlayer player);
+  IServerConduit createConduit(@Nonnull ItemStack item, @Nonnull EntityPlayer player);
 
 }

@@ -19,7 +19,7 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
-import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.gui.IItemFilterGui;
@@ -84,7 +84,7 @@ public class ItemSettings extends BaseSettingsPanel {
 
   private IItemFilterGui filterGui;
 
-  public ItemSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IConduit con) {
+  public ItemSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
     super(IconEIO.WRENCH_OVERLAY_ITEM, EnderIO.lang.localize("itemItemConduit.name"), gui, con, "item_settings");
     itemConduit = (IItemConduit) con;
 
@@ -409,7 +409,7 @@ public class ItemSettings extends BaseSettingsPanel {
     channelB.detach();
     deactiveFilterGUI();
   }
-  
+
   @Override
   @Nonnull
   public ResourceLocation getTexture() {
@@ -426,7 +426,7 @@ public class ItemSettings extends BaseSettingsPanel {
       filterGui.deactivate();
       filterGui = null;
     }
-//    gui.getGhostSlotHandler().getGhostSlots().clear();
+    // gui.getGhostSlotHandler().getGhostSlots().clear();
   }
 
 }

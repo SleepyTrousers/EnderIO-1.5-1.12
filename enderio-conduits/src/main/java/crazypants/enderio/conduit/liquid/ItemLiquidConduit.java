@@ -11,6 +11,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.registry.ConduitBuilder;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
@@ -58,7 +59,7 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
   }
 
   @Override
-  public IConduit createConduit(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+  public IServerConduit createConduit(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
     if (stack.getItemDamage() == 1) {
       return new AdvancedLiquidConduit();
     } else if (stack.getItemDamage() == 2) {

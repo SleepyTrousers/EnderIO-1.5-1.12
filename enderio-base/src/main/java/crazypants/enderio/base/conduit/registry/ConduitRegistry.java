@@ -15,7 +15,9 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.geom.Offsets;
 import crazypants.enderio.base.init.IModObject;
@@ -126,7 +128,7 @@ public class ConduitRegistry {
   /**
    * Returns a new conduit instance (member) for the given member UUID (<em>not</em> network/type UUID).
    */
-  public static IConduit getServerInstance(UUID uuid) {
+  public static IServerConduit getServerInstance(UUID uuid) {
     try {
       return UUID_TO_CONDUIT.get(uuid).getServerClass().newInstance();
     } catch (Exception e) {
@@ -137,7 +139,7 @@ public class ConduitRegistry {
   /**
    * Returns a new conduit client proxy instance (member) for the given member UUID (<em>not</em> network/type UUID).
    */
-  public static IConduit getClientInstance(UUID uuid) {
+  public static IClientConduit getClientInstance(UUID uuid) {
     try {
       return UUID_TO_CONDUIT.get(uuid).getClientClass().newInstance();
     } catch (Exception e) {

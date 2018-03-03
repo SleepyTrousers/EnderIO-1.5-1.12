@@ -13,6 +13,7 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
@@ -186,8 +187,17 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   @SideOnly(Side.CLIENT)
   @Nonnull
   @Override
-  public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IConduit con) {
+  public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
     return new LiquidSettings((GuiExternalConnection) gui, con); // TODO Abstract this better for base
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean updateGuiPanel(@Nonnull ITabPanel panel) {
+    if (panel instanceof LiquidSettings) {
+      return ((LiquidSettings) panel).updateConduit(this);
+    }
+    return false;
   }
 
   @SideOnly(Side.CLIENT)

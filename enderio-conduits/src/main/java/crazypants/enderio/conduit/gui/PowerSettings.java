@@ -1,9 +1,12 @@
 package crazypants.enderio.conduit.gui;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
@@ -12,8 +15,6 @@ import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import net.minecraft.client.gui.GuiButton;
-
-import javax.annotation.Nonnull;
 
 public class PowerSettings extends BaseSettingsPanel {
 
@@ -25,7 +26,7 @@ public class PowerSettings extends BaseSettingsPanel {
   private RedstoneModeButton rsB;
   private ColorButton colorB;
 
-  public PowerSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IConduit con) {
+  public PowerSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
     super(IconEIO.WRENCH_OVERLAY_POWER, EnderIO.lang.localize("itemPowerConduit.name"), gui, con, "power_settings");
     conduit = (IPowerConduit) con;
 
@@ -38,7 +39,7 @@ public class PowerSettings extends BaseSettingsPanel {
       public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
         RedstoneControlMode curMode = getRedstoneControlMode();
         conduit.setExtractionRedstoneMode(mode, gui.getDir());
-        if(curMode != mode) {
+        if (curMode != mode) {
           PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.getDir()));
         }
 
@@ -65,7 +66,7 @@ public class PowerSettings extends BaseSettingsPanel {
   @Override
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     super.actionPerformed(guiButton);
-    if(guiButton.id == ID_COLOR_BUTTON) {
+    if (guiButton.id == ID_COLOR_BUTTON) {
       conduit.setExtractionSignalColor(gui.getDir(), DyeColor.values()[colorB.getColorIndex()]);
       PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.getDir()));
     }

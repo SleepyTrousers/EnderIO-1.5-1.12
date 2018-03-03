@@ -9,8 +9,10 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
@@ -32,9 +34,13 @@ public class ConduitHandler implements IHandler<IConduit> {
   @Override
   public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull IConduit object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
-    NBTTagCompound root = new NBTTagCompound();
-    ConduitUtil.writeToNBT(object, root);
-    nbt.setTag(name, root);
+    if (object instanceof IServerConduit) {
+      NBTTagCompound root = new NBTTagCompound();
+      ConduitUtil.writeToNBT((IServerConduit) object, root);
+      nbt.setTag(name, root);
+    } else {
+      Log.error("Logic error: Attempting to store client conduit procy as NBT for phase(S) " + phase);
+    }
     return true;
   }
 

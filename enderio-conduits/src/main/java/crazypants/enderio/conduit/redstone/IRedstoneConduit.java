@@ -8,13 +8,14 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
-import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IClientConduit;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import net.minecraft.util.EnumFacing;
 
 // TODO Javadocs
 
-public interface IRedstoneConduit extends IConduit {
+public interface IRedstoneConduit extends IServerConduit, IClientConduit {
 
   public static final String KEY_CONDUIT_ICON = "blocks/redstone_conduit";
   public static final String KEY_TRANSMISSION_ICON = "blocks/redstone_conduit_transmission";

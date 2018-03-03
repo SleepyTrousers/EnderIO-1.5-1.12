@@ -20,6 +20,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitNetwork;
@@ -525,8 +526,17 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   @SideOnly(Side.CLIENT)
   @Nonnull
   @Override
-  public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IConduit con) {
+  public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
     return new PowerSettings((GuiExternalConnection) gui, con); // TODO find a better way to abstract this for base
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean updateGuiPanel(@Nonnull ITabPanel panel) {
+    if (panel instanceof PowerSettings) {
+      return ((PowerSettings) panel).updateConduit(this);
+    }
+    return false;
   }
 
   @SideOnly(Side.CLIENT)

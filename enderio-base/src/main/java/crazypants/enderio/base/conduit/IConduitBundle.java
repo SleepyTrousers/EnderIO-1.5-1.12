@@ -72,7 +72,7 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
    * @param conduit
    *          the conduit to add
    */
-  void addConduit(IConduit conduit);
+  void addConduit(IServerConduit conduit);
 
   /**
    * removes a conduit from the bundle
@@ -85,7 +85,12 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
   /**
    * @return Collection of all the conduits in the bundle
    */
-  Collection<IConduit> getConduits();
+  Collection<? extends IConduit> getConduits();
+
+  Collection<IServerConduit> getServerConduits();
+
+  @SideOnly(Side.CLIENT)
+  Collection<IClientConduit> getClientConduits();
 
   // geometry
 
@@ -134,13 +139,6 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
   // NB: this has to be named differently to the TE method due to obf
   @Nonnull
   World getBundleworld();
-
-  /**
-   * A callback for conduits to tell the conduit bundle that they have just changed in a way that changes the way the conduit bundle is rendered.
-   * <p>
-   * Safe to call server-side, but ignored there.
-   */
-  void geometryChanged();
 
   // void setGridNode(Object node);
 

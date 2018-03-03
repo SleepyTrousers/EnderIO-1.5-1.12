@@ -6,7 +6,9 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.geom.Offset;
 import net.minecraft.util.ResourceLocation;
 
@@ -55,7 +57,8 @@ public class ConduitBuilder {
 
   private UUID conduitUUID;
   private final @Nonnull NNList<UUID> conduitAliases = new NNList<>();
-  private Class<? extends IConduit> serverClass, clientClass;
+  private Class<? extends IServerConduit> serverClass;
+  private Class<? extends IClientConduit> clientClass;
 
   // END data
 
@@ -113,25 +116,21 @@ public class ConduitBuilder {
 
   // CLASSES
 
+  @SuppressWarnings("unchecked")
   public ConduitBuilder setClass(@Nonnull Class<? extends IConduit> clazz) {
     checkState(state.acceptNetworkData || state.acceptConduitData);
     if (state.acceptNetworkData) {
       baseType = clazz;
       state = State.NETWORK;
     } else {
-      serverClass = clazz;
-      if (clientClass == null) {
-        clientClass = clazz;
+      if (serverClass == null && IServerConduit.class.isAssignableFrom(clazz)) {
+        serverClass = (Class<? extends IServerConduit>) clazz;
+      }
+      if (clientClass == null && IClientConduit.class.isAssignableFrom(clazz)) {
+        clientClass = (Class<? extends IClientConduit>) clazz;
       }
       state = State.CONDUIT;
     }
-    return this;
-  }
-
-  public ConduitBuilder setClientClass(@Nonnull Class<? extends IConduit> clazz) {
-    checkState(state.acceptConduitData);
-    clientClass = clazz;
-    state = State.CONDUIT;
     return this;
   }
 
@@ -189,9 +188,9 @@ public class ConduitBuilder {
       if (network2 != null) {
         final UUID conduitUUID2 = conduitUUID;
         if (conduitUUID2 != null) {
-          final Class<? extends IConduit> serverClass2 = serverClass;
+          final Class<? extends IServerConduit> serverClass2 = serverClass;
           if (serverClass2 != null) {
-            final Class<? extends IConduit> clientClass2 = clientClass;
+            final Class<? extends IClientConduit> clientClass2 = clientClass;
             if (clientClass2 != null) {
               new ConduitDefinition(network2, conduitUUID2, serverClass2, clientClass2).getAliases().addAll(conduitAliases);
               state = State.POST_CONDUIT;
