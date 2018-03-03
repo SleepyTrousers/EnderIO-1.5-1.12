@@ -30,7 +30,6 @@ public class SpeciesItemFilterGui extends AbstractGuiItemFilter {
 
   final boolean isStickyModeAvailable;
 
-  private final ContainerFilter filterContainer;
   private final SpeciesItemFilter filter;
 
   private int buttonIdOffset;
@@ -45,7 +44,6 @@ public class SpeciesItemFilterGui extends AbstractGuiItemFilter {
   public SpeciesItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, int xOffset, int yOffset,
       int buttonIdOffset) {
     super(playerInv, filterContainer, te, "advanced_item_filter");
-    this.filterContainer = filterContainer;
     this.xOffset = xOffset;
     this.yOffset = yOffset;
     this.buttonIdOffset = buttonIdOffset;

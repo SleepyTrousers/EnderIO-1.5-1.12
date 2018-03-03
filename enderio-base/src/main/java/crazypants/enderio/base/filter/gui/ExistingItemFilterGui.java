@@ -42,8 +42,6 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
   private static final int ID_SHOW = FilterGuiUtil.nextButtonId();
   private static final int ID_MERGE = FilterGuiUtil.nextButtonId();
 
-  private final @Nonnull ContainerFilter filterContainer;
-
   private @Nonnull ToggleButton useMetaB;
   private @Nonnull ToggleButton useNbtB;
   private @Nonnull ToggleButton useOreDictB;
@@ -63,7 +61,6 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
   // TODO Remove isInput
   public ExistingItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
     super(playerInv, filterContainer, te);
-    this.filterContainer = filterContainer;
 
     filter = (ExistingItemFilter) filterContainer.getItemFilter();
 
@@ -210,7 +207,6 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
 
   private void sendFilterChange() {
     updateButtons();
-    filterContainer.onFilterChanged();
     PacketHandler.INSTANCE
         .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
   }

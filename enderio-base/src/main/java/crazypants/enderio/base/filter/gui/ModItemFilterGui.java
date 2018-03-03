@@ -26,8 +26,6 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
 
   private static final int MOD_NAME_COLOR = ColorUtil.getRGB(Color.white);
 
-  private final ContainerFilter filterContainer;
-
   private final ModItemFilter filter;
 
   private final Rectangle[] inputBounds;
@@ -43,7 +41,6 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
 
   public ModItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
     super(playerInv, filterContainer, te, "mod_item_filter");
-    this.filterContainer = filterContainer;
 
     filter = (ModItemFilter) filterContainer.getItemFilter();
     inputOffsetX = 50;
@@ -139,7 +136,6 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
 
   private void sendFilterChange() {
     updateButtons();
-    filterContainer.onFilterChanged();
     PacketHandler.INSTANCE
         .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
   }
