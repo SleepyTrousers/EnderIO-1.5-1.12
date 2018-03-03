@@ -25,6 +25,7 @@ import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.gui.handler.GuiHelper;
 import crazypants.enderio.base.handler.ServerTickHandler;
 import crazypants.enderio.base.init.CommonProxy;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.integration.bigreactors.BRProxy;
 import crazypants.enderio.base.integration.buildcraft.BuildcraftIntegration;
@@ -44,8 +45,12 @@ import crazypants.enderio.base.transceiver.ServerChannelRegister;
 import crazypants.enderio.util.CapturedMob;
 import info.loenwind.scheduler.Celeb;
 import info.loenwind.scheduler.Scheduler;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -108,6 +113,8 @@ public class EnderIO implements IEnderIOAddon {
   @EventHandler
   public void load(@Nonnull FMLInitializationEvent event) {
     Log.debug("PHASE INIT START");
+
+    initCrashData(); // after blocks have been created
 
     Fluids.registerFuels();
 
@@ -278,4 +285,19 @@ public class EnderIO implements IEnderIOAddon {
   public NNList<String> getExampleFiles() {
     return new NNList<>("peaceful", "easy_recipes", "hard_recipes");
   }
+
+  static void initCrashData() {
+    // this is an ugly hack to make sure all anon subclasses of CrashReportCategory that are needed for a crash report are actually loaded
+    CrashReport crashreport = CrashReport.makeCrashReport(new RuntimeException(), "Exception while updating neighbours");
+    CrashReportCategory crashreportcategory = crashreport.makeCategory("Block being updated");
+    crashreportcategory.addDetail("Source block type", new ICrashReportDetail<String>() {
+      @Override
+      public String call() throws Exception {
+        return "foo";
+      }
+    });
+    CrashReportCategory.addBlockInfo(crashreportcategory, new BlockPos(0, 0, 0), ModObject.block_machine_base.getBlockNN().getDefaultState());
+
+  }
+
 }
