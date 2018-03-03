@@ -23,6 +23,10 @@ public interface IItemFilter {
     ModObjectRegistry.getModObjectNN(filter.getItem()).openGui(worldIn, pos, player, dir, param1);
   }
 
+  default void openGui(@Nonnull EntityPlayer player, @Nonnull ItemStack filter, @Nonnull World worldIn, @Nonnull BlockPos pos) {
+    ModObjectRegistry.getModObjectNN(filter.getItem()).openGui(worldIn, pos, player);
+  }
+
   void readFromNBT(@Nonnull NBTTagCompound nbtRoot);
 
   void writeToNBT(@Nonnull NBTTagCompound nbtRoot);

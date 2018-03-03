@@ -17,6 +17,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.filter.FilterRegistry;
+import crazypants.enderio.base.filter.IFilterHolder;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.filters.ItemFilter;
@@ -42,9 +43,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
 @Storable
-public class TileVacuumChest extends AbstractCapabilityMachineEntity implements IRedstoneModeControlable, IPaintable.IPaintableTileEntity, IRanged {
+public class TileVacuumChest extends AbstractCapabilityMachineEntity
+    implements IRedstoneModeControlable, IPaintable.IPaintableTileEntity, IRanged, IFilterHolder {
 
   private static PredicateItemStack PREDICATE_FILTER = new PredicateItemStack() {
     @Override
@@ -75,6 +78,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
 
   @Store
   private int range = VacuumConfig.vacuumChestRange.get();
+
   @Store
   private ItemFilter filter;
   @Store({ NBTAction.CLIENT })
@@ -211,29 +215,11 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
     markDirty();
   }
 
-  public void setItemFilterSlot(int slot, @Nonnull ItemStack stack) {
-    if (slot >= 0 && slot < FILTER_SLOTS && filter != null) {
-      filter.setInventorySlotContents(slot, stack);
-    }
-  }
-
-  public void setFilterBlacklist(boolean isBlacklist) {
-    if (filter != null) {
-      filter.setBlacklist(isBlacklist);
-    }
-  }
-
-  public void setFilterMatchMeta(boolean matchMeta) {
-    if (filter != null) {
-      filter.setMatchMeta(matchMeta);
-    }
-  }
-
   public boolean hasItemFilter() {
     return filter != null;
   }
 
-  public ItemFilter getItemFilter() {
+  public IItemFilter getItemFilter() {
     return filter;
   }
 
@@ -275,5 +261,23 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity implements 
   }
 
   // RANGE END
+
+  // FILTER START
+
+  @Override
+  public IItemFilter getFilter(int filterId, int param1) {
+    return getItemFilter();
+  }
+
+  @Override
+  public void setFilter(int filterId, int param1, @Nonnull IItemFilter filter) {
+    this.filter = (ItemFilter) filter;
+    markDirty();
+  }
+
+  @Override
+  public IItemHandler getInventoryForSnapshot(int filterId, int param1) {
+    return getInventory();
+  }
 
 }

@@ -16,6 +16,7 @@ import crazypants.enderio.base.filter.network.ICloseFilterRemoteExec;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
@@ -40,7 +41,7 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
   }
 
   public int getParam1() {
-    return dir.ordinal();
+    return dir != null ? dir.ordinal() : -1;
   }
 
   @Override
@@ -50,7 +51,7 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
 
   public IItemFilter getItemFilter() {
     if (filterHolder != null) {
-      return filterHolder.getFilter(filterIndex, dir.ordinal());
+      return filterHolder.getFilter(filterIndex, dir != null ? dir.ordinal() : -1);
     }
     return null;
   }
@@ -79,7 +80,7 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
 
   @Override
   public IMessage doCloseFilterGui() {
-    TileEntityBase te = getTileEntity();
+    TileEntity te = getTileEntity();
     if (te != null) {
       ModObjectRegistry.getModObjectNN(te.getBlockType()).openGui(te.getWorld(), te.getPos(), player, dir, getParam1());
     } else {
