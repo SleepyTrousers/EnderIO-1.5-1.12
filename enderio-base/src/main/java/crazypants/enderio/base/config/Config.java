@@ -198,7 +198,6 @@ public final class Config {
   public static boolean darkSteelSolarChargeOthers = true;
 
   public static float darkSteelAnvilDamageChance = 0.024f;
-  public static int darkSteelAnvilMaxLevel = 80;
 
   public static float darkSteelLadderSpeedBoost = 0.06f;
 
@@ -680,10 +679,6 @@ public final class Config {
 
     darkSteelAnvilDamageChance = (float) config.get(sectionDarkSteel.name, "darkSteelAnvilDamageChance", darkSteelAnvilDamageChance,
         "Chance that the dark steel anvil will take damage after repairing something.").getDouble();
-
-    darkSteelAnvilMaxLevel = config
-        .get(sectionDarkSteel.name, "darkSteelAnvilMaxLevel", darkSteelAnvilMaxLevel, "Max cost operation the anvil can perform. Vanilla limit is 40.")
-        .getInt();
 
     darkSteelLadderSpeedBoost = (float) config.get(sectionDarkSteel.name, "darkSteelLadderSpeedBoost", darkSteelLadderSpeedBoost,
         "Speed boost, in blocks per tick, that the DS ladder gives over the vanilla ladder.").getDouble();
