@@ -103,19 +103,19 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
     return modObject.apply(new BlockItemPaintedBlock(this));
   }
 
-  private final @Nonnull Random rand = new Random();
+  private final @Nonnull Random rand = new Random(), stableRand = new Random();
 
   @Override
   public int getWeakPower(@Nonnull IBlockState state, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     // This value needs to be stable during a tick otherwise vanilla redstone wire will go nuts
-    Random stableRand = new Random(EnderIO.proxy.getServerTickCount() ^ pos.toLong());
+    stableRand.setSeed(EnderIO.proxy.getServerTickCount() ^ pos.toLong());
     return stableRand.nextInt(16);
   }
 
   @Override
   public boolean canProvidePower(@Nonnull IBlockState state) {
     // This value needs to be stable during a tick otherwise vanilla redstone wire will go nuts
-    Random stableRand = new Random(EnderIO.proxy.getServerTickCount() ^ state.hashCode());
+    stableRand.setSeed(EnderIO.proxy.getServerTickCount() ^ state.hashCode());
     return stableRand.nextBoolean();
   }
 
