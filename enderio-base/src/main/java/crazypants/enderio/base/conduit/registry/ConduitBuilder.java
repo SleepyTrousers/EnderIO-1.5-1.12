@@ -193,6 +193,10 @@ public class ConduitBuilder {
             final Class<? extends IClientConduit> clientClass2 = clientClass;
             if (clientClass2 != null) {
               new ConduitDefinition(network2, conduitUUID2, serverClass2, clientClass2).getAliases().addAll(conduitAliases);
+              conduitUUID = null;
+              conduitAliases.clear();
+              serverClass = null;
+              clientClass = null;
               state = State.POST_CONDUIT;
               return this;
             }
