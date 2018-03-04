@@ -117,7 +117,7 @@ public class CapturedMob { // TODO: DONE111
   }
 
   public static @Nullable CapturedMob create(@Nullable ResourceLocation entityId) {
-    if (entityId == null || !EntityList.isRegistered(entityId)) {
+    if (entityId == null || !EntityList.isRegistered(entityId) || !EntityUtil.isRegisteredMob(entityId)) {
       return null;
     }
     return new CapturedMob(entityId);
