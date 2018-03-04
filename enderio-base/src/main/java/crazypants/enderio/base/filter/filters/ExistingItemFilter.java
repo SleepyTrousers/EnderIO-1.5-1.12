@@ -33,9 +33,9 @@ public class ExistingItemFilter implements IItemFilter {
       return false;
     }
     if (snapshot != null) {
-      return isStackInSnapshot(item) == !blacklist;
+      return isStackInSnapshot(item) == blacklist;
     } else if (inventory != null) {
-      return isStackInInventory(inventory, item) == !blacklist;
+      return isStackInInventory(inventory, item) == blacklist;
     }
     return false;
   }

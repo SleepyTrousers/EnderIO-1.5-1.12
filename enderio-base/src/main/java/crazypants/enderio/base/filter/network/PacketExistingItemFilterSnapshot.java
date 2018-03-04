@@ -20,8 +20,6 @@ public class PacketExistingItemFilterSnapshot extends PacketFilterUpdate {
     CLEAR,
     SET,
     MERGE,
-    SET_BLACK,
-    UNSET_BLACK
   }
 
   private Opcode opcode;
@@ -76,13 +74,6 @@ public class PacketExistingItemFilterSnapshot extends PacketFilterUpdate {
         }
         break;
       }
-
-      case SET_BLACK:
-        filter.setBlacklist(true);
-        break;
-      case UNSET_BLACK:
-        filter.setBlacklist(false);
-        break;
 
       default:
         throw new AssertionError();

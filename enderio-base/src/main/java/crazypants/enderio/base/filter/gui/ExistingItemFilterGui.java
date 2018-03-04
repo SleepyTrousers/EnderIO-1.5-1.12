@@ -22,7 +22,6 @@ import crazypants.enderio.base.filter.network.PacketExistingItemFilterSnapshot;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
@@ -41,6 +40,7 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
   private static final int ID_CLEAR = FilterGuiUtil.nextButtonId();
   private static final int ID_SHOW = FilterGuiUtil.nextButtonId();
   private static final int ID_MERGE = FilterGuiUtil.nextButtonId();
+  private static final int ID_WHITELIST = FilterGuiUtil.nextButtonId();
 
   private @Nonnull ToggleButton useMetaB;
   private @Nonnull ToggleButton useNbtB;
@@ -58,7 +58,6 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
 
   private @Nonnull ExistingItemFilter filter;
 
-  // TODO Remove isInput
   public ExistingItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
     super(playerInv, filterContainer, te);
 
@@ -66,7 +65,7 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
 
     isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_INPUT);
 
-    int butLeft = 37;
+    int butLeft = 17;
     int x = butLeft;
     int y = 68;
 
@@ -97,15 +96,24 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     useOreDictB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);
 
-    snapshotB = new TooltipButton(this, ID_SNAPSHOT, 80, 65, 60, 20, EnderIO.lang.localize("gui.conduit.button.snap"));
-    mergeB = new GuiButton(ID_MERGE, 0, 0, 40, 20, EnderIO.lang.localize("gui.conduit.button.merge"));
-    clearB = new GuiButton(ID_CLEAR, 0, 0, 60, 20, EnderIO.lang.localize("gui.conduit.button.clear"));
-    showB = new GuiButton(ID_SHOW, 0, 0, 40, 20, EnderIO.lang.localize("gui.conduit.button.show"));
+    int x0 = getGuiLeft() + 246;
+    int y0 = getGuiTop() + 84;
+
+    snapshotB = new TooltipButton(this, ID_SNAPSHOT, 60, 64, 60, 20, EnderIO.lang.localize("gui.conduit.button.snap"));
+    mergeB = new GuiButton(ID_MERGE, x0, y0, 40, 20, EnderIO.lang.localize("gui.conduit.button.merge"));
+
+    x0 -= 64;
+    y0 += 24;
+
+    clearB = new GuiButton(ID_CLEAR, x0, y0, 60, 20, EnderIO.lang.localize("gui.conduit.button.clear"));
+
+    x0 += 64;
+    showB = new GuiButton(ID_SHOW, x0, y0, 40, 20, EnderIO.lang.localize("gui.conduit.button.show"));
 
     snapshotB.setToolTip(EnderIO.lang.localizeList("gui.conduit.button.snap.tooltip"));
 
-    x -= 20;
-    whiteListB = new IconButton(this, -1, x, y, IconEIO.FILTER_WHITELIST);
+    y -= 40;
+    whiteListB = new IconButton(this, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
 
     snapshotOverlay = new SnapshotOverlay();
@@ -142,21 +150,7 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
       whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
     }
 
-    int x0 = getGuiLeft() + 80;
-    int y0 = getGuiTop() + 65;
-    int x1 = x0 + 65;
-    int y1 = y0 + 22;
-
     snapshotB.onGuiInit();
-
-    mergeB.height = x1;
-    mergeB.packedFGColour = y0;
-
-    clearB.height = x0;
-    clearB.packedFGColour = y1;
-
-    showB.height = x1;
-    showB.packedFGColour = y1;
 
     clearB.enabled = filter.getSnapshot() != null;
     showB.enabled = clearB.enabled;
@@ -190,7 +184,7 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
       sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.MERGE);
     } else if (guiButton.id == ID_SHOW) {
       showSnapshotOverlay();
-    } else if (guiButton == whiteListB) {
+    } else if (guiButton.id == ID_WHITELIST) {
       filter.setBlacklist(!filter.isBlacklist());
       sendFilterChange();
     }
@@ -211,16 +205,6 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
         .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
   }
 
-  @Override
-  public void renderCustomOptions(int top, float par1, int par2, int par3) {
-    // GL11.glColor3f(1, 1, 1);
-    // RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
-    // gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 68, 0, 238, 18 * 5, 18);
-    // if(filter.isAdvanced()) {
-    // gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 86, 0, 238, 18 * 5, 18);
-    // }
-  }
-
   class SnapshotOverlay implements IGuiOverlay {
 
     boolean visible;
@@ -231,7 +215,7 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
 
     @Override
     public @Nonnull Rectangle getBounds() {
-      return new Rectangle(0, 0, width, height);
+      return new Rectangle(0, 0, xSize, ySize);
     }
 
     @Override
@@ -241,7 +225,6 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
       RenderUtil.renderQuad2D(4, 4, 0, getXSize() - 9, getYSize() - 8, new Vector4f(0, 0, 0, 1));
       RenderUtil.renderQuad2D(6, 6, 0, getXSize() - 13, getYSize() - 12, new Vector4f(0.6, 0.6, 0.6, 1));
 
-      Minecraft mc = Minecraft.getMinecraft();
       RenderItem itemRenderer = mc.getRenderItem();
 
       GL11.glEnable(GL11.GL_DEPTH_TEST);

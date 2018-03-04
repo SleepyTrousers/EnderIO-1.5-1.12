@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
 
+import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.filters.ItemFilter;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +17,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class PacketItemFilter extends MessageTileEntity<TileTransceiver> {
 
   private boolean isSend;
-  private ItemFilter filter;
+  private IItemFilter filter;
 
   public PacketItemFilter() {
   }

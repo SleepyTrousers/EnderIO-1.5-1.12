@@ -15,6 +15,8 @@ import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.FluidUtil;
 
+import crazypants.enderio.base.filter.FilterHandler;
+import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -71,10 +73,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
   private boolean inFluidFill = false;
   private boolean inGetTankInfo = false;
 
-  @Store
-  private ItemFilter sendItemFilter;
-  @Store
-  private ItemFilter recieveItemFilter;
+  @Store(handler = FilterHandler.class)
+  private IItemFilter sendItemFilter;
+
+  @Store(handler = FilterHandler.class)
+  private IItemFilter recieveItemFilter;
 
   @Store
   private boolean bufferStacks = true;
@@ -479,24 +482,24 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
     }
   }
 
-  public ItemFilter getSendItemFilter() {
+  public IItemFilter getSendItemFilter() {
     return sendItemFilter;
   }
 
-  public ItemFilter getReceiveItemFilter() {
+  public IItemFilter getReceiveItemFilter() {
     return recieveItemFilter;
   }
 
-  public ItemFilter getRecieveItemFilter() {
+  public IItemFilter getRecieveItemFilter() {
     return recieveItemFilter;
   }
 
-  public void setRecieveItemFilter(ItemFilter recieveItemFilter) {
-    this.recieveItemFilter = recieveItemFilter;
+  public void setRecieveItemFilter(IItemFilter filter) {
+    this.recieveItemFilter = filter;
   }
 
-  public void setSendItemFilter(ItemFilter sendItemFilter) {
-    this.sendItemFilter = sendItemFilter;
+  public void setSendItemFilter(IItemFilter filter) {
+    this.sendItemFilter = filter;
   }
 
   @Override
