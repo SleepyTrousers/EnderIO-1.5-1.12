@@ -8,11 +8,11 @@ import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.SpeciesItemFilter;
 import crazypants.enderio.base.filter.filters.SpeciesMode;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -51,12 +51,12 @@ public class SpeciesItemFilterGui extends AbstractGuiItemFilter {
     int x = butLeft;
     int y = yOffset + 1;
     whiteListB = new IconButton(this, ID_WHITELIST + buttonIdOffset, x, y, IconEIO.FILTER_WHITELIST);
-    whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+    whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
 
     x += 20;
     stickyB = new ToggleButton(this, ID_STICKY + buttonIdOffset, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
-    stickyB.setSelectedToolTip(EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled"));
-    stickyB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.stickyDisbaled"));
+    stickyB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_ENABLED.get(), Lang.GUI_ITEM_FILTER_STICKY_ENABLED_2.get());
+    stickyB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_DISABLED.get());
     stickyB.setPaintSelectedBorder(false);
 
     y += 20;
@@ -91,10 +91,10 @@ public class SpeciesItemFilterGui extends AbstractGuiItemFilter {
     whiteListB.onGuiInit();
     if (filter.isBlacklist()) {
       whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
-      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.blacklist"));
+      whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_BLACKLIST.get());
     } else {
       whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
-      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+      whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
     }
 
     speciesModeB.onGuiInit();

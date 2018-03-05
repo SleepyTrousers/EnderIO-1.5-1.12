@@ -11,6 +11,7 @@ import com.enderio.core.client.gui.button.IconButton;
 import crazypants.enderio.base.filter.network.ICloseFilterRemoteExec;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -37,6 +38,7 @@ public abstract class AbstractGuiItemFilter extends GuiContainerBaseEIO implemen
     isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_OUTPUT);
 
     closeWindowButton = new IconButton(this, ID_CLOSE_WINDOW_BUTTON, 3, 3, IconEIO.MINUS);
+    closeWindowButton.setToolTip(Lang.GUI_ITEM_FILTER_CLOSE.get(), Lang.GUI_ITEM_FILTER_CLOSE_2.get());
   }
 
   @Override

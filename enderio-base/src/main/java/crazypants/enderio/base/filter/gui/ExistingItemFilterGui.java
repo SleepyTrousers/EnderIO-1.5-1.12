@@ -16,11 +16,11 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.ExistingItemFilter;
 import crazypants.enderio.base.filter.network.PacketExistingItemFilterSnapshot;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
@@ -67,15 +67,14 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     int y = 68;
 
     useMetaB = new ToggleButton(this, ID_META, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
-    useMetaB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.matchMetaData"));
-    useMetaB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreMetaData"));
+    useMetaB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_MATCH_META.get());
+    useMetaB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_IGNORE_META.get());
     useMetaB.setPaintSelectedBorder(false);
 
     x += 20;
     stickyB = new ToggleButton(this, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
-    String[] lines = EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled");
-    stickyB.setSelectedToolTip(lines);
-    stickyB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.stickyDisbaled"));
+    stickyB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_ENABLED.get(), Lang.GUI_ITEM_FILTER_STICKY_ENABLED_2.get());
+    stickyB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_DISABLED.get());
     stickyB.setPaintSelectedBorder(false);
 
     y += 20;
@@ -83,35 +82,35 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
 
     x += 20;
     useNbtB = new ToggleButton(this, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
-    useNbtB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.matchNBT"));
-    useNbtB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreNBT"));
+    useNbtB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_MATCH_NBT.get());
+    useNbtB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_IGNORE_NBT.get());
     useNbtB.setPaintSelectedBorder(false);
 
     x = butLeft;
     useOreDictB = new ToggleButton(this, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
-    useOreDictB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicEnabled"));
-    useOreDictB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicDisabled"));
+    useOreDictB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_ORE_DIC_ENABLED.get());
+    useOreDictB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_ORE_DIC_DISABLED.get());
     useOreDictB.setPaintSelectedBorder(false);
 
     int x0 = getGuiLeft() + 246;
     int y0 = getGuiTop() + 84;
 
-    snapshotB = new TooltipButton(this, ID_SNAPSHOT, 60, 64, 60, 20, EnderIO.lang.localize("gui.conduit.button.snap"));
-    mergeB = new GuiButton(ID_MERGE, x0, y0, 40, 20, EnderIO.lang.localize("gui.conduit.button.merge"));
+    snapshotB = new TooltipButton(this, ID_SNAPSHOT, 60, 64, 60, 20, Lang.GUI_EXISTING_ITEM_FILTER_SNAPSHOT.get());
+    mergeB = new GuiButton(ID_MERGE, x0, y0, 40, 20, Lang.GUI_EXISTING_ITEM_FILTER_MERGE.get());
 
     x0 -= 64;
     y0 += 24;
 
-    clearB = new GuiButton(ID_CLEAR, x0, y0, 60, 20, EnderIO.lang.localize("gui.conduit.button.clear"));
+    clearB = new GuiButton(ID_CLEAR, x0, y0, 60, 20, Lang.GUI_EXISTING_ITEM_FILTER_CLEAR.get());
 
     x0 += 64;
-    showB = new GuiButton(ID_SHOW, x0, y0, 40, 20, EnderIO.lang.localize("gui.conduit.button.show"));
+    showB = new GuiButton(ID_SHOW, x0, y0, 40, 20, Lang.GUI_EXISTING_ITEM_FILTER_SHOW.get());
 
-    snapshotB.setToolTip(EnderIO.lang.localizeList("gui.conduit.button.snap.tooltip"));
+    snapshotB.setToolTip(Lang.GUI_EXISTING_ITEM_FILTER_SNAPSHOT_2.get());
 
     y -= 40;
     whiteListB = new IconButton(this, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
-    whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+    whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
 
     snapshotOverlay = new SnapshotOverlay();
     addOverlay(snapshotOverlay);
@@ -141,10 +140,10 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     whiteListB.onGuiInit();
     if (filter.isBlacklist()) {
       whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
-      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.blacklist"));
+      whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_BLACKLIST.get());
     } else {
       whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
-      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+      whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
     }
 
     snapshotB.onGuiInit();

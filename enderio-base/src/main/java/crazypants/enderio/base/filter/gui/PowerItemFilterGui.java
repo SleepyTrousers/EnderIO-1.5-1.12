@@ -6,10 +6,10 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.ToggleButton;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.PowerItemFilter;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -40,9 +40,8 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
 
     x += 20;
     stickyB = new ToggleButton(this, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
-    String[] lines = EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled");
-    stickyB.setSelectedToolTip(lines);
-    stickyB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.stickyDisbaled"));
+    stickyB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_ENABLED.get(), Lang.GUI_ITEM_FILTER_STICKY_ENABLED_2.get());
+    stickyB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_DISABLED.get());
     stickyB.setPaintSelectedBorder(false);
 
     x += 28;

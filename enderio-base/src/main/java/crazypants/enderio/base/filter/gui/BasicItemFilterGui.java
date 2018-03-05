@@ -8,11 +8,11 @@ import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.DamageModeIconHolder;
 import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -63,32 +63,32 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
     int x = butLeft;
     int y = yOffset + 1;
     whiteListB = new IconButton(this, ID_WHITELIST + buttonIdOffset, x, y, IconEIO.FILTER_WHITELIST);
-    whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+    whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
 
     x += 20;
     useMetaB = new ToggleButton(this, ID_META + buttonIdOffset, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
-    useMetaB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.matchMetaData"));
-    useMetaB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreMetaData"));
+    useMetaB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_MATCH_META.get());
+    useMetaB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_IGNORE_META.get());
     useMetaB.setPaintSelectedBorder(false);
 
     x += 20;
     stickyB = new ToggleButton(this, ID_STICKY + buttonIdOffset, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
-    stickyB.setSelectedToolTip(EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled"));
-    stickyB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.stickyDisbaled"));
+    stickyB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_ENABLED.get(), Lang.GUI_ITEM_FILTER_STICKY_ENABLED_2.get());
+    stickyB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_DISABLED.get());
     stickyB.setPaintSelectedBorder(false);
 
     y += 20;
     x = butLeft;
 
     useOreDictB = new ToggleButton(this, ID_ORE_DICT + buttonIdOffset, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
-    useOreDictB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicEnabled"));
-    useOreDictB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicDisabled"));
+    useOreDictB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_ORE_DIC_ENABLED.get());
+    useOreDictB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_ORE_DIC_DISABLED.get());
     useOreDictB.setPaintSelectedBorder(false);
 
     x += 20;
     useNbtB = new ToggleButton(this, ID_NBT + buttonIdOffset, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
-    useNbtB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.matchNBT"));
-    useNbtB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreNBT"));
+    useNbtB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_MATCH_NBT.get());
+    useNbtB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_IGNORE_NBT.get());
     useNbtB.setPaintSelectedBorder(false);
 
     x += 20;
@@ -138,10 +138,10 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
       whiteListB.onGuiInit();
       if (activeFilter.isBlacklist()) {
         whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
-        whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.blacklist"));
+        whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_BLACKLIST.get());
       } else {
         whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
-        whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+        whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
       }
     }
 

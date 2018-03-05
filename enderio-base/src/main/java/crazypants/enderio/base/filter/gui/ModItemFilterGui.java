@@ -9,11 +9,11 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.render.ColorUtil;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.ModItemFilter;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.filter.network.PacketModItemFilter;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -54,7 +54,7 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
     }
 
     whiteListB = new IconButton(this, -1, inputOffsetX - 19, 90, IconEIO.FILTER_WHITELIST);
-    whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+    whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
   }
 
   @Override
@@ -67,10 +67,10 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
     whiteListB.onGuiInit();
     if (filter.isBlacklist()) {
       whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
-      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.blacklist"));
+      whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_BLACKLIST.get());
     } else {
       whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
-      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+      whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
     }
   }
 

@@ -136,6 +136,9 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   public NNList<ItemStack> getSnapshot() {
+    if (snapshot == null) {
+      snapshot = NNList.emptyList();
+    }
     return snapshot;
   }
 

@@ -59,6 +59,7 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
     // TODO work out why this works
     // For some reason Advanced and Limited filters will have their state overridden if they run readFromNBT(),
     // however the basic filter is not saved to inventory if readFromNBT() is not run
+    // ^ Response to above - need to move filters to use @Store in conduits
     if (!tag.hasNoTags() || damage == 0) {
       filter.readFromNBT(tag);
     }
