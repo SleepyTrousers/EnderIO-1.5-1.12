@@ -269,10 +269,10 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
       DyeColor col = DyeColor.values()[extractChannelB.getColorIndex()];
       itemConduit.setInputColor(gui.getDir(), col);
     } else if (guiButton.id == ID_INSERT_FILTER_OPTIONS) {
-      doOpenFilterGui(FilterGuiUtil.INDEX_INPUT);
+      doOpenFilterGui(FilterGuiUtil.INDEX_OUTPUT);
       return;
     } else if (guiButton.id == ID_EXTRACT_FILTER_OPTIONS) {
-      doOpenFilterGui(FilterGuiUtil.INDEX_OUTPUT);
+      doOpenFilterGui(FilterGuiUtil.INDEX_INPUT);
       return;
     }
     PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));

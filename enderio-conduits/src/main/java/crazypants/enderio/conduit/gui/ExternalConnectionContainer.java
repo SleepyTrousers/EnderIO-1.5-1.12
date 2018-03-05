@@ -73,8 +73,8 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   protected void addSlots() {
     if (itemConduit != null) {
 
-      addSlotToContainer(slotInputFilter = new FilterSlot(getItemHandler(), 2, 23, 71));
-      addSlotToContainer(slotOutputFilter = new FilterSlot(getItemHandler(), 3, 113, 71));
+      addSlotToContainer(slotInputFilter = new FilterSlot(getItemHandler(), 3, 23, 71));
+      addSlotToContainer(slotOutputFilter = new FilterSlot(getItemHandler(), 2, 113, 71));
       addSlotToContainer(slotSpeedUpgrades = new SlotItemHandler(getItemHandler(), 0, 131, 71) {
         @Override
         public boolean isItemValid(@Nonnull ItemStack itemStack) {
