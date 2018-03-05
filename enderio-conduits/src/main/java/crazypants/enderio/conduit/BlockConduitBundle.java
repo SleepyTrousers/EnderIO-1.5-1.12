@@ -22,6 +22,7 @@ import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
@@ -189,8 +190,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     } else if (target.hitInfo instanceof CollidableComponent) {
       CollidableComponent cc = (CollidableComponent) target.hitInfo;
       IConduit con = cb.getConduit(cc.conduitType);
-      if (con != null && con instanceof IConduit.WithDefaultRendering) {
-        tex = ((IConduit.WithDefaultRendering) con).getTextureForState(cc);
+      if (con != null && con instanceof IClientConduit.WithDefaultRendering) {
+        tex = ((IClientConduit.WithDefaultRendering) con).getTextureForState(cc);
       }
     }
     if (tex == null) {
@@ -355,21 +356,20 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
 
   @Override
   public int getLightValue(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    TileEntity te = getTileEntitySafe(world, pos);
-    if (!(te instanceof IConduitBundle)) {
+    TileConduitBundle te = getTileEntitySafe(world, pos);
+    if (te == null) {
       return super.getLightValue(bs, world, pos);
     }
-    IConduitBundle con = (IConduitBundle) te;
     int result = 0;
-    if (con.hasFacade()) {
-      IBlockState paintSource = con.getPaintSourceNN();
+    if (te.hasFacade()) {
+      IBlockState paintSource = te.getPaintSourceNN();
       result = paintSource.getLightValue();
       if (paintSource.isOpaqueCube()) {
         return result;
       }
     }
     if (ConduitConfig.dynamicLighting.get()) {
-      Collection<IConduit> conduits = con.getConduits();
+      Collection<? extends IConduit> conduits = te.getConduits();
       for (IConduit conduit : conduits) {
         result += conduit.getLightValue();
       }

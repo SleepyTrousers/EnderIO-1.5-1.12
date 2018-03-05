@@ -14,6 +14,7 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
@@ -62,7 +63,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected void renderConduitDynamic(TextureAtlasSprite tex, IConduit.WithDefaultRendering conduit, CollidableComponent component, float brightness) {
+  protected void renderConduitDynamic(TextureAtlasSprite tex, IClientConduit.WithDefaultRendering conduit, CollidableComponent component, float brightness) {
     if (isNSEWUD(component.dir)) {
       LiquidConduit lc = (LiquidConduit) conduit;
       FluidStack fluid = lc.getFluidType();
@@ -74,7 +75,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
   @Override
   public void renderDynamicEntity(@Nonnull TileEntitySpecialRenderer conduitBundleRenderer, @Nonnull IConduitBundle te,
-      @Nonnull IConduit.WithDefaultRendering conduit, double x, double y, double z, float partialTick, float worldLight) {
+      @Nonnull IClientConduit.WithDefaultRendering conduit, double x, double y, double z, float partialTick, float worldLight) {
     calculateRatios((LiquidConduit) conduit);
     super.renderDynamicEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight);
   }

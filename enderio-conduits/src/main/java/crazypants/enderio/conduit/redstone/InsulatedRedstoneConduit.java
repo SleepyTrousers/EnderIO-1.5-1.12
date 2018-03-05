@@ -24,6 +24,7 @@ import com.google.common.collect.Multimap;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
@@ -719,8 +720,17 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @SideOnly(Side.CLIENT)
   @Nonnull
   @Override
-  public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IConduit con) {
+  public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
     return new RedstoneSettings((GuiExternalConnection) gui, con);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean updateGuiPanel(@Nonnull ITabPanel panel) {
+    if (panel instanceof RedstoneSettings) {
+      return ((RedstoneSettings) panel).updateConduit(this);
+    }
+    return false;
   }
 
   @SideOnly(Side.CLIENT)

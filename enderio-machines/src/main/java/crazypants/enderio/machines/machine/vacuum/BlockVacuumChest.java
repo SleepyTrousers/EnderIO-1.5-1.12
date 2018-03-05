@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.inventory.EnderInventory;
 
 import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_dont_crash_us_mcjty;
 import crazypants.enderio.base.BlockEio;
@@ -33,6 +34,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -202,14 +204,36 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
     ClientUtil.registerDefaultItemRenderer(modObject);
   }
 
+  // Comparator
+
   @Override
   public boolean hasComparatorInputOverride(@Nonnull IBlockState state) {
     return true;
   }
 
   @Override
-  public int getComparatorInputOverride(@Nonnull IBlockState blockState1, @Nonnull World worldIn, @Nonnull BlockPos pos) {
-    return Container.calcRedstone(getTileEntity(worldIn, pos));
+  public int getComparatorInputOverride(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos) {
+    TileVacuumChest te = getTileEntity(worldIn, pos);
+    if (te == null) {
+      return 0;
+    } else {
+      int i = 0;
+      float f = 0.0F;
+
+      EnderInventory inv = te.getInventory();
+
+      for (int j = 0; j < inv.getSlots(); ++j) {
+        ItemStack itemstack = inv.getStackInSlot(j);
+
+        if (!itemstack.isEmpty()) {
+          f += (float) itemstack.getCount() / (float) Math.min(inv.getSlotLimit(j), itemstack.getMaxStackSize());
+          ++i;
+        }
+      }
+
+      f = f / inv.getSlots();
+      return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
+    }
   }
 
 }

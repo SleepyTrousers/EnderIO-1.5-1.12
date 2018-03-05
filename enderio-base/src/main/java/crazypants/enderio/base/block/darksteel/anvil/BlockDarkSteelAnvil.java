@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.event.AnvilMaxCostEvent;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
@@ -18,7 +17,6 @@ import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -29,9 +27,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -66,21 +62,6 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   @SideOnly(Side.CLIENT)
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     return new GuiDarkSteelAnvil(player.inventory, player.world);
-  }
-
-  @SubscribeEvent
-  public static void onMaxAnvilCost(AnvilMaxCostEvent evt) {
-    if (evt.getSource() instanceof ContainerDarkSteelAnvil) {
-      evt.setMaxAnvilCost(Config.darkSteelAnvilMaxLevel);
-    } else if (FMLCommonHandler.instance().getSide() == Side.CLIENT && isClientShowingOurGui()) {
-      evt.setMaxAnvilCost(Config.darkSteelAnvilMaxLevel);
-    }
-  }
-
-  @SideOnly(Side.CLIENT)
-  private static boolean isClientShowingOurGui() {
-    GuiScreen gui = Minecraft.getMinecraft().currentScreen;
-    return gui != null && GuiDarkSteelAnvil.class == gui.getClass();
   }
 
   @Override

@@ -2,6 +2,7 @@ package crazypants.enderio.conduit;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
@@ -20,8 +21,10 @@ import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.facade.EnumFacadeType;
 import crazypants.enderio.base.conduit.geom.CollidableCache;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
@@ -43,6 +46,7 @@ import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
+import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -60,6 +64,7 @@ import net.minecraftforge.items.IItemHandler;
 
 import static crazypants.enderio.base.config.Config.transparentFacadesLetThroughBeaconBeam;
 
+@Storable
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider, IFilterHolder {
 
   // TODO Fix duct-tape
@@ -75,8 +80,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
    * v this one is the one we work with
    */
 
-  private @Nonnull List<IConduit> realConduits = new CopyOnWriteArrayList<IConduit>();
+  private final List<IServerConduit> serverConduits = new CopyOnWriteArrayList<>();
+  private List<IClientConduit> clientConduits;
 
+  @Store
   private @Nonnull EnumFacadeType facadeType = EnumFacadeType.BASIC;
 
   private final List<CollidableComponent> cachedCollidables = new CopyOnWriteArrayList<CollidableComponent>(); // <- duct-tape fix
@@ -146,27 +153,42 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   protected void onBeforeNbtWrite() {
-    conduits = new CopyOnWriteArrayList<IConduit>(realConduits);
+    conduits = serverConduits != null ? new CopyOnWriteArrayList<>(serverConduits) : new CopyOnWriteArrayList<>();
   }
 
   @Override
   protected void onAfterNbtRead() {
     super.onAfterNbtRead();
-    for (IConduit c : conduits) {
-      c.setBundle(this);
-    }
     if (world.isRemote) {
       ConduitRegistry.sort(conduits); // keep conduits sorted so the client side cache key is stable
+      CopyOnWriteArrayList<IClientConduit> temp = new CopyOnWriteArrayList<>();
+      for (IConduit c : conduits) {
+        if (c instanceof IClientConduit) {
+          c.setBundle(this);
+          temp.add((IClientConduit) c);
+        }
+      }
       final ConduitCacheKey oldHashCode = new ConduitCacheKey(), newHashCode = new ConduitCacheKey();
-      makeConduitHashCode(realConduits, oldHashCode);
-      makeConduitHashCode(conduits, newHashCode);
+      makeConduitHashCode(getClientConduits(), oldHashCode);
+      makeConduitHashCode(temp, newHashCode);
       if (hasWorld() && getWorld().isRemote && oldHashCode.hashCode() != newHashCode.hashCode()) {
         clientUpdated = true;
       }
+      clientConduits = temp; // switch over atomically to avoid threading issues
+      conduits = new CopyOnWriteArrayList<IConduit>();
+    } else {
+      // no threads on server-side. but to be safe, conduits only go into the list after they got a bundle set
+      // (a.k.a. "do better than World.addTileEntities()"
+      serverConduits.clear();
+      for (IConduit c : conduits) {
+        if (c instanceof IServerConduit) {
+          c.setBundle(this);
+          serverConduits.add((IServerConduit) c);
+        }
+      }
+      conduits.clear();
     }
-    realConduits = conduits; // switch over atomically to avoid threading issues
     cachedCollidables.clear();
-    conduits = new CopyOnWriteArrayList<IConduit>();
   }
 
   @Override
@@ -241,8 +263,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public void onChunkUnload() {
-    for (IConduit conduit : getConduits()) {
-      conduit.onChunkUnload();
+    if (!world.isRemote) {
+      for (IServerConduit conduit : getServerConduits()) {
+        conduit.onChunkUnload();
+      }
     }
   }
 
@@ -255,7 +279,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       conduit.updateEntity(world);
     }
 
-    if (conduitsDirty) {
+    if (!world.isRemote && conduitsDirty) {
       Prof.next(getWorld(), "neighborUpdate");
       doConduitsDirty();
     }
@@ -270,14 +294,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   private void doConduitsDirty() {
-    if (!world.isRemote) {
-      IBlockState bs = world.getBlockState(pos);
-      world.notifyBlockUpdate(pos, bs, bs, 3);
-      world.neighborChanged(pos, getBlockType(), pos);
-      markDirty();
-    } else {
-      geometryChanged(); // Q&D
-    }
+    IBlockState bs = world.getBlockState(pos);
+    world.notifyBlockUpdate(pos, bs, bs, 3);
+    world.neighborChanged(pos, getBlockType(), pos);
+    markDirty();
     conduitsDirty = false;
   }
 
@@ -314,30 +334,33 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     lastMode = curMode;
 
     if (markForUpdate) {
-      geometryChanged(); // Q&D
       updateBlock();
     }
   }
 
   @Override
   public void onNeighborBlockChange(@Nonnull Block blockId) {
-    boolean needsUpdate = false;
-    for (IConduit conduit : getConduits()) {
-      needsUpdate |= conduit.onNeighborBlockChange(blockId);
-    }
-    if (needsUpdate) {
-      dirty();
+    if (!world.isRemote) {
+      boolean needsUpdate = false;
+      for (IServerConduit conduit : getServerConduits()) {
+        needsUpdate |= conduit.onNeighborBlockChange(blockId);
+      }
+      if (needsUpdate) {
+        dirty();
+      }
     }
   }
 
   @Override
   public void onNeighborChange(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos posIn, @Nonnull BlockPos neighbor) {
-    boolean needsUpdate = false;
-    for (IConduit conduit : getConduits()) {
-      needsUpdate |= conduit.onNeighborChange(neighbor);
-    }
-    if (needsUpdate) {
-      dirty();
+    if (!world.isRemote) {
+      boolean needsUpdate = false;
+      for (IServerConduit conduit : getServerConduits()) {
+        needsUpdate |= conduit.onNeighborChange(neighbor);
+      }
+      if (needsUpdate) {
+        dirty();
+      }
     }
   }
 
@@ -367,29 +390,29 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   @Override
-  public void addConduit(IConduit conduit) {
+  public void addConduit(IServerConduit conduit) {
     if (world.isRemote) {
       return;
     }
     conduit.setBundle(this);
-    getConduits().add(conduit);
+    getServerConduits().add(conduit);
     conduit.onAddedToBundle();
     dirty();
   }
 
   @Override
   public void removeConduit(IConduit conduit) {
-    if (conduit != null) {
-      removeConduit(conduit, true);
+    if (conduit instanceof IServerConduit) {
+      removeConduit((IServerConduit) conduit, true);
     }
   }
 
-  public void removeConduit(IConduit conduit, boolean notify) {
+  public void removeConduit(IServerConduit conduit, boolean notify) {
     if (world.isRemote) {
       return;
     }
     conduit.onBeforeRemovedFromBundle();
-    getConduits().remove(conduit);
+    getServerConduits().remove(conduit);
     conduit.onAfterRemovedFromBundle();
     conduit.setBundle(null);
     if (notify) {
@@ -402,15 +425,26 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     if (world.isRemote) {
       return;
     }
-    while (!realConduits.isEmpty()) {
-      removeConduit(realConduits.get(0), false);
+    while (!serverConduits.isEmpty()) {
+      removeConduit(serverConduits.get(0), false);
     }
     dirty();
   }
 
   @Override
-  public Collection<IConduit> getConduits() {
-    return realConduits;
+  public Collection<IServerConduit> getServerConduits() {
+    return serverConduits != null ? serverConduits : Collections.emptyList();
+  }
+
+  @Override
+  public Collection<? extends IConduit> getConduits() {
+    return NullHelper.first(world.isRemote ? clientConduits : serverConduits, Collections.emptyList());
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public Collection<IClientConduit> getClientConduits() {
+    return clientConduits != null ? clientConduits : Collections.emptyList();
   }
 
   // Geometry
@@ -618,7 +652,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    for (IConduit conduit : getConduits()) {
+    for (IConduit conduit : getServerConduits()) {
       if (conduit.hasCapability(capability, facing))
         return true;
     }
@@ -628,15 +662,11 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @Nullable
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-    for (IConduit conduit : getConduits()) {
+    for (IConduit conduit : getServerConduits()) {
       if (conduit.hasCapability(capability, facing))
         return conduit.getCapability(capability, facing);
     }
     return super.getCapability(capability, facing);
-  }
-
-  @Override
-  public void geometryChanged() {
   }
 
   // // AE2
@@ -747,9 +777,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     if (world.isRemote) {
       return;
     }
-    List<IConduit> copy = new ArrayList<IConduit>(getConduits());
-    for (IConduit con : copy) {
-      con.invalidate();
+    for (IConduit con : getServerConduits()) {
+      ((IServerConduit) con).invalidate();
     }
   }
 
@@ -758,11 +787,11 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     hashCodes.add(facadeType.ordinal() << 16 | getFacadeRenderedAs().ordinal() << 8 | wrapper.getYetaDisplayMode().getDisplayMode().ordinal() << 1
         | (wrapper.getYetaDisplayMode().isHideFacades() ? 1 : 0));
-    makeConduitHashCode(getConduits(), hashCodes);
+    makeConduitHashCode(getClientConduits(), hashCodes);
   }
 
   @SideOnly(Side.CLIENT)
-  private static void makeConduitHashCode(Collection<IConduit> conduits, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+  private static void makeConduitHashCode(Collection<? extends IClientConduit> conduits, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     for (IConduit conduit : conduits) {
       if (conduit instanceof IConduitComponent) {
         ((IConduitComponent) conduit).hashCodeForModelCaching(hashCodes);
@@ -783,11 +812,11 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
         ConduitRenderMapper.instance);
     bsw.addCacheKey(self);
     return "CLIENT: TileConduitBundle [pos=" + self.pos + ", facade=" + self.getPaintSource() + ", facadeType=" + self.facadeType + ", conduits="
-        + self.getConduits() + ", cachekey=" + bsw.getCachekey() + ", bsw=" + bsw + "]";
+        + self.getClientConduits() + ", cachekey=" + bsw.getCachekey() + ", bsw=" + bsw + "]";
   }
 
   public static String toStringS(TileConduitBundle self) {
-    return "SERVER: TileConduitBundle [pos=" + self.pos + ", conduits=" + self.getConduits() + "]";
+    return "SERVER: TileConduitBundle [pos=" + self.pos + ", conduits=" + self.getServerConduits() + "]";
   }
 
   // FILTERS

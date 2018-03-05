@@ -69,6 +69,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
     setHardness(0.1F);
     setSoundType(SoundType.CLOTH);
     setLightOpacity(0);
+    setTickRandomly(false); // super enables this for no reason
   }
 
   private void init(@Nonnull IModObject modObject) {

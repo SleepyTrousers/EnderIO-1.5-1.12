@@ -18,7 +18,7 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
-import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
@@ -74,7 +74,7 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
   private final GuiToolTip filterExtractUpgradeTooltip;
   private final GuiToolTip filterInsertUpgradeTooltip;
 
-  public ItemSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IConduit con) {
+  public ItemSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
     super(IconEIO.WRENCH_OVERLAY_ITEM, EnderIO.lang.localize("itemItemConduit.name"), gui, con, "item_settings");
     itemConduit = (IItemConduit) con;
 

@@ -11,7 +11,7 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
-import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.lang.Lang;
@@ -32,7 +32,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   protected final @Nonnull IconEIO icon;
   protected final GuiExternalConnection gui;
-  protected final IConduit con;
+  protected IClientConduit con;
   protected final String typeName;
   protected final @Nonnull ResourceLocation texture;
 
@@ -64,6 +64,8 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IConduit con, @Nonnull String texture,
       boolean hasInputOutputMode) {
+  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IClientConduit con,
+      @Nonnull String texture) {
     this.icon = icon;
     this.typeName = typeName;
     this.gui = gui;
@@ -92,6 +94,14 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
     extractEnabledB = new CheckBox(gui, ID_EXTRACT_ENABLED, x, y);
 
+  }
+
+  public boolean updateConduit(@Nonnull IClientConduit conduit) {
+    this.con = conduit;
+    if (oldConectionMode != con.getConnectionMode(gui.getDir())) {
+      connectionModeChanged(con.getConnectionMode(gui.getDir()));
+    }
+    return true;
   }
 
   @Override

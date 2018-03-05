@@ -2,6 +2,7 @@ package crazypants.enderio.conduit.packet;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
@@ -18,51 +19,59 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> {
   public PacketConnectionMode() {
   }
 
-  public PacketConnectionMode(IConduit con, EnumFacing dir) {
+  public PacketConnectionMode(IConduit con, EnumFacing dir, ConnectionMode mode) {
     super(con.getBundle().getEntity(), con);
     this.dir = dir;
-    mode = con.getConnectionMode(dir);
+    this.mode = mode;
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    if(dir != null) {
+    if (dir != null) {
       buf.writeShort(dir.ordinal());
     } else {
       buf.writeShort(-1);
     }
-    buf.writeShort(mode.ordinal());
+    if (mode != null) {
+      buf.writeShort(mode.ordinal());
+    } else {
+      buf.writeShort(-1);
+    }
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     short ord = buf.readShort();
-    if(ord < 0) {
+    if (ord < 0) {
       dir = null;
     } else {
       dir = EnumFacing.values()[ord];
     }
-    mode = ConnectionMode.values()[buf.readShort()];
+    short modeOrd = buf.readShort();
+    if (modeOrd < 0) {
+      mode = null;
+    } else {
+      mode = ConnectionMode.values()[modeOrd];
+    }
 
   }
-  
+
   public static class Handler implements IMessageHandler<PacketConnectionMode, IMessage> {
 
     @Override
     public IMessage onMessage(PacketConnectionMode message, MessageContext ctx) {
       IConduit conduit = message.getConduit(ctx);
-      if (conduit == null) {
-        return null;
+      if (conduit instanceof IServerConduit) {
+        if (conduit instanceof IRedstoneConduit) {
+          ((IRedstoneConduit) conduit).forceConnectionMode(message.dir, message.mode);
+        } else if (conduit instanceof IServerConduit) {
+          ((IServerConduit) conduit).setConnectionMode(message.dir, message.mode);
+        }
+        IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
+        message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
       }
-      if (conduit instanceof IRedstoneConduit) {
-        ((IRedstoneConduit) conduit).forceConnectionMode(message.dir, message.mode);
-      } else {
-        conduit.setConnectionMode(message.dir, message.mode);
-      }
-      IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
-      message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
       return null;
     }
   }

@@ -13,6 +13,7 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.tool.ToolUtil;
+import crazypants.enderio.conduit.config.ConduitConfig;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -193,11 +194,13 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
   @Override
   public void updateEntity(@Nonnull World world) {
-    int lightValue = getLightValue();
-    if (lastLightValue != lightValue) {
-      BlockPos pos = getBundle().getLocation();
-      getBundle().getBundleworld().checkLightFor(EnumSkyBlock.BLOCK, pos);
-      lastLightValue = lightValue;
+    if (ConduitConfig.dynamicLighting.get()) {
+      int lightValue = getLightValue();
+      if (lastLightValue != lightValue) {
+        BlockPos pos = getBundle().getLocation();
+        getBundle().getBundleworld().checkLightFor(EnumSkyBlock.BLOCK, pos);
+        lastLightValue = lightValue;
+      }
     }
     super.updateEntity(world);
   }

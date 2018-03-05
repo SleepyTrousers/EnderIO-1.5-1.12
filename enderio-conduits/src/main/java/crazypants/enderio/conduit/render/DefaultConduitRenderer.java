@@ -13,6 +13,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitRenderer;
@@ -60,7 +61,7 @@ public class DefaultConduitRenderer implements IConduitRenderer {
 
   @Override
   public void addBakedQuads(@Nonnull TileEntitySpecialRenderer<?> conduitBundleRenderer, @Nonnull IConduitBundle bundle,
-      @Nonnull IConduit.WithDefaultRendering conduit, float brightness, @Nonnull BlockRenderLayer layer, List<BakedQuad> quads) {
+      @Nonnull IClientConduit.WithDefaultRendering conduit, float brightness, @Nonnull BlockRenderLayer layer, List<BakedQuad> quads) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
@@ -144,7 +145,7 @@ public class DefaultConduitRenderer implements IConduitRenderer {
 
   @Override
   public void renderDynamicEntity(@Nonnull TileEntitySpecialRenderer conduitBundleRenderer, @Nonnull IConduitBundle te,
-      @Nonnull IConduit.WithDefaultRendering conduit, double x, double y, double z, float partialTick, float worldLight) {
+      @Nonnull IClientConduit.WithDefaultRendering conduit, double x, double y, double z, float partialTick, float worldLight) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
@@ -166,7 +167,7 @@ public class DefaultConduitRenderer implements IConduitRenderer {
     }
   }
 
-  protected void renderConduitDynamic(TextureAtlasSprite tex, IConduit.WithDefaultRendering conduit, CollidableComponent component, float brightness) {
+  protected void renderConduitDynamic(TextureAtlasSprite tex, IClientConduit.WithDefaultRendering conduit, CollidableComponent component, float brightness) {
     GlStateManager.color(1, 1, 1);
     if (isNSEWUD(component.dir)) {
       float scaleFactor = 0.75f;

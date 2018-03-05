@@ -9,8 +9,8 @@ import com.enderio.core.common.TileEntityBase;
 
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
@@ -58,8 +58,8 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     }
 
     boolean performedAction = false;
-    Collection<IConduit> conduits = bundle.getConduits();
-    for (IConduit conduit : conduits) {
+    Collection<IServerConduit> conduits = bundle.getServerConduits();
+    for (IServerConduit conduit : conduits) {
       if (conduit.getExternalConnections().contains(dir)) {
         if (isCopy && !clearedData) {
           clearedData = true;

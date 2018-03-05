@@ -47,10 +47,13 @@ public class ConduitUtil {
   public static final Random RANDOM = new Random();
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  public static void ensureValidNetwork(IConduit conduit) {
+  public static void ensureValidNetwork(IServerConduit conduit) {
     TileEntity te = conduit.getBundle().getEntity();
     World world = te.getWorld();
-    Collection<? extends IConduit> connections = getConnectedConduits(world, te.getPos(), conduit.getBaseConduitType());
+    Collection<? extends IServerConduit> connections = getConnectedConduits(world, te.getPos(), (Class<? extends IServerConduit>) conduit.getBaseConduitType()); // TODO:
+                                                                                                                                                                 // this
+                                                                                                                                                                 // won't
+                                                                                                                                                                 // work
 
     if (reuseNetwork(conduit, connections, world)) {
       return;
@@ -62,9 +65,9 @@ public class ConduitUtil {
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  private static boolean reuseNetwork(IConduit con, Collection<? extends IConduit> connections, @Nonnull World world) {
+  private static boolean reuseNetwork(IServerConduit con, Collection<? extends IServerConduit> connections, @Nonnull World world) {
     IConduitNetwork network = null;
-    for (IConduit conduit : connections) {
+    for (IServerConduit conduit : connections) {
       if (network == null) {
         network = conduit.getNetwork();
       } else if (network != conduit.getNetwork()) {
@@ -91,13 +94,13 @@ public class ConduitUtil {
    * @param <T>
    *          Type of Conduit
    */
-  public static <T extends IConduit> void disconnectConduits(@Nonnull T con, @Nonnull EnumFacing connDir) {
+  public static <T extends IServerConduit> void disconnectConduits(@Nonnull T con, @Nonnull EnumFacing connDir) {
     con.conduitConnectionRemoved(connDir);
     BlockPos pos = con.getBundle().getLocation().offset(connDir);
     IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), con.getBaseConduitType());
-    if (neighbour != null) {
-      neighbour.conduitConnectionRemoved(connDir.getOpposite());
-      final IConduitNetwork<?, ?> neighbourNetwork = neighbour.getNetwork();
+    if (neighbour instanceof IServerConduit) {
+      ((IServerConduit) neighbour).conduitConnectionRemoved(connDir.getOpposite());
+      final IConduitNetwork<?, ?> neighbourNetwork = ((IServerConduit) neighbour).getNetwork();
       if (neighbourNetwork != null) {
         neighbourNetwork.destroyNetwork();
       }
@@ -109,8 +112,8 @@ public class ConduitUtil {
       network.destroyNetwork();
     }
     con.connectionsChanged();
-    if (neighbour != null) {
-      neighbour.connectionsChanged();
+    if (neighbour instanceof IServerConduit) {
+      ((IServerConduit) neighbour).connectionsChanged();
     }
   }
 
@@ -126,22 +129,23 @@ public class ConduitUtil {
    * @return True if the conduit can be connected, false otherwise
    */
 
-  public static <T extends IConduit> boolean connectConduits(@Nonnull T con, @Nonnull EnumFacing faceHit) {
+  public static <T extends IServerConduit> boolean connectConduits(@Nonnull T con, @Nonnull EnumFacing faceHit) {
     BlockPos pos = con.getBundle().getLocation().offset(faceHit);
     IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), con.getBaseConduitType());
-    if (neighbour != null && con.canConnectToConduit(faceHit, neighbour) && neighbour.canConnectToConduit(faceHit.getOpposite(), con)) {
+    if (neighbour instanceof IServerConduit && con.canConnectToConduit(faceHit, neighbour)
+        && ((IServerConduit) neighbour).canConnectToConduit(faceHit.getOpposite(), con)) {
       con.conduitConnectionAdded(faceHit);
-      neighbour.conduitConnectionAdded(faceHit.getOpposite());
+      ((IServerConduit) neighbour).conduitConnectionAdded(faceHit.getOpposite());
       final IConduitNetwork<?, ?> network = con.getNetwork();
       if (network != null) {
         network.destroyNetwork();
       }
-      final IConduitNetwork<?, ?> neighbourNetwork = neighbour.getNetwork();
+      final IConduitNetwork<?, ?> neighbourNetwork = ((IServerConduit) neighbour).getNetwork();
       if (neighbourNetwork != null) {
         neighbourNetwork.destroyNetwork();
       }
       con.connectionsChanged();
-      neighbour.connectionsChanged();
+      ((IServerConduit) neighbour).connectionsChanged();
       return true;
     }
     return false;
@@ -224,11 +228,11 @@ public class ConduitUtil {
         te.getPos().getZ() + dir.getFrontOffsetZ(), type);
   }
 
-  public static <T extends IConduit> Collection<T> getConnectedConduits(@Nonnull World world, int x, int y, int z, @Nonnull Class<T> type) {
+  public static <T extends IServerConduit> Collection<T> getConnectedConduits(@Nonnull World world, int x, int y, int z, @Nonnull Class<T> type) {
     return getConnectedConduits(world, new BlockPos(x, y, z), type);
   }
 
-  public static <T extends IConduit> Collection<T> getConnectedConduits(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Class<T> type) {
+  public static <T extends IServerConduit> Collection<T> getConnectedConduits(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Class<T> type) {
     TileEntity te = world.getTileEntity(pos);
     if (!(te instanceof IConduitBundle)) {
       return Collections.emptyList();
@@ -248,43 +252,41 @@ public class ConduitUtil {
     return result;
   }
 
-  public static void writeToNBT(IConduit conduit, @Nonnull NBTTagCompound conduitRoot) {
+  public static void writeToNBT(IServerConduit conduit, @Nonnull NBTTagCompound conduitRoot) {
     if (conduit == null) {
       conduitRoot.setString("UUID", UUID.nameUUIDFromBytes("null".getBytes()).toString());
     } else {
-      conduitRoot.setString("UUID", ConduitRegistry.getInstanceUUID(conduit).toString());
+      conduitRoot.setString("UUID", ConduitRegistry.get(conduit).getUUID().toString());
       conduit.writeToNBT(conduitRoot);
     }
   }
 
-  public static IConduit readConduitFromNBT(@Nonnull NBTTagCompound conduitRoot) {
+  public static IServerConduit readConduitFromNBT(@Nonnull NBTTagCompound conduitRoot) {
     if (conduitRoot.hasKey("UUID")) {
       String UUIDString = conduitRoot.getString("UUID");
-      IConduit result = ConduitRegistry.getInstance(UUID.fromString(UUIDString));
+      IServerConduit result = ConduitRegistry.getServerInstance(UUID.fromString(UUIDString));
       if (result != null) {
         result.readFromNBT(conduitRoot);
       }
       return result;
     }
-
-    // legacy NBT
-    String typeName = conduitRoot.getString("conduitType");
-    NBTTagCompound conduitBody = conduitRoot.getCompoundTag("conduit");
-    if (typeName.isEmpty() || conduitBody.hasNoTags()) {
-      return null;
-    }
-    IConduit result;
-    try {
-      result = (IConduit) Class.forName(typeName).newInstance();
-    } catch (Exception e) {
-      throw new RuntimeException("Could not create an instance of the conduit with name: " + typeName, e);
-    }
-    result.readFromNBT(conduitBody);
-    return result;
-
+    return null;
   }
 
-  public static boolean isRedstoneControlModeMet(@Nonnull IConduit conduit, @Nonnull RedstoneControlMode mode, @Nonnull DyeColor col) {
+  @SideOnly(Side.CLIENT)
+  public static IClientConduit readClientConduitFromNBT(@Nonnull NBTTagCompound conduitRoot) {
+    if (conduitRoot.hasKey("UUID")) {
+      String UUIDString = conduitRoot.getString("UUID");
+      IClientConduit result = ConduitRegistry.getClientInstance(UUID.fromString(UUIDString));
+      if (result != null) {
+        result.readFromNBT(conduitRoot);
+      }
+      return result;
+    }
+    return null;
+  }
+
+  public static boolean isRedstoneControlModeMet(@Nonnull IServerConduit conduit, @Nonnull RedstoneControlMode mode, @Nonnull DyeColor col) {
 
     if (mode == RedstoneControlMode.IGNORE) {
       return true;
@@ -344,9 +346,9 @@ public class ConduitUtil {
     IConduitBundle cb = (IConduitBundle) te;
     Set<EnumFacing> cons = new HashSet<EnumFacing>();
     boolean hasInsulated = false;
-    for (IConduit con : cb.getConduits()) {
+    for (IClientConduit con : cb.getClientConduits()) {
       cons.addAll(con.getExternalConnections());
-      if (ConduitRegistry.get(con).canConnectToAnything()) {
+      if (ConduitRegistry.getNetwork(con).canConnectToAnything()) {
         hasInsulated = true;
       }
     }

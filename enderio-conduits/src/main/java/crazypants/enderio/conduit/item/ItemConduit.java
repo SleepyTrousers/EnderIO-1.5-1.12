@@ -17,6 +17,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
@@ -146,8 +147,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   public @Nonnull NNList<ItemStack> getDrops() {
-    NNList<ItemStack> res = new NNList<>();
-    res.add(createItem());
+    NNList<ItemStack> res = super.getDrops();
     for (ItemStack stack : speedUpgrades.values()) {
       res.add(stack);
     }
@@ -906,8 +906,17 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @SideOnly(Side.CLIENT)
   @Nonnull
   @Override
-  public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IConduit con) {
+  public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
     return new ItemSettings((GuiExternalConnection) gui, con); // TODO abstract this better for base
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean updateGuiPanel(@Nonnull ITabPanel panel) {
+    if (panel instanceof ItemSettings) {
+      return ((ItemSettings) panel).updateConduit(this);
+    }
+    return false;
   }
 
   @SideOnly(Side.CLIENT)
