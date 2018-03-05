@@ -149,14 +149,14 @@ XML editor will display that as tooltips when editing this file.
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
         <item/><item name="DARK_STEEL"/><item/>
       </grid>
-      <output name="DARK_GRINDING_BALL" amount="25"/>
+      <output name="DARK_GRINDING_BALL" amount="24"/>
     </crafting>
   </recipe>
 
   <recipe name="Dark Grinding Ball Casting" required="true">
     <dependency item="tconstruct:cast_custom:2"/>
     <casting>
-      <input name="DARK_STEEL" amount="0.2"/>
+      <input name="DARK_STEEL_NUGGET" amount="1.875"/><!-- 30mB -->
       <cast name="tconstruct:cast_custom:2"/>
       <output name="DARK_GRINDING_BALL"/>
     </casting>
@@ -165,7 +165,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Dark Grinding Ball Smelting" required="true">
     <dependency item="tconstruct:cast_custom:2"/>
     <smelting tinkers="true" vanilla="false">
-      <input name="DARK_GRINDING_BALL" amount="25"/>
+      <input name="DARK_GRINDING_BALL" amount="24"/>
       <output name="DARK_STEEL" amount="5"/>
     </smelting>
   </recipe>
