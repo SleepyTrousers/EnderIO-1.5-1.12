@@ -382,4 +382,68 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Filter, Basic" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="oredict:paper" /><item />
+        <item name="oredict:paper" /><item name="blockHopper" /><item name="oredict:paper" />
+        <item /><item name="oredict:paper" /><item/>
+      </grid>
+      <output name="enderio:item_item_filter:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Advanced" required="true">
+    <crafting>
+      <grid>
+        <item name="dustRedstone" /><item name="oredict:paper" /><item name="dustRedstone" />
+        <item name="oredict:paper" /><item name="ZOMBIE_CONTROLLER" /><item name="oredict:paper" />
+        <item name="dustRedstone" /><item name="oredict:paper" /><item name="dustRedstone" />
+      </grid>
+      <output name="enderio:item_item_filter:1" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Counting" required="true">
+    <crafting>
+      <grid size="3x1">
+        <item name="minecraft:comparator" /><item name="enderio:item_item_filter:1" /><item name="minecraft:comparator" />
+      </grid>
+      <output name="enderio:item_item_filter:2" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Mod" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="oredict:paper" /><item />
+        <item name="oredict:paper" /><item name="enderio:item_yeta_wrench" /><item name="oredict:paper" />
+        <item /><item name="oredict:paper" /><item/>
+      </grid>
+      <output name="enderio:item_mod_item_filter:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Existing" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="dustRedstone" /><item />
+        <item name="dustRedstone" /><item name="enderio:item_item_filter:1" /><item name="dustRedstone" />
+        <item /><item name="minecraft:comparator" /><item/>
+      </grid>
+      <output name="enderio:item_existing_item_filter:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Power" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="oredict:paper" /><item />
+        <item name="oredict:paper" /><item name="CONDUIT_PROBE" /><item name="oredict:paper" />
+        <item /><item name="oredict:paper" /><item/>
+      </grid>
+      <output name="enderio:item_power_item_filter:0" />
+    </crafting>
+  </recipe>
+
 </enderio:recipes>
