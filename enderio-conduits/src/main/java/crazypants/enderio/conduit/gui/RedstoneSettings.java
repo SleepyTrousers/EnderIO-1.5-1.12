@@ -37,22 +37,19 @@ public class RedstoneSettings extends BaseSettingsPanel {
     super(IconEIO.WRENCH_OVERLAY_REDSTONE, EnderIO.lang.localize("itemRedstoneConduitInsulated.name"), gui, con, "redstone_settings", false);
 
     int x = leftColumn;
-    int y = customTop;
+    int y = customTop + 4;
 
     if (con instanceof IRedstoneConduit) {
       insCon = (IRedstoneConduit) con;
     }
 
     if (insCon != null) {
-      x += gap + gap + 2 + gui.getFontRenderer().getStringWidth(signalColorStr);
       cb = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
       cb.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
       DyeColor sigCol = insCon.getSignalColor(gui.getDir());
       cb.setColorIndex(sigCol.ordinal());
-      x += cb.getButtonWidth();
 
-      stongLabelX = x;
-      x += gap + gui.getFontRenderer().getStringWidth(signalStringthStr) + gap + 3;
+      y += 22;
       strongCB = new CheckBox(gui, ID_STRONG_BUTTON, x, y);
       strongCB.setToolTip(Lang.GUI_REDSTONE_SIGNAL_STRENGTH.get());
     }
@@ -97,10 +94,10 @@ public class RedstoneSettings extends BaseSettingsPanel {
   protected void renderCustomOptions(int top, float par1, int par2, int par3) {
     if (insCon != null) {
       if (cb != null) {
-        gui.getFontRenderer().drawString(signalColorStr, left + 20, top + 2, ColorUtil.getRGB(Color.darkGray));
+        gui.getFontRenderer().drawString(signalColorStr, left + 32, top + 6, ColorUtil.getRGB(Color.darkGray));
       }
       if (strongCB != null) {
-        gui.getFontRenderer().drawString(signalStringthStr, left + stongLabelX, top + 2, ColorUtil.getRGB(Color.darkGray));
+        gui.getFontRenderer().drawString(signalStringthStr, left + 32, top + 28, ColorUtil.getRGB(Color.darkGray));
       }
     }
   }
