@@ -14,7 +14,6 @@ import com.enderio.core.common.util.ItemUtil;
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import crazypants.enderio.base.network.PacketHandler;
@@ -79,7 +78,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       addSlotToContainer(slotSpeedUpgrades = new SlotItemHandler(getItemHandler(), 0, 131, 71) {
         @Override
         public boolean isItemValid(@Nonnull ItemStack itemStack) {
-          return isItemValidForSlot(0, itemStack);
+          return itemStack.getItem() instanceof ItemExtractSpeedUpgrade;
         }
 
         @Override
@@ -90,7 +89,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       addSlotToContainer(slotFunctionUpgrades = new SlotItemHandler(getItemHandler(), 1, 157, 71) {
         @Override
         public boolean isItemValid(@Nonnull ItemStack itemStack) {
-          return isItemValidForSlot(1, itemStack);
+          return false;
         }
 
         @Override
@@ -99,25 +98,6 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
         }
       });
     }
-  }
-
-  private boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack) {
-    if (stack.isEmpty()) {
-      return false;
-    }
-    switch (slot) {
-    case 0:
-      return stack.getItem() instanceof ItemExtractSpeedUpgrade;
-    // TODO Inventory
-    // case 1:
-    // final FunctionUpgrade functionUpgrade = ItemFunctionUpgrade.getFunctionUpgrade(item);
-    // return functionUpgrade != null
-    // && (functionUpgrade != FunctionUpgrade.INVENTORY_PANEL || !itemConduit.isConnectedToNetworkAwareBlock(dir));
-    case 2:
-    case 3:
-      return stack.getItem() instanceof IItemFilterUpgrade;
-    }
-    return false;
   }
 
   public void createGhostSlots(@Nonnull List<GhostSlot> ghostSlots) {

@@ -2,7 +2,9 @@ package crazypants.enderio.conduit.gui.item;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -41,22 +43,22 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
   @Nonnull
   @Override
   public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-    switch (slot) {
-    case 0:
-      itemConduit.setSpeedUpgrade(dir, stack);
-      break;
-    // TODO Inventory
-    // case 1:
-    // itemConduit.setFunctionUpgrade(dir, stack);
-    // break;
-    case 2:
-      itemConduit.setInputFilterUpgrade(dir, stack);
-      break;
-    case 3:
-      itemConduit.setOutputFilterUpgrade(dir, stack);
-      break;
+    if (!isItemValidForSlot(slot, stack)) {
+      return stack;
     }
-    return ItemStack.EMPTY;
+
+    ItemStack returnStack = ItemStack.EMPTY;
+    if (stack.getCount() > getSlotLimit(slot)) {
+      returnStack = stack.copy();
+      returnStack.setCount(stack.getCount() - getSlotLimit(slot));
+
+      stack.setCount(getSlotLimit(slot));
+    }
+
+    if (!simulate) {
+      setInventorySlotContents(slot, stack);
+    }
+    return returnStack;
   }
 
   @Nonnull
@@ -100,6 +102,26 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
       itemConduit.setOutputFilterUpgrade(dir, stack);
       break;
     }
+  }
+
+  private boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack) {
+    if (stack.isEmpty()) {
+      return false;
+    }
+    switch (slot) {
+    case 0:
+      return stack.getItem() instanceof ItemExtractSpeedUpgrade;
+    // TODO Inventory
+    // case 1:
+    // final FunctionUpgrade functionUpgrade = ItemFunctionUpgrade.getFunctionUpgrade(item);
+    // return functionUpgrade != null
+    // && (functionUpgrade != FunctionUpgrade.INVENTORY_PANEL || !itemConduit.isConnectedToNetworkAwareBlock(dir));
+    case 2:
+      return stack.getItem() instanceof IItemFilterUpgrade;
+    case 3:
+      return stack.getItem() instanceof IItemFilterUpgrade;
+    }
+    return false;
   }
 
   @Override
