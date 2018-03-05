@@ -33,9 +33,9 @@ public class ExistingItemFilter implements IItemFilter {
       return false;
     }
     if (snapshot != null) {
-      return isStackInSnapshot(item) == blacklist;
+      return isStackInSnapshot(item) != blacklist;
     } else if (inventory != null) {
-      return isStackInInventory(inventory, item) == blacklist;
+      return isStackInInventory(inventory, item) != blacklist;
     }
     return false;
   }
@@ -120,7 +120,7 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   public boolean mergeSnapshot(@Nonnull IItemHandler inventory) {
-    if (snapshot == null || snapshot.equals(NNList.emptyList())) {
+    if (snapshot == null) {
       snapshot = new NNList<ItemStack>();
     }
     boolean added = false;
@@ -136,9 +136,6 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   public NNList<ItemStack> getSnapshot() {
-    if (snapshot == null) {
-      snapshot = NNList.emptyList();
-    }
     return snapshot;
   }
 
@@ -223,7 +220,7 @@ public class ExistingItemFilter implements IItemFilter {
 
       NBTTagList itemList = new NBTTagList();
       for (ItemStack item : snapshot) {
-        if (item != null) {
+        if (!item.isEmpty()) {
           NBTTagCompound itemTag = new NBTTagCompound();
           item.writeToNBT(itemTag);
           itemList.appendTag(itemTag);
@@ -252,9 +249,11 @@ public class ExistingItemFilter implements IItemFilter {
       return;
     }
     for (ItemStack item : snapshot) {
-      NBTTagCompound itemRoot = new NBTTagCompound();
-      item.writeToNBT(itemRoot);
-      NetworkUtil.writeNBTTagCompound(itemRoot, buf);
+      if (!item.isEmpty()) {
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        item.writeToNBT(itemRoot);
+        NetworkUtil.writeNBTTagCompound(itemRoot, buf);
+      }
     }
   }
 

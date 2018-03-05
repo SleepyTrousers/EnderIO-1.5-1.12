@@ -50,9 +50,9 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
   private final @Nonnull IconButton whiteListB;
 
   private @Nonnull TooltipButton snapshotB;
-  private @Nonnull GuiButton clearB;
-  private @Nonnull GuiButton showB;
-  private @Nonnull GuiButton mergeB;
+  private @Nonnull TooltipButton clearB;
+  private @Nonnull TooltipButton showB;
+  private @Nonnull TooltipButton mergeB;
   private @Nonnull SnapshotOverlay snapshotOverlay;
 
   private @Nonnull ExistingItemFilter filter;
@@ -92,19 +92,19 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     useOreDictB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_ORE_DIC_DISABLED.get());
     useOreDictB.setPaintSelectedBorder(false);
 
-    int x0 = getGuiLeft() + 246;
-    int y0 = getGuiTop() + 84;
+    int x0 = getGuiLeft() + 124;
+    int y0 = getGuiTop() + 64;
 
     snapshotB = new TooltipButton(this, ID_SNAPSHOT, 60, 64, 60, 20, Lang.GUI_EXISTING_ITEM_FILTER_SNAPSHOT.get());
-    mergeB = new GuiButton(ID_MERGE, x0, y0, 40, 20, Lang.GUI_EXISTING_ITEM_FILTER_MERGE.get());
+    mergeB = new TooltipButton(this, ID_MERGE, x0, y0, 40, 20, Lang.GUI_EXISTING_ITEM_FILTER_MERGE.get());
 
     x0 -= 64;
     y0 += 24;
 
-    clearB = new GuiButton(ID_CLEAR, x0, y0, 60, 20, Lang.GUI_EXISTING_ITEM_FILTER_CLEAR.get());
+    clearB = new TooltipButton(this, ID_CLEAR, x0, y0, 60, 20, Lang.GUI_EXISTING_ITEM_FILTER_CLEAR.get());
 
     x0 += 64;
-    showB = new GuiButton(ID_SHOW, x0, y0, 40, 20, Lang.GUI_EXISTING_ITEM_FILTER_SHOW.get());
+    showB = new TooltipButton(this, ID_SHOW, x0, y0, 40, 20, Lang.GUI_EXISTING_ITEM_FILTER_SHOW.get());
 
     snapshotB.setToolTip(Lang.GUI_EXISTING_ITEM_FILTER_SNAPSHOT_2.get());
 
@@ -121,21 +121,21 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
   public void updateButtons() {
     super.updateButtons();
 
-    ExistingItemFilter activeFilter = filter;
+    
 
     useNbtB.onGuiInit();
-    useNbtB.setSelected(activeFilter.isMatchNBT());
+    useNbtB.setSelected(filter.isMatchNBT());
 
     useOreDictB.onGuiInit();
-    useOreDictB.setSelected(activeFilter.isUseOreDict());
+    useOreDictB.setSelected(filter.isUseOreDict());
 
     if (isStickyModeAvailable) {
       stickyB.onGuiInit();
-      stickyB.setSelected(activeFilter.isSticky());
+      stickyB.setSelected(filter.isSticky());
     }
 
     useMetaB.onGuiInit();
-    useMetaB.setSelected(activeFilter.isMatchMeta());
+    useMetaB.setSelected(filter.isMatchMeta());
 
     whiteListB.onGuiInit();
     if (filter.isBlacklist()) {
@@ -147,10 +147,13 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     }
 
     snapshotB.onGuiInit();
+    clearB.onGuiInit();
+    mergeB.onGuiInit();
+    showB.onGuiInit();
 
-    addButton(clearB);
-    addButton(showB);
-    addButton(mergeB);
+    clearB.setEnabled(filter.getSnapshot() != null);
+    mergeB.setEnabled(clearB.isEnabled());
+    showB.setEnabled(clearB.isEnabled());
   }
 
   @Override
@@ -180,6 +183,19 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
       filter.setBlacklist(!filter.isBlacklist());
       sendFilterChange();
     }
+  }
+
+  @Override
+  public void updateScreen() {
+    updateSnapshotButtons();
+    super.updateScreen();
+  }
+  
+  private void updateSnapshotButtons() {
+    filter = (ExistingItemFilter) filterContainer.getItemFilter();
+    clearB.setEnabled(filter.getSnapshot() != null);
+    mergeB.setEnabled(clearB.isEnabled());
+    showB.setEnabled(clearB.isEnabled());
   }
 
   private void showSnapshotOverlay() {

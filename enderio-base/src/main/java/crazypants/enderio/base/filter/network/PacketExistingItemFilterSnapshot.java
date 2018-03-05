@@ -8,6 +8,7 @@ import crazypants.enderio.base.filter.IFilterHolder;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.filters.ExistingItemFilter;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -56,7 +57,7 @@ public class PacketExistingItemFilterSnapshot extends PacketFilterUpdate {
 
       switch (message.opcode) {
       case CLEAR:
-        filter.setSnapshot(NNList.emptyList());
+        filter.setSnapshot((NNList<ItemStack>) null);
         break;
 
       case SET: {
