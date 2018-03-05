@@ -120,7 +120,7 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   public boolean mergeSnapshot(@Nonnull IItemHandler inventory) {
-    if (snapshot == null) {
+    if (snapshot == null || snapshot.equals(NNList.emptyList())) {
       snapshot = new NNList<ItemStack>();
     }
     boolean added = false;

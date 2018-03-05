@@ -152,10 +152,6 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
 
     snapshotB.onGuiInit();
 
-    clearB.enabled = filter.getSnapshot() != null;
-    showB.enabled = clearB.enabled;
-    mergeB.enabled = filter.getSnapshot() != null;
-
     addButton(clearB);
     addButton(showB);
     addButton(mergeB);
@@ -222,8 +218,8 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     public void draw(int mouseX, int mouseY, float partialTick) {
       RenderHelper.enableGUIStandardItemLighting();
       GL11.glEnable(GL11.GL_BLEND);
-      RenderUtil.renderQuad2D(4, 4, 0, getXSize() - 9, getYSize() - 8, new Vector4f(0, 0, 0, 1));
-      RenderUtil.renderQuad2D(6, 6, 0, getXSize() - 13, getYSize() - 12, new Vector4f(0.6, 0.6, 0.6, 1));
+      RenderUtil.renderQuad2D(8, 8, 0, getXSize() - 11, getYSize() - 11, new Vector4f(0, 0, 0, 1));
+      RenderUtil.renderQuad2D(10, 10, 0, getXSize() - 15, getYSize() - 15, new Vector4f(0.6, 0.6, 0.6, 1));
 
       RenderItem itemRenderer = mc.getRenderItem();
 
