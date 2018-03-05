@@ -17,7 +17,6 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.ILimitedItemFilter;
-import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.conduit.config.ConduitConfig;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.state.IBlockState;
@@ -27,7 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
-public class NetworkedInventory implements INetworkedInventory {
+public class NetworkedInventory {
 
   private static final boolean SIMULATE = true;
   private static final boolean EXECUTE = false;
@@ -69,27 +68,22 @@ public class NetworkedInventory implements INetworkedInventory {
     // }
   }
 
-  @Override
   public @Nonnull BlockPos getLocation() {
     return location;
   }
 
-  @Override
   public @Nonnull IItemConduit getCon() {
     return con;
   }
 
-  @Override
   public @Nonnull EnumFacing getConDir() {
     return conDir;
   }
 
-  @Override
   public @Nonnull List<Target> getSendPriority() {
     return sendPriority;
   }
 
-  @Override
   public boolean hasTarget(@Nonnull IConduit conduit, @Nonnull EnumFacing dir) {
     if (conduit instanceof IItemConduit) {
       for (Target t : sendPriority) {
@@ -101,13 +95,11 @@ public class NetworkedInventory implements INetworkedInventory {
     return false;
   }
 
-  @Override
   public boolean canExtract() {
     ConnectionMode mode = con.getConnectionMode(conDir);
     return mode == ConnectionMode.INPUT || mode == ConnectionMode.IN_OUT;
   }
 
-  @Override
   public boolean canInsert() {
     // if(inventoryPanel) {
     // return false;
@@ -120,17 +112,14 @@ public class NetworkedInventory implements INetworkedInventory {
   // return inventoryPanel;
   // }
 
-  @Override
   public boolean isSticky() {
     return con.getOutputFilter(conDir) != null && con.getOutputFilter(conDir).isValid() && con.getOutputFilter(conDir).isSticky();
   }
 
-  @Override
   public int getPriority() {
     return con.getOutputPriority(conDir);
   }
 
-  @Override
   public void onTick() {
     if (tickDeficit > 0 || !canExtract() || !con.isExtractionRedstoneConditionMet(conDir)) {
       // do nothing
@@ -222,7 +211,6 @@ public class NetworkedInventory implements INetworkedInventory {
     tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
   }
 
-  @Override
   public int insertIntoTargets(@Nonnull ItemStack toExtract) {
     if (Prep.isInvalid(toExtract)) {
       return 0;
@@ -261,7 +249,6 @@ public class NetworkedInventory implements INetworkedInventory {
     return sendPriority;
   }
 
-  @Override
   public int insertItem(@Nonnull ItemStack item) {
     if (!canInsert() || Prep.isInvalid(item)) {
       return 0;
@@ -286,7 +273,6 @@ public class NetworkedInventory implements INetworkedInventory {
     return ItemTools.doInsertItem(getInventory(), item);
   }
 
-  @Override
   public void updateInsertOrder() {
     sendPriority.clear();
     if (!canExtract()) {
@@ -294,7 +280,7 @@ public class NetworkedInventory implements INetworkedInventory {
     }
     List<Target> result = new ArrayList<NetworkedInventory.Target>();
 
-    for (INetworkedInventory other : network.inventories) {
+    for (NetworkedInventory other : network.inventories) {
       if ((con.isSelfFeedEnabled(conDir) || (other != this)) && other.canInsert()
           && con.getInputColor(conDir) == ((IItemConduit) other.getCon()).getOutputColor(other.getConDir())) {
 
@@ -368,12 +354,11 @@ public class NetworkedInventory implements INetworkedInventory {
     return null;
   }
 
-  private int distanceTo(INetworkedInventory other) {
+  private int distanceTo(NetworkedInventory other) {
     // TODO Check if this should be a double or int
     return (int) con.getBundle().getLocation().distanceSq(other.getCon().getBundle().getLocation());
   }
 
-  @Override
   public @Nullable IItemHandler getInventory() {
     return ItemTools.getExternalInventory(world, location, inventorySide);
   }
@@ -386,12 +371,12 @@ public class NetworkedInventory implements INetworkedInventory {
    * Class for storing the Target Inventory
    */
   static class Target implements Comparable<Target> {
-    INetworkedInventory inv;
+    NetworkedInventory inv;
     int distance;
     boolean stickyInput;
     int priority;
 
-    Target(@Nonnull INetworkedInventory inv, int distance, boolean stickyInput, int priority) {
+    Target(@Nonnull NetworkedInventory inv, int distance, boolean stickyInput, int priority) {
       this.inv = inv;
       this.distance = distance;
       this.stickyInput = stickyInput;
@@ -414,7 +399,6 @@ public class NetworkedInventory implements INetworkedInventory {
 
   }
 
-  @Override
   public @Nonnull String getLocalizedInventoryName() {
     return invName;
   }
