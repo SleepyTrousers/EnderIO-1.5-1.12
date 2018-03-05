@@ -74,7 +74,8 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
   private final GuiToolTip priorityTooltip;
   private final GuiToolTip speedUpgradeTooltip;
   private final GuiToolTip functionUpgradeTooltip;
-  private final GuiToolTip filterUpgradeTooltip;
+  private final GuiToolTip filterExtractUpgradeTooltip;
+  private final GuiToolTip filterInsertUpgradeTooltip;
 
   public ItemSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_ITEM, EnderIO.lang.localize("itemItemConduit.name"), gui, con, "item_settings");
@@ -106,14 +107,21 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     loopB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.selfFeedDisabled"));
     loopB.setPaintSelectedBorder(false);
 
-    filterUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18 * 2, customTop + 3 + 16, 18, 18), EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
+    filterExtractUpgradeTooltip = new GuiToolTip(new Rectangle(rightColumn, 70, 18, 18), EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
       @Override
       public boolean shouldDraw() {
-        // TODO remove redudant code
+        return !gui.getContainer().hasFilter(false) && super.shouldDraw();
+      }
+    };
+
+    filterInsertUpgradeTooltip = new GuiToolTip(new Rectangle(leftColumn, 70, 18, 18), EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
+      @Override
+      public boolean shouldDraw() {
         return !gui.getContainer().hasFilter(true) && super.shouldDraw();
       }
     };
-    speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18, customTop + 3 + 16, 18, 18), EnderIO.lang.localize("gui.conduit.item.speedupgrade"),
+
+    speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 22, customTop + 43, 18, 18), EnderIO.lang.localize("gui.conduit.item.speedupgrade"),
         EnderIO.lang.localize("gui.conduit.item.speedupgrade2")) {
       @Override
       public boolean shouldDraw() {
@@ -126,7 +134,7 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     for (FunctionUpgrade upgrade : FunctionUpgrade.values()) {
       list.add(EnderIO.lang.localizeExact(upgrade.unlocName.concat(".name")));
     }
-    functionUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18 * 2, customTop + 3 + 34, 18, 18), list) {
+    functionUpgradeTooltip = new GuiToolTip(new Rectangle(x + 4, customTop + 43, 18, 18), list) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasFunctionUpgrade() && super.shouldDraw();
@@ -229,7 +237,8 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     rsB.onGuiInit();
     rsB.setMode(RedstoneControlMode.IconHolder.getFromMode(itemConduit.getExtractionRedstoneMode(gui.getDir())));
 
-    gui.addToolTip(filterUpgradeTooltip);
+    gui.addToolTip(filterExtractUpgradeTooltip);
+    gui.addToolTip(filterInsertUpgradeTooltip);
     gui.addToolTip(functionUpgradeTooltip);
     loopB.onGuiInit();
     loopB.setSelected(itemConduit.isSelfFeedEnabled(gui.getDir()));
@@ -316,7 +325,8 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     gui.removeToolTip(priorityTooltip);
     gui.removeToolTip(speedUpgradeTooltip);
     gui.removeToolTip(functionUpgradeTooltip);
-    gui.removeToolTip(filterUpgradeTooltip);
+    gui.removeToolTip(filterExtractUpgradeTooltip);
+    gui.removeToolTip(filterInsertUpgradeTooltip);
     insertChannelB.detach();
     extractChannelB.detach();
     insertFilterOptionsB.detach();
