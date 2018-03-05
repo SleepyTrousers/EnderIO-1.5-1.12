@@ -60,10 +60,11 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   private EnderLiquidConduit eConduit;
   private boolean isEnder;
-  private static final int filterX = 8;
-  private static final int filterY = 67;
-  private static final Rectangle insertFilterBounds = new Rectangle(filterX, filterY, 90, 18);
-  private static final Rectangle extractFilterBounds = new Rectangle(filterX + 112, filterY, 90, 18);
+  private static final int filterInsertX = 7;
+  private static final int filterY = 81;
+  private static final int filterExtractX = filterInsertX + 101;
+  private static final Rectangle insertFilterBounds = new Rectangle(filterInsertX, filterY, 90, 18);
+  private static final Rectangle extractFilterBounds = new Rectangle(filterExtractX, filterY, 90, 18);
   private GuiToolTip[] filterToolTips;
 
   private IconButton insertWhiteListB;
@@ -126,7 +127,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   private void addFilterTooltips() {
     filterToolTips = new GuiToolTip[5];
     for (int i = 0; i < 5; i++) {
-      Rectangle bound = new Rectangle(filterX + (i * 18), filterY, 18, 18);
+      Rectangle bound = new Rectangle(filterInsertX + (i * 18), filterY, 18, 18);
       filterToolTips[i] = new FilterToolTip(bound, i);
       gui.addToolTip(filterToolTips[i]);
     }
@@ -170,20 +171,28 @@ public class LiquidSettings extends BaseSettingsPanel {
     if (!isFilterVisible()) {
       return;
     }
-    if (!insertFilterBounds.contains(x, y) || !extractFilterBounds.contains(x, y)) {
+
+    if (!insertFilterBounds.contains(x, y) && !extractFilterBounds.contains(x, y)) {
       return;
     }
+
+    boolean isInput = (x >= filterExtractX);
+
     ItemStack st = Minecraft.getMinecraft().player.inventory.getItemStack();
-    FluidFilter filter = eConduit.getFilter(gui.getDir(), false);
-    if (filter == null && st.isEmpty()) {
-      return;
-    }
+    FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput);
+
     if (filter == null) {
       filter = new FluidFilter();
     }
-    int slot = (x - filterX) / 18;
+    int slot = 0;
+    if (isInput) {
+      slot = (x - filterExtractX) / 18;
+    } else {
+      slot = (x - filterInsertX) / 18;
+    }
     filter.setFluid(slot, st);
-    setConduitFilter(filter, false);
+    setConduitFilter(filter, isInput);
+
   }
 
   // TODO Fliter fixes
@@ -252,22 +261,27 @@ public class LiquidSettings extends BaseSettingsPanel {
   }
 
   @Override
+  @Nonnull
+  public ResourceLocation getTexture() {
+    return isEnder ? EnderIO.proxy.getGuiTexture("ender_liquid_settings") : super.getTexture();
+  }
+
+  @Override
   protected void renderCustomOptions(int top, float par1, int par2, int par3) {
     if (isEnder && isFilterVisible()) {
 
       FontRenderer fr = gui.getFontRenderer();
       int x = left + leftColumn + 10;
-      int y = top + 22;
+      int y = top + 36;
       fr.drawString(filterStrInsert, x, y, ColorUtil.getRGB(Color.DARK_GRAY));
 
       x = left + rightColumn + 10;
       fr.drawString(filterStrExtract, x, y, ColorUtil.getRGB(Color.DARK_GRAY));
 
-      x = gui.getGuiLeft() + filterX;
+      x = gui.getGuiLeft() + filterInsertX;
       y = gui.getGuiTop() + filterY;
       GL11.glColor3f(1, 1, 1);
       gui.bindGuiTexture();
-      gui.drawTexturedModalRect(x, y, 0, 238, 90, 18);
 
       FluidFilter filterInsert = eConduit.getFilter(gui.getDir(), false);
       if (filterInsert != null && !filterInsert.isEmpty()) {
@@ -279,10 +293,9 @@ public class LiquidSettings extends BaseSettingsPanel {
         }
       }
 
-      x += 100;
+      x += 101;
       GL11.glColor3f(1, 1, 1);
       gui.bindGuiTexture();
-      gui.drawTexturedModalRect(x, y, 0, 238, 90, 18);
 
       FluidFilter filterExtract = eConduit.getFilter(gui.getDir(), true);
       if (filterExtract != null && !filterExtract.isEmpty()) {
