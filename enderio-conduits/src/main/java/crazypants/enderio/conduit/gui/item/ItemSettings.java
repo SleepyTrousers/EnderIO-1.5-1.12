@@ -2,7 +2,6 @@ package crazypants.enderio.conduit.gui.item;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 
@@ -13,7 +12,6 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.DyeColor;
@@ -31,8 +29,8 @@ import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.BaseSettingsPanel;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.lang.Lang;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import net.minecraft.client.gui.FontRenderer;
@@ -71,7 +69,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
   private int priLeft = 46;
   private int priWidth = 32;
 
-  private final GuiToolTip priorityTooltip;
   private final GuiToolTip speedUpgradeTooltip;
   private final GuiToolTip functionUpgradeTooltip;
   private final GuiToolTip filterExtractUpgradeTooltip;
@@ -81,60 +78,59 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     super(IconEIO.WRENCH_OVERLAY_ITEM, EnderIO.lang.localize("itemItemConduit.name"), gui, con, "item_settings");
     itemConduit = (IItemConduit) con;
 
-    // TODO Lang
-
     int x = leftColumn;
     int y = customTop;
 
     insertChannelB = new ColorButton(gui, ID_INSERT_CHANNEL, x, y);
     insertChannelB.setColorIndex(0);
-    insertChannelB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.item.channel"));
+    insertChannelB.setToolTipHeading(Lang.GUI_CONDUIT_CHANNEL.get());
 
     x = rightColumn;
     extractChannelB = new ColorButton(gui, ID_EXTRACT_CHANNEL, x, y);
     extractChannelB.setColorIndex(0);
-    extractChannelB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.item.channel"));
+    extractChannelB.setToolTipHeading(Lang.GUI_CONDUIT_CHANNEL.get());
 
     x += 4 + extractChannelB.getWidth();
     roundRobinB = new ToggleButton(gui, ID_ROUND_ROBIN, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
-    roundRobinB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.roundRobinEnabled"));
-    roundRobinB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.roundRobinDisabled"));
+    roundRobinB.setSelectedToolTip(Lang.GUI_ROUND_ROBIN_ENABLED.get());
+    roundRobinB.setUnselectedToolTip(Lang.GUI_ROUND_ROBIN_ENABLED.get());
     roundRobinB.setPaintSelectedBorder(false);
 
     x += 4 + roundRobinB.getWidth();
     loopB = new ToggleButton(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
-    loopB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.selfFeedEnabled"));
-    loopB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.selfFeedDisabled"));
+    loopB.setSelectedToolTip(Lang.GUI_SELF_FEED_ENABLED.get());
+    loopB.setUnselectedToolTip(Lang.GUI_SELF_FEED_DISABLED.get());
     loopB.setPaintSelectedBorder(false);
 
-    filterExtractUpgradeTooltip = new GuiToolTip(new Rectangle(rightColumn, 70, 18, 18), EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
+    filterExtractUpgradeTooltip = new GuiToolTip(new Rectangle(rightColumn, 70, 18, 18), Lang.GUI_ITEM_FILTER_UPGRADE.get()) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasFilter(false) && super.shouldDraw();
       }
     };
 
-    filterInsertUpgradeTooltip = new GuiToolTip(new Rectangle(leftColumn, 70, 18, 18), EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
+    filterInsertUpgradeTooltip = new GuiToolTip(new Rectangle(leftColumn, 70, 18, 18), Lang.GUI_ITEM_FILTER_UPGRADE.get()) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasFilter(true) && super.shouldDraw();
       }
     };
 
-    speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 22, customTop + 43, 18, 18), EnderIO.lang.localize("gui.conduit.item.speedupgrade"),
-        EnderIO.lang.localize("gui.conduit.item.speedupgrade2")) {
+    speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 22, customTop + 43, 18, 18), Lang.GUI_ITEM_SPEED_UPGRADE.get(),
+        Lang.GUI_ITEM_SPEED_UPGRADE_2.get()) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasSpeedUpgrades() && super.shouldDraw();
       }
     };
 
-    ArrayList<String> list = new ArrayList<String>();
-    SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.conduit.item.functionupgrade.line");
-    for (FunctionUpgrade upgrade : FunctionUpgrade.values()) {
-      list.add(EnderIO.lang.localizeExact(upgrade.unlocName.concat(".name")));
-    }
-    functionUpgradeTooltip = new GuiToolTip(new Rectangle(x + 4, customTop + 43, 18, 18), list) {
+    // ArrayList<String> list = new ArrayList<String>();
+    // SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.conduit.item.functionupgrade.line");
+    // for (FunctionUpgrade upgrade : FunctionUpgrade.values()) {
+    // list.add(EnderIO.lang.localizeExact(upgrade.unlocName.concat(".name")));
+    // }
+    functionUpgradeTooltip = new GuiToolTip(new Rectangle(x + 4, customTop + 43, 18, 18), Lang.GUI_ITEM_FUNCTION_UPGRADE.get(),
+        Lang.GUI_ITEM_FUNCTION_UPGRADE_2.get()) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasFunctionUpgrade() && super.shouldDraw();
@@ -178,9 +174,7 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     x += rsB.getWidth() + 4;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
     colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
-    colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.item.sigCol"));
-
-    priorityTooltip = new GuiToolTip(new Rectangle(priLeft + 9, y, priWidth, 16), EnderIO.lang.localize("gui.conduit.item.priority"));
+    colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
 
     x = priLeft + priWidth + 9;
     priUpB = MultiIconButton.createAddButton(gui, ID_PRIORITY_UP, x, y);
@@ -248,7 +242,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
 
     priUpB.onGuiInit();
     priDownB.onGuiInit();
-    gui.addToolTip(priorityTooltip);
 
     insertChannelB.onGuiInit();
     insertChannelB.setColorIndex(itemConduit.getOutputColor(gui.getDir()).ordinal());
@@ -307,8 +300,7 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     String str = itemConduit.getOutputPriority(gui.getDir()) + "";
     int sw = fr.getStringWidth(str);
 
-    // TODO Lang
-    String priority = "Priority";
+    String priority = Lang.GUI_PRIORITY.get();
     fr.drawString(priority, left + 12, top + 25, ColorUtil.getRGB(Color.black));
     fr.drawString(str, left + priLeft + priWidth - sw - gap, top + 25, ColorUtil.getRGB(Color.black));
   }
@@ -322,7 +314,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     loopB.detach();
     priUpB.detach();
     priDownB.detach();
-    gui.removeToolTip(priorityTooltip);
     gui.removeToolTip(speedUpgradeTooltip);
     gui.removeToolTip(functionUpgradeTooltip);
     gui.removeToolTip(filterExtractUpgradeTooltip);

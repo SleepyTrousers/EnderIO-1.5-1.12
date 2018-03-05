@@ -14,6 +14,7 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.conduit.lang.Lang;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -26,9 +27,8 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
   static final int ID_INSERT_ENABLED = 327;
   static final int ID_EXTRACT_ENABLED = 328;
 
-  // TODO Lang
-  private static final String ENABLED = "Enabled";
-  private static final String DISABLED = "Disabled";
+  private static final String ENABLED = Lang.GUI_CONDUIT_ENABLED_MODE.get();
+  private static final String DISABLED = Lang.GUI_CONDUIT_DISABLED_MODE.get();
 
   protected final @Nonnull IconEIO icon;
   protected final GuiExternalConnection gui;
@@ -71,13 +71,12 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
     this.texture = EnderIO.proxy.getGuiTexture(texture);
     this.hasInputOutputMode = hasInputOutputMode;
 
-    // TODO lang
     if (hasInputOutputMode) {
-      inputHeading = "Insert";
+      inputHeading = Lang.GUI_CONDUIT_INSERT_MODE.get();
     } else {
       inputHeading = ENABLED;
     }
-    outputHeading = "Extract";
+    outputHeading = Lang.GUI_CONDUIT_EXTRACT_MODE.get();
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
@@ -183,16 +182,6 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   @Override
   public void actionPerformed(@Nonnull GuiButton guiButton) {
-    // if (guiButton.id == PREV_MODE_B) {
-    // con.setConnectionMode(gui.getDir(), con.getPreviousConnectionMode(gui.getDir()));
-    // PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
-    // connectionModeChanged(con.getConnectionMode(gui.getDir()));
-    //
-    // } else if (guiButton.id == NEXT_MODE_B) {
-    // con.setConnectionMode(gui.getDir(), con.getNextConnectionMode(gui.getDir()));
-    // PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
-    // connectionModeChanged(con.getConnectionMode(gui.getDir()));
-    // }
     if (guiButton.id == ID_INSERT_ENABLED) {
       insertEnabled = !insertEnabled;
       if (!hasInputOutputMode) {
@@ -206,7 +195,6 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
     }
   }
 
-  // TODO Lang
   private void swapEnabledText() {
     if (inputHeading.equals(ENABLED)) {
       inputHeading = DISABLED;
@@ -236,17 +224,6 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   protected void renderCustomOptions(int topIn, float par1, int par2, int par3) {
 
-  }
-
-  private int getLongestModeStringWidth() {
-    int maxWidth = 0;
-    for (ConnectionMode mode : ConnectionMode.values()) {
-      int stringWidth = gui.getFontRenderer().getStringWidth(mode.getLocalisedName());
-      if (stringWidth > maxWidth) {
-        maxWidth = stringWidth;
-      }
-    }
-    return maxWidth;
   }
 
   protected String getTypeName() {

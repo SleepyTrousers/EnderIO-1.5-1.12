@@ -24,6 +24,7 @@ import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.conduit.lang.Lang;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
@@ -49,11 +50,11 @@ public class LiquidSettings extends BaseSettingsPanel {
   private final ColorButton colorB;
 
   @Nonnull
-  private static final String autoExtractStr = EnderIO.lang.localize("gui.conduit.fluid.auto_extract");
+  private static final String autoExtractStr = Lang.GUI_LIQUID_AUTO_EXTRACT.get();
   @Nonnull
-  private static final String filterStrInsert = EnderIO.lang.localize("gui.conduit.fluid.filter_insert");
+  private static final String filterStrInsert = Lang.GUI_LIQUID_FILTER.get();
   @Nonnull
-  private static final String filterStrExtract = EnderIO.lang.localize("gui.conduit.fluid.filter_extract");
+  private static final String filterStrExtract = Lang.GUI_LIQUID_FILTER.get();
 
   private final ILiquidConduit conduit;
 
@@ -80,12 +81,12 @@ public class LiquidSettings extends BaseSettingsPanel {
       int y = filterY - 20;
 
       insertWhiteListB = new IconButton(gui, ID_INSERT_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
-      insertWhiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.fluid.whitelist"));
+      insertWhiteListB.setToolTip(Lang.GUI_LIQUID_WHITELIST.get());
 
       x = rightColumn;
 
       extractWhiteListB = new IconButton(gui, ID_EXTRACT_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
-      extractWhiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.fluid.whitelist"));
+      extractWhiteListB.setToolTip(Lang.GUI_LIQUID_WHITELIST.get());
     } else {
       isEnder = false;
     }
@@ -118,7 +119,7 @@ public class LiquidSettings extends BaseSettingsPanel {
 
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-    colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signal_color"));
+    colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
   }
 
@@ -225,10 +226,10 @@ public class LiquidSettings extends BaseSettingsPanel {
     }
     if (filter != null && filter.isBlacklist()) {
       whitelistButton.setIcon(IconEIO.FILTER_BLACKLIST);
-      whitelistButton.setToolTip(EnderIO.lang.localize("gui.conduit.fluid.blacklist"));
+      whitelistButton.setToolTip(Lang.GUI_LIQUID_BLACKLIST.get());
     } else {
       whitelistButton.setIcon(IconEIO.FILTER_WHITELIST);
-      whitelistButton.setToolTip(EnderIO.lang.localize("gui.conduit.fluid.whitelist"));
+      whitelistButton.setToolTip(Lang.GUI_LIQUID_WHITELIST.get());
     }
   }
 
