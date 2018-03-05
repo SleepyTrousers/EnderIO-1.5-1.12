@@ -32,8 +32,7 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
   // public at the moment
   // private final Field _materialCost = ReflectionHelper.findField(ContainerRepair.class, "materialCost", "stackSizeToBeUsedInRepair", "field_82856_l");
 
-  public ContainerDarkSteelAnvil(@Nonnull InventoryPlayer playerInv, final @Nonnull World world, final @Nonnull BlockPos pos,
-      @Nonnull EntityPlayer player) {
+  public ContainerDarkSteelAnvil(@Nonnull InventoryPlayer playerInv, final @Nonnull World world, final @Nonnull BlockPos pos, @Nonnull EntityPlayer player) {
     super(playerInv, world, pos, player);
     this.pos = pos;
 
@@ -56,8 +55,8 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
       }
 
       @Override
-      public boolean canTakeStack(@Nonnull EntityPlayer stack) {
-        return (stack.capabilities.isCreativeMode || stack.experienceLevel >= ContainerDarkSteelAnvil.this.maximumCost)
+      public boolean canTakeStack(@Nonnull EntityPlayer playerIn) {
+        return (playerIn.capabilities.isCreativeMode || playerIn.experienceLevel >= ContainerDarkSteelAnvil.this.maximumCost)
             && ContainerDarkSteelAnvil.this.maximumCost > 0 && this.getHasStack();
       }
 
@@ -107,6 +106,8 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
 
   @Override
   public boolean canInteractWith(@Nonnull EntityPlayer player) {
-    return player.world.getBlockState(pos).getBlock() == blockDarkSteelAnvil.getBlock();
+    return player.world.getBlockState(pos).getBlock() == blockDarkSteelAnvil.getBlock()
+        && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
   }
+
 }

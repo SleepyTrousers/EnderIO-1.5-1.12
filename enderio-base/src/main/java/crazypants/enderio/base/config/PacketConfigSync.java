@@ -20,7 +20,6 @@ public class PacketConfigSync implements IMessage {
     buf.writeInt(Config.travelStaffMaximumDistance);
     buf.writeInt(Config.travelStaffMaxBlinkDistance);
     buf.writeFloat(Config.travelStaffPowerPerBlockRF);
-    buf.writeInt(Config.darkSteelAnvilMaxLevel);
   }
 
   @Override
@@ -33,7 +32,6 @@ public class PacketConfigSync implements IMessage {
     Config.travelStaffMaximumDistance = data.readInt();
     Config.travelStaffMaxBlinkDistance = data.readInt();
     Config.travelStaffPowerPerBlockRF = data.readFloat();
-    Config.darkSteelAnvilMaxLevel = data.readInt();
   }
 
   public static class Handler implements IMessageHandler<PacketConfigSync, IMessage> {

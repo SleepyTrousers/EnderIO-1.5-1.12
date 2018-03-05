@@ -1,7 +1,6 @@
 package crazypants.enderio.conduit.gui;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 
 import javax.annotation.Nonnull;
 
@@ -12,7 +11,7 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
-import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
@@ -30,13 +29,14 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   protected final @Nonnull IconEIO icon;
   protected final GuiExternalConnection gui;
-  protected final IConduit con;
+  protected IClientConduit con;
   protected final String typeName;
   protected final @Nonnull ResourceLocation texture;
 
   protected MultiIconButton leftArrow;
   protected MultiIconButton rightArrow;
   protected @Nonnull String modeLabel = EnderIO.lang.localize("gui.conduit.io_mode");
+  protected ConnectionMode oldConectionMode;
 
   protected int left = 0;
   protected int top = 0;
@@ -47,7 +47,8 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   protected int customTop = 0;
 
-  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IConduit con, @Nonnull String texture) {
+  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IClientConduit con,
+      @Nonnull String texture) {
     this.icon = icon;
     this.typeName = typeName;
     this.gui = gui;
@@ -67,6 +68,14 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
     customTop -= 16;
     // customTop = top;
 
+  }
+
+  public boolean updateConduit(@Nonnull IClientConduit conduit) {
+    this.con = conduit;
+    if (oldConectionMode != con.getConnectionMode(gui.getDir())) {
+      connectionModeChanged(con.getConnectionMode(gui.getDir()));
+    }
+    return true;
   }
 
   @Override
@@ -108,7 +117,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
   public IWidgetIcon getIcon() {
     return icon;
   }
-  
+
   @Override
   @Nonnull
   public ResourceLocation getTexture() {
@@ -118,18 +127,14 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
   @Override
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     if (guiButton.id == PREV_MODE_B) {
-      con.setConnectionMode(gui.getDir(), con.getPreviousConnectionMode(gui.getDir()));
-      PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
-      connectionModeChanged(con.getConnectionMode(gui.getDir()));
-
+      PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir(), false));
     } else if (guiButton.id == NEXT_MODE_B) {
-      con.setConnectionMode(gui.getDir(), con.getNextConnectionMode(gui.getDir()));
-      PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
-      connectionModeChanged(con.getConnectionMode(gui.getDir()));
+      PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir(), true));
     }
   }
 
   protected void connectionModeChanged(@Nonnull ConnectionMode conectionMode) {
+    oldConectionMode = conectionMode;
   }
 
   @Override

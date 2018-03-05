@@ -9,8 +9,10 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
@@ -24,21 +26,6 @@ public class ConduitHandler implements IHandler<IConduit> {
     Registry.GLOBAL_REGISTRY.register(new ConduitHandler());
   }
 
-  public void writeToNBT(IConduit conduit, NBTTagCompound nbtRoot) {
-    NBTTagCompound conduitRoot = new NBTTagCompound();
-    ConduitUtil.writeToNBT(conduit, conduitRoot);
-    NbtValue.CONDUIT.setTag(nbtRoot, conduitRoot);
-  }
-
-  @Nullable
-  public static IConduit readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
-    NBTTagCompound conduitTag = NbtValue.CONDUIT.getTag(nbtRoot);
-    if (conduitTag == null) {
-      return null;
-    }
-    return ConduitUtil.readConduitFromNBT(conduitTag);
-  }
-
   @Override
   public boolean canHandle(Class<?> clazz) {
     return ConduitHandler.class.isAssignableFrom(clazz);
@@ -47,9 +34,13 @@ public class ConduitHandler implements IHandler<IConduit> {
   @Override
   public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull IConduit object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
-    NBTTagCompound root = new NBTTagCompound();
-    writeToNBT(object, root);
-    nbt.setTag(name, root);
+    if (object instanceof IServerConduit) {
+      NBTTagCompound root = new NBTTagCompound();
+      ConduitUtil.writeToNBT((IServerConduit) object, root);
+      nbt.setTag(name, root);
+    } else {
+      Log.error("Logic error: Attempting to store client conduit procy as NBT for phase(S) " + phase);
+    }
     return true;
   }
 
@@ -58,9 +49,20 @@ public class ConduitHandler implements IHandler<IConduit> {
       @Nullable IConduit object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {
       NBTTagCompound root = nbt.getCompoundTag(name);
-      return readFromNBT(root);
+      object = read(phase, root);
+      if (object == null) {
+        // TODO: remove, this is for compatibility with early 1.12.2 dev builds
+        NBTTagCompound conduitTag = NbtValue.CONDUIT.getTag(root);
+        if (conduitTag != null) {
+          object = read(phase, conduitTag);
+        }
+      }
     }
-    return null;
+    return object;
+  }
+
+  private IConduit read(@Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound conduitTag) {
+    return phase.contains(NBTAction.CLIENT) ? ConduitUtil.readClientConduitFromNBT(conduitTag) : ConduitUtil.readConduitFromNBT(conduitTag);
   }
 
   public static class ConduitCopyOnWriteArrayListHandler extends HandleAbstractCollection<IConduit, CopyOnWriteArrayList<IConduit>> {

@@ -1,16 +1,19 @@
 package crazypants.enderio.conduit.item;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.DyeColor;
+
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IExtractor;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.filter.IItemFilter;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
 
-import javax.annotation.Nonnull;
-
-public interface IItemConduit extends IExtractor {
+public interface IItemConduit extends IExtractor, IServerConduit, IClientConduit {
 
   // Textures
   TextureAtlasSprite getTextureForInputMode();
@@ -30,7 +33,7 @@ public interface IItemConduit extends IExtractor {
   float getTickTimePerItem(@Nonnull EnumFacing direction);
 
   void itemsExtracted(int numInserted, int slot);
-  
+
   void setInputFilterUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack stack);
 
   void setOutputFilterUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack stack);
@@ -48,18 +51,14 @@ public interface IItemConduit extends IExtractor {
   IItemFilter getInputFilter(@Nonnull EnumFacing dir);
 
   IItemFilter getOutputFilter(@Nonnull EnumFacing dir);
-  
+
   void setSpeedUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade);
 
   @Nonnull
   ItemStack getSpeedUpgrade(@Nonnull EnumFacing dir);
 
-
-
-
-
   int getOutputPriority(@Nonnull EnumFacing dir);
-  
+
   void setOutputPriority(@Nonnull EnumFacing dir, int priority);
 
   int getMetaData();
@@ -69,9 +68,9 @@ public interface IItemConduit extends IExtractor {
   boolean isSelfFeedEnabled(@Nonnull EnumFacing dir);
 
   void setSelfFeedEnabled(@Nonnull EnumFacing dir, boolean enabled);
-  
+
   boolean isRoundRobinEnabled(@Nonnull EnumFacing dir);
-  
+
   void setRoundRobinEnabled(@Nonnull EnumFacing dir, boolean enabled);
 
   DyeColor getInputColor(@Nonnull EnumFacing dir);
@@ -82,14 +81,14 @@ public interface IItemConduit extends IExtractor {
 
   void setOutputColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);
 
-// TODO Inventory
-//  boolean isConnectedToNetworkAwareBlock(@Nonnull EnumFacing dir);
-//
-//  boolean hasInventoryPanelUpgrade(@Nonnull EnumFacing dir);
-//
-//  void setFunctionUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade);
-//
-//  @Nonnull
-//  ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir);
+  // TODO Inventory
+  // boolean isConnectedToNetworkAwareBlock(@Nonnull EnumFacing dir);
+  //
+  // boolean hasInventoryPanelUpgrade(@Nonnull EnumFacing dir);
+  //
+  // void setFunctionUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade);
+  //
+  // @Nonnull
+  // ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir);
 
 }

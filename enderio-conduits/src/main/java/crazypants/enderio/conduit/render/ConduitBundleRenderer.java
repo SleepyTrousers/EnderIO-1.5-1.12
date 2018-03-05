@@ -16,8 +16,8 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
-import crazypants.enderio.base.conduit.IConduit.WithDefaultRendering;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitRenderer;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
@@ -69,9 +69,9 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
     float brightness = -1;
     boolean hasDynamic = false;
-    for (IConduit c : bundle.getConduits()) {
+    for (IClientConduit c : bundle.getClientConduits()) {
       // TODO Temporary work around
-      IConduit.WithDefaultRendering con = (IConduit.WithDefaultRendering) c;
+      IClientConduit.WithDefaultRendering con = (IClientConduit.WithDefaultRendering) c;
       if (YetaUtil.renderConduit(player, con)) {
         IConduitRenderer renderer = getRendererForConduit(con);
         if (renderer.isDynamic()) {
@@ -151,9 +151,9 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
       wireBounds.add(BoundingBox.UNIT_CUBE);
     }
 
-    for (IConduit c : bundle.getConduits().toArray(new IConduit[0])) {
+    for (IClientConduit c : bundle.getClientConduits()) {
       // TODO Temporary Workaround
-      IConduit.WithDefaultRendering con = (IConduit.WithDefaultRendering) c;
+      IClientConduit.WithDefaultRendering con = (IClientConduit.WithDefaultRendering) c;
       if (state.getYetaDisplayMode().renderConduit(con)) {
         IConduitRenderer renderer = getRendererForConduit(con);
         renderer.addBakedQuads(this, bundle, con, brightness, layer, quads);
@@ -177,7 +177,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
       if (component != null) {
         if (component.conduitType != null) {
           // TODO Make an actual check before assuming a default render
-          IConduit.WithDefaultRendering conduit = (IConduit.WithDefaultRendering) bundle.getConduit(component.conduitType);
+          IClientConduit.WithDefaultRendering conduit = (IClientConduit.WithDefaultRendering) bundle.getConduit(component.conduitType);
           if (conduit != null) {
             if (state.getYetaDisplayMode().renderConduit(component.conduitType)) {
               TextureAtlasSprite tex = conduit.getTextureForState(component);
@@ -227,10 +227,10 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
 
     if (breakingAnimOnWholeConduit) {
-      for (IConduit c : bundle.getConduits().toArray(new IConduit[0])) {
+      for (IClientConduit c : bundle.getClientConduits()) {
         if (conduitType == c.getClass() || conduitType == c.getBaseConduitType()) {
           IConduitRenderer renderer = getRendererForConduit(c);
-          renderer.addBakedQuads(this, bundle, (WithDefaultRendering) c, 1, BlockRenderLayer.CUTOUT, quads);
+          renderer.addBakedQuads(this, bundle, (IClientConduit.WithDefaultRendering) c, 1, BlockRenderLayer.CUTOUT, quads);
         }
       }
     }
@@ -239,7 +239,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     for (CollidableComponent component : connectors) {
       if (component != null) {
         if (component.conduitType == conduitType || conduitType == null) {
-          IConduit.WithDefaultRendering conduit = (IConduit.WithDefaultRendering) bundle.getConduit(component.conduitType);
+          IClientConduit.WithDefaultRendering conduit = (IClientConduit.WithDefaultRendering) bundle.getConduit(component.conduitType);
           if (conduit != null) {
             TextureAtlasSprite tex = conduit.getTextureForState(component);
             BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);

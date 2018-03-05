@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper;
 
-import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.conduit.config.ConduitConfig;
 import net.minecraft.profiler.Profiler;
@@ -153,7 +153,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
         if (ticksEmpty > 40) {
           setFluidType(null);
           ticksEmpty = 0;
-          for (IConduit con : getConduits()) {
+          for (IServerConduit con : getConduits()) {
             con.setActive(false);
           }
           lastSyncedActive = false;
@@ -165,7 +165,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     ticksEmpty = 0;
 
     if (!lastSyncedActive) {
-      for (IConduit con : getConduits()) {
+      for (IServerConduit con : getConduits()) {
         con.setActive(true);
       }
       lastSyncedActive = true;

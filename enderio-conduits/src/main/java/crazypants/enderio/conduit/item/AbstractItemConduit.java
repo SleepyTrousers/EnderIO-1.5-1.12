@@ -9,6 +9,7 @@ import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitItem;
+import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -93,7 +94,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem, 
         }
         if (!bundle.hasType(getBaseConduitType())) {
           if (!world.isRemote) {
-            IConduit con = createConduit(held, player);
+            IServerConduit con = createConduit(held, player);
             if (con == null) {
               return EnumActionResult.PASS;
             }
@@ -134,11 +135,11 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem, 
     ItemStack existingConduitAsItemStack = existingConduit.createItem();
     if (!ItemUtil.areStacksEqual(existingConduitAsItemStack, held)) {
       if (!world.isRemote) {
-        IConduit newConduit = createConduit(held, player);
+        IServerConduit newConduit = createConduit(held, player);
         if (newConduit == null) {
           return EnumActionResult.PASS;
         }
-        bundle.removeConduit(existingConduit);
+        bundle.removeConduit((IServerConduit) existingConduit);
         bundle.addConduit(newConduit);
         if (!player.capabilities.isCreativeMode) {
           held.shrink(1);

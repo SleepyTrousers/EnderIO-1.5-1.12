@@ -143,9 +143,4 @@ public class BlockBuffer extends AbstractPowerConsumerBlock<TileBuffer>
     return state.getValue(BufferType.TYPE).hasInventory;
   }
 
-  @Override
-  public int getComparatorInputOverride(@Nonnull IBlockState blockState1, @Nonnull World worldIn, @Nonnull BlockPos pos) {
-    return Container.calcRedstone(getTileEntity(worldIn, pos));
-  }
-
 }

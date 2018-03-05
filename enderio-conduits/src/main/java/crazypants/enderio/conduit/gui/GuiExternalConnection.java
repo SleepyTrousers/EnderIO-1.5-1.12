@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.ITabPanel;
 
-import crazypants.enderio.base.conduit.IConduit;
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
@@ -37,7 +37,6 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
   final IConduitBundle bundle;
   private final @Nonnull EnumFacing dir;
 
-  private final List<IConduit> conduits = new ArrayList<IConduit>();
   private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
   private int activeTab = 0;
 
@@ -55,23 +54,25 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
 
     container.setInOutSlotsVisible(false, false);
 
-    List<IConduit> cons = new ArrayList<IConduit>(bundle.getConduits());
-    Collections.sort(cons, new Comparator<IConduit>() {
+    List<IClientConduit> cons = new ArrayList<>(bundle.getClientConduits());
+    Collections.sort(cons, new Comparator<IClientConduit>() {
 
       @Override
-      public int compare(@Nullable IConduit o1, @Nullable IConduit o2) {
+      public int compare(@Nullable IClientConduit o1, @Nullable IClientConduit o2) {
         return Integer.compare(o1.getGuiPanelTabOrder(), o2.getGuiPanelTabOrder());
 
       }
     });
 
-    for (IConduit con : cons) {
+    /**
+     * Note: We actually would need to rebuild this list each tick as other players in MP could add conduits to the bundle. We don't, so we can keep our sanity.
+     * 
+     * If conduits are added, they won't show up until the GUI is re-opened. If conduits are removed the GUI will close if their tab is selected.
+     */
+
+    for (IClientConduit con : cons) {
       if (con.containsExternalConnection(dir) || con.canConnectToExternal(dir, true)) {
-        ITabPanel tab = con.createGuiPanel(this, con);
-        if (tab != null) {
-          conduits.add(con);
-          tabs.add(tab);
-        }
+        tabs.add(con.createGuiPanel(this, con));
       }
     }
     if (tabs.isEmpty()) {
@@ -95,7 +96,14 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
 
   private @Nullable ITabPanel getActiveTab() {
     if (activeTab < tabs.size() && activeTab >= 0) {
-      return tabs.get(activeTab);
+      final ITabPanel tab = tabs.get(activeTab);
+      if (tab != null) {
+        for (IClientConduit con : bundle.getClientConduits()) {
+          if (con.updateGuiPanel(tab)) {
+            return tab;
+          }
+        }
+      }
     }
     return null;
   }
@@ -112,8 +120,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
     x = (x - guiLeft);
     y = (y - guiTop);
 
-    ITabPanel tab = getActiveTab();
-    if (tab != null)
+    if (activeTab < tabs.size())
       tabs.get(activeTab).mouseClicked(x, y, par3);
   }
 
@@ -156,6 +163,9 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
     if (tab != null) {
       Minecraft.getMinecraft().getTextureManager().bindTexture(tab.getTexture());
       drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
+    } else {
+      Minecraft.getMinecraft().player.closeScreen();
+      return;
     }
 
     startTabs();
