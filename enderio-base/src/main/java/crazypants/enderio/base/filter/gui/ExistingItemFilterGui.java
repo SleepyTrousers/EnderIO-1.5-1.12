@@ -54,7 +54,6 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
   private @Nonnull GuiButton showB;
   private @Nonnull GuiButton mergeB;
   private @Nonnull SnapshotOverlay snapshotOverlay;
-  final boolean isStickyModeAvailable;
 
   private @Nonnull ExistingItemFilter filter;
 
@@ -62,8 +61,6 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     super(playerInv, filterContainer, te);
 
     filter = (ExistingItemFilter) filterContainer.getItemFilter();
-
-    isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_INPUT);
 
     int butLeft = 17;
     int x = butLeft;

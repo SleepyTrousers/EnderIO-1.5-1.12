@@ -36,8 +36,6 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
 
   private final int inputOffsetX;
   private final int tfWidth;
-  private final int tfTextureX;
-  private final int tfTextureY;
 
   public ModItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
     super(playerInv, filterContainer, te, "mod_item_filter");
@@ -45,8 +43,6 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
     filter = (ModItemFilter) filterContainer.getItemFilter();
     inputOffsetX = 50;
     tfWidth = 96;
-    tfTextureX = 120;
-    tfTextureY = 214;
 
     inputBounds = new Rectangle[] { new Rectangle(inputOffsetX, 46, 16, 16), new Rectangle(inputOffsetX, 68, 16, 16), new Rectangle(inputOffsetX, 90, 16, 16) };
 

@@ -23,7 +23,6 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
   private static final int ID_LEVEL = FilterGuiUtil.nextButtonId();
 
   private final @Nonnull ToggleButton stickyB;
-  private final boolean isStickyModeAvailable;
 
   private final @Nonnull GuiButton modeB;
   private final @Nonnull GuiButton levelB;
@@ -32,8 +31,6 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
 
   public PowerItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
     super(playerInv, filterContainer, te);
-
-    isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_INPUT);
 
     filter = (PowerItemFilter) filterContainer.getItemFilter();
 

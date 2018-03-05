@@ -28,15 +28,12 @@ public class SpeciesItemFilterGui extends AbstractGuiItemFilter {
   private final CycleButton<SpeciesMode.IconHolder> speciesModeB;
   private final ToggleButton stickyB;
 
-  final boolean isStickyModeAvailable;
-
   private final SpeciesItemFilter filter;
 
   private int buttonIdOffset;
   private int xOffset;
   private int yOffset;
 
-  // TODO Investigate isStickModAvailable
   public SpeciesItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
     this(playerInv, filterContainer, te, 13, 34, 0);
   }
@@ -49,8 +46,6 @@ public class SpeciesItemFilterGui extends AbstractGuiItemFilter {
     this.buttonIdOffset = buttonIdOffset;
 
     filter = (SpeciesItemFilter) filterContainer.getItemFilter();
-
-    isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_INPUT);
 
     int butLeft = xOffset + 98;
     int x = butLeft;

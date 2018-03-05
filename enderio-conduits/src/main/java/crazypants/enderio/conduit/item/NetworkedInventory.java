@@ -225,7 +225,7 @@ public class NetworkedInventory {
     // for (Target target : sendPriority) {
     for (Target target : targets) {
       if (target.stickyInput && !matchedStickyInput) {
-        IItemFilter of = ((IItemConduit) target.inv.getCon()).getOutputFilter(target.inv.getConDir());
+        IItemFilter of = target.inv.getCon().getInputFilter(target.inv.getConDir());
         matchedStickyInput = of != null && of.isValid() && of.doesItemPassFilter(this.getInventory(), toExtract);
       }
       if (target.stickyInput || !matchedStickyInput) {
@@ -282,7 +282,7 @@ public class NetworkedInventory {
 
     for (NetworkedInventory other : network.inventories) {
       if ((con.isSelfFeedEnabled(conDir) || (other != this)) && other.canInsert()
-          && con.getInputColor(conDir) == ((IItemConduit) other.getCon()).getOutputColor(other.getConDir())) {
+          && con.getInputColor(conDir) == other.getCon().getOutputColor(other.getConDir())) {
 
         if (ConduitConfig.usePhyscialDistance.get()) {
           sendPriority.add(new Target(other, distanceTo(other), other.isSticky(), other.getPriority()));

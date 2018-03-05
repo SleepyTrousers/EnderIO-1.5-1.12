@@ -35,7 +35,6 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
   private final CycleButton<DamageModeIconHolder> damageB;
 
   final boolean isAdvanced, isLimited;
-  final boolean isStickyModeAvailable;
 
   private final ItemFilter filter;
 
@@ -59,8 +58,6 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
 
     isAdvanced = filter.isAdvanced();
     isLimited = filter.isLimited();
-
-    isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_INPUT);
 
     int butLeft = xOffset + 98;
     int x = butLeft;

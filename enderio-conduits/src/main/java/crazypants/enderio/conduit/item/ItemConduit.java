@@ -903,12 +903,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     return new ItemConduitNetwork();
   }
 
-  // @SideOnly(Side.CLIENT)
-  // @Override
-  // public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
-  // return new ItemSettings(gui, con);
-  // }
-
   @SideOnly(Side.CLIENT)
   @Nonnull
   @Override

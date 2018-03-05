@@ -20,6 +20,7 @@ public abstract class AbstractGuiItemFilter extends GuiContainerBaseEIO implemen
   private static final int ID_CLOSE_WINDOW_BUTTON = 12615;
 
   protected final @Nonnull ContainerFilter filterContainer;
+  protected final boolean isStickyModeAvailable;
 
   private final IconButton closeWindowButton;
 
@@ -32,6 +33,8 @@ public abstract class AbstractGuiItemFilter extends GuiContainerBaseEIO implemen
     this.filterContainer = filterContainer;
     xSize = 182;
     ySize = 200;
+
+    isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_OUTPUT);
 
     closeWindowButton = new IconButton(this, ID_CLOSE_WINDOW_BUTTON, 3, 3, IconEIO.MINUS);
   }
