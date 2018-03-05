@@ -1,21 +1,27 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
-import crazypants.enderio.machine.MachineObject;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.interfaces.IPoweredTask;
+import crazypants.enderio.base.machine.modes.IoMode;
+import crazypants.enderio.base.machine.task.ContinuousTask;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable.IPaintableTileEntity;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
+import crazypants.enderio.machine.InvPanelObject;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {
 
@@ -44,7 +50,7 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockInventoryPanelSensor.getUnlocalisedName();
+    return InvPanelObject.blockInventoryPanelSensor.getUnlocalisedName();
   }
 
   @Override
@@ -131,7 +137,7 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
     for (EnumFacing dir : EnumFacing.values()) {
       IItemConduit con = ConduitUtil.getConduit(world, this, dir, IItemConduit.class);
       if (con != null) {
-        AbstractConduitNetwork<?, ?> n = con.getNetwork();
+        IConduitNetwork<?, ?> n = con.getNetwork();
         if (n instanceof ItemConduitNetwork) {
           InventoryDatabaseServer db = ((ItemConduitNetwork) n).getDatabase();
           if (db != null) {

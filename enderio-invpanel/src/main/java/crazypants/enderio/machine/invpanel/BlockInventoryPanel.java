@@ -12,7 +12,7 @@ import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode6;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
-import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.InvPanelObject;
 import crazypants.enderio.machine.invpanel.remote.PacketPrimeInventoryPanelRemote;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
@@ -53,7 +53,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   public BlockInventoryPanel() {
-    super(MachineObject.blockInventoryPanel, TileInventoryPanel.class);
+    super(InvPanelObject.blockInventoryPanel, TileInventoryPanel.class);
     setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 

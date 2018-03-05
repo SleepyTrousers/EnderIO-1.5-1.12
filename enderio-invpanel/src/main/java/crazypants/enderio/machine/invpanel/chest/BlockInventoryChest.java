@@ -1,16 +1,22 @@
 package crazypants.enderio.machine.invpanel.chest;
 
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.base.GuiID;
-import crazypants.enderio.base.machine.RenderMappers;
+import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
-import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.property.EnumRenderMode;
-import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.InvPanelObject;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -27,10 +33,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
-
 public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest>
     implements IResourceTooltipProvider, ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
@@ -42,7 +44,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   }
 
   protected BlockInventoryChest() {
-    super(MachineObject.blockInventoryChest, TileInventoryChest.class);
+    super(InvPanelObject.blockInventoryChest, TileInventoryChest.class);
     initDefaultState();
   }
 

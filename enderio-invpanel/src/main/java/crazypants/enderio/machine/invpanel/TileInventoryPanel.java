@@ -19,17 +19,17 @@ import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.base.machine.generator.zombie.IHasNutrientTank;
-import crazypants.enderio.base.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
-import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.InvPanelObject;
 import crazypants.enderio.machine.invpanel.client.ClientDatabaseManager;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
+import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
+import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.enderio.HandleStoredCraftingRecipe.HandleStoredCraftingRecipeArrayList;
@@ -61,7 +61,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   private InventoryDatabaseServer dbServer;
   private InventoryDatabaseClient dbClient;
 
-  @Store({ NBTAction.UPDATE, NBTAction.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   private boolean active;
   @Store
   private boolean extractionDisabled;
@@ -334,7 +334,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockInventoryPanel.getUnlocalisedName();
+    return InvPanelObject.blockInventoryPanel.getUnlocalisedName();
   }
 
   @Override

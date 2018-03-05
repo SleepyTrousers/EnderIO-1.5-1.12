@@ -1,12 +1,18 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
-import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.InvPanelObject;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -15,9 +21,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import java.util.Random;
 
 public class BlockInventoryPanelSensor extends AbstractMachineBlock<TileInventoryPanelSensor> implements IResourceTooltipProvider, IPaintable.ISolidBlockPaintableBlock,
 IPaintable.IWrenchHideablePaint {
@@ -36,7 +39,7 @@ IPaintable.IWrenchHideablePaint {
   }
   
   public BlockInventoryPanelSensor() {
-    super(MachineObject.blockInventoryPanelSensor, TileInventoryPanelSensor.class);
+    super(InvPanelObject.blockInventoryPanelSensor, TileInventoryPanelSensor.class);
   }
   
   @Override
