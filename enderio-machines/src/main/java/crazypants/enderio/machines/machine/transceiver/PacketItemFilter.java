@@ -26,11 +26,11 @@ public class PacketItemFilter extends MessageTileEntity<TileTransceiver> {
   public PacketItemFilter(@Nonnull TileTransceiver te, boolean isSend) {
     super(te);
     this.isSend = isSend;
-    if (isSend) {
-      filter = te.getSendItemFilter();
-    } else {
-      filter = te.getReceiveItemFilter();
-    }
+    // if (isSend) {
+    // filter = te.getSendItemFilter();
+    // } else {
+    // filter = te.getReceiveItemFilter();
+    // }
   }
 
   @Override
@@ -57,13 +57,13 @@ public class PacketItemFilter extends MessageTileEntity<TileTransceiver> {
     public IMessage onMessage(PacketItemFilter message, MessageContext ctx) {
       EntityPlayer player = ctx.getServerHandler().player;
       TileTransceiver tile = message.getTileEntity(player.world);
-      if (tile != null && message.filter != null) {
-        if (message.isSend) {
-          tile.setSendItemFilter(message.filter);
-        } else {
-          tile.setRecieveItemFilter(message.filter);
-        }
-      }
+      // if (tile != null && message.filter != null) {
+      // if (message.isSend) {
+      // tile.setSendItemFilter(message.filter);
+      // } else {
+      // tile.setRecieveItemFilter(message.filter);
+      // }
+      // }
       return null;
     }
   }
