@@ -37,8 +37,9 @@ public enum ConduitObject implements IModObject.Registerable {
   item_power_conduit(ItemPowerConduit.class),
   item_redstone_conduit(ItemRedstoneConduit.class),
 
-  item_extract_speed_upgrade(ItemExtractSpeedUpgrade.class),
-  item_function_upgrade(ItemFunctionUpgrade.class),
+  item_extract_speed_upgrade(ItemExtractSpeedUpgrade.class, "createUpgrade"),
+  item_extract_speed_downgrade(ItemExtractSpeedUpgrade.class, "createDowngrade"),
+  item_inventory_panel_upgrade(ItemFunctionUpgrade.class, "createInventoryPanelUpgrade"),
 
   ;
 
@@ -58,11 +59,15 @@ public enum ConduitObject implements IModObject.Registerable {
   protected final @Nullable IModTileEntity modTileEntity;
 
   private ConduitObject(@Nonnull Class<?> clazz) {
-    this(clazz, null);
+    this(clazz, (IModTileEntity) null);
   }
-  
+
   private ConduitObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
     this(clazz, "create", modTileEntity);
+  }
+
+  private ConduitObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
+    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, null);
   }
 
   private ConduitObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nullable IModTileEntity modTileEntity) {

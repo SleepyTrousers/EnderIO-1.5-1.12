@@ -35,6 +35,7 @@ import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.conduitprobe.ItemConduitProbe;
+import crazypants.enderio.base.machine.interfaces.IYetaAwareBlock;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
@@ -91,7 +92,7 @@ import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
 
 public class BlockConduitBundle extends BlockEio<TileConduitBundle>
-    implements IEioGuiHandler.WithPos, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
+    implements IEioGuiHandler.WithPos, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IYetaAwareBlock {
 
   public static BlockConduitBundle create(@Nonnull IModObject modObject) {
     BlockConduitBundle result = new BlockConduitBundle(modObject);
@@ -821,7 +822,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     // items, which are then sent to the client for display
     TileConduitBundle te = getTileEntity(world, pos);
     if (te != null) {
-      return new ExternalConnectionContainer(player.inventory, facing, te);
+      return new ExternalConnectionContainer(player.inventory, EnumFacing.getFront(param1), te);
     }
     return null;
   }

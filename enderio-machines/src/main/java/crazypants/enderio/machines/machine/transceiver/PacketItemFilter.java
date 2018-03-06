@@ -5,7 +5,9 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
 
+import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.filters.ItemFilter;
+import crazypants.enderio.base.filter.items.BasicFilterTypes;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,7 +18,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class PacketItemFilter extends MessageTileEntity<TileTransceiver> {
 
   private boolean isSend;
-  private ItemFilter filter;
+  private IItemFilter filter;
 
   public PacketItemFilter() {
   }
@@ -24,11 +26,11 @@ public class PacketItemFilter extends MessageTileEntity<TileTransceiver> {
   public PacketItemFilter(@Nonnull TileTransceiver te, boolean isSend) {
     super(te);
     this.isSend = isSend;
-    if (isSend) {
-      filter = te.getSendItemFilter();
-    } else {
-      filter = te.getReceiveItemFilter();
-    }
+    // if (isSend) {
+    // filter = te.getSendItemFilter();
+    // } else {
+    // filter = te.getReceiveItemFilter();
+    // }
   }
 
   @Override
@@ -45,7 +47,7 @@ public class PacketItemFilter extends MessageTileEntity<TileTransceiver> {
     super.fromBytes(buf);
     isSend = buf.readBoolean();
     NBTTagCompound tag = NetworkUtil.readNBTTagCompound(buf);
-    filter = new ItemFilter();
+    filter = new ItemFilter(BasicFilterTypes.filterUpgradeAdvanced);
     filter.readFromNBT(tag);
   }
 
@@ -55,13 +57,13 @@ public class PacketItemFilter extends MessageTileEntity<TileTransceiver> {
     public IMessage onMessage(PacketItemFilter message, MessageContext ctx) {
       EntityPlayer player = ctx.getServerHandler().player;
       TileTransceiver tile = message.getTileEntity(player.world);
-      if (tile != null && message.filter != null) {
-        if (message.isSend) {
-          tile.setSendItemFilter(message.filter);
-        } else {
-          tile.setRecieveItemFilter(message.filter);
-        }
-      }
+      // if (tile != null && message.filter != null) {
+      // if (message.isSend) {
+      // tile.setSendItemFilter(message.filter);
+      // } else {
+      // tile.setRecieveItemFilter(message.filter);
+      // }
+      // }
       return null;
     }
   }

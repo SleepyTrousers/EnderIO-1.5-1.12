@@ -4,11 +4,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 
 public interface ILimitedItemFilter extends IItemFilter {
 
   @Override
-  int getMaxCountThatPassesFilter(@Nullable INetworkedInventory inv, @Nonnull ItemStack item);
+  int getMaxCountThatPassesFilter(@Nullable IItemHandler inv, @Nonnull ItemStack item);
 
   @Override
   boolean isLimited();

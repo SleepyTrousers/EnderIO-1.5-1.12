@@ -21,7 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public enum TransceiverRegistry {
-  
+
   INSTANCE;
 
   private final List<TileTransceiver> transceivers = new ArrayList<TileTransceiver>();
@@ -115,9 +115,9 @@ public enum TransceiverRegistry {
     if (!from.hasPower()) {
       return;
     }
-    if (!from.getSendItemFilter().doesItemPassFilter(null, contents)) {
-      return;
-    }
+    // if (!from.getSendItemFilter().doesItemPassFilter(null, contents)) {
+    // return;
+    // }
     for (Channel channel : channelsIn) {
       RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
       for (TileTransceiver trans : iter) {
@@ -134,9 +134,9 @@ public enum TransceiverRegistry {
   @Nonnull
   private ItemStack sendItem(TileTransceiver from, int slot, @Nonnull ItemStack contents, TileTransceiver to) {
     SlotDefinition sd = to.getSlotDefinition();
-    if (!to.getReceiveItemFilter().doesItemPassFilter(null, contents)) {
-      return contents;
-    }
+    // if (!to.getReceiveItemFilter().doesItemPassFilter(null, contents)) {
+    // return contents;
+    // }
     // try merging into existing stacks
 
     boolean sendComplete = false; // Only allow 1 stack per item type

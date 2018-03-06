@@ -5,13 +5,14 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.common.util.DyeColor;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.conduit.init.ConduitObject;
+import crazypants.enderio.conduit.lang.Lang;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import net.minecraft.client.gui.GuiButton;
@@ -27,10 +28,10 @@ public class PowerSettings extends BaseSettingsPanel {
   private ColorButton colorB;
 
   public PowerSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_POWER, EnderIO.lang.localize("itemPowerConduit.name"), gui, con, "power_settings");
+    super(IconEIO.WRENCH_OVERLAY_POWER, ConduitObject.item_power_conduit.getUnlocalisedName(), gui, con, "power_settings");
     conduit = (IPowerConduit) con;
 
-    int x = 38;
+    int x = rightColumn;
     int y = customTop;
 
     rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
@@ -58,7 +59,7 @@ public class PowerSettings extends BaseSettingsPanel {
 
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-    colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signal_color"));
+    colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
 
   }

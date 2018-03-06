@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
 
+import com.enderio.core.common.Lang;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
@@ -30,6 +31,8 @@ public class EnderIOConduits implements IEnderIOAddon {
 
   private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:" + crazypants.enderio.base.EnderIO.MODID;
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
+
+  public static final @Nonnull Lang lang = new Lang(DOMAIN);
 
   @SidedProxy(clientSide = "crazypants.enderio.conduit.init.ClientProxy", serverSide = "crazypants.enderio.conduit.init.CommonProxy")
   public static CommonProxy proxy;

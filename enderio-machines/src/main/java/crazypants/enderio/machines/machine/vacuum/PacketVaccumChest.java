@@ -39,28 +39,6 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> {
     return msg;
   }
 
-  public static PacketVaccumChest setFilterSlot(@Nonnull TileVacuumChest tile, int slot, @Nonnull ItemStack stack) {
-    PacketVaccumChest msg = new PacketVaccumChest(tile, CMD_SET_SLOT);
-    msg.value = slot;
-    msg.stack = stack;
-    tile.setItemFilterSlot(slot, stack);
-    return msg;
-  }
-
-  public static PacketVaccumChest setFilterBlacklist(@Nonnull TileVacuumChest tile, boolean isBlacklist) {
-    PacketVaccumChest msg = new PacketVaccumChest(tile, CMD_SET_BLACKLIST);
-    msg.value = isBlacklist ? 1 : 0;
-    tile.setFilterBlacklist(isBlacklist);
-    return msg;
-  }
-
-  public static PacketVaccumChest setFilterMatchMeta(@Nonnull TileVacuumChest tile, boolean matchMeta) {
-    PacketVaccumChest msg = new PacketVaccumChest(tile, CMD_SET_MATCHMETA);
-    msg.value = matchMeta ? 1 : 0;
-    tile.setFilterMatchMeta(matchMeta);
-    return msg;
-  }
-
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
@@ -87,23 +65,10 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> {
         case CMD_SET_RANGE:
           te.setRange(msg.value);
           break;
-        case CMD_SET_SLOT:
-          final ItemStack stack = msg.stack;
-          if (!stack.isEmpty()) {
-            te.setItemFilterSlot(msg.value, stack);
-          }
-          break;
-        case CMD_SET_BLACKLIST:
-          te.setFilterBlacklist(msg.value != 0);
-          break;
-        case CMD_SET_MATCHMETA:
-          te.setFilterMatchMeta(msg.value != 0);
-          break;
         }
       }
       return null;
+
     }
-
   }
-
 }

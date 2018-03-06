@@ -43,7 +43,7 @@ public enum DamageModeIconHolder implements ICycleEnum {
 
   @Override
   public @Nonnull List<String> getTooltipLines() {
-    return Collections.singletonList(EnderIO.lang.localize("gui.conduit.item.damage.".concat(name().toLowerCase(Locale.ENGLISH))));
+    return Collections.singletonList(EnderIO.lang.localize("gui.item_filter.damage.".concat(name().toLowerCase(Locale.ENGLISH))));
   }
 
   public @Nonnull DamageMode getMode() {

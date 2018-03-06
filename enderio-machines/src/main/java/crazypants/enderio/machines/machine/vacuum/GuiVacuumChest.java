@@ -8,29 +8,28 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
-import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.google.common.collect.Lists;
 
-import crazypants.enderio.base.filter.filters.ItemFilter;
+import crazypants.enderio.base.filter.gui.FilterGuiUtil;
+import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.network.PacketHandler;
-import crazypants.enderio.util.Prep;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 
 import static crazypants.enderio.base.machine.gui.GuiMachineBase.BUTTON_SIZE;
 
-public class GuiVacuumChest extends GuiContainerBaseEIO {
+public class GuiVacuumChest extends GuiContainerBaseEIO implements IOpenFilterRemoteExec.GUI {
 
   private static final int RANGE_LEFT = 145;
   private static final int RANGE_TOP = 86;
@@ -41,23 +40,21 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
 
   private static final int ID_RANGE_UP = 4711;
   private static final int ID_RANGE_DOWN = 4712;
-  private static final int ID_WHITELIST = 4713;
-  private static final int ID_MATCHMETA = 4714;
   private static final int ID_REDSTONE = 4715;
+  private static final int ID_OPEN_FILTER = 4713;
 
   private final @Nonnull TileVacuumChest te;
 
   private final @Nonnull GuiToolTip rangeTooltip;
   private final @Nonnull MultiIconButton rangeUpB;
   private final @Nonnull MultiIconButton rangeDownB;
-  private final @Nonnull ToggleButton whiteListB;
-  private final @Nonnull ToggleButton useMetaB;
   private final @Nonnull RedstoneModeButton<TileVacuumChest> rsB;
   private final @Nonnull String headerChest;
   private final @Nonnull String headerFilter;
   private final @Nonnull String headerRange;
   private final @Nonnull String headerInventory;
   private final @Nonnull ToggleButton showRangeB;
+  private final @Nonnull IconButton openFilterGuiB;
 
   public GuiVacuumChest(@Nonnull InventoryPlayer inventory, @Nonnull TileVacuumChest te) {
     super(new ContainerVacuumChest(inventory, te), "vacuum_chest");
@@ -90,21 +87,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
       }
     });
 
-    x = FILTER_LEFT + TileVacuumChest.FILTER_SLOTS * 18 - BUTTON_SIZE - 1;
-    whiteListB = new ToggleButton(this, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST, IconEIO.FILTER_BLACKLIST);
-    // whiteListB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist")); // TODO 1.11 see filter revamp
-    // whiteListB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.blacklist")); // TODO 1.11 see filter revamp
-    whiteListB.setPaintSelectedBorder(false);
-
-    x -= BUTTON_SIZE + 2;
-    useMetaB = new ToggleButton(this, ID_MATCHMETA, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
-    // useMetaB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.matchMetaData")); // TODO 1.11 see filter revamp
-    // useMetaB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreMetaData")); // TODO 1.11 see filter revamp
-    useMetaB.setPaintSelectedBorder(false);
-
-    for (int i = 0; i < TileVacuumChest.FILTER_SLOTS; i++) {
-      getGhostSlotHandler().getGhostSlots().add(new FilterGhostSlot(i, FILTER_LEFT + i * 18 + 1, FILTER_TOP + 1));
-    }
+    openFilterGuiB = new IconButton(this, ID_OPEN_FILTER, FILTER_LEFT, FILTER_TOP, IconEIO.GEAR_LIGHT);
 
     headerChest = Lang.GUI_VACUUM_CHEST.get();
     headerFilter = Lang.GUI_VACUUM_FILTER.get();
@@ -123,6 +106,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
   public void initGui() {
     super.initGui();
 
+    openFilterGuiB.onGuiInit();
     rangeUpB.onGuiInit();
     rangeDownB.onGuiInit();
     rsB.onGuiInit();
@@ -140,7 +124,6 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
       te.setShowRange(showRangeB.isSelected());
       return;
     }
-    ItemFilter itemFilter;
     switch (guiButton.id) {
     case ID_RANGE_UP:
       setRange((int) (te.getRange() + 1));
@@ -148,21 +131,9 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     case ID_RANGE_DOWN:
       setRange((int) (te.getRange() - 1));
       break;
-    case ID_WHITELIST:
-      itemFilter = te.getItemFilter();
-      if (itemFilter != null) {
-        PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterBlacklist(te, !itemFilter.isBlacklist()));
-        updateButtons();
-      }
+    case ID_OPEN_FILTER:
+      doOpenFilterGui(FilterGuiUtil.INDEX_NONE);
       break;
-    case ID_MATCHMETA:
-      itemFilter = te.getItemFilter();
-      if (itemFilter != null) {
-        PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterMatchMeta(te, !itemFilter.isMatchMeta()));
-        updateButtons();
-      }
-      break;
-
     }
   }
 
@@ -172,19 +143,10 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
 
   void filterChanged() {
     if (te.hasItemFilter()) {
-      whiteListB.onGuiInit();
-      useMetaB.onGuiInit();
-      updateButtons();
+      openFilterGuiB.setIsVisible(true);
     } else {
-      whiteListB.detach();
-      useMetaB.detach();
+      openFilterGuiB.setIsVisible(false);
     }
-  }
-
-  private void updateButtons() {
-    ItemFilter itemFilter = te.getItemFilter();
-    whiteListB.setSelected(itemFilter.isBlacklist());
-    useMetaB.setSelected(itemFilter.isMatchMeta());
   }
 
   @Override
@@ -194,10 +156,6 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
-
-    if (te.hasItemFilter()) {
-      drawTexturedModalRect(sx + FILTER_LEFT, sy + FILTER_TOP, 0, 238, TileVacuumChest.FILTER_SLOTS * 18, 18);
-    }
 
     int headerColor = 0x404040;
     FontRenderer fr = getFontRenderer();
@@ -212,34 +170,5 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     fr.drawString(str, sx + RANGE_LEFT + RANGE_WIDTH - sw - 5, sy + RANGE_TOP + 5, ColorUtil.getRGB(Color.black));
 
     super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
-  }
-
-  class FilterGhostSlot extends GhostSlot {
-
-    FilterGhostSlot(int slot, int x, int y) {
-      this.setSlot(slot);
-      this.setX(x);
-      this.setY(y);
-    }
-
-    @Override
-    public boolean isVisible() {
-      return GuiVacuumChest.this.te.hasItemFilter();
-    }
-
-    @Override
-    public void putStack(@Nonnull ItemStack stack, int realsize) {
-      // TODO: super.putStack() can do this already...
-      PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterSlot(GuiVacuumChest.this.te, getSlot(), stack));
-    }
-
-    @Override
-    public @Nonnull ItemStack getStack() {
-      ItemFilter itemFilter = GuiVacuumChest.this.te.getItemFilter();
-      if (itemFilter != null) {
-        return itemFilter.getStackInSlot(getSlot());
-      }
-      return Prep.getEmpty();
-    }
   }
 }

@@ -3,17 +3,11 @@ package crazypants.enderio.base.filter.filters;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.filter.INetworkedInventory;
-import crazypants.enderio.base.filter.gui.ExistingItemFilterGui;
-import crazypants.enderio.base.filter.gui.IItemFilterContainer;
-import crazypants.enderio.base.filter.gui.IItemFilterGui;
-import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;
@@ -34,20 +28,19 @@ public class ExistingItemFilter implements IItemFilter {
   private NNList<ItemStack> snapshot = null;
 
   @Override
-  public boolean doesItemPassFilter(@Nullable INetworkedInventory ni, @Nonnull ItemStack item) {
+  public boolean doesItemPassFilter(@Nullable IItemHandler inventory, @Nonnull ItemStack item) {
     if (Prep.isInvalid(item)) {
       return false;
     }
     if (snapshot != null) {
-      return isStackInSnapshot(item) == !blacklist;
-    } else if (ni != null && ni.getInventory() != null) {
-      return isStackInInventory(ni, item) == !blacklist;
+      return isStackInSnapshot(item) != blacklist;
+    } else if (inventory != null) {
+      return isStackInInventory(inventory, item) != blacklist;
     }
     return false;
   }
 
-  private boolean isStackInInventory(@Nonnull INetworkedInventory ni, @Nonnull ItemStack item) {
-    IItemHandler inventory = ni.getInventory();
+  private boolean isStackInInventory(@Nonnull IItemHandler inventory, @Nonnull ItemStack item) {
     if (inventory != null) {
       int numSlots = inventory.getSlots();
       for (int i = 0; i < numSlots; i++) {
@@ -117,24 +110,13 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   @Override
-  public void createGhostSlots(@Nonnull NNList<GhostSlot> slots, int xOffset, int yOffset, @Nullable Runnable cb) {
-  }
-
-  @Override
   public int getSlotCount() {
     return 0;
   }
 
-  public void setSnapshot(@Nonnull INetworkedInventory ni) {
+  public void setSnapshot(@Nonnull IItemHandler ni) {
     snapshot = new NNList<ItemStack>();
     mergeSnapshot(ni);
-  }
-
-  public void mergeSnapshot(@Nonnull INetworkedInventory ni) {
-    IItemHandler inventory = ni.getInventory();
-    if (inventory != null) {
-      mergeSnapshot(inventory);
-    }
   }
 
   public boolean mergeSnapshot(@Nonnull IItemHandler inventory) {
@@ -202,12 +184,6 @@ public class ExistingItemFilter implements IItemFilter {
     return blacklist;
   }
 
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
-  // return new ExistingItemFilterGui(gui, itemConduit, isInput);
-  // }
-
   @Override
   public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     readSettingsFromNBT(nbtRoot);
@@ -244,7 +220,7 @@ public class ExistingItemFilter implements IItemFilter {
 
       NBTTagList itemList = new NBTTagList();
       for (ItemStack item : snapshot) {
-        if (item != null) {
+        if (!item.isEmpty()) {
           NBTTagCompound itemTag = new NBTTagCompound();
           item.writeToNBT(itemTag);
           itemList.appendTag(itemTag);
@@ -273,15 +249,12 @@ public class ExistingItemFilter implements IItemFilter {
       return;
     }
     for (ItemStack item : snapshot) {
-      NBTTagCompound itemRoot = new NBTTagCompound();
-      item.writeToNBT(itemRoot);
-      NetworkUtil.writeNBTTagCompound(itemRoot, buf);
+      if (!item.isEmpty()) {
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        item.writeToNBT(itemRoot);
+        NetworkUtil.writeNBTTagCompound(itemRoot, buf);
+      }
     }
-  }
-
-  @Override
-  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new ExistingItemFilterGui(gui, filterContainer, isStickyModeAvailable);
   }
 
   @Override

@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "enderio:items/filter_upgrade_advanced"
+        "layer0": "enderio:items/extract_speed_downgrade"
     }
 }

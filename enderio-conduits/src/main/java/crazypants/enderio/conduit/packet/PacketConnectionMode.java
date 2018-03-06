@@ -14,15 +14,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class PacketConnectionMode extends AbstractConduitPacket<IConduit> {
 
   private EnumFacing dir;
-  private boolean next;
+  private ConnectionMode mode;
 
   public PacketConnectionMode() {
   }
 
-  public PacketConnectionMode(IConduit con, EnumFacing dir, boolean next) {
+  public PacketConnectionMode(IConduit con, EnumFacing dir, ConnectionMode mode) {
     super(con.getBundle().getEntity(), con);
     this.dir = dir;
-    this.next = next;
+    this.mode = mode;
   }
 
   @Override
@@ -33,7 +33,11 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> {
     } else {
       buf.writeShort(-1);
     }
-    buf.writeBoolean(next);
+    if (mode != null) {
+      buf.writeShort(mode.ordinal());
+    } else {
+      buf.writeShort(-1);
+    }
   }
 
   @Override
@@ -45,7 +49,12 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> {
     } else {
       dir = EnumFacing.values()[ord];
     }
-    next = buf.readBoolean();
+    short modeOrd = buf.readShort();
+    if (modeOrd < 0) {
+      mode = null;
+    } else {
+      mode = ConnectionMode.values()[modeOrd];
+    }
 
   }
 
@@ -55,12 +64,10 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> {
     public IMessage onMessage(PacketConnectionMode message, MessageContext ctx) {
       IConduit conduit = message.getConduit(ctx);
       if (conduit instanceof IServerConduit) {
-        ConnectionMode mode = message.next ? ((IServerConduit) conduit).getNextConnectionMode(message.dir)
-            : ((IServerConduit) conduit).getPreviousConnectionMode(message.dir);
         if (conduit instanceof IRedstoneConduit) {
-          ((IRedstoneConduit) conduit).forceConnectionMode(message.dir, mode);
+          ((IRedstoneConduit) conduit).forceConnectionMode(message.dir, message.mode);
         } else if (conduit instanceof IServerConduit) {
-          ((IServerConduit) conduit).setConnectionMode(message.dir, mode);
+          ((IServerConduit) conduit).setConnectionMode(message.dir, message.mode);
         }
         IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
         message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);

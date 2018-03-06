@@ -8,11 +8,6 @@ import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.filter.INetworkedInventory;
-import crazypants.enderio.base.filter.gui.IItemFilterContainer;
-import crazypants.enderio.base.filter.gui.IItemFilterGui;
-import crazypants.enderio.base.filter.gui.SpeciesItemFilterGui;
-import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.util.Prep;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IGenome;
@@ -27,10 +22,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.items.IItemHandler;
 
 // TODO: Move to integration-forestry after big conduit merge
 
-public class SpeciesItemFilter implements IInventory, IItemFilter {
+public class SpeciesItemFilter implements IInventory, IItemFilter.WithGhostSlots {
 
   private static final boolean DEFAULT_BLACKLIST = false;
   private static final boolean DEFAULT_STICKY = false;
@@ -64,7 +60,7 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public boolean doesItemPassFilter(@Nullable INetworkedInventory inv, @Nonnull ItemStack item) {
+  public boolean doesItemPassFilter(@Nullable IItemHandler inventory, @Nonnull ItemStack item) {
     return doesItemPassFilter(item);
   }
 
@@ -124,7 +120,7 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
   @Override
   public boolean isValid() {
     for (ItemStack item : items) {
-      if (item != null && AlleleManager.alleleRegistry.getSpeciesRoot(item) != null) {
+      if (!item.isEmpty() && AlleleManager.alleleRegistry.getSpeciesRoot(item) != null) {
         return true;
       }
     }
@@ -171,15 +167,6 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
     }
 
   }
-
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
-  // ItemConduitFilterContainer cont = new ItemConduitFilterContainer(itemConduit, gui.getDir(), isInput);
-  // SpeciesItemFilterGui itemFilterGui = new SpeciesItemFilterGui(gui, cont, !isInput);
-  // itemFilterGui.createFilterSlots();
-  // return itemFilterGui;
-  // }
 
   @Override
   public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
@@ -397,10 +384,5 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
   @Override
   public boolean isEmpty() {
     return items.isEmpty() || items.stream().allMatch(ItemStack::isEmpty);
-  }
-
-  @Override
-  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new SpeciesItemFilterGui(gui, filterContainer, isStickyModeAvailable);
   }
 }

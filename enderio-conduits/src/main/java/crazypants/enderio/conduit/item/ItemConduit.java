@@ -2,7 +2,6 @@ package crazypants.enderio.conduit.item;
 
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
@@ -25,14 +24,12 @@ import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.filter.INetworkedInventory;
 import crazypants.enderio.base.filter.filters.ItemFilter;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduit.AbstractConduit;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitComponent;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.item.ItemSettings;
@@ -51,7 +48,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import static crazypants.enderio.base.init.ModObject.itemItemFilter;
 import static crazypants.enderio.conduit.init.ConduitObject.item_item_conduit;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit, IConduitComponent {
@@ -134,17 +130,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     dataRoot.setBoolean("selfFeed", isSelfFeedEnabled(dir));
     dataRoot.setBoolean("roundRobin", isRoundRobinEnabled(dir));
     dataRoot.setInteger("outputPriority", getOutputPriority(dir));
-  }
-
-  protected void convertToItemUpgrades(int filterMeta, Map<EnumFacing, ItemStack> converted, EnumMap<EnumFacing, IItemFilter> sourceFilters) {
-    for (Entry<EnumFacing, IItemFilter> entry : sourceFilters.entrySet()) {
-      if (entry.getValue() != null) {
-        IItemFilter f = entry.getValue();
-        ItemStack up = new ItemStack(itemItemFilter.getItemNN(), 1, filterMeta);
-        FilterRegistry.writeFilterToStack(f, up);
-        converted.put(entry.getKey(), up);
-      }
-    }
   }
 
   @Override
@@ -442,7 +427,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   private void checkInventoryConnections(@Nonnull EnumFacing direction) {
     if (network != null) {
       BlockPos p = bundle.getEntity().getPos().offset(direction);
-      INetworkedInventory networkedInventory = network.getInventory(this, direction);
+      NetworkedInventory networkedInventory = network.getInventory(this, direction);
       if (externalConnections.contains(direction) && getConnectionMode(direction) != ConnectionMode.DISABLED) {
         if (networkedInventory == null) {
           network.inventoryAdded(this, direction, p, getExternalInventory(direction));
@@ -557,7 +542,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   }
 
   @Override
-  public @Nullable AbstractConduitNetwork<?, ?> getNetwork() {
+  public @Nullable ItemConduitNetwork getNetwork() {
     return network;
   }
 
@@ -905,17 +890,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     return new ItemConduitNetwork();
   }
 
-  // @SideOnly(Side.CLIENT)
-  // @Override
-  // public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
-  // return new ItemSettings(gui, con);
-  // }
-
   @SideOnly(Side.CLIENT)
   @Nonnull
   @Override
   public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    return new ItemSettings((GuiExternalConnection) gui, con); // TODO abstract this better for base
+    return new ItemSettings((GuiExternalConnection) gui, con);
   }
 
   @Override

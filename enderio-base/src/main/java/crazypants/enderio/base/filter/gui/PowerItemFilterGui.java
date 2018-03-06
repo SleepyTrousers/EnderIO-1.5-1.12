@@ -1,75 +1,65 @@
 package crazypants.enderio.base.filter.gui;
 
+import java.io.IOException;
+
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.ToggleButton;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.filters.PowerItemFilter;
-import crazypants.enderio.base.gui.GuiContainerBaseEIO;
+import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.tileentity.TileEntity;
 
-public class PowerItemFilterGui implements IItemFilterGui {
+public class PowerItemFilterGui extends AbstractGuiItemFilter {
 
   private static final int ID_STICKY = FilterGuiUtil.nextButtonId();
 
   private static final int ID_MORE = FilterGuiUtil.nextButtonId();
   private static final int ID_LEVEL = FilterGuiUtil.nextButtonId();
 
-  private final @Nonnull IItemFilterContainer filterContainer;
-  private final @Nonnull GuiContainerBaseEIO gui;
-
   private final @Nonnull ToggleButton stickyB;
-  private final boolean isStickModeAvailable;
 
   private final @Nonnull GuiButton modeB;
   private final @Nonnull GuiButton levelB;
 
   private final @Nonnull PowerItemFilter filter;
 
-  public PowerItemFilterGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    this.gui = gui;
-    this.filterContainer = filterContainer;
-    this.isStickModeAvailable = isStickyModeAvailable;
+  public PowerItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
+    super(playerInv, filterContainer, te);
 
     filter = (PowerItemFilter) filterContainer.getItemFilter();
 
-    int butLeft = 37;
+    int butLeft = 13;
     int x = butLeft;
-    int y = 68;
+    int y = 34;
 
     x += 20;
-    stickyB = new ToggleButton(gui, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
-    String[] lines = EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled");
-    stickyB.setSelectedToolTip(lines);
-    stickyB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.stickyDisbaled"));
+    stickyB = new ToggleButton(this, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
+    stickyB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_ENABLED.get(), Lang.GUI_ITEM_FILTER_STICKY_ENABLED_2.get());
+    stickyB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_DISABLED.get());
     stickyB.setPaintSelectedBorder(false);
 
-    modeB = new GuiButton(ID_MORE, 0, 0, 40, 20, "");
-    levelB = new GuiButton(ID_LEVEL, 0, 0, 40, 20, "");
-  }
+    x += 28;
+    int x1 = x + 116;
+    int y1 = y + 18;
+    modeB = new GuiButton(ID_MORE, x1, y1, 40, 20, "");
 
-  @Override
-  public void mouseClicked(int x, int y, int par3) {
+    x1 += 46;
+    levelB = new GuiButton(ID_LEVEL, x1, y1, 40, 20, "");
   }
 
   @Override
   public void updateButtons() {
-    if (isStickModeAvailable) {
+    super.updateButtons();
+    if (isStickyModeAvailable) {
       stickyB.onGuiInit();
       stickyB.setSelected(filter.isSticky());
     }
-
-    int x0 = gui.getGuiLeft() + 80;
-    int y0 = gui.getGuiTop() + 65;
-    int x1 = x0 + 45;
-
-    modeB.width = x0;
-    modeB.id = y0;
-
-    levelB.width = x1;
-    levelB.id = y0;
 
     switch (filter.getMode()) {
     case LESS:
@@ -94,12 +84,13 @@ public class PowerItemFilterGui implements IItemFilterGui {
 
     levelB.displayString = String.format("%d%%", filter.getLevel() * 100 / PowerItemFilter.MAX_LEVEL);
 
-    gui.addButton(modeB);
-    gui.addButton(levelB);
+    addButton(modeB);
+    addButton(levelB);
   }
 
   @Override
-  public void actionPerformed(@Nonnull GuiButton guiButton) {
+  public void actionPerformed(@Nonnull GuiButton guiButton) throws IOException {
+    super.actionPerformed(guiButton);
     if (guiButton.id == ID_STICKY) {
       filter.setSticky(stickyB.isSelected());
       sendFilterChange();
@@ -114,24 +105,7 @@ public class PowerItemFilterGui implements IItemFilterGui {
 
   private void sendFilterChange() {
     updateButtons();
-    filterContainer.onFilterChanged();
-    // PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
-  }
-
-  @Override
-  public void deactivate() {
-    stickyB.detach();
-    gui.removeButton(modeB);
-    gui.removeButton(levelB);
-  }
-
-  @Override
-  public void renderCustomOptions(int top, float par1, int par2, int par3) {
-    // GL11.glColor3f(1, 1, 1);
-    // RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
-    // gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 68, 0, 238, 18 * 5, 18);
-    // if(filter.isAdvanced()) {
-    // gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 86, 0, 238, 18 * 5, 18);
-    // }
+    PacketHandler.INSTANCE
+        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
   }
 }

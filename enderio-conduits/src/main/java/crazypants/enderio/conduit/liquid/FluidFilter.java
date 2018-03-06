@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.liquid;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.FluidUtil;
 
 import net.minecraft.item.ItemStack;
@@ -9,8 +11,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import javax.annotation.Nonnull;
-
 public class FluidFilter {
 
   private final FluidStack[] fluids = new FluidStack[5];
@@ -18,17 +18,17 @@ public class FluidFilter {
 
   public boolean isEmpty() {
     for (FluidStack f : fluids) {
-      if(f != null) {
+      if (f != null) {
         return false;
       }
     }
     return true;
   }
-  
+
   public int size() {
     return fluids.length;
   }
-  
+
   @Deprecated
   public Fluid getFluidAt(int index) {
     return fluids[index].getFluid();
@@ -53,19 +53,19 @@ public class FluidFilter {
     return true;
   }
 
-  public boolean setFluid(int index, ItemStack stack) {
-    if(stack == null) {
+  public boolean setFluid(int index, @Nonnull ItemStack stack) {
+    if (stack.isEmpty()) {
       return setFluid(index, (FluidStack) null);
     }
     FluidStack f = FluidUtil.getFluidTypeFromItem(stack);
     if (f == null || f.getFluid() == null) {
-      return false;
+      return setFluid(index, (FluidStack) null);
     }
     return setFluid(index, f);
   }
 
   public boolean removeFluid(int index) {
-    if(index < 0 || index >= fluids.length) {
+    if (index < 0 || index >= fluids.length) {
       return false;
     }
     fluids[index] = null;
@@ -92,7 +92,7 @@ public class FluidFilter {
 
   public void writeToNBT(@Nonnull NBTTagCompound root) {
     root.setBoolean("isBlacklist", isBlacklist);
-    if(isEmpty()) {
+    if (isEmpty()) {
       root.removeTag("fluidFilter");
       return;
     }
@@ -100,7 +100,7 @@ public class FluidFilter {
     NBTTagList fluidList = new NBTTagList();
     int index = 0;
     for (FluidStack f : fluids) {
-      if(f != null) {
+      if (f != null) {
         NBTTagCompound fRoot = new NBTTagCompound();
         fRoot.setInteger("index", index);
         f.writeToNBT(fRoot);
@@ -133,16 +133,16 @@ public class FluidFilter {
   }
 
   private void clear() {
-    for(int i=0;i<fluids.length;i++) {
+    for (int i = 0; i < fluids.length; i++) {
       fluids[i] = null;
-    }    
+    }
   }
 
   public boolean matchesFilter(FluidStack drained) {
-    if(drained == null || drained.getFluid() == null) {
+    if (drained == null || drained.getFluid() == null) {
       return false;
     }
-    if(isEmpty()) {
+    if (isEmpty()) {
       return true;
     }
     for (FluidStack f : fluids) {

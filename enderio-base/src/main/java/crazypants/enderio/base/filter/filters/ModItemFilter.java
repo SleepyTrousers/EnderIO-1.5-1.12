@@ -3,29 +3,23 @@ package crazypants.enderio.base.filter.filters;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
-import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.filter.INetworkedInventory;
-import crazypants.enderio.base.filter.gui.IItemFilterContainer;
-import crazypants.enderio.base.filter.gui.IItemFilterGui;
-import crazypants.enderio.base.filter.gui.ModItemFilterGui;
-import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.items.IItemHandler;
 
 public class ModItemFilter implements IItemFilter {
 
   private final String[] mods = new String[3];
   private boolean blacklist = false;
 
-  public String setMod(int index, ItemStack itemStack) {
+  public String setMod(int index, @Nonnull ItemStack itemStack) {
     if (index < 0 || index >= mods.length) {
       return null;
     }
@@ -67,7 +61,7 @@ public class ModItemFilter implements IItemFilter {
   }
 
   @Override
-  public boolean doesItemPassFilter(@Nullable INetworkedInventory inv, @Nonnull ItemStack item) {
+  public boolean doesItemPassFilter(@Nullable IItemHandler inventory, @Nonnull ItemStack item) {
     if (Prep.isInvalid(item)) {
       return false;
     }
@@ -96,19 +90,9 @@ public class ModItemFilter implements IItemFilter {
   }
 
   @Override
-  public void createGhostSlots(@Nonnull NNList<GhostSlot> slots, int xOffset, int yOffset, @Nullable Runnable cb) {
-  }
-
-  @Override
   public int getSlotCount() {
     return 0;
   }
-
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
-  // return new ModItemFilterGui(gui, itemConduit, isInput);
-  // }
 
   @Override
   public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
@@ -151,10 +135,5 @@ public class ModItemFilter implements IItemFilter {
   public void readFromByteBuf(@Nonnull ByteBuf buf) {
     NBTTagCompound tag = NetworkUtil.readNBTTagCompound(buf);
     readFromNBT(tag);
-  }
-
-  @Override
-  public IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    return new ModItemFilterGui(gui, filterContainer, isStickyModeAvailable);
   }
 }

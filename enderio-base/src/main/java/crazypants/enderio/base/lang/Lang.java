@@ -87,6 +87,28 @@ public enum Lang implements ILang {
   GUI_NOCAP(".gui.generic.nocap"),
   GUI_PROBE_COPIED(".gui.probe.copied"),
 
+  // FILTERS
+  GUI_ITEM_FILTER_CLOSE(".gui.item_filter.close"),
+  GUI_ITEM_FILTER_CLOSE_2(".gui.item_filter.close2"),
+
+  GUI_ITEM_FILTER_WHITELIST(".gui.item_filter.whitelist"),
+  GUI_ITEM_FILTER_BLACKLIST(".gui.item_filter.blacklist"),
+  GUI_ITEM_FILTER_MATCH_META(".gui.item_filter.match_meta"),
+  GUI_ITEM_FILTER_IGNORE_META(".gui.item_filter.ignore_meta"),
+  GUI_ITEM_FILTER_STICKY_ENABLED(".gui.item_filter.sticky_enabled"),
+  GUI_ITEM_FILTER_STICKY_ENABLED_2(".gui.item_filter.sticky_enabled2"),
+  GUI_ITEM_FILTER_STICKY_DISABLED(".gui.item_filter.sticky_disabled"),
+  GUI_ITEM_FILTER_ORE_DIC_ENABLED(".gui.item_filter.ore_dic_enabled"),
+  GUI_ITEM_FILTER_ORE_DIC_DISABLED(".gui.item_filter.ore_dic_disabled"),
+  GUI_ITEM_FILTER_MATCH_NBT(".gui.item_filter.match_nbt"),
+  GUI_ITEM_FILTER_IGNORE_NBT(".gui.item_filter.ignore_nbt"),
+
+  GUI_EXISTING_ITEM_FILTER_SNAPSHOT(".gui.existing.item_filter.snapshot"),
+  GUI_EXISTING_ITEM_FILTER_SNAPSHOT_2(".gui.existing.item_filter.snapshot2"),
+  GUI_EXISTING_ITEM_FILTER_MERGE(".gui.existing.item_filter.merge"),
+  GUI_EXISTING_ITEM_FILTER_CLEAR(".gui.existing.item_filter.clear"),
+  GUI_EXISTING_ITEM_FILTER_SHOW(".gui.existing.item_filter.show"),
+
   ;
 
   private final @Nonnull String key;
