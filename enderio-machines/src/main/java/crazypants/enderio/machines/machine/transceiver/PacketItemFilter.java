@@ -7,6 +7,7 @@ import com.enderio.core.common.network.NetworkUtil;
 
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.filters.ItemFilter;
+import crazypants.enderio.base.filter.items.BasicFilterTypes;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,7 +47,7 @@ public class PacketItemFilter extends MessageTileEntity<TileTransceiver> {
     super.fromBytes(buf);
     isSend = buf.readBoolean();
     NBTTagCompound tag = NetworkUtil.readNBTTagCompound(buf);
-    filter = new ItemFilter();
+    filter = new ItemFilter(BasicFilterTypes.filterUpgradeAdvanced);
     filter.readFromNBT(tag);
   }
 

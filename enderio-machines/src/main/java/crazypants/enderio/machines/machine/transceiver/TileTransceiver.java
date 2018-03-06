@@ -18,6 +18,7 @@ import com.enderio.core.common.util.FluidUtil;
 import crazypants.enderio.base.filter.FilterHandler;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.filters.ItemFilter;
+import crazypants.enderio.base.filter.items.BasicFilterTypes;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -87,8 +88,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
 
     currentTask = new ContinuousTask(getPowerUsePerTick());
 
-    sendItemFilter = new ItemFilter(true);
-    recieveItemFilter = new ItemFilter(true);
+    sendItemFilter = new ItemFilter(BasicFilterTypes.filterUpgradeAdvanced);
+    recieveItemFilter = new ItemFilter(BasicFilterTypes.filterUpgradeAdvanced);
   }
 
   public boolean isRedstoneChecksPassed() {

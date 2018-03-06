@@ -51,7 +51,7 @@ public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, Tile
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(BasicFilterTypes.filterUpgradeBasic.getStack(), NullHelper.notnull(filterSlot, "slot awol")));
+    slots.add(new GhostBackgroundItemSlot(BasicFilterTypes.filterUpgradeBasic.getBasicFilterStack(), NullHelper.notnull(filterSlot, "slot awol")));
   }
 
   @Override

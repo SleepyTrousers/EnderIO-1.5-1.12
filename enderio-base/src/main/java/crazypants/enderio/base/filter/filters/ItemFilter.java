@@ -69,30 +69,14 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots {
   }
 
   public ItemFilter(BasicFilterTypes type) {
-    this(type.getSlots(), type.isAdvanced());
-  }
-
-  public ItemFilter() {
-    this(5, false);
-  }
-
-  public ItemFilter(boolean advanced) {
-    this(advanced ? 10 : 5, advanced);
-  }
-
-  private ItemFilter(int numItems, boolean isAdvanced) {
-    this.isAdvanced = isAdvanced;
+    isAdvanced = type.isAdvanced();
+    isLimited = type.isLimited();
+    int numItems = type.getSlots();
     items = new NNList<ItemStack>(numItems, Prep.getEmpty());
     oreIds = new ArrayList<int[]>(numItems);
     for (int i = 0; i < numItems; i++) {
       oreIds.add(null);
     }
-    isLimited = false;
-  }
-
-  public ItemFilter(int damage) {
-    this(damage > 0);
-    isLimited = damage > 1;
   }
 
   @Override
