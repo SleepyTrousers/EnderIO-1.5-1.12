@@ -24,6 +24,7 @@ import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.conduit.lang.Lang;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
@@ -72,7 +73,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   private IconButton extractWhiteListB;
 
   public LiquidSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_FLUID, EnderIO.lang.localize("itemLiquidConduit.name"), gui, con, "liquid_settings");
+    super(IconEIO.WRENCH_OVERLAY_FLUID, ConduitObject.item_liquid_conduit.getUnlocalisedName(), gui, con, "liquid_settings");
 
     conduit = (ILiquidConduit) con;
     if (con instanceof EnderLiquidConduit) {

@@ -14,7 +14,6 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.DyeColor;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
@@ -27,6 +26,7 @@ import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.gui.BaseSettingsPanel;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.lang.Lang;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
@@ -74,7 +74,7 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
   private final GuiToolTip filterInsertUpgradeTooltip;
 
   public ItemSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_ITEM, EnderIO.lang.localize("itemItemConduit.name"), gui, con, "item_settings");
+    super(IconEIO.WRENCH_OVERLAY_ITEM, ConduitObject.item_item_conduit.getUnlocalisedName(), gui, con, "item_settings");
     itemConduit = (IItemConduit) con;
 
     int x = leftColumn;
@@ -289,11 +289,7 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
 
   @Override
   protected void renderCustomOptions(int top, float par1, int par2, int par3) {
-    ConnectionMode mode = con.getConnectionMode(gui.getDir());
-
     FontRenderer fr = gui.getFontRenderer();
-    int x = 0;
-    int rgb = ColorUtil.getRGB(Color.darkGray);
 
     GlStateManager.color(1, 1, 1);
     IconEIO.map.render(EnderWidget.BUTTON_DOWN, left + priLeft, top - 5, priWidth, 16, 0, true);

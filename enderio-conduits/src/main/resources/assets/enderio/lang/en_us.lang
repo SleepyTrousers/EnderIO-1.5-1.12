@@ -29,25 +29,6 @@ enderio.item_liquid_conduit_ender.tooltip.detailed.line3=transported on the same
 
 enderio.item_item_conduit.name=Item Conduit
 
-# Conduit GUIs
-
-enderio.gui.conduit.io_mode=Mode
-
-enderio.gui.conduit.redstone.signal_color=Signal Color
-enderio.gui.conduit.redstone.color=Color
-enderio.gui.conduit.redstone.signal_strength=Strong Signal
-enderio.gui.conduit.redstone.signal_strength.tooltip=Output a strong redstone signal 
-
-enderio.gui.conduit.fluid.auto_extract=Auto Extract
-enderio.gui.conduit.fluid.filter=Filter
-enderio.gui.conduit.fluid.whitelist=Whitelist
-enderio.gui.conduit.fluid.blacklist=Blacklist
-
-enderio.gui.conduit.redstone.signal_color=Signal Color
-enderio.gui.conduit.redstone.color=Color
-enderio.gui.conduit.redstone.signal_strengh=Strong Signal
-enderio.gui.conduit.redstone.signal_strengh.tooltip=Output a strong redstone signal 
-
 # CapBanks
 tile.block_cap_bank.creative.name=Creative Capacitor Bank
 tile.block_cap_bank.simple.name=Basic Capacitor Bank
@@ -123,7 +104,7 @@ enderio.config.condit.fluid=Fluid Conduits
 enderio.config.condit.item=Item Conduits
 enderio.config.condit.redstone=Redstone Conduits
 
-# New Lang
+# Upgrades
 
 item.item_extract_speed_upgrade.name=Extract Speed Upgrade
 item.item_extract_speed_downgrade.name=Extract Speed Downgrade
