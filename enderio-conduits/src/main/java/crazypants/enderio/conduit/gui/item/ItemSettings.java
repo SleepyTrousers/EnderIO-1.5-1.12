@@ -190,12 +190,11 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     x = leftColumn;
     y = 92;
 
-    // TODO use a better icon
-    insertFilterOptionsB = new IconButton(gui, ID_INSERT_FILTER_OPTIONS, x, y, IconEIO.IO_WHATSIT);
+    insertFilterOptionsB = new IconButton(gui, ID_INSERT_FILTER_OPTIONS, x, y, IconEIO.GEAR_LIGHT);
 
     x = rightColumn;
 
-    extractFilterOptionsB = new IconButton(gui, ID_EXTRACT_FILTER_OPTIONS, x, y, IconEIO.IO_WHATSIT);
+    extractFilterOptionsB = new IconButton(gui, ID_EXTRACT_FILTER_OPTIONS, x, y, IconEIO.GEAR_LIGHT);
 
   }
 

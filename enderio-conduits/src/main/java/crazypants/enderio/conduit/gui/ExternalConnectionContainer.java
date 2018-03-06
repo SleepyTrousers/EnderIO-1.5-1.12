@@ -78,7 +78,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       addSlotToContainer(slotSpeedUpgrades = new SlotItemHandler(getItemHandler(), 0, 131, 71) {
         @Override
         public boolean isItemValid(@Nonnull ItemStack itemStack) {
-          return itemStack.getItem() instanceof ItemExtractSpeedUpgrade;
+          return inventory.isItemValidForSlot(0, itemStack);
         }
 
         @Override

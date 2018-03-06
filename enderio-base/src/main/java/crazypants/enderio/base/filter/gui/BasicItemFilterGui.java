@@ -38,21 +38,17 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
 
   private final ItemFilter filter;
 
-  private int buttonIdOffset;
   private int xOffset;
   private int yOffset;
 
   public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
-    this(playerInv, filterContainer, 13, 34, 0, te);
+    this(playerInv, filterContainer, 13, 34, te);
   }
-  // TODO Lang
 
-  public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, int xOffset, int yOffset, int buttonIdOffset,
-      TileEntity te) {
+  public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, int xOffset, int yOffset, TileEntity te) {
     super(playerInv, filterContainer, te, "basic_item_filter", "advanced_item_filter");
     this.xOffset = xOffset;
     this.yOffset = yOffset;
-    this.buttonIdOffset = buttonIdOffset;
 
     filter = (ItemFilter) filterContainer.getItemFilter();
 
@@ -62,17 +58,17 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
     int butLeft = xOffset + 98;
     int x = butLeft;
     int y = yOffset + 1;
-    whiteListB = new IconButton(this, ID_WHITELIST + buttonIdOffset, x, y, IconEIO.FILTER_WHITELIST);
+    whiteListB = new IconButton(this, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
 
     x += 20;
-    useMetaB = new ToggleButton(this, ID_META + buttonIdOffset, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
+    useMetaB = new ToggleButton(this, ID_META, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
     useMetaB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_MATCH_META.get());
     useMetaB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_IGNORE_META.get());
     useMetaB.setPaintSelectedBorder(false);
 
     x += 20;
-    stickyB = new ToggleButton(this, ID_STICKY + buttonIdOffset, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
+    stickyB = new ToggleButton(this, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
     stickyB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_ENABLED.get(), Lang.GUI_ITEM_FILTER_STICKY_ENABLED_2.get());
     stickyB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_DISABLED.get());
     stickyB.setPaintSelectedBorder(false);
@@ -80,19 +76,19 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
     y += 20;
     x = butLeft;
 
-    useOreDictB = new ToggleButton(this, ID_ORE_DICT + buttonIdOffset, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
+    useOreDictB = new ToggleButton(this, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
     useOreDictB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_ORE_DIC_ENABLED.get());
     useOreDictB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_ORE_DIC_DISABLED.get());
     useOreDictB.setPaintSelectedBorder(false);
 
     x += 20;
-    useNbtB = new ToggleButton(this, ID_NBT + buttonIdOffset, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
+    useNbtB = new ToggleButton(this, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
     useNbtB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_MATCH_NBT.get());
     useNbtB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_IGNORE_NBT.get());
     useNbtB.setPaintSelectedBorder(false);
 
     x += 20;
-    damageB = new CycleButton<DamageModeIconHolder>(this, ID_DAMAGE + buttonIdOffset, x, y, DamageModeIconHolder.class);
+    damageB = new CycleButton<DamageModeIconHolder>(this, ID_DAMAGE, x, y, DamageModeIconHolder.class);
   }
 
   public void createFilterSlots() {
@@ -150,22 +146,22 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
   @Override
   public void actionPerformed(@Nonnull GuiButton guiButton) throws IOException {
     super.actionPerformed(guiButton);
-    if (guiButton.id == ID_META + buttonIdOffset) {
+    if (guiButton.id == ID_META) {
       filter.setMatchMeta(useMetaB.isSelected());
       sendFilterChange();
-    } else if (guiButton.id == ID_NBT + buttonIdOffset) {
+    } else if (guiButton.id == ID_NBT) {
       filter.setMatchNBT(useNbtB.isSelected());
       sendFilterChange();
-    } else if (guiButton.id == ID_STICKY + buttonIdOffset) {
+    } else if (guiButton.id == ID_STICKY) {
       filter.setSticky(stickyB.isSelected());
       sendFilterChange();
-    } else if (guiButton.id == ID_ORE_DICT + buttonIdOffset) {
+    } else if (guiButton.id == ID_ORE_DICT) {
       filter.setUseOreDict(useOreDictB.isSelected());
       sendFilterChange();
-    } else if (guiButton.id == ID_DAMAGE + buttonIdOffset) {
+    } else if (guiButton.id == ID_DAMAGE) {
       filter.setDamageMode(damageB.getMode().getMode());
       sendFilterChange();
-    } else if (guiButton.id == ID_WHITELIST + buttonIdOffset) {
+    } else if (guiButton.id == ID_WHITELIST) {
       filter.setBlacklist(!filter.isBlacklist());
       sendFilterChange();
     }

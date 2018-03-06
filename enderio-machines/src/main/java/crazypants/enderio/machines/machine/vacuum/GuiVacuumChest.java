@@ -87,7 +87,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO implements IOpenFilterRe
       }
     });
 
-    openFilterGuiB = new IconButton(this, ID_OPEN_FILTER, FILTER_LEFT, FILTER_TOP, IconEIO.IO_WHATSIT);
+    openFilterGuiB = new IconButton(this, ID_OPEN_FILTER, FILTER_LEFT, FILTER_TOP, IconEIO.GEAR_LIGHT);
 
     headerChest = Lang.GUI_VACUUM_CHEST.get();
     headerFilter = Lang.GUI_VACUUM_FILTER.get();

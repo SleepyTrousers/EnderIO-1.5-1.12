@@ -36,15 +36,11 @@ public class FilterHandler implements IHandler<IItemFilter> {
   @Override
   public IItemFilter read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
       @Nullable IItemFilter object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
-    if (object == null) {
+    if (object == null && !nbt.hasKey(name)) {
       // Note: This will be called with no nbt when a fresh itemstack is placed---output should be null!
-      if (nbt.hasKey(name)) {
-        object = FilterRegistry.loadFilterFromNbt(nbt.getCompoundTag(name));
-      } else {
-        return object;
-      }
+      return object;
     }
-    object.readFromNBT(nbt.getCompoundTag(name));
+    object = FilterRegistry.loadFilterFromNbt(nbt.getCompoundTag(name));
     return object;
   }
 

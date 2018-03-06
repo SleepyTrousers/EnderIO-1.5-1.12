@@ -118,26 +118,8 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
     }
 
     ConnectionMode mode = con.getConnectionMode(gui.getDir());
-    switch (mode) {
-    case IN_OUT:
-      insertEnabled = true;
-      extractEnabled = true;
-      break;
-    case INPUT:
-      insertEnabled = false;
-      extractEnabled = true;
-      break;
-    case OUTPUT:
-      insertEnabled = true;
-      extractEnabled = false;
-      break;
-    case DISABLED:
-      insertEnabled = false;
-      extractEnabled = false;
-      break;
-    default:
-      break;
-    }
+    insertEnabled = mode.acceptsOutput();
+    extractEnabled = mode.acceptsInput();
 
     insertEnabledB.setSelected(insertEnabled);
     extractEnabledB.setSelected(extractEnabled);

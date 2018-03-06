@@ -5,8 +5,6 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.IconButton;
@@ -23,6 +21,7 @@ import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -121,8 +120,6 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
   public void updateButtons() {
     super.updateButtons();
 
-    
-
     useNbtB.onGuiInit();
     useNbtB.setSelected(filter.isMatchNBT());
 
@@ -190,7 +187,7 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     updateSnapshotButtons();
     super.updateScreen();
   }
-  
+
   private void updateSnapshotButtons() {
     filter = (ExistingItemFilter) filterContainer.getItemFilter();
     clearB.setEnabled(filter.getSnapshot() != null);
@@ -229,13 +226,13 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     @Override
     public void draw(int mouseX, int mouseY, float partialTick) {
       RenderHelper.enableGUIStandardItemLighting();
-      GL11.glEnable(GL11.GL_BLEND);
+      GlStateManager.enableBlend();
+
       RenderUtil.renderQuad2D(8, 8, 0, getXSize() - 11, getYSize() - 11, new Vector4f(0, 0, 0, 1));
       RenderUtil.renderQuad2D(10, 10, 0, getXSize() - 15, getYSize() - 15, new Vector4f(0.6, 0.6, 0.6, 1));
 
       RenderItem itemRenderer = mc.getRenderItem();
-
-      GL11.glEnable(GL11.GL_DEPTH_TEST);
+      GlStateManager.enableDepth();
 
       NNList<ItemStack> snapshot = filter.getSnapshot();
       int x = 15;

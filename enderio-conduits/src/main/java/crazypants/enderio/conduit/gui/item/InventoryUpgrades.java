@@ -47,18 +47,12 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
       return stack;
     }
 
-    ItemStack returnStack = ItemStack.EMPTY;
-    if (stack.getCount() > getSlotLimit(slot)) {
-      returnStack = stack.copy();
-      returnStack.setCount(stack.getCount() - getSlotLimit(slot));
-
-      stack.setCount(getSlotLimit(slot));
-    }
+    ItemStack slotStack = stack.splitStack(getSlotLimit(slot));
 
     if (!simulate) {
-      setInventorySlotContents(slot, stack);
+      setInventorySlotContents(slot, slotStack);
     }
-    return returnStack;
+    return stack;
   }
 
   @Nonnull

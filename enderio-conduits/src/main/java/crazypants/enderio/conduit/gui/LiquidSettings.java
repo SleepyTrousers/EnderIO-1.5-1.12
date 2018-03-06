@@ -33,6 +33,7 @@ import crazypants.enderio.conduit.packet.PacketFluidFilter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -50,11 +51,11 @@ public class LiquidSettings extends BaseSettingsPanel {
   private final ColorButton colorB;
 
   @Nonnull
-  private static final String autoExtractStr = Lang.GUI_LIQUID_AUTO_EXTRACT.get();
+  private final String autoExtractStr = Lang.GUI_LIQUID_AUTO_EXTRACT.get();
   @Nonnull
-  private static final String filterStrInsert = Lang.GUI_LIQUID_FILTER.get();
+  private final String filterStrInsert = Lang.GUI_LIQUID_FILTER.get();
   @Nonnull
-  private static final String filterStrExtract = Lang.GUI_LIQUID_FILTER.get();
+  private final String filterStrExtract = Lang.GUI_LIQUID_FILTER.get();
 
   private final ILiquidConduit conduit;
 
@@ -195,7 +196,6 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   }
 
-  // TODO Fliter fixes
   protected void setConduitFilter(FluidFilter filter, boolean isInput) {
     eConduit.setFilter(gui.getDir(), filter, isInput);
     PacketHandler.INSTANCE.sendToServer(new PacketFluidFilter(eConduit, gui.getDir(), filter, isInput));
@@ -294,7 +294,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       }
 
       x += 101;
-      GL11.glColor3f(1, 1, 1);
+      GlStateManager.color(1, 1, 1);
       gui.bindGuiTexture();
 
       FluidFilter filterExtract = eConduit.getFilter(gui.getDir(), true);
@@ -315,14 +315,7 @@ public class LiquidSettings extends BaseSettingsPanel {
     ResourceLocation iconKey = f.getFluid().getStill();
     TextureAtlasSprite icon = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(iconKey.toString());
     if (icon != null) {
-      // RenderUtil.bindBlockTexture();
-      // int color = f.getFluid().getColor(f);
-      // GL11.glColor3ub((byte) (color >> 16 & 0xFF), (byte) (color >> 8 & 0xFF), (byte) (color & 0xFF));
-      // gui.drawTexturedModelRectFromIcon(x + 1, y + 1, icon, 16, 16);
-      // GL11.glColor3f(1, 1, 1);
-
       RenderUtil.renderGuiTank(f, 1000, 1000, x + 1, y + 1, 0, 16, 16);
-
     }
 
   }

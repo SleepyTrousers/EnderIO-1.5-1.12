@@ -57,6 +57,8 @@ public class PacketFilterUpdate extends MessageTileEntity<TileEntity> {
           Log.warn("Player " + ctx.getServerHandler().player.getName() + " tried to manipulate a filter while another gui was open!");
           return null;
         }
+      } else {
+        return null;
       }
     }
     World world = getWorld(ctx);

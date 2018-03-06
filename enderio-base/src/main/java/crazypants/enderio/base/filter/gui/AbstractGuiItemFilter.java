@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.IconButton;
 
 import crazypants.enderio.base.filter.network.ICloseFilterRemoteExec;
@@ -13,6 +11,7 @@ import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
@@ -51,7 +50,7 @@ public abstract class AbstractGuiItemFilter extends GuiContainerBaseEIO implemen
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int mouseX, int mouseY) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
