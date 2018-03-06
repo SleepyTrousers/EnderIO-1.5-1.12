@@ -21,6 +21,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  *
@@ -67,6 +69,7 @@ public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade, IRe
 
   @Override
   @Nullable
+  @SideOnly(Side.CLIENT)
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     return new PowerItemFilterGui(player.inventory, new ContainerFilter(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing),
         world.getTileEntity(pos));
