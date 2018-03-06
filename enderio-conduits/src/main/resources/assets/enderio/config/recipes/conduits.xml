@@ -177,7 +177,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="ELECTRICAL_STEEL" /><item name="minecraft:piston" /><item name="ELECTRICAL_STEEL" />
         <item name="ELECTRICAL_STEEL" /><item name="minecraft:redstone_torch" /><item name="ELECTRICAL_STEEL" />
       </grid>
-      <output name="enderio:item_extract_speed_upgrade:0" />
+      <output name="enderio:item_extract_speed_upgrade" />
     </crafting>
   </recipe>
 
@@ -188,7 +188,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="ELECTRICAL_STEEL" /><item name="slimeball" /><item name="ELECTRICAL_STEEL" />
         <item name="ELECTRICAL_STEEL" /><item name="stickWood" /><item name="ELECTRICAL_STEEL" />
       </grid>
-      <output name="enderio:item_extract_speed_upgrade:1" />
+      <output name="enderio:item_extract_speed_downgrade" />
     </crafting>
   </recipe>
 
@@ -199,7 +199,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="SILICON" /><item name="pearlEnderEye" /><item name="SILICON" />
         <item name="CONDUIT_BINDER" /><item name="ELECTRICAL_STEEL" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_function_upgrade:0" />
+      <output name="enderio:item_inventory_panel_upgrade" />
     </crafting>
   </recipe>
 

@@ -188,7 +188,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   @Nonnull
   @Override
   public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    return new LiquidSettings((GuiExternalConnection) gui, con); // TODO Abstract this better for base
+    return new LiquidSettings((GuiExternalConnection) gui, con);
   }
 
   @Override

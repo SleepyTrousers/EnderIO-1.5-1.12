@@ -894,7 +894,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Nonnull
   @Override
   public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    return new ItemSettings((GuiExternalConnection) gui, con); // TODO abstract this better for base
+    return new ItemSettings((GuiExternalConnection) gui, con);
   }
 
   @Override

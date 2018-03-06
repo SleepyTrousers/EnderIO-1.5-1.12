@@ -20,6 +20,7 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
+import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import crazypants.enderio.conduit.item.SpeedUpgrade;
@@ -36,14 +37,12 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_upgrade;
-import static crazypants.enderio.conduit.init.ConduitObject.item_function_upgrade;
 
 public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgrades, TileConduitBundle>
     implements IExternalConnectionContainer, IOpenFilterRemoteExec.Container {
 
   private final IItemConduit itemConduit;
 
-  // TODO Improve speed upgrades
   private int speedUpgradeSlotLimit = 15;
 
   private static final int outputFilterSlot = 36;
@@ -105,7 +104,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotOutputFilter));
       ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotInputFilter));
       ghostSlots.add(new GhostBackgroundItemSlot(item_extract_speed_upgrade.getItemNN(), slotSpeedUpgrades));
-      ghostSlots.add(new GhostBackgroundItemSlot(item_function_upgrade.getItemNN(), slotFunctionUpgrades));
+      ghostSlots.add(new GhostBackgroundItemSlot(ConduitObject.item_inventory_panel_upgrade.getItemNN(), slotFunctionUpgrades));
     }
   }
 
@@ -190,7 +189,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   }
 
   private void setSpeedUpgradeSlotLimit(@Nonnull ItemStack st) {
-    if (!st.isEmpty() && st.getItem() == item_extract_speed_upgrade.getItem()) {
+    if (!st.isEmpty() && st.getItem() instanceof ItemExtractSpeedUpgrade) {
       SpeedUpgrade speedUpgrade = ItemExtractSpeedUpgrade.getSpeedUpgrade(st);
       speedUpgradeSlotLimit = speedUpgrade.maxStackSize;
     }

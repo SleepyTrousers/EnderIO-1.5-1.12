@@ -108,7 +108,7 @@ enderio.config.condit.redstone=Redstone Conduits
 
 item.item_extract_speed_upgrade.name=Extract Speed Upgrade
 item.item_extract_speed_downgrade.name=Extract Speed Downgrade
-item.item_inventory_panel_upgrade.name=Function Upgrade
+item.item_inventory_panel_upgrade.name=Inventory Panel Upgrade
 
 # GUI
 enderio.gui.conduit_insert_mode=Insert
