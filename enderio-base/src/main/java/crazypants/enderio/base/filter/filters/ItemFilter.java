@@ -13,6 +13,7 @@ import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.ILimitedItemFilter;
 import crazypants.enderio.base.filter.items.BasicFilterTypes;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
@@ -29,7 +30,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots {
+public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimitedItemFilter {
 
   private static final boolean DEFAULT_BLACKLIST = false;
 
@@ -66,6 +67,10 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots {
     oreIds.addAll(o.oreIds);
     isAdvanced = o.isAdvanced;
     isLimited = o.isLimited;
+  }
+
+  public ItemFilter() {
+    this(BasicFilterTypes.filterUpgradeBasic);
   }
 
   public ItemFilter(BasicFilterTypes type) {

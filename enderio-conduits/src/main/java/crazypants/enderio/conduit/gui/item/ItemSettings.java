@@ -195,6 +195,8 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
 
     extractFilterOptionsB = new IconButton(gui, ID_EXTRACT_FILTER_OPTIONS, x, y, IconEIO.GEAR_LIGHT);
 
+    gui.getContainer().setInOutSlotsVisible(true, true);
+
   }
 
   @Override
