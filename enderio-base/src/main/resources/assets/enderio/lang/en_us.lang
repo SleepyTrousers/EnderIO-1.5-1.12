@@ -941,7 +941,7 @@ enderio.gui.existing.item_filter.snapshot=Snapshot
 enderio.gui.existing.item_filter.merge=Merge
 enderio.gui.existing.item_filter.clear=Clear
 enderio.gui.existing.item_filter.show=Show
-enderio.gui.existing.item_filter.snapshot2=Optional: If no snapshot is set,the inventory content will be used as filter
+enderio.gui.existing.item_filter.snapshot2=Optional: If no snapshot is set, the inventory content will be used as filter
 
 item.item_basic_item_filter.name=Basic Item Filter
 item.item_advanced_item_filter.name=Advanced Item Filter
