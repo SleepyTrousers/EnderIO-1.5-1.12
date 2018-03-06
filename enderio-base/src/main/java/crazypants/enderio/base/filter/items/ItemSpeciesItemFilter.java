@@ -96,6 +96,7 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade, I
 
   @Override
   @Nullable
+  @SideOnly(Side.CLIENT)
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     return new SpeciesItemFilterGui(player.inventory, new ContainerFilter(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing),
         world.getTileEntity(pos));
