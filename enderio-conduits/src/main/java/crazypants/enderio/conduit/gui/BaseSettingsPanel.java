@@ -36,6 +36,8 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
   protected final String typeName;
   protected final @Nonnull ResourceLocation texture;
 
+  protected ConnectionMode oldConnectionMode;
+
   private String inputHeading;
   private String outputHeading;
 
@@ -58,14 +60,13 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   protected int customTop = 0;
 
-  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IConduit con, @Nonnull String texture) {
+  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IClientConduit con,
+      @Nonnull String texture) {
     this(icon, typeName, gui, con, texture, true);
   }
 
-  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IConduit con, @Nonnull String texture,
+  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IClientConduit con, @Nonnull String texture,
       boolean hasInputOutputMode) {
-  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IClientConduit con,
-      @Nonnull String texture) {
     this.icon = icon;
     this.typeName = typeName;
     this.gui = gui;
@@ -98,7 +99,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   public boolean updateConduit(@Nonnull IClientConduit conduit) {
     this.con = conduit;
-    if (oldConectionMode != con.getConnectionMode(gui.getDir())) {
+    if (oldConnectionMode != con.getConnectionMode(gui.getDir())) {
       connectionModeChanged(con.getConnectionMode(gui.getDir()));
     }
     return true;
@@ -186,8 +187,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
     } else if (extractEnabled) {
       mode = ConnectionMode.INPUT;
     }
-    con.setConnectionMode(gui.getDir(), mode);
-    PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
+    PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir(), mode));
   }
 
   @Override
@@ -214,6 +214,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
   }
 
   protected void connectionModeChanged(@Nonnull ConnectionMode mode) {
+    oldConnectionMode = mode;
   }
 
   @Override

@@ -34,7 +34,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
   private int stongLabelX;
 
   public RedstoneSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_REDSTONE, EnderIO.lang.localize("itemRedstoneConduitInsulated.name"), gui, con, "redstone_settings");
+    super(IconEIO.WRENCH_OVERLAY_REDSTONE, EnderIO.lang.localize("itemRedstoneConduitInsulated.name"), gui, con, "redstone_settings", false);
 
     int x = leftColumn;
     int y = customTop + 4;

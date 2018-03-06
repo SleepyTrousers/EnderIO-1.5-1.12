@@ -247,6 +247,8 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     insertChannelB.setColorIndex(itemConduit.getOutputColor(gui.getDir()).ordinal());
     extractChannelB.onGuiInit();
     extractChannelB.setColorIndex(itemConduit.getInputColor(gui.getDir()).ordinal());
+
+    filtersChanged();
   }
 
   @Override
