@@ -11,7 +11,6 @@ import crazypants.enderio.base.filter.gui.ContainerFilter;
 import io.netty.buffer.ByteBuf;
 import jline.internal.Log;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -56,15 +55,12 @@ public class PacketFilterUpdate extends MessageTileEntity<TileEntity> {
         if (tileEntity == null || !tileEntity.getPos().equals(getPos())) {
           Log.warn("Player " + ctx.getServerHandler().player.getName() + " tried to manipulate a filter while another gui was open!");
           return null;
+        } else {
+          if (tileEntity instanceof IFilterHolder) {
+            return (IFilterHolder) tileEntity;
+          }
         }
-      } else {
-        return null;
       }
-    }
-    World world = getWorld(ctx);
-    TileEntity tileEntity = getTileEntity(world);
-    if (tileEntity instanceof IFilterHolder) {
-      return (IFilterHolder) tileEntity;
     }
     return null;
   }

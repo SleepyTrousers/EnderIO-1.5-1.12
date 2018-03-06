@@ -112,14 +112,12 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
     this.width = widthIn;
     this.height = heightIn;
 
+    updateConduit(con);
+
     insertEnabledB.onGuiInit();
     if (hasInputOutputMode) {
       extractEnabledB.onGuiInit();
     }
-
-    ConnectionMode mode = con.getConnectionMode(gui.getDir());
-    insertEnabled = mode.acceptsOutput();
-    extractEnabled = mode.acceptsInput();
 
     insertEnabledB.setSelected(insertEnabled);
     extractEnabledB.setSelected(extractEnabled);
@@ -197,6 +195,8 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   protected void connectionModeChanged(@Nonnull ConnectionMode mode) {
     oldConnectionMode = mode;
+    insertEnabled = mode.acceptsOutput();
+    extractEnabled = mode.acceptsInput();
   }
 
   @Override

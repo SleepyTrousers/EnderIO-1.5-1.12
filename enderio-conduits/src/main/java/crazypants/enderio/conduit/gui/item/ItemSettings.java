@@ -5,8 +5,6 @@ import java.awt.Rectangle;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
@@ -35,6 +33,7 @@ import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemoteExec.GUI {
 
@@ -296,7 +295,7 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     int x = 0;
     int rgb = ColorUtil.getRGB(Color.darkGray);
 
-    GL11.glColor3f(1, 1, 1);
+    GlStateManager.color(1, 1, 1);
     IconEIO.map.render(EnderWidget.BUTTON_DOWN, left + priLeft, top - 5, priWidth, 16, 0, true);
     String str = itemConduit.getOutputPriority(gui.getDir()) + "";
     int sw = fr.getStringWidth(str);
