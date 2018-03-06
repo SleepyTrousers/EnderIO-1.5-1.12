@@ -943,9 +943,9 @@ enderio.gui.existing.item_filter.clear=Clear
 enderio.gui.existing.item_filter.show=Show
 enderio.gui.existing.item_filter.snapshot2=Optional: If no snapshot is set,the inventory content will be used as filter
 
-item.item_item_filter_filterUpgradeBasic.name=Basic Item Filter
-item.item_item_filter_filterUpgradeAdvanced.name=Advanced Item Filter
-item.item_item_filter_filterUpgradeLimited.name=Limited Item Filter
+item.item_basic_item_filter.name=Basic Item Filter
+item.item_advanced_item_filter.name=Advanced Item Filter
+item.item_limited_item_filter.name=Limited Item Filter
 item.item_existing_item_filter.name=Existing Item Filter
 item.item_mod_item_filter.name=Mod Item Filter
 item.item_power_item_filter.name=Power Item Filter

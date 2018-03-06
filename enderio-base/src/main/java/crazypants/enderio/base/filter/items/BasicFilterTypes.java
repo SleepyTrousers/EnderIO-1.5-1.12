@@ -4,21 +4,23 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.NullHelper;
-
 import crazypants.enderio.base.init.ModObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 
 public enum BasicFilterTypes implements IStringSerializable {
-  filterUpgradeBasic("basic"),
-  filterUpgradeAdvanced("advanced"),
-  filterUpgradeLimited("limited");
+  filterUpgradeBasic("basic", false, 5),
+  filterUpgradeAdvanced("advanced", true, 10),
+  filterUpgradeLimited("limited", true, 10);
 
   public final @Nonnull String baseName;
+  public final boolean isAdvanced;
+  public final int slots;
 
-  private BasicFilterTypes(@Nonnull String baseName) {
+  private BasicFilterTypes(@Nonnull String baseName, boolean isAdvanced, int slots) {
     this.baseName = name().replaceAll("([A-Z])", "_$0").toLowerCase(Locale.ENGLISH);
+    this.isAdvanced = isAdvanced;
+    this.slots = slots;
   }
 
   public @Nonnull String getBaseName() {
@@ -30,7 +32,7 @@ public enum BasicFilterTypes implements IStringSerializable {
   }
 
   public @Nonnull ItemStack getStack(int size) {
-    return new ItemStack(ModObject.itemItemFilter.getItemNN(), size, ordinal());
+    return new ItemStack(ModObject.itemBasicItemFilter.getItemNN(), size);
   }
 
   @Override
@@ -38,12 +40,16 @@ public enum BasicFilterTypes implements IStringSerializable {
     return baseName;
   }
 
-  public static @Nonnull BasicFilterTypes getTypeFromMeta(int meta) {
-    return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "Enum.values()");
-  }
-
   public static int getMetaFromType(@Nonnull BasicFilterTypes value) {
     return value.ordinal();
+  }
+
+  public boolean isAdvanced() {
+    return isAdvanced;
+  }
+
+  public int getSlots() {
+    return slots;
   }
 
 }

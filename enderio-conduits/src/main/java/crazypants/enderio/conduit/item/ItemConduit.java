@@ -2,7 +2,6 @@ package crazypants.enderio.conduit.item;
 
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
@@ -49,7 +48,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import static crazypants.enderio.base.init.ModObject.itemItemFilter;
 import static crazypants.enderio.conduit.init.ConduitObject.item_item_conduit;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit, IConduitComponent {
@@ -132,17 +130,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     dataRoot.setBoolean("selfFeed", isSelfFeedEnabled(dir));
     dataRoot.setBoolean("roundRobin", isRoundRobinEnabled(dir));
     dataRoot.setInteger("outputPriority", getOutputPriority(dir));
-  }
-
-  protected void convertToItemUpgrades(int filterMeta, Map<EnumFacing, ItemStack> converted, EnumMap<EnumFacing, IItemFilter> sourceFilters) {
-    for (Entry<EnumFacing, IItemFilter> entry : sourceFilters.entrySet()) {
-      if (entry.getValue() != null) {
-        IItemFilter f = entry.getValue();
-        ItemStack up = new ItemStack(itemItemFilter.getItemNN(), 1, filterMeta);
-        FilterRegistry.writeFilterToStack(f, up);
-        converted.put(entry.getKey(), up);
-      }
-    }
   }
 
   @Override

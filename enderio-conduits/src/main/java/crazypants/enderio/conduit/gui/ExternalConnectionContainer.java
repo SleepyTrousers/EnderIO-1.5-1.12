@@ -16,6 +16,7 @@ import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
@@ -34,7 +35,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-import static crazypants.enderio.base.init.ModObject.itemItemFilter;
 import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_upgrade;
 import static crazypants.enderio.conduit.init.ConduitObject.item_function_upgrade;
 
@@ -102,8 +102,8 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   public void createGhostSlots(@Nonnull List<GhostSlot> ghostSlots) {
     if (itemConduit != null) {
-      ghostSlots.add(new GhostBackgroundItemSlot(itemItemFilter.getItemNN(), slotOutputFilter));
-      ghostSlots.add(new GhostBackgroundItemSlot(itemItemFilter.getItemNN(), slotInputFilter));
+      ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotOutputFilter));
+      ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotInputFilter));
       ghostSlots.add(new GhostBackgroundItemSlot(item_extract_speed_upgrade.getItemNN(), slotSpeedUpgrades));
       ghostSlots.add(new GhostBackgroundItemSlot(item_function_upgrade.getItemNN(), slotFunctionUpgrades));
     }

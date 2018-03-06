@@ -13,6 +13,7 @@ import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.items.BasicFilterTypes;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;
@@ -65,6 +66,10 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots {
     oreIds.addAll(o.oreIds);
     isAdvanced = o.isAdvanced;
     isLimited = o.isLimited;
+  }
+
+  public ItemFilter(BasicFilterTypes type) {
+    this(type.getSlots(), type.isAdvanced());
   }
 
   public ItemFilter() {
