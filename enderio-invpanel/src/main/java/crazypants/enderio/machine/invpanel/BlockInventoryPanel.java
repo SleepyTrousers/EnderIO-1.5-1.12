@@ -3,8 +3,9 @@ package crazypants.enderio.machine.invpanel;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -12,13 +13,15 @@ import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode6;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
-import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import crazypants.enderio.machine.invpanel.remote.PacketPrimeInventoryPanelRemote;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -33,7 +36,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   private static final float BLOCK_SIZE = 4f / 16f;
 
-  public static BlockInventoryPanel create() {
+  public static BlockInventoryPanel create(IModObject mo) {
     PacketHandler.INSTANCE.registerMessage(PacketItemInfo.class, PacketItemInfo.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketItemList.class, PacketItemList.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketRequestMissingItems.class, PacketRequestMissingItems.class, PacketHandler.nextID(), Side.SERVER);
@@ -53,13 +56,13 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   public BlockInventoryPanel() {
-    super(MachineObject.blockInventoryPanel, TileInventoryPanel.class);
+    super(InvpanelObject.blockInventoryPanel);
     setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 
   @Override
-  protected ItemBlock createItemBlock() {
-    return new BlockItemInventoryPanel(this, getName());
+  public ItemBlock createBlockItem(IModObject mo) {
+    return new BlockItemInventoryPanel(this, mo.getUnlocalisedName());
   }
 
   @Override
@@ -78,22 +81,22 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean isBlockNormalCube(IBlockState bs) {
+  public boolean isBlockNormalCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean isFullCube(IBlockState bs) {
+  public boolean isFullCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public AxisAlignedBB getBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     EnumFacing facing = getFacing(world, pos);
     return getBoundingBox(facing);
   }
@@ -130,30 +133,17 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
+  }
+  
+  @Override
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1, @Nonnull TileInventoryPanel te) {  
+    return new InventoryPanelContainer(player.inventory, te);
   }
 
   @Override
-  protected GuiID getGuiId() {
-    return GuiID.GUI_ID_INVENTORY_PANEL;
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileInventoryPanel te = getTileEntity(world, new BlockPos(x, y, z));
-    if (te != null) {
-      return new InventoryPanelContainer(player.inventory, te);
-    }
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileInventoryPanel te = getTileEntity(world, new BlockPos(x, y, z));
-    if (te != null) {
-      return new GuiInventoryPanel(te, new InventoryPanelContainer(player.inventory, te));
-    }
-    return null;
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1, @Nonnull TileInventoryPanel te) {
+    return new GuiInventoryPanel(te, new InventoryPanelContainer(player.inventory, te));
   }
 
   @Override
@@ -175,7 +165,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  public boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+  public boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
     return super.openGui(world, pos, entityPlayer, side);
   }
 

@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 public class CraftingHelper {
   final ItemStack[][] ingredients;
 
@@ -41,7 +43,7 @@ public class CraftingHelper {
     for (int idx = 0; idx < 9; idx++) {
       Slot slot = slots.get(idx);
       ItemStack stack = slot.getStack();
-      if(stack != null) {
+      if(!stack.isEmpty()) {
         stack = stack.copy();
         stack.setCount(1);
         ingredients[idx] = new ItemStack[] { stack };
@@ -66,7 +68,7 @@ public class CraftingHelper {
   }
 
   public void refill(InventoryPanelContainer container, int amount) {
-    InventoryDatabaseClient db = container.getInv().getDatabaseClient();
+    InventoryDatabaseClient db = container.getInventoryPanel().getDatabaseClient();
     if (db == null) {
       return;
     }
@@ -82,12 +84,12 @@ public class CraftingHelper {
           Slot slot = craftingGrid.get(idx);
           ItemStack stack = slot.getStack();
           if (pstack == null) {
-            if (stack != null) {
+            if (!stack.isEmpty()) {
               return;
             }
           } else {
             Candidate candidate;
-            if (stack != null) {
+            if (!stack.isEmpty()) {
               if (!isStackCompatible(pstack, stack)) {
                 return;
               }
@@ -153,10 +155,10 @@ public class CraftingHelper {
 
   private static int getSlotStackSize(Slot slot) {
     ItemStack stack = slot.getStack();
-    return (stack != null) ? stack.getCount() : 0;
+    return stack.getCount();
   }
 
-  private static boolean isStackCompatible(ItemStack[] pstack, ItemStack stack) {
+  private static boolean isStackCompatible(ItemStack[] pstack, @Nonnull ItemStack stack) {
     for (ItemStack istack : pstack) {
       if (ItemUtil.areStackMergable(stack, istack)) {
         return true;
@@ -188,7 +190,7 @@ public class CraftingHelper {
     }
   }
 
-  private Candidate findCandidates(ItemStack stack, InventoryPanelContainer container, InventoryDatabaseClient db, Candidate[] candidates) {
+  private Candidate findCandidates(@Nonnull ItemStack stack, InventoryPanelContainer container, InventoryDatabaseClient db, Candidate[] candidates) {
     for (Candidate candidate : candidates) {
       if (candidate != null && ItemUtil.areStackMergable(candidate.stack, stack)) {
         return candidate;
@@ -209,10 +211,10 @@ public class CraftingHelper {
     return candidate;
   }
 
-  private void findCandidates(Candidate candidates, ItemStack stack, Collection<Slot> slots) {
+  private void findCandidates(Candidate candidates, @Nonnull ItemStack stack, Collection<Slot> slots) {
     for (Slot slot : slots) {
       ItemStack slotStack = slot.getStack();
-      if (slotStack != null && ItemUtil.areStackMergable(slotStack, stack)) {
+      if (ItemUtil.areStackMergable(slotStack, stack)) {
         candidates.sourceSlots.add(slot);
         candidates.available += slotStack.getCount();
       }
@@ -220,13 +222,13 @@ public class CraftingHelper {
   }
 
   static class Candidate {
-    final ItemStack stack;
+    final @Nonnull ItemStack stack;
     final ArrayList<Slot> sourceSlots = new ArrayList<Slot>();
     ItemEntry entry;
     int available;
     int used;
 
-    public Candidate(ItemStack stack) {
+    public Candidate(@Nonnull ItemStack stack) {
       this.stack = stack;
     }
 

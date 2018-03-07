@@ -5,10 +5,13 @@ import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.InventorySlot;
 
 import crazypants.enderio.base.capacitor.CapacitorKeyType;
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
+import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.Scaler;
+import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -102,7 +105,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
     CLASSES.put(EnumChestSize.WAREHOUSE13, Meta8.class);
 
     for (EnumChestSize size : EnumChestSize.values()) {
-      GameRegistry.registerTileEntity(CLASSES.get(size), MachineObject.blockInventoryChest.getUnlocalisedName() + size.getName() + "TileEntity");
+      GameRegistry.registerTileEntity(CLASSES.get(size), InvpanelObject.blockInventoryChest.getUnlocalisedName() + size.getName() + "TileEntity");
     }
   }
 
@@ -122,9 +125,9 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
   // called by our block
   private TileInventoryChest(EnumChestSize size) {
     super(new EnderInventory(),
-        new DefaultCapacitorKey(MachineObject.blockInventoryChest, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 10),
-        new DefaultCapacitorKey(MachineObject.blockInventoryChest, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-        new DefaultCapacitorKey(MachineObject.blockInventoryChest, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 1)
+        new DefaultCapacitorKey(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 10),
+        new DefaultCapacitorKey(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 100000),
+        new DefaultCapacitorKey(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 1)
     );
     chestInventory = getInventory();
     this.size = size;
@@ -135,7 +138,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockInventoryChest.getUnlocalisedName();
+    return InvpanelObject.blockInventoryChest.getUnlocalisedName();
   }
 
   @Override
@@ -169,7 +172,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
   }
 
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+  public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facingIn) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && !hasPower()) {
       return false;
     }
@@ -177,7 +180,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
   }
 
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facingIn) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && !hasPower()) {
       return null;
     }
