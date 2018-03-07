@@ -72,6 +72,9 @@ public class LiquidSettings extends BaseSettingsPanel {
   private IconButton insertWhiteListB;
   private IconButton extractWhiteListB;
 
+  private final GuiToolTip insertFilterTooltip;
+  private final GuiToolTip extractFilterTooltip;
+
   public LiquidSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
     super(IconEIO.WRENCH_OVERLAY_FLUID, ConduitObject.item_liquid_conduit.getUnlocalisedName(), gui, con, "liquid_settings");
 
@@ -131,6 +134,19 @@ public class LiquidSettings extends BaseSettingsPanel {
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
     colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
+
+    insertFilterTooltip = new GuiToolTip(insertFilterBounds, Lang.GUI_LIQUID_FILTER.get()) {
+      @Override
+      public boolean shouldDraw() {
+        return super.shouldDraw() && isEnder;
+      }
+    };
+    extractFilterTooltip = new GuiToolTip(extractFilterBounds, Lang.GUI_LIQUID_FILTER.get()) {
+      @Override
+      public boolean shouldDraw() {
+        return super.shouldDraw() && isEnder;
+      }
+    };
   }
 
   private void addFilterTooltips() {
@@ -231,6 +247,9 @@ public class LiquidSettings extends BaseSettingsPanel {
       extractWhiteListB.onGuiInit();
       updateWhiteListButton(eConduit.getFilter(gui.getDir(), true), true);
     }
+
+    gui.addToolTip(insertFilterTooltip);
+    gui.addToolTip(extractFilterTooltip);
   }
 
   private void updateWhiteListButton(FluidFilter filter, boolean isInput) {
@@ -265,6 +284,9 @@ public class LiquidSettings extends BaseSettingsPanel {
       insertWhiteListB.detach();
       extractWhiteListB.detach();
     }
+
+    gui.removeToolTip(insertFilterTooltip);
+    gui.removeToolTip(extractFilterTooltip);
   }
 
   @Override

@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.filter.filters.ModItemFilter;
@@ -37,6 +38,10 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
   private final int inputOffsetX;
   private final int tfWidth;
 
+  private final GuiToolTip stackInsertTooltip1;
+  private final GuiToolTip stackInsertTooltip2;
+  private final GuiToolTip stackInsertTooltip3;
+
   public ModItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
     super(playerInv, filterContainer, te, "mod_item_filter");
 
@@ -45,6 +50,10 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
     tfWidth = 96;
 
     inputBounds = new Rectangle[] { new Rectangle(inputOffsetX, 46, 16, 16), new Rectangle(inputOffsetX, 68, 16, 16), new Rectangle(inputOffsetX, 90, 16, 16) };
+
+    stackInsertTooltip1 = new GuiToolTip(inputBounds[0], Lang.GUI_MOD_ITEM_FILTER_SLOT.get());
+    stackInsertTooltip2 = new GuiToolTip(inputBounds[1], Lang.GUI_MOD_ITEM_FILTER_SLOT.get());
+    stackInsertTooltip3 = new GuiToolTip(inputBounds[2], Lang.GUI_MOD_ITEM_FILTER_SLOT.get());
 
     deleteButs = new IconButton[inputBounds.length];
     for (int i = 0; i < deleteButs.length; i++) {
@@ -73,6 +82,10 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
       whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
       whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
     }
+
+    addToolTip(stackInsertTooltip1);
+    addToolTip(stackInsertTooltip2);
+    addToolTip(stackInsertTooltip3);
   }
 
   @Override

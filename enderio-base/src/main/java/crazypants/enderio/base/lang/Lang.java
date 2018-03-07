@@ -114,6 +114,7 @@ public enum Lang implements ILang {
   GUI_EXISTING_ITEM_FILTER_SHOW_2(".gui.existing.item_filter.show2"),
 
   GUI_MOD_ITEM_FILTER_DELETE(".gui.mod.item_filter.delete"),
+  GUI_MOD_ITEM_FILTER_SLOT(".gui.mod.item_filter.slot"),
 
   GUI_POWER_ITEM_FILTER_COMPARE(".gui.power.item_filter.compare"),
   GUI_POWER_ITEM_FILTER_PERCENT(".gui.power.item_filter.percent"),
