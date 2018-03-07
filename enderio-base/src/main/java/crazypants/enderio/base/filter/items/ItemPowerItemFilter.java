@@ -51,12 +51,6 @@ public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade, IRe
     return filter;
   }
 
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public void registerIcons(IIconRegister IIconRegister) {
-  // itemIcon = IIconRegister.registerIcon("enderio:filterUpgradePower");
-  // }
-
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
     return getUnlocalizedName();

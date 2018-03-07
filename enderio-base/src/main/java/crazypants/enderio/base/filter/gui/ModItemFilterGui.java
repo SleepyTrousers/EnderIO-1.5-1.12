@@ -51,9 +51,9 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
 
     inputBounds = new Rectangle[] { new Rectangle(inputOffsetX, 46, 16, 16), new Rectangle(inputOffsetX, 68, 16, 16), new Rectangle(inputOffsetX, 90, 16, 16) };
 
-    stackInsertTooltip1 = new GuiToolTip(inputBounds[0], "Input Slot");
-    stackInsertTooltip2 = new GuiToolTip(inputBounds[1], "Input Slot");
-    stackInsertTooltip3 = new GuiToolTip(inputBounds[2], "Input Slot");
+    stackInsertTooltip1 = new GuiToolTip(inputBounds[0], Lang.GUI_MOD_ITEM_FILTER_SLOT.get());
+    stackInsertTooltip2 = new GuiToolTip(inputBounds[1], Lang.GUI_MOD_ITEM_FILTER_SLOT.get());
+    stackInsertTooltip3 = new GuiToolTip(inputBounds[2], Lang.GUI_MOD_ITEM_FILTER_SLOT.get());
 
     deleteButs = new IconButton[inputBounds.length];
     for (int i = 0; i < deleteButs.length; i++) {

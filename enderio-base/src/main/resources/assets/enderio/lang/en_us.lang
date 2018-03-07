@@ -948,6 +948,7 @@ enderio.gui.existing.item_filter.clear2=Clear the snapshot
 enderio.gui.existing.item_filter.show2=Show the current snapshot
 
 enderio.gui.mod.item_filter.delete=Delete
+enderio.gui.mod.item_filter.slot=Input Slot
 
 enderio.gui.power.item_filter.compare=Comparison Mode
 enderio.gui.power.item_filter.percent=Power Percentage

@@ -135,13 +135,13 @@ public class LiquidSettings extends BaseSettingsPanel {
     colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
 
-    insertFilterTooltip = new GuiToolTip(insertFilterBounds, "Insert Filter") {
+    insertFilterTooltip = new GuiToolTip(insertFilterBounds, Lang.GUI_LIQUID_FILTER.get()) {
       @Override
       public boolean shouldDraw() {
         return super.shouldDraw() && isEnder;
       }
     };
-    extractFilterTooltip = new GuiToolTip(extractFilterBounds, "Extact Filter") {
+    extractFilterTooltip = new GuiToolTip(extractFilterBounds, Lang.GUI_LIQUID_FILTER.get()) {
       @Override
       public boolean shouldDraw() {
         return super.shouldDraw() && isEnder;
