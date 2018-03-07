@@ -41,7 +41,7 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
     super(playerInv, filterContainer, te, "mod_item_filter");
 
     filter = (ModItemFilter) filterContainer.getItemFilter();
-    inputOffsetX = 50;
+    inputOffsetX = getGuiLeft() + 20;
     tfWidth = 96;
 
     inputBounds = new Rectangle[] { new Rectangle(inputOffsetX, 46, 16, 16), new Rectangle(inputOffsetX, 68, 16, 16), new Rectangle(inputOffsetX, 90, 16, 16) };
@@ -50,10 +50,11 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
     for (int i = 0; i < deleteButs.length; i++) {
       Rectangle r = inputBounds[i];
       IconButton but = new IconButton(this, FilterGuiUtil.nextButtonId(), r.x + 19, r.y, IconEIO.MINUS);
+      but.setToolTip(Lang.GUI_MOD_ITEM_FILTER_DELETE.get());
       deleteButs[i] = but;
     }
 
-    whiteListB = new IconButton(this, -1, inputOffsetX - 19, 90, IconEIO.FILTER_WHITELIST);
+    whiteListB = new IconButton(this, -1, inputOffsetX + 19, 24, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
   }
 

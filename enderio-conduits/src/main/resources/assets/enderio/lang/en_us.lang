@@ -118,7 +118,7 @@ enderio.gui.conduit_disabled_mode=Disabled
 
 enderio.gui.conduit_channel=Channel
 enderio.gui.round_robin_enabled=Round Robin Enabled
-enderio.gui.round_robin_disabled=Round Robing Disabled
+enderio.gui.round_robin_disabled=Round Robin Disabled
 enderio.gui.self_feed_enabled=Self Feed Enabled
 enderio.gui.self_feed_disabled=Self Feed Disabled
 enderio.gui.item_filter_upgrade=Insert Filter Upgrade

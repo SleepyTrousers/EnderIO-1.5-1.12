@@ -57,12 +57,12 @@ public enum Lang implements ILang {
   SOUL_VIAL_FLUID("item.item_soul_vial.tooltip.fluidname"),
   SOUL_VIAL_COLOR("item.item_soul_vial.tooltip.color"),
   SOUL_VIAL_EMPTY("item.item_soul_vial.tooltip.empty"),
-  CONDUIT_FILTER("itemConduitFilterUpgrade"),
-  CONDUIT_FILTER_CONFIGURED("itemConduitFilterUpgrade.configured"),
-  CONDUIT_FILTER_CLEAR("itemConduitFilterUpgrade.clearConfigMethod"),
-  CONDUIT_FILTER_CLEAR_WARNING("itemConduitFilterUpgrade.clearConfigWarning"),
-  CONDUIT_FILTER_UPDATED("item.itemExistingItemFilter.filterUpdated"),
-  CONDUIT_FILTER_NOTUPDATED("item.itemExistingItemFilter.filterNotUpdated"),
+  CONDUIT_FILTER(".item_conduit_filter_upgrade"),
+  CONDUIT_FILTER_CONFIGURED(".item_conduit_filter_upgrade.configured"),
+  CONDUIT_FILTER_CLEAR(".item_conduit_filter_upgrade.clear_config_method"),
+  CONDUIT_FILTER_CLEAR_WARNING(".item_conduit_filter_upgrade.clear_config_warning"),
+  CONDUIT_FILTER_UPDATED(".item.item_existing_item_filter.filter_updated"),
+  CONDUIT_FILTER_NOTUPDATED(".item.item_existing_item_filter.filter_not_updated"),
   POWER_SYMBOL(".power.symbol"),
   POWER(".power.format"),
   POWER_OF(".power.format.of"),
@@ -88,6 +88,7 @@ public enum Lang implements ILang {
   GUI_PROBE_COPIED(".gui.probe.copied"),
 
   // FILTERS
+  GUI_EDIT_ITEM_FILTER(".gui.edit_item_filter"),
   GUI_ITEM_FILTER_CLOSE(".gui.item_filter.close"),
   GUI_ITEM_FILTER_CLOSE_2(".gui.item_filter.close2"),
 
@@ -108,6 +109,14 @@ public enum Lang implements ILang {
   GUI_EXISTING_ITEM_FILTER_MERGE(".gui.existing.item_filter.merge"),
   GUI_EXISTING_ITEM_FILTER_CLEAR(".gui.existing.item_filter.clear"),
   GUI_EXISTING_ITEM_FILTER_SHOW(".gui.existing.item_filter.show"),
+  GUI_EXISTING_ITEM_FILTER_MERGE_2(".gui.existing.item_filter.merge2"),
+  GUI_EXISTING_ITEM_FILTER_CLEAR_2(".gui.existing.item_filter.clear2"),
+  GUI_EXISTING_ITEM_FILTER_SHOW_2(".gui.existing.item_filter.show2"),
+
+  GUI_MOD_ITEM_FILTER_DELETE(".gui.mod.item_filter.delete"),
+
+  GUI_POWER_ITEM_FILTER_COMPARE(".gui.power.item_filter.compare"),
+  GUI_POWER_ITEM_FILTER_PERCENT(".gui.power.item_filter.percent"),
 
   ;
 

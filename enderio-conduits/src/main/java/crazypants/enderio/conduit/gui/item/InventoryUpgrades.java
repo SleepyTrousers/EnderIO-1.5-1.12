@@ -2,9 +2,9 @@ package crazypants.enderio.conduit.gui.item;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.conduit.item.ItemExtractSpeedUpgrade;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandlerModifiable;

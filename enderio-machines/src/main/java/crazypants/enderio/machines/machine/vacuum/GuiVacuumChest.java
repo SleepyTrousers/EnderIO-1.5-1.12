@@ -88,6 +88,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO implements IOpenFilterRe
     });
 
     openFilterGuiB = new IconButton(this, ID_OPEN_FILTER, FILTER_LEFT, FILTER_TOP, IconEIO.GEAR_LIGHT);
+    openFilterGuiB.setToolTip(crazypants.enderio.base.lang.Lang.GUI_EDIT_ITEM_FILTER.get());
 
     headerChest = Lang.GUI_VACUUM_CHEST.get();
     headerFilter = Lang.GUI_VACUUM_FILTER.get();

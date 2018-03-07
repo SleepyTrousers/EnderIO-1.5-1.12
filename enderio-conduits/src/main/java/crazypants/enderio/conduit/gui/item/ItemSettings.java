@@ -92,7 +92,7 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     x += 4 + extractChannelB.getWidth();
     roundRobinB = new ToggleButton(gui, ID_ROUND_ROBIN, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
     roundRobinB.setSelectedToolTip(Lang.GUI_ROUND_ROBIN_ENABLED.get());
-    roundRobinB.setUnselectedToolTip(Lang.GUI_ROUND_ROBIN_ENABLED.get());
+    roundRobinB.setUnselectedToolTip(Lang.GUI_ROUND_ROBIN_DISABLED.get());
     roundRobinB.setPaintSelectedBorder(false);
 
     x += 4 + roundRobinB.getWidth();
@@ -190,10 +190,12 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     y = 92;
 
     insertFilterOptionsB = new IconButton(gui, ID_INSERT_FILTER_OPTIONS, x, y, IconEIO.GEAR_LIGHT);
+    insertFilterOptionsB.setToolTip(crazypants.enderio.base.lang.Lang.GUI_EDIT_ITEM_FILTER.get());
 
     x = rightColumn;
 
     extractFilterOptionsB = new IconButton(gui, ID_EXTRACT_FILTER_OPTIONS, x, y, IconEIO.GEAR_LIGHT);
+    extractFilterOptionsB.setToolTip(crazypants.enderio.base.lang.Lang.GUI_EDIT_ITEM_FILTER.get());
 
     gui.getContainer().setInOutSlotsVisible(true, true);
 

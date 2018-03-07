@@ -31,12 +31,12 @@ public abstract class AbstractGuiItemFilter extends GuiContainerBaseEIO implemen
   protected AbstractGuiItemFilter(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull String... texture) {
     super(filterContainer, texture);
     this.filterContainer = filterContainer;
-    xSize = 182;
-    ySize = 200;
+    xSize = 189;
+    ySize = 207;
 
     isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_OUTPUT);
 
-    closeWindowButton = new IconButton(this, ID_CLOSE_WINDOW_BUTTON, 3, 3, IconEIO.MINUS);
+    closeWindowButton = new IconButton(this, ID_CLOSE_WINDOW_BUTTON, 3, 3, IconEIO.ARROW_LEFT);
     closeWindowButton.setToolTip(Lang.GUI_ITEM_FILTER_CLOSE.get(), Lang.GUI_ITEM_FILTER_CLOSE_2.get());
   }
 

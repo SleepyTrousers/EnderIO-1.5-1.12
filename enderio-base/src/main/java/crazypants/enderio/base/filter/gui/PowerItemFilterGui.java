@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.gui.button.TooltipButton;
 
 import crazypants.enderio.base.filter.filters.PowerItemFilter;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
@@ -24,8 +25,8 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
 
   private final @Nonnull ToggleButton stickyB;
 
-  private final @Nonnull GuiButton modeB;
-  private final @Nonnull GuiButton levelB;
+  private final @Nonnull TooltipButton modeB;
+  private final @Nonnull TooltipButton levelB;
 
   private final @Nonnull PowerItemFilter filter;
 
@@ -35,8 +36,8 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
     filter = (PowerItemFilter) filterContainer.getItemFilter();
 
     int butLeft = 13;
-    int x = butLeft;
-    int y = 34;
+    int x = getGuiLeft() + butLeft;
+    int y = getGuiTop() + 34;
 
     x += 20;
     stickyB = new ToggleButton(this, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
@@ -44,13 +45,13 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
     stickyB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_DISABLED.get());
     stickyB.setPaintSelectedBorder(false);
 
-    x += 28;
-    int x1 = x + 116;
-    int y1 = y + 18;
-    modeB = new GuiButton(ID_MORE, x1, y1, 40, 20, "");
+    x += 24;
+    modeB = new TooltipButton(this, ID_MORE, x, y, 40, 20, "");
+    modeB.setToolTip(Lang.GUI_POWER_ITEM_FILTER_COMPARE.get());
 
-    x1 += 46;
-    levelB = new GuiButton(ID_LEVEL, x1, y1, 40, 20, "");
+    x += 44;
+    levelB = new TooltipButton(this, ID_LEVEL, x, y, 40, 20, "");
+    levelB.setToolTip(Lang.GUI_POWER_ITEM_FILTER_PERCENT.get());
   }
 
   @Override
@@ -84,8 +85,8 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
 
     levelB.displayString = String.format("%d%%", filter.getLevel() * 100 / PowerItemFilter.MAX_LEVEL);
 
-    addButton(modeB);
-    addButton(levelB);
+    modeB.onGuiInit();
+    levelB.onGuiInit();
   }
 
   @Override
