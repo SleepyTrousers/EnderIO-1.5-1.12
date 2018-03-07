@@ -178,7 +178,7 @@ allprojects {
         file {
           whenMerged {
             entries.each { e ->
-              if (e.path.contains('gradleclasspathcontainer') || e instanceof AbstractClasspathEntry) {
+              if (e.path.contains('gradleclasspathcontainer') || e.path.contains('org.eclipse.jdt.launching.JRE_CONTAINER')) {
                 // Safety check that EC exists, otherwise we can't add this without breaking eclipse setup
                 e.entryAttributes['annotationpath'] = localEnderCore ? '/EnderCore/externalannotations' : null
               }

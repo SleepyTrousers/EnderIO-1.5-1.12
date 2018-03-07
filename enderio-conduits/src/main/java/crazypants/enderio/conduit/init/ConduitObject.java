@@ -12,8 +12,6 @@ import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.registry.Registry;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.EnderIOConduits;
-import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
-import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.conduit.item.ItemItemConduit;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
@@ -35,12 +33,7 @@ public enum ConduitObject implements IModObject.Registerable {
   item_item_conduit(ItemItemConduit.class),
   item_liquid_conduit(ItemLiquidConduit.class),
   item_power_conduit(ItemPowerConduit.class),
-  item_redstone_conduit(ItemRedstoneConduit.class),
-
-  item_extract_speed_upgrade(ItemExtractSpeedUpgrade.class),
-  item_function_upgrade(ItemFunctionUpgrade.class),
-
-  ;
+  item_redstone_conduit(ItemRedstoneConduit.class),;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
@@ -58,11 +51,15 @@ public enum ConduitObject implements IModObject.Registerable {
   protected final @Nullable IModTileEntity modTileEntity;
 
   private ConduitObject(@Nonnull Class<?> clazz) {
-    this(clazz, null);
+    this(clazz, (IModTileEntity) null);
   }
-  
+
   private ConduitObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
     this(clazz, "create", modTileEntity);
+  }
+
+  private ConduitObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
+    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, null);
   }
 
   private ConduitObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nullable IModTileEntity modTileEntity) {

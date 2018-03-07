@@ -3,19 +3,21 @@ package crazypants.enderio.machine.invpanel.chest;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.property.EnumRenderMode;
-import crazypants.enderio.machine.InvPanelObject;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -36,17 +38,17 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest>
-    implements IResourceTooltipProvider, ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
+    implements IResourceTooltipProvider, ISmartRenderAwareBlock, ICustomSubItems, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  public static BlockInventoryChest create() {
+  public static BlockInventoryChest create(@Nonnull IModObject mo) {
     TileInventoryChest.create();
-    BlockInventoryChest res = new BlockInventoryChest();
+    BlockInventoryChest res = new BlockInventoryChest(mo);
     res.init();
     return res;
   }
 
-  protected BlockInventoryChest() {
-    super(InvPanelObject.blockInventoryChest, TileInventoryChest.class);
+  protected BlockInventoryChest(@Nonnull IModObject mo) {
+    super(mo);
     initDefaultState();
   }
 
@@ -62,17 +64,17 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
     return getDefaultState().withProperty(EnumChestSize.SIZE, EnumChestSize.getTypeFromMeta(meta));
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     return EnumChestSize.getMetaFromType(state.getValue(EnumChestSize.SIZE));
   }
 
   @Override
-  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+  public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     return state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO);
   }
 
@@ -84,7 +86,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return RenderMappers.FRONT_MAPPER;
   }
 
@@ -97,18 +99,17 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   // NO GUI
 
   @Override
-  public Container getServerGuiElement(EntityPlayer player, World world, BlockPos pos, EnumFacing facing, int param1, TileInventoryChest te) {
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1, @Nonnull TileInventoryChest te) {
+    return null;
+  }
+  
+  @Override
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1, @Nonnull TileInventoryChest te) {
     return null;
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public GuiScreen getClientGuiElement(EntityPlayer player, World world, BlockPos pos, EnumFacing facing, int param1, TileInventoryChest te) {
-    return null;
-  }
-
-  @Override
-  public boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, int param) {
+  protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
     return false;
   }
 
@@ -116,17 +117,17 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
 
   }
 
   @Override
-  public boolean hasComparatorInputOverride(IBlockState state) {
+  public boolean hasComparatorInputOverride(@Nonnull IBlockState state) {
     return true;
   }
 
   @Override
-  public int getComparatorInputOverride(IBlockState blockStateIn, World worldIn, BlockPos pos) {
+  public int getComparatorInputOverride(@Nonnull IBlockState blockStateIn, @Nonnull World worldIn, @Nonnull BlockPos pos) {
     TileInventoryChest te = getTileEntitySafe(worldIn, pos);
     if (te != null) {
       return te.getComparatorInputOverride();
@@ -135,22 +136,23 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   }
 
   @Override
-  public @Nonnull TileEntity createTileEntity(World world, IBlockState state) {
+  public @Nonnull TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
     TileInventoryChest te = TileInventoryChest.create(state.getValue(EnumChestSize.SIZE));
     te.init();
     return te;
   }
 
   @Override
-  public boolean hasTileEntity(IBlockState state) {
+  public boolean hasTileEntity(@Nonnull IBlockState state) {
     return true;
   }
-
+  
   @Override
-  public Item createBlockItem(IModObject modObject) {
+  @Nullable
+  public Item createBlockItem(@Nonnull IModObject modObject) {
     ItemBlock ib = new ItemBlock(this) {
       @Override
-      public String getUnlocalizedName(ItemStack stack) {
+      public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
         return EnumChestSize.getTypeFromMeta(stack.getMetadata()).getUnlocalizedName(this);
       }
 
@@ -165,15 +167,22 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   }
 
   @Override
-  public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     for (EnumChestSize size : EnumChestSize.values()) {
       list.add(new ItemStack(this, 1, EnumChestSize.getMetaFromType(size)));
     }
   }
 
   @Override
-  public int damageDropped(IBlockState state) {
+  public int damageDropped(@Nonnull IBlockState state) {
     return getMetaFromState(state);
+  }
+
+  @Override
+  @Nonnull
+  public NNList<ItemStack> getSubItems() {
+    return getSubItems(this, EnumChestSize.values().length);
   }
 
 }

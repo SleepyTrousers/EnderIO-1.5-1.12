@@ -35,6 +35,7 @@ import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.conduitprobe.ItemConduitProbe;
+import crazypants.enderio.base.machine.interfaces.IYetaAwareBlock;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
@@ -77,6 +78,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
@@ -91,7 +93,7 @@ import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
 
 public class BlockConduitBundle extends BlockEio<TileConduitBundle>
-    implements IEioGuiHandler.WithPos, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
+    implements IEioGuiHandler.WithPos, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IYetaAwareBlock {
 
   public static BlockConduitBundle create(@Nonnull IModObject modObject) {
     BlockConduitBundle result = new BlockConduitBundle(modObject);
@@ -821,7 +823,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     // items, which are then sent to the client for display
     TileConduitBundle te = getTileEntity(world, pos);
     if (te != null) {
-      return new ExternalConnectionContainer(player.inventory, facing, te);
+      return new ExternalConnectionContainer(player.inventory, EnumFacing.getFront(param1), te);
     }
     return null;
   }
@@ -990,17 +992,11 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   }
 
   public @Nonnull List<RaytraceResult> doRayTraceAll(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer) {
-    double pitch = Math.toRadians(entityPlayer.rotationPitch);
-    double yaw = Math.toRadians(entityPlayer.rotationYaw);
-
-    double dirX = -Math.sin(yaw) * Math.cos(pitch);
-    double dirY = -Math.sin(pitch);
-    double dirZ = Math.cos(yaw) * Math.cos(pitch);
-
     double reachDistance = EnderIO.proxy.getReachDistanceForPlayer(entityPlayer);
 
     Vec3d origin = Util.getEyePosition(entityPlayer);
-    Vec3d direction = origin.addVector(dirX * reachDistance, dirY * reachDistance, dirZ * reachDistance);
+    Vec3d look = entityPlayer.getLook(EnderIOConduits.proxy.getPartialTicks());
+    Vec3d direction = origin.add(look.scale(reachDistance));
     return doRayTraceAll(world.getBlockState(pos), world, pos, origin, direction, entityPlayer);
   }
 

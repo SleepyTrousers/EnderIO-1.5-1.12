@@ -721,11 +721,11 @@ tile.fluid.cloud_seed_concentrated.name=Concentrated Cloud Seed
 fluid.xpjuice=Liquid XP
 tile.fluid.xpjuice.name=Liquid XP
 
-enderio.itemConduitFilterUpgrade=Upgrade for item conduits
+enderio.item_conduit_filter_upgrade=Upgrade for item conduits
 
-enderio.itemConduitFilterUpgrade.configured=%sConfigured
-enderio.itemConduitFilterUpgrade.clearConfigMethod=%sPlace in crafting grid to clear
-enderio.itemConduitFilterUpgrade.clearConfigWarning=%sThis will clear all stored filter settings!
+enderio.item_conduit_filter_upgrade.configured=%sConfigured
+enderio.item_conduit_filter_upgrade.clear_config_method=%sPlace in crafting grid to clear
+enderio.item_conduit_filter_upgrade.clear_config_warning=%sThis will clear all stored filter settings!
 
 enderio.gui.generic.max=Max: %s
 enderio.gui.generic.progress=Progress %s%%
@@ -909,3 +909,53 @@ enderio.advancement.gear.g4_energized_gear.desc=It's not round but glows
 enderio.advancement.gear.g5_vibrant_gear.name=Turns by itself
 enderio.advancement.gear.g5_vibrant_gear.desc=One moving part
 
+# Filters
+enderio.gui.item_filter.damage.disabled=Ignore Damage
+enderio.gui.item_filter.damage.damage_00_25=Up to 25% Damaged
+enderio.gui.item_filter.damage.damage_25_00=More than 25% Damaged
+enderio.gui.item_filter.damage.damage_00_50=Up to 50% Damaged
+enderio.gui.item_filter.damage.damage_50_00=More than 50% Damaged
+enderio.gui.item_filter.damage.damage_00_75=Up to 75% Damaged
+enderio.gui.item_filter.damage.damage_75_00=More than 75% Damaged
+enderio.gui.item_filter.damage.damage_00_00=Not Damaged
+enderio.gui.item_filter.damage.damage_01_00=Damaged
+enderio.gui.item_filter.damage.damage_yes=Can be Damaged
+enderio.gui.item_filter.damage.damage_not=Cannot be Damaged
+
+enderio.gui.edit_item_filter=Edit Filter Settings
+enderio.gui.item_filter.close=Close Filter
+enderio.gui.item_filter.close2=Go back to previous inventory
+
+enderio.gui.item_filter.whitelist=Whitelist
+enderio.gui.item_filter.blacklist=Blacklist
+enderio.gui.item_filter.match_meta=Match Metadata
+enderio.gui.item_filter.ignore_meta=Ignore Metadata
+enderio.gui.item_filter.sticky_enabled=Sticky Mode Enabled
+enderio.gui.item_filter.sticky_enabled2=Selected items will only be sent to this or other sticky outputs
+enderio.gui.item_filter.sticky_disabled=Sticky Mode Disabled
+enderio.gui.item_filter.ore_dic_enabled=Ore Dictionary Enabled
+enderio.gui.item_filter.ore_dic_disabled=Ore Dictionary Disabled
+enderio.gui.item_filter.match_nbt=Match NBT
+enderio.gui.item_filter.ignore_nbt=Ignore NBT
+
+enderio.gui.existing.item_filter.snapshot=Snapshot
+enderio.gui.existing.item_filter.merge=Merge
+enderio.gui.existing.item_filter.clear=Clear
+enderio.gui.existing.item_filter.show=Show
+enderio.gui.existing.item_filter.snapshot2=Optional: If no snapshot is set, the inventory content will be used as filter
+enderio.gui.existing.item_filter.merge2=Merge the current snapshot with a new one
+enderio.gui.existing.item_filter.clear2=Clear the snapshot
+enderio.gui.existing.item_filter.show2=Show the current snapshot
+
+enderio.gui.mod.item_filter.delete=Delete
+enderio.gui.mod.item_filter.slot=Input Slot
+
+enderio.gui.power.item_filter.compare=Comparison Mode
+enderio.gui.power.item_filter.percent=Power Percentage
+
+item.item_basic_item_filter.name=Basic Item Filter
+item.item_advanced_item_filter.name=Advanced Item Filter
+item.item_limited_item_filter.name=Limited Item Filter
+item.item_existing_item_filter.name=Existing Item Filter
+item.item_mod_item_filter.name=Mod Item Filter
+item.item_power_item_filter.name=Power Item Filter

@@ -7,6 +7,4 @@ package crazypants.enderio.base.machine.interfaces;
  */
 public interface IYetaAwareBlock {
 
-  // TODO 1.11: add to conduit bundle
-
 }

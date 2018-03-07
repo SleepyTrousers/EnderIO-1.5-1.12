@@ -24,16 +24,17 @@ import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
-import crazypants.enderio.machine.InvPanelObject;
 import crazypants.enderio.machine.invpanel.client.ClientDatabaseManager;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
+import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.enderio.HandleStoredCraftingRecipe.HandleStoredCraftingRecipeArrayList;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -43,6 +44,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 @Storable
 public class TileInventoryPanel extends AbstractInventoryMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank {
@@ -81,7 +83,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   public TileInventoryPanel() {
     super(new SlotDefinition(0, 8, 11, 20, 21, 20));
-    this.fuelTank = new SmartTank(Fluids.fluidNutrientDistillation, Config.inventoryPanelFree ? 0 : 2000);
+    this.fuelTank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), /*TODO Config.inventoryPanelFree*/ false ? 0 : 2000);
     this.fuelTank.setTileEntity(this);
     this.fuelTank.setCanDrain(false);
     this.storedCraftingRecipes = new ArrayList<StoredCraftingRecipe>();
@@ -107,13 +109,13 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
 
   @Override
-  public boolean canInsertItem(int slot, ItemStack itemstack, EnumFacing side) {  
+  public boolean isValidInput(@Nonnull ItemStack itemstack) {
     return false;
   }
-
+  
   @Override
-  protected boolean canExtractItem(int slot, ItemStack itemstack) {
-    return !extractionDisabled && super.canExtractItem(slot, itemstack);
+  public boolean isValidOutput(@Nonnull ItemStack itemstack) {
+    return !extractionDisabled && super.isValidOutput(itemstack);
   }
 
   @Override
@@ -124,13 +126,15 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     return true;
   }
 
+  private static IInventory emptyInventory = new InventoryBasic("[Null]", true, 0);
+
   @Override
-  public ItemStack decrStackSize(int fromSlot, int amount) {
+  public @Nonnull ItemStack decrStackSize(int fromSlot, int amount) {
     ItemStack res = super.decrStackSize(fromSlot, amount);
-    if(res != null && fromSlot < SLOT_CRAFTING_RESULT && eventHandler != null) {
-      eventHandler.onCraftMatrixChanged(this);
+    if(!res.isEmpty() && fromSlot < SLOT_CRAFTING_RESULT && eventHandler != null) {
+      eventHandler.onCraftMatrixChanged(emptyInventory);
     }
-    if(res != null && fromSlot == SLOT_VIEW_FILTER) {
+    if(!res.isEmpty() && fromSlot == SLOT_VIEW_FILTER) {
       updateItemFilter();
     }
     return res;
@@ -140,7 +144,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
     if(slot < SLOT_CRAFTING_RESULT && eventHandler != null) {
-      eventHandler.onCraftMatrixChanged(this);
+      eventHandler.onCraftMatrixChanged(emptyInventory);
     }
     if(slot == SLOT_VIEW_FILTER) {
       updateItemFilter();
@@ -157,7 +161,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public boolean isActive() {
-    return Config.inventoryPanelFree || active;
+    return /* TODO Config.inventoryPanelFree || */active;
   }
 
   @Override
@@ -334,7 +338,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public @Nonnull String getMachineName() {
-    return InvPanelObject.blockInventoryPanel.getUnlocalisedName();
+    return InvpanelObject.blockInventoryPanel.getUnlocalisedName();
   }
 
   @Override
@@ -364,7 +368,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
 
   @Override
-  public FluidTank[] getOutputTanks() {
+  public @Nonnull FluidTank[] getOutputTanks() {
     return new FluidTank[0];
   }
 

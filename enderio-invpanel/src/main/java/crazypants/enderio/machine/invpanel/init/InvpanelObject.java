@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.invpanel.init;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -7,31 +7,29 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.machine.EnderIOInvpanel;
 import crazypants.enderio.machine.invpanel.BlockInventoryPanel;
 import crazypants.enderio.machine.invpanel.chest.BlockInventoryChest;
-import crazypants.enderio.machine.invpanel.sensor.BlockInventoryPanelSensor;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber(modid = EnderIOInvPanel.MODID)
-public enum InvPanelObject implements IModObject.Registerable {
-
-  blockInventoryPanel(BlockInventoryPanel.class),
-  blockInventoryChest(BlockInventoryChest.class),
-  blockInventoryPanelSensor(BlockInventoryPanelSensor.class),
-
+@EventBusSubscriber(modid = EnderIOInvpanel.MODID)
+public enum InvpanelObject implements IModObject.Registerable {
+  
+  blockInventoryPanel(BlockInventoryPanel.class, InvpanelTileEntity.TileInventoryPanel),
+  blockInventoryChest(BlockInventoryChest.class, InvpanelTileEntity.TileInventoryChest),
   ;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
-    ModObjectRegistry.addModObjects(InvPanelObject.class);
+    ModObjectRegistry.addModObjects(InvpanelObject.class);
   }
 
   final @Nonnull String unlocalisedName;
@@ -41,25 +39,21 @@ public enum InvPanelObject implements IModObject.Registerable {
 
   protected final @Nonnull Class<?> clazz;
   protected final @Nullable String blockMethodName, itemMethodName;
-  protected final @Nullable Class<? extends TileEntity> teClazz;
+  protected final @Nullable IModTileEntity modTileEntity;
 
-  private InvPanelObject(@Nonnull Class<?> clazz) {
-    this(clazz, "create", (Class<? extends TileEntity>) null);
+  private InvpanelObject(@Nonnull Class<?> clazz) {
+    this(clazz, (IModTileEntity) null);
   }
 
-  private InvPanelObject(@Nonnull Class<?> clazz, Class<? extends TileEntity> teClazz) {
-    this(clazz, "create", teClazz);
+  private InvpanelObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
+    this(clazz, "create", modTileEntity);
   }
 
-  private InvPanelObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
-    this(clazz, methodName, (Class<? extends TileEntity>) null);
+  private InvpanelObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
+    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, null);
   }
 
-  private InvPanelObject(@Nonnull Class<?> clazz, @Nonnull String blockMethodName, @Nonnull String itemMethodName) {
-    this(clazz, blockMethodName, itemMethodName, null);
-  }
-
-  private InvPanelObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity> teClazz) {
+  private InvpanelObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nullable IModTileEntity modTileEntity) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     if (Block.class.isAssignableFrom(clazz)) {
@@ -71,15 +65,15 @@ public enum InvPanelObject implements IModObject.Registerable {
     } else {
       throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
     }
-    this.teClazz = teClazz;
+    this.modTileEntity = modTileEntity;
   }
 
-  private InvPanelObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity> teClazz) {
+  private InvpanelObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, @Nullable IModTileEntity modTileEntity) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
     this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
     this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    this.teClazz = teClazz;
+    this.modTileEntity = modTileEntity;
   }
 
   @Override
@@ -121,10 +115,10 @@ public enum InvPanelObject implements IModObject.Registerable {
     return item;
   }
 
-  @Nullable
   @Override
-  public Class<? extends TileEntity> getTileClass() {
-    return teClazz;
+  @Nullable
+  public IModTileEntity getTileEntity() {
+    return modTileEntity;
   }
 
   @Override

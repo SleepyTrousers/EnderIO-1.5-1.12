@@ -17,4 +17,8 @@ public class CommonProxy {
   public void init(@Nonnull FMLPostInitializationEvent event) {
   }
 
+  public float getPartialTicks() {
+    return 1;
+  }
+
 }

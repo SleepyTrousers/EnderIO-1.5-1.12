@@ -6,19 +6,26 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.filter.gui.IItemFilterContainer;
-import crazypants.enderio.base.filter.gui.IItemFilterGui;
-import crazypants.enderio.base.gui.GuiContainerBaseEIO;
+import crazypants.enderio.base.init.ModObjectRegistry;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 
 public interface IItemFilter {
 
-  @SideOnly(Side.CLIENT)
-  IItemFilterGui getGui(@Nonnull GuiContainerBaseEIO gui, @Nonnull IItemFilterContainer filterContainer, boolean isStickyModeAvailable);
+  default void openGui(@Nonnull EntityPlayer player, @Nonnull ItemStack filter, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing dir,
+      int param1) {
+    ModObjectRegistry.getModObjectNN(filter.getItem()).openGui(worldIn, pos, player, dir, param1);
+  }
+
+  default void openGui(@Nonnull EntityPlayer player, @Nonnull ItemStack filter, @Nonnull World worldIn, @Nonnull BlockPos pos) {
+    ModObjectRegistry.getModObjectNN(filter.getItem()).openGui(worldIn, pos, player);
+  }
 
   void readFromNBT(@Nonnull NBTTagCompound nbtRoot);
 
@@ -37,7 +44,7 @@ public interface IItemFilter {
    *          the item to check
    * @return true if the item is allowed to pass
    */
-  default boolean doesItemPassFilter(@Nullable INetworkedInventory inv, @Nonnull ItemStack item) {
+  default boolean doesItemPassFilter(@Nullable IItemHandler inv, @Nonnull ItemStack item) {
     return getMaxCountThatPassesFilter(inv, item) > 0;
   };
 
@@ -51,7 +58,7 @@ public interface IItemFilter {
    * @return false if the item is not allowed to pass, otherwise the maximum number of items that pass. If the filter doesn't impose a limit, the item's max
    *         stacksize is returned.
    */
-  default int getMaxCountThatPassesFilter(@Nullable INetworkedInventory inv, @Nonnull ItemStack item) {
+  default int getMaxCountThatPassesFilter(@Nullable IItemHandler inv, @Nonnull ItemStack item) {
     return doesItemPassFilter(inv, item) ? item.getMaxStackSize() : 0;
   };
 
@@ -68,7 +75,10 @@ public interface IItemFilter {
     return false;
   };
 
-  void createGhostSlots(@Nonnull NNList<GhostSlot> slots, int xOffset, int yOffset, @Nullable Runnable cb);
+  public interface WithGhostSlots extends IItemFilter {
+
+    void createGhostSlots(@Nonnull NNList<GhostSlot> slots, int xOffset, int yOffset, @Nullable Runnable cb);
+  }
 
   int getSlotCount();
 

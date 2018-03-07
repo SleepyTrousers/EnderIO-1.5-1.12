@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduitNetwork;
@@ -16,7 +13,7 @@ import crazypants.enderio.base.paint.IPaintable.IPaintableTileEntity;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
-import crazypants.enderio.machine.InvPanelObject;
+import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import info.loenwind.autosave.annotations.Store;
@@ -50,7 +47,7 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
 
   @Override
   public @Nonnull String getMachineName() {
-    return InvPanelObject.blockInventoryPanelSensor.getUnlocalisedName();
+    return InvpanelObject.blockInventoryPanelSensor.getUnlocalisedName();
   }
 
   @Override

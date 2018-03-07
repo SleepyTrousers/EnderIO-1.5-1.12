@@ -19,9 +19,8 @@ import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.power.IInternalPoweredItem;
 import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
 import crazypants.enderio.base.render.IHaveRenderers;
-import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
-import crazypants.enderio.machine.InvPanelObject;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
+import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import crazypants.enderio.util.ClientUtil;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -73,8 +72,8 @@ public class ItemRemoteInvAccess extends Item
 
   protected ItemRemoteInvAccess() {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(InvPanelObject.itemRemoteInvAccess.getUnlocalisedName());
-    setRegistryName(InvPanelObject.itemRemoteInvAccess.getUnlocalisedName());
+    setUnlocalizedName(InvpanelObject.itemRemoteInvAccess.getUnlocalisedName());
+    setRegistryName(InvpanelObject.itemRemoteInvAccess.getUnlocalisedName());
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(1);
@@ -88,7 +87,7 @@ public class ItemRemoteInvAccess extends Item
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
     for (ItemRemoteInvAccessType type : ItemRemoteInvAccessType.values()) {
-      ResourceLocation resourceLocation = new ResourceLocation(EnderIO.DOMAIN, type.getUnlocalizedName(InvPanelObject.itemRemoteInvAccess.getUnlocalisedName()));
+      ResourceLocation resourceLocation = new ResourceLocation(EnderIO.DOMAIN, type.getUnlocalizedName(InvpanelObject.itemRemoteInvAccess.getUnlocalisedName()));
       ModelBakery.registerItemVariants(this, resourceLocation);
       ClientUtil.regRenderer(this, type.toMetadata(), resourceLocation);
     }

@@ -34,9 +34,14 @@ import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.geom.Offsets;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.diagnostics.Prof;
+import crazypants.enderio.base.filter.IFilterHolder;
+import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduit.config.ConduitConfig;
+import crazypants.enderio.conduit.item.ItemConduit;
+import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
@@ -55,11 +60,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
 import static crazypants.enderio.base.config.Config.transparentFacadesLetThroughBeaconBeam;
 
 @Storable
-public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider {
+public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider, IFilterHolder {
 
   // TODO Fix duct-tape
   // TODO Check store
@@ -811,6 +817,45 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   public static String toStringS(TileConduitBundle self) {
     return "SERVER: TileConduitBundle [pos=" + self.pos + ", conduits=" + self.getServerConduits() + "]";
+  }
+
+  // FILTERS
+
+  @Override
+  public IItemFilter getFilter(int filterId, int param1) {
+    ItemConduit itemConduit = getConduit(ItemConduit.class);
+    if (itemConduit != null) {
+      if (filterId == FilterGuiUtil.INDEX_INPUT) {
+        return itemConduit.getInputFilter(EnumFacing.getFront(param1));
+      } else if (filterId == FilterGuiUtil.INDEX_OUTPUT) {
+        return itemConduit.getOutputFilter(EnumFacing.getFront(param1));
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public void setFilter(int filterId, int param1, @Nonnull IItemFilter filter) {
+    ItemConduit itemConduit = getConduit(ItemConduit.class);
+    if (itemConduit != null) {
+      if (filterId == FilterGuiUtil.INDEX_INPUT) {
+        itemConduit.setInputFilter(EnumFacing.getFront(param1), filter);
+      } else if (filterId == FilterGuiUtil.INDEX_OUTPUT) {
+        itemConduit.setOutputFilter(EnumFacing.getFront(param1), filter);
+      }
+    }
+  }
+
+  @Override
+  public IItemHandler getInventoryForSnapshot(int filterId, int param1) {
+    ItemConduit itemConduit = getConduit(ItemConduit.class);
+    if (itemConduit != null) {
+      ItemConduitNetwork icn = itemConduit.getNetwork();
+      if (icn != null) {
+        return icn.getInventory(itemConduit, EnumFacing.getFront(param1)).getInventory();
+      }
+    }
+    return null;
   }
 
 }

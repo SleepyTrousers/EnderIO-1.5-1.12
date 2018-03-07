@@ -29,25 +29,6 @@ enderio.item_liquid_conduit_ender.tooltip.detailed.line3=transported on the same
 
 enderio.item_item_conduit.name=Item Conduit
 
-# Conduit GUIs
-
-enderio.gui.conduit.io_mode=Mode
-
-enderio.gui.conduit.redstone.signal_color=Signal Color
-enderio.gui.conduit.redstone.color=Color
-enderio.gui.conduit.redstone.signal_strength=Strong Signal
-enderio.gui.conduit.redstone.signal_strength.tooltip=Output a strong redstone signal 
-
-enderio.gui.conduit.fluid.auto_extract=Auto Extract
-enderio.gui.conduit.fluid.filter=Filter
-enderio.gui.conduit.fluid.whitelist=Whitelist
-enderio.gui.conduit.fluid.blacklist=Blacklist
-
-enderio.gui.conduit.redstone.signal_color=Signal Color
-enderio.gui.conduit.redstone.color=Color
-enderio.gui.conduit.redstone.signal_strengh=Strong Signal
-enderio.gui.conduit.redstone.signal_strengh.tooltip=Output a strong redstone signal 
-
 # CapBanks
 tile.block_cap_bank.creative.name=Creative Capacitor Bank
 tile.block_cap_bank.simple.name=Basic Capacitor Bank
@@ -122,3 +103,35 @@ enderio.config.condit.energy=Energy Conduits
 enderio.config.condit.fluid=Fluid Conduits
 enderio.config.condit.item=Item Conduits
 enderio.config.condit.redstone=Redstone Conduits
+
+# Upgrades
+
+item.item_extract_speed_upgrade.name=Extract Speed Upgrade
+item.item_extract_speed_downgrade.name=Extract Speed Downgrade
+item.item_inventory_panel_upgrade.name=Inventory Panel Upgrade
+
+# GUI
+enderio.gui.conduit_insert_mode=Insert
+enderio.gui.conduit_extract_mode=Extract
+enderio.gui.conduit_enabled_mode=Enabled
+enderio.gui.conduit_disabled_mode=Disabled
+
+enderio.gui.conduit_channel=Channel
+enderio.gui.round_robin_enabled=Round Robin Enabled
+enderio.gui.round_robin_disabled=Round Robin Disabled
+enderio.gui.self_feed_enabled=Self Feed Enabled
+enderio.gui.self_feed_disabled=Self Feed Disabled
+enderio.gui.item_filter_upgrade=Insert Filter Upgrade
+enderio.gui.item_speed_upgrade=Insert Speed Upgrades/Downgrades
+enderio.gui.item_speed_upgrade2=Max Upgrades is 15; Max Downgrades is 1
+enderio.gui.item_function_upgrade=Insert Function Upgrade
+enderio.gui.item_function_upgrade2=Currently Disabled due to Inventory Panel Missing
+enderio.gui.signal_color=Signal Color
+enderio.gui.priority=Priority
+
+enderio.gui.liquid_auto_extract=Auto Extract
+enderio.gui.liquid_filter=Filter
+enderio.gui.liquid_whitelist=Whitelist
+enderio.gui.liquid_blacklist=Blacklist
+
+enderio.gui.redstone_signal_strength=Strong Signal

@@ -33,7 +33,6 @@ public enum EnumChestSize implements IStringSerializable {
     return slots;
   }
 
-  @SuppressWarnings("null")
   public static final @Nonnull PropertyEnum<EnumChestSize> SIZE = PropertyEnum.<EnumChestSize> create("size", EnumChestSize.class);
 
   @Override
@@ -41,12 +40,14 @@ public enum EnumChestSize implements IStringSerializable {
     return NullHelper.notnullJ(name().toLowerCase(Locale.ENGLISH), "String.toLowerCase()");
   }
 
+  @Nonnull
   public String getUnlocalizedName(Item me) {
     return me.getUnlocalizedName() + "_" + getName();
   }
 
+  @Nonnull
   public static EnumChestSize getTypeFromMeta(int meta) {
-    return values()[meta >= 0 && meta < values().length ? meta : 0];
+    return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "EnumChestSize#values");
   }
 
   public static int getMetaFromType(EnumChestSize value) {

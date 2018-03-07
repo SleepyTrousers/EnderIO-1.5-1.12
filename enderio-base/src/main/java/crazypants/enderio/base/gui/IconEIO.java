@@ -160,7 +160,14 @@ public enum IconEIO implements IWidgetIcon {
   VISIBLE_NO(224, 160),
   VISIBLE_YES(240, 160),
 
-  YETA_GEAR(48, 224);
+  YETA_GEAR(48, 224),
+
+  GEAR_LIGHT(16, 224),
+  GEAR_DARK(32, 224),
+
+  ARROW_LEFT(0, 208),
+
+  ;
 
   // Texture size is actually 512 but everything is aligned to a 256 grid
   private static final int TEX_SIZE = 256;

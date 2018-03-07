@@ -33,6 +33,8 @@ import crazypants.enderio.base.block.rail.BlockExitRail;
 import crazypants.enderio.base.block.skull.BlockEndermanSkull;
 import crazypants.enderio.base.capacitor.ItemCapacitor;
 import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
+import crazypants.enderio.base.conduit.item.ItemExtractSpeedUpgrade;
+import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.items.ItemBasicItemFilter;
 import crazypants.enderio.base.filter.items.ItemExistingItemFilter;
 import crazypants.enderio.base.filter.items.ItemModItemFilter;
@@ -143,7 +145,10 @@ public enum ModObject implements IModObject.Registerable {
   itemMagnet(ItemMagnet.class),
   blockEndermanSkull(BlockEndermanSkull.class, ModTileEntity.TileEndermanSkull),
   itemEnderFood(ItemEnderFood.class),
-  itemItemFilter(ItemBasicItemFilter.class),
+
+  itemBasicItemFilter(ItemBasicItemFilter.class, "createBasicItemFilter"),
+  itemAdvancedItemFilter(ItemBasicItemFilter.class, "createAdvancedItemFilter"),
+  itemLimitedItemFilter(ItemBasicItemFilter.class, "createLimitedItemFilter"),
   itemExistingItemFilter(ItemExistingItemFilter.class),
   itemModItemFilter(ItemModItemFilter.class),
   itemPowerItemFilter(ItemPowerItemFilter.class),
@@ -171,6 +176,10 @@ public enum ModObject implements IModObject.Registerable {
   itemDarkSteelAxe(ItemDarkSteelAxe.class),
   itemDarkSteelBow(ItemDarkSteelBow.class),
   itemDarkSteelShears(ItemDarkSteelShears.class),
+
+  item_extract_speed_upgrade(ItemExtractSpeedUpgrade.class, "createUpgrade"),
+  item_extract_speed_downgrade(ItemExtractSpeedUpgrade.class, "createDowngrade"),
+  item_inventory_panel_upgrade(ItemFunctionUpgrade.class, "createInventoryPanelUpgrade"),
 
   ;
 

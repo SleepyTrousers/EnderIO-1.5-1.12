@@ -11,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.gui.button.IconButton;
-import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
@@ -25,6 +24,8 @@ import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.conduit.init.ConduitObject;
+import crazypants.enderio.conduit.lang.Lang;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
@@ -33,6 +34,7 @@ import crazypants.enderio.conduit.packet.PacketFluidFilter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -43,54 +45,59 @@ public class LiquidSettings extends BaseSettingsPanel {
   static final int ID_REDSTONE_BUTTON = GuiExternalConnection.nextButtonId();
 
   private static final int ID_COLOR_BUTTON = GuiExternalConnection.nextButtonId();
-  private static final int ID_WHITELIST = GuiExternalConnection.nextButtonId();
-
-  private static final int NEXT_FILTER_ID = 989322;
+  private static final int ID_INSERT_WHITELIST = GuiExternalConnection.nextButtonId();
+  private static final int ID_EXTRACT_WHITELIST = GuiExternalConnection.nextButtonId();
 
   private final RedstoneModeButton rsB;
   private final ColorButton colorB;
 
   @Nonnull
-  private static final String autoExtractStr = EnderIO.lang.localize("gui.conduit.fluid.auto_extract");
+  private final String autoExtractStr = Lang.GUI_LIQUID_AUTO_EXTRACT.get();
   @Nonnull
-  private static final String filterStr = EnderIO.lang.localize("gui.conduit.fluid.filter");
+  private final String filterStrInsert = Lang.GUI_LIQUID_FILTER.get();
+  @Nonnull
+  private final String filterStrExtract = Lang.GUI_LIQUID_FILTER.get();
 
   private final ILiquidConduit conduit;
 
   private EnderLiquidConduit eConduit;
   private boolean isEnder;
-  private static final int filterX = 59;
-  private static final int filterY = 63;
-  private static final Rectangle filterBounds = new Rectangle(filterX, filterY, 90, 18);
+  private static final int filterInsertX = 7;
+  private static final int filterY = 81;
+  private static final int filterExtractX = filterInsertX + 101;
+  private static final Rectangle insertFilterBounds = new Rectangle(filterInsertX, filterY, 90, 18);
+  private static final Rectangle extractFilterBounds = new Rectangle(filterExtractX, filterY, 90, 18);
   private GuiToolTip[] filterToolTips;
 
-  private boolean inOutShowIn = true;
-  private MultiIconButton inOutNextB;
-  private IconButton whiteListB;
+  private IconButton insertWhiteListB;
+  private IconButton extractWhiteListB;
+
+  private final GuiToolTip insertFilterTooltip;
+  private final GuiToolTip extractFilterTooltip;
 
   public LiquidSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_FLUID, EnderIO.lang.localize("itemLiquidConduit.name"), gui, con, "liquid_settings");
+    super(IconEIO.WRENCH_OVERLAY_FLUID, ConduitObject.item_liquid_conduit.getUnlocalisedName(), gui, con, "liquid_settings");
 
     conduit = (ILiquidConduit) con;
     if (con instanceof EnderLiquidConduit) {
       eConduit = (EnderLiquidConduit) con;
       isEnder = true;
 
-      int x = gui.getXSize() - 20;
-      int y = customTop;
+      int x = leftColumn;
+      int y = filterY - 20;
 
-      inOutNextB = MultiIconButton.createRightArrowButton(gui, NEXT_FILTER_ID, x, y);
+      insertWhiteListB = new IconButton(gui, ID_INSERT_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
+      insertWhiteListB.setToolTip(Lang.GUI_LIQUID_WHITELIST.get());
 
-      x = filterX - 20;
-      y = filterY + 1;
+      x = rightColumn;
 
-      whiteListB = new IconButton(gui, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
-      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.fluid.whitelist"));
+      extractWhiteListB = new IconButton(gui, ID_EXTRACT_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
+      extractWhiteListB.setToolTip(Lang.GUI_LIQUID_WHITELIST.get());
     } else {
       isEnder = false;
     }
 
-    int x = gap + gui.getFontRenderer().getStringWidth(autoExtractStr) + gap * 2;
+    int x = rightColumn;
     int y = customTop;
 
     rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
@@ -99,6 +106,13 @@ public class LiquidSettings extends BaseSettingsPanel {
       public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
         RedstoneControlMode curMode = getRedstoneControlMode();
         conduit.setExtractionRedstoneMode(mode, gui.getDir());
+        if (mode == RedstoneControlMode.OFF || mode == RedstoneControlMode.ON) {
+          colorB.onGuiInit();
+          colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
+          colorB.setIsVisible(true);
+        } else {
+          colorB.setIsVisible(false);
+        }
         if (curMode != mode) {
           PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.getDir()));
         }
@@ -116,16 +130,29 @@ public class LiquidSettings extends BaseSettingsPanel {
       }
     });
 
-    x += rsB.getWidth() + gap;
+    x += rsB.getWidth() + 4;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-    colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signal_color"));
+    colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
+
+    insertFilterTooltip = new GuiToolTip(insertFilterBounds, Lang.GUI_LIQUID_FILTER.get()) {
+      @Override
+      public boolean shouldDraw() {
+        return super.shouldDraw() && isEnder;
+      }
+    };
+    extractFilterTooltip = new GuiToolTip(extractFilterBounds, Lang.GUI_LIQUID_FILTER.get()) {
+      @Override
+      public boolean shouldDraw() {
+        return super.shouldDraw() && isEnder;
+      }
+    };
   }
 
   private void addFilterTooltips() {
     filterToolTips = new GuiToolTip[5];
     for (int i = 0; i < 5; i++) {
-      Rectangle bound = new Rectangle(filterX + (i * 18), filterY, 18, 18);
+      Rectangle bound = new Rectangle(filterInsertX + (i * 18), filterY, 18, 18);
       filterToolTips[i] = new FilterToolTip(bound, i);
       gui.addToolTip(filterToolTips[i]);
     }
@@ -137,20 +164,10 @@ public class LiquidSettings extends BaseSettingsPanel {
     if (guiButton.id == ID_COLOR_BUTTON) {
       conduit.setExtractionSignalColor(gui.getDir(), DyeColor.values()[colorB.getColorIndex()]);
       PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.getDir()));
-    } else if (guiButton.id == ID_WHITELIST) {
-      toggleBlacklist();
-    } else if (guiButton.id == NEXT_FILTER_ID) {
-      inOutShowIn = !inOutShowIn;
-      if (isInput()) {
-        rsB.onGuiInit();
-        colorB.onGuiInit();
-      } else {
-        rsB.detach();
-        colorB.detach();
-      }
-      if (isFilterVisible()) {
-        updateWhiteListButton(eConduit.getFilter(gui.getDir(), isInput()));
-      }
+    } else if (guiButton.id == ID_INSERT_WHITELIST) {
+      toggleBlacklist(false);
+    } else if (guiButton.id == ID_EXTRACT_WHITELIST) {
+      toggleBlacklist(true);
     }
   }
 
@@ -160,17 +177,17 @@ public class LiquidSettings extends BaseSettingsPanel {
     updateGuiVisibility();
   }
 
-  private void toggleBlacklist() {
+  private void toggleBlacklist(boolean isInput) {
     if (!isFilterVisible()) {
       return;
     }
-    FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput());
+    FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput);
     if (filter == null) {
       filter = new FluidFilter();
     }
     filter.setBlacklist(!filter.isBlacklist());
-    setConduitFilter(filter);
-    updateWhiteListButton(filter);
+    setConduitFilter(filter, isInput);
+    updateWhiteListButton(filter, isInput);
   }
 
   @Override
@@ -179,25 +196,33 @@ public class LiquidSettings extends BaseSettingsPanel {
     if (!isFilterVisible()) {
       return;
     }
-    if (!filterBounds.contains(x, y)) {
+
+    if (!insertFilterBounds.contains(x, y) && !extractFilterBounds.contains(x, y)) {
       return;
     }
+
+    boolean isInput = (x >= filterExtractX);
+
     ItemStack st = Minecraft.getMinecraft().player.inventory.getItemStack();
-    FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput());
-    if (filter == null && st.isEmpty()) {
-      return;
-    }
+    FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput);
+
     if (filter == null) {
       filter = new FluidFilter();
     }
-    int slot = (x - filterX) / 18;
+    int slot = 0;
+    if (isInput) {
+      slot = (x - filterExtractX) / 18;
+    } else {
+      slot = (x - filterInsertX) / 18;
+    }
     filter.setFluid(slot, st);
-    setConduitFilter(filter);
+    setConduitFilter(filter, isInput);
+
   }
 
-  protected void setConduitFilter(FluidFilter filter) {
-    eConduit.setFilter(gui.getDir(), filter, isInput());
-    PacketHandler.INSTANCE.sendToServer(new PacketFluidFilter(eConduit, gui.getDir(), filter, isInput()));
+  protected void setConduitFilter(FluidFilter filter, boolean isInput) {
+    eConduit.setFilter(gui.getDir(), filter, isInput);
+    PacketHandler.INSTANCE.sendToServer(new PacketFluidFilter(eConduit, gui.getDir(), filter, isInput));
   }
 
   @Override
@@ -207,11 +232,7 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   private void updateGuiVisibility() {
     deactivate();
-
-    if (isInput()) {
-      rsB.onGuiInit();
-      colorB.onGuiInit();
-    }
+    rsB.onGuiInit();
 
     if (!isEnder) {
       return;
@@ -220,23 +241,30 @@ public class LiquidSettings extends BaseSettingsPanel {
     if (isFilterVisible()) {
       addFilterTooltips();
 
-      whiteListB.onGuiInit();
-      updateWhiteListButton(eConduit.getFilter(gui.getDir(), isInput()));
+      insertWhiteListB.onGuiInit();
+      updateWhiteListButton(eConduit.getFilter(gui.getDir(), false), false);
+
+      extractWhiteListB.onGuiInit();
+      updateWhiteListButton(eConduit.getFilter(gui.getDir(), true), true);
     }
 
-    ConnectionMode mode = con.getConnectionMode(gui.getDir());
-    if (mode == ConnectionMode.IN_OUT) {
-      inOutNextB.onGuiInit();
-    }
+    gui.addToolTip(insertFilterTooltip);
+    gui.addToolTip(extractFilterTooltip);
   }
 
-  private void updateWhiteListButton(FluidFilter filter) {
-    if (filter != null && filter.isBlacklist()) {
-      whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
-      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.fluid.blacklist"));
+  private void updateWhiteListButton(FluidFilter filter, boolean isInput) {
+    IconButton whitelistButton = null;
+    if (isInput) {
+      whitelistButton = extractWhiteListB;
     } else {
-      whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
-      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.fluid.whitelist"));
+      whitelistButton = insertWhiteListB;
+    }
+    if (filter != null && filter.isBlacklist()) {
+      whitelistButton.setIcon(IconEIO.FILTER_BLACKLIST);
+      whitelistButton.setToolTip(Lang.GUI_LIQUID_BLACKLIST.get());
+    } else {
+      whitelistButton.setIcon(IconEIO.FILTER_WHITELIST);
+      whitelistButton.setToolTip(Lang.GUI_LIQUID_WHITELIST.get());
     }
   }
 
@@ -253,43 +281,55 @@ public class LiquidSettings extends BaseSettingsPanel {
           }
         }
       }
-      inOutNextB.detach();
-      whiteListB.detach();
+      insertWhiteListB.detach();
+      extractWhiteListB.detach();
     }
+
+    gui.removeToolTip(insertFilterTooltip);
+    gui.removeToolTip(extractFilterTooltip);
+  }
+
+  @Override
+  @Nonnull
+  public ResourceLocation getTexture() {
+    return isEnder ? EnderIO.proxy.getGuiTexture("ender_liquid_settings") : super.getTexture();
   }
 
   @Override
   protected void renderCustomOptions(int top, float par1, int par2, int par3) {
-    boolean isInput = isInput();
-    if (isInput) {
-      int y = top;
-      gui.getFontRenderer().drawString(autoExtractStr, left, y, ColorUtil.getRGB(Color.DARK_GRAY));
-    }
     if (isEnder && isFilterVisible()) {
 
-      if (conduit.getConnectionMode(gui.getDir()) == ConnectionMode.IN_OUT) {
-        String inOutStr = inOutShowIn ? EnderIO.lang.localize("gui.conduit.io_mode.input") : EnderIO.lang.localize("gui.conduit.io_mode.output");
-        int x = gui.getGuiLeft() + gui.getXSize() - 20 - 5 - gui.getFontRenderer().getStringWidth(inOutStr);
-        int y = top;
-        gui.getFontRenderer().drawString(inOutStr, x, y, ColorUtil.getRGB(Color.DARK_GRAY));
-      }
-
       FontRenderer fr = gui.getFontRenderer();
-      int sw = fr.getStringWidth(filterStr);
-      int x = (gui.width / 2) - sw / 2;
-      int y = top + 20;
-      fr.drawString(filterStr, x, y, ColorUtil.getRGB(Color.DARK_GRAY));
+      int x = left + leftColumn + 10;
+      int y = top + 36;
+      fr.drawString(filterStrInsert, x, y, ColorUtil.getRGB(Color.DARK_GRAY));
 
-      x = gui.getGuiLeft() + filterX;
+      x = left + rightColumn + 10;
+      fr.drawString(filterStrExtract, x, y, ColorUtil.getRGB(Color.DARK_GRAY));
+
+      x = gui.getGuiLeft() + filterInsertX;
       y = gui.getGuiTop() + filterY;
       GL11.glColor3f(1, 1, 1);
       gui.bindGuiTexture();
-      gui.drawTexturedModalRect(x, y, 0, 238, 90, 18);
 
-      FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput);
-      if (filter != null && !filter.isEmpty()) {
-        for (int i = 0; i < filter.size(); i++) {
-          FluidStack f = filter.getFluidStackAt(i);
+      FluidFilter filterInsert = eConduit.getFilter(gui.getDir(), false);
+      if (filterInsert != null && !filterInsert.isEmpty()) {
+        for (int i = 0; i < filterInsert.size(); i++) {
+          FluidStack f = filterInsert.getFluidStackAt(i);
+          if (f != null) {
+            renderFluid(f, x + (i * 18), y);
+          }
+        }
+      }
+
+      x += 101;
+      GlStateManager.color(1, 1, 1);
+      gui.bindGuiTexture();
+
+      FluidFilter filterExtract = eConduit.getFilter(gui.getDir(), true);
+      if (filterExtract != null && !filterExtract.isEmpty()) {
+        for (int i = 0; i < filterExtract.size(); i++) {
+          FluidStack f = filterExtract.getFluidStackAt(i);
           if (f != null) {
             renderFluid(f, x + (i * 18), y);
           }
@@ -304,21 +344,9 @@ public class LiquidSettings extends BaseSettingsPanel {
     ResourceLocation iconKey = f.getFluid().getStill();
     TextureAtlasSprite icon = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(iconKey.toString());
     if (icon != null) {
-      // RenderUtil.bindBlockTexture();
-      // int color = f.getFluid().getColor(f);
-      // GL11.glColor3ub((byte) (color >> 16 & 0xFF), (byte) (color >> 8 & 0xFF), (byte) (color & 0xFF));
-      // gui.drawTexturedModelRectFromIcon(x + 1, y + 1, icon, 16, 16);
-      // GL11.glColor3f(1, 1, 1);
-
       RenderUtil.renderGuiTank(f, 1000, 1000, x + 1, y + 1, 0, 16, 16);
-
     }
 
-  }
-
-  private boolean isInput() {
-    ConnectionMode mode = conduit.getConnectionMode(gui.getDir());
-    return (mode == ConnectionMode.IN_OUT && inOutShowIn) || (mode == ConnectionMode.INPUT);
   }
 
   private boolean isFilterVisible() {
@@ -343,7 +371,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       if (!isFilterVisible()) {
         return Collections.emptyList();
       }
-      FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput());
+      FluidFilter filter = eConduit.getFilter(gui.getDir(), false);
       if (filter == null) {
         return Collections.emptyList();
       }

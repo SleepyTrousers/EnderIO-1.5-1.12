@@ -11,7 +11,7 @@ import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
-import crazypants.enderio.machine.InvPanelObject;
+import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,7 +40,7 @@ IPaintable.IWrenchHideablePaint {
   }
   
   public BlockInventoryPanelSensor() {
-    super(InvPanelObject.blockInventoryPanelSensor, TileInventoryPanelSensor.class);
+    super(InvpanelObject.blockInventoryPanelSensor, TileInventoryPanelSensor.class);
   }
   
   @Override
