@@ -1,13 +1,12 @@
 package crazypants.enderio.machine.invpanel.chest;
 
-import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
-import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
@@ -20,13 +19,16 @@ import crazypants.enderio.machine.InvPanelObject;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -95,22 +97,18 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   // NO GUI
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+  public Container getServerGuiElement(EntityPlayer player, World world, BlockPos pos, EnumFacing facing, int param1, TileInventoryChest te) {
     return null;
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+  @SideOnly(Side.CLIENT)
+  public GuiScreen getClientGuiElement(EntityPlayer player, World world, BlockPos pos, EnumFacing facing, int param1, TileInventoryChest te) {
     return null;
   }
 
   @Override
-  protected GuiID getGuiId() {
-    return null;
-  }
-
-  @Override
-  protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+  public boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, int param) {
     return false;
   }
 
@@ -149,7 +147,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   }
 
   @Override
-  protected ItemBlock createItemBlock() {
+  public Item createBlockItem(IModObject modObject) {
     ItemBlock ib = new ItemBlock(this) {
       @Override
       public String getUnlocalizedName(ItemStack stack) {
@@ -161,17 +159,15 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
         return damage;
       }
     };
-    ib.setRegistryName(getName());
     ib.setHasSubtypes(true);
+    modObject.apply(ib);
     return ib;
   }
 
-
   @Override
-  @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+  public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
     for (EnumChestSize size : EnumChestSize.values()) {
-      list.add(new ItemStack(itemIn, 1, EnumChestSize.getMetaFromType(size)));
+      list.add(new ItemStack(this, 1, EnumChestSize.getMetaFromType(size)));
     }
   }
 

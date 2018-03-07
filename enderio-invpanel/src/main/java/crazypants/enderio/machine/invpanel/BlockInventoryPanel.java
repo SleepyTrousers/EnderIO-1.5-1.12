@@ -4,7 +4,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -18,8 +18,10 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -58,8 +60,8 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  protected ItemBlock createItemBlock() {
-    return new BlockItemInventoryPanel(this, getName());
+  public Item createBlockItem(IModObject modObject) {
+    return modObject.apply(new BlockItemInventoryPanel(this));
   }
 
   @Override
@@ -134,26 +136,14 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  protected GuiID getGuiId() {
-    return GuiID.GUI_ID_INVENTORY_PANEL;
-  }
-
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileInventoryPanel te = getTileEntity(world, new BlockPos(x, y, z));
-    if (te != null) {
+  public Container getServerGuiElement(EntityPlayer player, World world, BlockPos pos, EnumFacing facing, int param1, TileInventoryPanel te) {
       return new InventoryPanelContainer(player.inventory, te);
-    }
-    return null;
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileInventoryPanel te = getTileEntity(world, new BlockPos(x, y, z));
-    if (te != null) {
+  @SideOnly(Side.CLIENT)
+  public GuiScreen getClientGuiElement(EntityPlayer player, World world, BlockPos pos, EnumFacing facing, int param1, TileInventoryPanel te) {
       return new GuiInventoryPanel(te, new InventoryPanelContainer(player.inventory, te));
-    }
-    return null;
   }
 
   @Override
