@@ -6,6 +6,7 @@ import crazypants.enderio.conduit.ConduitBundleStateMapper;
 import crazypants.enderio.conduit.EnderIOConduits;
 import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.powertools.machine.capbank.network.ClientNetworkManager;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -38,6 +39,11 @@ public class ClientProxy extends CommonProxy {
   @Override
   public void init(@Nonnull FMLPostInitializationEvent event) {
     super.init(event);
+  }
+  
+  @Override
+  public float getPartialTicks() {
+    return Minecraft.getMinecraft().getRenderPartialTicks();
   }
 
 }

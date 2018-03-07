@@ -78,6 +78,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
@@ -991,17 +992,11 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   }
 
   public @Nonnull List<RaytraceResult> doRayTraceAll(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer) {
-    double pitch = Math.toRadians(entityPlayer.rotationPitch);
-    double yaw = Math.toRadians(entityPlayer.rotationYaw);
-
-    double dirX = -Math.sin(yaw) * Math.cos(pitch);
-    double dirY = -Math.sin(pitch);
-    double dirZ = Math.cos(yaw) * Math.cos(pitch);
-
     double reachDistance = EnderIO.proxy.getReachDistanceForPlayer(entityPlayer);
 
     Vec3d origin = Util.getEyePosition(entityPlayer);
-    Vec3d direction = origin.addVector(dirX * reachDistance, dirY * reachDistance, dirZ * reachDistance);
+    Vec3d look = entityPlayer.getLook(EnderIOConduits.proxy.getPartialTicks());
+    Vec3d direction = origin.add(look.scale(reachDistance));
     return doRayTraceAll(world.getBlockState(pos), world, pos, origin, direction, entityPlayer);
   }
 
