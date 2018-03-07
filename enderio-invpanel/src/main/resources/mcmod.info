@@ -1,7 +1,7 @@
 [
 {
-  "modid": "EnderIO",
-  "name": "Ender IO",
+  "modid": "enderioinvpanel",
+  "name": "Ender IO Inventory Panel",
   "description": "Compact conduits, painted things and all sorts of stuff and bling.",
   "version": "${version}",
   "mcversion": "${mcversion}",
@@ -12,8 +12,9 @@
   "logoFile": "",
   "screenshots": [
   ],
-  "parent":"",
+  "parent":"enderio",
   "dependencies": [
+    "enderio","enderiomachines","enderioconduits"
   ]
 }
 ]

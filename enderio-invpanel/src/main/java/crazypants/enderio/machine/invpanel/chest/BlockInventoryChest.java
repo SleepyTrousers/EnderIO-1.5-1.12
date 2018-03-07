@@ -161,11 +161,10 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
         return damage;
       }
     };
-    ib.setRegistryName(modObject.getRegistryName());
     ib.setHasSubtypes(true);
+    modObject.apply(ib);
     return ib;
   }
-
 
   @Override
   @SideOnly(Side.CLIENT)

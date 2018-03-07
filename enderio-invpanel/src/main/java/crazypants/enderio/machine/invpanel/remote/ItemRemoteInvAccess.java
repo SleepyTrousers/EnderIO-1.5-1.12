@@ -1,5 +1,11 @@
 package crazypants.enderio.machine.invpanel.remote;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.CompoundCapabilityProvider;
@@ -8,7 +14,6 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.power.IInternalPoweredItem;
@@ -26,7 +31,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
@@ -44,13 +53,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-
-import static crazypants.enderio.base.machine.MachineObject.blockInventoryPanel;
-import static crazypants.enderio.util.NbtValue.*;
+import static crazypants.enderio.util.NbtValue.ENERGY;
+import static crazypants.enderio.util.NbtValue.FLUIDAMOUNT;
+import static crazypants.enderio.util.NbtValue.REMOTE_D;
+import static crazypants.enderio.util.NbtValue.REMOTE_X;
+import static crazypants.enderio.util.NbtValue.REMOTE_Y;
+import static crazypants.enderio.util.NbtValue.REMOTE_Z;
 
 public class ItemRemoteInvAccess extends Item
     implements IAdvancedTooltipProvider, IOverlayRenderAware, IFluidContainerItem, IInternalPoweredItem, IHaveRenderers {
@@ -119,7 +127,7 @@ public class ItemRemoteInvAccess extends Item
       REMOTE_Y.setInt(stack, te.getPos().getY());
       REMOTE_Z.setInt(stack, te.getPos().getZ());
       REMOTE_D.setInt(stack, te.getWorld().provider.getDimension());
-      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.set")));
+      player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.set")), true);
       return EnumActionResult.SUCCESS;
     }
     return EnumActionResult.PASS;
@@ -129,7 +137,7 @@ public class ItemRemoteInvAccess extends Item
   public ActionResult<ItemStack> onItemRightClick(ItemStack equipped, World world, EntityPlayer player, EnumHand hand) {
     if (!world.isRemote) {
       if (!REMOTE_X.hasTag(equipped) || !REMOTE_Y.hasTag(equipped) || !REMOTE_Z.hasTag(equipped) || !REMOTE_D.hasTag(equipped)) {
-        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.notarget")));
+        player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.notarget")), true);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
@@ -141,7 +149,7 @@ public class ItemRemoteInvAccess extends Item
       ItemRemoteInvAccessType type = ItemRemoteInvAccessType.fromStack(equipped);
 
       if (!type.inRange(d, x, y, z, world.provider.getDimension(), (int) player.posX, (int) player.posY, (int) player.posZ)) {
-        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outofrange")));
+        player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outofrange")), true);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
@@ -149,37 +157,37 @@ public class ItemRemoteInvAccess extends Item
       if (world.provider.getDimension() != d) {
         targetWorld = DimensionManager.getWorld(d);
         if (targetWorld == null) {
-          player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.invalidtargetworld")));
+          player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.invalidtargetworld")), true);
           return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
         }
       }
 
       final BlockPos pos = new BlockPos(x, y, z);
       if (!targetWorld.isBlockLoaded(pos)) {
-        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.notloaded")));
+        player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.notloaded")), true);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
-      if (targetWorld.getBlockState(pos).getBlock() != blockInventoryPanel.getBlock()) {
-        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.invalidtarget")));
+      if (targetWorld.getBlockState(pos).getBlock() != InvPanelObject.blockInventoryPanel.getBlock()) {
+        player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.invalidtarget")), true);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
       if (!(world instanceof WorldServer) || !(player instanceof EntityPlayerMP)) {
         Log.warn("Unexpected world or player: " + world + " " + player);
-        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.error")));
+        player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.error")), true);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
       if (getEnergyStored(equipped) < type.getRfPerTick() * 10) {
-        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outofpower")));
+        player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outofpower")), true);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
       if (!drain(equipped, type.getMbPerOpen())) {
         Fluid fluid = type.getFluidType();
         String fluidname = fluid.getLocalizedName(new FluidStack(fluid, 1));
-        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outoffluid").replace("{FLUIDNAME}", fluidname)));
+        player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outoffluid").replace("{FLUIDNAME}", fluidname)), true);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
@@ -193,7 +201,7 @@ public class ItemRemoteInvAccess extends Item
     if (getEnergyStored(stack) > 0) {
       return true;
     } else {
-      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outofpower")));
+      player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outofpower")), true);
       return false;
     }
   }

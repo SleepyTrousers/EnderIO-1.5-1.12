@@ -1,23 +1,27 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
-import crazypants.enderio.base.GuiID;
+import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import java.util.Random;
 
 public class BlockInventoryPanelSensor extends AbstractMachineBlock<TileInventoryPanelSensor> implements IResourceTooltipProvider, IPaintable.ISolidBlockPaintableBlock,
 IPaintable.IWrenchHideablePaint {
@@ -40,31 +44,19 @@ IPaintable.IWrenchHideablePaint {
   }
   
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileInventoryPanelSensor te = getTileEntity(world, new BlockPos(x, y, z));
-    if (te != null) {
+  public Container getServerGuiElement(EntityPlayer player, World world, BlockPos pos, EnumFacing facing, int param1, TileInventoryPanelSensor te) {
       return new ContainerSensor(player.inventory, te);
-    }
-    return null;
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileInventoryPanelSensor te = getTileEntity(world, new BlockPos(x, y, z));
-    if (te != null) {
+  @SideOnly(Side.CLIENT)
+  public GuiScreen getClientGuiElement(EntityPlayer player, World world, BlockPos pos, EnumFacing facing, int param1, TileInventoryPanelSensor te) {
       return new GuiSensor(player.inventory, te);
-    }
-    return null;
   }
 
   @Override
   public boolean isOpaqueCube(IBlockState bs) {
     return false;
-  }
-
-  @Override
-  protected GuiID getGuiId() {
-    return crazypants.enderio.base.GuiID.GUI_ID_INVENTORY_PANEL_SENSOR;
   }
 
   @Override

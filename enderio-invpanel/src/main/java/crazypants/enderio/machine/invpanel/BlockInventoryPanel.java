@@ -22,7 +22,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -61,8 +61,8 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  public ItemBlock createBlockItem(IModObject mo) {
-    return new BlockItemInventoryPanel(this, mo.getUnlocalisedName());
+  public Item createBlockItem(IModObject modObject) {
+    return modObject.apply(new BlockItemInventoryPanel(this));
   }
 
   @Override
@@ -144,6 +144,15 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   @Override
   public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1, @Nonnull TileInventoryPanel te) {
     return new GuiInventoryPanel(te, new InventoryPanelContainer(player.inventory, te));
+  }
+
+  @Override
+  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    TileInventoryPanel te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new GuiInventoryPanel(te, new InventoryPanelContainer(player.inventory, te));
+    }
+    return null;
   }
 
   @Override

@@ -1,5 +1,10 @@
 package crazypants.enderio.machine.invpanel.chest;
 
+import java.util.EnumMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.InventorySlot;
@@ -19,10 +24,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
-
-import javax.annotation.Nonnull;
-import java.util.EnumMap;
-import java.util.Map;
 
 @Storable
 public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachineEntity implements IPaintable.IPaintableTileEntity {
