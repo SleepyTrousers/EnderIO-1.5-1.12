@@ -74,7 +74,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       addSlotToContainer(slotSpeedUpgrades = new SlotItemHandler(getItemHandler(), 0, 131, 71) {
         @Override
         public boolean isItemValid(@Nonnull ItemStack itemStack) {
-          return inventory.isItemValidForSlot(0, itemStack);
+          return ExternalConnectionContainer.this.getItemHandler().isItemValidForSlot(0, itemStack);
         }
 
         @Override
@@ -85,7 +85,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       addSlotToContainer(slotFunctionUpgrades = new SlotItemHandler(getItemHandler(), 1, 157, 71) {
         @Override
         public boolean isItemValid(@Nonnull ItemStack itemStack) {
-          return false;
+          return ExternalConnectionContainer.this.getItemHandler().isItemValidForSlot(1, itemStack);
         }
 
         @Override
@@ -313,7 +313,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
     @Override
     public boolean isItemValid(@Nonnull ItemStack stack) {
-      return inventory.isItemValidForSlot(getSlotIndex(), stack);
+      return ExternalConnectionContainer.this.getItemHandler().isItemValidForSlot(getSlotIndex(), stack);
     }
 
   }
