@@ -32,7 +32,6 @@ import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
@@ -44,7 +43,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.SlotItemHandler;
 
 @Storable
 public class TileInventoryPanel extends AbstractInventoryMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank {
@@ -175,10 +173,10 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
       scanNetwork();
     }
 
-    if (updateClients.peek()) {      
-      IBlockState bs = getWorld().getBlockState(pos);
-      getWorld().notifyBlockUpdate(pos, bs, bs, 3);            
+    if (updateClients) {
+      forceUpdatePlayers();
       markDirty();
+      updateClients = false;
     }
 
     if(tanksDirty) {
@@ -210,11 +208,11 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
       if(active != dbServer.isOperational()) {
         active = dbServer.isOperational();
-        updateClients.set();
+        updateClients = true;
       }
     } else {
       if(active) {
-        updateClients.set();
+        updateClients = true;
       }
       dbServer = null;
       active = false;
@@ -414,14 +412,6 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, fuelTank);
     }
     return smartTankFluidHandler;
-  }
-
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return getSmartTankFluidHandler().has(facingIn);
-    }
-    return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")

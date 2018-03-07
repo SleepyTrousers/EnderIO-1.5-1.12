@@ -57,10 +57,10 @@ public class PacketRequestMissingItems implements IMessage, IMessageHandler<Pack
 
   @Override
   public IMessage onMessage(PacketRequestMissingItems message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+    EntityPlayerMP player = ctx.getServerHandler().player;
     if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
       InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      TileInventoryPanel teInvPanel = ipc.getInv();
+      TileInventoryPanel teInvPanel = ipc.getTe();
       InventoryDatabaseServer db = teInvPanel.getDatabaseServer();
       if(db != null) {
         try {

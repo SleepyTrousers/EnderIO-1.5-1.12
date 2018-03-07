@@ -147,15 +147,6 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileInventoryPanel te = getTileEntity(world, new BlockPos(x, y, z));
-    if (te != null) {
-      return new GuiInventoryPanel(te, new InventoryPanelContainer(player.inventory, te));
-    }
-    return null;
-  }
-
-  @Override
   @SideOnly(Side.CLIENT)
   public IItemRenderMapper getItemRenderMapper() {
     return InvPanelRenderMapper.instance;

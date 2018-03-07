@@ -35,15 +35,15 @@ public class ContainerSensor extends AbstractMachineContainer<TileInventoryPanel
 
     @Override
     public @Nonnull ItemStack getStack() {
-      return getInv().getItemToCheck();
+      return ContainerSensor.this.getTe().getItemToCheck();
     }
 
     @Override
     public void putStack(@Nonnull ItemStack stack, int realsize) {
       stack = stack.copy();
       stack.setCount(1);
-      getInv().setItemToCheck(stack);
-      PacketHandler.INSTANCE.sendToServer(new PacketItemToCheck(getInv()));
+      ContainerSensor.this.getTe().setItemToCheck(stack);
+      PacketHandler.INSTANCE.sendToServer(new PacketItemToCheck(ContainerSensor.this.getTe()));
     }
   }
 }

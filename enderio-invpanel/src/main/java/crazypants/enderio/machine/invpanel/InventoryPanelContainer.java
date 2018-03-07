@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.invpanel;
 
-import static crazypants.enderio.base.machine.MachineObject.itemBasicFilterUpgrade;
-
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +31,8 @@ import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
+
+import static crazypants.enderio.base.machine.MachineObject.itemBasicFilterUpgrade;
 
 public class InventoryPanelContainer extends AbstractMachineContainer<TileInventoryPanel> implements ChangeLog {
 
@@ -126,14 +126,10 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @Override
   public void onContainerClosed(EntityPlayer player) {
     super.onContainerClosed(player);
-    if (getInv().hasWorld() && !getInv().getWorld().isRemote) {
-      getInv().eventHandler = null;
+    if (getTe().hasWorld() && !getTe().getWorld().isRemote) {
+      getTe().eventHandler = null;
     }
     removeChangeLog();
-  }
-
-  public TileInventoryPanel getInventoryPanel() {
-    return getInv();
   }
 
   public Slot getSlotFilter() {
@@ -158,7 +154,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
 
   private void removeChangeLog() {
     if(changedItems != null) {
-      InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
+      InventoryDatabaseServer db = getTe().getDatabaseServer();
       if(db != null) {
         db.removeChangeLog(this);
       }
@@ -180,7 +176,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     }
     super.addListener(crafting);
     if(changedItems != null) {
-      InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
+      InventoryDatabaseServer db = getTe().getDatabaseServer();
       if(db != null) {
         db.addChangeLog(this);
         if(crafting instanceof EntityPlayerMP) {
@@ -216,11 +212,11 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
 
   public void checkCraftingRecipes() {
     storedRecipeExists = false;
-    int storedCraftingRecipes = getInventoryPanel().getStoredCraftingRecipes();
+    int storedCraftingRecipes = getTe().getStoredCraftingRecipes();
     if(hasCraftingRecipe() && storedCraftingRecipes > 0) {
       List<Slot> craftingGrid = getCraftingGridSlots();
       for(int idx = 0; idx < storedCraftingRecipes; idx++) {
-        if(getInventoryPanel().getStoredCraftingRecipe(idx).isEqual(craftingGrid)) {
+        if(getTe().getStoredCraftingRecipe(idx).isEqual(craftingGrid)) {
           storedRecipeExists = true;
           break;
         }
@@ -318,7 +314,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @Override
   public void sendChangeLog() {
     if(!changedItems.isEmpty() && !listeners.isEmpty()) {
-      InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
+      InventoryDatabaseServer db = getTe().getDatabaseServer();
       if(db != null) {
         try {
           byte[] compressed = db.compressChangedItems(changedItems);
@@ -347,7 +343,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   public void executeFetchItems(EntityPlayerMP player, int generation, int dbID, int targetSlot, int count) {
-    TileInventoryPanel te = getInventoryPanel();
+    TileInventoryPanel te = getTe();
     InventoryDatabaseServer db = te.getDatabaseServer();
     if(db == null || db.getGeneration() != generation || !db.isCurrent()) {
       return;
@@ -412,7 +408,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     if(!executeMoveItems(fromSlot, toSlotStart, toSlotEnd, amount)) {
       return false;
     }
-    if (!getInv().hasWorld() || getInv().getWorld().isRemote) {
+    if (!getTe().hasWorld() || getTe().getWorld().isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketMoveItems(fromSlot, toSlotStart, toSlotEnd, amount));
     }
     return true;

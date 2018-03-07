@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduitNetwork;
@@ -125,7 +128,7 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
   }
 
   @Override
-  protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
+  protected IPoweredTask createTask(IMachineRecipe nextRecipe, long nextSeed) {
     return new ContinuousTask(getPowerUsePerTick());
   }
 

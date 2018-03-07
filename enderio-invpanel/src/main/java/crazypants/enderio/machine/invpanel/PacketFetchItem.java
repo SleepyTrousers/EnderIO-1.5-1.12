@@ -42,7 +42,7 @@ public class PacketFetchItem implements IMessage, IMessageHandler<PacketFetchIte
 
   @Override
   public IMessage onMessage(PacketFetchItem message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+    EntityPlayerMP player = ctx.getServerHandler().player;
     if(player.openContainer instanceof InventoryPanelContainer) {
       InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
       ipc.executeFetchItems(player, message.generation, message.dbID, message.targetSlot, message.count);

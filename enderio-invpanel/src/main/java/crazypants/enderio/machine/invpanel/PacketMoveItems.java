@@ -41,7 +41,7 @@ public class PacketMoveItems implements IMessage, IMessageHandler<PacketMoveItem
 
   @Override
   public IMessage onMessage(PacketMoveItems message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+    EntityPlayerMP player = ctx.getServerHandler().player;
     if(player.openContainer instanceof InventoryPanelContainer) {
       InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
       ipc.executeMoveItems(message.fromSlot, message.toSlotStart, message.toSlotEnd, message.amount);

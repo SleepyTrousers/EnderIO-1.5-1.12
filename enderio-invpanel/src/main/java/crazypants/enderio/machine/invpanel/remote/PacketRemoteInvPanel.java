@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.invpanel.remote;
 
-import static crazypants.enderio.util.NbtValue.*;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import io.netty.buffer.ByteBuf;
@@ -19,6 +17,11 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import static crazypants.enderio.util.NbtValue.REMOTE_D;
+import static crazypants.enderio.util.NbtValue.REMOTE_X;
+import static crazypants.enderio.util.NbtValue.REMOTE_Y;
+import static crazypants.enderio.util.NbtValue.REMOTE_Z;
 
 public class PacketRemoteInvPanel implements IMessage, IMessageHandler<PacketRemoteInvPanel, IMessage> {
 
@@ -43,7 +46,7 @@ public class PacketRemoteInvPanel implements IMessage, IMessageHandler<PacketRem
 
   @Override
   public IMessage onMessage(PacketRemoteInvPanel message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+    EntityPlayerMP player = ctx.getServerHandler().player;
 
     ItemStack heldItem = player.getHeldItem(message.hand);
     if (heldItem == null || !(heldItem.getItem() instanceof ItemRemoteInvAccess)) {
@@ -62,7 +65,7 @@ public class PacketRemoteInvPanel implements IMessage, IMessageHandler<PacketRem
     ItemRemoteInvAccessType type = ItemRemoteInvAccessType.fromStack(heldItem);
 
     if (!type.inRange(d, x, y, z, player.getEntityWorld().provider.getDimension(), (int) player.posX, (int) player.posY, (int) player.posZ)) {
-      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outofrange")));
+      player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outofrange")), true);
       return null;
     }
 
@@ -71,21 +74,21 @@ public class PacketRemoteInvPanel implements IMessage, IMessageHandler<PacketRem
       return null;
     }
 
-    WorldServer world = server.worldServerForDimension(d);
+    WorldServer world = server.getWorld(d);
     if (world == null) {
-      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.invalidtarget")));
+      player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.invalidtarget")), true);
       return null;
     }
 
     final BlockPos pos = new BlockPos(x, y, z);
     if (!world.isBlockLoaded(pos)) {
-      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.notloaded")));
+      player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.notloaded")), true);
       return null;
     }
     
     TileEntity tileEntity = player.getEntityWorld().getTileEntity(pos);
     if (!(tileEntity instanceof TileInventoryPanel)) {
-      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.invalidtarget")));
+      player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.invalidtarget")), true);
       return null;
     }
 

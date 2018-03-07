@@ -43,10 +43,10 @@ public class PacketGuiSettings implements IMessage, IMessageHandler<PacketGuiSet
 
   @Override
   public IMessage onMessage(PacketGuiSettings message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+    EntityPlayerMP player = ctx.getServerHandler().player;
     if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
       InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      TileInventoryPanel teInvPanel = ipc.getInv();
+      TileInventoryPanel teInvPanel = ipc.getTe();
       teInvPanel.setGuiParameter(message.sortMode, message.filterString, message.sync);
     }
     return null;

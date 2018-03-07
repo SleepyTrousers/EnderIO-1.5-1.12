@@ -9,6 +9,7 @@ import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.conduit.EnderIOConduits;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.invpanel.chest.TileInventoryChest;
+import crazypants.enderio.machine.invpanel.sensor.TileInventoryPanelSensor;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
@@ -21,6 +22,8 @@ public enum InvpanelTileEntity implements IModTileEntity {
 
   TileInventoryPanel(TileInventoryPanel.class),
   TileInventoryChest(TileInventoryChest.class),
+  TileInventoryPanelSensor(TileInventoryPanelSensor.class),
+
   ;
 
   private final @Nonnull String unlocalisedName;

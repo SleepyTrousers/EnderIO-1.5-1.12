@@ -6,12 +6,12 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
-import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,20 +27,20 @@ public class BlockInventoryPanelSensor extends AbstractMachineBlock<TileInventor
 IPaintable.IWrenchHideablePaint {
 
   
-  public static BlockInventoryPanelSensor create() {
+  public static BlockInventoryPanelSensor create(@Nonnull IModObject modObject) {
     
     PacketHandler.INSTANCE.registerMessage(PacketActive.class, PacketActive.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketItemToCheck.class, PacketItemToCheck.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketItemCount.class, PacketItemCount.class, PacketHandler.nextID(), Side.SERVER);
     
     
-    BlockInventoryPanelSensor result = new BlockInventoryPanelSensor();
+    BlockInventoryPanelSensor result = new BlockInventoryPanelSensor(modObject);
     result.init();
     return result;
   }
   
-  public BlockInventoryPanelSensor() {
-    super(InvpanelObject.blockInventoryPanelSensor, TileInventoryPanelSensor.class);
+  public BlockInventoryPanelSensor(@Nonnull IModObject modObject) {
+    super(modObject);
   }
   
   @Override

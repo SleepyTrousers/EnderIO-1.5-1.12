@@ -68,7 +68,7 @@ public class CraftingHelper {
   }
 
   public void refill(InventoryPanelContainer container, int amount) {
-    InventoryDatabaseClient db = container.getInventoryPanel().getDatabaseClient();
+    InventoryDatabaseClient db = container.getTe().getDatabaseClient();
     if (db == null) {
       return;
     }
@@ -197,7 +197,7 @@ public class CraftingHelper {
       }
     }
     Candidate candidate = new Candidate(stack);
-    if(container.getInventoryPanel().isExtractionDisabled()) {
+    if(container.getTe().isExtractionDisabled()) {
       findCandidates(candidate, stack, container.getReturnAreaSlots());
     }
     findCandidates(candidate, stack, container.getPlayerInventorySlots());

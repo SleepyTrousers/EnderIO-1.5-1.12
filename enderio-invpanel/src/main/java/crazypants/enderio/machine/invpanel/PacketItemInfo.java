@@ -56,7 +56,7 @@ public class PacketItemInfo implements IMessage, IMessageHandler<PacketItemInfo,
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
       InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      TileInventoryPanel teInvPanel = ipc.getInv();
+      TileInventoryPanel teInvPanel = ipc.getTe();
       InventoryDatabaseClient db = teInvPanel.getDatabaseClient(message.generation);
       try {
         db.readCompressedItems(message.compressed);

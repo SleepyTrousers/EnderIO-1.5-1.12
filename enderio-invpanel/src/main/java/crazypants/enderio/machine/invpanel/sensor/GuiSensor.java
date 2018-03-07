@@ -1,18 +1,19 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
 
-public class GuiSensor extends GuiPoweredMachineBase<TileInventoryPanelSensor> {
+public class GuiSensor extends GuiMachineBase<TileInventoryPanelSensor> {
   
   
   private TextFieldEnder startTF;
@@ -87,9 +88,9 @@ public class GuiSensor extends GuiPoweredMachineBase<TileInventoryPanelSensor> {
     
     String txt = EnderIO.lang.localize("gui.inventorySensor.control1").trim();
     FontRenderer fr = getFontRenderer();
-    fr.drawString(txt, startTF.xPosition - 3 - fr.getStringWidth(txt), startTF.yPosition + 3, 0x000000);
+    fr.drawString(txt, startTF.x - 3 - fr.getStringWidth(txt), startTF.y + 3, 0x000000);
     txt = EnderIO.lang.localize("gui.inventorySensor.control2").trim();
-    fr.drawString(txt, stopTF.xPosition - 3 - fr.getStringWidth(txt), stopTF.yPosition + 3, 0x000000);
+    fr.drawString(txt, stopTF.x - 3 - fr.getStringWidth(txt), stopTF.y + 3, 0x000000);
     
     checkForTextChange();
   }

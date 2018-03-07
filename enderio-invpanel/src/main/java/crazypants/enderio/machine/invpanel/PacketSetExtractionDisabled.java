@@ -33,10 +33,10 @@ public class PacketSetExtractionDisabled implements IMessage, IMessageHandler<Pa
 
   @Override
   public IMessage onMessage(PacketSetExtractionDisabled message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+    EntityPlayerMP player = ctx.getServerHandler().player;
     if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
       InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      TileInventoryPanel teInvPanel = ipc.getInv();
+      TileInventoryPanel teInvPanel = ipc.getTe();
       teInvPanel.setExtractionDisabled(message.extractionDisabled);
     }
     return null;

@@ -54,17 +54,17 @@ public class PacketStoredCraftingRecipe implements IMessage, IMessageHandler<Pac
 
   @Override
   public IMessage onMessage(PacketStoredCraftingRecipe message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+    EntityPlayerMP player = ctx.getServerHandler().player;
     if(player.openContainer instanceof InventoryPanelContainer) {
       InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
       switch (message.action) {
         case ACTION_ADD:
           if(message.recipe != null) {
-            ipc.getInventoryPanel().addStoredCraftingRecipe(message.recipe);
+            ipc.getTe().addStoredCraftingRecipe(message.recipe);
           }
           break;
         case ACTION_DELETE:
-          ipc.getInventoryPanel().removeStoredCraftingRecipe(message.index);
+          ipc.getTe().removeStoredCraftingRecipe(message.index);
           break;
       }
     }

@@ -402,12 +402,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if (te.isActive()) {
       tfFilter.setEnabled(true);
       if (!tfFilter.isFocused() && tfFilter.getText().isEmpty()) {
-        fr.drawString(infoTextFilter, tfFilter.xPosition, tfFilter.yPosition, 0x707070);
+        fr.drawString(infoTextFilter, tfFilter.x, tfFilter.y, 0x707070);
       }
     } else {
       tfFilter.setEnabled(false);
       setText(tfFilter, "");
-      fr.drawString(infoTextOffline, tfFilter.xPosition, tfFilter.yPosition, 0x707070);
+      fr.drawString(infoTextOffline, tfFilter.x, tfFilter.y, 0x707070);
     }
   }
 
@@ -457,7 +457,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   @Override
-  protected void drawFakeItemStack(int x, int y, ItemStack stack) {
+  public void drawFakeItemStack(int x, int y, ItemStack stack) {
     FontRenderer font = stack.getItem().getFontRenderer(stack);
     if (font == null) {
       font = fontRenderer;
@@ -708,10 +708,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
           }
         } else {
           return;
-        }
-
-        if (DebugCommand.CLIENT.isEnabled()) {
-          DebugCommand.CLIENT.debug("extracting " + count + " of " + invSlot.getStack() + " for dbid=" + invSlot.entry.dbID + " " + invSlot.entry);
         }
 
         PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, targetSlot, count));

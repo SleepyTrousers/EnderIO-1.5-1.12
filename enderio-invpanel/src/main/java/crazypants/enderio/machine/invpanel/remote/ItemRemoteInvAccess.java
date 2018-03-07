@@ -14,11 +14,13 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.power.IInternalPoweredItem;
 import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
 import crazypants.enderio.base.render.IHaveRenderers;
+import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import crazypants.enderio.util.ClientUtil;
@@ -49,7 +51,6 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -63,31 +64,24 @@ import static crazypants.enderio.util.NbtValue.REMOTE_Z;
 public class ItemRemoteInvAccess extends Item
     implements IAdvancedTooltipProvider, IOverlayRenderAware, IFluidContainerItem, IInternalPoweredItem, IHaveRenderers {
 
-  public static ItemRemoteInvAccess create() {
+  public static ItemRemoteInvAccess create(@Nonnull IModObject modObject) {
     ClientRemoteGuiManager.create();
-    ItemRemoteInvAccess result = new ItemRemoteInvAccess();
-    result.init();
+    ItemRemoteInvAccess result = new ItemRemoteInvAccess(modObject);
     return result;
   }
 
-  protected ItemRemoteInvAccess() {
+  protected ItemRemoteInvAccess(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(InvpanelObject.itemRemoteInvAccess.getUnlocalisedName());
-    setRegistryName(InvpanelObject.itemRemoteInvAccess.getUnlocalisedName());
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(1);
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
+    modObject.apply(this);
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
+  public void registerRenderers(IModObject modObject) {
     for (ItemRemoteInvAccessType type : ItemRemoteInvAccessType.values()) {
-      ResourceLocation resourceLocation = new ResourceLocation(EnderIO.DOMAIN, type.getUnlocalizedName(InvpanelObject.itemRemoteInvAccess.getUnlocalisedName()));
+      ResourceLocation resourceLocation = new ResourceLocation(EnderIO.DOMAIN, type.getUnlocalizedName(modObject.getUnlocalisedName()));
       ModelBakery.registerItemVariants(this, resourceLocation);
       ClientUtil.regRenderer(this, type.toMetadata(), resourceLocation);
     }
@@ -168,7 +162,7 @@ public class ItemRemoteInvAccess extends Item
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
-      if (targetWorld.getBlockState(pos).getBlock() != InvPanelObject.blockInventoryPanel.getBlock()) {
+      if (targetWorld.getBlockState(pos).getBlock() != InvpanelObject.blockInventoryPanel.getBlock()) {
         player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.invalidtarget")), true);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }

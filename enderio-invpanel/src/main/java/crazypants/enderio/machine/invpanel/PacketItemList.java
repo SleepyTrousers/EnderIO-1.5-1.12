@@ -49,7 +49,7 @@ public class PacketItemList implements IMessage, IMessageHandler<PacketItemList,
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
       InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      TileInventoryPanel teInvPanel = ipc.getInv();
+      TileInventoryPanel teInvPanel = ipc.getTe();
       InventoryDatabaseClient db = teInvPanel.getDatabaseClient(message.generation);
       try {
         List<Integer> missingItems = db.readCompressedItemList(message.compressed);

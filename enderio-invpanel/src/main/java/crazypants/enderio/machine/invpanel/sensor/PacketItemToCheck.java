@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
 import com.enderio.core.common.network.MessageTileEntity;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -34,7 +35,7 @@ public class PacketItemToCheck extends MessageTileEntity<TileInventoryPanelSenso
 
   @Override
   public IMessage onMessage(PacketItemToCheck message, MessageContext ctx) {
-    TileInventoryPanelSensor te = message.getTileEntity(ctx.getServerHandler().playerEntity.world);
+    TileInventoryPanelSensor te = message.getTileEntity(ctx.getServerHandler().player.world);
     if(te != null) {
       te.setItemToCheck(message.item);
     }

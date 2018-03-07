@@ -41,7 +41,7 @@ public class SlotCraftingWrapper extends SlotCrafting {
         } else {
           int numInserted = ItemUtil.doInsertItem(inventory, 10, 20, containeritemstack);
           if (numInserted < containeritemstack.getCount()) {
-            containeritemstack.getCount() -= numInserted;
+            containeritemstack.shrink(numInserted);
             if (!playerIn.inventory.addItemStackToInventory(containeritemstack)) {
               playerIn.dropItem(containeritemstack, false);
             }

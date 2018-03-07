@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.invpanel.remote;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.Log;
@@ -8,8 +10,6 @@ import crazypants.enderio.base.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-
-import javax.annotation.Nonnull;
 
 public enum ItemRemoteInvAccessType {
   BASIC(0, "basic", 5 * 16, false, true),
@@ -81,8 +81,9 @@ public enum ItemRemoteInvAccessType {
     Fluid fluid = null;
     fluid = FluidRegistry.getFluid(Config.remoteInventoryFluidTypes[ordinal()]);
     if (fluid == null) {
-      Log.warn("ItemRemoteInvAccessType: Could not find fluid '" + Config.remoteInventoryFluidTypes[ordinal()] + "' using default fluid " + Fluids.fluidNutrientDistillation);
-      fluid = NullHelper.notnull(Fluids.fluidNutrientDistillation, "Nutrient Distillation registration went AWOL");
+      Log.warn("ItemRemoteInvAccessType: Could not find fluid '" + Config.remoteInventoryFluidTypes[ordinal()] + "' using default fluid "
+          + Fluids.NUTRIENT_DISTILLATION.getFluid());
+      fluid = NullHelper.notnull(Fluids.NUTRIENT_DISTILLATION.getFluid(), "Nutrient Distillation registration went AWOL");
     }
     return fluid;
   }
