@@ -165,6 +165,8 @@ public enum IconEIO implements IWidgetIcon {
   GEAR_LIGHT(16, 224),
   GEAR_DARK(32, 224),
 
+  ARROW_LEFT(0, 208),
+
   ;
 
   // Texture size is actually 512 but everything is aligned to a 256 grid

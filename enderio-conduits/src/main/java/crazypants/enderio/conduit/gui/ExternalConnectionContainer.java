@@ -13,6 +13,8 @@ import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
+import crazypants.enderio.base.conduit.item.ItemExtractSpeedUpgrade;
+import crazypants.enderio.base.conduit.item.SpeedUpgrade;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
@@ -20,10 +22,7 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
-import crazypants.enderio.conduit.init.ConduitObject;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
-import crazypants.enderio.conduit.item.SpeedUpgrade;
 import crazypants.enderio.conduit.packet.PacketSlotVisibility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -35,8 +34,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-
-import static crazypants.enderio.conduit.init.ConduitObject.item_extract_speed_upgrade;
 
 public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgrades, TileConduitBundle>
     implements IExternalConnectionContainer, IOpenFilterRemoteExec.Container {
@@ -103,8 +100,8 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     if (itemConduit != null) {
       ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotOutputFilter));
       ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotInputFilter));
-      ghostSlots.add(new GhostBackgroundItemSlot(item_extract_speed_upgrade.getItemNN(), slotSpeedUpgrades));
-      ghostSlots.add(new GhostBackgroundItemSlot(ConduitObject.item_inventory_panel_upgrade.getItemNN(), slotFunctionUpgrades));
+      ghostSlots.add(new GhostBackgroundItemSlot(ModObject.item_extract_speed_upgrade.getItemNN(), slotSpeedUpgrades));
+      ghostSlots.add(new GhostBackgroundItemSlot(ModObject.item_inventory_panel_upgrade.getItemNN(), slotFunctionUpgrades));
     }
   }
 

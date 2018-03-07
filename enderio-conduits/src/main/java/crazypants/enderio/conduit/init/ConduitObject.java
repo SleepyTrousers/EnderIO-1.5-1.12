@@ -12,8 +12,6 @@ import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.registry.Registry;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.EnderIOConduits;
-import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
-import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.conduit.item.ItemItemConduit;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
@@ -35,13 +33,7 @@ public enum ConduitObject implements IModObject.Registerable {
   item_item_conduit(ItemItemConduit.class),
   item_liquid_conduit(ItemLiquidConduit.class),
   item_power_conduit(ItemPowerConduit.class),
-  item_redstone_conduit(ItemRedstoneConduit.class),
-
-  item_extract_speed_upgrade(ItemExtractSpeedUpgrade.class, "createUpgrade"),
-  item_extract_speed_downgrade(ItemExtractSpeedUpgrade.class, "createDowngrade"),
-  item_inventory_panel_upgrade(ItemFunctionUpgrade.class, "createInventoryPanelUpgrade"),
-
-  ;
+  item_redstone_conduit(ItemRedstoneConduit.class),;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {

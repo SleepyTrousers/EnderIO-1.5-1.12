@@ -61,9 +61,9 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
 
     filter = (ExistingItemFilter) filterContainer.getItemFilter();
 
-    int butLeft = 17;
-    int x = butLeft;
-    int y = 68;
+    int butLeft = 20;
+    int x = getGuiLeft() + butLeft;
+    int y = getGuiTop() + 36;
 
     useMetaB = new ToggleButton(this, ID_META, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
     useMetaB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_MATCH_META.get());
@@ -71,13 +71,8 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     useMetaB.setPaintSelectedBorder(false);
 
     x += 20;
-    stickyB = new ToggleButton(this, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
-    stickyB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_ENABLED.get(), Lang.GUI_ITEM_FILTER_STICKY_ENABLED_2.get());
-    stickyB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_DISABLED.get());
-    stickyB.setPaintSelectedBorder(false);
-
-    y += 20;
-    x = butLeft;
+    whiteListB = new IconButton(this, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
+    whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
 
     x += 20;
     useNbtB = new ToggleButton(this, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
@@ -85,31 +80,39 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     useNbtB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_IGNORE_NBT.get());
     useNbtB.setPaintSelectedBorder(false);
 
-    x = butLeft;
+    x += 20;
     useOreDictB = new ToggleButton(this, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
     useOreDictB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_ORE_DIC_ENABLED.get());
     useOreDictB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_ORE_DIC_DISABLED.get());
     useOreDictB.setPaintSelectedBorder(false);
 
-    int x0 = getGuiLeft() + 124;
-    int y0 = getGuiTop() + 64;
+    x += 20;
+    stickyB = new ToggleButton(this, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
+    stickyB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_ENABLED.get(), Lang.GUI_ITEM_FILTER_STICKY_ENABLED_2.get());
+    stickyB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_DISABLED.get());
+    stickyB.setPaintSelectedBorder(false);
 
-    snapshotB = new TooltipButton(this, ID_SNAPSHOT, 60, 64, 60, 20, Lang.GUI_EXISTING_ITEM_FILTER_SNAPSHOT.get());
-    mergeB = new TooltipButton(this, ID_MERGE, x0, y0, 40, 20, Lang.GUI_EXISTING_ITEM_FILTER_MERGE.get());
+    x = butLeft;
+    y += 24;
 
-    x0 -= 64;
-    y0 += 24;
+    snapshotB = new TooltipButton(this, ID_SNAPSHOT, x, y, 60, 20, Lang.GUI_EXISTING_ITEM_FILTER_SNAPSHOT.get());
 
-    clearB = new TooltipButton(this, ID_CLEAR, x0, y0, 60, 20, Lang.GUI_EXISTING_ITEM_FILTER_CLEAR.get());
+    x += 64;
 
-    x0 += 64;
-    showB = new TooltipButton(this, ID_SHOW, x0, y0, 40, 20, Lang.GUI_EXISTING_ITEM_FILTER_SHOW.get());
+    mergeB = new TooltipButton(this, ID_MERGE, x, y, 40, 20, Lang.GUI_EXISTING_ITEM_FILTER_MERGE.get());
+
+    x -= 64;
+    y += 24;
+
+    clearB = new TooltipButton(this, ID_CLEAR, x, y, 60, 20, Lang.GUI_EXISTING_ITEM_FILTER_CLEAR.get());
+
+    x += 64;
+    showB = new TooltipButton(this, ID_SHOW, x, y, 40, 20, Lang.GUI_EXISTING_ITEM_FILTER_SHOW.get());
 
     snapshotB.setToolTip(Lang.GUI_EXISTING_ITEM_FILTER_SNAPSHOT_2.get());
-
-    y -= 40;
-    whiteListB = new IconButton(this, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
-    whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
+    mergeB.setToolTip(Lang.GUI_EXISTING_ITEM_FILTER_MERGE_2.get());
+    clearB.setToolTip(Lang.GUI_EXISTING_ITEM_FILTER_CLEAR_2.get());
+    showB.setToolTip(Lang.GUI_EXISTING_ITEM_FILTER_SHOW_2.get());
 
     snapshotOverlay = new SnapshotOverlay();
     addOverlay(snapshotOverlay);

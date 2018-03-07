@@ -40,6 +40,13 @@ public class PowerSettings extends BaseSettingsPanel {
       public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
         RedstoneControlMode curMode = getRedstoneControlMode();
         conduit.setExtractionRedstoneMode(mode, gui.getDir());
+        if (mode == RedstoneControlMode.OFF || mode == RedstoneControlMode.ON) {
+          colorB.onGuiInit();
+          colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
+          colorB.setIsVisible(true);
+        } else {
+          colorB.setIsVisible(false);
+        }
         if (curMode != mode) {
           PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.getDir()));
         }
@@ -57,7 +64,7 @@ public class PowerSettings extends BaseSettingsPanel {
       }
     });
 
-    x += rsB.getWidth() + gap;
+    x += rsB.getWidth() + 4;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
     colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
@@ -77,7 +84,6 @@ public class PowerSettings extends BaseSettingsPanel {
   protected void initCustomOptions() {
     super.initCustomOptions();
     rsB.onGuiInit();
-    colorB.onGuiInit();
   }
 
   @Override

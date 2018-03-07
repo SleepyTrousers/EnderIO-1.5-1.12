@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit.item;
+package crazypants.enderio.base.conduit.item;
 
 import java.util.ArrayList;
 import java.util.List;
