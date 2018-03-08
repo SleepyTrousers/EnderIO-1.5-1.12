@@ -25,7 +25,7 @@ public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> imp
   GeneralTab generalTab;
 
   public GuiTransceiver(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileTransceiver te) {
-    super(te, new ContainerTransceiver(par1InventoryPlayer, te), "transceiver", "itemFilter");
+    super(te, new ContainerTransceiver(par1InventoryPlayer, te), "transceiver_general", "itemFilter");
 
     generalTab = new GeneralTab(this);
     tabs.add(generalTab);

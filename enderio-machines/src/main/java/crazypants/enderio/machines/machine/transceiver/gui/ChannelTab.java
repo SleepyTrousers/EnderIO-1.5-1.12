@@ -58,6 +58,8 @@ public class ChannelTab implements ITabPanel {
   final @Nonnull ListSelectionListener<Channel> selectionListener;
   final @Nonnull TileTransceiver transceiver;
 
+  final @Nonnull Predicate predicate;
+
   public ChannelTab(@Nonnull GuiTransceiver guiTransceiver, @Nonnull ChannelType type) {
     parent = guiTransceiver;
     this.type = type;
@@ -84,23 +86,7 @@ public class ChannelTab implements ITabPanel {
     deleteChannelB = new IconButton(parent, DELETE_CHANNEL_BUTTON_ID, x + w - 20, y + h + 4, IconEIO.MINUS);
     deleteChannelB.setToolTip(Lang.GUI_TRANS_CHANNEL_DELETE.get());
 
-    Predicate<Channel> predicate = new Predicate<Channel>() {
-      @Override
-      public boolean apply(@Nullable Channel input) {
-        return input != null
-            && (input.isPublic() || input.getUser().equals(EnderIO.proxy.getClientPlayer().getGameProfile()) || input.getUser() == UserIdent.NOBODY);
-      }
-
-      @Override
-      public boolean equals(@Nullable Object obj) {
-        return super.equals(obj);
-      }
-
-      @Override
-      public int hashCode() {
-        return super.hashCode();
-      }
-    };
+    predicate = new SendReceivePredicate();
 
     x += w + 32;
     h = 35;
@@ -201,7 +187,9 @@ public class ChannelTab implements ITabPanel {
   @Override
   public void render(float partialTick, int mouseX, int mouseY) {
     newChannelTF.drawTextBox();
+
     channelList.drawScreen(mouseX, mouseY, partialTick);
+
     sendChannels.drawScreen(mouseX, mouseY, partialTick);
     recieveChannels.drawScreen(mouseX, mouseY, partialTick);
 
@@ -243,6 +231,7 @@ public class ChannelTab implements ITabPanel {
         PacketHandler.INSTANCE.sendToServer(new PacketSendRecieveChannel(transceiver, false, false, c));
       }
     }
+    recieveChannels.setChannels(transceiver.getRecieveChannels(type), predicate);
   }
 
   protected void sendTogglePressed() {
@@ -257,6 +246,7 @@ public class ChannelTab implements ITabPanel {
         PacketHandler.INSTANCE.sendToServer(new PacketSendRecieveChannel(transceiver, true, false, c));
       }
     }
+    sendChannels.setChannels(transceiver.getSendChannels(type), predicate);
   }
 
   private void deleteChannelPressed() {
@@ -291,7 +281,26 @@ public class ChannelTab implements ITabPanel {
   @Override
   @Nonnull
   public ResourceLocation getTexture() {
-    return EnderIO.proxy.getGuiTexture("transceiver_channel");
+    return EnderIO.proxy.getGuiTexture("transceiver_channel_select");
+  }
+
+  private class SendReceivePredicate implements Predicate<Channel> {
+
+    @Override
+    public boolean apply(@Nullable Channel input) {
+      return input != null
+          && (input.isPublic() || input.getUser().equals(EnderIO.proxy.getClientPlayer().getGameProfile()) || input.getUser() == UserIdent.NOBODY);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+      return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+      return super.hashCode();
+    }
   }
 
 }
