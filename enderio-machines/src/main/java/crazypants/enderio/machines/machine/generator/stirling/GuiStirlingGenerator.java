@@ -7,8 +7,6 @@ import java.text.MessageFormat;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
@@ -19,6 +17,7 @@ import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
@@ -88,7 +87,7 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture(isSimple ? 1 : 0);
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
@@ -100,8 +99,6 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
       scaled = getProgressScaled(12);
       drawTexturedModalRect(sx + 80, sy + 64 - scaled, 176, 12 - scaled, 14, scaled + 2);
     }
-
-    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
     FontRenderer fr = getFontRenderer();
     int y = guiTop + fr.FONT_HEIGHT / 2 + 3;
@@ -119,6 +116,9 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
+
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
 }

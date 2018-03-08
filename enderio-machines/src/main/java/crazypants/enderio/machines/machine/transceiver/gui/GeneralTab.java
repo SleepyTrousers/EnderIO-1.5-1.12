@@ -17,6 +17,7 @@ import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.machines.lang.Lang;
+import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -30,7 +31,7 @@ public class GeneralTab implements ITabPanel {
   final @Nonnull GuiToolTip sendPowerBarTT;
 
   final @Nonnull ToggleButton bufferSizeB;
-  final @Nonnull PowerBar internalPowerBar;
+  final @Nonnull PowerBar<TileTransceiver> internalPowerBar;
 
   public GeneralTab(@Nonnull GuiTransceiver guiTransceiver) {
     parent = guiTransceiver;

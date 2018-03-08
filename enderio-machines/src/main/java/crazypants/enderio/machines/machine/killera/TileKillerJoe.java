@@ -25,6 +25,7 @@ import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
+import crazypants.enderio.machines.capability.LegacyKillerJoeWrapper;
 import crazypants.enderio.machines.config.config.KillerJoeConfig;
 import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
@@ -57,6 +58,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.TargetContext;
 
@@ -538,13 +540,20 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     return smartTankFluidHandler;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return (T) getSmartTankFluidHandler().get(facingIn);
+      return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(getSmartTankFluidHandler().get(facingIn));
+    }
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facingIn != null) {
+      return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new LegacyKillerJoeWrapper(this, facingIn));
     }
     return super.getCapability(capability, facingIn);
+  }
+
+  @Override
+  protected boolean hasStuffToPush() {
+    return Prep.isValid(getStackInSlot(0));
   }
 
   public @Nonnull ItemStack getWeapon() {

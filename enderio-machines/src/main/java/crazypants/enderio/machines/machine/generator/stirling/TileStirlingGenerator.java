@@ -6,8 +6,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.common.util.IProgressTile;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.capability.ItemTools;
-import crazypants.enderio.base.capability.ItemTools.MoveResult;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
@@ -15,6 +13,7 @@ import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.PowerDistributor;
+import crazypants.enderio.machines.capability.LegacyStirlingWrapper;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
@@ -31,6 +30,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_GEN;
@@ -87,12 +88,6 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
   public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     return TileEntityFurnace.isItemFuel(itemstack);
   }
-
-  @Deprecated
-  public boolean canExtractItem(int i, @Nonnull ItemStack itemstack, @Nonnull EnumFacing j) {
-    return !TileEntityFurnace.isItemFuel(itemstack);
-  }
-  // TODO 1.11 didn't we have a special capability for this machine that handles this?
 
   @Override
   public boolean isActive() {
@@ -182,18 +177,6 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
     return needsUpdate;
   }
 
-  @Override
-  protected boolean doPush(@Nullable EnumFacing dir) {
-    final ItemStack fuelStack = inventory[0];
-    if (dir == null || fuelStack == null || Prep.isInvalid(fuelStack) || !shouldDoWorkThisTick(20)) {
-      return false;
-    }
-    if (!canExtractItem(0, fuelStack, dir)) {
-      return false;
-    }
-    return ItemTools.move(getPushLimit(), world, getPos(), dir, getPos().offset(dir), dir.getOpposite()) == MoveResult.MOVED;
-  }
-
   public static float getEnergyMultiplier(@Nonnull ICapacitorData capacitorType) {
     return STIRLING_POWER_GEN.get(capacitorType) / STIRLING_POWER_GEN.get(DefaultCapacitorData.BASIC_CAPACITOR);
   }
@@ -217,6 +200,20 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
     int transmitted = powerDis.transmitEnergy(world, canTransmit);
     setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
+  }
+
+  @Override
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing1) {
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing1 != null) {
+      return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new LegacyStirlingWrapper(this, facing1));
+    }
+    return super.getCapability(capability, facing1);
+  }
+
+  @Override
+  protected boolean hasStuffToPush() {
+    final ItemStack itemStack = inventory[0];
+    return itemStack != null && Prep.isValid(itemStack) && !TileEntityFurnace.isItemFuel(itemStack);
   }
 
 }

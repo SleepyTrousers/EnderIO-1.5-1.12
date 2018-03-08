@@ -95,7 +95,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
 
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {
-    if (dir == null || slotDefinition.getNumOutputSlots() <= 0 || !shouldDoWorkThisTick(20) || !hasStuffToPush()) {
+    if (dir == null || !shouldDoWorkThisTick(20) || !hasStuffToPush()) {
       return false;
     }
     return ItemTools.move(getPushLimit(), world, getPos(), dir, getPos().offset(dir), dir.getOpposite()) == MoveResult.MOVED;
@@ -103,7 +103,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
 
   @Override
   protected boolean doPull(@Nullable EnumFacing dir) {
-    if (dir == null || slotDefinition.getNumInputSlots() <= 0 || !shouldDoWorkThisTick(20) || !hasSpaceToPull()) {
+    if (dir == null || !shouldDoWorkThisTick(20) || !hasSpaceToPull()) {
       return false;
     }
     return ItemTools.move(getPullLimit(), world, getPos().offset(dir), dir.getOpposite(), getPos(), dir) == MoveResult.MOVED;
