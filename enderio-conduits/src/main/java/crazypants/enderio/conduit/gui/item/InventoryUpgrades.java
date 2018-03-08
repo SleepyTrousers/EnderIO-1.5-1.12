@@ -98,7 +98,7 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     }
   }
 
-  private boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack) {
+  public boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack) {
     if (stack.isEmpty()) {
       return false;
     }
