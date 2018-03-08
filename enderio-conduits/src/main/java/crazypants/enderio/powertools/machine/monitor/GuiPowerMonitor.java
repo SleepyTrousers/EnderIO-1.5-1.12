@@ -164,8 +164,8 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
 
       if (engineControlStart_value == null) {
         engineControlEnabled.setSelected(engineControlEnabled_value = getTileEntity().isEngineControlEnabled());
-        engineControlStart.setText(engineControlStart_value = LangPower.format(getTileEntity().getStartLevel() * 100));
-        engineControlStop.setText(engineControlStop_value = LangPower.format(getTileEntity().getStopLevel() * 100));
+        engineControlStart.setText(engineControlStart_value = "" + (int) (getTileEntity().getStartLevel() * 100));
+        engineControlStop.setText(engineControlStop_value = "" + (int) (getTileEntity().getStopLevel() * 100));
       }
 
       if (engineControlEnabled_value != engineControlEnabled.isSelected() || !engineControlStart_value.equals(engineControlStart.getText())
@@ -174,11 +174,11 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
       }
 
       if (engineControlEnabled_value != getTileEntity().isEngineControlEnabled()
-          || !engineControlStart_value.equals(LangPower.format(getTileEntity().getStartLevel() * 100))
-          || !engineControlStop_value.equals(LangPower.format(getTileEntity().getStopLevel() * 100))) {
+          || !engineControlStart_value.equals("" + (int) (getTileEntity().getStartLevel() * 100))
+          || !engineControlStop_value.equals("" + (int) (getTileEntity().getStopLevel() * 100))) {
         engineControlEnabled.setSelected(engineControlEnabled_value = getTileEntity().isEngineControlEnabled());
-        engineControlStart.setText(engineControlStart_value = LangPower.format(getTileEntity().getStartLevel() * 100));
-        engineControlStop.setText(engineControlStop_value = LangPower.format(getTileEntity().getStopLevel() * 100));
+        engineControlStart.setText(engineControlStart_value = "" + (int) (getTileEntity().getStartLevel() * 100));
+        engineControlStop.setText(engineControlStop_value = "" + (int) (getTileEntity().getStopLevel() * 100));
       }
 
       break;

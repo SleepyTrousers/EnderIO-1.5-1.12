@@ -193,7 +193,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   }
 
   // Side.CLIENT
-  private long[] lastUpdateRequest = new long[stats.length];
+  private long[] nextUpdateRequest = new long[stats.length];
 
   @SideOnly(Side.CLIENT)
   public StatCollector getStatCollector(int id) {
@@ -201,8 +201,8 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
       return null;
     }
     long now = EnderIO.proxy.getTickCount();
-    if (lastUpdateRequest[id] < now) {
-      lastUpdateRequest[id] = now + 10;
+    if (nextUpdateRequest[id] < now) {
+      nextUpdateRequest[id] = now + 10;
       PacketHandler.INSTANCE.sendToServer(PacketPowerMonitorGraph.requestUpdate(this, id));
     }
     return stats[id];
@@ -243,13 +243,13 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   protected StatData statData = null;
 
   // Side.CLIENT
-  private long lastUpdateRequestStatData = -1;
+  private long nextUpdateRequestStatData = -1;
 
   @SideOnly(Side.CLIENT)
   public StatData getStatData() {
     long now = EnderIO.proxy.getTickCount();
-    if (lastUpdateRequestStatData < now) {
-      lastUpdateRequestStatData = now + 10;
+    if (nextUpdateRequestStatData < now) {
+      nextUpdateRequestStatData = now + 10;
       PacketHandler.INSTANCE.sendToServer(PacketPowerMonitorStatData.requestUpdate(this));
     }
     return statData;
