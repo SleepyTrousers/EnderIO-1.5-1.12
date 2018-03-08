@@ -12,9 +12,11 @@ import com.enderio.core.api.client.gui.ITabPanel;
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.transceiver.ChannelType;
 import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> implements ITransceiverRemoteExec.GUI {
 
@@ -138,8 +140,15 @@ public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> imp
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
-    bindGuiTexture();
-    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
+    ITabPanel tab = tabs.get(activeTab);
+
+    if (tab != null) {
+      Minecraft.getMinecraft().getTextureManager().bindTexture(tab.getTexture());
+      drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
+    } else {
+      Minecraft.getMinecraft().player.closeScreen();
+      return;
+    }
 
     startTabs();
     for (int i = 0; i < tabs.size(); i++) {
@@ -157,6 +166,11 @@ public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> imp
 
   public @Nonnull ContainerTransceiver getContainer() {
     return (ContainerTransceiver) inventorySlots;
+  }
+
+  @Override
+  protected @Nonnull ResourceLocation getGuiTexture() {
+    return tabs.get(activeTab).getTexture();
   }
 
   // @Override

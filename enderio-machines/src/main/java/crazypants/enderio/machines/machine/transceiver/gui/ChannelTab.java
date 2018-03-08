@@ -291,7 +291,7 @@ public class ChannelTab implements ITabPanel {
   @Override
   @Nonnull
   public ResourceLocation getTexture() {
-    return EnderIO.proxy.getGuiTexture("transceiver");
+    return EnderIO.proxy.getGuiTexture("transceiver_channel");
   }
 
 }

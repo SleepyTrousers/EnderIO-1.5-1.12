@@ -87,12 +87,8 @@ public class GeneralTab implements ITabPanel {
 
     // Inventory
     parent.bindGuiTexture();
-    Point invRoot = container.getPlayerInventoryOffset();
-    parent.drawTexturedModalRect(left + invRoot.x - 1, top + invRoot.y - 1, 24, 180, 162, 76);
 
-    invRoot = container.getItemInventoryOffset();
-    parent.drawTexturedModalRect(left + invRoot.x - 1, top + invRoot.y - 1, 24, 180, 72, 36);
-    parent.drawTexturedModalRect(left + invRoot.x - 1 + (18 * 4) + container.getItemBufferSpacing(), top + invRoot.y - 1, 24, 180, 72, 36);
+    Point invRoot = container.getItemInventoryOffset();
 
     FontRenderer fr = parent.getFontRenderer();
     String sendTxt = Lang.GUI_TRANS_CHANNEL_SEND.get();
@@ -113,9 +109,6 @@ public class GeneralTab implements ITabPanel {
     x = left + 11 - 1;
     y = top + 14 - 1;
     int maxHeight = 58;
-
-    parent.drawTexturedModalRect(x, y, 233, 196, 12, maxHeight + 2);
-    parent.drawTexturedModalRect(x + SEND_BAR_OFFSET, y, 233, 196, 12, maxHeight + 2);
 
     int totalPixelHeight = parent.getTransciever().getEnergyStoredScaled(maxHeight * 2);
     int fillHeight = Math.min(totalPixelHeight, maxHeight);
@@ -170,6 +163,6 @@ public class GeneralTab implements ITabPanel {
   @Override
   @Nonnull
   public ResourceLocation getTexture() {
-    return EnderIO.proxy.getGuiTexture("transceiver");
+    return EnderIO.proxy.getGuiTexture("transceiver_general");
   }
 }
