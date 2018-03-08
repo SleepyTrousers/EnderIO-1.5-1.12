@@ -6,16 +6,17 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.ITabPanel;
 
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.transceiver.ChannelType;
 import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> implements ITransceiverRemoteExec.GUI {
 
@@ -24,7 +25,7 @@ public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> imp
   GeneralTab generalTab;
 
   public GuiTransceiver(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileTransceiver te) {
-    super(te, new ContainerTransceiver(par1InventoryPlayer, te), "transceiver", "itemFilter");
+    super(te, new ContainerTransceiver(par1InventoryPlayer, te), "transceiver_general", "itemFilter");
 
     generalTab = new GeneralTab(this);
     tabs.add(generalTab);
@@ -134,13 +135,20 @@ public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> imp
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
-    bindGuiTexture();
-    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
+    ITabPanel tab = tabs.get(activeTab);
+
+    if (tab != null) {
+      Minecraft.getMinecraft().getTextureManager().bindTexture(tab.getTexture());
+      drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
+    } else {
+      Minecraft.getMinecraft().player.closeScreen();
+      return;
+    }
 
     startTabs();
     for (int i = 0; i < tabs.size(); i++) {
@@ -158,6 +166,11 @@ public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> imp
 
   public @Nonnull ContainerTransceiver getContainer() {
     return (ContainerTransceiver) inventorySlots;
+  }
+
+  @Override
+  protected @Nonnull ResourceLocation getGuiTexture() {
+    return tabs.get(activeTab).getTexture();
   }
 
   // @Override

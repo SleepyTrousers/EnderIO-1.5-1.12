@@ -75,7 +75,7 @@ public enum Lang implements ILang {
   GUI_TRANS_SEND(".gui.trans.send"),
   GUI_TRANS_BUFFER_LOCAL(".gui.trans.buffer.local"),
   GUI_TRANS_BUFFER_UPKEEP(".gui.trans.buffer.local.upkeep"),
-  GUI_TRANS_BUFFER_SHARED(".trans.buffer.shared"),
+  GUI_TRANS_BUFFER_SHARED(".gui.trans.buffer.shared"),
   GUI_TRANS_BUFFER_MAXIO(".gui.trans.buffer.shared.maxIo"),
   GUI_TRANS_BUFFER_STACKS(".gui.trans.buffer.item.stacks"),
   GUI_TRANS_BUFFER_SINGLES(".gui.trans.buffer.item.single"),

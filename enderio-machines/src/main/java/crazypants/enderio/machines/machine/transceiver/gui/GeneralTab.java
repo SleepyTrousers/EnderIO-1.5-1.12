@@ -15,6 +15,7 @@ import com.enderio.core.client.render.ColorUtil;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -29,6 +30,7 @@ public class GeneralTab implements ITabPanel {
   final @Nonnull GuiToolTip sendPowerBarTT;
 
   final @Nonnull ToggleButton bufferSizeB;
+  final @Nonnull PowerBar internalPowerBar;
 
   public GeneralTab(@Nonnull GuiTransceiver guiTransceiver) {
     parent = guiTransceiver;
@@ -51,12 +53,15 @@ public class GeneralTab implements ITabPanel {
       }
     };
     parent.addToolTip(sendPowerBarTT);
+
+    internalPowerBar = new PowerBar<>(container.getTe(), parent, 10, 14, 10, 58);
   }
 
   @Override
   public void onGuiInit(int x, int y, int width, int height) {
     container.setPlayerInventoryVisible(true);
     container.setBufferSlotsVisible(true);
+    parent.addDrawingElement(internalPowerBar);
     bufferSizeB.onGuiInit();
   }
 
@@ -64,6 +69,7 @@ public class GeneralTab implements ITabPanel {
   public void deactivate() {
     container.setPlayerInventoryVisible(false);
     container.setBufferSlotsVisible(false);
+    parent.removeDrawingElement(internalPowerBar);
     bufferSizeB.detach();
   }
 
@@ -81,12 +87,8 @@ public class GeneralTab implements ITabPanel {
 
     // Inventory
     parent.bindGuiTexture();
-    Point invRoot = container.getPlayerInventoryOffset();
-    parent.drawTexturedModalRect(left + invRoot.x - 1, top + invRoot.y - 1, 24, 180, 162, 76);
 
-    invRoot = container.getItemInventoryOffset();
-    parent.drawTexturedModalRect(left + invRoot.x - 1, top + invRoot.y - 1, 24, 180, 72, 36);
-    parent.drawTexturedModalRect(left + invRoot.x - 1 + (18 * 4) + container.getItemBufferSpacing(), top + invRoot.y - 1, 24, 180, 72, 36);
+    Point invRoot = container.getItemInventoryOffset();
 
     FontRenderer fr = parent.getFontRenderer();
     String sendTxt = Lang.GUI_TRANS_CHANNEL_SEND.get();
@@ -107,9 +109,6 @@ public class GeneralTab implements ITabPanel {
     x = left + 11 - 1;
     y = top + 14 - 1;
     int maxHeight = 58;
-
-    parent.drawTexturedModalRect(x, y, 233, 196, 12, maxHeight + 2);
-    parent.drawTexturedModalRect(x + SEND_BAR_OFFSET, y, 233, 196, 12, maxHeight + 2);
 
     int totalPixelHeight = parent.getTransciever().getEnergyStoredScaled(maxHeight * 2);
     int fillHeight = Math.min(totalPixelHeight, maxHeight);
@@ -164,6 +163,6 @@ public class GeneralTab implements ITabPanel {
   @Override
   @Nonnull
   public ResourceLocation getTexture() {
-    return EnderIO.proxy.getGuiTexture("transceiver");
+    return EnderIO.proxy.getGuiTexture("transceiver_general");
   }
 }
