@@ -17,6 +17,7 @@ import com.google.common.collect.Multimap;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
@@ -113,9 +114,9 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       list.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
-      EnergyUpgradeManager.setPowerFull(is);
-      TravelUpgrade.INSTANCE.addToItem(is);
+      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+      EnergyUpgradeManager.setPowerFull(is, this);
+      TravelUpgrade.INSTANCE.addToItem(is, this);
       list.add(is);
     }
   }
@@ -332,7 +333,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
       // sword hit
       if (eu != null) {
-        eu.writeToItem(sword);
+        eu.writeToItem(sword, this);
 
         if (eu.getEnergy() > Config.darkSteelSwordPowerUsePerHit) {
           extractInternal(player.getHeldItemMainhand(), Config.darkSteelSwordPowerUsePerHit);
@@ -388,7 +389,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   @Override
   public void extractInternal(@Nonnull ItemStack equipped, int power) {
-    EnergyUpgradeManager.extractEnergy(equipped, power, false);
+    EnergyUpgradeManager.extractEnergy(equipped, this, power, false);
   }
 
   private boolean isTravelUpgradeActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {
@@ -432,6 +433,16 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   @Override
   public boolean shouldCauseReequipAnimation(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
     return slotChanged || oldStack.getItem() != newStack.getItem();
+  }
+
+  @Override
+  public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
+    return slot == EntityEquipmentSlot.MAINHAND;
+  }
+
+  @Override
+  public boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
+    return upgrade == TravelUpgrade.INSTANCE;
   }
 
 }

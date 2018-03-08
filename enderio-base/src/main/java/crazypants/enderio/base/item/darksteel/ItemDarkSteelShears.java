@@ -34,6 +34,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -95,8 +96,8 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
       list.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
-      EnergyUpgradeManager.setPowerFull(is);
+      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+      EnergyUpgradeManager.setPowerFull(is, this);
       list.add(is);
     }
   }
@@ -220,7 +221,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
       super.setDamage(stack, newDamage);
     }
     if (eu != null) {
-      eu.writeToItem(stack);
+      eu.writeToItem(stack, this);
     }
   }
 
@@ -309,6 +310,11 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   @Override
   public boolean shouldCauseReequipAnimation(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
     return slotChanged || oldStack.getItem() != newStack.getItem();
+  }
+
+  @Override
+  public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
+    return slot == EntityEquipmentSlot.MAINHAND;
   }
 
 }

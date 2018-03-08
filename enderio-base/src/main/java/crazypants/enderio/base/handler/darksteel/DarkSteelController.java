@@ -18,7 +18,6 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.top.TheOneProbeUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -138,7 +137,7 @@ public class DarkSteelController {
           if (item.getItem() instanceof IDarkSteelItem) {
             for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
               if (upgrade.hasUpgrade(item)) {
-                upgrade.onPlayerTick(item, player);
+                upgrade.onPlayerTick(item, (IDarkSteelItem) item.getItem(), player);
               }
             }
           }
@@ -167,15 +166,14 @@ public class DarkSteelController {
     float distance = event.getDistance();
     if (distance > 3) {
       ItemStack boots = event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.FEET);
-
-      if (boots.getItem() == ModObject.itemDarkSteelBoots.getItem()) {
+      if (boots.getItem() instanceof IDarkSteelItem) {
         int energyStored = EnergyUpgradeManager.getEnergyStored(boots);
         if (energyStored > 0) {
           float toMitigate = distance - 3;
           int energyCost = (int) Math.min(energyStored, Math.ceil(toMitigate * Config.darkSteelFallDistanceCost));
           float mitigated = energyCost / (float) Config.darkSteelFallDistanceCost;
           if (!event.getEntity().world.isRemote) {
-            EnergyUpgradeManager.setPowerLevel(boots, energyStored - energyCost);
+            EnergyUpgradeManager.extractEnergy(boots, (IDarkSteelItem) boots.getItem(), energyCost, false);
           }
           if (mitigated < toMitigate) {
             // Log.debug("Mitigating fall damage partially: original=", distance, " mitigated=", mitigated, " remaining=", distance - mitigated, " power used=",

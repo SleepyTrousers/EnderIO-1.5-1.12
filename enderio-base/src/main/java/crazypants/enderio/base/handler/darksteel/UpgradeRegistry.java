@@ -1,5 +1,7 @@
 package crazypants.enderio.base.handler.darksteel;
 
+import java.util.Comparator;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -18,6 +20,13 @@ import net.minecraftforge.registries.RegistryBuilder;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class UpgradeRegistry {
 
+  private static final Comparator<IDarkSteelUpgrade> darkSteelUpgradeComperator = new Comparator<IDarkSteelUpgrade>() {
+    @Override
+    public int compare(IDarkSteelUpgrade o1, IDarkSteelUpgrade o2) {
+      return o1.getUnlocalizedName().compareTo(o2.getUnlocalizedName());
+    }
+  };
+
   private static IForgeRegistry<IDarkSteelUpgrade> REGISTRY = null;
 
   @SubscribeEvent(priority = EventPriority.NORMAL)
@@ -27,7 +36,9 @@ public class UpgradeRegistry {
   }
 
   public static @Nonnull NNList<IDarkSteelUpgrade> getUpgrades() {
-    return NNList.wrap(REGISTRY.getValues());
+    final NNList<IDarkSteelUpgrade> list = new NNList<>(REGISTRY.getValuesCollection());
+    list.sort(darkSteelUpgradeComperator);
+    return list;
   }
 
   public static @Nullable IDarkSteelUpgrade getUpgrade(ResourceLocation id) {

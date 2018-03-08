@@ -40,6 +40,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -103,8 +104,8 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
       list.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
-      EnergyUpgradeManager.setPowerFull(is);
+      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+      EnergyUpgradeManager.setPowerFull(is, this);
       list.add(is);
     }
   }
@@ -139,7 +140,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   }
 
   private boolean doMultiHarvest(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc, @Nonnull Block refBlock) {
-
     IBlockState bs = world.getBlockState(bc);
     Block block = bs.getBlock();
     bs = bs.getActualState(world, bc);
@@ -156,7 +156,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
       if (world.rand.nextFloat() <= chance) {
         world.spawnEntity(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
         if (block == refBlock) { // other wise leaves
-          EnergyUpgradeManager.extractEnergy(player.getHeldItemMainhand(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
+          EnergyUpgradeManager.extractEnergy(player.getHeldItemMainhand(), this, Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
           usedPower = true;
         }
       }
@@ -203,7 +203,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
     if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(amount, false);
-      eu.writeToItem(stack);
+      eu.writeToItem(stack, this);
       return true;
     } else {
       return false;
@@ -279,6 +279,16 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   @Override
   public boolean shouldCauseReequipAnimation(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
     return slotChanged || Prep.isInvalid(oldStack) || Prep.isInvalid(newStack) || oldStack.getItem() != newStack.getItem();
+  }
+
+  @Override
+  public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
+    return slot == EntityEquipmentSlot.MAINHAND;
+  }
+
+  @Override
+  public boolean isAxe() {
+    return true;
   }
 
 }

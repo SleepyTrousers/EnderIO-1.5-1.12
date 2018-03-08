@@ -2,9 +2,9 @@ package crazypants.enderio.base.item.darksteel.upgrade.speed;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -52,8 +52,8 @@ public class SpeedUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack) {
-    if (stack.getItem() != ModObject.itemDarkSteelLeggings.getItemNN() || !EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)) {
+  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+    if (!item.isForSlot(EntityEquipmentSlot.LEGS) || !EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     SpeedUpgrade up = loadAnyFromItem(stack);

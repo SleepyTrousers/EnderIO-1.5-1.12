@@ -4,6 +4,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.lang.LangPower;
@@ -17,15 +18,15 @@ public abstract class EnergyUpgradeManager {
   protected static final @Nonnull String KEY_ENERGY = "energy";
   protected static final @Nonnull Random RANDOM = new Random();
 
- // Should this really be here.
- // TODO: Consider refactoring in the future
- private static final NbtComparer energyInvarientNbtComparer;
+  // Should this really be here.
+  // TODO: Consider refactoring in the future
+  private static final NbtComparer energyInvarientNbtComparer;
 
- static {
-   energyInvarientNbtComparer = new NbtComparer();
-   energyInvarientNbtComparer.addInvarientTagKey(EnergyUpgradeManager.KEY_ENERGY);
- }
-  
+  static {
+    energyInvarientNbtComparer = new NbtComparer();
+    energyInvarientNbtComparer.addInvarientTagKey(EnergyUpgradeManager.KEY_ENERGY);
+  }
+
   public static EnergyUpgrade.EnergyUpgradeHolder loadFromItem(@Nonnull ItemStack stack) {
     EnergyUpgrade energyUpgrade = EnergyUpgrade.loadAnyFromItem(stack);
     return energyUpgrade != null ? energyUpgrade.getEnergyUpgradeHolder(stack) : null;
@@ -49,46 +50,50 @@ public abstract class EnergyUpgradeManager {
   }
 
   public static int extractEnergy(@Nonnull ItemStack container, int maxExtract, boolean simulate) {
+    if (container.getItem() instanceof IDarkSteelItem) {
+      return extractEnergy(container, (IDarkSteelItem) container.getItem(), maxExtract, simulate);
+    }
+    return 0;
+  }
+
+  public static int extractEnergy(@Nonnull ItemStack container, @Nonnull IDarkSteelItem item, int maxExtract, boolean simulate) {
     EnergyUpgradeHolder eu = loadFromItem(container);
     if (eu == null) {
       return 0;
     }
     int res = eu.extractEnergy(maxExtract, simulate);
     if (!simulate && res > 0) {
-      eu.writeToItem(container);
+      eu.writeToItem(container, item);
     }
     return res;
   }
 
   public static int receiveEnergy(@Nonnull ItemStack container, int maxReceive, boolean simulate) {
+    if (container.getItem() instanceof IDarkSteelItem) {
+      receiveEnergy(container, (IDarkSteelItem) container.getItem(), maxReceive, simulate);
+    }
+    return 0;
+  }
+
+  public static int receiveEnergy(@Nonnull ItemStack container, @Nonnull IDarkSteelItem item, int maxReceive, boolean simulate) {
     EnergyUpgradeHolder eu = loadFromItem(container);
     if (eu == null) {
       return 0;
     }
     int res = eu.receiveEnergy(maxReceive, simulate);
     if (!simulate && res > 0) {
-      eu.writeToItem(container);
+      eu.writeToItem(container, item);
     }
     return res;
   }
 
-  public static void setPowerLevel(@Nonnull ItemStack item, int amount) {
-    if (!itemHasAnyPowerUpgrade(item)) {
+  public static void setPowerFull(@Nonnull ItemStack container, @Nonnull IDarkSteelItem item) {
+    if (!itemHasAnyPowerUpgrade(container)) {
       return;
     }
-    amount = Math.min(amount, getMaxEnergyStored(item));
-    EnergyUpgradeHolder eu = loadFromItem(item);
-    eu.setEnergy(amount);
-    eu.writeToItem(item);
-  }
-
-  public static void setPowerFull(@Nonnull ItemStack item) {
-    if (!itemHasAnyPowerUpgrade(item)) {
-      return;
-    }
-    EnergyUpgradeHolder eu = loadFromItem(item);
+    EnergyUpgradeHolder eu = loadFromItem(container);
     eu.setEnergy(eu.getCapacity());
-    eu.writeToItem(item);
+    eu.writeToItem(container, item);
   }
 
   public static String getStoredEnergyString(@Nonnull ItemStack itemstack) {
@@ -114,7 +119,7 @@ public abstract class EnergyUpgradeManager {
     }
     return eu.getCapacity();
   }
-  
+
   public static boolean compareNbt(NBTTagCompound oldNbt, NBTTagCompound newNbt) {
     return energyInvarientNbtComparer.compare(oldNbt, newNbt);
   }

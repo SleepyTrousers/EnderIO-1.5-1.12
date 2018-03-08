@@ -63,12 +63,27 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
 
   /**
    * Checks if the given stack has this upgrade.
+   * <p>
+   * <em>final</em>
    * 
    * @param stack
    *          An itemstack to test.
    * @return True if the given stack has this upgrade.
    */
-  boolean hasUpgrade(@Nonnull ItemStack stack);
+  default boolean hasUpgrade(@Nonnull ItemStack stack) {
+    return stack.getItem() instanceof IDarkSteelItem ? hasUpgrade(stack, (IDarkSteelItem) stack.getItem()) : false;
+  }
+
+  /**
+   * Checks if the given stack has this upgrade.
+   * 
+   * @param stack
+   *          An itemstack to test.
+   * @param item
+   *          The item of the stack, pre-cast to {@link IDarkSteelItem}
+   * @return True if the given stack has this upgrade.
+   */
+  boolean hasUpgrade(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item);
 
   /**
    * Checks if this upgrade can be applied to the given item. This is called by the anvil crafting for the "left" item after {@link #isUpgradeItem(ItemStack)}
@@ -76,27 +91,33 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
    * 
    * @param stack
    *          An itemstack to test.
+   * @param item
+   *          The item of the stack, pre-cast to {@link IDarkSteelItem}
    * @return True if this upgrade can be applied to the given item.
    */
-  boolean canAddToItem(@Nonnull ItemStack stack);
+  boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item);
 
   /**
    * Applies the upgrade to the item's nbt.
    * 
    * @param stack
    *          The item to upgrade.
+   * @param item
+   *          The item of the stack, pre-cast to {@link IDarkSteelItem}
    */
-  void addToItem(@Nonnull ItemStack stack);
+  void addToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item);
 
   /**
    * See {@link PlayerTickEvent}. Called when the given item is equipped in any {@link EntityEquipmentSlot} and has this upgrade.
    * 
    * @param stack
    *          The stack that has the upgrade.
+   * @param item
+   *          The item of the stack, pre-cast to {@link IDarkSteelItem}
    * @param player
    *          The player.
    */
-  default void onPlayerTick(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+  default void onPlayerTick(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull EntityPlayer player) {
   }
 
   /**

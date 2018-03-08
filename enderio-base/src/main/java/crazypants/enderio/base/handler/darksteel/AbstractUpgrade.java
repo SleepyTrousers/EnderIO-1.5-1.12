@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.ValueFactory.IValue;
@@ -111,7 +112,12 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
   }
 
   @Override
-  public boolean hasUpgrade(@Nonnull ItemStack stack) {
+  public final boolean hasUpgrade(@Nonnull ItemStack stack) {
+    return IDarkSteelUpgrade.super.hasUpgrade(stack);
+  }
+
+  @Override
+  public boolean hasUpgrade(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     final NBTTagCompound tagCompound = NbtValue.getReadOnlyRoot(stack);
     return tagCompound.hasKey(id) && tagCompound.getCompoundTag(id).getInteger(KEY_VARIANT) == variant;
   }
@@ -122,7 +128,7 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
   }
 
   @Override
-  public void addToItem(@Nonnull ItemStack stack) {
+  public void addToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     getOrCreateUpgradeNBT(stack).setInteger(KEY_VARIANT, variant);
   }
 

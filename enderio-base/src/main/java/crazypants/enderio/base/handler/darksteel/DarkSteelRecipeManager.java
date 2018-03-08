@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
+import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
@@ -70,30 +71,28 @@ public class DarkSteelRecipeManager {
 
   @SubscribeEvent
   public static void handleAnvilEvent(AnvilUpdateEvent evt) {
-    if (isRepair(evt)) {
-      handleRepair(evt);
-    } else {
-      handleUpgrade(evt);
+    if (evt.getLeft().getItem() instanceof IDarkSteelItem) {
+      if (isRepair(evt, (IDarkSteelItem) evt.getLeft().getItem())) {
+        handleRepair(evt, (IDarkSteelItem) evt.getLeft().getItem());
+      } else {
+        handleUpgrade(evt, (IDarkSteelItem) evt.getLeft().getItem());
+      }
     }
   }
 
-  private static boolean isRepair(AnvilUpdateEvent evt) {
-    if (evt.getLeft().getItem() instanceof IDarkSteelItem) {
-      IDarkSteelItem dsi = (IDarkSteelItem) evt.getLeft().getItem();
-      if (dsi.isItemForRepair(evt.getRight())) {
-        return true;
-      }
+  private static boolean isRepair(AnvilUpdateEvent evt, @Nonnull IDarkSteelItem item) {
+    if (item.isItemForRepair(evt.getRight())) {
+      return true;
     }
     return false;
   }
 
-  private static void handleRepair(AnvilUpdateEvent evt) {
+  private static void handleRepair(AnvilUpdateEvent evt, @Nonnull IDarkSteelItem item) {
     ItemStack targetStack = evt.getLeft();
     ItemStack ingots = evt.getRight();
 
     // repair event
-    IDarkSteelItem targetItem = (IDarkSteelItem) targetStack.getItem();
-    int maxIngots = targetItem.getIngotsRequiredForFullRepair();
+    int maxIngots = item.getIngotsRequiredForFullRepair();
 
     double damPerc = (double) targetStack.getItemDamage() / targetStack.getMaxDamage();
     int requiredIngots = (int) Math.ceil(damPerc * maxIngots);
@@ -111,15 +110,15 @@ public class DarkSteelRecipeManager {
     evt.setCost(ingots.getCount() + (int) Math.ceil(getEnchantmentRepairCost(resultStack) / 2));
   }
 
-  private static void handleUpgrade(AnvilUpdateEvent evt) {
+  private static void handleUpgrade(AnvilUpdateEvent evt, @Nonnull IDarkSteelItem item) {
     for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
-      if (upgrade.isUpgradeItem(evt.getRight()) && upgrade.canAddToItem(evt.getLeft())) {
+      if (upgrade.isUpgradeItem(evt.getRight()) && upgrade.canAddToItem(evt.getLeft(), item)) {
         ItemStack res = new ItemStack(evt.getLeft().getItem(), 1, evt.getLeft().getItemDamage());
         final NBTTagCompound tagCompound = evt.getLeft().getTagCompound();
         if (tagCompound != null) {
           res.setTagCompound(tagCompound.copy());
         }
-        upgrade.addToItem(res);
+        upgrade.addToItem(res, item);
         evt.setOutput(res);
         evt.setCost(upgrade.getLevelCost());
         return;
@@ -161,35 +160,41 @@ public class DarkSteelRecipeManager {
   }
 
   public static void addCommonTooltipEntries(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
-      if (upgrade instanceof IAdvancedTooltipProvider && upgrade.hasUpgrade(itemstack)) {
-        ((IAdvancedTooltipProvider) upgrade).addCommonEntries(itemstack, entityplayer, list, flag);
+    if (itemstack.getItem() instanceof IDarkSteelItem) {
+      for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
+        if (upgrade instanceof IAdvancedTooltipProvider && upgrade.hasUpgrade(itemstack, (IDarkSteelItem) itemstack.getItem())) {
+          ((IAdvancedTooltipProvider) upgrade).addCommonEntries(itemstack, entityplayer, list, flag);
+        }
       }
     }
   }
 
   public static void addBasicTooltipEntries(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
-      if (upgrade instanceof IAdvancedTooltipProvider && upgrade.hasUpgrade(itemstack)) {
-        ((IAdvancedTooltipProvider) upgrade).addBasicEntries(itemstack, entityplayer, list, flag);
+    if (itemstack.getItem() instanceof IDarkSteelItem) {
+      for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
+        if (upgrade instanceof IAdvancedTooltipProvider && upgrade.hasUpgrade(itemstack, (IDarkSteelItem) itemstack.getItem())) {
+          ((IAdvancedTooltipProvider) upgrade).addBasicEntries(itemstack, entityplayer, list, flag);
+        }
       }
     }
   }
 
   public static void addAdvancedTooltipEntries(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    List<IDarkSteelUpgrade> applyableUpgrades = new ArrayList<IDarkSteelUpgrade>();
-    for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
-      if (upgrade instanceof IAdvancedTooltipProvider && upgrade.hasUpgrade(itemstack)) {
-        ((IAdvancedTooltipProvider) upgrade).addDetailedEntries(itemstack, entityplayer, list, flag);
-      } else if (upgrade.canAddToItem(itemstack)) {
-        applyableUpgrades.add(upgrade);
+    if (itemstack.getItem() instanceof IDarkSteelItem) {
+      List<IDarkSteelUpgrade> applyableUpgrades = new ArrayList<IDarkSteelUpgrade>();
+      for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
+        if (upgrade instanceof IAdvancedTooltipProvider && upgrade.hasUpgrade(itemstack, (IDarkSteelItem) itemstack.getItem())) {
+          ((IAdvancedTooltipProvider) upgrade).addDetailedEntries(itemstack, entityplayer, list, flag);
+        } else if (upgrade.canAddToItem(itemstack, (IDarkSteelItem) itemstack.getItem())) {
+          applyableUpgrades.add(upgrade);
+        }
       }
-    }
-    if (!applyableUpgrades.isEmpty()) {
-      list.add(TextFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
-      for (IDarkSteelUpgrade up : applyableUpgrades) {
-        list.add(Lang.DARK_STEEL_LEVELS1.get(TextFormatting.DARK_AQUA, EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name")));
-        list.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC, up.getUpgradeItemName(), up.getLevelCost()));
+      if (!applyableUpgrades.isEmpty()) {
+        list.add(TextFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
+        for (IDarkSteelUpgrade up : applyableUpgrades) {
+          list.add(Lang.DARK_STEEL_LEVELS1.get(TextFormatting.DARK_AQUA, EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name")));
+          list.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC, up.getUpgradeItemName(), up.getLevelCost()));
+        }
       }
     }
   }
@@ -198,30 +203,31 @@ public class DarkSteelRecipeManager {
     return ImmutableList.copyOf(UpgradeRegistry.getUpgrades()).iterator();
   }
 
-  public static String getUpgradesAsString(@Nonnull ItemStack stack) {
+  public static @Nonnull String getUpgradesAsString(@Nonnull ItemStack stack) {
     String result = "";
     for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
       if (upgrade.hasUpgrade(stack)) {
-        result += upgrade.getUnlocalizedName();
+        result += "/" + upgrade.getUnlocalizedName();
       }
     }
-    return result.isEmpty() ? null : result;
+    return result.isEmpty() ? "" : NullHelper.first(result.substring(1), "");
   }
 
-  public static NNList<ItemStack> getRecipes(@Nonnull Set<String> seen, @Nonnull NNList<UpgradePath> list, @Nonnull NNList<ItemStack> input) {
+  public static NNList<ItemStack> getRecipes(@Nonnull Set<UpgradePath> list, @Nonnull NNList<ItemStack> input) {
     NNList<ItemStack> output = new NNList<ItemStack>();
     NNIterator<ItemStack> iterator = input.iterator();
     while (iterator.hasNext()) {
-      ItemStack stack = iterator.next();
-      for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
-        if (upgrade.canAddToItem(stack)) {
-          ItemStack newStack = stack.copy();
-          upgrade.addToItem(newStack);
-          String id = newStack.getItem() + getUpgradesAsString(stack) + ":" + getUpgradesAsString(newStack);
-          if (!seen.contains(id)) {
-            seen.add(id);
-            list.add(new UpgradePath(stack, upgrade.getUpgradeItem(), newStack));
-            output.add(newStack);
+      ItemStack inputStack = iterator.next();
+      if (inputStack.getItem() instanceof IDarkSteelItem) {
+        for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
+          if (upgrade.canAddToItem(inputStack, (IDarkSteelItem) inputStack.getItem())) {
+            ItemStack outputStack = inputStack.copy();
+            upgrade.addToItem(outputStack, (IDarkSteelItem) outputStack.getItem());
+            final UpgradePath path = new UpgradePath(inputStack, upgrade.getUpgradeItem(), outputStack);
+            if (!list.contains(path)) {
+              list.add(path);
+              output.add(outputStack);
+            }
           }
         }
       }
@@ -230,23 +236,23 @@ public class DarkSteelRecipeManager {
   }
 
   public static @Nonnull NNList<UpgradePath> getAllRecipes(@Nonnull NNList<ItemStack> validItems) {
-    NNList<UpgradePath> list = new NNList<UpgradePath>();
-    Set<String> seen = new HashSet<String>();
-    NNList<ItemStack> items = getRecipes(seen, list, validItems);
+    Set<UpgradePath> list = new HashSet<UpgradePath>();
+    NNList<ItemStack> items = getRecipes(list, validItems);
     while (!items.isEmpty()) {
-      items = getRecipes(seen, list, items);
+      items = getRecipes(list, items);
     }
-    return list;
+    return new NNList<>(list);
   }
 
   public static class UpgradePath {
-    public final @Nonnull ItemStack input, upgrade, output;
+    private final @Nonnull ItemStack input, upgrade, output;
+    private final @Nonnull String id;
 
     UpgradePath(@Nonnull ItemStack input, @Nonnull ItemStack upgrade, @Nonnull ItemStack output) {
-      super();
       this.input = input;
       this.upgrade = upgrade;
       this.output = output;
+      this.id = input.getItem().getRegistryName() + ":" + getUpgradesAsString(input) + ":" + getUpgradesAsString(output);
     }
 
     public @Nonnull ItemStack getInput() {
@@ -260,6 +266,26 @@ public class DarkSteelRecipeManager {
     public @Nonnull ItemStack getOutput() {
       return output;
     }
+
+    @Override
+    public int hashCode() {
+      return id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj)
+        return true;
+      if (obj == null)
+        return false;
+      if (getClass() != obj.getClass())
+        return false;
+      UpgradePath other = (UpgradePath) obj;
+      if (!id.equals(other.id))
+        return false;
+      return true;
+    }
+
   }
 
 }

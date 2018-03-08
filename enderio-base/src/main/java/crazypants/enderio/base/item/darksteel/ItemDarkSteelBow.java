@@ -30,6 +30,7 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemArrow;
@@ -101,8 +102,8 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
       list.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
-      EnergyUpgradeManager.setPowerFull(is);
+      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+      EnergyUpgradeManager.setPowerFull(is, this);
       list.add(is);
     }
   }
@@ -174,7 +175,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
         int used = getRequiredPower(draw, upgrade);
         if (used > 0) {
           upgrade.setEnergy(upgrade.getEnergy() - used);
-          upgrade.writeToItem(stack);
+          upgrade.writeToItem(stack, this);
         }
 
       }
@@ -313,7 +314,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
     if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(amount, false);
-      eu.writeToItem(stack);
+      eu.writeToItem(stack, this);
       return true;
     }
     return false;
@@ -375,6 +376,11 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
       list.add(str);
     }
     DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+  }
+
+  @Override
+  public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
+    return slot == EntityEquipmentSlot.MAINHAND;
   }
 
 }

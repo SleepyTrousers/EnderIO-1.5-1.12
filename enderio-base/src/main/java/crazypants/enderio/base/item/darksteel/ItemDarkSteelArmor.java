@@ -30,6 +30,7 @@ import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
@@ -143,24 +144,24 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
       par3List.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
-      EnergyUpgradeManager.setPowerFull(is);
+      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+      EnergyUpgradeManager.setPowerFull(is, this);
 
       Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.recipeIterator();
       while (iter.hasNext()) {
         IDarkSteelUpgrade upgrade = iter.next();
-        if (!(upgrade instanceof EnergyUpgrade || upgrade instanceof GliderUpgrade || upgrade instanceof ElytraUpgrade) && upgrade.canAddToItem(is)) {
-          upgrade.addToItem(is);
+        if (!(upgrade instanceof EnergyUpgrade || upgrade instanceof GliderUpgrade || upgrade instanceof ElytraUpgrade) && upgrade.canAddToItem(is, this)) {
+          upgrade.addToItem(is, this);
         }
       }
 
-      if (GliderUpgrade.INSTANCE.canAddToItem(is)) {
+      if (GliderUpgrade.INSTANCE.canAddToItem(is, this)) {
         ItemStack is2 = is.copy();
-        GliderUpgrade.INSTANCE.addToItem(is2);
+        GliderUpgrade.INSTANCE.addToItem(is2, this);
         par3List.add(is2);
-        if (ElytraUpgrade.INSTANCE.canAddToItem(is)) {
+        if (ElytraUpgrade.INSTANCE.canAddToItem(is, this)) {
           ItemStack is3 = is.copy();
-          ElytraUpgrade.INSTANCE.addToItem(is3);
+          ElytraUpgrade.INSTANCE.addToItem(is3, this);
           par3List.add(is3);
         }
         return;
@@ -275,7 +276,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
     if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * powerPerDamagePoint, false);
-      eu.writeToItem(stack);
+      eu.writeToItem(stack, this);
     } else {
       stack.damageItem(damage, NullHelper.notnullF(entity, "damageArmor() needs an entity"));
     }
@@ -406,6 +407,17 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   public boolean isItemForRepair(@Nonnull ItemStack right) {
     return OreDictionaryHelper.hasName(right, Alloy.DARK_STEEL.getOreIngot());
+  }
+
+  @Override
+  public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
+    return slot == armorType;
+  }
+
+  @Override
+  public boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
+    return upgrade == FORESTRY_FEET || upgrade == FORESTRY_LEGS || upgrade == FORESTRY_CHEST || upgrade == FORESTRY_HEAD || upgrade == FORESTRY_EYES
+        || upgrade == ElytraUpgrade.INSTANCE || upgrade == GogglesOfRevealingUpgrade.INSTANCE;
   }
 
 }

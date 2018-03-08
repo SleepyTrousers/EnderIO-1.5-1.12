@@ -2,9 +2,9 @@ package crazypants.enderio.base.integration.thaumcraft;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -36,11 +36,11 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack) {
-    if (stack.getItem() != ModObject.itemDarkSteelHelmet.getItemNN() || Prep.isInvalid(getGoggles())) {
+  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+    if (!item.isForSlot(EntityEquipmentSlot.HEAD) || Prep.isInvalid(getGoggles())) {
       return false;
     }
-    return !hasUpgrade(stack);
+    return item.hasUpgradeCallbacks(this) && !hasUpgrade(stack, item);
   }
 
   @Override

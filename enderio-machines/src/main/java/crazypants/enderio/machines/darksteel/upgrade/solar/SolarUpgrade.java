@@ -2,12 +2,12 @@ package crazypants.enderio.machines.darksteel.upgrade.solar;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.ValueFactory.IValue;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.machines.EnderIOMachines;
@@ -15,6 +15,7 @@ import crazypants.enderio.machines.config.config.SolarConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.solar.TileSolarPanel;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -59,8 +60,8 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
   }
 
   @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack) {
-    if (stack.getItem() != ModObject.itemDarkSteelHelmet.getItemNN() || !EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)) {
+  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+    if (!item.isForSlot(EntityEquipmentSlot.HEAD) || !EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     SolarUpgrade up = loadAnyFromItem(stack);
@@ -81,7 +82,7 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
   }
 
   @Override
-  public void onPlayerTick(@Nonnull ItemStack helm, @Nonnull EntityPlayer player) {
+  public void onPlayerTick(@Nonnull ItemStack helm, @Nonnull IDarkSteelItem item, @Nonnull EntityPlayer player) {
     // no processing on client
     if (player.world.isRemote) {
       return;

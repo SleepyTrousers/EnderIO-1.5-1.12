@@ -7,15 +7,16 @@ import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.material.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -31,9 +32,8 @@ public class GliderUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
   }
 
   @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack) {
-    return stack.getItem() == ModObject.itemDarkSteelChestplate.getItemNN() && !ElytraUpgrade.INSTANCE.hasUpgrade(stack)
-        && !GliderUpgrade.INSTANCE.hasUpgrade(stack);
+  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+    return item.isForSlot(EntityEquipmentSlot.CHEST) && !ElytraUpgrade.INSTANCE.hasUpgrade(stack, item) && !hasUpgrade(stack, item);
   }
 
   @Override
@@ -43,7 +43,7 @@ public class GliderUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
   }
 
   @Override
-  public void onPlayerTick(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+  public void onPlayerTick(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull EntityPlayer player) {
     if (!DarkSteelController.isGlideActive(player)) {
       return;
     }

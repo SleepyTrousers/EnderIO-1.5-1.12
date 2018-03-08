@@ -5,10 +5,11 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.util.Prep;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 
@@ -37,13 +38,13 @@ public class TheOneProbeUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack) {
-    return isAvailable() && stack.getItem() == ModObject.itemDarkSteelHelmet.getItem() && !hasUpgrade(stack);
+  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+    return isAvailable() && item.isForSlot(EntityEquipmentSlot.HEAD) && !hasUpgrade(stack, item);
   }
 
   @Override
-  public void addToItem(@Nonnull ItemStack stack) {
-    super.addToItem(stack);
+  public void addToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+    super.addToItem(stack, item);
     ItemUtil.getOrCreateNBT(stack).setInteger(PROBETAG, 1);
   }
 

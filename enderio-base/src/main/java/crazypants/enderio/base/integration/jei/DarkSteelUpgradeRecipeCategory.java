@@ -3,7 +3,6 @@ package crazypants.enderio.base.integration.jei;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -17,12 +16,12 @@ import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.Lists;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager.UpgradePath;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.ISubtypeRegistry.ISubtypeInterpreter;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IVanillaRecipeFactory;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
@@ -32,7 +31,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import static crazypants.enderio.base.init.ModObject.blockDarkSteelAnvil;
@@ -44,9 +42,9 @@ public class DarkSteelUpgradeRecipeCategory {
   public static void registerSubtypes(ISubtypeRegistry subtypeRegistry) {
     DarkSteelUpgradeSubtypeInterpreter dsusi = new DarkSteelUpgradeSubtypeInterpreter();
     Set<Item> items = new HashSet<Item>();
-    for (UpgradePath rec : allRecipes) {
-      items.add(rec.getInput().getItem());
-      items.add(rec.getOutput().getItem());
+    for (ItemStack stack : ItemHelper.getValidItems()) {
+      if (stack.getItem() instanceof IDarkSteelItem)
+        items.add(stack.getItem());
     }
     for (Item item : items) {
       if (item != null) {
@@ -73,7 +71,7 @@ public class DarkSteelUpgradeRecipeCategory {
     }
 
     int enchantmentRecipes = registerBookEnchantmentRecipes(registry, seen);
-    
+
     final IVanillaRecipeFactory factory = registry.getJeiHelpers().getVanillaRecipeFactory();
     Collection<IRecipeWrapper> anvilRecipes = NullHelper.notnullJ(allRecipes.stream()
         .map(rec -> factory.createAnvilRecipe(rec.getInput(), Collections.singletonList(rec.getUpgrade()), Collections.singletonList(rec.getOutput())))
@@ -132,39 +130,6 @@ public class DarkSteelUpgradeRecipeCategory {
       }
     }
     return false;
-  }
-
-  public static class DarkSteelUpgradeSubtypeInterpreter implements ISubtypeInterpreter {
-
-    @Override
-    public @Nonnull String apply(ItemStack itemStack) {
-      if (itemStack == null) {
-        throw new NullPointerException("You want me to return something Nonnull for a null ItemStack? F.U.");
-      }
-      String result = DarkSteelRecipeManager.getUpgradesAsString(itemStack);
-      Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemStack);
-      final List<Enchantment> keyList = new NNList<>(enchantments.keySet());
-      keyList.sort(new Comparator<Enchantment>() {
-        @Override
-        public int compare(Enchantment o1, Enchantment o2) {
-          return safeString(o1).compareTo(safeString(o2));
-        }
-
-      });
-      for (Enchantment enchantment : keyList) {
-        result += "/" + safeString(enchantment);
-      }
-      if (result == null) {
-        return "";
-      }
-      return result;
-    }
-
-    private @Nonnull String safeString(Enchantment enchantment) {
-      final ResourceLocation registryName = enchantment.getRegistryName();
-      return registryName != null ? registryName.toString() : "";
-    }
-
   }
 
 }

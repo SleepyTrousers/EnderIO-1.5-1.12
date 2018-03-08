@@ -21,6 +21,7 @@ import com.enderio.core.common.util.stackable.Things;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
@@ -51,6 +52,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -102,11 +104,11 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       list.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
-      EnergyUpgradeManager.setPowerFull(is);
-      TravelUpgrade.INSTANCE.addToItem(is);
-      SpoonUpgrade.INSTANCE.addToItem(is);
-      ExplosiveUpgrade.INSTANCE.addToItem(is);
+      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+      EnergyUpgradeManager.setPowerFull(is, this);
+      TravelUpgrade.INSTANCE.addToItem(is, this);
+      SpoonUpgrade.INSTANCE.addToItem(is, this);
+      ExplosiveUpgrade.INSTANCE.addToItem(is, this);
       list.add(is);
     }
   }
@@ -193,7 +195,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
     if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(amount, false);
-      eu.writeToItem(stack);
+      eu.writeToItem(stack, this);
       return true;
     } else {
       return false;
@@ -317,7 +319,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @Override
   public void extractInternal(@Nonnull ItemStack equipped, int power) {
-    EnergyUpgradeManager.extractEnergy(equipped, power, false);
+    EnergyUpgradeManager.extractEnergy(equipped, this, power, false);
   }
 
   private boolean isTravelUpgradeActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped, @Nonnull EnumHand hand) {
@@ -438,6 +440,21 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     }
 
     return !EnergyUpgradeManager.compareNbt(oldStack.getTagCompound(), newStack.getTagCompound());
+  }
+
+  @Override
+  public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
+    return slot == EntityEquipmentSlot.MAINHAND;
+  }
+
+  @Override
+  public boolean isPickaxe() {
+    return true;
+  }
+
+  @Override
+  public boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
+    return upgrade == ExplosiveUpgrade.INSTANCE || upgrade == SpoonUpgrade.INSTANCE || upgrade == TravelUpgrade.INSTANCE;
   }
 
 }

@@ -7,9 +7,9 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.ClientUtil;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
@@ -56,8 +56,8 @@ public class JumpUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack) {
-    if (stack.getItem() != ModObject.itemDarkSteelBoots.getItemNN() || !EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)) {
+  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+    if (!item.isForSlot(EntityEquipmentSlot.FEET) || !EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     JumpUpgrade up = loadAnyFromItem(stack);

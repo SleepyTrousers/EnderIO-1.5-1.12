@@ -66,8 +66,8 @@ public class EnergyUpgrade extends AbstractUpgrade {
       return EnergyUpgrade.this;
     }
 
-    public void writeToItem(@Nonnull ItemStack stack) {
-      EnergyUpgrade.this.addToItem(stack);
+    public void writeToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+      EnergyUpgrade.this.addToItem(stack, item);
       getOrCreateUpgradeNBT(stack).setInteger(EnergyUpgradeManager.KEY_ENERGY, energy);
     }
 
@@ -122,10 +122,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack) {
-    if (!(stack.getItem() instanceof IDarkSteelItem)) {
-      return false;
-    }
+  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     AbstractUpgrade up = EnergyUpgradeManager.next(loadAnyFromItem(stack));
     if (up == null) {
       return false;

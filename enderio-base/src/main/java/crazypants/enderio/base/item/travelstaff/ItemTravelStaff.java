@@ -11,6 +11,7 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
@@ -18,10 +19,12 @@ import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.item.darksteel.upgrade.travel.TravelUpgrade;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TravelController;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,7 +56,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
   @Nullable
   public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
     if (!EnergyUpgrade.EMPOWERED.hasAnyUpgradeVariant(stack)) {
-      EnergyUpgrade.EMPOWERED.addToItem(stack);
+      EnergyUpgrade.EMPOWERED.addToItem(stack, this);
     }
     return super.initCapabilities(stack, nbt);
   }
@@ -100,7 +103,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
 
   @Override
   public void extractInternal(@Nonnull ItemStack item, int powerUse) {
-    EnergyUpgradeManager.extractEnergy(item, powerUse, false);
+    EnergyUpgradeManager.extractEnergy(item, this, powerUse, false);
   }
 
   @Override
@@ -111,8 +114,8 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
       list.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is);
-      EnergyUpgradeManager.setPowerFull(is);
+      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+      EnergyUpgradeManager.setPowerFull(is, this);
       list.add(is);
     }
   }
@@ -134,19 +137,18 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
   }
 
   @Override
-  public int getIngotsRequiredForFullRepair() {
-    return 0;
-  }
-
-  @Override
-  public boolean isItemForRepair(@Nonnull ItemStack right) {
-    // not damageable, no repair
-    return false;
-  }
-
-  @Override
   public int getEnergyStored(@Nonnull ItemStack item) {
     return EnergyUpgradeManager.getEnergyStored(item);
+  }
+
+  @Override
+  public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
+    return slot == EntityEquipmentSlot.MAINHAND;
+  }
+
+  @Override
+  public boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
+    return upgrade == TravelUpgrade.INSTANCE;
   }
 
 }

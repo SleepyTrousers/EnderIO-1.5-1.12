@@ -2,11 +2,12 @@ package crazypants.enderio.base.item.darksteel.upgrade.travel;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.material.material.Material;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 
 public class TravelUpgrade extends AbstractUpgrade {
@@ -20,9 +21,9 @@ public class TravelUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack) {
-    return (stack.getItem() == ModObject.itemDarkSteelSword.getItemNN() || stack.getItem() == ModObject.itemDarkSteelPickaxe.getItemNN())
-        && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack) && !hasUpgrade(stack);
+  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+    return item.isForSlot(EntityEquipmentSlot.MAINHAND) && item.hasUpgradeCallbacks(this) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
+        && !hasUpgrade(stack, item);
   }
 
 }

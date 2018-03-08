@@ -2,12 +2,13 @@ package crazypants.enderio.integration.forestry.upgrades;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.integration.forestry.EnderIOIntegrationForestry;
 import crazypants.enderio.integration.forestry.ForestryItemStacks;
 import crazypants.enderio.integration.forestry.config.ForestryConfig;
 import crazypants.enderio.util.Prep;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 
 public class NaturalistEyeUpgrade extends AbstractUpgrade {
@@ -23,8 +24,8 @@ public class NaturalistEyeUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack) {
-    return stack.getItem() == ModObject.itemDarkSteelHelmet.getItem() && Prep.isValid(getUpgradeItem()) && !hasUpgrade(stack);
+  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+    return item.isForSlot(EntityEquipmentSlot.HEAD) && Prep.isValid(getUpgradeItem()) && !hasUpgrade(stack, item);
   }
 
   @Override
