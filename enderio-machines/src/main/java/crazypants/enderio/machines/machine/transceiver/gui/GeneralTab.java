@@ -15,6 +15,7 @@ import com.enderio.core.client.render.ColorUtil;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -29,6 +30,7 @@ public class GeneralTab implements ITabPanel {
   final @Nonnull GuiToolTip sendPowerBarTT;
 
   final @Nonnull ToggleButton bufferSizeB;
+  final @Nonnull PowerBar internalPowerBar;
 
   public GeneralTab(@Nonnull GuiTransceiver guiTransceiver) {
     parent = guiTransceiver;
@@ -51,12 +53,15 @@ public class GeneralTab implements ITabPanel {
       }
     };
     parent.addToolTip(sendPowerBarTT);
+
+    internalPowerBar = new PowerBar<>(container.getTe(), parent, 10, 14, 10, 58);
   }
 
   @Override
   public void onGuiInit(int x, int y, int width, int height) {
     container.setPlayerInventoryVisible(true);
     container.setBufferSlotsVisible(true);
+    parent.addDrawingElement(internalPowerBar);
     bufferSizeB.onGuiInit();
   }
 
@@ -64,6 +69,7 @@ public class GeneralTab implements ITabPanel {
   public void deactivate() {
     container.setPlayerInventoryVisible(false);
     container.setBufferSlotsVisible(false);
+    parent.removeDrawingElement(internalPowerBar);
     bufferSizeB.detach();
   }
 

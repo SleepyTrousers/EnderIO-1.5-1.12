@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.ITabPanel;
 
@@ -15,6 +13,7 @@ import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.transceiver.ChannelType;
 import crazypants.enderio.machines.machine.transceiver.TileTransceiver;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> implements ITransceiverRemoteExec.GUI {
@@ -134,7 +133,7 @@ public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> imp
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
