@@ -118,9 +118,9 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   SPAWNER_POWER_USE(MachineObject.block_powered_spawner, CapacitorKeyType.ENERGY_USE, Scaler.Factory.SPAWNER, 160),
   SPAWNER_SPEEDUP(MachineObject.block_powered_spawner, CapacitorKeyType.SPEED, Scaler.Factory.QUADRATIC, 1),
 
-  TRANSCEIVER_POWER_INTAKE(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 20480 * 2),
-  TRANSCEIVER_POWER_BUFFER(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 500000),
-  TRANSCEIVER_POWER_USE(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
+  TRANSCEIVER_POWER_INTAKE(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 20480 * 2),
+  TRANSCEIVER_POWER_BUFFER(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.CUBIC, 500000),
+  TRANSCEIVER_POWER_USE(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 10),
 
   VAT_POWER_INTAKE(MachineObject.block_vat, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
   VAT_POWER_BUFFER(MachineObject.block_vat, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),

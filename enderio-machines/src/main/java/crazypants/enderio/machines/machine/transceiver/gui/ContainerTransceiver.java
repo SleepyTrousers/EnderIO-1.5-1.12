@@ -76,6 +76,12 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
       inventorySlots.get(i).yPos = y;
       x += 18;
     }
+    if (upgradeSlot != null) {
+      x = offset.x - 47;
+      y = offset.y + 46;
+      inventorySlots.get(upgradeSlot.getSlotIndex()).xPos = x;
+      inventorySlots.get(upgradeSlot.getSlotIndex()).yPos = y;
+    }
     x = offset.x;
     y = offset.y + 18;
     for (; i < 8; i++) {
@@ -126,6 +132,11 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
   public IMessage doSetBufferStacks(boolean bufferStacks) {
     getTe().setBufferStacks(bufferStacks);
     return null;
+  }
+
+  @Override
+  public @Nonnull Point getUpgradeOffset() {
+    return new Point(7, 76);
   }
 
 }
