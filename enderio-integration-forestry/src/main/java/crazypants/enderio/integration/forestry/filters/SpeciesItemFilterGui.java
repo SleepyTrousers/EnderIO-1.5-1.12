@@ -1,4 +1,4 @@
-package crazypants.enderio.base.filter.gui;
+package crazypants.enderio.integration.forestry.filters;
 
 import java.io.IOException;
 
@@ -8,8 +8,9 @@ import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 
-import crazypants.enderio.base.filter.filters.SpeciesItemFilter;
-import crazypants.enderio.base.filter.filters.SpeciesMode;
+import crazypants.enderio.base.filter.gui.AbstractGuiItemFilter;
+import crazypants.enderio.base.filter.gui.ContainerFilter;
+import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.Lang;

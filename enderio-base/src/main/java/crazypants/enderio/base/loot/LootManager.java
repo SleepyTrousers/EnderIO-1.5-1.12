@@ -143,10 +143,6 @@ public class LootManager {
       lp.addEntry(createLootCapacitor(0.25F));
       lp.addEntry(createLootEntry(itemTravelStaff.getItemNN(), 1, 1, 0.1F));
 
-      if (ModObject.itemSpeciesItemFilter.getItem() != null) {
-        lp.addEntry(createLootEntry(ModObject.itemSpeciesItemFilter.getItemNN(), 1, 1, 0.5F));
-      }
-
     } else if (evt.getName().equals(LootTableList.CHESTS_END_CITY_TREASURE)) {
 
       final CapturedMob shulker = CapturedMob.create(new ResourceLocation("minecraft", "shulker"));

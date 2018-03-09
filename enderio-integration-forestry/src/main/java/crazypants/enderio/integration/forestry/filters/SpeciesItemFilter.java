@@ -1,4 +1,4 @@
-package crazypants.enderio.base.filter.filters;
+package crazypants.enderio.integration.forestry.filters;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

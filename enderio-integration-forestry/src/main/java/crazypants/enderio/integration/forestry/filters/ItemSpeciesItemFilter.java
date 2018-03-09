@@ -1,4 +1,4 @@
-package crazypants.enderio.base.filter.items;
+package crazypants.enderio.integration.forestry.filters;
 
 import java.util.List;
 
@@ -13,9 +13,7 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
-import crazypants.enderio.base.filter.filters.SpeciesItemFilter;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
-import crazypants.enderio.base.filter.gui.SpeciesItemFilterGui;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.ClientUtil;
