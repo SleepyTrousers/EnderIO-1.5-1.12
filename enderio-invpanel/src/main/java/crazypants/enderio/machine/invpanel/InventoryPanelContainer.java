@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
+import static crazypants.enderio.base.init.ModObject.itemBasicItemFilter;
+
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,6 +11,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.ItemUtil;
@@ -31,8 +37,7 @@ import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
-
-import static crazypants.enderio.base.machine.MachineObject.itemBasicFilterUpgrade;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class InventoryPanelContainer extends AbstractMachineContainer<TileInventoryPanel> implements ChangeLog {
 
@@ -69,9 +74,9 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   private boolean updateReturnAreaSlots;
   private boolean storedRecipeExists;
 
-  private World playerWorld;
+  private @Nonnull World playerWorld;
 
-  public InventoryPanelContainer(InventoryPlayer playerInv, TileInventoryPanel te) {
+  public InventoryPanelContainer(@Nonnull InventoryPlayer playerInv, @Nonnull TileInventoryPanel te) {
     super(playerInv, te);
     te.eventHandler = this;
     playerWorld = playerInv.player.world;
@@ -84,21 +89,21 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  protected void addMachineSlots(InventoryPlayer playerInv) {
+  protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
     slotCraftResult = inventorySlots.size();
-    addSlotToContainer(new SlotCraftingWrapper(playerInv.player, new InventoryCraftingWrapper(getInv(), this, 3, 3), getInv(),
+    addSlotToContainer(new SlotCraftingWrapper(playerInv.player, new InventoryCraftingWrapper(getTe().getAsInventory(), this, 3, 3), getTe().getAsInventory(),
         TileInventoryPanel.SLOT_CRAFTING_RESULT, CRAFTING_GRID_X + 59, CRAFTING_GRID_Y + 18));
     
 
     firstSlotCraftingGrid = inventorySlots.size();
     for (int y = 0, i = TileInventoryPanel.SLOT_CRAFTING_START; y < 3; y++) {
       for (int x = 0; x < 3; x++, i++) {
-        addSlotToContainer(new Slot(getInv(), i, CRAFTING_GRID_X + x * 18, CRAFTING_GRID_Y + y * 18));
+        addSlotToContainer(new Slot(getTe().getAsInventory(), i, CRAFTING_GRID_X + x * 18, CRAFTING_GRID_Y + y * 18));
       }
     }
     endSlotCraftingGrid = inventorySlots.size();
 
-    slotFilter = addSlotToContainer(new Slot(getInv(), TileInventoryPanel.SLOT_VIEW_FILTER, FILTER_SLOT_X, FILTER_SLOT_Y) {
+    slotFilter = addSlotToContainer(new Slot(getTe().getAsInventory(), TileInventoryPanel.SLOT_VIEW_FILTER, FILTER_SLOT_X, FILTER_SLOT_Y) {
       @Override
       public int getSlotStackLimit() {
         return 1;
@@ -108,14 +113,14 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     firstSlotReturn = inventorySlots.size();
     for (int y = 0, i = TileInventoryPanel.SLOT_RETURN_START; y < 2; y++) {
       for (int x = 0; x < 5; x++, i++) {
-        addSlotToContainer(new Slot(getInv(), i, RETURN_INV_X + x * 18, RETURN_INV_Y + y * 18));
+        addSlotToContainer(new Slot(getTe().getAsInventory(), i, RETURN_INV_X + x * 18, RETURN_INV_Y + y * 18));
       }
     }
     endSlotReturn = inventorySlots.size();
   }
 
-  public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(itemBasicFilterUpgrade.getItem(), FILTER_SLOT_X, FILTER_SLOT_Y));
+  public void createGhostSlots(GhostSlotHandler slots) {
+    slots.add(new GhostBackgroundItemSlot(itemBasicItemFilter.getItemNN(), FILTER_SLOT_X, FILTER_SLOT_Y));
   }
 
   @Override
@@ -124,7 +129,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  public void onContainerClosed(EntityPlayer player) {
+  public void onContainerClosed(@Nonnull EntityPlayer player) {
     super.onContainerClosed(player);
     if (getTe().hasWorld() && !getTe().getWorld().isRemote) {
       getTe().eventHandler = null;
@@ -162,7 +167,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  public void removeListener(IContainerListener crafting) {
+  public void removeListener(@Nonnull IContainerListener crafting) {
     super.removeListener(crafting);
     removeChangeLog();
   }
@@ -170,7 +175,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   
 
   @Override
-  public void addListener(IContainerListener crafting) {
+  public void addListener(@Nonnull IContainerListener crafting) {
     if(changedItems != null) {
       sendChangeLog();
     }
@@ -193,19 +198,19 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  public void onCraftMatrixChanged(IInventory inv) {
+  public void onCraftMatrixChanged(@Nonnull IInventory inv) {
     InventoryCrafting tmp = new InventoryCrafting(new Container() {
       @Override
-      public boolean canInteractWith(EntityPlayer ep) {
+      public boolean canInteractWith(@Nonnull EntityPlayer ep) {
         return false;
       }
     }, 3, 3);
 
     for (int i = 0; i < 9; i++) {
-      tmp.setInventorySlotContents(i, getInv().getStackInSlot(i));
+      tmp.setInventorySlotContents(i, getTe().getStackInSlot(i));
     }
 
-    getInv().setInventorySlotContents(9, CraftingManager.getInstance().findMatchingRecipe(tmp, playerWorld));
+    getTe().setInventorySlotContents(9, CraftingManager.findMatchingResult(tmp, playerWorld));
 
     checkCraftingRecipes();
   }
@@ -225,7 +230,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  public boolean canMergeSlot(ItemStack par1, Slot slot) {
+  public boolean canMergeSlot(@Nonnull ItemStack par1, @Nonnull Slot slot) {
     return !(slot instanceof SlotCrafting) && super.canMergeSlot(par1, slot);
   }
 
@@ -251,7 +256,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  protected List<SlotRange> getTargetSlotsForTransfer(int slotIndex, Slot slot) {
+  protected List<SlotRange> getTargetSlotsForTransfer(int slotIndex, @Nonnull Slot slot) {
     if((slotIndex == slotCraftResult) || (slotIndex >= firstSlotReturn && slotIndex < endSlotReturn)) {
       return Collections.singletonList(getPlayerInventorySlotRange(true));
     }
@@ -268,7 +273,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  protected boolean mergeItemStack(ItemStack par1ItemStack, int fromIndex, int toIndex, boolean reversOrder) {
+  protected boolean mergeItemStack(@Nonnull ItemStack par1ItemStack, int fromIndex, int toIndex, boolean reversOrder) {
     if(!super.mergeItemStack(par1ItemStack, fromIndex, toIndex, reversOrder)) {
       return false;
     }
@@ -332,7 +337,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     changedItems.clear();
   }
 
-  public int getSlotIndex(IInventory inv, int index) {
+  public int getSlotIndex(@Nonnull IInventory inv, int index) {
     for (int i = 0; i < inventorySlots.size(); i++) {
       Slot slot = inventorySlots.get(i);
       if(slot.isHere(inv, index)) {
@@ -421,14 +426,14 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
 
     Slot srcSlot = getSlot(fromSlot);
     ItemStack src = srcSlot.getStack();
-    if(src != null) {
+    if(!src.isEmpty()) {
       ItemStack toMove = src.copy();
       toMove.setCount(Math.min(src.getCount(), amount));
       int remaining = src.getCount() - toMove.getCount();
       if(mergeItemStack(toMove, toSlotStart, toSlotEnd, false)) {
         remaining += toMove.getCount();
         if(remaining == 0) {
-          srcSlot.putStack(null);
+          srcSlot.putStack(ItemStack.EMPTY);
         } else {
           src.setCount(remaining);
           srcSlot.onSlotChanged();
@@ -441,7 +446,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
 
   @SuppressWarnings("null")
   @Override
-  public boolean canInteractWith(EntityPlayer player) {
+  public boolean canInteractWith(@Nonnull EntityPlayer player) {
     if (super.canInteractWith(player)) {
       return true;
     }
@@ -462,7 +467,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @SuppressWarnings("null")
-  public void tick(EntityPlayer player) {
+  public void tick(@Nonnull EntityPlayer player) {
     if (!super.canInteractWith(player)) {
       if ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ItemRemoteInvAccess)) {
         ((ItemRemoteInvAccess) player.getHeldItemMainhand().getItem()).tick(player.getHeldItemMainhand(), player);

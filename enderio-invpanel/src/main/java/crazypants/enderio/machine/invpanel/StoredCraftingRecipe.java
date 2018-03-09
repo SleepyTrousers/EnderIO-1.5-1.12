@@ -3,6 +3,7 @@ package crazypants.enderio.machine.invpanel;
 import java.util.List;
 
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NullHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -70,7 +71,7 @@ public class StoredCraftingRecipe {
   public boolean readFromNBT(NBTTagCompound nbtRoot) {
     boolean hasSlots = false;
     for(int slotIdx = 0; slotIdx < 9; slotIdx++) {
-      NBTTagCompound itemStackNBT = (NBTTagCompound) nbtRoot.getTag(Integer.toString(slotIdx));
+      NBTTagCompound itemStackNBT = (NBTTagCompound) NullHelper.untrust(nbtRoot.getTag(Integer.toString(slotIdx)));
       if(itemStackNBT != null) {
         slots[slotIdx] = new ItemStack(itemStackNBT);
         hasSlots = true;
@@ -102,7 +103,7 @@ public class StoredCraftingRecipe {
       tmp.setInventorySlotContents(i, slots[i]);
     }
 
-    result = CraftingManager.getInstance().findMatchingRecipe(tmp, te.getWorld());
+    result = CraftingManager.findMatchingResult(tmp, te.getWorld());
     if(result != null) {
       result = result.copy();
       result.setCount(1);

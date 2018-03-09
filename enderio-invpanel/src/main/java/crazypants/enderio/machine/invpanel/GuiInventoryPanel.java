@@ -11,6 +11,8 @@ import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.GhostSlotHandler;
+import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -41,6 +43,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
@@ -76,6 +79,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final IconButton btnSort;
   private final ToggleButton btnSync;
   private final GuiToolTip ttRefill;
+  @Nonnull
   private final VScrollbar scrollbar;
   private final MultiIconButton btnClear;
 
@@ -91,22 +95,31 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   private CraftingHelper craftingHelper;
 
+  @Nonnull
   private final Rectangle btnAddStoredRecipe = new Rectangle();
 
   // TODO this class makes heavy use of ghost slots
-  public GuiInventoryPanel(TileInventoryPanel te, Container container) {
+  public GuiInventoryPanel(@Nonnull TileInventoryPanel te, @Nonnull Container container) {
     super(te, container, "inventorypanel");
     redstoneButton.visible = false;
     configB.visible = false;
 
+    this.ghostSlotHandler = new GhostSlotHandler() {
+      @Override
+      protected void ghostSlotClicked(@Nonnull GuiContainerBase gui, @Nonnull GhostSlot slot, int x, int y, int button) {
+        GuiInventoryPanel.this.ghostSlotClicked(slot, x, y, button);
+//        super.ghostSlotClicked(gui, slot, x, y, button);
+      }
+    };
+
     for (int y = 0; y < GHOST_ROWS; y++) {
       for (int x = 0; x < GHOST_COLUMNS; x++) {
-        getGhostSlots().add(new InvSlot(24 + 108 + x * 18, 28 + y * 18));
+        getGhostSlotHandler().add(new InvSlot(24 + 108 + x * 18, 28 + y * 18));
       }
     }
 
     for (int i = 0; i < TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES; i++) {
-      getGhostSlots().add(new RecipeSlot(i, 7, 7 + i * 20));
+      getGhostSlotHandler().add(new RecipeSlot(i, 7, 7 + i * 20));
     }
 
     this.view = new DatabaseView();
@@ -154,12 +167,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     btnSort = new IconButton(this, ID_SORT, 24 + 233, 27, getSortOrderIcon()) {
       @Override
-      public boolean mousePressed(Minecraft mc1, int x, int y) {
+      public boolean mousePressed(@Nonnull Minecraft mc1, int x, int y) {
         return mousePressedButton(mc1, x, y, 0);
       }
 
       @Override
-      public boolean mousePressedButton(Minecraft mc1, int x, int y, int button) {
+      public boolean mousePressedButton(@Nonnull Minecraft mc1, int x, int y, int button) {
         if (button <= 1 && super.checkMousePress(mc1, x, y)) {
           toggleSortOrder(button == 0);
           return true;
@@ -218,7 +231,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.clear.line");
     btnClear.setToolTip(list.toArray(new String[list.size()]));
 
-    if (!Config.inventoryPanelFree) {
+    if (true /* TODO !Config.inventoryPanelFree */) {
       addToolTip(new GuiToolTip(RECTANGLE_FUEL_TANK, "") {
         @Override
         protected void updateText() {
@@ -240,7 +253,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if (RECTANGLE_FUEL_TANK.contains(mouseX, mouseY)) {
       return getTileEntity().fuelTank.getFluid();
     }
-    GhostSlot slot = getGhostSlot(mouseX + getGuiLeft(), mouseY + getGuiTop());
+    GhostSlot slot = getGhostSlotHandler().getGhostSlotAt(this, mouseX + getGuiLeft(), mouseY + getGuiTop());
     if (slot instanceof InvSlot || slot instanceof RecipeSlot) {
       return slot.getStack();
     }
@@ -296,11 +309,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     btnClear.onGuiInit();
     btnSync.onGuiInit();
     addScrollbar(scrollbar);
-    ((InventoryPanelContainer) inventorySlots).createGhostSlots(getGhostSlots());
+    ((InventoryPanelContainer) inventorySlots).createGhostSlots(getGhostSlotHandler());
   }
 
   @Override
-  public void actionPerformed(GuiButton b) throws IOException {
+  public void actionPerformed(@Nonnull GuiButton b) throws IOException {
     super.actionPerformed(b);
     if (b.id == ID_CLEAR) {
       if (getContainer().clearCraftingGrid()) {
@@ -362,7 +375,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
 
     SmartTank fuelTank = te.fuelTank;
-    if (!Config.inventoryPanelFree) {
+    if (true /* TODO !Config.inventoryPanelFree */) {
       drawTexturedModalRect(sx + 35, sy + 132, 232, 163, 18, 49);
       if (fuelTank.getFluidAmount() > 0) {
         RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx + 24 + 12, sy + 133, zLevel, 16, 47);
@@ -412,7 +425,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   @Override
-  protected void onTextFieldChanged(TextFieldEnder tf, String old) {
+  protected void onTextFieldChanged(@Nonnull TextFieldEnder tf, @Nonnull String old) {
     if (tf == tfFilter && btnSync.isSelected() && tfFilter.isFocused()) {
       if (Loader.isModLoaded("NotEnoughItems")) {
         updateNEI(tfFilter.getText());
@@ -463,7 +476,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       font = fontRenderer;
     }
 
-    boolean smallText = Config.inventoryPanelScaleText;
+    boolean smallText = true; // TODO Config.inventoryPanelScaleText;
     String str = null;
     if (stack.getCount() >= 1000) {
       String unit = "k";
@@ -527,7 +540,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   // }
 
   @Override
-  public void drawHoveringText(List<String> list, int mouseX, int mouseY, FontRenderer font) {
+  public void drawHoveringText(@Nonnull List<String> list, int mouseX, int mouseY, @Nonnull FontRenderer font) {
     if (ghostSlotTooltipStacksize >= 1000) {
       list.add(TextFormatting.WHITE + EnderIO.lang.localize("gui.inventorypanel.tooltip.itemsstored", Integer.toString(ghostSlotTooltipStacksize)));
     }
@@ -588,7 +601,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     int index = scrollPos * GHOST_COLUMNS;
     int count = view.getNumEntries();
     for (int i = 0; i < GHOST_ROWS * GHOST_COLUMNS; i++, index++) {
-      InvSlot slot = (InvSlot) getGhostSlots().get(i);
+      InvSlot slot = (InvSlot) getGhostSlotHandler().getGhostSlots().get(i);
       if (index < count) {
         slot.entry = view.getItemEntry(index);
       } else {
@@ -661,10 +674,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       boolean shift = isShiftKeyDown();
 
       if (inventoryArea.contains(x, y)) {
+        GhostSlot hovered = getGhostSlotHandler().getGhostSlotAt(this, x, y);
         if (!shift) {
           scrollbar.scrollBy(-Integer.signum(delta));
-        } else if (hoverGhostSlot instanceof InvSlot) {
-          InvSlot invSlot = (InvSlot) hoverGhostSlot;
+        } else if (hovered instanceof InvSlot) {
+          InvSlot invSlot = (InvSlot) hovered;
           InventoryDatabaseClient db = getDatabase();
           if (invSlot.getStack() != null && invSlot.entry != null && db != null) {
             ItemStack itemStack = mc.player.inventory.getItemStack();
@@ -677,7 +691,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
   }
 
-  @Override
   protected void ghostSlotClicked(GhostSlot slot, int x, int y, int button) {
     if (slot instanceof InvSlot) {
       InvSlot invSlot = (InvSlot) slot;

@@ -325,8 +325,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
 
   @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
+  protected void onAfterNbtRead() {
     faceModes = null;
     if(eventHandler != null) {
       eventHandler.checkCraftingRecipes();

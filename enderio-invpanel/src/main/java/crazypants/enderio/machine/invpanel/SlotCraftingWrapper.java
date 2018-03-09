@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.ItemUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,6 +10,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.util.NonNullList;
 
 public class SlotCraftingWrapper extends SlotCrafting {
 
@@ -19,17 +22,17 @@ public class SlotCraftingWrapper extends SlotCrafting {
   }
 
   @Override
-  public void onPickupFromSlot(EntityPlayer playerIn, ItemStack stack) {
+  public @Nonnull ItemStack onTake(@Nonnull EntityPlayer playerIn, @Nonnull ItemStack stack) {
 
     net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerCraftingEvent(playerIn, stack, craftMatrix);
     this.onCrafting(stack);
     net.minecraftforge.common.ForgeHooks.setCraftingPlayer(playerIn);
-    ItemStack[] containeritems = CraftingManager.getInstance().getRemainingItems(this.craftMatrix, playerIn.world);
+    NonNullList<ItemStack> containeritems = CraftingManager.getRemainingItems(this.craftMatrix, playerIn.world);
     net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
 
-    for (int i = 0; i < containeritems.length; ++i) {
+    for (int i = 0; i < containeritems.size(); ++i) {
       ItemStack itemstack = this.craftMatrix.getStackInSlot(i);
-      ItemStack containeritemstack = containeritems[i];
+      ItemStack containeritemstack = containeritems.get(i);
 
       if (itemstack != null) {
         this.craftMatrix.decrStackSize(i, 1);
@@ -53,7 +56,7 @@ public class SlotCraftingWrapper extends SlotCrafting {
   }
 
   @Override
-  public ItemStack decrStackSize(int p_75209_1_) {
+  public @Nonnull ItemStack decrStackSize(int p_75209_1_) {
     if (this.getHasStack()) {
       // on a right click we are asked to craft half a result. Ignore that.
       return super.decrStackSize(this.getStack().getCount());

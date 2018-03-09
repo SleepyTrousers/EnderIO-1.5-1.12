@@ -26,7 +26,7 @@ public class BlockItemInventoryPanel extends ItemBlock {
     if(te instanceof TileInventoryPanel) {
       TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
       teInvPanel.setFacing(side);
-      teInvPanel.readFromItemStack(stack);
+      teInvPanel.readCustomNBT(stack);
       if(!world.isRemote) {        
         IBlockState bs = world.getBlockState(pos);
         world.notifyBlockUpdate(pos, bs, bs, 3);
