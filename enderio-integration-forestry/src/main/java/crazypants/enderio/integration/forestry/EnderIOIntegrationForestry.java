@@ -3,10 +3,14 @@ package crazypants.enderio.integration.forestry;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.Triple;
+
 import com.enderio.core.common.Lang;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.integration.forestry.config.ConfigHandler;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.config.Configuration;
@@ -71,6 +75,12 @@ public class EnderIOIntegrationForestry implements IEnderIOAddon {
     if (isLoaded()) {
       ForestryControl.registerEventBus();
     }
+  }
+
+  @Override
+  @Nonnull
+  public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
+    return new NNList<>(Triple.of(2, null, "integration-forestry"));
   }
 
   public static boolean isLoaded() {

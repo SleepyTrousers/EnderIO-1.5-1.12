@@ -16,3 +16,5 @@ enderio.darksteel.upgrade.apiarist_armor.feet.name=Apiarist's Shoes
 enderio.darksteel.upgrade.apiarist_armor.feet.tooltip.detailed.line1=Protection against bees
 
 enderio.config.items.darksteel.upgrades.forestry=Forestry Upgrades
+
+item.item_species_item_filter.name=Species Item Filter
