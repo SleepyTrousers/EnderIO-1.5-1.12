@@ -20,7 +20,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
-import crazypants.enderio.conduit.init.ConduitObject;
+import crazypants.enderio.conduits.init.ConduitObject;
 import crazypants.enderio.powertools.init.PowerToolObject;
 import crazypants.enderio.powertools.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.powertools.machine.monitor.TilePowerMonitor.StatData;

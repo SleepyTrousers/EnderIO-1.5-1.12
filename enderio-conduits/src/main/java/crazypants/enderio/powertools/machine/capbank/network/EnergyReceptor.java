@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.power.IPowerInterface;
-import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;

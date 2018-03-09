@@ -25,7 +25,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GeneralTab implements ITabPanel {
 
-  private static final int SEND_BAR_OFFSET = 13;
+  private static final int SEND_BAR_OFFSET = 12;
   final @Nonnull ContainerTransceiver container;
   final @Nonnull GuiTransceiver parent;
   final @Nonnull GuiToolTip sendPowerBarTT;
@@ -55,7 +55,7 @@ public class GeneralTab implements ITabPanel {
     };
     parent.addToolTip(sendPowerBarTT);
 
-    internalPowerBar = new PowerBar<>(container.getTe(), parent, 10, 14, 10, 58);
+    internalPowerBar = new PowerBar<>(container.getTe(), parent, 10, 14, 58);
   }
 
   @Override
@@ -116,20 +116,11 @@ public class GeneralTab implements ITabPanel {
 
     int fillY = y + 1 + 58 - fillHeight;
     x += 1;
-    parent.drawTexturedModalRect(x, fillY, 246, 196, 10, fillHeight);
 
     fillHeight = Math.max(0, totalPixelHeight - maxHeight);
     fillY = y + 1 + 58 - fillHeight;
-    parent.drawTexturedModalRect(x + SEND_BAR_OFFSET, fillY, 246 - 25, 196, 10, fillHeight);
+    parent.drawTexturedModalRect(x + SEND_BAR_OFFSET, fillY, 246 - 25, 196, 9, fillHeight);
 
-  }
-
-  public void updatePowerBarTooltip(List<String> text) {
-    text.add(Lang.GUI_TRANS_BUFFER_LOCAL.get());
-    text.add(Lang.GUI_TRANS_BUFFER_UPKEEP.get(LangPower.RFt(parent.getTransciever().getPowerUsePerTick())));
-    int maxEnergy = parent.getTransciever().getMaxEnergyStored() / 2;
-    int energyStored = Math.min(parent.getTransciever().getEnergyStored(), maxEnergy);
-    text.add(LangPower.RF(energyStored, maxEnergy));
   }
 
   private void updateSendPowerBarTooltip(List<String> text) {

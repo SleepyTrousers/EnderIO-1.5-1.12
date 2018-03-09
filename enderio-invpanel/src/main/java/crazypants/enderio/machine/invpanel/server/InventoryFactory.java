@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.invpanel.server;
 
-import crazypants.enderio.conduit.item.NetworkedInventory;
-
 import java.util.ArrayList;
+
+import crazypants.enderio.conduits.conduit.item.NetworkedInventory;
 
 public abstract class InventoryFactory {
 

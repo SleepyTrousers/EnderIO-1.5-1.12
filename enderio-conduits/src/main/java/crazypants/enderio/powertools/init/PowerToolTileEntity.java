@@ -6,7 +6,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
-import crazypants.enderio.conduit.EnderIOConduits;
+import crazypants.enderio.conduits.EnderIOConduits;
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import crazypants.enderio.powertools.machine.gauge.TileGauge;
 import crazypants.enderio.powertools.machine.monitor.TilePowerMonitor;

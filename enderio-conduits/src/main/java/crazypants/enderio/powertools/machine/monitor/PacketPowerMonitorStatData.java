@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.conduit.power.NetworkPowerManager;
+import crazypants.enderio.conduits.conduit.power.NetworkPowerManager;
 import crazypants.enderio.powertools.machine.monitor.TilePowerMonitor.StatData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;

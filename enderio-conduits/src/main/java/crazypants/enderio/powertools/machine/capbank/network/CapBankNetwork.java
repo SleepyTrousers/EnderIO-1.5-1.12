@@ -24,7 +24,7 @@ import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.IPowerStorage;
 import crazypants.enderio.base.power.PerTickIntAverageCalculator;
 import crazypants.enderio.base.power.PowerHandlerUtil;
-import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.powertools.machine.capbank.CapBankType;
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkEnergyResponse;

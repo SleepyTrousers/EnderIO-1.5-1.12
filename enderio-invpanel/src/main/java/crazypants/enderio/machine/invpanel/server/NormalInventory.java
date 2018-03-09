@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.invpanel.server;
 
-import crazypants.enderio.conduit.item.NetworkedInventory;
+import crazypants.enderio.conduits.conduit.item.NetworkedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandler;
