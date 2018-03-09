@@ -9,24 +9,18 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
-import crazypants.enderio.integration.forestry.EnderIOIntegrationForestry;
 import crazypants.enderio.integration.forestry.filters.ItemSpeciesItemFilter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber(modid = EnderIOIntegrationForestry.MODID)
 public enum ForestryIntegrationObject implements IModObject.Registerable {
 
   itemSpeciesItemFilter(ItemSpeciesItemFilter.class),
 
   ;
 
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
     ModObjectRegistry.addModObjects(ForestryIntegrationObject.class);
   }

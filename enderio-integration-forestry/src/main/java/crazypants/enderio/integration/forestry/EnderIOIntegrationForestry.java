@@ -12,6 +12,7 @@ import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.integration.forestry.config.ConfigHandler;
+import crazypants.enderio.integration.forestry.init.ForestryIntegrationObject;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
@@ -73,6 +74,7 @@ public class EnderIOIntegrationForestry implements IEnderIOAddon {
   public static void registerFarmers(@Nonnull RegistryEvent.Register<Block> event) {
     // No blocks to register, but we need to be on the event bus during the registry events. And as Block is guaranteed to be first, this is the perfect place.
     if (isLoaded()) {
+      ForestryIntegrationObject.registerBlocksEarly(event);
       ForestryControl.registerEventBus();
     }
   }
@@ -80,7 +82,10 @@ public class EnderIOIntegrationForestry implements IEnderIOAddon {
   @Override
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
-    return new NNList<>(Triple.of(2, null, "integration-forestry"));
+    if (isLoaded()) {
+      return new NNList<>(Triple.of(2, null, "integration-forestry"));
+    }
+    return NNList.emptyList();
   }
 
   public static boolean isLoaded() {
