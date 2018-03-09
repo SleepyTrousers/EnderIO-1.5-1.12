@@ -10,7 +10,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
-import crazypants.enderio.conduit.EnderIOConduits;
+import crazypants.enderio.conduits.EnderIOConduits;
 import crazypants.enderio.powertools.config.ConfigHandler;
 import crazypants.enderio.powertools.network.PacketHandler;
 import net.minecraftforge.common.config.Configuration;

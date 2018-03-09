@@ -6,7 +6,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
-import crazypants.enderio.conduit.EnderIOConduits;
+import crazypants.enderio.conduits.EnderIOConduits;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.invpanel.chest.TileInventoryChest;
 import crazypants.enderio.machine.invpanel.sensor.TileInventoryPanelSensor;

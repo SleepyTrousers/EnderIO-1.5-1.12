@@ -21,9 +21,9 @@ import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.conduit.TileConduitBundle;
-import crazypants.enderio.conduit.item.ItemConduit;
-import crazypants.enderio.conduit.item.ItemConduitNetwork;
+import crazypants.enderio.conduits.conduit.TileConduitBundle;
+import crazypants.enderio.conduits.conduit.item.ItemConduit;
+import crazypants.enderio.conduits.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.machine.invpanel.client.ClientDatabaseManager;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.init.InvpanelObject;
