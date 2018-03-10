@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketGuiSettingsUpdated extends MessageTileEntity<TileInventoryPanel> implements IMessageHandler<PacketGuiSettingsUpdated, IMessage> {
+public class PacketGuiSettingsUpdated extends MessageTileEntity<TileInventoryPanel>  {
 
   private int sortMode;
   private String filterString;
@@ -43,15 +43,17 @@ public class PacketGuiSettingsUpdated extends MessageTileEntity<TileInventoryPan
     buf.writeBoolean(sync);
   }
 
-  @Override
-  public IMessage onMessage(PacketGuiSettingsUpdated message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.world.getTileEntity(message.getPos());
-    if (te instanceof TileInventoryPanel) {
-      TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
-      teInvPanel.setGuiParameter(message.sortMode, message.filterString, message.sync);
+  public static class Handler implements IMessageHandler<PacketGuiSettingsUpdated, IMessage> {
+    
+    @Override
+    public IMessage onMessage(PacketGuiSettingsUpdated message, MessageContext ctx) {
+      EntityPlayer player = EnderIO.proxy.getClientPlayer();
+      TileEntity te = player.world.getTileEntity(message.getPos());
+      if (te instanceof TileInventoryPanel) {
+        TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
+        teInvPanel.setGuiParameter(message.sortMode, message.filterString, message.sync);
+      }
+      return null;
     }
-    return null;
   }
-
 }

@@ -14,14 +14,18 @@ import crazypants.enderio.base.machine.task.ContinuousTask;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable.IPaintableTileEntity;
 import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.conduits.conduit.item.IInventoryDatabase;
+import crazypants.enderio.conduits.conduit.item.IInventoryDatabaseServer;
 import crazypants.enderio.conduits.conduit.item.IItemConduit;
+import crazypants.enderio.conduits.conduit.item.IServerItemEntry;
 import crazypants.enderio.conduits.conduit.item.ItemConduitNetwork;
+import crazypants.enderio.conduits.conduit.item.ItemEntryBase;
 import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
-import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {
 
@@ -44,8 +48,8 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
   private boolean active = false;
 
   public TileInventoryPanelSensor() {
-    super(new SlotDefinition(0, 0, 0), CapacitorKey.INV_PANEL_SENSOR_POWER_INTAKE, CapacitorKey.INV_PANEL_SENSOR_POWER_BUFFER,
-        CapacitorKey.INV_PANEL_SENSOR_POWER_USE);
+    super(new SlotDefinition(0, 0, 0), CapacitorKey.LEGACY_ENERGY_INTAKE, CapacitorKey.LEGACY_ENERGY_BUFFER,
+        CapacitorKey.LEGACY_ENERGY_USE);
   }
 
   @Override
@@ -76,10 +80,10 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
     if (shouldDoWorkThisTick(10)) {
       if (itemToCheck != null) {
         
-        InventoryDatabaseServer db = getInventoryDB();
+        IInventoryDatabaseServer db = getInventoryDB();
         if (db != null) {
           int invHasCount = 0;
-          ItemEntry entry = db.lookupItem(itemToCheck, null, false);
+          IServerItemEntry entry = db.lookupItem(itemToCheck, null, false);
           if (entry != null) {
             invHasCount = entry.countItems();
           }
@@ -124,7 +128,7 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
   }
 
   private void broadcastSignal() {
-    world.notifyNeighborsOfStateChange(getPos(), getBlockType());
+    world.notifyNeighborsOfStateChange(getPos(), getBlockType(), true);
   }
 
   @Override
@@ -132,14 +136,14 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
     return new ContinuousTask(getPowerUsePerTick());
   }
 
-  public InventoryDatabaseServer getInventoryDB() {
+  public IInventoryDatabaseServer getInventoryDB() {
 
     for (EnumFacing dir : EnumFacing.values()) {
       IItemConduit con = ConduitUtil.getConduit(world, this, dir, IItemConduit.class);
       if (con != null) {
         IConduitNetwork<?, ?> n = con.getNetwork();
         if (n instanceof ItemConduitNetwork) {
-          InventoryDatabaseServer db = ((ItemConduitNetwork) n).getDatabase();
+          IInventoryDatabaseServer db = ((ItemConduitNetwork) n).getDatabase();
           if (db != null) {
             return db;
           }

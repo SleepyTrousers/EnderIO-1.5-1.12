@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSetExtractionDisabled implements IMessage, IMessageHandler<PacketSetExtractionDisabled, IMessage> {
+public class PacketSetExtractionDisabled implements IMessage {
 
   private int windowId;
   private boolean extractionDisabled;
@@ -30,16 +30,18 @@ public class PacketSetExtractionDisabled implements IMessage, IMessageHandler<Pa
     buf.writeInt(windowId);
     buf.writeBoolean(extractionDisabled);
   }
-
-  @Override
-  public IMessage onMessage(PacketSetExtractionDisabled message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().player;
-    if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
-      InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      TileInventoryPanel teInvPanel = ipc.getTe();
-      teInvPanel.setExtractionDisabled(message.extractionDisabled);
+  
+  public static class Handler implements IMessageHandler<PacketSetExtractionDisabled, IMessage> {
+  
+    @Override
+    public IMessage onMessage(PacketSetExtractionDisabled message, MessageContext ctx) {
+      EntityPlayerMP player = ctx.getServerHandler().player;
+      if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
+        InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
+        TileInventoryPanel teInvPanel = ipc.getTe();
+        teInvPanel.setExtractionDisabled(message.extractionDisabled);
+      }
+      return null;
     }
-    return null;
   }
-
 }

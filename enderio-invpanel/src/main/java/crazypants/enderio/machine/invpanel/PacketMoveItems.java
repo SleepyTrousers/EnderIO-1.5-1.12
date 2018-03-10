@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketMoveItems implements IMessage, IMessageHandler<PacketMoveItems, IMessage> {
+public class PacketMoveItems implements IMessage {
 
   private int fromSlot;
   private int toSlotStart;
@@ -38,14 +38,17 @@ public class PacketMoveItems implements IMessage, IMessageHandler<PacketMoveItem
     bb.writeShort(toSlotEnd);
     bb.writeShort(amount);
   }
-
-  @Override
-  public IMessage onMessage(PacketMoveItems message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().player;
-    if(player.openContainer instanceof InventoryPanelContainer) {
-      InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      ipc.executeMoveItems(message.fromSlot, message.toSlotStart, message.toSlotEnd, message.amount);
+  
+  public static class Handler implements IMessageHandler<PacketMoveItems, IMessage> {
+  
+    @Override
+    public IMessage onMessage(PacketMoveItems message, MessageContext ctx) {
+      EntityPlayerMP player = ctx.getServerHandler().player;
+      if(player.openContainer instanceof InventoryPanelContainer) {
+        InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
+        ipc.executeMoveItems(message.fromSlot, message.toSlotStart, message.toSlotEnd, message.amount);
+      }
+      return null;
     }
-    return null;
   }
 }

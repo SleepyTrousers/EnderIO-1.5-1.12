@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.invpanel.remote;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.machine.invpanel.GuiInventoryPanel;
 import crazypants.enderio.machine.invpanel.InventoryPanelContainer;
@@ -14,10 +13,6 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 public class ClientRemoteGuiManager implements IGuiHandler {
-
-  public static void create() {
-    GuiID.registerGuiHandler(GuiID.GUI_ID_INVENTORY_PANEL_REMOTE, new ClientRemoteGuiManager());
-  }
 
   private ClientRemoteGuiManager() {
   }

@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketItemToCheck extends MessageTileEntity<TileInventoryPanelSensor> implements IMessageHandler<PacketItemToCheck, IMessage> {
+public class PacketItemToCheck extends MessageTileEntity<TileInventoryPanelSensor> {
 
   private ItemStack item;
 
@@ -32,13 +32,16 @@ public class PacketItemToCheck extends MessageTileEntity<TileInventoryPanelSenso
     super.toBytes(buf);
     ByteBufUtils.writeItemStack(buf, item);
   }
-
-  @Override
-  public IMessage onMessage(PacketItemToCheck message, MessageContext ctx) {
-    TileInventoryPanelSensor te = message.getTileEntity(ctx.getServerHandler().player.world);
-    if(te != null) {
-      te.setItemToCheck(message.item);
+  
+  public static class Handler implements IMessageHandler<PacketItemToCheck, IMessage> {
+  
+    @Override
+    public IMessage onMessage(PacketItemToCheck message, MessageContext ctx) {
+      TileInventoryPanelSensor te = message.getTileEntity(ctx.getServerHandler().player.world);
+      if(te != null) {
+        te.setItemToCheck(message.item);
+      }
+      return null;
     }
-    return null;
   }
 }

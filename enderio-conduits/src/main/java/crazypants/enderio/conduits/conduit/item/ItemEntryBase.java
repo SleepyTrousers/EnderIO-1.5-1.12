@@ -1,15 +1,15 @@
-package crazypants.enderio.machine.invpanel;
+package crazypants.enderio.conduits.conduit.item;
 
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class ItemEntryBase {
+public class ItemEntryBase implements IItemEntry {
 
-  public final int dbID;
-  public final int hash;
-  public final int itemID;
-  public final int meta;
-  public final NBTTagCompound nbt;
+  private final int dbID;
+  private final int hash;
+  private final int itemID;
+  private final int meta;
+  private final NBTTagCompound nbt;
 
   protected ItemEntryBase(int dbID, int hash, int itemID, int meta, NBTTagCompound nbt) {
     this.dbID = dbID;
@@ -33,12 +33,39 @@ public class ItemEntryBase {
     return false;
   }
 
-  boolean equals(int itemID, int meta, NBTTagCompound nbt) {
+  @Override
+  public boolean equals(int itemID, int meta, NBTTagCompound nbt) {
     return this.itemID == itemID && this.meta == meta && ((this.nbt == nbt) || (this.nbt != null && this.nbt.equals(nbt)));
   }
 
+  @Override
   public Item getItem() {
     return Item.getItemById(itemID);
+  }
+  
+  @Override
+  public int getDbID() {
+    return dbID;
+  }
+
+  @Override
+  public int getHash() {
+    return hash;
+  }
+
+  @Override
+  public int getItemID() {
+    return itemID;
+  }
+
+  @Override
+  public int getMeta() {
+    return meta;
+  }
+
+  @Override
+  public NBTTagCompound getNbt() {
+    return nbt;
   }
 
   @Override

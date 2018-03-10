@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketItemList implements IMessage, IMessageHandler<PacketItemList, IMessage> {
+public class PacketItemList implements IMessage {
 
   private int windowId;
   private int generation;
@@ -43,24 +43,27 @@ public class PacketItemList implements IMessage, IMessageHandler<PacketItemList,
     buf.writeInt(generation);
     NetworkUtil.writeByteArray(buf, compressed);
   }
+  
+  public static class Handler implements IMessageHandler<PacketItemList, IMessage> {
 
-  @Override
-  public IMessage onMessage(PacketItemList message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
-      InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      TileInventoryPanel teInvPanel = ipc.getTe();
-      InventoryDatabaseClient db = teInvPanel.getDatabaseClient(message.generation);
-      try {
-        List<Integer> missingItems = db.readCompressedItemList(message.compressed);
-        if(missingItems != null) {
-          return new PacketRequestMissingItems(message.windowId, db.getGeneration(), missingItems);
+    @Override
+    public IMessage onMessage(PacketItemList message, MessageContext ctx) {
+      EntityPlayer player = EnderIO.proxy.getClientPlayer();
+      if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
+        InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
+        TileInventoryPanel teInvPanel = ipc.getTe();
+        InventoryDatabaseClient db = teInvPanel.getDatabaseClient(message.generation);
+        try {
+          List<Integer> missingItems = db.readCompressedItemList(message.compressed);
+          if (missingItems != null) {
+            return new PacketRequestMissingItems(message.windowId, db.getGeneration(), missingItems);
+          }
+        } catch (IOException ex) {
+          Logger.getLogger(PacketItemInfo.class.getName()).log(Level.SEVERE, "Exception while reading item list", ex);
         }
-      } catch (IOException ex) {
-        Logger.getLogger(PacketItemInfo.class.getName()).log(Level.SEVERE, "Exception while reading item list", ex);
       }
+      return null;
     }
-    return null;
   }
 
 }

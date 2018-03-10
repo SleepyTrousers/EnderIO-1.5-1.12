@@ -1,9 +1,8 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
@@ -21,7 +20,7 @@ public class ContainerSensor extends AbstractMachineContainer<TileInventoryPanel
   protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
   }
 
-  public void addGhostSlots(List<GhostSlot> ghostSlots) {
+  public void addGhostSlots(GhostSlotHandler ghostSlots) {
     ghostSlots.add(new DummySlot(0, 80, 9));
   }
 

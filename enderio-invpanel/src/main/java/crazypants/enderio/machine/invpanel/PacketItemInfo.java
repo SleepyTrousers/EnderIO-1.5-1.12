@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import com.enderio.core.common.network.NetworkUtil;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.conduits.conduit.item.IInventoryDatabaseServer;
+import crazypants.enderio.conduits.conduit.item.IServerItemEntry;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
@@ -17,7 +19,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketItemInfo implements IMessage, IMessageHandler<PacketItemInfo, IMessage> {
+public class PacketItemInfo implements IMessage {
 
   private int windowId;
   private int generation;
@@ -26,9 +28,9 @@ public class PacketItemInfo implements IMessage, IMessageHandler<PacketItemInfo,
   public PacketItemInfo() {
   }
 
-  public PacketItemInfo(int windowId, InventoryDatabaseServer db, List<ItemEntry> items) {
+  public PacketItemInfo(int windowId, IInventoryDatabaseServer db, List<? extends IServerItemEntry> items) {
     this.windowId = windowId;
-    this.generation = db.generation;
+    this.generation = db.getGeneration();
     try {
       compressed = db.compressItemInfo(items);
     } catch (IOException ex) {
@@ -51,19 +53,22 @@ public class PacketItemInfo implements IMessage, IMessageHandler<PacketItemInfo,
     NetworkUtil.writeByteArray(buf, compressed);
   }
 
-  @Override
-  public IMessage onMessage(PacketItemInfo message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
-      InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      TileInventoryPanel teInvPanel = ipc.getTe();
-      InventoryDatabaseClient db = teInvPanel.getDatabaseClient(message.generation);
-      try {
-        db.readCompressedItems(message.compressed);
-      } catch (IOException ex) {
-        Logger.getLogger(PacketItemInfo.class.getName()).log(Level.SEVERE, "Exception while reading item info", ex);
+  public static class Handler implements IMessageHandler<PacketItemInfo, IMessage> {
+    
+    @Override
+    public IMessage onMessage(PacketItemInfo message, MessageContext ctx) {
+      EntityPlayer player = EnderIO.proxy.getClientPlayer();
+      if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
+        InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
+        TileInventoryPanel teInvPanel = ipc.getTe();
+        InventoryDatabaseClient db = teInvPanel.getDatabaseClient(message.generation);
+        try {
+          db.readCompressedItems(message.compressed);
+        } catch (IOException ex) {
+          Logger.getLogger(PacketItemInfo.class.getName()).log(Level.SEVERE, "Exception while reading item info", ex);
+        }
       }
+      return null;
     }
-    return null;
   }
 }

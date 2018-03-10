@@ -29,9 +29,9 @@ IPaintable.IWrenchHideablePaint {
   
   public static BlockInventoryPanelSensor create(@Nonnull IModObject modObject) {
     
-    PacketHandler.INSTANCE.registerMessage(PacketActive.class, PacketActive.class, PacketHandler.nextID(), Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketItemToCheck.class, PacketItemToCheck.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketItemCount.class, PacketItemCount.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketActive.Handler.class, PacketActive.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketItemToCheck.Handler.class, PacketItemToCheck.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketItemCount.Handler.class, PacketItemCount.class, PacketHandler.nextID(), Side.SERVER);
     
     
     BlockInventoryPanelSensor result = new BlockInventoryPanelSensor(modObject);

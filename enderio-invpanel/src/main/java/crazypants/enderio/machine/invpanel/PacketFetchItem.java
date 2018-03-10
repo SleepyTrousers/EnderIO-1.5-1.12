@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketFetchItem implements IMessage, IMessageHandler<PacketFetchItem, IMessage> {
+public class PacketFetchItem implements IMessage {
 
   private int generation;
   private int dbID;
@@ -19,7 +19,7 @@ public class PacketFetchItem implements IMessage, IMessageHandler<PacketFetchIte
 
   public PacketFetchItem(int generation, ItemEntry entry, int targetSlot, int count) {
     this.generation = generation;
-    this.dbID = entry.dbID;
+    this.dbID = entry.getDbID();
     this.targetSlot = targetSlot;
     this.count = count;
   }
@@ -39,14 +39,17 @@ public class PacketFetchItem implements IMessage, IMessageHandler<PacketFetchIte
     bb.writeShort(targetSlot);
     bb.writeShort(count);
   }
-
-  @Override
-  public IMessage onMessage(PacketFetchItem message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().player;
-    if(player.openContainer instanceof InventoryPanelContainer) {
-      InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      ipc.executeFetchItems(player, message.generation, message.dbID, message.targetSlot, message.count);
+  
+  public static class Handler implements IMessageHandler<PacketFetchItem, IMessage> {
+  
+    @Override
+    public IMessage onMessage(PacketFetchItem message, MessageContext ctx) {
+      EntityPlayerMP player = ctx.getServerHandler().player;
+      if(player.openContainer instanceof InventoryPanelContainer) {
+        InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
+        ipc.executeFetchItems(player, message.generation, message.dbID, message.targetSlot, message.count);
+      }
+      return null;
     }
-    return null;
   }
 }

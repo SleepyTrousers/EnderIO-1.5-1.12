@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
@@ -19,7 +21,7 @@ public class GuiSensor extends GuiMachineBase<TileInventoryPanelSensor> {
   private TextFieldEnder startTF;
   private TextFieldEnder stopTF;
   
-  public GuiSensor(InventoryPlayer par1InventoryPlayer, TileInventoryPanelSensor te) {
+  public GuiSensor(InventoryPlayer par1InventoryPlayer, @Nonnull TileInventoryPanelSensor te) {
     super(te, new ContainerSensor(par1InventoryPlayer, te), "invPanelSensor");
     
     recipeButton.setYOrigin(recipeButton.getBounds().y + 19);
@@ -49,28 +51,28 @@ public class GuiSensor extends GuiMachineBase<TileInventoryPanelSensor> {
   @Override
   public void initGui() {
     super.initGui();
-    ((ContainerSensor) inventorySlots).addGhostSlots(getGhostSlots());
+    ((ContainerSensor) inventorySlots).addGhostSlots(getGhostSlotHandler());
   }
 
   @Override
   protected void mouseClickMove(int mouseX, int mouseY, int button, long par4) {
-    if (!getGhostSlots().isEmpty()) {
-      GhostSlot slot = getGhostSlot(mouseX, mouseY);
+    if (!getGhostSlotHandler().getGhostSlots().isEmpty()) {
+      GhostSlot slot = getGhostSlotHandler().getGhostSlotAt(this, mouseX, mouseY);
       if (slot != null) {
         ItemStack st = Minecraft.getMinecraft().player.inventory.getItemStack();
         // don't replace already set slots while dragging an item
-        if (st == null || slot.getStack() == null) {
-          slot.putStack(st);
+        if (st.isEmpty() || slot.getStack().isEmpty()) {
+          slot.putStack(st, 0);
         }
       }
     }
     super.mouseClickMove(mouseX, mouseY, button, par4);
   }
 
-  @Override
-  protected int getPowerHeight() {
-    return 57;
-  }
+//  @Override
+//  protected int getPowerBarHeight() {
+//    return 57;
+//  }
   
   @Override
   protected boolean showRecipeButton() {

@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketDatabaseReset implements IMessage, IMessageHandler<PacketDatabaseReset, IMessage> {
+public class PacketDatabaseReset implements IMessage {
 
   private int generation;
 
@@ -27,9 +27,12 @@ public class PacketDatabaseReset implements IMessage, IMessageHandler<PacketData
     bb.writeInt(generation);
   }
 
-  @Override
-  public IMessage onMessage(PacketDatabaseReset message, MessageContext ctx) {
-    ClientDatabaseManager.INSTANCE.destroyDatabase(message.generation);
-    return null;
+  public static class Handler implements IMessageHandler<PacketDatabaseReset, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketDatabaseReset message, MessageContext ctx) {
+      ClientDatabaseManager.INSTANCE.destroyDatabase(message.generation);
+      return null;
+    }
   }
 }

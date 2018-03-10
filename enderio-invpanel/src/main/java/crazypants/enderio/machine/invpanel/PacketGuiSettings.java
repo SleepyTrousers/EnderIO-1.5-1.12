@@ -7,13 +7,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketGuiSettings implements IMessage, IMessageHandler<PacketGuiSettings, IMessage> {
+public class PacketGuiSettings implements IMessage {
 
   private int windowId;
   private int sortMode;
   private String filterString;
   private boolean sync;
-  
+
   public PacketGuiSettings() {
     filterString = "";
   }
@@ -41,14 +41,17 @@ public class PacketGuiSettings implements IMessage, IMessageHandler<PacketGuiSet
     buf.writeBoolean(sync);
   }
 
-  @Override
-  public IMessage onMessage(PacketGuiSettings message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().player;
-    if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
-      InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      TileInventoryPanel teInvPanel = ipc.getTe();
-      teInvPanel.setGuiParameter(message.sortMode, message.filterString, message.sync);
+  public static class Handler implements IMessageHandler<PacketGuiSettings, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketGuiSettings message, MessageContext ctx) {
+      EntityPlayerMP player = ctx.getServerHandler().player;
+      if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
+        InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
+        TileInventoryPanel teInvPanel = ipc.getTe();
+        teInvPanel.setGuiParameter(message.sortMode, message.filterString, message.sync);
+      }
+      return null;
     }
-    return null;
   }
 }

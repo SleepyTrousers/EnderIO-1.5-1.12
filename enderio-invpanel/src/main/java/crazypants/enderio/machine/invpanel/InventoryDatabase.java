@@ -3,11 +3,14 @@ package crazypants.enderio.machine.invpanel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import crazypants.enderio.conduits.conduit.item.IInventoryDatabase;
+import crazypants.enderio.conduits.conduit.item.IItemEntry;
+import crazypants.enderio.conduits.conduit.item.ItemEntryBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
+public abstract class InventoryDatabase<ItemEntry extends IItemEntry> implements IInventoryDatabase<ItemEntry> {
 
   private static final Item META_EXTRACTOR = new Item();
 
@@ -30,11 +33,13 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
     complexRegistry = new HashMap<ItemEntry, ItemEntry>();
     complexItems = new ArrayList<ItemEntry>();
   }
-
+  
+  @Override
   public int getGeneration() {
     return generation;
   }
 
+  @Override
   public ItemEntry lookupItem(ItemStack stack, ItemEntry hint, boolean create) {
     if(stack == null || stack.getItem() == null) {
       return null;
@@ -105,6 +110,10 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
     return getSimpleItem(itemID, meta, true);
   }
 
+  /* (non-Javadoc)
+   * @see crazypants.enderio.machine.invpanel.IInventoryDatabase#getItem(int)
+   */
+  @Override
   public ItemEntry getItem(int dbID) {
     if(dbID < COMPLEX_DBINDEX_START) {
       return getSimpleItem(dbID);
@@ -117,6 +126,10 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
     return null;
   }
 
+  /* (non-Javadoc)
+   * @see crazypants.enderio.machine.invpanel.IInventoryDatabase#getExistingItem(int)
+   */
+  @Override
   public ItemEntry getExistingItem(int dbID) {
     if(dbID < COMPLEX_DBINDEX_START) {
       return simpleRegsitry.get(dbID);
@@ -144,7 +157,7 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
 
     @Override
     public boolean equals(Object obj) {
-      if(obj instanceof ItemEntryBase) {
+      if(obj instanceof IItemEntry) {
         final ItemEntryBase other = (ItemEntryBase) obj;
         return other.equals(itemID, meta, nbt);
       }

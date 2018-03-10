@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.machine.invpanel.ItemEntryBase;
+import crazypants.enderio.conduits.conduit.item.ItemEntryBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,8 +33,8 @@ public class ItemEntry extends ItemEntryBase {
 
   public @Nonnull ItemStack makeItemStack() {
     if (stack == null) {
-      stack = new ItemStack(getItem(), getCount(), meta);
-      stack.setTagCompound(nbt);
+      stack = new ItemStack(getItem(), getCount(), getMeta());
+      stack.setTagCompound(getNbt());
     }
     return stack;
   }

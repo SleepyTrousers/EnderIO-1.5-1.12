@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketItemCount extends MessageTileEntity<TileInventoryPanelSensor> implements IMessageHandler<PacketItemCount, IMessage> {
+public class PacketItemCount extends MessageTileEntity<TileInventoryPanelSensor> {
 
   private int startCount;
   private int stopCount;
@@ -35,14 +35,17 @@ public class PacketItemCount extends MessageTileEntity<TileInventoryPanelSensor>
     buf.writeInt(stopCount);
   }
 
-  @Override
-  public IMessage onMessage(PacketItemCount message, MessageContext ctx) {
-    TileInventoryPanelSensor te = message.getTileEntity(ctx.getServerHandler().player.world);
-    if(te != null) {
-      
-      te.setStartCount(message.startCount);
-      te.setStopCount(message.stopCount);
+  public static class Handler implements IMessageHandler<PacketItemCount, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketItemCount message, MessageContext ctx) {
+      TileInventoryPanelSensor te = message.getTileEntity(ctx.getServerHandler().player.world);
+      if (te != null) {
+
+        te.setStartCount(message.startCount);
+        te.setStopCount(message.stopCount);
+      }
+      return null;
     }
-    return null;
   }
 }

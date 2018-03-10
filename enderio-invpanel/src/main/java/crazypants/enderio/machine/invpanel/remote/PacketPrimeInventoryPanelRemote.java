@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import javax.annotation.Nonnull;
 
-public class PacketPrimeInventoryPanelRemote implements IMessage, IMessageHandler<PacketPrimeInventoryPanelRemote, IMessage> {
+public class PacketPrimeInventoryPanelRemote implements IMessage {
 
   private NBTTagCompound tag;
 
@@ -37,13 +37,15 @@ public class PacketPrimeInventoryPanelRemote implements IMessage, IMessageHandle
     NetworkUtil.writeNBTTagCompound(tag, buf);
   }
 
-  @Override
-  public IMessage onMessage(PacketPrimeInventoryPanelRemote message, MessageContext ctx) {
-    ClientRemoteGuiManager.targetTEtime = EnderIO.proxy.getTickCount() + 10;
-    TileInventoryPanel te = new TileInventoryPanel();
-    Reader.read(NBTAction.CLIENT, message.tag, te);
-    ClientRemoteGuiManager.targetTE = te;
-    return null;
+  public static class Handler implements IMessageHandler<PacketPrimeInventoryPanelRemote, IMessage> {
+    
+    @Override
+    public IMessage onMessage(PacketPrimeInventoryPanelRemote message, MessageContext ctx) {
+      ClientRemoteGuiManager.targetTEtime = EnderIO.proxy.getTickCount() + 10;
+      TileInventoryPanel te = new TileInventoryPanel();
+      Reader.read(NBTAction.CLIENT, message.tag, te);
+      ClientRemoteGuiManager.targetTE = te;
+      return null;
+    }
   }
-
 }

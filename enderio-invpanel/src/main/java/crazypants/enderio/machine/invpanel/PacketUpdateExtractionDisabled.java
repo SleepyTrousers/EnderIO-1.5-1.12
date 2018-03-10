@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketUpdateExtractionDisabled extends MessageTileEntity<TileInventoryPanel> implements IMessageHandler<PacketUpdateExtractionDisabled, IMessage> {
+public class PacketUpdateExtractionDisabled extends MessageTileEntity<TileInventoryPanel> {
 
   private boolean extractionDisabled;
 
@@ -33,16 +33,18 @@ public class PacketUpdateExtractionDisabled extends MessageTileEntity<TileInvent
     super.toBytes(buf);
     buf.writeBoolean(extractionDisabled);
   }
+  
+  public static class Handler implements IMessageHandler<PacketUpdateExtractionDisabled, IMessage> {
 
-  @Override
-  public IMessage onMessage(PacketUpdateExtractionDisabled message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.world.getTileEntity(message.getPos());
-    if(te instanceof TileInventoryPanel) {
-      TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
-      teInvPanel.updateExtractionDisabled(message.extractionDisabled);
+    @Override
+    public IMessage onMessage(PacketUpdateExtractionDisabled message, MessageContext ctx) {
+      EntityPlayer player = EnderIO.proxy.getClientPlayer();
+      TileEntity te = player.world.getTileEntity(message.getPos());
+      if (te instanceof TileInventoryPanel) {
+        TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
+        teInvPanel.updateExtractionDisabled(message.extractionDisabled);
+      }
+      return null;
     }
-    return null;
   }
-
 }

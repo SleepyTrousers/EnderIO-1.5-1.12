@@ -2,8 +2,6 @@ package crazypants.enderio.machine.invpanel;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.ItemUtil;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
@@ -11,14 +9,17 @@ import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 public class SlotCraftingWrapper extends SlotCrafting {
 
+  TileInventoryPanel inventory; // Shadow super field
   private final InventoryCrafting craftMatrix;
 
-  public SlotCraftingWrapper(EntityPlayer player, InventoryCrafting craftingInventory, IInventory p_i45790_3_, int slotIndex, int xPosition, int yPosition) {
-    super(player, craftingInventory, p_i45790_3_, slotIndex, xPosition, yPosition);
-    craftMatrix = craftingInventory;
+  public SlotCraftingWrapper(EntityPlayer player, InventoryCrafting craftingInventory, IInventory inventory, int slotIndex, int xPosition, int yPosition) {
+    super(player, craftingInventory, inventory, slotIndex, xPosition, yPosition);
+    craftMatrix = craftingInventory;  
   }
 
   @Override
@@ -34,25 +35,24 @@ public class SlotCraftingWrapper extends SlotCrafting {
       ItemStack itemstack = this.craftMatrix.getStackInSlot(i);
       ItemStack containeritemstack = containeritems.get(i);
 
-      if (itemstack != null) {
+      if (!itemstack.isEmpty()) {
         this.craftMatrix.decrStackSize(i, 1);
       }
 
-      if (containeritemstack != null) {
-        if (this.craftMatrix.getStackInSlot(i) == null) {
+      if (!containeritemstack.isEmpty()) {
+        if (this.craftMatrix.getStackInSlot(i).isEmpty()) {
           this.craftMatrix.setInventorySlotContents(i, containeritemstack);
         } else {
-          int numInserted = ItemUtil.doInsertItem(inventory, 10, 20, containeritemstack);
-          if (numInserted < containeritemstack.getCount()) {
-            containeritemstack.shrink(numInserted);
-            if (!playerIn.inventory.addItemStackToInventory(containeritemstack)) {
-              playerIn.dropItem(containeritemstack, false);
+          ItemStack remainder = ItemHandlerHelper.insertItem(inventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), containeritemstack, false);
+          if (!remainder.isEmpty()) {
+            if (!playerIn.inventory.addItemStackToInventory(remainder)) {
+              playerIn.dropItem(remainder, false);
             }
-
           }
         }
       }
     }
+    return stack;
   }
 
   @Override

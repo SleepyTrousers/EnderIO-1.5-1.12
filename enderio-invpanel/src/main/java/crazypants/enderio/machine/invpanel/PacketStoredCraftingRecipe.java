@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketStoredCraftingRecipe implements IMessage, IMessageHandler<PacketStoredCraftingRecipe, IMessage> {
+public class PacketStoredCraftingRecipe implements IMessage {
 
   public static final int ACTION_ADD = 0;
   public static final int ACTION_DELETE = 1;
@@ -52,22 +52,25 @@ public class PacketStoredCraftingRecipe implements IMessage, IMessageHandler<Pac
     NetworkUtil.writeNBTTagCompound(nbt, buf);
   }
 
-  @Override
-  public IMessage onMessage(PacketStoredCraftingRecipe message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().player;
-    if(player.openContainer instanceof InventoryPanelContainer) {
-      InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      switch (message.action) {
-        case ACTION_ADD:
-          if(message.recipe != null) {
-            ipc.getTe().addStoredCraftingRecipe(message.recipe);
-          }
-          break;
-        case ACTION_DELETE:
-          ipc.getTe().removeStoredCraftingRecipe(message.index);
-          break;
+  public static class Handler implements IMessageHandler<PacketStoredCraftingRecipe, IMessage> {
+    
+    @Override
+    public IMessage onMessage(PacketStoredCraftingRecipe message, MessageContext ctx) {
+      EntityPlayerMP player = ctx.getServerHandler().player;
+      if(player.openContainer instanceof InventoryPanelContainer) {
+        InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
+        switch (message.action) {
+          case ACTION_ADD:
+            if(message.recipe != null) {
+              ipc.getTe().addStoredCraftingRecipe(message.recipe);
+            }
+            break;
+          case ACTION_DELETE:
+            ipc.getTe().removeStoredCraftingRecipe(message.index);
+            break;
+        }
       }
+      return null;
     }
-    return null;
   }
 }

@@ -2,6 +2,9 @@ package crazypants.enderio.machine.invpanel.server;
 
 import java.util.ArrayList;
 
+import crazypants.enderio.conduits.conduit.item.ChangeLog;
+import crazypants.enderio.conduits.conduit.item.IItemEntry;
+
 final class ChangeLogList implements ChangeLog {
   final ArrayList<ChangeLog> clList;
 
@@ -12,7 +15,7 @@ final class ChangeLogList implements ChangeLog {
   }
 
   @Override
-  public void entryChanged(ItemEntry entry) {
+  public void entryChanged(IItemEntry entry) {
     for (ChangeLog cl : clList) {
       cl.entryChanged(entry);
     }

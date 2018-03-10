@@ -5,6 +5,7 @@ import static crazypants.enderio.base.init.ModObject.itemBasicItemFilter;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -21,8 +22,11 @@ import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.conduits.conduit.item.ChangeLog;
+import crazypants.enderio.conduits.conduit.item.IInventoryDatabaseServer;
+import crazypants.enderio.conduits.conduit.item.IItemEntry;
+import crazypants.enderio.conduits.conduit.item.IServerItemEntry;
 import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
-import crazypants.enderio.machine.invpanel.server.ChangeLog;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import net.minecraft.entity.player.EntityPlayer;
@@ -61,7 +65,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   public static final int FILTER_SLOT_X = 24+233;
   public static final int FILTER_SLOT_Y = 7;
 
-  private final HashSet<ItemEntry> changedItems;
+  private final HashSet<IItemEntry> changedItems;
 
   private Slot slotFilter;
 
@@ -75,6 +79,8 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   private boolean storedRecipeExists;
 
   private @Nonnull World playerWorld;
+  
+  private SlotCraftingWrapper slotCraft;
 
   public InventoryPanelContainer(@Nonnull InventoryPlayer playerInv, @Nonnull TileInventoryPanel te) {
     super(playerInv, te);
@@ -84,26 +90,28 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     if (!te.hasWorld() || te.getWorld().isRemote) {
       changedItems = null;
     } else {
-      changedItems = new HashSet<ItemEntry>();
+      changedItems = new HashSet<>();
     }
+    
+    slotCraft.inventory = te;
   }
 
   @Override
   protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
     slotCraftResult = inventorySlots.size();
-    addSlotToContainer(new SlotCraftingWrapper(playerInv.player, new InventoryCraftingWrapper(getTe().getAsInventory(), this, 3, 3), getTe().getAsInventory(),
+    addSlotToContainer(slotCraft = new SlotCraftingWrapper(playerInv.player, new InventoryCraftingWrapper(getInv(), this, 3, 3), getInv(),
         TileInventoryPanel.SLOT_CRAFTING_RESULT, CRAFTING_GRID_X + 59, CRAFTING_GRID_Y + 18));
     
 
     firstSlotCraftingGrid = inventorySlots.size();
     for (int y = 0, i = TileInventoryPanel.SLOT_CRAFTING_START; y < 3; y++) {
       for (int x = 0; x < 3; x++, i++) {
-        addSlotToContainer(new Slot(getTe().getAsInventory(), i, CRAFTING_GRID_X + x * 18, CRAFTING_GRID_Y + y * 18));
+        addSlotToContainer(new Slot(getInv(), i, CRAFTING_GRID_X + x * 18, CRAFTING_GRID_Y + y * 18));
       }
     }
     endSlotCraftingGrid = inventorySlots.size();
 
-    slotFilter = addSlotToContainer(new Slot(getTe().getAsInventory(), TileInventoryPanel.SLOT_VIEW_FILTER, FILTER_SLOT_X, FILTER_SLOT_Y) {
+    slotFilter = addSlotToContainer(new Slot(getInv(), TileInventoryPanel.SLOT_VIEW_FILTER, FILTER_SLOT_X, FILTER_SLOT_Y) {
       @Override
       public int getSlotStackLimit() {
         return 1;
@@ -113,7 +121,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     firstSlotReturn = inventorySlots.size();
     for (int y = 0, i = TileInventoryPanel.SLOT_RETURN_START; y < 2; y++) {
       for (int x = 0; x < 5; x++, i++) {
-        addSlotToContainer(new Slot(getTe().getAsInventory(), i, RETURN_INV_X + x * 18, RETURN_INV_Y + y * 18));
+        addSlotToContainer(new Slot(getInv(), i, RETURN_INV_X + x * 18, RETURN_INV_Y + y * 18));
       }
     }
     endSlotReturn = inventorySlots.size();
@@ -159,7 +167,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
 
   private void removeChangeLog() {
     if(changedItems != null) {
-      InventoryDatabaseServer db = getTe().getDatabaseServer();
+      IInventoryDatabaseServer db = getTe().getDatabaseServer();
       if(db != null) {
         db.removeChangeLog(this);
       }
@@ -181,7 +189,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     }
     super.addListener(crafting);
     if(changedItems != null) {
-      InventoryDatabaseServer db = getTe().getDatabaseServer();
+      IInventoryDatabaseServer db = getTe().getDatabaseServer();
       if(db != null) {
         db.addChangeLog(this);
         if(crafting instanceof EntityPlayerMP) {
@@ -306,7 +314,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  public void entryChanged(ItemEntry entry) {
+  public void entryChanged(IItemEntry entry) {
     changedItems.add(entry);
   }
 
@@ -319,10 +327,10 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @Override
   public void sendChangeLog() {
     if(!changedItems.isEmpty() && !listeners.isEmpty()) {
-      InventoryDatabaseServer db = getTe().getDatabaseServer();
+      IInventoryDatabaseServer db = getTe().getDatabaseServer();
       if(db != null) {
         try {
-          byte[] compressed = db.compressChangedItems(changedItems);
+          byte[] compressed = db.compressChangedItems((Collection<? extends IServerItemEntry>) changedItems);
           PacketItemList pil = new PacketItemList(windowId, db.getGeneration(), compressed);
           for (Object crafting : listeners) {
             if(crafting instanceof EntityPlayerMP) {
@@ -349,11 +357,11 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
 
   public void executeFetchItems(EntityPlayerMP player, int generation, int dbID, int targetSlot, int count) {
     TileInventoryPanel te = getTe();
-    InventoryDatabaseServer db = te.getDatabaseServer();
+    IInventoryDatabaseServer db = te.getDatabaseServer();
     if(db == null || db.getGeneration() != generation || !db.isCurrent()) {
       return;
     }
-    ItemEntry entry = db.getExistingItem(dbID);
+    IServerItemEntry entry = db.getExistingItem(dbID);
     if(entry != null) {
       ItemStack targetStack;
       Slot slot;
@@ -369,8 +377,8 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
         maxStackSize = slot.getSlotStackLimit();
       }
 
-      ItemStack tmpStack = new ItemStack(entry.getItem(), 0, entry.meta);
-      tmpStack.setTagCompound(entry.nbt);
+      ItemStack tmpStack = new ItemStack(entry.getItem(), 0, entry.getMeta());
+      tmpStack.setTagCompound(entry.getNbt());
       maxStackSize = Math.min(maxStackSize, tmpStack.getMaxStackSize());
 
       if(targetStack != null && targetStack.getCount() > 0) {

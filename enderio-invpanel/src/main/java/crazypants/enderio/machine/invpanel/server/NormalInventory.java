@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.invpanel.server;
 
+import crazypants.enderio.conduits.conduit.item.AbstractInventory;
+import crazypants.enderio.conduits.conduit.item.IInventoryDatabaseServer;
+import crazypants.enderio.conduits.conduit.item.IServerItemEntry;
 import crazypants.enderio.conduits.conduit.item.NetworkedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -13,7 +16,7 @@ class NormalInventory extends AbstractInventory {
   }
 
   @Override
-  int scanInventory(InventoryDatabaseServer db) {
+  public int scanInventory(IInventoryDatabaseServer db) {
     IItemHandler inv = ni.getInventory();
     
     if (inv == null) {
@@ -55,7 +58,7 @@ class NormalInventory extends AbstractInventory {
   }
 
   @Override
-  public int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int count) {
+  public int extractItem(IInventoryDatabaseServer db, IServerItemEntry entry, int slot, int count) {
     IItemHandler inv = ni.getInventory();
     if (inv == null) {
       return 0;
@@ -81,7 +84,7 @@ class NormalInventory extends AbstractInventory {
   }
 
   @Override
-  protected void markForScanning(BlockPos pos) {
+  public void markForScanning(BlockPos pos) {
     if (ni.isAt(pos)) {
       markForScanning();
     }

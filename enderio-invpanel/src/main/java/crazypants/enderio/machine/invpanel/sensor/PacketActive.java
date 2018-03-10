@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketActive extends MessageTileEntity<TileInventoryPanelSensor> implements IMessageHandler<PacketActive, IMessage> {
+public class PacketActive extends MessageTileEntity<TileInventoryPanelSensor> {
 
   private boolean active;
 
@@ -32,17 +32,20 @@ public class PacketActive extends MessageTileEntity<TileInventoryPanelSensor> im
     super.toBytes(buf);
     buf.writeBoolean(active);
   }
-
-  @Override
-  public IMessage onMessage(PacketActive message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileInventoryPanelSensor te = message.getTileEntity(player.world);
-    if(te != null) {
-      if(message.active != te.isActive()) {
-        te.setActive(message.active);
-        player.world.markBlockRangeForRenderUpdate(te.getPos(), te.getPos());
+  
+  public static class Handler implements IMessageHandler<PacketActive, IMessage> {
+  
+    @Override
+    public IMessage onMessage(PacketActive message, MessageContext ctx) {
+      EntityPlayer player = EnderIO.proxy.getClientPlayer();
+      TileInventoryPanelSensor te = message.getTileEntity(player.world);
+      if(te != null) {
+        if(message.active != te.isActive()) {
+          te.setActive(message.active);
+          player.world.markBlockRangeForRenderUpdate(te.getPos(), te.getPos());
+        }
       }
+      return null;
     }
-    return null;
   }
 }

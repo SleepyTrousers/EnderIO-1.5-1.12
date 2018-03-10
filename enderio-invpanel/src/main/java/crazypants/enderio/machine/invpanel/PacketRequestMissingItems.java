@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import com.enderio.core.common.network.CompressedDataOutput;
 import com.enderio.core.common.network.NetworkUtil;
 
+import crazypants.enderio.conduits.conduit.item.IInventoryDatabaseServer;
+import crazypants.enderio.conduits.conduit.item.IServerItemEntry;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import io.netty.buffer.ByteBuf;
@@ -16,7 +18,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketRequestMissingItems implements IMessage, IMessageHandler<PacketRequestMissingItems, IMessage> {
+public class PacketRequestMissingItems implements IMessage {
 
   private int windowId;
   private byte[] compressed;
@@ -54,26 +56,28 @@ public class PacketRequestMissingItems implements IMessage, IMessageHandler<Pack
     buf.writeInt(windowId);
     NetworkUtil.writeByteArray(buf, compressed);
   }
+  
+  public static class Handler implements IMessageHandler<PacketRequestMissingItems, IMessage> {
 
-  @Override
-  public IMessage onMessage(PacketRequestMissingItems message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().player;
-    if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
-      InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
-      TileInventoryPanel teInvPanel = ipc.getTe();
-      InventoryDatabaseServer db = teInvPanel.getDatabaseServer();
-      if(db != null) {
-        try {
-          List<ItemEntry> items = db.decompressMissingItems(message.compressed);
-          if(!items.isEmpty()) {
-            return new PacketItemInfo(message.windowId, db, items);
+    @Override
+    public IMessage onMessage(PacketRequestMissingItems message, MessageContext ctx) {
+      EntityPlayerMP player = ctx.getServerHandler().player;
+      if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
+        InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
+        TileInventoryPanel teInvPanel = ipc.getTe();
+        IInventoryDatabaseServer db = teInvPanel.getDatabaseServer();
+        if (db != null) {
+          try {
+            List<? extends IServerItemEntry> items = db.decompressMissingItems(message.compressed);
+            if (!items.isEmpty()) {
+              return new PacketItemInfo(message.windowId, db, items);
+            }
+          } catch (IOException ex) {
+            Logger.getLogger(PacketItemInfo.class.getName()).log(Level.SEVERE, "Exception while reading missing item IDs", ex);
           }
-        } catch (IOException ex) {
-          Logger.getLogger(PacketItemInfo.class.getName()).log(Level.SEVERE, "Exception while reading missing item IDs", ex);
         }
       }
-    }
-    return null;
+      return null;
   }
-
+  }
 }

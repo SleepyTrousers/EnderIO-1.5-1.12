@@ -12,7 +12,6 @@ import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.fluid.Fluids;
@@ -22,10 +21,14 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduits.conduit.TileConduitBundle;
+import crazypants.enderio.conduits.conduit.item.IInventoryDatabaseServer;
+import crazypants.enderio.conduits.conduit.item.IInventoryPanel;
 import crazypants.enderio.conduits.conduit.item.ItemConduit;
 import crazypants.enderio.conduits.conduit.item.ItemConduitNetwork;
+import crazypants.enderio.machine.invpanel.HandleStoredCraftingRecipe.HandleStoredCraftingRecipeArrayList;
 import crazypants.enderio.machine.invpanel.client.ClientDatabaseManager;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
+import crazypants.enderio.machine.invpanel.config.InvpanelConfig;
 import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
@@ -35,7 +38,6 @@ import info.loenwind.autosave.annotations.Store;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -45,7 +47,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 @Storable
-public class TileInventoryPanel extends AbstractInventoryMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank {
+public class TileInventoryPanel extends AbstractInventoryMachineEntity implements IInventoryPanel, ITankAccess.IExtendedTankAccess, IHasNutrientTank {
 
   public static final int SLOT_CRAFTING_START = 0;
   public static final int SLOT_CRAFTING_RESULT = 9;
@@ -58,7 +60,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   protected final SmartTank fuelTank;
   protected boolean tanksDirty;
 
-  private InventoryDatabaseServer dbServer;
+  private IInventoryDatabaseServer dbServer;
   private InventoryDatabaseClient dbClient;
 
   @Store({ NBTAction.CLIENT, NBTAction.SAVE })
@@ -81,13 +83,13 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   public TileInventoryPanel() {
     super(new SlotDefinition(0, 8, 11, 20, 21, 20));
-    this.fuelTank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), /*TODO Config.inventoryPanelFree*/ false ? 0 : 2000);
+    this.fuelTank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), InvpanelConfig.inventoryPanelFree.get() ? 0 : 2000);
     this.fuelTank.setTileEntity(this);
     this.fuelTank.setCanDrain(false);
     this.storedCraftingRecipes = new ArrayList<StoredCraftingRecipe>();
   }
 
-  public InventoryDatabaseServer getDatabaseServer() {
+  public IInventoryDatabaseServer getDatabaseServer() {
     return dbServer;
   }
 
@@ -159,7 +161,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public boolean isActive() {
-    return /* TODO Config.inventoryPanelFree || */active;
+    return InvpanelConfig.inventoryPanelFree.get() || active;
   }
 
   @Override
@@ -219,18 +221,20 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     }
   }
 
+  @Override
   public float getAvailablePower() {
-    return getPower() * Config.inventoryPanelPowerPerMB;
+    return getPower() * InvpanelConfig.inventoryPanelPowerPerMB.get();
   }
 
-  public void refuelPower(InventoryDatabaseServer db) {
-    float missingPower = Config.inventoryPanelPowerPerMB * 0.5f - db.getPower();
+  @Override
+  public void refuelPower(IInventoryDatabaseServer db) {
+    float missingPower = InvpanelConfig.inventoryPanelPowerPerMB.get() * 0.5f - db.getPower();
     if(missingPower > 0) {
-      int amount = (int) Math.ceil(missingPower / Config.inventoryPanelPowerPerMB);
+      int amount = (int) Math.ceil(missingPower / InvpanelConfig.inventoryPanelPowerPerMB.get());
       amount = Math.min(amount, getPower());
       if(amount > 0) {
         useNutrient(amount);
-        dbServer.addPower(amount * Config.inventoryPanelPowerPerMB);
+        dbServer.addPower(amount * InvpanelConfig.inventoryPanelPowerPerMB.get());
       }
     }
   }
@@ -240,7 +244,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
   
   private int getPower() {
-    return Config.inventoryPanelFree ? 100 : fuelTank.getFluidAmount();
+    return InvpanelConfig.inventoryPanelFree.get() ? 100 : fuelTank.getFluidAmount();
   }
 
   @Override
