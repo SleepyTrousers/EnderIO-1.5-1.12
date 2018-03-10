@@ -8,7 +8,6 @@ import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
-import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
@@ -24,7 +23,7 @@ public class PowerSettings extends BaseSettingsPanel {
   private static final int ID_COLOR_BUTTON = GuiExternalConnection.nextButtonId();
 
   private IPowerConduit conduit;
-  private RedstoneModeButton rsB;
+  private RedstoneModeButton<?> rsB;
   private ColorButton colorB;
 
   public PowerSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
@@ -34,41 +33,12 @@ public class PowerSettings extends BaseSettingsPanel {
     int x = rightColumn;
     int y = customTop;
 
-    rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
-
-      @Override
-      public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
-        RedstoneControlMode curMode = getRedstoneControlMode();
-        conduit.setExtractionRedstoneMode(mode, gui.getDir());
-        colorB.onGuiInit();
-        colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
-        if (mode == RedstoneControlMode.OFF || mode == RedstoneControlMode.ON) {
-          colorB.setIsVisible(true);
-        } else {
-          colorB.setIsVisible(false);
-        }
-        if (curMode != mode) {
-          PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.getDir()));
-        }
-
-      }
-
-      @Override
-      public RedstoneControlMode getRedstoneControlMode() {
-        return conduit.getExtractionRedstoneMode(gui.getDir());
-      }
-
-      @Override
-      public boolean getRedstoneControlStatus() {
-        return false;
-      }
-    });
-
-    x += rsB.getWidth() + 4;
-    colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
+    int x0 = x + 20;
+    colorB = new ColorButton(gui, ID_COLOR_BUTTON, x0, y);
     colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
 
+    rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new ConduitRedstoneModeControlable(conduit, gui, colorB));
   }
 
   @Override

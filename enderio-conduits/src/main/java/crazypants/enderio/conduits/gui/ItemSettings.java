@@ -21,7 +21,6 @@ import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
-import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduits.conduit.item.IItemConduit;
@@ -137,41 +136,12 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     y += insertChannelB.getHeight() + 6;
     x = rightColumn;
 
-    rsB = new RedstoneModeButton<>(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
-
-      @Override
-      public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
-        RedstoneControlMode curMode = getRedstoneControlMode();
-        itemConduit.setExtractionRedstoneMode(mode, gui.getDir());
-        colorB.onGuiInit();
-        colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
-        if (mode == RedstoneControlMode.OFF || mode == RedstoneControlMode.ON) {
-          colorB.setIsVisible(true);
-        } else {
-          colorB.setIsVisible(false);
-        }
-        if (curMode != mode) {
-          PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(itemConduit, gui.getDir()));
-        }
-
-      }
-
-      @Override
-      @Nonnull
-      public RedstoneControlMode getRedstoneControlMode() {
-        return itemConduit.getExtractionRedstoneMode(gui.getDir());
-      }
-
-      @Override
-      public boolean getRedstoneControlStatus() {
-        return false;
-      }
-    });
-
-    x += rsB.getWidth() + 4;
-    colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
+    int x0 = x + 20;
+    colorB = new ColorButton(gui, ID_COLOR_BUTTON, x0, y);
     colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
     colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
+
+    rsB = new RedstoneModeButton<>(gui, ID_REDSTONE_BUTTON, x, y, new ConduitRedstoneModeControlable(itemConduit, gui, colorB));
 
     x = priLeft + priWidth + 9;
     priUpB = MultiIconButton.createAddButton(gui, ID_PRIORITY_UP, x, y);
