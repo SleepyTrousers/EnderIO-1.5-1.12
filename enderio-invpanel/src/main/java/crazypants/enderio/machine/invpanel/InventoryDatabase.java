@@ -110,9 +110,6 @@ public abstract class InventoryDatabase<ItemEntry extends IItemEntry> implements
     return getSimpleItem(itemID, meta, true);
   }
 
-  /* (non-Javadoc)
-   * @see crazypants.enderio.machine.invpanel.IInventoryDatabase#getItem(int)
-   */
   @Override
   public ItemEntry getItem(int dbID) {
     if(dbID < COMPLEX_DBINDEX_START) {
@@ -126,9 +123,6 @@ public abstract class InventoryDatabase<ItemEntry extends IItemEntry> implements
     return null;
   }
 
-  /* (non-Javadoc)
-   * @see crazypants.enderio.machine.invpanel.IInventoryDatabase#getExistingItem(int)
-   */
   @Override
   public ItemEntry getExistingItem(int dbID) {
     if(dbID < COMPLEX_DBINDEX_START) {
