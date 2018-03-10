@@ -20,6 +20,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
+import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.sound.IModSound;
 import crazypants.enderio.base.sound.SoundHelper;
@@ -358,7 +359,7 @@ public class ConduitUtil {
     if (cons.size() == 1) {
       EnumFacing facing = cons.iterator().next();
       if (facing != null) {
-        ConduitRegistry.getConduitModObjectNN().openGui(world, new BlockPos(x, y, z), player, facing, facing.ordinal());
+        PacketHandler.INSTANCE.sendToServer(new PacketOpenConduitUI(te, facing));
       }
       return;
     }
