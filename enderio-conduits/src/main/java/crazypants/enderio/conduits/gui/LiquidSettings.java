@@ -106,9 +106,9 @@ public class LiquidSettings extends BaseSettingsPanel {
       public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
         RedstoneControlMode curMode = getRedstoneControlMode();
         conduit.setExtractionRedstoneMode(mode, gui.getDir());
+        colorB.onGuiInit();
+        colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
         if (mode == RedstoneControlMode.OFF || mode == RedstoneControlMode.ON) {
-          colorB.onGuiInit();
-          colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
           colorB.setIsVisible(true);
         } else {
           colorB.setIsVisible(false);
@@ -233,6 +233,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   private void updateGuiVisibility() {
     deactivate();
     rsB.onGuiInit();
+    rsB.setMode(RedstoneControlMode.IconHolder.getFromMode(conduit.getExtractionRedstoneMode(gui.getDir())));
 
     if (!isEnder) {
       return;

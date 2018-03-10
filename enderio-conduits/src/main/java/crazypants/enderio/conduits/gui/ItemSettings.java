@@ -143,9 +143,9 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
       public void setRedstoneControlMode(@Nonnull RedstoneControlMode mode) {
         RedstoneControlMode curMode = getRedstoneControlMode();
         itemConduit.setExtractionRedstoneMode(mode, gui.getDir());
+        colorB.onGuiInit();
+        colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
         if (mode == RedstoneControlMode.OFF || mode == RedstoneControlMode.ON) {
-          colorB.onGuiInit();
-          colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
           colorB.setIsVisible(true);
         } else {
           colorB.setIsVisible(false);
