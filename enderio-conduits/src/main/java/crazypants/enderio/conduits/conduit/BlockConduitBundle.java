@@ -79,7 +79,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
@@ -661,8 +660,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
         }
       } else {
         if (!world.isRemote) {
-          // GuiID.facing2guiid(closest.component.dir).openGui(world, pos, player, side);
-          openGui(world, pos, player, side, closestComponent.dir.ordinal());
+          openGui(world, pos, player, closestComponent.dir, closestComponent.dir.ordinal());
         }
         return true;
       }
@@ -824,7 +822,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     // items, which are then sent to the client for display
     TileConduitBundle te = getTileEntity(world, pos);
     if (te != null) {
-      return new ExternalConnectionContainer(player.inventory, EnumFacing.getFront(param1), te);
+      return new ExternalConnectionContainer(player.inventory, facing, te);
     }
     return null;
   }
@@ -838,7 +836,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       if (facing == null) {
         return new GuiExternalConnectionSelector(te);
       }
-      return new GuiExternalConnection(player.inventory, te, EnumFacing.getFront(param1));
+      return new GuiExternalConnection(player.inventory, te, facing);
     }
     return null;
   }

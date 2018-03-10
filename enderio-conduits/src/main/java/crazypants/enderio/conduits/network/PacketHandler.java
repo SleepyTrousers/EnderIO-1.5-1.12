@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
+import crazypants.enderio.base.conduit.PacketOpenConduitUI;
 import crazypants.enderio.base.filter.network.PacketExistingItemFilterSnapshot;
 import crazypants.enderio.base.filter.network.PacketModItemFilter;
 import crazypants.enderio.conduits.EnderIOConduits;

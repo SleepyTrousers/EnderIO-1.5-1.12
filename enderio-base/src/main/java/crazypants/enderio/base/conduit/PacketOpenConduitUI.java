@@ -1,4 +1,4 @@
-package crazypants.enderio.conduits.network;
+package crazypants.enderio.base.conduit;
 
 import com.enderio.core.common.network.MessageTileEntity;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
