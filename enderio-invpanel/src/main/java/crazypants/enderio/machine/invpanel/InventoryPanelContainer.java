@@ -65,7 +65,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   public static final int FILTER_SLOT_X = 24+233;
   public static final int FILTER_SLOT_Y = 7;
 
-  private final HashSet<IItemEntry> changedItems;
+  private final HashSet<IServerItemEntry> changedItems;
 
   private Slot slotFilter;
 
@@ -314,7 +314,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  public void entryChanged(IItemEntry entry) {
+  public void entryChanged(IServerItemEntry entry) {
     changedItems.add(entry);
   }
 
@@ -330,7 +330,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
       IInventoryDatabaseServer db = getTe().getDatabaseServer();
       if(db != null) {
         try {
-          byte[] compressed = db.compressChangedItems((Collection<? extends IServerItemEntry>) changedItems);
+          byte[] compressed = db.compressChangedItems(changedItems);
           PacketItemList pil = new PacketItemList(windowId, db.getGeneration(), compressed);
           for (Object crafting : listeners) {
             if(crafting instanceof EntityPlayerMP) {

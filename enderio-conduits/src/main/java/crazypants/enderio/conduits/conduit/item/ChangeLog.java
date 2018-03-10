@@ -2,7 +2,7 @@ package crazypants.enderio.conduits.conduit.item;
 
 public interface ChangeLog {
 
-  void entryChanged(IItemEntry entry);
+  void entryChanged(IServerItemEntry entry);
 
   void databaseReset();
 

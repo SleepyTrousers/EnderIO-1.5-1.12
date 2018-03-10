@@ -62,21 +62,10 @@ allprojects {
             replace 'DEFAULT_DEPENDENCIES;', "\"${dependencyString}\";"
     }
 
-    // The is very temporary, currently not all modules compile
-    // This will exclude all non compiling modules from CI but
-    // they will still appear is IDEs.
-    // TODO: Remove this once all modules compile
-    if (!project.hasProperty('include_in_build'))
-         project.ext.include_in_build = true
-    else
-        project.include_in_build = project.include_in_build != 'false'
-
     if (!project.hasProperty('include_in_combjar'))
          project.ext.include_in_combjar = true
     else
         project.ext.include_in_combjar = project.include_in_combjar != 'false'
-
-    project.ext.include_in_combjar = project.ext.include_in_combjar && project.include_in_build
 
     // Eclipse needs this for some reason
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
@@ -220,12 +209,10 @@ subprojects {
     }
 }
 
-// Part of the temporary fix for not compiling modules
-def buildprojects = subprojects.findAll { sp -> sp.include_in_build }
 def combjarprojects = subprojects.findAll { sp -> sp.ext.include_in_combjar }
 
 // Make sure all modules are configured
-buildprojects.each { subproject -> evaluationDependsOn( subproject.path ) }
+subprojects.each { subproject -> evaluationDependsOn( subproject.path ) }
 
 jar.doFirst {
     // This code merge all resources that are duplicated across the modules.
@@ -273,7 +260,7 @@ jar {
 
 // Finally copy all the jars to `libs`
 task copyJars(type: Copy, dependsOn: subprojects.tasks['signJar']) {
-    from buildprojects.collect { it.tasks.withType(Jar) }
+    from subprojects.collect { it.tasks.withType(Jar) }
     into "$buildDir/libs"
 }
 build.dependsOn copyJars
@@ -335,7 +322,7 @@ curseforge {
             optionalLibrary 'tinkers-construct'
         }
 
-        buildprojects.each { subproject ->
+        subprojects.each { subproject ->
             addArtifact subproject.jar
 
             if (resolveOption(subproject, 'publish_api'))
@@ -343,20 +330,6 @@ curseforge {
 
             if (resolveOption(subproject, 'publish_source'))
                 addArtifact subproject.sourceJar
-        }
-    }
-}
-
-// Part of the temporary fix for not compiling modules
-gradle.taskGraph.whenReady {
-    def tasksToDisable = [
-        'build', 'compileJava', 'assemble', 'sourceJar',
-        'check', 'reobfJar', 'signJar'
-    ]
-
-    gradle.taskGraph.allTasks.each {
-        if(!it.project.include_in_build) {
-            if (tasksToDisable.find { n -> it.name == n } != null) it.enabled = false
         }
     }
 }
