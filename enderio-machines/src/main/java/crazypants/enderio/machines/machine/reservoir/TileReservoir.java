@@ -172,14 +172,15 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
       doPush();
     }
 
-    if (tankDirty && shouldDoWorkThisTick(2)) {
-      // updateBlock(); // um, why?
+    if (tankDirty && shouldDoWorkThisTick(5)) {
+      forceUpdatePlayers();
       tankDirty = false;
     }
   }
 
   public void setAutoEject(boolean autoEject) {
     this.autoEject = autoEject;
+    setTanksDirty(); // force client update and data saving
   }
 
   public boolean isAutoEject() {
