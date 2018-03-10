@@ -12,6 +12,7 @@ import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.machine.EnderIOInvPanel;
 import crazypants.enderio.machine.invpanel.BlockInventoryPanel;
 import crazypants.enderio.machine.invpanel.chest.BlockInventoryChest;
+import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.machine.invpanel.sensor.BlockInventoryPanelSensor;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -28,6 +29,7 @@ public enum InvpanelObject implements IModObject.Registerable {
   blockInventoryChest(BlockInventoryChest.class, InvpanelTileEntity.TileInventoryChest),
   blockInventoryPanelSensor(BlockInventoryPanelSensor.class, InvpanelTileEntity.TileInventoryPanelSensor),
 
+  itemInventoryRemote(ItemRemoteInvAccess.class);
   ;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)

@@ -7,6 +7,7 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.machine.invpanel.config.InvpanelConfig;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -70,18 +71,19 @@ public enum ItemRemoteInvAccessType {
   }
 
   public int getRfCapacity() {
-    return Config.remoteInventoryRFCapacity[ordinal()];
+    return InvpanelConfig.remoteInventoryRFCapacity.get(ordinal()).get();
   }
 
   public int getFluidCapacity() {
-    return Config.remoteInventoryMBCapacity[ordinal()];
+    return InvpanelConfig.remoteInventoryMBCapacity.get(ordinal()).get();
   }
 
   public @Nonnull Fluid getFluidType() {
     Fluid fluid = null;
-    fluid = FluidRegistry.getFluid(Config.remoteInventoryFluidTypes[ordinal()]);
+    String fluidname = InvpanelConfig.remoteInventoryFluidTypes.get(ordinal()).get();
+    fluid = FluidRegistry.getFluid(fluidname);
     if (fluid == null) {
-      Log.warn("ItemRemoteInvAccessType: Could not find fluid '" + Config.remoteInventoryFluidTypes[ordinal()] + "' using default fluid "
+      Log.warn("ItemRemoteInvAccessType: Could not find fluid '" + fluidname + "' using default fluid "
           + Fluids.NUTRIENT_DISTILLATION.getFluid());
       fluid = NullHelper.notnull(Fluids.NUTRIENT_DISTILLATION.getFluid(), "Nutrient Distillation registration went AWOL");
     }
@@ -93,11 +95,11 @@ public enum ItemRemoteInvAccessType {
   }
 
   public int getMbPerOpen() {
-    return Config.remoteInventoryMBPerOpen[ordinal()];
+    return InvpanelConfig.remoteInventoryMBPerOpen.get(ordinal()).get();
   }
 
   public int getRfPerTick() {
-    return Config.remoteInventoryRFPerTick[ordinal()];
+    return InvpanelConfig.remoteInventoryRFPerTick.get(ordinal()).get();
   }
 
 }

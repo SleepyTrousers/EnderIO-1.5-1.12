@@ -1,5 +1,12 @@
 package crazypants.enderio.machine.invpanel.remote;
 
+import static crazypants.enderio.util.NbtValue.ENERGY;
+import static crazypants.enderio.util.NbtValue.FLUIDAMOUNT;
+import static crazypants.enderio.util.NbtValue.REMOTE_D;
+import static crazypants.enderio.util.NbtValue.REMOTE_X;
+import static crazypants.enderio.util.NbtValue.REMOTE_Y;
+import static crazypants.enderio.util.NbtValue.REMOTE_Z;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +33,7 @@ import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import crazypants.enderio.util.ClientUtil;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -37,6 +45,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -47,25 +56,16 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.util.NbtValue.ENERGY;
-import static crazypants.enderio.util.NbtValue.FLUIDAMOUNT;
-import static crazypants.enderio.util.NbtValue.REMOTE_D;
-import static crazypants.enderio.util.NbtValue.REMOTE_X;
-import static crazypants.enderio.util.NbtValue.REMOTE_Y;
-import static crazypants.enderio.util.NbtValue.REMOTE_Z;
-
 public class ItemRemoteInvAccess extends Item
-    implements IAdvancedTooltipProvider, IOverlayRenderAware, IFluidContainerItem, IInternalPoweredItem, IHaveRenderers {
+    implements IAdvancedTooltipProvider, IOverlayRenderAware, IInternalPoweredItem, IHaveRenderers {
 
   public static ItemRemoteInvAccess create(@Nonnull IModObject modObject) {
-    ClientRemoteGuiManager.create();
     ItemRemoteInvAccess result = new ItemRemoteInvAccess(modObject);
     return result;
   }
@@ -94,11 +94,13 @@ public class ItemRemoteInvAccess extends Item
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+  public void getSubItems(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
     for (ItemRemoteInvAccessType type : ItemRemoteInvAccessType.values()) {
       if (type.isVisible()) {
-        par3List.add(new ItemStack(par1, 1, type.toMetadata()));
-        par3List.add(setFull(new ItemStack(par1, 1, type.toMetadata())));
+        par3List.add(new ItemStack(this, 1, type.toMetadata()));
+        ItemStack full = new ItemStack(this, 1, type.toMetadata());
+        setFull(full);
+        par3List.add(full);
       }
     }
   }
@@ -109,13 +111,13 @@ public class ItemRemoteInvAccess extends Item
   }
 
   @Override
-  public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
-      EnumHand hand) {
+  public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 
     if (world.isRemote || !player.isSneaking()) {
       return EnumActionResult.PASS;
     }
     TileEntity te = world.getTileEntity(pos);
+    ItemStack stack = player.getHeldItem(hand);
     if (te instanceof TileInventoryPanel) {
       REMOTE_X.setInt(stack, te.getPos().getX());
       REMOTE_Y.setInt(stack, te.getPos().getY());
@@ -128,8 +130,9 @@ public class ItemRemoteInvAccess extends Item
   }
 
   @Override
-  public ActionResult<ItemStack> onItemRightClick(ItemStack equipped, World world, EntityPlayer player, EnumHand hand) {
+  public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
     if (!world.isRemote) {
+      ItemStack equipped = player.getHeldItem(hand);
       if (!REMOTE_X.hasTag(equipped) || !REMOTE_Y.hasTag(equipped) || !REMOTE_Z.hasTag(equipped) || !REMOTE_D.hasTag(equipped)) {
         player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.notarget")), true);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
@@ -188,7 +191,7 @@ public class ItemRemoteInvAccess extends Item
       ServerRemoteGuiManager.openGui((EntityPlayerMP) player, targetWorld, pos);
       return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
     }
-    return super.onItemRightClick(equipped, world, player, hand);
+    return super.onItemRightClick(world, player, hand);
   }
 
   public boolean canInteractWith(ItemStack stack, EntityPlayer player) {
@@ -218,19 +221,15 @@ public class ItemRemoteInvAccess extends Item
     return false;
   }
 
- 
-  public ItemStack setFull(ItemStack container) {
+  public void setFull(ItemStack container) {
     setEnergyStored(container, getMaxEnergyStored(container));
     FLUIDAMOUNT.setInt(container, getCapacity(container));
-    return container;
   }
 
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
     setEnergyStored(itemStack, 0);
   }
-
-  
 
   @Override
   public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
@@ -246,14 +245,13 @@ public class ItemRemoteInvAccess extends Item
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
-    super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    list.add(LangPower.RF(getEnergyStored(itemStack) ,getMaxEnergyStored(itemStack)));
-    list.add(LangFluid.MB(FLUIDAMOUNT.getInt(itemStack, 0), getFluidType(itemStack)));
+  public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    super.addInformation(stack, worldIn, tooltip, flagIn);
+    tooltip.add(LangPower.RF(getEnergyStored(stack) ,getMaxEnergyStored(stack)));
+    tooltip.add(LangFluid.MB(FLUIDAMOUNT.getInt(stack, 0), getFluidType(stack)));
   }
 
-  @Override
-  public FluidStack getFluid(ItemStack container) {
+  private FluidStack getFluid(ItemStack container) {
     int amount = FLUIDAMOUNT.getInt(container, 0);
     if (amount > 0) {
       return new FluidStack(getFluidType(container), amount);
@@ -262,34 +260,12 @@ public class ItemRemoteInvAccess extends Item
     }
   }
 
-  @Override
-  public int getCapacity(ItemStack container) {
+  private int getCapacity(ItemStack container) {
     return ItemRemoteInvAccessType.fromStack(container).getFluidCapacity();
-  }
-
-  @Override
-  public int fill(ItemStack container, FluidStack resource, boolean doFill) {
-    if (container == null || !(container.getItem() == this) || resource == null || resource.amount <= 0 || resource.getFluid() == null
-        || resource.getFluid() != getFluidType(container)) {
-      return 0;
-    }
-    int amount = FLUIDAMOUNT.getInt(container, 0);
-    int capacity = getCapacity(container);
-    int free = capacity - amount;
-    int toFill = Math.min(resource.amount, free);
-    if (toFill > 0 && doFill) {
-      FLUIDAMOUNT.setInt(container, amount + toFill);
-    }
-    return toFill;
   }
   
   public @Nonnull Fluid getFluidType(ItemStack stack) {
     return ItemRemoteInvAccessType.fromStack(stack).getFluidType();
-  }
-
-  @Override
-  public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
-    return null;
   }
 
   private boolean drain(ItemStack container, int toDrain) {
@@ -302,7 +278,6 @@ public class ItemRemoteInvAccess extends Item
     }
   }
 
-  
   @Override
   public int getMaxEnergyStored(ItemStack container) {
     return ItemRemoteInvAccessType.fromStack(container).getRfCapacity();
@@ -333,22 +308,22 @@ public class ItemRemoteInvAccess extends Item
     return new CompoundCapabilityProvider(new CapabilityProvider(stack), new ItemPowerCapabilityBackend(stack));
   }
 
-  private class CapabilityProvider implements IFluidHandler, ICapabilityProvider {
-    protected final ItemStack container;
+  private class CapabilityProvider implements IFluidHandlerItem, ICapabilityProvider {
+    protected final @Nonnull ItemStack container;
 
-    private CapabilityProvider(ItemStack container) {
+    private CapabilityProvider(@Nonnull ItemStack container) {
       this.container = container;
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+      return capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-      if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+      if(capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) {
         return (T) this;
       }
       return null;
@@ -393,7 +368,18 @@ public class ItemRemoteInvAccess extends Item
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-      return ItemRemoteInvAccess.this.fill(container, resource, doFill);
+      if (container.isEmpty() || !(container.getItem() == ItemRemoteInvAccess.this) || resource == null || resource.amount <= 0 || resource.getFluid() == null
+          || resource.getFluid() != getFluidType(container)) {
+        return 0;
+      }
+      int amount = FLUIDAMOUNT.getInt(container, 0);
+      int capacity = getCapacity(container);
+      int free = capacity - amount;
+      int toFill = Math.min(resource.amount, free);
+      if (toFill > 0 && doFill) {
+        FLUIDAMOUNT.setInt(container, amount + toFill);
+      }
+      return toFill;
     }
 
     @Override
@@ -406,6 +392,12 @@ public class ItemRemoteInvAccess extends Item
     @Nullable
     public FluidStack drain(int maxDrain, boolean doDrain) {
       return null;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getContainer() {
+      return container;
     }
   }
 

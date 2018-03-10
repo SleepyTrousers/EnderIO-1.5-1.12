@@ -1,8 +1,15 @@
 package crazypants.enderio.machine.invpanel.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.base.config.SectionedValueFactory;
 import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
+import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccessType;
 import crazypants.enderio.machines.config.Config;
 
 public final class InvpanelConfig {
@@ -27,4 +34,36 @@ public final class InvpanelConfig {
   
   public static final IValue<Boolean> inventoryPanelScaleText = F.make("inventoryPanelScaleText", true, 
       "If true stack sizes will be drawn at a smaller size with a little more detail.");
+  
+  public static final List<IValue<Integer>> remoteInventoryMBPerOpen = new ArrayList<>();
+  public static final List<IValue<Integer>> remoteInventoryRFPerTick = new ArrayList<>();
+  public static final List<IValue<Integer>> remoteInventoryMBCapacity = new ArrayList<>();
+  public static final List<IValue<Integer>> remoteInventoryRFCapacity = new ArrayList<>();
+  public static final List<IValue<String>> remoteInventoryFluidTypes = new ArrayList<>();
+  
+  private static final int[] DEF_MB_OPEN = {100, 25, 15 };
+  private static final int[] DEF_RF_TICK = {4, 6, 8};
+  private static final int[] DEF_MB_CAP  = {2000, 1000, 1500};
+  private static final int[] DEF_RF_CAP  = {60000, 120000, 150000};
+  private static final String[] DEF_FLUID = {"nutrient_distillation", "ender_distillation", "vapor_of_levity"};
+  
+  static {
+    for (ItemRemoteInvAccessType type : ItemRemoteInvAccessType.values()) {
+      int i = type.ordinal();
+      remoteInventoryMBPerOpen.add(F.make("remoteInventoryMBPerOpenTier" + i, DEF_MB_OPEN[i], 
+          "MB required to open the panel"));
+      
+      remoteInventoryRFPerTick.add(F.make("remoteInventoryRFPerTickTier" + i, DEF_RF_TICK[i], 
+          "RF used per tick when the panel is open"));
+      
+      remoteInventoryMBCapacity.add(F.make("remoteInventoryMBCapacityTier" + i, DEF_MB_CAP[i], 
+          "Capacity of the intrenal tank in MB"));
+      
+      remoteInventoryRFCapacity.add(F.make("remoteInventoryRFCapacityTier" + i, DEF_RF_CAP[i], 
+          "Capacity of the intrenal energy storage in RF"));
+      
+      remoteInventoryFluidTypes.add(F.make("remoteInventoryFluidTypesTier" + i, NullHelper.notnull(DEF_FLUID[i], "DEF_FLUID"), 
+          "The type of fluid required"));
+    }
+  }
 }

@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.invpanel.remote;
 
-import crazypants.enderio.base.GuiID;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
+import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -22,7 +22,7 @@ public class ServerRemoteGuiManager {
     if (te instanceof TileInventoryPanel) {
       PacketHandler.INSTANCE.sendTo(new PacketPrimeInventoryPanelRemote((TileInventoryPanel) te), player);
     }
-    GuiID.GUI_ID_INVENTORY_PANEL_REMOTE.openGui(player.world, player, x, y, z);
+    InvpanelObject.blockInventoryPanel.openGui(player.world, player, x, y, z);
     Ticker.create();
   }
 
