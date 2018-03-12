@@ -3,20 +3,39 @@ package crazypants.enderio.machines.machine.ihopper;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.inventory.EnderInventory.Type;
+import com.enderio.core.common.inventory.Filters;
+import com.enderio.core.common.inventory.Filters.PredicateItemStack;
 import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
+import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
+import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import net.minecraft.item.ItemStack;
 
-public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity {
+public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity implements IRedstoneModeControlable {
 
   public static final String OUTPUT_SLOT = "OUTPUT";
   public static final String INPUT_SLOT = "INPUT";
   public static final int SLOTS = 6;
+
+  private class PredicateItemStackMatch extends PredicateItemStack {
+
+    private final int slot;
+
+    PredicateItemStackMatch(int slot) {
+      this.slot = slot;
+    }
+
+    @Override
+    public boolean doApply(@Nonnull ItemStack input) {
+      return input.isItemEqual(items.get(slot));
+    }
+
+  }
 
   private final @Nonnull NNList<ItemStack> items;
 
@@ -24,17 +43,20 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity {
     super(CapacitorKey.IMPULSE_HOPPER_POWER_INTAKE, CapacitorKey.IMPULSE_HOPPER_POWER_BUFFER, CapacitorKey.IMPULSE_HOPPER_POWER_USE);
 
     for (int i = 0; i < SLOTS; i++) {
-      getInventory().add(Type.INPUT, INPUT_SLOT + i, new InventorySlot());
-      getInventory().add(Type.OUTPUT, OUTPUT_SLOT + i, new InventorySlot());
+      PredicateItemStackMatch predicate = new PredicateItemStackMatch(i);
+      getInventory().add(Type.INPUT, INPUT_SLOT + i, new InventorySlot(predicate, Filters.ALWAYS_TRUE));
+      getInventory().add(Type.OUTPUT, OUTPUT_SLOT + i, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
     }
 
     items = new NNList<ItemStack>(SLOTS, ItemStack.EMPTY);
+    redstoneControlMode = RedstoneControlMode.IGNORE;
   }
 
   @Override
   public void setGhostSlotContents(int slot, @Nonnull ItemStack stack, int realsize) {
     super.setGhostSlotContents(slot, stack, realsize);
     items.set(slot, stack);
+    forceUpdatePlayers();
   }
 
   @Nonnull
@@ -144,6 +166,8 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity {
           }
         }
       }
+      getEnergy().useEnergy();
+      getEnergy().useEnergy(getCapKey(neededPower));
       CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.setBaseValue(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.getDefaultBaseValue());
       // playSound();
       return true;

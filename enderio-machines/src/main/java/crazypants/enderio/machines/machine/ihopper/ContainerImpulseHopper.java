@@ -23,8 +23,8 @@ public class ContainerImpulseHopper extends ContainerEnderCap<EnderInventory, Ti
   @Override
   protected void addSlots() {
     for (int i = 0; i < TileImpulseHopper.SLOTS; i++) {
-      addSlotToContainer(new EnderSlot(Type.INPUT, getItemHandler(), "INPUT" + i, 44 + i * 18, 36));
-      addSlotToContainer(new EnderSlot(Type.OUTPUT, getItemHandler(), "OUTPUT" + i, 44 + i * 18, 63));
+      addSlotToContainer(new EnderSlot(getItemHandler().getView(Type.INPUT), "INPUT" + i, 44 + i * 18, 36));
+      addSlotToContainer(new EnderSlot(getItemHandler().getView(Type.OUTPUT), "OUTPUT" + i, 44 + i * 18, 63));
     }
     addSlotToContainer(new EnderSlot(Type.UPGRADE, getItemHandler(), "cap", 11, 60));
   }
