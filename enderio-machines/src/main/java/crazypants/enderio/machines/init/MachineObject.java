@@ -16,6 +16,7 @@ import crazypants.enderio.machines.machine.farm.BlockFarmStation;
 import crazypants.enderio.machines.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machines.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machines.machine.generator.zombie.BlockZombieGenerator;
+import crazypants.enderio.machines.machine.ihopper.BlockImpulseHopper;
 import crazypants.enderio.machines.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machines.machine.light.BlockElectricLight;
 import crazypants.enderio.machines.machine.light.BlockLightNode;
@@ -95,6 +96,8 @@ public enum MachineObject implements IModObject.Registerable {
   block_travel_anchor(BlockTravelAnchor.class, MachineTileEntity.TileTravelAnchor),
   block_tele_pad(BlockTelePad.class, "create_telepad", MachineTileEntity.TileTelePad),
   block_dialing_device(BlockDialingDevice.class, MachineTileEntity.TileDialingDevice),
+
+  block_impulse_hopper(BlockImpulseHopper.class, MachineTileEntity.TileImpulseHopper),
 
   ;
 

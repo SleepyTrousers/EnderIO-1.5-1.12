@@ -140,6 +140,11 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   DIALING_DEVICE_POWER_USE_TELEPORT(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 1000),
   DIALING_DEVICE_POWER_USE_PAPER(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 1000),
 
+  IMPULSE_HOPPER_POWER_INTAKE(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 100),
+  IMPULSE_HOPPER_POWER_BUFFER(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 100000),
+  IMPULSE_HOPPER_POWER_USE(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 5),
+  IMPULSE_HOPPER_POWER_USE_PER_ITEM(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 0),
+
   //
   ;
 
