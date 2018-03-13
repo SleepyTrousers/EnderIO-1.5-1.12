@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
+import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.modifiers.IToolMod;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
 import slimeknights.tconstruct.library.utils.ToolHelper;
@@ -35,7 +36,8 @@ public class TraitPickup extends ModifierTrait {
 
   @Override
   public boolean canApplyTogether(IToolMod otherModifier) {
-    return !(otherModifier instanceof TraitTeleport) && !(otherModifier instanceof TraitPickup);
+    return !(otherModifier instanceof TraitTeleport) && !(otherModifier instanceof TraitPickup)
+        && otherModifier != TinkerRegistry.getModifier("exnihilo_smashing");
   }
 
 }
