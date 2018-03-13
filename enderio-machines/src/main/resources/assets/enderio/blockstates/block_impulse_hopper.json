@@ -1,0 +1,27 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle": "enderio:blocks/block_impulse_hopper",
+            "front": "enderio:blocks/block_impulse_hopper"
+        }
+    },
+    "variants":{
+        "render":{
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
+            "front":{                                             "submodel":{ 
+				"frame":{ "model":"enderio:machine_frame" },
+				"s1":{ "model":"enderio:block_impulse_hopper", "y":0   },
+				"s2":{ "model":"enderio:block_impulse_hopper", "y":90  },
+				"s3":{ "model":"enderio:block_impulse_hopper", "y":180 },
+				"s4":{ "model":"enderio:block_impulse_hopper", "y":270 },
+				"s5":{ "model":"enderio:block_impulse_hopper", "x":90  },
+				"s6":{ "model":"enderio:block_impulse_hopper", "x":270 }
+			} },
+            "front_east":{     "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_south":{    "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_west":{     "submodel":{ "frame":{ "model":"enderio:machine_frame" } } }        
+        }
+    }
+}
