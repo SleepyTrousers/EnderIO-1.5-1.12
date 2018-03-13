@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.ihopper;
 
+import java.util.Random;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -25,6 +27,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -108,11 +111,6 @@ public class BlockImpulseHopper extends BlockEio<TileImpulseHopper>
   }
 
   @Override
-  public boolean isOpaqueCube(@Nonnull IBlockState state) {
-    return false;
-  }
-
-  @Override
   @Nullable
   public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta) {
     return new TileImpulseHopper();
@@ -130,19 +128,21 @@ public class BlockImpulseHopper extends BlockEio<TileImpulseHopper>
     return new GuiImpulseHopper(player.inventory, getTileEntity(world, pos));
   }
 
-  // @SideOnly(Side.CLIENT)
-  // @Override
-  // public void randomDisplayTick(@Nonnull IBlockState stateIn, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
-  // if (getTileEntity(world, pos).isActive() && world.getBlockState(pos.up()).isOpaqueCube()) {
-  // if (rand.nextInt(8) == 0) {
-  // float startX = pos.getX() + 0.8F - rand.nextFloat() * 0.6F;
-  // float startY = pos.getY() + 1.0F;
-  // float startZ = pos.getZ() + 0.8F - rand.nextFloat() * 0.6F;
-  // world.spawnParticle(EnumParticleTypes.REDSTONE, startX, startY, startZ, 0.0D, -0.2D, 0.0D);
-  // }
-  // }
-  // super.randomDisplayTick(stateIn, world, pos, rand);
-  // }
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void randomDisplayTick(@Nonnull IBlockState stateIn, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
+    TileImpulseHopper te = getTileEntity(world, pos);
+
+    if (te != null && te.isActive() && !world.getBlockState(pos.up()).isOpaqueCube()) {
+      if (rand.nextInt(8) == 0) {
+        float startX = pos.getX() + 0.8F - rand.nextFloat() * 0.6F;
+        float startY = pos.getY() + 1.0F;
+        float startZ = pos.getZ() + 0.8F - rand.nextFloat() * 0.6F;
+        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, startX, startY, startZ, 0.0D, -0.2D, 0.0D);
+      }
+      super.randomDisplayTick(stateIn, world, pos, rand);
+    }
+  }
 
   @Override
   @SideOnly(Side.CLIENT)
