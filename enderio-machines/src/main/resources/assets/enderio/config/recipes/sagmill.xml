@@ -174,7 +174,7 @@
   <recipe name="Sagmill: Infinity Dust" required="true">
     <sagmilling energy="30000" bonus="chance_only">
       <input name="dustBedrock"/>
-      <output name="enderio:block_infinity_fog" chance="0.5" />
+      <output name="enderio:block_infinity_fog"/>
     </sagmilling>
   </recipe>
 
