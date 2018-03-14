@@ -157,7 +157,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
     public @Nonnull ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
       if (!Prep.isInvalid(stack)) {
         IoMode mode = getIoMode(side);
-        if (mode != IoMode.PULL && mode != IoMode.DISABLED) {
+        if (mode != IoMode.PUSH && mode != IoMode.DISABLED) {
           return getInventory().getView(EnderInventory.Type.INPUT).insertItem(slot, stack, simulate);
         }
       }
@@ -167,7 +167,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
     @Override
     public @Nonnull ItemStack extractItem(int slot, int amount, boolean simulate) {
       IoMode mode = getIoMode(side);
-      if (mode != IoMode.PUSH && mode != IoMode.DISABLED) {
+      if (mode != IoMode.PULL && mode != IoMode.DISABLED) {
         return getInventory().getView(EnderInventory.Type.OUTPUT).extractItem(slot, amount, simulate);
       }
       return ItemStack.EMPTY;

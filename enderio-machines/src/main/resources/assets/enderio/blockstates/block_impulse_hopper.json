@@ -22,7 +22,11 @@
             } },
             "front_east":{     "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
             "front_south":{    "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
-            "front_west":{     "submodel":{ "frame":{ "model":"enderio:machine_frame" } } }        
+            "front_west":{     "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_on":{       "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_on_east":{  "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_on_south":{ "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_on_west":{  "submodel":{ "frame":{ "model":"enderio:machine_frame" } } }
         }
     }
 }

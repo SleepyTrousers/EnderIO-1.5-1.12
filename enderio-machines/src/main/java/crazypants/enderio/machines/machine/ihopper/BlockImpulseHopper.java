@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_dont_crash_us_mcjty;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
@@ -17,6 +18,7 @@ import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.util.ClientUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
@@ -26,6 +28,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -35,7 +38,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockImpulseHopper extends BlockEio<TileImpulseHopper>
-    implements IEioGuiHandler.WithPos, ITileEntityProvider, IHaveRenderers, ISmartRenderAwareBlock {
+    implements IEioGuiHandler.WithPos, ITileEntityProvider, IHaveRenderers, ISmartRenderAwareBlock, IRedstoneConnectable_dont_crash_us_mcjty {
 
   public static BlockImpulseHopper create(@Nonnull IModObject modObject) {
     BlockImpulseHopper iHopper = new BlockImpulseHopper(modObject);
@@ -52,6 +55,12 @@ public class BlockImpulseHopper extends BlockEio<TileImpulseHopper>
   @Override
   protected void init() {
     SmartModelAttacher.register(this);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public @Nonnull BlockRenderLayer getBlockLayer() {
+    return BlockRenderLayer.CUTOUT;
   }
 
   @Override
@@ -148,6 +157,21 @@ public class BlockImpulseHopper extends BlockEio<TileImpulseHopper>
   @SideOnly(Side.CLIENT)
   public void registerRenderers(@Nonnull IModObject mo) {
     ClientUtil.registerDefaultItemRenderer(mo);
+  }
+
+  @Override
+  public boolean shouldRedstoneConduitConnect(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing from) {
+    return true;
+  }
+
+  @Override
+  public void neighborChanged(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock,
+      @Nonnull BlockPos fromPos) {
+    super.neighborChanged(state, world, pos, neighborBlock, fromPos);
+    TileImpulseHopper te = getTileEntity(world, pos);
+    if (te != null) {
+      te.onNeighborBlockChange(state, world, fromPos, neighborBlock, fromPos);
+    }
   }
 
 }

@@ -13,8 +13,9 @@ import com.enderio.core.common.inventory.EnderSlot;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerImpulseHopper extends ContainerEnderCap<EnderInventory, TileImpulseHopper> {
+public class ContainerImpulseHopper extends ContainerEnderCap<EnderInventory, TileImpulseHopper> implements ImpulseHopperRemoteExec.Container {
 
   public ContainerImpulseHopper(@Nonnull InventoryPlayer playerInv, @Nonnull TileImpulseHopper te) {
     super(playerInv, te.getInventory(), te);
@@ -62,6 +63,27 @@ public class ContainerImpulseHopper extends ContainerEnderCap<EnderInventory, Ti
       return getTileEntity().getGhostSlotItems().get(getSlot());
     }
 
+  }
+
+  private int guiId = -1;
+
+  @Override
+  public void setGuiID(int id) {
+    guiId = id;
+  }
+
+  @Override
+  public int getGuiID() {
+    return guiId;
+  }
+
+  @Override
+  public IMessage doOpenFilterGui(boolean isLocked) {
+    TileImpulseHopper te = getTileEntity();
+    if (te != null) {
+      te.setOutputLocked(isLocked);
+    }
+    return null;
   }
 
 }

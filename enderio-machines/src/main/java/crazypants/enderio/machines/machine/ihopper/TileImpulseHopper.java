@@ -27,6 +27,9 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
   public static final int SLOTS = 6;
   public static final int BASE_TICK_RATE = 20;
 
+  @Store
+  private boolean isOutputLocked = false;
+
   private class PredicateItemStackMatch extends PredicateItemStack {
 
     private final int slot;
@@ -89,7 +92,7 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
     final ItemStack ghostStack = getGhostSlotContents(slot);
     final ItemStack outputStack = getOutputSlotContents(slot);
     return outputStack.isEmpty() || (!ghostStack.isEmpty() && ItemUtil.areStackMergable(ghostStack, outputStack)
-        && outputStack.getCount() + ghostStack.getCount() <= outputStack.getMaxStackSize());
+        && outputStack.getCount() + ghostStack.getCount() <= outputStack.getMaxStackSize() && !isOutputLocked);
   }
 
   @Nonnull
@@ -105,6 +108,14 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
   @Nonnull
   private ItemStack getOutputSlotContents(int slot) {
     return getInventory().getSlot(OUTPUT_SLOT + slot).get();
+  }
+
+  public boolean isOutputLocked() {
+    return isOutputLocked;
+  }
+
+  public void setOutputLocked(boolean isOutputLocked) {
+    this.isOutputLocked = isOutputLocked;
   }
 
   private int getPowerNeedForSlot(int slot) {
@@ -127,7 +138,7 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if (shouldDoWorkThisTick()) {
+    if (shouldDoWorkThisTick() && redstoneCheck) {
       if (getEnergy().useEnergy()) {
         // (1) Check if we can do a copy operation
         int neededPower = 0;
