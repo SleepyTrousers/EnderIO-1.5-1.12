@@ -26,7 +26,7 @@ public class ContainerImpulseHopper extends ContainerEnderCap<EnderInventory, Ti
       addSlotToContainer(new EnderSlot(getItemHandler().getView(Type.INPUT), "INPUT" + i, 44 + i * 18, 36));
       addSlotToContainer(new EnderSlot(getItemHandler().getView(Type.OUTPUT), "OUTPUT" + i, 44 + i * 18, 63));
     }
-    addSlotToContainer(new EnderSlot(Type.UPGRADE, getItemHandler(), "cap", 11, 60));
+    addSlotToContainer(new EnderSlot(getItemHandler().getView(Type.UPGRADE), "cap", 11, 60));
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {

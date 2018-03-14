@@ -49,7 +49,7 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
   protected AbstractCapabilityPoweredMachineEntity(@Nullable EnderInventory subclassInventory, @Nonnull ICapacitorKey maxEnergyRecieved,
       @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
     super(subclassInventory);
-    getInventory().add(Type.UPGRADE, CAPSLOT, new InventorySlot(Filters.CAPACITORS, null, 1));
+    getInventory().add(Type.UPGRADE, CAPSLOT, new InventorySlot(Filters.CAPACITORS, null, CAP_CALLBACK, 1));
     energy = new EnergyTank(this, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
     updateCapacitorFromSlot();
   }

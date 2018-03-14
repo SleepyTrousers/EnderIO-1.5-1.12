@@ -14,8 +14,12 @@ import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineE
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.handlers.minecraft.HandleItemStack;
 import net.minecraft.item.ItemStack;
 
+@Storable
 public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity implements IRedstoneModeControlable {
 
   public static final String OUTPUT_SLOT = "OUTPUT";
@@ -37,6 +41,7 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
 
   }
 
+  @Store(handler = HandleItemStack.HandleItemStackNNList.class)
   private final @Nonnull NNList<ItemStack> items;
 
   public TileImpulseHopper() {
@@ -69,18 +74,17 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
     return hasPower() && redstoneCheckPassed;
   }
 
-  private boolean checkGhostSlot(int slot) {
-    return getGhostSlotContents(slot) != ItemStack.EMPTY;
+  public boolean checkGhostSlot(int slot) {
+    return !getGhostSlotContents(slot).isEmpty();
   }
 
-  private boolean checkInputSlot(int slot) {
+  public boolean checkInputSlot(int slot) {
     final ItemStack ghostStack = getGhostSlotContents(slot);
     final ItemStack inputStack = getInputSlotContents(slot);
-    return ghostStack != ItemStack.EMPTY && inputStack != ItemStack.EMPTY && ItemUtil.areStacksEqual(ghostStack, inputStack)
-        && ghostStack.getCount() <= inputStack.getCount();
+    return !ghostStack.isEmpty() && !inputStack.isEmpty() && ItemUtil.areStacksEqual(ghostStack, inputStack) && ghostStack.getCount() <= inputStack.getCount();
   }
 
-  private boolean checkOutputSlot(int slot) {
+  public boolean checkOutputSlot(int slot) {
     final ItemStack ghostStack = getGhostSlotContents(slot);
     final ItemStack outputStack = getOutputSlotContents(slot);
     return outputStack.isEmpty() || (!ghostStack.isEmpty() && ItemUtil.areStackMergable(ghostStack, outputStack)
@@ -122,7 +126,7 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if (getEnergy().canUseEnergy()) {
+    if (getEnergy().useEnergy()) {
       // (1) Check if we can do a copy operation
       int neededPower = 0;
       boolean doSomething = false;
@@ -138,7 +142,7 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
         }
       }
       // (2) Abort if there is nothing to copy or we don't have enough power
-      if (!doSomething || !this.getEnergy().canUseEnergy(getCapKey(neededPower))) {
+      if (!doSomething || !this.getEnergy().useEnergy(getCapKey(neededPower))) {
         CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.setBaseValue(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.getDefaultBaseValue());
         return false;
       }
