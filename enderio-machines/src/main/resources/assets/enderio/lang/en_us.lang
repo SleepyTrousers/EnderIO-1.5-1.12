@@ -19,7 +19,7 @@ enderio.gui.alloy.mode.furnace=Furnace Only
 
 enderio.gui.buffer.in=Max In:
 enderio.gui.buffer.out=Max Out:
-enderio.gui.buffer.maxio=In/Out Max: %d
+enderio.gui.buffer.maxio=In/Out Max: %s
 
 enderio.gui.farm.baseUse=Base Use: %s
 
