@@ -10,6 +10,7 @@ import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.gui.CapPowerBar;
 import crazypants.enderio.base.machine.gui.GuiButtonIoConfig;
 import crazypants.enderio.base.machine.gui.GuiOverlayIoConfig;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -60,7 +61,8 @@ public class GuiImpulseHopper extends GuiContainerBaseEIO implements ImpulseHopp
     y += 35;
 
     lockOutputB = new ToggleButton(this, ID_LOCK_OUTPUT_BUTTON, x, y, IconEIO.LOCK_UNLOCKED, IconEIO.LOCK_LOCKED);
-    lockOutputB.setToolTip("");
+    lockOutputB.setSelectedToolTip(Lang.GUI_IMPULSE_HOPPER_LOCKED.get(), Lang.GUI_IMPULSE_HOPPER_LOCKED_TOOLTIP.get());
+    lockOutputB.setUnselectedToolTip(Lang.GUI_IMPULSE_HOPPER_UNLOCKED.get());
 
     addDrawingElement(new CapPowerBar(te.getEnergy(), this, POWERX, POWERY, POWER_HEIGHT));
   }

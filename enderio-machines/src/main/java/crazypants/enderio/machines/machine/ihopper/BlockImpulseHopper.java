@@ -5,6 +5,8 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
 import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_dont_crash_us_mcjty;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
@@ -27,6 +29,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -37,8 +40,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockImpulseHopper extends BlockEio<TileImpulseHopper>
-    implements IEioGuiHandler.WithPos, ITileEntityProvider, IHaveRenderers, ISmartRenderAwareBlock, IRedstoneConnectable_dont_crash_us_mcjty {
+public class BlockImpulseHopper extends BlockEio<TileImpulseHopper> implements IEioGuiHandler.WithPos, ITileEntityProvider, IHaveRenderers,
+    ISmartRenderAwareBlock, IRedstoneConnectable_dont_crash_us_mcjty, IResourceTooltipProvider {
 
   public static BlockImpulseHopper create(@Nonnull IModObject modObject) {
     BlockImpulseHopper iHopper = new BlockImpulseHopper(modObject);
@@ -172,6 +175,12 @@ public class BlockImpulseHopper extends BlockEio<TileImpulseHopper>
     if (te != null) {
       te.onNeighborBlockChange(state, world, fromPos, neighborBlock, fromPos);
     }
+  }
+
+  @Override
+  @Nonnull
+  public String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
+    return getUnlocalizedName();
   }
 
 }
