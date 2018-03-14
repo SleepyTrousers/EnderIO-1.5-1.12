@@ -25,6 +25,7 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
   public static final String OUTPUT_SLOT = "OUTPUT";
   public static final String INPUT_SLOT = "INPUT";
   public static final int SLOTS = 6;
+  public static final int BASE_TICK_RATE = 20;
 
   private class PredicateItemStackMatch extends PredicateItemStack {
 
@@ -126,58 +127,69 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if (getEnergy().useEnergy()) {
-      // (1) Check if we can do a copy operation
-      int neededPower = 0;
-      boolean doSomething = false;
-      for (int slot = 0; slot < SLOTS; slot++) {
-        if (checkGhostSlot(slot)) {
-          if (checkInputSlot(slot) && checkOutputSlot(slot)) {
-            doSomething = true;
-            neededPower += getPowerNeedForSlot(slot);
-          } else {
-            // We cannot, one of the preconditions is false
-            return false;
+    if (shouldDoWorkThisTick()) {
+      if (getEnergy().useEnergy()) {
+        // (1) Check if we can do a copy operation
+        int neededPower = 0;
+        boolean doSomething = false;
+        for (int slot = 0; slot < SLOTS; slot++) {
+          if (checkGhostSlot(slot)) {
+            if (checkInputSlot(slot) && checkOutputSlot(slot)) {
+              doSomething = true;
+              neededPower += getPowerNeedForSlot(slot);
+            } else {
+              // We cannot, one of the preconditions is false
+              return false;
+            }
           }
         }
-      }
-      // (2) Abort if there is nothing to copy or we don't have enough power
-      if (!doSomething || !this.getEnergy().useEnergy(getCapKey(neededPower))) {
+        // (2) Abort if there is nothing to copy or we don't have enough power
+        if (!doSomething || !this.getEnergy().useEnergy(getCapKey(neededPower))) {
+          CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.setBaseValue(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.getDefaultBaseValue());
+          return false;
+        }
+        // (3) Do the copy. Skip all the checks done above
+        for (int slot = 0; slot < SLOTS; slot++) {
+          final ItemStack ghostStack = getGhostSlotContents(slot);
+          final ItemStack inputStack = getInputSlotContents(slot);
+          if (!ghostStack.isEmpty() && !inputStack.isEmpty()) {
+            final ItemStack outputStack = getOutputSlotContents(slot);
+            if (!outputStack.isEmpty()) {
+              final ItemStack result = outputStack.copy();
+              result.grow(ghostStack.getCount());
+              getInventory().getSlot(OUTPUT_SLOT + slot).set(result);
+            } else {
+              final ItemStack result = inputStack.copy();
+              result.setCount(ghostStack.getCount());
+              getInventory().getSlot(OUTPUT_SLOT + slot).set(result);
+            }
+            if (ghostStack.getCount() < inputStack.getCount()) {
+              final ItemStack remainder = inputStack.copy();
+              remainder.shrink(ghostStack.getCount());
+              getInventory().getSlot(INPUT_SLOT + slot).set(remainder);
+            } else {
+              getInventory().getSlot(INPUT_SLOT + slot).set(ItemStack.EMPTY);
+            }
+          }
+        }
+        getEnergy().useEnergy();
+        getEnergy().useEnergy(getCapKey(neededPower));
         CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.setBaseValue(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.getDefaultBaseValue());
+        // playSound();
+        return true;
+      } else {
         return false;
       }
-      // (3) Do the copy. Skip all the checks done above
-      for (int slot = 0; slot < SLOTS; slot++) {
-        final ItemStack ghostStack = getGhostSlotContents(slot);
-        final ItemStack inputStack = getInputSlotContents(slot);
-        if (!ghostStack.isEmpty() && !inputStack.isEmpty()) {
-          final ItemStack outputStack = getOutputSlotContents(slot);
-          if (!outputStack.isEmpty()) {
-            final ItemStack result = outputStack.copy();
-            result.grow(ghostStack.getCount());
-            getInventory().getSlot(OUTPUT_SLOT + slot).set(result);
-          } else {
-            final ItemStack result = inputStack.copy();
-            result.setCount(ghostStack.getCount());
-            getInventory().getSlot(OUTPUT_SLOT + slot).set(result);
-          }
-          if (ghostStack.getCount() < inputStack.getCount()) {
-            final ItemStack remainder = inputStack.copy();
-            remainder.shrink(ghostStack.getCount());
-            getInventory().getSlot(INPUT_SLOT + slot).set(remainder);
-          } else {
-            getInventory().getSlot(INPUT_SLOT + slot).set(ItemStack.EMPTY);
-          }
-        }
-      }
-      getEnergy().useEnergy();
-      getEnergy().useEnergy(getCapKey(neededPower));
-      CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.setBaseValue(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.getDefaultBaseValue());
-      // playSound();
-      return true;
-    } else {
-      return false;
     }
+    return false;
+  }
+
+  private boolean shouldDoWorkThisTick() {
+    int impulseHopperSpeedScaled = CapacitorKey.IMPULSE_HOPPER_SPEED.get(getCapacitorData());
+    if (impulseHopperSpeedScaled > 0) {
+      return shouldDoWorkThisTick(BASE_TICK_RATE / impulseHopperSpeedScaled);
+    }
+    return false;
   }
 
 }
