@@ -8,20 +8,17 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_dont_crash_us_mcjty;
-import crazypants.enderio.base.BlockEio;
-import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
-import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -30,7 +27,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -40,8 +36,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockImpulseHopper extends BlockEio<TileImpulseHopper> implements IEioGuiHandler.WithPos, ITileEntityProvider, IHaveRenderers,
-    ISmartRenderAwareBlock, IRedstoneConnectable_dont_crash_us_mcjty, IResourceTooltipProvider {
+public class BlockImpulseHopper extends AbstractMachineBlock<TileImpulseHopper>
+    implements IHaveRenderers, ISmartRenderAwareBlock, IRedstoneConnectable_dont_crash_us_mcjty, IResourceTooltipProvider {
 
   public static BlockImpulseHopper create(@Nonnull IModObject modObject) {
     BlockImpulseHopper iHopper = new BlockImpulseHopper(modObject);
@@ -90,25 +86,9 @@ public class BlockImpulseHopper extends BlockEio<TileImpulseHopper> implements I
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  @Nonnull
-  public final IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
-    TileImpulseHopper tileEntity = getTileEntitySafe(world, pos);
-    if (tileEntity != null) {
-      setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
-    }
-    blockStateWrapper.bakeModel();
-    return blockStateWrapper;
-  }
-
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileImpulseHopper tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.isActive());
-  }
-
-  private @Nonnull BlockStateWrapperBase createBlockStateWrapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    return new BlockStateWrapperBase(state, world, pos, getBlockRenderMapper());
   }
 
   @Override
@@ -117,27 +97,22 @@ public class BlockImpulseHopper extends BlockEio<TileImpulseHopper> implements I
     return ImpulseRenderMapper.instance;
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
     return ImpulseRenderMapper.instance;
   }
 
   @Override
-  @Nullable
-  public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta) {
-    return new TileImpulseHopper();
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileImpulseHopper te) {
+    return new ContainerImpulseHopper(player.inventory, te);
   }
 
   @Override
-  @Nullable
-  public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return new ContainerImpulseHopper(player.inventory, getTileEntity(world, pos));
-  }
-
-  @Override
-  @Nullable
-  public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return new GuiImpulseHopper(player.inventory, getTileEntity(world, pos));
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileImpulseHopper te) {
+    return new GuiImpulseHopper(player.inventory, te);
   }
 
   @SideOnly(Side.CLIENT)

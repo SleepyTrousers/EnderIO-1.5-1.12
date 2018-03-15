@@ -15,6 +15,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
+// TODO we need a GuiMachineBase for cap machines
 public class GuiImpulseHopper extends GuiContainerBaseEIO implements ImpulseHopperRemoteExec.GUI {
 
   private static final int ID_REDSTONE_BUTTON = 139;

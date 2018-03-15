@@ -53,12 +53,6 @@ public class ContainerImpulseHopper extends ContainerEnderCap<EnderInventory, Ti
     }
 
     @Override
-    public void putStack(@Nonnull ItemStack stack, int realsize) {
-      getTileEntity().setGhostSlotContents(getSlot(), stack, realsize);
-      super.putStack(stack, realsize);
-    }
-
-    @Override
     public @Nonnull ItemStack getStack() {
       return getTileEntity().getGhostSlotItems().get(getSlot());
     }
