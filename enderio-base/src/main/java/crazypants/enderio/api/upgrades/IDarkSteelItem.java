@@ -25,7 +25,7 @@ public interface IDarkSteelItem {
   /**
    * Checks if the given item (anvil slot "right") can be used to repair this.
    * <p>
-   * If this never returns true, Ender IO will leave the item alone.
+   * If this never returns true, Ender IO will leave the item alone and not try to repair it.
    * 
    * @param right
    *          The item to test.
@@ -48,6 +48,8 @@ public interface IDarkSteelItem {
    * Checks if this item is a pickaxe.
    * <p>
    * Used by upgrades to determine if they can be applied to an item.
+   * <p>
+   * Note: Items that return true here should also do so for {@link #isForSlot(EntityEquipmentSlot)} with {@link EntityEquipmentSlot#MAINHAND}.
    */
   default boolean isPickaxe() {
     return false;
@@ -57,6 +59,8 @@ public interface IDarkSteelItem {
    * Checks if this item is an axe.
    * <p>
    * Used by upgrades to determine if they can be applied to an item.
+   * <p>
+   * Note: Items that return true here should also do so for {@link #isForSlot(EntityEquipmentSlot)} with {@link EntityEquipmentSlot#MAINHAND}.
    */
   default boolean isAxe() {
     return false;
@@ -68,7 +72,7 @@ public interface IDarkSteelItem {
    * Used by some upgrades to determine if they can be applied to an item. Only upgrades that need the item to have supporting code will call this, e.g. the
    * Spoon upgrade needs the item to have a specialized canHarvestBlock() and getToolClasses().
    * <p>
-   * Note that the energy upgrade is implicit.
+   * Note that the energy upgrade is implicit---all dark steel item must support it.
    */
   default boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
     return false;

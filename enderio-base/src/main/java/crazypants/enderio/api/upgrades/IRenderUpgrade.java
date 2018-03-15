@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 public interface IRenderUpgrade {
 
   /**
-   * Called when an item that implements this interface is in one of the equipment slots or in a Baules slot. Also called for {@link IDarkSteelUpgrade}s in
+   * Called when an item that implements this interface is in one of the equipment slots or in a Baubles slot. Also called for {@link IDarkSteelUpgrade}s in
    * equipment slots (but not Baubles slots).
    * 
    * @param renderPlayer
