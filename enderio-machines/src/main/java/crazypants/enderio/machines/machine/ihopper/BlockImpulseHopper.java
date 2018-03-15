@@ -66,6 +66,7 @@ public class BlockImpulseHopper extends AbstractMachineBlock<TileImpulseHopper>
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
       int param1, @Nonnull TileImpulseHopper te) {
     return new GuiImpulseHopper(player.inventory, te);
