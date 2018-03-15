@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * This interface allows {@link IDarkSteelUpgrade}s and items that are in {@link EntityEquipmentSlot}s To contribute to the rendering of players.
+ * This interface allows {@link IDarkSteelUpgrade}s and items that are in {@link EntityEquipmentSlot}s to contribute to the rendering of players.
  * <p>
  * The rendering happens as part of Ender IO's {@link LayerRenderer}&lt;{@link AbstractClientPlayer}&gt;.
  * 
