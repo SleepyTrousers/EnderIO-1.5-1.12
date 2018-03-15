@@ -401,9 +401,9 @@
   <recipe name="Sagmill: Flower Pot" required="false">
     <sagmilling energy="2000">
       <input name="item:minecraft:flower_pot"/>
-      <output name="itemClay" chance="0.9" />
-      <output name="itemClay" chance="0.3" />
-      <output name="itemClay" chance="0.1" />
+      <output name="ingotBrick" chance="0.9" />
+      <output name="ingotBrick" chance="0.3" />
+      <output name="ingotBrick" chance="0.1" />
       <output name="dustCoal" chance="0.05" />
     </sagmilling>
   </recipe>
