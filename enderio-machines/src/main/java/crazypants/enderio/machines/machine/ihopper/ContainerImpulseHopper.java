@@ -52,6 +52,7 @@ public class ContainerImpulseHopper extends ContainerEnderCap<EnderInventory, Ti
       this.setUpdateServer(true);
     }
 
+    @SuppressWarnings("null")
     @Override
     public @Nonnull ItemStack getStack() {
       return getTileEntity().getGhostSlotItems().get(getSlot());

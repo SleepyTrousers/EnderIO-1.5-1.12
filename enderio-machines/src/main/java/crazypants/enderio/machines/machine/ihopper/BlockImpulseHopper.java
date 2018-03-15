@@ -11,23 +11,14 @@ import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
-import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
-import crazypants.enderio.base.render.property.EnumRenderMode;
-import crazypants.enderio.base.render.registry.SmartModelAttacher;
-import crazypants.enderio.util.ClientUtil;
-import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -37,7 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockImpulseHopper extends AbstractMachineBlock<TileImpulseHopper>
-    implements IHaveRenderers, ISmartRenderAwareBlock, IRedstoneConnectable_dont_crash_us_mcjty, IResourceTooltipProvider {
+    implements ISmartRenderAwareBlock, IRedstoneConnectable_dont_crash_us_mcjty, IResourceTooltipProvider {
 
   public static BlockImpulseHopper create(@Nonnull IModObject modObject) {
     BlockImpulseHopper iHopper = new BlockImpulseHopper(modObject);
@@ -47,42 +38,7 @@ public class BlockImpulseHopper extends AbstractMachineBlock<TileImpulseHopper>
 
   public BlockImpulseHopper(@Nonnull IModObject mo) {
     super(mo);
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
     setShape(mkShape(BlockFaceShape.SOLID));
-  }
-
-  @Override
-  protected void init() {
-    SmartModelAttacher.register(this);
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public @Nonnull BlockRenderLayer getBlockLayer() {
-    return BlockRenderLayer.CUTOUT;
-  }
-
-  @Override
-  @Nonnull
-  protected BlockStateContainer createBlockState() {
-    return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER });
-  }
-
-  @Override
-  @Nonnull
-  public IBlockState getStateFromMeta(int meta) {
-    return getDefaultState();
-  }
-
-  @Override
-  public int getMetaFromState(@Nonnull IBlockState state) {
-    return 0;
-  }
-
-  @Override
-  @Nonnull
-  public IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
-    return getDefaultState();
   }
 
   @Override
@@ -125,37 +81,14 @@ public class BlockImpulseHopper extends AbstractMachineBlock<TileImpulseHopper>
         float startX = pos.getX() + 0.8F - rand.nextFloat() * 0.6F;
         float startY = pos.getY() + 1.0F;
         float startZ = pos.getZ() + 0.8F - rand.nextFloat() * 0.6F;
-        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, startX, startY, startZ, 0.0D, -0.2D, 0.0D);
+        world.spawnParticle(EnumParticleTypes.REDSTONE, startX, startY, startZ, 0, 0, 0);
       }
-      super.randomDisplayTick(stateIn, world, pos, rand);
     }
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerRenderers(@Nonnull IModObject mo) {
-    ClientUtil.registerDefaultItemRenderer(mo);
   }
 
   @Override
   public boolean shouldRedstoneConduitConnect(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing from) {
     return true;
-  }
-
-  @Override
-  public void neighborChanged(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock,
-      @Nonnull BlockPos fromPos) {
-    super.neighborChanged(state, world, pos, neighborBlock, fromPos);
-    TileImpulseHopper te = getTileEntity(world, pos);
-    if (te != null) {
-      te.onNeighborBlockChange(state, world, fromPos, neighborBlock, fromPos);
-    }
-  }
-
-  @Override
-  @Nonnull
-  public String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
-    return getUnlocalizedName();
   }
 
 }
