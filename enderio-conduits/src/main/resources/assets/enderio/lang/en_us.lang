@@ -19,13 +19,11 @@ enderio.item_liquid_conduit.locked_waila=Locked to
 enderio.fluid.millibuckets_tick=mB/t
 enderio.item_liquid_conduit.tooltip.max_extract=Max Extract:
 enderio.item_liquid_conduit.tooltip.max_io=Max IO:
-enderio.item_liquid_conduit.tooltip.detailed.line1=Fluid flow respects gravity
-enderio.item_liquid_conduit.tooltip.detailed.line2=Flow rate dependent on fluid
-enderio.item_liquid_conduit.tooltip.detailed.line3=viscosity
+enderio.item_liquid_conduit.tooltip.detailed.line1=Fluid flow respects gravity.
+enderio.item_liquid_conduit.tooltip.detailed.line2=Flow rate dependent on fluid viscosity.
 
-enderio.item_liquid_conduit_ender.tooltip.detailed.line1=Instant fluid teleportation
-enderio.item_liquid_conduit_ender.tooltip.detailed.line2=allows multiple fluids to be
-enderio.item_liquid_conduit_ender.tooltip.detailed.line3=transported on the same line
+enderio.item_liquid_conduit_ender.tooltip.detailed.line1=Instant fluid teleportation.
+enderio.item_liquid_conduit_ender.tooltip.detailed.line2=Allows multiple fluids to be transported on the same line.
 
 enderio.item_item_conduit.name=Item Conduit
 
@@ -35,7 +33,7 @@ tile.block_cap_bank.simple.name=Basic Capacitor Bank
 tile.block_cap_bank.activated.name=Capacitor Bank
 tile.block_cap_bank.vibrant.name=Vibrant Capacitor Bank
 tile.block_cap_bank.tooltip.detailed.line1=Multi-block energy storage.
-tile.block_cap_bank.tooltip.detailed.line2=Can charge RF powered items.
+tile.block_cap_bank.tooltip.detailed.line2=Can charge RF powered items. (to be removed)
 tile.block_cap_bank.tooltip.detailed.line3=Shift-R-Click on a face with an empty hand
 tile.block_cap_bank.tooltip.detailed.line4=to change information display
 tile.block_cap_bank.tooltip.has_items=§6Contains §4{0,number,integer}§6 {0,choice,1#item|1<items} in inventory
@@ -61,20 +59,14 @@ enderio.gui.cap_bank.output_mode=Output
 
 # Power Monitor
 tile.block_power_monitor.name=Power Monitor
-tile.block_power_monitor.tooltip.detailed.line1=Displays details of power use and
-tile.block_power_monitor.tooltip.detailed.line2=storage
-tile.block_power_monitor.tooltip.detailed.line3=Can be used to emit redstone
-tile.block_power_monitor.tooltip.detailed.line4=based on stored power levels
-tile.block_power_monitor.tooltip.detailed.line5=Must be attached to an EnderIO
-tile.block_power_monitor.tooltip.detailed.line6=conduit
+tile.block_power_monitor.tooltip.detailed.line1=Displays details of power use and storage.
+tile.block_power_monitor.tooltip.detailed.line3=Can be used to emit redstone based on stored power levels-
+tile.block_power_monitor.tooltip.detailed.line5=Must be attached to an EnderIO energy conduit.
 
 tile.block_advanced_power_monitor.name=Graphical Power Monitor
-tile.block_advanced_power_monitor.tooltip.detailed.line1=Displays details of power use and
-tile.block_advanced_power_monitor.tooltip.detailed.line2=storage
-tile.block_advanced_power_monitor.tooltip.detailed.line3=Can be used to emit redstone
-tile.block_advanced_power_monitor.tooltip.detailed.line4=based on stored power levels
-tile.block_advanced_power_monitor.tooltip.detailed.line5=Must be attached to an EnderIO
-tile.block_advanced_power_monitor.tooltip.detailed.line6=conduit
+tile.block_advanced_power_monitor.tooltip.detailed.line1=Displays details of power use and storage.
+tile.block_advanced_power_monitor.tooltip.detailed.line3=Can be used to emit redstone based on stored power levels.
+tile.block_advanced_power_monitor.tooltip.detailed.line5=Must be attached to an EnderIO energy conduit.
 
 enderio.gui.power_monitor.engine_control=Engine Control
 enderio.gui.power_monitor.emit=Emit
@@ -92,9 +84,8 @@ enderio.gui.power_monitor.mon_heading5=Average input over 5 seconds
 enderio.gui.power_monitor.no_network_error=No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
 
 # Gauge
-tile.block_gauge.name=RF Gauge
-tile.block_gauge.tooltip.detailed.line1=Displays RF levels of adjacent
-tile.block_gauge.tooltip.detailed.line2=blocks.
+tile.block_gauge.name=Energy Gauge
+tile.block_gauge.tooltip.detailed.line1=Displays energy levels of adjacent blocks.
 
 
 enderio.config.capbank=Capacitor Bank
