@@ -1,0 +1,32 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle": "enderio:blocks/block_impulse_hopper",
+            "front": "enderio:blocks/block_impulse_hopper",
+            "top": "enderio:blocks/block_machine_top",
+            "bottom": "enderio:blocks/block_machine_bottom"
+        }
+    },
+    "variants":{
+        "render":{
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
+            "front":{   "submodel":{ 
+                "frame":{ "model":"enderio:machine_frame" },
+            	"s":{ "model":"enderio:block_impulse_hopper", "y":0   },
+            	"w":{ "model":"enderio:block_impulse_hopper", "y":90  },
+            	"n":{ "model":"enderio:block_impulse_hopper", "y":180 },
+            	"o":{ "model":"enderio:block_impulse_hopper", "y":270 },
+            	"t":{ "model":"enderio:block_impulse_hopper_top_bottom"     } 
+            } },
+            "front_east":{     "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_south":{    "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_west":{     "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_on":{       "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_on_east":{  "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_on_south":{ "submodel":{ "frame":{ "model":"enderio:machine_frame" } } },
+            "front_on_west":{  "submodel":{ "frame":{ "model":"enderio:machine_frame" } } }
+        }
+    }
+}

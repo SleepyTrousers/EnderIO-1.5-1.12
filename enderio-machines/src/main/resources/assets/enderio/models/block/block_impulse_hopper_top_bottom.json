@@ -1,0 +1,23 @@
+﻿{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"elements": [
+		{
+			"name": "cube",
+			"from": [0.25, 0.25, 0.25],
+			"to": [15.75, 15.75, 15.75],
+			"faces": {
+				"up": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#top",
+					"cullface": "up"
+				},
+				"down": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#bottom",
+					"cullface": "down"
+				}
+			},
+			"type": "cube"
+		}
+	]
+}

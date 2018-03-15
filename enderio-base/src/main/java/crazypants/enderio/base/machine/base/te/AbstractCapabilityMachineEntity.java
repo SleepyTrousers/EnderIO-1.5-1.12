@@ -10,6 +10,7 @@ import com.enderio.core.common.inventory.InventorySlot;
 
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.capability.ItemTools.MoveResult;
+import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -154,15 +155,22 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
 
     @Override
     public @Nonnull ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-      if (Prep.isInvalid(stack)) {
-        return Prep.getEmpty();
+      if (!Prep.isInvalid(stack)) {
+        IoMode mode = getIoMode(side);
+        if (mode.canRecieveInput()) {
+          return getInventory().getView(EnderInventory.Type.INPUT).insertItem(slot, stack, simulate);
+        }
       }
-      return getView().insertItem(slot, stack, simulate);
+      return ItemStack.EMPTY;
     }
 
     @Override
     public @Nonnull ItemStack extractItem(int slot, int amount, boolean simulate) {
-      return getView().extractItem(slot, amount, simulate);
+      IoMode mode = getIoMode(side);
+      if (mode.canOutput()) {
+        return getInventory().getView(EnderInventory.Type.OUTPUT).extractItem(slot, amount, simulate);
+      }
+      return ItemStack.EMPTY;
     }
 
     @Override

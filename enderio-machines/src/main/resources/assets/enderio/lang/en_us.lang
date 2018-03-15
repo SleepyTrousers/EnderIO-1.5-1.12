@@ -128,6 +128,10 @@ enderio.gui.telepad.tank=Reagent Tank
 enderio.gui.telepad.max=Max: %s
 enderio.status.telepad.unformed=§4Telepad must be a 3x3 structure
 
+enderio.gui.impulse_hopper.locked=Output Locked
+enderio.gui.impulse_hopper.unlocked=Output Unlocked
+enderio.gui.impulse_hopper.locked.tooltip=Stops the impulse hopper from sorting items into the output slots if there are items in there already.
+
 tile.block_alloy_smelter.name=Alloy Smelter
 tile.block_alloy_smelter.tooltip.detailed.line1=Used to create EnderIO alloys
 tile.block_alloy_smelter.tooltip.detailed.line2=Can also be used as a powered furnace
@@ -290,6 +294,9 @@ tile.block_wired_charger.tooltip.detailed.line1=Charges items with µI
 
 tile.block_wireless_charger.name=Wireless Charger
 tile.block_wireless_charger.tooltip.detailed.line1=Charges items in nearby players inventories
+
+tile.block_impulse_hopper.name=Impulse Hopper
+tile.block_impulse_hopper.tooltip.detailed.line1=Takes inputed items and only outputs them if there is a full set of required items in the input.
 
 # Types. smelting=Alloy Smelter Speed,
 # area=all machines "area" attribute (e.g. farm),

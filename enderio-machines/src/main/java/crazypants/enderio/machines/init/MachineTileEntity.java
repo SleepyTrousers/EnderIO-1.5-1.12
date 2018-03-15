@@ -14,6 +14,7 @@ import crazypants.enderio.machines.machine.farm.TileFarmStation;
 import crazypants.enderio.machines.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.machines.machine.generator.stirling.TileStirlingGenerator;
 import crazypants.enderio.machines.machine.generator.zombie.TileZombieGenerator;
+import crazypants.enderio.machines.machine.ihopper.TileImpulseHopper;
 import crazypants.enderio.machines.machine.killera.TileKillerJoe;
 import crazypants.enderio.machines.machine.light.TileElectricLight;
 import crazypants.enderio.machines.machine.light.TileLightNode;
@@ -91,6 +92,7 @@ public enum MachineTileEntity implements IModTileEntity {
   TileTelePad(TileTelePad.class),
   TileCombustionGenerator(TileCombustionGenerator.class),
   TileCombustionGeneratorEnhanced(TileCombustionGenerator.Enhanced.class),
+  TileImpulseHopper(TileImpulseHopper.class),
 
   ;
 

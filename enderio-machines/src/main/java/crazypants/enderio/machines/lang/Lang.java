@@ -106,6 +106,9 @@ public enum Lang implements ILang {
   JEI_SOLAR_RANGE(".jei.solar_panel.range"),
   GUI_BUFFER_MAXIO(".gui.buffer.maxio"),
   GUI_OBELISK_NO_VIALS(".gui.obelisk.no_vials"),
+  GUI_IMPULSE_HOPPER_LOCKED(".gui.impulse_hopper.locked"),
+  GUI_IMPULSE_HOPPER_UNLOCKED(".gui.impulse_hopper.unlocked"),
+  GUI_IMPULSE_HOPPER_LOCKED_TOOLTIP(".gui.impulse_hopper.locked.tooltip"),
 
   ;
 

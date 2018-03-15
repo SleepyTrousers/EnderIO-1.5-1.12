@@ -21,6 +21,7 @@ import crazypants.enderio.machines.config.config.VacuumConfig;
 import crazypants.enderio.machines.config.config.VatConfig;
 import crazypants.enderio.machines.config.config.WeatherConfig;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
+import crazypants.enderio.machines.machine.ihopper.ImpulseHopperConfig;
 
 @ParametersAreNonnullByDefault // Not the right one, but eclipse knows only 3 null annotations anyway, so it's ok
 public final class Config {
@@ -44,6 +45,7 @@ public final class Config {
     CombustionGenConfig.F.getClass();
     ExperienceConfig.F.getClass();
     FarmConfig.F.getClass();
+    ImpulseHopperConfig.F.getClass();
     InhibitorConfig.F.getClass();
     KillerJoeConfig.F.getClass();
     SolarConfig.F.getClass();
