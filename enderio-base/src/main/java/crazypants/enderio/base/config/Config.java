@@ -70,16 +70,11 @@ public final class Config {
 
   public static double conduitScale = DEFAULT_CONDUIT_SCALE;
 
-  public static double transceiverEnergyLoss = 0.1;
-  public static int transceiverBucketTransmissionCostRF = 100;
-
   public static File configDirectory;
 
   public static @Nonnull File getConfigDirectory() {
     return NullHelper.notnull(configDirectory, "trying to access config before preInit");
   }
-
-  public static boolean transparentFacadesLetThroughBeaconBeam = true;
 
   public static int travelAnchorMaximumDistance = 96;
   public static int travelAnchorCooldown = 0;
@@ -102,8 +97,6 @@ public final class Config {
   public static boolean travelStaffOffhandShowsTravelTargets = true;
 
   public static float travelAnchorZoomScale = 0.2f;
-
-  public static boolean darkSteelRightClickPlaceEnabled = true;
 
   public static double[] darkSteelPowerDamgeAbsorptionRatios = { 0.5, 0.6, 0.7, 0.85 };
   public static int darkSteelPowerStorageBase = 100000;
@@ -360,11 +353,6 @@ public final class Config {
         .getDouble(DEFAULT_CONDUIT_SCALE);
     conduitScale = VecmathUtil.clamp(conduitScale, 0, 1);
 
-    transceiverEnergyLoss = config.get(sectionPower.name, "transceiverEnergyLoss", transceiverEnergyLoss,
-        "Amount of energy lost when transfered by Dimensional Transceiver; 0 is no loss, 1 is 100% loss").getDouble(transceiverEnergyLoss);
-    transceiverBucketTransmissionCostRF = config.get(sectionEfficiency.name, "transceiverBucketTransmissionCostRF", transceiverBucketTransmissionCostRF,
-        "The cost in RF of transporting a bucket of fluid via a Dimensional Transceiver.").getInt(transceiverBucketTransmissionCostRF);
-
     travelAnchorMaximumDistance = config.get(sectionAnchor.name, "travelAnchorMaxDistance", travelAnchorMaximumDistance,
         "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaximumDistance);
 
@@ -441,14 +429,6 @@ public final class Config {
         .get(sectionRod.name, "rodOfReturnFluidUsePerTeleport", rodOfReturnFluidUsePerTeleport, "How much fluid is used per teleport")
         .getInt(rodOfReturnFluidUsePerTeleport);
     rodOfReturnFluidType = config.getString("rodOfReturnFluidType", sectionRod.name, rodOfReturnFluidType, "The type of fluid used by the rod.");
-
-    transparentFacadesLetThroughBeaconBeam = config
-        .get(sectionAdvanced.name, "transparentFacadesLetThroughBeaconBeam", transparentFacadesLetThroughBeaconBeam,
-            "If true, transparent facades will not block the Beacon's beam. As side effect they will also let through a tiny amount of light.")
-        .getBoolean(transparentFacadesLetThroughBeaconBeam);
-
-    darkSteelRightClickPlaceEnabled = config.get(sectionDarkSteel.name, "darkSteelRightClickPlaceEnabled", darkSteelRightClickPlaceEnabled,
-        "Enable / disable right click to place block using dark steel tools.").getBoolean(darkSteelRightClickPlaceEnabled);
 
     darkSteelPowerDamgeAbsorptionRatios = config.get(sectionDarkSteel.name, "darkSteelPowerDamgeAbsorptionRatios", darkSteelPowerDamgeAbsorptionRatios,
         "A list of the amount of durability damage absorbed when items are powered. In order of upgrade level. 1=100% so items take no durability damage when powered.")

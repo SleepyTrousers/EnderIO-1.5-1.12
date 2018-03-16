@@ -21,6 +21,8 @@ public final class ConduitConfig {
       "When true: Correct lighting is recalculated (client side) for conduit bundles when transitioning from being hidden "
           + "behind a facade. This produces better quality rendering but can result in frame stutters when switching to/from a "
           + "wrench. (client-only setting)");
+  public static final IValue<Boolean> transparentFacadesLetThroughBeaconBeam = F.make("transparentFacadesLetThroughBeaconBeam", true, //
+      "If enabled, transparent facades will not block the Beacon's beam. As side effect they will also let through a tiny amount of light.").sync();
 
   public static final IValue<Integer> tier1_maxIO = FE.make("tier1_maxIO", 640, //
       "The maximum IO for the tier 1 power conduit.").setRange(1, MAXIO).sync();

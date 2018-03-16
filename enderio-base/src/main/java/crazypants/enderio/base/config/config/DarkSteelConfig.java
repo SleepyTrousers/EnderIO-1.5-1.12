@@ -7,6 +7,16 @@ import net.minecraftforge.fluids.Fluid;
 
 public final class DarkSteelConfig {
 
+  public static final SectionedValueFactory FP = new SectionedValueFactory(BaseConfig.F, new Section("", "items.darksteel.pickaxe"));
+
+  public static final IValue<Boolean> rightClickPlaceEnabled_pick = FP.make("rightClickPlaceEnabled", false, //
+      "If enabled, right clicking with the dark steel pickaxe will place a block.");
+
+  public static final SectionedValueFactory FA = new SectionedValueFactory(BaseConfig.F, new Section("", "items.darksteel.axe"));
+
+  public static final IValue<Boolean> rightClickPlaceEnabled_axe = FA.make("rightClickPlaceEnabled", false, //
+      "If enabled, right clicking with the dark steel axe will place a block.");
+
   public static final SectionedValueFactory F = new SectionedValueFactory(BaseConfig.F, new Section("", "items.darksteel.sword"));
 
   public static final IValue<Float> darkSteelSwordDamageBonusEmpowered = F.make("damageBonusEmpowered1", 1f, //

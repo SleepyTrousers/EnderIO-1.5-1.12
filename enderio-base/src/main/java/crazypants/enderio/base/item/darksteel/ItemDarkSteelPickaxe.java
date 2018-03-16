@@ -141,7 +141,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
       @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
     if (world.isRemote) {
-      if (Config.darkSteelRightClickPlaceEnabled) {
+      if (DarkSteelConfig.rightClickPlaceEnabled_pick.get()) {
         return doRightClickItemPlace(player, world, pos, side, hand, hitX, hitX, hitX);
       } else {
         if (doTravelAction(player.getHeldItem(hand), world, player, hand) != null) {
@@ -156,7 +156,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   static @Nonnull EnumActionResult doRightClickItemPlace(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side,
       @Nonnull EnumHand hand, float par8, float par9, float par10) {
 
-    if (!Config.darkSteelRightClickPlaceEnabled || hand != EnumHand.MAIN_HAND) {
+    if (hand != EnumHand.MAIN_HAND) {
       return EnumActionResult.PASS;
     }
 

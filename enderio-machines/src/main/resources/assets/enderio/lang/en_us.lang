@@ -352,6 +352,7 @@ enderio.config.inhibitor=Inhibitor Obelisk
 enderio.config.killerjoe=Killer Joe
 enderio.config.experience=Experience Obelisk
 enderio.config.tank=Tank
+enderio.config.tranceiver=Tranceiver
 
 enderio.config.generator=Generators
 enderio.config.generator.combustion=Combustion Generator

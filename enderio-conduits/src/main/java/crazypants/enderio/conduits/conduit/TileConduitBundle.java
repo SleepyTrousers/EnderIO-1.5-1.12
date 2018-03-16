@@ -44,8 +44,8 @@ import crazypants.enderio.conduits.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduits.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
-import crazypants.enderio.conduits.render.ConduitRenderMapper;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
+import crazypants.enderio.conduits.render.ConduitRenderMapper;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
@@ -61,8 +61,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
-
-import static crazypants.enderio.base.config.Config.transparentFacadesLetThroughBeaconBeam;
 
 @Storable
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider, IFilterHolder {
@@ -246,7 +244,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
     final IBlockState paintSource = getPaintSource();
     if (paintSource != null) {
-      if (getFacadeType().isTransparent() && transparentFacadesLetThroughBeaconBeam) {
+      if (getFacadeType().isTransparent() && ConduitConfig.transparentFacadesLetThroughBeaconBeam.get()) {
         return Math.min(paintSource.getLightOpacity(), 14);
       } else {
         return paintSource.getLightOpacity();

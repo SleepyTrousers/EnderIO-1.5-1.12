@@ -17,6 +17,7 @@ import crazypants.enderio.machines.config.config.SolarConfig;
 import crazypants.enderio.machines.config.config.SoulBinderConfig;
 import crazypants.enderio.machines.config.config.SpawnerConfig;
 import crazypants.enderio.machines.config.config.TankConfig;
+import crazypants.enderio.machines.config.config.TranceiverConfig;
 import crazypants.enderio.machines.config.config.VacuumConfig;
 import crazypants.enderio.machines.config.config.VatConfig;
 import crazypants.enderio.machines.config.config.WeatherConfig;
@@ -52,6 +53,7 @@ public final class Config {
     SoulBinderConfig.F.getClass();
     SpawnerConfig.F.getClass();
     TankConfig.F.getClass();
+    TranceiverConfig.F.getClass();
     VacuumConfig.F.getClass();
     VatConfig.F.getClass();
     WeatherConfig.F.getClass();

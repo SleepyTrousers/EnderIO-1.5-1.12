@@ -17,6 +17,7 @@ import com.enderio.core.common.util.OreDictionaryHelper;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.farmers.HarvestResult;
 import crazypants.enderio.base.farming.harvesters.AxeHarvestingTarget;
@@ -179,7 +180,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   @Override
   public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
       @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
-    if (world.isRemote) {
+    if (world.isRemote && DarkSteelConfig.rightClickPlaceEnabled_axe.get()) {
       return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, pos, side, hand, hitX, hitY, hitZ);
     }
     return EnumActionResult.PASS;

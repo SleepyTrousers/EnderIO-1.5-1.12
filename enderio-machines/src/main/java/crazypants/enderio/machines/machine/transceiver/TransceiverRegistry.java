@@ -11,10 +11,10 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.RoundRobinIterator;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.transceiver.Channel;
 import crazypants.enderio.base.transceiver.ChannelType;
+import crazypants.enderio.machines.config.config.TranceiverConfig;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -53,7 +53,7 @@ public enum TransceiverRegistry {
     RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
     for (TileTransceiver trans : iter) {
       if (trans != sender && trans.getRecieveChannels(ChannelType.POWER).contains(channel)) {
-        double invLoss = 1 - Config.transceiverEnergyLoss;
+        double invLoss = 1 - TranceiverConfig.energyLoss.get();
         int canSendWithLoss = (int) Math.round(canSend * invLoss);
         int recieved = trans.receiveEnergy(null, canSendWithLoss, false);
         if (recieved > 0) {
@@ -97,8 +97,8 @@ public enum TransceiverRegistry {
         if (trans != from) {
           int val = trans.recieveFluid(list, resource, doFill);
           if (val > 0) {
-            if (doFill && Config.transceiverBucketTransmissionCostRF > 0) {
-              int powerUsed = (int) Math.max(1, Config.transceiverBucketTransmissionCostRF * val / 1000d);
+            if (doFill && TranceiverConfig.bucketEnergyCost.get() > 0) {
+              int powerUsed = (int) Math.max(1, TranceiverConfig.bucketEnergyCost.get() * val / 1000d);
               from.usePower(powerUsed);
             }
             return val;
