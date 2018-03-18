@@ -232,7 +232,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
       ticksDelay = SpawnerConfig.poweredSpawnerMaxDelayTicks.get()
           - ((SpawnerConfig.poweredSpawnerMaxDelayTicks.get() - SpawnerConfig.poweredSpawnerMinDelayTicks.get()) / 2);
     }
-    ticksDelay /= SPAWNER_SPEEDUP.get(getCapacitorData());
+    ticksDelay /= SPAWNER_SPEEDUP.getFloat(getCapacitorData());
     int powerPerTick = getPowerUsePerTick();
     res.setRequiredEnergy(powerPerTick * ticksDelay);
     return res;
