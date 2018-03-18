@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 
 public class FloatValue extends AbstractValue<Float> {
 
-  protected FloatValue(@Nonnull ValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull Float defaultValue, @Nonnull String text) {
+  protected FloatValue(@Nonnull IValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull Float defaultValue, @Nonnull String text) {
     super(owner, section, keyname, defaultValue, text);
   }
 

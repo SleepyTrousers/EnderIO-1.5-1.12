@@ -1,13 +1,13 @@
 package crazypants.enderio.machines.config.config;
 
 import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.ValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactory;
 import crazypants.enderio.machines.config.Config;
 import net.minecraftforge.fluids.Fluid;
 
 public class TelePadConfig {
 
-  public static final ValueFactory F = Config.F.section("telepad");
+  public static final IValueFactory F = Config.F.section("telepad");
 
   public static final IValue<Integer> telepadPowerCoefficient = F.make("telepadPowerCoefficient", 100000, //
       "Power for a teleport is calculated by the formula:\npower = [this value] * ln(0.005*distance + 1)").setMin(0).sync();

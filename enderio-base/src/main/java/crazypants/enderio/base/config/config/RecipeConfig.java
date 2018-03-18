@@ -1,13 +1,13 @@
 package crazypants.enderio.base.config.config;
 
 import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.ValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactory;
 
 public final class RecipeConfig {
 
-  public static final ValueFactory F = BaseConfig.F.section("recipe");
-  public static final ValueFactory FA = F.section(".alloy");
-  public static final ValueFactory FP = F.section(".painter");
+  public static final IValueFactory F = BaseConfig.F.section("recipe");
+  public static final IValueFactory FA = F.section(".alloy");
+  public static final IValueFactory FP = F.section(".painter");
 
   public static final IValue<Integer> energyPerTask = FP.make("energyPerTask", 2000, //
       "The total amount of energy required to paint one block.").sync();

@@ -10,7 +10,7 @@ import io.netty.buffer.ByteBuf;
 
 public class ThingsValue extends AbstractValue<Things> {
 
-  protected ThingsValue(@Nonnull ValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull Things defaultValue, @Nonnull String text) {
+  protected ThingsValue(@Nonnull IValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull Things defaultValue, @Nonnull String text) {
     super(owner, section, keyname, defaultValue, text);
   }
 

@@ -19,29 +19,29 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnection
 public class FactoryManager {
 
   public static final @Nonnull String SERVER_OVERRIDE = " (synced from server)";
-  static final @Nonnull Map<String, ValueFactory> factories = new HashMap<>();
+  private static final @Nonnull Map<String, IValueFactory> factories = new HashMap<>();
 
-  public static void read(String mod, String section, final ByteBuf buf) {
-    factories.get(mod + "." + section).read(buf);
+  static void read(String mod, String section, final ByteBuf buf) {
+    Log.info("Read " + factories.get(mod + "." + section).read(buf) + " config values from server packet for " + mod + " (" + section + ")");
   }
 
-  static void registerFactory(@Nonnull ValueFactory factory) {
+  static void registerFactory(@Nonnull IValueFactory factory) {
     synchronized (factories) {
       factories.put(factory.getModid() + "." + factory.getSection(), factory);
     }
   }
 
   @SubscribeEvent
-  public void onPlayerLoggon(final PlayerLoggedInEvent evt) {
-    for (ValueFactory factory : factories.values()) {
+  public static void onPlayerLoggon(final PlayerLoggedInEvent evt) {
+    for (IValueFactory factory : factories.values()) {
       PacketHandler.sendTo(new PacketConfigSyncNew(factory), (EntityPlayerMP) evt.player);
       Log.info("Sent config to player " + evt.player.getDisplayNameString() + " for " + factory.getModid() + " (" + factory.getSection() + ")");
     }
   }
 
   @SubscribeEvent
-  public void onPlayerLogout(final ClientDisconnectionFromServerEvent event) {
-    for (ValueFactory factory : factories.values()) {
+  public static void onPlayerLogout(final ClientDisconnectionFromServerEvent event) {
+    for (IValueFactory factory : factories.values()) {
       factory.endServerOverride();
       Log.info("Removed server config override for " + factory.getModid() + " (" + factory.getSection() + ")");
     }

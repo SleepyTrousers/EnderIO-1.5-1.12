@@ -1,12 +1,12 @@
 package crazypants.enderio.machines.config.config;
 
 import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.ValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactory;
 import crazypants.enderio.machines.config.Config;
 
 public final class TankConfig {
 
-  public static final ValueFactory F = Config.F.section("tank");
+  public static final IValueFactory F = Config.F.section("tank");
 
   public static final IValue<Boolean> tankSmeltTrashIntoLava = F.make("tankSmeltTrashIntoLava", true, //
       "If true, when trashing items in lava, a tiny amount more lava will be produced. Trashing items in other hot liquids will NOT have this effect.").sync();

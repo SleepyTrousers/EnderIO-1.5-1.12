@@ -1,11 +1,11 @@
 package crazypants.enderio.base.config.config;
 
 import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.ValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactory;
 
 public final class EnchanterConfig {
 
-  public static final ValueFactory F = BaseConfig.F.section("enchanter");
+  public static final IValueFactory F = BaseConfig.F.section("enchanter");
 
   public static final IValue<Integer> baseLevelCost = F.make("baseLevelCost", 2, //
       "Base level cost added to all recipes in the enchanter.").setMin(0).sync();

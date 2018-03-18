@@ -7,7 +7,7 @@ import net.minecraftforge.common.config.Property;
 
 public class DoubleValue extends AbstractValue<Double> {
 
-  protected DoubleValue(@Nonnull ValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull Double defaultValue, @Nonnull String text) {
+  protected DoubleValue(@Nonnull IValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull Double defaultValue, @Nonnull String text) {
     super(owner, section, keyname, defaultValue, text);
   }
 

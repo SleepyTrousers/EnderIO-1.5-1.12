@@ -1,24 +1,24 @@
 package crazypants.enderio.base.config.config;
 
 import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.ValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactory;
 import net.minecraftforge.fluids.Fluid;
 
 public final class DarkSteelConfig {
 
-  public static final ValueFactory F_DARK_STEEL = BaseConfig.F.section("items.darksteel");
+  public static final IValueFactory F_DARK_STEEL = BaseConfig.F.section("items.darksteel");
 
-  public static final ValueFactory FP = F_DARK_STEEL.section(".pickaxe");
+  public static final IValueFactory FP = F_DARK_STEEL.section(".pickaxe");
 
   public static final IValue<Boolean> rightClickPlaceEnabled_pick = FP.make("rightClickPlaceEnabled", false, //
       "If enabled, right clicking with the dark steel pickaxe will place a block.");
 
-  public static final ValueFactory FA = F_DARK_STEEL.section(".axe");
+  public static final IValueFactory FA = F_DARK_STEEL.section(".axe");
 
   public static final IValue<Boolean> rightClickPlaceEnabled_axe = FA.make("rightClickPlaceEnabled", false, //
       "If enabled, right clicking with the dark steel axe will place a block.");
 
-  public static final ValueFactory F = F_DARK_STEEL.section(".sword");
+  public static final IValueFactory F = F_DARK_STEEL.section(".sword");
 
   public static final IValue<Float> darkSteelSwordDamageBonusEmpowered = F.make("damageBonusEmpowered1", 1f, //
       "The extra damage dealt when the sword is empowered I and has energy.").setRange(0, 32).sync();
@@ -40,9 +40,9 @@ public final class DarkSteelConfig {
   public static final IValue<Float> darkSteelSwordSpeedBonusEmpowered3 = F.make("speedBonusEmpowered4", 0.55f, //
       "The increase in attack speed when the sword is empowered IV and has energy.").setRange(0, 2).sync();
 
-  public static final ValueFactory F_UPGRADES = F_DARK_STEEL.section(".upgrades");
+  public static final IValueFactory F_UPGRADES = F_DARK_STEEL.section(".upgrades");
 
-  public static final ValueFactory F1 = F_UPGRADES.section(".speed");
+  public static final IValueFactory F1 = F_UPGRADES.section(".speed");
 
   public static final IValue<Float> darkSteelSpeedWalkModifier1 = F1.make("walkModifier1", 0.15f, //
       "Speed modifier applied when walking in the Dark Steel Leggings with Speed I.").setRange(0, 32).sync();
@@ -68,7 +68,7 @@ public final class DarkSteelConfig {
   public static final IValue<Float> darkSteelSpeedBonusEmpowered3 = F1.make("empoweredBonus4", 2.00f, //
       "The extra effectiveness of the speed upgrade when the Leggings are empowered IV and have energy.").setRange(0, 2).sync();
 
-  public static final ValueFactory F2 = F_UPGRADES.section(".explosive");
+  public static final IValueFactory F2 = F_UPGRADES.section(".explosive");
 
   public static final IValue<Integer> explosiveUpgradeCost = F2.make("upgradeCost", 8, //
       "Cost for the explosive upgrade in levels.").setRange(1, 99).sync();
@@ -84,7 +84,7 @@ public final class DarkSteelConfig {
           + "Enable this in modpacks that have a large number of modded stone or dirt in their worldgen.")
       .sync();
 
-  public static final ValueFactory F3 = F_DARK_STEEL.section(".coldfire");
+  public static final IValueFactory F3 = F_DARK_STEEL.section(".coldfire");
 
   public static final IValue<Fluid> fluidType = F3.makeFluid("fluidType", "vapor_of_levity", //
       "The type of fluid required to ignite cold fire.").sync();

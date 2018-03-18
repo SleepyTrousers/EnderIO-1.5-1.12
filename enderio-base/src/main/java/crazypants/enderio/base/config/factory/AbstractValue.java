@@ -13,7 +13,7 @@ public abstract class AbstractValue<T> implements IValue<T> {
   /**
    * 
    */
-  protected final @Nonnull ValueFactory owner;
+  protected final @Nonnull IValueFactory owner;
   protected int valueGeneration = 0;
   protected final @Nonnull String section, keyname;
   private final @Nonnull String text;
@@ -22,7 +22,7 @@ public abstract class AbstractValue<T> implements IValue<T> {
   protected Double minValue, maxValue;
   private boolean isSynced = false;
 
-  protected AbstractValue(@Nonnull ValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull T defaultValue, @Nonnull String text) {
+  protected AbstractValue(@Nonnull IValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull T defaultValue, @Nonnull String text) {
     this.owner = owner;
     this.section = section;
     this.keyname = keyname;

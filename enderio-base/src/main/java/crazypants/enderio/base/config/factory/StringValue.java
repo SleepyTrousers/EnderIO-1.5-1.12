@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 
 public class StringValue extends AbstractValue<String> {
 
-  protected StringValue(@Nonnull ValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull String defaultValue, @Nonnull String text) {
+  protected StringValue(@Nonnull IValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull String defaultValue, @Nonnull String text) {
     super(owner, section, keyname, defaultValue, text);
   }
 

@@ -1,12 +1,12 @@
 package crazypants.enderio.machines.config.config;
 
 import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.ValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactory;
 import crazypants.enderio.machines.config.Config;
 
 public final class SoulBinderConfig {
 
-  public static final ValueFactory F = Config.F.section("soulbinder");
+  public static final IValueFactory F = Config.F.section("soulbinder");
 
   public static final IValue<Integer> soulFluidInputRate = F.make("soulFluidInputRate", 50, //
       "Amount of XP fluid in mB the Soul Binder can accept per tick.").setMin(1).sync();

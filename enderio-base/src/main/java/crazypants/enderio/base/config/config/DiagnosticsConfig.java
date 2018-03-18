@@ -1,11 +1,11 @@
 package crazypants.enderio.base.config.config;
 
 import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.ValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactory;
 
 public final class DiagnosticsConfig {
 
-  public static final ValueFactory F = BaseConfig.F.section("diagnostics");
+  public static final IValueFactory F = BaseConfig.F.section("diagnostics");
 
   public static final IValue<Boolean> debugUpdatePackets = F.make("debugUpdatePackets", false, //
       "If true, TEs will flash when they recieve an update packet.");

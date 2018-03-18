@@ -1,18 +1,18 @@
 package crazypants.enderio.conduits.config;
 
 import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.ValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactory;
 
 public final class ConduitConfig {
 
   private static final int MAX = 2_000_000_000; // 0x77359400, keep some headroom to MAX_INT
   private static final int MAXIO = MAX / 2;
 
-  public static final ValueFactory F = Config.F.section("condit");
-  public static final ValueFactory FE = F.section(".energy");
-  public static final ValueFactory FF = F.section(".fluid");
-  public static final ValueFactory FI = F.section(".item");
-  public static final ValueFactory FR = F.section(".redstone");
+  public static final IValueFactory F = Config.F.section("condit");
+  public static final IValueFactory FE = F.section(".energy");
+  public static final IValueFactory FF = F.section(".fluid");
+  public static final IValueFactory FI = F.section(".item");
+  public static final IValueFactory FR = F.section(".redstone");
 
   public static final IValue<Boolean> dynamicLighting = F.make("dynamicLighting", false, //
       "If enabled, conduits will change their light levels based on their contents.").sync();

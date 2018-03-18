@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.config.config.BaseConfig;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.config.factory.FactoryManager;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.config.ConfigCategory;
@@ -152,7 +152,7 @@ public class ConfigElementEio implements IConfigElement {
 
   protected boolean isSynced() {
     // we cheat a bit here and assume that when Ender IO has server overrides, all submod have them
-    return isProperty && BaseConfig.F.isServerOverrideInPlace() && prop.getComment().contains(FactoryManager.SERVER_OVERRIDE);
+    return isProperty && DarkSteelConfig.F.isServerOverrideInPlace() && prop.getComment().contains(FactoryManager.SERVER_OVERRIDE);
   }
 
   @Override

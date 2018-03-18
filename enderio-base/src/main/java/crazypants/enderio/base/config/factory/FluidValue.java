@@ -18,7 +18,7 @@ public class FluidValue extends AbstractValue<Fluid> {
   private final @Nonnull String defaultValueName;
   private Fluid defaultFluid = null;
 
-  protected FluidValue(@Nonnull ValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull String defaultValue, @Nonnull String text) {
+  protected FluidValue(@Nonnull IValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull String defaultValue, @Nonnull String text) {
     super(owner, section, keyname, defaultFluidPlaceholder, text);
     defaultValueName = defaultValue;
   }

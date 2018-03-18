@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketConfigSyncNew implements IMessage {
 
-  protected ValueFactory factory;
+  protected IValueFactory factory;
   protected String modid, section;
   protected ByteBuf bufferCopy;
 
@@ -17,7 +17,7 @@ public class PacketConfigSyncNew implements IMessage {
     this.factory = null;
   }
 
-  PacketConfigSyncNew(ValueFactory factory) {
+  PacketConfigSyncNew(IValueFactory factory) {
     this.factory = factory;
   }
 

@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 
 public class BooleanValue extends AbstractValue<Boolean> {
 
-  protected BooleanValue(@Nonnull ValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull Boolean defaultValue, @Nonnull String text) {
+  protected BooleanValue(@Nonnull IValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull Boolean defaultValue, @Nonnull String text) {
     super(owner, section, keyname, defaultValue, text);
   }
 
