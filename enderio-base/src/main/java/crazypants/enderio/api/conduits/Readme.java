@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.Optional;
  * <ol>
  * <li>Write an interface defining your conduit that extends {@link IConduit}.
  * <li>Write one or more classes implementing that.
- * <li>Add an {@link IConduitNetwork} if your want.
+ * <li>Add an {@link IConduitNetwork} if you want.
  * <li>Add an {@link IConduitRenderer}.
  * <li>Write your item class.
  * <li>Use the {@link ConduitBuilder} to define your conduit (Note: You can leave out the offsets to get assigned the first free offset).
