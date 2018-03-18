@@ -1,12 +1,11 @@
 package crazypants.enderio.integration.forestry.config;
 
-import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.SectionedValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactory;
 
 public final class ForestryConfig {
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(Config.F, new Section("", "items.darksteel.upgrades.forestry"));
+  public static final IValueFactory F = Config.F.section("items.darksteel.upgrades.forestry");
 
   public static final IValue<Integer> apiaristArmorCost = F.make("apiaristArmorCost", 4, //
       "Number of levels required for the Apiarist Armor upgrade.").setRange(1, 99).sync();
