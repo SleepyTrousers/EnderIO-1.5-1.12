@@ -1,13 +1,12 @@
 package crazypants.enderio.machines.config.config;
 
-import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.IValueFactory;
 import crazypants.enderio.machines.config.Config;
 
 public final class SpawnerConfig {
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(Config.F, new Section("", "spawner"));
+  public static final IValueFactory F = Config.F.section("spawner");
 
   public static final IValue<Integer> powerSpawnerAddSpawnerCost = F.make("powerSpawnerAddSpawnerCost", 16, //
       "The number of levels it costs to add a broken spawner").setMin(1).sync();

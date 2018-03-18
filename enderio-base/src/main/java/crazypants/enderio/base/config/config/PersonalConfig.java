@@ -1,12 +1,11 @@
 package crazypants.enderio.base.config.config;
 
-import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.IValueFactory;
 
 public final class PersonalConfig {
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(BaseConfig.F, new Section("", "personal"));
+  public static final IValueFactory F = BaseConfig.F.section("personal");
 
   public static final IValue<Boolean> recipeButtonDisableAlways = F.make("recipeButtonDisableAlways", false, //
       "Should the annoying recipe button be always disabled?");

@@ -6,8 +6,8 @@ import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.PacketConfigSync;
-import crazypants.enderio.base.config.PacketConfigSyncNew;
-import crazypants.enderio.base.config.PacketConfigSyncNew.PacketConfigSyncNewHandler;
+import crazypants.enderio.base.config.factory.PacketConfigSyncNew;
+import crazypants.enderio.base.config.factory.PacketConfigSyncNew.PacketConfigSyncNewHandler;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelPowerPacket;
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFXPacket;

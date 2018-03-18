@@ -1,14 +1,13 @@
 package crazypants.enderio.base.config.config;
 
-import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.IValueFactory;
 
 public final class RecipeConfig {
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(BaseConfig.F, new Section("", "recipe"));
-  public static final SectionedValueFactory FA = new SectionedValueFactory(BaseConfig.F, new Section("", "recipe.alloy"));
-  public static final SectionedValueFactory FP = new SectionedValueFactory(BaseConfig.F, new Section("", "recipe.painter"));
+  public static final IValueFactory F = BaseConfig.F.section("recipe");
+  public static final IValueFactory FA = F.section(".alloy");
+  public static final IValueFactory FP = F.section(".painter");
 
   public static final IValue<Integer> energyPerTask = FP.make("energyPerTask", 2000, //
       "The total amount of energy required to paint one block.").sync();

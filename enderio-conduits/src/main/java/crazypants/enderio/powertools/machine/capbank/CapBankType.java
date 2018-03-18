@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.powertools.config.CapBankConfig;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.IStringSerializable;

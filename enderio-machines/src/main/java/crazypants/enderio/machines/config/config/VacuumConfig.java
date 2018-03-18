@@ -1,13 +1,12 @@
 package crazypants.enderio.machines.config.config;
 
-import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.IValueFactory;
 import crazypants.enderio.machines.config.Config;
 
 public final class VacuumConfig {
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(Config.F, new Section("", "vacuum"));
+  public static final IValueFactory F = Config.F.section("vacuum");
 
   public static final IValue<Integer> vacuumChestRange = F.make("vacuumChestRange", 6, //
       "The maximum range of the vacuum chest").setRange(1, 32).sync();

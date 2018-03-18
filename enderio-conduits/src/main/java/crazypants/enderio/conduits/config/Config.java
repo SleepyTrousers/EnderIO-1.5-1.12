@@ -1,8 +1,8 @@
 package crazypants.enderio.conduits.config;
 
 import crazypants.enderio.base.config.Config.Section;
+import crazypants.enderio.base.config.factory.ValueFactory;
 import crazypants.enderio.conduits.EnderIOConduits;
-import crazypants.enderio.base.config.ValueFactory;
 
 public final class Config {
 

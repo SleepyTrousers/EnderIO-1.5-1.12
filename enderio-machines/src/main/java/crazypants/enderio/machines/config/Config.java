@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.ValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.ValueFactory;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.ClientConfig;
 import crazypants.enderio.machines.config.config.CombustionGenConfig;

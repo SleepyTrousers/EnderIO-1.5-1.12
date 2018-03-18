@@ -6,8 +6,8 @@ import java.util.List;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.SectionedValueFactory;
 import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccessType;
 import crazypants.enderio.machines.config.Config;

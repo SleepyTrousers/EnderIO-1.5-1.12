@@ -1,4 +1,4 @@
-package crazypants.enderio.base.config;
+package crazypants.enderio.base.config.factory;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -9,27 +9,29 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketConfigSyncNew implements IMessage {
 
-  protected ValueFactory factory;
-  protected String factoryName;
+  protected IValueFactory factory;
+  protected String modid, section;
   protected ByteBuf bufferCopy;
 
   public PacketConfigSyncNew() {
     this.factory = null;
   }
 
-  PacketConfigSyncNew(ValueFactory factory) {
+  PacketConfigSyncNew(IValueFactory factory) {
     this.factory = factory;
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
     ByteBufUtils.writeUTF8String(buf, factory.getModid());
+    ByteBufUtils.writeUTF8String(buf, factory.getSection());
     factory.save(buf);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    factoryName = ByteBufUtils.readUTF8String(buf);
+    modid = ByteBufUtils.readUTF8String(buf);
+    section = ByteBufUtils.readUTF8String(buf);
     bufferCopy = buf.copy();
   }
 
@@ -37,7 +39,7 @@ public class PacketConfigSyncNew implements IMessage {
     @Override
     public IMessage onMessage(PacketConfigSyncNew message, MessageContext ctx) {
       if (!Minecraft.getMinecraft().isIntegratedServerRunning()) {
-        ValueFactory.read(message.factoryName, message.bufferCopy);
+        FactoryManager.read(message.modid, message.section, message.bufferCopy);
       }
       if (message.bufferCopy != null) {
         message.bufferCopy.release();

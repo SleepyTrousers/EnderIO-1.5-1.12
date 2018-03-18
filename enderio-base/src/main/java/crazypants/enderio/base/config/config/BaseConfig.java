@@ -1,7 +1,7 @@
 package crazypants.enderio.base.config.config;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.ValueFactory;
+import crazypants.enderio.base.config.factory.ValueFactory;
 
 public final class BaseConfig {
 

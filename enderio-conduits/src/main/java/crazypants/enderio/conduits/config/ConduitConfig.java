@@ -1,19 +1,18 @@
 package crazypants.enderio.conduits.config;
 
-import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.IValueFactory;
 
 public final class ConduitConfig {
 
   private static final int MAX = 2_000_000_000; // 0x77359400, keep some headroom to MAX_INT
   private static final int MAXIO = MAX / 2;
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(Config.F, new Section("", "condit"));
-  public static final SectionedValueFactory FE = new SectionedValueFactory(Config.F, new Section("", "condit.energy"));
-  public static final SectionedValueFactory FF = new SectionedValueFactory(Config.F, new Section("", "condit.fluid"));
-  public static final SectionedValueFactory FI = new SectionedValueFactory(Config.F, new Section("", "condit.item"));
-  public static final SectionedValueFactory FR = new SectionedValueFactory(Config.F, new Section("", "condit.redstone"));
+  public static final IValueFactory F = Config.F.section("condit");
+  public static final IValueFactory FE = F.section(".energy");
+  public static final IValueFactory FF = F.section(".fluid");
+  public static final IValueFactory FI = F.section(".item");
+  public static final IValueFactory FR = F.section(".redstone");
 
   public static final IValue<Boolean> dynamicLighting = F.make("dynamicLighting", false, //
       "If enabled, conduits will change their light levels based on their contents.").sync();

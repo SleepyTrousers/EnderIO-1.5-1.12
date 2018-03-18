@@ -1,12 +1,11 @@
 package crazypants.enderio.base.config.config;
 
-import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.IValueFactory;
 
 public final class InfinityConfig {
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(BaseConfig.F, new Section("", "items.infinityPowder"));
+  public static final IValueFactory F = BaseConfig.F.section("items.infinityPowder");
 
   public static final IValue<Float> dropChance = F.make("dropChance", .5f, //
       "Chance that Infinity Powder will drop from fire on bedrock.").setRange(0, 1).sync();
