@@ -1,13 +1,12 @@
 package crazypants.enderio.machines.config.config;
 
-import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.ValueFactory;
 import crazypants.enderio.machines.config.Config;
 
 public final class FarmConfig {
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(Config.F, new Section("", "farm"));
+  public static final ValueFactory F = Config.F.section("farm");
 
   public static final IValue<Integer> farmBonemealDelaySuccess = F.make("farmBonemealDelaySuccess", 16, //
       "The delay (in blocks) between a successful bonemealing and the next try.").setRange(0, Integer.MAX_VALUE).sync();

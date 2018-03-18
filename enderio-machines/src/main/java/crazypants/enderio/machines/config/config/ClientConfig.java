@@ -5,15 +5,14 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
 import crazypants.enderio.base.config.config.PersonalConfig;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.ValueFactory;
 import crazypants.enderio.machines.config.Config;
 
 public final class ClientConfig {
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(Config.F, new Section("", "client"));
+  public static final ValueFactory F = Config.F.section("client");
 
   public static final IValue<Boolean> jeiUseShortenedPainterRecipes = F.make("jeiUseShortenedPainterRecipes", true, //
       "If true, only a handful of sample painter recipes will be shown in JEI. Enable this if you have timing problems "

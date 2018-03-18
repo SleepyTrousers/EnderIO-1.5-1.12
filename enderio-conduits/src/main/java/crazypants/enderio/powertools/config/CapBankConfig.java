@@ -1,15 +1,14 @@
 package crazypants.enderio.powertools.config;
 
-import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.ValueFactory;
 
 public final class CapBankConfig {
 
   private static final int MAX = 2_000_000_000; // 0x77359400, keep some headroom to MAX_INT
   private static final int MAXIO = MAX / 2;
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(Config.F, new Section("", "capbank"));
+  public static final ValueFactory F = Config.F.section("capbank");
 
   public static final IValue<Integer> tierC_maxIO = F.make("tierC_maxIO", 50000, //
       "The maximum IO per tick for a creative capacitor bank.").setRange(1, MAXIO).sync();

@@ -1,12 +1,11 @@
 package crazypants.enderio.base.config.config;
 
-import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.ValueFactory;
 
 public final class TopConfig {
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(BaseConfig.F, new Section("", "top"));
+  public static final ValueFactory F = BaseConfig.F.section("top");
 
   public static final IValue<Boolean> enabled = F.make("enabled", true, //
       "If true, 'The One Probe' by McJty will be supported.").sync();

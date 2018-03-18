@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.config.config.BaseConfig;
+import crazypants.enderio.base.config.factory.FactoryManager;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
@@ -121,8 +122,8 @@ public class ConfigElementEio implements IConfigElement {
   @Override
   public String getComment() {
     String raw = NullHelper.first(isProperty ? prop.getComment() : category.getComment(), "").replaceFirst("\\s*\\[.*\\]", "");
-    boolean hasSyncMarker = raw.contains(ValueFactory.SERVER_OVERRIDE);
-    raw = raw.replace(ValueFactory.SERVER_OVERRIDE, "");
+    boolean hasSyncMarker = raw.contains(FactoryManager.SERVER_OVERRIDE);
+    raw = raw.replace(FactoryManager.SERVER_OVERRIDE, "");
     if (isSynced()) {
       return TextFormatting.DARK_RED + "" + TextFormatting.BOLD + "This value is determined by the server!\n" + TextFormatting.YELLOW + raw;
     } else if (hasSyncMarker) {
@@ -151,7 +152,7 @@ public class ConfigElementEio implements IConfigElement {
 
   protected boolean isSynced() {
     // we cheat a bit here and assume that when Ender IO has server overrides, all submod have them
-    return isProperty && BaseConfig.F.isServerOverrideInPlace() && prop.getComment().contains(ValueFactory.SERVER_OVERRIDE);
+    return isProperty && BaseConfig.F.isServerOverrideInPlace() && prop.getComment().contains(FactoryManager.SERVER_OVERRIDE);
   }
 
   @Override

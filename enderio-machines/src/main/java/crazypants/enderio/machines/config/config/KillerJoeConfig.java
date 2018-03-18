@@ -1,13 +1,12 @@
 package crazypants.enderio.machines.config.config;
 
-import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.ValueFactory;
 import crazypants.enderio.machines.config.Config;
 
 public final class KillerJoeConfig {
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(Config.F, new Section("", "killerjoe"));
+  public static final ValueFactory F = Config.F.section("killerjoe");
 
   public static final IValue<Double> killerJoeAttackHeight = F.make("killerJoeAttackHeight", 2.0, //
       "The reach of attacks above and below Joe.").setRange(1, 32).sync();

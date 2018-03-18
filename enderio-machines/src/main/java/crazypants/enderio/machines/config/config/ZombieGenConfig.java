@@ -1,13 +1,12 @@
 package crazypants.enderio.machines.config.config;
 
-import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.ValueFactory;
 import crazypants.enderio.machines.config.Config;
 
 public final class ZombieGenConfig {
 
-  public static final SectionedValueFactory F = new SectionedValueFactory(Config.F, new Section("", "generator.zombie"));
+  public static final ValueFactory F = Config.F.section("generator.zombie");
 
   public static final IValue<Integer> ticksPerBucketOfFuel = F.make("ticksPerBucketOfFuel", 10 * 60 * 20, //
       "The number of ticks one bucket of fuel lasts.").setMin(1).sync();

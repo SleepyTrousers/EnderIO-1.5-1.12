@@ -1,8 +1,8 @@
 package crazypants.enderio.integration.forestry.config;
 
 import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.SectionedValueFactory;
-import crazypants.enderio.base.config.ValueFactory.IValue;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.config.factory.SectionedValueFactory;
 
 public final class ForestryConfig {
 
