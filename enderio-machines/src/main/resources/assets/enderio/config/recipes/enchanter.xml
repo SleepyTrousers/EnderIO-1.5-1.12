@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the build-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+For more information, see base.xml.
+
+ -->
+
+  <recipe name="Enchanter: minecraft:protection" required="true" disabled="false">
+    <enchanting>
+      <input name="DARK_STEEL" amount="16"/>
+      <enchantment name="minecraft:protection" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:fire_protection" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:blaze_powder" amount="16"/>
+      <enchantment name="minecraft:fire_protection" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:feather_falling" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:feather" amount="1"/>
+      <enchantment name="minecraft:feather_falling" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:blast_protection" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:gunpowder" amount="16"/>
+      <enchantment name="minecraft:blast_protection" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:projectile_protection" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:arrow" amount="16"/>
+      <enchantment name="minecraft:projectile_protection" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:respiration" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:glass_bottle" amount="1"/>
+      <enchantment name="minecraft:respiration" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:aqua_affinity" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:waterlily" amount="1"/>
+      <enchantment name="minecraft:aqua_affinity" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:depth_strider" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:prismarine:0" amount="1"/>
+      <enchantment name="minecraft:depth_strider" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:frost_walker" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:ice" amount="16"/>
+      <enchantment name="minecraft:frost_walker" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:thorns" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:double_plant:4" amount="1"/>
+      <enchantment name="minecraft:thorns" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:sharpness" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:quartz" amount="12"/>
+      <enchantment name="minecraft:sharpness" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:smite" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:rotten_flesh" amount="12"/>
+      <enchantment name="minecraft:smite" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:bane_of_arthropods" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:spider_eye" amount="12"/>
+      <enchantment name="minecraft:bane_of_arthropods" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:knockback" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:piston" amount="1"/>
+      <enchantment name="minecraft:knockback" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:fire_aspect" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:blaze_rod" amount="8"/>
+      <enchantment name="minecraft:fire_aspect" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:looting" required="true" disabled="false">
+    <enchanting>
+      <input name="oredict:itemSkull" amount="1"/>
+      <enchantment name="minecraft:looting" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:efficiency" required="true" disabled="false">
+    <enchanting>
+      <input name="dustRedstone" amount="12"/>
+      <enchantment name="minecraft:efficiency" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:silk_touch" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:slime_ball" amount="1"/>
+      <enchantment name="minecraft:silk_touch" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:unbreaking" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:obsidian" amount="1"/>
+      <enchantment name="minecraft:unbreaking" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:mending" required="true" disabled="false">
+    <enchanting>
+      <input name="enderio:item_xp_transfer" amount="1"/>
+      <enchantment name="minecraft:mending" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:fortune" required="true" disabled="false">
+    <enchanting>
+      <input name="gemEmerald" amount="1"/>
+      <enchantment name="minecraft:fortune" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:power" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:flint" amount="12"/>
+      <enchantment name="minecraft:power" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:punch" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:string" amount="1"/>
+      <enchantment name="minecraft:punch" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:flame" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:netherrack" amount="1"/>
+      <enchantment name="minecraft:flame" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:infinity" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:ender_pearl" amount="1"/>
+      <enchantment name="minecraft:infinity" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:luck_of_the_sea" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:dye:4" amount="1"/>
+      <enchantment name="minecraft:luck_of_the_sea" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: minecraft:lure" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:fish" amount="1"/>
+      <enchantment name="minecraft:lure" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: enderio:soulbound" required="true" disabled="false">
+    <enchanting>
+      <input name="ENDER_CRYSTAL" amount="1"/>
+      <enchantment name="enderio:soulbound" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+
+</enderio:recipes>

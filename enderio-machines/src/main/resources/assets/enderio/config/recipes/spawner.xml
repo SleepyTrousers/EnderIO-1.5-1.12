@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the build-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+For more information, see base.xml.
+
+ -->
+
+  <recipe name="Spawner, defaults" required="true">
+    <spawning>
+      <!-- This will print out all available mobs: 
+      <entity name="minecraft:herobrine" costMultiplier="1" disabled="false"/>
+      -->
+      <entity name="*"                             costMultiplier="1.0" disabled="false"/> <!-- default -->
+      <entity name="minecraft:bat"                 costMultiplier="0.5" disabled="false"/> <!-- Bat -->
+      <entity name="minecraft:blaze"               costMultiplier="5.0" disabled="false"/> <!-- Blaze -->
+      <entity name="minecraft:cave_spider"         costMultiplier="1.0" disabled="false"/> <!-- Cave Spider -->
+      <entity name="minecraft:chicken"             costMultiplier="0.5" disabled="false"/> <!-- Chicken -->
+      <entity name="minecraft:cow"                 costMultiplier="0.5" disabled="false"/> <!-- Cow -->
+      <entity name="minecraft:creeper"             costMultiplier="1.5" disabled="false"/> <!-- Creeper -->
+      <entity name="minecraft:donkey"              costMultiplier="1.0" disabled="false"/> <!-- Donkey -->
+      <entity name="minecraft:elder_guardian"      costMultiplier="10"  disabled="true"/> <!-- Elder Guardian -->
+      <entity name="minecraft:enderman"            costMultiplier="10"  disabled="false"/> <!-- Enderman -->
+      <entity name="minecraft:endermite"           costMultiplier="0.3" disabled="false"/> <!-- Endermite -->
+      <entity name="minecraft:evocation_illager"   costMultiplier="25"  disabled="true"/> <!-- Evoker -->
+      <entity name="minecraft:ghast"               costMultiplier="10"  disabled="false"/> <!-- Ghast -->
+      <entity name="minecraft:giant"               costMultiplier="100" disabled="false"/> <!-- Giant -->
+      <entity name="minecraft:guardian"            costMultiplier="5.0" disabled="false"/> <!-- Guardian -->
+      <entity name="minecraft:horse"               costMultiplier="1.0" disabled="false"/> <!-- Horse -->
+      <entity name="minecraft:husk"                costMultiplier="2.0" disabled="false"/> <!-- Husk -->
+      <entity name="minecraft:llama"               costMultiplier="1.0" disabled="false"/> <!-- Llama -->
+      <entity name="minecraft:magma_cube"          costMultiplier="2.0" disabled="false"/> <!-- Magma Cube -->
+      <entity name="minecraft:mooshroom"           costMultiplier="1.0" disabled="false"/> <!-- Mooshroom -->
+      <entity name="minecraft:mule"                costMultiplier="1.0" disabled="false"/> <!-- Mule -->
+      <entity name="minecraft:ocelot"              costMultiplier="1.0" disabled="false"/> <!-- Ocelot -->
+      <entity name="minecraft:pig"                 costMultiplier="0.5" disabled="false"/> <!-- Pig -->
+      <entity name="minecraft:polar_bear"          costMultiplier="2.0" disabled="false"/> <!-- Polar Bear -->
+      <entity name="minecraft:rabbit"              costMultiplier="0.1" disabled="false"/> <!-- Rabbit -->
+      <entity name="minecraft:sheep"               costMultiplier="0.5" disabled="false"/> <!-- Sheep -->
+      <entity name="minecraft:shulker"             costMultiplier="10"  disabled="false"/> <!-- Shulker -->
+      <entity name="minecraft:silverfish"          costMultiplier="1.0" disabled="false"/> <!-- Silverfish -->
+      <entity name="minecraft:skeleton"            costMultiplier="2.0" disabled="false"/> <!-- Skeleton -->
+      <entity name="minecraft:skeleton_horse"      costMultiplier="2.0" disabled="false"/> <!-- Skeleton Horse -->
+      <entity name="minecraft:slime"               costMultiplier="5.0" disabled="false"/> <!-- Slime -->
+      <entity name="minecraft:snowman"             costMultiplier="1.0" disabled="false"/> <!-- Snow Golem -->
+      <entity name="minecraft:spider"              costMultiplier="1.0" disabled="false"/> <!-- Spider -->
+      <entity name="minecraft:squid"               costMultiplier="0.5" disabled="false"/> <!-- Squid -->
+      <entity name="minecraft:stray"               costMultiplier="3.0" disabled="false"/> <!-- Stray -->
+      <entity name="minecraft:vex"                 costMultiplier="1.0" disabled="false"/> <!-- Vex -->
+      <entity name="minecraft:villager"            costMultiplier="1.0" disabled="true"/> <!-- Villager -->
+      <entity name="minecraft:villager_golem"      costMultiplier="10"  disabled="true"/> <!-- Iron Golem -->
+      <entity name="minecraft:vindication_illager" costMultiplier="30"  disabled="false"/> <!-- Vindicator -->
+      <entity name="minecraft:witch"               costMultiplier="5.0" disabled="false"/> <!-- Witch -->
+      <entity name="minecraft:wither"              costMultiplier="50"  disabled="true"/> <!-- Wither -->
+      <entity name="minecraft:wither_skeleton"     costMultiplier="20"  disabled="false"/> <!-- Wither Skeleton -->
+      <entity name="minecraft:wolf"                costMultiplier="1.0" disabled="false"/> <!-- Wolf -->
+      <entity name="minecraft:zombie"              costMultiplier="1.0" disabled="false"/> <!-- Zombie -->
+      <entity name="minecraft:zombie_horse"        costMultiplier="2.0" disabled="false"/> <!-- Zombie Horse -->
+      <entity name="minecraft:zombie_pigman"       costMultiplier="5.0" disabled="false"/> <!-- Zombie Pigman -->
+      <entity name="minecraft:zombie_villager"     costMultiplier="2.5" disabled="false"/> <!-- Zombie Villager -->
+      <!-- Note: All unconfigured mobs will have a costMultiplier of 1.0 -->
+    </spawning>
+  </recipe>
+
+  <recipe name="Spawner, Ender Zoo" required="false">
+    <spawning>
+      <entity name="enderzoo:concussioncreeper"    costMultiplier="1.5" disabled="false"/>
+      <entity name="enderzoo:direslime"            costMultiplier="0.9" disabled="false"/>
+      <entity name="enderzoo:direwolf"             costMultiplier="1.5" disabled="false"/>
+      <entity name="enderzoo:enderminy"            costMultiplier="9.0" disabled="false"/>
+      <entity name="enderzoo:fallenknight"         costMultiplier="1.0" disabled="false"/>
+      <entity name="enderzoo:fallenmount"          costMultiplier="1.5" disabled="false"/>
+      <entity name="enderzoo:owl"                  costMultiplier="1.0" disabled="false"/>
+      <entity name="enderzoo:withercat"            costMultiplier="1.0" disabled="false"/>
+      <entity name="enderzoo:witherwitch"          costMultiplier="3.0" disabled="false"/>
+    </spawning>
+  </recipe>
+
+  <recipe name="Spawner, Chickens" required="false">
+    <spawning>
+      <entity name="chickens:chickenschicken"      costMultiplier="30" disabled="false"/>
+    </spawning>
+  </recipe>
+
+</enderio:recipes>
