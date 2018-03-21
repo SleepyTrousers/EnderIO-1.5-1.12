@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.api.addon.IEnderIOAddon;
+import crazypants.enderio.api.capacitor.CapabilityCapacitorData;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
@@ -96,6 +97,8 @@ public class EnderIO implements IEnderIOAddon {
   @EventHandler
   public void preInit(@Nonnull FMLPreInitializationEvent event) {
     Log.debug("PHASE PRE-INIT START");
+    
+    CapabilityCapacitorData.register();
 
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Config.Pre());
     Config.init(event);

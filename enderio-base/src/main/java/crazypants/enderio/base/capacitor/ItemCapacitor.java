@@ -6,10 +6,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.capacitor.CapabilityCapacitorData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObject;
@@ -22,6 +24,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumActionResult;
@@ -36,10 +39,12 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRenderers {
+public class ItemCapacitor extends Item implements IHaveRenderers {
 
   public static ItemCapacitor create(@Nonnull IModObject modObject) {
     return new ItemCapacitor(modObject);
@@ -68,7 +73,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
 
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
-    return getUnlocalizedName() + "." + getCapacitorData(stack).getUnlocalizedName();
+    return getUnlocalizedName() + "." + stack.getCapability(CapabilityCapacitorData.getCapNN(), null).getUnlocalizedName();
   }
 
   @Override
@@ -102,10 +107,27 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
       tooltip.add(EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack), NbtValue.CAPNAME.getString(stack, "(!%$&�*&%*???")));
     }
   }
-
+  
   @Override
-  public @Nonnull ICapacitorData getCapacitorData(@Nonnull ItemStack stack) {
-    return NullHelper.notnullJ(DefaultCapacitorData.values()[getMetadata(stack)], "Enum.values() has a null");
+  @Nullable
+  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+    ICapabilityProvider capProvider = new ICapabilityProvider() {
+
+      @Override
+      public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == CapabilityCapacitorData.getCapNN();
+      }
+
+      @Override
+      @Nullable
+      public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+        if (capability == CapabilityCapacitorData.getCapNN()) {
+          return CapabilityCapacitorData.getCapNN().cast(NullHelper.notnullJ(DefaultCapacitorData.values()[getMetadata(stack)], "Enum.values() has a null"));
+        }
+        return null;
+      }
+    };
+    return new CompoundCapabilityProvider(super.initCapabilities(stack, nbt), capProvider);
   }
 
   @Override
