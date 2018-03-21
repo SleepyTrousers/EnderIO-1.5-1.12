@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.TileEntityBase;
 
@@ -31,7 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
+public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
 
   protected BasicFilterTypes filterType;
 
@@ -76,19 +77,20 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
   }
 
   @Override
+  @Nonnull
+  public String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
+    return getUnlocalizedName();
+  }
+
+  @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
     if (FilterRegistry.isFilterSet(stack)) {
-      if (!SpecialTooltipHandler.showAdvancedTooltips()) {
-        tooltip.add(Lang.CONDUIT_FILTER.get());
-        SpecialTooltipHandler.addShowDetailsTooltip(tooltip);
-      } else {
-        tooltip.add(Lang.CONDUIT_FILTER_CONFIGURED.get(TextFormatting.ITALIC));
-        tooltip.add(Lang.CONDUIT_FILTER_CLEAR.get(TextFormatting.ITALIC));
+      if (SpecialTooltipHandler.showAdvancedTooltips()) {
+        tooltip.add(Lang.ITEM_FILTER_CONFIGURED.get(TextFormatting.ITALIC));
+        tooltip.add(Lang.ITEM_FILTER_CLEAR.get(TextFormatting.ITALIC));
       }
-    } else {
-      tooltip.add(Lang.CONDUIT_FILTER.get());
     }
   }
 

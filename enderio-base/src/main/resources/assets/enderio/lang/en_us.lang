@@ -723,11 +723,20 @@ tile.fluid.cloud_seed_concentrated.name=Concentrated Cloud Seed
 fluid.xpjuice=Liquid XP
 tile.fluid.xpjuice.name=Liquid XP
 
-enderio.item_conduit_filter_upgrade=Upgrade for item conduits
+enderio.item_item_filter_upgrade=Upgrade for item conduits
+item.item_existing_item_filter.tooltip.detailed.line1=Filters items based on a snapshot 
+item.item_existing_item_filter.tooltip.detailed.line2=of the connected inventory
+item.item_mod_item_filter.tooltip.detailed.line1=Filters items based on the mod they come from
+item.item_power_item_filter.tooltip.detailed.line1=Filters items based on their current energy
+item.item_basic_item_filter.tooltip.detailed.line1=Filters items with whitelist and match metadata options
+item.item_advanced_item_filter.tooltip.detailed.line1=Filters items with advanced configuration options
+item.item_limited_item_filter.tooltip.detailed.line1=Filters items based on their stack size in 
+item.item_limited_item_filter.tooltip.detailed.line2=addition to the features of the advanced item filter
+item.item_big_item_filter.tooltip.detailed.line1=Filters even more items
 
-enderio.item_conduit_filter_upgrade.configured=%sConfigured
-enderio.item_conduit_filter_upgrade.clear_config_method=%sPlace in crafting grid to clear
-enderio.item_conduit_filter_upgrade.clear_config_warning=%sThis will clear all stored filter settings!
+enderio.item_item_filter_upgrade.configured=%sConfigured
+enderio.item_item_filter_upgrade.clear_config_method=%sPlace in crafting grid to clear
+enderio.item_item_filter_upgrade.clear_config_warning=%sThis will clear all stored filter settings!
 
 enderio.gui.generic.max=Max: %s
 enderio.gui.generic.progress=Progress %s%%
