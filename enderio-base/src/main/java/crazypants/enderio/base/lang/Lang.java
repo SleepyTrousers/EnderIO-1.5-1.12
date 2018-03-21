@@ -119,6 +119,16 @@ public enum Lang implements ILang {
   GUI_POWER_ITEM_FILTER_COMPARE(".gui.power.item_filter.compare"),
   GUI_POWER_ITEM_FILTER_PERCENT(".gui.power.item_filter.percent"),
 
+  GUI_BASIC_ITEM_FILTER(".gui.basic_item_filter"),
+  GUI_ADVANCED_ITEM_FILTER(".gui.advanced_item_filter"),
+  GUI_LIMITED_ITEM_FILTER(".gui.limited_item_filter"),
+  GUI_BIG_ITEM_FILTER(".gui.big_item_filter"),
+  GUI_EXISTING_ITEM_FILTER(".gui.existing_item_filter"),
+  GUI_MOD_ITEM_FILTER(".gui.mod_item_filter"),
+  GUI_POWER_ITEM_FILTER(".gui.power_item_filter"),
+
+  GUI_SPECIES_ITEM_FILTER(".gui.species_item_filter"),
+
   ;
 
   private final @Nonnull String key;

@@ -279,4 +279,10 @@ public class ExistingItemFilterGui extends AbstractGuiItemFilter {
     }
 
   }
+
+  @Override
+  @Nonnull
+  protected String getUnlocalisedNameForHeading() {
+    return Lang.GUI_EXISTING_ITEM_FILTER.get();
+  }
 }

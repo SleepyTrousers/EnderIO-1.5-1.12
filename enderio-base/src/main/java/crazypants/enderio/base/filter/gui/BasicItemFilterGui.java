@@ -184,4 +184,18 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
     super.bindGuiTexture(isBig ? 2 : (isAdvanced ? 1 : 0));
   }
 
+  @Override
+  @Nonnull
+  protected String getUnlocalisedNameForHeading() {
+    if (filter.isBig()) {
+      return Lang.GUI_BIG_ITEM_FILTER.get();
+    } else if (filter.isLimited()) {
+      return Lang.GUI_LIMITED_ITEM_FILTER.get();
+    } else if (filter.isAdvanced()) {
+      return Lang.GUI_ADVANCED_ITEM_FILTER.get();
+    } else {
+      return Lang.GUI_BASIC_ITEM_FILTER.get();
+    }
+  }
+
 }
