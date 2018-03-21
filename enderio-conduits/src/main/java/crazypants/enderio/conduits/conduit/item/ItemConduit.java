@@ -22,8 +22,8 @@ import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
-import crazypants.enderio.base.conduit.item.ItemExtractSpeedUpgrade;
-import crazypants.enderio.base.conduit.item.SpeedUpgrade;
+import crazypants.enderio.base.conduit.item.FunctionUpgrade;
+import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.filters.ItemFilter;
@@ -83,7 +83,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   protected final EnumMap<EnumFacing, IItemFilter> inputFilters = new EnumMap<EnumFacing, IItemFilter>(EnumFacing.class);
   protected final EnumMap<EnumFacing, ItemStack> outputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
   protected final EnumMap<EnumFacing, ItemStack> inputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
-  protected final EnumMap<EnumFacing, ItemStack> speedUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
   protected final EnumMap<EnumFacing, ItemStack> functionUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
 
   protected final EnumMap<EnumFacing, Boolean> selfFeed = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
@@ -107,7 +106,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
       EnumFacing dir = itr.next();
       outputFilterUpgrades.put(dir, ItemStack.EMPTY);
       inputFilterUpgrades.put(dir, ItemStack.EMPTY);
-      speedUpgrades.put(dir, ItemStack.EMPTY);
       functionUpgrades.put(dir, ItemStack.EMPTY);
     }
   }
@@ -137,9 +135,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public @Nonnull NNList<ItemStack> getDrops() {
     NNList<ItemStack> res = super.getDrops();
-    for (ItemStack stack : speedUpgrades.values()) {
-      res.add(stack);
-    }
     for (ItemStack stack : functionUpgrades.values()) {
       res.add(stack);
     }
@@ -251,15 +246,15 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   }
 
   @Override
-  public void setSpeedUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade) {
-    speedUpgrades.put(dir, upgrade);
+  public void setFunctionUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade) {
+    functionUpgrades.put(dir, upgrade);
     setClientStateDirty();
   }
 
   @Override
   @Nonnull
-  public ItemStack getSpeedUpgrade(@Nonnull EnumFacing dir) {
-    return speedUpgrades.get(dir);
+  public ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir) {
+    return functionUpgrades.get(dir);
   }
   //
   // @Override
@@ -388,12 +383,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   public int getMaximumExtracted(@Nonnull EnumFacing dir) {
-    ItemStack stack = speedUpgrades.get(dir);
+    ItemStack stack = functionUpgrades.get(dir);
     if (stack.isEmpty()) {
-      return SpeedUpgrade.BASE_MAX_EXTRACTED;
+      return FunctionUpgrade.BASE_MAX_EXTRACTED;
     }
-    SpeedUpgrade speedUpgrade = ItemExtractSpeedUpgrade.getSpeedUpgrade(stack);
-    return speedUpgrade.getMaximumExtracted(stack.getCount());
+    FunctionUpgrade functionUpgrade = ItemFunctionUpgrade.getFunctionUpgrade(stack);
+    return functionUpgrade.getMaximumExtracted(stack.getCount());
   }
 
   @Override
@@ -639,15 +634,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
       }
     }
 
-    for (Entry<EnumFacing, ItemStack> entry : speedUpgrades.entrySet()) {
-      if (entry.getValue() != null) {
-        ItemStack up = entry.getValue();
-        NBTTagCompound itemRoot = new NBTTagCompound();
-        up.writeToNBT(itemRoot);
-        nbtRoot.setTag("speedUpgrades." + entry.getKey().name(), itemRoot);
-      }
-    }
-
     for (Entry<EnumFacing, ItemStack> entry : functionUpgrades.entrySet()) {
       if (entry.getValue() != null) {
         ItemStack up = entry.getValue();
@@ -764,13 +750,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
         IItemFilter filter = FilterRegistry.loadFilterFromNbt(filterTag);
         inputFilters.put(dir, filter);
-      }
-
-      key = "speedUpgrades." + dir.name();
-      if (nbtRoot.hasKey(key)) {
-        NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
-        ItemStack ups = new ItemStack(upTag);
-        speedUpgrades.put(dir, ups);
       }
 
       key = "functionUpgrades." + dir.name();

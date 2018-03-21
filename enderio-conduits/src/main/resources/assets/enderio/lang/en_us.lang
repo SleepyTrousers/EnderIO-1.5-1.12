@@ -112,11 +112,10 @@ enderio.gui.round_robin_enabled=Round Robin Enabled
 enderio.gui.round_robin_disabled=Round Robin Disabled
 enderio.gui.self_feed_enabled=Self Feed Enabled
 enderio.gui.self_feed_disabled=Self Feed Disabled
-enderio.gui.item_filter_upgrade=Insert Filter Upgrade
-enderio.gui.item_speed_upgrade=Insert Speed Upgrades/Downgrades
-enderio.gui.item_speed_upgrade2=Max Upgrades is 15; Max Downgrades is 1
-enderio.gui.item_function_upgrade=Insert Function Upgrade
-enderio.gui.item_function_upgrade2=Currently Disabled due to Inventory Panel Missing
+enderio.gui.item_filter_upgrade=Filter Upgrade
+enderio.gui.item_function_upgrade=Function Upgrade
+enderio.gui.item_function_upgrade2=Max Speed Upgrades is 15
+enderio.gui.item_function_upgrade3=Max Speed Downgrades is 1
 enderio.gui.signal_color=Signal Color
 enderio.gui.priority=Priority
 

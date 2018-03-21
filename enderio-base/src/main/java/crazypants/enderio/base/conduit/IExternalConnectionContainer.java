@@ -17,11 +17,6 @@ public interface IExternalConnectionContainer {
   /**
    * Returns true if there are speed upgrades
    */
-  boolean hasSpeedUpgrades();
-
-  /**
-   * Returns true if there is a function upgrade
-   */
   boolean hasFunctionUpgrade();
 
   /**

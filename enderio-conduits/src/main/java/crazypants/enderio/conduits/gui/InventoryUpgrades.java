@@ -2,7 +2,7 @@ package crazypants.enderio.conduits.gui;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.conduit.item.ItemExtractSpeedUpgrade;
+import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.conduits.conduit.item.IItemConduit;
 import net.minecraft.item.ItemStack;
@@ -27,7 +27,7 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
   public ItemStack getStackInSlot(int slot) {
     switch (slot) {
     case 0:
-      return itemConduit.getSpeedUpgrade(dir);
+      return itemConduit.getFunctionUpgrade(dir);
     // TODO Inventory
     // case 1:
     // return itemConduit.getFunctionUpgrade(dir);
@@ -83,7 +83,7 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
   private void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
     switch (slot) {
     case 0:
-      itemConduit.setSpeedUpgrade(dir, stack);
+      itemConduit.setFunctionUpgrade(dir, stack);
       break;
     // TODO Inventory
     // case 1:
@@ -104,7 +104,7 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     }
     switch (slot) {
     case 0:
-      return stack.getItem() instanceof ItemExtractSpeedUpgrade;
+      return stack.getItem() instanceof ItemFunctionUpgrade;
     // TODO Inventory
     // case 1:
     // final FunctionUpgrade functionUpgrade = ItemFunctionUpgrade.getFunctionUpgrade(item);

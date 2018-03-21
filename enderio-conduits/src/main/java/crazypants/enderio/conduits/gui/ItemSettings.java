@@ -65,7 +65,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
   private int priLeft = 46;
   private int priWidth = 32;
 
-  private final GuiToolTip speedUpgradeTooltip;
   private final GuiToolTip functionUpgradeTooltip;
   private final GuiToolTip filterExtractUpgradeTooltip;
   private final GuiToolTip filterInsertUpgradeTooltip;
@@ -112,21 +111,13 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
       }
     };
 
-    speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 22, customTop + 43, 18, 18), Lang.GUI_ITEM_SPEED_UPGRADE.get(),
-        Lang.GUI_ITEM_SPEED_UPGRADE_2.get()) {
-      @Override
-      public boolean shouldDraw() {
-        return !gui.getContainer().hasSpeedUpgrades() && super.shouldDraw();
-      }
-    };
-
     // ArrayList<String> list = new ArrayList<String>();
     // SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.conduit.item.functionupgrade.line");
     // for (FunctionUpgrade upgrade : FunctionUpgrade.values()) {
     // list.add(EnderIO.lang.localizeExact(upgrade.unlocName.concat(".name")));
     // }
-    functionUpgradeTooltip = new GuiToolTip(new Rectangle(x + 4, customTop + 43, 18, 18), Lang.GUI_ITEM_FUNCTION_UPGRADE.get(),
-        Lang.GUI_ITEM_FUNCTION_UPGRADE_2.get()) {
+    functionUpgradeTooltip = new GuiToolTip(new Rectangle(x - 22, customTop + 43, 18, 18), Lang.GUI_ITEM_FUNCTION_UPGRADE.get(),
+        Lang.GUI_ITEM_FUNCTION_UPGRADE_2.get(), Lang.GUI_ITEM_FUNCTION_UPGRADE_3.get()) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasFunctionUpgrade() && super.shouldDraw();
@@ -203,12 +194,11 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
 
     gui.addToolTip(filterExtractUpgradeTooltip);
     gui.addToolTip(filterInsertUpgradeTooltip);
-    gui.addToolTip(functionUpgradeTooltip);
     loopB.onGuiInit();
     loopB.setSelected(itemConduit.isSelfFeedEnabled(gui.getDir()));
     roundRobinB.onGuiInit();
     roundRobinB.setSelected(itemConduit.isRoundRobinEnabled(gui.getDir()));
-    gui.addToolTip(speedUpgradeTooltip);
+    gui.addToolTip(functionUpgradeTooltip);
 
     priUpB.onGuiInit();
     priDownB.onGuiInit();
@@ -282,7 +272,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     loopB.detach();
     priUpB.detach();
     priDownB.detach();
-    gui.removeToolTip(speedUpgradeTooltip);
     gui.removeToolTip(functionUpgradeTooltip);
     gui.removeToolTip(filterExtractUpgradeTooltip);
     gui.removeToolTip(filterInsertUpgradeTooltip);
