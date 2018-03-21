@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
@@ -29,7 +28,6 @@ import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.powertools.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketGuiChange;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkStateRequest;
-import crazypants.enderio.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -51,19 +49,19 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   protected static final int CONFIG_ID = 377996104;
 
-  private static final int POWER_X = 11 + 18;
+  private static final int POWER_X = 8;
   private static final int POWER_Y = 9;
   private static final int POWER_WIDTH = 10;
   private static final int POWER_HEIGHT = 68;
   protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
 
-  private int inputX = 78 + 24;
+  private int inputX = 104;
   private int inputY = 18;
 
-  private int outputX = 78 + 24;
+  private int outputX = 104;
   private int outputY = 36;
 
-  private int rightMargin = 8 + 24;
+  private int rightMargin = 8;
 
   private final @Nonnull TileCapBank capBank;
 
@@ -82,17 +80,14 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   private boolean initState = true;
   private boolean textFieldsHaveRealData = false;
 
-  private final @Nonnull ContainerCapBank container;
-
   @SuppressWarnings("rawtypes")
   public GuiCapBank(Entity player, InventoryPlayer playerInv, @Nonnull TileCapBank te, @Nonnull ContainerCapBank container) {
     super(container, "capacitor_bank");
     capBank = te;
-    this.container = (ContainerCapBank) inventorySlots;
 
     updateState();
 
-    xSize = 176 + 42;
+    xSize = 176;
 
     addToolTip(new GuiToolTip(new Rectangle(7, POWER_Y + 1, POWER_WIDTH, POWER_HEIGHT - 1), "") {
 
@@ -115,7 +110,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
     });
 
-    int x = xSize - rightMargin - GuiMachineBase.BUTTON_SIZE - 21;
+    int x = xSize - rightMargin - GuiMachineBase.BUTTON_SIZE;
     int y = inputY;
     inputRsButton = new RedstoneModeButton(this, -1, x, y, new IRedstoneModeControlable() {
 
@@ -264,23 +259,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
-    drawTexturedModalRect(sx, sy, 0, 0, xSize - 21, ySize);
-
-    if (container.hasBaublesSlots()) {
-      drawTexturedModalRect(sx + 194, sy + 6, 221, 78, 24, 39);
-      for (int i = 1; i < container.baubles.getSizeInventory(); i++) {
-        drawTexturedModalRect(sx + 194, sy + 11 + i * 18, 221, 137, 24, 23);
-      }
-      RenderUtil.bindTexture(baublesBackground);
-      for (int i = 0; i < container.baubles.getSizeInventory(); i++) {
-        if (Prep.isInvalid(container.baubles.getStackInSlot(i))) {
-          final int textureX = 77 + (i / 4) * 19;
-          final int textureY = 8 + (i % 4) * 18;
-          drawTexturedModalRect(sx + 196, sy + 12 + i * 18, textureX, textureY, 16, 16);
-        }
-      }
-      bindGuiTexture();
-    }
+    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
 
     int i1 = getEnergyStoredScaled(POWER_HEIGHT);
     drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 176 + 21, 0, POWER_WIDTH, i1);
@@ -302,13 +281,13 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
     str = EnderIO.lang.localize("gui.cap_bank.max_input") + ":";
     swid = fr.getStringWidth(str);
-    x = guiLeft + inputX - swid - 3;
+    x = guiLeft + inputX - swid - 26;
     y = guiTop + inputY + 2;
     drawString(fr, str, x, y, -1);
 
     str = EnderIO.lang.localize("gui.cap_bank.max_output") + ":";
     swid = fr.getStringWidth(str);
-    x = guiLeft + outputX - swid - 3;
+    x = guiLeft + outputX - swid - 26;
     y = guiTop + outputY + 2;
     drawString(fr, str, x, y, -1);
 
@@ -318,26 +297,6 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   @Override
   public void drawHoveringText(@Nonnull List<String> par1List, int par2, int par3, @Nonnull FontRenderer font) {
     super.drawHoveringText(par1List, par2, par3, font);
-  }
-
-  @Override
-  public int getGuiLeft() {
-    return guiLeft + getOverlayOffsetX();
-  }
-
-  @Override
-  public int getGuiTop() {
-    return guiTop;
-  }
-
-  @Override
-  public int getXSize() {
-    return xSize - 42;
-  }
-
-  @Override
-  public int getOverlayOffsetX() {
-    return 22;
   }
 
   @Override
@@ -377,7 +336,6 @@ public class GuiCapBank extends GuiContainerBaseEIO {
       return true;
     }
     if (network.getStateUpdateCount() > initialStateCount) {
-      container.updateInventory();
       updateFieldsFromState();
       initState = false;
       return true;

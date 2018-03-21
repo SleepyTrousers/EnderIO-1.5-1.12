@@ -16,7 +16,6 @@ import crazypants.enderio.powertools.machine.capbank.InfoDisplayType;
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkEnergyRequest;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkStateRequest;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -36,8 +35,6 @@ public class CapBankClientNetwork implements ICapBankNetwork {
 
   private @Nonnull RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
   private @Nonnull RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
-
-  private final @Nonnull InventoryImpl inventory = new InventoryImpl();
 
   private float avgInput;
   private float avgOutput;
@@ -76,16 +73,6 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     energyStored = state.getEnergyStored();
     inputControlMode = state.getInputMode();
     outputControlMode = state.getOutputMode();
-
-    BlockPos pos = state.getInventoryImplLocation();
-    if (pos == null) {
-      inventory.setCapBank(null);
-    } else {
-      TileEntity te = world.getTileEntity(pos);
-      if (te instanceof TileCapBank) {
-        inventory.setCapBank((TileCapBank) te);
-      }
-    }
     avgInput = state.getAverageInput();
     avgOutput = state.getAverageOutput();
 
@@ -188,11 +175,6 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   @Override
   public void setOutputControlMode(@Nonnull RedstoneControlMode outputControlMode) {
     this.outputControlMode = outputControlMode;
-  }
-
-  @Override
-  public @Nonnull InventoryImpl getInventory() {
-    return inventory;
   }
 
   @Override

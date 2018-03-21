@@ -10,11 +10,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
-import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
-import com.enderio.core.common.util.Util;
-import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.TileEntityEio;
@@ -35,7 +32,6 @@ import crazypants.enderio.powertools.machine.capbank.network.CapBankClientNetwor
 import crazypants.enderio.powertools.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.powertools.machine.capbank.network.EnergyReceptor;
 import crazypants.enderio.powertools.machine.capbank.network.ICapBankNetwork;
-import crazypants.enderio.powertools.machine.capbank.network.InventoryImpl;
 import crazypants.enderio.powertools.machine.capbank.network.NetworkUtil;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkIdRequest;
 import crazypants.enderio.util.NbtValue;
@@ -46,8 +42,6 @@ import info.loenwind.autosave.handlers.enderio.HandleIOMode;
 import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -58,7 +52,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IIoConfigurable, IPowerStorage, IInventory, IPaintable.IPaintableTileEntity {
+public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IIoConfigurable, IPowerStorage, IPaintable.IPaintableTileEntity {
 
   @Store(handler = HandleIOMode.class)
   private Map<EnumFacing, IoMode> faceModes;
@@ -91,7 +85,6 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   private int networkId = -1;
   private int idRequestTimer = 0;
 
-  private boolean dropItems;
   private boolean displayTypesDirty;
   private boolean revalidateDisplayTypes;
   private int lastComparatorState;
@@ -155,31 +148,6 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
     }
   }
 
-  public void moveInventoryToNetwork() {
-    if (network == null) {
-      return;
-    }
-    if (network.getInventory().getCapBank() == this && !InventoryImpl.isInventoryEmtpy(inventory)) {
-      for (TileCapBank cb : network.getMembers()) {
-        if (cb != this) {
-          for (int i = 0; i < inventory.size(); i++) {
-            cb.inventory.set(i, inventory.get(i));
-            inventory.set(i, ItemStack.EMPTY);
-          }
-          network.getInventory().setCapBank(cb);
-          markDirty();
-          cb.markDirty();
-          break;
-        }
-      }
-    }
-  }
-
-  public void onBreakBlock() {
-    // If we are holding the networks inventory when we are broken, transfer it to another member of the network
-    moveInventoryToNetwork();
-  }
-
   @Override
   public void doUpdate() {
     if (world.isRemote) {
@@ -227,8 +195,6 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
       world.updateComparatorOutputLevel(getPos(), getBlockType());
       lastComparatorState = comparatorState;
     }
-
-    doDropItems();
   }
 
   // ---------- IO
@@ -745,143 +711,6 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   @Override
   public boolean displayPower() {
-    return true;
-  }
-
-  // ------------------- Inventory TODO Move to capabilities
-
-  @Override
-  public void closeInventory(@Nonnull EntityPlayer player) {
-
-  }
-
-  @Override
-  public void openInventory(@Nonnull EntityPlayer player) {
-
-  }
-
-  @Override
-  public int getField(int id) {
-    return 0;
-  }
-
-  @Override
-  public void setField(int id, int value) {
-
-  }
-
-  @Override
-  public int getFieldCount() {
-    return 0;
-  }
-
-  @Override
-  public @Nonnull ItemStack getStackInSlot(int slot) {
-    if (network == null) {
-      return ItemStack.EMPTY;
-    }
-    return network.getInventory().getStackInSlot(slot);
-  }
-
-  @Override
-  public @Nonnull ItemStack decrStackSize(int fromSlot, int amount) {
-    if (network == null) {
-      return ItemStack.EMPTY;
-    }
-    return network.getInventory().decrStackSize(fromSlot, amount);
-  }
-
-  @Override
-  public void setInventorySlotContents(int slot, @Nonnull ItemStack itemstack) {
-    if (network == null) {
-      return;
-    }
-    network.getInventory().setInventorySlotContents(slot, itemstack);
-  }
-
-  @Override
-  public @Nonnull ItemStack removeStackFromSlot(int index) {
-    if (network == null) {
-      return ItemStack.EMPTY;
-    }
-    return network.getInventory().removeStackFromSlot(index);
-  }
-
-  @Override
-  public void clear() {
-    if (network == null) {
-      return;
-    }
-    network.getInventory().clear();
-  }
-
-  @Override
-  public int getSizeInventory() {
-    return 4;
-  }
-
-  @Override
-  public boolean isEmpty() {
-    for (ItemStack stack : inventory) {
-      if (!stack.isEmpty()) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  @Override
-  public int getInventoryStackLimit() {
-    return 1;
-  }
-
-  @Override
-  public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
-    return canPlayerAccess(player);
-  }
-
-  @Override
-  public boolean isItemValidForSlot(int slot, @Nonnull ItemStack itemstack) {
-    if (itemstack.isEmpty()) {
-      return false;
-    }
-    return PowerHandlerUtil.getCapability(itemstack, null) != null;
-  }
-
-  public @Nonnull NNList<ItemStack> getInventory() {
-    return inventory;
-  }
-
-  public void dropItems() {
-    dropItems = true;
-  }
-
-  public void doDropItems() {
-    if (!dropItems) {
-      return;
-    }
-    Vector3d dropLocation;
-    EntityPlayer player = world.getClosestPlayer(getPos().getX(), getPos().getY(), getPos().getZ(), 32, false);
-    if (player != null) {
-      dropLocation = EntityUtil.getEntityPosition(player);
-    } else {
-      dropLocation = new Vector3d(getPos());
-    }
-    Util.dropItems(world, inventory.toArray(new ItemStack[inventory.size()]), (int) dropLocation.x, (int) dropLocation.y, (int) dropLocation.z, false);
-    for (int i = 0; i < inventory.size(); i++) {
-      inventory.set(i, ItemStack.EMPTY);
-    }
-    dropItems = false;
-    markDirty();
-  }
-
-  @Override
-  public @Nonnull String getName() {
-    return getName();
-  }
-
-  @Override
-  public boolean hasCustomName() {
     return true;
   }
 
