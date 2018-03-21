@@ -47,6 +47,10 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
     return new ItemBasicItemFilter(modObject, BasicFilterTypes.filterUpgradeLimited);
   }
 
+  public static ItemBasicItemFilter createBigItemFilter(@Nonnull IModObject modObject) {
+    return new ItemBasicItemFilter(modObject, BasicFilterTypes.filterUpgradeBig);
+  }
+
   protected ItemBasicItemFilter(@Nonnull IModObject modObject, BasicFilterTypes filterType) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);

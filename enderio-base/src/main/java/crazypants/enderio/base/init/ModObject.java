@@ -145,9 +145,11 @@ public enum ModObject implements IModObject.Registerable {
   blockEndermanSkull(BlockEndermanSkull.class, ModTileEntity.TileEndermanSkull),
   itemEnderFood(ItemEnderFood.class),
 
+  // Filters
   itemBasicItemFilter(ItemBasicItemFilter.class, "createBasicItemFilter"),
   itemAdvancedItemFilter(ItemBasicItemFilter.class, "createAdvancedItemFilter"),
   itemLimitedItemFilter(ItemBasicItemFilter.class, "createLimitedItemFilter"),
+  itemBigItemFilter(ItemBasicItemFilter.class, "createBigItemFilter"),
   itemExistingItemFilter(ItemExistingItemFilter.class),
   itemModItemFilter(ItemModItemFilter.class),
   itemPowerItemFilter(ItemPowerItemFilter.class),

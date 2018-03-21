@@ -34,7 +34,7 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
   private final ToggleButton stickyB;
   private final CycleButton<DamageModeIconHolder> damageB;
 
-  final boolean isAdvanced, isLimited;
+  final boolean isAdvanced, isLimited, isBig;
 
   private final ItemFilter filter;
 
@@ -46,7 +46,7 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
   }
 
   public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, int xOffset, int yOffset, TileEntity te) {
-    super(playerInv, filterContainer, te, "basic_item_filter", "advanced_item_filter");
+    super(playerInv, filterContainer, te, "basic_item_filter", "advanced_item_filter", "big_item_filter");
     this.xOffset = xOffset;
     this.yOffset = yOffset;
 
@@ -54,10 +54,16 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
 
     isAdvanced = filter.isAdvanced();
     isLimited = filter.isLimited();
+    isBig = filter.isBig();
 
     int butLeft = xOffset + 98;
     int x = butLeft;
     int y = yOffset + 1;
+
+    if (isBig) {
+      y = 13;
+      x += 27;
+    }
     whiteListB = new IconButton(this, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
 
@@ -175,7 +181,7 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
 
   @Override
   public void bindGuiTexture() {
-    super.bindGuiTexture(isAdvanced ? 1 : 0);
+    super.bindGuiTexture(isBig ? 2 : (isAdvanced ? 1 : 0));
   }
 
 }
