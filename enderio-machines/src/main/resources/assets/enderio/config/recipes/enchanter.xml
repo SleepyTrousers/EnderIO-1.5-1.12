@@ -102,7 +102,7 @@ For more information, see base.xml.
   </recipe>
   <recipe name="Enchanter: minecraft:looting" required="true" disabled="false">
     <enchanting>
-      <input name="oredict:itemSkull" amount="1"/>
+      <input name="enderio:block_enderman_skull:2" amount="1"/>
       <enchantment name="minecraft:looting" costMultiplier="1"/>
     </enchanting>
   </recipe>
@@ -176,6 +176,69 @@ For more information, see base.xml.
     <enchanting>
       <input name="ENDER_CRYSTAL" amount="1"/>
       <enchantment name="enderio:soulbound" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+<!--
+EnderZoo Enchantments WitherArrow, WitherWeapon
+-->
+    <recipe name="Enchanter: enderzoo:witherarrow" required="false" disabled="false">
+    <enchanting>
+      <input name="minecraft:tipped_arrow" nbt='{Potion:"enderzoo:withering"}' amount="8"/>
+      <enchantment name="enderzoo:witherarrow" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+    <recipe name="Enchanter: enderzoo:witherweapon" required="false" disabled="false">
+    <enchanting>
+      <input name="enderzoo:witheringdust" amount="4"/>
+      <enchantment name="enderzoo:witherweapon" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+<!--
+COFH Core Enchantments Holding, Insight, Leech, Multishot, Smelting, Vorpal
+-->
+    <recipe name="Enchanter: cofhcore:holding" required="false" disabled="false">
+    <enchanting>
+      <input name="minecraft:trapped_chest" amount="16"/>
+      <enchantment name="cofhcore:holding" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+    <recipe name="Enchanter: cofhcore:insight" required="false" disabled="false">
+    <enchanting>
+      <input name="ingotCopper" amount="20"/>
+      <enchantment name="cofhcore:insight" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+    <recipe name="Enchanter: cofhcore:leech" required="false" disabled="false">
+    <enchanting>
+      <input name="minecraft:soul_sand" amount="4"/>
+      <enchantment name="cofhcore:leech" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+    <recipe name="Enchanter: cofhcore:multishot" required="false" disabled="false">
+    <enchanting>
+      <input name="minecraft:spectral_arrow" amount="4"/>
+      <enchantment name="cofhcore:multishot" costMultiplier="2"/>
+    </enchanting>
+  </recipe>
+    <recipe name="Enchanter: cofhcore:smelting" required="false" disabled="false">
+    <enchanting>
+      <input name="minecraft:fire_charge" amount="16"/>
+      <enchantment name="cofhcore:smelting" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+    <recipe name="Enchanter: cofhcore:vorpal" required="false" disabled="false">
+    <enchanting>
+      <input name="itemSkull" amount="4"/>
+      <enchantment name="cofhcore:vorpal" costMultiplier="2"/>
+    </enchanting>
+  </recipe>
+<!--
+Draconic Evolution Enchant, Enchant_Reaper
+-->
+  <recipe name="Enchanter: draconicevolution:enchant_reaper" required="false" disabled="false">
+    <enchanting>
+      <input name="draconicevolution:draconium_block" amount="12"/>
+      <enchantment name="draconicevolution:enchant_reaper" costMultiplier="2"/>
     </enchanting>
   </recipe>
 
