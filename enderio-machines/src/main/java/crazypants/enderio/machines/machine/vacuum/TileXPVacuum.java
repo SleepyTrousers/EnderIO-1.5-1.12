@@ -32,8 +32,6 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   private static final int IO_MB_TICK = 10000; // no need to slow down the vacuum any more than necessary, let the limit be the piping
 
-  private double range = VacuumConfig.vacuumXPRange.get();
-
   @Store
   private boolean formed = false;
   private boolean formedRender = false;
@@ -82,18 +80,21 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   private void doHoover() {
     boolean pickUpThisTick = xpCon.getFluidAmount() == 0;
-    for (EntityXPOrb entity : world.getEntitiesWithinAABB(EntityXPOrb.class, getBounds(), this)) { // note the Predicate parameter
+    for (EntityXPOrb entity : world.getEntitiesWithinAABB(EntityXPOrb.class, new BoundingBox(getPos()).expand(VacuumConfig.vacuumXPRange.get()), this)) {
+      // note the Predicate parameter
       double x = (pos.getX() + 0.5D - entity.posX);
       double y = (pos.getY() + 0.5D - entity.posY);
       double z = (pos.getZ() + 0.5D - entity.posZ);
 
       double distance = Math.sqrt(x * x + y * y + z * z);
       if (distance < 1.25) {
-        if (pickUpThisTick) {
-          hooverEntity(entity);
+        if (pickUpThisTick && !world.isRemote && !entity.isDead) {
+          int xpValue = entity.getXpValue();
+          xpCon.addExperience(xpValue);
+          entity.setDead();
         }
       } else {
-        double distScale = Math.min(1d, Math.max(0.25d, 1d - distance / range));
+        double distScale = Math.min(1d, Math.max(0.25d, 1d - distance / VacuumConfig.vacuumXPRange.get()));
         distScale *= distScale;
 
         entity.motionX += x / distance * distScale * speed;
@@ -107,23 +108,6 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
     }
   }
 
-  private void hooverEntity(EntityXPOrb entity) {
-    if (!world.isRemote && !entity.isDead) {
-      int xpValue = entity.getXpValue();
-      xpCon.addExperience(xpValue);
-      entity.setDead();
-    }
-  }
-
-  private int limitRange(int rangeIn) {
-    return Math.max(0, Math.min(VacuumConfig.vacuumXPRange.get(), rangeIn));
-  }
-
-  public void setRange(int range) {
-    this.range = limitRange(range);
-    markDirty();
-  }
-
   @Override
   public boolean equals(@Nullable Object obj) {
     return super.equals(obj);
@@ -133,18 +117,6 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
   public int hashCode() {
     return super.hashCode();
   }
-
-  // RANGE
-
-  public @Nonnull BoundingBox getBounds() {
-    return new BoundingBox(getPos()).expand(getRange());
-  }
-
-  public double getRange() {
-    return range;
-  }
-
-  // RANGE END
 
   private final @Nonnull Callback<EnumFacing> push_callback = new Callback<EnumFacing>() {
     @Override
