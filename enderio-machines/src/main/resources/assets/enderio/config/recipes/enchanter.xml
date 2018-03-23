@@ -102,7 +102,7 @@ For more information, see base.xml.
   </recipe>
   <recipe name="Enchanter: minecraft:looting" required="true" disabled="false">
     <enchanting>
-      <input name="enderio:block_enderman_skull:2" amount="1"/>
+      <input name="itemSkull" amount="1"/>
       <enchantment name="minecraft:looting" costMultiplier="1"/>
     </enchanting>
   </recipe>
