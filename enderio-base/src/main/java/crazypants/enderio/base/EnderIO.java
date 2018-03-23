@@ -101,8 +101,6 @@ public class EnderIO implements IEnderIOAddon {
     Config.init(event);
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Config.Post());
 
-    proxy.loadIcons();
-
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.PreInit());
 
     proxy.init(event);

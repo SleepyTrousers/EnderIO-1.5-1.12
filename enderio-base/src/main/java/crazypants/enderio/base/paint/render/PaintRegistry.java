@@ -11,7 +11,9 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.base.Function;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -26,10 +28,12 @@ import net.minecraftforge.client.model.ModelStateComposition;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class PaintRegistry {
 
   public static enum PaintMode {
@@ -220,12 +224,22 @@ public class PaintRegistry {
 
   private static PaintRegistryServer instance = null;
 
-  public static void create() {
+  public static PaintRegistryServer getInstance() {
     if (instance == null) {
-      instance = new PaintRegistryClient();
-      instance.init();
-      MinecraftForge.EVENT_BUS.register(instance);
+      if (EnderIO.proxy.isDedicatedServer()) {
+        instance = new PaintRegistryServer();
+      } else {
+        instance = new PaintRegistryClient();
+        instance.init();
+        MinecraftForge.EVENT_BUS.register(instance);
+      }
     }
+    return instance;
+  }
+
+  @SubscribeEvent
+  public static void register(EnderIOLifecycleEvent.PreInit event) {
+    getInstance();
   }
 
   public static void registerModel(String name, ResourceLocation location) {
@@ -233,11 +247,11 @@ public class PaintRegistry {
   }
 
   public static void registerModel(String name, ResourceLocation location, PaintMode paintMode) {
-    create();
-    instance.registerModel(name, location, paintMode);
+    getInstance().registerModel(name, location, paintMode);
   }
 
   public static <T> T getModel(Class<T> clazz, String name, @Nullable IBlockState paintSource, IModelState rotation) {
-    return instance.getModel(clazz, name, paintSource, rotation);
+    return getInstance().getModel(clazz, name, paintSource, rotation);
   }
+
 }
