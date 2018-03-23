@@ -228,7 +228,7 @@ COFH Core Enchantments Holding, Insight, Leech, Multishot, Smelting, Vorpal
   </recipe>
     <recipe name="Enchanter: cofhcore:vorpal" required="false" disabled="false">
     <enchanting>
-      <input name="itemSkull" amount="4"/>
+      <input name="obsidian" amount="4"/>
       <enchantment name="cofhcore:vorpal" costMultiplier="2"/>
     </enchanting>
   </recipe>
