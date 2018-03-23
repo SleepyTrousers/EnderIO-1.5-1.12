@@ -26,6 +26,7 @@ import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.config.config.SoulBinderConfig;
 import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
+
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -110,11 +111,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     if (recipe == null) {
       return null;
     }
-    if(!getStackInSlot(3).isEmpty()) {
-    	
-    	return null;
-    	
-    }
+    
     int xpRequired = ((ISoulBinderRecipe) recipe).getExperienceRequired();
     if (xpCont.getExperienceTotal() >= xpRequired) {
       return recipe;
