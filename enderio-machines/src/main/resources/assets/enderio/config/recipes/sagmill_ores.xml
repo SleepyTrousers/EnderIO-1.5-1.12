@@ -2456,63 +2456,63 @@
   <recipe name="Sagmill: draconicevolution:draconium_ore:0 Ore" required="false">
     <sagmilling energy="3600">
       <input name="draconicevolution:draconium_ore:0" />
-      <output name="dustDraconic" amount="2" />
+      <output name="dustDraconium" amount="2" />
       <output name="oredict:cobblestone" chance="0.15" />
     </sagmilling>
   </recipe>
 
   <recipe name="Sagmill: Nether Draconic Ore" required="false">
     <sagmilling energy="3200">
-      <input name="oreNetherDraconic" />
-      <output name="dustDraconic" amount="4" />
+      <input name="oreNetherDraconium" />
+      <output name="dustDraconium" amount="4" />
       <output name="minecraft:netherrack" chance="0.15" />
     </sagmilling>
   </recipe>
 
-  <recipe name="Sagmill: Dense Draconic Ore" required="false">
+  <recipe name="Sagmill: Dense Draconium Ore" required="false">
     <sagmilling energy="4800">
-      <input name="denseoreDraconic" />
-      <output name="oreDraconic" amount="4" />
+      <input name="denseoreDraconium" />
+      <output name="oreDraconium" amount="4" />
     </sagmilling>
   </recipe>
 
-  <recipe name="Sagmill: Draconic Ingot" required="false">
+  <recipe name="Sagmill: Draconium Ingot" required="false">
     <sagmilling energy="2400" bonus="none">
-      <input name="ingotDraconic" />
-      <output name="dustDraconic" />
+      <input name="ingotDraconium" />
+      <output name="dustDraconium" />
     </sagmilling>
   </recipe>
 
-  <recipe name="Smelting: Draconic Dust" required="false">
+  <recipe name="Smelting: Draconium Dust" required="false">
     <smelting>
-      <input name="dustDraconic" />
-      <output name="ingotDraconic" />
+      <input name="dustDraconium" />
+      <output name="ingotDraconium" />
     </smelting>
   </recipe>
 
-  <recipe name="Sagmill: Draconic Block" required="false">
+  <recipe name="Sagmill: Draconium Block" required="false">
     <sagmilling energy="3600" bonus="none">
-      <input name="blockDraconic" />
-      <output name="dustDraconic" amount="9" />
+      <input name="blockDraconium" />
+      <output name="dustDraconium" amount="9" />
     </sagmilling>
   </recipe>
 
-  <!-- Draconic (Draconic) -->
+  <!-- Draconium (Draconic) -->
 
   <recipe name="Sagmill: draconicevolution:draconium_ore:1 Ore" required="false">
     <sagmilling energy="3600">
       <input name="draconicevolution:draconium_ore:1" />
-      <output name="dustDraconic" amount="2" />
+      <output name="dustDraconium" amount="2" />
       <output name="minecraft:netherrack" chance="0.15" />
     </sagmilling>
   </recipe>
 
-  <!-- Draconic (Draconic) -->
+  <!-- Draconium (Draconic) -->
 
   <recipe name="Sagmill: draconicevolution:draconium_ore:2 Ore" required="false">
     <sagmilling energy="3600">
       <input name="draconicevolution:draconium_ore:2" />
-      <output name="dustDraconic" amount="2" />
+      <output name="dustDraconium" amount="2" />
       <output name="minecraft:end_stone" chance="0.15" />
     </sagmilling>
   </recipe>
