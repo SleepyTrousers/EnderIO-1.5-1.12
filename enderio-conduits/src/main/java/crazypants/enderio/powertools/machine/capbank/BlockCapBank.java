@@ -257,7 +257,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IEioGuiHandle
   public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     TileCapBank te = getTileEntity(world, pos);
     if (te != null) {
-      return ContainerCapBank.create(player.inventory, te, param1);
+      return new ContainerCapBank(player.inventory, te);
     }
     return null;
   }
@@ -268,7 +268,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IEioGuiHandle
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     TileCapBank te = getTileEntity(world, pos);
     if (te != null) {
-      return new GuiCapBank(player, player.inventory, te, ContainerCapBank.create(player.inventory, te, param1));
+      return new GuiCapBank(player, player.inventory, te, new ContainerCapBank(player.inventory, te));
     }
     return null;
   }
@@ -370,28 +370,6 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IEioGuiHandle
     default:
       return EnumFacing.values()[4];
     }
-  }
-
-  @Override
-  public boolean removedByPlayer(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, boolean willHarvest) {
-    if (!world.isRemote && (!player.capabilities.isCreativeMode)) {
-      TileCapBank te = getTileEntity(world, pos);
-      if (te != null) {
-        te.moveInventoryToNetwork();
-      }
-    }
-    return super.removedByPlayer(bs, world, pos, player, willHarvest);
-  }
-
-  @Override
-  public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
-    if (!world.isRemote) {
-      TileCapBank te = getTileEntity(world, pos);
-      if (te != null) {
-        te.onBreakBlock();
-      }
-    }
-    super.breakBlock(world, pos, state);
   }
 
   @Override

@@ -48,7 +48,7 @@ public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMac
     addProgressTooltip(55, 35, 14, 14);
     addProgressTooltip(103, 35, 14, 14);
 
-    addDrawingElement(new PowerBar<>(furnaceInventory, this));
+    addDrawingElement(new PowerBar(furnaceInventory, this));
   }
 
   @Override

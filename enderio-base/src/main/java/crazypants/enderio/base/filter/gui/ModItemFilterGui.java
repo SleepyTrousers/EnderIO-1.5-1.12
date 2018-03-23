@@ -108,6 +108,7 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+
     for (int i = 0; i < inputBounds.length; i++) {
       String mod = filter.getModAt(i);
       if (mod != null) {
@@ -148,6 +149,12 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
     updateButtons();
     PacketHandler.INSTANCE
         .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
+  }
+
+  @Override
+  @Nonnull
+  protected String getUnlocalisedNameForHeading() {
+    return Lang.GUI_MOD_ITEM_FILTER.get();
   }
 
 }

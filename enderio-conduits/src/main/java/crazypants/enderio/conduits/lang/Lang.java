@@ -18,10 +18,9 @@ public enum Lang implements ILang {
   GUI_SELF_FEED_ENABLED(".gui.self_feed_enabled"),
   GUI_SELF_FEED_DISABLED(".gui.self_feed_disabled"),
   GUI_ITEM_FILTER_UPGRADE(".gui.item_filter_upgrade"),
-  GUI_ITEM_SPEED_UPGRADE(".gui.item_speed_upgrade"),
-  GUI_ITEM_SPEED_UPGRADE_2(".gui.item_speed_upgrade2"),
   GUI_ITEM_FUNCTION_UPGRADE(".gui.item_function_upgrade"),
   GUI_ITEM_FUNCTION_UPGRADE_2(".gui.item_function_upgrade2"),
+  GUI_ITEM_FUNCTION_UPGRADE_3(".gui.item_function_upgrade3"),
   GUI_SIGNAL_COLOR(".gui.signal_color"),
   GUI_PRIORITY(".gui.priority"),
 

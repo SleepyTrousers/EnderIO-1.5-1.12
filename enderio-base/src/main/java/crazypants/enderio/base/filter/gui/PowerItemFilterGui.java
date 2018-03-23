@@ -109,4 +109,10 @@ public class PowerItemFilterGui extends AbstractGuiItemFilter {
     PacketHandler.INSTANCE
         .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
   }
+
+  @Override
+  @Nonnull
+  protected String getUnlocalisedNameForHeading() {
+    return Lang.GUI_POWER_ITEM_FILTER.get();
+  }
 }

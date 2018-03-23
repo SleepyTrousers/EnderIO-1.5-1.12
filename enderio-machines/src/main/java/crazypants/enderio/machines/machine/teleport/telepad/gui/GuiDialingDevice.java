@@ -11,7 +11,7 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
-import crazypants.enderio.base.machine.gui.CapPowerBar;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.telepad.TileDialingDevice;
@@ -85,7 +85,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO implements IDialingDev
       }
     });
 
-    addDrawingElement(new CapPowerBar(te.getEnergy(), this, powerX, powerY, 10, powerScale));
+    addDrawingElement(new PowerBar(te.getEnergy(), this, powerX, powerY, 10, powerScale));
   }
 
   @Override

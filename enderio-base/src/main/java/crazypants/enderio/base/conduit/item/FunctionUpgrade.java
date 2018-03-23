@@ -7,9 +7,21 @@ import net.minecraft.util.ResourceLocation;
 
 public enum FunctionUpgrade {
 
-  // TODO Move Inventory Panel
+  INVENTORY_PANEL("inventory_panel_upgrade", "item.item_inventory_panel_upgrade", 1),
+  EXTRACT_SPEED_UPGRADE("extract_speed_upgrade", "item.item_extract_speed_upgrade", 15) {
+    @Override
+    public int getMaximumExtracted(int stackSize) {
+      return BASE_MAX_EXTRACTED + Math.min(stackSize, maxStackSize) * 4;
+    }
+  },
+  EXTRACT_SPEED_DOWNGRADE("extract_speed_downgrade", "item.item_extract_speed_downgrade", 1) {
+    @Override
+    public int getMaximumExtracted(int stackSize) {
+      return 1;
+    }
+  };
 
-  INVENTORY_PANEL("inventory_panel_upgrade", "item.item_inventory_panel_upgrade", 1);
+  public static final int BASE_MAX_EXTRACTED = 4;
 
   public final String baseName;
   public final String iconName;
@@ -29,5 +41,9 @@ public enum FunctionUpgrade {
     this.iconName = "enderio:" + name;
     this.unlocName = unlocName;
     this.maxStackSize = maxStackSize;
+  }
+
+  public int getMaximumExtracted(int stackSize) {
+    return BASE_MAX_EXTRACTED;
   }
 }

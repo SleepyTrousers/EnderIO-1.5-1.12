@@ -52,10 +52,10 @@ public interface IItemConduit extends IExtractor, IServerConduit, IClientConduit
 
   IItemFilter getOutputFilter(@Nonnull EnumFacing dir);
 
-  void setSpeedUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade);
+  void setFunctionUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade);
 
   @Nonnull
-  ItemStack getSpeedUpgrade(@Nonnull EnumFacing dir);
+  ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir);
 
   int getOutputPriority(@Nonnull EnumFacing dir);
 

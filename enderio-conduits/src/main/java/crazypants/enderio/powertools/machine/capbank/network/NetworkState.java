@@ -1,12 +1,9 @@
 package crazypants.enderio.powertools.machine.capbank.network;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
-import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.util.math.BlockPos;
 
 public class NetworkState {
 
@@ -17,12 +14,11 @@ public class NetworkState {
   private final int maxOutput;
   private final @Nonnull RedstoneControlMode inputMode;
   private final @Nonnull RedstoneControlMode outputMode;
-  private final @Nullable BlockPos invImplLoc;
   private final float averageInput;
   private final float averageOutput;
 
   public NetworkState(long energyStored, long maxEnergyStored, int maxIO, int maxInput, int maxOutput, @Nonnull RedstoneControlMode inputMode,
-      @Nonnull RedstoneControlMode outputMode, @Nullable BlockPos invImplLoc, float averageInput, float averageOutput) {
+      @Nonnull RedstoneControlMode outputMode, float averageInput, float averageOutput) {
     this.energyStored = energyStored;
     this.maxEnergyStored = maxEnergyStored;
     this.maxIO = maxIO;
@@ -30,7 +26,6 @@ public class NetworkState {
     this.maxOutput = maxOutput;
     this.inputMode = inputMode;
     this.outputMode = outputMode;
-    this.invImplLoc = invImplLoc;
     this.averageInput = averageInput;
     this.averageOutput = averageOutput;
   }
@@ -43,12 +38,6 @@ public class NetworkState {
     maxOutput = network.getMaxOutput();
     inputMode = network.getInputControlMode();
     outputMode = network.getOutputControlMode();
-    TileCapBank cb = network.getInventory().getCapBank();
-    if (cb != null) {
-      invImplLoc = cb.getLocation();
-    } else {
-      invImplLoc = null;
-    }
     averageInput = network.getAverageInputPerTick();
     averageOutput = network.getAverageOutputPerTick();
   }
@@ -81,10 +70,6 @@ public class NetworkState {
     return outputMode;
   }
 
-  public @Nullable BlockPos getInventoryImplLocation() {
-    return invImplLoc;
-  }
-
   public float getAverageInput() {
     return averageInput;
   }
@@ -101,10 +86,6 @@ public class NetworkState {
     buf.writeInt(maxOutput);
     buf.writeShort(inputMode.ordinal());
     buf.writeShort(outputMode.ordinal());
-    buf.writeBoolean(invImplLoc != null);
-    if (invImplLoc != null) {
-      buf.writeLong(invImplLoc.toLong());
-    }
     buf.writeFloat(averageInput);
     buf.writeFloat(averageOutput);
   }
@@ -112,7 +93,7 @@ public class NetworkState {
   @SuppressWarnings("null")
   public static NetworkState readFromBuf(@Nonnull ByteBuf buf) {
     return new NetworkState(buf.readLong(), buf.readLong(), buf.readInt(), buf.readInt(), buf.readInt(), RedstoneControlMode.values()[buf.readShort()],
-        RedstoneControlMode.values()[buf.readShort()], buf.readBoolean() ? BlockPos.fromLong(buf.readLong()) : null, buf.readFloat(), buf.readFloat());
+        RedstoneControlMode.values()[buf.readShort()], buf.readFloat(), buf.readFloat());
   }
 
   @Override

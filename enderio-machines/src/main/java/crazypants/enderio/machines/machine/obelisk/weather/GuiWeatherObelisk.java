@@ -43,7 +43,7 @@ public class GuiWeatherObelisk extends GuiInventoryMachineBase<TileWeatherObelis
       }
     });
 
-    addDrawingElement(new PowerBar<>(tileEntity, this, 8, 11, 63));
+    addDrawingElement(new PowerBar(tileEntity, this, 8, 11, 63));
   }
 
   @Override

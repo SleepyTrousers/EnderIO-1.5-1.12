@@ -65,8 +65,8 @@ public class ItemModItemFilter extends Item implements IItemFilterUpgrade, IReso
     super.addInformation(stack, worldIn, tooltip, flagIn);
     if (FilterRegistry.isFilterSet(stack)) {
       if (SpecialTooltipHandler.showAdvancedTooltips()) {
-        tooltip.add(TextFormatting.ITALIC + Lang.CONDUIT_FILTER_CONFIGURED.get());
-        tooltip.add(TextFormatting.ITALIC + Lang.CONDUIT_FILTER_CLEAR.get());
+        tooltip.add(Lang.ITEM_FILTER_CONFIGURED.get(TextFormatting.ITALIC));
+        tooltip.add(Lang.ITEM_FILTER_CLEAR.get(TextFormatting.ITALIC));
       }
     }
   }
