@@ -8,13 +8,14 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import crazypants.enderio.api.capacitor.CapabilityCapacitorData;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagFloat;
 
 public class CapacitorHelper {
-
+  
   private CapacitorHelper() {
   }
 
@@ -26,10 +27,7 @@ public class CapacitorHelper {
     if (capData != null) {
       return capData;
     }
-    if (stack.getItem() instanceof ICapacitorDataItem) {
-      return ((ICapacitorDataItem) stack.getItem()).getCapacitorData(stack);
-    }
-    return null;
+    return stack.getCapability(CapabilityCapacitorData.getCapNN(), null);
   }
 
   public static boolean isValidUpgrade(@Nonnull ItemStack stack) {
@@ -40,10 +38,7 @@ public class CapacitorHelper {
     if (capData != null) {
       return true;
     }
-    if (stack.getItem() instanceof ICapacitorDataItem) {
-      return true;
-    }
-    return false;
+    return stack.hasCapability(CapabilityCapacitorData.getCapNN(), null);
   }
 
   protected static @Nullable ICapacitorData getNBTCapacitorDataFromItemStack(@Nonnull ItemStack stack) {
