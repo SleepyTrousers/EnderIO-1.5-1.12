@@ -36,7 +36,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_USE;
@@ -110,6 +109,11 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     IMachineRecipe recipe = super.canStartNextTask(nextSeed);
     if (recipe == null) {
       return null;
+    }
+    if(!getStackInSlot(3).isEmpty()) {
+    	
+    	return null;
+    	
     }
     int xpRequired = ((ISoulBinderRecipe) recipe).getExperienceRequired();
     if (xpCont.getExperienceTotal() >= xpRequired) {
