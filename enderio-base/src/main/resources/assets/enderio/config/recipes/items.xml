@@ -446,4 +446,13 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Filter, Big" required="true">
+    <crafting>
+      <grid size="3x1">
+        <item name="minecraft:chorus_fruit_popped" /><item name="enderio:item_basic_item_filter" /><item name="minecraft:chorus_fruit_popped" />
+      </grid>
+      <output name="enderio:item_big_item_filter" />
+    </crafting>
+  </recipe>
+
 </enderio:recipes>
