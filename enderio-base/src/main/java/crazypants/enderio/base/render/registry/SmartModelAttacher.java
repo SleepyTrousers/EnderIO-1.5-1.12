@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.init.IModObject.Registerable;
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -40,11 +41,12 @@ import net.minecraft.util.registry.IRegistry;
 import net.minecraft.util.registry.RegistrySimple;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class SmartModelAttacher {
 
   private static class RegistrationHolder<T extends Comparable<T>, V extends T> {
@@ -89,10 +91,6 @@ public class SmartModelAttacher {
   private static <T extends Comparable<T>, V extends T> void register(@Nonnull Block block, IProperty<T> property, V defaultsValue, V autoValue,
       boolean itemOnly) {
     blocks.add(new RegistrationHolder<T, V>(block, property, defaultsValue, autoValue, itemOnly));
-  }
-
-  public static void create() {
-    MinecraftForge.EVENT_BUS.register(new SmartModelAttacher());
   }
 
   /**
@@ -178,9 +176,9 @@ public class SmartModelAttacher {
   }
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  @SubscribeEvent()
+  @SubscribeEvent
   @SideOnly(Side.CLIENT)
-  public void bakeModels(@Nonnull ModelBakeEvent event) {
+  public static void bakeModels(@Nonnull ModelBakeEvent event) {
     for (RegistrationHolder holder : blocks) {
       Block block = holder.block;
       Map<IBlockState, ModelResourceLocation> locations = event.getModelManager().getBlockModelShapes().getBlockStateMapper().getVariants(block);

@@ -26,7 +26,6 @@ import crazypants.enderio.base.item.yetawrench.YetaWrenchOverlayRenderer;
 import crazypants.enderio.base.material.glass.EnderIOGlassesStateMapper;
 import crazypants.enderio.base.paint.PaintTooltipUtil;
 import crazypants.enderio.base.paint.YetaUtil;
-import crazypants.enderio.base.paint.render.PaintRegistry;
 import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IDefaultRenderers;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -81,12 +80,6 @@ public class ClientProxy extends CommonProxy {
   @Override
   public EntityPlayer getClientPlayer() {
     return Minecraft.getMinecraft().player;
-  }
-
-  @Override
-  public void loadIcons() {
-    SmartModelAttacher.create();
-    PaintRegistry.create();
   }
 
   @SubscribeEvent

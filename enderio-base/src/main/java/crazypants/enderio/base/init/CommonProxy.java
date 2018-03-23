@@ -46,9 +46,6 @@ public class CommonProxy {
     return 5;
   }
 
-  public void loadIcons() {
-  }
-
   public void init(@Nonnull FMLPreInitializationEvent event) {
     TOPUtil.create();
   }
