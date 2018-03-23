@@ -26,6 +26,7 @@ import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.config.config.SoulBinderConfig;
 import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
+
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -36,7 +37,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_USE;
@@ -111,6 +111,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     if (recipe == null) {
       return null;
     }
+    
     int xpRequired = ((ISoulBinderRecipe) recipe).getExperienceRequired();
     if (xpCont.getExperienceTotal() >= xpRequired) {
       return recipe;
