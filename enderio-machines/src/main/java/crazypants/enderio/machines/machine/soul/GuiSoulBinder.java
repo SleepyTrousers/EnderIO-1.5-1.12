@@ -33,7 +33,7 @@ public class GuiSoulBinder extends GuiInventoryMachineBase<TileSoulBinder> imple
 
     addProgressTooltip(80, 34, 24, 16);
 
-    addDrawingElement(new PowerBar<>(te, this));
+    addDrawingElement(new PowerBar(te, this));
   }
 
   @Override

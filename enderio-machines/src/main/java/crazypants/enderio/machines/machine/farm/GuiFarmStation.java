@@ -47,7 +47,7 @@ public class GuiFarmStation extends GuiInventoryMachineBase<TileFarmStation> {
         return Lists.newArrayList((showRangeB.isSelected() ? Lang.GUI_HIDE_RANGE : Lang.GUI_SHOW_RANGE).get());
       }
     });
-    addDrawingElement(new PowerBar<TileFarmStation>(machine, this, 45) {
+    addDrawingElement(new PowerBar(machine, this, 45) {
       @Override
       protected String getPowerOutputLabel(@Nonnull String rft) {
         return Lang.GUI_FARM_BASEUSE.get(rft);

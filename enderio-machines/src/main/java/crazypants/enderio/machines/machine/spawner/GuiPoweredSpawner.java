@@ -53,7 +53,7 @@ public class GuiPoweredSpawner extends GuiInventoryMachineBase<TilePoweredSpawne
       }
     });
 
-    addDrawingElement(new PowerBar<>(te, this));
+    addDrawingElement(new PowerBar(te, this));
   }
 
   @Override

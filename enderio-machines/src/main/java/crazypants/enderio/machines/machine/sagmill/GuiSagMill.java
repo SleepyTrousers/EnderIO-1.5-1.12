@@ -32,7 +32,7 @@ public class GuiSagMill extends GuiInventoryMachineBase<TileSagMill> {
     addProgressTooltip(79, 31, 18, 24);
     redstoneButton.setIsVisible(!isSimple);
 
-    addDrawingElement(new PowerBar<>(inventory, this));
+    addDrawingElement(new PowerBar(inventory, this));
   }
 
   @Override

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
@@ -20,6 +21,7 @@ import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiButtonIoConfig;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.machine.gui.GuiOverlayIoConfig;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -80,6 +82,8 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   private boolean initState = true;
   private boolean textFieldsHaveRealData = false;
 
+  private @Nonnull PowerBar powerBar;
+
   @SuppressWarnings("rawtypes")
   public GuiCapBank(Entity player, InventoryPlayer playerInv, @Nonnull TileCapBank te, @Nonnull ContainerCapBank container) {
     super(container, "capacitor_bank");
@@ -88,27 +92,6 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     updateState();
 
     xSize = 176;
-
-    addToolTip(new GuiToolTip(new Rectangle(7, POWER_Y + 1, POWER_WIDTH, POWER_HEIGHT - 1), "") {
-
-      @Override
-      protected void updateText() {
-        text.clear();
-        // FIXME how can we put a newline between these two without hardcoding word order?
-        text.add(LangPower.format(network.getEnergyStoredL()) + " " + LangPower.ofStr());
-        text.add(TextFormatting.WHITE + LangPower.format(network.getMaxEnergyStoredL()) + " " + TextFormatting.GRAY + LangPower.RF());
-
-        float change = network.getAverageChangePerTick();
-        String color = TextFormatting.WHITE.toString();
-        if (change > 0) {
-          color = TextFormatting.GREEN.toString() + "+";
-        } else if (change < 0) {
-          color = TextFormatting.RED.toString();
-        }
-        text.add(Lang.POWER_PERTICK.get(color + LangPower.format(Math.round(change)) + TextFormatting.GRAY.toString()));
-      }
-
-    });
 
     int x = xSize - rightMargin - GuiMachineBase.BUTTON_SIZE;
     int y = inputY;
@@ -195,6 +178,33 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
     textFields.add(maxInputTF);
     textFields.add(maxOutputTF);
+
+    powerBar = new PowerBar(te, this, POWER_X, POWER_Y, POWER_HEIGHT) {
+      @Override
+      public @Nullable GuiToolTip getTooltip() {
+        return new GuiToolTip(new Rectangle(7, POWER_Y + 1, POWER_WIDTH, POWER_HEIGHT - 1), "") {
+
+          @Override
+          protected void updateText() {
+            text.clear();
+            // FIXME how can we put a newline between these two without hardcoding word order?
+            text.add(LangPower.format(network.getEnergyStoredL()) + " " + LangPower.ofStr());
+            text.add(TextFormatting.WHITE + LangPower.format(network.getMaxEnergyStoredL()) + " " + TextFormatting.GRAY + LangPower.RF());
+
+            float change = network.getAverageChangePerTick();
+            String color = TextFormatting.WHITE.toString();
+            if (change > 0) {
+              color = TextFormatting.GREEN.toString() + "+";
+            } else if (change < 0) {
+              color = TextFormatting.RED.toString();
+            }
+            text.add(Lang.POWER_PERTICK.get(color + LangPower.format(Math.round(change)) + TextFormatting.GRAY.toString()));
+          }
+
+        };
+      }
+    };
+    addDrawingElement(powerBar);
   }
 
   @Override
@@ -260,9 +270,6 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     int sy = (height - ySize) / 2;
 
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
-
-    int i1 = getEnergyStoredScaled(POWER_HEIGHT);
-    drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 176 + 21, 0, POWER_WIDTH, i1);
 
     for (int i = 0; i < buttonList.size(); ++i) {
       GuiButton guibutton = buttonList.get(i);

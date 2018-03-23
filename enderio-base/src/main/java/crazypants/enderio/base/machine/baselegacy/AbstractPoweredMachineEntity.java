@@ -10,6 +10,7 @@ import crazypants.enderio.base.capacitor.CapacitorHelper;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
+import crazypants.enderio.base.machine.gui.IPowerBarData;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.ILegacyPoweredTile;
 import crazypants.enderio.util.NbtValue;
@@ -20,7 +21,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 
 @Storable
-public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMachineEntity implements ILegacyPoweredTile {
+public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMachineEntity implements ILegacyPoweredTile, IPowerBarData {
 
   // Power
   private @Nonnull ICapacitorData capacitorData = DefaultCapacitorData.NONE;
@@ -108,6 +109,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     return storedEnergyRF > 0;
   }
 
+  @Override
   public @Nonnull ICapacitorData getCapacitorData() {
     if (slotDefinition.getNumUpgradeSlots() <= 0) {
       return DefaultCapacitorData.BASIC_CAPACITOR;
@@ -222,6 +224,15 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
 
   public void setEnergyLoss(ICapacitorKey energyLoss) {
     this.energyLoss = energyLoss;
+  }
+
+  @Override
+  public int getMaxUsage() {
+    return getMaxUsage(maxEnergyUsed);
+  }
+
+  public int getMaxUsage(@Nonnull ICapacitorKey key) {
+    return key.get(capacitorData);
   }
 
 }

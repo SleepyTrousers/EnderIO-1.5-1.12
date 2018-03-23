@@ -15,9 +15,12 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
+import crazypants.enderio.base.machine.gui.IPowerBarData;
 import crazypants.enderio.base.machine.interfaces.IIoConfigurable;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -52,7 +55,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IIoConfigurable, IPowerStorage, IPaintable.IPaintableTileEntity {
+public class TileCapBank extends TileEntityEio
+    implements ILegacyPowerReceiver, IIoConfigurable, IPowerStorage, IPaintable.IPaintableTileEntity, IPowerBarData {
 
   @Store(handler = HandleIOMode.class)
   private Map<EnumFacing, IoMode> faceModes;
@@ -740,6 +744,17 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   @Override
   public @Nonnull BlockPos getLocation() {
     return getPos();
+  }
+
+  @Override
+  @Nonnull
+  public ICapacitorData getCapacitorData() {
+    return DefaultCapacitorData.BASIC_CAPACITOR;
+  }
+
+  @Override
+  public int getMaxUsage() {
+    return 0;
   }
 
 }

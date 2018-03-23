@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.IDrawingElement;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
@@ -20,14 +21,13 @@ import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.base.machine.baselegacy.AbstractPoweredMachineEntity;
 import info.loenwind.scheduler.Celeb;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 
-public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawingElement {
+public class PowerBar implements IDrawingElement {
 
   public class PowerBarTooltip extends GuiToolTip {
     public PowerBarTooltip() {
@@ -45,40 +45,40 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
         }
         text.add(lang.get(0));
       }
-      if (machine.getCapacitorData() == DefaultCapacitorData.NONE) {
+      if (tank.getCapacitorData() == DefaultCapacitorData.NONE) {
         text.addAll(Lang.GUI_NOCAP.getLines());
       } else {
-        text.add(getPowerOutputLabel(LangPower.RFt(machine.getPowerUsePerTick())));
-        text.add(LangPower.RF(machine.getEnergyStored(), machine.getMaxEnergyStored()));
+        text.add(getPowerOutputLabel(LangPower.RFt(tank.getMaxUsage())));
+        text.add(LangPower.RF(tank.getEnergyStored(), tank.getMaxEnergyStored()));
       }
     }
   }
 
-  private final @Nonnull T machine;
+  private final @Nonnull IPowerBarData tank;
   private final @Nonnull GuiContainerBaseEIO owner;
   private final @Nonnull PowerBarTooltip tooltip;
   private int x, y, width, height;
 
-  public PowerBar(@Nonnull T machine, @Nonnull GuiContainerBaseEIO owner, int height) {
-    this(machine, owner, -1, -1, -1, height);
+  public PowerBar(@Nonnull IPowerBarData tank, @Nonnull GuiContainerBaseEIO owner, int height) {
+    this(tank, owner, -1, -1, -1, height);
   }
 
-  public PowerBar(@Nonnull T machine, @Nonnull GuiContainerBaseEIO owner) {
-    this(machine, owner, -1, -1, -1, -1);
+  public PowerBar(@Nonnull IPowerBarData tank, @Nonnull GuiContainerBaseEIO owner) {
+    this(tank, owner, -1, -1, -1, -1);
   }
 
-  public PowerBar(@Nonnull T machine, @Nonnull GuiContainerBaseEIO owner, int x, int y) {
-    this(machine, owner, x, y, -1, -1);
+  public PowerBar(@Nonnull IPowerBarData tank, @Nonnull GuiContainerBaseEIO owner, int x, int y) {
+    this(tank, owner, x, y, -1, -1);
   }
 
-  public PowerBar(@Nonnull T machine, @Nonnull GuiContainerBaseEIO owner, int x, int y, int height) {
-    this(machine, owner, x, y, -1, height);
+  public PowerBar(@Nonnull IPowerBarData tank, @Nonnull GuiContainerBaseEIO owner, int x, int y, int height) {
+    this(tank, owner, x, y, -1, height);
   }
 
-  public PowerBar(@Nonnull T machine, @Nonnull GuiContainerBaseEIO owner, int x, int y, int width, int height) {
-    this.machine = machine;
+  public PowerBar(@Nonnull IPowerBarData tank, @Nonnull GuiContainerBaseEIO owner, int x, int y, int width, int height) {
+    this.tank = tank;
     this.owner = owner;
-    this.x = x > 0 ? x : 15;
+    this.x = x > 0 ? x : 16;
     this.y = y > 0 ? y : 14;
     this.width = width > 0 ? width : 9;
     this.height = height > 0 ? height : 42;
@@ -105,7 +105,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     int guiX0 = owner.getGuiLeft();
     int guiY0 = owner.getGuiTop();
 
-    if (machine.getCapacitorData() == DefaultCapacitorData.NONE) {
+    if (tank.getCapacitorData() == DefaultCapacitorData.NONE) {
       paintCapacitorError(guiX0, guiY0);
     } else {
       paintPowerBar(guiX0, guiY0);
@@ -119,7 +119,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
   }
 
   private void paintC24Overlay(int guiX0, int guiY0) {
-    final int drawX = guiX0 + x + 1;
+    final int drawX = guiX0 + x;
     final int barWidth = width;
     final int fullBarHeight = height;
     final int drawYfullBar = guiY0 + (y + height) - fullBarHeight;
@@ -129,22 +129,38 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
     owner.drawTexturedModalRect(drawX, drawYfullBar, drawUc24, drawVc24, barWidth, fullBarHeight);
   }
 
+  private int getEnergyStoredScaled(int scale) {
+    final int maxEnergyStored = tank.getMaxEnergyStored();
+    return maxEnergyStored == 0 ? 0 : VecmathUtil.clamp(Math.round(scale * ((float) tank.getEnergyStored() / maxEnergyStored)), 0, scale);
+  }
+
   private void paintPowerBar(int guiX0, int guiY0) {
-    final int drawX = guiX0 + x + 1; // Dirty hack, that fixes wrong energy bar position.
+    final int drawX = guiX0 + x;
     final int barWidth = width;
 
-    final int barHeight = machine.getEnergyStoredScaled(height);
+    int barHeight = getEnergyStoredScaled(height);
     int barFrame = (int) ((EnderIO.proxy.getTickCount() / 3) % 20);
     if (barFrame > 10) {
       barFrame = 20 - barFrame;
     }
     final int yOffset = (y + height) - barHeight;
-    final int drawY = guiY0 + yOffset;
+    int drawY = guiY0 + yOffset;
     final int drawU = barFrame * 10;
     final int drawV = 128;
     owner.drawTexturedModalRect(drawX, drawY, drawU, drawV, barWidth, barHeight);
 
-    final int overlayFrame = (int) ((EnderIO.proxy.getTickCount()) % 128);
+    while (barHeight > 64) {
+      drawShimmer(drawX, drawY, barWidth, 64, 1);
+      drawShimmer(drawX, drawY, barWidth, 64, 5);
+      drawY += 64;
+      barHeight -= 64;
+    }
+    drawShimmer(drawX, drawY, barWidth, barHeight, 1);
+    drawShimmer(drawX, drawY, barWidth, barHeight, 5);
+  }
+
+  private void drawShimmer(final int drawX, final int drawY, final int barWidth, final int barHeight, int speed) {
+    final int overlayFrame = (int) ((EnderIO.proxy.getTickCount() / speed) % 128);
     int drawUoverlay = 128;
     int drawVoverlay = 128 + overlayFrame;
     if (drawVoverlay + barHeight > 255) {
@@ -155,7 +171,7 @@ public class PowerBar<T extends AbstractPoweredMachineEntity> implements IDrawin
   }
 
   private void paintCapacitorError(int guiX0, int guiY0) {
-    final int drawX = guiX0 + x + 1; // >Dirty hack, that fixes wrong fake capacitor position.
+    final int drawX = guiX0 + x;
     final int drawY = guiY0 + y + 16 - 6;
 
     final int barWidth = width;

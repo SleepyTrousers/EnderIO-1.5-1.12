@@ -22,7 +22,7 @@ import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.ToggleTravelButton;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.base.machine.gui.CapPowerBar;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.machines.config.config.TelePadConfig;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.telepad.BlockTelePad;
@@ -117,7 +117,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, SWITCH_X, SWITCH_Y, IconEIO.IO_WHATSIT);
     switchButton.setToolTip(Lang.GUI_TELEPAD_TO_TRAVEL.get());
 
-    addDrawingElement(new CapPowerBar(te.getEnergy(), this, powerX, powerY, 10, getPowerScale()));
+    addDrawingElement(new PowerBar(te.getEnergy(), this, powerX, powerY, 10, getPowerScale()));
   }
 
   @Override
