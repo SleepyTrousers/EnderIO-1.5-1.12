@@ -164,7 +164,7 @@
                  But if another mod does so, this will allow players to "shave off" infinity
                  powder from bedrock. As with the in-world crafting, the bedrock will not be
                  consumed. -->
-    <sagmilling energy="9999999" bonus="none">
+    <sagmilling energy="500000" bonus="none">
       <input name="minecraft:bedrock"/>
       <output name="minecraft:bedrock" />
       <output name="dustBedrock" />
