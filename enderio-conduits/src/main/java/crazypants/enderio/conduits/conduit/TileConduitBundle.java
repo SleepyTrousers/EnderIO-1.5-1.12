@@ -41,6 +41,7 @@ import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduits.conduit.item.ItemConduit;
 import crazypants.enderio.conduits.conduit.item.ItemConduitNetwork;
+import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduits.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
@@ -132,6 +133,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public int getInternalRedstoneSignalForColor(@Nonnull DyeColor col) {
+    IRedstoneConduit redCon = getConduit(IRedstoneConduit.class);
+    if (redCon != null) {
+      return redCon.getRedstoneSignalForColor(col);
+    }
     return 0;
   }
 
