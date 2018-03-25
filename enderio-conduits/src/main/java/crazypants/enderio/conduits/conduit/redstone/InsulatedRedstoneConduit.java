@@ -556,6 +556,11 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   // ---------------------
 
   @Override
+  public int getRedstoneSignalForColor(@Nonnull DyeColor col) {
+    return network.getSignalStrengthForColor(col);
+  }
+
+  @Override
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
     if (component.dir == null) {

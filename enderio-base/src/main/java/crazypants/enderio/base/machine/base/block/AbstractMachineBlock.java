@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.Util;
 
+import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_dont_crash_us_mcjty;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
@@ -49,7 +50,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio<T>
-    implements IEioGuiHandler.WithPos, IResourceTooltipProvider, ISmartRenderAwareBlock, IClearableConfiguration {
+    implements IEioGuiHandler.WithPos, IResourceTooltipProvider, ISmartRenderAwareBlock, IClearableConfiguration, IRedstoneConnectable_dont_crash_us_mcjty {
 
   protected final @Nonnull Random random;
 
@@ -294,6 +295,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
         return face == EnumFacing.UP ? up : face == EnumFacing.DOWN ? down : allSides;
       }
     };
+  }
+
+  @Override
+  public boolean shouldRedstoneConduitConnect(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing from) {
+    return true;
   }
 
 }

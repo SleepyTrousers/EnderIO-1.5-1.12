@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.NullHelper;
@@ -117,6 +118,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
       signals.putAll(source, sigs);
     }
     updatingNetwork = false;
+
   }
 
   public Multimap<SignalSource, Signal> getSignals() {
@@ -239,6 +241,16 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
       // broadcast out a change
       notifyNeigborsOfSignalUpdate();
     }
+  }
+
+  public int getSignalStrengthForColor(DyeColor color) {
+    int strength = 0;
+    for (Signal signal : signals.values()) {
+      if (signal.getColor() == color && signal.getStrength() > strength) {
+        strength = signal.getStrength();
+      }
+    }
+    return strength;
   }
 
 }
