@@ -15,13 +15,20 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.render.IRenderMapper.IBlockRenderMapper;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.util.QuadCollector;
+import crazypants.enderio.conduits.EnderIOConduits;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIOConduits.MODID, value = Side.CLIENT)
 public class BlockStateWrapperConduitBundle extends BlockStateWrapperBase {
 
   private final static Cache<ConduitCacheKey, QuadCollector> cache = CacheBuilder.newBuilder().maximumSize(500).expireAfterAccess(10, TimeUnit.MINUTES)
@@ -62,7 +69,9 @@ public class BlockStateWrapperConduitBundle extends BlockStateWrapperBase {
     return cache.getIfPresent(cachekey);
   }
 
-  public static void invalidate() {
+  @SubscribeEvent
+  @SideOnly(Side.CLIENT)
+  public static void invalidate(@Nonnull ModelBakeEvent event) {
     cache.invalidateAll();
   }
 

@@ -22,7 +22,6 @@ import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.render.ITintedBlock;
 import crazypants.enderio.base.render.ITintedItem;
 import crazypants.enderio.base.render.model.RelayingBakedModel;
-import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.pipeline.OverlayHolder;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import net.minecraft.block.Block;
@@ -254,7 +253,6 @@ public class SmartModelAttacher {
     }
 
     OverlayHolder.collectOverlayQuads(event);
-    BlockStateWrapperBase.invalidate();
   }
 
   @SuppressWarnings("null")

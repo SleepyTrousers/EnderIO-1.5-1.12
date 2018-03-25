@@ -12,6 +12,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMap;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.base.paint.IPaintable.IWrenchHideablePaint;
@@ -49,9 +50,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk.EnumCreateEntityType;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrapper {
 
   private final static Cache<Pair<Block, Long>, QuadCollector> cache = CacheBuilder.newBuilder().maximumSize(500).<Pair<Block, Long>, QuadCollector> build();
@@ -94,7 +99,9 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     return cache.getIfPresent(Pair.of(block, getCacheKey()));
   }
 
-  public static void invalidate() {
+  @SubscribeEvent
+  @SideOnly(Side.CLIENT)
+  public static void invalidate(@Nonnull ModelBakeEvent event) {
     cache.invalidateAll();
   }
 
