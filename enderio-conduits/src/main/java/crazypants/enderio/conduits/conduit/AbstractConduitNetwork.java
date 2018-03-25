@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.ConduitUtil;
@@ -251,11 +252,11 @@ public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends
   }
 
   @Override
-  public void tickStart(ServerTickEvent event, Profiler profiler) {
+  public void tickStart(ServerTickEvent event, @Nullable Profiler profiler) {
   }
 
   @Override
-  public void tickEnd(ServerTickEvent event, Profiler profiler) {
+  public void tickEnd(ServerTickEvent event, @Nullable Profiler profiler) {
   }
 
 }

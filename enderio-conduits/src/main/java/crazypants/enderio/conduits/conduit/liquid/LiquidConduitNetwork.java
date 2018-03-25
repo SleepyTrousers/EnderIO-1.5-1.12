@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.fluid.IFluidWrapper;
 
@@ -45,7 +46,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
   }
 
   @Override
-  public void tickEnd(ServerTickEvent event, Profiler profiler) {
+  public void tickEnd(ServerTickEvent event, @Nullable Profiler profiler) {
     List<LiquidConduit> cons = getConduits();
     if (cons.isEmpty()) {
       return;

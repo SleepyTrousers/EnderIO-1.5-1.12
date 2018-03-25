@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import buildcraft.api.transport.pipe.PipeEventItem.ItemEntry;
 import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
@@ -192,7 +192,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   }
 
   @Override
-  public void tickEnd(ServerTickEvent event, Profiler profiler) {
+  public void tickEnd(ServerTickEvent event, @Nullable Profiler profiler) {
     for (NetworkedInventory ni : inventories) {
       if (requiresSort) {
         Prof.start(profiler, "updateInsertOrder_", ni.getInventory());
@@ -260,13 +260,13 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       @Override
       public void addChangeLog(ChangeLog cl) {
         // TODO Auto-generated method stub
-        
+
       }
 
       @Override
       public void removeChangeLog(ChangeLog cl) {
         // TODO Auto-generated method stub
-        
+
       }
 
       @Override
@@ -296,7 +296,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       @Override
       public void resetDatabase() {
         // TODO Auto-generated method stub
-        
+
       }
 
       @Override
@@ -314,7 +314,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       @Override
       public void addPower(float power) {
         // TODO Auto-generated method stub
-        
+
       }
 
       @Override
@@ -332,25 +332,26 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       @Override
       public void tick() {
         // TODO Auto-generated method stub
-        
+
       }
 
       @Override
       public void sendChangeLogs() {
         // TODO Auto-generated method stub
-        
+
       }
 
       @Override
       public void onNeighborChange(BlockPos neighborPos) {
         // TODO Auto-generated method stub
-        
+
       }
 
       @Override
       public void entryChanged(IServerItemEntry entry) {
         // TODO Auto-generated method stub
-        
-      }};
+
+      }
+    };
   }
 }
