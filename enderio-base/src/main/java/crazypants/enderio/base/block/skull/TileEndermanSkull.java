@@ -1,5 +1,7 @@
 package crazypants.enderio.base.block.skull;
 
+import com.enderio.core.common.NBTAction;
+
 import crazypants.enderio.base.TileEntityEio;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -7,7 +9,7 @@ import info.loenwind.autosave.annotations.Store;
 @Storable
 public class TileEndermanSkull extends TileEntityEio {
 
-  @Store
+  @Store({ NBTAction.SAVE, NBTAction.CLIENT })
   private float yaw;
 
   // Rendering data

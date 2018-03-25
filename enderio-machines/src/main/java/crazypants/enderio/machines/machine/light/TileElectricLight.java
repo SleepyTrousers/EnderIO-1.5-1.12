@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -30,14 +31,14 @@ import static crazypants.enderio.machines.init.MachineObject.block_light_node;
 
 public class TileElectricLight extends TileEntityEio implements ILegacyPowerReceiver {
 
-  @Store
+  @Store({ NBTAction.SAVE, NBTAction.CLIENT })
   private @Nonnull EnumFacing face = EnumFacing.DOWN;
 
   public static final int RF_USE_PER_TICK = 1;
 
   private boolean init = true;
 
-  @Store(handler = HandleBlockPos.HandleBlockPosList.class)
+  @Store(handler = HandleBlockPos.HandleBlockPosList.class, value = { NBTAction.SAVE, NBTAction.CLIENT })
   private List<BlockPos> lightNodes;
 
   private boolean updatingLightNodes = false;
@@ -46,7 +47,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
   private WirelessChargedLocation chargedLocation;
 
-  @Store
+  @Store({ NBTAction.SAVE, NBTAction.CLIENT })
   private int energyStoredRF;
 
   public TileElectricLight() {
