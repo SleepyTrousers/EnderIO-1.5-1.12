@@ -71,13 +71,17 @@ public class GuiDialingDevice extends GuiContainerBaseEIO implements IDialingDev
       @Override
       protected void updateText() {
         text.clear();
-        TelepadTarget el = targetList.getElementAt(getLastMouseX() + getGuiLeft(), getLastMouseY());
+        TelepadTarget el = targetList.getElementAt(getLastMouseX() + getGuiLeft(), getLastMouseY() + getGuiTop());
         if (el != null) {
           Rectangle iconBnds = targetList.getIconBounds(0);
           if (iconBnds.contains(getLastMouseX() + getGuiLeft(), 1)) {
             text.add(TextFormatting.RED + "Delete");
           } else {
-            text.add(TextFormatting.WHITE + el.getName());
+            String name = el.getName();
+            if (name.trim().length() == 0) {
+              name = Lang.GUI_TELEPAD_UNNAMED_LOCATION.get();
+            }
+            text.add(TextFormatting.WHITE + name);
             text.add(BlockCoord.chatString(el.getLocation(), TextFormatting.WHITE));
             text.add(el.getDimenionName());
           }
