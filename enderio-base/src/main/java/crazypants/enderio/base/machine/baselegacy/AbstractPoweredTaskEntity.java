@@ -338,7 +338,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   }
 
   protected int getNumCanMerge(@Nonnull ItemStack itemStack, @Nonnull ItemStack result) {
-    if (!itemStack.isItemEqual(result)) {
+    if (!itemStack.isItemEqual(result) || !ItemStack.areItemStackTagsEqual(itemStack, result)) {
       return 0;
     }
     return Math.min(itemStack.getMaxStackSize() - itemStack.getCount(), result.getCount());

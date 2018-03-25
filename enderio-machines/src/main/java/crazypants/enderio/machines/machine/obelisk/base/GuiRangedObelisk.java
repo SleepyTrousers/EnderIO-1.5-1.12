@@ -28,7 +28,8 @@ public class GuiRangedObelisk extends GuiInventoryMachineBase<AbstractRangedObel
     this(par1InventoryPlayer, te, new ContainerRangedObelisk(par1InventoryPlayer, te), "attractor");
   }
 
-  public GuiRangedObelisk(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull AbstractRangedObeliskEntity te, @Nonnull Container container, String... texture) {
+  public GuiRangedObelisk(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull AbstractRangedObeliskEntity te, @Nonnull Container container,
+      String... texture) {
     super(te, container, texture);
 
     int x = getXSize() - 5 - BUTTON_SIZE;
@@ -41,7 +42,7 @@ public class GuiRangedObelisk extends GuiInventoryMachineBase<AbstractRangedObel
       }
     });
 
-    addDrawingElement(new PowerBar<>(te, this));
+    addDrawingElement(new PowerBar(te, this));
   }
 
   @Override

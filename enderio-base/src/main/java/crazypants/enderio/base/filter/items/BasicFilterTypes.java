@@ -9,20 +9,25 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 
 public enum BasicFilterTypes implements IStringSerializable {
-  filterUpgradeBasic("basic", false, 5, false),
-  filterUpgradeAdvanced("advanced", true, 10, false),
-  filterUpgradeLimited("limited", true, 10, true);
+  filterUpgradeBasic("basic", false, 5, false, false),
+  filterUpgradeAdvanced("advanced", true, 10, false, false),
+  filterUpgradeLimited("limited", true, 10, true, false),
+  filterUpgradeBig("big", false, 36, false, true),
+
+  ;
 
   private final @Nonnull String baseName;
   private final boolean isAdvanced;
   private final int slots;
   private final boolean isLimited;
+  private final boolean isBig;
 
-  private BasicFilterTypes(@Nonnull String baseName, boolean isAdvanced, int slots, boolean isLimited) {
+  private BasicFilterTypes(@Nonnull String baseName, boolean isAdvanced, int slots, boolean isLimited, boolean isBig) {
     this.baseName = name().replaceAll("([A-Z])", "_$0").toLowerCase(Locale.ENGLISH);
     this.isAdvanced = isAdvanced;
     this.slots = slots;
     this.isLimited = isLimited;
+    this.isBig = isBig;
   }
 
   public @Nonnull String getBaseName() {
@@ -48,6 +53,10 @@ public enum BasicFilterTypes implements IStringSerializable {
 
   public boolean isLimited() {
     return isLimited;
+  }
+
+  public boolean isBig() {
+    return isBig;
   }
 
 }

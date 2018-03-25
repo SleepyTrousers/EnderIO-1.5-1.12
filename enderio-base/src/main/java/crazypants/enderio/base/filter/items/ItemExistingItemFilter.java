@@ -70,8 +70,8 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
       if (externalInventory != null) {
         ItemStack heldItem = player.getHeldItem(hand);
         ExistingItemFilter filter = (ExistingItemFilter) createFilterFromStack(heldItem);
-        player.sendStatusMessage(
-            filter.mergeSnapshot(externalInventory) ? Lang.CONDUIT_FILTER_UPDATED.toChatServer() : Lang.CONDUIT_FILTER_NOTUPDATED.toChatServer(), true);
+        player.sendStatusMessage(filter.mergeSnapshot(externalInventory) ? Lang.ITEM_FILTER_UPDATED.toChatServer() : Lang.ITEM_FILTER_NOTUPDATED.toChatServer(),
+            true);
         FilterRegistry.writeFilterToStack(filter, heldItem);
         return EnumActionResult.SUCCESS;
       }
@@ -91,8 +91,8 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
     super.addInformation(stack, worldIn, tooltip, flagIn);
     if (FilterRegistry.isFilterSet(stack)) {
       if (SpecialTooltipHandler.showAdvancedTooltips()) {
-        tooltip.add(Lang.CONDUIT_FILTER_CONFIGURED.get(TextFormatting.ITALIC));
-        tooltip.add(Lang.CONDUIT_FILTER_CLEAR.get(TextFormatting.ITALIC));
+        tooltip.add(Lang.ITEM_FILTER_CONFIGURED.get(TextFormatting.ITALIC));
+        tooltip.add(Lang.ITEM_FILTER_CLEAR.get(TextFormatting.ITALIC));
       }
     }
   }

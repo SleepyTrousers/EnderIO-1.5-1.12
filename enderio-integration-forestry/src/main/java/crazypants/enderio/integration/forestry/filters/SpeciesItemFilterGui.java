@@ -124,4 +124,10 @@ public class SpeciesItemFilterGui extends AbstractGuiItemFilter {
         .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
   }
 
+  @Override
+  @Nonnull
+  protected String getUnlocalisedNameForHeading() {
+    return Lang.GUI_SPECIES_ITEM_FILTER.get();
+  }
+
 }

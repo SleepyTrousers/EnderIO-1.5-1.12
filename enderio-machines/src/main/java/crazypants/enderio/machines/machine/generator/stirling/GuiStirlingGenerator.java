@@ -49,7 +49,7 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
     }
     addProgressTooltip(80, 52, 14, 14);
 
-    addDrawingElement(new PowerBar<>(te, this));
+    addDrawingElement(new PowerBar(te, this));
   }
 
   @Override

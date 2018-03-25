@@ -1,15 +1,19 @@
 package crazypants.enderio.base.filter.gui;
 
+import java.awt.Color;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.filter.network.ICloseFilterRemoteExec;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.Lang;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -56,6 +60,9 @@ public abstract class AbstractGuiItemFilter extends GuiContainerBaseEIO implemen
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
 
+    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+    fr.drawString(getUnlocalisedNameForHeading(), getGuiLeft() + 28, getGuiTop() + 13, ColorUtil.getRGB(Color.DARK_GRAY));
+
     renderCustomOptions(getGuiTop() + 13, par1, mouseX, mouseY);
     super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
   }
@@ -74,5 +81,8 @@ public abstract class AbstractGuiItemFilter extends GuiContainerBaseEIO implemen
 
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
   }
+
+  @Nonnull
+  protected abstract String getUnlocalisedNameForHeading();
 
 }

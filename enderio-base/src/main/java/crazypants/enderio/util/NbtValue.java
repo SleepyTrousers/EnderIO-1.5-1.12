@@ -46,6 +46,7 @@ public enum NbtValue { // TODO: DONE111
   CONDUIT("conduit"),
   CONTENTCOUNT("contentCount"),
   DATAROOT("data"),
+  FILTER_BIG("isBig"),
 
   ;
 

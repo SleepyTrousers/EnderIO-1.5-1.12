@@ -14,7 +14,7 @@ public class GuiSliceAndSplice extends GuiInventoryMachineBase<TileSliceAndSplic
 
     addProgressTooltip(103, 49, 24, 16);
 
-    addDrawingElement(new PowerBar<>(te, this));
+    addDrawingElement(new PowerBar(te, this));
   }
 
   @Override

@@ -7,7 +7,7 @@ import com.enderio.core.client.gui.button.ToggleButton;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
-import crazypants.enderio.base.machine.gui.CapPowerBar;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.machine.gui.GuiButtonIoConfig;
 import crazypants.enderio.base.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machines.lang.Lang;
@@ -65,7 +65,7 @@ public class GuiImpulseHopper extends GuiContainerBaseEIO implements ImpulseHopp
     lockOutputB.setSelectedToolTip(Lang.GUI_IMPULSE_HOPPER_LOCKED.get(), Lang.GUI_IMPULSE_HOPPER_LOCKED_TOOLTIP.get());
     lockOutputB.setUnselectedToolTip(Lang.GUI_IMPULSE_HOPPER_UNLOCKED.get());
 
-    addDrawingElement(new CapPowerBar(te.getEnergy(), this, POWERX, POWERY, POWER_HEIGHT));
+    addDrawingElement(new PowerBar(te.getEnergy(), this, POWERX, POWERY, POWER_HEIGHT));
   }
 
   @Override

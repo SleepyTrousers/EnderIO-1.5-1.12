@@ -76,8 +76,6 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
   private final @Nonnull PerTickIntAverageCalculator powerTrackerIn = new PerTickIntAverageCalculator(2);
   private final @Nonnull PerTickIntAverageCalculator powerTrackerOut = new PerTickIntAverageCalculator(2);
 
-  private final @Nonnull InventoryImpl inventory = new InventoryImpl();
-
   private boolean firstUpate = true;
 
   public CapBankNetwork(int id) {
@@ -142,7 +140,6 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
       }
     }
     capBanks.clear();
-    inventory.setCapBank(null);
     if (cap != null) {
       PacketHandler.INSTANCE.sendToAll(new PacketNetworkStateResponse(this, true));
     }
@@ -193,22 +190,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
         addReceptors(recs);
       }
 
-      if (inventory.isEmtpy()) {
-        inventory.setCapBank(cap);
-      } else if (!InventoryImpl.isInventoryEmtpy(cap)) {
-        if (inventory.isEmtpy()) {
-          inventory.setCapBank(cap);
-        } else {
-          cap.dropItems();
-        }
-      }
-
     }
-  }
-
-  @Override
-  public @Nonnull InventoryImpl getInventory() {
-    return inventory;
   }
 
   @Override
@@ -225,9 +207,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
 
   @Override
   public void tickEnd(TickEvent.ServerTickEvent evt, Profiler profiler) {
-    Prof.start(profiler, "ItemCharging");
-    chargeItems(inventory.getStacks());
-    Prof.next(profiler, "EnergyTransmitting");
+    Prof.start(profiler, "EnergyTransmitting");
     transmitEnergy();
 
     if (energyStored != prevEnergyStored) {

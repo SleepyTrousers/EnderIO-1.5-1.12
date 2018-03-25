@@ -907,7 +907,7 @@ our $ores = [
 		name => 'Draconic', mod => 'Draconic', requ => 'false',
 
 		ore => 'draconicevolution:draconium_ore:0',
-		dust => 'dustDraconic', amount => 2,
+		dust => 'dustDraconium', amount => 2,
 		base => [ 'oredict:cobblestone', 1, 0.15 ],
 
 		netheramount => 2, # *amount
@@ -915,14 +915,14 @@ our $ores = [
 
 		denseamount => 4,
 
-		ingot => 'ingotDraconic', block => 'blockDraconic',
+		ingot => 'ingotDraconium', block => 'blockDraconium',
 	},
 
 	{
 		name => 'Draconic', mod => 'Draconic', requ => 'false',
 
 		ore => 'draconicevolution:draconium_ore:1',
-		dust => 'dustDraconic', amount => 2,
+		dust => 'dustDraconium', amount => 2,
 		base => [ 'minecraft:netherrack', 1, 0.15 ],
 	},
 
@@ -930,7 +930,7 @@ our $ores = [
 		name => 'Draconic', mod => 'Draconic', requ => 'false',
 
 		ore => 'draconicevolution:draconium_ore:2',
-		dust => 'dust*', amount => 2,
+		dust => 'dustDraconium', amount => 2,
 		base => [ 'minecraft:end_stone', 1, 0.15 ],
 	},
 

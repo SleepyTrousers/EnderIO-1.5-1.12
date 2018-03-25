@@ -10,12 +10,12 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
-import crazypants.enderio.base.conduit.item.ItemExtractSpeedUpgrade;
-import crazypants.enderio.base.conduit.item.SpeedUpgrade;
-import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.conduit.item.FunctionUpgrade;
+import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import crazypants.enderio.base.init.ModObject;
@@ -43,16 +43,14 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   private static final int outputFilterSlot = 36;
   private static final int inputFilterSlot = 37;
-  private static final int speedUpgradeSlot = 38;
-  private static final int functionUpgradeSlot = 39;
+  private static final int functionUpgradeSlot = 38;
 
-  private Slot slotSpeedUpgrades;
-  private Slot slotFunctionUpgrades;
+  private Slot slotFunctionUpgrade;
   private Slot slotInputFilter;
   private Slot slotOutputFilter;
 
-  private EnumFacing dir;
-  private EntityPlayer player;
+  private @Nonnull EnumFacing dir;
+  private @Nonnull EntityPlayer player;
 
   final List<IFilterChangeListener> filterListeners = new ArrayList<IFilterChangeListener>();
 
@@ -70,7 +68,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
       addSlotToContainer(slotInputFilter = new FilterSlot(getItemHandler(), 3, 23, 71));
       addSlotToContainer(slotOutputFilter = new FilterSlot(getItemHandler(), 2, 113, 71));
-      addSlotToContainer(slotSpeedUpgrades = new SlotItemHandler(getItemHandler(), 0, 131, 71) {
+      addSlotToContainer(slotFunctionUpgrade = new SlotItemHandler(getItemHandler(), 0, 131, 71) {
         @Override
         public boolean isItemValid(@Nonnull ItemStack itemStack) {
           return ExternalConnectionContainer.this.getItemHandler().isItemValidForSlot(0, itemStack);
@@ -81,17 +79,6 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
           return speedUpgradeSlotLimit;
         }
       });
-      addSlotToContainer(slotFunctionUpgrades = new SlotItemHandler(getItemHandler(), 1, 157, 71) {
-        @Override
-        public boolean isItemValid(@Nonnull ItemStack itemStack) {
-          return ExternalConnectionContainer.this.getItemHandler().isItemValidForSlot(1, itemStack);
-        }
-
-        @Override
-        public int getSlotStackLimit() {
-          return 1;
-        }
-      });
     }
   }
 
@@ -99,8 +86,10 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     if (itemConduit != null) {
       ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotOutputFilter));
       ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotInputFilter));
-      ghostSlots.add(new GhostBackgroundItemSlot(ModObject.item_extract_speed_upgrade.getItemNN(), slotSpeedUpgrades));
-      ghostSlots.add(new GhostBackgroundItemSlot(ModObject.item_inventory_panel_upgrade.getItemNN(), slotFunctionUpgrades));
+
+      NNList<ItemStack> ghostSlotIcons = new NNList<>(new ItemStack(ModObject.item_extract_speed_upgrade.getItemNN()),
+          new ItemStack(ModObject.item_extract_speed_downgrade.getItemNN()), new ItemStack(ModObject.item_inventory_panel_upgrade.getItemNN()));
+      ghostSlots.add(new GhostBackgroundItemSlot(ghostSlotIcons, slotFunctionUpgrade));
     }
   }
 
@@ -122,13 +111,8 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   }
 
   @Override
-  public boolean hasSpeedUpgrades() {
-    return slotSpeedUpgrades != null && slotSpeedUpgrades.getHasStack();
-  }
-
-  @Override
   public boolean hasFunctionUpgrade() {
-    return slotFunctionUpgrades != null && slotFunctionUpgrades.getHasStack();
+    return slotFunctionUpgrade != null && slotFunctionUpgrade.getHasStack();
   }
 
   @Override
@@ -143,9 +127,8 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       return;
     }
     setSlotsVisible(inputVisible, inputFilterSlot, inputFilterSlot + 1);
-    setSlotsVisible(inputVisible, speedUpgradeSlot, speedUpgradeSlot + 1);
+    setSlotsVisible(inputVisible, functionUpgradeSlot, functionUpgradeSlot + 1);
     setSlotsVisible(outputVisible, outputFilterSlot, outputFilterSlot + 1);
-    setSlotsVisible(inputVisible || outputVisible, functionUpgradeSlot, functionUpgradeSlot + 1);
     World world = itemConduit.getBundle().getBundleworld();
     if (world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketSlotVisibility(inputVisible, outputVisible));
@@ -174,7 +157,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   @Nonnull
   public ItemStack slotClick(int slotId, int dragType, @Nonnull ClickType clickTypeIn, @Nonnull EntityPlayer player) {
     ItemStack st = player.inventory.getItemStack();
-    setSpeedUpgradeSlotLimit(st);
+    setFunctionUpgradeSlotLimit(st);
     try {
       return super.slotClick(slotId, dragType, clickTypeIn, player);
     } catch (Exception e) {
@@ -184,9 +167,9 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     }
   }
 
-  private void setSpeedUpgradeSlotLimit(@Nonnull ItemStack st) {
-    if (!st.isEmpty() && st.getItem() instanceof ItemExtractSpeedUpgrade) {
-      SpeedUpgrade speedUpgrade = ItemExtractSpeedUpgrade.getSpeedUpgrade(st);
+  private void setFunctionUpgradeSlotLimit(@Nonnull ItemStack st) {
+    if (!st.isEmpty() && st.getItem() instanceof ItemFunctionUpgrade) {
+      FunctionUpgrade speedUpgrade = ItemFunctionUpgrade.getFunctionUpgrade(st);
       speedUpgradeSlotLimit = speedUpgrade.maxStackSize;
     }
   }
@@ -196,7 +179,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       return false;
     }
 
-    setSpeedUpgradeSlotLimit(origStack);
+    setFunctionUpgradeSlotLimit(origStack);
     ItemStack curStack = targetSlot.getStack();
     int maxStackSize = Math.min(origStack.getMaxStackSize(), targetSlot.getSlotStackLimit());
 
@@ -285,11 +268,11 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   public IMessage doOpenFilterGui(int filterIndex) {
     if (itemConduit != null) {
       if (filterIndex == FilterGuiUtil.INDEX_INPUT) {
-        ((IItemFilter) itemConduit.getInputFilter(dir)).openGui(player, itemConduit.getInputFilterUpgrade(dir), getTileEntity().getBundleworld(),
-            getTileEntity().getPos(), dir, filterIndex);
+        itemConduit.getInputFilter(dir).openGui(player, itemConduit.getInputFilterUpgrade(dir), getTileEntity().getBundleworld(), getTileEntity().getPos(), dir,
+            filterIndex);
       } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT) {
-        ((IItemFilter) itemConduit.getOutputFilter(dir)).openGui(player, itemConduit.getOutputFilterUpgrade(dir), getTileEntity().getBundleworld(),
-            getTileEntity().getPos(), dir, filterIndex);
+        itemConduit.getOutputFilter(dir).openGui(player, itemConduit.getOutputFilterUpgrade(dir), getTileEntity().getBundleworld(), getTileEntity().getPos(),
+            dir, filterIndex);
       }
     }
     return null;

@@ -57,12 +57,12 @@ public enum Lang implements ILang {
   SOUL_VIAL_FLUID("item.item_soul_vial.tooltip.fluidname"),
   SOUL_VIAL_COLOR("item.item_soul_vial.tooltip.color"),
   SOUL_VIAL_EMPTY("item.item_soul_vial.tooltip.empty"),
-  CONDUIT_FILTER(".item_conduit_filter_upgrade"),
-  CONDUIT_FILTER_CONFIGURED(".item_conduit_filter_upgrade.configured"),
-  CONDUIT_FILTER_CLEAR(".item_conduit_filter_upgrade.clear_config_method"),
-  CONDUIT_FILTER_CLEAR_WARNING(".item_conduit_filter_upgrade.clear_config_warning"),
-  CONDUIT_FILTER_UPDATED(".item.item_existing_item_filter.filter_updated"),
-  CONDUIT_FILTER_NOTUPDATED(".item.item_existing_item_filter.filter_not_updated"),
+  ITEM_FILTER(".item_item_filter_upgrade"),
+  ITEM_FILTER_CONFIGURED(".item_item_filter_upgrade.configured"),
+  ITEM_FILTER_CLEAR(".item_item_filter_upgrade.clear_config_method"),
+  ITEM_FILTER_CLEAR_WARNING(".item_item_filter_upgrade.clear_config_warning"),
+  ITEM_FILTER_UPDATED(".item.item_existing_item_filter.filter_updated"),
+  ITEM_FILTER_NOTUPDATED(".item.item_existing_item_filter.filter_not_updated"),
   POWER_SYMBOL(".power.symbol"),
   POWER(".power.format"),
   POWER_OF(".power.format.of"),
@@ -118,6 +118,16 @@ public enum Lang implements ILang {
 
   GUI_POWER_ITEM_FILTER_COMPARE(".gui.power.item_filter.compare"),
   GUI_POWER_ITEM_FILTER_PERCENT(".gui.power.item_filter.percent"),
+
+  GUI_BASIC_ITEM_FILTER(".gui.basic_item_filter"),
+  GUI_ADVANCED_ITEM_FILTER(".gui.advanced_item_filter"),
+  GUI_LIMITED_ITEM_FILTER(".gui.limited_item_filter"),
+  GUI_BIG_ITEM_FILTER(".gui.big_item_filter"),
+  GUI_EXISTING_ITEM_FILTER(".gui.existing_item_filter"),
+  GUI_MOD_ITEM_FILTER(".gui.mod_item_filter"),
+  GUI_POWER_ITEM_FILTER(".gui.power_item_filter"),
+
+  GUI_SPECIES_ITEM_FILTER(".gui.species_item_filter"),
 
   ;
 

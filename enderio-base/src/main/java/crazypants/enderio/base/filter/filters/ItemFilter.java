@@ -53,7 +53,7 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
 
   private final @Nonnull List<int[]> oreIds;
 
-  private boolean isAdvanced, isLimited;
+  private boolean isAdvanced, isLimited, isBig;
 
   public void copyFrom(@Nonnull ItemFilter o) {
     isBlacklist = o.isBlacklist;
@@ -67,6 +67,7 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     oreIds.addAll(o.oreIds);
     isAdvanced = o.isAdvanced;
     isLimited = o.isLimited;
+    isBig = o.isBig;
   }
 
   public ItemFilter() {
@@ -76,6 +77,7 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
   public ItemFilter(BasicFilterTypes type) {
     isAdvanced = type.isAdvanced();
     isLimited = type.isLimited();
+    isBig = type.isBig();
     int numItems = type.getSlots();
     items = new NNList<ItemStack>(numItems, Prep.getEmpty());
     oreIds = new ArrayList<int[]>(numItems);
@@ -264,6 +266,7 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     NbtValue.FILTER_STICKY.setBoolean(nbtRoot, sticky);
     NbtValue.FILTER_ADVANCED.setBoolean(nbtRoot, isAdvanced);
     NbtValue.FILTER_LIMITED.setBoolean(nbtRoot, isLimited);
+    NbtValue.FILTER_BIG.setBoolean(nbtRoot, isBig);
     NbtValue.FILTER_DAMAGE.setInt(nbtRoot, damageMode.ordinal());
 
     NBTTagList tagList = new NBTTagList();
@@ -289,6 +292,7 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     sticky = NbtValue.FILTER_STICKY.getBoolean(nbtRoot);
     isAdvanced = NbtValue.FILTER_ADVANCED.getBoolean(nbtRoot);
     isLimited = NbtValue.FILTER_LIMITED.getBoolean(nbtRoot);
+    isBig = NbtValue.FILTER_BIG.getBoolean(nbtRoot);
     damageMode = NullHelper.notnullJ(DamageMode.values()[NbtValue.FILTER_DAMAGE.getInt(nbtRoot) & 255], "Enum.values()");
 
     items.clear();
@@ -297,7 +301,8 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
       items.add(new ItemStack(tagList.getCompoundTagAt(i)));
     }
 
-    int numItems = isAdvanced ? 10 : 5;
+    int numItems = isBig ? BasicFilterTypes.filterUpgradeBig.getSlots()
+        : (isAdvanced ? BasicFilterTypes.filterUpgradeAdvanced.getSlots() : BasicFilterTypes.filterUpgradeBasic.getSlots());
     while (items.size() < numItems) {
       items.add(Prep.getEmpty());
     }
@@ -408,11 +413,13 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     int topY = yOffset;
     int leftX = xOffset;
     int index = 0;
-    int numRows = isAdvanced ? 2 : 1;
+    int numRows = isBig ? 4 : (isAdvanced ? 2 : 1);
+    int rowSpacing = isBig ? 0 : 2;
+    int numCols = isBig ? 9 : 5;
     for (int row = 0; row < numRows; ++row) {
-      for (int col = 0; col < 5; ++col) {
+      for (int col = 0; col < numCols; ++col) {
         int x = leftX + col * 18;
-        int y = topY + row * 20;
+        int y = topY + row * 18 + rowSpacing;
         slots.add(new ItemFilterGhostSlot(index, x, y, cb));
         index++;
       }
@@ -433,9 +440,13 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     return isLimited;
   }
 
+  public boolean isBig() {
+    return isBig;
+  }
+
   public boolean isDefault() {
     return !isAdvanced && !isValid() && isBlacklist == DEFAULT_BLACKLIST && matchMeta == DEFAULT_META && matchNBT == DEFAULT_MBT
-        && useOreDict == DEFAULT_ORE_DICT && sticky == DEFAULT_STICKY;
+        && useOreDict == DEFAULT_ORE_DICT && sticky == DEFAULT_STICKY && !isBig;
   }
 
   @Override

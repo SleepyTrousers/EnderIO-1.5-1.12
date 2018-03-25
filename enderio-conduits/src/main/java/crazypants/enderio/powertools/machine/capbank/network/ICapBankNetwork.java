@@ -59,11 +59,6 @@ public interface ICapBankNetwork extends IPowerStorage {
 
   void addReceptors(@Nonnull Collection<EnergyReceptor> receptors);
 
-  // ------ Inventory
-
-  @Nonnull
-  InventoryImpl getInventory();
-
   // ------ Redstone
 
   void setOutputControlMode(@Nonnull RedstoneControlMode outputControlMode);

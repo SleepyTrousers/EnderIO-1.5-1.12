@@ -13,7 +13,7 @@ public class GuiWiredCharger extends GuiInventoryMachineBase<TileWiredCharger> {
   public GuiWiredCharger(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileWiredCharger te) {
     super(te, new ContainerWiredCharger(par1InventoryPlayer, te), "wired_charger");
 
-    addDrawingElement(new PowerBar<TileWiredCharger>(te, this, 15, 14, 42));
+    addDrawingElement(new PowerBar(te, this, 15, 14, 42));
   }
 
   @Override

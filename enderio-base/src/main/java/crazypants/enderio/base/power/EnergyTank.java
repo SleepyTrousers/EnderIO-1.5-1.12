@@ -11,6 +11,7 @@ import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.base.machine.gui.IPowerBarData;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -20,7 +21,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.energy.IEnergyStorage;
 
 @Storable
-public class EnergyTank implements IEnergyStorage {
+public class EnergyTank implements IEnergyStorage, IPowerBarData {
 
   private class Side implements IEnergyStorage {
 
@@ -188,6 +189,7 @@ public class EnergyTank implements IEnergyStorage {
     return false;
   }
 
+  @Override
   public int getMaxUsage() {
     return getMaxUsage(maxEnergyUsed);
   }
@@ -246,6 +248,7 @@ public class EnergyTank implements IEnergyStorage {
     return true;
   }
 
+  @Override
   public @Nonnull ICapacitorData getCapacitorData() {
     return capacitorData;
   }
