@@ -10,6 +10,7 @@ import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.telepad.TileDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetList;
 import crazypants.enderio.machines.network.PacketHandler;
@@ -19,9 +20,9 @@ import net.minecraft.client.renderer.BufferBuilder;
 
 public class GuiTargetList extends GuiScrollableList<TelepadTarget> {
 
-  private final TileDialingDevice te;
+  private final @Nonnull TileDialingDevice te;
 
-  public GuiTargetList(int width, int height, int originX, int originY, TileDialingDevice te) {
+  public GuiTargetList(int width, int height, int originX, int originY, @Nonnull TileDialingDevice te) {
     super(width, height, originX, originY, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 4);
     this.te = te;
   }
@@ -45,7 +46,7 @@ public class GuiTargetList extends GuiScrollableList<TelepadTarget> {
     TelepadTarget targ = getElementAt(elementIndex);
     String name = targ.getName();
     if (name.trim().length() == 0) {
-      name = "Unnamed";
+      name = Lang.GUI_TELEPAD_UNNAMED_LOCATION.get();
     }
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     fr.drawString(name, x + 4, y + 2, 0xffffff, true);
@@ -66,7 +67,6 @@ public class GuiTargetList extends GuiScrollableList<TelepadTarget> {
     TelepadTarget target = getSelectedElement();
     Rectangle iconBounds = getIconBounds(0);
     if (iconBounds.contains(elX, elY)) {
-      te.removeTarget(target);
       PacketHandler.INSTANCE.sendToServer(new PacketTargetList(te, target, false));
       if (selectedIndex >= getNumElements()) {
         setSelection(getNumElements() - 1);

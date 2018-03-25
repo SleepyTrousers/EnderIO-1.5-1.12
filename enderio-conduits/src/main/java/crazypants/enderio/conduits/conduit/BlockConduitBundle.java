@@ -67,7 +67,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -604,9 +603,9 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     }
 
     ItemStack stack = player.getHeldItem(hand);
-    if (stack.getItem() == Items.STICK) { // TODO: remove this later!
-      player.sendMessage(new TextComponentString("You clicked on " + bundle));
-    }
+    // if (stack.getItem() == Items.STICK) { // TODO: remove this later!
+    // player.sendMessage(new TextComponentString("You clicked on " + bundle));
+    // }
     if (stack.getItem() == ModObject.itemConduitFacade.getItem()) {
       // add or replace facade
       return handleFacadeClick(world, pos, player, side, bundle, stack, hand, hitX, hitY, hitZ);

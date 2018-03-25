@@ -215,7 +215,7 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if (guiButton.id == ID_COLOR_BUTTON) {
-      itemConduit.setExtractionSignalColor(gui.getDir(), DyeColor.values()[colorB.getColorIndex()]);
+      itemConduit.setExtractionSignalColor(gui.getDir(), DyeColor.fromIndex(colorB.getColorIndex()));
       PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(itemConduit, gui.getDir()));
       return;
     } else if (guiButton.id == ID_LOOP) {

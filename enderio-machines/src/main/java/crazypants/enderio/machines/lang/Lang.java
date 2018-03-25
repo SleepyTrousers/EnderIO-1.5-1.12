@@ -96,6 +96,7 @@ public enum Lang implements ILang {
   GUI_TELEPAD_ERROR_BLOCKED(".gui.telepad.blocked"),
   GUI_TELEPAD_TELEPORT(".gui.telepad.teleport"),
   GUI_TELEPAD_TANK(".gui.telepad.tank"),
+  GUI_TELEPAD_UNNAMED_LOCATION(".gui.telepad.unnamed_location"),
   GUI_VANILLA_REPAIR_COST("container.repair.cost"), // vanilla key
   GUI_TELEPAD_MAX(".gui.telepad.max"),
   JEI_SAGMILL_CHANCE(".jei.sagmill.outputchance"),

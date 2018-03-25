@@ -133,7 +133,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if (guiButton.id == ID_COLOR_BUTTON) {
-      conduit.setExtractionSignalColor(gui.getDir(), DyeColor.values()[colorB.getColorIndex()]);
+      conduit.setExtractionSignalColor(gui.getDir(), DyeColor.fromIndex(colorB.getColorIndex()));
       PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.getDir()));
     } else if (guiButton.id == ID_INSERT_WHITELIST) {
       toggleBlacklist(false);

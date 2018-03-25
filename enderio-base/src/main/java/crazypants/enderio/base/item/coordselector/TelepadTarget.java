@@ -179,7 +179,7 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
     TelepadTarget other = (TelepadTarget) obj;
     if (dimension != other.dimension)
       return false;
-    if (!icon.equals(other.icon))
+    if (!ItemStack.areItemStacksEqual(icon, other.icon))
       return false;
     if (!location.equals(other.location))
       return false;
