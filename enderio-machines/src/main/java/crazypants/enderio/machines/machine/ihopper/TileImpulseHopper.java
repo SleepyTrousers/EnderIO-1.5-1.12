@@ -187,7 +187,7 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
         getEnergy().useEnergy(getCapKey(neededPower));
         CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.setBaseValue(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.getDefaultBaseValue());
         // playSound();
-        return true;
+        return super.processTasks(redstoneCheck);
       } else {
         return false;
       }
