@@ -1,12 +1,5 @@
 package crazypants.enderio.powertools.machine.monitor;
 
-import static com.enderio.core.common.NBTAction.CLIENT;
-import static com.enderio.core.common.NBTAction.ITEM;
-import static com.enderio.core.common.NBTAction.SAVE;
-import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
-import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
-import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -34,6 +27,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static com.enderio.core.common.NBTAction.CLIENT;
+import static com.enderio.core.common.NBTAction.ITEM;
+import static com.enderio.core.common.NBTAction.SAVE;
+import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
+import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
+import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;
 
 @Storable
 public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {
@@ -76,7 +76,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, @Nullable ItemStack item) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack item) {
     return false;
   }
 

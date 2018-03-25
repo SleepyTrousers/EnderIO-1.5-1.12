@@ -39,8 +39,6 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   static final int VOLUME_PER_CONNECTION = Fluid.BUCKET_VOLUME / 4;
 
-  // TODO Lang
-
   public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit");
   public static final TextureSupplier ICON_KEY_LOCKED = TextureRegistry.registerTexture("blocks/liquid_conduit_locked");
   public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core");

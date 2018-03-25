@@ -76,11 +76,11 @@ enderio.gui.power_monitor.engine_section3=% full.
 enderio.gui.power_monitor.engine_section4= Stop when storage greater than
 enderio.gui.power_monitor.engine_section5=or equal to
 enderio.gui.power_monitor.of=of
-enderio.gui.power_monitor.mon_heading1=Conduit Storage
-enderio.gui.power_monitor.mon_heading2=Capacitor Bank Storage
-enderio.gui.power_monitor.mon_heading3=Machine Buffers
-enderio.gui.power_monitor.mon_heading4=Average output over 5 seconds
-enderio.gui.power_monitor.mon_heading5=Average input over 5 seconds
+enderio.gui.power_monitor.conduit_storage=Conduit Storage
+enderio.gui.power_monitor.capbank_storage=Capacitor Bank Storage
+enderio.gui.power_monitor.machine_buffer=Machine Buffers
+enderio.gui.power_monitor.average_output=Average output over 5 seconds
+enderio.gui.power_monitor.average_input=Average input over 5 seconds
 enderio.gui.power_monitor.no_network_error=No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
 
 # Gauge

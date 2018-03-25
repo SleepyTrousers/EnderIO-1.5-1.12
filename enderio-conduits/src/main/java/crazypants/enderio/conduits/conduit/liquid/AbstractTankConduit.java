@@ -14,6 +14,7 @@ import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.config.ConduitConfig;
+import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -109,8 +110,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
           if (network.fluidTypeLocked) {
             network.setFluidTypeLocked(false);
             numEmptyEvents = 0;
-            // TODO Lang
-            ChatUtil.sendNoSpamUnloc(player, EnderIO.lang, "itemLiquidConduit.unlockedType");
+            ChatUtil.sendNoSpam(player, Lang.ITEM_LIQUID_CONDUIT_UNLOCKED_TYPE.get());
           }
         } else if (network != null) {
           network.setFluidType(null);
