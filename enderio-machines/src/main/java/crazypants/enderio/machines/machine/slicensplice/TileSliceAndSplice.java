@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.paint.IPaintable;
@@ -19,8 +20,6 @@ import crazypants.enderio.base.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -151,10 +150,10 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
       return false;
     }
     if (slot == axeIndex) {
-      return itemstack.getItem() instanceof ItemAxe;
+      return FarmingTool.AXE.itemMatches(itemstack);
     }
     if (slot == shearsIndex) {
-      return itemstack.getItem() instanceof ItemShears;
+      return FarmingTool.SHEARS.itemMatches(itemstack);
     }
 
     ItemStack currentStackInSlot = getStackInSlot(slot);
