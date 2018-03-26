@@ -60,7 +60,8 @@ public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implemen
 
     };
     renderer.init();
-    bounds = new Rectangle(screenIn.getOverlayOffsetX() + 5, screenIn.getGuiYSize() - height - 5, screenIn.getGuiXSize() - 10, height);
+    bounds = new Rectangle(screenIn.getOverlayOffsetXLeft() + 5, screenIn.getGuiYSize() - height - 5,
+        screenIn.getGuiXSize() - screenIn.getOverlayOffsetXRight() - 10, height);
   }
 
   protected @Nonnull String getLabelForMode(IoMode mode) {
@@ -75,7 +76,7 @@ public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implemen
     Minecraft mc = Minecraft.getMinecraft();
     ScaledResolution scaledresolution = new ScaledResolution(mc);
 
-    int vpx = ((screen.getGuiRootLeft() + bounds.x - screen.getOverlayOffsetX()) * scaledresolution.getScaleFactor());
+    int vpx = ((screen.getGuiRootLeft() + bounds.x - screen.getOverlayOffsetXLeft()) * scaledresolution.getScaleFactor());
     int vpy = (screen.getGuiRootTop() + 4) * scaledresolution.getScaleFactor();
     int w = bounds.width * scaledresolution.getScaleFactor();
     int h = bounds.height * scaledresolution.getScaleFactor();
@@ -96,7 +97,7 @@ public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implemen
 
   @Override
   public boolean isMouseInBounds(int mouseX, int mouseY) {
-    int x = mouseX - screen.getGuiRootLeft() + screen.getOverlayOffsetX();
+    int x = mouseX - screen.getGuiRootLeft() + screen.getOverlayOffsetXLeft();
     int y = mouseY - screen.getGuiRootTop();
     if (bounds.contains(x, y)) {
       return true;

@@ -56,7 +56,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
 
     xSize = getXSize();
     ySize = getYSize();
-    int x = getXSize() - 5 - BUTTON_SIZE;
+    int x = getButtonXPos() - 5 - BUTTON_SIZE;
     int y = 5;
     redstoneButton = new RedstoneModeButton<T>(this, -1, x, y, tileEntity);
 
@@ -204,5 +204,9 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
       return Util.getProgressScaled(scale, (IProgressTile) tileEntity);
     }
     return 0;
+  }
+
+  protected int getButtonXPos() {
+    return getXSize();
   }
 }

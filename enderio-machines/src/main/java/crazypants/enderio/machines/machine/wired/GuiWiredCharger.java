@@ -51,4 +51,20 @@ public class GuiWiredCharger extends GuiInventoryMachineBase<TileWiredCharger> {
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
+  // Overridden to set the size of the io config overlay
+  @Override
+  public int getOverlayOffsetXRight() {
+    return 42;
+  }
+
+  @Override
+  public int getOverlayOffsetXLeft() {
+    return super.getOverlayOffsetXLeft() + 21;
+  }
+
+  @Override
+  protected int getButtonXPos() {
+    return 218 - 23;
+  }
+
 }

@@ -62,7 +62,7 @@ public class WiredChargerRecipeCategory extends BlankRecipeCategory<WiredCharger
     registry.addRecipeCategories(new WiredChargerRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_wired_charger.getBlockNN()), WiredChargerRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_wireless_charger.getBlockNN()), WiredChargerRecipeCategory.UID);
-    registry.addRecipeClickArea(GuiWiredCharger.class, 155, 42, 16, 16, WiredChargerRecipeCategory.UID);
+    registry.addRecipeClickArea(GuiWiredCharger.class, 176, 42, 16, 16, WiredChargerRecipeCategory.UID);
 
     long start = System.nanoTime();
 
