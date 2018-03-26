@@ -34,6 +34,8 @@ item.item_alloy_nugget_vibrant_alloy.name=Vibrant Alloy Nugget
 item.item_basic_capacitor.activated.name=Double-Layer Capacitor
 item.item_basic_capacitor.basic.name=Basic Capacitor
 item.item_basic_capacitor.ender.name=Octadic Capacitor
+enderio.activated.name=Double-Layer Capacitor
+enderio.ender.name=Ocatadic Capacitor
 
 item.item_broken_spawner.name=Broken Spawner
 item.item_broken_spawner.tooltip.detailed.line1=Combine with a Powered Spawner

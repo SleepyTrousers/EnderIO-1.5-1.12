@@ -62,7 +62,7 @@ public class WiredChargerRecipeCategory extends BlankRecipeCategory<WiredCharger
     registry.addRecipeCategories(new WiredChargerRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_wired_charger.getBlockNN()), WiredChargerRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_wireless_charger.getBlockNN()), WiredChargerRecipeCategory.UID);
-    registry.addRecipeClickArea(GuiWiredCharger.class, 155, 42, 16, 16, WiredChargerRecipeCategory.UID);
+    registry.addRecipeClickArea(GuiWiredCharger.class, 176, 42, 16, 16, WiredChargerRecipeCategory.UID);
 
     long start = System.nanoTime();
 
@@ -94,8 +94,8 @@ public class WiredChargerRecipeCategory extends BlankRecipeCategory<WiredCharger
 
   public WiredChargerRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("wired_charger");
-    background = guiHelper.createDrawable(backgroundLocation, 28, 15, 100, 49, 0, 0, 46, 0);
-    flame = guiHelper.createAnimatedDrawable(guiHelper.createDrawable(backgroundLocation, 176, 0, 14, 37), 200, IDrawableAnimated.StartDirection.BOTTOM, false);
+    background = guiHelper.createDrawable(backgroundLocation, 49, 15, 100, 49, 0, 0, 46, 0);
+    flame = guiHelper.createAnimatedDrawable(guiHelper.createDrawable(backgroundLocation, 241, 0, 14, 37), 200, IDrawableAnimated.StartDirection.BOTTOM, false);
   }
 
   @Override

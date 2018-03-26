@@ -1,23 +1,40 @@
 package crazypants.enderio.machines.machine.wired;
 
+import java.awt.Point;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.util.ArrayInventory;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
+import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.integration.jei.ItemHelper;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.machines.machine.tank.InventorySlot;
+import crazypants.enderio.util.ShadowInventory;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EntityEquipmentSlot.Type;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCharger> {
 
@@ -27,14 +44,103 @@ public class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCha
   public static int FIRST_INVENTORY_SLOT = 1 + 1 + 1; // input + output + upgrade
   public static int NUM_INVENTORY_SLOT = 4 * 9;
 
+  protected IInventory baubles;
+
   public ContainerWiredCharger(@Nonnull InventoryPlayer playerInv, @Nonnull TileWiredCharger te) {
     super(playerInv, te);
+    baubles = BaublesUtil.instance().getBaubles(playerInv.player);
   }
 
   @Override
   protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
-    addSlotToContainer(new InventorySlot(getInv(), 0, 54, 28));
-    addSlotToContainer(new InventorySlot(getInv(), 1, 105, 28));
+    addSlotToContainer(new InventorySlot(getInv(), 0, 75, 28));
+    addSlotToContainer(new InventorySlot(getInv(), 1, 126, 28));
+
+    if (baubles != null && BaublesUtil.WhoAmI.whoAmI(playerInv.player.world) == BaublesUtil.WhoAmI.SPCLIENT) {
+      baubles = new ShadowInventory(baubles);
+    }
+
+    if (hasBaublesSlots() && (baubles == null || baubles.getSizeInventory() != getBaublesSize())) {
+      baubles = new ArrayInventory(getBaublesSize()) {
+        @Override
+        public boolean isItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
+          return false;
+        }
+
+        @Override
+        public @Nonnull ItemStack getStackInSlot(int slot) {
+          return new ItemStack(Blocks.BARRIER);
+        }
+
+        @Override
+        public @Nonnull ItemStack decrStackSize(int slot, int amount) {
+          return ItemStack.EMPTY;
+        }
+
+        @Override
+        public @Nonnull ItemStack removeStackFromSlot(int index) {
+          return ItemStack.EMPTY;
+        }
+
+      };
+    }
+
+    int baublesOffset = 196;
+
+    for (final EntityEquipmentSlot slt : EntityEquipmentSlot.values()) {
+      if (slt.getSlotType() == Type.ARMOR) {
+        addSlotToContainer(new Slot(playerInv, 36 + slt.getIndex(), 6, 66 - slt.getIndex() * 18) {
+
+          @Override
+          public int getSlotStackLimit() {
+            return 1;
+          }
+
+          @Override
+          public boolean isItemValid(@Nonnull ItemStack par1ItemStack) {
+            if (par1ItemStack.isEmpty()) {
+              return false;
+            }
+            return par1ItemStack.getItem().isValidArmor(par1ItemStack, slt, playerInv.player);
+          }
+
+          @Override
+          @SideOnly(Side.CLIENT)
+          public String getSlotTexture() {
+            return ItemArmor.EMPTY_SLOT_NAMES[slt.getIndex()];
+          }
+        });
+      }
+    }
+
+    addSlotToContainer(new Slot(playerInv, 40, 6, 12 + 18 * 4) {
+      @Override
+      @Nullable
+      @SideOnly(Side.CLIENT)
+      public String getSlotTexture() {
+        return "minecraft:items/empty_armor_slot_shield";
+      }
+    });
+
+    if (hasBaublesSlots()) {
+      for (int i = 0; i < baubles.getSizeInventory(); i++) {
+        addSlotToContainer(new Slot(baubles, i, baublesOffset, 12 + i * 18) {
+          @Override
+          public boolean isItemValid(@Nonnull ItemStack par1ItemStack) {
+            return inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
+          }
+
+          @Override
+          public boolean canTakeStack(@Nonnull EntityPlayer playerIn) {
+            ItemStack stackInSlot = inventory.getStackInSlot(getSlotIndex());
+            if (stackInSlot.getItem() == Item.getItemFromBlock(Blocks.BARRIER)) {
+              return false;
+            }
+            return super.canTakeStack(playerIn);
+          }
+        });
+      }
+    }
   }
 
   public void addGhostslots(NNList<GhostSlot> ghostSlots) {
@@ -83,6 +189,109 @@ public class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCha
       }
     }
     return result;
+  }
+
+  @Override
+  public @Nonnull ItemStack transferStackInSlot(@Nonnull EntityPlayer entityPlayer, int slotIndex) {
+    int otherSlots = 4 + 5; // charging + armor + off-hand
+    int startBaublesSlot = otherSlots;
+    int endBaublesSlot = hasBaublesSlots() ? 0 : startBaublesSlot + getBaublesSize();
+
+    ItemStack copystack = ItemStack.EMPTY;
+    Slot slot = inventorySlots.get(slotIndex);
+    if (slot != null && slot.getHasStack()) {
+
+      ItemStack origStack = slot.getStack();
+      copystack = origStack.copy();
+
+      // Note: Merging into Baubles slots is disabled because the used vanilla
+      // merge method does not check if the item can go into the slot or not.
+
+      if (slotIndex < 4) {
+        // merge from machine input slots to inventory
+        if (!mergeItemStackIntoArmor(entityPlayer, origStack, slotIndex)
+            && /*
+                * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
+                */!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
+          return ItemStack.EMPTY;
+        }
+
+      } else {
+        // Check from inv-> charge then inv->hotbar or hotbar->inv
+        if (!getInv().isItemValidForSlot(0, origStack) || !mergeItemStack(origStack, 0, 4, false)) {
+
+          if (slotIndex >= startBaublesSlot && slotIndex < endBaublesSlot) {
+            if (!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false) && !mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
+              return ItemStack.EMPTY;
+            }
+          } else if (slotIndex < endPlayerSlot) {
+            if (/*
+                 * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
+                 */!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
+              return ItemStack.EMPTY;
+            }
+          } else if (slotIndex >= startHotBarSlot && slotIndex < endHotBarSlot) {
+            if (/*
+                 * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
+                 */!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
+              return ItemStack.EMPTY;
+            }
+          }
+
+        }
+      }
+
+      if (origStack.getCount() == 0) {
+        slot.putStack(ItemStack.EMPTY);
+      } else {
+        slot.onSlotChanged();
+      }
+
+      slot.onSlotChanged();
+
+      if (origStack.getCount() == copystack.getCount()) {
+        return ItemStack.EMPTY;
+      }
+
+      return slot.onTake(entityPlayer, origStack);
+    }
+
+    return copystack;
+  }
+
+  // BAUBLES
+
+  public boolean hasBaublesSlots() {
+    return baubles != null;
+  }
+
+  private int getBaublesSize() {
+    return 7;
+  }
+
+  private boolean mergeItemStackIntoArmor(EntityPlayer entityPlayer, ItemStack origStack, int slotIndex) {
+    if (origStack == null || EntityLiving.getSlotForItemStack(origStack).getSlotType() != EntityEquipmentSlot.Type.ARMOR) {
+      return false;
+    }
+    int index = EntityLiving.getSlotForItemStack(origStack).getIndex();
+    NonNullList<ItemStack> ai = entityPlayer.inventory.armorInventory;
+    if (ai.get(index).isEmpty()) {
+      ai.set(index, origStack.copy());
+      origStack.setCount(0);
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public @Nonnull Point getPlayerInventoryOffset() {
+    return new Point(29, 84);
+  }
+
+  @Override
+  @Nonnull
+  public Point getUpgradeOffset() {
+    return new Point(33, 60);
   }
 
 }

@@ -173,6 +173,16 @@ public class GuiTransceiver extends GuiInventoryMachineBase<TileTransceiver> imp
     return tabs.get(activeTab).getTexture();
   }
 
+  @Override
+  public int getOverlayOffsetXLeft() {
+    return 38;
+  }
+
+  @Override
+  public int getOverlayOffsetXRight() {
+    return 78;
+  }
+
   // @Override
   // @Optional.Method(modid = "NotEnoughItems")
   // public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {

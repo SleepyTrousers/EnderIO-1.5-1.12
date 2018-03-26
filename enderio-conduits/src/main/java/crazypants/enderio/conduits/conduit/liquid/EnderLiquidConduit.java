@@ -41,8 +41,6 @@ import static crazypants.enderio.conduits.init.ConduitObject.item_liquid_conduit
 
 public class EnderLiquidConduit extends AbstractLiquidConduit implements IConduitComponent {
 
-  // TODO Lang
-
   public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_ender");
   public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core_ender");
   public static final TextureSupplier ICON_IN_OUT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_in_out");

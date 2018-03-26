@@ -8,8 +8,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.button.InvisibleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
@@ -22,12 +20,14 @@ import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.conduits.init.ConduitObject;
 import crazypants.enderio.powertools.init.PowerToolObject;
+import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.powertools.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.powertools.machine.monitor.TilePowerMonitor.StatData;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -38,9 +38,9 @@ import net.minecraft.util.ResourceLocation;
 public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements IPowerMonitorRemoteExec.GUI {
 
   private static enum Tab {
-    GRAPH(0, new ItemStack(PowerToolObject.block_advanced_power_monitor.getBlockNN())),
-    STAT(1, new ItemStack(PowerToolObject.block_power_monitor.getBlockNN())),
-    CONTROL(2, new ItemStack(Items.REDSTONE));
+    GRAPH(2, new ItemStack(PowerToolObject.block_advanced_power_monitor.getBlockNN())),
+    STAT(0, new ItemStack(PowerToolObject.block_power_monitor.getBlockNN())),
+    CONTROL(1, new ItemStack(Items.REDSTONE));
 
     int tabNo;
     @Nonnull
@@ -82,8 +82,8 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
     }
 
     engineControlEnabled = new CheckBox(this, 4, 0, 0);
-    engineControlEnabled.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"));
-    engineControlEnabled.setUnselectedToolTip(EnderIO.lang.localize("gui.disabled"));
+    engineControlEnabled.setSelectedToolTip(Lang.GUI_ENABLED.get());
+    engineControlEnabled.setUnselectedToolTip(Lang.GUI_DISABLED.get());
 
     engineControlStart = new TextFieldEnder(getFontRenderer(), 0, 0, 28, 14);
     engineControlStart.setCanLoseFocus(true);
@@ -95,11 +95,11 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
     engineControlStop.setMaxStringLength(3);
     textFields.add(engineControlStop);
 
-    addToolTip(tooltipConduitStorage = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.power_monitor.mon_heading1")));
-    addToolTip(tooltipCapacitorBankStorage = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.power_monitor.mon_heading2")));
-    addToolTip(tooltipMachineBuffers = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.power_monitor.mon_heading3")));
-    addToolTip(tooltipAverageOutput = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.power_monitor.mon_heading4")));
-    addToolTip(tooltipAverageInput = new GuiToolTip(new Rectangle(0, 0, 0, 0), EnderIO.lang.localize("gui.power_monitor.mon_heading5")));
+    addToolTip(tooltipConduitStorage = new GuiToolTip(new Rectangle(0, 0, 0, 0), Lang.GUI_POWER_MONITOR_CONDUIT_STORAGE.get()));
+    addToolTip(tooltipCapacitorBankStorage = new GuiToolTip(new Rectangle(0, 0, 0, 0), Lang.GUI_POWER_MONITOR_CAPBANK_STORAGE.get()));
+    addToolTip(tooltipMachineBuffers = new GuiToolTip(new Rectangle(0, 0, 0, 0), Lang.GUI_POWER_MONITOR_MACHINE_BUFFER.get()));
+    addToolTip(tooltipAverageOutput = new GuiToolTip(new Rectangle(0, 0, 0, 0), Lang.GUI_POWER_MONITOR_AVERAGE_OUTPUT.get()));
+    addToolTip(tooltipAverageInput = new GuiToolTip(new Rectangle(0, 0, 0, 0), Lang.GUI_POWER_MONITOR_AVERAGE_INPUT.get()));
 
     addDrawingElement(new PowerBar(te, this, 7, 10, 4, 66) {
       @Override
@@ -251,7 +251,7 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
@@ -284,7 +284,7 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
     startTabs();
     for (Tab drawTab : Tab.values()) {
       if (drawTab != Tab.GRAPH || getTileEntity().isAdvanced()) {
-        renderStdTab(sx, sy, drawTab.tabNo - (getTileEntity().isAdvanced() ? 0 : 1), drawTab.itemStack, drawTab == tab);
+        renderStdTab(sx, sy, drawTab.tabNo, drawTab.itemStack, drawTab == tab);
       }
     }
   }
@@ -305,11 +305,11 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
     int x0 = sx + TEXT_MARGIN_LEFT;
     int y0 = sy + TEXT_MARGIN_TOP;
 
-    String engineTxt1 = EnderIO.lang.localize("gui.power_monitor.engine_section1").trim(); // Emit signal when storage less
-    String engineTxt2 = EnderIO.lang.localize("gui.power_monitor.engine_section2").trim(); // than
-    String engineTxt3 = EnderIO.lang.localize("gui.power_monitor.engine_section3").trim(); // % full.
-    String engineTxt4 = EnderIO.lang.localize("gui.power_monitor.engine_section4").trim(); // Stop when storage greater than
-    String engineTxt5 = EnderIO.lang.localize("gui.power_monitor.engine_section5").trim(); // or equal to
+    String engineTxt1 = Lang.GUI_POWER_MONITOR_ENGINE_1.get().trim(); // Emit signal when storage less
+    String engineTxt2 = Lang.GUI_POWER_MONITOR_ENGINE_2.get().trim(); // than
+    String engineTxt3 = Lang.GUI_POWER_MONITOR_ENGINE_3.get().trim(); // % full.
+    String engineTxt4 = Lang.GUI_POWER_MONITOR_ENGINE_4.get().trim(); // Stop when storage greater than
+    String engineTxt5 = Lang.GUI_POWER_MONITOR_ENGINE_5.get().trim(); // or equal to
 
     List<Object> elems = new ArrayList<Object>();
     elems.add(engineControlEnabled);
@@ -367,7 +367,7 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
 
     StatData statData = getTileEntity().getStatData();
     if (statData == null || statData.maxPowerInConduits == 0) {
-      fr.drawSplitString(EnderIO.lang.localize("gui.power_monitor.no_network_error"), x, y, TEXT_WIDTH, errorCol);
+      fr.drawSplitString(Lang.GUI_POWER_MONITOR_NO_NETWORK_ERROR.get(), x, y, TEXT_WIDTH, errorCol);
       return;
     }
 

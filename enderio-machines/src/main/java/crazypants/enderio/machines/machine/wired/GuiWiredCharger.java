@@ -11,9 +11,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 public class GuiWiredCharger extends GuiInventoryMachineBase<TileWiredCharger> {
 
   public GuiWiredCharger(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileWiredCharger te) {
-    super(te, new ContainerWiredCharger(par1InventoryPlayer, te), "wired_charger");
+    super(te, new ContainerWiredCharger(par1InventoryPlayer, te), "wired_charger", "wired_charger_baubles");
 
-    addDrawingElement(new PowerBar(te, this, 15, 14, 42));
+    xSize = 218;
+
+    addDrawingElement(new PowerBar(te, this, 37, 14, 42));
   }
 
   @Override
@@ -26,7 +28,12 @@ public class GuiWiredCharger extends GuiInventoryMachineBase<TileWiredCharger> {
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-    bindGuiTexture();
+    if (((ContainerWiredCharger) inventorySlots).hasBaublesSlots()) {
+      bindGuiTexture(1);
+    } else {
+      bindGuiTexture(0);
+    }
+
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
@@ -34,7 +41,7 @@ public class GuiWiredCharger extends GuiInventoryMachineBase<TileWiredCharger> {
 
     if (shouldRenderProgress()) {
       int scaled = getProgressScaled(37);
-      drawTexturedModalRect(sx + 81, sy + 17 + 37 - scaled, 176, 0 + 37 - scaled, 14, 38);
+      drawTexturedModalRect(sx + 103, sy + 17 + 37 - scaled, 242, 0 + 37 - scaled, 14, 38);
     }
 
     String invName = EnderIOMachines.lang.localizeExact(getTileEntity().getMachineName() + ".name");
@@ -42,6 +49,22 @@ public class GuiWiredCharger extends GuiInventoryMachineBase<TileWiredCharger> {
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+  }
+
+  // Overridden to set the size of the io config overlay
+  @Override
+  public int getOverlayOffsetXRight() {
+    return 42;
+  }
+
+  @Override
+  public int getOverlayOffsetXLeft() {
+    return super.getOverlayOffsetXLeft() + 21;
+  }
+
+  @Override
+  protected int getButtonXPos() {
+    return 218 - 23;
   }
 
 }

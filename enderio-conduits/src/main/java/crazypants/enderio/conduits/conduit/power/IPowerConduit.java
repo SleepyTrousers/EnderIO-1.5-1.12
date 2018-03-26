@@ -12,8 +12,6 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public interface IPowerConduit extends IEnergyStorage, IExtractor, IServerConduit, IClientConduit {
 
-  // TODO Lang
-
   public static final String ICON_KEY = "blocks/power_conduit";
   public static final String ICON_KEY_INPUT = "blocks/power_conduit_input";
   public static final String ICON_KEY_OUTPUT = "blocks/power_conduit_output";

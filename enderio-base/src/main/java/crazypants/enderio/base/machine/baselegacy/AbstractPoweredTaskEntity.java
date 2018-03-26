@@ -2,7 +2,6 @@ package crazypants.enderio.base.machine.baselegacy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,8 +33,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   @Store({ NBTAction.SAVE, NBTAction.ITEM })
   protected IMachineRecipe lastCompletedRecipe;
   protected IMachineRecipe cachedNextRecipe;
-
-  protected final Random random = new Random();
 
   protected int ticksSinceCheckedRecipe = 0;
   protected boolean startFailed = false;
@@ -159,6 +156,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
         mergeResults(output);
       }
     }
+    damageCapacitor();
     markDirty();
     currentTask = null;
   }

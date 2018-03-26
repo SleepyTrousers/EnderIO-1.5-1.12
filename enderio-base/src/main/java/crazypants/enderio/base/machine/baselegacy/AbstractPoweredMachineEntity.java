@@ -1,5 +1,7 @@
 package crazypants.enderio.base.machine.baselegacy;
 
+import java.util.Random;
+
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.NBTAction;
@@ -32,6 +34,11 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   // Not NBTAction.ITEM to keep the storedEnergy tag out in the open
   private int storedEnergyRF;
   protected float lastSyncPowerStored = -1;
+
+  @Store({ NBTAction.SAVE, NBTAction.CLIENT })
+  protected boolean isCapacitorDamageable = false;
+
+  protected @Nonnull Random random = new Random();
 
   public AbstractPoweredMachineEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
       @Nonnull ICapacitorKey maxEnergyUsed) {
@@ -159,7 +166,17 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
           .first(CapacitorHelper.getCapacitorDataFromItemStack(NullHelper.first(stack, ItemStack.EMPTY)), DefaultCapacitorData.NONE);
       if (!capacitorData.equals(capacitorDataFromItemStack)) {
         capacitorData = capacitorDataFromItemStack;
+        isCapacitorDamageable = stack.isItemStackDamageable();
         onCapacitorDataChange();
+      }
+    }
+  }
+
+  protected void damageCapacitor() {
+    if (isCapacitorDamageable) {
+      ItemStack cap = inventory[slotDefinition.minUpgradeSlot];
+      if (cap.attemptDamageItem(1, random, null)) {
+        this.setInventorySlotContents(slotDefinition.minUpgradeSlot, ItemStack.EMPTY);
       }
     }
   }

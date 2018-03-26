@@ -20,6 +20,7 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.conduits.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduits.conduit.item.AbstractItemConduit;
 import crazypants.enderio.conduits.config.ConduitConfig;
+import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.render.ConduitBundleRenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -98,9 +99,9 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
     // TODO Lang
 
-    String mbt = " " + EnderIO.lang.localize("fluid.millibuckets_tick");
-    list.add(EnderIO.lang.localize("item_liquid_conduit.tooltip.max_extract") + " " + extractRate + mbt);
-    list.add(EnderIO.lang.localize("item_liquid_conduit.tooltip.max_io") + " " + maxIo + mbt);
+    String mbt = " " + Lang.FLUID_MILLIBUCKETS_TICK.get();
+    list.add(Lang.GUI_LIQUID_TOOLTIP_MAX_EXTRACT + " " + extractRate + mbt);
+    list.add(Lang.GUI_LIQUID_TOOLTIP_MAX_IO.get() + " " + maxIo + mbt);
 
     if (itemstack.getItemDamage() == 0) {
       SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.item_liquid_conduit");

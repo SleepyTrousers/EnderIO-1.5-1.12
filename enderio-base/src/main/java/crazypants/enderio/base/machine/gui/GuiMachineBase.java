@@ -56,7 +56,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
 
     xSize = getXSize();
     ySize = getYSize();
-    int x = getXSize() - 5 - BUTTON_SIZE;
+    int x = getButtonXPos() - 5 - BUTTON_SIZE;
     int y = 5;
     redstoneButton = new RedstoneModeButton<T>(this, -1, x, y, tileEntity);
 
@@ -68,7 +68,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
 
     y += 19;
     recipeButton = new IconButton(this, RECIPE_ID, x, y, IconEIO.RECIPE);
-    recipeButton.visible = false;
+    recipeButton.setIsVisible(false);
     recipeButton.setIconMargin(1, 1);
   }
 
@@ -93,7 +93,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
     }
 
     if (showRecipeButton()) {
-      recipeButton.visible = true;
+      recipeButton.setIsVisible(true);
     }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
@@ -204,5 +204,9 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
       return Util.getProgressScaled(scale, (IProgressTile) tileEntity);
     }
     return 0;
+  }
+
+  protected int getButtonXPos() {
+    return getXSize();
   }
 }

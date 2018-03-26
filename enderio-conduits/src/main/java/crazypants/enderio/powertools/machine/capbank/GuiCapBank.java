@@ -11,12 +11,10 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.common.util.NullHelper;
-import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
-import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiButtonIoConfig;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
@@ -27,6 +25,7 @@ import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.powertools.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketGuiChange;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkStateRequest;
@@ -36,13 +35,10 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 
 public class GuiCapBank extends GuiContainerBaseEIO {
-
-  public static final @Nonnull ResourceLocation baublesBackground = new ResourceLocation("baubles", "textures/gui/expanded_inventory.png");
 
   private static final @Nonnull CapBankClientNetwork NULL_NETWORK = new CapBankClientNetwork(-1);
 
@@ -150,9 +146,9 @@ public class GuiCapBank extends GuiContainerBaseEIO {
       @Override
       protected @Nonnull String getLabelForMode(IoMode mode) {
         if (mode == IoMode.PUSH) {
-          return EnderIO.lang.localize("gui.cap_bank.output_mode");
+          return Lang.GUI_CAPBANK_OUTPUT_MODE.get();
         } else if (mode == IoMode.PULL) {
-          return EnderIO.lang.localize("gui.cap_bank.input_mode");
+          return Lang.GUI_CAPBANK_INPUT_MODE.get();
         }
         return super.getLabelForMode(mode);
       }
@@ -198,7 +194,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
             } else if (change < 0) {
               color = TextFormatting.RED.toString();
             }
-            text.add(Lang.POWER_PERTICK.get(color + LangPower.format(Math.round(change)) + TextFormatting.GRAY.toString()));
+            text.add(crazypants.enderio.base.lang.Lang.POWER_PERTICK.get(color + LangPower.format(Math.round(change)) + TextFormatting.GRAY.toString()));
           }
 
         };
@@ -278,7 +274,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
     int midX = sx + xSize / 2;
 
-    String str = EnderIO.lang.localize("gui.cap_bank.max_io") + " " + LangPower.RFt(network.getMaxIO());
+    String str = Lang.GUI_CAPBANK_MAX_IO.get() + " " + LangPower.RFt(network.getMaxIO());
     FontRenderer fr = getFontRenderer();
     int swid = fr.getStringWidth(str);
     int x = midX - swid / 2;
@@ -286,13 +282,13 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
     drawString(fr, str, x, y, -1);
 
-    str = EnderIO.lang.localize("gui.cap_bank.max_input") + ":";
+    str = Lang.GUI_CAPBANK_MAX_INPUT.get() + ":";
     swid = fr.getStringWidth(str);
     x = guiLeft + inputX - swid - 26;
     y = guiTop + inputY + 2;
     drawString(fr, str, x, y, -1);
 
-    str = EnderIO.lang.localize("gui.cap_bank.max_output") + ":";
+    str = Lang.GUI_CAPBANK_MAX_OUTPUT.get() + ":";
     swid = fr.getStringWidth(str);
     x = guiLeft + outputX - swid - 26;
     y = guiTop + outputY + 2;
@@ -309,10 +305,6 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   @Override
   public @Nonnull FontRenderer getFontRenderer() {
     return Minecraft.getMinecraft().fontRenderer;
-  }
-
-  private int getEnergyStoredScaled(int scale) {
-    return (int) VecmathUtil.clamp(Math.round(scale * network.getEnergyStoredRatio()), 0, scale);
   }
 
   private void requestStateUpdate() {

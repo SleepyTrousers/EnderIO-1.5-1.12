@@ -34,7 +34,6 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
 
   public static final int CONDUIT_VOLUME = Fluid.BUCKET_VOLUME;
 
-  // TODO Lang
   public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced");
   public static final TextureSupplier ICON_KEY_LOCKED = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_locked");
   public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core_advanced");

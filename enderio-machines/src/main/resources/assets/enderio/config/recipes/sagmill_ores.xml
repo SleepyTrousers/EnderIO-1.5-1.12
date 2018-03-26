@@ -2456,7 +2456,9 @@
   <recipe name="Sagmill: draconicevolution:draconium_ore:0 Ore" required="false">
     <sagmilling energy="3600">
       <input name="draconicevolution:draconium_ore:0" />
-      <output name="dustDraconium" amount="2" />
+      <output name="dustDraconium" amount="3" />
+      <output name="dustDraconium" amount="2" chance="0.4" />
+      <output name="dustDraconium" amount="2" chance="0.15"/>
       <output name="oredict:cobblestone" chance="0.15" />
     </sagmilling>
   </recipe>
@@ -2502,7 +2504,9 @@
   <recipe name="Sagmill: draconicevolution:draconium_ore:1 Ore" required="false">
     <sagmilling energy="3600">
       <input name="draconicevolution:draconium_ore:1" />
-      <output name="dustDraconium" amount="2" />
+      <output name="dustDraconium" amount="3" />
+      <output name="dustDraconium" amount="2" chance="0.4" />
+      <output name="dustDraconium" amount="2" chance="0.15"/>
       <output name="minecraft:netherrack" chance="0.15" />
     </sagmilling>
   </recipe>
@@ -2512,7 +2516,9 @@
   <recipe name="Sagmill: draconicevolution:draconium_ore:2 Ore" required="false">
     <sagmilling energy="3600">
       <input name="draconicevolution:draconium_ore:2" />
-      <output name="dustDraconium" amount="2" />
+      <output name="dustDraconium" amount="3" />
+      <output name="dustDraconium" amount="2" chance="0.4" />
+      <output name="dustDraconium" amount="2" chance="0.15"/>
       <output name="minecraft:end_stone" chance="0.15" />
     </sagmilling>
   </recipe>
@@ -2574,6 +2580,18 @@
       <input name="oreEndInferium" />
       <output name="essenceInferium" amount="4" />
       <output name="minecraft:end_stone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <!-- DimensionalShard (RFTools) -->
+
+  <recipe name="Sagmill: oreDimensionalShard Ore" required="false">
+    <sagmilling energy="3600" bonus="chance_only">
+      <input name="oreDimensionalShard" />
+      <output name="rftools:dimensional_shard" amount="4" />
+      <output name="rftools:dimensional_shard" chance="0.50" amount="3" />
+      <output name="rftools:dimensional_shard" chance="0.15" amount="3" />
+      <output name="minecraft:cobblestone" chance="0.15" amount="1" />
     </sagmilling>
   </recipe>
 
