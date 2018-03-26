@@ -419,7 +419,7 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     for (int row = 0; row < numRows; ++row) {
       for (int col = 0; col < numCols; ++col) {
         int x = leftX + col * 18;
-        int y = topY + row * 18 + rowSpacing;
+        int y = topY + row * 18 + rowSpacing * row;
         slots.add(new ItemFilterGhostSlot(index, x, y, cb));
         index++;
       }
