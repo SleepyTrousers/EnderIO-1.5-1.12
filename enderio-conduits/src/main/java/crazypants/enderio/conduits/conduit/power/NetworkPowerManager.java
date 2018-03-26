@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.ConnectionMode;
@@ -112,7 +113,7 @@ public class NetworkPowerManager {
   private int errorSupressionA = 0;
   private int errorSupressionB = 0;
 
-  public void applyRecievedPower(Profiler theProfiler) {
+  public void applyRecievedPower(@Nullable Profiler theProfiler) {
     try {
       doApplyRecievedPower(theProfiler);
     } catch (Exception e) {
@@ -128,7 +129,7 @@ public class NetworkPowerManager {
     }
   }
 
-  public void doApplyRecievedPower(Profiler profiler) {
+  public void doApplyRecievedPower(@Nullable Profiler profiler) {
 
     trackerStartTick();
 

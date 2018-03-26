@@ -37,7 +37,7 @@ public class Prof {
     stop(getProfiler(world));
   }
 
-  public static void start(Profiler profiler, @Nonnull String section) {
+  public static void start(@Nullable Profiler profiler, @Nonnull String section) {
     if (profiler != null) {
       profiler.startSection(section);
     }
@@ -46,8 +46,9 @@ public class Prof {
 
   public static void start(@Nullable Profiler profiler, @Nonnull String section, @Nullable Object param) {
     if (profiler != null) {
-      start(profiler, makeSection(section, param));
+      profiler.startSection(makeSection(section, param));
     }
+    counter.get().count++;
   }
 
   public static void next(@Nullable Profiler profiler, @Nonnull String section) {
@@ -73,10 +74,8 @@ public class Prof {
   }
 
   public static void stop(@Nullable Profiler profiler, int count) {
-    if (profiler != null) {
-      for (int i = 0; i < count; i++) {
-        stop(profiler);
-      }
+    for (int i = 0; i < count; i++) {
+      stop(profiler);
     }
   }
 

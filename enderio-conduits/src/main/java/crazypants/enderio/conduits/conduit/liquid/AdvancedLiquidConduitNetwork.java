@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper;
@@ -101,7 +102,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   @Override
-  public void tickEnd(ServerTickEvent event, Profiler profiler) {
+  public void tickEnd(ServerTickEvent event, @Nullable Profiler profiler) {
     if (liquidType == null || outputs.isEmpty() || !tank.containsValidLiquid() || tank.isEmpty()) {
       Prof.start(profiler, "updateActiveState");
       updateActiveState();

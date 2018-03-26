@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.power.IPowerInterface;
@@ -106,7 +107,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
   }
 
   @Override
-  public void tickEnd(ServerTickEvent event, Profiler profiler) {
+  public void tickEnd(ServerTickEvent event, @Nullable Profiler profiler) {
     powerManager.applyRecievedPower(profiler);
   }
 

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.RoundRobinIterator;
@@ -206,7 +207,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
   // --------- Tick Handling
 
   @Override
-  public void tickEnd(TickEvent.ServerTickEvent evt, Profiler profiler) {
+  public void tickEnd(TickEvent.ServerTickEvent evt, @Nullable Profiler profiler) {
     Prof.start(profiler, "EnergyTransmitting");
     transmitEnergy();
 
@@ -583,7 +584,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
   }
 
   @Override
-  public void tickStart(ServerTickEvent event, Profiler profiler) {
+  public void tickStart(ServerTickEvent event, @Nullable Profiler profiler) {
   }
 
 }

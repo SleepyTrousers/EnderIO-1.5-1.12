@@ -4,6 +4,7 @@ import java.util.IdentityHashMap;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
@@ -20,9 +21,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 public class ServerTickHandler {
 
   public static interface ITickListener {
-    public void tickStart(TickEvent.ServerTickEvent event, Profiler profiler);
+    public void tickStart(TickEvent.ServerTickEvent event, @Nullable Profiler profiler);
 
-    public void tickEnd(TickEvent.ServerTickEvent event, Profiler profiler);
+    public void tickEnd(TickEvent.ServerTickEvent event, @Nullable Profiler profiler);
   }
 
   private final static @Nonnull IdentityHashMap<ITickListener, String> listeners = new IdentityHashMap<>();
@@ -41,7 +42,10 @@ public class ServerTickHandler {
 
   @SubscribeEvent
   public static void onServerTick(@Nonnull TickEvent.ServerTickEvent event) {
-    final Profiler profiler = FMLCommonHandler.instance().getMinecraftServerInstance().profiler;
+    Profiler profiler = FMLCommonHandler.instance().getMinecraftServerInstance().profiler;
+    if (!profiler.profilingEnabled) {
+      profiler = null;
+    }
     Prof.start(profiler, "root"); // this event is fired outside the profiler's normal coverage...
     Prof.start(profiler, "ServerTickEvent_" + event.phase);
     for (Entry<ITickListener, String> entry : listeners.entrySet()) {
