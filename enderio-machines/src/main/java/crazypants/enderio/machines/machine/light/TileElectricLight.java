@@ -38,7 +38,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
   private boolean init = true;
 
-  @Store(handler = HandleBlockPos.HandleBlockPosList.class, value = { NBTAction.SAVE, NBTAction.CLIENT })
+  @Store(handler = HandleBlockPos.HandleBlockPosList.class, value = NBTAction.SAVE)
   private List<BlockPos> lightNodes;
 
   private boolean updatingLightNodes = false;

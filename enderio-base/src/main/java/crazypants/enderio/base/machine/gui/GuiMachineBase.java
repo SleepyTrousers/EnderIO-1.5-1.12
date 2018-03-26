@@ -68,7 +68,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
 
     y += 19;
     recipeButton = new IconButton(this, RECIPE_ID, x, y, IconEIO.RECIPE);
-    recipeButton.visible = false;
+    recipeButton.setIsVisible(false);
     recipeButton.setIconMargin(1, 1);
   }
 
@@ -93,7 +93,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
     }
 
     if (showRecipeButton()) {
-      recipeButton.visible = true;
+      recipeButton.setIsVisible(true);
     }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
