@@ -2577,4 +2577,47 @@
     </sagmilling>
   </recipe>
 
+<!-- RfTools-->
+
+  <recipe name="Sagmill: rftools:dimensional_shard_ore:0 Ore" required="false">
+    <sagmilling energy="3600" bonus="chance_only">
+      <input name="rftools:dimensional_shard_ore:0" />
+      <output name="rftools:dimensional_shard" amount="4" />
+      <output name="rftools:dimensional_shard" chance="0.50" amount="3" />
+      <output name="rftools:dimensional_shard" chance="0.15" amount="3" />
+      <output name="minecraft:cobblestone" chance="0.15" amount="1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: rftools:dimensional_shard_ore:1 Ore" required="false">
+    <sagmilling energy="3200" bonus="chance_only">
+      <input name="rftools:dimensional_shard_ore:1" />
+      <output name="rftools:dimensional_shard" amount="4" />
+      <output name="rftools:dimensional_shard" chance="0.50" amount="3" />
+      <output name="rftools:dimensional_shard" chance="0.15" amount="3" />
+      <output name="minecraft:netherrack" chance="0.15" amount="1" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: rftools:dimensional_shard_ore:2 Ore" required="false">
+    <sagmilling energy="4500" bonus="chance_only">
+      <input name="rftools:dimensional_shard_ore:2" />
+      <output name="rftools:dimensional_shard" amount="4" />
+      <output name="rftools:dimensional_shard" chance="0.50" amount="3" />
+      <output name="rftools:dimensional_shard" chance="0.15" amount="3" />
+      <output name="minecraft:endstone" chance="0.15" amount="1" />
+    </sagmilling>
+  </recipe>
+
+<!-- Temp Fix For Exnihilo having wrong oredict -->
+  
+  <recipe name="Sagmill: oreYellorium Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreYellorium" />
+      <output name="dustYellorium" amount="2" />
+      <output name="dustCyanite" chance="0.05" required="false" />
+      <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
 </enderio:recipes>
