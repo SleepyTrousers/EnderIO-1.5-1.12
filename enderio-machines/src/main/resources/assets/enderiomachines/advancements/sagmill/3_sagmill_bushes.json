@@ -1,16 +1,14 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.sagmill.3_sagmill_bushes.desc",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.3_sagmill_bushes.desc"
     },
     "title": {
-      "translate": "enderio.advancement.sagmill.3_sagmill_bushes.name",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.3_sagmill_bushes.name"
     },
     "icon": {
-      "item": "minecraft:deadbush",
-      "data": 0
+      "item": "enderio:item_material",
+      "data": 48
     }
   },
   "criteria": {
@@ -27,15 +25,7 @@
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 10
   },
-  "requirements": [
-    [
-      "inv_changed-enderio:item_material"
-    ]
-  ],
   "parent": "enderiomachines:sagmill/2_sagmill_flowers"
 }

@@ -1,23 +1,23 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.alloy.1_alloy_smelter_get.desc"
+      "translate": "enderio.advancement.stirling.1_stirling_generator_get.desc"
     },
     "title": {
-      "translate": "enderio.advancement.alloy.1_alloy_smelter_get.name"
+      "translate": "enderio.advancement.stirling.1_stirling_generator_get.name"
     },
     "icon": {
-      "item": "enderio:block_simple_alloy_smelter",
+      "item": "enderio:block_simple_stirling_generator",
       "data": 0
     }
   },
   "criteria": {
-    "inv_changed-enderio:block_simple_alloy_smelter": {
+    "inv_changed-enderio:block_simple_stirling_generator": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "enderio:block_simple_alloy_smelter",
+            "item": "enderio:block_simple_stirling_generator",
             "data": 0
           }
         ]

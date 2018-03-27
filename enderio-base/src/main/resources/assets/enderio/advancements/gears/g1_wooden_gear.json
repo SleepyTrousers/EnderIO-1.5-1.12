@@ -1,12 +1,10 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.gears.g1_wooden_gear.desc",
-      "color": "white"
+      "translate": "enderio.advancement.gears.g1_wooden_gear.desc"
     },
     "title": {
-      "translate": "enderio.advancement.gears.g1_wooden_gear.name",
-      "color": "white"
+      "translate": "enderio.advancement.gears.g1_wooden_gear.name"
     },
     "icon": {
       "item": "enderio:item_material",
@@ -27,15 +25,7 @@
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 10
   },
-  "requirements": [
-    [
-      "inv_changed-enderio:item_material"
-    ]
-  ],
   "parent": "enderio:root"
 }

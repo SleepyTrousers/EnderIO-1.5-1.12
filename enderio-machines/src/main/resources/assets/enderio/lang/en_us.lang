@@ -362,39 +362,50 @@ enderio.config.generator.solar=Solar Panels
 
 # Achie...um...Advancements
 
-enderio.advancement.alloy.1_alloy_smelter_get.name=Mix it up
-enderio.advancement.alloy.1_alloy_smelter_get.desc=Make a simple alloy smelter
+enderio.advancement.alloy.1_alloy_smelter_get.name=Alloys and Enemies
+enderio.advancement.alloy.1_alloy_smelter_get.desc=Craft a Simple Alloy Smelter
 
-enderio.advancement.challenge.1_all_simple_get.name=Simple is simple
-enderio.advancement.challenge.1_all_simple_get.desc=Make all simple machines
+enderio.advancement.alloy.2_energetic_alloy_get.name=Energized Metal
+enderio.advancement.alloy.2_energetic_alloy_get.desc=Combine gold, redstone, and glowstone
 
-enderio.advancement.sagmill.1_sagmill_get.name=Grind it down
-enderio.advancement.sagmill.1_sagmill_get.desc=Make a simple SAG Mill
+enderio.advancement.alloy.machine_chassis_get.name=The Culmination
+enderio.advancement.alloy.machine_chassis_get.desc=Craft a Machine Chassis
 
-enderio.advancement.sagmill.2_sagmill_flowers.name=Purely Organic
-enderio.advancement.sagmill.2_sagmill_flowers.desc=Put some flowers into the SAG Mill
+enderio.advancement.challenge.1_all_simple_get.name=Start at the Beginning
+enderio.advancement.challenge.1_all_simple_get.desc=Craft all simple machines
 
-enderio.advancement.sagmill.3_sagmill_bushes.name=Chewing Wood
-enderio.advancement.sagmill.3_sagmill_bushes.desc=Not green anymore? Grind it anyway.
+enderio.advancement.sagmill.1_sagmill_get.name=Semi-Autogenous Grinding
+enderio.advancement.sagmill.1_sagmill_get.desc=Craft a simple SAG Mill
 
-enderio.advancement.sagmill.4_brown.name=All Natural
-enderio.advancement.sagmill.4_brown.desc=Twigs and slime give what?
+enderio.advancement.sagmill.2_sagmill_flowers.name=Destroy Something Beautiful
+enderio.advancement.sagmill.2_sagmill_flowers.desc=Grind down some plant matter
 
-enderio.advancement.sagmill.5_green.name=Edible
-enderio.advancement.sagmill.5_green.desc=Very toxic!
+enderio.advancement.sagmill.3_sagmill_bushes.name=Useful in Death
+enderio.advancement.sagmill.3_sagmill_bushes.desc=Grind down a dead bush
+
+enderio.advancement.sagmill.4_brown.name=Who Needs Jungles?
+enderio.advancement.sagmill.4_brown.desc=Combine some twigs and organic matter into dye
+
+enderio.advancement.sagmill.5_green.name=Caution: Do Not Eat
+enderio.advancement.sagmill.5_green.desc=Combine some plant matter and animal products into dye
 
 enderio.advancement.sagmill.6_coal.name=Chewing Dead Wood
-enderio.advancement.sagmill.6_coal.desc=Really old wood? Grind it away.
+enderio.advancement.sagmill.6_coal.desc=Grind down some coal
 
-enderio.advancement.sagmill.7_black.name=Cleansing
-enderio.advancement.sagmill.7_black.desc=No, it's not food
+enderio.advancement.sagmill.7_black.name=Who Needs Squid?
+enderio.advancement.sagmill.7_black.desc=Combine some coal dust and animal products into dye
 
 enderio.advancement.sagmill.8_blue.name=Bejeweled
-enderio.advancement.sagmill.8_blue.desc=They look great, why grind them to dust?
+enderio.advancement.sagmill.8_blue.desc=Grind down some Lapis Lazuli
 
 enderio.advancement.sagmill.9_white.name=Bejeweled 2
-enderio.advancement.sagmill.9_white.desc=Those can go, they are boring...
+enderio.advancement.sagmill.9_white.desc=Grind down some Quartz
 
-enderio.advancement.sagmill.a_powder_coating.name=Powder Coating
-enderio.advancement.sagmill.a_powder_coating.desc=A nice coating makes a better chassis
+enderio.advancement.sagmill.a_powder_coating.name=Classic Color
+enderio.advancement.sagmill.a_powder_coating.desc=Craft some Organic Machine Powder Coating
 
+enderio.advancement.stirling.1_stirling_generator_get.name=Harness the Heat
+enderio.advancement.stirling.1_stirling_generator_get.desc=Craft a Simple Stirling Generator
+
+enderio.advancement.machines.root.name=Ender IO Machines
+enderio.advancement.machines.root.desc=Begin your automation adventure

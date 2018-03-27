@@ -1,0 +1,31 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.alloy.2_energetic_alloy_get.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.alloy.2_energetic_alloy_get.name"
+    },
+    "icon": {
+      "item": "enderio:item_alloy_ingot",
+      "data": 1
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_energetic_alloy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "ingotEnergeticAlloy"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 10
+  },
+  "parent": "enderiomachines:alloy/1_alloy_smelter_get"
+}

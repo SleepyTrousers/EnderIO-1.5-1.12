@@ -898,29 +898,29 @@ container.chestDouble=Double Chest
 
 # Achie...um...Advancements
 
-enderio.advancement.root.name=Ender IO
-enderio.advancement.root.desc=How many pipes in one block?
+enderio.advancement.root.name=Ender IO Basics
+enderio.advancement.root.desc=A step closer to infinity
 
-enderio.advancement.start.1_infinity_powder_get.name=It burns
-enderio.advancement.start.1_infinity_powder_get.desc=Light bedrock on fire and get a reward
+enderio.advancement.start.1_infinity_powder_get.name=Collect the Infinite
+enderio.advancement.start.1_infinity_powder_get.desc=Light Bedrock on fire and get a reward
 
-enderio.advancement.start.2_simple_chassis_get.name=Get constructive
-enderio.advancement.start.2_simple_chassis_get.desc=Make your first machine chassis
+enderio.advancement.start.2_simple_chassis_get.name=The Third 'S' is Silent
+enderio.advancement.start.2_simple_chassis_get.desc=Make your first Machine Chassis
 
-enderio.advancement.gears.g1_wooden_gear.name=Round and round
-enderio.advancement.gears.g1_wooden_gear.desc=It's not round but it turns anyway
+enderio.advancement.gears.g1_wooden_gear.name=Arboreally Mechanical
+enderio.advancement.gears.g1_wooden_gear.desc=Craft a Wooden Gear
 
-enderio.advancement.gear.g2_stone_gear.name=Round and heavy
-enderio.advancement.gear.g2_stone_gear.desc=It's not round but it's heavy
+enderio.advancement.gear.g2_stone_gear.name=Geologically Mechanical
+enderio.advancement.gear.g2_stone_gear.desc=Craft a Stone Gear
 
-enderio.advancement.gear.g3_iron_gear.name=Round and rusty
-enderio.advancement.gear.g3_iron_gear.desc=It's not round but it rusts
+enderio.advancement.gear.g3_iron_gear.name=Ferrously Mechanical
+enderio.advancement.gear.g3_iron_gear.desc=Craft an Iron Gear
 
-enderio.advancement.gear.g4_energized_gear.name=Round and glowy
-enderio.advancement.gear.g4_energized_gear.desc=It's not round but glows
+enderio.advancement.gear.g4_energized_gear.name=Luminously Mechanical
+enderio.advancement.gear.g4_energized_gear.desc=Craft an Energized Bimetal Gear
 
-enderio.advancement.gear.g5_vibrant_gear.name=Turns by itself
-enderio.advancement.gear.g5_vibrant_gear.desc=One moving part
+enderio.advancement.gear.g5_vibrant_gear.name=Mystically Mechanical
+enderio.advancement.gear.g5_vibrant_gear.desc=Craft a Vibrant Bimetal Gear
 
 # Filters
 enderio.gui.item_filter.damage.disabled=Ignore Damage

@@ -1,13 +1,11 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.root.desc",
-      "color": "white"
+      "translate": "enderio.advancement.root.desc"
     },
     "title": {
       "translate": "enderio.advancement.root.name",
-      "bold": true,
-      "color": "white"
+      "color": "purple"
     },
     "icon": {
       "item": "enderio:item_enderface",
@@ -29,16 +27,5 @@
         }
       }
     }
-  },
-  "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
-    "experience": 10
-  },
-  "requirements": [
-    [
-      "location"
-    ]
-  ]
+  }
 }

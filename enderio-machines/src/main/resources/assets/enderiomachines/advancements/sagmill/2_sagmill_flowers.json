@@ -1,16 +1,14 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.sagmill.2_sagmill_flowers.desc",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.2_sagmill_flowers.desc"
     },
     "title": {
-      "translate": "enderio.advancement.sagmill.2_sagmill_flowers.name",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.2_sagmill_flowers.name"
     },
     "icon": {
-      "item": "red_flower",
-      "data": 4
+      "item": "enderio:item_material",
+      "data": 47
     }
   },
   "criteria": {
@@ -27,15 +25,7 @@
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 10
   },
-  "requirements": [
-    [
-      "inv_changed-enderio:item_material"
-    ]
-  ],
   "parent": "enderiomachines:sagmill/1_sagmill_get"
 }

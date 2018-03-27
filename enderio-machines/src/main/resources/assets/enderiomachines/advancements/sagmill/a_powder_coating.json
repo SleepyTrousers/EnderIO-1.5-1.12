@@ -1,12 +1,10 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.sagmill.a_powder_coating.desc",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.a_powder_coating.desc"
     },
     "title": {
-      "translate": "enderio.advancement.sagmill.a_powder_coating.name",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.a_powder_coating.name"
     },
     "icon": {
       "item": "enderio:item_material",
@@ -27,15 +25,7 @@
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 10
   },
-  "requirements": [
-    [
-      "inv_changed-enderio:item_material"
-    ]
-  ],
   "parent": "enderiomachines:sagmill/9_white"
 }
