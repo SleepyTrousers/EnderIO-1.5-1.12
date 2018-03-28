@@ -409,6 +409,10 @@
                                 </restriction>
                               </simpleType>
                             </attribute>
+                            <attribute name="nbt" type="string" use="optional">
+                              <annotation>
+                                <documentation>An NBT tag in the same syntax Minecraft uses for recipes, the give command, etc.</documentation>
+                              </annotation></attribute>
                           </complexType>
                         </element>
                         <element minOccurs="1" maxOccurs="1" name="enchantment">
