@@ -176,7 +176,14 @@ public enum Fluids {
   }
 
   public static @Nonnull ItemStack getBucket(@Nonnull Fluid fluid) {
-    return FluidUtil.getFilledBucket(new FluidStack(fluid, Fluid.BUCKET_VOLUME));
+    final FluidStack fluidStack = new FluidStack(fluid, Fluid.BUCKET_VOLUME);
+    try {
+      fluidStack.getFluid();
+    } catch (NullPointerException e) {
+      throw new RuntimeException("The fluid " + fluid + " (" + fluid.getUnlocalizedName()
+          + ") is registered in the FluidRegistry, but the FluidRegistry has no delegate for it. This is impossible.", e);
+    }
+    return FluidUtil.getFilledBucket(fluidStack);
   }
 
   public static @Nonnull NNList<ItemStack> getBuckets() {
