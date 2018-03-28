@@ -149,6 +149,7 @@ public enum ModObject implements IModObject.Registerable {
   itemAdvancedItemFilter(ItemBasicItemFilter.class, "createAdvancedItemFilter"),
   itemLimitedItemFilter(ItemBasicItemFilter.class, "createLimitedItemFilter"),
   itemBigItemFilter(ItemBasicItemFilter.class, "createBigItemFilter"),
+  itemBigAdvancedItemFilter(ItemBasicItemFilter.class, "createBigAdvancedItemFilter"),
   itemExistingItemFilter(ItemExistingItemFilter.class),
   itemModItemFilter(ItemModItemFilter.class),
   itemPowerItemFilter(ItemPowerItemFilter.class),

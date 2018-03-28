@@ -172,6 +172,12 @@ For more information, see base.xml.
       <enchantment name="minecraft:lure" costMultiplier="1"/>
     </enchanting>
   </recipe>
+  <recipe name="Enchanter: minecraft:sweeping" required="true" disabled="false">
+    <enchanting>
+      <input name="ingotIron" amount="8"/>
+      <enchantment name="minecraft:sweeping" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
   <recipe name="Enchanter: enderio:soulbound" required="true" disabled="false">
     <enchanting>
       <input name="ENDER_CRYSTAL" amount="1"/>
@@ -198,13 +204,13 @@ COFH Core Enchantments Holding, Insight, Leech, Multishot, Smelting, Vorpal
 -->
     <recipe name="Enchanter: cofhcore:holding" required="false" disabled="false">
     <enchanting>
-      <input name="minecraft:trapped_chest" amount="16"/>
+      <input name="chestWood" amount="16"/>
       <enchantment name="cofhcore:holding" costMultiplier="1"/>
     </enchanting>
   </recipe>
     <recipe name="Enchanter: cofhcore:insight" required="false" disabled="false">
     <enchanting>
-      <input name="ingotCopper" amount="20"/>
+      <input name="minecraft:experience_bottle" amount="4"/>
       <enchantment name="cofhcore:insight" costMultiplier="1"/>
     </enchanting>
   </recipe>
@@ -216,20 +222,20 @@ COFH Core Enchantments Holding, Insight, Leech, Multishot, Smelting, Vorpal
   </recipe>
     <recipe name="Enchanter: cofhcore:multishot" required="false" disabled="false">
     <enchanting>
-      <input name="minecraft:spectral_arrow" amount="4"/>
-      <enchantment name="cofhcore:multishot" costMultiplier="2"/>
+      <input name="SKELETAL_CONTRACTOR" amount="1"/>
+      <enchantment name="cofhcore:multishot" costMultiplier="1"/>
     </enchanting>
   </recipe>
     <recipe name="Enchanter: cofhcore:smelting" required="false" disabled="false">
     <enchanting>
-      <input name="minecraft:fire_charge" amount="16"/>
+      <input name="minecraft:furnace" amount="16"/>
       <enchantment name="cofhcore:smelting" costMultiplier="1"/>
     </enchanting>
   </recipe>
     <recipe name="Enchanter: cofhcore:vorpal" required="false" disabled="false">
     <enchanting>
-      <input name="obsidian" amount="4"/>
-      <enchantment name="cofhcore:vorpal" costMultiplier="2"/>
+      <input name="ZOMBIE_CONTROLLER" amount="1"/>
+      <enchantment name="cofhcore:vorpal" costMultiplier="1"/>
     </enchanting>
   </recipe>
 <!--

@@ -448,10 +448,23 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Filter, Big" required="true">
     <crafting>
-      <grid size="3x1">
-        <item name="minecraft:chorus_fruit_popped" /><item name="enderio:item_basic_item_filter" /><item name="minecraft:chorus_fruit_popped" />
+      <grid size="3x3">
+        <item name="dustObsidian" /><item name="minecraft:paper" /><item name="dustObsidian" />
+        <item name="minecraft:paper" /><item name="SKELETAL_CONTRACTOR" /><item name="minecraft:paper" />
+        <item name="dustObsidian" /><item name="minecraft:paper" /><item name="dustObsidian" />
       </grid>
       <output name="enderio:item_big_item_filter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Big Advanced" required="true">
+    <crafting>
+      <grid size="1x3">
+        <item name="minecraft:shulker_shell" />
+        <item name="enderio:item_advanced_item_filter" />
+        <item name="minecraft:shulker_shell" />
+      </grid>
+      <output name="enderio:item_big_advanced_item_filter" />
     </crafting>
   </recipe>
 
