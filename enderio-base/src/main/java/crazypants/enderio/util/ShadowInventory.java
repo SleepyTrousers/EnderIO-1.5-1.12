@@ -2,6 +2,7 @@ package crazypants.enderio.util;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.Util;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,13 +10,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 
-public class ShadowInventory implements IInventory { // TODO: DONE111
-  private final ItemStack[] items;
+public class ShadowInventory implements IInventory {
+  private final NNList<ItemStack> items;
   private final IInventory master;
 
   public ShadowInventory(IInventory master) {
     this.master = master;
-    items = new ItemStack[master.getSizeInventory()];
+    items = new NNList<ItemStack>(master.getSizeInventory(), ItemStack.EMPTY);
   }
 
   @Override
@@ -25,8 +26,8 @@ public class ShadowInventory implements IInventory { // TODO: DONE111
 
   @Override
   public @Nonnull ItemStack getStackInSlot(int index) {
-    final ItemStack itemStack = items[index];
-    return itemStack == null ? master.getStackInSlot(index) : itemStack;
+    final ItemStack itemStack = items.get(index);
+    return itemStack.isEmpty() ? master.getStackInSlot(index) : itemStack;
   }
 
   @Override
@@ -36,7 +37,7 @@ public class ShadowInventory implements IInventory { // TODO: DONE111
 
   @Override
   public void setInventorySlotContents(int index, @Nonnull ItemStack stack) {
-    items[index] = stack;
+    items.set(index, stack);
   }
 
   @Override
@@ -59,7 +60,7 @@ public class ShadowInventory implements IInventory { // TODO: DONE111
   }
 
   @Override
-  public boolean hasCustomName() {  
+  public boolean hasCustomName() {
     return master.hasCustomName();
   }
 
@@ -77,12 +78,12 @@ public class ShadowInventory implements IInventory { // TODO: DONE111
 
   @Override
   public void openInventory(@Nonnull EntityPlayer player) {
-    master.openInventory(player);    
+    master.openInventory(player);
   }
 
   @Override
   public void closeInventory(@Nonnull EntityPlayer player) {
-    master.closeInventory(player);    
+    master.closeInventory(player);
   }
 
   @Override
@@ -93,7 +94,7 @@ public class ShadowInventory implements IInventory { // TODO: DONE111
   @Override
   public void setField(int id, int value) {
     master.setField(id, value);
-    
+
   }
 
   @Override
@@ -103,19 +104,12 @@ public class ShadowInventory implements IInventory { // TODO: DONE111
 
   @Override
   public void clear() {
-    for (int i = 0; i < items.length; i++) {
-      removeStackFromSlot(i);
-    }
+    items.clear();
   }
 
   @Override
   public boolean isEmpty() {
-    for (int i = 0; i < items.length; i++) {
-      if (!getStackInSlot(i).isEmpty()) {
-        return false;
-      }
-    }
-    return true;
+    return items.isEmpty();
   }
 
   @Override
