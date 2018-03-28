@@ -1,0 +1,31 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.conduits.fluid_conduit.pressurized.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.conduits.fluid_conduit.pressurized.name"
+    },
+    "icon": {
+      "item": "enderio:item_liquid_conduit",
+      "data": 1
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:liquid_conduit_pressurized": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_liquid_conduit",
+            "data": 1
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 20
+  },
+  "parent": "enderioconduits:fluid/1_fluid_conduit"
+}

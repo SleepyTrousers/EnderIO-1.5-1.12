@@ -1,0 +1,30 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.conduits.energy_conduit.basic.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.conduits.energy_conduit.basic.name"
+    },
+    "icon": {
+      "item": "enderio:item_power_conduit",
+      "data": 0
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:power_conduit": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_power_conduit"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 10
+  },
+  "parent": "enderioconduits:start/2_conduit_binder"
+}

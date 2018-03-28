@@ -27,5 +27,5 @@
   "rewards": {
     "experience": 10
   },
-  "parent": "enderiomachines:alloy/1_alloy_smelter_get"
+  "parent": "enderiomachines:basics/alloy/1_alloy_smelter_get"
 }

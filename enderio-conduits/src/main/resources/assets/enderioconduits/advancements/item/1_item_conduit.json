@@ -1,0 +1,30 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.conduits.item_conduit.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.conduits.item_conduit.name"
+    },
+    "icon": {
+      "item": "enderio:item_item_conduit",
+      "data": 0
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_conduit": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_item_conduit"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 20
+  },
+  "parent": "enderioconduits:start/2_conduit_binder"
+}

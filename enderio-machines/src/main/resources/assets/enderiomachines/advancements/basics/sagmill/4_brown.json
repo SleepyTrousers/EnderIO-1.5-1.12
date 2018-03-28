@@ -1,14 +1,14 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.sagmill.9_white.desc"
+      "translate": "enderio.advancement.sagmill.4_brown.desc"
     },
     "title": {
-      "translate": "enderio.advancement.sagmill.9_white.name"
+      "translate": "enderio.advancement.sagmill.4_brown.name"
     },
     "icon": {
-      "item": "minecraft:quartz",
-      "data": 0
+      "item": "enderio:item_material",
+      "data": 50
     }
   },
   "criteria": {
@@ -17,8 +17,8 @@
       "conditions": {
         "items": [
           {
-            "type":"forge:ore_dict",
-            "ore": "dustNetherQuartz"
+            "item": "enderio:item_material",
+            "data": 50
           }
         ]
       }
@@ -27,5 +27,5 @@
   "rewards": {
     "experience": 10
   },
-  "parent": "enderiomachines:sagmill/8_blue"
+  "parent": "enderiomachines:basics/sagmill/3_sagmill_bushes"
 }

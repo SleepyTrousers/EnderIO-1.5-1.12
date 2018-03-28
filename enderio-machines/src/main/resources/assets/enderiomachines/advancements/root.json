@@ -7,11 +7,11 @@
       "translate": "enderio.advancement.machines.root.name"
     },
     "icon": {
-      "item": "enderio:item_material",
-      "data": 1
+      "item": "enderio:item_enderface",
+      "data": 19
     },
-    "frame": "challenge",
-    "background": "enderio:textures/blocks/block_machine_bottom.png"
+    "background": "enderio:textures/blocks/block_machine_bottom.png",
+    "announce_to_chat": false
   },
   "criteria": {
     "inv_changed-enderio:block_machine_chassis_root": {
@@ -25,11 +25,5 @@
         ]
       }
     }
-  },
-  "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
-    "experience": 10
   }
 }

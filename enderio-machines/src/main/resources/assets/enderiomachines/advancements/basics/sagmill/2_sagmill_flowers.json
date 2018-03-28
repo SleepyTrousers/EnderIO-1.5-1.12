@@ -1,14 +1,14 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.sagmill.5_green.desc"
+      "translate": "enderio.advancement.sagmill.2_sagmill_flowers.desc"
     },
     "title": {
-      "translate": "enderio.advancement.sagmill.5_green.name"
+      "translate": "enderio.advancement.sagmill.2_sagmill_flowers.name"
     },
     "icon": {
       "item": "enderio:item_material",
-      "data": 49
+      "data": 47
     }
   },
   "criteria": {
@@ -17,8 +17,8 @@
       "conditions": {
         "items": [
           {
-            "item": "enderio:item_material",
-            "data": 49
+            "type":"forge:ore_dict",
+            "ore": "itemPlantgreen"
           }
         ]
       }
@@ -27,5 +27,5 @@
   "rewards": {
     "experience": 10
   },
-  "parent": "enderiomachines:sagmill/2_sagmill_flowers"
+  "parent": "enderiomachines:basics/sagmill/1_sagmill_get"
 }

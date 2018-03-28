@@ -1,0 +1,31 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.conduits.conduit_binder.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.conduits.conduit_binder.name"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 4
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:conduit_binder": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "itemConduitBinder"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 10
+  },
+  "parent": "enderioconduits:start/1_binder_composite"
+}

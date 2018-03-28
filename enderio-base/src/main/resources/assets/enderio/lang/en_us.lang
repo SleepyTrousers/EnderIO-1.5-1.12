@@ -242,6 +242,8 @@ item.item_yeta_wrench.tooltip.detailed.line5=open conduit settings GUI
 item.item_yeta_wrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or '%s' to
 item.item_yeta_wrench.tooltip.detailed.line7=render a single conduit type
 
+item.item_enderface.name=Enderface
+
 tile.block_infinity_fog.name=Infinity Dust
 tile.block_infinity_fog.tooltip.common.line1=§4§oDangerous
 tile.block_infinity_fog.tooltip.detailed.line1=When Grains of Infinity are ground to a very fine dust, the dust starts to develop properties of the infinite bedrock it was made from.

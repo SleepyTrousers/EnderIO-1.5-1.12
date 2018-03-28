@@ -10,9 +10,7 @@
       "item": "enderio:item_material",
       "data": 1
     },
-    "frame": "challenge",
-    "announce_to_chat": false,
-    "show_toast": false
+    "frame": "challenge"
   },
   "criteria": {
     "inv_changed-enderio:block_machine_chassis": {
@@ -27,5 +25,11 @@
       }
     }
   },
-  "parent": "enderiomachines:sagmill/a_powder_coating"
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 10
+  },
+  "parent": "enderiomachines:basics/sagmill/a_powder_coating"
 }

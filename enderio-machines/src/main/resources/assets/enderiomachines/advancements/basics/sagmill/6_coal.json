@@ -1,14 +1,14 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.sagmill.7_black.desc"
+      "translate": "enderio.advancement.sagmill.6_coal.desc"
     },
     "title": {
-      "translate": "enderio.advancement.sagmill.7_black.name"
+      "translate": "enderio.advancement.sagmill.6_coal.name"
     },
     "icon": {
-      "item": "enderio:item_material",
-      "data": 51
+      "item": "minecraft:coal",
+      "data": 0
     }
   },
   "criteria": {
@@ -17,8 +17,8 @@
       "conditions": {
         "items": [
           {
-            "item": "enderio:item_material",
-            "data": 51
+            "type":"forge:ore_dict",
+            "ore": "dustCoal"
           }
         ]
       }
@@ -27,5 +27,5 @@
   "rewards": {
     "experience": 10
   },
-  "parent": "enderiomachines:sagmill/6_coal"
+  "parent": "enderiomachines:basics/sagmill/1_sagmill_get"
 }

@@ -1,14 +1,14 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.sagmill.8_blue.desc"
+      "translate": "enderio.advancement.sagmill.3_sagmill_bushes.desc"
     },
     "title": {
-      "translate": "enderio.advancement.sagmill.8_blue.name"
+      "translate": "enderio.advancement.sagmill.3_sagmill_bushes.name"
     },
     "icon": {
-      "item": "minecraft:dye",
-      "data": 4
+      "item": "enderio:item_material",
+      "data": 48
     }
   },
   "criteria": {
@@ -18,7 +18,7 @@
         "items": [
           {
             "type":"forge:ore_dict",
-            "ore": "dustLapis"
+            "ore": "itemPlantbrown"
           }
         ]
       }
@@ -27,5 +27,5 @@
   "rewards": {
     "experience": 10
   },
-  "parent": "enderiomachines:sagmill/1_sagmill_get"
+  "parent": "enderiomachines:basics/sagmill/2_sagmill_flowers"
 }
