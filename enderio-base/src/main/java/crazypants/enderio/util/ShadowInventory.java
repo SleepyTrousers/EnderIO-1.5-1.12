@@ -2,7 +2,6 @@ package crazypants.enderio.util;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.Util;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,12 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 
 public class ShadowInventory implements IInventory {
-  private final NNList<ItemStack> items;
+  private final ItemStack[] items;
   private final IInventory master;
 
   public ShadowInventory(IInventory master) {
     this.master = master;
-    items = new NNList<ItemStack>(master.getSizeInventory(), ItemStack.EMPTY);
+    items = new ItemStack[master.getSizeInventory()];
   }
 
   @Override
@@ -26,7 +25,7 @@ public class ShadowInventory implements IInventory {
 
   @Override
   public @Nonnull ItemStack getStackInSlot(int index) {
-    final ItemStack itemStack = items.get(index);
+    final ItemStack itemStack = items[index];
     return itemStack.isEmpty() ? master.getStackInSlot(index) : itemStack;
   }
 
@@ -37,7 +36,7 @@ public class ShadowInventory implements IInventory {
 
   @Override
   public void setInventorySlotContents(int index, @Nonnull ItemStack stack) {
-    items.set(index, stack);
+    items[index] = stack;
   }
 
   @Override
@@ -104,12 +103,19 @@ public class ShadowInventory implements IInventory {
 
   @Override
   public void clear() {
-    items.clear();
+    for (int i = 0; i < items.length; i++) {
+      removeStackFromSlot(i);
+    }
   }
 
   @Override
   public boolean isEmpty() {
-    return items.isEmpty();
+    for (int i = 0; i < items.length; i++) {
+      if (!getStackInSlot(i).isEmpty()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override
