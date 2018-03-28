@@ -36,8 +36,10 @@ public class GhostSlotTarget<I> implements Target<I> {
 
   @Override
   public void accept(I ingredient) {
-    filter.setInventorySlotContents(slot.getSlot(), (ItemStack) ingredient);
-    gui.sendFilterChange();
+    if (ingredient instanceof ItemStack) {
+      filter.setInventorySlotContents(slot.getSlot(), (ItemStack) ingredient);
+      gui.sendFilterChange();
+    }
   }
 
 }

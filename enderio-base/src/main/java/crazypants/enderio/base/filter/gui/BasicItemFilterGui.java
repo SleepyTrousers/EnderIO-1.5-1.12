@@ -66,7 +66,7 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
 
     if (isBig) {
       y = 13;
-      x += 27;
+      x = isAdvanced ? x - 53 : x + 27;
     }
     whiteListB = new IconButton(this, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
@@ -83,8 +83,12 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
     stickyB.setUnselectedToolTip(Lang.GUI_ITEM_FILTER_STICKY_DISABLED.get());
     stickyB.setPaintSelectedBorder(false);
 
-    y += 20;
-    x = butLeft;
+    if (!isBig) {
+      y += 20;
+      x = butLeft;
+    } else {
+      x += 20;
+    }
 
     useOreDictB = new ToggleButton(this, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
     useOreDictB.setSelectedToolTip(Lang.GUI_ITEM_FILTER_ORE_DIC_ENABLED.get());
@@ -192,7 +196,7 @@ public class BasicItemFilterGui extends AbstractGuiItemFilter {
   @Nonnull
   protected String getUnlocalisedNameForHeading() {
     if (filter.isBig()) {
-      return Lang.GUI_BIG_ITEM_FILTER.get();
+      return filter.isAdvanced() ? Lang.GUI_BIG_ADVANCED_ITEM_FILTER.get() : Lang.GUI_BIG_ITEM_FILTER.get();
     } else if (filter.isLimited()) {
       return Lang.GUI_LIMITED_ITEM_FILTER.get();
     } else if (filter.isAdvanced()) {
