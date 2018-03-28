@@ -1,12 +1,10 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.gear.g5_vibrant_gear.desc",
-      "color": "white"
+      "translate": "enderio.advancement.gear.g5_vibrant_gear.desc"
     },
     "title": {
-      "translate": "enderio.advancement.gear.g5_vibrant_gear.name",
-      "color": "white"
+      "translate": "enderio.advancement.gear.g5_vibrant_gear.name"
     },
     "icon": {
       "item": "enderio:item_material",
@@ -27,15 +25,7 @@
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 40
   },
-  "requirements": [
-    [
-      "inv_changed-enderio:item_material"
-    ]
-  ],
   "parent": "enderio:gears/g4_energized_gear"
 }

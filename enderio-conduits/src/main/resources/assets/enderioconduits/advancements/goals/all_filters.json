@@ -1,0 +1,114 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.conduits.all_filters.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.conduits.all_filters.name"
+    },
+    "icon": {
+      "item": "enderio:item_mod_item_filter",
+      "data": 0
+    },
+    "hidden": true,
+    "frame": "goal"
+  },
+  "criteria": {
+    "inv_changed-enderio:item_basic_item_filter2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_basic_item_filter",
+            "data": 0
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:item_advanced_item_filter2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_advanced_item_filter",
+            "data": 0
+          }
+        ]
+      }
+    },
+    
+    "inv_changed-enderio:item_limited_item_filter2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_limited_item_filter",
+            "data": 0
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:item_big_item_filter2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_big_item_filter",
+            "data": 0
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:item_big_advanced_item_filter2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_big_advanced_item_filter",
+            "data": 0
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:item_existing_item_filter2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_existing_item_filter",
+            "data": 0
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:item_mod_item_filter2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_mod_item_filter",
+            "data": 0
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:item_powered_item_filter2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_powered_item_filter",
+            "data": 0
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 30
+  },
+  "parent": "enderioconduits:item/1_item_conduit"
+}

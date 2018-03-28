@@ -1,12 +1,10 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.sagmill.6_coal.desc",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.6_coal.desc"
     },
     "title": {
-      "translate": "enderio.advancement.sagmill.6_coal.name",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.6_coal.name"
     },
     "icon": {
       "item": "minecraft:coal",
@@ -27,15 +25,7 @@
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 10
   },
-  "requirements": [
-    [
-      "inv_changed-enderio:item_material"
-    ]
-  ],
-  "parent": "enderiomachines:sagmill/1_sagmill_get"
+  "parent": "enderiomachines:basics/sagmill/1_sagmill_get"
 }

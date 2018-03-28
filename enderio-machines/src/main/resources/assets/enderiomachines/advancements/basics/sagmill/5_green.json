@@ -1,16 +1,14 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.sagmill.7_black.desc",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.5_green.desc"
     },
     "title": {
-      "translate": "enderio.advancement.sagmill.7_black.name",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.5_green.name"
     },
     "icon": {
       "item": "enderio:item_material",
-      "data": 51
+      "data": 49
     }
   },
   "criteria": {
@@ -20,22 +18,14 @@
         "items": [
           {
             "item": "enderio:item_material",
-            "data": 51
+            "data": 49
           }
         ]
       }
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 10
   },
-  "requirements": [
-    [
-      "inv_changed-enderio:item_material"
-    ]
-  ],
-  "parent": "enderiomachines:sagmill/6_coal"
+  "parent": "enderiomachines:basics/sagmill/2_sagmill_flowers"
 }

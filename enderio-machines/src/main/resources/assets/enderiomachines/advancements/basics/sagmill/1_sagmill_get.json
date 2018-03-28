@@ -1,12 +1,10 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.sagmill.1_sagmill_get.desc",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.1_sagmill_get.desc"
     },
     "title": {
-      "translate": "enderio.advancement.sagmill.1_sagmill_get.name",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.1_sagmill_get.name"
     },
     "icon": {
       "item": "enderio:block_simple_sag_mill",
@@ -27,15 +25,7 @@
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 10
   },
-  "requirements": [
-    
-    [
-    "inv_changed-enderio:block_simple_sag_mill"
-  ]],
   "parent": "enderio:start/2_simple_chassis_get"
 }

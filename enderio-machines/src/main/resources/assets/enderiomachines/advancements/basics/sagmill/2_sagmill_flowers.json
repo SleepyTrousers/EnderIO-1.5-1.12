@@ -1,14 +1,14 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.gears.g1_wooden_gear.desc"
+      "translate": "enderio.advancement.sagmill.2_sagmill_flowers.desc"
     },
     "title": {
-      "translate": "enderio.advancement.gears.g1_wooden_gear.name"
+      "translate": "enderio.advancement.sagmill.2_sagmill_flowers.name"
     },
     "icon": {
       "item": "enderio:item_material",
-      "data": 10
+      "data": 47
     }
   },
   "criteria": {
@@ -18,7 +18,7 @@
         "items": [
           {
             "type":"forge:ore_dict",
-            "ore": "gearWood"
+            "ore": "itemPlantgreen"
           }
         ]
       }
@@ -27,5 +27,5 @@
   "rewards": {
     "experience": 10
   },
-  "parent": "enderio:root"
+  "parent": "enderiomachines:basics/sagmill/1_sagmill_get"
 }

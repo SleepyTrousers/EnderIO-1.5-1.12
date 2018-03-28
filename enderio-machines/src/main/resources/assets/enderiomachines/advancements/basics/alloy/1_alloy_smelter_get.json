@@ -1,12 +1,10 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.alloy.1_alloy_smelter_get.desc",
-      "color": "white"
+      "translate": "enderio.advancement.alloy.1_alloy_smelter_get.desc"
     },
     "title": {
-      "translate": "enderio.advancement.alloy.1_alloy_smelter_get.name",
-      "color": "white"
+      "translate": "enderio.advancement.alloy.1_alloy_smelter_get.name"
     },
     "icon": {
       "item": "enderio:block_simple_alloy_smelter",
@@ -27,15 +25,7 @@
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 10
   },
-  "requirements": [
-    
-    [
-    "inv_changed-enderio:block_simple_alloy_smelter"
-  ]],
   "parent": "enderio:start/2_simple_chassis_get"
 }

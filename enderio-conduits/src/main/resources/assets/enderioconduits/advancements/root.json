@@ -1,0 +1,51 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.conduits.root.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.conduits.root.name"
+    },
+    "icon": {
+      "item": "enderio:item_enderface",
+      "data": 21
+    },
+    "announce_to_chat": false,
+    "background": "enderio:textures/blocks/conduit_connector.png"
+  },
+  "criteria": {
+    "inv_changed-enderio:sand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "sand"
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:gravel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "gravel"
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:clay": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "forge:ore_dict",
+            "ore": "itemClay"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.stirling.1_stirling_generator_get.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.stirling.1_stirling_generator_get.name"
+    },
+    "icon": {
+      "item": "enderio:block_simple_stirling_generator",
+      "data": 0
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:block_simple_stirling_generator": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:block_simple_stirling_generator",
+            "data": 0
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 10
+  },
+  "parent": "enderio:start/2_simple_chassis_get"
+}

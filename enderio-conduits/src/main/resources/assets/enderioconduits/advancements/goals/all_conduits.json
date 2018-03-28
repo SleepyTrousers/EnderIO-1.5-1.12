@@ -1,0 +1,113 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.conduits.all_conduits.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.conduits.all_conduits.name"
+    },
+    "icon": {
+      "item": "enderio:item_item_conduit",
+      "data": 0
+    },
+    "hidden": true,
+    "frame": "goal"
+  },
+  "criteria": {
+    "inv_changed-enderio:power_conduit2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_power_conduit",
+            "data": 0
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:power_conduit_enhanced2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_power_conduit",
+            "data": 1
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:power_conduit_ender2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_power_conduit",
+            "data": 2
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:liquid_conduit2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_liquid_conduit",
+            "data": 0
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:liquid_conduit_pressurized2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_liquid_conduit",
+            "data": 1
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:liquid_conduit_ender2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_liquid_conduit",
+            "data": 2
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:item_conduit2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_item_conduit",
+            "data": 0
+          }
+        ]
+      }
+    },
+    "inv_changed-enderio:redstone_conduit2": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_redstone_conduit",
+            "data": 0
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "loot": [
+      "enderio:reward"
+    ],
+    "experience": 30
+  },
+  "parent": "enderioconduits:start/2_conduit_binder"
+}

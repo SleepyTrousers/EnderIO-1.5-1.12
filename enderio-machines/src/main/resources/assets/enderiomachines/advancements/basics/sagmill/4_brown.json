@@ -1,12 +1,10 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.sagmill.4_brown.desc",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.4_brown.desc"
     },
     "title": {
-      "translate": "enderio.advancement.sagmill.4_brown.name",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.4_brown.name"
     },
     "icon": {
       "item": "enderio:item_material",
@@ -27,15 +25,7 @@
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 10
   },
-  "requirements": [
-    [
-      "inv_changed-enderio:item_material"
-    ]
-  ],
-  "parent": "enderiomachines:sagmill/3_sagmill_bushes"
+  "parent": "enderiomachines:basics/sagmill/3_sagmill_bushes"
 }

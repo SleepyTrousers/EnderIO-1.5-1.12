@@ -1,0 +1,30 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.conduits.fluid_conduit.basic.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.conduits.fluid_conduit.basic.name"
+    },
+    "icon": {
+      "item": "enderio:item_liquid_conduit",
+      "data": 0
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:liquid_conduit": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_liquid_conduit"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 10
+  },
+  "parent": "enderioconduits:start/2_conduit_binder"
+}

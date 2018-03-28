@@ -1,16 +1,14 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.sagmill.a_powder_coating.desc",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.3_sagmill_bushes.desc"
     },
     "title": {
-      "translate": "enderio.advancement.sagmill.a_powder_coating.name",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.3_sagmill_bushes.name"
     },
     "icon": {
       "item": "enderio:item_material",
-      "data": 52
+      "data": 48
     }
   },
   "criteria": {
@@ -20,22 +18,14 @@
         "items": [
           {
             "type":"forge:ore_dict",
-            "ore": "dyeMachine"
+            "ore": "itemPlantbrown"
           }
         ]
       }
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 10
   },
-  "requirements": [
-    [
-      "inv_changed-enderio:item_material"
-    ]
-  ],
-  "parent": "enderiomachines:sagmill/9_white"
+  "parent": "enderiomachines:basics/sagmill/2_sagmill_flowers"
 }

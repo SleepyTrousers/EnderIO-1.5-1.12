@@ -1,24 +1,24 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.gears.g1_wooden_gear.desc"
+      "translate": "enderio.advancement.conduits.binder_composite.desc"
     },
     "title": {
-      "translate": "enderio.advancement.gears.g1_wooden_gear.name"
+      "translate": "enderio.advancement.conduits.binder_composite.name"
     },
     "icon": {
       "item": "enderio:item_material",
-      "data": 10
+      "data": 23
     }
   },
   "criteria": {
-    "inv_changed-enderio:item_material": {
+    "inv_changed-enderio:binder_composite": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "type":"forge:ore_dict",
-            "ore": "gearWood"
+            "type": "forge:ore_dict",
+            "ore": "itemBinderComposite"
           }
         ]
       }
@@ -27,5 +27,5 @@
   "rewards": {
     "experience": 10
   },
-  "parent": "enderio:root"
+  "parent": "enderioconduits:root"
 }

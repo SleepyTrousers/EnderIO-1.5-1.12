@@ -1,12 +1,10 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.start.1_infinity_powder_get.desc",
-      "color": "white"
+      "translate": "enderio.advancement.start.1_infinity_powder_get.desc"
     },
     "title": {
-      "translate": "enderio.advancement.start.1_infinity_powder_get.name",
-      "color": "white"
+      "translate": "enderio.advancement.start.1_infinity_powder_get.name"
     },
     "icon": {
       "item": "bedrock",
@@ -27,15 +25,7 @@
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 20
   },
-  "requirements": [
-    [
-      "inv_changed-enderio:item_material"
-    ]
-  ],
   "parent": "enderio:root"
 }

@@ -1,18 +1,17 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.challenge.1_all_simple_get.desc",
-      "color": "white"
+      "translate": "enderio.advancement.challenge.1_all_simple_get.desc"
     },
     "title": {
-      "translate": "enderio.advancement.challenge.1_all_simple_get.name",
-      "color": "white"
+      "translate": "enderio.advancement.challenge.1_all_simple_get.name"
     },
     "icon": {
       "item": "enderio:block_simple_stirling_generator",
       "data": 0
     },
-    "frame":"challenge"
+    "frame":"goal",
+    "hidden": true
   },
   "criteria": {
     "inv_changed-enderio:block_simple_stirling_generator": {
@@ -55,15 +54,5 @@
     ],
     "experience": 30
   },
-  "requirements": [
-    [
-      "inv_changed-enderio:block_simple_stirling_generator"
-    ],
-    [
-      "inv_changed-enderio:block_simple_sag_mill"
-    ],
-    [
-    "inv_changed-enderio:block_simple_alloy_smelter"
-  ]],
   "parent": "enderio:start/2_simple_chassis_get"
 }

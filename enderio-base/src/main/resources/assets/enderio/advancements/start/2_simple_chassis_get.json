@@ -1,12 +1,10 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.start.2_simple_chassis_get.desc",
-      "color": "white"
+      "translate": "enderio.advancement.start.2_simple_chassis_get.desc"
     },
     "title": {
-      "translate": "enderio.advancement.start.2_simple_chassis_get.name",
-      "color": "white"
+      "translate": "enderio.advancement.start.2_simple_chassis_get.name"
     },
     "icon": {
       "item": "enderio:item_material",
@@ -27,15 +25,7 @@
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 10
   },
-  "requirements": [
-    [
-      "inv_changed-enderio:item_material"
-    ]
-  ],
   "parent": "enderio:start/1_infinity_powder_get"
 }

@@ -1,12 +1,10 @@
 {
   "display": {
     "description": {
-      "translate": "enderio.advancement.sagmill.9_white.desc",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.9_white.desc"
     },
     "title": {
-      "translate": "enderio.advancement.sagmill.9_white.name",
-      "color": "white"
+      "translate": "enderio.advancement.sagmill.9_white.name"
     },
     "icon": {
       "item": "minecraft:quartz",
@@ -27,15 +25,7 @@
     }
   },
   "rewards": {
-    "loot": [
-      "enderio:reward"
-    ],
     "experience": 10
   },
-  "requirements": [
-    [
-      "inv_changed-enderio:item_material"
-    ]
-  ],
-  "parent": "enderiomachines:sagmill/8_blue"
+  "parent": "enderiomachines:basics/sagmill/8_blue"
 }
