@@ -17,7 +17,6 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.item.darksteel.CapabilityProviderDarksteel;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.item.darksteel.upgrade.travel.TravelUpgrade;
@@ -59,7 +58,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
     if (!EnergyUpgrade.EMPOWERED.hasAnyUpgradeVariant(stack)) {
       EnergyUpgrade.EMPOWERED.addToItem(stack, this);
     }
-    return new CapabilityProviderDarksteel(stack, super.initCapabilities(stack, nbt));
+    return super.initCapabilities(stack, nbt);
   }
 
   @Override

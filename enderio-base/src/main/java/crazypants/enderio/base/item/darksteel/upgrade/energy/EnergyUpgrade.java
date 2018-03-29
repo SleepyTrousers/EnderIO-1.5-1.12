@@ -19,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -61,7 +60,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
         energy -= energyExtracted;
       }
       return energyExtracted;
-    }    
+    }
 
     public @Nonnull EnergyUpgrade getUpgrade() {
       return EnergyUpgrade.this;
@@ -75,6 +74,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
     public int getCapacity() {
       return capacity;
     }
+
   }
 
   public static final @Nonnull EnergyUpgrade EMPOWERED = new EnergyUpgrade(0, "enderio.darksteel.upgrade.empowered_one", Config.darkSteelUpgradeVibrantCost,
