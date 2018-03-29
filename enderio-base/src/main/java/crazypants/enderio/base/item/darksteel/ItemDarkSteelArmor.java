@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IElytraFlyingProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
@@ -65,6 +66,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ISpecialArmor;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.Optional.InterfaceList;
@@ -133,6 +135,12 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getDurability(armorType);
+  }
+  
+  @Override
+  @Nullable
+  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+    return new CapabilityProviderDarksteel(stack, super.initCapabilities(stack, nbt));
   }
 
   @Override

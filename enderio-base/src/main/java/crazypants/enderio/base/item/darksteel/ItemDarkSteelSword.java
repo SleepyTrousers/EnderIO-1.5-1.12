@@ -58,6 +58,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -104,6 +105,12 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     super(MATERIAL);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
+  }
+  
+  @Override
+  @Nullable
+  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+    return new CapabilityProviderDarksteel(stack, super.initCapabilities(stack, nbt));
   }
 
   @Override

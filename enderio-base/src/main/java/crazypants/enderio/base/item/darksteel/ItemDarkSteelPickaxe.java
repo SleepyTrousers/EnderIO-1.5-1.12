@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
@@ -55,6 +56,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -68,6 +70,7 @@ import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -93,6 +96,12 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     super(ItemDarkSteelSword.MATERIAL);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
+  }
+  
+  @Override
+  @Nullable
+  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+    return new CapabilityProviderDarksteel(stack, super.initCapabilities(stack, nbt));
   }
 
   @Override
