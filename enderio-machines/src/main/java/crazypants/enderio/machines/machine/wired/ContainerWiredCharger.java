@@ -36,7 +36,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCharger> {
+public abstract class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCharger> {
 
   // JEI wants this data without giving us a chance to instantiate a container
   public static int FIRST_RECIPE_SLOT = 0;
@@ -46,9 +46,20 @@ public class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCha
 
   protected IInventory baubles;
 
+  @Nonnull
+  public static ContainerWiredCharger create(@Nonnull InventoryPlayer playerInv, @Nonnull TileWiredCharger te, int baubleSlots) {
+    return new ContainerWiredCharger(playerInv, te) {
+
+      @Override
+      protected int getBaublesSize() {
+        return baubleSlots;
+      }
+
+    };
+  }
+
   public ContainerWiredCharger(@Nonnull InventoryPlayer playerInv, @Nonnull TileWiredCharger te) {
     super(playerInv, te);
-    baubles = BaublesUtil.instance().getBaubles(playerInv.player);
   }
 
   @Override
@@ -56,11 +67,13 @@ public class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCha
     addSlotToContainer(new InventorySlot(getInv(), 0, 75, 28));
     addSlotToContainer(new InventorySlot(getInv(), 1, 126, 28));
 
+    baubles = BaublesUtil.instance().getBaubles(playerInv.player);
+
     if (baubles != null && BaublesUtil.WhoAmI.whoAmI(playerInv.player.world) == BaublesUtil.WhoAmI.SPCLIENT) {
       baubles = new ShadowInventory(baubles);
     }
 
-    if (hasBaublesSlots() && (baubles == null || baubles.getSizeInventory() != getBaublesSize())) {
+    if (hasBaublesSlots() && (baubles == null)) {
       baubles = new ArrayInventory(getBaublesSize()) {
         @Override
         public boolean isItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
@@ -140,6 +153,7 @@ public class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCha
           }
         });
       }
+
     }
   }
 
@@ -262,12 +276,10 @@ public class ContainerWiredCharger extends AbstractMachineContainer<TileWiredCha
   // BAUBLES
 
   public boolean hasBaublesSlots() {
-    return baubles != null;
+    return getBaublesSize() > 0;
   }
 
-  private int getBaublesSize() {
-    return 7;
-  }
+  protected abstract int getBaublesSize();
 
   private boolean mergeItemStackIntoArmor(EntityPlayer entityPlayer, ItemStack origStack, int slotIndex) {
     if (origStack == null || EntityLiving.getSlotForItemStack(origStack).getSlotType() != EntityEquipmentSlot.Type.ARMOR) {

@@ -1,6 +1,5 @@
 package crazypants.enderio.powertools.machine.capbank;
 
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -34,13 +33,11 @@ import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
-import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.powertools.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.powertools.machine.capbank.network.NetworkUtil;
 import crazypants.enderio.powertools.machine.capbank.render.CapBankBlockRenderMapper;
 import crazypants.enderio.powertools.machine.capbank.render.CapBankItemRenderMapper;
 import crazypants.enderio.powertools.machine.capbank.render.CapBankRenderer;
-import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -180,10 +177,6 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IEioGuiHandle
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     list.add(LangPower.RF(BlockItemCapBank.getStoredEnergyForItem(itemstack), CapBankType.getTypeFromMeta(itemstack.getItemDamage()).getMaxEnergyStored()));
-    int count = NbtValue.CONTENTCOUNT.getInt(itemstack);
-    if (count > 0) {
-      list.add(MessageFormat.format(Lang.CAPBANK_TOOLTIP_WITH_ITEMS.get(), count));
-    }
   }
 
   @Override

@@ -13,6 +13,7 @@ public enum BasicFilterTypes implements IStringSerializable {
   filterUpgradeAdvanced("advanced", true, 10, false, false),
   filterUpgradeLimited("limited", true, 10, true, false),
   filterUpgradeBig("big", false, 36, false, true),
+  filterUpgradeBigAdvanced("big_advanced", true, 36, false, true),
 
   ;
 

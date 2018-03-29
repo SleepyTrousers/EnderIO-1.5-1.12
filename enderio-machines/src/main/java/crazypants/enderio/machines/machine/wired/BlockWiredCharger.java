@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerBlock;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -12,6 +13,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -37,14 +39,14 @@ public class BlockWiredCharger extends AbstractPowerConsumerBlock<TileWiredCharg
   @Override
   public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
       int param1, @Nonnull TileWiredCharger te) {
-    return new ContainerWiredCharger(player.inventory, te);
+    return ContainerWiredCharger.create(player.inventory, te, param1);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
       int param1, @Nonnull TileWiredCharger te) {
-    return new GuiWiredCharger(player.inventory, te);
+    return new GuiWiredCharger(player.inventory, te, param1);
   }
 
   @Override
@@ -56,6 +58,19 @@ public class BlockWiredCharger extends AbstractPowerConsumerBlock<TileWiredCharg
   @SideOnly(Side.CLIENT)
   public void bindTileEntitySpecialRenderer() {
     ClientRegistry.bindTileEntitySpecialRenderer(TileWiredCharger.class, new TESRWiredCharger<>(this));
+  }
+
+  @Override
+  protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
+    return openGui(world, pos, entityPlayer, side, baublesToGuiId(BaublesUtil.instance().getBaubles(entityPlayer)));
+  }
+
+  private static int baublesToGuiId(IInventory baubles) {
+    if (baubles != null) {
+      return baubles.getSizeInventory();
+    } else {
+      return 0;
+    }
   }
 
 }

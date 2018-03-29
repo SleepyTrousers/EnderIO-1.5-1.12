@@ -9,7 +9,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 
-public class ShadowInventory implements IInventory { // TODO: DONE111
+public class ShadowInventory implements IInventory {
   private final ItemStack[] items;
   private final IInventory master;
 
@@ -26,7 +26,7 @@ public class ShadowInventory implements IInventory { // TODO: DONE111
   @Override
   public @Nonnull ItemStack getStackInSlot(int index) {
     final ItemStack itemStack = items[index];
-    return itemStack == null ? master.getStackInSlot(index) : itemStack;
+    return itemStack.isEmpty() ? master.getStackInSlot(index) : itemStack;
   }
 
   @Override
@@ -59,7 +59,7 @@ public class ShadowInventory implements IInventory { // TODO: DONE111
   }
 
   @Override
-  public boolean hasCustomName() {  
+  public boolean hasCustomName() {
     return master.hasCustomName();
   }
 
@@ -77,12 +77,12 @@ public class ShadowInventory implements IInventory { // TODO: DONE111
 
   @Override
   public void openInventory(@Nonnull EntityPlayer player) {
-    master.openInventory(player);    
+    master.openInventory(player);
   }
 
   @Override
   public void closeInventory(@Nonnull EntityPlayer player) {
-    master.closeInventory(player);    
+    master.closeInventory(player);
   }
 
   @Override
@@ -93,7 +93,7 @@ public class ShadowInventory implements IInventory { // TODO: DONE111
   @Override
   public void setField(int id, int value) {
     master.setField(id, value);
-    
+
   }
 
   @Override
