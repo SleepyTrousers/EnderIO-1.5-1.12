@@ -142,7 +142,7 @@ XML editor will display that as tooltips when editing this file.
     </casting>
   </recipe>
 
-  <recipe name="Dark Steel Ball" required="true">
+  <recipe name="Dark Steel Ball Crafting" required="true">
     <crafting>
       <grid>
         <item/><item name="DARK_STEEL"/><item/>
