@@ -46,7 +46,7 @@ public class Recipes implements RecipeRoot {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends RecipeRoot> T addRecipes(RecipeRoot other) {
+  public <T extends RecipeRoot> T addRecipes(RecipeRoot other, boolean allowOverrides) throws InvalidRecipeConfigException {
     if (other instanceof Recipes) {
       if (!isValid()) {
         return (T) other;
@@ -63,28 +63,15 @@ public class Recipes implements RecipeRoot {
         for (AbstractConditional recipe : ((Recipes) other).recipes) {
           if (!recipeNames.contains(recipe.getName())) {
             recipes.add(recipe);
+          } else if (!allowOverrides) {
+            throw new InvalidRecipeConfigException("Duplicate recipe '" + recipe.getName() + "'");
           }
         }
       } else {
         recipes.addAll(((Recipes) other).recipes);
       }
 
-      if (((Recipes) other).aliases == null) {
-        // NOP
-      } else if (aliases != null) {
-        Set<String> aliasNames = new HashSet<String>();
-        for (Alias alias : aliases) {
-          aliasNames.add(alias.getName());
-        }
-
-        for (Alias alias : ((Recipes) other).aliases) {
-          if (!aliasNames.contains(alias.getName())) {
-            aliases.add(alias);
-          }
-        }
-      } else {
-        aliases = ((Recipes) other).aliases;
-      }
+      // ignore aliases, they auto-register as soon as they are loaded
     }
     return (T) this;
   }

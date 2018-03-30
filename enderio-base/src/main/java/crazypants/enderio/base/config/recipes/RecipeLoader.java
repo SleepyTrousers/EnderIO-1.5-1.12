@@ -79,8 +79,12 @@ public class RecipeLoader {
 
     Recipes config = new Recipes();
     if (RecipeConfig.loadCoreRecipes.get()) {
-      for (Triple<Integer, RecipeFactory, String> triple : recipeFiles) {
-        config = readCoreFile(NullHelper.first(triple.getMiddle(), recipeFactory), "recipes/" + triple.getRight()).addRecipes(config);
+      try {
+        for (Triple<Integer, RecipeFactory, String> triple : recipeFiles) {
+          config = readCoreFile(NullHelper.first(triple.getMiddle(), recipeFactory), "recipes/" + triple.getRight()).addRecipes(config, false);
+        }
+      } catch (InvalidRecipeConfigException e) {
+        recipeError(NullHelper.first(e.getFilename(), "Core Recipes"), e.getMessage());
       }
     }
 
@@ -92,7 +96,11 @@ public class RecipeLoader {
     for (File file : userfiles) {
       final Recipes userFile = readUserFile(recipeFactory, file.getName(), file);
       if (userFile != null) {
-        config = userFile.addRecipes(config);
+        try {
+          config = userFile.addRecipes(config, true);
+        } catch (InvalidRecipeConfigException e) {
+          recipeError(NullHelper.first(e.getFilename(), file.getName()), e.getMessage());
+        }
       }
     }
 
@@ -111,7 +119,7 @@ public class RecipeLoader {
       try (InputStream is = IOUtils.toInputStream(recipe, Charset.forName("UTF-8"))) {
         Recipes recipes = RecipeFactory.readStax(new Recipes(), "recipes", is);
         recipes.enforceValidity();
-        config = recipes.addRecipes(config);
+        config = recipes.addRecipes(config, true);
       } catch (InvalidRecipeConfigException e) {
         recipeError(NullHelper.first(e.getFilename(), "IMC from other mod"), e.getMessage());
       } catch (IOException e) {
