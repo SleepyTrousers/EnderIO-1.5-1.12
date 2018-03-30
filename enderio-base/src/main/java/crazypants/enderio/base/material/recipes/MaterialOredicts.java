@@ -62,6 +62,7 @@ public class MaterialOredicts {
         OreDictionary.registerOre(alloy.getOreBlock(), alloy.getStackBlock());
         OreDictionary.registerOre(alloy.getOreIngot(), alloy.getStackIngot());
         OreDictionary.registerOre(alloy.getOreNugget(), alloy.getStackNugget());
+        OreDictionary.registerOre(alloy.getOreBall(), alloy.getStackBall());
       }
     });
 

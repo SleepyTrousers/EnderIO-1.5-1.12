@@ -142,39 +142,39 @@ XML editor will display that as tooltips when editing this file.
     </casting>
   </recipe>
 
-  <recipe name="Dark Grinding Ball" required="true">
+  <recipe name="Dark Steel Ball" required="true">
     <crafting>
       <grid>
         <item/><item name="DARK_STEEL"/><item/>
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
         <item/><item name="DARK_STEEL"/><item/>
       </grid>
-      <output name="DARK_GRINDING_BALL" amount="24"/>
+      <output name="DARK_STEEL_BALL" amount="24"/>
     </crafting>
   </recipe>
 
-  <recipe name="Dark Grinding Ball Casting" required="true">
+  <recipe name="Dark Steel Casting" required="true">
     <dependency item="tconstruct:cast_custom:2"/>
     <casting>
       <input name="DARK_STEEL_NUGGET" amount="1.875"/><!-- 30mB -->
       <cast name="tconstruct:cast_custom:2"/>
-      <output name="DARK_GRINDING_BALL"/>
+      <output name="DARK_STEEL_BALL"/>
     </casting>
   </recipe>
 
-  <recipe name="Dark Grinding Ball Smelting" required="true">
+  <recipe name="Dark Ball Smelting" required="true">
     <dependency item="tconstruct:cast_custom:2"/>
     <smelting tinkers="true" vanilla="false">
-      <input name="DARK_GRINDING_BALL" amount="24"/>
+      <input name="DARK_STEEL_BALL" amount="24"/>
       <output name="DARK_STEEL" amount="5"/>
     </smelting>
   </recipe>
 
-  <recipe name="Dark Grinding Ball Reverse Casting" required="true">
+  <recipe name="Dark Steel Ball Reverse Casting" required="true">
     <dependency item="tconstruct:cast_custom:2"/>
     <casting>
       <input name="ingotGold" amount="2"/>
-      <cast name="DARK_GRINDING_BALL" consumed="true"/>
+      <cast name="DARK_STEEL_BALL" consumed="true"/>
       <output name="tconstruct:cast_custom:2"/>
     </casting>
   </recipe>

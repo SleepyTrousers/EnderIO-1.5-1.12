@@ -82,6 +82,7 @@ public enum ModObject implements IModObject.Registerable {
   blockAlloy(BlockAlloy.class),
   itemAlloyIngot(ItemAlloy.class),
   itemAlloyNugget(ItemAlloy.class),
+  itemAlloyBall(ItemAlloy.class),
   itemMaterial(ItemMaterial.class),
 
   itemBrokenSpawner(ItemBrokenSpawner.class),
