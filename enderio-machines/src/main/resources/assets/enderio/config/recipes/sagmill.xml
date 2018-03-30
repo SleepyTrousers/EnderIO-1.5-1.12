@@ -65,7 +65,7 @@
     <item name="gemDiamond"/>
   </grindingball>
   <grindingball name="Dark Steel Ball" grinding="1.5" chance="2.00" power="0.7" durability="250000" >
-    <item name="itemDarkGrindingBall"/>
+    <item name="ballDarkSteel"/>
   </grindingball>
 
   <recipe name="Sagmill: Silicon" required="true">

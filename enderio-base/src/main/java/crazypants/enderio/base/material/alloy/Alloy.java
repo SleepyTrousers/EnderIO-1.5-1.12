@@ -73,6 +73,14 @@ public enum Alloy implements IStringSerializable {
     return new ItemStack(ModObject.itemAlloyIngot.getItemNN(), size, ordinal());
   }
 
+  public @Nonnull ItemStack getStackBall() {
+    return getStackBall(1);
+  }
+
+  public @Nonnull ItemStack getStackBall(int size) {
+    return new ItemStack(ModObject.itemAlloyBall.getItemNN(), size, ordinal());
+  }
+
   public @Nonnull ItemStack getStackBlock() {
     return getStackBlock(1);
   }
@@ -91,6 +99,10 @@ public enum Alloy implements IStringSerializable {
 
   public @Nonnull String getOreIngot() {
     return "ingot" + oreName;
+  }
+
+  public @Nonnull String getOreBall() {
+    return "ball" + oreName;
   }
 
   public @Nonnull String getOreBlock() {
