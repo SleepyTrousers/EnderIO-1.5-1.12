@@ -2031,7 +2031,7 @@
     </sagmilling>
   </recipe>
 
-  <!-- Yellorite (Tiny Reactors) -->
+  <!-- Yellorite (Extreme Reactors) -->
 
   <recipe name="Sagmill: oreYellorite Ore" required="false">
     <sagmilling energy="3600">
@@ -2611,7 +2611,7 @@
   
   <recipe name="Sagmill: Tiny Progressions Lava Ore" required="false">
     <sagmilling energy="3600">
-      <input name="tp:lava_block" />
+      <input name="tp:lava_ore" />
       <output name="gemLava" amount="2" />
       <output name="gemLava" chance="0.75" amount="2" />
       <output name="gemLava" chance="0.5"/>
