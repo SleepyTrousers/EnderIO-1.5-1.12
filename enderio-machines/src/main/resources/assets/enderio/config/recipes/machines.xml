@@ -237,8 +237,8 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="minecraft:diamond_hoe" /><item name="ELECTRICAL_STEEL" />
-        <item name="GEAR_ENERGIZED" /><item name="CHASSIS" /><item name="GEAR_ENERGIZED" />
-        <item name="PULSATING_CRYSTAL" /><item name="ZOMBIE_CONTROLLER" /><item name="PULSATING_CRYSTAL" />
+        <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
+        <item name="GEAR_ENERGIZED" /><item name="minecraft:diamond_axe" /><item name="GEAR_ENERGIZED" />
       </grid>
       <output name="enderio:block_farm_station" />
     </crafting>
@@ -611,9 +611,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="TelePad" required="true" disabled="false">
     <crafting>
       <grid size="3x3">
-        <item name="FUSED_QUARTZ" /><item name="ENDER_CRYSTAL" /><item name="FUSED_QUARTZ" />
+        <item name="FUSED_QUARTZ" /><item name="VIBRANT_ALLOY" /><item name="FUSED_QUARTZ" />
         <item name="DARK_STEEL" /><item name="enderio:block_travel_anchor" /><item name="DARK_STEEL" />
-        <item name="DARK_STEEL" /><item name="CAPACITOR3" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item name="CAPACITOR1" /><item name="DARK_STEEL" />
       </grid>
       <output name="enderio:block_tele_pad" />
     </crafting>

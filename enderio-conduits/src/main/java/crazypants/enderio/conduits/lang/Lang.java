@@ -31,10 +31,10 @@ public enum Lang implements ILang {
 
   GUI_REDSTONE_SIGNAL_STRENGTH(".gui.redstone_signal_strength"),
 
-  FLUID_MILLIBUCKETS_TICK("fluid.millibuckets_tick"),
-  GUI_LIQUID_TOOLTIP_MAX_EXTRACT("item_liquid_conduit.tooltip.max_extract"),
-  GUI_LIQUID_TOOLTIP_MAX_IO("item_liquid_conduit.tooltip.max_io"),
-  ITEM_LIQUID_CONDUIT_UNLOCKED_TYPE("itemLiquidConduit.unlockedType"),
+  FLUID_MILLIBUCKETS_TICK(".fluid.millibuckets_tick"),
+  GUI_LIQUID_TOOLTIP_MAX_EXTRACT(".item_liquid_conduit.tooltip.max_extract"),
+  GUI_LIQUID_TOOLTIP_MAX_IO(".item_liquid_conduit.tooltip.max_io"),
+  ITEM_LIQUID_CONDUIT_UNLOCKED_TYPE(".item_liquid_conduit.unlocked_type"),
 
   ;
 
