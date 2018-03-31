@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.UserIdent;
 
@@ -70,6 +71,21 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
 
   @Store
   private boolean visible = true;
+
+  // TODO: Check the users server-side instead of having this copy
+  @Store({ NBTAction.SAVE, NBTAction.CLIENT })
+  private @Nullable UserIdent travelOwner;
+
+  @Override
+  public void setOwner(@Nonnull EntityPlayer player) {
+    super.setOwner(player);
+    this.travelOwner = UserIdent.create(player.getGameProfile());
+  }
+
+  @Override
+  public @Nonnull UserIdent getOwner() {
+    return travelOwner != null ? travelOwner : super.getOwner();
+  }
 
   private boolean isAuthorisedUser(UserIdent ident) {
     return authorisedUsers.contains(ident);
