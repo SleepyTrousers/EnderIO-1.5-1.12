@@ -2031,7 +2031,7 @@
     </sagmilling>
   </recipe>
 
-  <!-- Yellorite (Extreme Reactors) -->
+  <!-- Yellorite (Tiny Reactors) -->
 
   <recipe name="Sagmill: oreYellorite Ore" required="false">
     <sagmilling energy="3600">
@@ -2626,6 +2626,18 @@
       <output name="dustEnder" chance="0.75" amount="2" />
       <output name="dustEnder" chance="0.5" amount="2" />
       <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <!-- Quark -->
+
+  <recipe name="Sagmill: Quark Ender Biotite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="quark:biotite_ore" />
+      <output name="gemEnderBiotite" amount="1" />
+      <output name="gemEnderBiotite" amount="1" chance="0.25" />
+      <output name="gemEnderBiotite" amount="1" chance="0.15"/>
+      <output name="minecraft:end_stone" chance="0.15" />
     </sagmilling>
   </recipe>
 
