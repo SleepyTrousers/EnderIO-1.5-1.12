@@ -2598,7 +2598,7 @@
 
 <!-- Temp Fix For Exnihilo having wrong oredict -->
   
-  <recipe name="Sagmill: oreYellorium Ore" required="false">
+  <recipe name="Sagmill: Yellorium Ore" required="false">
     <sagmilling energy="3600">
       <input name="oreYellorium" />
       <output name="dustYellorium" amount="2" />
@@ -2611,7 +2611,7 @@
   
   <recipe name="Sagmill: Tiny Progressions Lava Ore" required="false">
     <sagmilling energy="3600">
-      <input name="tp:lava_block" />
+      <input name="tp:lava_ore" />
       <output name="gemLava" amount="2" />
       <output name="gemLava" chance="0.75" amount="2" />
       <output name="gemLava" chance="0.5"/>
@@ -2626,6 +2626,18 @@
       <output name="dustEnder" chance="0.75" amount="2" />
       <output name="dustEnder" chance="0.5" amount="2" />
       <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <!-- Quark -->
+
+  <recipe name="Sagmill: Quark Ender Biotite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="quark:biotite_ore" />
+      <output name="gemEnderBiotite" amount="1" />
+      <output name="gemEnderBiotite" amount="1" chance="0.25" />
+      <output name="gemEnderBiotite" amount="1" chance="0.15"/>
+      <output name="minecraft:end_stone" chance="0.15" />
     </sagmilling>
   </recipe>
 
