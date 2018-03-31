@@ -281,7 +281,11 @@ public class TravelController {
     if (event.phase == TickEvent.Phase.END) {
       EntityPlayerSP player = Minecraft.getMinecraft().player;
       if (NullHelper.untrust(player) == null) {
-        // Log.warn("(in TickEvent.ClientTickEvent) net.minecraft.client.Minecraft.player is marked @Nonnull but it is null.");
+        return;
+      }
+      if (player.isSpectator()) {
+        showTargets = false;
+        candidates.clear();
         return;
       }
       onBlockCoord = getActiveTravelBlock(player);
