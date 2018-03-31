@@ -2600,7 +2600,7 @@
   
   <recipe name="Sagmill: oreYellorium Ore" required="false">
     <sagmilling energy="3600">
-      <input name="oreYellorium" />
+      <input name="ingotYellorium" />
       <output name="dustYellorium" amount="2" />
       <output name="dustCyanite" chance="0.05" required="false" />
       <output name="oredict:cobblestone" chance="0.15" />
