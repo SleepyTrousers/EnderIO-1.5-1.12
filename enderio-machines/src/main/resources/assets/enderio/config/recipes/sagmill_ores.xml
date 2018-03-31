@@ -2606,5 +2606,17 @@
       <output name="oredict:cobblestone" chance="0.15" />
     </sagmilling>
   </recipe>
+  
+<!-- Tiny Progessions -->
+  
+  <recipe name="Sagmill: Tiny Progressions Lava Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="tp:lava_block" />
+      <output name="gemLava" amount="2" />
+      <output name="gemLava" chance="0.75" amount="2" />
+      <output name="gemLava" chance="0.5"/>
+      <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
 
 </enderio:recipes>
