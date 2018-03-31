@@ -43,9 +43,9 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    if(dir == null) {
+    if (dir == null) {
       buf.writeShort(-1);
-    }else {
+    } else {
       buf.writeShort(dir.ordinal());
     }
     buf.writeBoolean(loopMode);
@@ -61,7 +61,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     short ord = buf.readShort();
-    if(ord < 0) {
+    if (ord < 0) {
       dir = null;
     } else {
       dir = EnumFacing.values()[ord];
@@ -80,16 +80,18 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     @Override
     public IMessage onMessage(PacketItemConduitFilter message, MessageContext ctx) {
       IItemConduit conduit = message.getConduit(ctx);
-      conduit.setSelfFeedEnabled(message.dir, message.loopMode);
-      conduit.setRoundRobinEnabled(message.dir, message.roundRobin);
-      conduit.setInputColor(message.dir, message.colIn);
-      conduit.setOutputColor(message.dir, message.colOut);
-      conduit.setOutputPriority(message.dir, message.priority);
-      applyFilter(message.dir, conduit, message.inputFilter, true);
-      applyFilter(message.dir, conduit, message.outputFilter, false);
+      if (conduit != null) {
+        conduit.setSelfFeedEnabled(message.dir, message.loopMode);
+        conduit.setRoundRobinEnabled(message.dir, message.roundRobin);
+        conduit.setInputColor(message.dir, message.colIn);
+        conduit.setOutputColor(message.dir, message.colOut);
+        conduit.setOutputPriority(message.dir, message.priority);
+        applyFilter(message.dir, conduit, message.inputFilter, true);
+        applyFilter(message.dir, conduit, message.outputFilter, false);
 
-      IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
-      message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
+        IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
+        message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
+      }
       return null;
     }
 

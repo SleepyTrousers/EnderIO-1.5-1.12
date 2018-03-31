@@ -27,9 +27,9 @@ public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IRed
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    if(dir == null) {
+    if (dir == null) {
       buf.writeShort(-1);
-    }else {
+    } else {
       buf.writeShort(dir.ordinal());
     }
     buf.writeShort(col.ordinal());
@@ -39,7 +39,7 @@ public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IRed
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     short ord = buf.readShort();
-    if(ord < 0) {
+    if (ord < 0) {
       dir = null;
     } else {
       dir = EnumFacing.values()[ord];
@@ -51,9 +51,12 @@ public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IRed
 
     @Override
     public IMessage onMessage(PacketRedstoneConduitSignalColor message, MessageContext ctx) {
-      message.getConduit(ctx).setSignalColor(message.dir, message.col);
-      IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
-      message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
+      final IRedstoneConduit conduit = message.getConduit(ctx);
+      if (conduit != null) {
+        conduit.setSignalColor(message.dir, message.col);
+        IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
+        message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
+      }
       return null;
     }
   }
