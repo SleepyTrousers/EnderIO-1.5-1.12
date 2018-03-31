@@ -271,6 +271,19 @@ jar {
     }
 }
 
+// Combine all the API jars into a single jar
+task combApiJar(type: Jar) {
+    dependsOn combjarprojects.tasks['classes']
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    combjarprojects.each { subproject -> 
+        from subproject.apiJar
+    }
+}
+
+artifacts {
+    archives combApiJar
+}
+
 // Finally copy all the jars to `libs`
 task copyJars(type: Copy, dependsOn: subprojects.tasks['signJar']) {
     from buildprojects.collect { it.tasks.withType(Jar) }
