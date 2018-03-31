@@ -108,6 +108,13 @@ XML editor will display that as tooltips when editing this file.
   <alias name="SOULARIUM" item="ingotSoularium" />
 
   <alias name="DARK_STEEL_BALL" item="ballDarkSteel" />
+  <alias name="ELECTRICAL_STEEL_BALL" item="ballElectricalSteel" />
+  <alias name="ENERGETIC_ALLOY_BALL" item="ballEnergeticAlloy" />
+  <alias name="VIBRANT_ALLOY_BALL" item="ballVibrantAlloy" />
+  <alias name="REDSTONE_ALLOY_BALL" item="ballRedstoneAlloy" />
+  <alias name="CONDUCTIVE_IRON_BALL" item="ballConductiveIron" />
+  <alias name="PULSATING_IRON_BALL" item="ballPulsatingIron" />
+  <alias name="SOULARIUM_BALL" item="ballSoularium" />
 
   <alias name="ELECTRICAL_STEEL_BLOCK" item="blockElectricalSteel" />
   <alias name="ENERGETIC_ALLOY_BLOCK" item="blockEnergeticAlloy" />
