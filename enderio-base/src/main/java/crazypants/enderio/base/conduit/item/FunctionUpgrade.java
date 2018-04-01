@@ -3,6 +3,8 @@ package crazypants.enderio.base.conduit.item;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.util.ResourceLocation;
 
 public enum FunctionUpgrade {
@@ -23,9 +25,9 @@ public enum FunctionUpgrade {
 
   public static final int BASE_MAX_EXTRACTED = 4;
 
-  public final String baseName;
-  public final String iconName;
-  public final String unlocName;
+  public final @Nonnull String baseName;
+  public final @Nonnull String iconName;
+  public final @Nonnull String unlocName;
   public final int maxStackSize;
 
   public static List<ResourceLocation> resources() {
@@ -36,7 +38,7 @@ public enum FunctionUpgrade {
     return res;
   }
 
-  private FunctionUpgrade(String name, String unlocName, int maxStackSize) {
+  private FunctionUpgrade(@Nonnull String name, @Nonnull String unlocName, int maxStackSize) {
     this.baseName = name;
     this.iconName = "enderio:" + name;
     this.unlocName = unlocName;

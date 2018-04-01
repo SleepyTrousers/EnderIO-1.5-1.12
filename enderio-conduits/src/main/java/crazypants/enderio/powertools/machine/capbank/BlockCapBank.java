@@ -285,12 +285,12 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IEioGuiHandle
   }
 
   @SideOnly(Side.CLIENT)
-  public static TextureAtlasSprite getGaugeIcon() {
+  public static @Nonnull TextureAtlasSprite getGaugeIcon() {
     return gaugeIcon.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
-  public static TextureAtlasSprite getInfoPanelIcon() {
+  public static @Nonnull TextureAtlasSprite getInfoPanelIcon() {
     return infoPanelIcon.get(TextureAtlasSprite.class);
   }
 

@@ -156,11 +156,11 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   @Override
   @Nonnull
-  public ItemStack slotClick(int slotId, int dragType, @Nonnull ClickType clickTypeIn, @Nonnull EntityPlayer player) {
-    ItemStack st = player.inventory.getItemStack();
+  public ItemStack slotClick(int slotId, int dragType, @Nonnull ClickType clickTypeIn, @Nonnull EntityPlayer playerIn) {
+    ItemStack st = playerIn.inventory.getItemStack();
     setFunctionUpgradeSlotLimit(st);
     try {
-      return super.slotClick(slotId, dragType, clickTypeIn, player);
+      return super.slotClick(slotId, dragType, clickTypeIn, playerIn);
     } catch (Exception e) {
       // TODO Horrible work around for a bug when double clicking on a stack in inventory which matches a filter item
       // This does does double clicking to fill a stack from working with this GUI open.

@@ -27,25 +27,25 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
   static final int ID_INSERT_ENABLED = 327;
   static final int ID_EXTRACT_ENABLED = 328;
 
-  private static final String ENABLED = Lang.GUI_CONDUIT_ENABLED_MODE.get();
-  private static final String DISABLED = Lang.GUI_CONDUIT_DISABLED_MODE.get();
+  private final @Nonnull String ENABLED = Lang.GUI_CONDUIT_ENABLED_MODE.get();
+  private final @Nonnull String DISABLED = Lang.GUI_CONDUIT_DISABLED_MODE.get();
 
   protected final @Nonnull IconEIO icon;
-  protected final GuiExternalConnection gui;
-  protected IClientConduit con;
-  protected final String typeName;
+  protected final @Nonnull GuiExternalConnection gui;
+  protected @Nonnull IClientConduit con;
+  protected final @Nonnull String typeName;
   protected final @Nonnull ResourceLocation texture;
 
   protected ConnectionMode oldConnectionMode;
 
-  private String inputHeading;
-  private String outputHeading;
+  private @Nonnull String inputHeading;
+  private @Nonnull String outputHeading;
 
   private boolean insertEnabled = false;
   private boolean extractEnabled = false;
 
-  private final CheckBox extractEnabledB;
-  private final CheckBox insertEnabledB;
+  private final @Nonnull CheckBox extractEnabledB;
+  private final @Nonnull CheckBox insertEnabledB;
 
   private final boolean hasInputOutputMode;
 
@@ -60,13 +60,13 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   protected int customTop = 0;
 
-  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IClientConduit con,
+  protected BaseSettingsPanel(@Nonnull IconEIO icon, @Nonnull String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IClientConduit con,
       @Nonnull String texture) {
     this(icon, typeName, gui, con, texture, true);
   }
 
-  protected BaseSettingsPanel(@Nonnull IconEIO icon, String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IClientConduit con, @Nonnull String texture,
-      boolean hasInputOutputMode) {
+  protected BaseSettingsPanel(@Nonnull IconEIO icon, @Nonnull String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IClientConduit con,
+      @Nonnull String texture, boolean hasInputOutputMode) {
     this.icon = icon;
     this.typeName = typeName;
     this.gui = gui;
@@ -221,7 +221,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   }
 
-  protected String getTypeName() {
+  protected @Nonnull String getTypeName() {
     return typeName;
   }
 

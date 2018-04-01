@@ -38,7 +38,7 @@ public enum Lang implements ILang {
 
   ;
 
-  private final String key;
+  private final @Nonnull String key;
 
   private Lang(@Nonnull String key) {
     if (key.startsWith(".")) {
