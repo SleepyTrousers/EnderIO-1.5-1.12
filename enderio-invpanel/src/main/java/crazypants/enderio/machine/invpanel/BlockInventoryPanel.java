@@ -46,8 +46,10 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     PacketHandler.INSTANCE.registerMessage(PacketGuiSettings.Handler.class, PacketGuiSettings.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketStoredCraftingRecipe.Handler.class, PacketStoredCraftingRecipe.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketSetExtractionDisabled.Handler.class, PacketSetExtractionDisabled.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketUpdateExtractionDisabled.Handler.class, PacketUpdateExtractionDisabled.class, PacketHandler.nextID(), Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketPrimeInventoryPanelRemote.Handler.class, PacketPrimeInventoryPanelRemote.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketUpdateExtractionDisabled.Handler.class, PacketUpdateExtractionDisabled.class, PacketHandler.nextID(),
+        Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketPrimeInventoryPanelRemote.Handler.class, PacketPrimeInventoryPanelRemote.class, PacketHandler.nextID(),
+        Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketGuiSettingsUpdated.Handler.class, PacketGuiSettingsUpdated.class, PacketHandler.nextID(), Side.CLIENT);
 
     BlockInventoryPanel panel = new BlockInventoryPanel();
@@ -67,7 +69,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   @Override
   protected void initDefaultState() {
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode6.RENDER, EnumRenderMode6.AUTO));
+    setDefaultState(getBlockState().getBaseState().withProperty(EnumRenderMode6.RENDER, EnumRenderMode6.AUTO));
   }
 
   @Override
@@ -135,14 +137,16 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   @Override
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
   }
-  
+
   @Override
-  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1, @Nonnull TileInventoryPanel te) {  
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileInventoryPanel te) {
     return new InventoryPanelContainer(player.inventory, te);
   }
 
   @Override
-  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1, @Nonnull TileInventoryPanel te) {
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileInventoryPanel te) {
     return new GuiInventoryPanel(te, new InventoryPanelContainer(player.inventory, te));
   }
 

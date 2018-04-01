@@ -57,7 +57,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
   }
 
   protected void initDefaultState() {
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
+    setDefaultState(getBlockState().getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
   @Override

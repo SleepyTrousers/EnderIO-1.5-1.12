@@ -44,7 +44,7 @@ public class BlockBuffer extends AbstractPowerConsumerBlock<TileBuffer>
 
   private BlockBuffer(@Nonnull IModObject modObject) {
     super(modObject);
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BufferType.TYPE, BufferType.ITEM));
+    setDefaultState(getBlockState().getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BufferType.TYPE, BufferType.ITEM));
     setShape(mkShape(BlockFaceShape.SOLID));
   }
 

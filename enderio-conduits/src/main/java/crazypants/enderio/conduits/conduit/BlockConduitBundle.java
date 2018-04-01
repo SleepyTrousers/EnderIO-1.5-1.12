@@ -113,7 +113,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     setHardness(1.5f);
     setResistance(10.0f);
     setCreativeTab(null);
-    setDefaultState(blockState.getBaseState().withProperty(OPAQUE, false));
+    setDefaultState(getBlockState().getBaseState().withProperty(OPAQUE, false));
     setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 

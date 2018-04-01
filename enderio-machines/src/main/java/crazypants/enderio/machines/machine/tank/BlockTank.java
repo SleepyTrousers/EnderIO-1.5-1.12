@@ -61,7 +61,7 @@ public class BlockTank extends AbstractInventoryMachineBlock<TileTank>
     setSoundType(SoundType.GLASS);
     setLightOpacity(0);
     setDefaultState(
-        this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(EnumTankType.KIND, EnumTankType.NORMAL));
+        getBlockState().getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(EnumTankType.KIND, EnumTankType.NORMAL));
     setShape(mkShape(BlockFaceShape.SOLID, BlockFaceShape.SOLID, BlockFaceShape.UNDEFINED));
   }
 

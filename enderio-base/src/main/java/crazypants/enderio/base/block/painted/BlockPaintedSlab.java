@@ -89,7 +89,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   public BlockPaintedSlab(@Nonnull IModObject modObject, @Nonnull Material material, @Nullable Block halfVariant) {
     super(material);
-    IBlockState iblockstate = this.blockState.getBaseState();
+    IBlockState iblockstate = getBlockState().getBaseState();
 
     if (!this.isDouble()) {
       iblockstate = iblockstate.withProperty(HALF, BlockSlab.EnumBlockHalf.BOTTOM);

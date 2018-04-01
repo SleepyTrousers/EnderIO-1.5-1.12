@@ -49,7 +49,7 @@ public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResour
     super(modObject);
     setLightOpacity(255);
     useNeighborBrightness = true;
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO).withProperty(SolarType.KIND,
+    setDefaultState(getBlockState().getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO).withProperty(SolarType.KIND,
         SolarType.SIMPLE));
     setShape(mkShape(BlockFaceShape.SOLID, BlockFaceShape.UNDEFINED, BlockFaceShape.UNDEFINED));
   }

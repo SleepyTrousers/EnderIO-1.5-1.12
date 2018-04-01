@@ -87,7 +87,7 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
   private BlockFusedQuartz(@Nonnull IModObject modObject, @Nonnull FusedQuartzType glasstype) {
     super(modObject);
     this.glasstype = glasstype;
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
+    setDefaultState(getBlockState().getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
         .withProperty(FusedQuartzType.KIND, glasstype).withProperty(BlockColored.COLOR, DEFAULT_COLOR));
   }
 

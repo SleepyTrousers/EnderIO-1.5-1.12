@@ -84,7 +84,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IEioGuiHandle
     super(modObject);
     setHardness(2.0F);
     setLightOpacity(255);
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
+    setDefaultState(getBlockState().getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
         .withProperty(CapBankType.KIND, CapBankType.NONE));
     setShape(mkShape(BlockFaceShape.SOLID));
   }

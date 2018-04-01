@@ -80,7 +80,7 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
   }
 
   protected void initDefaultState() {
-    setDefaultState(this.blockState.getBaseState());
+    setDefaultState(getBlockState().getBaseState());
   }
 
   @Override

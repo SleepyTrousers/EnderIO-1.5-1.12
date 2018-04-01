@@ -47,7 +47,7 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice>
     super(modObject);
     setLightOpacity(255);
     useNeighborBrightness = true;
-    setDefaultState(blockState.getBaseState().withProperty(FACING, DialerFacing.UP_TONORTH));
+    setDefaultState(getBlockState().getBaseState().withProperty(FACING, DialerFacing.UP_TONORTH));
     setShape(mkShape(BlockFaceShape.UNDEFINED)); // TODO 'bottom' side SOLID
   }
 

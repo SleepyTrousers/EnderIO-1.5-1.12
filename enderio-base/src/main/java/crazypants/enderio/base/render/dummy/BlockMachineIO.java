@@ -29,7 +29,7 @@ public class BlockMachineIO extends Block {
   public BlockMachineIO(IModObject modObject) {
     super(Material.CIRCUITS);
     modObject.apply(this);
-    this.setDefaultState(this.blockState.getBaseState().withProperty(IOMode.IO, IOMode.get(EnumFacing.DOWN, IOMode.EnumIOMode.NONE)));
+    this.setDefaultState(getBlockState().getBaseState().withProperty(IOMode.IO, IOMode.get(EnumFacing.DOWN, IOMode.EnumIOMode.NONE)));
     setCreativeTab(null);
     disableStats();
   }
