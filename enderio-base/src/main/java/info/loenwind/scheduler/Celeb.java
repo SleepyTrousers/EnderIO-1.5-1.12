@@ -12,19 +12,21 @@ public class Celeb implements Event {
   public static final Celeb H31 = new Celeb(2015, 10, 31, 0, 0, 2015, 11, 1, 0, 0);
   public static final Celeb C06 = new Celeb(2015, 12, 6, 0, 0, 2015, 12, 7, 0, 0);
   public static final Celeb C24 = new Celeb(2015, 12, 24, 12, 0, 2015, 12, 27, 0, 0);
+  public static final Space SPACE = new Space(2017, 5, 1, 0, 0, 2017, 5, 1, 0, 0);
 
   public static void init(@Nonnull FMLPostInitializationEvent event) {
     Scheduler.instance.registerEvent(H31);
     Scheduler.instance.registerEvent(C06);
     Scheduler.instance.registerEvent(C24);
+    Scheduler.instance.registerEvent(SPACE);
   }
 
   private boolean on = false;
 
-  private final Calendar start = Calendar.getInstance(Locale.getDefault());
-  private final Calendar end = Calendar.getInstance(Locale.getDefault());
+  protected final Calendar start = Calendar.getInstance(Locale.getDefault());
+  protected final Calendar end = Calendar.getInstance(Locale.getDefault());
 
-  private Celeb(int year0, int month0, int date0, int hourOfDay0, int minute0, int year1, int month1, int date1, int hourOfDay1, int minute1) {
+  protected Celeb(int year0, int month0, int date0, int hourOfDay0, int minute0, int year1, int month1, int date1, int hourOfDay1, int minute1) {
     start.set(year0, month0 - 1, date0, hourOfDay0, minute0, 0);
     end.set(year1, month1 - 1, date1, hourOfDay1, minute1, 0);
   }
@@ -63,7 +65,7 @@ public class Celeb implements Event {
 
   @Override
   public String toString() {
-    return "Celeb24 [start=" + start + ", end=" + end + "]";
+    return "Celeb24 [start=" + start.toInstant() + ", end=" + end.toInstant() + "]";
   }
 
   public boolean isOn() {
