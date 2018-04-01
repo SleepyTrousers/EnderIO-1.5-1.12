@@ -331,7 +331,6 @@ curseforge {
             optionalLibrary 'opencomputers'
             optionalLibrary 'forestry'
             optionalLibrary 'ctm'
-            optionalLibrary 'tesla'
             optionalLibrary 'applied-energistics-2'
             optionalLibrary 'actually-additions'
             optionalLibrary 'extreme-reactors'
@@ -343,7 +342,6 @@ curseforge {
             optionalLibrary 'immersive-engineering'
             optionalLibrary 'industrial-craft'
             optionalLibrary 'natura'
-            optionalLibrary 'railcraft'
             optionalLibrary 'thermal-foundation'
             optionalLibrary 'tinkers-construct'
         }
