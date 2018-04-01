@@ -46,17 +46,41 @@ XML editor will display that as tooltips when editing this file.
 
    -->
 
-  <grindingball name="Flint" grinding="1.2" chance="1.25" power="0.85" durability="24000" >
-    <item name="itemFlint"/>
-  </grindingball>
+<grindingball name="Flint" grinding="1.2" chance="1.25" power="0.85" durability="24000" >
+  <item name="itemFlint"/>
+</grindingball>
 
-  <grindingball name="Diamond" grinding="1.75" chance="1.1" power="1.25" durability="200000" >
-    <item name="gemDiamond"/>
-  </grindingball>
+<grindingball name="Dark Steel Ball" grinding="1.5" chance="2.00" power="0.7" durability="125000" >
+  <item name="ballDarkSteel"/>
+</grindingball>
 
-  <grindingball name="Dark Steel Ball" grinding="1.5" chance="2.00" power="0.7" durability="250000" >
-    <item name="DARK_STEEL_BALL"/>
-  </grindingball>
+<grindingball name="Electrical Steel Ball" grinding="1.2" chance="1.00" power="0.35" durability="40000" >
+  <item name="ballElectricalSteel"/>
+</grindingball>
+
+<grindingball name="Energetic Alloy Ball" grinding="1.6" chance="1.1" power="1.1" durability="60000" >
+  <item name="ballEnergeticAlloy"/>
+</grindingball>
+
+<grindingball name="Vibrant Alloy Ball" grinding="1.75" chance="1.35" power="1.35" durability="80000" >
+  <item name="ballVibrantAlloy"/>
+</grindingball>
+
+<grindingball name="Redstone Alloy Ball" grinding="1.00" chance="1.00" power="0.6" durability="30000" >
+  <item name="ballRedstoneAlloy"/>
+</grindingball>
+
+<grindingball name="Conductive Iron Ball" grinding="1.00" chance="1.00" power="0.5" durability="40000" >
+  <item name="ballConductiveIron"/>
+</grindingball>
+
+<grindingball name="Pulsating Iron Ball" grinding="1.0" chance="2.00" power="1.0" durability="100000" >
+  <item name="ballPulsatingIron"/>
+</grindingball>
+
+<grindingball name="Soularium Ball" grinding="1.2" chance="2.5" power="0.85" durability="80000" >
+  <item name="ballSoularium"/>
+</grindingball>
 
   <recipe name="Dark Steel Ball Crafting" required="true">
     <crafting>
