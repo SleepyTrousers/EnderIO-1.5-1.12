@@ -36,38 +36,6 @@
     </crafting>
   </recipe>
 
-  <!-- 
-
-  Grinding Balls:
-  Grinding balls provide bonus outputs and reduced power use. Using the user config new grinding balls may be added and
-  existing ones removed.
-
-  Use of the grinding ball is restricted by the bonusType of the recipe. If it is set to "none", it will not have any grinding
-  ball bonuses applied and will not reduce the durability of any balls in the mill at the time it is  processed. If it is set
-  to "chance_only", the chance and power multipliers of the grinding balls are applied, but not the grinding multiplier. If it
-  is set to "multiply_output" (default), all multipliers apply.
-
-  - grinding:           The recipe output will be produced this many times. e.g. "3.14" would produce 3 copies of the complete
-                        output set and a 14% chance for a forth copy.
-  - chance:             The chances for the different outputs of the recipe are multiplied with this. e.g. if a recipe specifies
-                        <output name="cobblestone" chance="0.15" /> a chance multiplier of "3.14" would make it a 47.1% chance
-                        of getting one cobblestone. Results of more than 100% do not give multiples.
-  - power:              The "energy cost" of the recipe is multiplied with this.
-  - durability:         This specifies how long one grinding ball will last before it is used up. The unit is the amount of
-                        power used by the SAG Mill.
-
-   -->
-
-  <grindingball name="Flint" grinding="1.2" chance="1.25" power="0.85" durability="24000" >
-    <item name="itemFlint"/>
-  </grindingball>
-  <grindingball name="Diamond" grinding="1.75" chance="1.1" power="1.25" durability="200000" >
-    <item name="gemDiamond"/>
-  </grindingball>
-  <grindingball name="Dark Steel Ball" grinding="1.5" chance="2.00" power="0.7" durability="250000" >
-    <item name="ballDarkSteel"/>
-  </grindingball>
-
   <recipe name="Sagmill: Silicon" required="true">
     <sagmilling energy="720">
       <input name="oredict:sand"/>

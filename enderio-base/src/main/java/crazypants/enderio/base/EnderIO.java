@@ -275,7 +275,8 @@ public class EnderIO implements IEnderIOAddon {
   @Override
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
-    return new NNList<>(Triple.of(0, null, "aliases"), Triple.of(1, null, "materials"), Triple.of(1, null, "items"), Triple.of(1, null, "base"));
+    return new NNList<>(Triple.of(0, null, "aliases"), Triple.of(1, null, "materials"), Triple.of(1, null, "items"), Triple.of(1, null, "base"),
+        Triple.of(1, null, "balls"));
   }
 
   @Override
@@ -295,7 +296,6 @@ public class EnderIO implements IEnderIOAddon {
       }
     });
     CrashReportCategory.addBlockInfo(crashreportcategory, new BlockPos(0, 0, 0), ModObject.block_machine_base.getBlockNN().getDefaultState());
-
   }
 
 }
