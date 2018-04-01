@@ -192,15 +192,4 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Awareness Upgrade" required="true">
-    <crafting>
-      <grid size="3x3">
-        <item name="CONDUIT_BINDER" /><item name="SILICON" /><item name="CONDUIT_BINDER" />
-        <item name="SILICON" /><item name="pearlEnderEye" /><item name="SILICON" />
-        <item name="CONDUIT_BINDER" /><item name="ELECTRICAL_STEEL" /><item name="CONDUIT_BINDER" />
-      </grid>
-      <output name="enderio:item_inventory_panel_upgrade" />
-    </crafting>
-  </recipe>
-
 </enderio:recipes>
