@@ -61,7 +61,6 @@ public final class Config {
   public static final @Nonnull Section sectionEnchantments = new Section("Enchantments", "enchantments");
   public static final @Nonnull Section sectionMisc = new Section("Misc", "misc");
   public static final @Nonnull Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
-  // public static final @Nonnull Section sectionTOP = new Section("The One Probe integration", "top");
   public static final @Nonnull Section sectionHoes = new Section("Farm Settings.Hoes", "hoes");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
