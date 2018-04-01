@@ -810,11 +810,11 @@
               <documentation>The recipe output will be produced this many times. e.g. &quot;3.14&quot; would produce 3 copies of the complete
                         output set and a 14% chance for a forth copy.</documentation></annotation>
             <simpleType>
-        <restriction base="float">
-          <minExclusive value="0"></minExclusive>
-          <maxInclusive value="2"></maxInclusive>
-        </restriction>
-      </simpleType>
+              <restriction base="float">
+                <minExclusive value="0"></minExclusive>
+                <maxInclusive value="5"></maxInclusive>
+              </restriction>
+            </simpleType>
     </attribute>
     <attribute name="chance" use="optional" default="1.0">
             <annotation>
@@ -824,7 +824,7 @@
             <simpleType>
         <restriction base="float">
           <minExclusive value="0"></minExclusive>
-          <maxInclusive value="2"></maxInclusive>
+          <maxInclusive value="5"></maxInclusive>
         </restriction>
       </simpleType>
     </attribute>
