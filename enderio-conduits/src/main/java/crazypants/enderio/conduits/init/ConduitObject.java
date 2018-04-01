@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -33,7 +34,13 @@ public enum ConduitObject implements IModObject.Registerable {
   item_item_conduit(ItemItemConduit.class),
   item_liquid_conduit(ItemLiquidConduit.class),
   item_power_conduit(ItemPowerConduit.class),
-  item_redstone_conduit(ItemRedstoneConduit.class),;
+  item_redstone_conduit(ItemRedstoneConduit.class),
+
+  // Function Upgrades
+  item_extract_speed_upgrade(ItemFunctionUpgrade.class, "createUpgrade"),
+  item_extract_speed_downgrade(ItemFunctionUpgrade.class, "createDowngrade"),
+
+  ;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {

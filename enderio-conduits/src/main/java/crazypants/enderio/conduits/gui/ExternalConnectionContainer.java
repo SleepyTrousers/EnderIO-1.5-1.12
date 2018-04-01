@@ -22,6 +22,7 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduits.conduit.TileConduitBundle;
 import crazypants.enderio.conduits.conduit.item.IItemConduit;
+import crazypants.enderio.conduits.init.ConduitObject;
 import crazypants.enderio.conduits.network.PacketSlotVisibility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -87,8 +88,8 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotOutputFilter));
       ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotInputFilter));
 
-      NNList<ItemStack> ghostSlotIcons = new NNList<>(new ItemStack(ModObject.item_extract_speed_upgrade.getItemNN()),
-          new ItemStack(ModObject.item_extract_speed_downgrade.getItemNN()), new ItemStack(ModObject.item_inventory_panel_upgrade.getItemNN()));
+      NNList<ItemStack> ghostSlotIcons = new NNList<>(new ItemStack(ConduitObject.item_extract_speed_upgrade.getItemNN()),
+          new ItemStack(ConduitObject.item_extract_speed_downgrade.getItemNN()));
       ghostSlots.add(new GhostBackgroundItemSlot(ghostSlotIcons, slotFunctionUpgrade));
     }
   }

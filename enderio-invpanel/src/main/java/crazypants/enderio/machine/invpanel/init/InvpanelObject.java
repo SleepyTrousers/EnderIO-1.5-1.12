@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -24,12 +25,16 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOInvPanel.MODID)
 public enum InvpanelObject implements IModObject.Registerable {
-  
+
   blockInventoryPanel(BlockInventoryPanel.class, InvpanelTileEntity.TileInventoryPanel),
   blockInventoryChest(BlockInventoryChest.class, InvpanelTileEntity.TileInventoryChest),
   blockInventoryPanelSensor(BlockInventoryPanelSensor.class, InvpanelTileEntity.TileInventoryPanelSensor),
 
-  itemInventoryRemote(ItemRemoteInvAccess.class);
+  itemInventoryRemote(ItemRemoteInvAccess.class),
+
+  // Function Upgrades
+  item_inventory_panel_upgrade(ItemFunctionUpgrade.class, "createInventoryPanelUpgrade"),
+
   ;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
