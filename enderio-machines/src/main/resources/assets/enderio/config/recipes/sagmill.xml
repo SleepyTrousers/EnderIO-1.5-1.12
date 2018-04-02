@@ -127,18 +127,6 @@
     </sagmilling>
   </recipe>
 
-  <recipe name="Sagmill: Infinity Powder" required="true">
-      <!-- Note: This recipe is not usually available; Ender IO does not add a way to get bedrock.
-                 But if another mod does so, this will allow players to "shave off" infinity
-                 powder from bedrock. As with the in-world crafting, the bedrock will not be
-                 consumed. -->
-    <sagmilling energy="9999999" bonus="none">
-      <input name="minecraft:bedrock"/>
-      <output name="minecraft:bedrock" />
-      <output name="dustBedrock" />
-    </sagmilling>
-  </recipe>
-
   <recipe name="Sagmill: Infinity Dust" required="true">
     <sagmilling energy="30000" bonus="chance_only">
       <input name="dustBedrock"/>
