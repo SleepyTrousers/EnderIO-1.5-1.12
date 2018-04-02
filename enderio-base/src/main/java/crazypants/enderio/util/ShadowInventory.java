@@ -26,7 +26,7 @@ public class ShadowInventory implements IInventory {
   @Override
   public @Nonnull ItemStack getStackInSlot(int index) {
     final ItemStack itemStack = items[index];
-    return itemStack.isEmpty() ? master.getStackInSlot(index) : itemStack;
+    return itemStack == null ? master.getStackInSlot(index) : itemStack;
   }
 
   @Override
