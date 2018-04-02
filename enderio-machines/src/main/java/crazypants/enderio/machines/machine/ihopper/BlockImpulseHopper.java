@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
-import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_dont_crash_us_mcjty;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -27,8 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockImpulseHopper extends AbstractMachineBlock<TileImpulseHopper>
-    implements ISmartRenderAwareBlock, IRedstoneConnectable_dont_crash_us_mcjty, IResourceTooltipProvider {
+public class BlockImpulseHopper extends AbstractMachineBlock<TileImpulseHopper> implements ISmartRenderAwareBlock, IResourceTooltipProvider {
 
   public static BlockImpulseHopper create(@Nonnull IModObject modObject) {
     BlockImpulseHopper iHopper = new BlockImpulseHopper(modObject);
