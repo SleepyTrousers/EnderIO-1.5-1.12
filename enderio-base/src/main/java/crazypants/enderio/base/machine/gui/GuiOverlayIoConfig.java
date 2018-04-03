@@ -76,7 +76,7 @@ public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implemen
     Minecraft mc = Minecraft.getMinecraft();
     ScaledResolution scaledresolution = new ScaledResolution(mc);
 
-    int vpx = ((screen.getGuiRootLeft() + screen.getOverlayOffsetXLeft()) * scaledresolution.getScaleFactor());
+    int vpx = ((screen.getGuiRootLeft() + screen.getOverlayOffsetXLeft() + 5) * scaledresolution.getScaleFactor());
     int vpy = (screen.getGuiRootTop() + 4) * scaledresolution.getScaleFactor();
     int w = bounds.width * scaledresolution.getScaleFactor();
     int h = bounds.height * scaledresolution.getScaleFactor();

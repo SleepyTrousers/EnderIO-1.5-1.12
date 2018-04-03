@@ -5,11 +5,13 @@ import java.awt.Rectangle;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 
 public class GuiSagMill extends GuiInventoryMachineBase<TileSagMill> {
 
@@ -52,6 +54,15 @@ public class GuiSagMill extends GuiInventoryMachineBase<TileSagMill> {
       drawTexturedModalRect(guiLeft + 142, guiTop + 23 + (16 - barHeight), 186, 31, 4, barHeight);
     }
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+  }
+
+  @Override
+  protected void renderSlotHighlight(@Nonnull Slot slot, @Nonnull Vector4f col) {
+    // Check if this is a simple sag mill, if so don't draw the grinding slot highlight
+    if (isSimple && slot.getSlotIndex() == ContainerSagMill.GRINDING_BALL_SLOT) {
+      return;
+    }
+    super.renderSlotHighlight(slot, col);
   }
 
 }

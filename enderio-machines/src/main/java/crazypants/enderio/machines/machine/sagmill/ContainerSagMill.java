@@ -12,6 +12,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerSagMill<E extends TileSagMill> extends AbstractMachineContainer<E> {
 
+  static final int GRINDING_BALL_SLOT = 1;
+
   public static class Normal extends ContainerSagMill<TileSagMill.Normal> {
     public Normal(@Nonnull InventoryPlayer playerInv, @Nonnull TileSagMill.Normal te) {
       super(playerInv, te);
@@ -46,7 +48,7 @@ public class ContainerSagMill<E extends TileSagMill> extends AbstractMachineCont
   @Override
   protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
     addSlotToContainer(new InventorySlot(getInv(), 0, 80, 12));
-    addSlotToContainer(new InventorySlot(getInv(), 1, 122, 23) {
+    addSlotToContainer(new InventorySlot(getInv(), GRINDING_BALL_SLOT, 122, 23) {
       @Override
       @SideOnly(Side.CLIENT)
       public boolean isEnabled() {
