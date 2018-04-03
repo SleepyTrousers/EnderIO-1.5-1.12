@@ -231,6 +231,38 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Gear, ae2 messes things up" required="true">
+    <crafting>
+      <grid>
+        <item name="stickWood"/><item /><item name="stickWood"/>
+        <item /><item /><item />
+        <item name="stickWood"/><item /><item name="stickWood"/>
+      </grid>
+      <output name="GEAR_WOOD"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Gear, just to be sure" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="stickWood"/><item /><item name="stickWood"/>
+        <item name="stickWood"/><item /><item name="stickWood"/>
+      </grid>
+      <output name="GEAR_WOOD"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Gear, better save than sorry" required="true">
+    <crafting>
+      <grid size="2x3">
+        <item name="stickWood"/><item name="stickWood"/>
+        <item /><item />
+        <item name="stickWood"/><item name="stickWood"/>
+      </grid>
+      <output name="GEAR_WOOD"/>
+    </crafting>
+  </recipe>
+
   <recipe name="Gear, Stone" required="true">
     <crafting>
       <grid>
