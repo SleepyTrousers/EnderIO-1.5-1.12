@@ -97,7 +97,7 @@
       "conditions": {
         "items": [
           {
-            "item": "enderio:item_powered_item_filter",
+            "item": "enderio:item_power_item_filter",
             "data": 0
           }
         ]
