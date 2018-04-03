@@ -8,7 +8,7 @@
     },
     "icon": {
       "item": "enderio:item_material",
-      "data": 49
+      "data": 48
     }
   },
   "criteria": {
@@ -18,7 +18,7 @@
         "items": [
           {
             "item": "enderio:item_material",
-            "data": 49
+            "data": 48
           }
         ]
       }
