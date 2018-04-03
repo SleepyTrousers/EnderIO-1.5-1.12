@@ -25,6 +25,11 @@
           "layer0": "enderio:items/item_enderface_materials"
         }
       },
+      "conduits": {
+      	"textures": {
+      	  "layer0": "enderio:items/item_enderface_conduits"
+      	}
+      },
       "none": {
         "textures": {
           "layer0": "enderio:items/item_enderface_none"

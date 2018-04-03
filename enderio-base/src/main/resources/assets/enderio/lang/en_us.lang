@@ -22,6 +22,15 @@ item.item_alloy_ingot_redstone_alloy.name=Redstone Alloy Ingot
 item.item_alloy_ingot_soularium.name=Soularium Ingot
 item.item_alloy_ingot_vibrant_alloy.name=Vibrant Alloy Ingot
 
+item.item_alloy_ball_conductive_iron.name=Conductive Iron Grinding Ball
+item.item_alloy_ball_dark_steel.name=Dark Steel Grinding Ball
+item.item_alloy_ball_electrical_steel.name=Electrical Steel Grinding Ball
+item.item_alloy_ball_energetic_alloy.name=Energetic Alloy Grinding Ball
+item.item_alloy_ball_pulsating_iron.name=Pulsating Iron Grinding Ball
+item.item_alloy_ball_redstone_alloy.name=Redstone Alloy Grinding Ball
+item.item_alloy_ball_soularium.name=Soularium Grinding Ball
+item.item_alloy_ball_vibrant_alloy.name=Vibrant Alloy Grinding Ball
+
 item.item_alloy_nugget_conductive_iron.name=Conductive Iron Nugget
 item.item_alloy_nugget_dark_steel.name=Dark Steel Nugget
 item.item_alloy_nugget_electrical_steel.name=Electrical Steel Nugget
@@ -137,7 +146,6 @@ item.item_material.attractor_crystal.name=Enticing Crystal
 item.item_material.binder_composite.name=Binder Composite
 item.item_material.chassi_parts.name=Machine Parts
 item.item_material.conduit_binder.name=Conduit Binder
-item.item_material.dark_grinding_ball.name=Dark Steel Ball
 item.item_material.dust_wheat.name=Flour
 item.item_material.ender_crystal.name=Ender Crystal
 item.item_material.ender_crystal_powder.name=Grains of the End
@@ -241,6 +249,8 @@ item.item_yeta_wrench.tooltip.detailed.line4=Shift-L-Click on a conduit to
 item.item_yeta_wrench.tooltip.detailed.line5=open conduit settings GUI
 item.item_yeta_wrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or '%s' to
 item.item_yeta_wrench.tooltip.detailed.line7=render a single conduit type
+
+item.item_enderface.name=Enderface
 
 tile.block_infinity_fog.name=Infinity Dust
 tile.block_infinity_fog.tooltip.common.line1=§4§oDangerous
@@ -735,6 +745,8 @@ item.item_advanced_item_filter.tooltip.detailed.line1=Filters items with advance
 item.item_limited_item_filter.tooltip.detailed.line1=Filters items based on their stack size in 
 item.item_limited_item_filter.tooltip.detailed.line2=addition to the features of the advanced item filter
 item.item_big_item_filter.tooltip.detailed.line1=Filters even more items
+item.item_big_advanced_item_filter.tooltip.detailed.line1=Filters even more items with
+item.item_big_advanced_item_filter.tooltip.detailed.line2=advanced configuration options
 
 enderio.item_item_filter_upgrade.configured=%sConfigured
 enderio.item_item_filter_upgrade.clear_config_method=%sPlace in crafting grid to clear
@@ -966,6 +978,7 @@ enderio.gui.basic_item_filter=Basic Item Filter
 enderio.gui.advanced_item_filter=Advanced Item Filter
 enderio.gui.limited_item_filter=Limited Item Filter
 enderio.gui.big_item_filter=Big Item Filter
+enderio.gui.big_advanced_item_filter=Filter
 enderio.gui.existing_item_filter=Existing Item Filter
 enderio.gui.mod_item_filter=Mod Item Filter
 enderio.gui.power_item_filter=Power Item Filter
@@ -981,6 +994,7 @@ item.item_basic_item_filter.name=Basic Item Filter
 item.item_advanced_item_filter.name=Advanced Item Filter
 item.item_limited_item_filter.name=Limited Item Filter
 item.item_big_item_filter.name=Big Item Filter
+item.item_big_advanced_item_filter.name=Advanced Big Item Filter
 item.item_existing_item_filter.name=Existing Item Filter
 item.item_mod_item_filter.name=Mod Item Filter
 item.item_power_item_filter.name=Power Item Filter

@@ -125,3 +125,66 @@ enderio.gui.liquid_whitelist=Whitelist
 enderio.gui.liquid_blacklist=Blacklist
 
 enderio.gui.redstone_signal_strength=Strong Signal
+
+# Advancements
+
+enderio.advancement.conduits.root.name=Ender IO Conduits
+enderio.advancement.conduits.root.desc=How many pipes in one block?
+
+enderio.advancement.conduits.binder_composite.name=I Am Not Grout!
+enderio.advancement.conduits.binder_composite.desc=Craft some Binder Composite
+
+# Temp?
+enderio.advancement.conduits.conduit_binder.name=Universal Binder
+enderio.advancement.conduits.conduit_binder.desc=Smelt some Conduit Binder
+
+# Temp
+enderio.advancement.conduits.energy_conduit.basic.name=Basic Energy
+enderio.advancement.conduits.energy_conduit.basic.desc=Craft some Energy Conduits
+
+# Temp
+enderio.advancement.conduits.energy_conduit.enhanced.name=Enhanced Energy
+enderio.advancement.conduits.energy_conduit.enhanced.desc=Craft some Enhanced Energy Conduits
+
+# Temp
+enderio.advancement.conduits.energy_conduit.ender.name=Ender Energy
+enderio.advancement.conduits.energy_conduit.ender.desc=Craft some Ender Energy Conduits
+
+# Temp
+enderio.advancement.conduits.fluid_conduit.basic.name=Basic Fluid
+enderio.advancement.conduits.fluid_conduit.basic.desc=Craft some Fluid Conduits
+
+# Temp?
+enderio.advancement.conduits.fluid_conduit.pressurized.name=Under Pressure
+enderio.advancement.conduits.fluid_conduit.pressurized.desc=Craft some Pressurized Fluid Conduits
+
+enderio.advancement.conduits.fluid_conduit.ender.name=Instant Fluids, Just Add Ender
+enderio.advancement.conduits.fluid_conduit.ender.desc=Craft some Ender Fluid Conduits
+
+# Temp
+enderio.advancement.conduits.item_conduit.name=Item Transfer
+enderio.advancement.conduits.item_conduit.desc=Craft some Item Conduits
+
+enderio.advancement.conduits.basic_filter.name=Filtering For Dummies
+enderio.advancement.conduits.basic_filter.desc=Craft a Basic Item Filter
+
+enderio.advancement.conduits.advanced_filter.name=Maximum Control
+enderio.advancement.conduits.advanced_filter.desc=Craft an Advanced Item Filter
+
+enderio.advancement.conduits.big_filter.name=Maximum Size
+enderio.advancement.conduits.big_filter.desc=Craft a Big Item Filter
+
+enderio.advancement.conduits.big_advanced_filter.name=One Filter to Rule Them All
+enderio.advancement.conduits.big_advanced_filter.desc=Craft a Big Advanced Item Filter
+
+# Temp
+enderio.advancement.conduits.redstone_conduit.name=Redstone Transfer
+enderio.advancement.conduits.redstone_conduit.desc=Craft some Redstone Conduits
+
+# Temp?
+enderio.advancement.conduits.all_conduits.name=Jack of All Trades
+enderio.advancement.conduits.all_conduits.desc=Craft all of the core conduit types
+
+# Temp?
+enderio.advancement.conduits.all_filters.name=Getting Specific
+enderio.advancement.conduits.all_filters.desc=Craft all of the core filter types

@@ -8,6 +8,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.filter.gui.BasicItemFilterGui;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientHelper;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
@@ -21,6 +22,7 @@ import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import net.minecraft.item.ItemStack;
 
 @JEIPlugin
 public class JeiPlugin implements IModPlugin {
@@ -55,6 +57,8 @@ public class JeiPlugin implements IModPlugin {
       registry.addRecipes(JeiAccessor.ALTERNATIVES, VanillaRecipeCategoryUid.CRAFTING);
       Log.debug("Provided " + JeiAccessor.ALTERNATIVES.size() + " synthetic crafting recipes to JEI");
     }
+    
+    registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ModObject.itemEnderface.getItemNN()));
   }
 
   @Override

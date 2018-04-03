@@ -14,7 +14,6 @@ import com.enderio.core.common.vecmath.Camera;
 import com.enderio.core.common.vecmath.Matrix4d;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -33,8 +32,8 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 public class BlockSceneRenderer {
 
-  private float pitch = 0;
-  private double distance;
+  private final float pitch;
+  private final double distance;
 
   private @Nonnull Minecraft mc = Minecraft.getMinecraft();
 
@@ -44,14 +43,14 @@ public class BlockSceneRenderer {
   private final @Nonnull Matrix4d pitchRot = new Matrix4d();
   private final @Nonnull Matrix4d yawRot = new Matrix4d();
 
-  private @Nonnull NNList<Pair<BlockPos, IBlockState>> configurables = new NNList<>();
+  private final @Nonnull NNList<Pair<BlockPos, IBlockState>> blocks = new NNList<>();
 
-  public BlockSceneRenderer(@Nonnull final NNList<Pair<BlockPos, IBlockState>> configurables) {
-    this.configurables.addAll(configurables);
+  public BlockSceneRenderer(@Nonnull final NNList<Pair<BlockPos, IBlockState>> blocks) {
+    this.blocks.addAll(blocks);
 
     Vector3d min = new Vector3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
     Vector3d max = new Vector3d(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
-    for (Pair<BlockPos, IBlockState> pair : configurables) {
+    for (Pair<BlockPos, IBlockState> pair : blocks) {
       BlockPos bc = pair.getKey();
       min.set(Math.min(bc.getX(), min.x), Math.min(bc.getY(), min.y), Math.min(bc.getZ(), min.z));
       max.set(Math.max(bc.getX(), max.x), Math.max(bc.getY(), max.y), Math.max(bc.getZ(), max.z));
@@ -82,7 +81,6 @@ public class BlockSceneRenderer {
     if (updateCamera(vpx, vpy, vpw, vph)) {
       applyCamera();
       renderScene();
-
       resetCamera();
     }
   }
@@ -99,19 +97,11 @@ public class BlockSceneRenderer {
     GlStateManager.enableTexture2D();
     GlStateManager.enableAlpha();
 
-    final Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
+    final LayerRenderer layerRenderer = new LayerRenderer(new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z));
 
     BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
     try {
-      NNList.of(BlockRenderLayer.class).apply(new Callback<BlockRenderLayer>() {
-        @Override
-        public void apply(@Nonnull BlockRenderLayer layer) {
-          ForgeHooksClient.setRenderLayer(layer);
-          setGlStateForPass(layer);
-          doWorldRenderPass(trans, configurables, layer);
-        }
-      });
-
+      NNList.of(BlockRenderLayer.class).apply(layerRenderer);
     } finally {
       ForgeHooksClient.setRenderLayer(oldRenderLayer);
       GlStateManager.depthMask(true);
@@ -119,41 +109,57 @@ public class BlockSceneRenderer {
 
   }
 
-  private void doWorldRenderPass(@Nonnull Vector3d trans, @Nonnull NNList<Pair<BlockPos, IBlockState>> blocks, final @Nonnull BlockRenderLayer layer) {
-    BufferBuilder wr = Tessellator.getInstance().getBuffer();
-    wr.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-    wr.setTranslation(trans.x, trans.y, trans.z);
-    blocks.apply(new Callback<Pair<BlockPos, IBlockState>>() {
-      @Override
-      public void apply(@Nonnull Pair<BlockPos, IBlockState> entry) {
-        BlockPos pos = entry.getKey();
-        IBlockState bs = entry.getValue();
-        Block block = bs.getBlock();
-        if (block.canRenderInLayer(bs, layer) && pos != null) {
-          renderBlock(bs, pos, Tessellator.getInstance().getBuffer());
-        }
-      }
-    });
-    Tessellator.getInstance().draw();
-    wr.setTranslation(0, 0, 0);
-  }
+  private final class LayerRenderer implements Callback<BlockRenderLayer> {
 
-  public void renderBlock(@Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull BufferBuilder worldRendererIn) {
-    try {
-      BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
-      EnumBlockRenderType type = state.getRenderType();
-      if (type != EnumBlockRenderType.MODEL) {
-        blockrendererdispatcher.renderBlock(state, pos, Minecraft.getMinecraft().world, worldRendererIn);
-        return;
-      }
-      IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(state);
-      blockrendererdispatcher.getBlockModelRenderer().renderModel(Minecraft.getMinecraft().world, ibakedmodel, state, pos, worldRendererIn, false);
-    } catch (Throwable throwable) {
-      // Just bury a render issue here, it is only the IO screen
+    private final @Nonnull Vector3d translation;
+
+    private LayerRenderer(@Nonnull Vector3d translation) {
+      this.translation = translation;
+    }
+
+    @Override
+    public void apply(@Nonnull BlockRenderLayer layer) {
+      ForgeHooksClient.setRenderLayer(layer);
+      setGlStateForPass(layer);
+      BufferBuilder wr = Tessellator.getInstance().getBuffer();
+      wr.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+      wr.setTranslation(translation.x, translation.y, translation.z);
+      blocks.apply(new BlockRenderer(layer));
+      Tessellator.getInstance().draw();
+      wr.setTranslation(0, 0, 0);
     }
   }
 
-  private void setGlStateForPass(@Nonnull BlockRenderLayer layer) {
+  private static final class BlockRenderer implements Callback<Pair<BlockPos, IBlockState>> {
+    private final @Nonnull BlockRenderLayer layer;
+
+    private BlockRenderer(@Nonnull BlockRenderLayer layer) {
+      this.layer = layer;
+    }
+
+    @Override
+    public void apply(@Nonnull Pair<BlockPos, IBlockState> entry) {
+      BlockPos pos = entry.getKey();
+      IBlockState bs = entry.getValue();
+      if (bs.getBlock().canRenderInLayer(bs, layer) && pos != null) {
+        BufferBuilder worldRendererIn = Tessellator.getInstance().getBuffer();
+        try {
+          BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+          EnumBlockRenderType type = bs.getRenderType();
+          if (type != EnumBlockRenderType.MODEL) {
+            blockrendererdispatcher.renderBlock(bs, pos, Minecraft.getMinecraft().world, worldRendererIn);
+          } else {
+            IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(bs);
+            blockrendererdispatcher.getBlockModelRenderer().renderModel(Minecraft.getMinecraft().world, ibakedmodel, bs, pos, worldRendererIn, false);
+          }
+        } catch (Throwable throwable) {
+          // Just bury a render issue here, it is only a GUI screen
+        }
+      }
+    }
+  }
+
+  private static void setGlStateForPass(@Nonnull BlockRenderLayer layer) {
     GlStateManager.color(1, 1, 1);
     if (layer != BlockRenderLayer.TRANSLUCENT) {
       GlStateManager.enableDepth();

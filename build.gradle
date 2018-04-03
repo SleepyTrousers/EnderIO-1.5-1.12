@@ -271,6 +271,19 @@ jar {
     }
 }
 
+// Combine all the API jars into a single jar
+task combApiJar(type: Jar) {
+    dependsOn combjarprojects.tasks['classes']
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    combjarprojects.each { subproject -> 
+        from subproject.apiJar
+    }
+}
+
+artifacts {
+    archives combApiJar
+}
+
 // Finally copy all the jars to `libs`
 task copyJars(type: Copy, dependsOn: subprojects.tasks['signJar']) {
     from buildprojects.collect { it.tasks.withType(Jar) }
@@ -318,7 +331,6 @@ curseforge {
             optionalLibrary 'opencomputers'
             optionalLibrary 'forestry'
             optionalLibrary 'ctm'
-            optionalLibrary 'tesla'
             optionalLibrary 'applied-energistics-2'
             optionalLibrary 'actually-additions'
             optionalLibrary 'extreme-reactors'
@@ -330,7 +342,6 @@ curseforge {
             optionalLibrary 'immersive-engineering'
             optionalLibrary 'industrial-craft'
             optionalLibrary 'natura'
-            optionalLibrary 'railcraft'
             optionalLibrary 'thermal-foundation'
             optionalLibrary 'tinkers-construct'
         }

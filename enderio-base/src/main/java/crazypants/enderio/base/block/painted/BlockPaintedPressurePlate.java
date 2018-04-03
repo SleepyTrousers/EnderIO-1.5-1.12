@@ -91,7 +91,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
 
   public BlockPaintedPressurePlate(@Nonnull IModObject modObject) {
     super(Material.IRON);
-    this.setDefaultState(this.blockState.getBaseState().withProperty(BlockPressurePlateWeighted.POWER, 0));
+    this.setDefaultState(getBlockState().getBaseState().withProperty(BlockPressurePlateWeighted.POWER, 0));
     setCreativeTab(EnderIOTab.tabEnderIO);
     modObject.apply(this);
     setSoundType(SoundType.WOOD);

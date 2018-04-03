@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.inventory.EnderInventory;
 
-import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_dont_crash_us_mcjty;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
@@ -42,7 +42,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmartRenderAwareBlock, IEioGuiHandler.WithPos, IResourceTooltipProvider,
-    IRedstoneConnectable_dont_crash_us_mcjty, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
+    IRedstoneConnectable, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
 
   public static BlockVacuumChest create(@Nonnull IModObject modObject) {
     BlockVacuumChest res = new BlockVacuumChest(modObject);
@@ -57,7 +57,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
   }
 
   protected void initDefaultState() {
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
+    setDefaultState(getBlockState().getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
   @Override

@@ -63,7 +63,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
 
   @Override
   protected void initDefaultState() {
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BLOCK_TYPE, BlockType.SINGLE));
+    setDefaultState(getBlockState().getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BLOCK_TYPE, BlockType.SINGLE));
   }
 
   @Override

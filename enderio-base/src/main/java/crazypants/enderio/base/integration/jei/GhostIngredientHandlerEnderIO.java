@@ -1,5 +1,6 @@
 package crazypants.enderio.base.integration.jei;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -15,7 +16,9 @@ public class GhostIngredientHandlerEnderIO implements IGhostIngredientHandler<Ba
   @Override
   @Nonnull
   public <I> List<Target<I>> getTargets(@Nonnull BasicItemFilterGui gui, @Nonnull I ingredient, boolean doStart) {
-    return gui.<I> getTargetSlots();
+    List<Target<I>> list = new ArrayList<Target<I>>();
+    list.addAll(gui.getTargetSlots());
+    return list;
   }
 
   @Override

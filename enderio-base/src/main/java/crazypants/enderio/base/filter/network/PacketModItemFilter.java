@@ -52,7 +52,7 @@ public class PacketModItemFilter extends PacketFilterUpdate {
 
     @Override
     public IMessage onMessage(PacketModItemFilter message, MessageContext ctx) {
-      IFilterHolder filterHolder = message.getFilterHolder(ctx, message.filterId, message.param1);
+      IFilterHolder filterHolder = message.getFilterHolder(ctx);
       if (filterHolder == null) {
         return null;
       }

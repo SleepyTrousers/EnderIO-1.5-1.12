@@ -59,7 +59,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
 
     });
     setSoundType(SoundType.GLASS);
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO));
+    setDefaultState(getBlockState().getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO));
     setShape(mkShape(BlockFaceShape.SOLID));
   }
 

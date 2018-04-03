@@ -52,6 +52,10 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IRe
     return new ItemBasicItemFilter(modObject, BasicFilterTypes.filterUpgradeBig);
   }
 
+  public static ItemBasicItemFilter createBigAdvancedItemFilter(@Nonnull IModObject modObject) {
+    return new ItemBasicItemFilter(modObject, BasicFilterTypes.filterUpgradeBigAdvanced);
+  }
+
   protected ItemBasicItemFilter(@Nonnull IModObject modObject, BasicFilterTypes filterType) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);

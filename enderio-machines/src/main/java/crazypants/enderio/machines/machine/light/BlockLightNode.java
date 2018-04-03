@@ -38,7 +38,7 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
     super(modObject, Material.AIR);
     setCreativeTab(null);
     setTickRandomly(true);
-    setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
+    setDefaultState(getBlockState().getBaseState().withProperty(ACTIVE, false));
     setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 

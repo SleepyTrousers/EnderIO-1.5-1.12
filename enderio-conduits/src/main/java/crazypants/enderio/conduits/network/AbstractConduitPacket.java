@@ -3,6 +3,7 @@ package crazypants.enderio.conduits.network;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
 
@@ -55,7 +56,7 @@ public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBu
   }
 
   @SuppressWarnings("unchecked")
-  public T getConduit(MessageContext ctx) {
+  public @Nullable T getConduit(MessageContext ctx) {
     if (ctx.side == Side.SERVER) {
       if (ctx.getServerHandler().player.openContainer instanceof ExternalConnectionContainer) {
         final TileConduitBundle tileEntity = ((ExternalConnectionContainer) ctx.getServerHandler().player.openContainer).getTileEntity();

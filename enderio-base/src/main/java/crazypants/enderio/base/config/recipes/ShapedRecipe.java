@@ -12,7 +12,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreIngredient;
@@ -30,7 +29,7 @@ public class ShapedRecipe extends ShapedRecipes {
 
   protected final @Nonnull Things result;
 
-  public ShapedRecipe(@Nonnull ResourceLocation name, int width, int height, @Nonnull NonNullList<Ingredient> ingredients, @Nonnull Things result) {
+  public ShapedRecipe(@Nonnull ResourceLocation name, int width, int height, @Nonnull NNList<Ingredient> ingredients, @Nonnull Things result) {
     super("", width, height, ingredients, new ItemStack(Items.SPAWN_EGG));
     this.result = result;
     setRegistryName(name);
@@ -49,8 +48,8 @@ public class ShapedRecipe extends ShapedRecipes {
   }
 
   @Override
-  public @Nonnull NonNullList<Ingredient> getIngredients() {
-    return result.isPotentiallyValid() ? super.getIngredients() : NONE;
+  public @Nonnull NNList<Ingredient> getIngredients() {
+    return result.isPotentiallyValid() ? ((NNList<Ingredient>) super.getIngredients()).copy() : NONE;
   }
 
   @Override
@@ -69,7 +68,7 @@ public class ShapedRecipe extends ShapedRecipes {
 
   public static class Upgrade extends ShapedRecipe {
 
-    public Upgrade(@Nonnull ResourceLocation name, int width, int height, @Nonnull NonNullList<Ingredient> ingredients, @Nonnull Things result) {
+    public Upgrade(@Nonnull ResourceLocation name, int width, int height, @Nonnull NNList<Ingredient> ingredients, @Nonnull Things result) {
       super(name, width, height, ingredients, result);
     }
 

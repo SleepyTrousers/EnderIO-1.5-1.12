@@ -3,6 +3,7 @@ package crazypants.enderio.base.machine.gui;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nonnull;
 
@@ -11,6 +12,7 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -23,6 +25,7 @@ import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
+import info.loenwind.scheduler.Celeb;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
@@ -209,4 +212,33 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
   protected int getButtonXPos() {
     return getXSize();
   }
+
+  @Override
+  public void drawWorldBackground(int tint) {
+    if (Celeb.SPACE.isOn() && NullHelper.untrust(mc.world) != null) {
+      drawRect(0, 0, width, height, 0xFF000000);
+
+      long tickCount = EnderIO.proxy.getTickCount();
+      Random rand = new Random();
+
+      for (int layer = 1; layer < 10; layer++) {
+        for (int star = 0; star < width - 1; star++) {
+          long seed = layer * layer + star + (tickCount / layer);
+          rand.setSeed(seed);
+          int y = rand.nextInt(height * 10 * layer / 3);
+          int r = rand.nextInt(64);
+          int g = rand.nextInt(64);
+          int b = rand.nextInt(32);
+          int color = ((0xFF - r) << 16) | ((0xFF - g) << 8) | (0xFF - b);
+          if (y < height) {
+            drawRect(star, y, star + 1, y + 1, 0xA0000000 | color);
+            drawRect(star + 1, y, star + 2, y + 1, 0x20000000 | color);
+          }
+        }
+      }
+      return;
+    }
+    super.drawWorldBackground(tint);
+  }
+
 }

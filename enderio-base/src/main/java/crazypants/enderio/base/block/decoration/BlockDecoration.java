@@ -51,7 +51,7 @@ public class BlockDecoration extends Block implements IHaveRenderers, IModObject
   }
 
   protected void initDefaultState() {
-    setDefaultState(this.blockState.getBaseState());
+    setDefaultState(getBlockState().getBaseState());
   }
 
   @Override

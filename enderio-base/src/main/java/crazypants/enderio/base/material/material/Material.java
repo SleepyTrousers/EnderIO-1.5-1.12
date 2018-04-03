@@ -25,7 +25,6 @@ public enum Material {
   PLATE_PHOTOVOLTAIC("platePhotovoltaic"),
   CONDUIT_BINDER("conduitBinder"),
   SILICON("silicon"),
-  DARK_GRINDING_BALL("darkGrindingBall"),
   GLIDER_WING("gliderWing"),
   GLIDER_WINGS("gliderWings"),
   NUTRITIOUS_STICK("nutritiousStick"),

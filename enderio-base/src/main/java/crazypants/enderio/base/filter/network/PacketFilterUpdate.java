@@ -25,7 +25,7 @@ public class PacketFilterUpdate extends MessageTileEntity<TileEntity> {
   public PacketFilterUpdate() {
   }
 
-  public PacketFilterUpdate(TileEntity te, @Nonnull IItemFilter filter, int filterId, int param1) {
+  public PacketFilterUpdate(@Nonnull TileEntity te, @Nonnull IItemFilter filter, int filterId, int param1) {
     super(te);
     this.filter = filter;
     this.filterId = filterId;
@@ -48,7 +48,7 @@ public class PacketFilterUpdate extends MessageTileEntity<TileEntity> {
     filter = FilterRegistry.readFilter(buf);
   }
 
-  public IFilterHolder getFilterHolder(MessageContext ctx, int filterId, int param1) {
+  public IFilterHolder getFilterHolder(MessageContext ctx) {
     if (ctx.side == Side.SERVER) {
       if (ctx.getServerHandler().player.openContainer instanceof ContainerFilter) {
         final TileEntity tileEntity = ((ContainerFilter) ctx.getServerHandler().player.openContainer).getTileEntity();
@@ -69,7 +69,7 @@ public class PacketFilterUpdate extends MessageTileEntity<TileEntity> {
 
     @Override
     public IMessage onMessage(PacketFilterUpdate message, MessageContext ctx) {
-      IFilterHolder filterHolder = message.getFilterHolder(ctx, message.filterId, message.param1);
+      IFilterHolder filterHolder = message.getFilterHolder(ctx);
       if (filterHolder != null) {
         filterHolder.setFilter(message.filterId, message.param1, message.filter);
       }

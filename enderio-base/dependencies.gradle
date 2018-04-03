@@ -3,4 +3,5 @@ modDependencies {
 	endercore { requireAfter(endercore_version) }
 	jei { loadAfter(jei_version) }
 	buildcraft { loadAfter(buildcraft_version) }
+	baubles { loadAfter(baubles_version) }
 }

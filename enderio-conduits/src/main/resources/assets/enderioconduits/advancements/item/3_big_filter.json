@@ -1,0 +1,30 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.conduits.big_filter.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.conduits.big_filter.name"
+    },
+    "icon": {
+      "item": "enderio:item_big_item_filter",
+      "data": 0
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_big_item_filter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_big_item_filter"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 20
+  },
+  "parent": "enderioconduits:item/2_basic_filter"
+}

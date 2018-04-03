@@ -56,54 +56,6 @@ public class RecipeFactory {
     }
   }
 
-  @SuppressWarnings("resource")
-  public <T extends RecipeRoot> T readFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
-    final ResourceLocation xsdRL = new ResourceLocation(domain, "config/recipes.xsd");
-    final File xsdFL = new File(configDirectory, "recipes.xsd");
-    copyCore(xsdRL, xsdFL);
-
-    final ResourceLocation coreRL = new ResourceLocation(domain, "config/" + fileName + "_core.xml");
-    final File coreFL = new File(configDirectory, fileName + "_core.xml");
-    copyCore(coreRL, coreFL);
-
-    final File userFL = new File(configDirectory, fileName + "_user.xml");
-
-    T config;
-    try (InputStream coreFileStream = getResource(coreRL)) {
-      try {
-        config = readStax(target.copy(target), rootElement, coreFileStream);
-      } catch (XMLStreamException e) {
-        printContentsOnError(getResource(coreRL), coreRL.toString());
-        throw e;
-      } catch (InvalidRecipeConfigException irce) {
-        irce.setFilename(fileName + "_core.xml");
-        throw irce;
-      }
-    }
-
-    if (userFL.exists()) {
-      try (InputStream userFileStream = userFL.exists() ? new FileInputStream(userFL) : null;) {
-        try {
-          config = readStax(target, rootElement, userFileStream).addRecipes(config);
-        } catch (XMLStreamException e) {
-          printContentsOnError(new FileInputStream(userFL), userFL.toString());
-          throw e;
-        } catch (InvalidRecipeConfigException irce) {
-          irce.setFilename(fileName + "_user.xml");
-          throw irce;
-        }
-      }
-    } else {
-      try (BufferedWriter writer = new BufferedWriter(new FileWriter(userFL, false))) {
-        writer.write(DEFAULT_USER_FILE);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-
-    return config;
-  }
-
   public void placeXSD(String folderName) {
     final ResourceLocation xsdRL = new ResourceLocation(domain, "config/recipes/recipes.xsd");
     final File xsdFL = new File(configDirectory, folderName + "/recipes.xsd");

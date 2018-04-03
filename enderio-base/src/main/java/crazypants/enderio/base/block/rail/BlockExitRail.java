@@ -29,7 +29,7 @@ public class BlockExitRail extends BlockRailBase implements IDefaultRenderers, I
 
   public BlockExitRail(@Nonnull IModObject modObject) {
     super(false);
-    this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.NORTH_SOUTH));
+    this.setDefaultState(getBlockState().getBaseState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.NORTH_SOUTH));
     setCreativeTab(CreativeTabs.TRANSPORTATION);
     modObject.apply(this);
   }

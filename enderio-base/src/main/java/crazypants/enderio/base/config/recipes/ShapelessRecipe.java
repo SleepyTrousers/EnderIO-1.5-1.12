@@ -2,6 +2,7 @@ package crazypants.enderio.base.config.recipes;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -11,7 +12,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -19,7 +19,7 @@ public class ShapelessRecipe extends ShapelessRecipes {
 
   private final @Nonnull Things result;
 
-  public ShapelessRecipe(@Nonnull ResourceLocation name, @Nonnull NonNullList<Ingredient> ingredients, @Nonnull Things result) {
+  public ShapelessRecipe(@Nonnull ResourceLocation name, @Nonnull NNList<Ingredient> ingredients, @Nonnull Things result) {
     super("", new ItemStack(Items.SPAWN_EGG), ingredients);
     this.result = result;
     setRegistryName(name);
@@ -38,8 +38,8 @@ public class ShapelessRecipe extends ShapelessRecipes {
   }
 
   @Override
-  public @Nonnull NonNullList<Ingredient> getIngredients() {
-    return result.isPotentiallyValid() ? super.getIngredients() : ShapedRecipe.NONE;
+  public @Nonnull NNList<Ingredient> getIngredients() {
+    return result.isPotentiallyValid() ? ((NNList<Ingredient>) super.getIngredients()).copy() : ShapedRecipe.NONE;
   }
 
   @Override
@@ -58,7 +58,7 @@ public class ShapelessRecipe extends ShapelessRecipes {
 
   public static class Upgrade extends ShapelessRecipe {
 
-    public Upgrade(@Nonnull ResourceLocation name, @Nonnull NonNullList<Ingredient> ingredients, @Nonnull Things result) {
+    public Upgrade(@Nonnull ResourceLocation name, @Nonnull NNList<Ingredient> ingredients, @Nonnull Things result) {
       super(name, ingredients, result);
     }
 

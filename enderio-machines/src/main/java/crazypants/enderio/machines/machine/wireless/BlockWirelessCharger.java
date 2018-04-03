@@ -44,7 +44,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
   private BlockWirelessCharger(@Nonnull IModObject modObject) {
     super(modObject);
     setLightOpacity(1);
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
+    setDefaultState(getBlockState().getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
     setShape(mkShape(BlockFaceShape.SOLID));
   }
 

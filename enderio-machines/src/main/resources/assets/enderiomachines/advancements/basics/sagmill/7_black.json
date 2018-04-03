@@ -1,0 +1,31 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.sagmill.7_black.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.sagmill.7_black.name"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 51
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_material",
+            "data": 51
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 10
+  },
+  "parent": "enderiomachines:basics/sagmill/6_coal"
+}

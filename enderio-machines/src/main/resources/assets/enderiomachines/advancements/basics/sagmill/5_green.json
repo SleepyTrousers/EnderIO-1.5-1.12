@@ -1,0 +1,31 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.sagmill.5_green.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.sagmill.5_green.name"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 49
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_material",
+            "data": 49
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 10
+  },
+  "parent": "enderiomachines:basics/sagmill/2_sagmill_flowers"
+}

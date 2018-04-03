@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.vecmath.Vector3f;
 
-import crazypants.enderio.api.redstone_dont_crash_us_mcjty.IRedstoneConnectable_dont_crash_us_mcjty;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockElectricLight extends BlockEio<TileElectricLight> implements IRedstoneConnectable_dont_crash_us_mcjty, IHaveRenderers {
+public class BlockElectricLight extends BlockEio<TileElectricLight> implements IRedstoneConnectable, IHaveRenderers {
 
   static final float BLOCK_HEIGHT = 0.05f;
   static final float BLOCK_WIDTH = 0.3f;
@@ -50,7 +50,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   public BlockElectricLight(@Nonnull IModObject modObject) {
     super(modObject);
     setLightOpacity(0);
-    setDefaultState(blockState.getBaseState().withProperty(TYPE, LightType.ELECTRIC).withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
+    setDefaultState(getBlockState().getBaseState().withProperty(TYPE, LightType.ELECTRIC).withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
     setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 

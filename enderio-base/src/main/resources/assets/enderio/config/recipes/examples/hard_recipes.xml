@@ -15,30 +15,30 @@
     </crafting>
   </recipe>
 
-  <recipe name="Dark Grinding Ball" required="true">
+  <recipe name="Dark Steel Ball Crafting" required="true">
     <crafting>
       <grid>
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
         <item name="DARK_STEEL"/><item/><item name="DARK_STEEL"/>
         <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
       </grid>
-      <output name="DARK_GRINDING_BALL" amount="25"/>
+      <output name="DARK_STEEL_BALL" amount="25"/>
     </crafting>
   </recipe>
 
-  <recipe name="Dark Grinding Ball Casting" required="true">
+  <recipe name="Dark Steel Casting" required="true">
     <dependency item="tconstruct:cast_custom:2"/>
     <casting>
       <input name="DARK_STEEL" amount="0.32"/>
       <cast name="tconstruct:cast_custom:2"/>
-      <output name="DARK_GRINDING_BALL"/>
+      <output name="DARK_STEEL_BALL"/>
     </casting>
   </recipe>
 
-  <recipe name="Dark Grinding Ball Smelting" required="true">
+  <recipe name="Dark Ball Smelting" required="true">
     <dependency item="tconstruct:cast_custom:2"/>
     <smelting tinkers="true" vanilla="false">
-      <input name="DARK_GRINDING_BALL" amount="25"/>
+      <input name="DARK_STEEL_BALL" amount="25"/>
       <output name="DARK_STEEL" amount="8"/>
     </smelting>
   </recipe>

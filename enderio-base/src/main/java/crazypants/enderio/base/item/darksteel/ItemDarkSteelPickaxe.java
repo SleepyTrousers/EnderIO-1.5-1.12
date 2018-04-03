@@ -386,7 +386,8 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       final IBlockState blockstate = world.getBlockState(target);
       final Block block = blockstate.getBlock();
       if ((DarkSteelConfig.explosiveUpgradeUnlimitedTargets.get() || STONES.contains(block) || (withSpoon && DIRTS.contains(block)))
-          && referenceHardness >= blockstate.getBlockHardness(world, target) && isToolEffective(blockstate, item)) {
+          && referenceHardness >= blockstate.getBlockHardness(world, target)
+          && (isToolEffective(blockstate, item) || ForgeHooks.canHarvestBlock(block, player, world, target))) {
         final int exp = ForgeHooks.onBlockBreakEvent(world, gameType, player, target);
         if (exp != -1 && block.canHarvestBlock(world, target, player)) {
           if (block.removedByPlayer(blockstate, world, target, player, true)) {

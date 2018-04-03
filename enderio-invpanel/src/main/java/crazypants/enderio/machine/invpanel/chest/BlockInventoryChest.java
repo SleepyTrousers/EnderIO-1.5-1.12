@@ -55,7 +55,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   @Override
   protected void initDefaultState() {
     setDefaultState(
-        this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(EnumChestSize.SIZE, EnumChestSize.TINY));
+        getBlockState().getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(EnumChestSize.SIZE, EnumChestSize.TINY));
   }
 
   @Override
@@ -99,12 +99,14 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   // NO GUI
 
   @Override
-  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1, @Nonnull TileInventoryChest te) {
+  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileInventoryChest te) {
     return null;
   }
-  
+
   @Override
-  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1, @Nonnull TileInventoryChest te) {
+  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, @Nonnull TileInventoryChest te) {
     return null;
   }
 
@@ -146,7 +148,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   public boolean hasTileEntity(@Nonnull IBlockState state) {
     return true;
   }
-  
+
   @Override
   @Nullable
   public Item createBlockItem(@Nonnull IModObject modObject) {

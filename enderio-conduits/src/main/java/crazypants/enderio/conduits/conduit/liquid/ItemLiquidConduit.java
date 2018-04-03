@@ -97,10 +97,8 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
       maxIo = ConduitConfig.fluid_tier3_maxIO.get();
     }
 
-    // TODO Lang
-
     String mbt = " " + Lang.FLUID_MILLIBUCKETS_TICK.get();
-    list.add(Lang.GUI_LIQUID_TOOLTIP_MAX_EXTRACT + " " + extractRate + mbt);
+    list.add(Lang.GUI_LIQUID_TOOLTIP_MAX_EXTRACT.get() + " " + extractRate + mbt);
     list.add(Lang.GUI_LIQUID_TOOLTIP_MAX_IO.get() + " " + maxIo + mbt);
 
     if (itemstack.getItemDamage() == 0) {

@@ -27,7 +27,7 @@ public class BlockMachineBase extends Block {
   public BlockMachineBase(IModObject modObject) {
     super(Material.CIRCUITS);
     modObject.apply(this);
-    this.setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderPart.SUB, EnumRenderPart.DEFAULTS));
+    this.setDefaultState(getBlockState().getBaseState().withProperty(EnumRenderPart.SUB, EnumRenderPart.DEFAULTS));
     setCreativeTab(null);
     disableStats();
   }

@@ -1,0 +1,31 @@
+{
+  "display": {
+    "description": {
+      "translate": "enderio.advancement.sagmill.4_brown.desc"
+    },
+    "title": {
+      "translate": "enderio.advancement.sagmill.4_brown.name"
+    },
+    "icon": {
+      "item": "enderio:item_material",
+      "data": 50
+    }
+  },
+  "criteria": {
+    "inv_changed-enderio:item_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "enderio:item_material",
+            "data": 50
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 10
+  },
+  "parent": "enderiomachines:basics/sagmill/3_sagmill_bushes"
+}

@@ -142,43 +142,6 @@ XML editor will display that as tooltips when editing this file.
     </casting>
   </recipe>
 
-  <recipe name="Dark Grinding Ball" required="true">
-    <crafting>
-      <grid>
-        <item/><item name="DARK_STEEL"/><item/>
-        <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
-        <item/><item name="DARK_STEEL"/><item/>
-      </grid>
-      <output name="DARK_GRINDING_BALL" amount="24"/>
-    </crafting>
-  </recipe>
-
-  <recipe name="Dark Grinding Ball Casting" required="true">
-    <dependency item="tconstruct:cast_custom:2"/>
-    <casting>
-      <input name="DARK_STEEL_NUGGET" amount="1.875"/><!-- 30mB -->
-      <cast name="tconstruct:cast_custom:2"/>
-      <output name="DARK_GRINDING_BALL"/>
-    </casting>
-  </recipe>
-
-  <recipe name="Dark Grinding Ball Smelting" required="true">
-    <dependency item="tconstruct:cast_custom:2"/>
-    <smelting tinkers="true" vanilla="false">
-      <input name="DARK_GRINDING_BALL" amount="24"/>
-      <output name="DARK_STEEL" amount="5"/>
-    </smelting>
-  </recipe>
-
-  <recipe name="Dark Grinding Ball Reverse Casting" required="true">
-    <dependency item="tconstruct:cast_custom:2"/>
-    <casting>
-      <input name="ingotGold" amount="2"/>
-      <cast name="DARK_GRINDING_BALL" consumed="true"/>
-      <output name="tconstruct:cast_custom:2"/>
-    </casting>
-  </recipe>
-
   <recipe name="Gear Reverse Casting, 1" required="true">
     <dependency item="tconstruct:cast_custom:4"/>
     <casting>
@@ -263,6 +226,38 @@ XML editor will display that as tooltips when editing this file.
         <item /><item name="stickWood"/><item />
         <item name="stickWood"/><item /><item name="stickWood"/>
         <item /><item name="stickWood"/><item />
+      </grid>
+      <output name="GEAR_WOOD"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Gear, ae2 messes things up" required="true">
+    <crafting>
+      <grid>
+        <item name="stickWood"/><item /><item name="stickWood"/>
+        <item /><item /><item />
+        <item name="stickWood"/><item /><item name="stickWood"/>
+      </grid>
+      <output name="GEAR_WOOD"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Gear, just to be sure" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="stickWood"/><item /><item name="stickWood"/>
+        <item name="stickWood"/><item /><item name="stickWood"/>
+      </grid>
+      <output name="GEAR_WOOD"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Gear, better save than sorry" required="true">
+    <crafting>
+      <grid size="2x3">
+        <item name="stickWood"/><item name="stickWood"/>
+        <item /><item />
+        <item name="stickWood"/><item name="stickWood"/>
       </grid>
       <output name="GEAR_WOOD"/>
     </crafting>

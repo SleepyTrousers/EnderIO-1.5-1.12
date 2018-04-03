@@ -70,7 +70,7 @@ public abstract class EnergyUpgradeManager {
 
   public static int receiveEnergy(@Nonnull ItemStack container, int maxReceive, boolean simulate) {
     if (container.getItem() instanceof IDarkSteelItem) {
-      receiveEnergy(container, (IDarkSteelItem) container.getItem(), maxReceive, simulate);
+      return receiveEnergy(container, (IDarkSteelItem) container.getItem(), maxReceive, simulate);
     }
     return 0;
   }

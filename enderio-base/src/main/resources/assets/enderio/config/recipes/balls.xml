@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the build-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+To make changes to the recipes, copy the recipes you want to change to
+a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
+and set it to true, e.g.: <recipe name="Gear" disabled="true" />
+
+You can also disabled all build in recipes, so that only your files in the
+'user' folder will be loaded.
+
+Item specifications can reference an alias, an ore dictionary name, a
+block or an item. You can force the type by prefixing the value with
+"oredict:", "block:" or "item:". Recipes that have items that cannot be
+found in-game are either skipped or an error, depending on their "required"
+attribute.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <!-- 
+
+  Grinding Balls:
+  Grinding balls provide bonus outputs and reduced power use. Using the user config new grinding balls may be added and
+  existing ones removed.
+
+  Use of the grinding ball is restricted by the bonusType of the recipe. If it is set to "none", it will not have any grinding
+  ball bonuses applied and will not reduce the durability of any balls in the mill at the time it is  processed. If it is set
+  to "chance_only", the chance and power multipliers of the grinding balls are applied, but not the grinding multiplier. If it
+  is set to "multiply_output" (default), all multipliers apply.
+
+  - grinding:           The recipe output will be produced this many times. e.g. "3.14" would produce 3 copies of the complete
+                        output set and a 14% chance for a forth copy.
+  - chance:             The chances for the different outputs of the recipe are multiplied with this. e.g. if a recipe specifies
+                        <output name="cobblestone" chance="0.15" /> a chance multiplier of "3.14" would make it a 47.1% chance
+                        of getting one cobblestone. Results of more than 100% do not give multiples.
+  - power:              The "energy cost" of the recipe is multiplied with this.
+  - durability:         This specifies how long one grinding ball will last before it is used up. The unit is the amount of
+                        power used by the SAG Mill.
+
+   -->
+
+<grindingball name="Flint" grinding="1.2" chance="1.25" power="0.85" durability="24000" >
+  <item name="itemFlint"/>
+</grindingball>
+
+<grindingball name="Dark Steel Ball" grinding="1.5" chance="2.00" power="0.7" durability="125000" >
+  <item name="ballDarkSteel"/>
+</grindingball>
+
+<grindingball name="Electrical Steel Ball" grinding="1.2" chance="1.00" power="0.35" durability="40000" >
+  <item name="ballElectricalSteel"/>
+</grindingball>
+
+<grindingball name="Energetic Alloy Ball" grinding="1.6" chance="1.1" power="1.1" durability="60000" >
+  <item name="ballEnergeticAlloy"/>
+</grindingball>
+
+<grindingball name="Vibrant Alloy Ball" grinding="1.75" chance="1.35" power="1.35" durability="80000" >
+  <item name="ballVibrantAlloy"/>
+</grindingball>
+
+<grindingball name="Redstone Alloy Ball" grinding="1.00" chance="1.00" power="0.6" durability="30000" >
+  <item name="ballRedstoneAlloy"/>
+</grindingball>
+
+<grindingball name="Conductive Iron Ball" grinding="1.00" chance="1.00" power="0.5" durability="40000" >
+  <item name="ballConductiveIron"/>
+</grindingball>
+
+<grindingball name="Pulsating Iron Ball" grinding="1.0" chance="2.00" power="1.0" durability="100000" >
+  <item name="ballPulsatingIron"/>
+</grindingball>
+
+<grindingball name="Soularium Ball" grinding="1.2" chance="2.5" power="0.85" durability="80000" >
+  <item name="ballSoularium"/>
+</grindingball>
+
+  <recipe name="Dark Steel Ball Crafting" required="true">
+    <crafting>
+      <grid>
+        <item/><item name="DARK_STEEL"/><item/>
+        <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+        <item/><item name="DARK_STEEL"/><item/>
+      </grid>
+      <output name="DARK_STEEL_BALL" amount="24"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="DARK_STEEL_NUGGET" amount="1.875"/><!-- 30mB -->
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="DARK_STEEL_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Dark Ball Smelting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="DARK_STEEL_BALL" amount="24"/>
+      <output name="DARK_STEEL" amount="5"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Dark Steel Ball Reverse Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="DARK_STEEL_BALL" consumed="true"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+ 
+  <recipe name="Electrical Steel Ball Crafting" required="true">
+    <crafting>
+      <grid>
+        <item/><item name="ELECTRICAL_STEEL"/><item/>
+        <item name="ELECTRICAL_STEEL"/><item name="ELECTRICAL_STEEL"/><item name="ELECTRICAL_STEEL"/>
+        <item/><item name="ELECTRICAL_STEEL"/><item/>
+      </grid>
+      <output name="ELECTRICAL_STEEL_BALL" amount="24"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Electrical Steel Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ELECTRICAL_STEEL_NUGGET" amount="1.875"/><!-- 30mB -->
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="ELECTRICAL_STEEL_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Electrical Ball Smelting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="ELECTRICAL_STEEL_BALL" amount="24"/>
+      <output name="ELECTRICAL_STEEL" amount="5"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Electrical Steel Ball Reverse Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="ELECTRICAL_STEEL_BALL" consumed="true"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Energetic Alloy Ball Crafting" required="true">
+    <crafting>
+      <grid>
+        <item/><item name="ENERGETIC_ALLOY"/><item/>
+        <item name="ENERGETIC_ALLOY"/><item name="ENERGETIC_ALLOY"/><item name="ENERGETIC_ALLOY"/>
+        <item/><item name="ENERGETIC_ALLOY"/><item/>
+      </grid>
+      <output name="ENERGETIC_ALLOY_BALL" amount="24"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Energetic Alloy Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ENERGETIC_ALLOY_NUGGET" amount="1.875"/><!-- 30mB -->
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="ENERGETIC_ALLOY_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Energetic Alloy Ball Smelting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="ENERGETIC_ALLOY_BALL" amount="24"/>
+      <output name="ENERGETIC_ALLOY" amount="5"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Energetic Alloy Ball Reverse Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="ENERGETIC_ALLOY_BALL" consumed="true"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Vibrant Alloy Ball Crafting" required="true">
+    <crafting>
+      <grid>
+        <item/><item name="VIBRANT_ALLOY"/><item/>
+        <item name="VIBRANT_ALLOY"/><item name="VIBRANT_ALLOY"/><item name="VIBRANT_ALLOY"/>
+        <item/><item name="VIBRANT_ALLOY"/><item/>
+      </grid>
+      <output name="VIBRANT_ALLOY_BALL" amount="24"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Vibrant Alloy Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="VIBRANT_ALLOY_NUGGET" amount="1.875"/><!-- 30mB -->
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="VIBRANT_ALLOY_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Vibrant Alloy Smelting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="VIBRANT_ALLOY_BALL" amount="24"/>
+      <output name="VIBRANT_ALLOY" amount="5"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Vibrant Alloy Ball Reverse Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="VIBRANT_ALLOY_BALL" consumed="true"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Redstone Alloy Ball Crafting" required="true">
+    <crafting>
+      <grid>
+        <item/><item name="REDSTONE_ALLOY"/><item/>
+        <item name="REDSTONE_ALLOY"/><item name="REDSTONE_ALLOY"/><item name="REDSTONE_ALLOY"/>
+        <item/><item name="REDSTONE_ALLOY"/><item/>
+      </grid>
+      <output name="REDSTONE_ALLOY_BALL" amount="24"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Redstone Alloy Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="REDSTONE_ALLOY_NUGGET" amount="1.875"/><!-- 30mB -->
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="REDSTONE_ALLOY_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Redstone Alloy Smelting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="REDSTONE_ALLOY_BALL" amount="24"/>
+      <output name="REDSTONE_ALLOY" amount="5"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Redstone Alloy Ball Reverse Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="REDSTONE_ALLOY_BALL" consumed="true"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Conductive Iron Ball Crafting" required="true">
+    <crafting>
+      <grid>
+        <item/><item name="CONDUCTIVE_IRON"/><item/>
+        <item name="CONDUCTIVE_IRON"/><item name="CONDUCTIVE_IRON"/><item name="CONDUCTIVE_IRON"/>
+        <item/><item name="CONDUCTIVE_IRON"/><item/>
+      </grid>
+      <output name="CONDUCTIVE_IRON_BALL" amount="24"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conductive Iron Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="CONDUCTIVE_IRON_NUGGET" amount="1.875"/><!-- 30mB -->
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="CONDUCTIVE_IRON_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Conductive Iron Smelting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="CONDUCTIVE_IRON_BALL" amount="24"/>
+      <output name="CONDUCTIVE_IRON" amount="5"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Conductive Iron Ball Reverse Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="CONDUCTIVE_IRON_BALL" consumed="true"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Pulsating Iron Ball Crafting" required="true">
+    <crafting>
+      <grid>
+        <item/><item name="PULSATING_IRON"/><item/>
+        <item name="PULSATING_IRON"/><item name="PULSATING_IRON"/><item name="PULSATING_IRON"/>
+        <item/><item name="PULSATING_IRON"/><item/>
+      </grid>
+      <output name="PULSATING_IRON_BALL" amount="24"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Pulsating Iron Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="PULSATING_IRON_NUGGET" amount="1.875"/><!-- 30mB -->
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="PULSATING_IRON_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Pulsating Iron Smelting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="PULSATING_IRON_BALL" amount="24"/>
+      <output name="PULSATING_IRON" amount="5"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Pulsating Iron Ball Reverse Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="PULSATING_IRON_BALL" consumed="true"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Soularium Ball Crafting" required="true">
+    <crafting>
+      <grid>
+        <item/><item name="SOULARIUM"/><item/>
+        <item name="SOULARIUM"/><item name="SOULARIUM"/><item name="SOULARIUM"/>
+        <item/><item name="SOULARIUM"/><item/>
+      </grid>
+      <output name="SOULARIUM_BALL" amount="24"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Soularium Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="SOULARIUM_NUGGET" amount="1.875"/><!-- 30mB -->
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="SOULARIUM_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Soularium Ball Smelting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="SOULARIUM_BALL" amount="24"/>
+      <output name="SOULARIUM" amount="5"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Soularium Ball Reverse Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="SOULARIUM_BALL" consumed="true"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+
+</enderio:recipes>

@@ -81,7 +81,7 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
   }
 
   protected void initDefaultState() {
-    setDefaultState(this.blockState.getBaseState());
+    setDefaultState(getBlockState().getBaseState());
   }
 
   @Override

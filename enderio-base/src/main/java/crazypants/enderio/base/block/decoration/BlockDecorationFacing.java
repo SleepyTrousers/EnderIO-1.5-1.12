@@ -46,7 +46,7 @@ public class BlockDecorationFacing extends BlockDecoration {
 
   @Override
   protected void initDefaultState() {
-    setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.SOUTH).withProperty(ACTIVE, false));
+    setDefaultState(getBlockState().getBaseState().withProperty(FACING, EnumFacing.SOUTH).withProperty(ACTIVE, false));
   }
 
   @Override

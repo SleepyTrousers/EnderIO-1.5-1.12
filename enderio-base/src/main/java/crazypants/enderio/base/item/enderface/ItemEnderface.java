@@ -29,7 +29,7 @@ public class ItemEnderface extends Item implements IHaveRenderers {
 
   @Override
   public boolean hasEffect(@Nonnull ItemStack stack) {
-    return true;
+    return (stack.getItemDamage() & ~0xF) == 0;
   }
 
   @Override
@@ -39,11 +39,17 @@ public class ItemEnderface extends Item implements IHaveRenderers {
 
   @Override
   public void registerRenderers(@Nonnull IModObject modObject) {
-    ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(modObject.getRegistryName(), "variant=none"));
-    ModelLoader.setCustomModelResourceLocation(this, 1, new ModelResourceLocation(modObject.getRegistryName(), "variant=items"));
-    ModelLoader.setCustomModelResourceLocation(this, 2, new ModelResourceLocation(modObject.getRegistryName(), "variant=materials"));
-    ModelLoader.setCustomModelResourceLocation(this, 3, new ModelResourceLocation(modObject.getRegistryName(), "variant=machines"));
-    ModelLoader.setCustomModelResourceLocation(this, 4, new ModelResourceLocation(modObject.getRegistryName(), "variant=mobs"));
+    registerVariant(modObject, 0, "none");
+    registerVariant(modObject, 1, "items");
+    registerVariant(modObject, 2, "materials");
+    registerVariant(modObject, 3, "machines");
+    registerVariant(modObject, 4, "mobs");
+    registerVariant(modObject, 5, "conduits");
   }
-
+  
+  private void registerVariant(@Nonnull IModObject mo, int meta, String name) {
+    ModelLoader.setCustomModelResourceLocation(this, meta, new ModelResourceLocation(mo.getRegistryName(), "variant=" + name));
+    // Non-glint version
+    ModelLoader.setCustomModelResourceLocation(this, meta | (1 << 4), new ModelResourceLocation(mo.getRegistryName(), "variant=" + name));
+  }
 }
