@@ -91,8 +91,6 @@ public enum Lang implements ILang {
   GUI_AUTH_ERROR_HARVEST(".chat.travel_accessable.error.harvest"),
   STATUS_TELEPAD_UNFORMED(".status.telepad.unformed"),
   GUI_TELEPAD_NOFLUID(".chat.telepad.noFluid"),
-  GUI_TELEPAD_CLOSE(".gui.telepad.close"),
-  GUI_TELEPAD_CLOSE_2(".gui.telepad.clsoe"),
   GUI_TELEPAD_TO_TRAVEL(".gui.telepad.configure.travel"),
   GUI_TELEPAD_TO_MAIN(".gui.telepad.configure.telepad"),
   GUI_TELEPAD_ERROR_BLOCKED(".gui.telepad.blocked"),
