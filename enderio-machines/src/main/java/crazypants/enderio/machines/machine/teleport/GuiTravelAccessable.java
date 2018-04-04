@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.CheckBox;
+import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
@@ -29,11 +30,15 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   private static final int ID_PUBLIC = 0;
   private static final int ID_PRIVATE = 1;
   private static final int ID_PROTECTED = 2;
+  
+  //private static final int ID_CLOSE_WINDOW_BUTTON = 12615;
 
   private final @Nonnull CheckBox publicCB;
   private final @Nonnull CheckBox privateCB;
   private final @Nonnull CheckBox protectedCB;
   private final @Nonnull ToggleButton visibleCB;
+  
+  //private final IconButton closeWindowButton;
 
   private final @Nonnull TextFieldEnder tf;
 
@@ -85,9 +90,12 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     publicCB = new CheckBox(this, ID_PUBLIC, x, y);
     publicCB.setSelected(te.getAccessMode() == AccessMode.PUBLIC);
 
-    visibleCB = new ToggleButton(this, -1, 150, 10, IconEIO.VISIBLE_NO, IconEIO.VISIBLE_YES);
+    visibleCB = new ToggleButton(this, -1, 10, 10, IconEIO.VISIBLE_NO, IconEIO.VISIBLE_YES);
     visibleCB.setSelected(te.isVisible());
     visibleCB.setToolTip(Lang.GUI_AUTH_VISIBLE.getLines().toArray(new String[0]));
+    
+    //closeWindowButton = new IconButton(this, ID_CLOSE_WINDOW_BUTTON, 3, 3, IconEIO.ARROW_LEFT);
+    //closeWindowButton.setToolTip(Lang.GUI_TELEPAD_CLOSE.get(), Lang.GUI_TELEPAD_CLOSE_2.get());
 
     ySize = 185;
 
@@ -109,6 +117,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
       te.setVisible(visibleCB.isSelected());
       doSetVisible(visibleCB.isSelected());
     }
+    
   }
 
   @Override
@@ -121,6 +130,8 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     privateCB.onGuiInit();
     protectedCB.onGuiInit();
     visibleCB.onGuiInit();
+    
+    //closeWindowButton.onGuiInit();
 
     tf.setMaxStringLength(32);
     tf.setFocused(true);
