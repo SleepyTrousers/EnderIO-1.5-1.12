@@ -43,7 +43,7 @@ public class QuadCollector {
   }
 
   private static Integer mkKey(EnumFacing side, BlockRenderLayer pass) {
-    return (side == null ? 0 : side.ordinal() + 1) * BlockRenderLayer.values().length + (pass == BREAKING ? 0 : pass.ordinal() + 1);
+    return (side == null ? 0 : side.ordinal() + 1) * (BlockRenderLayer.values().length + 1) + (pass == BREAKING ? 0 : pass.ordinal() + 1);
   }
 
   public void addQuads(EnumFacing side, BlockRenderLayer pass, List<BakedQuad> quads) {
