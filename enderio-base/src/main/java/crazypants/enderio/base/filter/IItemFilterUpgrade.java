@@ -22,7 +22,7 @@ public interface IItemFilterUpgrade extends IClearableConfiguration, IEioGuiHand
   @Override
   @Nullable
   default Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return new ContainerFilter(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing);
+    return new ContainerFilter<IItemFilter>(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing);
   }
 
 }

@@ -26,7 +26,10 @@ import crazypants.enderio.base.conduit.item.FunctionUpgrade;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
+import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.filters.ItemFilter;
+import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
@@ -52,7 +55,7 @@ import net.minecraftforge.items.IItemHandler;
 
 import static crazypants.enderio.conduits.init.ConduitObject.item_item_conduit;
 
-public class ItemConduit extends AbstractConduit implements IItemConduit, IConduitComponent {
+public class ItemConduit extends AbstractConduit implements IItemConduit, IConduitComponent, IFilterHolder<IItemFilter> {
 
   public static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
@@ -893,14 +896,52 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     return 0;
   }
 
+  // Only uses the Filter Capability, since conduits don't have an inventory
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
+      return true;
+    }
     return false;
   }
 
+  @SuppressWarnings("unchecked")
   @Nullable
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
+      return (T) this;
+    }
     return null;
   }
+
+  @Override
+  public IItemFilter getFilter(int filterId, int param1) {
+    if (filterId == FilterGuiUtil.INDEX_INPUT) {
+      return getInputFilter(EnumFacing.getFront(param1));
+    } else if (filterId == FilterGuiUtil.INDEX_OUTPUT) {
+      return getOutputFilter(EnumFacing.getFront(param1));
+    }
+    return null;
+  }
+
+  @Override
+  public void setFilter(int filterId, int param1, @Nonnull IItemFilter filter) {
+    if (filterId == FilterGuiUtil.INDEX_INPUT) {
+      setInputFilter(EnumFacing.getFront(param1), filter);
+    } else if (filterId == FilterGuiUtil.INDEX_OUTPUT) {
+      setOutputFilter(EnumFacing.getFront(param1), filter);
+    }
+  }
+
+  @Override
+  @Nullable
+  public IItemHandler getInventoryForSnapshot(int filterId, int param1) {
+    ItemConduitNetwork icn = getNetwork();
+    if (icn != null) {
+      return icn.getInventory(this, EnumFacing.getFront(param1)).getInventory();
+    }
+    return null;
+  }
+
 }

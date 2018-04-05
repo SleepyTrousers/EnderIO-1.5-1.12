@@ -101,8 +101,8 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
   @Nullable
   @SideOnly(Side.CLIENT)
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return new ExistingItemFilterGui(player.inventory, new ContainerFilter(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing),
-        world.getTileEntity(pos));
+    return new ExistingItemFilterGui(player.inventory,
+        new ContainerFilter<IItemFilter>(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing), world.getTileEntity(pos));
   }
 
 }

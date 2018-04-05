@@ -10,8 +10,9 @@ import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.TileEntityBase;
 import com.enderio.core.common.inventory.EnderInventory;
 
-import crazypants.enderio.base.filter.IFilterHolder;
-import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.IFilter;
+import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
+import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.network.ICloseFilterRemoteExec;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,10 +21,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntityBase> implements ICloseFilterRemoteExec.Container {
+public class ContainerFilter<I extends IFilter> extends ContainerEnderCap<EnderInventory, TileEntityBase> implements ICloseFilterRemoteExec.Container {
 
   private EnumFacing dir;
-  private IFilterHolder filterHolder;
+  private IFilterHolder<I> filterHolder;
   private @Nonnull EntityPlayer player;
 
   // Used to hold extra information about the original filter container (e.g. which filter it is inside a conduit)
@@ -35,9 +36,10 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
     this.filterIndex = filterIndex;
     this.player = playerInv.player;
 
-    if (te instanceof IFilterHolder) {
-      filterHolder = (IFilterHolder) te;
+    if (te.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
+      filterHolder = te.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
     }
+
   }
 
   public int getParam1() {
@@ -49,7 +51,7 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
 
   }
 
-  public IItemFilter getItemFilter() {
+  public I getItemFilter() {
     if (filterHolder != null) {
       return filterHolder.getFilter(filterIndex, dir != null ? dir.ordinal() : -1);
     }

@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.filter.IFilterHolder;
 import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.filters.ExistingItemFilter;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
@@ -49,7 +49,7 @@ public class PacketExistingItemFilterSnapshot extends PacketFilterUpdate {
 
     @Override
     public PacketExistingItemFilterSnapshot onMessage(PacketExistingItemFilterSnapshot message, MessageContext ctx) {
-      IFilterHolder filterHolder = message.getFilterHolder(ctx);
+      IFilterHolder<IItemFilter> filterHolder = message.getFilterHolder(ctx);
       if (filterHolder == null) {
         return null;
       }

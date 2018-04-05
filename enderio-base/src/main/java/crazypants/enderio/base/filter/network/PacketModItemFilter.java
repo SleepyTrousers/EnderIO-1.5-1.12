@@ -2,8 +2,8 @@ package crazypants.enderio.base.filter.network;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.filter.IFilterHolder;
 import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.filters.ModItemFilter;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
@@ -52,7 +52,7 @@ public class PacketModItemFilter extends PacketFilterUpdate {
 
     @Override
     public IMessage onMessage(PacketModItemFilter message, MessageContext ctx) {
-      IFilterHolder filterHolder = message.getFilterHolder(ctx);
+      IFilterHolder<IItemFilter> filterHolder = message.getFilterHolder(ctx);
       if (filterHolder == null) {
         return null;
       }

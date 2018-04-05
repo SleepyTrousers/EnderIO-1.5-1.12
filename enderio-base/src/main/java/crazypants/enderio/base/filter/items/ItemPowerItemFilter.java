@@ -84,8 +84,8 @@ public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade, IRe
   @Nullable
   @SideOnly(Side.CLIENT)
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return new PowerItemFilterGui(player.inventory, new ContainerFilter(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing),
-        world.getTileEntity(pos));
+    return new PowerItemFilterGui(player.inventory,
+        new ContainerFilter<IItemFilter>(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing), world.getTileEntity(pos));
   }
 
 }
