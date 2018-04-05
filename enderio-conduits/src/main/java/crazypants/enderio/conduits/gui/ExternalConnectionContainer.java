@@ -12,14 +12,17 @@ import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.conduit.item.FunctionUpgrade;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
+import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.conduit.TileConduitBundle;
 import crazypants.enderio.conduits.conduit.item.IItemConduit;
 import crazypants.enderio.conduits.init.ConduitObject;
@@ -56,7 +59,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   final List<IFilterChangeListener> filterListeners = new ArrayList<IFilterChangeListener>();
 
   public ExternalConnectionContainer(@Nonnull InventoryPlayer playerInv, @Nonnull EnumFacing dir, @Nonnull TileConduitBundle bundle) {
-    super(playerInv, new InventoryUpgrades(bundle.getConduit(IItemConduit.class), dir), bundle);
+    super(playerInv, new InventoryUpgrades(dir), bundle);
     this.itemConduit = bundle.getConduit(IItemConduit.class);
     this.dir = dir;
     this.player = playerInv.player;
@@ -123,16 +126,29 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   }
 
   @Override
-  public void setInOutSlotsVisible(boolean inputVisible, boolean outputVisible) {
-    if (itemConduit == null) {
+  public void setInOutSlotsVisible(boolean inputVisible, boolean outputVisible, IConduit conduit) {
+    if (conduit == null) {
       return;
     }
-    setSlotsVisible(inputVisible, inputFilterSlot, inputFilterSlot + 1);
-    setSlotsVisible(inputVisible, functionUpgradeSlot, functionUpgradeSlot + 1);
-    setSlotsVisible(outputVisible, outputFilterSlot, outputFilterSlot + 1);
+
+    boolean hasFilterHolder = conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
+    boolean hasUpgradeHolder = conduit.hasCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir);
+
     World world = itemConduit.getBundle().getBundleworld();
+
+    if (hasFilterHolder) {
+      getItemHandler().setFilterHolder(conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir));
+    }
+    if (hasUpgradeHolder) {
+      getItemHandler().setUpgradeHolder(conduit.getCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir));
+    }
+
+    setSlotsVisible(inputVisible && hasFilterHolder, inputFilterSlot, inputFilterSlot + 1);
+    setSlotsVisible(inputVisible && hasUpgradeHolder, functionUpgradeSlot, functionUpgradeSlot + 1);
+    setSlotsVisible(outputVisible && hasFilterHolder, outputFilterSlot, outputFilterSlot + 1);
+
     if (world.isRemote) {
-      PacketHandler.INSTANCE.sendToServer(new PacketSlotVisibility(inputVisible, outputVisible));
+      PacketHandler.INSTANCE.sendToServer(new PacketSlotVisibility(conduit, inputVisible, outputVisible));
     }
   }
 

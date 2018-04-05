@@ -156,7 +156,7 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     extractFilterOptionsB = new IconButton(gui, ID_EXTRACT_FILTER_OPTIONS, x, y, IconEIO.GEAR_LIGHT);
     extractFilterOptionsB.setToolTip(crazypants.enderio.base.lang.Lang.GUI_EDIT_ITEM_FILTER.get());
 
-    gui.getContainer().setInOutSlotsVisible(true, true);
+    gui.getContainer().setInOutSlotsVisible(true, true, itemConduit);
 
   }
 
@@ -188,7 +188,7 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
   }
 
   private void updateButtons() {
-    gui.getContainer().setInOutSlotsVisible(true, true);
+    gui.getContainer().setInOutSlotsVisible(true, true, itemConduit);
     rsB.onGuiInit();
     rsB.setMode(RedstoneControlMode.IconHolder.getFromMode(itemConduit.getExtractionRedstoneMode(gui.getDir())));
 
@@ -265,7 +265,7 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
 
   @Override
   public void deactivate() {
-    gui.getContainer().setInOutSlotsVisible(false, false);
+    gui.getContainer().setInOutSlotsVisible(false, false, itemConduit);
     rsB.detach();
     colorB.detach();
     roundRobinB.detach();

@@ -3,8 +3,11 @@ package crazypants.enderio.conduits.gui;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
+import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
-import crazypants.enderio.conduits.conduit.item.IItemConduit;
+import crazypants.enderio.base.filter.capability.IFilterHolder;
+import crazypants.enderio.base.filter.gui.FilterGuiUtil;
+import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -14,12 +17,21 @@ import net.minecraftforge.items.IItemHandlerModifiable;
  */
 public class InventoryUpgrades implements IItemHandlerModifiable {
 
-  private IItemConduit itemConduit;
   private @Nonnull EnumFacing dir;
 
-  public InventoryUpgrades(@Nonnull IItemConduit itemConduit, @Nonnull EnumFacing dir) {
-    this.itemConduit = itemConduit;
+  private IFilterHolder<IFilter> filterHolder;
+  private IUpgradeHolder upgradeHolder;
+
+  public InventoryUpgrades(@Nonnull EnumFacing dir) {
     this.dir = dir;
+  }
+
+  public void setFilterHolder(IFilterHolder<IFilter> filterHolder) {
+    this.filterHolder = filterHolder;
+  }
+
+  public void setUpgradeHolder(IUpgradeHolder upgradeHolder) {
+    this.upgradeHolder = upgradeHolder;
   }
 
   @Override
@@ -27,14 +39,11 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
   public ItemStack getStackInSlot(int slot) {
     switch (slot) {
     case 0:
-      return itemConduit.getFunctionUpgrade(dir);
-    // TODO Inventory
-    // case 1:
-    // return itemConduit.getFunctionUpgrade(dir);
+      return upgradeHolder != null ? upgradeHolder.getUpgradeStack(dir.ordinal()) : ItemStack.EMPTY;
     case 2:
-      return itemConduit.getInputFilterUpgrade(dir);
+      return filterHolder != null ? filterHolder.getFilterStack(FilterGuiUtil.INDEX_INPUT, dir.ordinal()) : ItemStack.EMPTY;
     case 3:
-      return itemConduit.getOutputFilterUpgrade(dir);
+      return filterHolder != null ? filterHolder.getFilterStack(FilterGuiUtil.INDEX_OUTPUT, dir.ordinal()) : ItemStack.EMPTY;
     default:
       return ItemStack.EMPTY;
     }
@@ -83,17 +92,19 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
   private void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
     switch (slot) {
     case 0:
-      itemConduit.setFunctionUpgrade(dir, stack);
+      if (upgradeHolder != null) {
+        upgradeHolder.setUpgradeStack(dir.ordinal(), stack);
+      }
       break;
-    // TODO Inventory
-    // case 1:
-    // itemConduit.setFunctionUpgrade(dir, stack);
-    // break;
     case 2:
-      itemConduit.setInputFilterUpgrade(dir, stack);
+      if (filterHolder != null) {
+        filterHolder.setFilterStack(FilterGuiUtil.INDEX_INPUT, dir.ordinal(), stack);
+      }
       break;
     case 3:
-      itemConduit.setOutputFilterUpgrade(dir, stack);
+      if (filterHolder != null) {
+        filterHolder.setFilterStack(FilterGuiUtil.INDEX_OUTPUT, dir.ordinal(), stack);
+      }
       break;
     }
   }
@@ -105,11 +116,6 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     switch (slot) {
     case 0:
       return stack.getItem() instanceof ItemFunctionUpgrade;
-    // TODO Inventory
-    // case 1:
-    // final FunctionUpgrade functionUpgrade = ItemFunctionUpgrade.getFunctionUpgrade(item);
-    // return functionUpgrade != null
-    // && (functionUpgrade != FunctionUpgrade.INVENTORY_PANEL || !itemConduit.isConnectedToNetworkAwareBlock(dir));
     case 2:
       return stack.getItem() instanceof IItemFilterUpgrade;
     case 3:

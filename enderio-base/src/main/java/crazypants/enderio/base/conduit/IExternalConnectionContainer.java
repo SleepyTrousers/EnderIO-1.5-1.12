@@ -7,7 +7,7 @@ public interface IExternalConnectionContainer {
   /**
    * Allows all input/output slots to be made visible
    */
-  void setInOutSlotsVisible(boolean inputVisible, boolean outputVisible);
+  void setInOutSlotsVisible(boolean inputVisible, boolean outputVisible, IConduit conduit);
 
   /**
    * Sets inventory slot visibility

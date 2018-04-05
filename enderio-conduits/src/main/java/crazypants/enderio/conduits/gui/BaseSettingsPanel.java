@@ -95,7 +95,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
     extractEnabledB = new CheckBox(gui, ID_EXTRACT_ENABLED, x, y);
 
-    gui.getContainer().setInOutSlotsVisible(false, false);
+    gui.getContainer().setInOutSlotsVisible(false, false, null);
 
   }
 
