@@ -37,6 +37,7 @@ import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduits.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduits.config.ConduitConfig;
@@ -651,7 +652,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     // TODO Find a better way for guis to access filter capabilities
-    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
+    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
       for (IConduit conduit : getConduits()) {
         if (conduit.hasCapability(capability, facing))
           return true;
@@ -669,7 +670,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     // TODO Find a better way for guis to access filter capabilities
-    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
+    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
       for (IConduit conduit : getConduits()) {
         if (conduit.hasCapability(capability, facing))
           return conduit.getCapability(capability, facing);

@@ -34,6 +34,8 @@ import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
+import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
+import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.gui.GuiExternalConnection;
@@ -55,7 +57,7 @@ import net.minecraftforge.items.IItemHandler;
 
 import static crazypants.enderio.conduits.init.ConduitObject.item_item_conduit;
 
-public class ItemConduit extends AbstractConduit implements IItemConduit, IConduitComponent, IFilterHolder<IItemFilter> {
+public class ItemConduit extends AbstractConduit implements IItemConduit, IConduitComponent, IFilterHolder<IItemFilter>, IUpgradeHolder {
 
   public static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
@@ -896,10 +898,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     return 0;
   }
 
-  // Only uses the Filter Capability, since conduits don't have an inventory
+  // Only uses the Filter and Upgrade Capabilities, since conduits don't have an inventory
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
+    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
       return true;
     }
     return false;
@@ -909,7 +911,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Nullable
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
+    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
       return (T) this;
     }
     return null;
@@ -942,6 +944,37 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
       return icn.getInventory(this, EnumFacing.getFront(param1)).getInventory();
     }
     return null;
+  }
+
+  @Override
+  @Nonnull
+  public ItemStack getFilterStack(int filterIndex, int param1) {
+    if (filterIndex == FilterGuiUtil.INDEX_INPUT) {
+      return getInputFilterUpgrade(EnumFacing.getFront(param1));
+    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT) {
+      return getOutputFilterUpgrade(EnumFacing.getFront(param1));
+    }
+    return ItemStack.EMPTY;
+  }
+
+  @Override
+  public void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack) {
+    if (filterIndex == FilterGuiUtil.INDEX_INPUT) {
+      setInputFilterUpgrade(EnumFacing.getFront(param1), stack);
+    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT) {
+      setOutputFilterUpgrade(EnumFacing.getFront(param1), stack);
+    }
+  }
+
+  @Override
+  @Nonnull
+  public ItemStack getUpgradeStack(int param1) {
+    return getFunctionUpgrade(EnumFacing.getFront(param1));
+  }
+
+  @Override
+  public void setUpgradeStack(int param1, @Nonnull ItemStack stack) {
+    setFunctionUpgrade(EnumFacing.getFront(param1), stack);
   }
 
 }

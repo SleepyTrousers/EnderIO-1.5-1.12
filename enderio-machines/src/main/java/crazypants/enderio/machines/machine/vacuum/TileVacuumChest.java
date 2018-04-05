@@ -298,4 +298,15 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity
     return getInventory();
   }
 
+  @Override
+  @Nonnull
+  public ItemStack getFilterStack(int filterIndex, int param1) {
+    return getInventory().getSlot("filter").get();
+  }
+
+  @Override
+  public void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack) {
+    getInventory().getSlot("filter").set(stack);
+  }
+
 }

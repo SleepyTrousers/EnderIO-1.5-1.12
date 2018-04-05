@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.filter.IFilter;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
 /**
@@ -50,5 +51,10 @@ public interface IFilterHolder<T extends IFilter> {
   default IItemHandler getInventoryForSnapshot(int filterIndex, int param1) {
     return null;
   }
+
+  @Nonnull
+  ItemStack getFilterStack(int filterIndex, int param1);
+
+  void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack);
 
 }
