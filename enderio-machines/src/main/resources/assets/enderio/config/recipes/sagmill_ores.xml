@@ -2453,7 +2453,7 @@
 
   <!-- Draconic (Draconic) -->
 
-  <recipe name="Sagmill: Draconicevolution:draconium_ore:0 Ore" required="false">
+  <recipe name="Sagmill: draconicevolution:draconium_ore:0 Ore" required="false">
     <sagmilling energy="3600">
       <input name="draconicevolution:draconium_ore:0" />
       <output name="dustDraconium" amount="3" />
