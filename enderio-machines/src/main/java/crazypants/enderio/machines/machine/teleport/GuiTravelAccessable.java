@@ -85,10 +85,10 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     publicCB = new CheckBox(this, ID_PUBLIC, x, y);
     publicCB.setSelected(te.getAccessMode() == AccessMode.PUBLIC);
 
-    visibleCB = new ToggleButton(this, -1, 150, 10, IconEIO.VISIBLE_NO, IconEIO.VISIBLE_YES);
+    visibleCB = new ToggleButton(this, -1, 10, 10, IconEIO.VISIBLE_NO, IconEIO.VISIBLE_YES);
     visibleCB.setSelected(te.isVisible());
     visibleCB.setToolTip(Lang.GUI_AUTH_VISIBLE.getLines().toArray(new String[0]));
-
+    
     ySize = 185;
 
     textFields.add(tf);
@@ -109,6 +109,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
       te.setVisible(visibleCB.isSelected());
       doSetVisible(visibleCB.isSelected());
     }
+    
   }
 
   @Override
