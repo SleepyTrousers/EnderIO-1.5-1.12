@@ -64,7 +64,7 @@ public class LegacyMachineWrapper implements IItemHandler {
     }
 
     int slot = extSlot2intSlot(external);
-    if (!machine.getSlotDefinition().isInputSlot(slot)) {
+    if (!machine.getSlotDefinition().isInputSlot(slot)||!this.machine.canInsertItem(slot,stack,side)) {
       return stack;
     }
 
