@@ -93,6 +93,8 @@ public enum Lang implements ILang {
   GUI_TELEPAD_NOFLUID(".chat.telepad.noFluid"),
   GUI_TELEPAD_TO_TRAVEL(".gui.telepad.configure.travel"),
   GUI_TELEPAD_TO_MAIN(".gui.telepad.configure.telepad"),
+  GUI_TELEPAD_TRAVEL_SETTINGS_CLOSE(".gui.telepad_travel_settings.close"),
+  GUI_TELEPAD_TRAVEL_SETTINGS_CLOSE_2(".gui.telepad_travel_settings.close2"),
   GUI_TELEPAD_ERROR_BLOCKED(".gui.telepad.blocked"),
   GUI_TELEPAD_TELEPORT(".gui.telepad.teleport"),
   GUI_TELEPAD_TANK(".gui.telepad.tank"),
