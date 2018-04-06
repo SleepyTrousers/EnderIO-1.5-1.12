@@ -68,22 +68,21 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   @Override
   protected void addSlots() {
-    if (itemConduit != null) {
 
-      addSlotToContainer(slotInputFilter = new FilterSlot(getItemHandler(), 3, 23, 71));
-      addSlotToContainer(slotOutputFilter = new FilterSlot(getItemHandler(), 2, 113, 71));
-      addSlotToContainer(slotFunctionUpgrade = new SlotItemHandler(getItemHandler(), 0, 131, 71) {
-        @Override
-        public boolean isItemValid(@Nonnull ItemStack itemStack) {
-          return ExternalConnectionContainer.this.getItemHandler().isItemValidForSlot(0, itemStack);
-        }
+    addSlotToContainer(slotInputFilter = new FilterSlot(getItemHandler(), 3, 23, 71));
+    addSlotToContainer(slotOutputFilter = new FilterSlot(getItemHandler(), 2, 113, 71));
+    addSlotToContainer(slotFunctionUpgrade = new SlotItemHandler(getItemHandler(), 0, 131, 71) {
+      @Override
+      public boolean isItemValid(@Nonnull ItemStack itemStack) {
+        return ExternalConnectionContainer.this.getItemHandler().isItemValidForSlot(0, itemStack);
+      }
 
-        @Override
-        public int getSlotStackLimit() {
-          return speedUpgradeSlotLimit;
-        }
-      });
-    }
+      @Override
+      public int getSlotStackLimit() {
+        return speedUpgradeSlotLimit;
+      }
+    });
+
   }
 
   public void createGhostSlots(@Nonnull List<GhostSlot> ghostSlots) {
@@ -134,17 +133,18 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     boolean hasFilterHolder = conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
     boolean hasUpgradeHolder = conduit.hasCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir);
 
-    World world = itemConduit.getBundle().getBundleworld();
+    World world = conduit.getBundle().getBundleworld();
 
     if (hasFilterHolder) {
       getItemHandler().setFilterHolder(conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir));
     }
     if (hasUpgradeHolder) {
       getItemHandler().setUpgradeHolder(conduit.getCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir));
+
     }
 
-    setSlotsVisible(inputVisible && hasFilterHolder, inputFilterSlot, inputFilterSlot + 1);
     setSlotsVisible(inputVisible && hasUpgradeHolder, functionUpgradeSlot, functionUpgradeSlot + 1);
+    setSlotsVisible(inputVisible && hasFilterHolder, inputFilterSlot, inputFilterSlot + 1);
     setSlotsVisible(outputVisible && hasFilterHolder, outputFilterSlot, outputFilterSlot + 1);
 
     if (world.isRemote) {

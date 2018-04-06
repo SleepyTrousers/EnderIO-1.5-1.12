@@ -7,11 +7,15 @@ import javax.annotation.Nonnull;
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CheckBox;
+import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
+import crazypants.enderio.base.conduit.IFilterChangeListener;
+import crazypants.enderio.base.filter.gui.FilterGuiUtil;
+import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduits.lang.Lang;
@@ -22,10 +26,12 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 
-public class BaseSettingsPanel extends Gui implements ITabPanel {
+public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemoteExec.GUI {
 
   static final int ID_INSERT_ENABLED = 327;
   static final int ID_EXTRACT_ENABLED = 328;
+  protected static final int ID_INSERT_FILTER_OPTIONS = 329;
+  protected static final int ID_EXTRACT_FILTER_OPTIONS = 330;
 
   private final @Nonnull String ENABLED = Lang.GUI_CONDUIT_ENABLED_MODE.get();
   private final @Nonnull String DISABLED = Lang.GUI_CONDUIT_DISABLED_MODE.get();
@@ -46,6 +52,9 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   private final @Nonnull CheckBox extractEnabledB;
   private final @Nonnull CheckBox insertEnabledB;
+
+  private @Nonnull IconButton insertFilterOptionsB;
+  private @Nonnull IconButton extractFilterOptionsB;
 
   private final boolean hasInputOutputMode;
 
@@ -95,8 +104,45 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
     extractEnabledB = new CheckBox(gui, ID_EXTRACT_ENABLED, x, y);
 
+    x = leftColumn;
+    y = 92;
+
+    insertFilterOptionsB = new IconButton(gui, ID_INSERT_FILTER_OPTIONS, x, y, IconEIO.GEAR_LIGHT);
+    insertFilterOptionsB.setToolTip(crazypants.enderio.base.lang.Lang.GUI_EDIT_ITEM_FILTER.get());
+
+    x = rightColumn;
+
+    extractFilterOptionsB = new IconButton(gui, ID_EXTRACT_FILTER_OPTIONS, x, y, IconEIO.GEAR_LIGHT);
+    extractFilterOptionsB.setToolTip(crazypants.enderio.base.lang.Lang.GUI_EDIT_ITEM_FILTER.get());
+
+    if (hasFilters()) {
+      gui.getContainer().addFilterListener(new IFilterChangeListener() {
+        @Override
+        public void onFilterChanged() {
+          filtersChanged();
+        }
+      });
+    }
+
     gui.getContainer().setInOutSlotsVisible(false, false, null);
 
+  }
+
+  protected void filtersChanged() {
+    insertFilterOptionsB.onGuiInit();
+    extractFilterOptionsB.onGuiInit();
+
+    if (gui.getContainer().hasFilter(true)) {
+      insertFilterOptionsB.setIsVisible(true);
+    } else {
+      insertFilterOptionsB.setIsVisible(false);
+    }
+
+    if (gui.getContainer().hasFilter(false)) {
+      extractFilterOptionsB.setIsVisible(true);
+    } else {
+      extractFilterOptionsB.setIsVisible(false);
+    }
   }
 
   public boolean updateConduit(@Nonnull IClientConduit conduit) {
@@ -134,6 +180,8 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
   public void deactivate() {
     insertEnabledB.detach();
     extractEnabledB.detach();
+    insertFilterOptionsB.detach();
+    extractFilterOptionsB.detach();
   }
 
   @Override
@@ -184,6 +232,12 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
     } else if (guiButton.id == ID_EXTRACT_ENABLED) {
       extractEnabled = !extractEnabled;
       updateConnectionMode();
+    } else if (guiButton.id == ID_INSERT_FILTER_OPTIONS) {
+      doOpenFilterGui(FilterGuiUtil.INDEX_OUTPUT);
+      return;
+    } else if (guiButton.id == ID_EXTRACT_FILTER_OPTIONS) {
+      doOpenFilterGui(FilterGuiUtil.INDEX_INPUT);
+      return;
     }
   }
 
@@ -223,6 +277,20 @@ public class BaseSettingsPanel extends Gui implements ITabPanel {
 
   protected @Nonnull String getTypeName() {
     return typeName;
+  }
+
+  protected boolean hasFilters() {
+    return false;
+  }
+
+  @Override
+  public void setGuiID(int id) {
+    gui.setGuiID(id);
+  }
+
+  @Override
+  public int getGuiID() {
+    return gui.getGuiID();
   }
 
 }

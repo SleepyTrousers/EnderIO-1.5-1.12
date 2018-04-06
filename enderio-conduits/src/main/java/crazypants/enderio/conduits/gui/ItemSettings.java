@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.ColorButton;
-import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
@@ -16,9 +15,6 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
-import crazypants.enderio.base.conduit.IFilterChangeListener;
-import crazypants.enderio.base.filter.gui.FilterGuiUtil;
-import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -32,7 +28,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 
-public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemoteExec.GUI {
+public class ItemSettings extends BaseSettingsPanel {
 
   private static final int ID_REDSTONE_BUTTON = 12614;
   private static final int ID_COLOR_BUTTON = 179816;
@@ -42,8 +38,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
   private static final int ID_PRIORITY_DOWN = 26;
   private static final int ID_INSERT_CHANNEL = 23;
   private static final int ID_EXTRACT_CHANNEL = 27;
-  private static final int ID_INSERT_FILTER_OPTIONS = 28;
-  private static final int ID_EXTRACT_FILTER_OPTIONS = 29;
 
   private IItemConduit itemConduit;
 
@@ -58,9 +52,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
 
   private ColorButton insertChannelB;
   private ColorButton extractChannelB;
-
-  private IconButton insertFilterOptionsB;
-  private IconButton extractFilterOptionsB;
 
   private int priLeft = 46;
   private int priWidth = 32;
@@ -138,24 +129,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     priUpB = MultiIconButton.createAddButton(gui, ID_PRIORITY_UP, x, y);
     priDownB = MultiIconButton.createMinusButton(gui, ID_PRIORITY_DOWN, x, y + 8);
 
-    gui.getContainer().addFilterListener(new IFilterChangeListener() {
-      @Override
-      public void onFilterChanged() {
-        filtersChanged();
-      }
-    });
-
-    x = leftColumn;
-    y = 92;
-
-    insertFilterOptionsB = new IconButton(gui, ID_INSERT_FILTER_OPTIONS, x, y, IconEIO.GEAR_LIGHT);
-    insertFilterOptionsB.setToolTip(crazypants.enderio.base.lang.Lang.GUI_EDIT_ITEM_FILTER.get());
-
-    x = rightColumn;
-
-    extractFilterOptionsB = new IconButton(gui, ID_EXTRACT_FILTER_OPTIONS, x, y, IconEIO.GEAR_LIGHT);
-    extractFilterOptionsB.setToolTip(crazypants.enderio.base.lang.Lang.GUI_EDIT_ITEM_FILTER.get());
-
     gui.getContainer().setInOutSlotsVisible(true, true, itemConduit);
 
   }
@@ -168,23 +141,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
   private void updateGuiVisibility() {
     deactivate();
     updateButtons();
-  }
-
-  private void filtersChanged() {
-    insertFilterOptionsB.onGuiInit();
-    extractFilterOptionsB.onGuiInit();
-
-    if (gui.getContainer().hasFilter(true)) {
-      insertFilterOptionsB.setIsVisible(true);
-    } else {
-      insertFilterOptionsB.setIsVisible(false);
-    }
-
-    if (gui.getContainer().hasFilter(false)) {
-      extractFilterOptionsB.setIsVisible(true);
-    } else {
-      extractFilterOptionsB.setIsVisible(false);
-    }
   }
 
   private void updateButtons() {
@@ -232,12 +188,6 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     } else if (guiButton.id == ID_EXTRACT_CHANNEL) {
       DyeColor col = DyeColor.values()[extractChannelB.getColorIndex()];
       itemConduit.setInputColor(gui.getDir(), col);
-    } else if (guiButton.id == ID_INSERT_FILTER_OPTIONS) {
-      doOpenFilterGui(FilterGuiUtil.INDEX_OUTPUT);
-      return;
-    } else if (guiButton.id == ID_EXTRACT_FILTER_OPTIONS) {
-      doOpenFilterGui(FilterGuiUtil.INDEX_INPUT);
-      return;
     }
     PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
   }
@@ -277,18 +227,11 @@ public class ItemSettings extends BaseSettingsPanel implements IOpenFilterRemote
     gui.removeToolTip(filterInsertUpgradeTooltip);
     insertChannelB.detach();
     extractChannelB.detach();
-    insertFilterOptionsB.detach();
-    extractFilterOptionsB.detach();
   }
 
   @Override
-  public void setGuiID(int id) {
-    gui.setGuiID(id);
-  }
-
-  @Override
-  public int getGuiID() {
-    return gui.getGuiID();
+  protected boolean hasFilters() {
+    return true;
   }
 
 }
