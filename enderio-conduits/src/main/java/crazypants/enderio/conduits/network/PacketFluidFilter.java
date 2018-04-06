@@ -1,6 +1,6 @@
 package crazypants.enderio.conduits.network;
 
-import crazypants.enderio.base.filter.filters.fluid.FluidFilter;
+import crazypants.enderio.base.filter.fluid.FluidFilter;
 import crazypants.enderio.conduits.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduits.conduit.liquid.ILiquidConduit;
 import io.netty.buffer.ByteBuf;

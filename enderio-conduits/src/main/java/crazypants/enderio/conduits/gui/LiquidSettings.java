@@ -19,7 +19,7 @@ import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
-import crazypants.enderio.base.filter.filters.fluid.FluidFilter;
+import crazypants.enderio.base.filter.fluid.FluidFilter;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;

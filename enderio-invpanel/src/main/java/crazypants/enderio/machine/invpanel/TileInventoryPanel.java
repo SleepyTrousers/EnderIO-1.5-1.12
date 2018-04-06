@@ -13,7 +13,7 @@ import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
 import crazypants.enderio.base.filter.FilterRegistry;
-import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;

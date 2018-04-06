@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 import java.text.Collator;
 import java.util.*;
 
-import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.item.IItemFilter;
 
 public class DatabaseView {
 

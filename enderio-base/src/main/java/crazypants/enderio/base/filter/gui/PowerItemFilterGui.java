@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.button.TooltipButton;
 
-import crazypants.enderio.base.filter.filters.item.PowerItemFilter;
+import crazypants.enderio.base.filter.item.PowerItemFilter;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.Lang;

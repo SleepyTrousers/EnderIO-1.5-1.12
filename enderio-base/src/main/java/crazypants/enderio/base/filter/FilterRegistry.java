@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.util.NbtValue;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;

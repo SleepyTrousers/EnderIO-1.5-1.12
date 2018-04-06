@@ -7,7 +7,7 @@ import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IExtractor;
 import crazypants.enderio.base.conduit.IServerConduit;
-import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.item.IItemFilter;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;

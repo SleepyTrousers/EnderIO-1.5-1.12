@@ -1,11 +1,10 @@
-package crazypants.enderio.base.filter.filters.item;
+package crazypants.enderio.base.filter.item;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.network.NetworkUtil;
 
-import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;

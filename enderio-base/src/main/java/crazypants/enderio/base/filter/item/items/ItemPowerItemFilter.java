@@ -1,4 +1,4 @@
-package crazypants.enderio.base.filter.items;
+package crazypants.enderio.base.filter.item.items;
 
 import java.util.List;
 
@@ -11,11 +11,11 @@ import com.enderio.core.common.TileEntityBase;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.FilterRegistry;
-import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
-import crazypants.enderio.base.filter.filters.item.ModItemFilter;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
-import crazypants.enderio.base.filter.gui.ModItemFilterGui;
+import crazypants.enderio.base.filter.gui.PowerItemFilterGui;
+import crazypants.enderio.base.filter.item.IItemFilter;
+import crazypants.enderio.base.filter.item.PowerItemFilter;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
@@ -31,13 +31,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemModItemFilter extends Item implements IItemFilterUpgrade<IItemFilter>, IResourceTooltipProvider {
+/**
+ *
+ * @author matthias
+ */
+public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade<IItemFilter>, IResourceTooltipProvider {
 
-  public static ItemModItemFilter create(@Nonnull IModObject modObject) {
-    return new ItemModItemFilter(modObject);
+  public static ItemPowerItemFilter create(@Nonnull IModObject modObject) {
+    return new ItemPowerItemFilter(modObject);
   }
 
-  protected ItemModItemFilter(@Nonnull IModObject modObject) {
+  protected ItemPowerItemFilter(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     setHasSubtypes(true);
@@ -47,11 +51,16 @@ public class ItemModItemFilter extends Item implements IItemFilterUpgrade<IItemF
 
   @Override
   public IItemFilter createFilterFromStack(@Nonnull ItemStack stack) {
-    IItemFilter filter = new ModItemFilter();
+    IItemFilter filter = new PowerItemFilter();
     if (NbtValue.FILTER.hasTag(stack)) {
       filter.readFromNBT(NbtValue.FILTER.getTag(stack));
     }
     return filter;
+  }
+
+  @Override
+  public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
+    return getUnlocalizedName();
   }
 
   @Override
@@ -75,8 +84,8 @@ public class ItemModItemFilter extends Item implements IItemFilterUpgrade<IItemF
   @Nullable
   @SideOnly(Side.CLIENT)
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return new ModItemFilterGui(player.inventory, new ContainerFilter<IItemFilter>(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing),
-        world.getTileEntity(pos));
+    return new PowerItemFilterGui(player.inventory,
+        new ContainerFilter<IItemFilter>(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing), world.getTileEntity(pos));
   }
 
 }

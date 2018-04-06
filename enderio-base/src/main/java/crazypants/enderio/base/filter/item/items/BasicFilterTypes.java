@@ -1,4 +1,4 @@
-package crazypants.enderio.base.filter.items;
+package crazypants.enderio.base.filter.item.items;
 
 import java.util.Locale;
 

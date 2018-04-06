@@ -7,7 +7,7 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.util.Prep;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IGenome;

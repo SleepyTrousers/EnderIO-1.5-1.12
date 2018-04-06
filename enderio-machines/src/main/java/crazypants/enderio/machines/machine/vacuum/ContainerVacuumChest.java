@@ -14,7 +14,7 @@ import com.enderio.core.common.inventory.EnderSlot;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
-import crazypants.enderio.base.filter.items.BasicFilterTypes;
+import crazypants.enderio.base.filter.item.items.BasicFilterTypes;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

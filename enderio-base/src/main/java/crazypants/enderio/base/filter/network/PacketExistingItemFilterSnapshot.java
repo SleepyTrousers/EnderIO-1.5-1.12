@@ -4,9 +4,9 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
-import crazypants.enderio.base.filter.filters.item.ExistingItemFilter;
+import crazypants.enderio.base.filter.item.ExistingItemFilter;
+import crazypants.enderio.base.filter.item.IItemFilter;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;

@@ -1,4 +1,4 @@
-package crazypants.enderio.base.filter.filters.item;
+package crazypants.enderio.base.filter.item;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -7,7 +7,6 @@ import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
-import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;

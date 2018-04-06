@@ -3,7 +3,7 @@ package crazypants.enderio.conduits.network;
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.filter.FilterRegistry;
-import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.conduits.conduit.item.IItemConduit;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;

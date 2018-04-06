@@ -1,4 +1,4 @@
-package crazypants.enderio.base.filter.filters;
+package crazypants.enderio.base.filter.gui;
 
 import javax.annotation.Nonnull;
 

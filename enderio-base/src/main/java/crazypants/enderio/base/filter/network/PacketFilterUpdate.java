@@ -5,10 +5,10 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.filter.FilterRegistry;
-import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
+import crazypants.enderio.base.filter.item.IItemFilter;
 import io.netty.buffer.ByteBuf;
 import jline.internal.Log;
 import net.minecraft.tileentity.TileEntity;

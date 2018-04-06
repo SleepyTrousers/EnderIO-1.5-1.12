@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.diagnostics.Prof;
-import crazypants.enderio.base.filter.IItemFilter;
+import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.conduit.item.NetworkedInventory.Target;
 import net.minecraft.item.ItemStack;

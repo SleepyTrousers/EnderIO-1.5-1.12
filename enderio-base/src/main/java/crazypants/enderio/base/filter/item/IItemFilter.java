@@ -1,4 +1,4 @@
-package crazypants.enderio.base.filter;
+package crazypants.enderio.base.filter.item;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.filter.IFilter;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 

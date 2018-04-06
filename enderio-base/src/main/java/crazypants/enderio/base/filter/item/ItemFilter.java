@@ -1,4 +1,4 @@
-package crazypants.enderio.base.filter.filters.item;
+package crazypants.enderio.base.filter.item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +12,8 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.filter.ILimitedItemFilter;
-import crazypants.enderio.base.filter.filters.DamageMode;
-import crazypants.enderio.base.filter.items.BasicFilterTypes;
+import crazypants.enderio.base.filter.gui.DamageMode;
+import crazypants.enderio.base.filter.item.items.BasicFilterTypes;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;
