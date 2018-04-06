@@ -16,6 +16,7 @@ import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.filter.fluid.FluidFilter;
+import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
@@ -49,8 +50,8 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   private EnderLiquidConduitNetwork network;
   private int ticksSinceFailedExtract;
 
-  private final EnumMap<EnumFacing, FluidFilter> outputFilters = new EnumMap<EnumFacing, FluidFilter>(EnumFacing.class);
-  private final EnumMap<EnumFacing, FluidFilter> inputFilters = new EnumMap<EnumFacing, FluidFilter>(EnumFacing.class);
+  private final EnumMap<EnumFacing, IFluidFilter> outputFilters = new EnumMap<EnumFacing, IFluidFilter>(EnumFacing.class);
+  private final EnumMap<EnumFacing, IFluidFilter> inputFilters = new EnumMap<EnumFacing, IFluidFilter>(EnumFacing.class);
 
   @Override
   @Nonnull
@@ -109,14 +110,14 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     return network;
   }
 
-  public FluidFilter getFilter(@Nonnull EnumFacing dir, boolean isInput) {
+  public IFluidFilter getFilter(@Nonnull EnumFacing dir, boolean isInput) {
     if (isInput) {
       return inputFilters.get(dir);
     }
     return outputFilters.get(dir);
   }
 
-  public void setFilter(@Nonnull EnumFacing dir, @Nonnull FluidFilter filter, boolean isInput) {
+  public void setFilter(@Nonnull EnumFacing dir, @Nonnull IFluidFilter filter, boolean isInput) {
     if (isInput) {
       inputFilters.put(dir, filter);
     } else {
@@ -318,13 +319,13 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Override
   protected void writeTypeSettingsToNbt(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     super.writeTypeSettingsToNbt(dir, dataRoot);
-    FluidFilter out = outputFilters.get(dir);
+    IFluidFilter out = outputFilters.get(dir);
     if (out != null) {
       NBTTagCompound outTag = new NBTTagCompound();
       out.writeToNBT(outTag);
       dataRoot.setTag("outputFilters", outTag);
     }
-    FluidFilter in = inputFilters.get(dir);
+    IFluidFilter in = inputFilters.get(dir);
     if (in != null) {
       NBTTagCompound inTag = new NBTTagCompound();
       in.writeToNBT(inTag);
@@ -335,9 +336,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Override
   public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
-    for (Entry<EnumFacing, FluidFilter> entry : inputFilters.entrySet()) {
+    for (Entry<EnumFacing, IFluidFilter> entry : inputFilters.entrySet()) {
       if (entry.getValue() != null) {
-        FluidFilter f = entry.getValue();
+        IFluidFilter f = entry.getValue();
         if (f != null && !f.isDefault()) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);
@@ -345,9 +346,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
         }
       }
     }
-    for (Entry<EnumFacing, FluidFilter> entry : outputFilters.entrySet()) {
+    for (Entry<EnumFacing, IFluidFilter> entry : outputFilters.entrySet()) {
       if (entry.getValue() != null) {
-        FluidFilter f = entry.getValue();
+        IFluidFilter f = entry.getValue();
         if (f != null && !f.isDefault()) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);

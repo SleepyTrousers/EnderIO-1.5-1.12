@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.FluidUtil;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -11,11 +12,12 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class FluidFilter {
+public class FluidFilter implements IFluidFilter {
 
   private final FluidStack[] fluids = new FluidStack[5];
   private boolean isBlacklist;
 
+  @Override
   public boolean isEmpty() {
     for (FluidStack f : fluids) {
       if (f != null) {
@@ -25,15 +27,12 @@ public class FluidFilter {
     return true;
   }
 
+  @Override
   public int size() {
     return fluids.length;
   }
 
-  @Deprecated
-  public Fluid getFluidAt(int index) {
-    return fluids[index].getFluid();
-  }
-
+  @Override
   public FluidStack getFluidStackAt(int index) {
     return fluids[index];
   }
@@ -44,6 +43,7 @@ public class FluidFilter {
     return true;
   }
 
+  @Override
   public boolean setFluid(int index, FluidStack fluid) {
     if (fluid == null || fluid.getFluid() == null) {
       fluids[index] = null;
@@ -53,6 +53,7 @@ public class FluidFilter {
     return true;
   }
 
+  @Override
   public boolean setFluid(int index, @Nonnull ItemStack stack) {
     if (stack.isEmpty()) {
       return setFluid(index, (FluidStack) null);
@@ -64,6 +65,7 @@ public class FluidFilter {
     return setFluid(index, f);
   }
 
+  @Override
   public boolean removeFluid(int index) {
     if (index < 0 || index >= fluids.length) {
       return false;
@@ -78,18 +80,22 @@ public class FluidFilter {
     setFluid(index, f);
   }
 
+  @Override
   public boolean isBlacklist() {
     return isBlacklist;
   }
 
+  @Override
   public void setBlacklist(boolean isBlacklist) {
     this.isBlacklist = isBlacklist;
   }
 
+  @Override
   public boolean isDefault() {
     return !isBlacklist && isEmpty();
   }
 
+  @Override
   public void writeToNBT(@Nonnull NBTTagCompound root) {
     root.setBoolean("isBlacklist", isBlacklist);
     if (isEmpty()) {
@@ -112,6 +118,7 @@ public class FluidFilter {
 
   }
 
+  @Override
   public void readFromNBT(@Nonnull NBTTagCompound root) {
     isBlacklist = root.getBoolean("isBlacklist");
     if (root.hasKey("fluidFilter")) {
@@ -138,6 +145,7 @@ public class FluidFilter {
     }
   }
 
+  @Override
   public boolean matchesFilter(FluidStack drained) {
     if (drained == null || drained.getFluid() == null) {
       return false;
@@ -151,6 +159,18 @@ public class FluidFilter {
       }
     }
     return isBlacklist;
+  }
+
+  @Override
+  public void writeToByteBuf(@Nonnull ByteBuf buf) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void readFromByteBuf(@Nonnull ByteBuf buf) {
+    // TODO Auto-generated method stub
+
   }
 
 }

@@ -12,7 +12,7 @@ import com.enderio.core.common.fluid.IFluidWrapper.ITankInfoWrapper;
 import com.enderio.core.common.util.RoundRobinIterator;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
-import crazypants.enderio.base.filter.fluid.FluidFilter;
+import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import net.minecraft.util.EnumFacing;
@@ -119,7 +119,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     if (drained == null) {
       return false;
     }
-    FluidFilter filter = con.getFilter(conDir, isInput);
+    IFluidFilter filter = con.getFilter(conDir, isInput);
     if (filter == null || filter.isEmpty()) {
       return true;
     }

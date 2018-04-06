@@ -20,6 +20,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.filter.fluid.FluidFilter;
+import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -152,7 +153,7 @@ public class LiquidSettings extends BaseSettingsPanel {
     if (!isFilterVisible()) {
       return;
     }
-    FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput);
+    IFluidFilter filter = eConduit.getFilter(gui.getDir(), isInput);
     if (filter == null) {
       filter = new FluidFilter();
     }
@@ -175,7 +176,7 @@ public class LiquidSettings extends BaseSettingsPanel {
     boolean isInput = (x >= filterExtractX);
 
     ItemStack st = Minecraft.getMinecraft().player.inventory.getItemStack();
-    FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput);
+    IFluidFilter filter = eConduit.getFilter(gui.getDir(), isInput);
 
     if (filter == null) {
       filter = new FluidFilter();
@@ -191,7 +192,7 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   }
 
-  protected void setConduitFilter(FluidFilter filter, boolean isInput) {
+  protected void setConduitFilter(IFluidFilter filter, boolean isInput) {
     eConduit.setFilter(gui.getDir(), filter, isInput);
     PacketHandler.INSTANCE.sendToServer(new PacketFluidFilter(eConduit, gui.getDir(), filter, isInput));
   }
@@ -224,7 +225,7 @@ public class LiquidSettings extends BaseSettingsPanel {
     gui.addToolTip(extractFilterTooltip);
   }
 
-  private void updateWhiteListButton(FluidFilter filter, boolean isInput) {
+  private void updateWhiteListButton(IFluidFilter filter, boolean isInput) {
     IconButton whitelistButton = null;
     if (isInput) {
       whitelistButton = extractWhiteListB;
@@ -284,7 +285,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       GL11.glColor3f(1, 1, 1);
       gui.bindGuiTexture();
 
-      FluidFilter filterInsert = eConduit.getFilter(gui.getDir(), false);
+      IFluidFilter filterInsert = eConduit.getFilter(gui.getDir(), false);
       if (filterInsert != null && !filterInsert.isEmpty()) {
         for (int i = 0; i < filterInsert.size(); i++) {
           FluidStack f = filterInsert.getFluidStackAt(i);
@@ -298,7 +299,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       GlStateManager.color(1, 1, 1);
       gui.bindGuiTexture();
 
-      FluidFilter filterExtract = eConduit.getFilter(gui.getDir(), true);
+      IFluidFilter filterExtract = eConduit.getFilter(gui.getDir(), true);
       if (filterExtract != null && !filterExtract.isEmpty()) {
         for (int i = 0; i < filterExtract.size(); i++) {
           FluidStack f = filterExtract.getFluidStackAt(i);
@@ -343,7 +344,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       if (!isFilterVisible()) {
         return Collections.emptyList();
       }
-      FluidFilter filter = eConduit.getFilter(gui.getDir(), false);
+      IFluidFilter filter = eConduit.getFilter(gui.getDir(), false);
       if (filter == null) {
         return Collections.emptyList();
       }

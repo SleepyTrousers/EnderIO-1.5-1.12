@@ -1,6 +1,7 @@
 package crazypants.enderio.conduits.network;
 
 import crazypants.enderio.base.filter.fluid.FluidFilter;
+import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.conduits.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduits.conduit.liquid.ILiquidConduit;
 import io.netty.buffer.ByteBuf;
@@ -16,12 +17,12 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> {
 
   private EnumFacing dir;
   private boolean isInput;
-  private FluidFilter filter;
+  private IFluidFilter filter;
 
   public PacketFluidFilter() {
   }
 
-  public PacketFluidFilter(EnderLiquidConduit eConduit, EnumFacing dir, FluidFilter filter, boolean isInput) {
+  public PacketFluidFilter(EnderLiquidConduit eConduit, EnumFacing dir, IFluidFilter filter, boolean isInput) {
     super(eConduit.getBundle().getEntity(), eConduit);
     this.dir = dir;
     this.filter = filter;
