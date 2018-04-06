@@ -34,7 +34,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   private final @Nonnull CheckBox privateCB;
   private final @Nonnull CheckBox protectedCB;
   private final @Nonnull ToggleButton visibleCB;
-
+  
   private final @Nonnull TextFieldEnder tf;
 
   private final @Nonnull String publicStr;
@@ -45,6 +45,9 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   private final int col0x;
   private final int col1x;
   private final int col2x;
+  
+  private final int visibleBX = guiLeft + (xSize - 26);
+  private final int visibleBY = 10;
 
   protected final @Nonnull World world;
 
@@ -85,7 +88,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     publicCB = new CheckBox(this, ID_PUBLIC, x, y);
     publicCB.setSelected(te.getAccessMode() == AccessMode.PUBLIC);
 
-    visibleCB = new ToggleButton(this, -1, 10, 10, IconEIO.VISIBLE_NO, IconEIO.VISIBLE_YES);
+    visibleCB = new ToggleButton(this, -1, visibleBX, visibleBY, IconEIO.VISIBLE_NO, IconEIO.VISIBLE_YES);
     visibleCB.setSelected(te.isVisible());
     visibleCB.setToolTip(Lang.GUI_AUTH_VISIBLE.getLines().toArray(new String[0]));
     
