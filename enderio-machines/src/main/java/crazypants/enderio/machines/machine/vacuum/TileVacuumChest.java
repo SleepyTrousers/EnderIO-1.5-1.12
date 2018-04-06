@@ -66,7 +66,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity
       if (filter != null) {
         FilterRegistry.writeFilterToStack(filter, oldStack);
       }
-      filter = FilterRegistry.getFilterForUpgrade(newStack);
+      filter = FilterRegistry.<IItemFilter> getFilterForUpgrade(newStack);
       forceUpdatePlayers();
     }
   };

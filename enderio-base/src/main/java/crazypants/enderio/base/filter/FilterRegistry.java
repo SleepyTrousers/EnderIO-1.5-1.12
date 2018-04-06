@@ -16,12 +16,12 @@ public class FilterRegistry {
     return stack.getItem() instanceof IItemFilterUpgrade;
   }
 
-  public static @Nullable IItemFilter getFilterForUpgrade(@Nonnull ItemStack stack) {
+  public static @Nullable <T extends IFilter> T getFilterForUpgrade(@Nonnull ItemStack stack) {
     if (!isItemFilter(stack)) {
       return null;
     }
-    IItemFilterUpgrade upgrade = (IItemFilterUpgrade) stack.getItem();
-    IItemFilter res = upgrade.createFilterFromStack(stack);
+    IItemFilterUpgrade<T> upgrade = (IItemFilterUpgrade<T>) stack.getItem();
+    T res = upgrade.createFilterFromStack(stack);
     return res;
   }
 

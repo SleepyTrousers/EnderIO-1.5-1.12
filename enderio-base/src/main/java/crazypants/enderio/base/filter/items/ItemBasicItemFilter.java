@@ -32,7 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
+public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade<IItemFilter>, IResourceTooltipProvider {
 
   protected BasicFilterTypes filterType;
 

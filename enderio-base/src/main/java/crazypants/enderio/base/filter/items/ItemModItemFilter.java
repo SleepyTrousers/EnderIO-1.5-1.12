@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemModItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
+public class ItemModItemFilter extends Item implements IItemFilterUpgrade<IItemFilter>, IResourceTooltipProvider {
 
   public static ItemModItemFilter create(@Nonnull IModObject modObject) {
     return new ItemModItemFilter(modObject);

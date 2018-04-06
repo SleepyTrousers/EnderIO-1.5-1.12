@@ -227,14 +227,14 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public void setInputFilterUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack stack) {
     inputFilterUpgrades.put(dir, stack);
-    setInputFilter(dir, FilterRegistry.getFilterForUpgrade(stack));
+    setInputFilter(dir, FilterRegistry.<IItemFilter> getFilterForUpgrade(stack));
     setClientStateDirty();
   }
 
   @Override
   public void setOutputFilterUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack stack) {
     outputFilterUpgrades.put(dir, stack);
-    setOutputFilter(dir, FilterRegistry.getFilterForUpgrade(stack));
+    setOutputFilter(dir, FilterRegistry.<IItemFilter> getFilterForUpgrade(stack));
     setClientStateDirty();
   }
 

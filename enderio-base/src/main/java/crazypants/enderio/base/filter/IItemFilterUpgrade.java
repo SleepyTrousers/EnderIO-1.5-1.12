@@ -15,14 +15,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public interface IItemFilterUpgrade extends IClearableConfiguration, IEioGuiHandler.WithPos {
+public interface IItemFilterUpgrade<T extends IFilter> extends IClearableConfiguration, IEioGuiHandler.WithPos {
 
-  IItemFilter createFilterFromStack(@Nonnull ItemStack stack);
+  T createFilterFromStack(@Nonnull ItemStack stack);
 
   @Override
   @Nullable
   default Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return new ContainerFilter<IItemFilter>(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing);
+    return new ContainerFilter<T>(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing);
   }
 
 }

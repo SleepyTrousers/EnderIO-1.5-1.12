@@ -36,7 +36,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 
-public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
+public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade<IItemFilter>, IResourceTooltipProvider {
 
   public static ItemExistingItemFilter create(@Nonnull IModObject modObject) {
     return new ItemExistingItemFilter(modObject);

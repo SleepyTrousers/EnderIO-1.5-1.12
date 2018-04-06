@@ -30,7 +30,6 @@ import crazypants.enderio.machine.invpanel.client.ClientDatabaseManager;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.config.InvpanelConfig;
 import crazypants.enderio.machine.invpanel.init.InvpanelObject;
-import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
 import info.loenwind.autosave.annotations.Storable;
@@ -94,11 +93,11 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
 
   public InventoryDatabaseClient getDatabaseClient(int generation) {
-    if(dbClient != null && dbClient.getGeneration() != generation) {
+    if (dbClient != null && dbClient.getGeneration() != generation) {
       ClientDatabaseManager.INSTANCE.destroyDatabase(dbClient.getGeneration());
       dbClient = null;
     }
-    if(dbClient == null) {
+    if (dbClient == null) {
       dbClient = ClientDatabaseManager.INSTANCE.getOrCreateDatabase(generation);
     }
     return dbClient;
@@ -112,7 +111,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   public boolean isValidInput(@Nonnull ItemStack itemstack) {
     return false;
   }
-  
+
   @Override
   public boolean isValidOutput(@Nonnull ItemStack itemstack) {
     return !extractionDisabled && super.isValidOutput(itemstack);
@@ -120,7 +119,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public boolean isMachineItemValidForSlot(int slot, ItemStack stack) {
-    if(slot == SLOT_VIEW_FILTER && stack != null) {
+    if (slot == SLOT_VIEW_FILTER && stack != null) {
       return FilterRegistry.isItemFilter(stack) && FilterRegistry.isFilterSet(stack);
     }
     return true;
@@ -131,10 +130,10 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   @Override
   public @Nonnull ItemStack decrStackSize(int fromSlot, int amount) {
     ItemStack res = super.decrStackSize(fromSlot, amount);
-    if(!res.isEmpty() && fromSlot < SLOT_CRAFTING_RESULT && eventHandler != null) {
+    if (!res.isEmpty() && fromSlot < SLOT_CRAFTING_RESULT && eventHandler != null) {
       eventHandler.onCraftMatrixChanged(emptyInventory);
     }
-    if(!res.isEmpty() && fromSlot == SLOT_VIEW_FILTER) {
+    if (!res.isEmpty() && fromSlot == SLOT_VIEW_FILTER) {
       updateItemFilter();
     }
     return res;
@@ -143,16 +142,16 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   @Override
   public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
-    if(slot < SLOT_CRAFTING_RESULT && eventHandler != null) {
+    if (slot < SLOT_CRAFTING_RESULT && eventHandler != null) {
       eventHandler.onCraftMatrixChanged(emptyInventory);
     }
-    if(slot == SLOT_VIEW_FILTER) {
+    if (slot == SLOT_VIEW_FILTER) {
       updateItemFilter();
     }
   }
 
   private void updateItemFilter() {
-    itemFilter = FilterRegistry.getFilterForUpgrade(inventory[SLOT_VIEW_FILTER]);
+    itemFilter = FilterRegistry.<IItemFilter> getFilterForUpgrade(inventory[SLOT_VIEW_FILTER]);
   }
 
   public IItemFilter getItemFilter() {
@@ -166,12 +165,12 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public void doUpdate() {
-    if(world.isRemote) {
+    if (world.isRemote) {
       updateEntityClient();
       return;
     }
 
-    if(shouldDoWorkThisTick(20)) {
+    if (shouldDoWorkThisTick(20)) {
       scanNetwork();
     }
 
@@ -181,7 +180,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
       updateClients = false;
     }
 
-    if(tanksDirty) {
+    if (tanksDirty) {
       tanksDirty = false;
       PacketHandler.sendToAllAround(new PacketNutrientTank(this), this);
     }
@@ -195,25 +194,25 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
     BlockPos p = pos.offset(backside);
     TileEntity te = world.getTileEntity(p);
-    if(te instanceof TileConduitBundle) {
+    if (te instanceof TileConduitBundle) {
       TileConduitBundle teCB = (TileConduitBundle) te;
       ItemConduit conduit = teCB.getConduit(ItemConduit.class);
-      if(conduit != null) {
+      if (conduit != null) {
         icn = (ItemConduitNetwork) conduit.getNetwork();
       }
     }
 
-    if(icn != null) {
+    if (icn != null) {
       dbServer = icn.getDatabase();
       dbServer.sendChangeLogs();
       refuelPower(dbServer);
 
-      if(active != dbServer.isOperational()) {
+      if (active != dbServer.isOperational()) {
         active = dbServer.isOperational();
         updateClients = true;
       }
     } else {
-      if(active) {
+      if (active) {
         updateClients = true;
       }
       dbServer = null;
@@ -229,10 +228,10 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   @Override
   public void refuelPower(IInventoryDatabaseServer db) {
     float missingPower = InvpanelConfig.inventoryPanelPowerPerMB.get() * 0.5f - db.getPower();
-    if(missingPower > 0) {
+    if (missingPower > 0) {
       int amount = (int) Math.ceil(missingPower / InvpanelConfig.inventoryPanelPowerPerMB.get());
       amount = Math.min(amount, getPower());
-      if(amount > 0) {
+      if (amount > 0) {
         useNutrient(amount);
         dbServer.addPower(amount * InvpanelConfig.inventoryPanelPowerPerMB.get());
       }
@@ -242,7 +241,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   public void useNutrient(int amount) {
     fuelTank.removeFluidAmount(amount);
   }
-  
+
   private int getPower() {
     return InvpanelConfig.inventoryPanelFree.get() ? 100 : fuelTank.getFluidAmount();
   }
@@ -259,7 +258,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   public String getGuiFilterString() {
     return guiFilterString;
   }
-  
+
   public boolean getGuiSync() {
     return guiSync;
   }
@@ -279,7 +278,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
 
   public StoredCraftingRecipe getStoredCraftingRecipe(int index) {
-    if(index < 0 || index >= storedCraftingRecipes.size()) {
+    if (index < 0 || index >= storedCraftingRecipes.size()) {
       return null;
     }
     return storedCraftingRecipes.get(index);
@@ -313,7 +312,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   public void setExtractionDisabled(boolean extractionDisabled) {
     this.extractionDisabled = extractionDisabled;
-    if(world != null) {
+    if (world != null) {
       if (!world.isRemote) {
         PacketHandler.INSTANCE.sendToDimension(new PacketUpdateExtractionDisabled(this, extractionDisabled), world.provider.getDimension());
       }
@@ -322,7 +321,9 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   /**
    * This is called by PacketUpdateExtractionDisabled on the client side
-   * @param extractionDisabledIn if extraction is disabled
+   * 
+   * @param extractionDisabledIn
+   *          if extraction is disabled
    */
   void updateExtractionDisabled(boolean extractionDisabledIn) {
     this.extractionDisabled = extractionDisabledIn;
@@ -331,7 +332,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   @Override
   protected void onAfterNbtRead() {
     faceModes = null;
-    if(eventHandler != null) {
+    if (eventHandler != null) {
       eventHandler.checkCraftingRecipes();
     }
     updateItemFilter();
@@ -362,7 +363,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    if(forFluidType != null && fuelTank.canFill(forFluidType.getFluid())) {
+    if (forFluidType != null && fuelTank.canFill(forFluidType.getFluid())) {
       return fuelTank;
     }
     return null;

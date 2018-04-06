@@ -35,7 +35,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  * @author matthias
  */
-public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
+public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade<IItemFilter>, IResourceTooltipProvider {
 
   public static ItemPowerItemFilter create(@Nonnull IModObject modObject) {
     return new ItemPowerItemFilter(modObject);

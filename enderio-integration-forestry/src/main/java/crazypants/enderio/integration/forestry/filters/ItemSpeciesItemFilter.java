@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade {
+public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade<IItemFilter> {
 
   public static ItemSpeciesItemFilter create(@Nonnull IModObject modObject) {
     return new ItemSpeciesItemFilter(modObject);
