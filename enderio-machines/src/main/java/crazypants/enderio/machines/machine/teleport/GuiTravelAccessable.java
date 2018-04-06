@@ -45,9 +45,6 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   private final int col0x;
   private final int col1x;
   private final int col2x;
-  
-  private final int visibleBX = guiLeft + (xSize - 26);
-  private final int visibleBY = 10;
 
   protected final @Nonnull World world;
 
@@ -59,8 +56,11 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     super(container, "travel_accessable");
     this.te = te;
     this.world = container.world;
-
-    publicStr = Lang.GUI_AUTH_PUBLIC.get();
+  
+  	final int visibleBX = guiLeft + (xSize - 26);
+ 	final int visibleBY = 10;
+    
+  	publicStr = Lang.GUI_AUTH_PUBLIC.get();
     privateStr = Lang.GUI_AUTH_PRIVATE.get();
     protectedStr = Lang.GUI_AUTH_PROTECTED.get();
 
