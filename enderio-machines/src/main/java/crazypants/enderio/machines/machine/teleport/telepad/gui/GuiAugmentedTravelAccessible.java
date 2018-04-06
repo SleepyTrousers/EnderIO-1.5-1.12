@@ -1,7 +1,5 @@
 package crazypants.enderio.machines.machine.teleport.telepad.gui;
 
-import java.io.IOException;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.IconButton;
@@ -22,15 +20,13 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable<TileTelePa
 
   private static final int ID_CLOSE_WINDOW_BUTTON = 99;
 
-  //ToggleTravelButton switchButton;
   private final IconButton closeWindowButton;
 
   public GuiAugmentedTravelAccessible(@Nonnull InventoryPlayer playerInv, @Nonnull TileTelePad te, @Nonnull World world) {
     super(playerInv, te, world);
-    //switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, GuiTelePad.SWITCH_X, GuiTelePad.SWITCH_Y, IconEIO.IO_WHATSIT);
-    //switchButton.setToolTip(Lang.GUI_TELEPAD_TO_MAIN.get());
+
     closeWindowButton = new IconButton(this, ID_CLOSE_WINDOW_BUTTON, 3, 3, IconEIO.ARROW_LEFT);
-    closeWindowButton.setToolTip("TODO: TOOLTIP LANG", "MORE TODO");
+    closeWindowButton.setToolTip(Lang.GUI_TELEPAD_TRAVEL_SETTINGS_CLOSE.get(), Lang.GUI_TELEPAD_TRAVEL_SETTINGS_CLOSE_2.get());
   
   }
 
@@ -39,7 +35,7 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable<TileTelePa
     super.initGui();
     
     closeWindowButton.onGuiInit();
-    //switchButton.onGuiInit();
+
   }
   
   @Override

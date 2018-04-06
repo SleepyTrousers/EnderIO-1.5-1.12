@@ -65,8 +65,6 @@ public class GuiTelePad extends GuiContainerBaseEIO {
   private static final int fluidScale = 58;
   private static final @Nonnull Rectangle RECTANGLE_TANK = new Rectangle(fluidX, fluidY, 10, fluidScale);
 
-  public static int SWITCH_X = 155, SWITCH_Y = 5;
-
   public GuiTelePad(@Nonnull InventoryPlayer playerInv, final @Nonnull TileTelePad te) {
     super(new ContainerTelePad(playerInv, te), "tele_pad");
     this.te = te;
@@ -138,7 +136,6 @@ public class GuiTelePad extends GuiContainerBaseEIO {
   @Override
   public void initGui() {
     super.initGui();
-    //switchButton.onGuiInit();
 
     String text = Lang.GUI_TELEPAD_TELEPORT.get();
     int textWidth = getFontRenderer().getStringWidth(text) + 10;
@@ -250,11 +247,6 @@ public class GuiTelePad extends GuiContainerBaseEIO {
 
     super.drawGuiContainerBackgroundLayer(p_146976_1_, p_146976_2_, p_146976_3_);
   }
-
-  /*@Override
-  public void switchGui() {
-    PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, BlockTelePad.GUI_ID_TELEPAD_TRAVEL));
-  }*/
 
   @Override
   protected void actionPerformed(@Nonnull GuiButton button) throws IOException {
