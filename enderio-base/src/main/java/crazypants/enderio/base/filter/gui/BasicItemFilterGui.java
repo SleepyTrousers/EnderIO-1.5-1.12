@@ -12,7 +12,7 @@ import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.base.filter.filters.DamageModeIconHolder;
-import crazypants.enderio.base.filter.filters.ItemFilter;
+import crazypants.enderio.base.filter.filters.item.ItemFilter;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.integration.jei.GhostSlotTarget;

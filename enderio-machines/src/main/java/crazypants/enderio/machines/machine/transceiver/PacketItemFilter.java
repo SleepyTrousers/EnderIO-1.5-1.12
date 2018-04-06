@@ -6,7 +6,7 @@ import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
 
 import crazypants.enderio.base.filter.IItemFilter;
-import crazypants.enderio.base.filter.filters.ItemFilter;
+import crazypants.enderio.base.filter.filters.item.ItemFilter;
 import crazypants.enderio.base.filter.items.BasicFilterTypes;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;

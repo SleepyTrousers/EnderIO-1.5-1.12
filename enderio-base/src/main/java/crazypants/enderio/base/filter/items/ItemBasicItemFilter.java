@@ -13,7 +13,7 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
-import crazypants.enderio.base.filter.filters.ItemFilter;
+import crazypants.enderio.base.filter.filters.item.ItemFilter;
 import crazypants.enderio.base.filter.gui.BasicItemFilterGui;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
 import crazypants.enderio.base.init.IModObject;

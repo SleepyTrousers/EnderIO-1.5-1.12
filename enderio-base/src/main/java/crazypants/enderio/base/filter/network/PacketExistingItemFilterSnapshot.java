@@ -6,7 +6,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
-import crazypants.enderio.base.filter.filters.ExistingItemFilter;
+import crazypants.enderio.base.filter.filters.item.ExistingItemFilter;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;

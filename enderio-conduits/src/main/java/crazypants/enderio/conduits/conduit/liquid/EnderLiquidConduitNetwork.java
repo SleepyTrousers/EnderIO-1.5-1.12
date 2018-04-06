@@ -12,6 +12,7 @@ import com.enderio.core.common.fluid.IFluidWrapper.ITankInfoWrapper;
 import com.enderio.core.common.util.RoundRobinIterator;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.filter.filters.fluid.FluidFilter;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import net.minecraft.util.EnumFacing;

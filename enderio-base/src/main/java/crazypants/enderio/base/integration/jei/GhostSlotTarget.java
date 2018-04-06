@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
 
-import crazypants.enderio.base.filter.filters.ItemFilter;
+import crazypants.enderio.base.filter.filters.item.ItemFilter;
 import crazypants.enderio.base.filter.gui.BasicItemFilterGui;
 import mezz.jei.api.gui.IGhostIngredientHandler.Target;
 import net.minecraft.item.ItemStack;

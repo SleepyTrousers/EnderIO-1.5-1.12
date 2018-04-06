@@ -10,7 +10,7 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
-import crazypants.enderio.base.filter.filters.ModItemFilter;
+import crazypants.enderio.base.filter.filters.item.ModItemFilter;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.filter.network.PacketModItemFilter;
 import crazypants.enderio.base.gui.IconEIO;

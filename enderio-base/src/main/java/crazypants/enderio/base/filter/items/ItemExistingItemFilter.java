@@ -14,7 +14,7 @@ import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
-import crazypants.enderio.base.filter.filters.ExistingItemFilter;
+import crazypants.enderio.base.filter.filters.item.ExistingItemFilter;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
 import crazypants.enderio.base.filter.gui.ExistingItemFilterGui;
 import crazypants.enderio.base.init.IModObject;

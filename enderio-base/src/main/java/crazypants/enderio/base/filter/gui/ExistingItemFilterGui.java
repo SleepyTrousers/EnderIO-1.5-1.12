@@ -14,7 +14,7 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.base.filter.filters.ExistingItemFilter;
+import crazypants.enderio.base.filter.filters.item.ExistingItemFilter;
 import crazypants.enderio.base.filter.network.PacketExistingItemFilterSnapshot;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;

@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.filter.IItemFilter;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
-import crazypants.enderio.base.filter.filters.ModItemFilter;
+import crazypants.enderio.base.filter.filters.item.ModItemFilter;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
