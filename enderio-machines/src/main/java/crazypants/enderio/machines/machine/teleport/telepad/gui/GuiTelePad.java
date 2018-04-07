@@ -70,6 +70,12 @@ public class GuiTelePad extends GuiContainerBaseEIO {
     this.te = te;
     ySize = 220;
 
+    int settingsBX = guiLeft + xSize - (7 + 16);
+    int settingsBY = guiTop + 10;
+    
+    travelSettingsButton = new IconButton(this, ID_TRAVEL_SETTINGS_BUTTON, settingsBX, settingsBY, IconEIO.GEAR_LIGHT);
+    travelSettingsButton.setToolTip(Lang.GUI_TELEPAD_TO_TRAVEL.get());
+    
     addToolTip(new GuiToolTip(new Rectangle(progressX, progressY, progressScale, 10), "") {
       @Override
       protected void updateText() {
@@ -143,15 +149,12 @@ public class GuiTelePad extends GuiContainerBaseEIO {
     int x = guiLeft + (xSize / 2) - (textWidth / 2);
     int y = guiTop + 83;
 
-    int settingsBX = guiLeft + xSize - (10 + 16);
-    int settingsBY = guiTop + 10;
+    
     
     teleportButton = new GuiButton(ID_TELEPORT_BUTTON, x, y, textWidth, 20, text);
     addButton(teleportButton);
 
-    travelSettingsButton = new IconButton(this, ID_TRAVEL_SETTINGS_BUTTON, settingsBX, settingsBY, IconEIO.GEAR_LIGHT);
-    travelSettingsButton.setToolTip(Lang.GUI_TELEPAD_TO_TRAVEL.get());
-    addButton(travelSettingsButton);
+    travelSettingsButton.onGuiInit();
     
     ((ContainerTelePad) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }

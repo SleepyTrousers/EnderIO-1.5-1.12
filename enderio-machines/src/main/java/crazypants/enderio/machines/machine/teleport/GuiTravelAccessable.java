@@ -57,6 +57,9 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     this.te = te;
     this.world = container.world;
   
+    xSize = 184;
+    ySize = 200;
+    
   	final int visibleBX = guiLeft + (xSize - 26);
  	final int visibleBY = 10;
     

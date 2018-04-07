@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.button.IconButton;
 
 import crazypants.enderio.base.gui.IconEIO;
-//import crazypants.enderio.base.gui.ToggleTravelButton;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.GuiTravelAccessable;
 import crazypants.enderio.machines.machine.teleport.telepad.BlockTelePad;
