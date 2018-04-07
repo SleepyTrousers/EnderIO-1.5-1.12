@@ -633,7 +633,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="ImpulseHopper" required="true" disabled="false">
     <crafting>
       <grid size="3x3">
-        <item name="ELECTRICAL_STEEL"/><item name="minecraft:hopper" /><item name="ELECTRICAL_STEEL"/>
+        <item name="ELECTRICAL_STEEL"/><item name="blockHopper" /><item name="ELECTRICAL_STEEL"/>
         <item name="GEAR_ENERGIZED"/><item name="CHASSIS" /><item name="GEAR_ENERGIZED"/>
         <item name="ELECTRICAL_STEEL" /><item name="REDSTONE_ALLOY" /><item name="ELECTRICAL_STEEL" />
       </grid>
