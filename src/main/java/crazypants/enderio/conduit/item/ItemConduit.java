@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.inventory.IInventoryConnection;
@@ -153,16 +154,16 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {    
+  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {
     setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
-    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);    
+    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
     setInputColor(dir, DyeColor.values()[dataRoot.getShort("inputColor")]);
     setOutputColor(dir, DyeColor.values()[dataRoot.getShort("outputColor")]);
     setSelfFeedEnabled(dir, dataRoot.getBoolean("selfFeed"));
     setRoundRobinEnabled(dir, dataRoot.getBoolean("roundRobin"));
     setOutputPriority(dir, dataRoot.getInteger("outputPriority"));
   }
-  
+
   @Override
   protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
     dataRoot.setShort("extractionSignalColor", (short)getExtractionSignalColor(dir).ordinal());
@@ -171,9 +172,9 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     dataRoot.setShort("outputColor", (short)getOutputColor(dir).ordinal());
     dataRoot.setBoolean("selfFeed", isSelfFeedEnabled(dir));
     dataRoot.setBoolean("roundRobin", isRoundRobinEnabled(dir));
-    dataRoot.setInteger("outputPriority", getOutputPriority(dir));    
+    dataRoot.setInteger("outputPriority", getOutputPriority(dir));
   }
-  
+
   protected void convertToItemUpgrades(int filterMeta, Map<ForgeDirection, ItemStack> converted, EnumMap<ForgeDirection, IItemFilter> sourceFilters) {
     for (Entry<ForgeDirection, IItemFilter> entry : sourceFilters.entrySet()) {
       if(entry.getValue() != null) {
@@ -893,4 +894,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     }
   }
 
+  @Override public boolean onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
+    if (network != null && network.hasDatabase()) {
+      network.getDatabase().onNeighborChange(x,y,z);
+    }
+    return super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
+  }
 }

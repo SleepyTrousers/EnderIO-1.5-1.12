@@ -118,6 +118,10 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     return changeCount;
   }
 
+  public boolean hasDatabase() {
+    return database != null;
+  }
+
   public InventoryDatabaseServer getDatabase() {
     check: {
       if(database == null) {
