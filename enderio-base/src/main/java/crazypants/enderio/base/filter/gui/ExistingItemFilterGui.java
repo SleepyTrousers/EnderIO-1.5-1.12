@@ -28,7 +28,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ExistingItemFilterGui extends AbstractGuiItemFilter {
+public class ExistingItemFilterGui extends AbstractFilterGui {
 
   private static final int ID_NBT = FilterGuiUtil.nextButtonId();
   private static final int ID_META = FilterGuiUtil.nextButtonId();

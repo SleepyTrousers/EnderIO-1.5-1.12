@@ -5,10 +5,10 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.filter.FilterRegistry;
+import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
-import crazypants.enderio.base.filter.item.IItemFilter;
 import io.netty.buffer.ByteBuf;
 import jline.internal.Log;
 import net.minecraft.tileentity.TileEntity;
@@ -22,12 +22,12 @@ public class PacketFilterUpdate extends MessageTileEntity<TileEntity> {
 
   protected int filterId;
   protected int param1;
-  protected IItemFilter filter;
+  protected IFilter filter;
 
   public PacketFilterUpdate() {
   }
 
-  public PacketFilterUpdate(@Nonnull TileEntity te, @Nonnull IItemFilter filter, int filterId, int param1) {
+  public PacketFilterUpdate(@Nonnull TileEntity te, @Nonnull IFilter filter, int filterId, int param1) {
     super(te);
     this.filter = filter;
     this.filterId = filterId;
@@ -50,7 +50,7 @@ public class PacketFilterUpdate extends MessageTileEntity<TileEntity> {
     filter = FilterRegistry.readFilter(buf);
   }
 
-  public IFilterHolder<IItemFilter> getFilterHolder(MessageContext ctx) {
+  public IFilterHolder<IFilter> getFilterHolder(MessageContext ctx) {
     if (ctx.side == Side.SERVER) {
       if (ctx.getServerHandler().player.openContainer instanceof ContainerFilter) {
         final TileEntity tileEntity = ((ContainerFilter) ctx.getServerHandler().player.openContainer).getTileEntity();
@@ -71,7 +71,7 @@ public class PacketFilterUpdate extends MessageTileEntity<TileEntity> {
 
     @Override
     public IMessage onMessage(PacketFilterUpdate message, MessageContext ctx) {
-      IFilterHolder<IItemFilter> filterHolder = message.getFilterHolder(ctx);
+      IFilterHolder<IFilter> filterHolder = message.getFilterHolder(ctx);
       if (filterHolder != null) {
         filterHolder.setFilter(message.filterId, message.param1, message.filter);
       }

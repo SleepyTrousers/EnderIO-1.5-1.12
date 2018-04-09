@@ -16,7 +16,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-public class PowerItemFilterGui extends AbstractGuiItemFilter {
+public class PowerItemFilterGui extends AbstractFilterGui {
 
   private static final int ID_STICKY = FilterGuiUtil.nextButtonId();
 

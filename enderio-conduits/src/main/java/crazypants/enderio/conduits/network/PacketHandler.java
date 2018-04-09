@@ -49,6 +49,7 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketRedstoneConduitOutputStrength.Handler.class, PacketRedstoneConduitOutputStrength.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketOpenConduitUI.Handler.class, PacketOpenConduitUI.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketSlotVisibility.Handler.class, PacketSlotVisibility.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketConduitFilter.Handler.class, PacketConduitFilter.class, PacketHandler.nextID(), Side.SERVER);
   }
 
 }

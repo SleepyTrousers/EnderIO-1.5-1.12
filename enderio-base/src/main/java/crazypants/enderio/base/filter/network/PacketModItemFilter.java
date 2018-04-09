@@ -2,6 +2,7 @@ package crazypants.enderio.base.filter.network;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ModItemFilter;
@@ -52,7 +53,7 @@ public class PacketModItemFilter extends PacketFilterUpdate {
 
     @Override
     public IMessage onMessage(PacketModItemFilter message, MessageContext ctx) {
-      IFilterHolder<IItemFilter> filterHolder = message.getFilterHolder(ctx);
+      IFilterHolder<IFilter> filterHolder = message.getFilterHolder(ctx);
       if (filterHolder == null) {
         return null;
       }

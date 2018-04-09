@@ -17,6 +17,7 @@ import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.fluid.FluidFilter;
@@ -139,6 +140,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     } else {
       outputFilters.put(dir, filter);
     }
+    setClientStateDirty();
   }
 
   @Nonnull
@@ -156,6 +158,8 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     } else {
       outputFilterUpgrades.put(dir, stack);
     }
+    setFilter(dir, FilterRegistry.<IFluidFilter> getFilterForUpgrade(stack), isInput);
+    setClientStateDirty();
   }
 
   @Override
@@ -337,33 +341,40 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     super.readTypeSettings(dir, dataRoot);
-    if (dataRoot.hasKey("outputFilters")) {
-      FluidFilter out = new FluidFilter();
-      out.readFromNBT(dataRoot.getCompoundTag("outputFilters"));
-      outputFilters.put(dir, out);
-    }
-    if (dataRoot.hasKey("inputFilters")) {
-      FluidFilter in = new FluidFilter();
-      in.readFromNBT(dataRoot.getCompoundTag("inputFilters"));
-      inputFilters.put(dir, in);
-    }
+    // if (dataRoot.hasKey("outputFilters")) {
+    // FluidFilter out = new FluidFilter();
+    // out.readFromNBT(dataRoot.getCompoundTag("outputFilters"));
+    // outputFilters.put(dir, out);
+    // }
+    // if (dataRoot.hasKey("inputFilters")) {
+    // FluidFilter in = new FluidFilter();
+    // in.readFromNBT(dataRoot.getCompoundTag("inputFilters"));
+    // inputFilters.put(dir, in);
+    // }
   }
 
   @Override
   protected void writeTypeSettingsToNbt(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     super.writeTypeSettingsToNbt(dir, dataRoot);
-    IFluidFilter out = outputFilters.get(dir);
-    if (out != null) {
-      NBTTagCompound outTag = new NBTTagCompound();
-      out.writeToNBT(outTag);
-      dataRoot.setTag("outputFilters", outTag);
+    // IFluidFilter out = outputFilters.get(dir);
+    // if (out != null) {
+    // NBTTagCompound outTag = new NBTTagCompound();
+    // out.writeToNBT(outTag);
+    // dataRoot.setTag("outputFilters", outTag);
+    // }
+    // IFluidFilter in = inputFilters.get(dir);
+    // if (in != null) {
+    // NBTTagCompound inTag = new NBTTagCompound();
+    // in.writeToNBT(inTag);
+    // dataRoot.setTag("inputFilters", inTag);
+    // }
+  }
+
+  private boolean isDefault(IFluidFilter f) {
+    if (f instanceof FluidFilter) {
+      return ((FluidFilter) f).isDefault();
     }
-    IFluidFilter in = inputFilters.get(dir);
-    if (in != null) {
-      NBTTagCompound inTag = new NBTTagCompound();
-      in.writeToNBT(inTag);
-      dataRoot.setTag("inputFilters", inTag);
-    }
+    return false;
   }
 
   @Override
@@ -372,9 +383,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     for (Entry<EnumFacing, IFluidFilter> entry : inputFilters.entrySet()) {
       if (entry.getValue() != null) {
         IFluidFilter f = entry.getValue();
-        if (f != null && !f.isDefault()) {
+        if (!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
-          f.writeToNBT(itemRoot);
+          FilterRegistry.writeFilterToNbt(f, itemRoot);
           nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
         }
       }
@@ -382,11 +393,34 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     for (Entry<EnumFacing, IFluidFilter> entry : outputFilters.entrySet()) {
       if (entry.getValue() != null) {
         IFluidFilter f = entry.getValue();
-        if (f != null && !f.isDefault()) {
+        if (!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
-          f.writeToNBT(itemRoot);
+          FilterRegistry.writeFilterToNbt(f, itemRoot);
           nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
         }
+      }
+    }
+    for (Entry<EnumFacing, ItemStack> entry : inputFilterUpgrades.entrySet()) {
+      if (entry.getValue() != null) {
+        ItemStack up = entry.getValue();
+        IFluidFilter filter = getFilter(entry.getKey(), true);
+        FilterRegistry.writeFilterToStack(filter, up);
+
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        up.writeToNBT(itemRoot);
+        nbtRoot.setTag("inputFilterUpgrades." + entry.getKey().name(), itemRoot);
+      }
+    }
+
+    for (Entry<EnumFacing, ItemStack> entry : outputFilterUpgrades.entrySet()) {
+      if (entry.getValue() != null) {
+        ItemStack up = entry.getValue();
+        IFluidFilter filter = getFilter(entry.getKey(), false);
+        FilterRegistry.writeFilterToStack(filter, up);
+
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        up.writeToNBT(itemRoot);
+        nbtRoot.setTag("outputFilterUpgrades." + entry.getKey().name(), itemRoot);
       }
     }
   }
@@ -398,24 +432,44 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
       String key = "inFilts." + dir.name();
       if (nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
-        FluidFilter f = new FluidFilter();
-        f.readFromNBT(filterTag);
-        if (!f.isEmpty()) {
-          inputFilters.put(dir, f);
-        }
+        IFluidFilter filter = (IFluidFilter) FilterRegistry.loadFilterFromNbt(filterTag);
+        inputFilters.put(dir, filter);
+      }
+
+      key = "inputFilterUpgrades." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemStack ups = new ItemStack(upTag);
+        inputFilterUpgrades.put(dir, ups);
+      }
+
+      key = "outputFilterUpgrades." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemStack ups = new ItemStack(upTag);
+        outputFilterUpgrades.put(dir, ups);
       }
 
       key = "outFilts." + dir.name();
       if (nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
-        FluidFilter f = new FluidFilter();
-        f.readFromNBT(filterTag);
-        if (!f.isEmpty()) {
-          outputFilters.put(dir, f);
-        }
+        IFluidFilter filter = (IFluidFilter) FilterRegistry.loadFilterFromNbt(filterTag);
+        outputFilters.put(dir, filter);
       }
+
+      generateFiltersFromItems();
     }
 
+  }
+
+  private void generateFiltersFromItems() {
+    for (EnumFacing facing : EnumFacing.VALUES) {
+      ItemStack stack = this.outputFilterUpgrades.get(facing);
+      if (!stack.isEmpty()) {
+        IFluidFilter filter = FilterRegistry.getFilterForUpgrade(stack);
+        outputFilters.put(facing, filter);
+      }
+    }
   }
 
   @Override
@@ -437,9 +491,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Override
   @Nonnull
   public ItemStack getFilterStack(int filterIndex, int param1) {
-    if (filterIndex == FilterGuiUtil.INDEX_INPUT) {
+    if (filterIndex == FilterGuiUtil.INDEX_INPUT_FLUID) {
       return getFilterStack(EnumFacing.getFront(param1), true);
-    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT) {
+    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_FLUID) {
       return getFilterStack(EnumFacing.getFront(param1), false);
     }
     return ItemStack.EMPTY;
@@ -447,9 +501,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   @Override
   public IFluidFilter getFilter(int filterIndex, int param1) {
-    if (filterIndex == FilterGuiUtil.INDEX_INPUT) {
+    if (filterIndex == FilterGuiUtil.INDEX_INPUT_FLUID) {
       return getFilter(EnumFacing.getFront(param1), true);
-    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT) {
+    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_FLUID) {
       return getFilter(EnumFacing.getFront(param1), false);
     }
     return null;
@@ -457,20 +511,30 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   @Override
   public void setFilter(int filterIndex, int param1, @Nonnull IFluidFilter filter) {
-    if (filterIndex == FilterGuiUtil.INDEX_INPUT) {
+    if (filterIndex == FilterGuiUtil.INDEX_INPUT_FLUID) {
       setFilter(EnumFacing.getFront(param1), filter, true);
-    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT) {
+    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_FLUID) {
       setFilter(EnumFacing.getFront(param1), filter, false);
     }
   }
 
   @Override
   public void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack) {
-    if (filterIndex == FilterGuiUtil.INDEX_INPUT) {
+    if (filterIndex == FilterGuiUtil.INDEX_INPUT_FLUID) {
       setFilterStack(EnumFacing.getFront(param1), stack, true);
-    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT) {
+    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_FLUID) {
       setFilterStack(EnumFacing.getFront(param1), stack, false);
     }
+  }
+
+  @Override
+  public int getInputFilterIndex() {
+    return FilterGuiUtil.INDEX_INPUT_FLUID;
+  }
+
+  @Override
+  public int getOutputFilterIndex() {
+    return FilterGuiUtil.INDEX_OUTPUT_FLUID;
   }
 
   @SuppressWarnings("unchecked")

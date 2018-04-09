@@ -7,12 +7,15 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.TileEntityBase;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.fluid.FluidFilter;
 import crazypants.enderio.base.filter.fluid.IFluidFilter;
+import crazypants.enderio.base.filter.gui.ContainerFilter;
+import crazypants.enderio.base.filter.gui.FluidFilterGui;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
@@ -77,9 +80,8 @@ public class ItemFluidFilter extends Item implements IItemFilterUpgrade<IFluidFi
   @Nullable
   @SideOnly(Side.CLIENT)
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    // return new PowerItemFilterGui(player.inventory,
-    // new ContainerFilter<IItemFilter>(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing), world.getTileEntity(pos));
-    return null;
+    return new FluidFilterGui(player.inventory, new ContainerFilter<IFluidFilter>(player.inventory, param1, (TileEntityBase) world.getTileEntity(pos), facing),
+        world.getTileEntity(pos));
   }
 
 }

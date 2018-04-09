@@ -15,6 +15,7 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
+import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -188,6 +189,12 @@ public class ItemSettings extends BaseSettingsPanel {
     } else if (guiButton.id == ID_EXTRACT_CHANNEL) {
       DyeColor col = DyeColor.values()[extractChannelB.getColorIndex()];
       itemConduit.setInputColor(gui.getDir(), col);
+    } else if (guiButton.id == ID_INSERT_FILTER_OPTIONS) {
+      doOpenFilterGui(FilterGuiUtil.INDEX_OUTPUT_ITEM);
+      return;
+    } else if (guiButton.id == ID_EXTRACT_FILTER_OPTIONS) {
+      doOpenFilterGui(FilterGuiUtil.INDEX_INPUT_ITEM);
+      return;
     }
     PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
   }

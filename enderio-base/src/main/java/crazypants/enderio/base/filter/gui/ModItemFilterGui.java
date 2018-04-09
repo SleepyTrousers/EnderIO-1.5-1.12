@@ -23,7 +23,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ModItemFilterGui extends AbstractGuiItemFilter {
+public class ModItemFilterGui extends AbstractFilterGui {
 
   private static final int MOD_NAME_COLOR = ColorUtil.getRGB(Color.white);
 

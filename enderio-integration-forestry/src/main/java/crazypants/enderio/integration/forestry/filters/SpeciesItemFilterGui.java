@@ -8,7 +8,7 @@ import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 
-import crazypants.enderio.base.filter.gui.AbstractGuiItemFilter;
+import crazypants.enderio.base.filter.gui.AbstractFilterGui;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
@@ -19,7 +19,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-public class SpeciesItemFilterGui extends AbstractGuiItemFilter {
+public class SpeciesItemFilterGui extends AbstractFilterGui {
 
   private static final int ID_WHITELIST = FilterGuiUtil.nextButtonId();
   private static final int ID_SPECIES_MODE = FilterGuiUtil.nextButtonId();

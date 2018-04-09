@@ -985,6 +985,7 @@ enderio.gui.existing_item_filter=Existing Item Filter
 enderio.gui.mod_item_filter=Mod Item Filter
 enderio.gui.power_item_filter=Power Item Filter
 enderio.gui.species_item_filter=Species Item Filter
+enderio.gui.fluid_filter=Fluid Filter
 
 enderio.gui.mod.item_filter.delete=Delete
 enderio.gui.mod.item_filter.slot=Input Slot

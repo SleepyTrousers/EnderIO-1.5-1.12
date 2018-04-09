@@ -14,7 +14,6 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
-import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
@@ -232,12 +231,6 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     } else if (guiButton.id == ID_EXTRACT_ENABLED) {
       extractEnabled = !extractEnabled;
       updateConnectionMode();
-    } else if (guiButton.id == ID_INSERT_FILTER_OPTIONS) {
-      doOpenFilterGui(FilterGuiUtil.INDEX_OUTPUT);
-      return;
-    } else if (guiButton.id == ID_EXTRACT_FILTER_OPTIONS) {
-      doOpenFilterGui(FilterGuiUtil.INDEX_INPUT);
-      return;
     }
   }
 

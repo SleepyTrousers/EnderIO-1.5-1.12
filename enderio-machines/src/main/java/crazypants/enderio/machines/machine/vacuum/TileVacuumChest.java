@@ -22,6 +22,7 @@ import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
+import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
@@ -307,6 +308,16 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity
   @Override
   public void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack) {
     getInventory().getSlot("filter").set(stack);
+  }
+
+  @Override
+  public int getInputFilterIndex() {
+    return FilterGuiUtil.INDEX_NONE;
+  }
+
+  @Override
+  public int getOutputFilterIndex() {
+    return FilterGuiUtil.INDEX_NONE;
   }
 
 }

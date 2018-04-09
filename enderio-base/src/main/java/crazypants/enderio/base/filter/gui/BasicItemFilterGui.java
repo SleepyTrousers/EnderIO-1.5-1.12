@@ -21,7 +21,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-public class BasicItemFilterGui extends AbstractGuiItemFilter {
+public class BasicItemFilterGui extends AbstractFilterGui {
 
   private static final int ID_WHITELIST = FilterGuiUtil.nextButtonId();
   private static final int ID_NBT = FilterGuiUtil.nextButtonId();

@@ -18,7 +18,7 @@ import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.conduit.item.FunctionUpgrade;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
-import crazypants.enderio.base.filter.gui.FilterGuiUtil;
+import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.network.PacketHandler;
@@ -55,6 +55,8 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   private @Nonnull EnumFacing dir;
   private @Nonnull EntityPlayer player;
+
+  private IConduit currentCon;
 
   final List<IFilterChangeListener> filterListeners = new ArrayList<IFilterChangeListener>();
 
@@ -129,6 +131,8 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     if (conduit == null) {
       return;
     }
+
+    currentCon = conduit;
 
     boolean hasFilterHolder = conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
     boolean hasUpgradeHolder = conduit.hasCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir);
@@ -283,13 +287,12 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   @Override
   public IMessage doOpenFilterGui(int filterIndex) {
-    if (itemConduit != null) {
-      if (filterIndex == FilterGuiUtil.INDEX_INPUT) {
-        itemConduit.getInputFilter(dir).openGui(player, itemConduit.getInputFilterUpgrade(dir), getTileEntity().getBundleworld(), getTileEntity().getPos(), dir,
-            filterIndex);
-      } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT) {
-        itemConduit.getOutputFilter(dir).openGui(player, itemConduit.getOutputFilterUpgrade(dir), getTileEntity().getBundleworld(), getTileEntity().getPos(),
-            dir, filterIndex);
+    if (currentCon.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
+      IFilterHolder<?> filterHolder = currentCon.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
+      int param1 = dir.ordinal();
+      if (filterHolder != null) {
+        filterHolder.getFilter(filterIndex, param1).openGui(player, filterHolder.getFilterStack(filterIndex, param1), getTileEntity().getBundleworld(),
+            getTileEntity().getPos(), dir, filterIndex);
       }
     }
     return null;

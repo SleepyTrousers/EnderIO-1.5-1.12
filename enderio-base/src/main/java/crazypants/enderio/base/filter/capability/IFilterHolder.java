@@ -57,4 +57,8 @@ public interface IFilterHolder<T extends IFilter> {
 
   void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack);
 
+  int getInputFilterIndex();
+
+  int getOutputFilterIndex();
+
 }

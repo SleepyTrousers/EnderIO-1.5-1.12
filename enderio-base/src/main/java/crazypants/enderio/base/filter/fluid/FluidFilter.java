@@ -1,9 +1,14 @@
 package crazypants.enderio.base.filter.fluid;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.util.NbtValue;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -96,46 +101,34 @@ public class FluidFilter implements IFluidFilter {
   }
 
   @Override
-  public void writeToNBT(@Nonnull NBTTagCompound root) {
-    root.setBoolean("isBlacklist", isBlacklist);
-    if (isEmpty()) {
-      root.removeTag("fluidFilter");
-      return;
-    }
+  public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
+    NbtValue.FILTER_BLACKLIST.setBoolean(nbtRoot, isBlacklist);
 
     NBTTagList fluidList = new NBTTagList();
+
     int index = 0;
     for (FluidStack f : fluids) {
+      NBTTagCompound fRoot = new NBTTagCompound();
       if (f != null) {
-        NBTTagCompound fRoot = new NBTTagCompound();
         fRoot.setInteger("index", index);
         f.writeToNBT(fRoot);
         fluidList.appendTag(fRoot);
       }
       index++;
     }
-    root.setTag("fluidStackFilter", fluidList);
+    nbtRoot.setTag("fluids", fluidList);
 
   }
 
   @Override
-  public void readFromNBT(@Nonnull NBTTagCompound root) {
-    isBlacklist = root.getBoolean("isBlacklist");
-    if (root.hasKey("fluidFilter")) {
-      NBTTagList fluidList = (NBTTagList) root.getTag("fluidFilter");
-      for (int i = 0; i < fluidList.tagCount(); i++) {
-        NBTTagCompound fRoot = fluidList.getCompoundTagAt(i);
-        setFluid(fRoot.getInteger("index"), fRoot.getString("fluidName"));
-      }
-    } else if (root.hasKey("fluidStackFilter")) {
-      NBTTagList fluidList = (NBTTagList) root.getTag("fluidStackFilter");
-      for (int i = 0; i < fluidList.tagCount(); i++) {
-        NBTTagCompound fRoot = fluidList.getCompoundTagAt(i);
-        setFluid(fRoot.getInteger("index"), FluidStack.loadFluidStackFromNBT(fRoot));
-      }
-    } else {
-      clear();
-      return;
+  public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
+
+    isBlacklist = NbtValue.FILTER_BLACKLIST.getBoolean(nbtRoot);
+    clear();
+
+    NBTTagList tagList = nbtRoot.getTagList("fluids", nbtRoot.getId());
+    for (int i = 0; i < tagList.tagCount(); i++) {
+      fluids[i] = FluidStack.loadFluidStackFromNBT(tagList.getCompoundTagAt(i));
     }
   }
 
@@ -163,14 +156,54 @@ public class FluidFilter implements IFluidFilter {
 
   @Override
   public void writeToByteBuf(@Nonnull ByteBuf buf) {
-    // TODO Auto-generated method stub
-
+    NBTTagCompound root = new NBTTagCompound();
+    writeToNBT(root);
+    NetworkUtil.writeNBTTagCompound(root, buf);
   }
 
   @Override
   public void readFromByteBuf(@Nonnull ByteBuf buf) {
-    // TODO Auto-generated method stub
+    NBTTagCompound tag = NetworkUtil.readNBTTagCompound(buf);
+    readFromNBT(tag);
+  }
 
+  public void createGhostSlots(@Nonnull NNList<GhostSlot> slots, int xOffset, int yOffset, @Nullable Runnable cb) {
+    int topY = yOffset;
+    int leftX = xOffset;
+    int index = 0;
+    int numRows = 1;
+    int rowSpacing = 2;
+    int numCols = 5;
+    for (int row = 0; row < numRows; ++row) {
+      for (int col = 0; col < numCols; ++col) {
+        int x = leftX + col * 18;
+        int y = topY + row * 18 + rowSpacing * row;
+        slots.add(new FluidFilterGhostSlot(index, x, y, cb));
+        index++;
+      }
+    }
+  }
+
+  class FluidFilterGhostSlot extends GhostSlot {
+    private final Runnable cb;
+
+    FluidFilterGhostSlot(int slot, int x, int y, Runnable cb) {
+      this.setX(x);
+      this.setY(y);
+      this.setSlot(slot);
+      this.cb = cb;
+    }
+
+    @Override
+    public void putStack(@Nonnull ItemStack stack, int realsize) {
+      fluids[getSlot()] = FluidUtil.getFluidTypeFromItem(stack);
+      cb.run();
+    }
+
+    @Override
+    public @Nonnull ItemStack getStack() {
+      return ItemStack.EMPTY;
+    }
   }
 
 }

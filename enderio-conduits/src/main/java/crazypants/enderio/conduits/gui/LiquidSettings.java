@@ -9,6 +9,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
+import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -17,6 +18,7 @@ import crazypants.enderio.conduits.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduits.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduits.init.ConduitObject;
 import crazypants.enderio.conduits.lang.Lang;
+import crazypants.enderio.conduits.network.PacketConduitFilter;
 import crazypants.enderio.conduits.network.PacketExtractMode;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
@@ -39,7 +41,7 @@ public class LiquidSettings extends BaseSettingsPanel {
     conduit = (ILiquidConduit) con;
     if (con instanceof EnderLiquidConduit) {
       isEnder = true;
-      gui.getContainer().setInOutSlotsVisible(true, true, con);
+      gui.getContainer().setInOutSlotsVisible(true, true, conduit);
     }
 
     int x = rightColumn;
@@ -73,6 +75,15 @@ public class LiquidSettings extends BaseSettingsPanel {
     if (guiButton.id == ID_COLOR_BUTTON) {
       conduit.setExtractionSignalColor(gui.getDir(), DyeColor.fromIndex(colorB.getColorIndex()));
       PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.getDir()));
+    } else if (guiButton.id == ID_INSERT_FILTER_OPTIONS) {
+      doOpenFilterGui(FilterGuiUtil.INDEX_OUTPUT_FLUID);
+      return;
+    } else if (guiButton.id == ID_EXTRACT_FILTER_OPTIONS) {
+      doOpenFilterGui(FilterGuiUtil.INDEX_INPUT_FLUID);
+      return;
+    }
+    if (isEnder) {
+      PacketHandler.INSTANCE.sendToServer(new PacketConduitFilter(conduit, gui.getDir()));
     }
   }
 
