@@ -41,7 +41,6 @@ public class LiquidSettings extends BaseSettingsPanel {
     conduit = (ILiquidConduit) con;
     if (con instanceof EnderLiquidConduit) {
       isEnder = true;
-      gui.getContainer().setInOutSlotsVisible(true, true, conduit);
     }
 
     int x = rightColumn;
@@ -95,6 +94,7 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   @Override
   protected void initCustomOptions() {
+    gui.getContainer().setInOutSlotsVisible(true, true, conduit);
     updateGuiVisibility();
   }
 
@@ -106,6 +106,7 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   @Override
   public void deactivate() {
+    gui.getContainer().setInOutSlotsVisible(false, false, null);
     rsB.detach();
     colorB.detach();
   }

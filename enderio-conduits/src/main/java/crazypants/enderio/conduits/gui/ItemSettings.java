@@ -130,12 +130,12 @@ public class ItemSettings extends BaseSettingsPanel {
     priUpB = MultiIconButton.createAddButton(gui, ID_PRIORITY_UP, x, y);
     priDownB = MultiIconButton.createMinusButton(gui, ID_PRIORITY_DOWN, x, y + 8);
 
-    gui.getContainer().setInOutSlotsVisible(true, true, itemConduit);
-
   }
 
   @Override
   protected void initCustomOptions() {
+    gui.getContainer().setInOutSlotsVisible(true, true, itemConduit);
+    ((ExternalConnectionContainer) gui.inventorySlots).createGhostSlots(gui.getGhostSlotHandler().getGhostSlots());
     updateGuiVisibility();
   }
 
@@ -222,7 +222,7 @@ public class ItemSettings extends BaseSettingsPanel {
 
   @Override
   public void deactivate() {
-    gui.getContainer().setInOutSlotsVisible(false, false, itemConduit);
+    gui.getContainer().setInOutSlotsVisible(false, false, null);
     rsB.detach();
     colorB.detach();
     roundRobinB.detach();

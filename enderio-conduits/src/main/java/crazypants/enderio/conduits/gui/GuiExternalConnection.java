@@ -82,7 +82,6 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
   public void initGui() {
     super.initGui();
     buttonList.clear();
-    ((ExternalConnectionContainer) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
     for (int i = 0; i < tabs.size(); i++) {
       if (i == activeTab) {
         tabs.get(i).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);

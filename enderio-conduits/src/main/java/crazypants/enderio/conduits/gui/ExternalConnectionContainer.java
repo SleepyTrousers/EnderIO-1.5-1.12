@@ -24,7 +24,6 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.conduit.TileConduitBundle;
-import crazypants.enderio.conduits.conduit.item.IItemConduit;
 import crazypants.enderio.conduits.init.ConduitObject;
 import crazypants.enderio.conduits.network.PacketSlotVisibility;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,8 +39,6 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgrades, TileConduitBundle>
     implements IExternalConnectionContainer, IOpenFilterRemoteExec.Container {
-
-  private final IItemConduit itemConduit;
 
   private int speedUpgradeSlotLimit = 15;
 
@@ -62,7 +59,6 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   public ExternalConnectionContainer(@Nonnull InventoryPlayer playerInv, @Nonnull EnumFacing dir, @Nonnull TileConduitBundle bundle) {
     super(playerInv, new InventoryUpgrades(dir), bundle);
-    this.itemConduit = bundle.getConduit(IItemConduit.class);
     this.dir = dir;
     this.player = playerInv.player;
     addSlots();
@@ -88,14 +84,12 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   }
 
   public void createGhostSlots(@Nonnull List<GhostSlot> ghostSlots) {
-    if (itemConduit != null) {
-      ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotOutputFilter));
-      ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotInputFilter));
+    ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotOutputFilter));
+    ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotInputFilter));
 
-      NNList<ItemStack> ghostSlotIcons = new NNList<>(new ItemStack(ConduitObject.item_extract_speed_upgrade.getItemNN()),
-          new ItemStack(ConduitObject.item_extract_speed_downgrade.getItemNN()));
-      ghostSlots.add(new GhostBackgroundItemSlot(ghostSlotIcons, slotFunctionUpgrade));
-    }
+    NNList<ItemStack> ghostSlotIcons = new NNList<>(new ItemStack(ConduitObject.item_extract_speed_upgrade.getItemNN()),
+        new ItemStack(ConduitObject.item_extract_speed_downgrade.getItemNN()));
+    ghostSlots.add(new GhostBackgroundItemSlot(ghostSlotIcons, slotFunctionUpgrade));
   }
 
   @Override
@@ -128,22 +122,27 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   @Override
   public void setInOutSlotsVisible(boolean inputVisible, boolean outputVisible, IConduit conduit) {
-    if (conduit == null) {
-      return;
-    }
 
-    currentCon = conduit;
+    World world = null;
 
-    boolean hasFilterHolder = conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
-    boolean hasUpgradeHolder = conduit.hasCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir);
+    boolean hasFilterHolder = false;
+    boolean hasUpgradeHolder = false;
 
-    World world = conduit.getBundle().getBundleworld();
+    if (conduit != null) {
+      world = conduit.getBundle().getBundleworld();
 
-    if (hasFilterHolder) {
-      getItemHandler().setFilterHolder(conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir));
-    }
-    if (hasUpgradeHolder) {
-      getItemHandler().setUpgradeHolder(conduit.getCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir));
+      currentCon = conduit;
+
+      hasFilterHolder = conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
+      hasUpgradeHolder = conduit.hasCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir);
+
+      if (hasFilterHolder) {
+        getItemHandler().setFilterHolder(conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir));
+      }
+      if (hasUpgradeHolder) {
+        getItemHandler().setUpgradeHolder(conduit.getCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir));
+
+      }
 
     }
 
@@ -151,7 +150,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     setSlotsVisible(inputVisible && hasFilterHolder, inputFilterSlot, inputFilterSlot + 1);
     setSlotsVisible(outputVisible && hasFilterHolder, outputFilterSlot, outputFilterSlot + 1);
 
-    if (world.isRemote) {
+    if (world != null && world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketSlotVisibility(conduit, inputVisible, outputVisible));
     }
   }

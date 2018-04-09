@@ -902,7 +902,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY
-        || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY && getConduitConnections().contains(facing)) {
+        || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY && getExternalConnections().contains(facing)) {
       return true;
     }
     return false;

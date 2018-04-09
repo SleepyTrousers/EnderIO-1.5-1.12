@@ -341,33 +341,33 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     super.readTypeSettings(dir, dataRoot);
-    // if (dataRoot.hasKey("outputFilters")) {
-    // FluidFilter out = new FluidFilter();
-    // out.readFromNBT(dataRoot.getCompoundTag("outputFilters"));
-    // outputFilters.put(dir, out);
-    // }
-    // if (dataRoot.hasKey("inputFilters")) {
-    // FluidFilter in = new FluidFilter();
-    // in.readFromNBT(dataRoot.getCompoundTag("inputFilters"));
-    // inputFilters.put(dir, in);
-    // }
+    if (dataRoot.hasKey("outputFilters")) {
+      FluidFilter out = new FluidFilter();
+      out.readFromNBT(dataRoot.getCompoundTag("outputFilters"));
+      outputFilters.put(dir, out);
+    }
+    if (dataRoot.hasKey("inputFilters")) {
+      FluidFilter in = new FluidFilter();
+      in.readFromNBT(dataRoot.getCompoundTag("inputFilters"));
+      inputFilters.put(dir, in);
+    }
   }
 
   @Override
   protected void writeTypeSettingsToNbt(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     super.writeTypeSettingsToNbt(dir, dataRoot);
-    // IFluidFilter out = outputFilters.get(dir);
-    // if (out != null) {
-    // NBTTagCompound outTag = new NBTTagCompound();
-    // out.writeToNBT(outTag);
-    // dataRoot.setTag("outputFilters", outTag);
-    // }
-    // IFluidFilter in = inputFilters.get(dir);
-    // if (in != null) {
-    // NBTTagCompound inTag = new NBTTagCompound();
-    // in.writeToNBT(inTag);
-    // dataRoot.setTag("inputFilters", inTag);
-    // }
+    IFluidFilter out = outputFilters.get(dir);
+    if (out != null) {
+      NBTTagCompound outTag = new NBTTagCompound();
+      out.writeToNBT(outTag);
+      dataRoot.setTag("outputFilters", outTag);
+    }
+    IFluidFilter in = inputFilters.get(dir);
+    if (in != null) {
+      NBTTagCompound inTag = new NBTTagCompound();
+      in.writeToNBT(inTag);
+      dataRoot.setTag("inputFilters", inTag);
+    }
   }
 
   private boolean isDefault(IFluidFilter f) {
@@ -386,7 +386,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
         if (!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           FilterRegistry.writeFilterToNbt(f, itemRoot);
-          nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
+          nbtRoot.setTag("inFluidFilts." + entry.getKey().name(), itemRoot);
         }
       }
     }
@@ -396,7 +396,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
         if (!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           FilterRegistry.writeFilterToNbt(f, itemRoot);
-          nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
+          nbtRoot.setTag("outFluidFilts." + entry.getKey().name(), itemRoot);
         }
       }
     }
@@ -408,7 +408,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
         NBTTagCompound itemRoot = new NBTTagCompound();
         up.writeToNBT(itemRoot);
-        nbtRoot.setTag("inputFilterUpgrades." + entry.getKey().name(), itemRoot);
+        nbtRoot.setTag("inputFluidFilterUpgrades." + entry.getKey().name(), itemRoot);
       }
     }
 
@@ -420,7 +420,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
         NBTTagCompound itemRoot = new NBTTagCompound();
         up.writeToNBT(itemRoot);
-        nbtRoot.setTag("outputFilterUpgrades." + entry.getKey().name(), itemRoot);
+        nbtRoot.setTag("outputFluidFilterUpgrades." + entry.getKey().name(), itemRoot);
       }
     }
   }
@@ -429,34 +429,35 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
     for (EnumFacing dir : EnumFacing.VALUES) {
-      String key = "inFilts." + dir.name();
+      String key = "inFluidFilts." + dir.name();
       if (nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
         IFluidFilter filter = (IFluidFilter) FilterRegistry.loadFilterFromNbt(filterTag);
         inputFilters.put(dir, filter);
       }
 
-      key = "inputFilterUpgrades." + dir.name();
+      key = "inputFluidFilterUpgrades." + dir.name();
       if (nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemStack ups = new ItemStack(upTag);
         inputFilterUpgrades.put(dir, ups);
       }
 
-      key = "outputFilterUpgrades." + dir.name();
+      key = "outputFluidFilterUpgrades." + dir.name();
       if (nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemStack ups = new ItemStack(upTag);
         outputFilterUpgrades.put(dir, ups);
       }
 
-      key = "outFilts." + dir.name();
+      key = "outFluidFilts." + dir.name();
       if (nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
         IFluidFilter filter = (IFluidFilter) FilterRegistry.loadFilterFromNbt(filterTag);
         outputFilters.put(dir, filter);
       }
 
+      // TODO remove this later
       generateFiltersFromItems();
     }
 
@@ -464,7 +465,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   private void generateFiltersFromItems() {
     for (EnumFacing facing : EnumFacing.VALUES) {
-      ItemStack stack = this.outputFilterUpgrades.get(facing);
+      ItemStack stack = outputFilterUpgrades.get(facing);
       if (!stack.isEmpty()) {
         IFluidFilter filter = FilterRegistry.getFilterForUpgrade(stack);
         outputFilters.put(facing, filter);
@@ -480,7 +481,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
+    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY && containsExternalConnection(facing)) {
       return true;
     }
     return super.hasCapability(capability, facing);
