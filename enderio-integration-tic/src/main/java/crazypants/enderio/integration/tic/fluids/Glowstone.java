@@ -33,9 +33,8 @@ public class Glowstone {
         return 0x80FFFFFF; // | 0xffbc5e;
       }
     }.setUnlocalizedName(EnderIO.DOMAIN + "." + TicProxy.GLOWSTONE_FLUID_NAME).setDensity(-500).setGaseous(true).setTemperature(1500 + 273).setViscosity(100);
-    if (FluidRegistry.registerFluid(fluid)) {
-      FluidRegistry.addBucketForFluid(fluid);
-    }
+    FluidRegistry.registerFluid(fluid);
+    FluidRegistry.addBucketForFluid(fluid);
   }
 
   public static Block createFluidBlock() {

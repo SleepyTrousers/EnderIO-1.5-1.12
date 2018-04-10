@@ -33,9 +33,8 @@ public class Redstone {
         return 0xFF000000 | 0xff0000;
       }
     }.setUnlocalizedName(EnderIO.DOMAIN + "." + TicProxy.REDSTONE_FLUID_NAME).setDensity(1200).setTemperature(1700 + 273).setViscosity(1500);
-    if (FluidRegistry.registerFluid(fluid)) {
-      FluidRegistry.addBucketForFluid(fluid);
-    }
+    FluidRegistry.registerFluid(fluid);
+    FluidRegistry.addBucketForFluid(fluid);
   }
 
   public static Block createFluidBlock() {

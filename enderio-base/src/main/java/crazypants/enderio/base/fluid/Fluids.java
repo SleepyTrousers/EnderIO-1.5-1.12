@@ -137,6 +137,11 @@ public enum Fluids {
   private final boolean hasBlock;
   protected final @Nonnull Material material;
   protected final int color;
+  /**
+   * INTERNAL ONLY - PERIOD
+   */
+  @Deprecated
+  private Fluid fluidUnsafe;
 
   private Fluids(@Nonnull String name) {
     this.name = name;
@@ -207,7 +212,10 @@ public enum Fluids {
   @SubscribeEvent(priority = EventPriority.HIGH)
   public static void registerFluids(@Nonnull RegistryEvent.Register<Block> event) {
     for (Fluids fluid : values()) {
-      FluidRegistry.registerFluid(fluid.init(new Fluid(fluid.name, fluid.getStill(), fluid.getFlowing())));
+      // We need a hard reference to the Fluid to make sure we register a bucket for it
+      Fluid f = new Fluid(fluid.name, fluid.getStill(), fluid.getFlowing());
+      FluidRegistry.registerFluid(fluid.init(f));
+      fluid.fluidUnsafe = f;
     }
   }
 
@@ -223,9 +231,8 @@ public enum Fluids {
   @SubscribeEvent
   public static void registerItems(@Nonnull RegistryEvent.Register<Item> event) {
     for (Fluids fluid : values()) {
-      if (!FluidRegistry.getBucketFluids().contains(fluid.getFluid())) {
-        FluidRegistry.addBucketForFluid(fluid.getFluid());
-      }
+      // Always add a bucket for our Fluid, avoids bugs when EIO is installed to an existing world
+      FluidRegistry.addBucketForFluid(fluid.fluidUnsafe);
     }
   }
 

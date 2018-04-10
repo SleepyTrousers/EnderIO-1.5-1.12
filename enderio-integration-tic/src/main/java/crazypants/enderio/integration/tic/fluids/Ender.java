@@ -35,9 +35,8 @@ public class Ender {
       }
     }.setUnlocalizedName(EnderIO.DOMAIN + "." + TicProxy.ENDER_FLUID_NAME).setDensity(4000);
     fluid.setLuminosity(3).setTemperature(1000 + 273).setViscosity(35);
-    if (FluidRegistry.registerFluid(fluid)) {
-      FluidRegistry.addBucketForFluid(fluid);
-    }
+    FluidRegistry.registerFluid(fluid);
+    FluidRegistry.addBucketForFluid(fluid);
   }
 
   public static Block createFluidBlock() {
