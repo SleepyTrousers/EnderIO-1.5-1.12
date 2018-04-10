@@ -3,7 +3,10 @@ package crazypants.enderio.base.material.material;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
+
+import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.InfinityConfig;
@@ -18,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class MaterialCraftingHandler {
@@ -72,4 +76,25 @@ public class MaterialCraftingHandler {
     }
   }
 
+  @SuppressWarnings("null")
+  @SubscribeEvent
+  public static void onWorldTick(@Nonnull TickEvent.WorldTickEvent event) {
+    if (!fires.isEmpty() && !event.world.getGameRules().getBoolean("doFireTick") && InfinityConfig.inWorldCraftingEnabled.get()
+        && (InfinityConfig.enableInAllDimensions.get() || event.world.provider.getDimension() == 0)) {
+      final int yOffset = event.world.provider.getDimension() * 256;
+      final long worldTime = event.world.getTotalWorldTime();
+      for (Entry<BlockPos, Long> fire : fires.entrySet()) {
+        final BlockPos posIdx = fire.getKey();
+        final BlockPos pos = posIdx.down(yOffset);
+        if (pos.getY() >= 0 && pos.getY() <= 255 && worldTime > fire.getValue()) {
+          if (event.world.getBlockState(pos).getBlock() instanceof BlockFire) {
+            event.world.setBlockToAir(pos);
+          } else {
+            fires.remove(posIdx);
+          }
+          return; // else CME
+        }
+      }
+    }
+  }
 }
