@@ -28,11 +28,13 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
   final @Nonnull ITravelAccessable ta;
   final TileEntity te;
   final @Nonnull World world;
+  final @Nonnull EntityPlayer player;
 
   public ContainerTravelAccessable(@Nonnull InventoryPlayer playerInv, final @Nonnull ITravelAccessable travelAccessable, @Nonnull World world) {
     super(playerInv, playerInv);
     ta = travelAccessable;
     this.world = world;
+    this.player = playerInv.player;
     if (ta instanceof TileEntity) {
       te = ((TileEntity) ta);
     } else {
@@ -45,15 +47,15 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
   }
 
   public void addGhostSlots(List<GhostSlot> ghostSlots) {
-    int x = 44;
-    int y = 73;
+    int x = 50;
+    int y = 79;
     for (int i = 0; i < 5; i++) {
       ghostSlots.add(new CtaGhostSlot(ta, i, x, y, true));
       x += 18;
     }
 
-    x = 125;
-    y = 10;
+    x = 131;
+    y = 16;
     ghostSlots.add(new CtaGhostSlot(ta, 0, x, y, false));
   }
 
@@ -152,6 +154,12 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
       te.getWorld().notifyBlockUpdate(te.getPos(), bs, bs, 3);
       te.getWorld().markChunkDirty(te.getPos(), te);
     }
+    return null;
+  }
+
+  @Override
+  public IMessage doCloseGui() {
+    player.closeScreen();
     return null;
   }
 

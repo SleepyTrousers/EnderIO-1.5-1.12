@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.CheckBox;
+import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
@@ -20,6 +21,7 @@ import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -29,6 +31,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   private static final int ID_PUBLIC = 0;
   private static final int ID_PRIVATE = 1;
   private static final int ID_PROTECTED = 2;
+  protected static final int ID_CLOSE_WINDOW_BUTTON = 99;
 
   private final @Nonnull CheckBox publicCB;
   private final @Nonnull CheckBox privateCB;
@@ -48,6 +51,8 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
 
   protected final @Nonnull World world;
 
+  private final IconButton closeWindowButton;
+
   public GuiTravelAccessable(@Nonnull InventoryPlayer playerInv, @Nonnull T te, @Nonnull World world) {
     this(te, new ContainerTravelAccessable(playerInv, te, world));
   }
@@ -56,20 +61,20 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     super(container, "travel_accessable");
     this.te = te;
     this.world = container.world;
-  
+
     xSize = 184;
     ySize = 200;
-    
-  	final int visibleBX = guiLeft + (xSize - 26);
- 	final int visibleBY = 10;
-    
-  	publicStr = Lang.GUI_AUTH_PUBLIC.get();
+
+    final int visibleBX = guiLeft + (xSize - 26);
+    final int visibleBY = 16;
+
+    publicStr = Lang.GUI_AUTH_PUBLIC.get();
     privateStr = Lang.GUI_AUTH_PRIVATE.get();
     protectedStr = Lang.GUI_AUTH_PROTECTED.get();
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    tf = new TextFieldEnder(fr, 28, 10, 90, 16);
+    tf = new TextFieldEnder(fr, 34, 16, 90, 16);
 
     col1x = 88;
     col0x = (col1x - fr.getStringWidth(protectedStr) / 2) / 2;
@@ -94,15 +99,18 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     visibleCB = new ToggleButton(this, -1, visibleBX, visibleBY, IconEIO.VISIBLE_NO, IconEIO.VISIBLE_YES);
     visibleCB.setSelected(te.isVisible());
     visibleCB.setToolTip(Lang.GUI_AUTH_VISIBLE.getLines().toArray(new String[0]));
-    
-    ySize = 185;
+
+    closeWindowButton = new IconButton(this, ID_CLOSE_WINDOW_BUTTON, 3, 3, IconEIO.ARROW_LEFT);
+    closeWindowButton.setToolTip(Lang.GUI_TELEPAD_TRAVEL_SETTINGS_CLOSE.get(), Lang.GUI_TELEPAD_TRAVEL_SETTINGS_CLOSE_2.get());
 
     textFields.add(tf);
   }
 
   @Override
   protected void actionPerformed(@Nonnull GuiButton b) {
-    if (b.id >= 0) {
+    if (b.id == ID_CLOSE_WINDOW_BUTTON) {
+      doCloseGui();
+    } else if (b.id >= 0) {
       privateCB.setSelected(b.id == ID_PRIVATE);
       protectedCB.setSelected(b.id == ID_PROTECTED);
       publicCB.setSelected(b.id == ID_PUBLIC);
@@ -115,7 +123,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
       te.setVisible(visibleCB.isSelected());
       doSetVisible(visibleCB.isSelected());
     }
-    
+
   }
 
   @Override
@@ -128,6 +136,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     privateCB.onGuiInit();
     protectedCB.onGuiInit();
     visibleCB.onGuiInit();
+    closeWindowButton.onGuiInit();
 
     tf.setMaxStringLength(32);
     tf.setFocused(true);
@@ -152,7 +161,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
 
   @Override
   public void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
@@ -212,14 +221,16 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
 
     if (te.getAccessMode() != AccessMode.PROTECTED) {
       bindGuiTexture();
-      GL11.glColor4f(1, 1, 1, 0.75f);
-      GL11.glEnable(GL11.GL_BLEND);
-      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      GL11.glDisable(GL11.GL_DEPTH_TEST);
-      drawTexturedModalRect(43, 72, 5, 35, 90, 18);
-      GL11.glDisable(GL11.GL_BLEND);
-      GL11.glEnable(GL11.GL_DEPTH_TEST);
-      GL11.glColor4f(1, 1, 1, 1);
+      GlStateManager.color(1, 1, 1, 0.75f);
+      GlStateManager.enableBlend();
+      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GlStateManager.disableDepth();
+
+      // Draw the cover for the ghost slots
+      drawTexturedModalRect(48, 78, 9, 25, 90, 18);
+      GlStateManager.disableBlend();
+      GlStateManager.enableDepth();
+      GlStateManager.color(1, 1, 1, 1);
     }
   }
 

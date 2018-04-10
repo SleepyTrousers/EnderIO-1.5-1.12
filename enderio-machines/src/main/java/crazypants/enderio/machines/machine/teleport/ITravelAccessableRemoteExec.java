@@ -13,6 +13,7 @@ public class ITravelAccessableRemoteExec {
   static final int EXEC_ACCESS_MODE = 0;
   static final int EXEC_LABEL = 1;
   static final int EXEC_VISIBLE = 2;
+  static final int EXEC_CLOSE_GUI = 3;
 
   public interface GUI extends IRemoteExec.IGui {
 
@@ -28,6 +29,10 @@ public class ITravelAccessableRemoteExec {
       GuiPacket.send(this, EXEC_VISIBLE, visible);
     }
 
+    default void doCloseGui() {
+      GuiPacket.send(this, EXEC_CLOSE_GUI);
+    }
+
   }
 
   public interface Container extends IRemoteExec.IContainer {
@@ -38,6 +43,8 @@ public class ITravelAccessableRemoteExec {
 
     IMessage doSetVisible(boolean visible);
 
+    IMessage doCloseGui();
+
     @Override
     default IMessage networkExec(int id, GuiPacket message) {
       switch (id) {
@@ -47,6 +54,8 @@ public class ITravelAccessableRemoteExec {
         return doSetLabel(message.getString(0));
       case EXEC_VISIBLE:
         return doSetVisible(message.getBoolean(0));
+      case EXEC_CLOSE_GUI:
+        return doCloseGui();
       }
       return null;
     }
