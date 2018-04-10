@@ -70,7 +70,7 @@ public class GuiVat extends GuiInventoryMachineBase<TileVat> {
 
     addProgressTooltip(81, 63, 14, 14);
 
-    addDrawingElement(new PowerBar(te, this, 11, 11, 43));
+    addDrawingElement(new PowerBar(te, this, 12, 11, 43));
   }
 
   @Override

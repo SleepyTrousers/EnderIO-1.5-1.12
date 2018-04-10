@@ -54,7 +54,7 @@ public class GeneralTab implements ITabPanel {
     };
     parent.addToolTip(sendPowerBarTT);
 
-    internalPowerBar = new PowerBar(container.getTe(), parent, 10, 14, 58);
+    internalPowerBar = new PowerBar(container.getTe(), parent, 11, 14, 58);
   }
 
   @Override
