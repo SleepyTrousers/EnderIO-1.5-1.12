@@ -20,7 +20,6 @@ plugins {
     id 'com.matthewprenger.cursegradle' version "1.0.7"
 }
 
-apply plugin: 'maven'
 apply plugin: 'eclipse'
 
 // We use these to mess with the eclipse .classpath file
@@ -193,7 +192,6 @@ allprojects {
         }
       }
     }
-
 }
 
 // Configuration that applies only to modules
@@ -212,11 +210,6 @@ subprojects {
     task sourcesJar(type: Jar) {
         classifier = 'sources'
         from sourceSets.main.allSource
-    }
-
-    artifacts {
-        archives apiJar
-        archives sourcesJar
     }
 }
 
@@ -290,6 +283,30 @@ task copyJars(type: Copy, dependsOn: subprojects.tasks['signJar']) {
     into "$buildDir/libs"
 }
 build.dependsOn copyJars
+
+apply plugin: 'maven-publish'
+
+publishing {
+  tasks.publish.dependsOn 'build'
+  publications {
+    buildprojects.each { subproject ->
+      "${subproject.name}"(MavenPublication) {
+        from subproject.components.java
+        
+        artifact subproject.sourceJar
+        artifact subproject.apiJar
+        
+        artifactId getPrettyName(subproject) 
+      }
+    }
+  }
+
+  repositories {
+    if (project.hasProperty('mavendir')) {
+      maven { url mavendir }
+    }
+  }
+}
 
 def release = System.getenv("RELEASE") != null &&
               !System.getenv("RELEASE").equalsIgnoreCase("false")
@@ -427,12 +444,15 @@ String getVersionString(Project proj) {
     return String.join('-', version_parts)
 }
 
-String getArchiveBaseName(Project proj) {
+String getPrettyName(Project proj) {
     def project_base_name = rootProject.name
     if (proj.hasProperty('module_name'))
         project_base_name += "-${proj.module_name}"
+    return project_base_name
+}
 
-    return "${project_base_name}-${project.minecraft_version}"
+String getArchiveBaseName(Project proj) {
+    return getPrettyName(proj) + "-${project.minecraft_version}"
 }
 
 String getChangelogFormat() {
