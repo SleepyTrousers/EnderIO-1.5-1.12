@@ -2702,4 +2702,29 @@
     </sagmilling>
   </recipe>
 
+  <!-- Nuclearcraft Ores -->
+  <recipe name="Sagmill: Thorium Ore" required="false">
+    <sagmilling energy="5000">
+      <input name="oreThorium" />
+      <output name="dustThorium" amount="2" />
+      <output name="minecraft:stone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Boron Ore" required="false">
+    <sagmilling energy="5000">
+      <input name="oreBoron" />
+      <output name="dustBoron" amount="2" />
+      <output name="minecraft:stone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Lithium Ore" required="false">
+    <sagmilling energy="5000">
+      <input name="oreLithium" />
+      <output name="dustLithium" amount="2" />
+      <output name="minecraft:stone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
 </enderio:recipes>
