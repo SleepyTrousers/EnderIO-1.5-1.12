@@ -63,7 +63,6 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     super(playerInv, new InventoryUpgrades(dir), bundle);
     this.dir = dir;
     this.player = playerInv.player;
-    addSlots();
   }
 
   @Override
