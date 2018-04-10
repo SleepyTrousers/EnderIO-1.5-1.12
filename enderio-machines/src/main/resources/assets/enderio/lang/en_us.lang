@@ -128,6 +128,8 @@ enderio.gui.telepad.tank=Reagent Tank
 enderio.gui.telepad.max=Max: %s
 enderio.status.telepad.unformed=§4Telepad must be a 3x3 structure
 enderio.gui.telepad.unnamed_location=Unnamed
+enderio.gui.telepad_travel_settings.close=Close Travel Settings
+enderio.gui.telepad_travel_settings.close2=Go back to previous inventory
 
 enderio.gui.impulse_hopper.locked=Output Locked
 enderio.gui.impulse_hopper.unlocked=Output Unlocked

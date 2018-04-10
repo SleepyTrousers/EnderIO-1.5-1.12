@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
@@ -17,9 +18,7 @@ import com.enderio.core.common.util.Util;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
-import crazypants.enderio.base.gui.IToggleableGui;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.gui.ToggleTravelButton;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.PowerBar;
@@ -37,13 +36,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.math.BlockPos;
 
-public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
+public class GuiTelePad extends GuiContainerBaseEIO {
 
-  private static final int ID_SWITCH_BUTTON = 95;
   private static final int ID_TELEPORT_BUTTON = 96;
+  private static final int ID_TRAVEL_SETTINGS_BUTTON = 97;
 
-  ToggleTravelButton switchButton;
+  GuiButton switchButton;
   GuiButton teleportButton;
+  IconButton travelSettingsButton;
 
   private final @Nonnull TileTelePad te;
 
@@ -65,13 +65,17 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   private static final int fluidScale = 58;
   private static final @Nonnull Rectangle RECTANGLE_TANK = new Rectangle(fluidX, fluidY, 10, fluidScale);
 
-  public static int SWITCH_X = 155, SWITCH_Y = 5;
-
   public GuiTelePad(@Nonnull InventoryPlayer playerInv, final @Nonnull TileTelePad te) {
     super(new ContainerTelePad(playerInv, te), "tele_pad");
     this.te = te;
     ySize = 220;
 
+    int settingsBX = guiLeft + xSize - (7 + 16);
+    int settingsBY = guiTop + 10;
+    
+    travelSettingsButton = new IconButton(this, ID_TRAVEL_SETTINGS_BUTTON, settingsBX, settingsBY, IconEIO.GEAR_LIGHT);
+    travelSettingsButton.setToolTip(Lang.GUI_TELEPAD_TO_TRAVEL.get());
+    
     addToolTip(new GuiToolTip(new Rectangle(progressX, progressY, progressScale, 10), "") {
       @Override
       protected void updateText() {
@@ -114,9 +118,6 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
     textFields.addAll(Lists.newArrayList(xTF, yTF, zTF, dimTF));
 
-    switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, SWITCH_X, SWITCH_Y, IconEIO.IO_WHATSIT);
-    switchButton.setToolTip(Lang.GUI_TELEPAD_TO_TRAVEL.get());
-
     addDrawingElement(new PowerBar(te.getEnergy(), this, powerX, powerY, 10, getPowerScale()));
   }
 
@@ -141,7 +142,6 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   @Override
   public void initGui() {
     super.initGui();
-    switchButton.onGuiInit();
 
     String text = Lang.GUI_TELEPAD_TELEPORT.get();
     int textWidth = getFontRenderer().getStringWidth(text) + 10;
@@ -149,9 +149,13 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     int x = guiLeft + (xSize / 2) - (textWidth / 2);
     int y = guiTop + 83;
 
+    
+    
     teleportButton = new GuiButton(ID_TELEPORT_BUTTON, x, y, textWidth, 20, text);
     addButton(teleportButton);
 
+    travelSettingsButton.onGuiInit();
+    
     ((ContainerTelePad) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
 
@@ -248,16 +252,15 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   }
 
   @Override
-  public void switchGui() {
-    PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, BlockTelePad.GUI_ID_TELEPAD_TRAVEL));
-  }
-
-  @Override
   protected void actionPerformed(@Nonnull GuiButton button) throws IOException {
     super.actionPerformed(button);
 
     if (button.id == ID_TELEPORT_BUTTON) {
       te.teleportAll();
+    }else if (button.id == ID_TRAVEL_SETTINGS_BUTTON) {
+    	
+    	PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, BlockTelePad.GUI_ID_TELEPAD_TRAVEL));
+    	
     }
   }
 }

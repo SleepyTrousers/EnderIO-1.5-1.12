@@ -59,7 +59,7 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
 
   @Override
   public @Nonnull Point getPlayerInventoryOffset() {
-    return new Point(8, 103);
+    return new Point(14, 109);
   }
 
   @Override
