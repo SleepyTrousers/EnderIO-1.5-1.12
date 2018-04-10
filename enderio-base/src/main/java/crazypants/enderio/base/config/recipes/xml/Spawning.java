@@ -48,7 +48,7 @@ public class Spawning extends AbstractConditional {
       for (Entity entity : entities) {
         if (entity.isDefault()) {
           PoweredSpawnerRecipeRegistry.getInstance().setDefaultCostMultiplier(entity.getCostMultiplier());
-          PoweredSpawnerRecipeRegistry.getInstance().setAllowUnconfiguredMobs(entity.isDisabled());
+          PoweredSpawnerRecipeRegistry.getInstance().setAllowUnconfiguredMobs(!entity.isDisabled());
         } else if (entity.isDisabled()) {
           PoweredSpawnerRecipeRegistry.getInstance().addToBlacklist(entity.getMob().getEntityName());
         } else {
