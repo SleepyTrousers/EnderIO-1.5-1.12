@@ -29,6 +29,31 @@ public enum Lang implements ILang {
   GUI_POWER_MONITOR_ENGINE_3(".gui.power_monitor.engine_section3"),
   GUI_POWER_MONITOR_ENGINE_4(".gui.power_monitor.engine_section4"),
   GUI_POWER_MONITOR_ENGINE_5(".gui.power_monitor.engine_section5"),
+  GUI_POWER_MONITOR_OF(".gui.power_monitor.of"),
+
+  // Conduit Probe
+  GUI_CONDUIT_PROBE_NETWORK_HEADING(".gui.conduit_probe.network_heading"),
+  GUI_CONDUIT_PROBE_CONDUIT_BUFFER(".gui.conduit_probe.conduit_buffer"),
+  GUI_CONDUIT_PROBE_REQUEST_RANGE(".gui.conduit_probe.request_range"),
+  GUI_CONDUIT_PROBE_CURRENT_REQUEST(".gui.conduit_probe.current_request"),
+  GUI_CONDUIT_PROBE_ITEM_HEADING(".gui.conduit_probe.item_heading"),
+  GUI_CONDUIT_PROBE_ITEM_NO_CONNECTIONS(".gui.conduit_probe.item_no_connections"),
+  GUI_CONDUIT_PROBE_NO_POWER_FROM_SIDE(".gui.conduit_probe.no_power_from_side"),
+  GUI_CONDUIT_PROBE_CONNECTION_DIR(".gui.conduit_probe.connection_dir"),
+  GUI_CONDUIT_PROBE_EXTRACTED_ITEMS(".gui.conduit_probe.extracted_items"),
+  GUI_CONDUIT_PROBE_EXTRACTED_ITEM(".gui.conduit_probe.extracted_item"),
+  GUI_CONDUIT_PROBE_NO_OUTPUTS(".gui.conduit_probe.no_outputs"),
+  GUI_CONDUIT_PROBE_INSERTED_INTO(".gui.conduit_probe.inserted_into"),
+  GUI_CONDUIT_PROBE_NO_ITEMS(".gui.conduit_probe.no_items"),
+  GUI_CONDUIT_PROBE_NO_ITEM(".gui.conduit_probe.no_item"),
+  GUI_CONDUIT_PROBE_RECEIVE_ITEMS(".gui.conduit_probe.receive_items"),
+  GUI_CONDUIT_PROBE_RECEIVE_ITEM1(".gui.conduit_probe.receive_item1"),
+  GUI_CONDUIT_PROBE_RECEIVE_ITEM2(".gui.conduit_probe.receive_item2"),
+
+  GUI_ENERGY_CONDUIT(".gui.conduit_energy.header"),
+  GUI_ITEM_CONDUIT(".gui.conduit_item.header"),
+  GUI_FLUID_CONDUIT(".gui.conduit_fluid.header"),
+  GUI_REDSTONE_CONDUIT(".gui.conduit_redstone.header"),
 
   ;
 

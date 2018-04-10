@@ -200,4 +200,7 @@ public interface IConduit extends ICapabilityProvider {
 
   void updateEntity(@Nonnull World world); // Please, do not tick unless really, really needed!
 
+  @Nonnull
+  String getConduitProbeInfo();
+
 }

@@ -232,6 +232,12 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     return this;
   }
 
+  @Override
+  @Nonnull
+  public String getConduitProbeInfo() {
+    return "";
+  }
+
   /**
    * Inner class for holding the direction of capabilities.
    */

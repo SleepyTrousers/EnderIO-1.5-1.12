@@ -756,4 +756,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     return null;
   }
+
+  @Override
+  @Nonnull
+  public String getConduitProbeInfo() {
+    return "";
+  }
 }

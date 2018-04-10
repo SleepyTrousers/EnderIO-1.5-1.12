@@ -988,4 +988,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     return FilterGuiUtil.INDEX_OUTPUT_ITEM;
   }
 
+  @Override
+  @Nonnull
+  public String getConduitProbeInfo() {
+    return "";
+  }
+
 }

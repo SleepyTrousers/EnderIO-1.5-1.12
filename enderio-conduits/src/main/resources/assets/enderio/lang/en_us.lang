@@ -83,6 +83,30 @@ enderio.gui.power_monitor.average_output=Average output over 5 seconds
 enderio.gui.power_monitor.average_input=Average input over 5 seconds
 enderio.gui.power_monitor.no_network_error=No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
 
+# Conduit Probe
+enderio.gui.conduit_probe.network_heading=Power Network
+enderio.gui.conduit_probe.conduit_buffer=Internal Buffer
+enderio.gui.conduit_probe.request_range=Per tick request range
+enderio.gui.conduit_probe.current_request=Current request
+enderio.gui.conduit_probe.item_heading=Item Conduit
+enderio.gui.conduit_probe.item_no_connections=has no external connections
+enderio.gui.conduit_probe.no_power_from_side=cannot receive power from this side
+enderio.gui.conduit_probe.connection_dir=connection to:
+enderio.gui.conduit_probe.extracted_items=Extracted items
+enderio.gui.conduit_probe.extracted_item=Item
+enderio.gui.conduit_probe.no_outputs=has no valid outputs
+enderio.gui.conduit_probe.inserted_into=will be inserted into:
+enderio.gui.conduit_probe.no_items=Receives no items.
+enderio.gui.conduit_probe.no_item=Can not receive
+enderio.gui.conduit_probe.receive_items=Can receive items from:
+enderio.gui.conduit_probe.receive_item1=Can receive
+enderio.gui.conduit_probe.receive_item2=from:
+
+enderio.gui.conduit_energy.header=Energy Conduit
+enderio.gui.conduit_item.header=Item Conduit
+enderio.gui.conduit_fluid.header=Fluid Conduit
+enderio.gui.conduit_redstone.header=Redstone Conduit
+
 # Gauge
 tile.block_gauge.name=Energy Gauge
 tile.block_gauge.tooltip.detailed.line1=Displays energy levels of adjacent blocks.

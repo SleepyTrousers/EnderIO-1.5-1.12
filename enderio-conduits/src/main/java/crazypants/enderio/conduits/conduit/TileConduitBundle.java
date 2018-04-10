@@ -147,11 +147,14 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     return false;
   }
 
-  // TODO Make each conduit use its own probe data
   @Nonnull
   @Override
   public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
-    return new String[0];
+    StringBuilder sb = new StringBuilder();
+    for (IConduit con : getConduits()) {
+      sb.append(con.getConduitProbeInfo());
+    }
+    return sb.toString().split("\n");
   }
 
   @Override

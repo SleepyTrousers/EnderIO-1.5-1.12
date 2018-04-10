@@ -29,6 +29,7 @@ import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.PowerHandlerUtil;
@@ -41,6 +42,7 @@ import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.gui.GuiExternalConnection;
 import crazypants.enderio.conduits.gui.PowerSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
+import crazypants.enderio.powertools.lang.Lang;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -117,13 +119,93 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   }
 
   @Override
+  @Nonnull
+  public String getConduitProbeInfo() {
+    PowerConduitNetwork pcn = (PowerConduitNetwork) getNetwork();
+    NetworkPowerManager pm = pcn.getPowerManager();
+    PowerTracker tracker = pm.getTracker(this);
+
+    if (tracker != null) {
+      String color = "\u00A7a ";
+      StringBuilder sb = new StringBuilder();
+      sb.append(color);
+      sb.append(Lang.GUI_ENERGY_CONDUIT.get());
+
+      color = "\u00A79 ";
+      sb.append(color);
+      sb.append(Lang.GUI_CONDUIT_PROBE_CONDUIT_BUFFER.get());
+      sb.append(" ");
+      sb.append(LangPower.RF(getEnergyStored()));
+      sb.append(" ");
+      sb.append(Lang.GUI_POWER_MONITOR_OF.get());
+      sb.append(" ");
+      sb.append(LangPower.RF(getMaxEnergyStored()));
+      sb.append("\n");
+      sb.append(Lang.GUI_POWER_MONITOR_AVERAGE_OUTPUT.get());
+      sb.append(" ");
+      sb.append(LangPower.RF(tracker.getAverageRfTickSent()));
+      sb.append("\n");
+      sb.append(Lang.GUI_POWER_MONITOR_AVERAGE_INPUT.get());
+      sb.append(" ");
+      sb.append(LangPower.RF(tracker.getAverageRfTickRecieved()));
+
+      return sb.toString();
+    } else {
+      tracker = pm.getNetworkPowerTracker();
+      String color = "\u00A7a ";
+      StringBuilder sb = new StringBuilder();
+      sb.append(color);
+      sb.append(Lang.GUI_CONDUIT_PROBE_NETWORK_HEADING.get());
+      sb.append("\n");
+
+      color = "\u00A79 ";
+      sb.append(color);
+      sb.append(Lang.GUI_POWER_MONITOR_CONDUIT_STORAGE.get());
+      sb.append(" ");
+      sb.append(LangPower.RF(pm.getPowerInConduits()));
+      sb.append(" ");
+      sb.append(Lang.GUI_POWER_MONITOR_OF.get());
+      sb.append(" ");
+      sb.append(LangPower.RF(pm.getMaxPowerInConduits()));
+      sb.append("\n");
+      sb.append(Lang.GUI_POWER_MONITOR_CAPBANK_STORAGE.get());
+      sb.append(" ");
+      sb.append(LangPower.RF(pm.getPowerInCapacitorBanks()));
+      sb.append(" ");
+      sb.append(Lang.GUI_POWER_MONITOR_OF.get());
+      sb.append(" ");
+      sb.append(LangPower.RF(pm.getMaxPowerInCapacitorBanks()));
+      sb.append("\n");
+      sb.append(Lang.GUI_POWER_MONITOR_MACHINE_BUFFER.get());
+      sb.append(" ");
+      sb.append(LangPower.RF(pm.getPowerInReceptors()));
+      sb.append(" ");
+      sb.append(Lang.GUI_POWER_MONITOR_OF.get());
+      sb.append(" ");
+      sb.append(LangPower.RF(pm.getMaxPowerInReceptors()));
+      sb.append("\n");
+      sb.append(Lang.GUI_POWER_MONITOR_AVERAGE_OUTPUT.get());
+      sb.append(" ");
+      sb.append(LangPower.RF(tracker.getAverageRfTickSent()));
+      sb.append("\n");
+      sb.append(Lang.GUI_POWER_MONITOR_AVERAGE_INPUT.get());
+      sb.append(" ");
+      sb.append(LangPower.RF(tracker.getAverageRfTickRecieved()));
+
+      return sb.toString();
+    }
+  }
+
+  @Override
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     DyeColor col = DyeColor.getColorFromDye(player.getHeldItemMainhand());
     if (ConduitUtil.isProbeEquipped(player, hand)) {
-      if (!player.world.isRemote) {
-        // TODO PacketConduitProbe.sendInfoMessage(player, this);
-      }
-      return true;
+      // if (PacketConduitProbe.canCreatePacket(player.world, getBundle().getLocation())) {
+      // if (player.world.isRemote) {
+      // PacketHandler.INSTANCE.sendToServer(new PacketConduitProbe(getBundle().getLocation(), res.movingObjectPosition.sideHit));
+      // }
+      // }
+      return false;
     } else if (col != null && res.component != null && isColorBandRendered(res.component.dir)) {
       setExtractionSignalColor(res.component.dir, col);
       return true;
