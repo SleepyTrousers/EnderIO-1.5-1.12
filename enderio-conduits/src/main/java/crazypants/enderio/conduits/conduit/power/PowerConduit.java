@@ -120,7 +120,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   @Override
   @Nonnull
-  public String getConduitProbeInfo() {
+  public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
     PowerConduitNetwork pcn = (PowerConduitNetwork) getNetwork();
     NetworkPowerManager pm = pcn.getPowerManager();
     PowerTracker tracker = pm.getTracker(this);
@@ -200,11 +200,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     DyeColor col = DyeColor.getColorFromDye(player.getHeldItemMainhand());
     if (ConduitUtil.isProbeEquipped(player, hand)) {
-      // if (PacketConduitProbe.canCreatePacket(player.world, getBundle().getLocation())) {
-      // if (player.world.isRemote) {
-      // PacketHandler.INSTANCE.sendToServer(new PacketConduitProbe(getBundle().getLocation(), res.movingObjectPosition.sideHit));
-      // }
-      // }
       return false;
     } else if (col != null && res.component != null && isColorBandRendered(res.component.dir)) {
       setExtractionSignalColor(res.component.dir, col);

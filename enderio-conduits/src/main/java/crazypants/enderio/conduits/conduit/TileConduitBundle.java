@@ -152,7 +152,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
     StringBuilder sb = new StringBuilder();
     for (IConduit con : getConduits()) {
-      sb.append(con.getConduitProbeInfo());
+      sb.append(con.getConduitProbeInfo(player));
     }
     return sb.toString().split("\n");
   }

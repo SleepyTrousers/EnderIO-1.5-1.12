@@ -759,7 +759,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   @Nonnull
-  public String getConduitProbeInfo() {
+  public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
     return "";
   }
 }

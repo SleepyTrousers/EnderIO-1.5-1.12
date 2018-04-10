@@ -13,6 +13,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
@@ -30,6 +31,7 @@ import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ItemFilter;
+import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
@@ -41,6 +43,8 @@ import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.gui.GuiExternalConnection;
 import crazypants.enderio.conduits.gui.ItemSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
+import crazypants.enderio.powertools.lang.Lang;
+import crazypants.enderio.powertools.network.PacketHandler;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -48,6 +52,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
@@ -155,10 +160,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     if (ConduitUtil.isProbeEquipped(player, hand)) {
-      if (!player.world.isRemote) {
-        // TODO PacketConduitProbe.sendInfoMessage(player, this, null);
-      }
-      return true;
+      return false;
     } else if (ToolUtil.isToolEquipped(player, hand)) {
       if (!getBundle().getEntity().getWorld().isRemote) {
         if (res != null && res.component != null) {
@@ -185,8 +187,9 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
       if (res != null && res.component != null) {
         EnumFacing connDir = res.component.dir;
         if (connDir != null && containsExternalConnection(connDir)) {
-          if (!player.world.isRemote) {
+          if (player.world.isRemote) {
             // TODO PacketConduitProbe.sendInfoMessage(player, this, player.getHeldItem(hand));
+            PacketHandler.sendToServer(new PacketConduitProbe(getBundle().getLocation(), connDir));
           }
           return true;
         }
@@ -990,8 +993,96 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   @Nonnull
-  public String getConduitProbeInfo() {
-    return "";
+  public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
+    TextFormatting color;
+    StringBuilder sb = new StringBuilder();
+
+    ItemStack input = player.getHeldItemMainhand();
+
+    if (getExternalConnections().isEmpty()) {
+      sb.append(Lang.GUI_CONDUIT_PROBE_ITEM_HEADING.get());
+      sb.append(" ");
+      sb.append(Lang.GUI_CONDUIT_PROBE_ITEM_NO_CONNECTIONS.get());
+      sb.append("\n");
+    } else {
+      for (EnumFacing dir : getExternalConnections()) {
+        ConnectionMode mode = getConnectionMode(dir);
+        color = TextFormatting.GREEN;
+
+        sb.append(color);
+        sb.append(Lang.GUI_CONDUIT_PROBE_ITEM_HEADING.get());
+        sb.append(" ");
+        sb.append(Lang.GUI_CONDUIT_PROBE_CONNECTION_DIR.get());
+        sb.append(" ");
+        sb.append(dir);
+        sb.append("\n");
+
+        ItemConduitNetwork icn = getNetwork();
+        if (icn != null && mode.acceptsInput()) {
+          color = TextFormatting.BLUE;
+          sb.append(color);
+          sb.append(" ");
+
+          if (input.isEmpty()) {
+            sb.append(Lang.GUI_CONDUIT_PROBE_EXTRACTED_ITEMS.get());
+          } else {
+            sb.append(Lang.GUI_CONDUIT_PROBE_EXTRACTED_ITEM.get());
+            sb.append(" ");
+            sb.append(input.getDisplayName());
+          }
+          sb.append(" ");
+          List<String> targets = icn.getTargetsForExtraction(getBundle().getLocation().offset(dir), this, input);
+          if (targets.isEmpty()) {
+            sb.append(" ");
+            sb.append(Lang.GUI_CONDUIT_PROBE_NO_OUTPUTS.get());
+            sb.append(".\n");
+          } else {
+            sb.append(" ");
+            sb.append(Lang.GUI_CONDUIT_PROBE_INSERTED_INTO.get());
+            sb.append("\n");
+            for (String str : targets) {
+              sb.append("  - ");
+              sb.append(str);
+              sb.append(" ");
+              sb.append("\n");
+            }
+          }
+        }
+        if (icn != null && mode.acceptsOutput()) {
+          color = TextFormatting.BLUE;
+          sb.append(color + " ");
+
+          List<String> targets = icn.getInputSourcesFor(this, dir, input);
+          if (targets.isEmpty()) {
+            if (input.isEmpty()) {
+              sb.append(Lang.GUI_CONDUIT_PROBE_NO_ITEMS.get());
+            } else {
+              sb.append(Lang.GUI_CONDUIT_PROBE_NO_ITEM.get());
+              sb.append(" ");
+              sb.append(input.getDisplayName());
+            }
+          } else {
+            if (input.isEmpty()) {
+              sb.append(Lang.GUI_CONDUIT_PROBE_RECEIVE_ITEMS.get());
+            } else {
+              sb.append(Lang.GUI_CONDUIT_PROBE_RECEIVE_ITEM1.get());
+              sb.append(" ");
+              sb.append(input.getDisplayName());
+              sb.append(" ");
+              sb.append(EnderIO.lang.localize(Lang.GUI_CONDUIT_PROBE_RECEIVE_ITEM2.get()));
+            }
+            sb.append("\n");
+            for (String str : targets) {
+              sb.append("  - ");
+              sb.append(str);
+              sb.append("\n");
+            }
+          }
+
+        }
+      }
+    }
+    return sb.toString();
   }
 
 }
