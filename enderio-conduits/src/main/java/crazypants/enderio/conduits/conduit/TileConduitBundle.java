@@ -34,7 +34,10 @@ import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.geom.Offsets;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.diagnostics.Prof;
+import crazypants.enderio.base.filter.IFilter;
+import crazypants.enderio.base.filter.ITileFilterContainer;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
+import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
@@ -58,9 +61,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
 @Storable
-public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider {
+public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider, ITileFilterContainer {
 
   // TODO Fix duct-tape
   // TODO Check store
@@ -834,7 +838,48 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     return "SERVER: TileConduitBundle [pos=" + self.pos + ", conduits=" + self.getServerConduits() + "]";
   }
 
+  ////////////////////////////////////////////
   // FILTERS
+  ////////////////////////////////////////////
+
+  @Override
+  public void setFilter(int filterIndex, int param, IFilter filter) {
+    for (IConduit conduit : getConduits()) {
+      if (conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param))) {
+        IFilterHolder<IFilter> filterHolder = conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param));
+        if (filterHolder != null && (filterHolder.getInputFilterIndex() == filterIndex || filterHolder.getOutputFilterIndex() == filterIndex)) {
+          filterHolder.setFilter(filterIndex, param, filter);
+        }
+      }
+    }
+  }
+
+  @Override
+  public IFilter getFilter(int filterIndex, int param) {
+    for (IConduit conduit : getConduits()) {
+      if (conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param))) {
+        IFilterHolder<IFilter> filterHolder = conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param));
+        if (filterHolder != null && (filterHolder.getInputFilterIndex() == filterIndex || filterHolder.getOutputFilterIndex() == filterIndex)) {
+          return filterHolder.getFilter(filterIndex, param);
+        }
+      }
+    }
+    return null;
+  }
+
+  @Override
+  @Nullable
+  public IItemHandler getInventoryForSnapshot(int filterIndex, int param) {
+    for (IConduit conduit : getConduits()) {
+      if (conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param))) {
+        IFilterHolder<IFilter> filterHolder = conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param));
+        if (filterHolder != null && (filterHolder.getInputFilterIndex() == filterIndex || filterHolder.getOutputFilterIndex() == filterIndex)) {
+          return filterHolder.getInventoryForSnapshot(filterIndex, param);
+        }
+      }
+    }
+    return null;
+  }
 
   // @Override
   // public IItemFilter getFilter(int filterId, int param1) {

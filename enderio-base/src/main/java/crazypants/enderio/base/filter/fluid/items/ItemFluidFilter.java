@@ -1,4 +1,4 @@
-package crazypants.enderio.base.filter.item.items;
+package crazypants.enderio.base.filter.fluid.items;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilterContainer;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
+import crazypants.enderio.base.filter.fluid.FluidFilter;
+import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
-import crazypants.enderio.base.filter.gui.PowerItemFilterGui;
-import crazypants.enderio.base.filter.item.IItemFilter;
-import crazypants.enderio.base.filter.item.PowerItemFilter;
+import crazypants.enderio.base.filter.gui.FluidFilterGui;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
@@ -33,17 +33,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- *
- * @author matthias
- */
-public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade<IItemFilter>, IResourceTooltipProvider {
+public class ItemFluidFilter extends Item implements IItemFilterUpgrade<IFluidFilter>, IResourceTooltipProvider {
 
-  public static ItemPowerItemFilter create(@Nonnull IModObject modObject) {
-    return new ItemPowerItemFilter(modObject);
+  public static ItemFluidFilter create(@Nonnull IModObject modObject) {
+    return new ItemFluidFilter(modObject);
   }
 
-  protected ItemPowerItemFilter(@Nonnull IModObject modObject) {
+  protected ItemFluidFilter(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     setHasSubtypes(true);
@@ -52,8 +48,8 @@ public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade<IIte
   }
 
   @Override
-  public IItemFilter createFilterFromStack(@Nonnull ItemStack stack) {
-    IItemFilter filter = new PowerItemFilter();
+  public IFluidFilter createFilterFromStack(@Nonnull ItemStack stack) {
+    IFluidFilter filter = new FluidFilter();
     if (NbtValue.FILTER.hasTag(stack)) {
       filter.readFromNBT(NbtValue.FILTER.getTag(stack));
     }
@@ -88,8 +84,8 @@ public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade<IIte
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     Container container = player.openContainer;
     if (container != null && container instanceof IFilterContainer) {
-      return new PowerItemFilterGui(player.inventory, new ContainerFilter(player, (TileEntityBase) world.getTileEntity(pos), facing, param1),
-          world.getTileEntity(pos), ((IFilterContainer<IItemFilter>) container).getFilter(param1));
+      return new FluidFilterGui(player.inventory, new ContainerFilter(player, (TileEntityBase) world.getTileEntity(pos), facing, param1),
+          world.getTileEntity(pos), ((IFilterContainer<IFluidFilter>) container).getFilter(param1));
     }
     return null;
   }

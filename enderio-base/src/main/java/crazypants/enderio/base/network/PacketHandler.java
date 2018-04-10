@@ -8,6 +8,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.PacketConfigSync;
 import crazypants.enderio.base.config.factory.PacketConfigSyncNew;
 import crazypants.enderio.base.config.factory.PacketConfigSyncNew.PacketConfigSyncNewHandler;
+import crazypants.enderio.base.filter.network.PacketExistingItemFilterSnapshot;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelPowerPacket;
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFXPacket;
@@ -85,7 +86,7 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketDarkSteelSFXPacket.ServerHandler.class, PacketDarkSteelSFXPacket.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketDarkSteelSFXPacket.ClientHandler.class, PacketDarkSteelSFXPacket.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketFilterUpdate.Handler.class, PacketFilterUpdate.class, nextID(), Side.SERVER);
-
+    INSTANCE.registerMessage(PacketExistingItemFilterSnapshot.Handler.class, PacketExistingItemFilterSnapshot.class, PacketHandler.nextID(), Side.SERVER);
   }
 
 }

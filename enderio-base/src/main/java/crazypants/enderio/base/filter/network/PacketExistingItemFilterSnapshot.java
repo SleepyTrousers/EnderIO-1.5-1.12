@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.filter.capability.IFilterHolder;
+import crazypants.enderio.base.filter.ITileFilterContainer;
 import crazypants.enderio.base.filter.item.ExistingItemFilter;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import io.netty.buffer.ByteBuf;
@@ -49,11 +49,11 @@ public class PacketExistingItemFilterSnapshot extends PacketFilterUpdate {
 
     @Override
     public PacketExistingItemFilterSnapshot onMessage(PacketExistingItemFilterSnapshot message, MessageContext ctx) {
-      IFilterHolder<IItemFilter> filterHolder = message.getFilterHolder(ctx);
-      if (filterHolder == null) {
+      ITileFilterContainer filterContainer = message.getFilterContainer(ctx);
+      if (filterContainer == null) {
         return null;
       }
-      ExistingItemFilter filter = (ExistingItemFilter) filterHolder.getFilter(message.filterId, message.param1);
+      ExistingItemFilter filter = (ExistingItemFilter) filterContainer.getFilter(message.filterId, message.param1);
 
       switch (message.opcode) {
       case CLEAR:
@@ -61,7 +61,7 @@ public class PacketExistingItemFilterSnapshot extends PacketFilterUpdate {
         break;
 
       case SET: {
-        IItemHandler inv = filterHolder.getInventoryForSnapshot(message.filterId, message.param1);
+        IItemHandler inv = filterContainer.getInventoryForSnapshot(message.filterId, message.param1);
         if (inv != null) {
           filter.setSnapshot(inv);
         }
@@ -69,7 +69,7 @@ public class PacketExistingItemFilterSnapshot extends PacketFilterUpdate {
       }
 
       case MERGE: {
-        IItemHandler inv = filterHolder.getInventoryForSnapshot(message.filterId, message.param1);
+        IItemHandler inv = filterContainer.getInventoryForSnapshot(message.filterId, message.param1);
         if (inv != null) {
           filter.mergeSnapshot(inv);
         }
@@ -80,7 +80,7 @@ public class PacketExistingItemFilterSnapshot extends PacketFilterUpdate {
         throw new AssertionError();
       }
 
-      filterHolder.setFilter(message.filterId, message.param1, filter);
+      filterContainer.setFilter(message.filterId, message.param1, filter);
 
       return null;
     }

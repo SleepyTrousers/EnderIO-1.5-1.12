@@ -13,7 +13,9 @@ import com.enderio.core.common.inventory.EnderInventory.Type;
 import com.enderio.core.common.inventory.EnderSlot;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.filter.IFilterContainer;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
+import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.items.BasicFilterTypes;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +23,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, TileVacuumChest> implements IOpenFilterRemoteExec.Container {
+public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, TileVacuumChest>
+    implements IOpenFilterRemoteExec.Container, IFilterContainer<IItemFilter> {
 
   private Slot filterSlot;
   private Runnable filterChangedCB;
@@ -92,6 +95,11 @@ public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, Tile
       }
     }
     return null;
+  }
+
+  @Override
+  public IItemFilter getFilter(int index) {
+    return getTileEntity().getItemFilter();
   }
 
 }

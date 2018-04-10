@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
@@ -15,8 +17,12 @@ import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.filter.FilterRegistry;
+import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
+import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.fluid.FluidFilter;
 import crazypants.enderio.base.filter.fluid.IFluidFilter;
+import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
@@ -41,7 +47,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.conduits.init.ConduitObject.item_liquid_conduit;
 
-public class EnderLiquidConduit extends AbstractLiquidConduit implements IConduitComponent {
+public class EnderLiquidConduit extends AbstractLiquidConduit implements IConduitComponent, IFilterHolder<IFluidFilter> {
 
   public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_ender");
   public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core_ender");
@@ -52,6 +58,17 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   private final EnumMap<EnumFacing, IFluidFilter> outputFilters = new EnumMap<EnumFacing, IFluidFilter>(EnumFacing.class);
   private final EnumMap<EnumFacing, IFluidFilter> inputFilters = new EnumMap<EnumFacing, IFluidFilter>(EnumFacing.class);
+  private final EnumMap<EnumFacing, ItemStack> outputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
+  private final EnumMap<EnumFacing, ItemStack> inputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
+
+  public EnderLiquidConduit() {
+    super();
+    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+      EnumFacing dir = itr.next();
+      outputFilterUpgrades.put(dir, ItemStack.EMPTY);
+      inputFilterUpgrades.put(dir, ItemStack.EMPTY);
+    }
+  }
 
   @Override
   @Nonnull
@@ -123,6 +140,26 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     } else {
       outputFilters.put(dir, filter);
     }
+    setClientStateDirty();
+  }
+
+  @Nonnull
+  public ItemStack getFilterStack(@Nonnull EnumFacing dir, boolean isInput) {
+    if (isInput) {
+      return inputFilterUpgrades.get(dir);
+    } else {
+      return outputFilterUpgrades.get(dir);
+    }
+  }
+
+  public void setFilterStack(@Nonnull EnumFacing dir, @Nonnull ItemStack stack, boolean isInput) {
+    if (isInput) {
+      inputFilterUpgrades.put(dir, stack);
+    } else {
+      outputFilterUpgrades.put(dir, stack);
+    }
+    setFilter(dir, FilterRegistry.<IFluidFilter> getFilterForUpgrade(stack), isInput);
+    setClientStateDirty();
   }
 
   @Override
@@ -333,27 +370,57 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     }
   }
 
+  private boolean isDefault(IFluidFilter f) {
+    if (f instanceof FluidFilter) {
+      return ((FluidFilter) f).isDefault();
+    }
+    return false;
+  }
+
   @Override
   public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
     for (Entry<EnumFacing, IFluidFilter> entry : inputFilters.entrySet()) {
       if (entry.getValue() != null) {
         IFluidFilter f = entry.getValue();
-        if (f != null && !f.isDefault()) {
+        if (!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
-          f.writeToNBT(itemRoot);
-          nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
+          FilterRegistry.writeFilterToNbt(f, itemRoot);
+          nbtRoot.setTag("inFluidFilts." + entry.getKey().name(), itemRoot);
         }
       }
     }
     for (Entry<EnumFacing, IFluidFilter> entry : outputFilters.entrySet()) {
       if (entry.getValue() != null) {
         IFluidFilter f = entry.getValue();
-        if (f != null && !f.isDefault()) {
+        if (!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
-          f.writeToNBT(itemRoot);
-          nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
+          FilterRegistry.writeFilterToNbt(f, itemRoot);
+          nbtRoot.setTag("outFluidFilts." + entry.getKey().name(), itemRoot);
         }
+      }
+    }
+    for (Entry<EnumFacing, ItemStack> entry : inputFilterUpgrades.entrySet()) {
+      if (entry.getValue() != null) {
+        ItemStack up = entry.getValue();
+        IFluidFilter filter = getFilter(entry.getKey(), true);
+        FilterRegistry.writeFilterToStack(filter, up);
+
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        up.writeToNBT(itemRoot);
+        nbtRoot.setTag("inputFluidFilterUpgrades." + entry.getKey().name(), itemRoot);
+      }
+    }
+
+    for (Entry<EnumFacing, ItemStack> entry : outputFilterUpgrades.entrySet()) {
+      if (entry.getValue() != null) {
+        ItemStack up = entry.getValue();
+        IFluidFilter filter = getFilter(entry.getKey(), false);
+        FilterRegistry.writeFilterToStack(filter, up);
+
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        up.writeToNBT(itemRoot);
+        nbtRoot.setTag("outputFluidFilterUpgrades." + entry.getKey().name(), itemRoot);
       }
     }
   }
@@ -362,27 +429,48 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
     for (EnumFacing dir : EnumFacing.VALUES) {
-      String key = "inFilts." + dir.name();
+      String key = "inFluidFilts." + dir.name();
       if (nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
-        FluidFilter f = new FluidFilter();
-        f.readFromNBT(filterTag);
-        if (!f.isEmpty()) {
-          inputFilters.put(dir, f);
-        }
+        IFluidFilter filter = (IFluidFilter) FilterRegistry.loadFilterFromNbt(filterTag);
+        inputFilters.put(dir, filter);
       }
 
-      key = "outFilts." + dir.name();
+      key = "inputFluidFilterUpgrades." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemStack ups = new ItemStack(upTag);
+        inputFilterUpgrades.put(dir, ups);
+      }
+
+      key = "outputFluidFilterUpgrades." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemStack ups = new ItemStack(upTag);
+        outputFilterUpgrades.put(dir, ups);
+      }
+
+      key = "outFluidFilts." + dir.name();
       if (nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
-        FluidFilter f = new FluidFilter();
-        f.readFromNBT(filterTag);
-        if (!f.isEmpty()) {
-          outputFilters.put(dir, f);
-        }
+        IFluidFilter filter = (IFluidFilter) FilterRegistry.loadFilterFromNbt(filterTag);
+        outputFilters.put(dir, filter);
       }
+
+      // TODO remove this later
+      generateFiltersFromItems();
     }
 
+  }
+
+  private void generateFiltersFromItems() {
+    for (EnumFacing facing : EnumFacing.VALUES) {
+      ItemStack stack = outputFilterUpgrades.get(facing);
+      if (!stack.isEmpty()) {
+        IFluidFilter filter = FilterRegistry.getFilterForUpgrade(stack);
+        outputFilters.put(facing, filter);
+      }
+    }
   }
 
   @Override
@@ -391,12 +479,73 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     return new EnderLiquidConduitNetwork();
   }
 
+  @Override
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY && containsExternalConnection(facing)) {
+      return true;
+    }
+    return super.hasCapability(capability, facing);
+  }
+
+  // FILTERS
+
+  @Override
+  @Nonnull
+  public ItemStack getFilterStack(int filterIndex, int param1) {
+    if (filterIndex == FilterGuiUtil.INDEX_INPUT_FLUID) {
+      return getFilterStack(EnumFacing.getFront(param1), true);
+    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_FLUID) {
+      return getFilterStack(EnumFacing.getFront(param1), false);
+    }
+    return ItemStack.EMPTY;
+  }
+
+  @Override
+  public IFluidFilter getFilter(int filterIndex, int param1) {
+    if (filterIndex == FilterGuiUtil.INDEX_INPUT_FLUID) {
+      return getFilter(EnumFacing.getFront(param1), true);
+    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_FLUID) {
+      return getFilter(EnumFacing.getFront(param1), false);
+    }
+    return null;
+  }
+
+  @Override
+  public void setFilter(int filterIndex, int param1, @Nonnull IFluidFilter filter) {
+    if (filterIndex == FilterGuiUtil.INDEX_INPUT_FLUID) {
+      setFilter(EnumFacing.getFront(param1), filter, true);
+    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_FLUID) {
+      setFilter(EnumFacing.getFront(param1), filter, false);
+    }
+  }
+
+  @Override
+  public void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack) {
+    if (filterIndex == FilterGuiUtil.INDEX_INPUT_FLUID) {
+      setFilterStack(EnumFacing.getFront(param1), stack, true);
+    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_FLUID) {
+      setFilterStack(EnumFacing.getFront(param1), stack, false);
+    }
+  }
+
+  @Override
+  public int getInputFilterIndex() {
+    return FilterGuiUtil.INDEX_INPUT_FLUID;
+  }
+
+  @Override
+  public int getOutputFilterIndex() {
+    return FilterGuiUtil.INDEX_OUTPUT_FLUID;
+  }
+
   @SuppressWarnings("unchecked")
   @Nullable
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) new ConnectionEnderLiquidSide(facing);
+    } else if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
+      return (T) this;
     }
     return null;
   }

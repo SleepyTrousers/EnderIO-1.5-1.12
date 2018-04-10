@@ -1,22 +1,18 @@
-package crazypants.enderio.base.filter.capability;
+package crazypants.enderio.base.filter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.base.filter.IFilter;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
 /**
- * Simple capability handler for Filters
+ * Interface to allow the implementation of filter access for tile entities. Used on conduit bundles and vac chest
  *
- * @param <T>
- *          Type of Filter
  */
-public interface IFilterHolder<T extends IFilter> {
+public interface ITileFilterContainer {
 
   /**
-   * Gets a filter from the capability
+   * Gets a filter from the tile. This is only used by the existing item filter
    * 
    * @param filterIndex
    *          The id of the filter, specifically used by conduits to identify if the filter is a input or output filter
@@ -24,10 +20,10 @@ public interface IFilterHolder<T extends IFilter> {
    *          An extra parameter for even more specific filter selection, see conduits using it for facing
    * @return the Filter of type T
    */
-  T getFilter(int filterIndex, int param1);
+  IFilter getFilter(int filterIndex, int param1);
 
   /**
-   * Sets the filter of the capability
+   * Sets the filter of the tile
    * 
    * @param filterIndex
    *          The id of the filter location
@@ -36,7 +32,7 @@ public interface IFilterHolder<T extends IFilter> {
    * @param filter
    *          The filter to set it to
    */
-  void setFilter(int filterIndex, int param1, @Nonnull T filter);
+  void setFilter(int filterIndex, int param1, @Nonnull IFilter filter);
 
   /**
    * Used by the existing item filter to get the inventory it is connected to
@@ -51,14 +47,5 @@ public interface IFilterHolder<T extends IFilter> {
   default IItemHandler getInventoryForSnapshot(int filterIndex, int param1) {
     return null;
   }
-
-  @Nonnull
-  ItemStack getFilterStack(int filterIndex, int param1);
-
-  void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack);
-
-  int getInputFilterIndex();
-
-  int getOutputFilterIndex();
 
 }

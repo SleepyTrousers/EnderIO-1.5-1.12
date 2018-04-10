@@ -71,8 +71,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     priority = buf.readInt();
     colIn = DyeColor.values()[buf.readShort()];
     colOut = DyeColor.values()[buf.readShort()];
-    inputFilter = FilterRegistry.readFilter(buf);
-    outputFilter = FilterRegistry.readFilter(buf);
+    inputFilter = (IItemFilter) FilterRegistry.readFilter(buf);
+    outputFilter = (IItemFilter) FilterRegistry.readFilter(buf);
   }
 
   public static class Handler implements IMessageHandler<PacketItemConduitFilter, IMessage> {

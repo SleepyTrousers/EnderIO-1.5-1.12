@@ -19,7 +19,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-public abstract class AbstractGuiItemFilter extends GuiContainerBaseEIO implements ICloseFilterRemoteExec.GUI {
+public abstract class AbstractFilterGui extends GuiContainerBaseEIO implements ICloseFilterRemoteExec.GUI {
 
   private static final int ID_CLOSE_WINDOW_BUTTON = 12615;
 
@@ -28,17 +28,17 @@ public abstract class AbstractGuiItemFilter extends GuiContainerBaseEIO implemen
 
   private final IconButton closeWindowButton;
 
-  public AbstractGuiItemFilter(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
+  public AbstractFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
     this(playerInv, filterContainer, te, "item_filter");
   }
 
-  protected AbstractGuiItemFilter(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull String... texture) {
+  protected AbstractFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull String... texture) {
     super(filterContainer, texture);
     this.filterContainer = filterContainer;
     xSize = 189;
     ySize = 207;
 
-    isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_OUTPUT);
+    isStickyModeAvailable = (filterContainer.getFilterIndex() == FilterGuiUtil.INDEX_OUTPUT_ITEM);
 
     closeWindowButton = new IconButton(this, ID_CLOSE_WINDOW_BUTTON, 3, 3, IconEIO.ARROW_LEFT);
     closeWindowButton.setToolTip(Lang.GUI_ITEM_FILTER_CLOSE.get(), Lang.GUI_ITEM_FILTER_CLOSE_2.get());

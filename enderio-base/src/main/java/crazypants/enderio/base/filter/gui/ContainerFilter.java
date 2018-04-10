@@ -10,36 +10,26 @@ import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.TileEntityBase;
 import com.enderio.core.common.inventory.EnderInventory;
 
-import crazypants.enderio.base.filter.IFilter;
-import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
-import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.network.ICloseFilterRemoteExec;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerFilter<I extends IFilter> extends ContainerEnderCap<EnderInventory, TileEntityBase> implements ICloseFilterRemoteExec.Container {
+public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntityBase> implements ICloseFilterRemoteExec.Container {
 
   private EnumFacing dir;
-  private IFilterHolder<I> filterHolder;
   private @Nonnull EntityPlayer player;
 
   // Used to hold extra information about the original filter container (e.g. which filter it is inside a conduit)
-  public int filterIndex;
+  private int filterIndex;
 
-  public ContainerFilter(@Nonnull InventoryPlayer playerInv, int filterIndex, TileEntityBase te, EnumFacing dir) {
-    super(playerInv, new EnderInventory(), te);
+  public ContainerFilter(@Nonnull EntityPlayer player, TileEntityBase te, EnumFacing dir, int filterIndex) {
+    super(player.inventory, new EnderInventory(), te);
+    this.player = player;
     this.dir = dir;
     this.filterIndex = filterIndex;
-    this.player = playerInv.player;
-
-    if (te.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
-      filterHolder = te.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
-    }
-
   }
 
   public int getParam1() {
@@ -49,13 +39,6 @@ public class ContainerFilter<I extends IFilter> extends ContainerEnderCap<EnderI
   @Override
   protected void addSlots() {
 
-  }
-
-  public I getItemFilter() {
-    if (filterHolder != null) {
-      return filterHolder.getFilter(filterIndex, dir != null ? dir.ordinal() : -1);
-    }
-    return null;
   }
 
   // TODO move ghost slots here
@@ -78,6 +61,10 @@ public class ContainerFilter<I extends IFilter> extends ContainerEnderCap<EnderI
   @Override
   public int getGuiID() {
     return guiId;
+  }
+
+  public int getFilterIndex() {
+    return filterIndex;
   }
 
   @Override

@@ -5,8 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.base.conduit.PacketOpenConduitUI;
-import crazypants.enderio.base.filter.network.PacketExistingItemFilterSnapshot;
-import crazypants.enderio.base.filter.network.PacketModItemFilter;
 import crazypants.enderio.conduits.EnderIOConduits;
 import crazypants.enderio.conduits.conduit.liquid.PacketConduitFluidLevel;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -42,13 +40,12 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketExtractMode.Handler.class, PacketExtractMode.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketConnectionMode.Handler.class, PacketConnectionMode.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketItemConduitFilter.Handler.class, PacketItemConduitFilter.class, PacketHandler.nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketExistingItemFilterSnapshot.Handler.class, PacketExistingItemFilterSnapshot.class, PacketHandler.nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketModItemFilter.Handler.class, PacketModItemFilter.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketFluidFilter.Handler.class, PacketFluidFilter.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketRedstoneConduitSignalColor.Handler.class, PacketRedstoneConduitSignalColor.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketRedstoneConduitOutputStrength.Handler.class, PacketRedstoneConduitOutputStrength.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketOpenConduitUI.Handler.class, PacketOpenConduitUI.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketSlotVisibility.Handler.class, PacketSlotVisibility.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketConduitFilter.Handler.class, PacketConduitFilter.class, PacketHandler.nextID(), Side.SERVER);
   }
 
 }

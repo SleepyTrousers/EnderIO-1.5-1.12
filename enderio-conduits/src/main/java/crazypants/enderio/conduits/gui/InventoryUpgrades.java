@@ -6,7 +6,6 @@ import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
-import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -41,9 +40,9 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     case 0:
       return upgradeHolder != null ? upgradeHolder.getUpgradeStack(dir.ordinal()) : ItemStack.EMPTY;
     case 2:
-      return filterHolder != null ? filterHolder.getFilterStack(FilterGuiUtil.INDEX_INPUT, dir.ordinal()) : ItemStack.EMPTY;
+      return filterHolder != null ? filterHolder.getFilterStack(filterHolder.getInputFilterIndex(), dir.ordinal()) : ItemStack.EMPTY;
     case 3:
-      return filterHolder != null ? filterHolder.getFilterStack(FilterGuiUtil.INDEX_OUTPUT, dir.ordinal()) : ItemStack.EMPTY;
+      return filterHolder != null ? filterHolder.getFilterStack(filterHolder.getOutputFilterIndex(), dir.ordinal()) : ItemStack.EMPTY;
     default:
       return ItemStack.EMPTY;
     }
@@ -98,12 +97,12 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
       break;
     case 2:
       if (filterHolder != null) {
-        filterHolder.setFilterStack(FilterGuiUtil.INDEX_INPUT, dir.ordinal(), stack);
+        filterHolder.setFilterStack(filterHolder.getInputFilterIndex(), dir.ordinal(), stack);
       }
       break;
     case 3:
       if (filterHolder != null) {
-        filterHolder.setFilterStack(FilterGuiUtil.INDEX_OUTPUT, dir.ordinal(), stack);
+        filterHolder.setFilterStack(filterHolder.getOutputFilterIndex(), dir.ordinal(), stack);
       }
       break;
     }

@@ -10,9 +10,9 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
+import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ModItemFilter;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
-import crazypants.enderio.base.filter.network.PacketModItemFilter;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
@@ -23,7 +23,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ModItemFilterGui extends AbstractGuiItemFilter {
+public class ModItemFilterGui extends AbstractFilterGui {
 
   private static final int MOD_NAME_COLOR = ColorUtil.getRGB(Color.white);
 
@@ -42,10 +42,10 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
   private final GuiToolTip stackInsertTooltip2;
   private final GuiToolTip stackInsertTooltip3;
 
-  public ModItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
+  public ModItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, IItemFilter filterIn) {
     super(playerInv, filterContainer, te, "mod_item_filter");
 
-    filter = (ModItemFilter) filterContainer.getItemFilter();
+    filter = (ModItemFilter) filterIn;
     inputOffsetX = getGuiLeft() + 20;
     tfWidth = 96;
 
@@ -139,16 +139,14 @@ public class ModItemFilterGui extends AbstractGuiItemFilter {
   }
 
   private void setMod(int i, @Nonnull ItemStack st) {
-    String mod = filter.setMod(i, st);
-    PacketHandler.INSTANCE
-        .sendToServer(new PacketModItemFilter(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1(), i, mod));
-
+    filter.setMod(i, st);
+    sendFilterChange();
   }
 
   private void sendFilterChange() {
     updateButtons();
     PacketHandler.INSTANCE
-        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
+        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.getFilterIndex(), filterContainer.getParam1()));
   }
 
   @Override

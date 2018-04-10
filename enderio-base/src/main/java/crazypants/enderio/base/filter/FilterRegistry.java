@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.util.NbtValue;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
@@ -30,7 +29,7 @@ public class FilterRegistry {
     return NbtValue.FILTER.hasTag(stack);
   }
 
-  public static void writeFilterToStack(@Nullable IItemFilter filter, @Nonnull ItemStack stack) {
+  public static void writeFilterToStack(@Nullable IFilter filter, @Nonnull ItemStack stack) {
     if (filter == null) {
       return;
     }
@@ -39,7 +38,7 @@ public class FilterRegistry {
     NbtValue.FILTER.setTag(stack, filterRoot);
   }
 
-  public static void writeFilterToNbt(@Nullable IItemFilter filter, @Nonnull NBTTagCompound filterTag) {
+  public static void writeFilterToNbt(@Nullable IFilter filter, @Nonnull NBTTagCompound filterTag) {
     if (filter == null) {
       return;
     }
@@ -47,7 +46,7 @@ public class FilterRegistry {
     filter.writeToNBT(filterTag);
   }
 
-  public static IItemFilter loadFilterFromNbt(@Nullable NBTTagCompound filterTag) {
+  public static IFilter loadFilterFromNbt(@Nullable NBTTagCompound filterTag) {
     if (filterTag == null) {
       return null;
     }
@@ -55,10 +54,10 @@ public class FilterRegistry {
     return loadFilterFromNbt(className, filterTag);
   }
 
-  private static IItemFilter loadFilterFromNbt(@Nullable String className, @Nonnull NBTTagCompound tag) {
+  private static IFilter loadFilterFromNbt(@Nullable String className, @Nonnull NBTTagCompound tag) {
     try {
       Class<?> clz = Class.forName(className);
-      IItemFilter filter = (IItemFilter) clz.newInstance();
+      IFilter filter = (IFilter) clz.newInstance();
       filter.readFromNBT(tag);
       return filter;
     } catch (Exception e) {
@@ -67,10 +66,10 @@ public class FilterRegistry {
     }
   }
 
-  private static IItemFilter loadFilterFromByteBuf(@Nonnull String className, @Nonnull ByteBuf buf) {
+  private static IFilter loadFilterFromByteBuf(@Nonnull String className, @Nonnull ByteBuf buf) {
     try {
       Class<?> clz = Class.forName(className);
-      IItemFilter filter = (IItemFilter) clz.newInstance();
+      IFilter filter = (IFilter) clz.newInstance();
       filter.readFromByteBuf(buf);
       return filter;
     } catch (Exception e) {
@@ -79,7 +78,7 @@ public class FilterRegistry {
     }
   }
 
-  public static void writeFilter(@Nonnull ByteBuf buf, @Nullable IItemFilter filter) {
+  public static void writeFilter(@Nonnull ByteBuf buf, @Nullable IFilter filter) {
     if (filter == null) {
       ByteBufUtils.writeUTF8String(buf, "nullFilter");
       return;
@@ -89,7 +88,7 @@ public class FilterRegistry {
     filter.writeToByteBuf(buf);
   }
 
-  public static IItemFilter readFilter(@Nonnull ByteBuf buf) {
+  public static IFilter readFilter(@Nonnull ByteBuf buf) {
     String className = ByteBufUtils.readUTF8String(buf);
     if (className.equals("nullFilter")) {
       return null;
