@@ -6,6 +6,7 @@ import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilter;
+import crazypants.enderio.base.filter.ITileFilterContainer;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
@@ -50,7 +51,24 @@ public class PacketFilterUpdate extends MessageTileEntity<TileEntity> {
     filter = FilterRegistry.readFilter(buf);
   }
 
-  public IFilterHolder<IFilter> getFilterHolder(MessageContext ctx) {
+  public ITileFilterContainer getFilterContainer(MessageContext ctx) {
+    if (ctx.side == Side.SERVER) {
+      if (ctx.getServerHandler().player.openContainer instanceof ContainerFilter) {
+        final TileEntity tileEntity = ((ContainerFilter) ctx.getServerHandler().player.openContainer).getTileEntity();
+        if (tileEntity == null || !tileEntity.getPos().equals(getPos())) {
+          Log.warn("Player " + ctx.getServerHandler().player.getName() + " tried to manipulate a filter while another gui was open!");
+          return null;
+        } else {
+          if (tileEntity instanceof ITileFilterContainer) {
+            return (ITileFilterContainer) tileEntity;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  public IFilterHolder<IFilter> getFilterHolderCapability(MessageContext ctx) {
     if (ctx.side == Side.SERVER) {
       if (ctx.getServerHandler().player.openContainer instanceof ContainerFilter) {
         final TileEntity tileEntity = ((ContainerFilter) ctx.getServerHandler().player.openContainer).getTileEntity();
@@ -71,9 +89,9 @@ public class PacketFilterUpdate extends MessageTileEntity<TileEntity> {
 
     @Override
     public IMessage onMessage(PacketFilterUpdate message, MessageContext ctx) {
-      IFilterHolder<IFilter> filterHolder = message.getFilterHolder(ctx);
-      if (filterHolder != null) {
-        filterHolder.setFilter(message.filterId, message.param1, message.filter);
+      ITileFilterContainer filterContainer = message.getFilterContainer(ctx);
+      if (filterContainer != null) {
+        filterContainer.setFilter(message.filterId, message.param1, message.filter);
       }
       return null;
     }

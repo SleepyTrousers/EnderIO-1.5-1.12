@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.NBTAction;
@@ -19,10 +18,9 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.filter.FilterHandler;
 import crazypants.enderio.base.filter.FilterRegistry;
+import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
-import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
-import crazypants.enderio.base.filter.capability.IFilterHolder;
-import crazypants.enderio.base.filter.gui.FilterGuiUtil;
+import crazypants.enderio.base.filter.ITileFilterContainer;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
@@ -40,19 +38,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ClassInheritanceMultiMap;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.IItemHandler;
 
 @Storable
 public class TileVacuumChest extends AbstractCapabilityMachineEntity
-    implements IRedstoneModeControlable, IPaintable.IPaintableTileEntity, IRanged, IFilterHolder<IItemFilter> {
+    implements IRedstoneModeControlable, IPaintable.IPaintableTileEntity, IRanged, ITileFilterContainer {
 
   private static PredicateItemStack PREDICATE_FILTER = new PredicateItemStack() {
     @Override
@@ -264,60 +259,9 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity
 
   // RANGE END
 
-  // FILTER START
-
   @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
-      return true;
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
-      return (T) this;
-    }
-    return super.getCapability(capability, facingIn);
-  }
-
-  @Override
-  public IItemFilter getFilter(int filterId, int param1) {
-    return getItemFilter();
-  }
-
-  @Override
-  public void setFilter(int filterId, int param1, @Nonnull IItemFilter filter) {
-    this.filter = filter;
-    markDirty();
-  }
-
-  @Override
-  public IItemHandler getInventoryForSnapshot(int filterId, int param1) {
-    return getInventory();
-  }
-
-  @Override
-  @Nonnull
-  public ItemStack getFilterStack(int filterIndex, int param1) {
-    return getInventory().getSlot("filter").get();
-  }
-
-  @Override
-  public void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack) {
-    getInventory().getSlot("filter").set(stack);
-  }
-
-  @Override
-  public int getInputFilterIndex() {
-    return FilterGuiUtil.INDEX_NONE;
-  }
-
-  @Override
-  public int getOutputFilterIndex() {
-    return FilterGuiUtil.INDEX_NONE;
+  public void setFilter(int filterIndex, int param, IFilter filter) {
+    this.filter = (IItemFilter) filter;
   }
 
 }

@@ -8,6 +8,7 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.filter.fluid.FluidFilter;
+import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.Lang;
@@ -32,13 +33,13 @@ public class FluidFilterGui extends AbstractFilterGui {
   private int xOffset;
   private int yOffset;
 
-  public FluidFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
+  public FluidFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, IFluidFilter filterIn) {
     super(playerInv, filterContainer, te, "basic_item_filter");
 
     xOffset = 13;
     yOffset = 34;
 
-    filter = (FluidFilter) filterContainer.getItemFilter();
+    filter = (FluidFilter) filterIn;
 
     int butLeft = xOffset + 98;
 
@@ -89,7 +90,7 @@ public class FluidFilterGui extends AbstractFilterGui {
   public void sendFilterChange() {
     updateButtons();
     PacketHandler.INSTANCE
-        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
+        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.getFilterIndex(), filterContainer.getParam1()));
   }
 
   @Override

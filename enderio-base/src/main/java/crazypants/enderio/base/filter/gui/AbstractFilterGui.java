@@ -38,7 +38,7 @@ public abstract class AbstractFilterGui extends GuiContainerBaseEIO implements I
     xSize = 189;
     ySize = 207;
 
-    isStickyModeAvailable = (filterContainer.filterIndex == FilterGuiUtil.INDEX_OUTPUT_ITEM);
+    isStickyModeAvailable = (filterContainer.getFilterIndex() == FilterGuiUtil.INDEX_OUTPUT_ITEM);
 
     closeWindowButton = new IconButton(this, ID_CLOSE_WINDOW_BUTTON, 3, 3, IconEIO.ARROW_LEFT);
     closeWindowButton.setToolTip(Lang.GUI_ITEM_FILTER_CLOSE.get(), Lang.GUI_ITEM_FILTER_CLOSE_2.get());

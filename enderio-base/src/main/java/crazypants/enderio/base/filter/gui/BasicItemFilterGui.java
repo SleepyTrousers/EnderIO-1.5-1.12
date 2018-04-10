@@ -11,6 +11,7 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
+import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ItemFilter;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
@@ -44,16 +45,17 @@ public class BasicItemFilterGui extends AbstractFilterGui {
   private int xOffset;
   private int yOffset;
 
-  public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
-    this(playerInv, filterContainer, 13, 34, te);
+  public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, IItemFilter filter) {
+    this(playerInv, filterContainer, 13, 34, te, filter);
   }
 
-  public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, int xOffset, int yOffset, TileEntity te) {
+  public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, int xOffset, int yOffset, TileEntity te,
+      IItemFilter filterIn) {
     super(playerInv, filterContainer, te, "basic_item_filter", "advanced_item_filter", "big_item_filter");
     this.xOffset = xOffset;
     this.yOffset = yOffset;
 
-    filter = (ItemFilter) filterContainer.getItemFilter();
+    filter = (ItemFilter) filterIn;
 
     isAdvanced = filter.isAdvanced();
     isLimited = filter.isLimited();
@@ -183,7 +185,7 @@ public class BasicItemFilterGui extends AbstractFilterGui {
   public void sendFilterChange() {
     updateButtons();
     PacketHandler.INSTANCE
-        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
+        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.getFilterIndex(), filterContainer.getParam1()));
   }
 
   @Override

@@ -11,6 +11,7 @@ import com.enderio.core.client.gui.button.ToggleButton;
 import crazypants.enderio.base.filter.gui.AbstractFilterGui;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
+import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.Lang;
@@ -35,18 +36,18 @@ public class SpeciesItemFilterGui extends AbstractFilterGui {
   private int xOffset;
   private int yOffset;
 
-  public SpeciesItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
-    this(playerInv, filterContainer, te, 13, 34, 0);
+  public SpeciesItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, IItemFilter filter) {
+    this(playerInv, filterContainer, te, 13, 34, 0, filter);
   }
 
   public SpeciesItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, int xOffset, int yOffset,
-      int buttonIdOffset) {
+      int buttonIdOffset, IItemFilter filterIn) {
     super(playerInv, filterContainer, te, "advanced_item_filter");
     this.xOffset = xOffset;
     this.yOffset = yOffset;
     this.buttonIdOffset = buttonIdOffset;
 
-    filter = (SpeciesItemFilter) filterContainer.getItemFilter();
+    filter = (SpeciesItemFilter) filterIn;
 
     int butLeft = xOffset + 98;
     int x = butLeft;
@@ -121,7 +122,7 @@ public class SpeciesItemFilterGui extends AbstractFilterGui {
   private void sendFilterChange() {
     updateButtons();
     PacketHandler.INSTANCE
-        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
+        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.getFilterIndex(), filterContainer.getParam1()));
   }
 
   @Override

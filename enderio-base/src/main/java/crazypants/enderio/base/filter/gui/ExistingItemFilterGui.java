@@ -15,6 +15,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.filter.item.ExistingItemFilter;
+import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.network.PacketExistingItemFilterSnapshot;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
@@ -56,10 +57,10 @@ public class ExistingItemFilterGui extends AbstractFilterGui {
 
   private @Nonnull ExistingItemFilter filter;
 
-  public ExistingItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
+  public ExistingItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull IItemFilter filterIn) {
     super(playerInv, filterContainer, te);
 
-    filter = (ExistingItemFilter) filterContainer.getItemFilter();
+    filter = (ExistingItemFilter) filterIn;
 
     int butLeft = 20;
     int x = getGuiLeft() + butLeft;
@@ -192,7 +193,8 @@ public class ExistingItemFilterGui extends AbstractFilterGui {
   }
 
   private void updateSnapshotButtons() {
-    filter = (ExistingItemFilter) filterContainer.getItemFilter();
+    // TODO Make this a callback based thing, current implementation does not sync well between server and client
+    // filter = (ExistingItemFilter) filterContainer.getItemFilter();
     clearB.setEnabled(filter.getSnapshot() != null);
     mergeB.setEnabled(clearB.isEnabled());
     showB.setEnabled(clearB.isEnabled());
@@ -204,13 +206,13 @@ public class ExistingItemFilterGui extends AbstractFilterGui {
 
   private void sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode opcode) {
     PacketHandler.INSTANCE.sendToServer(
-        new PacketExistingItemFilterSnapshot(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1(), opcode));
+        new PacketExistingItemFilterSnapshot(filterContainer.getTileEntity(), filter, filterContainer.getFilterIndex(), filterContainer.getParam1(), opcode));
   }
 
   private void sendFilterChange() {
     updateButtons();
     PacketHandler.INSTANCE
-        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
+        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.getFilterIndex(), filterContainer.getParam1()));
   }
 
   class SnapshotOverlay implements IGuiOverlay {

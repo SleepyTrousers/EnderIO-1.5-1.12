@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.button.TooltipButton;
 
+import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.PowerItemFilter;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
@@ -30,10 +31,10 @@ public class PowerItemFilterGui extends AbstractFilterGui {
 
   private final @Nonnull PowerItemFilter filter;
 
-  public PowerItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
+  public PowerItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, IItemFilter filterIn) {
     super(playerInv, filterContainer, te);
 
-    filter = (PowerItemFilter) filterContainer.getItemFilter();
+    filter = (PowerItemFilter) filterIn;
 
     int butLeft = 13;
     int x = getGuiLeft() + butLeft;
@@ -107,7 +108,7 @@ public class PowerItemFilterGui extends AbstractFilterGui {
   private void sendFilterChange() {
     updateButtons();
     PacketHandler.INSTANCE
-        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.filterIndex, filterContainer.getParam1()));
+        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.getFilterIndex(), filterContainer.getParam1()));
   }
 
   @Override

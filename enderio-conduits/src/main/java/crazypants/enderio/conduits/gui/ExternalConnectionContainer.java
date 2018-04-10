@@ -17,6 +17,8 @@ import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.conduit.item.FunctionUpgrade;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
+import crazypants.enderio.base.filter.IFilter;
+import crazypants.enderio.base.filter.IFilterContainer;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
@@ -38,7 +40,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgrades, TileConduitBundle>
-    implements IExternalConnectionContainer, IOpenFilterRemoteExec.Container {
+    implements IExternalConnectionContainer, IOpenFilterRemoteExec.Container, IFilterContainer {
 
   private int speedUpgradeSlotLimit = 15;
 
@@ -292,6 +294,18 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       if (filterHolder != null) {
         filterHolder.getFilter(filterIndex, param1).openGui(player, filterHolder.getFilterStack(filterIndex, param1), getTileEntity().getBundleworld(),
             getTileEntity().getPos(), dir, filterIndex);
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public IFilter getFilter(int filterIndex) {
+    if (currentCon.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
+      IFilterHolder<?> filterHolder = currentCon.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
+      int param1 = dir.ordinal();
+      if (filterHolder != null) {
+        return filterHolder.getFilter(filterIndex, param1);
       }
     }
     return null;

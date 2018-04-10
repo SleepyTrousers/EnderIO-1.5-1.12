@@ -50,7 +50,7 @@ public class PacketExistingItemFilterSnapshot extends PacketFilterUpdate {
 
     @Override
     public PacketExistingItemFilterSnapshot onMessage(PacketExistingItemFilterSnapshot message, MessageContext ctx) {
-      IFilterHolder<IFilter> filterHolder = message.getFilterHolder(ctx);
+      IFilterHolder<IFilter> filterHolder = message.getFilterHolderCapability(ctx);
       if (filterHolder == null) {
         return null;
       }
