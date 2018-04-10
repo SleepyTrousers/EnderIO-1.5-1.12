@@ -12,30 +12,30 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketSlotVisibility extends AbstractConduitPacket<IConduit> {
 
-  private boolean inputVisible;
-  private boolean outputVisible;
+  private boolean filterVisible;
+  private boolean upgradeVisible;
 
   public PacketSlotVisibility() {
   }
 
-  public PacketSlotVisibility(@Nonnull IConduit conduit, boolean inputVisible, boolean outputVisible) {
+  public PacketSlotVisibility(@Nonnull IConduit conduit, boolean filterVisible, boolean upgradeVisible) {
     super(conduit);
-    this.inputVisible = inputVisible;
-    this.outputVisible = outputVisible;
+    this.filterVisible = filterVisible;
+    this.upgradeVisible = upgradeVisible;
   }
 
   @Override
   public void fromBytes(ByteBuf bb) {
     super.fromBytes(bb);
     int value = bb.readUnsignedByte();
-    inputVisible = (value & 1) != 0;
-    outputVisible = (value & 2) != 0;
+    filterVisible = (value & 1) != 0;
+    upgradeVisible = (value & 2) != 0;
   }
 
   @Override
   public void toBytes(ByteBuf bb) {
     super.toBytes(bb);
-    int value = (inputVisible ? 1 : 0) | (outputVisible ? 2 : 0);
+    int value = (filterVisible ? 1 : 0) | (upgradeVisible ? 2 : 0);
     bb.writeByte(value);
   }
 
@@ -47,7 +47,7 @@ public class PacketSlotVisibility extends AbstractConduitPacket<IConduit> {
       EntityPlayerMP player = ctx.getServerHandler().player;
       if (player.openContainer instanceof ExternalConnectionContainer) {
         ExternalConnectionContainer ecc = (ExternalConnectionContainer) player.openContainer;
-        ecc.setInOutSlotsVisible(message.inputVisible, message.outputVisible, conduit);
+        ecc.setInOutSlotsVisible(message.filterVisible, message.upgradeVisible, conduit);
       }
       return null;
     }

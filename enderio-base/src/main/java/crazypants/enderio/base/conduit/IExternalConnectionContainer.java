@@ -10,11 +10,6 @@ public interface IExternalConnectionContainer {
   void setInOutSlotsVisible(boolean inputVisible, boolean outputVisible, IConduit conduit);
 
   /**
-   * Sets inventory slot visibility
-   */
-  void setInventorySlotsVisible(boolean visible);
-
-  /**
    * Returns true if there are speed upgrades
    */
   boolean hasFunctionUpgrade();

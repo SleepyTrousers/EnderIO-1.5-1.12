@@ -188,7 +188,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
         EnumFacing connDir = res.component.dir;
         if (connDir != null && containsExternalConnection(connDir)) {
           if (player.world.isRemote) {
-            // TODO PacketConduitProbe.sendInfoMessage(player, this, player.getHeldItem(hand));
             PacketHandler.sendToServer(new PacketConduitProbe(getBundle().getLocation(), connDir));
           }
           return true;

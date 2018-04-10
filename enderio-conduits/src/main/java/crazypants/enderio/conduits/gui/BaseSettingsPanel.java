@@ -123,7 +123,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
       });
     }
 
-    gui.getContainer().setInOutSlotsVisible(false, false, null);
+    gui.getContainer().setInOutSlotsVisible(false, false, con);
 
   }
 

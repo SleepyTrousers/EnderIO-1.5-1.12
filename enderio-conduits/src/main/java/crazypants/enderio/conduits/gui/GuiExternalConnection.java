@@ -83,12 +83,11 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
     super.initGui();
     buttonList.clear();
     for (int i = 0; i < tabs.size(); i++) {
-      if (i == activeTab) {
-        tabs.get(i).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);
-      } else {
+      if (i != activeTab) {
         tabs.get(i).deactivate();
       }
     }
+    tabs.get(activeTab).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);
   }
 
   private @Nullable ITabPanel getActiveTab() {

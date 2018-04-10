@@ -86,19 +86,18 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   @Override
   protected void initCustomOptions() {
-    gui.getContainer().setInOutSlotsVisible(true, true, conduit);
+    gui.getContainer().setInOutSlotsVisible(true, false, conduit);
     updateGuiVisibility();
   }
 
   private void updateGuiVisibility() {
-    deactivate();
     rsB.onGuiInit();
     rsB.setMode(RedstoneControlMode.IconHolder.getFromMode(conduit.getExtractionRedstoneMode(gui.getDir())));
   }
 
   @Override
   public void deactivate() {
-    gui.getContainer().setInOutSlotsVisible(false, false, null);
+    gui.getContainer().setInOutSlotsVisible(false, false, conduit);
     rsB.detach();
     colorB.detach();
   }

@@ -68,7 +68,6 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   @Override
   protected void addSlots() {
-
     addSlotToContainer(slotInputFilter = new FilterSlot(getItemHandler(), 3, 23, 71));
     addSlotToContainer(slotOutputFilter = new FilterSlot(getItemHandler(), 2, 113, 71));
     addSlotToContainer(slotFunctionUpgrade = new SlotItemHandler(getItemHandler(), 0, 131, 71) {
@@ -82,7 +81,6 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
         return speedUpgradeSlotLimit;
       }
     });
-
   }
 
   public void createGhostSlots(@Nonnull List<GhostSlot> ghostSlots) {
@@ -123,17 +121,18 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   }
 
   @Override
-  public void setInOutSlotsVisible(boolean inputVisible, boolean outputVisible, IConduit conduit) {
+  public void setInOutSlotsVisible(boolean filterVisible, boolean upgradeVisible, IConduit conduit) {
+    if (conduit == null) {
+      return;
+    }
 
-    World world = null;
+    World world = getTileEntity().getBundleworld();
 
     boolean hasFilterHolder = false;
     boolean hasUpgradeHolder = false;
+    currentCon = conduit;
 
-    if (conduit != null) {
-      world = conduit.getBundle().getBundleworld();
-
-      currentCon = conduit;
+    if (filterVisible || upgradeVisible) {
 
       hasFilterHolder = conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
       hasUpgradeHolder = conduit.hasCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir);
@@ -143,35 +142,51 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       }
       if (hasUpgradeHolder) {
         getItemHandler().setUpgradeHolder(conduit.getCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir));
-
       }
-
     }
 
-    setSlotsVisible(inputVisible && hasUpgradeHolder, functionUpgradeSlot, functionUpgradeSlot + 1);
-    setSlotsVisible(inputVisible && hasFilterHolder, inputFilterSlot, inputFilterSlot + 1);
-    setSlotsVisible(outputVisible && hasFilterHolder, outputFilterSlot, outputFilterSlot + 1);
+    setSlotsVisible(filterVisible && hasFilterHolder, upgradeVisible && hasUpgradeHolder);
 
-    if (world != null && world.isRemote) {
-      PacketHandler.INSTANCE.sendToServer(new PacketSlotVisibility(conduit, inputVisible, outputVisible));
+    if (world.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketSlotVisibility(conduit, filterVisible, upgradeVisible));
     }
   }
 
-  @Override
-  public void setInventorySlotsVisible(boolean visible) {
-    setSlotsVisible(visible, 0, 36);
-  }
+  private void setSlotsVisible(boolean filterVisible, boolean upgradeVisible) {
+    Slot inFilter = getSlot(1);
+    Slot outFilter = getSlot(0);
+    Slot funcUpgrade = getSlot(2);
 
-  private void setSlotsVisible(boolean visible, int startIndex, int endIndex) {
-    for (int i = startIndex; i < endIndex; i++) {
-      Slot s = getSlot(i);
-      if (visible) {
-        s.xPos = slotLocations.get(s).x;
-        s.yPos = slotLocations.get(s).y;
-      } else {
-        s.xPos = -3000;
-        s.yPos = -3000;
-      }
+    if (filterVisible) {
+      slotInputFilter.xPos = slotLocations.get(slotInputFilter).x;
+      slotInputFilter.yPos = slotLocations.get(slotInputFilter).y;
+      slotOutputFilter.xPos = slotLocations.get(slotOutputFilter).x;
+      slotOutputFilter.yPos = slotLocations.get(slotOutputFilter).y;
+      inFilter.xPos = slotLocations.get(inFilter).x;
+      inFilter.yPos = slotLocations.get(inFilter).y;
+      outFilter.xPos = slotLocations.get(outFilter).x;
+      outFilter.yPos = slotLocations.get(outFilter).y;
+    } else {
+      slotInputFilter.xPos = -3000;
+      slotInputFilter.yPos = -3000;
+      slotOutputFilter.xPos = -3000;
+      slotOutputFilter.yPos = -3000;
+      inFilter.xPos = -3000;
+      inFilter.yPos = -3000;
+      outFilter.xPos = -3000;
+      outFilter.yPos = -3000;
+    }
+
+    if (upgradeVisible) {
+      slotFunctionUpgrade.xPos = slotLocations.get(slotFunctionUpgrade).x;
+      slotFunctionUpgrade.yPos = slotLocations.get(slotFunctionUpgrade).y;
+      funcUpgrade.xPos = slotLocations.get(funcUpgrade).x;
+      funcUpgrade.yPos = slotLocations.get(funcUpgrade).y;
+    } else {
+      slotFunctionUpgrade.xPos = -3000;
+      slotFunctionUpgrade.yPos = -3000;
+      funcUpgrade.xPos = -3000;
+      funcUpgrade.yPos = -3000;
     }
   }
 

@@ -140,12 +140,10 @@ public class ItemSettings extends BaseSettingsPanel {
   }
 
   private void updateGuiVisibility() {
-    deactivate();
     updateButtons();
   }
 
   private void updateButtons() {
-    gui.getContainer().setInOutSlotsVisible(true, true, itemConduit);
     rsB.onGuiInit();
     rsB.setMode(RedstoneControlMode.IconHolder.getFromMode(itemConduit.getExtractionRedstoneMode(gui.getDir())));
 
@@ -222,7 +220,7 @@ public class ItemSettings extends BaseSettingsPanel {
 
   @Override
   public void deactivate() {
-    gui.getContainer().setInOutSlotsVisible(false, false, null);
+    gui.getContainer().setInOutSlotsVisible(false, false, itemConduit);
     rsB.detach();
     colorB.detach();
     roundRobinB.detach();
