@@ -468,4 +468,15 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+    <recipe name="Filter, Fluid" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="oredict:paper" /><item />
+        <item name="oredict:paper" /><item name="minecraft:bucket" /><item name="oredict:paper" />
+        <item /><item name="oredict:paper" /><item/>
+      </grid>
+      <output name="enderio:item_fluid_filter" />
+    </crafting>
+  </recipe>
+
 </enderio:recipes>
