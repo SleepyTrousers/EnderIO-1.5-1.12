@@ -61,6 +61,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
 @Storable
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider, ITileFilterContainer {
@@ -837,6 +838,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     return "SERVER: TileConduitBundle [pos=" + self.pos + ", conduits=" + self.getServerConduits() + "]";
   }
 
+  ////////////////////////////////////////////
+  // FILTERS
+  ////////////////////////////////////////////
+
   @Override
   public void setFilter(int filterIndex, int param, IFilter filter) {
     for (IConduit conduit : getConduits()) {
@@ -849,7 +854,32 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
   }
 
-  // FILTERS
+  @Override
+  public IFilter getFilter(int filterIndex, int param) {
+    for (IConduit conduit : getConduits()) {
+      if (conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param))) {
+        IFilterHolder<IFilter> filterHolder = conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param));
+        if (filterHolder != null && (filterHolder.getInputFilterIndex() == filterIndex || filterHolder.getOutputFilterIndex() == filterIndex)) {
+          return filterHolder.getFilter(filterIndex, param);
+        }
+      }
+    }
+    return null;
+  }
+
+  @Override
+  @Nullable
+  public IItemHandler getInventoryForSnapshot(int filterIndex, int param) {
+    for (IConduit conduit : getConduits()) {
+      if (conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param))) {
+        IFilterHolder<IFilter> filterHolder = conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param));
+        if (filterHolder != null && (filterHolder.getInputFilterIndex() == filterIndex || filterHolder.getOutputFilterIndex() == filterIndex)) {
+          return filterHolder.getInventoryForSnapshot(filterIndex, param);
+        }
+      }
+    }
+    return null;
+  }
 
   // @Override
   // public IItemFilter getFilter(int filterId, int param1) {

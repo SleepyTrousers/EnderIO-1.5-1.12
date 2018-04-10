@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.NBTAction;
@@ -44,6 +45,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
 @Storable
 public class TileVacuumChest extends AbstractCapabilityMachineEntity
@@ -260,8 +262,19 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity
   // RANGE END
 
   @Override
-  public void setFilter(int filterIndex, int param, IFilter filter) {
+  public void setFilter(int filterIndex, int param, @Nonnull IFilter filter) {
     this.filter = (IItemFilter) filter;
+  }
+
+  @Override
+  public IFilter getFilter(int filterIndex, int param1) {
+    return filter;
+  }
+
+  @Override
+  @Nullable
+  public IItemHandler getInventoryForSnapshot(int filterIndex, int param1) {
+    return getInventory();
   }
 
 }
