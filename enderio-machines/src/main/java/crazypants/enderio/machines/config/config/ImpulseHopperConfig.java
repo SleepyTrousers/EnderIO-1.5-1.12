@@ -1,4 +1,4 @@
-package crazypants.enderio.machines.machine.ihopper;
+package crazypants.enderio.machines.config.config;
 
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.config.factory.IValueFactory;
