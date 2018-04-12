@@ -320,7 +320,7 @@ curseforge {
     def build_number = System.getenv('BUILD_NUMBER') == null ? '0' : System.getenv('BUILD_NUMBER')
     def changelog_content = System.getenv('CHANGELOG') != null && !System.getenv('CHANGELOG').equals('none')
         ? System.getenv('CHANGELOG')
-        : ''
+        : getChangelog() ?: ''
 
     def changelog_text = getChangelogFormat()
         .replaceAll('#BUILD#', build_number)
