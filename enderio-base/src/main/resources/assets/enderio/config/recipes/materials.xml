@@ -209,7 +209,37 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
+  <recipe name="Soul Chassis">
+    <alloying energy="3600" exp="1">
+      <input name="SIMPLE_CHASSIS"/>
+      <input name="dyeSoulMachine" amount="6"/>
+      <output name="SOUL_CHASSIS"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Enhanced Chassis" required="true">
+    <crafting>
+      <grid>
+        <item name="enderio:block_dark_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_dark_iron_bars"/>
+        <item name="ingotEndSteel"/><item name="CHASSIS"/><item name="ingotEndSteel"/>
+        <item name="enderio:block_dark_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_dark_iron_bars"/>
+      </grid>
+      <output name="ENHANCED_CHASSIS"/>
+    </crafting>
+  </recipe>
+
   <recipe name="Machine Dye">
+    <crafting>
+      <grid>
+        <item name="dustLapis"/><item name="POWDER_QUARTZ"/><item name="ORGANIC_BROWN_DYE"/>
+        <item name="POWDER_QUARTZ"/><item name="ORGANIC_BLACK_DYE"/><item name="POWDER_QUARTZ"/>
+        <item name="ORGANIC_BROWN_DYE"/><item name="POWDER_QUARTZ"/><item name="dustLapis"/>
+      </grid>
+      <output name="dyeSoulMachine" amount="9"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Soul Machine Dye">
     <crafting>
       <grid>
         <item name="dustLapis"/><item name="POWDER_QUARTZ"/><item name="ORGANIC_GREEN_DYE"/>

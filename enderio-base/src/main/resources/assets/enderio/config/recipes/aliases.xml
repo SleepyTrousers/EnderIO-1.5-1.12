@@ -25,6 +25,8 @@ XML editor will display that as tooltips when editing this file.
 
   <alias name="CHASSIS" item="itemMachineChassi" />
   <alias name="SIMPLE_CHASSIS" item="itemSimpleMachineChassi" />
+  <alias name="SOUL_CHASSIS" item="itemSoulMachineChassi" />
+  <alias name="ENHANCED_CHASSIS" item="itemEnhancedMachineChassi" />
   <alias name="CHASSIPARTS" item="itemChassiParts" />
 
   <alias name="GEAR_WOOD" item="gearWood" />
@@ -97,6 +99,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="PULSATING_IRON_NUGGET" item="nuggetPulsatingIron" />
   <alias name="DARK_STEEL_NUGGET" item="nuggetDarkSteel" />
   <alias name="SOULARIUM_NUGGET" item="nuggetSoularium" />
+  <alias name="END_STEEL_NUGGET" item="nuggetEndSteel" />
 
   <alias name="ELECTRICAL_STEEL" item="ingotElectricalSteel" />
   <alias name="ENERGETIC_ALLOY" item="ingotEnergeticAlloy" />
@@ -106,15 +109,17 @@ XML editor will display that as tooltips when editing this file.
   <alias name="PULSATING_IRON" item="ingotPulsatingIron" />
   <alias name="DARK_STEEL" item="ingotDarkSteel" />
   <alias name="SOULARIUM" item="ingotSoularium" />
-
-  <alias name="DARK_STEEL_BALL" item="ballDarkSteel" />
+  <alias name="END_STEEL" item="ingotEndSteel" />
+  
   <alias name="ELECTRICAL_STEEL_BALL" item="ballElectricalSteel" />
   <alias name="ENERGETIC_ALLOY_BALL" item="ballEnergeticAlloy" />
   <alias name="VIBRANT_ALLOY_BALL" item="ballVibrantAlloy" />
   <alias name="REDSTONE_ALLOY_BALL" item="ballRedstoneAlloy" />
   <alias name="CONDUCTIVE_IRON_BALL" item="ballConductiveIron" />
   <alias name="PULSATING_IRON_BALL" item="ballPulsatingIron" />
+  <alias name="DARK_STEEL_BALL" item="ballDarkSteel" />
   <alias name="SOULARIUM_BALL" item="ballSoularium" />
+  <alias name="END_STEEL_BALL" item="ballEndSteel" />
 
   <alias name="ELECTRICAL_STEEL_BLOCK" item="blockElectricalSteel" />
   <alias name="ENERGETIC_ALLOY_BLOCK" item="blockEnergeticAlloy" />
@@ -124,6 +129,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="PULSATING_IRON_BLOCK" item="blockPulsatingIron" />
   <alias name="DARK_STEEL_BLOCK" item="blockDarkSteel" />
   <alias name="SOULARIUM_BLOCK" item="blockSoularium" />
+  <alias name="END_STEEL_BLOCK" item="blockEndSteel" />
 
   <alias name="CAP_BANK_1" item="enderio:block_cap_bank:1" />
   <alias name="CAP_BANK_2" item="enderio:block_cap_bank:2" />

@@ -44,6 +44,11 @@
         "textures": {
           "layer0": "enderio:items/item_alloy_ball_vibrant_alloy"
         }
+      },
+      "end_steel": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_ball_end_steel"
+        }
       }
     }
   }

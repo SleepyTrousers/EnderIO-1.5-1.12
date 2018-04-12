@@ -44,6 +44,11 @@
         "textures": {
           "layer0": "enderio:items/item_alloy_ingot_vibrant_alloy"
         }
+      },
+      "end_steel": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_ingot_end_steel"
+        }
       }
     }
   }

@@ -44,6 +44,11 @@
 				"textures": {
 					"all": "enderio:blocks/block_alloy_soularium"
 				}
+			},
+			"end_steel": {
+				"textures": {
+					"all": "enderio:blocks/block_alloy_end_steel"
+				}
 			}
 		}
 	}

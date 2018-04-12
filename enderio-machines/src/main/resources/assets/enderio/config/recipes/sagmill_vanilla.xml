@@ -408,6 +408,13 @@
     </sagmilling>
   </recipe>
 
+  <recipe name="Sagmill: Prismarine" required="true">
+    <sagmilling energy="2000" bonus="none">
+      <input name="gemPrismarine"/>
+      <output name="dustPrismarine" />
+      <output name="dustPrismarine" chance="0.1"/>
+    </sagmilling>
+  </recipe>
 
 
 

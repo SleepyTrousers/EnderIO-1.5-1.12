@@ -96,7 +96,7 @@ For more information, see base.xml.
 
   <recipe name="Spawner, Industrial Foregoing" required="false">
     <spawning>
-      <entity name="industrialforegoing:pink_slime" costMultiplier="5.0" disabled="false"/>
+      <entity name="industrialforegoing:pink_slime" costMultiplier="10.0" disabled="false"/>
     </spawning>
   </recipe>
   

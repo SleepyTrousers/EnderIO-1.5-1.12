@@ -277,6 +277,11 @@
             "layer0": "enderio:items/item_material_machine_dye"
         }
       },
+      "soul_machine_dye":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_soul_machine_dye"
+        }
+      },
       "simple_machine_chassi": {
         "model": "enderio:machine_body",
         "submodel": {
@@ -291,6 +296,38 @@
           "back": "enderio:items/item_simple_machine_chassi",
           "frontframe": "enderio:items/item_simple_machine_chassi",
           "front": "enderio:items/item_simple_machine_chassi"
+        }
+      },
+      "soul_machine_chassi": {
+        "model": "enderio:machine_body",
+        "submodel": {
+          "front": {
+            "model": "enderio:machine_front"
+          }
+        },
+        "textures": {
+          "top": "enderio:items/item_soul_machine_chassi",
+          "bottom": "enderio:items/item_soul_machine_chassi",
+          "side": "enderio:items/item_soul_machine_chassi",
+          "back": "enderio:items/item_soul_machine_chassi",
+          "frontframe": "enderio:items/item_soul_machine_chassi",
+          "front": "enderio:items/item_soul_machine_chassi"
+        }
+      },
+      "enhanced_machine_chassi": {
+        "model": "enderio:machine_body",
+        "submodel": {
+          "front": {
+            "model": "enderio:machine_front"
+          }
+        },
+        "textures": {
+          "top": "enderio:items/item_enhanced_machine_chassi",
+          "bottom": "enderio:items/item_enhanced_machine_chassi",
+          "side": "enderio:items/item_enhanced_machine_chassi",
+          "back": "enderio:items/item_enhanced_machine_chassi",
+          "frontframe": "enderio:items/item_enhanced_machine_chassi",
+          "front": "enderio:items/item_enhanced_machine_chassi"
         }
       }
     }

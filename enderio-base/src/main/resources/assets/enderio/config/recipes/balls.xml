@@ -82,6 +82,10 @@ XML editor will display that as tooltips when editing this file.
   <item name="ballSoularium"/>
 </grindingball>
 
+<grindingball name="End Steel Ball" grinding="1.5" chance="2.2" power="0.6" durability="65000" >
+  <item name="ballEndSteel"/>
+</grindingball>
+
   <recipe name="Dark Steel Ball Crafting" required="true">
     <crafting>
       <grid>
@@ -115,6 +119,43 @@ XML editor will display that as tooltips when editing this file.
     <casting>
       <input name="ingotGold" amount="2"/>
       <cast name="DARK_STEEL_BALL" consumed="true"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+
+  <recipe name="End Steel Ball Crafting" required="true">
+    <crafting>
+      <grid>
+        <item/><item name="END_STEEL"/><item/>
+        <item name="END_STEEL"/><item name="END_STEEL"/><item name="END_STEEL"/>
+        <item/><item name="END_STEEL"/><item/>
+      </grid>
+      <output name="END_STEEL_BALL" amount="24"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="End Steel Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="END_STEEL_NUGGET" amount="1.875"/><!-- 30mB -->
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="END_STEEL_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="End Ball Smelting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="END_STEEL_BALL" amount="24"/>
+      <output name="END_STEEL" amount="5"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="End Steel Ball Reverse Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="END_STEEL_BALL" consumed="true"/>
       <output name="tconstruct:cast_custom:2"/>
     </casting>
   </recipe>

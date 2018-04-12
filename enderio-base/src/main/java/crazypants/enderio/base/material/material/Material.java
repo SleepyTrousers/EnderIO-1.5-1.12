@@ -78,6 +78,9 @@ public enum Material {
   DYE_BROWN("organic_brown_dye", "dyeBrown"),
   DYE_BLACK("organic_black_dye", "dyeBlack"),
   DYE_MACHINE("machine_dye", "dyeMachine"),
+  DYE_SOUL_MACHINE("soul_machine_dye", "dyeSoulMachine"),
+  SOUL_MACHINE_CHASSIS("soulMachineChassi"),
+  ENHANCED_MACHINE_CHASSIS("enhancedMachineChassi"),
 
   ;
 

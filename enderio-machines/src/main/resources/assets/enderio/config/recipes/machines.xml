@@ -369,7 +369,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="SOULARIUM" /><item name="HEAD_ENDERMAN" /><item name="SOULARIUM" />
-        <item name="HEAD_ZOMBIE" /><item name="CHASSIS" /><item name="HEAD_CREEPER" />
+        <item name="HEAD_ZOMBIE" /><item name="SOUL_CHASSIS" /><item name="HEAD_CREEPER" />
         <item name="SOULARIUM" /><item name="HEAD_SKELETON" /><item name="SOULARIUM" />
       </grid>
       <output name="enderio:block_soul_binder" />
@@ -381,7 +381,7 @@ XML editor will display that as tooltips when editing this file.
       <grid size="3x3">
         <item /><item name="ATTRACTOR_CRYSTAL" /><item />
         <item name="ENERGETIC_ALLOY" /><item name="GEAR_WOOD" /><item name="ENERGETIC_ALLOY" />
-        <item name="SOULARIUM" /><item name="CHASSIS" /><item name="SOULARIUM" />
+        <item name="SOULARIUM" /><item name="SOUL_CHASSIS" /><item name="SOULARIUM" />
       </grid>
       <output name="enderio:block_attractor_obelisk" />
     </crafting>
@@ -392,7 +392,7 @@ XML editor will display that as tooltips when editing this file.
       <grid size="3x3">
         <item /><item name="HEAD_ENDERMAN_TORMENTED" /><item />
         <item name="ENERGETIC_ALLOY" /><item name="GEAR_ENERGIZED" /><item name="ENERGETIC_ALLOY" />
-        <item name="SOULARIUM" /><item name="CHASSIS" /><item name="SOULARIUM" />
+        <item name="SOULARIUM" /><item name="SOUL_CHASSIS" /><item name="SOULARIUM" />
       </grid>
       <output name="enderio:block_aversion_obelisk" />
     </crafting>
@@ -414,7 +414,7 @@ XML editor will display that as tooltips when editing this file.
       <grid size="3x3">
         <item /><item name="ENDER_CRYSTAL" /><item />
         <item name="ENERGETIC_ALLOY" /><item name="GEAR_IRON" /><item name="ENERGETIC_ALLOY" />
-        <item name="SOULARIUM" /><item name="CHASSIS" /><item name="SOULARIUM" />
+        <item name="SOULARIUM" /><item name="SOUL_CHASSIS" /><item name="SOULARIUM" />
       </grid>
       <output name="enderio:block_inhibitor_obelisk" />
     </crafting>
@@ -424,8 +424,8 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item /><item name="enderio:item_xp_transfer" /><item />
-        <item name="ENERGETIC_ALLOY" /><item name="GEAR_IRON" /><item name="ENERGETIC_ALLOY" />
-        <item name="SOULARIUM" /><item name="enderio:block_tank:0" /><item name="SOULARIUM" />
+        <item name="ENERGETIC_ALLOY" /><item name="enderio:block_tank:0" /><item name="ENERGETIC_ALLOY" />
+        <item name="SOULARIUM" /><item name="SOUL_CHASSIS" /><item name="SOULARIUM" />
       </grid>
       <output name="enderio:block_experience_obelisk" />
     </crafting>
@@ -435,8 +435,8 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item /><item name="WEATHER_CRYSTAL" /><item />
-        <item name="ENERGETIC_ALLOY" /><item name="GEAR_VIBRANT" /><item name="ENERGETIC_ALLOY" />
-        <item name="SOULARIUM" /><item name="CAPACITOR3" /><item name="SOULARIUM" />
+        <item name="ENERGETIC_ALLOY" /><item name="CAPACITOR3" /><item name="ENERGETIC_ALLOY" />
+        <item name="SOULARIUM" /><item name="SOUL_CHASSIS" /><item name="SOULARIUM" />
       </grid>
       <output name="enderio:block_weather_obelisk" />
     </crafting>
@@ -547,7 +547,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="SOULARIUM" /><item name="itemSkull" /><item name="SOULARIUM" />
-        <item name="minecraft:iron_axe" /><item name="CHASSIS" /><item name="minecraft:shears" />
+        <item name="minecraft:iron_axe" /><item name="SOUL_CHASSIS" /><item name="minecraft:shears" />
         <item name="SOULARIUM" /><item name="SOULARIUM" /><item name="SOULARIUM" />
       </grid>
       <output name="enderio:block_slice_and_splice" />
@@ -558,7 +558,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="SOULARIUM" /><item name="itemSkull" /><item name="SOULARIUM" />
-        <item name="minecraft:shears" /><item name="CHASSIS" /><item name="minecraft:iron_axe" />
+        <item name="minecraft:shears" /><item name="SOUL_CHASSIS" /><item name="minecraft:iron_axe" />
         <item name="SOULARIUM" /><item name="SOULARIUM" /><item name="SOULARIUM" />
       </grid>
       <output name="enderio:block_slice_and_splice" />

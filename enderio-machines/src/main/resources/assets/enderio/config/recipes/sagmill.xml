@@ -52,6 +52,13 @@
     </sagmilling>
   </recipe>
 
+  <recipe name="Sagmill: Coal Block" required="true">
+    <sagmilling energy="2400">
+      <input name="blockCoal"/>
+      <output name="dustCoal" amount="9" />
+    </sagmilling>
+  </recipe>
+
   <recipe name="Sagmill: Ender Pearl" required="true">
     <sagmilling energy="1600" bonus="none">
       <input name="oredict:enderpearl"/>
