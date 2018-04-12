@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.integration.jei.RecipeWrapper;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
@@ -14,6 +15,7 @@ import crazypants.enderio.base.recipe.IManyToOneRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter;
 import crazypants.enderio.machines.machine.alloy.GuiAlloySmelter;
 import mezz.jei.api.IGuiHelper;
@@ -38,15 +40,21 @@ import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.FI
 import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.NUM_INVENTORY_SLOT;
 import static crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter.NUM_RECIPE_SLOT;
 
-public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory.AlloyRecipe> {
+public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory.AlloyRecipeWrapper> {
 
   public static final @Nonnull String UID = "AlloySmelter";
 
   // ------------ Recipes
 
-  public static class AlloyRecipe extends RecipeWrapper {
-    public AlloyRecipe(IRecipe recipe) {
+  public static class AlloyRecipeWrapper extends RecipeWrapper {
+
+    private IDrawable alloyFront;
+
+    public AlloyRecipeWrapper(IRecipe recipe, @Nonnull IGuiHelper guiHelper) {
       super(recipe);
+      if (!IRecipe.RecipeLevel.SIMPLE.is(recipe.getRecipeLevel())) {
+        alloyFront = guiHelper.createDrawable(new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/alloy_smelter_simple_front.png"), 0, 0, 16, 16, 16, 16);
+      }
     }
 
     @Override
@@ -54,25 +62,42 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
       super.getIngredients(ingredients);
       ingredients.setInput(EnergyIngredient.class, new EnergyIngredient(recipe.getEnergyRequired()));
     }
+
+    @Override
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+      if (alloyFront != null) {
+        alloyFront.draw(minecraft, 129 - xOff, 40 - yOff - 5);
+        IconEIO.map.render(IconEIO.GENERIC_VERBOTEN, 135 - xOff, 34 - yOff - 5, true);
+      }
+    }
+
+    @Override
+    public @Nonnull List<String> getTooltipStrings(int mouseX, int mouseY) {
+      if (alloyFront != null && mouseX >= (121 - xOff) && mouseX <= (121 - xOff + 32) && mouseY >= 32 - yOff - 5 && mouseY <= 32 - yOff + 32 - 5) {
+        return Lang.JEI_ALLOY_NOTSIMPLE.getLines();
+      }
+      return super.getTooltipStrings(mouseX, mouseY);
+    }
   }
 
-  public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+  public static void register(IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
 
     registry.addRecipeCategories(new AlloyRecipeCategory(guiHelper));
-    registry.handleRecipes(IRecipe.class, AlloyRecipe::new, AlloyRecipeCategory.UID);
     registry.addRecipeClickArea(GuiAlloySmelter.class, 155, 42, 16, 16, AlloyRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_simple_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID);
 
     long start = System.nanoTime();
 
-    List<IRecipe> result = new ArrayList<IRecipe>();
+    List<AlloyRecipeWrapper> result = new ArrayList<>();
     for (IManyToOneRecipe rec : AlloyRecipeManager.getInstance().getRecipes()) {
       if (!rec.isSynthetic()) {
-        result.add(rec);
+        result.add(new AlloyRecipeWrapper(rec, guiHelper));
       }
     }
-    result.addAll(AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes());
+    for (IRecipe rec : AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes()) {
+      result.add(new AlloyRecipeWrapper(rec, guiHelper));
+    }
 
     long end = System.nanoTime();
     registry.addRecipes(result, UID);
@@ -90,8 +115,8 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
   // ------------ Category
 
   // Offsets from full size gui, makes it much easier to get the location correct
-  private int xOff = 45;
-  private int yOff = 3;
+  private static final int xOff = 45;
+  private static final int yOff = 3;
   private final @Nonnull IDrawable background;
   private final @Nonnull IDrawableAnimated flame;
 
@@ -125,7 +150,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
   }
 
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull AlloyRecipeCategory.AlloyRecipe recipeWrapper, @Nonnull IIngredients ingredients) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull AlloyRecipeCategory.AlloyRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
     IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
 

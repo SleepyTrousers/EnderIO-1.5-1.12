@@ -144,7 +144,12 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
       int stackSize = output.getCount();
       output.setCount(stackSize);
       final ItemStack key = NullHelper.notnullM(entry.getKey(), "null item stack in furnace recipes");
-      result.add(new Recipe(new RecipeInput(key), RF_PER_ITEM, RecipeBonusType.NONE, new RecipeOutput(output)));
+      result.add(new Recipe(new RecipeInput(key), RF_PER_ITEM, RecipeBonusType.NONE, new RecipeOutput(output)) {
+        @Override
+        public @Nonnull RecipeLevel getRecipeLevel() {
+          return RecipeLevel.NORMAL;
+        }
+      });
     }
     return result;
   }
