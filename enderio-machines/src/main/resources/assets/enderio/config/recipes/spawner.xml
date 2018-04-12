@@ -86,4 +86,18 @@ For more information, see base.xml.
     </spawning>
   </recipe>
 
+  <recipe name="Spawner, Thermal Foundation" required="false">
+    <spawning>
+      <entity name="thermalfoundation:blizz"       costMultiplier="5.0" disabled="false"/>
+      <entity name="thermalfoundation:basalz"      costMultiplier="5.0" disabled="false"/>
+      <entity name="thermalfoundation:blitz"       costMultiplier="5.0" disabled="false"/>
+    </spawning>
+  </recipe>
+
+  <recipe name="Spawner, Industrial Foregoing" required="false">
+    <spawning>
+      <entity name="industrialforegoing:pink_slime" costMultiplier="5.0" disabled="false"/>
+    </spawning>
+  </recipe>
+  
 </enderio:recipes>
