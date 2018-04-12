@@ -173,6 +173,21 @@ public class TicMaterials {
       }
     });
 
+    TRAITS.put(Alloy.END_STEEL, new Data() {
+      @Override
+      public void traits(@Nonnull Material material) {
+        material.addTrait(TinkerTraits.unnatural);
+        material.addTrait(TinkerTraits.enderference, MaterialTypes.HEAD);
+        material.addTrait(TinkerTraits.alien, MaterialTypes.HEAD);
+      }
+
+      @Override
+      public void stats(@Nonnull Material material) {
+        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(550, 7.00f, 6.00f, HarvestLevels.COBALT), new HandleMaterialStats(0.9f, 150),
+            new ExtraMaterialStats(250), new BowMaterialStats(0.3f, 2.5f, 9f));
+      }
+    });
+
   }
 
   public static interface Data {
