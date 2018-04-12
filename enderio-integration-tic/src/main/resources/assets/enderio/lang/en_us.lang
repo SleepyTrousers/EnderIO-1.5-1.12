@@ -7,6 +7,7 @@ material.pulsating_iron.name=Pulsating Iron
 material.redstone_alloy.name=Redstone Alloy
 material.soularium.name=Soularium
 material.vibrant_alloy.name=Vibrant Alloy
+material.end_steel.name=End Steel
 
 material.dark_steel.prefix=Dark %s
 material.conductive_iron.prefix=Conductive %s
@@ -16,6 +17,7 @@ material.pulsating_iron.prefix=Pulsating %s
 material.redstone_alloy.prefix=Red %s
 material.soularium.prefix=Souled %s
 material.vibrant_alloy.prefix=Vibrant %s
+material.end_steel.prefix=%s of the End
 
 modifier.enderport.name=Vanishing
 modifier.enderport.desc=§oOut of my way!§r\nChance to teleport enemies away.
@@ -39,6 +41,8 @@ fluid.dark_steel=Molten Dark Steel
 tile.fluid.dark_steel.name=Molten Dark Steel
 fluid.soularium=Molten Soularium
 tile.fluid.soularium.name=Molten Soularium
+fluid.end_steel=Molten End Steel
+tile.fluid.end_steel.name=Molten End Steel
 
 fluid.enderio.glowstone=Glowgas
 tile.fluid.enderio.glowstone.name=Glowgas
