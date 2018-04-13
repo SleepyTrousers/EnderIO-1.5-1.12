@@ -14,6 +14,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
+import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
@@ -36,7 +37,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
   private final @Nonnull String DISABLED = Lang.GUI_CONDUIT_DISABLED_MODE.get();
 
   protected final @Nonnull IconEIO icon;
-  protected final @Nonnull GuiExternalConnection gui;
+  protected final @Nonnull IGuiExternalConnection gui;
   protected @Nonnull IClientConduit con;
   protected final @Nonnull String typeName;
   protected final @Nonnull ResourceLocation texture;
@@ -68,12 +69,12 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
   protected int customTop = 0;
 
-  protected BaseSettingsPanel(@Nonnull IconEIO icon, @Nonnull String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IClientConduit con,
+  protected BaseSettingsPanel(@Nonnull IconEIO icon, @Nonnull String typeName, @Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con,
       @Nonnull String texture) {
     this(icon, typeName, gui, con, texture, true);
   }
 
-  protected BaseSettingsPanel(@Nonnull IconEIO icon, @Nonnull String typeName, @Nonnull GuiExternalConnection gui, @Nonnull IClientConduit con,
+  protected BaseSettingsPanel(@Nonnull IconEIO icon, @Nonnull String typeName, @Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con,
       @Nonnull String texture, boolean hasInputOutputMode) {
     this.icon = icon;
     this.typeName = typeName;

@@ -236,10 +236,6 @@ public final class Config {
 
   public static NNList<ResourceLocation> soulVesselBlackList = new NNList<ResourceLocation>();
   public static NNList<ResourceLocation> soulVesselUnspawnableList = new NNList<ResourceLocation>();
-  static {
-    // TODO 1.11 move to integrations, find correct RL
-    // soulVesselUnspawnableList.add("chickens.ChickensChicken");
-  }
   public static boolean soulVesselCapturesBosses = false;
 
   public static int soulBinderBrokenSpawnerRF = 2500000;

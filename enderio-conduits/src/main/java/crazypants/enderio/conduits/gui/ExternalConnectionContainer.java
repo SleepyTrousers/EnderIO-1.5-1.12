@@ -14,8 +14,6 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
 import crazypants.enderio.base.conduit.IFilterChangeListener;
-import crazypants.enderio.base.conduit.item.FunctionUpgrade;
-import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.IFilterContainer;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
@@ -29,7 +27,6 @@ import crazypants.enderio.conduits.init.ConduitObject;
 import crazypants.enderio.conduits.network.PacketSlotVisibility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -81,7 +78,8 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     });
   }
 
-  public void createGhostSlots(@Nonnull List<GhostSlot> ghostSlots) {
+  @Override
+  public void createGhostSlots(@Nonnull NNList<GhostSlot> ghostSlots) {
     ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotOutputFilter));
     ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotInputFilter));
 
@@ -185,27 +183,6 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       slotFunctionUpgrade.yPos = -3000;
       funcUpgrade.xPos = -3000;
       funcUpgrade.yPos = -3000;
-    }
-  }
-
-  @Override
-  @Nonnull
-  public ItemStack slotClick(int slotId, int dragType, @Nonnull ClickType clickTypeIn, @Nonnull EntityPlayer playerIn) {
-    ItemStack st = playerIn.inventory.getItemStack();
-    setFunctionUpgradeSlotLimit(st);
-    try {
-      return super.slotClick(slotId, dragType, clickTypeIn, playerIn);
-    } catch (Exception e) {
-      // TODO Horrible work around for a bug when double clicking on a stack in inventory which matches a filter item
-      // This does does double clicking to fill a stack from working with this GUI open.
-      return ItemStack.EMPTY;
-    }
-  }
-
-  private void setFunctionUpgradeSlotLimit(@Nonnull ItemStack st) {
-    if (!st.isEmpty() && st.getItem() instanceof ItemFunctionUpgrade) {
-      FunctionUpgrade speedUpgrade = ItemFunctionUpgrade.getFunctionUpgrade(st);
-      speedUpgradeSlotLimit = speedUpgrade.maxStackSize;
     }
   }
 

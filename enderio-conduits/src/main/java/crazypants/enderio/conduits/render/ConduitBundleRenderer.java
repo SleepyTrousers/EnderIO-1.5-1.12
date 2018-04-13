@@ -70,7 +70,6 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     float brightness = -1;
     boolean hasDynamic = false;
     for (IClientConduit c : bundle.getClientConduits()) {
-      // TODO Temporary work around
       IClientConduit.WithDefaultRendering con = (IClientConduit.WithDefaultRendering) c;
       if (YetaUtil.renderConduit(player, con)) {
         IConduitRenderer renderer = getRendererForConduit(con);
@@ -152,7 +151,6 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
 
     for (IClientConduit c : bundle.getClientConduits()) {
-      // TODO Temporary Workaround
       IClientConduit.WithDefaultRendering con = (IClientConduit.WithDefaultRendering) c;
       if (state.getYetaDisplayMode().renderConduit(con)) {
         IConduitRenderer renderer = getRendererForConduit(con);
@@ -176,7 +174,6 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     for (CollidableComponent component : connectors) {
       if (component != null) {
         if (component.conduitType != null) {
-          // TODO Make an actual check before assuming a default render
           IClientConduit.WithDefaultRendering conduit = (IClientConduit.WithDefaultRendering) bundle.getConduit(component.conduitType);
           if (conduit != null) {
             if (state.getYetaDisplayMode().renderConduit(component.conduitType)) {

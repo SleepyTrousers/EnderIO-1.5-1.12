@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.button.ColorButton;
 
 import crazypants.enderio.base.conduit.IExtractor;
+import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
@@ -13,10 +14,10 @@ import crazypants.enderio.conduits.network.PacketExtractMode;
 public class ConduitRedstoneModeControlable implements IRedstoneModeControlable {
 
   private final IExtractor con;
-  private final GuiExternalConnection gui;
+  private final IGuiExternalConnection gui;
   private final ColorButton colorB;
 
-  public ConduitRedstoneModeControlable(@Nonnull IExtractor con, @Nonnull GuiExternalConnection gui, @Nonnull ColorButton colorB) {
+  public ConduitRedstoneModeControlable(@Nonnull IExtractor con, @Nonnull IGuiExternalConnection gui, @Nonnull ColorButton colorB) {
     this.con = con;
     this.gui = gui;
     this.colorB = colorB;

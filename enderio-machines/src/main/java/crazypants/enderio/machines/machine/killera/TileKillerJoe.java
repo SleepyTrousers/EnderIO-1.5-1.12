@@ -131,8 +131,6 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     isMending = false;
   }
 
-  // TODO 1.11 check that broken tools can be removed by automation
-
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
 

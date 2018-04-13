@@ -15,6 +15,7 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
+import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
@@ -61,7 +62,7 @@ public class ItemSettings extends BaseSettingsPanel {
   private final GuiToolTip filterExtractUpgradeTooltip;
   private final GuiToolTip filterInsertUpgradeTooltip;
 
-  public ItemSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
+  public ItemSettings(@Nonnull final IGuiExternalConnection gui, @Nonnull IClientConduit con) {
     super(IconEIO.WRENCH_OVERLAY_ITEM, ConduitObject.item_item_conduit.getUnlocalisedName(), gui, con, "item_settings");
     itemConduit = (IItemConduit) con;
 
@@ -135,7 +136,7 @@ public class ItemSettings extends BaseSettingsPanel {
   @Override
   protected void initCustomOptions() {
     gui.getContainer().setInOutSlotsVisible(true, true, itemConduit);
-    ((ExternalConnectionContainer) gui.inventorySlots).createGhostSlots(gui.getGhostSlotHandler().getGhostSlots());
+    gui.getContainer().createGhostSlots(gui.getGhostSlotHandler().getGhostSlots());
     updateGuiVisibility();
   }
 

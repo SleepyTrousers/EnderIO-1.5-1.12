@@ -1,10 +1,10 @@
 package crazypants.enderio.conduits.conduit.liquid;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
-import javax.annotation.Nonnull;
-// TODO Make Java Docs
 public class LiquidOutput {
 
   final EnumFacing dir;
@@ -26,19 +26,19 @@ public class LiquidOutput {
 
   @Override
   public boolean equals(Object obj) {
-    if(this == obj)
+    if (this == obj)
       return true;
-    if(obj == null)
+    if (obj == null)
       return false;
-    if(getClass() != obj.getClass())
+    if (getClass() != obj.getClass())
       return false;
     LiquidOutput other = (LiquidOutput) obj;
-    if(location == null) {
-      if(other.location != null)
+    if (location == null) {
+      if (other.location != null)
         return false;
-    } else if(!location.equals(other.location))
+    } else if (!location.equals(other.location))
       return false;
-    if(dir != other.dir)
+    if (dir != other.dir)
       return false;
     return true;
   }

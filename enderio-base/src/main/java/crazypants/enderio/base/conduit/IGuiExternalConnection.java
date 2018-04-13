@@ -1,6 +1,7 @@
 package crazypants.enderio.base.conduit;
 
 import com.enderio.core.api.client.gui.IGuiScreen;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.EnumFacing;
 
@@ -20,4 +21,9 @@ public interface IGuiExternalConnection extends IGuiScreen {
   int getGuiTop();
 
   FontRenderer getFontRenderer();
+
+  void setGuiID(int id);
+
+  int getGuiID();
+
 }

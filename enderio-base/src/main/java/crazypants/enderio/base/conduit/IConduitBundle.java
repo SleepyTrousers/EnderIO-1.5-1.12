@@ -140,9 +140,6 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
   @Nonnull
   World getBundleworld();
 
-  // void setGridNode(Object node);
-
-  // TODO find out what this does
   int getInternalRedstoneSignalForColor(@Nonnull DyeColor col);
 
   boolean handleFacadeClick(World world, BlockPos placeAt, EntityPlayer player, EnumFacing opposite, ItemStack stack, EnumHand hand, float hitX, float hitY,

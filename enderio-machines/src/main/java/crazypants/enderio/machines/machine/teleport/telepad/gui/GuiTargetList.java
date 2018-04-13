@@ -54,10 +54,6 @@ public class GuiTargetList extends GuiScrollableList<TelepadTarget> {
     if (getSelectedElement() == targ) {
       Rectangle iconBounds = getIconBounds(y);
       EnderWidget icon = EnderWidget.X_BUT;
-      // TODO no access to these vars anymore
-      // if(iconBounds.contains(mouseX, mouseY)) {
-      // icon = EnderWidget.X_BUT_HOVER;
-      // }
       EnderWidget.map.render(icon, iconBounds.x, iconBounds.y, iconBounds.width, iconBounds.height, 0, true);
     }
   }

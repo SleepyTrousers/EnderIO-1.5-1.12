@@ -23,8 +23,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-// TODO Javadocs
-
 public class NetworkPowerManager {
 
   private final PowerConduitNetwork network;

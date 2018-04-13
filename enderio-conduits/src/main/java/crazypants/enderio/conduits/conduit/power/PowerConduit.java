@@ -39,7 +39,6 @@ import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.config.ConduitConfig;
-import crazypants.enderio.conduits.gui.GuiExternalConnection;
 import crazypants.enderio.conduits.gui.PowerSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.powertools.lang.Lang;
@@ -604,7 +603,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   @Nonnull
   @Override
   public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    return new PowerSettings((GuiExternalConnection) gui, con); // TODO find a better way to abstract this for base
+    return new PowerSettings(gui, con);
   }
 
   @Override
