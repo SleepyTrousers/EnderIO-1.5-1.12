@@ -411,9 +411,7 @@ public class TravelController {
     requiredPower = (int) (getDistance(player, coord) * source.getPowerCostPerBlockTraveledRF());
     int canUsePower = getEnergyInTravelItem(equipped);
     if (requiredPower > canUsePower) {
-      
     		player.sendStatusMessage(Lang.STAFF_NO_POWER.toChat(), true);
-    	
       return -1;
     }
     return requiredPower;
