@@ -190,6 +190,11 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
     return modObject.apply(new BlockItemFusedQuartz(this));
   }
 
+  @Override
+  public @Nonnull MapColor getMapColor(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
+    return MapColor.AIR; // Same as glass
+  }
+
   public static class BlockItemFusedQuartz extends BlockFusedQuartzBase.BlockItemFusedQuartzBase implements ITintedItem, IWithPaintName {
 
     public BlockItemFusedQuartz(@Nonnull BlockFusedQuartz block) {
