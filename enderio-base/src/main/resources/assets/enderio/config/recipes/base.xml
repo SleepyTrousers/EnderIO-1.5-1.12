@@ -626,4 +626,12 @@ XML editor will display that as tooltips when editing this file.
     </slicing>
   </recipe>
 
+  <recipe name="Guardian Diode">
+    <slicing energy="20000">
+      <input name="ingotEnergeticAlloy"/><input name="gemPrismarine"/><input name="ingotEnergeticAlloy"/>
+      <input name="dustPrismarine"/><input name="itemSilicon"/><input name="dustPrismarine"/>
+      <output name="skullGuardianDiode"/>
+    </slicing>
+  </recipe>
+
 </enderio:recipes>

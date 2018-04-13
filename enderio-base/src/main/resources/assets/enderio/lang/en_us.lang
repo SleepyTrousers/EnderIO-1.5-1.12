@@ -457,6 +457,8 @@ tile.block_painted_dark_steel_door.name=Painted Dark Steel Door
 
 tile.block_reinforced_obsidian.name=Reinforced Obsidian
 tile.block_reinforced_obsidian.tooltip.common.line1=Wither Proof
+tile.block_industrial_insulation.name=Industrial Insulation
+tile.block_industrial_insulation.tooltip.common.line1=Absorbs nearby fluids like a sponge
 
 tile.block_self_resetting_lever5.name=Self-resetting Lever (5 seconds)
 tile.block_self_resetting_lever10.name=Self-resetting Lever (10 seconds)

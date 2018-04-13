@@ -1,0 +1,22 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "enderio:cube",
+        "textures": {
+            "all": "enderio:blocks/block_industrial_insulation",
+            "particle": "enderio:blocks/block_industrial_insulation"
+        }
+    },
+	"variants": {
+        "normal": [{
+            "textures": {
+                "all": "enderio:blocks/block_industrial_insulation"
+            }
+        }],
+        "inventory": [{
+            "textures": {
+                "all": "enderio:blocks/block_industrial_insulation"
+            }
+        }]
+	}
+}

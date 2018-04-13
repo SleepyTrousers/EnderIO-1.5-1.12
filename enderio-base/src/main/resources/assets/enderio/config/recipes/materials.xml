@@ -228,6 +228,17 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Unsouled Chassis" required="true">
+    <crafting>
+      <grid>
+        <item name="INDUSTRIAL_INSULATION"/><item name="GUARDIAN_DIODE"/><item name="INDUSTRIAL_INSULATION"/>
+        <item name="INDUSTRIAL_INSULATION"/><item name="SOUL_CHASSIS"/><item name="INDUSTRIAL_INSULATION"/>
+        <item name="INDUSTRIAL_INSULATION"/><item name="GUARDIAN_DIODE"/><item name="INDUSTRIAL_INSULATION"/>
+      </grid>
+      <output name="UNSOULED_CHASSIS"/>
+    </crafting>
+  </recipe>
+
   <recipe name="Machine Dye">
     <crafting>
       <grid>
@@ -440,6 +451,22 @@ XML editor will display that as tooltips when editing this file.
       </grid>
       <output name="enderio:block_reinforced_obsidian"/>
     </crafting>
+  </recipe>
+
+  <alias name="INSULATION_METAL" item="dustTin">
+    <dependency item="dustTin" reverse="false"/>
+  </alias>
+  <alias name="INSULATION_METAL" item="dustIron">
+    <dependency item="dustTin" reverse="true"/>
+  </alias>
+
+  <recipe name="Alloy: Industrial Insulation" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="dustLapis"/>
+      <input name="minecraft:wool"/>
+      <input name="INSULATION_METAL"/>
+      <output name="INDUSTRIAL_INSULATION"/>
+    </alloying>
   </recipe>
 
   <recipe name="Dark Steel Anvil" required="true">

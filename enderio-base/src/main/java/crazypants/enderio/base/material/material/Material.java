@@ -83,7 +83,7 @@ public enum Material {
   ENHANCED_MACHINE_CHASSIS("enhancedMachineChassi"),
   UNSOULED_MACHINE_CHASSIS("unsouledMachineChassi"),
 
-  GUARDIAN_DIODE("skullGuardianDiode"),
+  GUARDIAN_DIODE("skullGuardianDiode", "skullGuardianDiode"),
 
   ;
 

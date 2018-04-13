@@ -16,6 +16,7 @@ import crazypants.enderio.base.block.decoration.BlockDecoration;
 import crazypants.enderio.base.block.decoration.BlockDecorationFacing;
 import crazypants.enderio.base.block.detector.BlockDetector;
 import crazypants.enderio.base.block.infinity.BlockInfinity;
+import crazypants.enderio.base.block.insulation.BlockIndustrialInsulation;
 import crazypants.enderio.base.block.lever.BlockSelfResettingLever;
 import crazypants.enderio.base.block.painted.BlockPaintedCarpet;
 import crazypants.enderio.base.block.painted.BlockPaintedDoor;
@@ -104,6 +105,7 @@ public enum ModObject implements IModObject.Registerable {
   blockDecoration1(BlockDecoration.class),
   blockDecoration2(BlockDecorationFacing.class),
   blockDecoration3(BlockDecorationFacing.class, "create2"),
+  blockIndustrialInsulation(BlockIndustrialInsulation.class),
 
   // Painter
   blockPaintedFence(BlockPaintedFence.class, ModTileEntity.TileEntityPaintedBlock),
