@@ -182,30 +182,29 @@ public abstract class ContainerWiredCharger extends AbstractMachineContainer<Til
   public static NNList<Triple<ItemStack, ItemStack, Integer>> getValidPair(List<ItemStack> validItems) {
     NNList<Triple<ItemStack, ItemStack, Integer>> result = new NNList<>();
     for (ItemStack stack : validItems) {
-      if (PowerHandlerUtil.getCapability(stack, null) != null) {
-        ItemStack copy = stack.copy();
-        IEnergyStorage emptyCap = null;
-        try {
-            emptyCap = PowerHandlerUtil.getCapability(copy, null);
-        } catch (Exception e) {
-            Log.LOGGER.error("An itemstack (" + copy + ") threw an exception when asked for a capability. This is a bug in that mod!", e);
-        }
-        if (emptyCap != null) {
-          int extracted = 1, maxloop = 200;
-          while (extracted > 0 && emptyCap.canExtract() && maxloop-- > 0) {
-            extracted = emptyCap.extractEnergy(Integer.MAX_VALUE, false);
-          }
-          if (emptyCap.canReceive() && emptyCap.getEnergyStored() < emptyCap.getMaxEnergyStored()) {
-            ItemStack empty = copy.copy();
-            int added = emptyCap.receiveEnergy(Integer.MAX_VALUE, false);
-            int power = added;
-            maxloop = 200;
-            while (added > 0 && maxloop-- > 0) {
-              power += added = emptyCap.receiveEnergy(Integer.MAX_VALUE, false);
+      try {
+        if (PowerHandlerUtil.getCapability(stack, null) != null) {
+          ItemStack copy = stack.copy();
+          IEnergyStorage emptyCap = PowerHandlerUtil.getCapability(copy, null);
+          if (emptyCap != null) {
+            int extracted = 1, maxloop = 200;
+            while (extracted > 0 && emptyCap.canExtract() && maxloop-- > 0) {
+              extracted = emptyCap.extractEnergy(Integer.MAX_VALUE, false);
             }
-            result.add(Triple.of(empty, copy, power));
+            if (emptyCap.canReceive() && emptyCap.getEnergyStored() < emptyCap.getMaxEnergyStored()) {
+              ItemStack empty = copy.copy();
+              int added = emptyCap.receiveEnergy(Integer.MAX_VALUE, false);
+              int power = added;
+              maxloop = 200;
+              while (added > 0 && maxloop-- > 0) {
+                power += added = emptyCap.receiveEnergy(Integer.MAX_VALUE, false);
+              }
+              result.add(Triple.of(empty, copy, power));
+            }
           }
         }
+      } catch (Exception e) {
+        Log.LOGGER.error("An itemstack (" + stack + ") threw an exception during energy detection. This is a bug in that mod!", e);
       }
     }
     return result;
