@@ -49,7 +49,7 @@ public class FluidFilter implements IFluidFilter {
   }
 
   @Override
-  public boolean setFluid(int index, FluidStack fluid) {
+  public boolean setFluid(int index, @Nullable FluidStack fluid) {
     if (fluid == null || fluid.getFluid() == null) {
       fluids[index] = null;
     } else {

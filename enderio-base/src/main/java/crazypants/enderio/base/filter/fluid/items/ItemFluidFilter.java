@@ -77,12 +77,13 @@ public class ItemFluidFilter extends Item implements IItemFilterFluidUpgrade, IR
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   @Nullable
   @SideOnly(Side.CLIENT)
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     Container container = player.openContainer;
-    if (container != null && container instanceof IFilterContainer) {
+    if (container instanceof IFilterContainer) {
       return new FluidFilterGui(player.inventory, new ContainerFilter(player, (TileEntityBase) world.getTileEntity(pos), facing, param1),
           world.getTileEntity(pos), ((IFilterContainer<IFluidFilter>) container).getFilter(param1));
     }

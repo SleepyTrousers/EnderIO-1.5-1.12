@@ -57,16 +57,17 @@ public class BlockIndustrialInsulation extends BlockEio<TileEntityEio> implement
   }
 
   // Uses the sponge absorb method, easier than overriding the whole BlockSponge and removing all the BlockState code
+  @SuppressWarnings("null")
   private boolean absorb(@Nonnull World worldIn, @Nonnull BlockPos pos) {
     Queue<Tuple<BlockPos, Integer>> queue = Lists.<Tuple<BlockPos, Integer>> newLinkedList();
     List<BlockPos> list = Lists.<BlockPos> newArrayList();
-    queue.add(new Tuple(pos, Integer.valueOf(0)));
+    queue.add(new Tuple<BlockPos, Integer>(pos, Integer.valueOf(0)));
     int i = 0;
 
     while (!queue.isEmpty()) {
-      Tuple<BlockPos, Integer> tuple = (Tuple) queue.poll();
+      Tuple<BlockPos, Integer> tuple = queue.poll();
       BlockPos blockpos = tuple.getFirst();
-      int j = ((Integer) tuple.getSecond()).intValue();
+      int j = tuple.getSecond().intValue();
 
       for (EnumFacing enumfacing : EnumFacing.values()) {
         BlockPos blockpos1 = blockpos.offset(enumfacing);
@@ -78,7 +79,7 @@ public class BlockIndustrialInsulation extends BlockEio<TileEntityEio> implement
           ++i;
 
           if (j < 6) {
-            queue.add(new Tuple(blockpos1, j + 1));
+            queue.add(new Tuple<BlockPos, Integer>(blockpos1, j + 1));
           }
         }
       }
