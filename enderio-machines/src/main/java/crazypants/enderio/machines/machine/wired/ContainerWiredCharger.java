@@ -14,6 +14,7 @@ import com.enderio.core.common.util.ArrayInventory;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.integration.jei.ItemHelper;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
@@ -183,7 +184,12 @@ public abstract class ContainerWiredCharger extends AbstractMachineContainer<Til
     for (ItemStack stack : validItems) {
       if (PowerHandlerUtil.getCapability(stack, null) != null) {
         ItemStack copy = stack.copy();
-        IEnergyStorage emptyCap = PowerHandlerUtil.getCapability(copy, null);
+        IEnergyStorage emptyCap = null;
+        try {
+            emptyCap = PowerHandlerUtil.getCapability(copy, null);
+        } catch (Exception e) {
+            Log.LOGGER.error("An itemstack (" + copy + ") threw an exception when asked for a capability. This is a bug in that mod!", e);
+        }
         if (emptyCap != null) {
           int extracted = 1, maxloop = 200;
           while (extracted > 0 && emptyCap.canExtract() && maxloop-- > 0) {
