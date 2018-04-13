@@ -406,18 +406,16 @@ public class TravelController {
   private int getRequiredPower(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull TravelSource source, @Nonnull BlockPos coord) {
     if (!isTravelItemActive(player, equipped)) {
       return 0;
-    }
+      }
     int requiredPower;
     requiredPower = (int) (getDistance(player, coord) * source.getPowerCostPerBlockTraveledRF());
     int canUsePower = getEnergyInTravelItem(equipped);
     if (requiredPower > canUsePower) {
-    		player.sendStatusMessage(Lang.STAFF_NO_POWER.toChat(), true);
+      player.sendStatusMessage(Lang.STAFF_NO_POWER.toChat(), true);
       return -1;
-    }
+      }
     return requiredPower;
-  }
-  
-  
+    }
 
   private boolean isInRangeTarget(@Nonnull EntityPlayer player, @Nonnull BlockPos bc, float maxSq) {
     return getDistanceSquared(player, bc) <= maxSq;
