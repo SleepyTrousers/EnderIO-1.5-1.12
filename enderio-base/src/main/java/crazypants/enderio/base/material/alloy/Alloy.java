@@ -22,7 +22,7 @@ public enum Alloy implements IStringSerializable {
   PULSATING_IRON("pulsatingIron", 7.0f, 0x2c9044, 1132),
   DARK_STEEL("darkSteel", 10.0f, 0x6c6c6c, 1540),
   SOULARIUM("soularium", 10.0f, 0x695b4d, 363),
-  END_STEEL("endSteel", 16.0f, 0xFBFCB3, 1540),
+  END_STEEL("endSteel", 10.0f, 0xfbfcb3, 940),
 
   ;
 

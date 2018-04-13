@@ -186,6 +186,7 @@ item.item_material.skull_skeletal_contractor.name=Skeletal Contractor
 item.item_material.skull_zombie_controller.name=Z-Logic Controller
 item.item_material.skull_zombie_electrode.name=Zombie Electrode
 item.item_material.skull_zombie_frankenstien.name=Frank'N'Zombie
+item.item_material.skull_guardian_diode.name=Guardian Diode
 item.item_material.vibrant_crystal.name=Vibrant Crystal
 item.item_material.vibrant_powder.name=Grains of Vibrancy
 item.item_material.weather_crystal.name=Weather Crystal
@@ -217,6 +218,8 @@ item.item_material.soul_machine_dye.tooltip.detailed.line1=Industrially produced
 item.item_material.soul_machine_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with holy water and seek religous advice.
 item.item_material.enhanced_machine_chassi.name=Enhanced Machine Chassis
 item.item_material.enhanced_machine_chassi.tooltip.detailed.line1=A reinforced structure for constructing sturdier machinery
+item.item_material.unsouled_machine_chassi.name=Unsouled Machine Chassis
+item.item_material.unsouled_machine_chassi.tooltip.detailed.line1=An advanced frame for machinery, but it seems to be missing something...
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad
