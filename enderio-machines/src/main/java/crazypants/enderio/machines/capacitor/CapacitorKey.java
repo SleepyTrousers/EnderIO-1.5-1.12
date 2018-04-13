@@ -21,9 +21,9 @@ import static crazypants.enderio.machines.config.Config.sectionCapacitor;
 
 public enum CapacitorKey implements ICapacitorKey.Computable {
 
-  SIMPLE_ALLOY_SMELTER_POWER_INTAKE(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 10),
+  SIMPLE_ALLOY_SMELTER_POWER_INTAKE(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 20),
   SIMPLE_ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 1000),
-  SIMPLE_ALLOY_SMELTER_POWER_USE(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 5),
+  SIMPLE_ALLOY_SMELTER_POWER_USE(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
   SIMPLE_ALLOY_SMELTER_POWER_LOSS(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 1),
 
   ALLOY_SMELTER_POWER_INTAKE(MachineObject.block_alloy_smelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
@@ -55,12 +55,12 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
 
   STIRLING_POWER_LOSS(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 0),
   STIRLING_POWER_BUFFER(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  STIRLING_POWER_GEN(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.QUADRATIC, 20),
+  STIRLING_POWER_GEN(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.DROPOFF, 40),
   STIRLING_POWER_TIME(MachineObject.block_stirling_generator, CapacitorKeyType.SPEED, Scaler.Factory.BURNTIME, 1),
 
   SIMPLE_STIRLING_POWER_LOSS(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 1),
   SIMPLE_STIRLING_POWER_BUFFER(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 1000),
-  SIMPLE_STIRLING_POWER_GEN(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.FIXED_1, 10),
+  SIMPLE_STIRLING_POWER_GEN(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.FIXED_1, 20),
 
   ZOMBIE_POWER_LOSS(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 0),
   ZOMBIE_POWER_BUFFER(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
@@ -99,9 +99,9 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   SAG_MILL_POWER_BUFFER(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
   SAG_MILL_POWER_USE(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
 
-  SIMPLE_SAG_MILL_POWER_INTAKE(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 10),
+  SIMPLE_SAG_MILL_POWER_INTAKE(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 20),
   SIMPLE_SAG_MILL_POWER_BUFFER(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 1000),
-  SIMPLE_SAG_MILL_POWER_USE(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 5),
+  SIMPLE_SAG_MILL_POWER_USE(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
   SIMPLE_SAG_MILL_POWER_LOSS(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 1),
 
   SLICE_POWER_INTAKE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.QUADRATIC, 160),

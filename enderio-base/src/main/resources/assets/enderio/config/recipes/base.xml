@@ -430,6 +430,42 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
+  <recipe name="Alloy: Green Dye, Oredict" required="true">
+    <alloying energy="2000" exp="0.25">
+      <input name="dyeGreen" amount="2"/>
+      <input name="oredict:slimeball"/>
+      <input name="dustCoal" amount="2"/>
+      <output name="ORGANIC_GREEN_DYE" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Green Dye, Oredict Variant" required="true">
+    <alloying energy="1500" exp="0.125">
+      <input name="dyeGreen"/>
+      <input name="oredict:egg"/>
+      <input name="dustCoal"/>
+      <output name="ORGANIC_GREEN_DYE"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Green Dye, Oredict Charcoal" required="false">
+    <alloying energy="2000" exp="0.25">
+      <input name="dyeGreen" amount="2"/>
+      <input name="oredict:slimeball"/>
+      <input name="dustCharcoal" amount="2"/>
+      <output name="ORGANIC_GREEN_DYE" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Green Dye, Oredict Charcoal Variant" required="false">
+    <alloying energy="1500" exp="0.125">
+      <input name="dyeGreen"/>
+      <input name="oredict:egg"/>
+      <input name="dustCharcoal"/>
+      <output name="ORGANIC_GREEN_DYE"/>
+    </alloying>
+  </recipe>
+
   <recipe name="Alloy: Brown Dye" required="true">
     <alloying energy="2000" exp="0.25">
       <input name="itemPlantbrown" amount="12"/>
@@ -442,6 +478,42 @@ XML editor will display that as tooltips when editing this file.
     <alloying energy="1500" exp="0.125">
       <input name="itemPlantbrown" amount="6"/>
       <input name="minecraft:mushroom_stew"/>
+      <output name="ORGANIC_BROWN_DYE"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Brown Dye, Oredict" required="true">
+    <alloying energy="2000" exp="0.25">
+      <input name="dyeBrown" amount="2"/>
+      <input name="oredict:slimeball"/>
+      <input name="dustCoal" amount="2"/>
+      <output name="ORGANIC_BROWN_DYE" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Brown Dye, Oredict Variant" required="true">
+    <alloying energy="1500" exp="0.125">
+      <input name="dyeBrown"/>
+      <input name="minecraft:mushroom_stew"/>
+      <input name="dustCoal"/>
+      <output name="ORGANIC_BROWN_DYE"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Brown Dye, Oredict Charcoal" required="false">
+    <alloying energy="2000" exp="0.25">
+      <input name="dyeBrown" amount="2"/>
+      <input name="oredict:slimeball"/>
+      <input name="dustCharcoal" amount="2"/>
+      <output name="ORGANIC_BROWN_DYE" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Brown Dye, Oredict Charcoal Variant" required="false">
+    <alloying energy="1500" exp="0.125">
+      <input name="dyeBrown"/>
+      <input name="oredict:egg"/>
+      <input name="dustCharcoal"/>
       <output name="ORGANIC_BROWN_DYE"/>
     </alloying>
   </recipe>

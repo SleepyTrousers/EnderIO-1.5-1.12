@@ -204,7 +204,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Chassis">
     <alloying energy="3600" exp="1">
       <input name="SIMPLE_CHASSIS"/>
-      <input name="dyeMachine" amount="6"/>
+      <input name="dyeMachine"/>
       <output name="CHASSIS"/>
     </alloying>
   </recipe>
@@ -212,7 +212,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Soul Chassis">
     <alloying energy="3600" exp="1">
       <input name="SIMPLE_CHASSIS"/>
-      <input name="dyeSoulMachine" amount="6"/>
+      <input name="dyeSoulMachine"/>
       <output name="SOUL_CHASSIS"/>
     </alloying>
   </recipe>
@@ -246,7 +246,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="POWDER_QUARTZ"/><item name="ORGANIC_BLACK_DYE"/><item name="POWDER_QUARTZ"/>
         <item name="ORGANIC_GREEN_DYE"/><item name="POWDER_QUARTZ"/><item name="dustLapis"/>
       </grid>
-      <output name="dyeMachine" amount="9"/>
+      <output name="dyeMachine" amount="6"/>
     </crafting>
   </recipe>
 
@@ -257,7 +257,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="POWDER_QUARTZ"/><item name="ORGANIC_BLACK_DYE"/><item name="POWDER_QUARTZ"/>
         <item name="ORGANIC_BROWN_DYE"/><item name="POWDER_QUARTZ"/><item name="dustLapis"/>
       </grid>
-      <output name="dyeSoulMachine" amount="9"/>
+      <output name="dyeSoulMachine" amount="6"/>
     </crafting>
   </recipe>
 
