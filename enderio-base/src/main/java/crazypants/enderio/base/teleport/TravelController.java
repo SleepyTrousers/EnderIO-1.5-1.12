@@ -81,6 +81,8 @@ public class TravelController {
   private final @Nonnull HashMap<BlockPos, Float> candidates = new HashMap<>();
 
   private boolean selectionEnabled = true;
+  
+  private boolean showNoPowerMessageFlipFlop = true;
 
   private double fovRad;
 
@@ -118,9 +120,17 @@ public class TravelController {
     }
     return true;
   }
+  
+  private void resetFlipFlop() {
+	  
+	  showNoPowerMessageFlipFlop = true;
+	  
+  }
 
   public boolean doBlink(@Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull EntityPlayer player) {
     if (!doesHandAllowBlink(hand)) {
+    	
+    	resetFlipFlop();
       return false;
     }
     Vector3d eye = Util.getEyePositionEio(player);
@@ -149,9 +159,11 @@ public class TravelController {
         // we test against our feets location
         sample.y -= playerHeight;
         if (doBlinkAround(player, equipped, hand, sample, true)) {
+        	resetFlipFlop();
           return true;
         }
       }
+      resetFlipFlop();
       return false;
     } else {
 
@@ -181,6 +193,7 @@ public class TravelController {
         sample.y -= playerHeight;
 
         if (doBlinkAround(player, equipped, hand, sample, false)) {
+        	resetFlipFlop();
           return true;
         }
         teleDistance++;
@@ -196,12 +209,14 @@ public class TravelController {
         sample.y -= playerHeight;
 
         if (doBlinkAround(player, equipped, hand, sample, false)) {
+        	resetFlipFlop();
           return true;
         }
         sampleDistance--;
         teleDistance--;
       }
     }
+    resetFlipFlop();
     return false;
   }
 
@@ -380,7 +395,7 @@ public class TravelController {
     if (requiredPower < 0) {
       return false;
     }
-
+    
     if (!isInRangeTarget(player, coord, source.getMaxDistanceTravelledSq())) {
       if (source != TravelSource.STAFF_BLINK) {
         player.sendMessage(new TextComponentTranslation("enderio.blockTravelPlatform.outOfRange"));
@@ -410,11 +425,19 @@ public class TravelController {
     requiredPower = (int) (getDistance(player, coord) * source.getPowerCostPerBlockTraveledRF());
     int canUsePower = getEnergyInTravelItem(equipped);
     if (requiredPower > canUsePower) {
-      player.sendMessage(Lang.STAFF_NO_POWER.toChat());
+    	if( showNoPowerMessageFlipFlop ) {
+      
+    		player.sendMessage(Lang.STAFF_NO_POWER.toChat());
+    		showNoPowerMessageFlipFlop = false;
+    		
+    	}
+    	
       return -1;
     }
     return requiredPower;
   }
+  
+  
 
   private boolean isInRangeTarget(@Nonnull EntityPlayer player, @Nonnull BlockPos bc, float maxSq) {
     return getDistanceSquared(player, bc) <= maxSq;

@@ -61,7 +61,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
 
   @Override
   public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
-    ItemStack equipped = player.getHeldItem(hand);
+	  ItemStack equipped = player.getHeldItem(hand);
     if (player.isSneaking()) {
       long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
       if (ticksSinceBlink < 0) {
