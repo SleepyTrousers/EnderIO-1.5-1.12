@@ -34,6 +34,7 @@ public class ElytraUpgradeLayer implements IRenderUpgrade {
 
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     GlStateManager.enableBlend();
+    GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 
     final ResourceLocation locationElytra = entitylivingbaseIn.getLocationElytra();
     if (entitylivingbaseIn.isPlayerInfoSet() && locationElytra != null) {
@@ -57,6 +58,7 @@ public class ElytraUpgradeLayer implements IRenderUpgrade {
           headPitch, scale);
     }
 
+    GlStateManager.disableBlend();
     GlStateManager.popMatrix();
   }
 
