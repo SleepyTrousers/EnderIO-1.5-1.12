@@ -12,7 +12,6 @@ import com.enderio.core.common.TileEntityBase;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilterContainer;
-import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.gui.BasicItemFilterGui;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
 import crazypants.enderio.base.filter.item.IItemFilter;
@@ -34,7 +33,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade<IItemFilter>, IResourceTooltipProvider {
+public class ItemBasicItemFilter extends Item implements IItemFilterItemUpgrade, IResourceTooltipProvider {
 
   protected BasicFilterTypes filterType;
 

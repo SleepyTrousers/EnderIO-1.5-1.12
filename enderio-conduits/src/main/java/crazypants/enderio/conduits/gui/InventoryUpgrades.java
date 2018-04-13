@@ -2,11 +2,16 @@ package crazypants.enderio.conduits.gui;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
+import crazypants.enderio.base.filter.fluid.items.IItemFilterFluidUpgrade;
+import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
+import crazypants.enderio.conduits.conduit.item.IItemConduit;
+import crazypants.enderio.conduits.conduit.liquid.ILiquidConduit;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -51,10 +56,6 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
   @Nonnull
   @Override
   public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-    if (!isItemValidForSlot(slot, stack)) {
-      return stack;
-    }
-
     ItemStack slotStack = stack.splitStack(getSlotLimit(slot));
 
     if (!simulate) {
@@ -108,7 +109,7 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     }
   }
 
-  public boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack) {
+  public boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack, IConduit con) {
     if (stack.isEmpty()) {
       return false;
     }
@@ -116,11 +117,20 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     case 0:
       return stack.getItem() instanceof ItemFunctionUpgrade;
     case 2:
-      return stack.getItem() instanceof IItemFilterUpgrade;
+      return isFilterUpgradeAccepted(stack, con);
     case 3:
-      return stack.getItem() instanceof IItemFilterUpgrade;
+      return isFilterUpgradeAccepted(stack, con);
     }
     return false;
+  }
+
+  private boolean isFilterUpgradeAccepted(@Nonnull ItemStack stack, IConduit con) {
+    if (con instanceof IItemConduit) {
+      return stack.getItem() instanceof IItemFilterItemUpgrade;
+    } else if (con instanceof ILiquidConduit) {
+      return stack.getItem() instanceof IItemFilterFluidUpgrade;
+    }
+    return stack.getItem() instanceof IItemFilterUpgrade;
   }
 
   @Override

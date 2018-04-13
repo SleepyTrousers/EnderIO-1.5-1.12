@@ -13,7 +13,6 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilterContainer;
-import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
 import crazypants.enderio.base.filter.gui.ExistingItemFilterGui;
 import crazypants.enderio.base.filter.item.ExistingItemFilter;
@@ -38,7 +37,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 
-public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade<IItemFilter>, IResourceTooltipProvider {
+public class ItemExistingItemFilter extends Item implements IItemFilterItemUpgrade, IResourceTooltipProvider {
 
   public static ItemExistingItemFilter create(@Nonnull IModObject modObject) {
     return new ItemExistingItemFilter(modObject);

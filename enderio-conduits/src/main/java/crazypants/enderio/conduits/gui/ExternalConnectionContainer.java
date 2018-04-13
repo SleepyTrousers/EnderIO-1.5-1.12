@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnderCap;
-import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.conduit.IConduit;
@@ -72,7 +71,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     addSlotToContainer(slotFunctionUpgrade = new SlotItemHandler(getItemHandler(), 0, 131, 71) {
       @Override
       public boolean isItemValid(@Nonnull ItemStack itemStack) {
-        return ExternalConnectionContainer.this.getItemHandler().isItemValidForSlot(0, itemStack);
+        return ExternalConnectionContainer.this.getItemHandler().isItemValidForSlot(0, itemStack, currentCon);
       }
 
       @Override
@@ -210,84 +209,6 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     }
   }
 
-  private boolean mergeItemStackSpecial(@Nonnull ItemStack origStack, @Nonnull Slot targetSlot) {
-    if (!targetSlot.isItemValid(origStack)) {
-      return false;
-    }
-
-    setFunctionUpgradeSlotLimit(origStack);
-    ItemStack curStack = targetSlot.getStack();
-    int maxStackSize = Math.min(origStack.getMaxStackSize(), targetSlot.getSlotStackLimit());
-
-    if (curStack.isEmpty()) {
-      curStack = origStack.copy();
-      curStack.setCount(Math.min(origStack.getCount(), maxStackSize));
-      origStack.shrink(curStack.getCount());
-      targetSlot.putStack(curStack);
-      targetSlot.onSlotChanged();
-      return true;
-    } else if (ItemUtil.areStackMergable(curStack, origStack)) {
-      int mergedSize = curStack.getCount() + origStack.getCount();
-      if (mergedSize <= maxStackSize) {
-        origStack.setCount(0);
-        curStack.setCount(mergedSize);
-        targetSlot.onSlotChanged();
-        return true;
-      } else if (curStack.getCount() < maxStackSize) {
-        origStack.shrink(maxStackSize - curStack.getCount());
-        curStack.setCount(maxStackSize);
-        targetSlot.onSlotChanged();
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  @Override
-  @Nonnull
-  public ItemStack transferStackInSlot(@Nonnull EntityPlayer entityPlayer, int slotIndex) {
-    ItemStack copyStack = ItemStack.EMPTY;
-    Slot slot = inventorySlots.get(slotIndex);
-    if (slot != null && slot.getHasStack()) {
-      ItemStack origStack = slot.getStack();
-      copyStack = origStack.copy();
-
-      boolean merged = false;
-      if (slotIndex < outputFilterSlot) {
-        for (int targetSlotIdx = outputFilterSlot; targetSlotIdx <= functionUpgradeSlot; targetSlotIdx++) {
-          Slot targetSlot = inventorySlots.get(targetSlotIdx);
-          if (targetSlot.xPos >= 0 && mergeItemStackSpecial(origStack, targetSlot)) {
-            merged = true;
-            break;
-          }
-        }
-      } else {
-        merged = mergeItemStack(origStack, 0, outputFilterSlot, false);
-      }
-
-      if (!merged) {
-        return ItemStack.EMPTY;
-      }
-
-      slot.onSlotChange(origStack, copyStack);
-
-      if (origStack.getCount() == 0) {
-        slot.putStack(ItemStack.EMPTY);
-      } else {
-        slot.onSlotChanged();
-      }
-
-      if (origStack.getCount() == copyStack.getCount()) {
-        return ItemStack.EMPTY;
-      }
-
-      slot.onTake(entityPlayer, origStack);
-    }
-
-    return copyStack;
-  }
-
   private int guiId = -1;
 
   @Override
@@ -342,7 +263,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
     @Override
     public boolean isItemValid(@Nonnull ItemStack stack) {
-      return ExternalConnectionContainer.this.getItemHandler().isItemValidForSlot(getSlotIndex(), stack);
+      return ExternalConnectionContainer.this.getItemHandler().isItemValidForSlot(getSlotIndex(), stack, currentCon);
     }
 
   }

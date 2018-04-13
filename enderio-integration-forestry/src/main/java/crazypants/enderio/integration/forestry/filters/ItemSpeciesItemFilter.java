@@ -12,9 +12,9 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilterContainer;
-import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
 import crazypants.enderio.base.filter.item.IItemFilter;
+import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.client.gui.GuiScreen;
@@ -30,7 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade<IItemFilter> {
+public class ItemSpeciesItemFilter extends Item implements IItemFilterItemUpgrade {
 
   public static ItemSpeciesItemFilter create(@Nonnull IModObject modObject) {
     return new ItemSpeciesItemFilter(modObject);

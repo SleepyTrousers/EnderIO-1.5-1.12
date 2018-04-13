@@ -20,9 +20,9 @@ import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.filter.FilterHandler;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilter;
-import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.ITileFilterContainer;
 import crazypants.enderio.base.filter.item.IItemFilter;
+import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -54,7 +54,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity
   private static PredicateItemStack PREDICATE_FILTER = new PredicateItemStack() {
     @Override
     public boolean doApply(@Nonnull ItemStack input) {
-      return input.getItem() instanceof IItemFilterUpgrade;
+      return input.getItem() instanceof IItemFilterItemUpgrade;
     }
   };
 
