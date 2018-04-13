@@ -81,6 +81,9 @@ public enum Material {
   DYE_SOUL_MACHINE("soul_machine_dye", "dyeSoulMachine"),
   SOUL_MACHINE_CHASSIS("soulMachineChassi"),
   ENHANCED_MACHINE_CHASSIS("enhancedMachineChassi"),
+  UNSOULED_MACHINE_CHASSIS("unsouledMachineChassi"),
+
+  GUARDIAN_DIODE("skullGuardianDiode", "skullGuardianDiode"),
 
   ;
 

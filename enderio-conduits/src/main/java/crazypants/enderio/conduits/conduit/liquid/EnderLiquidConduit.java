@@ -456,20 +456,6 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
         IFluidFilter filter = (IFluidFilter) FilterRegistry.loadFilterFromNbt(filterTag);
         outputFilters.put(dir, filter);
       }
-
-      // TODO remove this later
-      generateFiltersFromItems();
-    }
-
-  }
-
-  private void generateFiltersFromItems() {
-    for (EnumFacing facing : EnumFacing.VALUES) {
-      ItemStack stack = outputFilterUpgrades.get(facing);
-      if (!stack.isEmpty()) {
-        IFluidFilter filter = FilterRegistry.getFilterForUpgrade(stack);
-        outputFilters.put(facing, filter);
-      }
     }
   }
 

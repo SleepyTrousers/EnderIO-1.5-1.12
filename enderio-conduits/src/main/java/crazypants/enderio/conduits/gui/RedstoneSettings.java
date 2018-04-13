@@ -10,6 +10,7 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.IClientConduit;
+import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
@@ -33,7 +34,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
 
   private int stongLabelX;
 
-  public RedstoneSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
+  public RedstoneSettings(@Nonnull final IGuiExternalConnection gui, @Nonnull IClientConduit con) {
     super(IconEIO.WRENCH_OVERLAY_REDSTONE, ConduitObject.item_redstone_conduit.getUnlocalisedName(), gui, con, "redstone_settings", false);
 
     int x = leftColumn;

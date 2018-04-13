@@ -329,6 +329,27 @@
           "frontframe": "enderio:items/item_enhanced_machine_chassi",
           "front": "enderio:items/item_enhanced_machine_chassi"
         }
+      },
+      "unsouled_machine_chassi": {
+        "model": "enderio:machine_body",
+        "submodel": {
+          "front": {
+            "model": "enderio:machine_front"
+          }
+        },
+        "textures": {
+          "top": "enderio:items/item_unsouled_machine_chassi",
+          "bottom": "enderio:items/item_unsouled_machine_chassi",
+          "side": "enderio:items/item_unsouled_machine_chassi",
+          "back": "enderio:items/item_unsouled_machine_chassi",
+          "frontframe": "enderio:items/item_unsouled_machine_chassi",
+          "front": "enderio:items/item_unsouled_machine_chassi"
+        }
+      },
+      "skull_guardian_diode":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_skull_guardian_diode"
+        }
       }
     }
   }

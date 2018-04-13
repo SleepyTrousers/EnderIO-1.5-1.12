@@ -20,7 +20,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
-// TODO Javadocs
 public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<AdvancedLiquidConduit> {
 
   private final ConduitTank tank = new ConduitTank(0);

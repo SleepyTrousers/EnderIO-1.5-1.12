@@ -6,6 +6,7 @@ import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.IClientConduit;
+import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -26,7 +27,7 @@ public class PowerSettings extends BaseSettingsPanel {
   private RedstoneModeButton<?> rsB;
   private ColorButton colorB;
 
-  public PowerSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
+  public PowerSettings(@Nonnull final IGuiExternalConnection gui, @Nonnull IClientConduit con) {
     super(IconEIO.WRENCH_OVERLAY_POWER, ConduitObject.item_power_conduit.getUnlocalisedName(), gui, con, "power_settings");
     conduit = (IPowerConduit) con;
 

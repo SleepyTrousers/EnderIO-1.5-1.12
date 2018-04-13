@@ -43,7 +43,6 @@ public class CapabilityFilterHolder {
 
     @Override
     public IFilterHolder call() throws Exception {
-      // TODO Auto-generated method stub
       return null;
     }
 

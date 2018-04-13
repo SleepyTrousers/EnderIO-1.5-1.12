@@ -71,6 +71,7 @@ public class ItemCapacitor extends Item implements IHaveRenderers {
 
   }
 
+  @SuppressWarnings("null")
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
     return getUnlocalizedName() + "." + stack.getCapability(CapabilityCapacitorData.getCapNN(), null).getUnlocalizedName();
@@ -107,7 +108,7 @@ public class ItemCapacitor extends Item implements IHaveRenderers {
       tooltip.add(EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack), NbtValue.CAPNAME.getString(stack, "(!%$&�*&%*???")));
     }
   }
-  
+
   @Override
   @Nullable
   public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {

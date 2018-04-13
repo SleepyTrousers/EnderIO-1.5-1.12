@@ -204,7 +204,6 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
   static class NetworkTank {
 
     final @Nonnull EnderLiquidConduit con;
-    // TODO Confirm dir necessity
     final @Nonnull EnumFacing conDir;
     final IFluidWrapper externalTank;
     final @Nonnull EnumFacing tankDir;

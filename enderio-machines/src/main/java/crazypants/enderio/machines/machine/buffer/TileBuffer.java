@@ -178,8 +178,6 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
     initMaxIO();
   }
 
-  // TODO 1.11 check that items can be inserted *and* removed by automation
-
   @Override
   public boolean canConnectEnergy(@Nonnull EnumFacing from) {
     return hasPower();

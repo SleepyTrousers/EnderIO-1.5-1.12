@@ -12,7 +12,6 @@ import com.enderio.core.common.TileEntityBase;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilterContainer;
-import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.gui.BasicItemFilterGui;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
 import crazypants.enderio.base.filter.item.IItemFilter;
@@ -34,7 +33,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade<IItemFilter>, IResourceTooltipProvider {
+public class ItemBasicItemFilter extends Item implements IItemFilterItemUpgrade, IResourceTooltipProvider {
 
   protected BasicFilterTypes filterType;
 
@@ -71,12 +70,7 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade<IIte
   public IItemFilter createFilterFromStack(@Nonnull ItemStack stack) {
     ItemFilter filter = new ItemFilter(filterType);
     NBTTagCompound tag = NbtValue.FILTER.getTag(stack);
-
-    // TODO work out why this works
-    // For some reason Advanced and Limited filters will have their state overridden if they run readFromNBT(),
-    // however the basic filter is not saved to inventory if readFromNBT() is not run
-    // ^ Response to above - need to move filters to use @Store in conduits
-    if (!tag.hasNoTags() || filterType == BasicFilterTypes.filterUpgradeBasic) {
+    if (!tag.hasNoTags()) {
       filter.readFromNBT(tag);
     }
     return filter;

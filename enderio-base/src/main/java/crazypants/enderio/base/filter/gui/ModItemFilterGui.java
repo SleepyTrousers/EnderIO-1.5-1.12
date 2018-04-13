@@ -38,9 +38,9 @@ public class ModItemFilterGui extends AbstractFilterGui {
   private final int inputOffsetX;
   private final int tfWidth;
 
-  private final GuiToolTip stackInsertTooltip1;
-  private final GuiToolTip stackInsertTooltip2;
-  private final GuiToolTip stackInsertTooltip3;
+  private final @Nonnull GuiToolTip stackInsertTooltip1;
+  private final @Nonnull GuiToolTip stackInsertTooltip2;
+  private final @Nonnull GuiToolTip stackInsertTooltip3;
 
   public ModItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, IItemFilter filterIn) {
     super(playerInv, filterContainer, te, "mod_item_filter");

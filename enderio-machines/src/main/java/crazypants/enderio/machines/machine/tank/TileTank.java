@@ -30,9 +30,13 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.capabilities.Capability;
@@ -107,6 +111,15 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     return fluid != null && fluid.getFluid().getTemperature() > 973;
   }
 
+  public boolean canEatXP() {
+    final FluidStack fluid = tank.getFluid();
+    return fluid == null || (fluid.getFluid() == Fluids.XP_JUICE.getFluid() && tank.getAvailableSpace() >= XpUtil.experienceToLiquid(11));
+  }
+
+  public boolean isXpBottle(@Nonnull ItemStack stack) {
+    return stack.getItem() == Items.EXPERIENCE_BOTTLE;
+  }
+
   public @Nonnull VoidMode getVoidMode() {
     return voidMode;
   }
@@ -121,7 +134,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
       return false;
     }
     if (i == 0) {
-      return FluidUtil.getFluidTypeFromItem(item) != null;
+      return (FluidUtil.getFluidTypeFromItem(item) != null) || (isXpBottle(item) && canEatXP());
     } else if (i == 1) {
       return FluidUtil.hasEmptyCapacity(item) || canBeMended(item);
     } else if (i == 2 && canVoidItems()) {
@@ -292,6 +305,23 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
 
     final FluidAndStackResult fill = FluidUtil.tryDrainContainer(inputStack, this);
     if (fill.result.fluidStack == null) {
+      if (isXpBottle(inputStack) && canEatXP()) {
+        if (tank.fill(new FluidStack(Fluids.XP_JUICE.getFluid(), XpUtil.experienceToLiquid(3 + world.rand.nextInt(5) + world.rand.nextInt(5))), true) > 0) {
+          inputStack.shrink(1);
+          setInventorySlotContents(input, inputStack);
+          setTanksDirty();
+          markDirty();
+          // The event takes a blockpos and plays at that corner. At least vary the corner a bit...
+          BlockPos eventPos = pos;
+          if (world.rand.nextBoolean()) {
+            eventPos = eventPos.south();
+          }
+          if (world.rand.nextBoolean()) {
+            eventPos = eventPos.east();
+          }
+          world.playEvent(2002, eventPos, PotionUtils.getPotionColor(PotionTypes.WATER));
+        }
+      }
       return false;
     }
 

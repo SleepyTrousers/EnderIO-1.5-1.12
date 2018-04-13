@@ -27,6 +27,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="SIMPLE_CHASSIS" item="itemSimpleMachineChassi" />
   <alias name="SOUL_CHASSIS" item="itemSoulMachineChassi" />
   <alias name="ENHANCED_CHASSIS" item="itemEnhancedMachineChassi" />
+  <alias name="UNSOULED_CHASSIS" item="itemUnsouledMachineChassi" />
   <alias name="CHASSIPARTS" item="itemChassiParts" />
 
   <alias name="GEAR_WOOD" item="gearWood" />
@@ -79,6 +80,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="ENDER_RESONATOR" item="skullEnderResonator" />
   <alias name="SENTIENT_ENDER" item="skullSentientEnder" />
   <alias name="SKELETAL_CONTRACTOR" item="skullSkeletalContractor" />
+  <alias name="GUARDIAN_DIODE" item="skullGuardianDiode" />
 
   <alias name="CAPACITOR1" item="enderio:item_basic_capacitor:0" />
   <alias name="CAPACITOR2" item="enderio:item_basic_capacitor:1" />
@@ -174,5 +176,6 @@ XML editor will display that as tooltips when editing this file.
 
   <alias name="ADVANCED_FILTER" item="enderio:item_basic_filter_upgrade:1" />
   <alias name="COUNTING_FILTER" item="enderio:item_basic_filter_upgrade:2" />
+  <alias name="INDUSTRIAL_INSULATION" item="enderio:block_industrial_insulation" />
 
 </enderio:recipes>

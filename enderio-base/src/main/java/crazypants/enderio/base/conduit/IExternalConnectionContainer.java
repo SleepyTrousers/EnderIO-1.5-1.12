@@ -2,6 +2,9 @@ package crazypants.enderio.base.conduit;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.util.NNList;
+
 public interface IExternalConnectionContainer {
 
   /**
@@ -29,4 +32,6 @@ public interface IExternalConnectionContainer {
    *          Filter Listener
    */
   void addFilterListener(@Nonnull IFilterChangeListener listener);
+
+  void createGhostSlots(@Nonnull NNList<GhostSlot> ghostSlots);
 }

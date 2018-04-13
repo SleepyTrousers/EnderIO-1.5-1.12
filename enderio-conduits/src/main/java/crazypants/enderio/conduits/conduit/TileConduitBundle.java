@@ -658,7 +658,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    // TODO Find a better way for guis to access filter capabilities
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
       for (IConduit conduit : getConduits()) {
         if (conduit.hasCapability(capability, facing))
@@ -676,7 +675,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @Nullable
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-    // TODO Find a better way for guis to access filter capabilities
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
       for (IConduit conduit : getConduits()) {
         if (conduit.hasCapability(capability, facing))
@@ -690,108 +688,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
     return super.getCapability(capability, facing);
   }
-
-  // // AE2
-  //
-  // private Object node; // IGridNode object, untyped to avoid crash w/o AE2
-  //
-  // @Override
-  // @Method(modid = "appliedenergistics2")
-  // public IGridNode getGridNode(AEPartLocation loc) {
-  // IMEConduit cond = getConduit(IMEConduit.class);
-  // if (cond != null) {
-  // if (loc == null || loc == AEPartLocation.INTERNAL || cond.getConnectionMode(loc.getOpposite().getFacing()) == ConnectionMode.IN_OUT) {
-  // return (IGridNode) node;
-  // }
-  // }
-  // return null;
-  // }
-  //
-  // @SuppressWarnings("cast")
-  // @Override
-  // @Method(modid = "appliedenergistics2")
-  // public void setGridNode(Object node) {
-  // this.node = (IGridNode) node;
-  // }
-  //
-  // @Override
-  // @Method(modid = "appliedenergistics2")
-  // public AECableType getCableConnectionType(AEPartLocation loc) {
-  // IMEConduit cond = getConduit(IMEConduit.class);
-  // if (cond == null || loc == AEPartLocation.INTERNAL) {
-  // return AECableType.NONE;
-  // } else {
-  // return cond.isConnectedTo(loc.getFacing()) ? cond.isDense() ? AECableType.DENSE : AECableType.SMART : AECableType.NONE;
-  // }
-  // }
-  //
-  // @Override
-  // @Method(modid = "appliedenergistics2")
-  // public void securityBreak() {
-  // }
-  //
-  // // OpenComputers
-  //
-  // @Override
-  // @Method(modid = "OpenComputersAPI|Network")
-  // public Node node() {
-  // IOCConduit cond = getConduit(IOCConduit.class);
-  // if (cond != null) {
-  // return cond.node();
-  // } else {
-  // return null;
-  // }
-  // }
-  //
-  // @Override
-  // @Method(modid = "OpenComputersAPI|Network")
-  // public void onConnect(Node node) {
-  // IOCConduit cond = getConduit(IOCConduit.class);
-  // if (cond != null) {
-  // cond.onConnect(node);
-  // }
-  // }
-  //
-  // @Override
-  // @Method(modid = "OpenComputersAPI|Network")
-  // public void onDisconnect(Node node) {
-  // IOCConduit cond = getConduit(IOCConduit.class);
-  // if (cond != null) {
-  // cond.onDisconnect(node);
-  // }
-  // }
-  //
-  // @Override
-  // @Method(modid = "OpenComputersAPI|Network")
-  // public void onMessage(Message message) {
-  // IOCConduit cond = getConduit(IOCConduit.class);
-  // if (cond != null) {
-  // cond.onMessage(message);
-  // }
-  // }
-  //
-  // @Override
-  // @Method(modid = "OpenComputersAPI|Network")
-  // public Node sidedNode(EnumFacing side) {
-  // IOCConduit cond = getConduit(IOCConduit.class);
-  // if (cond != null) {
-  // return cond.sidedNode(side);
-  // } else {
-  // return null;
-  // }
-  // }
-  //
-  // @Override
-  // @Method(modid = "OpenComputersAPI|Network")
-  // @SideOnly(Side.CLIENT)
-  // public boolean canConnect(EnumFacing side) {
-  // IOCConduit cond = getConduit(IOCConduit.class);
-  // if (cond != null) {
-  // return cond.canConnect(side);
-  // } else {
-  // return false;
-  // }
-  // }
 
   @Override
   public void invalidate() {
@@ -883,42 +779,5 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
     return null;
   }
-
-  // @Override
-  // public IItemFilter getFilter(int filterId, int param1) {
-  // ItemConduit itemConduit = getConduit(ItemConduit.class);
-  // if (itemConduit != null) {
-  // if (filterId == FilterGuiUtil.INDEX_INPUT) {
-  // return itemConduit.getInputFilter(EnumFacing.getFront(param1));
-  // } else if (filterId == FilterGuiUtil.INDEX_OUTPUT) {
-  // return itemConduit.getOutputFilter(EnumFacing.getFront(param1));
-  // }
-  // }
-  // return null;
-  // }
-  //
-  // @Override
-  // public void setFilter(int filterId, int param1, @Nonnull IItemFilter filter) {
-  // ItemConduit itemConduit = getConduit(ItemConduit.class);
-  // if (itemConduit != null) {
-  // if (filterId == FilterGuiUtil.INDEX_INPUT) {
-  // itemConduit.setInputFilter(EnumFacing.getFront(param1), filter);
-  // } else if (filterId == FilterGuiUtil.INDEX_OUTPUT) {
-  // itemConduit.setOutputFilter(EnumFacing.getFront(param1), filter);
-  // }
-  // }
-  // }
-  //
-  // @Override
-  // public IItemHandler getInventoryForSnapshot(int filterId, int param1) {
-  // ItemConduit itemConduit = getConduit(ItemConduit.class);
-  // if (itemConduit != null) {
-  // ItemConduitNetwork icn = itemConduit.getNetwork();
-  // if (icn != null) {
-  // return icn.getInventory(itemConduit, EnumFacing.getFront(param1)).getInventory();
-  // }
-  // }
-  // return null;
-  // }
 
 }

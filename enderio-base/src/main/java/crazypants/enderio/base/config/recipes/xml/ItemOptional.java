@@ -24,7 +24,6 @@ public class ItemOptional implements RecipeConfigElement {
 
   public ItemOptional() {
     super();
-    // TODO Auto-generated constructor stub
   }
 
   @Override

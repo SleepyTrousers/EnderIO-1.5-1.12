@@ -8,6 +8,7 @@ import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
+import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
@@ -34,7 +35,7 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   private final ILiquidConduit conduit;
 
-  public LiquidSettings(@Nonnull final GuiExternalConnection gui, @Nonnull IClientConduit con) {
+  public LiquidSettings(@Nonnull final IGuiExternalConnection gui, @Nonnull IClientConduit con) {
     super(IconEIO.WRENCH_OVERLAY_FLUID, ConduitObject.item_liquid_conduit.getUnlocalisedName(), gui, con, "liquid_settings");
 
     conduit = (ILiquidConduit) con;

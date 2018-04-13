@@ -224,133 +224,109 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     return Collections.emptyList();
   }
 
+  // TODO make all of this actually do stuff
   public IInventoryDatabaseServer getDatabase() {
     return new IInventoryDatabaseServer() {
 
       @Override
       public int getGeneration() {
-        // TODO Auto-generated method stub
         return 0;
       }
 
       @Override
       public IServerItemEntry lookupItem(ItemStack stack, IServerItemEntry hint, boolean create) {
-        // TODO Auto-generated method stub
         return null;
       }
 
       @Override
       public IServerItemEntry getItem(int dbID) {
-        // TODO Auto-generated method stub
         return null;
       }
 
       @Override
       public IServerItemEntry getExistingItem(int dbID) {
-        // TODO Auto-generated method stub
         return null;
       }
 
       @Override
       public boolean isCurrent() {
-        // TODO Auto-generated method stub
         return false;
       }
 
       @Override
       public void addChangeLog(ChangeLog cl) {
-        // TODO Auto-generated method stub
 
       }
 
       @Override
       public void removeChangeLog(ChangeLog cl) {
-        // TODO Auto-generated method stub
 
       }
 
       @Override
       public List<? extends IServerItemEntry> decompressMissingItems(byte[] compressed) throws IOException {
-        // TODO Auto-generated method stub
         return null;
       }
 
       @Override
       public byte[] compressItemInfo(List<? extends IServerItemEntry> items) throws IOException {
-        // TODO Auto-generated method stub
         return null;
       }
 
       @Override
       public byte[] compressItemList() throws IOException {
-        // TODO Auto-generated method stub
         return null;
       }
 
       @Override
       public byte[] compressChangedItems(Collection<? extends IServerItemEntry> items) throws IOException {
-        // TODO Auto-generated method stub
         return null;
       }
 
       @Override
       public void resetDatabase() {
-        // TODO Auto-generated method stub
 
       }
 
       @Override
       public int getNumInventories() {
-        // TODO Auto-generated method stub
         return 0;
       }
 
       @Override
       public float getPower() {
-        // TODO Auto-generated method stub
         return 0;
       }
 
       @Override
       public void addPower(float power) {
-        // TODO Auto-generated method stub
 
       }
 
       @Override
       public boolean isOperational() {
-        // TODO Auto-generated method stub
         return false;
       }
 
       @Override
       public int extractItems(IServerItemEntry entry, int count, IInventoryPanel te) {
-        // TODO Auto-generated method stub
         return 0;
       }
 
       @Override
       public void tick() {
-        // TODO Auto-generated method stub
-
       }
 
       @Override
       public void sendChangeLogs() {
-        // TODO Auto-generated method stub
-
       }
 
       @Override
       public void onNeighborChange(BlockPos neighborPos) {
-        // TODO Auto-generated method stub
-
       }
 
       @Override
       public void entryChanged(IServerItemEntry entry) {
-        // TODO Auto-generated method stub
-
       }
     };
   }
