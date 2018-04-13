@@ -72,7 +72,7 @@ public class TESRWiredCharger<T extends TileWiredCharger> extends ManagedTESR<T>
     }
     double rot = (EnderIO.proxy.getTickCount() * 0.05D + (tick * 0.05D) + rand.nextDouble()) % (Math.PI * 2);
 
-    doRender(floatingItem, rot);
+    doRender(world, floatingItem, rot);
 
     GlStateManager.popMatrix();
   }
@@ -81,14 +81,14 @@ public class TESRWiredCharger<T extends TileWiredCharger> extends ManagedTESR<T>
     return te.getItemToRender();
   }
 
-  public void doRender(@Nonnull ItemStack itemstack, double rot) {
+  public void doRender(@Nonnull World world, @Nonnull ItemStack itemstack, double rot) {
     GlStateManager.enableLighting();
     GlStateManager.enableRescaleNormal();
     GlStateManager.alphaFunc(516, 0.1F);
     GlStateManager.enableBlend();
     GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
     GlStateManager.pushMatrix();
-    IBakedModel ibakedmodel = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemstack);
+    IBakedModel ibakedmodel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(itemstack, world, null);
     float f2 = ibakedmodel.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
     GlStateManager.translate(0, 0.25F * f2, 0);
 
