@@ -2,11 +2,13 @@ package crazypants.enderio.conduits.network;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.base.conduit.IConduit;
-import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
+import crazypants.enderio.conduits.conduit.liquid.EnderLiquidConduit;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -14,58 +16,42 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPacket<T> {
+public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidConduit> {
 
-  protected EnumFacing dir;
-  protected IFilter inputFilter;
-  protected IFilter outputFilter;
+  private DyeColor colIn;
+  private DyeColor colOut;
 
-  public PacketConduitFilter() {
-
+  public PacketEnderLiquidConduit() {
   }
 
-  public PacketConduitFilter(@Nonnull T con, @Nonnull EnumFacing dir) {
-    super(con);
-    this.dir = dir;
-
-    if (con.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
-      IFilterHolder<IFilter> filterHolder = con.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
-      inputFilter = filterHolder.getFilter(filterHolder.getInputFilterIndex(), dir.ordinal());
-      outputFilter = filterHolder.getFilter(filterHolder.getOutputFilterIndex(), dir.ordinal());
-    }
+  public PacketEnderLiquidConduit(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing dir) {
+    super(con, dir);
+    colIn = con.getInputColor(dir);
+    colOut = con.getOutputColor(dir);
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    if (dir == null) {
-      buf.writeShort(-1);
-    } else {
-      buf.writeShort(dir.ordinal());
-    }
-    FilterRegistry.writeFilter(buf, inputFilter);
-    FilterRegistry.writeFilter(buf, outputFilter);
+    buf.writeShort(colIn.ordinal());
+    buf.writeShort(colOut.ordinal());
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
-    short ord = buf.readShort();
-    if (ord < 0) {
-      dir = null;
-    } else {
-      dir = EnumFacing.values()[ord];
-    }
-    inputFilter = FilterRegistry.readFilter(buf);
-    outputFilter = FilterRegistry.readFilter(buf);
+    colIn = DyeColor.values()[buf.readShort()];
+    colOut = DyeColor.values()[buf.readShort()];
   }
 
-  public static class Handler implements IMessageHandler<PacketConduitFilter, IMessage> {
+  public static class Handler implements IMessageHandler<PacketEnderLiquidConduit, IMessage> {
 
     @Override
-    public IMessage onMessage(PacketConduitFilter message, MessageContext ctx) {
-      IConduit conduit = message.getConduit(ctx);
+    public IMessage onMessage(PacketEnderLiquidConduit message, MessageContext ctx) {
+      EnderLiquidConduit conduit = message.getConduit(ctx);
       if (conduit != null) {
+        conduit.setInputColor(message.dir, message.colIn);
+        conduit.setOutputColor(message.dir, message.colOut);
         applyFilter(message.dir, conduit, message.inputFilter, true);
         applyFilter(message.dir, conduit, message.outputFilter, false);
 
@@ -85,6 +71,7 @@ public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPack
         }
       }
     }
+
   }
 
 }

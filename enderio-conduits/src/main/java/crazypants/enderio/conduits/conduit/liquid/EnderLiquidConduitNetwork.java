@@ -7,11 +7,9 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper.ITankInfoWrapper;
 import com.enderio.core.common.util.RoundRobinIterator;
 
-import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.config.ConduitConfig;
@@ -98,7 +96,8 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       // TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
 
       for (NetworkTank target : getIteratorForTank(tank)) {
-        if (!target.equals(tank) && target.acceptsOuput && target.isValid() && matchedFilter(resource, target.con, target.conDir, false)) {
+        if (!target.equals(tank) && target.acceptsOuput && target.isValid() && target.inputColor == tank.outputColor
+            && matchedFilter(resource, target.con, target.conDir, false)) {
           int vol = doFill ? target.externalTank.fill(resource.copy()) : target.externalTank.offer(resource.copy());
           remaining -= vol;
           filled += vol;
@@ -194,60 +193,6 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
           return false;
         }
       } else if (!conduitLoc.equals(other.conduitLoc)) {
-        return false;
-      }
-      return true;
-    }
-
-  }
-
-  static class NetworkTank {
-
-    final @Nonnull EnderLiquidConduit con;
-    final @Nonnull EnumFacing conDir;
-    final IFluidWrapper externalTank;
-    final @Nonnull EnumFacing tankDir;
-    final @Nonnull BlockPos conduitLoc;
-    final boolean acceptsOuput;
-
-    public NetworkTank(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
-      this.con = con;
-      this.conDir = conDir;
-      conduitLoc = con.getBundle().getLocation();
-      tankDir = conDir.getOpposite();
-      externalTank = AbstractLiquidConduit.getExternalFluidHandler(con.getBundle().getBundleworld(), conduitLoc.offset(conDir), tankDir);
-      acceptsOuput = con.getConnectionMode(conDir).acceptsOutput();
-    }
-
-    public boolean isValid() {
-      return externalTank != null && con.getConnectionMode(conDir) != ConnectionMode.DISABLED;
-    }
-
-    @Override
-    public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + conDir.hashCode();
-      result = prime * result + conduitLoc.hashCode();
-      return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      if (this == obj) {
-        return true;
-      }
-      if (obj == null) {
-        return false;
-      }
-      if (getClass() != obj.getClass()) {
-        return false;
-      }
-      NetworkTank other = (NetworkTank) obj;
-      if (conDir != other.conDir) {
-        return false;
-      }
-      if (!conduitLoc.equals(other.conduitLoc)) {
         return false;
       }
       return true;

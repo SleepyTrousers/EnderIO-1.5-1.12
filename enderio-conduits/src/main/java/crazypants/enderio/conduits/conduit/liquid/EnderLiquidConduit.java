@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -28,6 +29,7 @@ import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
+import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,6 +54,11 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_ender");
   public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core_ender");
   public static final TextureSupplier ICON_IN_OUT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_in_out");
+  public static final TextureSupplier ICON_KEY_IN_OUT_BG = TextureRegistry.registerTexture("blocks/item_conduit_io_connector");
+  public static final TextureSupplier ICON_KEY_INPUT = TextureRegistry.registerTexture("blocks/item_conduit_input");
+  public static final TextureSupplier ICON_KEY_OUTPUT = TextureRegistry.registerTexture("blocks/item_conduit_output");
+  public static final TextureSupplier ICON_KEY_IN_OUT_OUT = TextureRegistry.registerTexture("blocks/item_conduit_in_out_out");
+  public static final TextureSupplier ICON_KEY_IN_OUT_IN = TextureRegistry.registerTexture("blocks/item_conduit_in_out_in");
 
   private EnderLiquidConduitNetwork network;
   private int ticksSinceFailedExtract;
@@ -60,6 +67,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   private final EnumMap<EnumFacing, IFluidFilter> inputFilters = new EnumMap<EnumFacing, IFluidFilter>(EnumFacing.class);
   private final EnumMap<EnumFacing, ItemStack> outputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
   private final EnumMap<EnumFacing, ItemStack> inputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
+
+  private final EnumMap<EnumFacing, DyeColor> inputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
+  private final EnumMap<EnumFacing, DyeColor> outputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
   public EnderLiquidConduit() {
     super();
@@ -196,17 +206,27 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForInputMode() {
-    return AdvancedLiquidConduit.ICON_EXTRACT_KEY.get(TextureAtlasSprite.class);
+    return ICON_KEY_INPUT.get(TextureAtlasSprite.class);
+  }
+
+  @SideOnly(Side.CLIENT)
+  public TextureAtlasSprite getTextureForInOutMode(boolean input) {
+    return input ? ICON_KEY_IN_OUT_IN.get(TextureAtlasSprite.class) : ICON_KEY_IN_OUT_OUT.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForOutputMode() {
-    return AdvancedLiquidConduit.ICON_INSERT_KEY.get(TextureAtlasSprite.class);
+    return ICON_KEY_OUTPUT.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForInOutMode() {
     return ICON_IN_OUT_KEY.get(TextureAtlasSprite.class);
+  }
+
+  @SideOnly(Side.CLIENT)
+  public TextureAtlasSprite getTextureForInOutBackground() {
+    return ICON_KEY_IN_OUT_BG.get(TextureAtlasSprite.class);
   }
 
   @Override
@@ -218,6 +238,14 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @SideOnly(Side.CLIENT)
   public @Nonnull Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     return null;
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    super.hashCodeForModelCaching(hashCodes);
+    hashCodes.addEnum(outputColors);
+    hashCodes.addEnum(inputColors);
   }
 
   @Override
@@ -423,6 +451,20 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
         nbtRoot.setTag("outputFluidFilterUpgrades." + entry.getKey().name(), itemRoot);
       }
     }
+
+    for (Entry<EnumFacing, DyeColor> entry : inputColors.entrySet()) {
+      if (entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("inSC." + entry.getKey().name(), ord);
+      }
+    }
+
+    for (Entry<EnumFacing, DyeColor> entry : outputColors.entrySet()) {
+      if (entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("outSC." + entry.getKey().name(), ord);
+      }
+    }
   }
 
   @Override
@@ -456,7 +498,25 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
         IFluidFilter filter = (IFluidFilter) FilterRegistry.loadFilterFromNbt(filterTag);
         outputFilters.put(dir, filter);
       }
+
+      key = "inSC." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        short ord = nbtRoot.getShort(key);
+        if (ord >= 0 && ord < DyeColor.values().length) {
+          inputColors.put(dir, DyeColor.values()[ord]);
+        }
+      }
+
+      key = "outSC." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        short ord = nbtRoot.getShort(key);
+        if (ord >= 0 && ord < DyeColor.values().length) {
+          outputColors.put(dir, DyeColor.values()[ord]);
+        }
+      }
     }
+
+    connectionsDirty = true;
   }
 
   @Override
@@ -522,6 +582,43 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Override
   public int getOutputFilterIndex() {
     return FilterGuiUtil.INDEX_OUTPUT_FLUID;
+  }
+
+  // Channel Colors
+  @Nonnull
+  public DyeColor getInputColor(@Nonnull EnumFacing dir) {
+    DyeColor result = inputColors.get(dir);
+    if (result == null) {
+      return DyeColor.GREEN;
+    }
+    return result;
+  }
+
+  @Nonnull
+  public DyeColor getOutputColor(@Nonnull EnumFacing dir) {
+    DyeColor result = outputColors.get(dir);
+    if (result == null) {
+      return DyeColor.GREEN;
+    }
+    return result;
+  }
+
+  public void setInputColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
+    inputColors.put(dir, col);
+    if (network != null) {
+      refreshConnections(dir);
+    }
+    setClientStateDirty();
+    collidablesDirty = true;
+  }
+
+  public void setOutputColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
+    outputColors.put(dir, col);
+    if (network != null) {
+      refreshConnections(dir);
+    }
+    setClientStateDirty();
+    collidablesDirty = true;
   }
 
   @SuppressWarnings("unchecked")

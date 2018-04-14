@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
@@ -29,22 +32,49 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
   @Override
   protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,
       @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
-
     super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
 
+    if (layer == null || component.dir == null) {
+      return;
+    }
+
+    EnumFacing renderDir = component.dir;
+    if (!conduit.getExternalConnections().contains(renderDir)) {
+      return;
+    }
+
     EnderLiquidConduit pc = (EnderLiquidConduit) conduit;
+    DyeColor inChannel = null;
+    DyeColor outChannel = null;
+    TextureAtlasSprite inTex = null;
+    TextureAtlasSprite outTex = null;
+    boolean render = true;
     for (EnumFacing dir : conduit.getExternalConnections()) {
-      TextureAtlasSprite daTex = null;
+
       if (conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
-        daTex = pc.getTextureForInputMode();
+        inTex = pc.getTextureForInputMode();
+        inChannel = pc.getInputColor(dir);
       } else if (conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
-        daTex = pc.getTextureForOutputMode();
+        outTex = pc.getTextureForOutputMode();
+        outChannel = pc.getOutputColor(dir);
       } else if (conduit.getConnectionMode(dir) == ConnectionMode.IN_OUT) {
-        daTex = pc.getTextureForInOutMode();
+        inTex = pc.getTextureForInOutMode(true);
+        outTex = pc.getTextureForInOutMode(false);
+        inChannel = pc.getInputColor(dir);
+        outChannel = pc.getOutputColor(dir);
+      } else {
+        render = false;
       }
-      if (daTex != null) {
-        Offset offset = bundle.getOffset(ILiquidConduit.class, dir);
-        ConnectionModeGeometry.addModeConnectorQuads(dir, offset, daTex, null, quads);
+    }
+
+    if (render) {
+      Offset offset = bundle.getOffset(EnderLiquidConduit.class, renderDir);
+      ConnectionModeGeometry.addModeConnectorQuads(renderDir, offset, pc.getTextureForInOutBackground(), null, quads);
+      if (inChannel != null) {
+        ConnectionModeGeometry.addModeConnectorQuads(renderDir, offset, inTex, ColorUtil.toFloat4(inChannel.getColor()), quads);
+      }
+      if (outChannel != null) {
+        ConnectionModeGeometry.addModeConnectorQuads(renderDir, offset, outTex, ColorUtil.toFloat4(outChannel.getColor()), quads);
       }
     }
   }

@@ -18,7 +18,7 @@ import crazypants.enderio.conduits.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduits.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduits.init.ConduitObject;
 import crazypants.enderio.conduits.lang.Lang;
-import crazypants.enderio.conduits.network.PacketConduitFilter;
+import crazypants.enderio.conduits.network.PacketEnderLiquidConduit;
 import crazypants.enderio.conduits.network.PacketExtractMode;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
@@ -28,10 +28,16 @@ public class LiquidSettings extends BaseSettingsPanel {
   static final int ID_REDSTONE_BUTTON = GuiExternalConnection.nextButtonId();
 
   private static final int ID_COLOR_BUTTON = GuiExternalConnection.nextButtonId();
+  private static final int ID_INSERT_CHANNEL = GuiExternalConnection.nextButtonId();
+  private static final int ID_EXTRACT_CHANNEL = GuiExternalConnection.nextButtonId();
 
   private final RedstoneModeButton rsB;
   private final ColorButton colorB;
   private boolean isEnder = false;
+  private EnderLiquidConduit eCon;
+
+  private ColorButton insertChannelB;
+  private ColorButton extractChannelB;
 
   private final ILiquidConduit conduit;
 
@@ -41,12 +47,23 @@ public class LiquidSettings extends BaseSettingsPanel {
     conduit = (ILiquidConduit) con;
     if (con instanceof EnderLiquidConduit) {
       isEnder = true;
+      eCon = (EnderLiquidConduit) con;
     }
 
-    int x = rightColumn;
+    int x = leftColumn;
     int y = customTop;
 
+    insertChannelB = new ColorButton(gui, ID_INSERT_CHANNEL, x, y);
+    insertChannelB.setColorIndex(0);
+    insertChannelB.setToolTipHeading(Lang.GUI_CONDUIT_CHANNEL.get());
+
+    x = rightColumn;
+    extractChannelB = new ColorButton(gui, ID_EXTRACT_CHANNEL, x, y);
+    extractChannelB.setColorIndex(0);
+    extractChannelB.setToolTipHeading(Lang.GUI_CONDUIT_CHANNEL.get());
+
     int x0 = x + 20;
+    y += insertChannelB.getHeight() + 6;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x0, y);
     colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
@@ -73,15 +90,24 @@ public class LiquidSettings extends BaseSettingsPanel {
     } else if (guiButton.id == ID_EXTRACT_FILTER_OPTIONS) {
       doOpenFilterGui(FilterGuiUtil.INDEX_INPUT_FLUID);
       return;
+    } else if (guiButton.id == ID_INSERT_CHANNEL) {
+      DyeColor col = DyeColor.values()[insertChannelB.getColorIndex()];
+      eCon.setOutputColor(gui.getDir(), col);
+    } else if (guiButton.id == ID_EXTRACT_CHANNEL) {
+      DyeColor col = DyeColor.values()[extractChannelB.getColorIndex()];
+      eCon.setInputColor(gui.getDir(), col);
     }
     if (isEnder) {
-      PacketHandler.INSTANCE.sendToServer(new PacketConduitFilter(conduit, gui.getDir()));
+      PacketHandler.INSTANCE.sendToServer(new PacketEnderLiquidConduit(eCon, gui.getDir()));
     }
   }
 
   @Override
   protected void connectionModeChanged(@Nonnull ConnectionMode conectionMode) {
     super.connectionModeChanged(conectionMode);
+    if (isEnder) {
+      PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(eCon, gui.getDir()));
+    }
     updateGuiVisibility();
   }
 
@@ -94,6 +120,13 @@ public class LiquidSettings extends BaseSettingsPanel {
   private void updateGuiVisibility() {
     rsB.onGuiInit();
     rsB.setMode(RedstoneControlMode.IconHolder.getFromMode(conduit.getExtractionRedstoneMode(gui.getDir())));
+
+    if (isEnder) {
+      insertChannelB.onGuiInit();
+      insertChannelB.setColorIndex(eCon.getOutputColor(gui.getDir()).ordinal());
+      extractChannelB.onGuiInit();
+      extractChannelB.setColorIndex(eCon.getInputColor(gui.getDir()).ordinal());
+    }
   }
 
   @Override
@@ -101,6 +134,8 @@ public class LiquidSettings extends BaseSettingsPanel {
     gui.getContainer().setInOutSlotsVisible(false, false, conduit);
     rsB.detach();
     colorB.detach();
+    insertChannelB.detach();
+    extractChannelB.detach();
   }
 
   @Override
