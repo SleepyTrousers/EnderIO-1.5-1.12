@@ -44,5 +44,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="chestWood" amount="4" />
     </crafting>
   </recipe>
+ 
+  <recipe name="Tweak: Wood Hopper" required="false">
+    <crafting>
+      <grid>
+        <item name="ingotIron/><item name="logWood"/><item name="ingotIron"/>
+        <item name="ingotIron"/><item name="logWood"/><item name="ingotIron"/>
+        <item/><item name="ingotIron"/><item/>
+      </grid>
+      <output name="blockHopper" amount="4" />
+    </crafting>
+  </recipe>
 
 </enderio:recipes>
