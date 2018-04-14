@@ -99,5 +99,80 @@ For more information, see base.xml.
       <entity name="industrialforegoing:pink_slime" costMultiplier="10.0" disabled="false"/>
     </spawning>
   </recipe>
+
+  <recipe name="Spawner, Ice and Fire" required="false">
+    <spawning>
+      <entity name="iceandfire:firedragon" costMultiplier="30.0" disabled="true"/>
+      <entity name="iceandfire:icedragon" costMultiplier="30.0" disabled="true"/>
+      <entity name="iceandfire:icevillager" costMultiplier="1.0" disabled="true"/>
+      <entity name="iceandfire:hippogryph" costMultiplier="2.0" disabled="false"/>
+      <entity name="iceandfire:gorgon" costMultiplier="20.0" disabled="false"/>
+      <entity name="iceandfire:if_pixie" costMultiplier="1.0" disabled="false"/>
+      <entity name="iceandfire:cyclops" costMultiplier="20.0" disabled="false"/>
+      <entity name="iceandfire:hippogryph" costMultiplier="2.0" disabled="false"/>
+    </spawning>
+  </recipe>
+
+  <recipe name="Spawner, Matter Overdrive" required="false">
+    <spawning>
+      <entity name="matteroverdrive:rogue_android" costMultiplier="20.0" disabled="false"/>
+      <entity name="matteroverdrive:mad_scientist" costMultiplier="1.0" disabled="true"/>
+      <entity name="matteroverdrive:mutant_scientist" costMultiplier="1.0" disabled="true"/>
+    </spawning>
+  </recipe>
+
+  <recipe name="Spawner, Meecreeps" required="false">
+    <spawning>
+      <entity name="meecreeps:meecreeps" costMultiplier="1.0" disabled="true"/>
+    </spawning>
+  </recipe>
+
+  <recipe name="Spawner, Primitive Mobs" required="false">
+    <spawning>
+      <entity name="primitivemobs:chameleon" costMultiplier="0.5" disabled="false"/>
+      <entity name="primitivemobs:treasure_slime" costMultiplier="10.0" disabled="false"/>
+      <entity name="primitivemobs:haunted_tool" costMultiplier="1.0" disabled="true"/>
+      <entity name="primitivemobs:grovesprite" costMultiplier="0.5" disabled="false"/>
+      <entity name="primitivemobs:bewitched_tome" costMultiplier="1.0" disabled="true"/>
+      <entity name="primitivemobs:filch_lizard" costMultiplier="0.5" disabled="false"/>
+      <entity name="primitivemobs:brain_slime" costMultiplier="5.0" disabled="false"/>
+      <entity name="primitivemobs:rocket_creeper" costMultiplier="1.5" disabled="false"/>
+      <entity name="primitivemobs:festive_creeper" costMultiplier="1.5" disabled="false"/>
+      <entity name="primitivemobs:support_creeper" costMultiplier="1.5" disabled="false"/>
+      <entity name="primitivemobs:skeleton_warrior" costMultiplier="2.0" disabled="false"/>
+      <entity name="primitivemobs:blazing_juggernaut" costMultiplier="5.0" disabled="false"/>
+      <entity name="primitivemobs:lily_lurker" costMultiplier="1.5" disabled="false"/>
+      <entity name="primitivemobs:mother_spider" costMultiplier="2.0" disabled="false"/>
+      <entity name="primitivemobs:baby_spider" costMultiplier="1.0" disabled="true"/>
+      <entity name="primitivemobs:trollager" costMultiplier="2.0" disabled="false"/>
+      <entity name="primitivemobs:lost_miner" costMultiplier="1.0" disabled="true"/>
+      <entity name="primitivemobs:traveling_merchant" costMultiplier="1.0" disabled="true"/>
+      <entity name="primitivemobs:dodo" costMultiplier="0.5" disabled="false"/>
+      <entity name="primitivemobs:mimic" costMultiplier="5.0" disabled="false"/>
+    </spawning>
+  </recipe>
+
+  <recipe name="Spawner, Quark" required="false">
+    <spawning>
+      <entity name="quark:pirate" costMultiplier="1.0" disabled="false"/>
+      <entity name="quark:wraith" costMultiplier="2.0" disabled="false"/>
+      <entity name="quark:dweller" costMultiplier="1.5" disabled="false"/>
+      <entity name="quark:ashen" costMultiplier="2.0" disabled="false"/>
+    </spawning>
+  </recipe>
+
+  <recipe name="Spawner, Tinkers Construct" required="false">
+    <spawning>
+      <entity name="tconstruct:blueslime" costMultiplier="5.0" disabled="false"/>
+    </spawning>
+  </recipe>
+
+  <recipe name="Spawner, Totemic" required="false">
+    <spawning>
+      <entity name="totemic:buffalo" costMultiplier="1.0" disabled="false"/>
+      <entity name="totemic:baykok" costMultiplier="30.0" disabled="true"/>
+      <entity name="totemic:bald_eagle" costMultiplier="1.0" disabled="false"/>
+    </spawning>
+  </recipe>
   
 </enderio:recipes>
