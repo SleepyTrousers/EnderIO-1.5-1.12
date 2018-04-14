@@ -276,7 +276,7 @@ public class EnderIO implements IEnderIOAddon {
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
     return new NNList<>(Triple.of(0, null, "aliases"), Triple.of(1, null, "materials"), Triple.of(1, null, "items"), Triple.of(1, null, "base"),
-        Triple.of(1, null, "balls"));
+        Triple.of(1, null, "balls"), Triple.of(9, null, "misc"));
   }
 
   @Override
