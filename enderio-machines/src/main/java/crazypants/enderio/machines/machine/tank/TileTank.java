@@ -117,7 +117,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   }
 
   public boolean isXpBottle(@Nonnull ItemStack stack) {
-    return stack.getItem() == Items.EXPERIENCE_BOTTLE;
+    return stack.getItem() == Items.EXPERIENCE_BOTTLE && FluidUtil.getFluidTypeFromItem(stack) == null;
   }
 
   public @Nonnull VoidMode getVoidMode() {
