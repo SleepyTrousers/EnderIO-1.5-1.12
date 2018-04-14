@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.UserIdent;
+import com.feed_the_beast.ftblib.lib.data.FTBLibAPI;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TravelSource;
@@ -16,11 +17,11 @@ import crazypants.enderio.base.capacitor.CapacitorKeyType;
 import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.Scaler;
-import crazypants.enderio.base.integration.IntegrationRegistry;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.integration.ftblib.FtblIntegration;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.endercore.HandleUserIdent;
@@ -103,7 +104,7 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
     // Covers protected and private access modes
     return isOwnerUser(UserIdent.create(playerName.getGameProfile())) || isAuthorisedUser(UserIdent.create(playerName.getGameProfile()))
     // TODO TeamMode button
-        || IntegrationRegistry.isInSameTeam(UserIdent.create(playerName.getGameProfile()), getOwner());
+        || FtblIntegration.isInSameTeam(UserIdent.create(playerName.getGameProfile()), getOwner());
   }
 
   @Override
@@ -154,7 +155,8 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
     if (accessMode != AccessMode.PRIVATE) {
       return true;
     }
-    return isOwnerUser(UserIdent.create(playerName.getGameProfile()));
+    UserIdent ident = UserIdent.create(playerName.getGameProfile());
+    return isOwnerUser(ident) || FtblIntegration.isInSameTeam(ident, getOwner());
   }
 
   @Override

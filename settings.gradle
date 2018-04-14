@@ -1,4 +1,4 @@
-include ':enderio-base', ':enderio-machines', ':enderio-conduits', ':enderio-invpanel', ':enderio-integration-ftbl', ':enderio-integration-tic', ':enderio-integration-forestry'
+include ':enderio-base', ':enderio-machines', ':enderio-conduits', ':enderio-invpanel', ':enderio-integration-tic', ':enderio-integration-forestry'
 
 rootProject.name = 'EnderIO'
 

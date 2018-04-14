@@ -1,8 +1,0 @@
-repositories {
-	ivy { name "com.latmod.mods"; artifactPattern "http://mods.latmod.com/[module]/[revision]/[module]-[revision](-[classifier]).[ext]" }
-}
-
-dependencies {
-	compile project(":enderio-base")
-    deobfCompile "com.latmod.mods:FTBLib:${ftbl_version}"
-}
