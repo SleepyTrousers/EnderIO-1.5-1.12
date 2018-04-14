@@ -1,19 +1,10 @@
-apply plugin: 'java'
-
-sourceSets {
-    api {
-        java {
-            srcDir 'lib/CoFHLib/src/main/java'
-            exclude '**/cofh/lib/**'
-            exclude '**/IGeneratorParser.java'
-        }
-    }
-}
-
 dependencies {
 	deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
 	deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}:api"
 	deobfCompile "team.chisel.ctm:CTM:${ctm_version}:api"
+	deobfCompile("cofh:CoFHCore:${cofhcore_version}:universal") {
+		transitive = false // We don't need RF nor JEI, thank you very much
+	}
 	
 	compile("mcjty.theoneprobe:TheOneProbe-1.12:${top_version}:api") {
 		transitive = false // Why does TOP API pull in RF? The world may never know...
