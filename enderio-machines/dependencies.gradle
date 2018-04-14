@@ -2,7 +2,7 @@ modDependencies {
 	forge { requireAfter(forge_version) }
 	endercore { requireAfter(endercore_version) }
 	jei { loadAfter(jei_version) }
-	ftblib { loadAfter(ftbl_version) }
+	ftblib { loadAfter(ftbl_dep) }
 }
 
 def localDependencies = project(':enderio-base')
