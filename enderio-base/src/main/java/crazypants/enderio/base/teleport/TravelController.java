@@ -121,7 +121,7 @@ public class TravelController {
 
   public boolean doBlink(@Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull EntityPlayer player) {
     if (!doesHandAllowBlink(hand)) {
-    	
+
       return false;
     }
     Vector3d eye = Util.getEyePositionEio(player);
@@ -381,7 +381,7 @@ public class TravelController {
     if (requiredPower < 0) {
       return false;
     }
-    
+
     if (!isInRangeTarget(player, coord, source.getMaxDistanceTravelledSq())) {
       if (source != TravelSource.STAFF_BLINK) {
         player.sendStatusMessage(new TextComponentTranslation("enderio.blockTravelPlatform.outOfRange"), true);
@@ -406,16 +406,16 @@ public class TravelController {
   private int getRequiredPower(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull TravelSource source, @Nonnull BlockPos coord) {
     if (!isTravelItemActive(player, equipped)) {
       return 0;
-      }
+    }
     int requiredPower;
     requiredPower = (int) (getDistance(player, coord) * source.getPowerCostPerBlockTraveledRF());
     int canUsePower = getEnergyInTravelItem(equipped);
     if (requiredPower > canUsePower) {
       player.sendStatusMessage(Lang.STAFF_NO_POWER.toChat(), true);
       return -1;
-      }
-    return requiredPower;
     }
+    return requiredPower;
+  }
 
   private boolean isInRangeTarget(@Nonnull EntityPlayer player, @Nonnull BlockPos bc, float maxSq) {
     return getDistanceSquared(player, bc) <= maxSq;

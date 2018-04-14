@@ -62,25 +62,25 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
   @Override
   public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     ItemStack equipped = player.getHeldItem(hand);
-		  if (player.isSneaking()) {
-		    long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
-	      if (ticksSinceBlink < 0) {
-	        lastBlickTick = -1;
-	        }
-	      if (Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
-	        if (TravelController.instance.doBlink(equipped, hand, player)) {
-	          player.swingArm(hand);
-	          lastBlickTick = EnderIO.proxy.getTickCount();
-	          }
-	        }
-	      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
-	      }
-	
-		  if (world.isRemote) {
-	      TravelController.instance.activateTravelAccessable(equipped, hand, world, player, TravelSource.STAFF);
-	      }
-	    player.swingArm(hand);
-	    return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
+    if (player.isSneaking()) {
+      long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
+      if (ticksSinceBlink < 0) {
+        lastBlickTick = -1;
+      }
+      if (Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
+        if (TravelController.instance.doBlink(equipped, hand, player)) {
+          player.swingArm(hand);
+          lastBlickTick = EnderIO.proxy.getTickCount();
+        }
+      }
+      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
+    }
+
+    if (world.isRemote) {
+      TravelController.instance.activateTravelAccessable(equipped, hand, world, player, TravelSource.STAFF);
+    }
+    player.swingArm(hand);
+    return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
   }
 
   @Override
