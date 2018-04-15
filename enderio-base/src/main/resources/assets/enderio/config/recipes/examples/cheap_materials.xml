@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <recipe name="Simple Chassis" required="true">
+    <crafting>
+      <grid>
+        <item name="barsIron"/><item name="barsIron"/><item name="barsIron"/>
+        <item name="barsIron"/><item /><item name="barsIron"/>
+        <item name="barsIron"/><item name="barsIron"/><item name="barsIron"/>
+      </grid>
+      <output name="SIMPLE_CHASSIS"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Chassis">
+    <crafting>
+      <grid>
+        <item name="nuggetIron"/><item name="nuggetIron"/><item name="nuggetIron"/>
+        <item name="nuggetIron"/><item /><item name="nuggetIron"/>
+        <item name="nuggetIron"/><item name="nuggetIron"/><item name="nuggetIron"/>
+      </grid>
+      <output name="CHASSIS"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Soul Chassis">
+    <crafting>
+      <grid>
+        <item name="nuggetSoularium"/><item name="nuggetSoularium"/><item name="nuggetSoularium"/>
+        <item name="nuggetSoularium"/><item /><item name="nuggetSoularium"/>
+        <item name="nuggetSoularium"/><item name="nuggetSoularium"/><item name="nuggetSoularium"/>
+      </grid>
+      <output name="SOUL_CHASSIS"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Enhanced Chassis" required="true">
+    <crafting>
+      <grid>
+        <item name="nuggetDarkSteel"/><item name="nuggetDarkSteel"/><item name="nuggetDarkSteel"/>
+        <item name="nuggetDarkSteel"/><item /><item name="nuggetDarkSteel"/>
+        <item name="nuggetDarkSteel"/><item name="nuggetDarkSteel"/><item name="nuggetDarkSteel"/>
+      </grid>
+      <output name="ENHANCED_CHASSIS"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Unsouled Chassis" required="true">
+    <crafting>
+      <grid>
+        <item name="ingotSoularium"/><item name="nuggetSoularium"/><item name="ingotSoularium"/>
+        <item name="nuggetSoularium"/><item /><item name="nuggetSoularium"/>
+        <item name="ingotSoularium"/><item name="nuggetSoularium"/><item name="ingotSoularium"/>
+      </grid>
+      <output name="UNSOULED_CHASSIS"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Machine Dye">
+    <crafting>
+      <grid size="1x1">
+        <item name="minecraft:dirt"/>
+      </grid>
+      <output name="dyeMachine" amount="64"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Gear, Iron" required="true">
+    <crafting>
+      <grid>
+        <item name="nuggetIron"/><item name="ingotIron"/><item name="nuggetIron"/>
+        <item name="ingotIron"/><item /><item name="ingotIron"/>
+        <item name="nuggetIron"/><item name="ingotIron"/><item name="nuggetIron"/>
+      </grid>
+      <output name="GEAR_IRON"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor 1" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="nuggetGold"/><item name="minecraft:dirt"/>
+        <item name="nuggetGold"/><item name="minecraft:dirt"/><item name="nuggetGold"/>
+        <item name="minecraft:dirt"/><item name="nuggetGold"/><item />
+      </grid>
+      <output name="CAPACITOR1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor 2" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="minecraft:dirt"/><item />
+        <item name="CAPACITOR1"/><item name="minecraft:dirt"/><item name="CAPACITOR1"/>
+        <item /><item name="minecraft:dirt"/><item />
+      </grid>
+      <output name="CAPACITOR2"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor 3" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="minecraft:dirt"/><item />
+        <item name="CAPACITOR2"/><item name="minecraft:dirt"/><item name="CAPACITOR2"/>
+        <item /><item name="minecraft:dirt"/><item />
+      </grid>
+      <output name="CAPACITOR3"/>
+    </crafting>
+  </recipe>
+
+</enderio:recipes>

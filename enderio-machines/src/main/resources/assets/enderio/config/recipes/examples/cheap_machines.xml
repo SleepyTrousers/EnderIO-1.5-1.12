@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <recipe name="Simple Stirling Generator" disabled="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="minecraft:stonebrick:0" /><item name="minecraft:furnace" /><item name="minecraft:stonebrick:0" />
+        <item name="minecraft:stonebrick:0" /><item name="SIMPLE_CHASSIS"/><item name="minecraft:stonebrick:0" />
+        <item name="GEAR_IRON" /><item name="minecraft:piston" /><item name="GEAR_IRON" />
+      </grid>
+      <output name="enderio:block_simple_stirling_generator" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Stirling Generator" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="minecraft:stonebrick:0" /><item name="minecraft:furnace" /><item name="minecraft:stonebrick:0" />
+        <item name="minecraft:stonebrick:0" /><item name="CHASSIS" /><item name="minecraft:stonebrick:0" />
+        <item name="minecraft:dirt" /><item name="minecraft:piston" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_stirling_generator" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Stirling Generator, Upgrade" disabled="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:block_simple_stirling_generator" /><item />
+        <item /><item name="CHASSIS" /><item />
+        <item name="GEAR_ENERGIZED" /><item /><item name="GEAR_ENERGIZED" />
+      </grid>
+      <output name="enderio:block_stirling_generator" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Combustion Generator" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
+        <item name="EnderIO:block_tank:0" /><item name="CHASSIS" /><item name="EnderIO:block_tank:0" />
+        <item name="minecraft:dirt" /><item name="minecraft:piston" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_combustion_generator" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Enhanced Combustion Generator" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
+        <item name="EnderIO:block_tank:1" /><item name="CHASSIS" /><item name="EnderIO:block_tank:1" />
+        <item name="minecraft:dirt" /><item name="minecraft:piston" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_enhanced_combustion_generator" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Enhanced Combustion Generator, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="3x2">
+        <item name="EnderIO:block_tank:1" /><item name="enderio:block_combustion_generator" /><item name="EnderIO:block_tank:1" />
+        <item name="minecraft:dirt" /><item /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_enhanced_combustion_generator" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Zombie Generator" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
+        <item name="FUSED_QUARTZ" /><item name="minecraft:dirt" /><item name="FUSED_QUARTZ" />
+        <item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" />
+      </grid>
+      <output name="enderio:block_zombie_generator" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Killer Joe" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item name="FUSED_QUARTZ" /><item name="minecraft:dirt" /><item name="FUSED_QUARTZ" />
+        <item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" />
+      </grid>
+      <output name="enderio:block_killer_joe" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Powered Spawner" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="minecraft:dirt" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
+        <item name="minecraft:dirt" /><item name="minecraft:dirt" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_powered_spawner" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Simple Alloy Smelter" disabled="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron" /><item name="minecraft:furnace" /><item name="ingotIron" />
+        <item name="minecraft:furnace" /><item name="SIMPLE_CHASSIS"/><item name="minecraft:furnace" />
+        <item name="GEAR_STONE" /><item name="item:minecraft:bucket" /><item name="GEAR_STONE" />
+      </grid>
+      <output name="enderio:block_simple_alloy_smelter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Alloy Smelter" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron" /><item name="minecraft:furnace" /><item name="ingotIron" />
+        <item name="minecraft:furnace" /><item name="CHASSIS" /><item name="minecraft:furnace" />
+        <item name="minecraft:dirt" /><item name="item:minecraft:cauldron" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_alloy_smelter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Alloy Smelter, Upgrade" disabled="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:block_simple_alloy_smelter" /><item />
+        <item /><item name="CHASSIS" /><item />
+        <item name="GEAR_ENERGIZED" /><item name="item:minecraft:cauldron" /><item name="GEAR_ENERGIZED" />
+      </grid>
+      <output name="enderio:block_alloy_smelter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painter" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="minecraft:dirt" /><item name="minecraft:dirt" /><item name="minecraft:dirt" />
+        <item name="GEAR_IRON" /><item name="CHASSIS" /><item name="GEAR_IRON" />
+        <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:block_painter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Farming Station" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="minecraft:dirt" /><item name="minecraft:diamond_hoe" /><item name="minecraft:dirt" />
+        <item name="minecraft:dirt" /><item name="CHASSIS" /><item name="minecraft:dirt" />
+        <item name="minecraft:dirt" /><item name="minecraft:dirt" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_farm_station" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Transceiver" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="minecraft:dirt" /><item name="ELECTRICAL_STEEL" />
+        <item name="FUSED_QUARTZ" /><item name="minecraft:dirt" /><item name="FUSED_QUARTZ" />
+        <item name="ELECTRICAL_STEEL" /><item name="minecraft:dirt" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:block_transceiver" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Soul Binder" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="SOULARIUM" /><item name="minecraft:dirt" /><item name="SOULARIUM" />
+        <item name="minecraft:dirt" /><item name="SOUL_CHASSIS" /><item name="minecraft:dirt" />
+        <item name="SOULARIUM" /><item name="minecraft:dirt" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:block_soul_binder" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Attractor Obelisk" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="ATTRACTOR_CRYSTAL" /><item />
+        <item name="minecraft:dirt" /><item name="minecraft:dirt" /><item name="minecraft:dirt" />
+        <item name="minecraft:dirt" /><item name="SOUL_CHASSIS" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_attractor_obelisk" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Aversion Obelisk" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="HEAD_ENDERMAN_TORMENTED" /><item />
+        <item name="minecraft:dirt" /><item name="minecraft:dirt" /><item name="minecraft:dirt" />
+        <item name="minecraft:dirt" /><item name="SOUL_CHASSIS" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_aversion_obelisk" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Relocator Obelisk" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="minecraft:dirt" /><item />
+        <item name="minecraft:dirt" /><item name="enderio:block_aversion_obelisk" /><item name="minecraft:dirt" />
+        <item /><item name="minecraft:dirt" /><item />
+      </grid>
+      <output name="enderio:block_relocator_obelisk" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inhibitor Obelisk" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="ENDER_CRYSTAL" /><item />
+        <item name="minecraft:dirt" /><item name="minecraft:dirt" /><item name="minecraft:dirt" />
+        <item name="minecraft:dirt" /><item name="SOUL_CHASSIS" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_inhibitor_obelisk" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Experience Obelisk" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="enderio:item_xp_transfer" /><item />
+        <item name="minecraft:dirt" /><item name="minecraft:dirt" /><item name="minecraft:dirt" />
+        <item name="minecraft:dirt" /><item name="SOUL_CHASSIS" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_experience_obelisk" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Weather Obelisk" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="WEATHER_CRYSTAL" /><item />
+        <item name="minecraft:dirt" /><item name="minecraft:dirt" /><item name="minecraft:dirt" />
+        <item name="minecraft:dirt" /><item name="SOUL_CHASSIS" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_weather_obelisk" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Slice'N'Splice" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="minecraft:dirt" /><item name="minecraft:dirt" /><item name="minecraft:dirt" />
+        <item name="minecraft:dirt" /><item name="SOUL_CHASSIS" /><item name="minecraft:shears" />
+        <item name="minecraft:dirt" /><item name="minecraft:dirt" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_slice_and_splice" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Travel Anchor" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="minecraft:dirt" /><item name="CONDUIT_BINDER" /><item name="minecraft:dirt" />
+        <item name="CONDUIT_BINDER" /><item name="minecraft:dirt" /><item name="CONDUIT_BINDER" />
+        <item name="minecraft:dirt" /><item name="CONDUIT_BINDER" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_travel_anchor" />
+    </crafting>
+  </recipe>
+
+  <recipe name="TelePad" required="true" disabled="false">
+    <crafting>
+      <grid size="3x3">
+        <item name="minecraft:dirt" /><item name="minecraft:dirt" /><item name="minecraft:dirt" />
+        <item name="minecraft:dirt" /><item name="enderio:block_travel_anchor" /><item name="minecraft:dirt" />
+        <item name="minecraft:dirt" /><item name="minecraft:dirt" /><item name="minecraft:dirt" />
+      </grid>
+      <output name="enderio:block_tele_pad" />
+    </crafting>
+  </recipe>
+
+</enderio:recipes>
+ 
