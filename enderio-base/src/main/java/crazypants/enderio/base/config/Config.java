@@ -201,7 +201,7 @@ public final class Config {
   public static int fireWaterPowerTotalBurnTime = 15000;
 
   /**
-   * Note: If someone asks you ton include a hoe in this list, the correct answer is "No. Get the other mod author to oredict their hoe(s) as 'toolHoe'"
+   * Note: If someone asks you to include a hoe in this list, the correct answer is "No. Get the other mod author to oredict their hoe(s) as 'toolHoe'"
    */
   public static String[] hoeStrings = new String[] { "tconstruct:mattock", "thermalfoundation:tool.hoe_invar", "thermalfoundation:tool.hoe_copper",
       "thermalfoundation:tool.hoe_bronze", "thermalfoundation:tool.hoe_silver", "thermalfoundation:tool.hoe_electrum", "thermalfoundation:tool.hoe_tin",
@@ -352,7 +352,7 @@ public final class Config {
         "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaximumDistance);
 
     travelAnchorCooldown = config
-        .get(sectionAnchor.name, "travelAnchorCooldown", travelAnchorCooldown, "Number of ticks cooldown between activations (1 sec = 20 ticks)")
+        .get(sectionAnchor.name, "travelAnchorCooldown", travelAnchorCooldown, "Number of ticks in cooldown between activations (1 sec = 20 ticks)")
         .getInt(travelAnchorCooldown);
 
     travelAnchorSneak = config.get(sectionAnchor.name, "travelAnchorSneak", travelAnchorSneak, "Add sneak as an option to activate travel anchors")
@@ -365,7 +365,7 @@ public final class Config {
     travelStaffMaximumDistance = config.get(sectionStaff.name, "travelStaffMaxDistance", travelStaffMaximumDistance,
         "Maximum number of blocks that can be traveled using the Staff of Traveling.").getInt(travelStaffMaximumDistance);
     travelStaffPowerPerBlockRF = (float) config.get(sectionStaff.name, "travelStaffPowerPerBlockRF", travelStaffPowerPerBlockRF,
-        "Number of RF required per block traveled using the Staff of Traveling.").getDouble(travelStaffPowerPerBlockRF);
+        "Amount of energy required per block traveled using the Staff of Traveling.").getDouble(travelStaffPowerPerBlockRF);
 
     travelStaffMaxBlinkDistance = config
         .get(sectionStaff.name, "travelStaffMaxBlinkDistance", travelStaffMaxBlinkDistance, "Max number of blocks teleported when shift clicking the staff.")
@@ -412,11 +412,11 @@ public final class Config {
     rodOfReturnTicksToActivate = config
         .get(sectionRod.name, "rodOfReturnTicksToActivate", rodOfReturnTicksToActivate, "Number of ticks the rod must be used before teleporting")
         .getInt(rodOfReturnTicksToActivate);
-    rodOfReturnPowerStorage = config.get(sectionRod.name, "rodOfReturnPowerStorage", rodOfReturnPowerStorage, "Internal RF buffer for rod")
+    rodOfReturnPowerStorage = config.get(sectionRod.name, "rodOfReturnPowerStorage", rodOfReturnPowerStorage, "Internal energy buffer for rod")
         .getInt(rodOfReturnPowerStorage);
-    rodOfReturnRfPerTick = config.get(sectionRod.name, "rodOfReturnRfPerTick", rodOfReturnRfPerTick, "RF used per tick").getInt(rodOfReturnRfPerTick);
+    rodOfReturnRfPerTick = config.get(sectionRod.name, "rodOfReturnRfPerTick", rodOfReturnRfPerTick, "energy used per tick").getInt(rodOfReturnRfPerTick);
     rodOfReturnMinTicksToRecharge = config
-        .get(sectionRod.name, "rodOfReturnMinTicksToRecharge", rodOfReturnMinTicksToRecharge, "Min number of ticks required to recharge the internal RF buffer")
+        .get(sectionRod.name, "rodOfReturnMinTicksToRecharge", rodOfReturnMinTicksToRecharge, "Min number of ticks required to recharge the internal energy buffer")
         .getInt(rodOfReturnMinTicksToRecharge);
     rodOfReturnFluidStorage = config.get(sectionRod.name, "rodOfReturnFluidStorage", rodOfReturnFluidStorage, "How much fluid the rod can store")
         .getInt(rodOfReturnFluidStorage);
@@ -480,24 +480,24 @@ public final class Config {
         "Jump height modifier applied when jumping with Dark Steel Boots equipped").getDouble(darkSteelBootsJumpModifier);
 
     darkSteelPowerStorageBase = config
-        .get(sectionDarkSteel.name, "darkSteelPowerStorage", darkSteelPowerStorageBase, "Amount of power stored (RF) per crystal in the armor items recipe.")
+        .get(sectionDarkSteel.name, "darkSteelPowerStorage", darkSteelPowerStorageBase, "Amount of power stored energy per crystal in the armor items recipe.")
         .getInt(darkSteelPowerStorageBase);
     darkSteelWalkPowerCost = config.get(sectionDarkSteel.name, "darkSteelWalkPowerCost", darkSteelWalkPowerCost,
-        "Amount of power stored (RF) per block walked when wearing the dark steel boots.").getInt(darkSteelWalkPowerCost);
+        "Amount of power stored energy per block walked when wearing the dark steel boots.").getInt(darkSteelWalkPowerCost);
     darkSteelSprintPowerCost = config.get(sectionDarkSteel.name, "darkSteelSprintPowerCost", darkSteelWalkPowerCost,
-        "Amount of power stored (RF) per block walked when wearing the dark steel boots.").getInt(darkSteelSprintPowerCost);
+        "Amount of power stored energy per block walked when wearing the dark steel boots.").getInt(darkSteelSprintPowerCost);
     darkSteelDrainPowerFromInventory = config
         .get(sectionDarkSteel.name, "darkSteelDrainPowerFromInventory", darkSteelDrainPowerFromInventory,
-            "If true, dark steel armor will drain power stored (RF) in power containers in the players inventory.")
+            "If true, dark steel armor will drain power stored energy in power containers in the players inventory.")
         .getBoolean(darkSteelDrainPowerFromInventory);
 
     darkSteelBootsJumpPowerCost = config
         .get(sectionDarkSteel.name, "darkSteelBootsJumpPowerCost", darkSteelBootsJumpPowerCost,
-            "Base amount of power used per jump (RF) dark steel boots. The second jump in a 'double jump' uses 2x this etc")
+            "Base amount of power used per jump energy dark steel boots. The second jump in a 'double jump' uses 2x this etc")
         .getInt(darkSteelBootsJumpPowerCost);
 
     darkSteelFallDistanceCost = config.get(sectionDarkSteel.name, "darkSteelFallDistanceCost", darkSteelFallDistanceCost,
-        "Amount of power used (RF) per block height of fall distance damage negated.").getInt(darkSteelFallDistanceCost);
+        "Amount of power used energy per block height of fall distance damage negated.").getInt(darkSteelFallDistanceCost);
 
     darkSteelSwimCost = config.get(sectionDarkSteel.name, "darkSteelSwimCost", darkSteelSwimCost, "Number of levels required for the 'Swim' upgrade.")
         .getInt(darkSteelSwimCost);
@@ -600,7 +600,7 @@ public final class Config {
     darkSteelBowFovMultipliers = config.get(sectionDarkSteel.name, "darkSteelBowFovMultiplier", darkSteelBowFovMultipliers,
         "The reduction in FOV when the bow is fullen drawn (the zoom level). A 'vanilla' bow has a value of 0.15").getDoubleList();
     darkSteelBowPowerUsePerDamagePoint = config
-        .get(sectionDarkSteel.name, "darkSteelBowPowerUsePerDamagePoint", darkSteelBowPowerUsePerDamagePoint, "The amount of power (RF) used per hit.")
+        .get(sectionDarkSteel.name, "darkSteelBowPowerUsePerDamagePoint", darkSteelBowPowerUsePerDamagePoint, "The amount of energy used per hit.")
         .getInt(darkSteelBowPowerUsePerDamagePoint);
     darkSteelBowDrawSpeeds = config.get(sectionDarkSteel.name, "darkSteelBowDrawSpeeds", darkSteelBowDrawSpeeds,
         "A list of the amount of draw speeds at the different upgrade levels. A vanilla bow draw speed is 20").getIntList();
@@ -612,7 +612,7 @@ public final class Config {
         .getInt(darkSteelBowPowerUsePerTickDrawn);
 
     darkSteelPickPowerUseObsidian = config
-        .get(sectionDarkSteel.name, "darkSteelPickPowerUseObsidian", darkSteelPickPowerUseObsidian, "The amount of power (RF) used to break an obsidian block.")
+        .get(sectionDarkSteel.name, "darkSteelPickPowerUseObsidian", darkSteelPickPowerUseObsidian, "The amount of energy used to break an obsidian block.")
         .getInt(darkSteelPickPowerUseObsidian);
     darkSteelPickEffeciencyObsidian = config.get(sectionDarkSteel.name, "darkSteelPickEffeciencyObsidian", darkSteelPickEffeciencyObsidian,
         "The efficiency when breaking obsidian with a powered Dark Pickaxe.").getInt(darkSteelPickEffeciencyObsidian);
@@ -621,16 +621,16 @@ public final class Config {
             "If set to a value > 0, the obsidian speed and power use will be used for all blocks with hardness >= to this value.")
         .getDouble(darkSteelPickApplyObsidianEffeciencyAtHardess);
     darkSteelPickPowerUsePerDamagePoint = config.get(sectionDarkSteel.name, "darkSteelPickPowerUsePerDamagePoint", darkSteelPickPowerUsePerDamagePoint,
-        "Power use (RF) per damage/durability point avoided.").getInt(darkSteelPickPowerUsePerDamagePoint);
+        "Energy use per damage/durability point avoided.").getInt(darkSteelPickPowerUsePerDamagePoint);
     darkSteelPickEffeciencyBoostWhenPowered = (float) config.get(sectionDarkSteel.name, "darkSteelPickEffeciencyBoostWhenPowered",
         darkSteelPickEffeciencyBoostWhenPowered, "The increase in efficiency when powered.").getDouble(darkSteelPickEffeciencyBoostWhenPowered);
     darkSteelPickMinesTiCArdite = config.getBoolean("darkSteelPickMinesTiCArdite", sectionDarkSteel.name, darkSteelPickMinesTiCArdite,
         "When true the dark steel pick will be able to mine TiC Ardite and Cobalt");
 
     darkSteelAxePowerUsePerDamagePoint = config.get(sectionDarkSteel.name, "darkSteelAxePowerUsePerDamagePoint", darkSteelAxePowerUsePerDamagePoint,
-        "Power use (RF) per damage/durability point avoided.").getInt(darkSteelAxePowerUsePerDamagePoint);
+        "Energy per damage/durability point avoided.").getInt(darkSteelAxePowerUsePerDamagePoint);
     darkSteelAxePowerUsePerDamagePointMultiHarvest = config.get(sectionDarkSteel.name, "darkSteelPickAxeUsePerDamagePointMultiHarvest",
-        darkSteelAxePowerUsePerDamagePointMultiHarvest, "Power use (RF) per damage/durability point avoided when shift-harvesting multiple logs")
+        darkSteelAxePowerUsePerDamagePointMultiHarvest, "Energy per damage/durability point avoided when shift-harvesting multiple logs")
         .getInt(darkSteelAxePowerUsePerDamagePointMultiHarvest);
     darkSteelAxeSpeedPenaltyMultiHarvest = (float) config
         .get(sectionDarkSteel.name, "darkSteelAxeSpeedPenaltyMultiHarvest", darkSteelAxeSpeedPenaltyMultiHarvest, "How much slower shift-harvesting logs is.")
@@ -695,10 +695,10 @@ public final class Config {
     // END Hoes
 
     magnetPowerUsePerSecondRF = config
-        .get(sectionMagnet.name, "magnetPowerUsePerTickRF", magnetPowerUsePerSecondRF, "The amount of RF power used per tick when the magnet is active")
+        .get(sectionMagnet.name, "magnetPowerUsePerTickRF", magnetPowerUsePerSecondRF, "The amount of energy used per tick when the magnet is active")
         .getInt(magnetPowerUsePerSecondRF);
     magnetPowerCapacityRF = config
-        .get(sectionMagnet.name, "magnetPowerCapacityRF", magnetPowerCapacityRF, "Amount of RF power stored in a fully charged magnet")
+        .get(sectionMagnet.name, "magnetPowerCapacityRF", magnetPowerCapacityRF, "Amount of energy stored in a fully charged magnet")
         .getInt(magnetPowerCapacityRF);
     magnetRange = config.get(sectionMagnet.name, "magnetRange", magnetRange, "Range of the magnet in blocks.").getInt(magnetRange);
     magnetMaxItems = config
@@ -766,21 +766,21 @@ public final class Config {
             + "be captured, even with this enabled. This is a limitation of the dragon, not the Soul Vial.");
 
     soulBinderBrokenSpawnerRF = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerRF", soulBinderBrokenSpawnerRF,
-        "The number of RF required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerRF);
+        "The amount of energy required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerRF);
     soulBinderReanimationRF = config
-        .get(sectionSoulBinder.name, "soulBinderReanimationRF", soulBinderReanimationRF, "The number of RF required to to re-animated a mob head.")
+        .get(sectionSoulBinder.name, "soulBinderReanimationRF", soulBinderReanimationRF, "The amount of energy required to to re-animated a mob head.")
         .getInt(soulBinderReanimationRF);
     soulBinderEnderCystalRF = config
-        .get(sectionSoulBinder.name, "soulBinderEnderCystalRF", soulBinderEnderCystalRF, "The number of RF required to create an ender crystal.")
+        .get(sectionSoulBinder.name, "soulBinderEnderCystalRF", soulBinderEnderCystalRF, "The amount of energy required to create an ender crystal.")
         .getInt(soulBinderEnderCystalRF);
     soulBinderAttractorCystalRF = config
-        .get(sectionSoulBinder.name, "soulBinderAttractorCystalRF", soulBinderAttractorCystalRF, "The number of RF required to create an attractor crystal.")
+        .get(sectionSoulBinder.name, "soulBinderAttractorCystalRF", soulBinderAttractorCystalRF, "The amount of energy required to create an attractor crystal.")
         .getInt(soulBinderAttractorCystalRF);
     soulBinderTunedPressurePlateRF = config
-        .get(sectionSoulBinder.name, "soulBinderTunedPressurePlateRF", soulBinderTunedPressurePlateRF, "The number of RF required to tune a pressure plate.")
+        .get(sectionSoulBinder.name, "soulBinderTunedPressurePlateRF", soulBinderTunedPressurePlateRF, "The amount of energy required to tune a pressure plate.")
         .getInt(soulBinderTunedPressurePlateRF);
     soulBinderPrecientCystalRF = config
-        .get(sectionSoulBinder.name, "soulBinderPrecientCystalRF", soulBinderPrecientCystalRF, "The number of RF required to create a precient crystal.")
+        .get(sectionSoulBinder.name, "soulBinderPrecientCystalRF", soulBinderPrecientCystalRF, "The amount of energy required to create a precient crystal.")
         .getInt(soulBinderPrecientCystalRF);
 
     soulBinderAttractorCystalLevels = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalLevels", soulBinderAttractorCystalLevels,
