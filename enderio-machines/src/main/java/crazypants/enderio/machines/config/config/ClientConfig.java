@@ -32,7 +32,7 @@ public final class ClientConfig {
       final Integer value = bloodEnabledInt.get();
       if (overrideNeeded && value == 0) {
         if (!hasLogged) {
-          Log.warn("Detected local country '" + Locale.getDefault().getCountry() + "', cencoring blood.");
+          Log.warn("Detected local country '" + Locale.getDefault().getCountry() + "', censoring blood.");
           hasLogged = true;
         }
         return false;
