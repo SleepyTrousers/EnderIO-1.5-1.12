@@ -38,8 +38,8 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
       return;
     }
 
-    EnumFacing renderDir = component.dir;
-    if (!conduit.getExternalConnections().contains(renderDir)) {
+    EnumFacing dir = component.dir;
+    if (!conduit.getExternalConnections().contains(dir)) {
       return;
     }
 
@@ -49,32 +49,29 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
     TextureAtlasSprite inTex = null;
     TextureAtlasSprite outTex = null;
     boolean render = true;
-    for (EnumFacing dir : conduit.getExternalConnections()) {
-
-      if (conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
-        inTex = pc.getTextureForInputMode();
-        inChannel = pc.getInputColor(dir);
-      } else if (conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
-        outTex = pc.getTextureForOutputMode();
-        outChannel = pc.getOutputColor(dir);
-      } else if (conduit.getConnectionMode(dir) == ConnectionMode.IN_OUT) {
-        inTex = pc.getTextureForInOutMode(true);
-        outTex = pc.getTextureForInOutMode(false);
-        inChannel = pc.getInputColor(dir);
-        outChannel = pc.getOutputColor(dir);
-      } else {
-        render = false;
-      }
+    if (conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
+      inTex = pc.getTextureForInputMode();
+      inChannel = pc.getInputColor(dir);
+    } else if (conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
+      outTex = pc.getTextureForOutputMode();
+      outChannel = pc.getOutputColor(dir);
+    } else if (conduit.getConnectionMode(dir) == ConnectionMode.IN_OUT) {
+      inTex = pc.getTextureForInOutMode(true);
+      outTex = pc.getTextureForInOutMode(false);
+      inChannel = pc.getInputColor(dir);
+      outChannel = pc.getOutputColor(dir);
+    } else {
+      render = false;
     }
 
     if (render) {
-      Offset offset = bundle.getOffset(EnderLiquidConduit.class, renderDir);
-      ConnectionModeGeometry.addModeConnectorQuads(renderDir, offset, pc.getTextureForInOutBackground(), null, quads);
+      Offset offset = bundle.getOffset(ILiquidConduit.class, dir);
+      ConnectionModeGeometry.addModeConnectorQuads(dir, offset, pc.getTextureForInOutBackground(), null, quads);
       if (inChannel != null) {
-        ConnectionModeGeometry.addModeConnectorQuads(renderDir, offset, inTex, ColorUtil.toFloat4(inChannel.getColor()), quads);
+        ConnectionModeGeometry.addModeConnectorQuads(dir, offset, inTex, ColorUtil.toFloat4(inChannel.getColor()), quads);
       }
       if (outChannel != null) {
-        ConnectionModeGeometry.addModeConnectorQuads(renderDir, offset, outTex, ColorUtil.toFloat4(outChannel.getColor()), quads);
+        ConnectionModeGeometry.addModeConnectorQuads(dir, offset, outTex, ColorUtil.toFloat4(outChannel.getColor()), quads);
       }
     }
   }
