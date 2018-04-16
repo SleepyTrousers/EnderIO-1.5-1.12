@@ -581,7 +581,7 @@ public final class Config {
         .getDouble(fakePlayerSkullChance);
 
     darkSteelSwordPowerUsePerHit = config
-        .get(sectionDarkSteel.name, "darkSteelSwordPowerUsePerHit", darkSteelSwordPowerUsePerHit, "The amount of power (RF) used per hit.")
+        .get(sectionDarkSteel.name, "darkSteelSwordPowerUsePerHit", darkSteelSwordPowerUsePerHit, "The amount of energy used per hit.")
         .getInt(darkSteelSwordPowerUsePerHit);
     darkSteelSwordEnderPearlDropChance = config
         .get(sectionDarkSteel.name, "darkSteelSwordEnderPearlDropChance", darkSteelSwordEnderPearlDropChance,
