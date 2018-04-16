@@ -642,7 +642,7 @@ public final class Config {
         .get(sectionDarkSteel.name, "darkSteelShearsDurabilityFactor", darkSteelShearsDurabilityFactor, "How much more durable as vanilla shears they are.")
         .getInt(darkSteelShearsDurabilityFactor);
     darkSteelShearsPowerUsePerDamagePoint = config.get(sectionDarkSteel.name, "darkSteelShearsPowerUsePerDamagePoint", darkSteelShearsPowerUsePerDamagePoint,
-        "Power use (RF) per damage/durability point avoided.").getInt(darkSteelShearsPowerUsePerDamagePoint);
+        "Energy use per damage/durability point avoided.").getInt(darkSteelShearsPowerUsePerDamagePoint);
     darkSteelShearsEffeciencyBoostWhenPowered = (float) config.get(sectionDarkSteel.name, "darkSteelShearsEffeciencyBoostWhenPowered",
         darkSteelShearsEffeciencyBoostWhenPowered, "The increase in efficiency when powered.").getDouble(darkSteelShearsEffeciencyBoostWhenPowered);
     darkSteelShearsBlockAreaBoostWhenPowered = config.get(sectionDarkSteel.name, "darkSteelShearsBlockAreaBoostWhenPowered",
