@@ -658,6 +658,14 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
+  <recipe name="Alloy: Steel (Oredict)" required="false">
+    <alloying energy="4000" exp="0">
+      <input name="ingotIron"/>
+      <input name="fuelCoke"/>
+      <output name="ingotSteel"/>
+    </alloying>
+  </recipe>
+
   <recipe name="Tormented Enderman Head">
     <slicing energy="20000">
       <input name="ingotSoularium"/><input name="enderio:block_enderman_skull:0"/><input name="ingotSoularium"/>
