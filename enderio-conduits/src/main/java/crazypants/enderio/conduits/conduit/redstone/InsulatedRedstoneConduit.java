@@ -46,6 +46,7 @@ import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.gui.GuiExternalConnection;
 import crazypants.enderio.conduits.gui.RedstoneSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
+import dan200.computercraft.api.ComputerCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.state.IBlockState;
@@ -59,6 +60,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -459,6 +462,18 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
         Signal signal = new Signal(pos, side, input - 1, getSignalColor(side));
         signals.add(signal);
       }
+
+      if (Loader.isModLoaded("computercraft")) {
+        BlockPos loc = getBundle().getLocation().offset(side);
+        int bundledInput = getComputerCraftBundledPowerLevel(side);
+        if (bundledInput >= 0) {
+          for (int i = 0; i < 16; i++) {
+            int color = bundledInput >>> i & 1;
+            Signal signal = new Signal(loc, side, color == 1 ? 16 : 0, DyeColor.fromIndex(Math.max(0, 15 - i)));
+            signals.add(signal);
+          }
+        }
+      }
     }
 
     if (network != null) {
@@ -496,6 +511,18 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     }
 
     return res;
+  }
+
+  @Optional.Method(modid = "computercraft")
+  protected int getComputerCraftBundledPowerLevel(EnumFacing dir) {
+    World world = getBundle().getBundleworld();
+    BlockPos pos = getBundle().getLocation().offset(dir);
+
+    if (world.isBlockLoaded(pos)) {
+      return ComputerCraftAPI.getBundledRedstoneOutput(world, pos, dir.getOpposite());
+    } else {
+      return -1;
+    }
   }
 
   @Override
