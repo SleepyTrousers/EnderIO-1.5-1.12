@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
@@ -38,6 +39,8 @@ import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.ITileFilterContainer;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
@@ -141,10 +144,58 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   @Override
-  public boolean handleFacadeClick(World world1, BlockPos placeAt, EntityPlayer player, EnumFacing opposite, ItemStack stack, EnumHand hand, float hitX,
-      float hitY, float hitZ) {
-    // TODO make this more useful
-    return false;
+  public boolean handleFacadeClick(@Nonnull World world1, @Nonnull BlockPos placeAt, @Nonnull EntityPlayer player, @Nonnull EnumFacing opposite,
+      @Nonnull ItemStack stack, @Nonnull EnumHand hand, float hitX, float hitY, float hitZ) {
+    // Add facade
+    if (player.isSneaking()) {
+      return false;
+    }
+
+    IBlockState facadeID = PaintUtil.getSourceBlock(player.getHeldItem(hand));
+    if (facadeID == null) {
+      return false;
+    }
+
+    int facadeType1 = player.getHeldItem(hand).getItemDamage();
+
+    if (hasFacade()) {
+      if (!YetaUtil.isSolidFacadeRendered(this, player) || facadeEquals(facadeID, facadeType1)) {
+        return false;
+      }
+      if (!world.isRemote && !player.capabilities.isCreativeMode) {
+        ItemStack drop = new ItemStack(ModObject.itemConduitFacade.getItemNN(), 1, EnumFacadeType.getMetaFromType(getFacadeType()));
+        PaintUtil.setSourceBlock(drop, getPaintSource());
+        if (!player.inventory.addItemStackToInventory(drop)) {
+          ItemUtil.spawnItemInWorldWithRandomMotion(world, drop, pos, hitX, hitY, hitZ, 1.2f);
+        }
+      }
+    }
+    setFacadeType(EnumFacadeType.getTypeFromMeta(facadeType1));
+    setPaintSource(facadeID);
+    if (!world.isRemote) {
+      ConduitUtil.playPlaceSound(facadeID.getBlock().getSoundType(), world, pos);
+    }
+    if (!player.capabilities.isCreativeMode) {
+      stack.shrink(1);
+    }
+    IBlockState bs = world.getBlockState(pos);
+    world.notifyBlockUpdate(pos, bs, bs, 3);
+    markDirty();
+    return true;
+  }
+
+  private boolean facadeEquals(@Nonnull IBlockState b, int facadeType1) {
+    IBlockState a = getPaintSource();
+    if (a == null) {
+      return false;
+    }
+    if (a.getBlock() != b.getBlock()) {
+      return false;
+    }
+    if (getFacadeType().ordinal() != facadeType1) {
+      return false;
+    }
+    return a.getBlock().getMetaFromState(a) == b.getBlock().getMetaFromState(b);
   }
 
   @Nonnull

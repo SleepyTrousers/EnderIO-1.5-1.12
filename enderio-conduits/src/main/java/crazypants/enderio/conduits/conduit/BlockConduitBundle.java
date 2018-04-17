@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
@@ -607,8 +606,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     // player.sendMessage(new TextComponentString("You clicked on " + bundle));
     // }
     if (stack.getItem() == ModObject.itemConduitFacade.getItem()) {
-      // add or replace facade
-      return handleFacadeClick(world, pos, player, side, bundle, stack, hand, hitX, hitY, hitZ);
+      return bundle.handleFacadeClick(world, pos, player, side, stack, hand, hitX, hitY, hitZ);
 
     } else if (ConduitUtil.isConduitEquipped(player, hand)) {
       // Add conduit
@@ -754,61 +752,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       return true;
     }
     return false;
-  }
-
-  public boolean handleFacadeClick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, @Nonnull EnumFacing side,
-      @Nonnull IConduitBundle bundle, @Nonnull ItemStack stack, @Nonnull EnumHand hand, float hitX, float hitY, float hitZ) {
-
-    // Add facade
-    if (player.isSneaking()) {
-      return false;
-    }
-
-    IBlockState facadeID = PaintUtil.getSourceBlock(player.getHeldItem(hand));
-    if (facadeID == null) {
-      return false;
-    }
-
-    int facadeType = player.getHeldItem(hand).getItemDamage();
-
-    if (bundle.hasFacade()) {
-      if (!YetaUtil.isSolidFacadeRendered(bundle, player) || facadeEquals(bundle, facadeID, facadeType)) {
-        return false;
-      }
-      if (!world.isRemote && !player.capabilities.isCreativeMode) {
-        ItemStack drop = new ItemStack(ModObject.itemConduitFacade.getItemNN(), 1, EnumFacadeType.getMetaFromType(bundle.getFacadeType()));
-        PaintUtil.setSourceBlock(drop, bundle.getPaintSource());
-        if (!player.inventory.addItemStackToInventory(drop)) {
-          ItemUtil.spawnItemInWorldWithRandomMotion(world, drop, pos, hitX, hitY, hitZ, 1.2f);
-        }
-      }
-    }
-    bundle.setFacadeType(EnumFacadeType.getTypeFromMeta(facadeType));
-    bundle.setPaintSource(facadeID);
-    if (!world.isRemote) {
-      ConduitUtil.playPlaceSound(facadeID.getBlock().getSoundType(), world, pos);
-    }
-    if (!player.capabilities.isCreativeMode) {
-      stack.shrink(1);
-    }
-    IBlockState bs = world.getBlockState(pos);
-    world.notifyBlockUpdate(pos, bs, bs, 3);
-    bundle.getEntity().markDirty();
-    return true;
-  }
-
-  private boolean facadeEquals(@Nonnull IConduitBundle bundle, @Nonnull IBlockState b, int facadeType) {
-    IBlockState a = bundle.getPaintSource();
-    if (a == null) {
-      return false;
-    }
-    if (a.getBlock() != b.getBlock()) {
-      return false;
-    }
-    if (bundle.getFacadeType().ordinal() != facadeType) {
-      return false;
-    }
-    return a.getBlock().getMetaFromState(a) == b.getBlock().getMetaFromState(b);
   }
 
   @Nullable
