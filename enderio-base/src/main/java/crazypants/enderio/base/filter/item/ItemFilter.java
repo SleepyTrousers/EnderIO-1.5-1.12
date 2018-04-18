@@ -35,17 +35,17 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
 
   private static final boolean DEFAULT_META = true;
 
-  private static final boolean DEFAULT_MBT = true;
+  private static final boolean DEFAULT_NBT = true;
 
   private static final boolean DEFAULT_ORE_DICT = false;
 
   private static final boolean DEFAULT_STICKY = false;
 
   private boolean isBlacklist = DEFAULT_BLACKLIST;
-  private boolean matchMeta = true;
-  private boolean matchNBT = true;
-  private boolean useOreDict = false;
-  private boolean sticky = false;
+  private boolean matchMeta = DEFAULT_META;
+  private boolean matchNBT = DEFAULT_NBT;
+  private boolean useOreDict = DEFAULT_ORE_DICT;
+  private boolean sticky = DEFAULT_STICKY;
   private @Nonnull DamageMode damageMode = DamageMode.DISABLED;
 
   private @Nonnull NNList<ItemStack> items;
@@ -444,7 +444,7 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
   }
 
   public boolean isDefault() {
-    return !isAdvanced && !isValid() && isBlacklist == DEFAULT_BLACKLIST && matchMeta == DEFAULT_META && matchNBT == DEFAULT_MBT
+    return !isAdvanced && !isValid() && isBlacklist == DEFAULT_BLACKLIST && matchMeta == DEFAULT_META && matchNBT == DEFAULT_NBT
         && useOreDict == DEFAULT_ORE_DICT && sticky == DEFAULT_STICKY && !isBig;
   }
 

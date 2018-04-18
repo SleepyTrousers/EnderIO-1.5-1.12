@@ -13,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 public class XpUtil {
 
   // Values taken from OpenBlocks to ensure compatibility
-
   public static final int RATIO = 20;
 
   public static int liquidToExperience(int liquid) {
@@ -55,15 +54,20 @@ public class XpUtil {
     if (level == 0) {
       return 0;
     } else if (level <= 15) {
-      return sum(level, 7, 2);
+      return xpMath(level, 7, 2);
     } else if (level <= 30) {
-      return 315 + sum(level - 15, 37, 5);
+      return 315 + xpMath(level - 15, 37, 5);
     }
-    return 1395 + sum(level - 30, 112, 9);
+    return 1395 + xpMath(level - 30, 112, 9);
   }
 
-  private static int sum(int level, int a, int d) {
-    return level * (2 * a + (level - 1) * d) / 2;
+  /**
+   * Used to calculate the amount of XP required to level up. Based on OpenBlocks sum method
+   * 
+   * @return the capacity of the XP bar
+   */
+  private static int xpMath(int n, int a, int d) {
+    return n * (2 * a + (n - 1) * d) / 2;
   }
 
   public static int getLevelForExperience(int experience) {
