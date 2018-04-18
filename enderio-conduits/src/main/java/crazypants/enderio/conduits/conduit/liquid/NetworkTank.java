@@ -20,6 +20,8 @@ public class NetworkTank {
   final DyeColor inputColor;
   final DyeColor outputColor;
   final int priority;
+  final boolean roundRobin;
+  final boolean selfFeed;
 
   public NetworkTank(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
     this.con = con;
@@ -31,6 +33,8 @@ public class NetworkTank {
     inputColor = con.getOutputColor(conDir);
     outputColor = con.getInputColor(conDir);
     priority = con.getOutputPriority(conDir);
+    roundRobin = con.isRoundRobinEnabled(conDir);
+    selfFeed = con.isSelfFeedEnabled(conDir);
   }
 
   public boolean isValid() {

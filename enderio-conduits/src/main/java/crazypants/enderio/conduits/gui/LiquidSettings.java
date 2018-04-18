@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
+import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.DyeColor;
@@ -39,6 +40,8 @@ public class LiquidSettings extends BaseSettingsPanel {
   private static final int ID_EXTRACT_CHANNEL = GuiExternalConnection.nextButtonId();
   private static final int ID_PRIORITY_UP = GuiExternalConnection.nextButtonId();
   private static final int ID_PRIORITY_DOWN = GuiExternalConnection.nextButtonId();
+  private static final int ID_ROUND_ROBIN = GuiExternalConnection.nextButtonId();
+  private static final int ID_LOOP = GuiExternalConnection.nextButtonId();
 
   private final RedstoneModeButton rsB;
   private final ColorButton colorB;
@@ -50,6 +53,9 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   private final MultiIconButton priUpB;
   private final MultiIconButton priDownB;
+
+  private final ToggleButton roundRobinB;
+  private final ToggleButton loopB;
 
   private int priLeft = 46;
   private int priWidth = 32;
@@ -77,6 +83,19 @@ public class LiquidSettings extends BaseSettingsPanel {
     extractChannelB.setColorIndex(0);
     extractChannelB.setToolTipHeading(Lang.GUI_CONDUIT_CHANNEL.get());
 
+    x += 4 + extractChannelB.getWidth();
+    roundRobinB = new ToggleButton(gui, ID_ROUND_ROBIN, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
+    roundRobinB.setSelectedToolTip(Lang.GUI_ROUND_ROBIN_ENABLED.get());
+    roundRobinB.setUnselectedToolTip(Lang.GUI_ROUND_ROBIN_DISABLED.get());
+    roundRobinB.setPaintSelectedBorder(false);
+
+    x += 4 + roundRobinB.getWidth();
+    loopB = new ToggleButton(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
+    loopB.setSelectedToolTip(Lang.GUI_SELF_FEED_ENABLED.get());
+    loopB.setUnselectedToolTip(Lang.GUI_SELF_FEED_DISABLED.get());
+    loopB.setPaintSelectedBorder(false);
+
+    x = rightColumn;
     int x0 = x + 20;
     y += insertChannelB.getHeight() + 6;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x0, y);
@@ -120,6 +139,10 @@ public class LiquidSettings extends BaseSettingsPanel {
       eCon.setOutputPriority(gui.getDir(), eCon.getOutputPriority(gui.getDir()) + 1);
     } else if (guiButton.id == ID_PRIORITY_DOWN) {
       eCon.setOutputPriority(gui.getDir(), eCon.getOutputPriority(gui.getDir()) - 1);
+    } else if (guiButton.id == ID_ROUND_ROBIN) {
+      eCon.setRoundRobinEnabled(gui.getDir(), !eCon.isRoundRobinEnabled(gui.getDir()));
+    } else if (guiButton.id == ID_LOOP) {
+      eCon.setSelfFeedEnabled(gui.getDir(), !eCon.isSelfFeedEnabled(gui.getDir()));
     }
     if (isEnder) {
       PacketHandler.INSTANCE.sendToServer(new PacketEnderLiquidConduit(eCon, gui.getDir()));
@@ -153,6 +176,12 @@ public class LiquidSettings extends BaseSettingsPanel {
 
       priUpB.onGuiInit();
       priDownB.onGuiInit();
+
+      roundRobinB.onGuiInit();
+      roundRobinB.setSelected(eCon.isRoundRobinEnabled(gui.getDir()));
+
+      loopB.onGuiInit();
+      loopB.setSelected(eCon.isSelfFeedEnabled(gui.getDir()));
     }
   }
 
@@ -165,6 +194,8 @@ public class LiquidSettings extends BaseSettingsPanel {
     extractChannelB.detach();
     priDownB.detach();
     priUpB.detach();
+    roundRobinB.detach();
+    loopB.detach();
   }
 
   @Override

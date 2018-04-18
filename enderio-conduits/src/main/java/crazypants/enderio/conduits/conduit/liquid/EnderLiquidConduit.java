@@ -73,6 +73,10 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   protected final EnumMap<EnumFacing, Integer> priorities = new EnumMap<EnumFacing, Integer>(EnumFacing.class);
 
+  protected final EnumMap<EnumFacing, Boolean> roundRobin = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
+
+  protected final EnumMap<EnumFacing, Boolean> selfFeed = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
+
   public EnderLiquidConduit() {
     super();
     for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
@@ -473,6 +477,18 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
         nbtRoot.setInteger("priority." + entry.getKey().name(), entry.getValue());
       }
     }
+
+    for (Entry<EnumFacing, Boolean> entry : roundRobin.entrySet()) {
+      if (entry.getValue() != null) {
+        nbtRoot.setBoolean("roundRobin." + entry.getKey().name(), entry.getValue());
+      }
+    }
+
+    for (Entry<EnumFacing, Boolean> entry : selfFeed.entrySet()) {
+      if (entry.getValue() != null) {
+        nbtRoot.setBoolean("selfFeed." + entry.getKey().name(), entry.getValue());
+      }
+    }
   }
 
   @Override
@@ -527,6 +543,18 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
       if (nbtRoot.hasKey(key)) {
         int val = nbtRoot.getInteger(key);
         priorities.put(dir, val);
+      }
+
+      key = "roundRobin." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        boolean val = nbtRoot.getBoolean(key);
+        roundRobin.put(dir, val);
+      }
+
+      key = "selfFeed." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        boolean val = nbtRoot.getBoolean(key);
+        selfFeed.put(dir, val);
       }
     }
 
@@ -651,6 +679,44 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     }
     if (network != null) {
       refreshConnections(dir);
+    }
+  }
+
+  public boolean isRoundRobinEnabled(@Nonnull EnumFacing dir) {
+    Boolean val = roundRobin.get(dir);
+    if (val == null) {
+      return false;
+    }
+    return val;
+  }
+
+  public void setRoundRobinEnabled(@Nonnull EnumFacing dir, boolean enabled) {
+    if (!enabled) {
+      roundRobin.remove(dir);
+    } else {
+      roundRobin.put(dir, enabled);
+    }
+    if (network != null) {
+      network.connectionChanged(this, dir);
+    }
+  }
+
+  public boolean isSelfFeedEnabled(@Nonnull EnumFacing dir) {
+    Boolean val = selfFeed.get(dir);
+    if (val == null) {
+      return false;
+    }
+    return val;
+  }
+
+  public void setSelfFeedEnabled(@Nonnull EnumFacing dir, boolean enabled) {
+    if (!enabled) {
+      selfFeed.remove(dir);
+    } else {
+      selfFeed.put(dir, enabled);
+    }
+    if (network != null) {
+      network.connectionChanged(this, dir);
     }
   }
 

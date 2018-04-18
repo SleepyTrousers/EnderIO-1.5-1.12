@@ -21,6 +21,8 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
   private DyeColor colIn;
   private DyeColor colOut;
   private int priority;
+  private boolean roundRobin;
+  private boolean selfFeed;
 
   public PacketEnderLiquidConduit() {
   }
@@ -30,6 +32,8 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
     colIn = con.getInputColor(dir);
     colOut = con.getOutputColor(dir);
     priority = con.getOutputPriority(dir);
+    roundRobin = con.isRoundRobinEnabled(dir);
+    selfFeed = con.isSelfFeedEnabled(dir);
   }
 
   @Override
@@ -38,6 +42,8 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
     buf.writeShort(colIn.ordinal());
     buf.writeShort(colOut.ordinal());
     buf.writeInt(priority);
+    buf.writeBoolean(roundRobin);
+    buf.writeBoolean(selfFeed);
   }
 
   @Override
@@ -46,6 +52,8 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
     colIn = DyeColor.values()[buf.readShort()];
     colOut = DyeColor.values()[buf.readShort()];
     priority = buf.readInt();
+    roundRobin = buf.readBoolean();
+    selfFeed = buf.readBoolean();
   }
 
   public static class Handler implements IMessageHandler<PacketEnderLiquidConduit, IMessage> {
@@ -57,6 +65,8 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
         conduit.setInputColor(message.dir, message.colIn);
         conduit.setOutputColor(message.dir, message.colOut);
         conduit.setOutputPriority(message.dir, message.priority);
+        conduit.setRoundRobinEnabled(message.dir, message.roundRobin);
+        conduit.setSelfFeedEnabled(message.dir, message.selfFeed);
         applyFilter(message.dir, conduit, message.inputFilter, true);
         applyFilter(message.dir, conduit, message.outputFilter, false);
 
