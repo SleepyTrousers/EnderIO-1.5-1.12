@@ -80,7 +80,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
         FluidStack res = wrapper.drain(fs);
         if (res != null && res.amount > 0) {
           int xpToGive = XpUtil.liquidToExperience(res.amount);
-          XpUtil.addPlayerXP(player, requiredXP);
+          XpUtil.addPlayerXP(player, xpToGive);
           return true;
         }
       }
