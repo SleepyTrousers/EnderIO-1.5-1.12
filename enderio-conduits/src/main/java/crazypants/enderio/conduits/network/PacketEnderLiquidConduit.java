@@ -20,6 +20,7 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
 
   private DyeColor colIn;
   private DyeColor colOut;
+  private int priority;
 
   public PacketEnderLiquidConduit() {
   }
@@ -28,6 +29,7 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
     super(con, dir);
     colIn = con.getInputColor(dir);
     colOut = con.getOutputColor(dir);
+    priority = con.getOutputPriority(dir);
   }
 
   @Override
@@ -35,6 +37,7 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
     super.toBytes(buf);
     buf.writeShort(colIn.ordinal());
     buf.writeShort(colOut.ordinal());
+    buf.writeInt(priority);
   }
 
   @Override
@@ -42,6 +45,7 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
     super.fromBytes(buf);
     colIn = DyeColor.values()[buf.readShort()];
     colOut = DyeColor.values()[buf.readShort()];
+    priority = buf.readInt();
   }
 
   public static class Handler implements IMessageHandler<PacketEnderLiquidConduit, IMessage> {
@@ -52,6 +56,7 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
       if (conduit != null) {
         conduit.setInputColor(message.dir, message.colIn);
         conduit.setOutputColor(message.dir, message.colOut);
+        conduit.setOutputPriority(message.dir, message.priority);
         applyFilter(message.dir, conduit, message.inputFilter, true);
         applyFilter(message.dir, conduit, message.outputFilter, false);
 

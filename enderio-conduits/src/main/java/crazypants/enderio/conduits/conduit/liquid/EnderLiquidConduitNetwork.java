@@ -1,6 +1,7 @@
 package crazypants.enderio.conduits.conduit.liquid;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +35,30 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
   public void connectionChanged(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
     NetworkTankKey key = new NetworkTankKey(con, conDir);
     NetworkTank tank = new NetworkTank(con, conDir);
+
+    // Check for later
+    boolean sort = false;
+    NetworkTank oldTank = tankMap.get(key);
+    if (oldTank != null && oldTank.priority != tank.priority) {
+      sort = true;
+    }
+
     tanks.remove(tank); // remove old tank, NB: =/hash is only calced on location and dir
     tankMap.remove(key);
     tanks.add(tank);
     tankMap.put(key, tank);
+
+    // If the priority has been changed, then sort the list to match
+    if (sort) {
+      tanks.sort(new Comparator<NetworkTank>() {
+
+        @Override
+        public int compare(NetworkTank arg0, NetworkTank arg1) {
+          return arg1.priority - arg0.priority;
+        }
+
+      });
+    }
   }
 
   public boolean extractFrom(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
@@ -110,6 +131,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       return filled;
 
     } finally {
+      getIteratorForTank(tank).reset();
       filling = false;
     }
   }
@@ -125,7 +147,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     return filter.matchesFilter(drained);
   }
 
-  private Iterable<NetworkTank> getIteratorForTank(@Nonnull NetworkTank tank) {
+  private RoundRobinIterator<NetworkTank> getIteratorForTank(@Nonnull NetworkTank tank) {
     if (iterators == null) {
       iterators = new HashMap<NetworkTank, RoundRobinIterator<NetworkTank>>();
     }

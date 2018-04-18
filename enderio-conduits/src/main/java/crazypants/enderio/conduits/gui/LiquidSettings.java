@@ -1,8 +1,13 @@
 package crazypants.enderio.conduits.gui;
 
+import java.awt.Color;
+
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.ColorButton;
+import com.enderio.core.client.gui.button.MultiIconButton;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.EnderIO;
@@ -20,7 +25,9 @@ import crazypants.enderio.conduits.init.ConduitObject;
 import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.network.PacketEnderLiquidConduit;
 import crazypants.enderio.conduits.network.PacketExtractMode;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 public class LiquidSettings extends BaseSettingsPanel {
@@ -30,6 +37,8 @@ public class LiquidSettings extends BaseSettingsPanel {
   private static final int ID_COLOR_BUTTON = GuiExternalConnection.nextButtonId();
   private static final int ID_INSERT_CHANNEL = GuiExternalConnection.nextButtonId();
   private static final int ID_EXTRACT_CHANNEL = GuiExternalConnection.nextButtonId();
+  private static final int ID_PRIORITY_UP = GuiExternalConnection.nextButtonId();
+  private static final int ID_PRIORITY_DOWN = GuiExternalConnection.nextButtonId();
 
   private final RedstoneModeButton rsB;
   private final ColorButton colorB;
@@ -38,6 +47,12 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   private ColorButton insertChannelB;
   private ColorButton extractChannelB;
+
+  private final MultiIconButton priUpB;
+  private final MultiIconButton priDownB;
+
+  private int priLeft = 46;
+  private int priWidth = 32;
 
   private final ILiquidConduit conduit;
 
@@ -70,6 +85,11 @@ public class LiquidSettings extends BaseSettingsPanel {
 
     rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new ConduitRedstoneModeControlable(conduit, gui, colorB));
 
+    x = priLeft + priWidth + 9;
+
+    priUpB = MultiIconButton.createAddButton(gui, ID_PRIORITY_UP, x, y);
+    priDownB = MultiIconButton.createMinusButton(gui, ID_PRIORITY_DOWN, x, y + 8);
+
   }
 
   @Override
@@ -96,6 +116,10 @@ public class LiquidSettings extends BaseSettingsPanel {
     } else if (guiButton.id == ID_EXTRACT_CHANNEL) {
       DyeColor col = DyeColor.values()[extractChannelB.getColorIndex()];
       eCon.setInputColor(gui.getDir(), col);
+    } else if (guiButton.id == ID_PRIORITY_UP) {
+      eCon.setOutputPriority(gui.getDir(), eCon.getOutputPriority(gui.getDir()) + 1);
+    } else if (guiButton.id == ID_PRIORITY_DOWN) {
+      eCon.setOutputPriority(gui.getDir(), eCon.getOutputPriority(gui.getDir()) - 1);
     }
     if (isEnder) {
       PacketHandler.INSTANCE.sendToServer(new PacketEnderLiquidConduit(eCon, gui.getDir()));
@@ -126,6 +150,9 @@ public class LiquidSettings extends BaseSettingsPanel {
       insertChannelB.setColorIndex(eCon.getOutputColor(gui.getDir()).ordinal());
       extractChannelB.onGuiInit();
       extractChannelB.setColorIndex(eCon.getInputColor(gui.getDir()).ordinal());
+
+      priUpB.onGuiInit();
+      priDownB.onGuiInit();
     }
   }
 
@@ -136,6 +163,25 @@ public class LiquidSettings extends BaseSettingsPanel {
     colorB.detach();
     insertChannelB.detach();
     extractChannelB.detach();
+    priDownB.detach();
+    priUpB.detach();
+  }
+
+  @Override
+  protected void renderCustomOptions(int top, float par1, int par2, int par3) {
+    if (!isEnder) {
+      return;
+    }
+    FontRenderer fr = gui.getFontRenderer();
+
+    GlStateManager.color(1, 1, 1);
+    IconEIO.map.render(EnderWidget.BUTTON_DOWN, left + priLeft, top - 5, priWidth, 16, 0, true);
+    String str = eCon.getOutputPriority(gui.getDir()) + "";
+    int sw = fr.getStringWidth(str);
+
+    String priority = Lang.GUI_PRIORITY.get();
+    fr.drawString(priority, left + 12, top + 25, ColorUtil.getRGB(Color.black));
+    fr.drawString(str, left + priLeft + priWidth - sw - gap, top + 25, ColorUtil.getRGB(Color.black));
   }
 
   @Override

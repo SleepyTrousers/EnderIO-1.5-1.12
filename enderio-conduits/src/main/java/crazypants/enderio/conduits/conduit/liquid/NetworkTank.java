@@ -19,6 +19,7 @@ public class NetworkTank {
   final boolean acceptsOuput;
   final DyeColor inputColor;
   final DyeColor outputColor;
+  final int priority;
 
   public NetworkTank(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
     this.con = con;
@@ -29,6 +30,7 @@ public class NetworkTank {
     acceptsOuput = con.getConnectionMode(conDir).acceptsOutput();
     inputColor = con.getOutputColor(conDir);
     outputColor = con.getInputColor(conDir);
+    priority = con.getOutputPriority(conDir);
   }
 
   public boolean isValid() {

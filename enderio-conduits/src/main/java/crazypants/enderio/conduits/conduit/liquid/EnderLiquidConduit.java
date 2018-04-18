@@ -71,6 +71,8 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   private final EnumMap<EnumFacing, DyeColor> inputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
   private final EnumMap<EnumFacing, DyeColor> outputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
+  protected final EnumMap<EnumFacing, Integer> priorities = new EnumMap<EnumFacing, Integer>(EnumFacing.class);
+
   public EnderLiquidConduit() {
     super();
     for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
@@ -465,6 +467,12 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
         nbtRoot.setShort("outSC." + entry.getKey().name(), ord);
       }
     }
+
+    for (Entry<EnumFacing, Integer> entry : priorities.entrySet()) {
+      if (entry.getValue() != null) {
+        nbtRoot.setInteger("priority." + entry.getKey().name(), entry.getValue());
+      }
+    }
   }
 
   @Override
@@ -513,6 +521,12 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
         if (ord >= 0 && ord < DyeColor.values().length) {
           outputColors.put(dir, DyeColor.values()[ord]);
         }
+      }
+
+      key = "priority." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        int val = nbtRoot.getInteger(key);
+        priorities.put(dir, val);
       }
     }
 
@@ -619,6 +633,25 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     }
     setClientStateDirty();
     collidablesDirty = true;
+  }
+
+  public int getOutputPriority(@Nonnull EnumFacing dir) {
+    Integer res = priorities.get(dir);
+    if (res == null) {
+      return 0;
+    }
+    return res.intValue();
+  }
+
+  public void setOutputPriority(@Nonnull EnumFacing dir, int priority) {
+    if (priority == 0) {
+      priorities.remove(dir);
+    } else {
+      priorities.put(dir, priority);
+    }
+    if (network != null) {
+      refreshConnections(dir);
+    }
   }
 
   @SuppressWarnings("unchecked")
