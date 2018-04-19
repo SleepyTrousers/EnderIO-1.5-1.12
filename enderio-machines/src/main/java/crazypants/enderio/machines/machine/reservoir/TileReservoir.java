@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
@@ -31,11 +32,11 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 @Storable
 public class TileReservoir extends TileEntityEio implements ITankAccess.IExtendedTankAccess {
 
-  @Store
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   final @Nonnull SmartTank tank = new SmartTank(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
   public boolean canRefill = false;
 
-  @Store
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   boolean autoEject = false;
 
   private boolean tankDirty = false;
