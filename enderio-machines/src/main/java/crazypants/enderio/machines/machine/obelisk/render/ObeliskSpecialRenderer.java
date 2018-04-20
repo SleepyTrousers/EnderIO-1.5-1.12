@@ -65,6 +65,7 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
     renderItemStack(null, Minecraft.getMinecraft().world, 0, 0, 0, 0f);
     bakeObelisk();
     renderObelisk();
+    GlStateManager.enableBlend(); // GUI needs this to remain enabled
   }
 
   protected void bakeObelisk() {
