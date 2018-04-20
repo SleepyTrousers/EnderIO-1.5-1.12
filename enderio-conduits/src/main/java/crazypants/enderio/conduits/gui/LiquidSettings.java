@@ -63,7 +63,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   private final ILiquidConduit conduit;
 
   public LiquidSettings(@Nonnull final IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_FLUID, ConduitObject.item_liquid_conduit.getUnlocalisedName(), gui, con, "liquid_settings");
+    super(IconEIO.WRENCH_OVERLAY_FLUID, ConduitObject.item_liquid_conduit.getUnlocalisedName(), gui, con, "in_out_settings");
 
     conduit = (ILiquidConduit) con;
     if (con instanceof EnderLiquidConduit) {
@@ -97,7 +97,9 @@ public class LiquidSettings extends BaseSettingsPanel {
 
     x = rightColumn;
     int x0 = x + 20;
-    y += insertChannelB.getHeight() + 6;
+    if (isEnder) {
+      y += insertChannelB.getHeight() + 6;
+    }
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x0, y);
     colorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
@@ -114,7 +116,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   @Override
   @Nonnull
   public ResourceLocation getTexture() {
-    return isEnder ? EnderIO.proxy.getGuiTexture("item_settings") : super.getTexture();
+    return isEnder ? EnderIO.proxy.getGuiTexture("filter_upgrade_settings") : super.getTexture();
   }
 
   @Override

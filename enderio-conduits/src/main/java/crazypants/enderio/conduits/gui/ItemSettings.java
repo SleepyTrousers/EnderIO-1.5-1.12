@@ -63,7 +63,7 @@ public class ItemSettings extends BaseSettingsPanel {
   private final GuiToolTip filterInsertUpgradeTooltip;
 
   public ItemSettings(@Nonnull final IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_ITEM, ConduitObject.item_item_conduit.getUnlocalisedName(), gui, con, "item_settings");
+    super(IconEIO.WRENCH_OVERLAY_ITEM, ConduitObject.item_item_conduit.getUnlocalisedName(), gui, con, "filter_upgrade_settings");
     itemConduit = (IItemConduit) con;
 
     int x = leftColumn;

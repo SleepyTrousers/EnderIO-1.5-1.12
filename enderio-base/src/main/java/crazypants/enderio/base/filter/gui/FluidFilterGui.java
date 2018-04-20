@@ -32,7 +32,7 @@ public class FluidFilterGui extends AbstractFilterGui {
   private int yOffset;
 
   public FluidFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull IFluidFilter filterIn) {
-    super(playerInv, filterContainer, te, filterIn, "basic_item_filter");
+    super(playerInv, filterContainer, te, filterIn, "fluid_filter");
 
     xOffset = 13;
     yOffset = 34;

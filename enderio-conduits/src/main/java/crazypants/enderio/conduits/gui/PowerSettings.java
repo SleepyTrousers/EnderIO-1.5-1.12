@@ -28,7 +28,7 @@ public class PowerSettings extends BaseSettingsPanel {
   private ColorButton colorB;
 
   public PowerSettings(@Nonnull final IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_POWER, ConduitObject.item_power_conduit.getUnlocalisedName(), gui, con, "power_settings");
+    super(IconEIO.WRENCH_OVERLAY_POWER, ConduitObject.item_power_conduit.getUnlocalisedName(), gui, con, "in_out_settings");
     conduit = (IPowerConduit) con;
 
     int x = rightColumn;
