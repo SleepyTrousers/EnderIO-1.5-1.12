@@ -13,6 +13,8 @@ import com.enderio.core.common.inventory.EnderInventory;
 import crazypants.enderio.base.filter.network.ICloseFilterRemoteExec;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -68,6 +70,15 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
   }
 
   @Override
+  @Nonnull
+  public ItemStack slotClick(int slotId, int dragType, @Nonnull ClickType clickTypeIn, @Nonnull EntityPlayer playerIn) {
+    if (slotId == 27 + playerIn.inventory.currentItem) {
+      return ItemStack.EMPTY;
+    }
+    return super.slotClick(slotId, dragType, clickTypeIn, playerIn);
+  }
+
+  @Override
   public IMessage doCloseFilterGui() {
     TileEntity te = getTileEntity();
     if (te != null) {
@@ -76,6 +87,14 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
       player.closeScreen();
     }
     return null;
+  }
+
+  @Override
+  public void onContainerClosed(@Nonnull EntityPlayer playerIn) {
+    super.onContainerClosed(playerIn);
+    if (getTileEntity() == null) {
+      player.resetActiveHand();
+    }
   }
 
 }

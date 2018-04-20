@@ -9,10 +9,8 @@ import com.enderio.core.client.gui.button.TooltipButton;
 
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.PowerItemFilter;
-import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -31,8 +29,8 @@ public class PowerItemFilterGui extends AbstractFilterGui {
 
   private final @Nonnull PowerItemFilter filter;
 
-  public PowerItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, IItemFilter filterIn) {
-    super(playerInv, filterContainer, te);
+  public PowerItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull IItemFilter filterIn) {
+    super(playerInv, filterContainer, te, filterIn);
 
     filter = (PowerItemFilter) filterIn;
 
@@ -103,12 +101,6 @@ public class PowerItemFilterGui extends AbstractFilterGui {
       filter.setLevel((filter.getLevel() + 1) % (PowerItemFilter.MAX_LEVEL + 1));
       sendFilterChange();
     }
-  }
-
-  private void sendFilterChange() {
-    updateButtons();
-    PacketHandler.INSTANCE
-        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.getFilterIndex(), filterContainer.getParam1()));
   }
 
   @Override

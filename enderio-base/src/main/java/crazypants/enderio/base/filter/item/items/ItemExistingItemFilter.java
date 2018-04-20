@@ -18,6 +18,7 @@ import crazypants.enderio.base.filter.gui.ExistingItemFilterGui;
 import crazypants.enderio.base.filter.item.ExistingItemFilter;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.client.gui.GuiScreen;
@@ -27,6 +28,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -75,10 +77,23 @@ public class ItemExistingItemFilter extends Item implements IItemFilterItemUpgra
             true);
         FilterRegistry.writeFilterToStack(filter, heldItem);
         return EnumActionResult.SUCCESS;
+      } else {
+        ModObject.itemExistingItemFilter.openGui(world, player.getPosition(), player, null, hand.ordinal());
+        return EnumActionResult.SUCCESS;
       }
     }
 
     return EnumActionResult.PASS;
+  }
+
+  @Override
+  @Nonnull
+  public ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, @Nonnull EntityPlayer playerIn, @Nonnull EnumHand handIn) {
+    if (!worldIn.isRemote && playerIn.isSneaking()) {
+      ModObject.itemExistingItemFilter.openGui(worldIn, playerIn.getPosition(), playerIn, null, handIn.ordinal());
+      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+    }
+    return super.onItemRightClick(worldIn, playerIn, handIn);
   }
 
   @Override
@@ -106,8 +121,10 @@ public class ItemExistingItemFilter extends Item implements IItemFilterItemUpgra
     if (container != null && container instanceof IFilterContainer) {
       return new ExistingItemFilterGui(player.inventory, new ContainerFilter(player, (TileEntityBase) world.getTileEntity(pos), facing, param1),
           world.getTileEntity(pos), ((IFilterContainer<IItemFilter>) container).getFilter(param1));
+    } else {
+      return new ExistingItemFilterGui(player.inventory, new ContainerFilter(player, null, facing, param1), null,
+          FilterRegistry.getFilterForUpgrade(player.getHeldItem(EnumHand.values()[param1])));
     }
-    return null;
   }
 
 }

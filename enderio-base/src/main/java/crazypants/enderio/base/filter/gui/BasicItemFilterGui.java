@@ -13,11 +13,9 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ItemFilter;
-import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.integration.jei.GhostSlotTarget;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -40,18 +38,18 @@ public class BasicItemFilterGui extends AbstractFilterGui {
 
   final boolean isAdvanced, isLimited, isBig;
 
-  private final ItemFilter filter;
+  private final @Nonnull ItemFilter filter;
 
   private int xOffset;
   private int yOffset;
 
-  public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, IItemFilter filter) {
+  public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull IItemFilter filter) {
     this(playerInv, filterContainer, 13, 34, te, filter);
   }
 
   public BasicItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, int xOffset, int yOffset, TileEntity te,
-      IItemFilter filterIn) {
-    super(playerInv, filterContainer, te, "basic_item_filter", "advanced_item_filter", "big_item_filter");
+      @Nonnull IItemFilter filterIn) {
+    super(playerInv, filterContainer, te, filterIn, "basic_item_filter", "advanced_item_filter", "big_item_filter");
     this.xOffset = xOffset;
     this.yOffset = yOffset;
 
@@ -180,12 +178,6 @@ public class BasicItemFilterGui extends AbstractFilterGui {
       filter.setBlacklist(!filter.isBlacklist());
       sendFilterChange();
     }
-  }
-
-  public void sendFilterChange() {
-    updateButtons();
-    PacketHandler.INSTANCE
-        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.getFilterIndex(), filterContainer.getParam1()));
   }
 
   @Override

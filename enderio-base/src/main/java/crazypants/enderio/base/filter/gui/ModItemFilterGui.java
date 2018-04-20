@@ -12,10 +12,8 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ModItemFilter;
-import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -27,7 +25,7 @@ public class ModItemFilterGui extends AbstractFilterGui {
 
   private static final int MOD_NAME_COLOR = ColorUtil.getRGB(Color.white);
 
-  private final ModItemFilter filter;
+  private final @Nonnull ModItemFilter filter;
 
   private final Rectangle[] inputBounds;
 
@@ -42,8 +40,8 @@ public class ModItemFilterGui extends AbstractFilterGui {
   private final @Nonnull GuiToolTip stackInsertTooltip2;
   private final @Nonnull GuiToolTip stackInsertTooltip3;
 
-  public ModItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, IItemFilter filterIn) {
-    super(playerInv, filterContainer, te, "mod_item_filter");
+  public ModItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull IItemFilter filterIn) {
+    super(playerInv, filterContainer, te, filterIn, "mod_item_filter");
 
     filter = (ModItemFilter) filterIn;
     inputOffsetX = getGuiLeft() + 20;
@@ -141,12 +139,6 @@ public class ModItemFilterGui extends AbstractFilterGui {
   private void setMod(int i, @Nonnull ItemStack st) {
     filter.setMod(i, st);
     sendFilterChange();
-  }
-
-  private void sendFilterChange() {
-    updateButtons();
-    PacketHandler.INSTANCE
-        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.getFilterIndex(), filterContainer.getParam1()));
   }
 
   @Override

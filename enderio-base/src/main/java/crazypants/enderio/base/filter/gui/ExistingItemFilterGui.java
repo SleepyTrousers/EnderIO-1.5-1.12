@@ -17,7 +17,6 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.base.filter.item.ExistingItemFilter;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.network.PacketExistingItemFilterSnapshot;
-import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
@@ -58,7 +57,7 @@ public class ExistingItemFilterGui extends AbstractFilterGui {
   private @Nonnull ExistingItemFilter filter;
 
   public ExistingItemFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull IItemFilter filterIn) {
-    super(playerInv, filterContainer, te);
+    super(playerInv, filterContainer, te, filterIn);
 
     filter = (ExistingItemFilter) filterIn;
 
@@ -205,14 +204,11 @@ public class ExistingItemFilterGui extends AbstractFilterGui {
   }
 
   private void sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode opcode) {
-    PacketHandler.INSTANCE.sendToServer(
-        new PacketExistingItemFilterSnapshot(filterContainer.getTileEntity(), filter, filterContainer.getFilterIndex(), filterContainer.getParam1(), opcode));
-  }
-
-  private void sendFilterChange() {
-    updateButtons();
-    PacketHandler.INSTANCE
-        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.getFilterIndex(), filterContainer.getParam1()));
+    TileEntity te = filterContainer.getTileEntity();
+    if (te != null) {
+      PacketHandler.INSTANCE
+          .sendToServer(new PacketExistingItemFilterSnapshot(te, filter, filterContainer.getFilterIndex(), filterContainer.getParam1(), opcode));
+    }
   }
 
   class SnapshotOverlay implements IGuiOverlay {

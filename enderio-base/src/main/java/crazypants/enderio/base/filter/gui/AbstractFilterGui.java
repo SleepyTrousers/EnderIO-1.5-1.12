@@ -8,10 +8,14 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.render.ColorUtil;
 
+import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.network.ICloseFilterRemoteExec;
+import crazypants.enderio.base.filter.network.PacketFilterUpdate;
+import crazypants.enderio.base.filter.network.PacketHeldFilterUpdate;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -27,16 +31,20 @@ public abstract class AbstractFilterGui extends GuiContainerBaseEIO implements I
   protected final boolean isStickyModeAvailable;
 
   private final IconButton closeWindowButton;
+  private final @Nonnull IFilter filter;
 
-  public AbstractFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te) {
-    this(playerInv, filterContainer, te, "item_filter");
+  public AbstractFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull IFilter filter) {
+    this(playerInv, filterContainer, te, filter, "item_filter");
   }
 
-  protected AbstractFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull String... texture) {
+  protected AbstractFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull IFilter filter,
+      @Nonnull String... texture) {
     super(filterContainer, texture);
     this.filterContainer = filterContainer;
     xSize = 189;
     ySize = 207;
+
+    this.filter = filter;
 
     isStickyModeAvailable = (filterContainer.getFilterIndex() == FilterGuiUtil.INDEX_OUTPUT_ITEM);
 
@@ -84,5 +92,20 @@ public abstract class AbstractFilterGui extends GuiContainerBaseEIO implements I
 
   @Nonnull
   protected abstract String getUnlocalisedNameForHeading();
+
+  public void sendFilterChange() {
+    updateButtons();
+    TileEntity te = filterContainer.getTileEntity();
+    if (te != null) {
+      PacketHandler.INSTANCE.sendToServer(new PacketFilterUpdate(te, getFilter(), filterContainer.getFilterIndex(), filterContainer.getParam1()));
+    } else {
+      PacketHandler.INSTANCE.sendToServer(new PacketHeldFilterUpdate(getFilter(), filterContainer.getFilterIndex()));
+    }
+  }
+
+  @Nonnull
+  private IFilter getFilter() {
+    return filter;
+  }
 
 }

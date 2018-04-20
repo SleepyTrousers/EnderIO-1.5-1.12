@@ -16,6 +16,7 @@ import crazypants.enderio.base.filter.gui.ContainerFilter;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.integration.forestry.init.ForestryIntegrationObject;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
@@ -23,7 +24,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -54,6 +57,17 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterItemUpgrad
   }
 
   @Override
+  @Nonnull
+  public EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
+      @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
+    if (!world.isRemote && player.isSneaking()) {
+      ForestryIntegrationObject.itemSpeciesItemFilter.openGui(world, player.getPosition(), player, null, hand.ordinal());
+      return EnumActionResult.SUCCESS;
+    }
+    return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
+  }
+
+  @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
@@ -78,8 +92,10 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterItemUpgrad
     if (container != null && container instanceof IFilterContainer) {
       return new SpeciesItemFilterGui(player.inventory, new ContainerFilter(player, (TileEntityBase) world.getTileEntity(pos), facing, param1),
           world.getTileEntity(pos), ((IFilterContainer<IItemFilter>) container).getFilter(param1));
+    } else {
+      return new SpeciesItemFilterGui(player.inventory, new ContainerFilter(player, null, facing, param1), null,
+          FilterRegistry.getFilterForUpgrade(player.getHeldItem(EnumHand.values()[param1])));
     }
-    return null;
   }
 
 }

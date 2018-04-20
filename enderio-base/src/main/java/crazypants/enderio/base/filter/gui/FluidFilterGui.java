@@ -9,10 +9,8 @@ import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.filter.fluid.FluidFilter;
 import crazypants.enderio.base.filter.fluid.IFluidFilter;
-import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -28,13 +26,13 @@ public class FluidFilterGui extends AbstractFilterGui {
 
   private final IconButton whiteListB;
 
-  private final FluidFilter filter;
+  private final @Nonnull FluidFilter filter;
 
   private int xOffset;
   private int yOffset;
 
-  public FluidFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, IFluidFilter filterIn) {
-    super(playerInv, filterContainer, te, "basic_item_filter");
+  public FluidFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull IFluidFilter filterIn) {
+    super(playerInv, filterContainer, te, filterIn, "basic_item_filter");
 
     xOffset = 13;
     yOffset = 34;
@@ -87,12 +85,6 @@ public class FluidFilterGui extends AbstractFilterGui {
     }
   }
 
-  public void sendFilterChange() {
-    updateButtons();
-    PacketHandler.INSTANCE
-        .sendToServer(new PacketFilterUpdate(filterContainer.getTileEntity(), filter, filterContainer.getFilterIndex(), filterContainer.getParam1()));
-  }
-
   @Override
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
     int x = getGuiLeft() + xOffset;
@@ -100,7 +92,7 @@ public class FluidFilterGui extends AbstractFilterGui {
     GlStateManager.color(1, 1, 1);
     bindGuiTexture();
 
-    if (filter != null && !filter.isEmpty()) {
+    if (!filter.isEmpty()) {
       for (int i = 0; i < filter.size(); i++) {
         FluidStack f = filter.getFluidStackAt(i);
         if (f != null) {
