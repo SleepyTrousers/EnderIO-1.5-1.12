@@ -477,7 +477,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Alloy: Brown Dye, Variant" required="true">
     <alloying energy="1500" exp="0.125">
       <input name="itemPlantbrown" amount="6"/>
-      <input name="minecraft:mushroom_stew"/>
+      <input name="oredict:egg"/>
       <output name="ORGANIC_BROWN_DYE"/>
     </alloying>
   </recipe>
@@ -494,7 +494,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Alloy: Brown Dye, Oredict Variant" required="true">
     <alloying energy="1500" exp="0.125">
       <input name="dyeBrown"/>
-      <input name="minecraft:mushroom_stew"/>
+      <input name="oredict:egg"/>
       <input name="dustCoal"/>
       <output name="ORGANIC_BROWN_DYE"/>
     </alloying>

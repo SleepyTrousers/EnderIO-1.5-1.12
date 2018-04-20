@@ -287,9 +287,9 @@
   <recipe name="Sagmill: Dead Bush" required="true">
     <sagmilling energy="1200">
       <input name="minecraft:deadbush"/>
-      <output name="itemPlantbrown" chance="0.2" />
+      <output name="itemPlantbrown" chance="0.6" />
+      <output name="itemPlantbrown" chance="0.3" />
       <output name="itemPlantbrown" chance="0.1" />
-      <output name="itemPlantbrown" chance="0.05" />
     </sagmilling>
   </recipe>
 
