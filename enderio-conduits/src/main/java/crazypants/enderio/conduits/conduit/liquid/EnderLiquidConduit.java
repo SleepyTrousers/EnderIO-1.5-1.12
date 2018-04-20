@@ -28,6 +28,8 @@ import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
+import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
+import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.util.Prep;
@@ -49,7 +51,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.conduits.init.ConduitObject.item_liquid_conduit;
 
-public class EnderLiquidConduit extends AbstractLiquidConduit implements IConduitComponent, IFilterHolder<IFluidFilter> {
+public class EnderLiquidConduit extends AbstractLiquidConduit implements IConduitComponent, IFilterHolder<IFluidFilter>, IUpgradeHolder {
 
   public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_ender");
   public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core_ender");
@@ -77,12 +79,15 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   protected final EnumMap<EnumFacing, Boolean> selfFeed = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
 
+  protected final EnumMap<EnumFacing, ItemStack> functionUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
+
   public EnderLiquidConduit() {
     super();
     for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
       EnumFacing dir = itr.next();
       outputFilterUpgrades.put(dir, ItemStack.EMPTY);
       inputFilterUpgrades.put(dir, ItemStack.EMPTY);
+      functionUpgrades.put(dir, ItemStack.EMPTY);
     }
   }
 
@@ -90,6 +95,21 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Nonnull
   public ItemStack createItem() {
     return new ItemStack(item_liquid_conduit.getItemNN(), 1, 2);
+  }
+
+  @Override
+  public @Nonnull NNList<ItemStack> getDrops() {
+    NNList<ItemStack> res = super.getDrops();
+    for (ItemStack stack : functionUpgrades.values()) {
+      res.add(stack);
+    }
+    for (ItemStack stack : inputFilterUpgrades.values()) {
+      res.add(stack);
+    }
+    for (ItemStack stack : outputFilterUpgrades.values()) {
+      res.add(stack);
+    }
+    return res;
   }
 
   @Override
@@ -489,6 +509,15 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
         nbtRoot.setBoolean("selfFeed." + entry.getKey().name(), entry.getValue());
       }
     }
+
+    for (Entry<EnumFacing, ItemStack> entry : functionUpgrades.entrySet()) {
+      if (entry.getValue() != null) {
+        ItemStack up = entry.getValue();
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        up.writeToNBT(itemRoot);
+        nbtRoot.setTag("functionUpgrades." + entry.getKey().name(), itemRoot);
+      }
+    }
   }
 
   @Override
@@ -556,6 +585,14 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
         boolean val = nbtRoot.getBoolean(key);
         selfFeed.put(dir, val);
       }
+
+      key = "functionUpgrades." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemStack ups = new ItemStack(upTag);
+        functionUpgrades.put(dir, ups);
+      }
+
     }
 
     connectionsDirty = true;
@@ -569,7 +606,8 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY && containsExternalConnection(facing)) {
+    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY
+        || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY && containsExternalConnection(facing)) {
       return true;
     }
     return super.hasCapability(capability, facing);
@@ -720,13 +758,34 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     }
   }
 
+  @Nonnull
+  public ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir) {
+    return functionUpgrades.get(dir);
+  }
+
+  public void setFunctionUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade) {
+    functionUpgrades.put(dir, upgrade);
+    setClientStateDirty();
+  }
+
+  @Override
+  @Nonnull
+  public ItemStack getUpgradeStack(int param1) {
+    return this.getFunctionUpgrade(EnumFacing.getFront(param1));
+  }
+
+  @Override
+  public void setUpgradeStack(int param1, @Nonnull ItemStack stack) {
+    this.setFunctionUpgrade(EnumFacing.getFront(param1), stack);
+  }
+
   @SuppressWarnings("unchecked")
   @Nullable
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) new ConnectionEnderLiquidSide(facing);
-    } else if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
+    } else if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
       return (T) this;
     }
     return null;

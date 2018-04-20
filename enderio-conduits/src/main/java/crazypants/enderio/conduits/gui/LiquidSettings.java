@@ -114,7 +114,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   @Override
   @Nonnull
   public ResourceLocation getTexture() {
-    return isEnder ? EnderIO.proxy.getGuiTexture("ender_liquid_settings") : super.getTexture();
+    return isEnder ? EnderIO.proxy.getGuiTexture("item_settings") : super.getTexture();
   }
 
   @Override
@@ -160,7 +160,8 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   @Override
   protected void initCustomOptions() {
-    gui.getContainer().setInOutSlotsVisible(true, false, conduit);
+    gui.getContainer().setInOutSlotsVisible(true, true, conduit);
+    gui.getContainer().createGhostSlots(gui.getGhostSlotHandler().getGhostSlots());
     updateGuiVisibility();
   }
 

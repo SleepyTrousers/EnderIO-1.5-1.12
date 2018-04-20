@@ -557,7 +557,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public int getRedstoneSignalForColor(@Nonnull DyeColor col) {
-    return network.getSignalStrengthForColor(col);
+    if (network != null) {
+      return network.getSignalStrengthForColor(col);
+    }
+    return 0;
   }
 
   @Override

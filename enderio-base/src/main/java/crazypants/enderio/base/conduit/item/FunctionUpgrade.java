@@ -24,6 +24,7 @@ public enum FunctionUpgrade {
   };
 
   public static final int BASE_MAX_EXTRACTED = 4;
+  public static final int LIQUID_MAX_EXTRACTED_SCALER = 2;
 
   public final @Nonnull String baseName;
   public final @Nonnull String iconName;

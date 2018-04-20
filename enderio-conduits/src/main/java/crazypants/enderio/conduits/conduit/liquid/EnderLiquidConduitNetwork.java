@@ -11,9 +11,12 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.fluid.IFluidWrapper.ITankInfoWrapper;
 import com.enderio.core.common.util.RoundRobinIterator;
 
+import crazypants.enderio.base.conduit.item.FunctionUpgrade;
+import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.config.ConduitConfig;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
@@ -70,8 +73,9 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     if (drained == null || drained.amount <= 0 || !matchedFilter(drained, con, conDir, true)) {
       return false;
     }
+
     drained = drained.copy();
-    drained.amount = Math.min(drained.amount, ConduitConfig.fluid_tier3_extractRate.get());
+    drained.amount = Math.min(drained.amount, ConduitConfig.fluid_tier3_extractRate.get() * getExtractSpeedMultiplier(tank) / 2);
     int amountAccepted = fillFrom(tank, drained.copy(), true);
     if (amountAccepted <= 0) {
       return false;
@@ -110,8 +114,9 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       if (resource == null || !matchedFilter(resource, tank.con, tank.conDir, true)) {
         return 0;
       }
+
       resource = resource.copy();
-      resource.amount = Math.min(resource.amount, ConduitConfig.fluid_tier3_maxIO.get());
+      resource.amount = Math.min(resource.amount, ConduitConfig.fluid_tier3_maxIO.get() * getExtractSpeedMultiplier(tank) / 2);
       int filled = 0;
       int remaining = resource.amount;
       // TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
@@ -136,6 +141,22 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       }
       filling = false;
     }
+  }
+
+  private int getExtractSpeedMultiplier(NetworkTank tank) {
+    int extractSpeedMultiplier = 2;
+
+    ItemStack upgradeStack = tank.con.getFunctionUpgrade(tank.conDir);
+    if (!upgradeStack.isEmpty()) {
+      FunctionUpgrade upgrade = ItemFunctionUpgrade.getFunctionUpgrade(upgradeStack);
+      if (upgrade == FunctionUpgrade.EXTRACT_SPEED_UPGRADE) {
+        extractSpeedMultiplier += FunctionUpgrade.LIQUID_MAX_EXTRACTED_SCALER * Math.min(upgrade.maxStackSize, upgradeStack.getCount());
+      } else if (upgrade == FunctionUpgrade.EXTRACT_SPEED_DOWNGRADE) {
+        extractSpeedMultiplier = 1;
+      }
+    }
+
+    return extractSpeedMultiplier;
   }
 
   private boolean matchedFilter(FluidStack drained, @Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir, boolean isInput) {
