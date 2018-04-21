@@ -26,6 +26,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -74,13 +75,12 @@ public class ItemPowerItemFilter extends Item implements IItemFilterItemUpgrade,
 
   @Override
   @Nonnull
-  public EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
-      @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
+  public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     if (!world.isRemote && player.isSneaking()) {
       ModObject.itemPowerItemFilter.openGui(world, player.getPosition(), player, null, hand.ordinal());
-      return EnumActionResult.SUCCESS;
+      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
-    return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
+    return super.onItemRightClick(world, player, hand);
   }
 
   @Override

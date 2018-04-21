@@ -77,9 +77,6 @@ public class ItemExistingItemFilter extends Item implements IItemFilterItemUpgra
             true);
         FilterRegistry.writeFilterToStack(filter, heldItem);
         return EnumActionResult.SUCCESS;
-      } else {
-        ModObject.itemExistingItemFilter.openGui(world, player.getPosition(), player, null, hand.ordinal());
-        return EnumActionResult.SUCCESS;
       }
     }
 
