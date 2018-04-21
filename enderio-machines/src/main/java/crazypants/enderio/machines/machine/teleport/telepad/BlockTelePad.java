@@ -10,10 +10,10 @@ import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.machines.lang.Lang;
-import crazypants.enderio.machines.machine.teleport.ContainerTravelAccessable;
 import crazypants.enderio.machines.machine.teleport.ContainerTravelAuth;
 import crazypants.enderio.machines.machine.teleport.GuiTravelAuth;
 import crazypants.enderio.machines.machine.teleport.anchor.BlockTravelAnchor;
+import crazypants.enderio.machines.machine.teleport.telepad.gui.ContainerAugmentedTravelAccessable;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.ContainerTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.GuiAugmentedTravelAccessible;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.GuiTelePad;
@@ -148,7 +148,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
     if (GUI_ID_TELEPAD == ID) {
       return new ContainerTelePad(player.inventory, te);
     } else if (GUI_ID_TELEPAD_TRAVEL == ID) {
-      return new ContainerTravelAccessable(player.inventory, te, world);
+      return new ContainerAugmentedTravelAccessable(player.inventory, te, world, 6);
     } else {
       return new ContainerTravelAuth(player.inventory);
     }

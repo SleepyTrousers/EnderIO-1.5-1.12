@@ -4,8 +4,6 @@ import java.awt.Color;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
@@ -13,6 +11,7 @@ import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
@@ -68,7 +67,7 @@ public class GuiTravelAuth extends GuiContainerBaseEIO {
 
   @Override
   public void drawGuiContainerBackgroundLayer(float f, int mx, int my) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;

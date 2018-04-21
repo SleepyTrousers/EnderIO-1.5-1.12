@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.CheckBox;
-import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
@@ -31,13 +30,12 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   private static final int ID_PUBLIC = 0;
   private static final int ID_PRIVATE = 1;
   private static final int ID_PROTECTED = 2;
-  protected static final int ID_CLOSE_WINDOW_BUTTON = 99;
 
   private final @Nonnull CheckBox publicCB;
   private final @Nonnull CheckBox privateCB;
   private final @Nonnull CheckBox protectedCB;
   private final @Nonnull ToggleButton visibleCB;
-  
+
   private final @Nonnull TextFieldEnder tf;
 
   private final @Nonnull String publicStr;
@@ -51,10 +49,8 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
 
   protected final @Nonnull World world;
 
-  private final IconButton closeWindowButton;
-
-  public GuiTravelAccessable(@Nonnull InventoryPlayer playerInv, @Nonnull T te, @Nonnull World world) {
-    this(te, new ContainerTravelAccessable(playerInv, te, world));
+  public GuiTravelAccessable(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerTravelAccessable container, @Nonnull T te, @Nonnull World world) {
+    this(te, container);
   }
 
   public GuiTravelAccessable(@Nonnull T te, @Nonnull ContainerTravelAccessable container) {
@@ -62,11 +58,10 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     this.te = te;
     this.world = container.world;
 
-    xSize = 184;
-    ySize = 200;
+    ySize = 185;
 
     final int visibleBX = guiLeft + (xSize - 26);
-    final int visibleBY = 16;
+    final int visibleBY = 10 + getGuiOffset();
 
     publicStr = Lang.GUI_AUTH_PUBLIC.get();
     privateStr = Lang.GUI_AUTH_PRIVATE.get();
@@ -74,15 +69,15 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    tf = new TextFieldEnder(fr, 34, 16, 90, 16);
+    tf = new TextFieldEnder(fr, 28 + getGuiOffset(), 10 + getGuiOffset(), 90, 16);
 
-    col1x = 88;
+    col1x = 82 + getGuiOffset();
     col0x = (col1x - fr.getStringWidth(protectedStr) / 2) / 2;
     int tmp = (col1x + fr.getStringWidth(protectedStr) / 2);
     col2x = tmp + (176 - tmp) / 2;
 
     int x = 0;
-    int y = 50;
+    int y = 44 + getGuiOffset();
 
     x = col0x - 8;
     privateCB = new CheckBox(this, ID_PRIVATE, x, y);
@@ -100,17 +95,12 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     visibleCB.setSelected(te.isVisible());
     visibleCB.setToolTip(Lang.GUI_AUTH_VISIBLE.getLines().toArray(new String[0]));
 
-    closeWindowButton = new IconButton(this, ID_CLOSE_WINDOW_BUTTON, 3, 3, IconEIO.ARROW_LEFT);
-    closeWindowButton.setToolTip(Lang.GUI_TELEPAD_TRAVEL_SETTINGS_CLOSE.get(), Lang.GUI_TELEPAD_TRAVEL_SETTINGS_CLOSE_2.get());
-
     textFields.add(tf);
   }
 
   @Override
   protected void actionPerformed(@Nonnull GuiButton b) {
-    if (b.id == ID_CLOSE_WINDOW_BUTTON) {
-      doCloseGui();
-    } else if (b.id >= 0) {
+    if (b.id >= 0) {
       privateCB.setSelected(b.id == ID_PRIVATE);
       protectedCB.setSelected(b.id == ID_PROTECTED);
       publicCB.setSelected(b.id == ID_PUBLIC);
@@ -136,7 +126,6 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     privateCB.onGuiInit();
     protectedCB.onGuiInit();
     visibleCB.onGuiInit();
-    closeWindowButton.onGuiInit();
 
     tf.setMaxStringLength(32);
     tf.setFocused(true);
@@ -170,7 +159,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
 
     int col = ColorUtil.getRGB(Color.white);
     int x = sx;
-    int y = sy + 38;
+    int y = sy + 32 + getGuiOffset();
 
     FontRenderer fr = getFontRenderer();
     x = sx + col0x - fr.getStringWidth(privateStr) / 2;
@@ -227,7 +216,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
       GlStateManager.disableDepth();
 
       // Draw the cover for the ghost slots
-      drawTexturedModalRect(48, 78, 9, 25, 90, 18);
+      drawTexturedModalRect(42 + getGuiOffset(), 72 + getGuiOffset(), 9, 25, 90, 18);
       GlStateManager.disableBlend();
       GlStateManager.enableDepth();
       GlStateManager.color(1, 1, 1, 1);
@@ -237,6 +226,10 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   @Override
   public void drawScreen(int par1, int par2, float par3) {
     super.drawScreen(par1, par2, par3);
+  }
+
+  protected int getGuiOffset() {
+    return 0;
   }
 
 }

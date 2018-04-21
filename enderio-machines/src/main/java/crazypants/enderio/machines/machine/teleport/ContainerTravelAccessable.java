@@ -29,12 +29,14 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
   final TileEntity te;
   final @Nonnull World world;
   final @Nonnull EntityPlayer player;
+  final int offset;
 
-  public ContainerTravelAccessable(@Nonnull InventoryPlayer playerInv, final @Nonnull ITravelAccessable travelAccessable, @Nonnull World world) {
+  public ContainerTravelAccessable(@Nonnull InventoryPlayer playerInv, final @Nonnull ITravelAccessable travelAccessable, @Nonnull World world, int guiOffset) {
     super(playerInv, playerInv);
     ta = travelAccessable;
     this.world = world;
     this.player = playerInv.player;
+    this.offset = guiOffset;
     if (ta instanceof TileEntity) {
       te = ((TileEntity) ta);
     } else {
@@ -47,21 +49,21 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
   }
 
   public void addGhostSlots(List<GhostSlot> ghostSlots) {
-    int x = 50;
-    int y = 79;
+    int x = 44 + offset;
+    int y = 73 + offset;
     for (int i = 0; i < 5; i++) {
       ghostSlots.add(new CtaGhostSlot(ta, i, x, y, true));
       x += 18;
     }
 
-    x = 131;
-    y = 16;
+    x = 125 + offset;
+    y = 10 + offset;
     ghostSlots.add(new CtaGhostSlot(ta, 0, x, y, false));
   }
 
   @Override
   public @Nonnull Point getPlayerInventoryOffset() {
-    return new Point(14, 109);
+    return new Point(8, 103);
   }
 
   @Override

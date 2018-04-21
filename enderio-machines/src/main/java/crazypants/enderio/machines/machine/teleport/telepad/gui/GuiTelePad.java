@@ -7,8 +7,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
@@ -32,6 +30,7 @@ import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -72,10 +71,10 @@ public class GuiTelePad extends GuiContainerBaseEIO {
 
     int settingsBX = guiLeft + xSize - (7 + 16);
     int settingsBY = guiTop + 10;
-    
+
     travelSettingsButton = new IconButton(this, ID_TRAVEL_SETTINGS_BUTTON, settingsBX, settingsBY, IconEIO.GEAR_LIGHT);
     travelSettingsButton.setToolTip(Lang.GUI_TELEPAD_TO_TRAVEL.get());
-    
+
     addToolTip(new GuiToolTip(new Rectangle(progressX, progressY, progressScale, 10), "") {
       @Override
       protected void updateText() {
@@ -149,13 +148,11 @@ public class GuiTelePad extends GuiContainerBaseEIO {
     int x = guiLeft + (xSize / 2) - (textWidth / 2);
     int y = guiTop + 83;
 
-    
-    
     teleportButton = new GuiButton(ID_TELEPORT_BUTTON, x, y, textWidth, 20, text);
     addButton(teleportButton);
 
     travelSettingsButton.onGuiInit();
-    
+
     ((ContainerTelePad) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
 
@@ -203,7 +200,7 @@ public class GuiTelePad extends GuiContainerBaseEIO {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
@@ -254,13 +251,10 @@ public class GuiTelePad extends GuiContainerBaseEIO {
   @Override
   protected void actionPerformed(@Nonnull GuiButton button) throws IOException {
     super.actionPerformed(button);
-
     if (button.id == ID_TELEPORT_BUTTON) {
       te.teleportAll();
-    }else if (button.id == ID_TRAVEL_SETTINGS_BUTTON) {
-    	
-    	PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, BlockTelePad.GUI_ID_TELEPAD_TRAVEL));
-    	
+    } else if (button.id == ID_TRAVEL_SETTINGS_BUTTON) {
+      PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, BlockTelePad.GUI_ID_TELEPAD_TRAVEL));
     }
   }
 }

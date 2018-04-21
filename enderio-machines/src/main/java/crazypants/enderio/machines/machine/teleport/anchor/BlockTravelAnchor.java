@@ -108,7 +108,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends AbstractMachi
   public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int ID,
       @Nonnull T te) {
     if (GUI_ID_TRAVEL_ACCESSABLE == ID) {
-      return new ContainerTravelAccessable(player.inventory, te, world);
+      return new ContainerTravelAccessable(player.inventory, te, world, 0);
     } else {
       return new ContainerTravelAuth(player.inventory);
     }
@@ -119,7 +119,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends AbstractMachi
   public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int ID,
       @Nonnull T te) {
     if (GUI_ID_TRAVEL_ACCESSABLE == ID) {
-      return new GuiTravelAccessable<T>(player.inventory, te, world);
+      return new GuiTravelAccessable<T>(player.inventory, new ContainerTravelAccessable(player.inventory, te, world, ID), te, world);
     } else {
       return new GuiTravelAuth(player, te, world);
     }
