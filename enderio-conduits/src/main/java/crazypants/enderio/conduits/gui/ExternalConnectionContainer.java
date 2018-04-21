@@ -80,12 +80,23 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   @Override
   public void createGhostSlots(@Nonnull NNList<GhostSlot> ghostSlots) {
-    ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotOutputFilter));
-    ghostSlots.add(new GhostBackgroundItemSlot(ModObject.itemBasicItemFilter.getItemNN(), slotInputFilter));
-
-    NNList<ItemStack> ghostSlotIcons = new NNList<>(new ItemStack(ConduitObject.item_extract_speed_upgrade.getItemNN()),
+    NNList<ItemStack> filtersAll = new NNList<>(new ItemStack(ModObject.itemBasicItemFilter.getItemNN()));
+    NNList<ItemStack> upgrades = new NNList<>(new ItemStack(ConduitObject.item_extract_speed_upgrade.getItemNN()),
         new ItemStack(ConduitObject.item_extract_speed_downgrade.getItemNN()));
-    ghostSlots.add(new GhostBackgroundItemSlot(ghostSlotIcons, slotFunctionUpgrade));
+    createGhostSlots(ghostSlots, filtersAll, filtersAll, upgrades);
+  }
+
+  @Override
+  public void createGhostSlots(@Nonnull NNList<GhostSlot> ghostSlots, @Nonnull NNList<ItemStack> filters, @Nonnull NNList<ItemStack> upgrades) {
+    createGhostSlots(ghostSlots, filters, filters, upgrades);
+  }
+
+  @Override
+  public void createGhostSlots(@Nonnull NNList<GhostSlot> ghostSlots, @Nonnull NNList<ItemStack> filtersIn, @Nonnull NNList<ItemStack> filtersOut,
+      @Nonnull NNList<ItemStack> upgrades) {
+    ghostSlots.add(new GhostBackgroundItemSlot(filtersIn, slotInputFilter));
+    ghostSlots.add(new GhostBackgroundItemSlot(filtersOut, slotOutputFilter));
+    ghostSlots.add(new GhostBackgroundItemSlot(upgrades, slotFunctionUpgrade));
   }
 
   @Override

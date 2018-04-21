@@ -10,6 +10,7 @@ import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
@@ -18,6 +19,7 @@ import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduits.conduit.liquid.EnderLiquidConduit;
@@ -29,6 +31,7 @@ import crazypants.enderio.conduits.network.PacketExtractMode;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class LiquidSettings extends BaseSettingsPanel {
@@ -163,8 +166,15 @@ public class LiquidSettings extends BaseSettingsPanel {
   @Override
   protected void initCustomOptions() {
     gui.getContainer().setInOutSlotsVisible(true, true, conduit);
-    gui.getContainer().createGhostSlots(gui.getGhostSlotHandler().getGhostSlots());
+    createGhostSlots();
     updateGuiVisibility();
+  }
+
+  private void createGhostSlots() {
+    NNList<ItemStack> filtersAll = new NNList<>(new ItemStack(ModObject.itemFluidFilter.getItemNN()));
+    NNList<ItemStack> upgrades = new NNList<>(new ItemStack(ConduitObject.item_extract_speed_upgrade.getItemNN()),
+        new ItemStack(ConduitObject.item_extract_speed_downgrade.getItemNN()));
+    gui.getContainer().createGhostSlots(gui.getGhostSlotHandler().getGhostSlots(), filtersAll, upgrades);
   }
 
   private void updateGuiVisibility() {
