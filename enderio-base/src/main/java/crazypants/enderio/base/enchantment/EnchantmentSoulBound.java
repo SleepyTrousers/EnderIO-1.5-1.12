@@ -21,7 +21,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
   private static final @Nonnull String NAME = "soulbound";
 
   @SubscribeEvent
-  public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<Enchantment> event) {
+  public static void register(@Nonnull RegistryEvent.Register<Enchantment> event) {
     event.getRegistry().register(new EnchantmentSoulBound());
   }
 
