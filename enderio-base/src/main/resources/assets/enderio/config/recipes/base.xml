@@ -255,7 +255,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Alloy: End Steel" required="true">
-    <alloying energy="10000" exp="0.5">
+    <alloying energy="20000" exp="0.5">
       <input name="oredict:endstone"/>
       <input name="ingotDarkSteel"/>
       <input name="obsidian"/>
