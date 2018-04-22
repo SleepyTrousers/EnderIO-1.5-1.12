@@ -183,8 +183,8 @@ public class TicMaterials {
 
       @Override
       public void stats(@Nonnull Material material) {
-        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(550, 7.00f, 6.00f, HarvestLevels.COBALT), new HandleMaterialStats(0.9f, 150),
-            new ExtraMaterialStats(250), new BowMaterialStats(0.3f, 2.5f, 9f));
+        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(400, 8.25f, 5.00f, HarvestLevels.COBALT), new HandleMaterialStats(0.9f, 50),
+            new ExtraMaterialStats(150), new BowMaterialStats(0.3f, 2.5f, 9f));
       }
     });
 
