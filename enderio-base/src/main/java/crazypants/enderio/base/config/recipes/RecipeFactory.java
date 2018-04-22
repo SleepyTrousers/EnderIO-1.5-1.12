@@ -86,7 +86,7 @@ public class RecipeFactory {
     final File coreFL = new File(configDirectory, fileName);
     copyCore(coreRL, coreFL);
 
-    Log.info("Reading core recipe file " + fileName);
+    Log.debug("Reading core recipe file " + fileName);
     try (InputStream coreFileStream = getResource(coreRL)) {
       try {
         return readStax(target, rootElement, coreFileStream);

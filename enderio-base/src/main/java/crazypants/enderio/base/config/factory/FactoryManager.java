@@ -22,7 +22,7 @@ public class FactoryManager {
   private static final @Nonnull Map<String, IValueFactory> factories = new HashMap<>();
 
   static void read(String mod, String section, final ByteBuf buf) {
-    Log.info("Read " + factories.get(mod + "." + section).read(buf) + " config values from server packet for " + mod + " (" + section + ")");
+    Log.debug("Read " + factories.get(mod + "." + section).read(buf) + " config values from server packet for " + mod + " (" + section + ")");
   }
 
   static void registerFactory(@Nonnull IValueFactory factory) {
@@ -35,7 +35,7 @@ public class FactoryManager {
   public static void onPlayerLoggon(final PlayerLoggedInEvent evt) {
     for (IValueFactory factory : factories.values()) {
       PacketHandler.sendTo(new PacketConfigSyncNew(factory), (EntityPlayerMP) evt.player);
-      Log.info("Sent config to player " + evt.player.getDisplayNameString() + " for " + factory.getModid() + " (" + factory.getSection() + ")");
+      Log.debug("Sent config to player " + evt.player.getDisplayNameString() + " for " + factory.getModid() + " (" + factory.getSection() + ")");
     }
   }
 
@@ -43,7 +43,7 @@ public class FactoryManager {
   public static void onPlayerLogout(final ClientDisconnectionFromServerEvent event) {
     for (IValueFactory factory : factories.values()) {
       factory.endServerOverride();
-      Log.info("Removed server config override for " + factory.getModid() + " (" + factory.getSection() + ")");
+      Log.debug("Removed server config override for " + factory.getModid() + " (" + factory.getSection() + ")");
     }
   }
 

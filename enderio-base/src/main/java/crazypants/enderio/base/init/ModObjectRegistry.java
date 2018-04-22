@@ -57,7 +57,6 @@ public class ModObjectRegistry {
 
   @SubscribeEvent(priority = EventPriority.NORMAL)
   public static void registerBlocks(@Nonnull RegistryEvent.Register<Block> event) {
-    Log.info("ModObjectRegistry:RegistryEvent.Register<Block>");
     for (IModObject elem : objects) {
       if (elem instanceof IModObject.Registerable) {
         IModObject.Registerable mo = (IModObject.Registerable) elem;
@@ -86,7 +85,6 @@ public class ModObjectRegistry {
 
   @SubscribeEvent
   public static void registerItems(@Nonnull RegistryEvent.Register<Item> event) {
-    Log.info("ModObjectRegistry:RegistryEvent.Register<Item>");
     for (IModObject elem : objects) {
       if (elem instanceof IModObject.Registerable) {
         IModObject.Registerable mo = (IModObject.Registerable) elem;

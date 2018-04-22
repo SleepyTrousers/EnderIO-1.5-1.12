@@ -190,8 +190,18 @@ public class RecipeLoader {
         Recipes recipes = RecipeFactory.readStax(new Recipes(), "recipes", is);
         recipes.enforceValidity();
         recipes.register("IMC recipes");
+        return;
+      } catch (InvalidRecipeConfigException e) {
+        recipeError(recipe + " (IMC from other mod)", e.getMessage());
+      } catch (IOException e) {
+        Log.error("IO error while parsing string:");
+        e.printStackTrace();
+        recipeError("IMC from other mod", "IO error while parsing string:" + e.getMessage());
+      } catch (XMLStreamException e) {
+        Log.error("IMC has malformed XML:");
+        e.printStackTrace();
+        recipeError("IMC from other mod", "IMC has malformed XML:" + e.getMessage());
       }
-      throw new InvalidRecipeConfigException("empty XML");
     }
   }
 

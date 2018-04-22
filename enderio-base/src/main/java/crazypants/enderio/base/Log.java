@@ -22,11 +22,7 @@ public final class Log {
   }
 
   public static void info(Object... msg) {
-    if (inDev) {
-      LOGGER.info(join("", msg));
-    } else if (LOGGER.isDebugEnabled()) {
-      LOGGER.debug(join("", msg));
-    }
+    LOGGER.info(join("", msg));
   }
 
   public static void debug(Object... msg) {
