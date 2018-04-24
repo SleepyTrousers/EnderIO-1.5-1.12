@@ -1,9 +1,16 @@
 package crazypants.enderio.machines.integration.jei;
 
+import static crazypants.enderio.machines.init.MachineObject.block_enchanter;
+import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.NUM_RECIPE_SLOT;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
@@ -29,14 +36,13 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import static crazypants.enderio.machines.init.MachineObject.block_enchanter;
-import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.NUM_RECIPE_SLOT;
 
 public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipeCategory.EnchanterRecipeWrapper> {
 
@@ -45,6 +51,8 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
   // ------------ Recipes
 
   public static class EnchanterRecipeWrapper extends BlankRecipeWrapper {
+    
+    private static final @Nonnull ResourceLocation XP_ORB_TEXTURE = new ResourceLocation("textures/entity/experience_orb.png");
 
     private final EnchanterRecipe rec;
 
@@ -67,16 +75,33 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
       final IGuiIngredient<ItemStack> in0 = currentIngredients.get(0);
       final IGuiIngredient<ItemStack> in1 = currentIngredients.get(1);
       final IGuiIngredient<ItemStack> in2 = currentIngredients.get(2);
+      final IGuiIngredient<ItemStack> out = currentIngredients.get(3);
+      int enchLvl = 0;
+      if (out != null) {
+        final ItemStack slot3 = out.getDisplayedIngredient();
+        if (slot3 != null) {
+          Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(slot3);
+          if (enchants.size() == 1) {
+            Entry<Enchantment, Integer> ench = enchants.entrySet().iterator().next();
+            enchLvl = ench.getValue();
+            String name = ench.getKey().getTranslatedName(enchLvl);
+            minecraft.fontRenderer.drawString(name, 147 - minecraft.fontRenderer.getStringWidth(name), 0, 0x8b8b8b);
+          }
+        }
+      }
       if (in0 != null && in1 != null && in2 != null) {
         final ItemStack slot0 = in0.getDisplayedIngredient();
         final ItemStack slot1 = in1.getDisplayedIngredient();
         final ItemStack slot2 = in2.getDisplayedIngredient();
         if (slot0 != null && slot1 != null && slot2 != null) {
           int xpCost = rec.getXPCost(new NNList<>(new MachineRecipeInput(0, slot0), new MachineRecipeInput(1, slot1), new MachineRecipeInput(1, slot2)));
-
           if (xpCost != 0) {
-            String str = Lang.GUI_VANILLA_REPAIR_COST.get(xpCost);
-            minecraft.fontRenderer.drawStringWithShadow(str, 6, 36, 0x80FF20);
+
+            minecraft.getTextureManager().bindTexture(XP_ORB_TEXTURE);
+            GlStateManager.color(0x80 / 255f, 0xFF / 255f, 0x20 / 255f);
+            Gui.drawScaledCustomSizeModalRect(-4, 26, 0, 0, 16, 16, 16, 16, 64, 64);
+
+            minecraft.fontRenderer.drawString("" + xpCost, 9, 31, 0x404040);
           }
         }
       }
