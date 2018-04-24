@@ -67,11 +67,6 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   public @Nonnull EnumActionResult onItemUseFirst(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side,
       float hitX, float hitY, float hitZ, @Nonnull EnumHand hand) {
 
-    if (world.isRemote) {
-      // If its client side we have to return pass so this method is called on server, where we need to perform the op
-      return EnumActionResult.PASS;
-    }
-
     final IBlockState blockState = world.getBlockState(pos);
     IBlockState bs = blockState;
     Block block = bs.getBlock();
@@ -111,7 +106,9 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     if (ret) {
       player.swingArm(hand);
     }
-    return ret ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
+
+    // If its client side we have to return pass so this method is called on server, where we need to perform the op
+    return ret && !world.isRemote ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
   }
 
   @Override
