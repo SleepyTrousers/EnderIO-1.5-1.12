@@ -103,6 +103,11 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
 
   @Override
+  public boolean doesSideBlockChestOpening(@Nonnull IBlockState blockStateIn, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
+    return side != EnumFacing.DOWN;
+  }
+
+  @Override
   public boolean canBeWrenched() {
     return false;
   }
