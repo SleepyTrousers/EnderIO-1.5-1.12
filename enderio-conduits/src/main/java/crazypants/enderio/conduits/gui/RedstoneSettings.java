@@ -28,14 +28,12 @@ public class RedstoneSettings extends BaseSettingsPanel {
 
   private CheckBox strongCB;
 
-  private String signalColorStr = Lang.GUI_SIGNAL_COLOR.get();
-  private String signalStringthStr = Lang.GUI_REDSTONE_SIGNAL_STRENGTH.get();
+  private @Nonnull String signalColorStr = Lang.GUI_SIGNAL_COLOR.get();
+  private @Nonnull String signalStrengthStr = Lang.GUI_REDSTONE_SIGNAL_STRENGTH.get();
   private IRedstoneConduit insCon;
 
-  private int stongLabelX;
-
   public RedstoneSettings(@Nonnull final IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_REDSTONE, ConduitObject.item_redstone_conduit.getUnlocalisedName(), gui, con, "simple_settings", false);
+    super(IconEIO.WRENCH_OVERLAY_REDSTONE, ConduitObject.item_redstone_conduit.getUnlocalisedName(), gui, con, "in_out_settings", true);
 
     int x = leftColumn;
     int y = customTop + 4;
@@ -50,7 +48,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
       DyeColor sigCol = insCon.getSignalColor(gui.getDir());
       cb.setColorIndex(sigCol.ordinal());
 
-      y += 22;
+      x = rightColumn;
       strongCB = new CheckBox(gui, ID_STRONG_BUTTON, x, y);
       strongCB.setToolTip(Lang.GUI_REDSTONE_SIGNAL_STRENGTH.get());
     }
@@ -92,13 +90,13 @@ public class RedstoneSettings extends BaseSettingsPanel {
   }
 
   @Override
-  protected void renderCustomOptions(int top, float par1, int par2, int par3) {
+  protected void renderCustomOptions(int topIn, float par1, int par2, int par3) {
     if (insCon != null) {
       if (cb != null) {
-        gui.getFontRenderer().drawString(signalColorStr, left + 32, top + 6, ColorUtil.getRGB(Color.darkGray));
+        gui.getFontRenderer().drawString(signalColorStr, left + 31, topIn + 6, ColorUtil.getRGB(Color.darkGray));
       }
       if (strongCB != null) {
-        gui.getFontRenderer().drawString(signalStringthStr, left + 32, top + 28, ColorUtil.getRGB(Color.darkGray));
+        gui.getFontRenderer().drawString(signalStrengthStr, left + 121, topIn + 6, ColorUtil.getRGB(Color.darkGray));
       }
     }
   }

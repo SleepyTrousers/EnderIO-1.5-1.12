@@ -165,10 +165,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public void onChunkUnload() {
-    RedstoneConduitNetwork network = (RedstoneConduitNetwork) getNetwork();
+    RedstoneConduitNetwork networkR = (RedstoneConduitNetwork) getNetwork();
     if (network != null) {
-      Multimap<SignalSource, Signal> oldSignals = ArrayListMultimap.create(network.getSignals());
-      List<IRedstoneConduit> conduits = Lists.newArrayList(network.getConduits());
+      Multimap<SignalSource, Signal> oldSignals = ArrayListMultimap.create(networkR.getSignals());
+      List<IRedstoneConduit> conduits = Lists.newArrayList(networkR.getConduits());
       super.onChunkUnload();
       network.afterChunkUnload(conduits, oldSignals);
     }
@@ -255,42 +255,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public void forceConnectionMode(@Nonnull EnumFacing dir, @Nonnull ConnectionMode mode) {
-    if (mode == ConnectionMode.IN_OUT) {
-
-      setConnectionMode(dir, mode);
-      forcedConnections.put(dir, mode);
-      onAddedToBundle();
-      if (network != null) {
-        network.updateInputsFromConduit(this, false);
-      }
-
-    } else {
-      setConnectionMode(dir, mode);
-      forcedConnections.put(dir, mode);
-      onAddedToBundle();
-      if (network != null) {
-        network.updateInputsFromConduit(this, false);
-      }
-
+    setConnectionMode(dir, mode);
+    forcedConnections.put(dir, mode);
+    onAddedToBundle();
+    if (network != null) {
+      network.updateInputsFromConduit(this, false);
     }
-  }
-
-  @Override
-  @Nonnull
-  public ConnectionMode getNextConnectionMode(@Nonnull EnumFacing dir) {
-    if (getConnectionMode(dir) == ConnectionMode.IN_OUT) {
-      return ConnectionMode.DISABLED;
-    }
-    return ConnectionMode.IN_OUT;
-  }
-
-  @Override
-  @Nonnull
-  public ConnectionMode getPreviousConnectionMode(@Nonnull EnumFacing dir) {
-    if (getConnectionMode(dir) == ConnectionMode.IN_OUT) {
-      return ConnectionMode.DISABLED;
-    }
-    return ConnectionMode.IN_OUT;
   }
 
   @Override
@@ -371,7 +341,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public int isProvidingWeakPower(@Nonnull EnumFacing toDirection) {
     toDirection = toDirection.getOpposite();
-    if (getConnectionMode(toDirection) != ConnectionMode.IN_OUT) {
+    if (!getConnectionMode(toDirection).acceptsInput()) {
       return 0;
     }
     if (network == null || !network.isNetworkEnabled()) {
@@ -416,15 +386,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   @Nonnull
   public Collection<Signal> getNetworkOutputs(@Nonnull EnumFacing side) {
-    if (side == null) {
-      if (network == null) {
-        return Collections.emptySet();
-      }
-      return network.getSignals().values();
-    }
-
     ConnectionMode mode = getConnectionMode(side);
-    if (network == null || mode != ConnectionMode.IN_OUT) {
+    if (network == null || !mode.acceptsInput()) {
       return Collections.emptySet();
     }
     Collection<Signal> allSigs = network.getSignals().values();
@@ -489,7 +452,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       res = world.getRedstonePower(loc, dir);
       IBlockState bs = world.getBlockState(loc);
       Block block = bs.getBlock();
-      if (res < 15 && block == Blocks.REDSTONE_WIRE) {
+      if (res <= 15 && block == Blocks.REDSTONE_WIRE) {
         int wireIn = bs.getValue(BlockRedstoneWire.POWER);
         res = Math.max(res, wireIn);
       }
@@ -499,10 +462,11 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public @Nonnull ConnectionMode getConnectionMode(@Nonnull EnumFacing dir) {
-    ConnectionMode res = conectionModes.get(dir);
+  @Nonnull
+  public ConnectionMode getConnectionMode(@Nonnull EnumFacing dir) {
+    ConnectionMode res = forcedConnections.get(dir);
     if (res == null) {
-      return ConnectionMode.IN_OUT;
+      return getDefaultConnectionMode();
     }
     return res;
   }
@@ -526,7 +490,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   private boolean acceptSignalsForDir(@Nonnull EnumFacing dir) {
-    if (getConnectionMode(dir) != ConnectionMode.IN_OUT) {
+    if (!getConnectionMode(dir).acceptsOutput()) {
       return false;
     }
     BlockPos loc = getBundle().getLocation().offset(dir);

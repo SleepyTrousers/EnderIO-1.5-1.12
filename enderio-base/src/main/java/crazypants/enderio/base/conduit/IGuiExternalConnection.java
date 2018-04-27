@@ -1,5 +1,7 @@
 package crazypants.enderio.base.conduit;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IGuiScreen;
 
 import net.minecraft.client.gui.FontRenderer;
@@ -10,6 +12,7 @@ public interface IGuiExternalConnection extends IGuiScreen {
   /**
    * Gets the direction of the conduit's connection
    */
+  @Nonnull
   EnumFacing getDir();
 
   /**
