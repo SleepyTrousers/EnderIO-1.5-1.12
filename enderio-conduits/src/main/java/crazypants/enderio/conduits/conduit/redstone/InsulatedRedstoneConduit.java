@@ -683,12 +683,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     return new RedstoneConduitNetwork();
   }
 
-  // @SideOnly(Side.CLIENT)
-  // @Override
-  // public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
-  // return new RedstoneSettings(gui, con);
-  // }
-
   @SideOnly(Side.CLIENT)
   @Nonnull
   @Override

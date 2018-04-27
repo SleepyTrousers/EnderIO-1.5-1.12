@@ -88,6 +88,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
       outputFilterUpgrades.put(dir, ItemStack.EMPTY);
       inputFilterUpgrades.put(dir, ItemStack.EMPTY);
       functionUpgrades.put(dir, ItemStack.EMPTY);
+      roundRobin.put(dir, true);
     }
   }
 
