@@ -33,7 +33,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
   private IRedstoneConduit insCon;
 
   public RedstoneSettings(@Nonnull final IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_REDSTONE, ConduitObject.item_redstone_conduit.getUnlocalisedName(), gui, con, "in_out_settings", true);
+    super(IconEIO.WRENCH_OVERLAY_REDSTONE, ConduitObject.item_redstone_conduit.getUnlocalisedName(), gui, con, "in_out_settings");
 
     int x = leftColumn;
     int y = customTop + 4;
@@ -99,6 +99,18 @@ public class RedstoneSettings extends BaseSettingsPanel {
         gui.getFontRenderer().drawString(signalStrengthStr, left + 121, topIn + 6, ColorUtil.getRGB(Color.darkGray));
       }
     }
+  }
+
+  @Override
+  @Nonnull
+  protected String getInputHeading() {
+    return Lang.GUI_REDSTONE_CONDUIT_INPUT_MODE.get();
+  }
+
+  @Override
+  @Nonnull
+  protected String getOutputHeading() {
+    return Lang.GUI_REDSTONE_CONDUIT_OUTPUT_MODE.get();
   }
 
 }

@@ -33,9 +33,6 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
   protected static final int ID_INSERT_FILTER_OPTIONS = 329;
   protected static final int ID_EXTRACT_FILTER_OPTIONS = 330;
 
-  private final @Nonnull String ENABLED = Lang.GUI_CONDUIT_ENABLED_MODE.get();
-  private final @Nonnull String DISABLED = Lang.GUI_CONDUIT_DISABLED_MODE.get();
-
   protected final @Nonnull IconEIO icon;
   protected final @Nonnull IGuiExternalConnection gui;
   protected @Nonnull IClientConduit con;
@@ -56,8 +53,6 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
   private @Nonnull IconButton insertFilterOptionsB;
   private @Nonnull IconButton extractFilterOptionsB;
 
-  private final boolean hasInputOutputMode;
-
   protected int left = 0;
   protected int top = 0;
   protected int width = 0;
@@ -71,24 +66,14 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
   protected BaseSettingsPanel(@Nonnull IconEIO icon, @Nonnull String typeName, @Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con,
       @Nonnull String texture) {
-    this(icon, typeName, gui, con, texture, true);
-  }
-
-  protected BaseSettingsPanel(@Nonnull IconEIO icon, @Nonnull String typeName, @Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con,
-      @Nonnull String texture, boolean hasInputOutputMode) {
     this.icon = icon;
     this.typeName = typeName;
     this.gui = gui;
     this.con = con;
     this.texture = EnderIO.proxy.getGuiTexture(texture);
-    this.hasInputOutputMode = hasInputOutputMode;
 
-    if (hasInputOutputMode) {
-      inputHeading = Lang.GUI_CONDUIT_INSERT_MODE.get();
-    } else {
-      inputHeading = ENABLED;
-    }
-    outputHeading = Lang.GUI_CONDUIT_EXTRACT_MODE.get();
+    inputHeading = getInputHeading();
+    outputHeading = getOutputHeading();
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
@@ -163,9 +148,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     updateConduit(con);
 
     insertEnabledB.onGuiInit();
-    if (hasInputOutputMode) {
-      extractEnabledB.onGuiInit();
-    }
+    extractEnabledB.onGuiInit();
 
     insertEnabledB.setSelected(insertEnabled);
     extractEnabledB.setSelected(extractEnabled);
@@ -224,22 +207,10 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     if (guiButton.id == ID_INSERT_ENABLED) {
       insertEnabled = !insertEnabled;
-      if (!hasInputOutputMode) {
-        extractEnabled = !extractEnabled;
-        swapEnabledText();
-      }
       updateConnectionMode();
     } else if (guiButton.id == ID_EXTRACT_ENABLED) {
       extractEnabled = !extractEnabled;
       updateConnectionMode();
-    }
-  }
-
-  private void swapEnabledText() {
-    if (inputHeading.equals(ENABLED)) {
-      inputHeading = DISABLED;
-    } else {
-      inputHeading = ENABLED;
     }
   }
 
@@ -257,11 +228,8 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     int x = left + 32;
     int y = gui.getGuiTop() + 10;
     fr.drawString(inputHeading, x, y, rgb);
-
-    if (hasInputOutputMode) {
-      x += 92;
-      fr.drawString(outputHeading, x, y, rgb);
-    }
+    x += 92;
+    fr.drawString(outputHeading, x, y, rgb);
     renderCustomOptions(y + gap + fr.FONT_HEIGHT + gap, par1, par2, par3);
   }
 
@@ -285,6 +253,16 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
   @Override
   public int getGuiID() {
     return gui.getGuiID();
+  }
+
+  @Nonnull
+  protected String getInputHeading() {
+    return Lang.GUI_CONDUIT_INSERT_MODE.get();
+  }
+
+  @Nonnull
+  protected String getOutputHeading() {
+    return Lang.GUI_CONDUIT_EXTRACT_MODE.get();
   }
 
 }

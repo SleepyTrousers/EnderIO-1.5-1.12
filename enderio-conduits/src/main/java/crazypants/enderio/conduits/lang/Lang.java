@@ -36,6 +36,9 @@ public enum Lang implements ILang {
   GUI_LIQUID_TOOLTIP_MAX_IO(".item_liquid_conduit.tooltip.max_io"),
   ITEM_LIQUID_CONDUIT_UNLOCKED_TYPE(".item_liquid_conduit.unlocked_type"),
 
+  GUI_REDSTONE_CONDUIT_INPUT_MODE(".gui.redstone_conduit_input_mode"),
+  GUI_REDSTONE_CONDUIT_OUTPUT_MODE(".gui.redstone_conduit_output_mode"),
+
   ;
 
   private final @Nonnull String key;
