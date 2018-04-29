@@ -3,7 +3,6 @@ package crazypants.enderio.base.recipe.painter;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
-import crazypants.enderio.base.paint.PaintTooltipUtil;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.util.Prep;
@@ -15,7 +14,7 @@ public class FacadePainterRecipe extends AbstractPainterTemplate<ItemConduitFaca
 
   public FacadePainterRecipe(ItemConduitFacade facade) {
     super();
-    PaintTooltipUtil.registerPaintable(facade);
+    PaintUtil.registerPaintable(facade);
   }
 
   @Override

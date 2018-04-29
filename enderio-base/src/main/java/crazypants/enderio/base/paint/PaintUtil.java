@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.Prep;
@@ -238,5 +239,48 @@ public class PaintUtil {
     }
     return paintBlock.getStateFromMeta(paintSource.getItem().getMetadata(paintSource.getMetadata()));
   }
+
+  /**
+   * Registers blocks that can be painted but do not implement IPaintable themselves. Used for blocks that are not Ender IO blocks, e.g. vanilla fences.
+   */
+  public static void registerPaintable(Block... blocks) {
+    for (Block block : blocks) {
+      if (!(block instanceof IPaintable)) {
+        PaintUtil.paintables.add(block);
+      }
+    }
+  }
+
+  /**
+   * Registers items that can be painted but are not items for blocks implement IPaintable themselves. Used for items that do not have a block , e.g. Dark Steel
+   * Helmets and Facades.
+   */
+  public static void registerPaintable(Item... items) {
+    for (Item item : items) {
+      if (!(Block.getBlockFromItem(item) instanceof IPaintable)) {
+        PaintUtil.paintables.add(item);
+      }
+    }
+  }
+
+  /**
+   * Checks if an item is paintable.
+   * <p>
+   * An item can be painted if
+   * <ul>
+   * <li>it already is painted,
+   * <li>it represents a block that implements IPaintable,
+   * <li>it represents a block that was registered as being paintable, or
+   * <li>it was registered as being paintable.
+   * </ul>
+   */
+  public static boolean isPaintable(@Nonnull ItemStack stack) {
+    if (Prep.isInvalid(stack)) {
+      return false;
+    }
+    return isPainted(stack) || Block.getBlockFromItem(stack.getItem()) instanceof IPaintable || PaintUtil.paintables.contains(stack);
+  }
+
+  private static Things paintables = new Things();
 
 }

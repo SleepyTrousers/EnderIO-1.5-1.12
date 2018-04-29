@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.paint.PaintTooltipUtil;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.util.Prep;
@@ -26,7 +25,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
     this.resultBlock = resultBlock;
     this.validTargets = validTargetBlocks;
     this.allowEasyConversion = allowEasyConversion;
-    PaintTooltipUtil.registerPaintable(validTargetBlocks);
+    PaintUtil.registerPaintable(validTargetBlocks);
   }
 
   public BasicPainterTemplate(@Nullable T resultBlock, @Nonnull Block... validTargetBlocks) {

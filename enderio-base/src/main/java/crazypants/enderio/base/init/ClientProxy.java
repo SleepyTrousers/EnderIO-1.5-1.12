@@ -24,7 +24,6 @@ import crazypants.enderio.base.item.conduitprobe.ConduitProbeOverlayRenderer;
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetector;
 import crazypants.enderio.base.item.yetawrench.YetaWrenchOverlayRenderer;
 import crazypants.enderio.base.material.glass.EnderIOGlassesStateMapper;
-import crazypants.enderio.base.paint.PaintTooltipUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IDefaultRenderers;
@@ -135,7 +134,6 @@ public class ClientProxy extends CommonProxy {
     SpecialTooltipHandler.addCallback(new TooltipHandlerGrinding());
     SpecialTooltipHandler.addCallback(new TooltipHandlerBurnTime());
     SpecialTooltipHandler.addCallback(new TooltipHandlerFluid());
-    PaintTooltipUtil.create();
 
     IoConfigRenderer.init(event);
 

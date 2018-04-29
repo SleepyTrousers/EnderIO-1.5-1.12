@@ -3,7 +3,7 @@ package crazypants.enderio.base.recipe.painter;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelArmor;
-import crazypants.enderio.base.paint.PaintTooltipUtil;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemBlock;
@@ -82,7 +82,7 @@ public class HelmetPainterTemplate extends AbstractPainterTemplate<ItemDarkSteel
 
   @Override
   protected void registerTargetsWithTooltipProvider() {
-    PaintTooltipUtil.registerPaintable(helmet);
+    PaintUtil.registerPaintable(helmet);
   }
 
 }
