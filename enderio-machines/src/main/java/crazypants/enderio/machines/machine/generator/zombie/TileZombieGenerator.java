@@ -13,6 +13,7 @@ import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorEntity;
@@ -20,7 +21,6 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.power.PowerDistributor;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -58,15 +58,10 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   private boolean inPause;
 
   public TileZombieGenerator() {
-    super(new SlotDefinition(0, 0, 0), ZOMBIE_POWER_BUFFER, ZOMBIE_POWER_GEN);
+    super(new SlotDefinition(0, 0, 1), ZOMBIE_POWER_BUFFER, ZOMBIE_POWER_GEN);
     setEnergyLoss(ZOMBIE_POWER_LOSS);
     tank.setTileEntity(this);
     tank.setCanDrain(false);
-  }
-
-  @Override
-  public @Nonnull String getMachineName() {
-    return MachineObject.block_zombie_generator.getUnlocalisedName();
   }
 
   @Override
@@ -141,6 +136,10 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   }
 
   private boolean generateEnergy() {
+
+    if (getCapacitorData() == DefaultCapacitorData.NONE) {
+      return false;
+    }
 
     // if there are still ticks left from the last mB of fuel we used, keep producing energy no matter what
     if (ticksRemaingFuel >= 1f) {

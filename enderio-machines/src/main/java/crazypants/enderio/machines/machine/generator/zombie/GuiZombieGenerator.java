@@ -40,7 +40,7 @@ public class GuiZombieGenerator extends GuiInventoryMachineBase<TileZombieGenera
       }
     });
 
-    addDrawingElement(new PowerBar(tileEntity, this, 16, 20, 48));
+    addDrawingElement(new PowerBar(tileEntity, this));
   }
 
   @Override

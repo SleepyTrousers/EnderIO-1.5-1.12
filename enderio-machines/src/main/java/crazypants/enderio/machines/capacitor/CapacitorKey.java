@@ -64,7 +64,7 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
 
   ZOMBIE_POWER_LOSS(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 0),
   ZOMBIE_POWER_BUFFER(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  ZOMBIE_POWER_GEN(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.FIXED_1, 80),
+  ZOMBIE_POWER_GEN(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.CHEMICAL, 80),
 
   ATTRACTOR_POWER_INTAKE(MachineObject.block_attractor_obelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.QUADRATIC, 80),
   ATTRACTOR_POWER_BUFFER(MachineObject.block_attractor_obelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
