@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.Log;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
@@ -157,6 +158,11 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   // --------------- End -------------------------
 
   public int fill(EnumFacing from, FluidStack resource, boolean doFill, boolean doPush, int pushToken) {
+    if (network == null) {
+      Log.error("The network for this conduit was null when asked to fill. Please report this to the Ender IO github");
+      return 0;
+    }
+
     if (network.canAcceptLiquid(resource)) {
       network.setFluidType(resource);
     } else {
