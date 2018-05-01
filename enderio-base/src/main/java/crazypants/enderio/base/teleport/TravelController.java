@@ -276,6 +276,7 @@ public class TravelController {
     tanFovRad = Math.tanh(fovRad);
   }
 
+  @SuppressWarnings({ "unused", "null" })
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onClientTick(@Nonnull TickEvent.ClientTickEvent event) {
@@ -298,6 +299,9 @@ public class TravelController {
         selectedCoord = null;
       }
       MovementInput input = player.movementInput;
+      if (input == null) {
+        return;
+      }
       tempJump = input.jump;
       tempSneak = input.sneak;
 
