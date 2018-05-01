@@ -37,4 +37,7 @@ public final class PersonalConfig {
   public static final IValue<Boolean> tooltipsAddFurnaceFuel = F.make("tooltipsAddFurnaceFuel", true, //
       "If true, adds burn duration tooltips to furnace fuels.");
 
+  public static final IValue<Boolean> candyColors = F.make("candyColors", false, //
+      "Should the annoying new candy colors be used for Fused Glass/Quartz?");
+
 }

@@ -7,6 +7,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.PaintUtil.IWithPaintName;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -24,7 +25,6 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -176,13 +176,25 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
 
   @Override
   public int getBlockTint(@Nonnull IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
-    return MapColor.getBlockColor(state.getValue(BlockColored.COLOR)).colorValue;
+    if (PersonalConfig.candyColors.get()) {
+      return state.getValue(BlockColored.COLOR).getColorValue();
+    } else {
+      return MapColor.getBlockColor(state.getValue(BlockColored.COLOR)).colorValue;
+    }
   }
 
   @Override
   @Nullable
   public float[] getBeaconColorMultiplier(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull BlockPos beaconPos) {
-    return EntitySheep.getDyeRgb(state.getValue(BlockColored.COLOR));
+    if (PersonalConfig.candyColors.get()) {
+      return state.getValue(BlockColored.COLOR).getColorComponentValues();
+    } else {
+      int colorValue = MapColor.getBlockColor(state.getValue(BlockColored.COLOR)).colorValue;
+      int i = (colorValue & 0xFF0000) >> 16;
+      int j = (colorValue & 0xFF00) >> 8;
+      int k = (colorValue & 0xFF);
+      return new float[] { i / 255.0F, j / 255.0F, k / 255.0F };
+    }
   }
 
   @Override
