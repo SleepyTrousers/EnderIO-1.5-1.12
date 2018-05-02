@@ -2,11 +2,13 @@ package crazypants.enderio.machines.machine.crafter;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.handlers.minecraft.HandleItemStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -16,35 +18,38 @@ import net.minecraft.util.text.TextComponentString;
 @Storable
 public class DummyCraftingGrid implements IInventory {
 
-  @Store
-  ItemStack[] inv = new ItemStack[10];
+  @Store(handler = HandleItemStack.HandleItemStackNNList.class)
+  NNList<ItemStack> inv = new NNList<ItemStack>(10, ItemStack.EMPTY);
 
   public boolean hasValidRecipe() {
-    return getOutput() != null;
+    return !getOutput().isEmpty();
   }
 
+  @Nonnull
   public ItemStack getOutput() {
-    return inv[9];
+    return inv.get(9);
   }
 
   @Override
   public int getSizeInventory() {
-    return inv.length;
+    return inv.size();
   }
 
   @Override
-  public @Nonnull ItemStack getStackInSlot(int var1) {
-    if (var1 < 0 || var1 >= inv.length) {
+  @Nonnull
+  public ItemStack getStackInSlot(int slot) {
+    if (slot < 0 || slot >= inv.size()) {
       return Prep.getEmpty();
     }
-    return NullHelper.first(inv[var1], Prep.getEmpty());
+    return NullHelper.first(inv.get(slot), Prep.getEmpty());
   }
 
   @Override
-  public @Nonnull ItemStack decrStackSize(int fromSlot, int amount) {
-    ItemStack item = inv[fromSlot];
-    inv[fromSlot] = null;
-    if (item == null) {
+  @Nonnull
+  public ItemStack decrStackSize(int fromSlot, int amount) {
+    ItemStack item = inv.get(fromSlot);
+    inv.set(fromSlot, ItemStack.EMPTY);
+    if (item.isEmpty()) {
       return Prep.getEmpty();
     }
     item.setCount(0);
@@ -53,21 +58,20 @@ public class DummyCraftingGrid implements IInventory {
 
   @Override
   public void setInventorySlotContents(int i, @Nonnull ItemStack itemstack) {
-    inv[i] = itemstack.copy();
-    if (i < 9) {
-      inv[i].setCount(0); // FIXME 1.11
-    }
+    inv.set(i, itemstack.copy());
+    // if (i < 9) {
+    // inv.get(i).setCount(0);
+    // }
   }
 
   @Override
   public void clear() {
-    for (int i = 0; i < inv.length; i++) {
-      inv[i] = null;
-    }
+    inv.clear();
   }
 
   @Override
-  public @Nonnull ItemStack removeStackFromSlot(int index) {
+  @Nonnull
+  public ItemStack removeStackFromSlot(int index) {
     ItemStack res = getStackInSlot(index);
     setInventorySlotContents(index, Prep.getEmpty());
     return res;

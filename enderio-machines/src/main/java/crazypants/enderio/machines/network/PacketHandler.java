@@ -6,6 +6,7 @@ import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.buffer.PacketBufferIO;
+import crazypants.enderio.machines.machine.crafter.PacketCrafter;
 import crazypants.enderio.machines.machine.farm.PacketFarmAction;
 import crazypants.enderio.machines.machine.farm.PacketFarmLockedSlot;
 import crazypants.enderio.machines.machine.farm.PacketUpdateNotification;
@@ -20,10 +21,10 @@ import crazypants.enderio.machines.machine.spawner.PacketSpawnerUpdateNotificati
 import crazypants.enderio.machines.machine.tank.PacketTankFluid;
 import crazypants.enderio.machines.machine.tank.PacketTankVoidMode;
 import crazypants.enderio.machines.machine.teleport.packet.PacketDrainStaff;
-import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTelePadFluidLevel;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketOpenServerGui;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTargetList;
+import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTelePadFluidLevel;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTeleport;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTeleportTrigger;
 import crazypants.enderio.machines.machine.transceiver.PacketItemFilter;
@@ -95,6 +96,7 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketSendRecieveChannelList.Handler.class, PacketSendRecieveChannelList.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketItemFilter.Handler.class, PacketItemFilter.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketSwing.Handler.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketCrafter.Handler.class, PacketCrafter.class, PacketHandler.nextID(), Side.SERVER);
 
   }
 
