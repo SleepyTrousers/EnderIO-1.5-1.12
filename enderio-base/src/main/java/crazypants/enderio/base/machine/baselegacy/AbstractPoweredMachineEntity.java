@@ -148,15 +148,6 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     }
   }
 
-  @Override
-  public @Nonnull ItemStack decrStackSize(int fromSlot, int amount) {
-    ItemStack res = super.decrStackSize(fromSlot, amount);
-    if (slotDefinition.isUpgradeSlot(fromSlot)) {
-      updateCapacitorFromSlot();
-    }
-    return res;
-  }
-
   private void updateCapacitorFromSlot() {
     if (slotDefinition.getNumUpgradeSlots() <= 0) {
       capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;

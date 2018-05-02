@@ -34,7 +34,9 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   public AbstractInventoryMachineEntity(@Nonnull SlotDefinition slotDefinition) {
     this.slotDefinition = slotDefinition;
     inventory = new ItemStack[slotDefinition.getNumSlots()];
-    clear();
+    for (int i = 0; i < inventory.length; ++i) {
+      inventory[i] = Prep.getEmpty();
+    }
   }
 
   @Override
@@ -170,22 +172,6 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     return itemStack == null ? Prep.getEmpty() : itemStack;
   }
 
-  public @Nonnull ItemStack decrStackSize(int slot, int amount) {
-    ItemStack item = inventory[slot];
-    if (item != null && !item.isEmpty()) {
-      if (item.getCount() <= amount) {
-        ItemStack result = item;
-        inventory[slot] = Prep.getEmpty();
-        markDirty();
-        return result;
-      }
-      ItemStack split = item.splitStack(amount);
-      markDirty();
-      return split;
-    }
-    return Prep.getEmpty();
-  }
-
   public void setInventorySlotContents(int slot, @Nonnull ItemStack contents) {
     inventory[slot] = contents.copy();
     if (inventory[slot].getCount() > getInventoryStackLimit(slot)) {
@@ -194,20 +180,6 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
       Block.spawnAsEntity(world, pos, contents);
     }
     markDirty();
-  }
-
-  public void clear() {
-    for (int i = 0; i < inventory.length; ++i) {
-      inventory[i] = Prep.getEmpty();
-    }
-    markDirty();
-  }
-
-  public @Nonnull ItemStack removeStackFromSlot(int index) {
-    ItemStack res = inventory[index];
-    inventory[index] = Prep.getEmpty();
-    markDirty();
-    return res == null ? Prep.getEmpty() : res;
   }
 
   public @Nonnull InventoryWrapper getAsInventory() {
@@ -257,12 +229,24 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
 
     @Override
     public @Nonnull ItemStack decrStackSize(int index, int count) {
-      return AbstractInventoryMachineEntity.this.decrStackSize(index, count);
+      ItemStack item = getStackInSlot(index);
+      if (Prep.isValid(item)) {
+        if (item.getCount() <= count) {
+          setInventorySlotContents(index, Prep.getEmpty());
+          return item;
+        }
+        ItemStack split = item.splitStack(count);
+        setInventorySlotContents(index, item);
+        return split;
+      }
+      return Prep.getEmpty();
     }
 
     @Override
     public @Nonnull ItemStack removeStackFromSlot(int index) {
-      return AbstractInventoryMachineEntity.this.removeStackFromSlot(index);
+      ItemStack res = getStackInSlot(index);
+      setInventorySlotContents(index, Prep.getEmpty());
+      return res;
     }
 
     @Override
@@ -314,7 +298,9 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
 
     @Override
     public void clear() {
-      AbstractInventoryMachineEntity.this.clear();
+      for (int i = 0; i < getSizeInventory(); ++i) {
+        setInventorySlotContents(i, Prep.getEmpty());
+      }
     }
 
   }

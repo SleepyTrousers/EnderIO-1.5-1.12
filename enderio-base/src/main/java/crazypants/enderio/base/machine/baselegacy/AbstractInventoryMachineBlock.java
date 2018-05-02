@@ -68,7 +68,7 @@ public abstract class AbstractInventoryMachineBlock<T extends AbstractInventoryM
         ItemStack itemstack = inv.getStackInSlot(j);
 
         if (!itemstack.isEmpty()) {
-          f += (float) itemstack.getCount() / (float) Math.min(inv.getInventoryStackLimit(), itemstack.getMaxStackSize());
+          f += (float) itemstack.getCount() / (float) Math.min(inv.getInventoryStackLimit(j), itemstack.getMaxStackSize());
           ++i;
         }
       }

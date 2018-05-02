@@ -293,7 +293,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       fluidUsed = 0;
       WeatherTask task = WeatherTask.fromFluid(inputTank.getFluidNN().getFluid());
       if (canStartTask(task)) {
-        decrStackSize(0, 1);
+        getStackInSlot(0).shrink(1);
         activeTask = task;
         return true;
       }

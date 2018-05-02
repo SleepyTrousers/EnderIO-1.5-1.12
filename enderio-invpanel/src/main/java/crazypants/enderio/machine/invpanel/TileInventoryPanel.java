@@ -128,19 +128,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   private static IInventory emptyInventory = new InventoryBasic("[Null]", true, 0);
 
   @Override
-  public @Nonnull ItemStack decrStackSize(int fromSlot, int amount) {
-    ItemStack res = super.decrStackSize(fromSlot, amount);
-    if (!res.isEmpty() && fromSlot < SLOT_CRAFTING_RESULT && eventHandler != null) {
-      eventHandler.onCraftMatrixChanged(emptyInventory);
-    }
-    if (!res.isEmpty() && fromSlot == SLOT_VIEW_FILTER) {
-      updateItemFilter();
-    }
-    return res;
-  }
-
-  @Override
-  public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
+  public void setInventorySlotContents(int slot, @Nonnull ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
     if (slot < SLOT_CRAFTING_RESULT && eventHandler != null) {
       eventHandler.onCraftMatrixChanged(emptyInventory);

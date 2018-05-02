@@ -350,7 +350,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
       for (MachineRecipeInput item : consumed) {
         if (item != null) {
           if (Prep.isValid(item.item)) {
-            decrStackSize(item.slotNumber, item.item.getCount());
+            getStackInSlot(item.slotNumber).shrink(item.item.getCount());
           } else if (item.fluid != null) {
             drainInputFluid(item);
           }
@@ -370,15 +370,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected void onAfterNbtRead() {
     super.onAfterNbtRead();
     cachedNextRecipe = null;
-  }
-
-  @Override
-  public @Nonnull ItemStack decrStackSize(int fromSlot, int amount) {
-    ItemStack res = super.decrStackSize(fromSlot, amount);
-    if (slotDefinition.isInputSlot(fromSlot)) {
-      cachedNextRecipe = null;
-    }
-    return res;
   }
 
   @Override

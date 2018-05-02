@@ -97,7 +97,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
           return;
         }
         ItemStack res = capturedMob.toGenericStack(ModObject.itemSoulVial.getItemNN(), 1, 1);
-        decrStackSize(0, 1);
+        getStackInSlot(0).shrink(1);
         setInventorySlotContents(1, res);
       }
     } else {
