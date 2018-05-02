@@ -11,6 +11,7 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 
 public interface IRedstoneConduit extends IServerConduit, IClientConduit {
@@ -32,13 +33,11 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
 
   Collection<Signal> getNetworkOutputs(@Nonnull EnumFacing side);
 
-  DyeColor getSignalColor(@Nonnull EnumFacing dir);
+  DyeColor getInputSignalColor(@Nonnull EnumFacing dir);
 
   void updateNetwork();
 
   // Old insulated interface
-
-  public static final String COLOR_CONTROLLER_ID = "ColorController";
 
   void onInputsChanged(@Nonnull EnumFacing side, int[] inputValues);
 
@@ -46,11 +45,29 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
 
   void forceConnectionMode(@Nonnull EnumFacing dir, @Nonnull ConnectionMode mode);
 
-  void setSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);
+  void setInputSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);
 
   boolean isOutputStrong(@Nonnull EnumFacing dir);
 
   void setOutputStrength(@Nonnull EnumFacing dir, boolean isStrong);
 
   int getRedstoneSignalForColor(@Nonnull DyeColor col);
+
+  Set<EnumFacing> getInputConnections();
+
+  DyeColor getOutputSignalColor(@Nonnull EnumFacing dir);
+
+  void setOutputSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);
+
+  @Nonnull
+  TextureAtlasSprite getTextureForInputMode();
+
+  @Nonnull
+  TextureAtlasSprite getTextureForOutputMode();
+
+  @Nonnull
+  TextureAtlasSprite getTextureForInOutMode(boolean b);
+
+  @Nonnull
+  TextureAtlasSprite getTextureForInOutBackground();
 }

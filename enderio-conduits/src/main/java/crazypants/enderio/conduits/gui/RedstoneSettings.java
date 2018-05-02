@@ -22,9 +22,11 @@ import net.minecraft.client.gui.GuiButton;
 
 public class RedstoneSettings extends BaseSettingsPanel {
 
-  private static final int ID_COLOR_BUTTON = GuiExternalConnection.nextButtonId();
+  private static final int ID_INPUT_COLOR_BUTTON = GuiExternalConnection.nextButtonId();
   private static final int ID_STRONG_BUTTON = GuiExternalConnection.nextButtonId();
-  private ColorButton cb;
+  private static final int ID_OUTPUT_COLOR_BUTTON = GuiExternalConnection.nextButtonId();
+  private @Nonnull ColorButton inputColorB;
+  private @Nonnull ColorButton outputColorB;
 
   private CheckBox strongCB;
 
@@ -38,28 +40,33 @@ public class RedstoneSettings extends BaseSettingsPanel {
     int x = leftColumn;
     int y = customTop + 4;
 
-    if (con instanceof IRedstoneConduit) {
-      insCon = (IRedstoneConduit) con;
-    }
+    insCon = (IRedstoneConduit) con;
 
-    if (insCon != null) {
-      cb = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-      cb.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
-      DyeColor sigCol = insCon.getSignalColor(gui.getDir());
-      cb.setColorIndex(sigCol.ordinal());
+    inputColorB = new ColorButton(gui, ID_INPUT_COLOR_BUTTON, x, y);
+    inputColorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
+    DyeColor sigCol = insCon.getInputSignalColor(gui.getDir());
+    inputColorB.setColorIndex(sigCol.ordinal());
 
-      x = rightColumn;
-      strongCB = new CheckBox(gui, ID_STRONG_BUTTON, x, y);
-      strongCB.setToolTip(Lang.GUI_REDSTONE_SIGNAL_STRENGTH.get());
-    }
+    x = rightColumn;
+    outputColorB = new ColorButton(gui, ID_OUTPUT_COLOR_BUTTON, x, y);
+    outputColorB.setToolTipHeading(Lang.GUI_SIGNAL_COLOR.get());
+    DyeColor sigColOut = insCon.getOutputSignalColor(gui.getDir());
+    outputColorB.setColorIndex(sigColOut.ordinal());
+
+    y += 20;
+    strongCB = new CheckBox(gui, ID_STRONG_BUTTON, x, y);
+    strongCB.setToolTip(Lang.GUI_REDSTONE_SIGNAL_STRENGTH.get());
   }
 
   @Override
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     super.actionPerformed(guiButton);
-    if (guiButton.id == ID_COLOR_BUTTON && cb != null) {
-      insCon.setSignalColor(gui.getDir(), DyeColor.values()[cb.getColorIndex()]);
-      PacketHandler.INSTANCE.sendToServer(new PacketRedstoneConduitSignalColor(insCon, gui.getDir()));
+    if (guiButton.id == ID_INPUT_COLOR_BUTTON) {
+      insCon.setInputSignalColor(gui.getDir(), DyeColor.values()[inputColorB.getColorIndex()]);
+      PacketHandler.INSTANCE.sendToServer(new PacketRedstoneConduitSignalColor(insCon, gui.getDir(), true));
+    } else if (guiButton.id == ID_OUTPUT_COLOR_BUTTON) {
+      insCon.setOutputSignalColor(gui.getDir(), DyeColor.values()[outputColorB.getColorIndex()]);
+      PacketHandler.INSTANCE.sendToServer(new PacketRedstoneConduitSignalColor(insCon, gui.getDir(), false));
     } else if (guiButton.id == ID_STRONG_BUTTON && strongCB != null) {
       insCon.setOutputStrength(gui.getDir(), strongCB.isSelected());
       PacketHandler.INSTANCE.sendToServer(new PacketRedstoneConduitOutputStrength(insCon, gui.getDir()));
@@ -68,37 +75,27 @@ public class RedstoneSettings extends BaseSettingsPanel {
 
   @Override
   protected void initCustomOptions() {
-    if (insCon != null) {
-      if (cb != null) {
-        cb.setColorIndex(cb.getColorIndex());
-        cb.onGuiInit();
-      }
-      strongCB.onGuiInit();
-      strongCB.setSelected(insCon.isOutputStrong(gui.getDir()));
-    }
+    inputColorB.setColorIndex(insCon.getInputSignalColor(gui.getDir()).ordinal());
+    inputColorB.onGuiInit();
+    outputColorB.setColorIndex(insCon.getOutputSignalColor(gui.getDir()).ordinal());
+    outputColorB.onGuiInit();
+    strongCB.onGuiInit();
+    strongCB.setSelected(insCon.isOutputStrong(gui.getDir()));
   }
 
   @Override
   public void deactivate() {
     super.deactivate();
-    if (cb != null) {
-      cb.detach();
-    }
-    if (strongCB != null) {
-      strongCB.detach();
-    }
+    inputColorB.detach();
+    outputColorB.detach();
+    strongCB.detach();
   }
 
   @Override
   protected void renderCustomOptions(int topIn, float par1, int par2, int par3) {
-    if (insCon != null) {
-      if (cb != null) {
-        gui.getFontRenderer().drawString(signalColorStr, left + 31, topIn + 6, ColorUtil.getRGB(Color.darkGray));
-      }
-      if (strongCB != null) {
-        gui.getFontRenderer().drawString(signalStrengthStr, left + 121, topIn + 6, ColorUtil.getRGB(Color.darkGray));
-      }
-    }
+    gui.getFontRenderer().drawString(signalColorStr, left + 31, topIn + 6, ColorUtil.getRGB(Color.darkGray));
+    gui.getFontRenderer().drawString(signalColorStr, left + 121, topIn + 6, ColorUtil.getRGB(Color.darkGray));
+    gui.getFontRenderer().drawString(signalStrengthStr, left + 121, topIn + 26, ColorUtil.getRGB(Color.darkGray));
   }
 
   @Override
