@@ -20,16 +20,44 @@ import crazypants.enderio.base.network.IRemoteExec;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerCrafter extends ContainerEnderCap<EnderInventory, TileCrafter> implements IRemoteExec.IContainer {
+public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<EnderInventory, TileCrafter> implements IRemoteExec.IContainer {
+
+  public static class Normal extends ContainerCrafter<TileCrafter> {
+    public Normal(@Nonnull InventoryPlayer playerInv, @Nonnull TileCrafter te) {
+      super(playerInv, te);
+    }
+
+    @Override
+    protected void addSlots() {
+      super.addSlots();
+      addSlotToContainer(new EnderSlot(getItemHandler().getView(Type.UPGRADE), "cap", 6, 60));
+    }
+
+  }
+
+  public static class Simple extends ContainerCrafter<TileCrafter.Simple> {
+    public Simple(@Nonnull InventoryPlayer playerInv, @Nonnull TileCrafter.Simple te) {
+      super(playerInv, te);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  @Nonnull
+  public static <E extends TileCrafter> ContainerCrafter<E> create(@Nonnull InventoryPlayer playerInv, @Nonnull E te) {
+    if (te instanceof TileCrafter.Simple) {
+      return (ContainerCrafter<E>) new Simple(playerInv, (TileCrafter.Simple) te);
+    } else {
+      return (ContainerCrafter<E>) new Normal(playerInv, te);
+    }
+  }
 
   public static final int EXEC_SET_BUFFER = 0;
 
   private final List<DummySlot> dummySlots = new ArrayList<DummySlot>();
 
-  public ContainerCrafter(@Nonnull InventoryPlayer playerInv, @Nonnull TileCrafter te, EnumFacing facing) {
+  public ContainerCrafter(@Nonnull InventoryPlayer playerInv, @Nonnull T te) {
     super(playerInv, te.getInventory(), te);
   }
 
@@ -53,8 +81,6 @@ public class ContainerCrafter extends ContainerEnderCap<EnderInventory, TileCraf
         return false;
       }
     });
-
-    addSlotToContainer(new EnderSlot(getItemHandler().getView(Type.UPGRADE), "cap", 6, 60));
   }
 
   public void addCrafterSlots(@Nonnull GhostSlotHandler ghostSlots) {

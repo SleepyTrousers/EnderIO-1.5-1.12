@@ -21,14 +21,11 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
-public class GuiCrafter extends GuiContainerBaseEIO {
+public class GuiCrafter<T extends TileCrafter> extends GuiContainerBaseEIO {
 
   private static final int ID_REDSTONE_BUTTON = 139;
   private static final int ID_IO_MODE_BUTTON = 140;
   private static final int ID_BUFFER_BUTTON = 141;
-
-  private static final int REDSTONE_MODE_LEFT = 153;
-  private static final int REDSTONE_MODE_TOP = 8;
 
   private static final int POWERX = 10;
   private static final int POWERY = 14;
@@ -42,15 +39,19 @@ public class GuiCrafter extends GuiContainerBaseEIO {
 
   private final @Nonnull ToggleButton bufferSizeB;
 
-  public GuiCrafter(@Nonnull InventoryPlayer playerInv, @Nonnull TileCrafter te) {
-    super(new ContainerCrafter(playerInv, te, null), "crafter");
+  private final boolean isSimple;
+
+  public GuiCrafter(@Nonnull InventoryPlayer playerInv, @Nonnull T te) {
+    super(ContainerCrafter.create(playerInv, te), "crafter", "simple_crafter");
     this.te = te;
+    isSimple = te instanceof TileCrafter.Simple;
     xSize = getXSize();
 
     int x = getXSize() - 7 - 16;
     int y = 14;
 
     rsB = new RedstoneModeButton<TileCrafter>(this, ID_REDSTONE_BUTTON, x, y, te);
+    rsB.setIsVisible(!isSimple);
 
     y += 20;
     configOverlay = new GuiOverlayIoConfig<TileCrafter>(te);
@@ -63,6 +64,7 @@ public class GuiCrafter extends GuiContainerBaseEIO {
     bufferSizeB.setSelectedToolTip(EnderIO.lang.localize("gui.machine.bufferingstacks"));
     bufferSizeB.setUnselectedToolTip(EnderIO.lang.localize("gui.machine.bufferingsingle"));
     bufferSizeB.setSelected(te.isBufferStacks());
+    bufferSizeB.setIsVisible(!isSimple);
 
     addDrawingElement(new PowerBar(te.getEnergy(), this, POWERX, POWERY, POWER_HEIGHT));
     // recipeButton.setYOrigin(recipeButton.getBounds().y + 19);
@@ -111,7 +113,7 @@ public class GuiCrafter extends GuiContainerBaseEIO {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    bindGuiTexture();
+    bindGuiTexture(isSimple ? 1 : 0);
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 

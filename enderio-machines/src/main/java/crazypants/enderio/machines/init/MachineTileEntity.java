@@ -95,6 +95,7 @@ public enum MachineTileEntity implements IModTileEntity {
   TileCombustionGeneratorEnhanced(TileCombustionGenerator.Enhanced.class),
   TileImpulseHopper(TileImpulseHopper.class),
   TileCrafter(TileCrafter.class),
+  TileSimpleCrafter(TileCrafter.Simple.class),
 
   ;
 

@@ -12,6 +12,9 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 import com.mojang.authlib.GameProfile;
 
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.paint.IPaintable;
@@ -32,6 +35,20 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 @Storable
 public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implements IPaintable.IPaintableTileEntity {
 
+  public static class Simple extends TileCrafter {
+
+    public Simple() {
+      super(CapacitorKey.SIMPLE_CRAFTER_POWER_INTAKE, CapacitorKey.SIMPLE_CRAFTER_POWER_BUFFER, CapacitorKey.SIMPLE_CRAFTER_POWER_USE);
+      getInventory().getSlot(CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
+    }
+
+    @Override
+    public int getTicksPerCraft() {
+      return 20;
+    }
+
+  }
+
   public static final @Nonnull String OUTPUT_SLOT = "OUTPUT";
   public static final @Nonnull String INPUT_SLOT = "INPUT";
   public static final int BASE_TICK_RATE = 10;
@@ -50,7 +67,11 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
   private FakePlayerEIO playerInst;
 
   public TileCrafter() {
-    super(CapacitorKey.CRAFTER_POWER_INTAKE, CapacitorKey.CRAFTER_POWER_BUFFER, CapacitorKey.CRAFTER_POWER_USE);
+    this(CapacitorKey.CRAFTER_POWER_INTAKE, CapacitorKey.CRAFTER_POWER_BUFFER, CapacitorKey.CRAFTER_POWER_USE);
+  }
+
+  public TileCrafter(@Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
+    super(maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
     containerItems = new NNList<ItemStack>();
 
     for (int i = 0; i < 9; i++) {

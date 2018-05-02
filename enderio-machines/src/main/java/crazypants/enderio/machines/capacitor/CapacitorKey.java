@@ -153,6 +153,12 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   CRAFTER_POWER_CRAFT(MachineObject.block_crafter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
   CRAFTER_SPEED(MachineObject.block_crafter, CapacitorKeyType.SPEED, Scaler.Factory.QUADRATIC, 1),
 
+  SIMPLE_CRAFTER_POWER_INTAKE(MachineObject.block_crafter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 20),
+  SIMPLE_CRAFTER_POWER_BUFFER(MachineObject.block_crafter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 10000),
+  SIMPLE_CRAFTER_POWER_USE(MachineObject.block_crafter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
+  SIMPLE_CRAFTER_POWER_CRAFT(MachineObject.block_crafter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
+  SIMPLE_CRAFTER_SPEED(MachineObject.block_crafter, CapacitorKeyType.SPEED, Scaler.Factory.QUADRATIC, 1),
+
   //
   ;
 

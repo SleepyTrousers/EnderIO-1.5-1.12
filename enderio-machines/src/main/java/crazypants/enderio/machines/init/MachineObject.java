@@ -100,6 +100,7 @@ public enum MachineObject implements IModObject.Registerable {
 
   block_impulse_hopper(BlockImpulseHopper.class, MachineTileEntity.TileImpulseHopper),
   block_crafter(BlockCrafter.class, MachineTileEntity.TileCrafter),
+  block_simple_crafter(BlockCrafter.class, "create_simple", MachineTileEntity.TileSimpleCrafter),
 
   ;
 

@@ -10,6 +10,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -20,23 +21,43 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
+public class BlockCrafter<T extends TileCrafter> extends AbstractMachineBlock<TileCrafter>
+    implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  public static BlockCrafter create(@Nonnull IModObject modObject) {
-    BlockCrafter res = new BlockCrafter(modObject);
+  public static BlockCrafter<TileCrafter> create(@Nonnull IModObject modObject) {
+    BlockCrafter<TileCrafter> res = new BlockCrafter<TileCrafter>(modObject);
+    res.init();
+    return res;
+  }
+
+  public static BlockCrafter<TileCrafter.Simple> create_simple(@Nonnull IModObject modObject) {
+    BlockCrafter<TileCrafter.Simple> res = new BlockCrafter<TileCrafter.Simple>(modObject) {
+      @Override
+      @SideOnly(Side.CLIENT)
+      public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+    };
     res.init();
     return res;
   }
 
   protected BlockCrafter(@Nonnull IModObject modObject) {
     super(modObject);
+    setShape(mkShape(BlockFaceShape.SOLID));
   }
 
   @Override
   @Nullable
   public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1,
       @Nonnull TileCrafter te) {
-    return new ContainerCrafter(player.inventory, te, null);
+    return ContainerCrafter.create(player.inventory, te);
   }
 
   @Override

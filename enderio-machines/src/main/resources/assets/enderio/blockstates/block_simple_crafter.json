@@ -1,0 +1,29 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle":"enderio:blocks/block_simple_machine_bottom",
+            "top":"enderio:blocks/block_crafter_simple_top",
+            "bottom":"enderio:blocks/block_machine_bottom",
+            "side":"enderio:blocks/block_crafter_simple_side",
+            "back":"enderio:blocks/block_simple_machine_back",
+            "frontframe":"enderio:blocks/simple_crafter",
+            "front":"enderio:blocks/simple_crafter",
+            "fronton":"enderio:blocks/simple_crafter"
+        }
+    },
+    "variants":{
+        "render":{
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
+            "front":{                                             "submodel":{ "front":{ "model":"enderio:crafter_front", "y":180 }, "body":{ "model":"enderio:machine_body", "y":180 } } },
+            "front_east":{                                        "submodel":{ "front":{ "model":"enderio:crafter_front", "y":270 }, "body":{ "model":"enderio:machine_body", "y":270 } } },
+            "front_south":{                                       "submodel":{ "front":{ "model":"enderio:crafter_front", "y":0   }, "body":{ "model":"enderio:machine_body", "y":0   } } },
+            "front_west":{                                        "submodel":{ "front":{ "model":"enderio:crafter_front", "y":90  }, "body":{ "model":"enderio:machine_body", "y":90  } } },
+            "front_on":{       "textures":{ "front":"#fronton" }, "submodel":{ "front":{ "model":"enderio:crafter_front", "y":180 }, "body":{ "model":"enderio:machine_body", "y":180 } } },
+            "front_on_east":{  "textures":{ "front":"#fronton" }, "submodel":{ "front":{ "model":"enderio:crafter_front", "y":270 }, "body":{ "model":"enderio:machine_body", "y":270 } } },
+            "front_on_south":{ "textures":{ "front":"#fronton" }, "submodel":{ "front":{ "model":"enderio:crafter_front", "y":0   }, "body":{ "model":"enderio:machine_body", "y":0   } } },
+            "front_on_west":{  "textures":{ "front":"#fronton" }, "submodel":{ "front":{ "model":"enderio:crafter_front", "y":90  }, "body":{ "model":"enderio:machine_body", "y":90  } } }
+        }
+    }
+}
