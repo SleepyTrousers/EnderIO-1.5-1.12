@@ -113,6 +113,8 @@ public enum Lang implements ILang {
   GUI_IMPULSE_HOPPER_LOCKED(".gui.impulse_hopper.locked"),
   GUI_IMPULSE_HOPPER_UNLOCKED(".gui.impulse_hopper.unlocked"),
   GUI_IMPULSE_HOPPER_LOCKED_TOOLTIP(".gui.impulse_hopper.locked.tooltip"),
+  GUI_BUFFERING_STACK(".gui.crafter.buffering_stack"),
+  GUI_BUFFERING_SINGLE(".gui.crafter.buffering_single"),
 
   ;
 

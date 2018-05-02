@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCrafter<T extends TileCrafter> extends AbstractMachineBlock<TileCrafter>
+public class BlockCrafter<T extends TileCrafter> extends AbstractMachineBlock<T>
     implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockCrafter<TileCrafter> create(@Nonnull IModObject modObject) {
@@ -56,7 +56,7 @@ public class BlockCrafter<T extends TileCrafter> extends AbstractMachineBlock<Ti
   @Override
   @Nullable
   public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1,
-      @Nonnull TileCrafter te) {
+      @Nonnull T te) {
     return ContainerCrafter.create(player.inventory, te);
   }
 
@@ -64,8 +64,8 @@ public class BlockCrafter<T extends TileCrafter> extends AbstractMachineBlock<Ti
   @SideOnly(Side.CLIENT)
   @Nullable
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1,
-      @Nonnull TileCrafter te) {
-    return new GuiCrafter(player.inventory, te);
+      @Nonnull T te) {
+    return new GuiCrafter<T>(player.inventory, te);
   }
 
   @Override
@@ -85,6 +85,11 @@ public class BlockCrafter<T extends TileCrafter> extends AbstractMachineBlock<Ti
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileCrafter tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.getFacing());
+  }
+
+  @Override
+  public boolean shouldRedstoneConduitConnect(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing from) {
+    return true;
   }
 
 }

@@ -135,6 +135,9 @@ enderio.gui.impulse_hopper.locked=Output Locked
 enderio.gui.impulse_hopper.unlocked=Output Unlocked
 enderio.gui.impulse_hopper.locked.tooltip=Stops the impulse hopper from sorting items into the output slots if there are items in there already.
 
+enderio.gui.crafter.buffering_stack=Buffering Item Stacks
+enderio.gui.crafter.buffering_single=Buffering Single Items
+
 tile.block_alloy_smelter.name=Alloy Smelter
 tile.block_alloy_smelter.tooltip.detailed.line1=Used to create EnderIO alloys
 tile.block_alloy_smelter.tooltip.detailed.line2=Can also be used as a powered furnace
@@ -300,6 +303,10 @@ tile.block_wireless_charger.tooltip.detailed.line1=Charges items in nearby playe
 
 tile.block_impulse_hopper.name=Impulse Hopper
 tile.block_impulse_hopper.tooltip.detailed.line1=Takes inputed items and only outputs them if there is a full set of required items in the input.
+
+tile.block_crafter.name=Crafter
+
+tile.block_simple_crafter.name=Simple Crafter
 
 # Types. smelting=Alloy Smelter Speed,
 # area=all machines "area" attribute (e.g. farm),

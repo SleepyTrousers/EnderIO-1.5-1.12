@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
@@ -15,6 +14,7 @@ import crazypants.enderio.base.machine.gui.GuiButtonIoConfig;
 import crazypants.enderio.base.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.network.GuiPacket;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -61,8 +61,8 @@ public class GuiCrafter<T extends TileCrafter> extends GuiContainerBaseEIO {
 
     y += 20;
     bufferSizeB = new ToggleButton(this, ID_BUFFER_BUTTON, x, y, IconEIO.ITEM_SINGLE, IconEIO.ITEM_STACK);
-    bufferSizeB.setSelectedToolTip(EnderIO.lang.localize("gui.machine.bufferingstacks"));
-    bufferSizeB.setUnselectedToolTip(EnderIO.lang.localize("gui.machine.bufferingsingle"));
+    bufferSizeB.setSelectedToolTip(Lang.GUI_BUFFERING_STACK.get());
+    bufferSizeB.setUnselectedToolTip(Lang.GUI_BUFFERING_SINGLE.get());
     bufferSizeB.setSelected(te.isBufferStacks());
     bufferSizeB.setIsVisible(!isSimple);
 
