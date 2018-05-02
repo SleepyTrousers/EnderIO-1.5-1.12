@@ -145,7 +145,19 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   IMPULSE_HOPPER_POWER_BUFFER(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
   IMPULSE_HOPPER_POWER_USE(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 16),
   IMPULSE_HOPPER_POWER_USE_PER_ITEM(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
-  IMPULSE_HOPPER_SPEED(MachineObject.block_impulse_hopper, CapacitorKeyType.SPEED, Scaler.Factory.QUADRATIC, 1);
+  IMPULSE_HOPPER_SPEED(MachineObject.block_impulse_hopper, CapacitorKeyType.SPEED, Scaler.Factory.QUADRATIC, 1),
+
+  CRAFTER_POWER_INTAKE(MachineObject.block_crafter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
+  CRAFTER_POWER_BUFFER(MachineObject.block_crafter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  CRAFTER_POWER_USE(MachineObject.block_crafter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 10),
+  CRAFTER_POWER_CRAFT(MachineObject.block_crafter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
+  CRAFTER_SPEED(MachineObject.block_crafter, CapacitorKeyType.SPEED, Scaler.Factory.QUADRATIC, 1),
+
+  SIMPLE_CRAFTER_POWER_INTAKE(MachineObject.block_crafter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 20),
+  SIMPLE_CRAFTER_POWER_BUFFER(MachineObject.block_crafter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 10000),
+  SIMPLE_CRAFTER_POWER_USE(MachineObject.block_crafter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
+  SIMPLE_CRAFTER_POWER_CRAFT(MachineObject.block_crafter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
+  SIMPLE_CRAFTER_SPEED(MachineObject.block_crafter, CapacitorKeyType.SPEED, Scaler.Factory.QUADRATIC, 1),
 
   //
   ;

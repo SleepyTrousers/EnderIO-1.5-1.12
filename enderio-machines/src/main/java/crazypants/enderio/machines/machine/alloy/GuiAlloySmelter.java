@@ -5,8 +5,6 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.IIconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
@@ -19,6 +17,7 @@ import crazypants.enderio.machines.machine.alloy.TileAlloySmelter.Mode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
@@ -114,7 +113,7 @@ public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMac
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture(isSimple ? 1 : 0);
     int sx = guiLeft;
     int sy = guiTop;

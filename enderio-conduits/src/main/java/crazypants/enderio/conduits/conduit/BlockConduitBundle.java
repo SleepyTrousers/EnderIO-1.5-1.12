@@ -43,7 +43,6 @@ import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.EnderIOConduits;
 import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
-import crazypants.enderio.conduits.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.gui.ExternalConnectionContainer;
 import crazypants.enderio.conduits.gui.GuiExternalConnection;
@@ -866,17 +865,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
         CollidableComponent component = iter.next().component;
         if (component != null && component.conduitType == null && component.data != ConduitConnectorType.EXTERNAL) {
           iter.remove();
-        }
-      }
-
-      // This is an ugly special case, TODO fix this
-      for (RaytraceResult hit : results) {
-        IRedstoneConduit cond = con.getConduit(IRedstoneConduit.class);
-        CollidableComponent component = hit.component;
-        EnumFacing dir = component == null ? null : component.dir;
-        if (cond != null && component != null && dir != null && cond.getExternalConnections().contains(dir)
-            && component.data == InsulatedRedstoneConduit.COLOR_CONTROLLER_ID) {
-          minBB = component.bound;
         }
       }
 

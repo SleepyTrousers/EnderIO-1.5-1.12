@@ -14,8 +14,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.ITabPanel;
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.ArrayListMultimap;
@@ -31,7 +29,6 @@ import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
-import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.redstone.signals.SignalSource;
@@ -76,12 +73,21 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     ICONS.put(KEY_TRANSMISSION_ICON, TextureRegistry.registerTexture(KEY_TRANSMISSION_ICON));
   }
 
+  public static final TextureSupplier ICON_IN_OUT_KEY = TextureRegistry.registerTexture("blocks/item_conduit_in_out");
+  public static final TextureSupplier ICON_KEY_IN_OUT_BG = TextureRegistry.registerTexture("blocks/item_conduit_io_connector");
+  public static final TextureSupplier ICON_KEY_INPUT = TextureRegistry.registerTexture("blocks/item_conduit_input");
+  public static final TextureSupplier ICON_KEY_OUTPUT = TextureRegistry.registerTexture("blocks/item_conduit_output");
+  public static final TextureSupplier ICON_KEY_IN_OUT_OUT = TextureRegistry.registerTexture("blocks/item_conduit_in_out_out");
+  public static final TextureSupplier ICON_KEY_IN_OUT_IN = TextureRegistry.registerTexture("blocks/item_conduit_in_out_in");
+
   // --------------------------------- Class Start
   // -------------------------------------------
 
   private Map<EnumFacing, ConnectionMode> forcedConnections = new EnumMap<EnumFacing, ConnectionMode>(EnumFacing.class);
 
-  private Map<EnumFacing, DyeColor> signalColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
+  private Map<EnumFacing, DyeColor> inputSignalColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
+
+  private Map<EnumFacing, DyeColor> outputSignalColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
   private Map<EnumFacing, Boolean> signalStrengths = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
 
@@ -182,7 +188,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
       DyeColor col = DyeColor.getColorFromDye(player.getHeldItem(hand));
       if (col != null && res.component != null) {
-        setSignalColor(res.component.dir, col);
+        setInputSignalColor(res.component.dir, col);
         return true;
       } else if (ToolUtil.isToolEquipped(player, hand)) {
 
@@ -190,20 +196,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
           EnumFacing connDir = res.component.dir;
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
 
-          boolean colorHit = false;
-          if (all != null && containsExternalConnection(connDir)) {
-            for (RaytraceResult rtr : all) {
-              if (rtr != null && rtr.component != null && COLOR_CONTROLLER_ID.equals(rtr.component.data)) {
-                colorHit = true;
-              }
-            }
-          }
-
-          if (colorHit) {
-            setSignalColor(connDir, DyeColor.getNext(getSignalColor(connDir)));
-            return true;
-
-          } else if (connDir == null || connDir == faceHit) {
+          if (connDir == null || connDir == faceHit) {
 
             BlockPos pos = getBundle().getLocation().offset(faceHit);
             Block id = world.getBlockState(pos).getBlock();
@@ -279,8 +272,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   @Nonnull
-  public DyeColor getSignalColor(@Nonnull EnumFacing dir) {
-    DyeColor res = signalColors.get(dir);
+  public DyeColor getInputSignalColor(@Nonnull EnumFacing dir) {
+    DyeColor res = inputSignalColors.get(dir);
     if (res == null) {
       return DyeColor.RED;
     }
@@ -288,12 +281,33 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public void setSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
-    signalColors.put(dir, col);
+  public void setInputSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
+    inputSignalColors.put(dir, col);
     if (network != null) {
       network.updateInputsFromConduit(this, false);
     }
     setClientStateDirty();
+    collidablesDirty = true;
+  }
+
+  @Override
+  @Nonnull
+  public DyeColor getOutputSignalColor(@Nonnull EnumFacing dir) {
+    DyeColor res = outputSignalColors.get(dir);
+    if (res == null) {
+      return DyeColor.RED;
+    }
+    return res;
+  }
+
+  @Override
+  public void setOutputSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
+    outputSignalColors.put(dir, col);
+    if (network != null) {
+      network.updateInputsFromConduit(this, false);
+    }
+    setClientStateDirty();
+    collidablesDirty = true;
   }
 
   @Override
@@ -316,6 +330,17 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
         network.notifyNeigborsOfSignalUpdate();
       }
     }
+  }
+
+  @Override
+  public Set<EnumFacing> getInputConnections() {
+    Set<EnumFacing> inputs = new HashSet<EnumFacing>();
+    for (EnumFacing dir : EnumFacing.VALUES) {
+      if (getConnectionMode(dir).acceptsOutput()) {
+        inputs.add(dir);
+      }
+    }
+    return inputs;
   }
 
   @Override
@@ -359,7 +384,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Nonnull
   private BlockPos getPos() {
-    return bundle.getEntity().getPos();
+    return getBundle().getLocation();
   }
 
   @Override
@@ -395,7 +420,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return allSigs;
     }
 
-    DyeColor col = getSignalColor(side);
+    DyeColor col = getOutputSignalColor(side);
     Set<Signal> result = new HashSet<Signal>();
     for (Signal signal : allSigs) {
       if (signal.getColor() == col) {
@@ -419,7 +444,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       if (input > 1) { // need to degrade external signals by one as they
                        // enter
         BlockPos pos = getBundle().getLocation().offset(side);
-        Signal signal = new Signal(pos, side, input - 1, getSignalColor(side));
+        Signal signal = new Signal(pos, side, input - 1, getInputSignalColor(side));
         signals.add(signal);
       }
     }
@@ -505,12 +530,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return baseCollidables;
     }
 
-    BoundingBox bb = ConduitGeometryUtil.instance.createBoundsForConnectionController(key.dir, key.offset);
-    CollidableComponent cc = new CollidableComponent(IRedstoneConduit.class, bb, key.dir, COLOR_CONTROLLER_ID);
-
     List<CollidableComponent> result = new ArrayList<CollidableComponent>();
     result.addAll(baseCollidables);
-    result.add(cc);
 
     return result;
   }
@@ -534,9 +555,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return ConduitConfig.showState.get() && isActive() ? ICONS.get(KEY_INS_CORE_ON_ICON).get(TextureAtlasSprite.class)
           : ICONS.get(KEY_INS_CORE_OFF_ICON).get(TextureAtlasSprite.class);
     }
-    if (COLOR_CONTROLLER_ID.equals(component.data)) {
-      return IconUtil.instance.whiteTexture;
-    }
     return ICONS.get(KEY_INS_CONDUIT_ICON).get(TextureAtlasSprite.class);
   }
 
@@ -553,20 +571,50 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     return null;
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
-  protected boolean renderStub(@Nonnull EnumFacing dir) {
-    return false;
+  @Nonnull
+  public TextureAtlasSprite getTextureForInputMode() {
+    return ICON_KEY_INPUT.get(TextureAtlasSprite.class);
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  @Nonnull
+  public TextureAtlasSprite getTextureForInOutMode(boolean input) {
+    return input ? ICON_KEY_IN_OUT_IN.get(TextureAtlasSprite.class) : ICON_KEY_IN_OUT_OUT.get(TextureAtlasSprite.class);
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  @Nonnull
+  public TextureAtlasSprite getTextureForOutputMode() {
+    return ICON_KEY_OUTPUT.get(TextureAtlasSprite.class);
+  }
+
+  @SideOnly(Side.CLIENT)
+  public TextureAtlasSprite getTextureForInOutMode() {
+    return ICON_IN_OUT_KEY.get(TextureAtlasSprite.class);
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  @Nonnull
+  public TextureAtlasSprite getTextureForInOutBackground() {
+    return ICON_KEY_IN_OUT_BG.get(TextureAtlasSprite.class);
   }
 
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
-    setSignalColor(dir, DyeColor.values()[dataRoot.getShort("signalColor")]);
+    setInputSignalColor(dir, DyeColor.values()[dataRoot.getShort("signalColor")]);
+    setOutputSignalColor(dir, DyeColor.values()[dataRoot.getShort("outputSignalColor")]);
     setOutputStrength(dir, dataRoot.getBoolean("signalStrong"));
   }
 
   @Override
   protected void writeTypeSettingsToNbt(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
-    dataRoot.setShort("signalColor", (short) getSignalColor(dir).ordinal());
+    dataRoot.setShort("signalColor", (short) getInputSignalColor(dir).ordinal());
+    dataRoot.setShort("outputSignalColor", (short) getOutputSignalColor(dir).ordinal());
     dataRoot.setBoolean("signalStrong", isOutputStrong(dir));
   }
 
@@ -589,11 +637,11 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       nbtRoot.setByteArray("forcedConnections", modes);
     }
 
-    if (signalColors.size() >= 0) {
+    if (inputSignalColors.size() >= 0) {
       byte[] modes = new byte[6];
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
-        DyeColor col = signalColors.get(dir);
+        DyeColor col = inputSignalColors.get(dir);
         if (col != null) {
           modes[i] = (byte) col.ordinal();
         } else {
@@ -602,6 +650,21 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
         i++;
       }
       nbtRoot.setByteArray("signalColors", modes);
+    }
+
+    if (outputSignalColors.size() >= 0) {
+      byte[] modes = new byte[6];
+      int i = 0;
+      for (EnumFacing dir : EnumFacing.VALUES) {
+        DyeColor col = outputSignalColors.get(dir);
+        if (col != null) {
+          modes[i] = (byte) col.ordinal();
+        } else {
+          modes[i] = -1;
+        }
+        i++;
+      }
+      nbtRoot.setByteArray("outputSignalColors", modes);
     }
 
     if (signalStrengths.size() >= 0) {
@@ -637,13 +700,25 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       }
     }
 
-    signalColors.clear();
+    inputSignalColors.clear();
     byte[] cols = nbtRoot.getByteArray("signalColors");
     if (cols != null && cols.length == 6) {
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
         if (cols[i] >= 0) {
-          signalColors.put(dir, DyeColor.values()[cols[i]]);
+          inputSignalColors.put(dir, DyeColor.values()[cols[i]]);
+        }
+        i++;
+      }
+    }
+
+    outputSignalColors.clear();
+    byte[] outCols = nbtRoot.getByteArray("outputSignalColors");
+    if (outCols != null && outCols.length == 6) {
+      int i = 0;
+      for (EnumFacing dir : EnumFacing.VALUES) {
+        if (outCols[i] >= 0) {
+          outputSignalColors.put(dir, DyeColor.values()[outCols[i]]);
         }
         i++;
       }
@@ -672,7 +747,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     super.hashCodeForModelCaching(hashCodes);
-    hashCodes.addEnum(signalColors);
+    hashCodes.addEnum(inputSignalColors);
+    hashCodes.addEnum(outputSignalColors);
     if (ConduitConfig.showState.get() && isActive()) {
       hashCodes.add(1);
     }

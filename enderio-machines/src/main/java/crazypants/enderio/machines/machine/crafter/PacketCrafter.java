@@ -1,5 +1,6 @@
 package crazypants.enderio.machines.machine.crafter;
-/*package crazypants.enderio.base.machines.machine.crafter;
+
+import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
@@ -10,19 +11,19 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketCrafter extends MessageTileEntity<TileCrafter> implements IMessageHandler<PacketCrafter, IMessage> {
+public class PacketCrafter extends MessageTileEntity<TileCrafter> {
 
   private int slot;
-  private ItemStack stack;
+  private @Nonnull ItemStack stack = ItemStack.EMPTY;
 
   public PacketCrafter() {
   }
 
-  private PacketCrafter(TileCrafter tile) {
+  private PacketCrafter(@Nonnull TileCrafter tile) {
     super(tile);
   }
 
-  public static PacketCrafter setSlot(TileCrafter te, int slot, ItemStack stack) {
+  public static PacketCrafter setSlot(@Nonnull TileCrafter te, int slot, @Nonnull ItemStack stack) {
     PacketCrafter msg = new PacketCrafter(te);
     msg.slot = slot;
     msg.stack = stack;
@@ -44,19 +45,21 @@ public class PacketCrafter extends MessageTileEntity<TileCrafter> implements IMe
     ByteBufUtils.writeItemStack(buf, stack);
   }
 
-  @Override
-  public IMessage onMessage(PacketCrafter msg, MessageContext ctx) {
-    TileCrafter te = msg.getTileEntity(ctx.getServerHandler().player.world);
-    if (te != null) {
-      msg.execute(te);
+  public static class Handler implements IMessageHandler<PacketCrafter, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketCrafter msg, MessageContext ctx) {
+      TileCrafter te = msg.getTileEntity(ctx.getServerHandler().player.world);
+      if (te != null) {
+        msg.execute(te);
+      }
+      return null;
     }
-    return null;
   }
 
-  private void execute(TileCrafter te) {
+  private void execute(@Nonnull TileCrafter te) {
     te.craftingGrid.setInventorySlotContents(slot, stack);
     te.updateCraftingOutput();
   }
 
 }
-*/

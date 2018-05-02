@@ -11,6 +11,7 @@ import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machines.machine.buffer.BlockBuffer;
+import crazypants.enderio.machines.machine.crafter.BlockCrafter;
 import crazypants.enderio.machines.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machines.machine.farm.BlockFarmStation;
 import crazypants.enderio.machines.machine.generator.combustion.BlockCombustionGenerator;
@@ -98,6 +99,8 @@ public enum MachineObject implements IModObject.Registerable {
   block_dialing_device(BlockDialingDevice.class, MachineTileEntity.TileDialingDevice),
 
   block_impulse_hopper(BlockImpulseHopper.class, MachineTileEntity.TileImpulseHopper),
+  block_crafter(BlockCrafter.class, MachineTileEntity.TileCrafter),
+  block_simple_crafter(BlockCrafter.class, "create_simple", MachineTileEntity.TileSimpleCrafter),
 
   ;
 
