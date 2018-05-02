@@ -34,6 +34,7 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
 
   public static final @Nonnull String OUTPUT_SLOT = "OUTPUT";
   public static final @Nonnull String INPUT_SLOT = "INPUT";
+  public static final int BASE_TICK_RATE = 10;
 
   @Store
   DummyCraftingGrid craftingGrid = new DummyCraftingGrid();
@@ -97,21 +98,19 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
   }
 
   private boolean hasRequiredPower() {
-    return true; // getEnergyStored() >= getPowerUsePerCraft();
+    return getEnergy().getEnergyStored() >= getPowerUsePerCraft();
   }
 
-  // @Override
-  // public int getPowerUsePerTick() {
-  // return (int) Math.ceil(getPowerUsePerCraft() / (double) getTicksPerCraft());
-  // }
-
   protected int getPowerUsePerCraft() {
-    // TODO return Config.crafterRfPerCraft;
-    return 10;
+    return CapacitorKey.CRAFTER_POWER_CRAFT.get(getCapacitorData());
   }
 
   public int getTicksPerCraft() {
-    return 20;// Math.max(1, CapacitorKey.CRAFTER_TICKS.get(getCapacitorData()));
+    int impulseHopperSpeedScaled = CapacitorKey.CRAFTER_SPEED.get(getCapacitorData());
+    if (impulseHopperSpeedScaled > 0) {
+      return BASE_TICK_RATE / impulseHopperSpeedScaled;
+    }
+    return BASE_TICK_RATE;
   }
 
   static boolean compareDamageable(@Nonnull ItemStack stack, @Nonnull ItemStack req) {
@@ -229,6 +228,7 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
       }
     }
 
+    getEnergy().useEnergy(CapacitorKey.CRAFTER_POWER_CRAFT);
     return true;
   }
 
