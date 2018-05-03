@@ -1,5 +1,7 @@
 package crazypants.enderio.conduits.network;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IServerConduit;
@@ -19,8 +21,8 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> {
   public PacketConnectionMode() {
   }
 
-  public PacketConnectionMode(IConduit con, EnumFacing dir, ConnectionMode mode) {
-    super(con.getBundle().getEntity(), con);
+  public PacketConnectionMode(@Nonnull IConduit con, EnumFacing dir, ConnectionMode mode) {
+    super(con);
     this.dir = dir;
     this.mode = mode;
   }

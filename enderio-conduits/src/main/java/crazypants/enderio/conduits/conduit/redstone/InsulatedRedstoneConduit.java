@@ -333,24 +333,14 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public Set<EnumFacing> getInputConnections() {
-    Set<EnumFacing> inputs = new HashSet<EnumFacing>();
-    for (EnumFacing dir : EnumFacing.VALUES) {
-      if (getConnectionMode(dir).acceptsOutput()) {
-        inputs.add(dir);
-      }
-    }
-    return inputs;
-  }
-
-  @Override
   public boolean canConnectToExternal(@Nonnull EnumFacing direction, boolean ignoreConnectionState) {
     if (ignoreConnectionState) { // you can always force an external connection
       return true;
     }
-    if (forcedConnections.get(direction) == ConnectionMode.DISABLED) {
+    ConnectionMode forcedConnection = forcedConnections.get(direction);
+    if (forcedConnection == ConnectionMode.DISABLED) {
       return false;
-    } else if (forcedConnections.get(direction) == ConnectionMode.IN_OUT) {
+    } else if (forcedConnection == ConnectionMode.IN_OUT || forcedConnection == ConnectionMode.OUTPUT || forcedConnection == ConnectionMode.INPUT) {
       return true;
     }
     // Not set so figure it out
@@ -394,18 +384,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     } else {
       return 0;
     }
-  }
-
-  @Override
-  public void externalConnectionAdded(@Nonnull EnumFacing fromDirection) {
-    super.externalConnectionAdded(fromDirection);
-    setConnectionMode(fromDirection, ConnectionMode.IN_OUT);
-  }
-
-  @Override
-  public void externalConnectionRemoved(@Nonnull EnumFacing fromDirection) {
-    super.externalConnectionRemoved(fromDirection);
-    setConnectionMode(fromDirection, ConnectionMode.NOT_SET);
   }
 
   @Override
