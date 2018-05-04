@@ -17,6 +17,7 @@ import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
@@ -37,7 +38,7 @@ public class PowerBar implements IDrawingElement {
     @Override
     protected void updateText() {
       text.clear();
-      if (Celeb.C24.isOn()) {
+      if (Celeb.C24.isOn() && PersonalConfig.celebrateChristmas.get()) {
         final long currentTick = EnderIO.proxy.getTickCount() / 30;
         if (langLastTick != currentTick) {
           langLastTick = currentTick;
@@ -109,7 +110,7 @@ public class PowerBar implements IDrawingElement {
       paintCapacitorError(guiX0, guiY0);
     } else {
       paintPowerBar(guiX0, guiY0);
-      if (Celeb.C24.isOn()) {
+      if (Celeb.C24.isOn() && PersonalConfig.celebrateChristmas.get()) {
         paintC24Overlay(guiX0, guiY0);
       }
     }

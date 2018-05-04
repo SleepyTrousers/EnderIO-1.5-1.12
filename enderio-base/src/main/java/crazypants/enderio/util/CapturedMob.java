@@ -13,6 +13,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import info.loenwind.scheduler.Celeb;
@@ -280,10 +281,10 @@ public class CapturedMob { // TODO: DONE111
     }
 
     if (entity instanceof EntityWitherSkeleton) {
-      if (Celeb.H31.isOn() && Math.random() < 0.25) {
+      if (Celeb.H31.isOn() && Math.random() < 0.25 && PersonalConfig.celebrateReformation.get()) {
         entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
         ((EntityWitherSkeleton) entity).setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
-      } else if (Celeb.C06.isOn() && Math.random() < 0.25) {
+      } else if (Celeb.C06.isOn() && Math.random() < 0.25 && PersonalConfig.celebrateNicholas.get()) {
         entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.LEATHER_BOOTS : Items.STICK));
       } else if (Math.random() < 0.1) {
         entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModObject.itemDarkSteelSword.getItemNN()));

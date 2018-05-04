@@ -17,6 +17,7 @@ import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.IoConfigRenderer.SelectedFace;
@@ -213,17 +214,26 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
     return getXSize();
   }
 
+  static long[] LAYERSEED = null;
+
   @Override
   public void drawWorldBackground(int tint) {
-    if (Celeb.SPACE.isOn() && NullHelper.untrust(mc.world) != null) {
-      drawRect(0, 0, width, height, 0xFF000000);
+    if (Celeb.SPACE.isOn() && NullHelper.untrust(mc.world) != null && PersonalConfig.celebrateSpaceDay.get()) {
+      drawRect(0, 0, width, height, 0xDF000000);
 
       long tickCount = EnderIO.proxy.getTickCount();
       Random rand = new Random();
 
+      if (LAYERSEED == null) {
+        LAYERSEED = new long[10];
+        for (int i = 0; i < LAYERSEED.length; i++) {
+          LAYERSEED[i] = rand.nextLong();
+        }
+      }
+
       for (int layer = 1; layer < 10; layer++) {
         for (int star = 0; star < width - 1; star++) {
-          long seed = layer * layer + star + (tickCount / layer);
+          long seed = LAYERSEED[layer] + star + (tickCount / layer);
           rand.setSeed(seed);
           int y = rand.nextInt(height * 10 * layer / 3);
           int r = rand.nextInt(64);

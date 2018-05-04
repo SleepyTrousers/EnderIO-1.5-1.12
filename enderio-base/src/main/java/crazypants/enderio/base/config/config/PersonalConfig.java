@@ -40,4 +40,16 @@ public final class PersonalConfig {
   public static final IValue<Boolean> candyColors = F.make("candyColors", false, //
       "Should the annoying new candy colors be used for Fused Glass/Quartz?");
 
+  public static final IValue<Boolean> celebrateSpaceDay = F.make("celebrateSpaceDay", true, //
+      "Celebrate the International Space Day?");
+
+  public static final IValue<Boolean> celebrateChristmas = F.make("celebrateChristmas", true, //
+      "Celebrate Christmas?");
+
+  public static final IValue<Boolean> celebrateNicholas = F.make("celebrateNicholas", true, //
+      "Celebrate St Nicholas' Day?").sync();
+
+  public static final IValue<Boolean> celebrateReformation = F.make("celebrateReformation", true, //
+      "Celebrate Reformation Day?").sync(); // HL: yes, it's actually Halloween, but I'm a troll ;)
+
 }
