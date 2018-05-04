@@ -2822,12 +2822,12 @@
   <recipe name="Sagmill: Dilithium Ore" required="false">
     <sagmilling energy="3600">
       <input name="oreDilithium" />
-      <output name="dustDilitihum" amount="2"/>
+      <output name="dustDilithium" amount="2"/>
       <output name="minecraft:stone" chance="0.15" />
     </sagmilling>
   </recipe>
 
-    <recipe name="Sagmill: Tritanium Ore" required="false">
+  <recipe name="Sagmill: Tritanium Ore" required="false">
     <sagmilling energy="3600">
       <input name="oreTritanium" />
       <output name="dustTritanium" amount="2"/>
