@@ -1,15 +1,19 @@
 package crazypants.enderio.base.filter.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.filter.fluid.FluidFilter;
 import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.integration.jei.GhostSlotTarget;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -114,6 +118,15 @@ public class FluidFilterGui extends AbstractFilterGui {
   @Nonnull
   protected String getUnlocalisedNameForHeading() {
     return Lang.GUI_FLUID_FILTER.get();
+  }
+
+  @Override
+  public @Nonnull <I> List<GhostSlotTarget<I>> getTargetSlots() {
+    List<GhostSlotTarget<I>> targets = new ArrayList<>();
+    for (GhostSlot slot : getGhostSlotHandler().getGhostSlots()) {
+      targets.add(new GhostSlotTarget<I>(filter, slot, getGuiLeft(), getGuiTop(), this));
+    }
+    return targets;
   }
 
 }

@@ -34,4 +34,7 @@ public interface IFilter {
 
   void readFromByteBuf(@Nonnull ByteBuf buf);
 
+  default void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
+  }
+
 }

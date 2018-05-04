@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.filter.gui.BasicItemFilterGui;
+import crazypants.enderio.base.filter.gui.AbstractFilterGui;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientHelper;
@@ -50,14 +50,14 @@ public class JeiPlugin implements IModPlugin {
     InfinityRecipeCategory.registerExtras(registry);
 
     registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
-    registry.addGhostIngredientHandler(BasicItemFilterGui.class, new GhostIngredientHandlerEnderIO());
+    registry.addGhostIngredientHandler(AbstractFilterGui.class, new GhostIngredientHandlerEnderIO());
 
     if (!JeiAccessor.ALTERNATIVES.isEmpty()) {
       // These are lookups for the outputs, the real recipes with the same input create a different oredicted variant of the output item.
       registry.addRecipes(JeiAccessor.ALTERNATIVES, VanillaRecipeCategoryUid.CRAFTING);
       Log.debug("Provided " + JeiAccessor.ALTERNATIVES.size() + " synthetic crafting recipes to JEI");
     }
-    
+
     registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ModObject.itemEnderface.getItemNN()));
   }
 

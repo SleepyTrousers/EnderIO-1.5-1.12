@@ -199,6 +199,7 @@ public class BasicItemFilterGui extends AbstractFilterGui {
     }
   }
 
+  @Override
   public @Nonnull <I> List<GhostSlotTarget<I>> getTargetSlots() {
     List<GhostSlotTarget<I>> targets = new ArrayList<>();
     for (GhostSlot slot : getGhostSlotHandler().getGhostSlots()) {

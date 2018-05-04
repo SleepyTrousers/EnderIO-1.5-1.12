@@ -3,6 +3,8 @@ package crazypants.enderio.base.filter.gui;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -13,6 +15,7 @@ import com.enderio.core.client.render.ColorUtil;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ModItemFilter;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.integration.jei.GhostSlotTarget;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -145,6 +148,15 @@ public class ModItemFilterGui extends AbstractFilterGui {
   @Nonnull
   protected String getUnlocalisedNameForHeading() {
     return Lang.GUI_MOD_ITEM_FILTER.get();
+  }
+
+  @Override
+  public @Nonnull <I> List<GhostSlotTarget<I>> getTargetSlots() {
+    List<GhostSlotTarget<I>> targets = new ArrayList<>();
+    for (int i = 0; i < inputBounds.length; i++) {
+      targets.add(new GhostSlotTarget<I>(filter, i, getGuiLeft(), getGuiTop(), inputBounds[i].x, inputBounds[i].y, this));
+    }
+    return targets;
   }
 
 }
