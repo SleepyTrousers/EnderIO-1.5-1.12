@@ -430,7 +430,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     HashSet<Signal> signals = new HashSet<Signal>();
     if (acceptSignalsForDir(side)) {
       int input = getExternalPowerLevel(side);
-      if (input > 1) {
+      if (input > 0) {
         BlockPos pos = getBundle().getLocation().offset(side);
         Signal signal = new Signal(pos, side, input, getInputSignalColor(side));
         signals.add(signal);
