@@ -95,6 +95,7 @@ allprojects {
         maven { url = "http://mod-buildcraft.com/maven/" }
         maven { url = "https://maven.latmod.com" } // FTBLib
         maven { url = "http://maven.covers1624.net/" } // CoFHCore
+        maven { url = "http://cc.crzd.me/maven/" } // ComputerCraft
         ivy {
             url "http://ae-mod.info/builds"
             layout "pattern", {
@@ -289,28 +290,16 @@ task copyJars(type: Copy, dependsOn: subprojects.tasks['signJar']) {
 }
 build.dependsOn copyJars
 
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
 
-publishing {
-  tasks.publish.dependsOn 'build'
-  publications {
-    buildprojects.each { subproject ->
-      "${subproject.name}"(MavenPublication) {
-        from subproject.components.java
-        
-        artifact subproject.sourceJar
-        artifact subproject.apiJar
-        
-        artifactId getPrettyName(subproject) 
-      }
+uploadArchives {
+    repositories {
+        if (project.hasProperty('mavenDir')) {
+            mavenDeployer {
+                repository(url: mavenDir)
+            }
+        }
     }
-  }
-
-  repositories {
-    if (project.hasProperty('mavendir')) {
-      maven { url mavendir }
-    }
-  }
 }
 
 def release = System.getenv("RELEASE") != null &&
@@ -360,6 +349,7 @@ curseforge {
             optionalLibrary 'botania'
             optionalLibrary 'buildcraft'
             optionalLibrary 'chisels-bits'
+            optionalLibrary 'computercraft'
             optionalLibrary 'extra-utilities'
             optionalLibrary 'immersive-engineering'
             optionalLibrary 'industrial-craft'

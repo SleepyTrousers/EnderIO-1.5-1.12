@@ -40,9 +40,9 @@ import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.config.ConduitConfig;
-import crazypants.enderio.conduits.gui.GuiExternalConnection;
 import crazypants.enderio.conduits.gui.RedstoneSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
+import dan200.computercraft.api.ComputerCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.state.IBlockState;
@@ -56,6 +56,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -98,6 +100,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   private int activeUpdateCooldown = 0;
 
   private boolean activeDirty = false;
+
+  private boolean connectionsDirty = false;
 
   @SuppressWarnings("unused")
   public InsulatedRedstoneConduit() {
@@ -146,6 +150,13 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
         Prof.start(world, "updateActiveState");
         updateActiveState();
         Prof.stop(world);
+      }
+
+      if (connectionsDirty) {
+        if (hasExternalConnections()) {
+          network.updateInputsFromConduit(this, false);
+        }
+        connectionsDirty = false;
       }
 
     }
@@ -333,28 +344,18 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public Set<EnumFacing> getInputConnections() {
-    Set<EnumFacing> inputs = new HashSet<EnumFacing>();
-    for (EnumFacing dir : EnumFacing.VALUES) {
-      if (getConnectionMode(dir).acceptsOutput()) {
-        inputs.add(dir);
-      }
-    }
-    return inputs;
-  }
-
-  @Override
   public boolean canConnectToExternal(@Nonnull EnumFacing direction, boolean ignoreConnectionState) {
     if (ignoreConnectionState) { // you can always force an external connection
       return true;
     }
-    if (forcedConnections.get(direction) == ConnectionMode.DISABLED) {
+    ConnectionMode forcedConnection = forcedConnections.get(direction);
+    if (forcedConnection == ConnectionMode.DISABLED) {
       return false;
-    } else if (forcedConnections.get(direction) == ConnectionMode.IN_OUT) {
+    } else if (forcedConnection == ConnectionMode.IN_OUT || forcedConnection == ConnectionMode.OUTPUT || forcedConnection == ConnectionMode.INPUT) {
       return true;
     }
     // Not set so figure it out
-    World world = getBundle().getEntity().getWorld();
+    World world = getBundle().getBundleworld();
     BlockPos pos = getBundle().getLocation().offset(direction);
     IBlockState bs = world.getBlockState(pos);
     if (bs.getBlock() == ConduitRegistry.getConduitModObjectNN().getBlock()) {
@@ -397,18 +398,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public void externalConnectionAdded(@Nonnull EnumFacing fromDirection) {
-    super.externalConnectionAdded(fromDirection);
-    setConnectionMode(fromDirection, ConnectionMode.IN_OUT);
-  }
-
-  @Override
-  public void externalConnectionRemoved(@Nonnull EnumFacing fromDirection) {
-    super.externalConnectionRemoved(fromDirection);
-    setConnectionMode(fromDirection, ConnectionMode.NOT_SET);
-  }
-
-  @Override
   @Nonnull
   public Collection<Signal> getNetworkOutputs(@Nonnull EnumFacing side) {
     ConnectionMode mode = getConnectionMode(side);
@@ -441,11 +430,22 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     HashSet<Signal> signals = new HashSet<Signal>();
     if (acceptSignalsForDir(side)) {
       int input = getExternalPowerLevel(side);
-      if (input > 1) { // need to degrade external signals by one as they
-                       // enter
+      if (input > 0) {
         BlockPos pos = getBundle().getLocation().offset(side);
-        Signal signal = new Signal(pos, side, input - 1, getInputSignalColor(side));
+        Signal signal = new Signal(pos, side, input, getInputSignalColor(side));
         signals.add(signal);
+      }
+
+      if (Loader.isModLoaded("computercraft")) {
+        BlockPos loc = getBundle().getLocation().offset(side);
+        int bundledInput = getComputerCraftBundledPowerLevel(side);
+        if (bundledInput >= 0) {
+          for (int i = 0; i < 16; i++) {
+            int color = bundledInput >>> i & 1;
+            Signal signal = new Signal(loc, side, color == 1 ? 16 : 0, DyeColor.fromIndex(Math.max(0, 15 - i)));
+            signals.add(signal);
+          }
+        }
       }
     }
 
@@ -464,7 +464,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   protected int getExternalPowerLevel(@Nonnull EnumFacing dir) {
-    World world = getBundle().getEntity().getWorld();
+    World world = getBundle().getBundleworld();
     BlockPos loc = getBundle().getLocation().offset(dir);
     int res = 0;
 
@@ -486,6 +486,18 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     return res;
   }
 
+  @Optional.Method(modid = "computercraft")
+  protected int getComputerCraftBundledPowerLevel(EnumFacing dir) {
+    World world = getBundle().getBundleworld();
+    BlockPos pos = getBundle().getLocation().offset(dir);
+
+    if (world.isBlockLoaded(pos)) {
+      return ComputerCraftAPI.getBundledRedstoneOutput(world, pos, dir.getOpposite());
+    } else {
+      return -1;
+    }
+  }
+
   @Override
   @Nonnull
   public ConnectionMode getConnectionMode(@Nonnull EnumFacing dir) {
@@ -498,7 +510,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public boolean onNeighborBlockChange(@Nonnull Block blockId) {
-    World world = getBundle().getEntity().getWorld();
+    World world = getBundle().getBundleworld();
     if (world.isRemote) {
       return false;
     }
@@ -507,9 +519,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return false;
     }
     if (blockId != ConduitRegistry.getConduitModObjectNN().getBlock()) {
-      if (hasExternalConnections()) {
-        network.updateInputsFromConduit(this, false);
-      }
+      connectionsDirty = true;
     }
     return res;
   }
@@ -763,7 +773,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Nonnull
   @Override
   public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    return new RedstoneSettings((GuiExternalConnection) gui, con);
+    return new RedstoneSettings(gui, con);
   }
 
   @Override

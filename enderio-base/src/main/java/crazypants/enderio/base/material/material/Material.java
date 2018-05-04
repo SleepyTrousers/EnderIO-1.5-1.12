@@ -84,6 +84,9 @@ public enum Material {
   UNSOULED_MACHINE_CHASSIS("unsouledMachineChassi"),
 
   GUARDIAN_DIODE("skullGuardianDiode", "skullGuardianDiode"),
+  GRINDING_BALL_SIGNALUM("grindingBallSignalum"),
+  GRINDING_BALL_ENDERIUM("grindingBallEnderium"),
+  GRINDING_BALL_LUMIUM("grindingBallLumium"),
 
   ;
 

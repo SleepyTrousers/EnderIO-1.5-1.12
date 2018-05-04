@@ -72,7 +72,7 @@ public class ContainerFilter extends ContainerEnderCap<EnderInventory, TileEntit
   @Override
   @Nonnull
   public ItemStack slotClick(int slotId, int dragType, @Nonnull ClickType clickTypeIn, @Nonnull EntityPlayer playerIn) {
-    if (slotId == 27 + playerIn.inventory.currentItem) {
+    if (getTileEntity() == null && slotId == 27 + playerIn.inventory.currentItem) {
       return ItemStack.EMPTY;
     }
     return super.slotClick(slotId, dragType, clickTypeIn, playerIn);

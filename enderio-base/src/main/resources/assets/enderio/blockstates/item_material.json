@@ -350,6 +350,21 @@
         "textures": {
             "layer0": "enderio:items/item_material_skull_guardian_diode"
         }
+      },
+      "grinding_ball_signalum":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_grinding_ball_signalum"
+        }
+      },
+      "grinding_ball_enderium":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_grinding_ball_enderium"
+        }
+      },
+      "grinding_ball_lumium":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_grinding_ball_lumium"
+        }
       }
     }
   }

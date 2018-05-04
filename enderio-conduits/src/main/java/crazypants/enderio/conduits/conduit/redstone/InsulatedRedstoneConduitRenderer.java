@@ -47,14 +47,14 @@ public class InsulatedRedstoneConduitRenderer extends DefaultConduitRenderer {
     TextureAtlasSprite outTex = null;
     boolean render = true;
     if (conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
-      inTex = pc.getTextureForInputMode();
+      inTex = pc.getTextureForOutputMode();
       inChannel = pc.getOutputSignalColor(dir);
     } else if (conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
-      outTex = pc.getTextureForOutputMode();
+      outTex = pc.getTextureForInputMode();
       outChannel = pc.getInputSignalColor(dir);
     } else if (conduit.getConnectionMode(dir) == ConnectionMode.IN_OUT) {
-      inTex = pc.getTextureForInOutMode(true);
-      outTex = pc.getTextureForInOutMode(false);
+      inTex = pc.getTextureForInOutMode(false);
+      outTex = pc.getTextureForInOutMode(true);
       inChannel = pc.getOutputSignalColor(dir);
       outChannel = pc.getInputSignalColor(dir);
     } else {

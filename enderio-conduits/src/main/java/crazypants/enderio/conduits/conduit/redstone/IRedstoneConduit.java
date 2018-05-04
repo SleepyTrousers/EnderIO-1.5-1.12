@@ -53,8 +53,6 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
 
   int getRedstoneSignalForColor(@Nonnull DyeColor col);
 
-  Set<EnumFacing> getInputConnections();
-
   DyeColor getOutputSignalColor(@Nonnull EnumFacing dir);
 
   void setOutputSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);

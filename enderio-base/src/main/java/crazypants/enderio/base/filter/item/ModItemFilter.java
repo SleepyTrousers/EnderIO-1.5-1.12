@@ -79,6 +79,11 @@ public class ModItemFilter implements IItemFilter {
   }
 
   @Override
+  public void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
+    setMod(slot, stack);
+  }
+
+  @Override
   public boolean isSticky() {
     return false;
   }

@@ -78,7 +78,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     updatingNetwork = false;
 
     // Then ask them what inputs they have now
-    Set<EnumFacing> externalConnections = con.getInputConnections();
+    Set<EnumFacing> externalConnections = con.getExternalConnections();
     for (EnumFacing side : EnumFacing.values()) {
       if (externalConnections.contains(side)) {
         updateInputsForSource(con, new SignalSource(pos, side));

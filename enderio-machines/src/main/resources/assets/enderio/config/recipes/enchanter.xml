@@ -248,4 +248,49 @@ Draconic Evolution Enchant, Enchant_Reaper
     </enchanting>
   </recipe>
 
+<!-- Evil Craft -->
+  <recipe name="Enchanter: evilcraft:life_stealing" required="false" disabled="false">
+    <enchanting>
+      <input name="evilcraft:blood_orb:1" amount="2"/>
+      <enchantment name="evilcraft:life_stealing" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+
+  <recipe name="Enchanter: evilcraft:poison_tip" required="false" disabled="false">
+    <enchanting>
+      <input name="evilcraft:poison_sac" amount="4"/>
+      <enchantment name="evilcraft:poison_tip" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+
+  <recipe name="Enchanter: evilcraft:unusing" required="false" disabled="false">
+    <enchanting>
+      <input name="evilcraft:blood_waxed_coal" amount="8"/>
+      <enchantment name="evilcraft:unusing" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+
+<!-- Astral Sorcery -->
+  <recipe name="Enchanter: astralsorcery:enchantment.as.nightvision" required="false" disabled="false">
+    <enchanting>
+      <input name="dustAstralStarmetal" amount="8"/>
+      <enchantment name="astralsorcery:enchantment.as.nightvision" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+
+<!-- AbyssalCraft -->
+  <recipe name="Enchanter: abyssalcraft:iron_wall" required="false" disabled="false">
+    <enchanting>
+      <input name="minecraft:iron_bars" amount="32"/>
+      <enchantment name="abyssalcraft:iron_wall" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+
+  <recipe name="Enchanter: abyssalcraft:light_pierce" required="false" disabled="false">
+    <enchanting>
+      <input name="abyssalcraft:shadowgem" amount="1"/>
+      <enchantment name="abyssalcraft:light_pierce" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+
 </enderio:recipes>

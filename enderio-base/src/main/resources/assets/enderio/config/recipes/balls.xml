@@ -50,11 +50,11 @@ XML editor will display that as tooltips when editing this file.
   <item name="itemFlint"/>
 </grindingball>
 
-<grindingball name="Dark Steel Ball" grinding="1.4" chance="2.00" power="0.7" durability="125000" >
+<grindingball name="Dark Steel Ball" grinding="1.35" chance="2.00" power="0.7" durability="125000" >
   <item name="ballDarkSteel"/>
 </grindingball>
 
-<grindingball name="Electrical Steel Ball" grinding="1.2" chance="1.00" power="0.35" durability="40000" >
+<grindingball name="Electrical Steel Ball" grinding="1.2" chance="1.65" power="0.8" durability="40000" >
   <item name="ballElectricalSteel"/>
 </grindingball>
 
@@ -66,24 +66,36 @@ XML editor will display that as tooltips when editing this file.
   <item name="ballVibrantAlloy"/>
 </grindingball>
 
-<grindingball name="Redstone Alloy Ball" grinding="1.00" chance="1.00" power="0.6" durability="30000" >
+<grindingball name="Redstone Alloy Ball" grinding="1.00" chance="1.00" power="0.35" durability="30000" >
   <item name="ballRedstoneAlloy"/>
 </grindingball>
 
-<grindingball name="Conductive Iron Ball" grinding="1.00" chance="1.00" power="0.5" durability="40000" >
+<grindingball name="Conductive Iron Ball" grinding="1.35" chance="1.00" power="1.0" durability="40000" >
   <item name="ballConductiveIron"/>
 </grindingball>
 
-<grindingball name="Pulsating Iron Ball" grinding="1.0" chance="2.00" power="1.0" durability="100000" >
+<grindingball name="Pulsating Iron Ball" grinding="1.0" chance="1.85" power="1.0" durability="100000" >
   <item name="ballPulsatingIron"/>
 </grindingball>
 
-<grindingball name="Soularium Ball" grinding="1.2" chance="2.5" power="0.9" durability="80000" >
+<grindingball name="Soularium Ball" grinding="1.2" chance="2.15" power="0.9" durability="80000" >
   <item name="ballSoularium"/>
 </grindingball>
 
-<grindingball name="End Steel Ball" grinding="1.5" chance="2.3" power="0.6" durability="75000" >
+<grindingball name="End Steel Ball" grinding="1.4" chance="2.4" power="0.7" durability="75000" >
   <item name="ballEndSteel"/>
+</grindingball>
+
+<grindingball name="Signalum Ball" grinding="1.2" chance="1.65" power="0.35" durability="100000" >
+  <item name="SIGNALUM_BALL"/>
+</grindingball>
+
+<grindingball name="Enderium Ball" grinding="1.65" chance="1.45" power="1.25" durability="120000" >
+  <item name="ENDERIUM_BALL"/>
+</grindingball>
+
+<grindingball name="Lumium Ball" grinding="1.1" chance="2.15" power="0.9" durability="100000" >
+  <item name="LUMIUM_BALL"/>
 </grindingball>
 
   <recipe name="Dark Steel Ball Crafting" required="true">
@@ -415,6 +427,119 @@ XML editor will display that as tooltips when editing this file.
     <casting>
       <input name="ingotGold" amount="2"/>
       <cast name="SOULARIUM_BALL" consumed="true"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+
+  <!-- Thermal Grinding Balls -->
+
+  <recipe name="Signalum Ball Crafting" required="false">
+    <crafting>
+      <grid>
+        <item/><item name="ingotSignalum"/><item/>
+        <item name="ingotSignalum"/><item name="ingotSignalum"/><item name="ingotSignalum"/>
+        <item/><item name="ingotSignalum"/><item/>
+      </grid>
+      <output name="SIGNALUM_BALL" amount="24"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Signalum Casting" required="false">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="nuggetSignalum" amount="1.875"/><!-- 30mB -->
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="SIGNALUM_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Signalum Ball Smelting" required="false">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="SIGNALUM_BALL" amount="24"/>
+      <output name="nuggetSignalum" amount="5"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Signalum Ball Reverse Casting" required="false">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="SIGNALUM_BALL" consumed="true"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Enderium Ball Crafting" required="false">
+    <crafting>
+      <grid>
+        <item/><item name="ingotEnderium"/><item/>
+        <item name="ingotEnderium"/><item name="ingotEnderium"/><item name="ingotEnderium"/>
+        <item/><item name="ingotEnderium"/><item/>
+      </grid>
+      <output name="ENDERIUM_BALL" amount="24"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Enderium Casting" required="false">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="nuggetEnderium" amount="1.875"/><!-- 30mB -->
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="ENDERIUM_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Enderium Ball Smelting" required="false">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="ENDERIUM_BALL" amount="24"/>
+      <output name="nuggetEnderium" amount="5"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Enderium Ball Reverse Casting" required="false">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="ENDERIUM_BALL" consumed="true"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Lumium Ball Crafting" required="false">
+    <crafting>
+      <grid>
+        <item/><item name="ingotLumium"/><item/>
+        <item name="ingotLumium"/><item name="ingotLumium"/><item name="ingotLumium"/>
+        <item/><item name="ingotLumium"/><item/>
+      </grid>
+      <output name="LUMIUM_BALL" amount="24"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Lumium Casting" required="false">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="nuggetLumium" amount="1.875"/><!-- 30mB -->
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="LUMIUM_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Lumium Ball Smelting" required="false">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="LUMIUM_BALL" amount="24"/>
+      <output name="nuggetLumium" amount="5"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Lumium Ball Reverse Casting" required="false">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="LUMIUM_BALL" consumed="true"/>
       <output name="tconstruct:cast_custom:2"/>
     </casting>
   </recipe>

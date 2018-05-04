@@ -155,6 +155,11 @@ public class FluidFilter implements IFluidFilter {
   }
 
   @Override
+  public void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
+    setFluid(slot, stack);
+  }
+
+  @Override
   public void writeToByteBuf(@Nonnull ByteBuf buf) {
     NBTTagCompound root = new NBTTagCompound();
     writeToNBT(root);
