@@ -67,7 +67,7 @@ public final class PersonalConfig {
 
   // GUI Branding
 
-  public static final IValue<Boolean> GUIBrandingEnabled = F.make("GUIBrandingEnabled", false, //
+  public static final IValue<Boolean> GUIBrandingEnabled = F.make("GUIBrandingEnabled", true, //
       "Should the GUI background be branded?");
 
   public static final IValue<String> GUIBrandingTexture = F.make("GUIBrandingTexture", EnderIO.DOMAIN + ":textures/items/item_enderface_none.png", //
