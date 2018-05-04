@@ -178,4 +178,8 @@ XML editor will display that as tooltips when editing this file.
   <alias name="COUNTING_FILTER" item="enderio:item_basic_filter_upgrade:2" />
   <alias name="INDUSTRIAL_INSULATION" item="enderio:block_industrial_insulation" />
 
+  <alias name="SIGNALUM_BALL" item="itemGrindingBallSignalum" />
+  <alias name="ENDERIUM_BALL" item="itemGrindingBallEnderium" />
+  <alias name="LUMIUM_BALL" item="itemGrindingBallLumium" />
+
 </enderio:recipes>
