@@ -74,15 +74,15 @@ XML editor will display that as tooltips when editing this file.
   <item name="ballConductiveIron"/>
 </grindingball>
 
-<grindingball name="Pulsating Iron Ball" grinding="1.0" chance="2.00" power="1.0" durability="100000" >
+<grindingball name="Pulsating Iron Ball" grinding="1.0" chance="1.85" power="1.0" durability="100000" >
   <item name="ballPulsatingIron"/>
 </grindingball>
 
-<grindingball name="Soularium Ball" grinding="1.2" chance="2.25" power="0.9" durability="80000" >
+<grindingball name="Soularium Ball" grinding="1.2" chance="2.15" power="0.9" durability="80000" >
   <item name="ballSoularium"/>
 </grindingball>
 
-<grindingball name="End Steel Ball" grinding="1.5" chance="2.5" power="0.7" durability="75000" >
+<grindingball name="End Steel Ball" grinding="1.4" chance="2.4" power="0.7" durability="75000" >
   <item name="ballEndSteel"/>
 </grindingball>
 
@@ -94,7 +94,7 @@ XML editor will display that as tooltips when editing this file.
   <item name="ENDERIUM_BALL"/>
 </grindingball>
 
-<grindingball name="Lumium Ball" grinding="1.1" chance="2.4" power="0.9" durability="100000" >
+<grindingball name="Lumium Ball" grinding="1.1" chance="2.15" power="0.9" durability="100000" >
   <item name="LUMIUM_BALL"/>
 </grindingball>
 
