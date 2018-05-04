@@ -644,9 +644,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Crafter" required="true" disabled="false">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron"/><item name="oredict:workbench" /><item name="ingotIron"/>
+        <item name="itemSilicon"/><item name="itemSilicon" /><item name="itemSilicon"/>
         <item name="ingotIron"/><item name="CHASSIS" /><item name="ingotIron"/>
-        <item name="GEAR_IRON" /><item name="ZOMBIE_CONTROLLER" /><item name="GEAR_IRON" />
+        <item name="GEAR_IRON" /><item name="oredict:workbench" /><item name="GEAR_IRON" />
       </grid>
       <output name="enderio:block_crafter" />
     </crafting>
@@ -655,9 +655,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="SimpleCrafter" required="true" disabled="false">
     <crafting>
       <grid size="3x3">
-        <item name="oredict:cobblestone"/><item name="oredict:workbench" /><item name="oredict:cobblestone"/>
-        <item name="oredict:cobblestone"/><item name="SIMPLE_CHASSIS" /><item name="oredict:cobblestone"/>
-        <item name="GEAR_STONE" /><item name="ingotIron" /><item name="GEAR_STONE" />
+        <item name="itemSilicon"/><item name="itemSilicon" /><item name="itemSilicon"/>
+        <item name="ingotIron"/><item name="SIMPLE_CHASSIS" /><item name="ingotIron"/>
+        <item name="GEAR_STONE" /><item name="oredict:workbench" /><item name="GEAR_STONE" />
       </grid>
       <output name="enderio:block_simple_crafter" />
     </crafting>
@@ -668,7 +668,7 @@ XML editor will display that as tooltips when editing this file.
       <grid size="3x3">
         <item /><item name="enderio:block_simple_crafter" /><item />
         <item /><item name="CHASSIS" /><item />
-        <item name="GEAR_IRON" /><item name="ZOMBIE_CONTROLLER" /><item name="GEAR_IRON" />
+        <item name="GEAR_IRON" /><item name="oredict:workbench" /><item name="GEAR_IRON" />
       </grid>
       <output name="enderio:block_crafter" />
     </crafting>
