@@ -7,6 +7,8 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
@@ -248,7 +250,24 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
       }
       return;
     }
+
     super.drawWorldBackground(tint);
+
+    if (PersonalConfig.GUIBrandingEnabled.get()) {
+      GlStateManager.color(1.0F, 1.0F, 1.0F, PersonalConfig.GUIBrandingAlpha.get());
+      RenderUtil.bindTexture(PersonalConfig.GUIBrandingTexture.get());
+      GlStateManager.enableBlend();
+      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GlStateManager.enableAlpha();
+      GlStateManager.alphaFunc(GL11.GL_GREATER, 0.01F);
+
+      int size = Math.min(width, height) / PersonalConfig.GUIBrandingTiles.get();
+
+      drawModalRectWithCustomSizedTexture(0, 0, 0, 0, width, height, size, size);
+
+      GlStateManager.disableAlpha();
+      GlStateManager.disableBlend();
+    }
   }
 
 }
