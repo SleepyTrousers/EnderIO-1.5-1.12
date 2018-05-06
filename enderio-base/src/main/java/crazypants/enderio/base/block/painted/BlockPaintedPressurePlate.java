@@ -16,6 +16,7 @@ import crazypants.enderio.base.block.painted.BlockItemPaintedBlock.INamedSubBloc
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.base.material.glass.BlockFusedQuartzBase;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
@@ -66,8 +67,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.base.init.ModObject.blockFusedQuartz;
 
 public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock, IRenderMapper.IBlockRenderMapper.IRenderLayerAware,
@@ -502,7 +501,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
       @Nullable BlockRenderLayer blockLayer, @Nonnull QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
     if ((blockLayer == null || PaintUtil.canRenderInLayer(paintSource, blockLayer))
-        && (paintSource == null || paintSource.getBlock() != blockFusedQuartz.getBlock())) {
+        && (paintSource == null || !(paintSource.getBlock() instanceof BlockFusedQuartzBase))) {
       quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource, getRotation(world, pos)), paintSource, MathHelper.getPositionRandom(pos));
     }
     return null;
