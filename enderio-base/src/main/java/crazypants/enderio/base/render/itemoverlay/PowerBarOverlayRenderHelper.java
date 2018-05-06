@@ -47,9 +47,9 @@ public class PowerBarOverlayRenderHelper {
   private static final double BAR_W = MIMIC_VANILLA_RENDERBUG ? 13d : 12d;
 
   protected @Nonnull Vector4i colorShadow = new Vector4i(0, 0, 0, 255);
-  protected @Nonnull Vector4i colorBarLeft = new Vector4i(0x02, 0x03, 0x60, 255);
-  protected @Nonnull Vector4i colorBarRight = new Vector4i(0x2D, 0xCE, 0xFA, 255);
-  protected @Nonnull Vector4i colorBG = new Vector4i(0x00, 0x00, 0x30, 255);
+  protected @Nonnull Vector4i colorBarLeft = new Vector4i(0x19, 0x03, 0x28, 255);
+  protected @Nonnull Vector4i colorBarRight = new Vector4i(0xB9, 0x6D, 0xED, 255);
+  protected @Nonnull Vector4i colorBG = new Vector4i(0x0E, 0x01, 0x16, 255);
 
   /**
    * Instance for items that always have their power buffer
