@@ -252,6 +252,10 @@ item.item_travel_staff.tooltip.detailed.line4=Shift-R-Click will teleport the
 item.item_travel_staff.tooltip.detailed.line5=player a short distance
 item.item_travel_staff.chat.notEnoughPower=Not enough power
 
+item.item_staff_of_levity.name=Staff of Levity
+item.item_staff_of_levity.tooltip.detailed.line1=Appliess anti-gravity with 
+item.item_staff_of_levity.tooltip.detailed.line1=Shift-R-Click to the player
+
 item.item_xp_transfer.name=Experience Rod
 item.item_xp_transfer.tooltip.detailed.line1=R-Click on a fluid tank containing
 item.item_xp_transfer.tooltip.detailed.line2=liquid XP to gain levels
