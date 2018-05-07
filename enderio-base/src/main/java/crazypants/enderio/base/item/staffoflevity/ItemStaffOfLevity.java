@@ -1,11 +1,13 @@
 package crazypants.enderio.base.item.staffoflevity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.FluidUtil;
@@ -87,7 +89,6 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
         lastActivationTick = -1;
       }
       player.swingArm(hand);
-      lastActivationTick = EnderIO.proxy.getTickCount();
 
       if (world.isRemote && (ticksSinceActivation == 0 || ticksSinceActivation >= Config.staffOfLevityTicksBetweenActivation)) {
         if (!isEffectActive && hasFluid(stack)) {
@@ -96,7 +97,7 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
         } else {
           player.removePotionEffect(MobEffects.LEVITATION);
         }
-        ticksSinceActivation = 0;
+        lastActivationTick = EnderIO.proxy.getTickCount();
         isEffectActive = !isEffectActive;
       }
     }
@@ -122,6 +123,10 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
   @Override
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     list.add(EnergyUpgradeManager.getStoredEnergyString(itemstack));
+
+    List<String> entries = new ArrayList<String>();
+    SpecialTooltipHandler.addDetailedTooltipFromResources(entries, getUnlocalizedName());
+    list.addAll(entries);
     DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
