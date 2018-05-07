@@ -272,7 +272,7 @@ public final class Config {
 
   public static int staffOfLevityFluidUsePerTeleport = 100;
   public static int staffOfLevityFluidStorage = 8000;
-  public static int staffOfLevityTicksBetweenActivation = 20;
+  public static int staffOfLevityTicksBetweenActivation = 10;
   public static String staffOfLevityFluidType = "vapor_of_levity";
 
   public static boolean paintedGlowstoneRequireSilkTouch = false;
