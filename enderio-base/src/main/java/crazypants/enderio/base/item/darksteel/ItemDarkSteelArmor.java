@@ -31,6 +31,7 @@ import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
+import crazypants.enderio.base.integration.thaumcraft.ThaumaturgeRobesUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
@@ -72,15 +73,16 @@ import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import thaumcraft.api.items.IVisDiscountGear;
 
 @InterfaceList({
     // @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "Thaumcraft"),
-    // @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "Thaumcraft"),
+    @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "thaumcraft"),
     // @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "Thaumcraft"),
     @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "forestry"),
     @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "forestry") })
 public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware, IHasPlayerRenderer,
-    IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist {
+    IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist, IVisDiscountGear {
   // IGoggles, IRevealer, IVisDiscountGear {
 
   public static ItemDarkSteelArmor createDarkSteelBoots(@Nonnull IModObject modObject) {
@@ -309,14 +311,25 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   // return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack);
   // }
   //
-  // @Override
-  // @Method(modid = "Thaumcraft")
-  // public int getVisDiscount(ItemStack stack, EntityPlayer player) {
-  // if (!stack.isEmpty() || stack.getItem() != ModObject.itemDarkSteelHelmet.getItemNN()) {
-  // return 0;
-  // }
-  // return GogglesOfRevealingUpgrade.isUpgradeEquipped(player) ? 5 : 0;
-  // }
+  @Override
+  @Method(modid = "thaumcraft")
+  public int getVisDiscount(ItemStack stack, EntityPlayer player) {
+    if (!stack.isEmpty()) {
+      if (stack.getItem() == ModObject.itemDarkSteelBoots.getItemNN()) {
+        return ThaumaturgeRobesUpgrade.BOOTS.hasUpgrade(stack) ? 2 : 0;
+      }
+      if (stack.getItem() == ModObject.itemDarkSteelLeggings.getItemNN()) {
+        return ThaumaturgeRobesUpgrade.LEGS.hasUpgrade(stack) ? 3 : 0;
+      }
+      if (stack.getItem() == ModObject.itemDarkSteelChestplate.getItemNN()) {
+        return ThaumaturgeRobesUpgrade.CHEST.hasUpgrade(stack) ? 3 : 0;
+      }
+      // if (stack.getItem() == ModObject.itemDarkSteelHelmet.getItemNN()) {
+      // return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack) ? 5 : 0;
+      // }
+    }
+    return 0;
+  }
 
   public boolean isGogglesUgradeActive() {
     return gogglesUgradeActive;
@@ -418,7 +431,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   public boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
     return upgrade == FORESTRY_FEET || upgrade == FORESTRY_LEGS || upgrade == FORESTRY_CHEST || upgrade == FORESTRY_HEAD || upgrade == FORESTRY_EYES
-        || upgrade == ElytraUpgrade.INSTANCE || upgrade == GogglesOfRevealingUpgrade.INSTANCE;
+        || upgrade == ElytraUpgrade.INSTANCE || upgrade == GogglesOfRevealingUpgrade.INSTANCE || upgrade == ThaumaturgeRobesUpgrade.BOOTS
+        || upgrade == ThaumaturgeRobesUpgrade.LEGS || upgrade == ThaumaturgeRobesUpgrade.CHEST;
   }
+
 
 }

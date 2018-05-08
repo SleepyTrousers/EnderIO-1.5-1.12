@@ -173,6 +173,7 @@ public final class Config {
   public static int darkSteelElytraCost = 10;
 
   public static int darkSteelGogglesOfRevealingCost = 4;
+  public static int darkSteelThaumaturgeRobeCost = 4;
 
   public static int darkSteelSwimCost = 4;
 
@@ -538,6 +539,8 @@ public final class Config {
 
     darkSteelGogglesOfRevealingCost = config.get(sectionDarkSteel.name, "darkSteelGogglesOfRevealingCost", darkSteelGogglesOfRevealingCost,
         "Number of levels required for the Goggles of Revealing upgrade.").getInt(darkSteelGogglesOfRevealingCost);
+    darkSteelThaumaturgeRobeCost = config.get(sectionDarkSteel.name, "darkSteelThaumaturgeRobeCost", darkSteelThaumaturgeRobeCost,
+        "Number of levels required for the Thaumaturge's Robes upgrades.").getInt(darkSteelThaumaturgeRobeCost);
 
     darkSteelTravelCost = config.get(sectionDarkSteel.name, "darkSteelTravelCost", darkSteelTravelCost, "Number of levels required for the 'Travel' upgrade.")
         .getInt(darkSteelTravelCost);
