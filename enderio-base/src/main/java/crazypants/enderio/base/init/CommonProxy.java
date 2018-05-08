@@ -54,12 +54,12 @@ public class CommonProxy {
   }
 
   public void init(@Nonnull FMLInitializationEvent event) {
+    ThaumcraftUtil.create();
     MinecraftForge.EVENT_BUS.register(tickTimer);
     // registerCommands(); // debug command disabled because it is not needed at the moment
   }
 
   public void init(@Nonnull FMLPostInitializationEvent event) {
-    ThaumcraftUtil.create();
   }
 
   public void stopWithErrorScreen(String... message) {
