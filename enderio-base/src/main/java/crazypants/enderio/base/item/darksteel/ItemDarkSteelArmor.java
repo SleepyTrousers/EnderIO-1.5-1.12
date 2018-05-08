@@ -76,9 +76,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import thaumcraft.api.items.IVisDiscountGear;
 
 @InterfaceList({
-    // @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "Thaumcraft"),
+    // @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "thaumcraft"),
     @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "thaumcraft"),
-    // @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "Thaumcraft"),
+    // @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "thaumcraft"),
     @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "forestry"),
     @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "forestry") })
 public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware, IHasPlayerRenderer,
@@ -293,7 +293,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   // TODO: Mod Thaumcraft - Should we re add goggles upgrade?
   //
   // @Override
-  // @Method(modid = "Thaumcraft")
+  // @Method(modid = "thaumcraft")
   // public boolean showNodes(ItemStack stack, EntityLivingBase player) {
   // if (stack.isEmpty() || !gogglesUgradeActive) {
   // return false;
@@ -303,7 +303,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   // }
   //
   // @Override
-  // @Method(modid = "Thaumcraft")
+  // @Method(modid = "thaumcraft")
   // public boolean showIngamePopups(ItemStack stack, EntityLivingBase player) {
   // if (stack.isEmpty() || !gogglesUgradeActive) {
   // return false;
