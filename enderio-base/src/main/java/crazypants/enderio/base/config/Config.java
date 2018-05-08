@@ -270,6 +270,11 @@ public final class Config {
   public static int rodOfReturnFluidStorage = 200;
   public static String rodOfReturnFluidType = "ender_distillation";
 
+  public static int staffOfLevityFluidUsePerTeleport = 100;
+  public static int staffOfLevityFluidStorage = 8000;
+  public static int staffOfLevityTicksBetweenActivation = 10;
+  public static String staffOfLevityFluidType = "vapor_of_levity";
+
   public static boolean paintedGlowstoneRequireSilkTouch = false;
 
   public static boolean enableBaublesIntegration = true;
@@ -415,9 +420,8 @@ public final class Config {
     rodOfReturnPowerStorage = config.get(sectionRod.name, "rodOfReturnPowerStorage", rodOfReturnPowerStorage, "Internal energy buffer for rod")
         .getInt(rodOfReturnPowerStorage);
     rodOfReturnRfPerTick = config.get(sectionRod.name, "rodOfReturnRfPerTick", rodOfReturnRfPerTick, "energy used per tick").getInt(rodOfReturnRfPerTick);
-    rodOfReturnMinTicksToRecharge = config
-        .get(sectionRod.name, "rodOfReturnMinTicksToRecharge", rodOfReturnMinTicksToRecharge, "Min number of ticks required to recharge the internal energy buffer")
-        .getInt(rodOfReturnMinTicksToRecharge);
+    rodOfReturnMinTicksToRecharge = config.get(sectionRod.name, "rodOfReturnMinTicksToRecharge", rodOfReturnMinTicksToRecharge,
+        "Min number of ticks required to recharge the internal energy buffer").getInt(rodOfReturnMinTicksToRecharge);
     rodOfReturnFluidStorage = config.get(sectionRod.name, "rodOfReturnFluidStorage", rodOfReturnFluidStorage, "How much fluid the rod can store")
         .getInt(rodOfReturnFluidStorage);
     rodOfReturnFluidUsePerTeleport = config
@@ -627,8 +631,9 @@ public final class Config {
     darkSteelPickMinesTiCArdite = config.getBoolean("darkSteelPickMinesTiCArdite", sectionDarkSteel.name, darkSteelPickMinesTiCArdite,
         "When true the dark steel pick will be able to mine TiC Ardite and Cobalt");
 
-    darkSteelAxePowerUsePerDamagePoint = config.get(sectionDarkSteel.name, "darkSteelAxePowerUsePerDamagePoint", darkSteelAxePowerUsePerDamagePoint,
-        "Energy per damage/durability point avoided.").getInt(darkSteelAxePowerUsePerDamagePoint);
+    darkSteelAxePowerUsePerDamagePoint = config
+        .get(sectionDarkSteel.name, "darkSteelAxePowerUsePerDamagePoint", darkSteelAxePowerUsePerDamagePoint, "Energy per damage/durability point avoided.")
+        .getInt(darkSteelAxePowerUsePerDamagePoint);
     darkSteelAxePowerUsePerDamagePointMultiHarvest = config.get(sectionDarkSteel.name, "darkSteelPickAxeUsePerDamagePointMultiHarvest",
         darkSteelAxePowerUsePerDamagePointMultiHarvest, "Energy per damage/durability point avoided when shift-harvesting multiple logs")
         .getInt(darkSteelAxePowerUsePerDamagePointMultiHarvest);
@@ -697,8 +702,7 @@ public final class Config {
     magnetPowerUsePerSecondRF = config
         .get(sectionMagnet.name, "magnetPowerUsePerTickRF", magnetPowerUsePerSecondRF, "The amount of energy used per tick when the magnet is active")
         .getInt(magnetPowerUsePerSecondRF);
-    magnetPowerCapacityRF = config
-        .get(sectionMagnet.name, "magnetPowerCapacityRF", magnetPowerCapacityRF, "Amount of energy stored in a fully charged magnet")
+    magnetPowerCapacityRF = config.get(sectionMagnet.name, "magnetPowerCapacityRF", magnetPowerCapacityRF, "Amount of energy stored in a fully charged magnet")
         .getInt(magnetPowerCapacityRF);
     magnetRange = config.get(sectionMagnet.name, "magnetRange", magnetRange, "Range of the magnet in blocks.").getInt(magnetRange);
     magnetMaxItems = config
@@ -773,12 +777,10 @@ public final class Config {
     soulBinderEnderCystalRF = config
         .get(sectionSoulBinder.name, "soulBinderEnderCystalRF", soulBinderEnderCystalRF, "The amount of energy required to create an ender crystal.")
         .getInt(soulBinderEnderCystalRF);
-    soulBinderAttractorCystalRF = config
-        .get(sectionSoulBinder.name, "soulBinderAttractorCystalRF", soulBinderAttractorCystalRF, "The amount of energy required to create an attractor crystal.")
-        .getInt(soulBinderAttractorCystalRF);
-    soulBinderTunedPressurePlateRF = config
-        .get(sectionSoulBinder.name, "soulBinderTunedPressurePlateRF", soulBinderTunedPressurePlateRF, "The amount of energy required to tune a pressure plate.")
-        .getInt(soulBinderTunedPressurePlateRF);
+    soulBinderAttractorCystalRF = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalRF", soulBinderAttractorCystalRF,
+        "The amount of energy required to create an attractor crystal.").getInt(soulBinderAttractorCystalRF);
+    soulBinderTunedPressurePlateRF = config.get(sectionSoulBinder.name, "soulBinderTunedPressurePlateRF", soulBinderTunedPressurePlateRF,
+        "The amount of energy required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateRF);
     soulBinderPrecientCystalRF = config
         .get(sectionSoulBinder.name, "soulBinderPrecientCystalRF", soulBinderPrecientCystalRF, "The amount of energy required to create a precient crystal.")
         .getInt(soulBinderPrecientCystalRF);

@@ -73,14 +73,15 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@InterfaceList({ @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "Thaumcraft"),
-    @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "Thaumcraft"),
-    @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "Thaumcraft"),
+@InterfaceList({
+    // @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "Thaumcraft"),
+    // @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "Thaumcraft"),
+    // @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "Thaumcraft"),
     @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "forestry"),
     @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "forestry") })
 public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware, IHasPlayerRenderer,
     IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist {
-  // TODO: Mod Thaumcraft IGoggles, IRevealer, IVisDiscountGear,
+  // IGoggles, IRevealer, IVisDiscountGear {
 
   public static ItemDarkSteelArmor createDarkSteelBoots(@Nonnull IModObject modObject) {
     return create(modObject, EntityEquipmentSlot.FEET);
@@ -287,31 +288,31 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     return false;
   }
 
-  // TODO: Mod Thaumcraft
-
+  // TODO: Mod Thaumcraft - Should we re add goggles upgrade?
+  //
   // @Override
   // @Method(modid = "Thaumcraft")
-  // public boolean showNodes(ItemStack itemstack, EntityLivingBase player) {
-  // if(itemStack.isEmpty() || itemstack.getItem() == null || !gogglesUgradeActive) {
+  // public boolean showNodes(ItemStack stack, EntityLivingBase player) {
+  // if (stack.isEmpty() || !gogglesUgradeActive) {
   // return false;
   // }
-  // return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
+  // return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack);
   //
   // }
   //
   // @Override
   // @Method(modid = "Thaumcraft")
-  // public boolean showIngamePopups(ItemStack itemstack, EntityLivingBase player) {
-  // if(itemStack.isEmpty() || itemstack.getItem() == null || !gogglesUgradeActive) {
+  // public boolean showIngamePopups(ItemStack stack, EntityLivingBase player) {
+  // if (stack.isEmpty() || !gogglesUgradeActive) {
   // return false;
   // }
-  // return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
+  // return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack);
   // }
   //
   // @Override
   // @Method(modid = "Thaumcraft")
-  // public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
-  // if(stack == null || stack.getItem() != ModObject.itemDarkSteelHelmet) {
+  // public int getVisDiscount(ItemStack stack, EntityPlayer player) {
+  // if (!stack.isEmpty() || stack.getItem() != ModObject.itemDarkSteelHelmet.getItemNN()) {
   // return 0;
   // }
   // return GogglesOfRevealingUpgrade.isUpgradeEquipped(player) ? 5 : 0;

@@ -15,7 +15,8 @@ public class PacketUpgradeState implements IMessage {
     SPEED,
     STEP_ASSIST,
     JUMP,
-    ELYTRA
+    ELYTRA,
+    GOGGLES
   }
 
   public PacketUpgradeState() {

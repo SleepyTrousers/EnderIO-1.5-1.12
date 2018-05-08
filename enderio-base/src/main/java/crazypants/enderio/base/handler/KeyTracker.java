@@ -15,6 +15,7 @@ import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
+import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbeMode;
 import crazypants.enderio.base.item.darksteel.upgrade.jump.JumpUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetector;
@@ -176,12 +177,10 @@ public class KeyTracker {
     @Override
     public void execute() {
       // TODO: Mod Thaumcraft
-      // EntityPlayer player = Minecraft.getMinecraft().player;
-      // if(!GogglesOfRevealingUpgrade.isUpgradeEquipped(player)){
-      // boolean isActive = !ModObject.itemDarkSteelHelmet.isGogglesUgradeActive();
-      // sendEnabledChatMessage("darksteel.upgrade.goggles", isActive); // TODO lang key is wrong
-      // ModObject.itemDarkSteelHelmet.setGogglesUgradeActive(isActive);
-      // }
+      EntityPlayer player = Minecraft.getMinecraft().player;
+      if (GogglesOfRevealingUpgrade.isUpgradeEquipped(player)) {
+        toggleDarkSteelController(Type.GOGGLES, "darksteel.upgrades.goggles");
+      }
     }
   }
 
