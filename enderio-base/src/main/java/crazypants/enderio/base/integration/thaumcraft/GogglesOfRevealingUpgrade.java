@@ -19,7 +19,7 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
   public static final @Nonnull GogglesOfRevealingUpgrade INSTANCE = new GogglesOfRevealingUpgrade();
 
   public static @Nonnull ItemStack getGoggles() {
-    Item i = Item.REGISTRY.getObject(new ResourceLocation("Thaumcraft", "ItemGoggles"));
+    Item i = Item.REGISTRY.getObject(new ResourceLocation("thaumcraft", "goggles"));
     if (i != null) {
       return new ItemStack(i);
     }

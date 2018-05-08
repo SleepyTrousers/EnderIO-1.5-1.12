@@ -34,6 +34,17 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_travel_staff" />
     </crafting>
   </recipe>
+
+  <recipe name="Staff Of Levity" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item /><item name="PRECIENT_CRYSTAL" />
+        <item /><item name="DARK_STEEL" /><item />
+        <item name="DARK_STEEL" /><item /><item />
+      </grid>
+      <output name="enderio:item_staff_of_levity" />
+    </crafting>
+  </recipe>
   
   <recipe name="Rod of Return" required="true">
     <crafting>

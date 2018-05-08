@@ -33,9 +33,10 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import thaumcraft.api.crafting.IInfusionStabiliser;
 
 @Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliser", modid = "Thaumcraft")
-public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IHaveTESR, IHaveRenderers { // TODO: Mod Thaumcraft IInfusionStabiliser
+public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IHaveTESR, IHaveRenderers, IInfusionStabiliser {
 
   public static final @Nonnull PropertyEnum<SkullType> VARIANT = PropertyEnum.<SkullType> create("variant", SkullType.class);
 
@@ -142,10 +143,9 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
     });
   }
 
-  // TODO: Mod Thaumcraft
-  // @Override
-  // @Optional.Method(modid = "Thaumcraft")
-  // public boolean canStabaliseInfusion(World world, BlockPos pos) {
-  // return true;
-  // }
+  @Override
+  @Optional.Method(modid = "Thaumcraft")
+  public boolean canStabaliseInfusion(World world, BlockPos pos) {
+    return true;
+  }
 }

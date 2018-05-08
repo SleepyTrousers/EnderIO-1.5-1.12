@@ -12,6 +12,7 @@ import com.enderio.core.common.util.NullHelper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject.Registerable;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -37,7 +38,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class EnderItemOverrideList extends ItemOverrideList {
 
   public EnderItemOverrideList() {
@@ -48,6 +55,12 @@ public class EnderItemOverrideList extends ItemOverrideList {
       .<Pair<Block, Long>, ItemQuadCollector> build();
 
   public static final @Nonnull EnderItemOverrideList instance = new EnderItemOverrideList();
+
+  @SubscribeEvent
+  @SideOnly(Side.CLIENT)
+  public static void invalidate(@Nonnull ModelBakeEvent event) {
+    cache.invalidateAll();
+  }
 
   @SuppressWarnings("deprecation")
   @Override

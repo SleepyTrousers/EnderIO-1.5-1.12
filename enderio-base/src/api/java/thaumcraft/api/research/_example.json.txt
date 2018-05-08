@@ -1,0 +1,48 @@
+{
+    "entries" :[
+        {
+        
+        "key": "EXAMPLE",    /* REQUIRED; the key used to identify this research */
+        "name": "research.example.title",   /* text name for the research. Can be a localization key */          
+        "icons": [ "thaumcraft:textures/items/thaumonomicon.png", "minecraft:logs;1;1" ],   /* icons to display for this research. Can either be a image or an itemstack (uses MC commandline formatting for /give command). If multiple icons are given they will be cycled through at 1 second intervals
+        "category": "BASICS",   /* REQUIRED; the category/tab you wish to add this research to */
+        "parents": [ "SOMETHING@3", "~ANOTHER_THING" ], 
+            /* 
+               Parent research that needs to be completed to open up this research. 
+               Adding a @ followed by a number will allow the research to open up at that stage of the parents 
+               progress instead of fully completed. 
+               Prefixing an entry with ~ will prevent lines from being drawn between them in GUI. 
+            */
+        "siblings": [ "~BROTHER", "SISTER" ], /* research entries that will get unlocked along with this one if it is completed. Accepts same prefixes as "parents" above
+        "meta": [ "ROUND","SPIKY","HIDDEN","REVERSE","AUTOUNLOCK" ],
+        "location": [ 0,0 ], /* x and y location of the research icon in the gui
+        "reward_item": [ "minecraft:stick" ], /* and item the player will receive as a reward for completing this research */
+        "reward_knowledge": [ "OBSERVATION;AUROMANCY;1" ], /* knowledge the player will receive as a reward for completing this research */
+        
+        "stages": [
+                {
+                    "text": "research.example.text.stage.1",  /* REQUIRED; description of this stage */
+                    "recipes": ["A_RECIPE","ANOTHER_RECIPE"],  /* list of recipes to display on page. The name must have an entry in the thaumcraft recipe catalog */
+                    "required_item":["minecraft:planks;30;1;{display:{Lore:['Stuff you need to hand in']}}"],
+                    "required_craft":["minecraft:stick","thaumcraft:nitor"],
+                    "required_knowledge":["THEORY;GOLEMANCY;2","OBSERVATION;AUROMANCY;1"],
+                    "required_research":["RESEARCH_YOU_NEED"] /* follows similar logic to parent research. You can specify things that are not full blown research entries in their own right. In that case a ? will be shown instead of their icon and you will have to add localization in the format "research.RESEARCH_YOU_NEED.text" if you want a proper name to be shown. Some other icons are also possible. Starting the research with "m_" will show a map, "f_" a flask and "c_" a chest.
+                },
+                {
+                    "text": "research.example.text.stage.2",
+                    "recipes": ["THE_FINAL_RECIPE"],
+                    "warp": 5      /* the amount of warp gained when this stage is completed 
+                }
+            ],
+            
+         "addenda": [    /* adds special pages that only display once the main research is unlocked along with a secondary trigger. Can be used to display special parts of the research that only unlocks once something else is discovered, for example what effects bellows would have on an infernal furnace
+                {
+                    "text": "research.example.text.stage.1",  /* REQUIRED; the text that will be displayed on this page. */
+                    "recipes": ["A_RECIPE","ANOTHER_RECIPE"],  /* list of recipes to display on page. The name must have an entry in the thaumcraft recipe catalog */
+                    "required_research":["RESEARCH_YOU_NEED"] /* follows similar logic to parent research. You can specify things that are not full blown research entries in their own right. In that case a ? will be shown instead of their icon and you will have to add localization in the format "research.RESEARCH_YOU_NEED.text" if you want a proper name to be shown. Some other icons are also possible. Starting the research with "m_" will show a map, "f_" a flask and "c_" a chest.
+                }
+            ]
+        }
+    ]
+}
+    
