@@ -635,6 +635,13 @@ enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount
 enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Magic is being revealed
 enderio.darksteel.upgrade.gogglesOfRevealing.disabled=Magic is hidden from plain sight
 
+enderio.darksteel.upgrade.thaumaturge_robes.chest.name=Thaumaturge's Robe
+enderio.darksteel.upgrade.thaumaturge_robes.chest.tooltip.detailed.line1=Vis Discount: 3%
+enderio.darksteel.upgrade.thaumaturge_robes.legs.name=Thaumaturge's Leggings
+enderio.darksteel.upgrade.thaumaturge_robes.legs.tooltip.detailed.line1=Vis Discount: 3%
+enderio.darksteel.upgrade.thaumaturge_robes.feet.name=Thaumaturge's Boots
+enderio.darksteel.upgrade.thaumaturge_robes.feet.tooltip.detailed.line1=Vis Discount: 2%
+
 enderio.darksteel.upgrade.jump.enabled=Jump Enabled
 enderio.darksteel.upgrade.jump.disabled=Jump Disabled
 
