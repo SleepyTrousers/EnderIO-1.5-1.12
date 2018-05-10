@@ -1,9 +1,7 @@
 package crazypants.enderio.conduits.conduit.redstone;
 
-import java.util.Collection;
-import java.util.Set;
-
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.DyeColor;
 
@@ -29,10 +27,11 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
 
   int isProvidingWeakPower(@Nonnull EnumFacing toDirection);
 
-  Set<Signal> getNetworkInputs(@Nonnull EnumFacing side);
+  Signal getNetworkInput(@Nonnull EnumFacing side);
 
-  Collection<Signal> getNetworkOutputs(@Nonnull EnumFacing side);
+  Signal getNetworkOutput(@Nonnull EnumFacing side);
 
+  @Nonnull
   DyeColor getInputSignalColor(@Nonnull EnumFacing dir);
 
   void updateNetwork();
@@ -53,6 +52,7 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
 
   int getRedstoneSignalForColor(@Nonnull DyeColor col);
 
+  @Nonnull
   DyeColor getOutputSignalColor(@Nonnull EnumFacing dir);
 
   void setOutputSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);
@@ -68,4 +68,10 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
 
   @Nonnull
   TextureAtlasSprite getTextureForInOutBackground();
+
+  @Nullable
+  Signal getExternalSignalForDir(@Nonnull EnumFacing dir);
+
+  void setExternalSignalForDir(@Nonnull EnumFacing dir, @Nullable Signal signal);
+
 }

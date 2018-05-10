@@ -1,13 +1,11 @@
 package crazypants.enderio.base.conduit.redstone.filters;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
-import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
-import crazypants.enderio.base.conduit.redstone.signals.ISignalSource;
+import crazypants.enderio.base.conduit.redstone.signals.Signal;
 
 /**
  * A filter that can be added to a redstone conduit to filter its output
@@ -15,8 +13,8 @@ import crazypants.enderio.base.conduit.redstone.signals.ISignalSource;
  */
 public interface IOutputSignalFilter {
 
-  default @Nonnull CombinedSignal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nullable ISignalSource ignore) {
-    return CombinedSignal.NONE;
+  default @Nonnull Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal) {
+    return Signal.NONE;
   }
 
 }

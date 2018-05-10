@@ -2,13 +2,10 @@ package crazypants.enderio.conduits.conduit.redstone;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -16,9 +13,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.vecmath.Vector4f;
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
@@ -30,8 +25,8 @@ import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
+import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
-import crazypants.enderio.base.conduit.redstone.signals.SignalSource;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.render.registry.TextureRegistry;
@@ -56,7 +51,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -93,7 +87,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   private Map<EnumFacing, Boolean> signalStrengths = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
 
-  private final List<Set<Signal>> externalSignals = new ArrayList<Set<Signal>>();
+  private final Map<EnumFacing, Signal> externalSignals = new EnumMap<EnumFacing, Signal>(EnumFacing.class);
 
   private RedstoneConduitNetwork network;
 
@@ -105,9 +99,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @SuppressWarnings("unused")
   public InsulatedRedstoneConduit() {
-    for (EnumFacing ignored : EnumFacing.VALUES) {
-      externalSignals.add(new HashSet<Signal>());
-    }
   }
 
   @Override
@@ -184,7 +175,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public void onChunkUnload() {
     RedstoneConduitNetwork networkR = (RedstoneConduitNetwork) getNetwork();
     if (networkR != null) {
-      Multimap<SignalSource, Signal> oldSignals = ArrayListMultimap.create(networkR.getSignals());
+      BundledSignal oldSignals = networkR.getBundledSignal();
       List<IRedstoneConduit> conduits = Lists.newArrayList(networkR.getConduits());
       super.onChunkUnload();
       networkR.afterChunkUnload(conduits, oldSignals);
@@ -219,7 +210,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
               setConnectionMode(faceHit, ConnectionMode.NOT_SET);
               return ConduitUtil.connectConduits(this, faceHit);
             }
-            forceConnectionMode(faceHit, ConnectionMode.IN_OUT);
+            forceConnectionMode(faceHit, ConnectionMode.INPUT);
             return true;
 
           } else if (externalConnections.contains(connDir)) {
@@ -374,12 +365,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return 0;
     }
     int result = 0;
-    for (Signal signal : getNetworkOutputs(toDirection)) {
-      // don't return signals back to where they came from
-      if (!signal.getSource().equals(getPos().offset(toDirection))) {
-        result = Math.max(result, signal.getStrength());
-      }
-    }
+    Signal signal = getNetworkOutput(toDirection);
+    result = Math.max(result, signal.getStrength());
     return result;
   }
 
@@ -399,68 +386,48 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   @Nonnull
-  public Collection<Signal> getNetworkOutputs(@Nonnull EnumFacing side) {
+  public Signal getNetworkOutput(@Nonnull EnumFacing side) {
     ConnectionMode mode = getConnectionMode(side);
     if (network == null || !mode.acceptsInput()) {
-      return Collections.emptySet();
+      return Signal.NONE;
     }
-    Collection<Signal> allSigs = network.getSignals().values();
-    if (allSigs.isEmpty()) {
-      return allSigs;
-    }
-
     DyeColor col = getOutputSignalColor(side);
-    Set<Signal> result = new HashSet<Signal>();
-    for (Signal signal : allSigs) {
-      if (signal.getColor() == col) {
-        result.add(signal);
-      }
-    }
-
-    return result;
+    BundledSignal bundledSignal = network.getBundledSignal();
+    return bundledSignal.getSignal(col);
   }
 
   @Override
   @Nonnull
-  public Set<Signal> getNetworkInputs(@Nonnull EnumFacing side) {
+  public Signal getNetworkInput(@Nonnull EnumFacing side) {
     if (network != null) {
       network.setNetworkEnabled(false);
     }
 
-    HashSet<Signal> signals = new HashSet<Signal>();
+    Signal result = Signal.NONE;
     if (acceptSignalsForDir(side)) {
       int input = getExternalPowerLevel(side);
-      if (input > 0) {
-        BlockPos pos = getBundle().getLocation().offset(side);
-        Signal signal = new Signal(pos, side, input, getInputSignalColor(side));
-        signals.add(signal);
+      if (input > result.getStrength()) {
+        result = new Signal(input);
       }
-
-      if (Loader.isModLoaded("computercraft")) {
-        BlockPos loc = getBundle().getLocation().offset(side);
-        int bundledInput = getComputerCraftBundledPowerLevel(side);
-        if (bundledInput >= 0) {
-          for (int i = 0; i < 16; i++) {
-            int color = bundledInput >>> i & 1;
-            Signal signal = new Signal(loc, side, color == 1 ? 16 : 0, DyeColor.fromIndex(Math.max(0, 15 - i)));
-            signals.add(signal);
-          }
-        }
-      }
+      // TODO Mod ComputerCraft
+      // if (Loader.isModLoaded("computercraft")) {
+      // BlockPos loc = getBundle().getLocation().offset(side);
+      // int bundledInput = getComputerCraftBundledPowerLevel(side);
+      // if (bundledInput >= 0) {
+      // for (int i = 0; i < 16; i++) {
+      // int color = bundledInput >>> i & 1;
+      // Signal signal = new Signal(loc, side, color == 1 ? 16 : 0, DyeColor.fromIndex(Math.max(0, 15 - i)));
+      // signals.add(signal);
+      // }
+      // }
+      // }
     }
 
     if (network != null) {
       network.setNetworkEnabled(true);
     }
 
-    Map<DyeColor, Signal> res = new HashMap<DyeColor, Signal>();
-    for (Signal signal : signals) {
-      if (signal != null && (!res.containsKey(signal.getColor()) || signal.getStrength() > res.get(signal.getColor()).getStrength())) {
-        res.put(signal.getColor(), signal);
-      }
-    }
-
-    return new HashSet<Signal>(res.values());
+    return result;
   }
 
   protected int getExternalPowerLevel(@Nonnull EnumFacing dir) {
@@ -506,6 +473,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return getDefaultConnectionMode();
     }
     return res;
+  }
+
+  @Override
+  @Nonnull
+  public ConnectionMode getDefaultConnectionMode() {
+    return ConnectionMode.OUTPUT;
   }
 
   @Override
@@ -808,5 +781,20 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Nonnull
   public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
     return "";
+  }
+
+  @Override
+  @Nullable
+  public Signal getExternalSignalForDir(@Nonnull EnumFacing dir) {
+    return externalSignals.get(dir);
+  }
+
+  @Override
+  public void setExternalSignalForDir(@Nonnull EnumFacing dir, @Nullable Signal signal) {
+    if (signal != null) {
+      externalSignals.put(dir, signal);
+    } else {
+      externalSignals.remove(dir);
+    }
   }
 }

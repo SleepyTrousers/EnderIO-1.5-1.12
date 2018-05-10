@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
-import crazypants.enderio.base.conduit.redstone.signals.ISignalSource;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 
 /**
@@ -14,8 +13,7 @@ import crazypants.enderio.base.conduit.redstone.signals.Signal;
  */
 public interface IInputSignalFilter {
 
-  default @Nonnull Signal apply(@Nonnull CombinedSignal signal, @Nonnull DyeColor color, @Nonnull ISignalSource source) {
-    return new Signal(signal, color, source);
-  }
+  @Nonnull
+  Signal apply(@Nonnull CombinedSignal signal, @Nonnull DyeColor color);
 
 }

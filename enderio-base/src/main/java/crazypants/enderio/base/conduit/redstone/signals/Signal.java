@@ -2,53 +2,46 @@ package crazypants.enderio.base.conduit.redstone.signals;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.DyeColor;
+public class Signal extends CombinedSignal {
 
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
+  public static final @Nonnull Signal NONE = new Signal(0);
+  public static final @Nonnull Signal MAX = new Signal(15);
 
-public class Signal extends CombinedSignal implements ISignalSource {
+  private int totalStrength;
 
-  private final @Nonnull BlockPos source;
-  private final @Nonnull EnumFacing dir;
-  private final @Nonnull DyeColor color;
-
-  public Signal(@Nonnull BlockPos source, @Nonnull EnumFacing dir, int strength, @Nonnull DyeColor color) {
+  public Signal(int strength) {
     super(strength);
-    this.source = source.toImmutable();
-    this.dir = dir;
-    this.color = color;
+    this.totalStrength = strength;
   }
 
-  public Signal(@Nonnull CombinedSignal signal, @Nonnull DyeColor color, @Nonnull ISignalSource source) {
-    this(source.getSource(), source.getDir(), signal.getStrength(), color);
-  }
-
-  @Override
-  @Nonnull
-  public BlockPos getSource() {
-    return source;
-  }
-
-  @Override
-  @Nonnull
-  public EnumFacing getDir() {
-    return dir;
-  }
-
-  @Nonnull
-  public DyeColor getColor() {
-    return color;
+  public Signal(@Nonnull CombinedSignal signal) {
+    this(signal.getStrength());
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
-    result = prime * result + color.hashCode();
-    result = prime * result + dir.hashCode();
-    result = prime * result + source.hashCode();
+    result = prime * result + getTotalStrength();
     return result;
+  }
+
+  public int getTotalStrength() {
+    return totalStrength;
+  }
+
+  public void addStrength(int str) {
+    totalStrength += str;
+    setStrength(totalStrength);
+  }
+
+  public void removeStrength(int str) {
+    totalStrength -= str;
+    setStrength(totalStrength);
+  }
+
+  public void resetSignal() {
+    totalStrength = 0;
   }
 
   @Override
@@ -59,19 +52,12 @@ public class Signal extends CombinedSignal implements ISignalSource {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Signal other = (Signal) obj;
-    if (color != other.color)
-      return false;
-    if (dir != other.dir)
-      return false;
-    if (!source.equals(other.source))
-      return false;
     return true;
   }
 
   @Override
   public String toString() {
-    return "Signal [getStrength()=" + getStrength() + ", source=" + source + ", dir=" + dir + ", color=" + color + "]";
+    return "Signal [getStrength()=" + getStrength() + ", getTotalStrengt()=" + getTotalStrength() + "]";
   }
 
 }
