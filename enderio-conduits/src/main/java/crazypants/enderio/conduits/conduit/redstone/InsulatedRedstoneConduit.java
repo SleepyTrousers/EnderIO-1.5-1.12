@@ -102,7 +102,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public @Nullable IConduitNetwork<IRedstoneConduit, IRedstoneConduit> getNetwork() {
+  public @Nullable RedstoneConduitNetwork getNetwork() {
     return network;
   }
 
@@ -409,18 +409,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       if (input > result.getStrength()) {
         result = new Signal(input);
       }
-      // TODO Mod ComputerCraft
-      // if (Loader.isModLoaded("computercraft")) {
-      // BlockPos loc = getBundle().getLocation().offset(side);
-      // int bundledInput = getComputerCraftBundledPowerLevel(side);
-      // if (bundledInput >= 0) {
-      // for (int i = 0; i < 16; i++) {
-      // int color = bundledInput >>> i & 1;
-      // Signal signal = new Signal(loc, side, color == 1 ? 16 : 0, DyeColor.fromIndex(Math.max(0, 15 - i)));
-      // signals.add(signal);
-      // }
-      // }
-      // }
     }
 
     if (network != null) {
@@ -454,7 +442,25 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Optional.Method(modid = "computercraft")
-  protected int getComputerCraftBundledPowerLevel(EnumFacing dir) {
+  @Override
+  @Nonnull
+  public Map<DyeColor, Signal> getComputerCraftSignals(@Nonnull EnumFacing side) {
+    Map<DyeColor, Signal> ccSignals = new EnumMap<DyeColor, Signal>(DyeColor.class);
+
+    int bundledInput = getComputerCraftBundledPowerLevel(side);
+    if (bundledInput >= 0) {
+      for (int i = 0; i < 16; i++) {
+        int color = bundledInput >>> i & 1;
+        Signal signal = new Signal(color == 1 ? 16 : 0);
+        ccSignals.put(DyeColor.fromIndex(Math.max(0, 15 - i)), signal);
+      }
+    }
+
+    return ccSignals;
+  }
+
+  @Optional.Method(modid = "computercraft")
+  private int getComputerCraftBundledPowerLevel(EnumFacing dir) {
     World world = getBundle().getBundleworld();
     BlockPos pos = getBundle().getLocation().offset(dir);
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -26,6 +27,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.Loader;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
 
@@ -111,6 +113,23 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
       bundledSignal.remove(con.getInputSignalColor(dir), oldSig.getStrength());
     }
     bundledSignal.add(con.getInputSignalColor(dir), signal.getStrength());
+
+    if (Loader.isModLoaded("computercraft")) {
+      Map<DyeColor, Signal> ccSignals = con.getComputerCraftSignals(dir);
+
+      if (!ccSignals.isEmpty()) {
+        for (DyeColor color : ccSignals.keySet()) {
+          Signal oldSigB = bundledSignal.getSignal(color);
+          Signal ccSig = ccSignals.get(color);
+
+          if (oldSigB.getStrength() != ccSig.getStrength()) {
+            bundledSignal.remove(color, oldSigB.getStrength());
+          }
+          bundledSignal.add(color, ccSig.getStrength());
+        }
+      }
+    }
+
     con.setExternalSignalForDir(dir, signal);
     updatingNetwork = false;
 
