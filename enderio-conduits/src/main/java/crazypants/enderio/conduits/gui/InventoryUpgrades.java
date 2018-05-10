@@ -11,7 +11,8 @@ import crazypants.enderio.base.filter.fluid.items.IItemFilterFluidUpgrade;
 import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.item.IItemConduit;
-import crazypants.enderio.conduits.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduits.conduit.liquid.AbstractTankConduit;
+import crazypants.enderio.conduits.conduit.liquid.EnderLiquidConduit;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -115,7 +116,7 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     }
     switch (slot) {
     case 0:
-      return stack.getItem() instanceof ItemFunctionUpgrade;
+      return isFunctionUpgradeAccepted(stack, con);
     case 2:
       return isFilterUpgradeAccepted(stack, con);
     case 3:
@@ -127,10 +128,15 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
   private boolean isFilterUpgradeAccepted(@Nonnull ItemStack stack, IConduit con) {
     if (con instanceof IItemConduit) {
       return stack.getItem() instanceof IItemFilterItemUpgrade;
-    } else if (con instanceof ILiquidConduit) {
+    } else if (con instanceof EnderLiquidConduit) {
       return stack.getItem() instanceof IItemFilterFluidUpgrade;
     }
     return stack.getItem() instanceof IItemFilterUpgrade;
+  }
+
+  private boolean isFunctionUpgradeAccepted(@Nonnull ItemStack stack, IConduit con) {
+    // Hacky work around to avoid liquid conduits accepting upgrades
+    return stack.getItem() instanceof ItemFunctionUpgrade && !(con instanceof AbstractTankConduit);
   }
 
   @Override
