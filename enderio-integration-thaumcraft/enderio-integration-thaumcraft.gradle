@@ -1,0 +1,6 @@
+repositories {
+}
+
+dependencies {
+  compile project(":enderio-base")
+}

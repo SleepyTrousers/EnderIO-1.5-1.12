@@ -1,0 +1,13 @@
+modDependencies {
+	forge { requireAfter(forge_version) }
+	thaumcraft { loadAfter(thaumcraft_version) }
+	endercore { requireAfter(endercore_version) }
+	jei { loadAfter(jei_version) }
+}
+
+def localDependencies = project(':enderio-base')
+localDependencies.each { dep ->
+	modDependencies {
+		"${dep.module_mod_id}" { requireAfter(dep.version) }
+	}
+}
