@@ -33,7 +33,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
   protected static final int ID_INSERT_FILTER_OPTIONS = 329;
   protected static final int ID_EXTRACT_FILTER_OPTIONS = 330;
 
-  protected final @Nonnull IconEIO icon;
+  protected final @Nonnull IWidgetIcon icon;
   protected final @Nonnull IGuiExternalConnection gui;
   protected @Nonnull IClientConduit con;
   protected final @Nonnull String typeName;
@@ -64,7 +64,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
   protected int customTop = 0;
 
-  protected BaseSettingsPanel(@Nonnull IconEIO icon, @Nonnull String typeName, @Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con,
+  protected BaseSettingsPanel(@Nonnull IWidgetIcon icon, @Nonnull String typeName, @Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con,
       @Nonnull String texture) {
     this.icon = icon;
     this.typeName = typeName;
