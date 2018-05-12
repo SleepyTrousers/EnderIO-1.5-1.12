@@ -13,6 +13,15 @@ import crazypants.enderio.base.conduit.redstone.signals.Signal;
  */
 public interface IOutputSignalFilter extends IRedstoneSignalFilter {
 
+  /**
+   * Apply the filter to the signal
+   * 
+   * @param color
+   *          color of the signal
+   * @param bundledSignal
+   *          bundle to get the signal from
+   * @return the signal after being modified by the filter
+   */
   default @Nonnull Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal) {
     return Signal.NONE;
   }

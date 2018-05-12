@@ -130,6 +130,7 @@ public enum Lang implements ILang {
 
   GUI_SPECIES_ITEM_FILTER(".gui.species_item_filter"),
   GUI_FLUID_FILTER(".gui.fluid_filter"),
+  GUI_SIGNAL_COLOR(".gui.signal_color"),
 
   ;
 

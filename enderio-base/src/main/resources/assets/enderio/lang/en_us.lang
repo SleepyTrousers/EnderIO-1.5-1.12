@@ -1035,4 +1035,6 @@ item.item_power_item_filter.name=Power Item Filter
 
 item.item_fluid_filter.name=Fluid Filter
 
-item.item_redstone_not_filter=Redstone Not Filter
+item.item_redstone_not_filter=Redstone NOT Filter
+item.item_redstone_or_filter=Redstone OR Filter
+item.item_redstone_and_filter=Redstone AND Filter

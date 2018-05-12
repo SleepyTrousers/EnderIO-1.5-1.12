@@ -13,16 +13,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBasicSignalFilterUpgrade extends Item implements IItemOutputSignalFilterUpgrade {
+public class ItemInvertingOutputSignalFilter extends Item implements IItemOutputSignalFilterUpgrade {
 
-  public static ItemBasicSignalFilterUpgrade create(@Nonnull IModObject modObject) {
-    return new ItemBasicSignalFilterUpgrade(modObject);
+  public static ItemInvertingOutputSignalFilter create(@Nonnull IModObject modObject) {
+    return new ItemInvertingOutputSignalFilter(modObject);
   }
 
-  public ItemBasicSignalFilterUpgrade(@Nonnull IModObject modObject) {
-    super();
+  public ItemInvertingOutputSignalFilter(@Nonnull IModObject modObject) {
     modObject.apply(this);
+    setHasSubtypes(true);
+    setMaxDamage(0);
+    setMaxStackSize(64);
   }
 
   @Override
@@ -30,6 +34,7 @@ public class ItemBasicSignalFilterUpgrade extends Item implements IItemOutputSig
     return new InvertingOutputSignalFilter();
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   @Nullable
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
