@@ -1,9 +1,8 @@
-package crazypants.enderio.base.conduit.redstone;
+package crazypants.enderio.base.filter.redstone;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.base.conduit.redstone.filters.IInputSignalFilter;
 import net.minecraft.item.ItemStack;
 
 public interface IItemInputFilterUpgrade {

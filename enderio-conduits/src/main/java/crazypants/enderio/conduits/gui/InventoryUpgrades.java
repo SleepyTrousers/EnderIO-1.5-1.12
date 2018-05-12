@@ -9,10 +9,13 @@ import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.fluid.items.IItemFilterFluidUpgrade;
 import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
+import crazypants.enderio.base.filter.redstone.items.IItemInputSignalFilterUpgrade;
+import crazypants.enderio.base.filter.redstone.items.IItemOutputSignalFilterUpgrade;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.item.IItemConduit;
 import crazypants.enderio.conduits.conduit.liquid.AbstractTankConduit;
 import crazypants.enderio.conduits.conduit.liquid.EnderLiquidConduit;
+import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -118,18 +121,24 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     case 0:
       return isFunctionUpgradeAccepted(stack, con);
     case 2:
-      return isFilterUpgradeAccepted(stack, con);
+      return isFilterUpgradeAccepted(stack, con, true);
     case 3:
-      return isFilterUpgradeAccepted(stack, con);
+      return isFilterUpgradeAccepted(stack, con, false);
     }
     return false;
   }
 
-  private boolean isFilterUpgradeAccepted(@Nonnull ItemStack stack, IConduit con) {
+  private boolean isFilterUpgradeAccepted(@Nonnull ItemStack stack, IConduit con, boolean isInput) {
     if (con instanceof IItemConduit) {
       return stack.getItem() instanceof IItemFilterItemUpgrade;
     } else if (con instanceof EnderLiquidConduit) {
       return stack.getItem() instanceof IItemFilterFluidUpgrade;
+    } else if (con instanceof IRedstoneConduit) {
+      if (!isInput) {
+        return stack.getItem() instanceof IItemInputSignalFilterUpgrade;
+      } else {
+        return stack.getItem() instanceof IItemOutputSignalFilterUpgrade;
+      }
     }
     return stack.getItem() instanceof IItemFilterUpgrade;
   }

@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.DyeColor;
 
-import crazypants.enderio.base.conduit.redstone.filters.IOutputSignalFilter;
+import crazypants.enderio.base.filter.redstone.IOutputSignalFilter;
 
 public class BundledSignal {
 

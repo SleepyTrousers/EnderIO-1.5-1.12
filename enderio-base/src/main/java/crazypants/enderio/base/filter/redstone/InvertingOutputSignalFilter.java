@@ -1,4 +1,4 @@
-package crazypants.enderio.base.conduit.redstone.filters;
+package crazypants.enderio.base.filter.redstone;
 
 import javax.annotation.Nonnull;
 

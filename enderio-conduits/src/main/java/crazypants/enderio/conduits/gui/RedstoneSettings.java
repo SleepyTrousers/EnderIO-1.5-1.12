@@ -32,7 +32,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
 
   private @Nonnull String signalColorStr = Lang.GUI_SIGNAL_COLOR.get();
   private @Nonnull String signalStrengthStr = Lang.GUI_REDSTONE_SIGNAL_STRENGTH.get();
-  private IRedstoneConduit insCon;
+  private @Nonnull IRedstoneConduit insCon;
 
   public RedstoneSettings(@Nonnull final IGuiExternalConnection gui, @Nonnull IClientConduit con) {
     super(IconEIO.WRENCH_OVERLAY_REDSTONE, ConduitObject.item_redstone_conduit.getUnlocalisedName(), gui, con, "in_out_settings");
@@ -75,6 +75,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
 
   @Override
   protected void initCustomOptions() {
+    gui.getContainer().setInOutSlotsVisible(true, false, insCon);
     inputColorB.setColorIndex(insCon.getInputSignalColor(gui.getDir()).ordinal());
     inputColorB.onGuiInit();
     outputColorB.setColorIndex(insCon.getOutputSignalColor(gui.getDir()).ordinal());
@@ -85,7 +86,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
 
   @Override
   public void deactivate() {
-    super.deactivate();
+    gui.getContainer().setInOutSlotsVisible(false, false, insCon);
     inputColorB.detach();
     outputColorB.detach();
     strongCB.detach();
@@ -108,6 +109,11 @@ public class RedstoneSettings extends BaseSettingsPanel {
   @Nonnull
   protected String getOutputHeading() {
     return Lang.GUI_REDSTONE_CONDUIT_OUTPUT_MODE.get();
+  }
+
+  @Override
+  protected boolean hasFilters() {
+    return true;
   }
 
 }
