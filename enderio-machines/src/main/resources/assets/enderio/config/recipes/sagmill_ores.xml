@@ -627,9 +627,9 @@
 
   <!-- Quartz -->
 
-  <recipe name="Sagmill: oreQuartz Ore" required="true">
+  <recipe name="Sagmill: quartz_ore Ore" required="true">
     <sagmilling energy="3600">
-      <input name="oreQuartz" />
+      <input name="minecraft:quartz_ore" />
       <output name="gemQuartz" amount="2" />
       <output name="POWDER_QUARTZ" chance="0.1" />
       <output name="minecraft:netherrack" chance="0.15" />
@@ -2618,7 +2618,7 @@
       <input name="oreYellorium" />
       <output name="dustYellorium" amount="2" />
       <output name="dustCyanite" chance="0.05" required="false" />
-      <output name="oredict:cobblestone" chance="0.15" />
+      <output name="minecraft:cobblestone" chance="0.15" />
     </sagmilling>
   </recipe>
   
@@ -2630,7 +2630,7 @@
       <output name="gemLava" amount="2" />
       <output name="gemLava" chance="0.75" amount="2" />
       <output name="gemLava" chance="0.5"/>
-      <output name="oredict:cobblestone" chance="0.15" />
+      <output name="minecraft:cobblestone" chance="0.15" />
     </sagmilling>
   </recipe>
   
@@ -2711,7 +2711,7 @@
     <sagmilling energy="3600">
       <input name="oreIridium" />
       <output name="dustIridium" amount="2" />
-      <output name="minecraft:stone" chance="0.15" />
+      <output name="minecraft:cobblestone" chance="0.15" />
       <output name="dustPlatinum" chance="0.1" required="false" />
     </sagmilling>
   </recipe>
@@ -2721,7 +2721,7 @@
     <sagmilling energy="3600">
       <input name="oreThorium" />
       <output name="dustThorium" amount="2" />
-      <output name="minecraft:stone" chance="0.15" />
+      <output name="minecraft:cobblestone" chance="0.15" />
       <output name="dustUranium" chance="0.1"/>
     </sagmilling>
   </recipe>
@@ -2730,7 +2730,7 @@
     <sagmilling energy="3600">
       <input name="oreBoron" />
       <output name="dustBoron" amount="2" />
-      <output name="minecraft:stone" chance="0.15" />
+      <output name="minecraft:cobblestone" chance="0.15" />
       <output name="dustLithium" chance="0.1"/>
     </sagmilling>
   </recipe>
@@ -2739,7 +2739,7 @@
     <sagmilling energy="3600">
       <input name="oreLithium" />
       <output name="dustLithium" amount="2" />
-      <output name="minecraft:stone" chance="0.15" />
+      <output name="minecraft:cobblestone" chance="0.15" />
       <output name="dustBoron" chance="0.1"/>
     </sagmilling>
   </recipe>
@@ -2749,7 +2749,7 @@
     <sagmilling energy="3600">
       <input name="oreBauxite" />
       <output name="dustBauxite" amount="2" />
-      <output name="minecraft:stone" chance="0.15" />
+      <output name="minecraft:cobblestone" chance="0.15" />
       <output name="dustAluminum" chance="0.1"/>
     </sagmilling>
   </recipe>
@@ -2759,7 +2759,7 @@
       <input name="oreGalena" />
       <output name="dustGalena" amount="2" />
       <output name="dustSulfur" chance="0.25" />
-      <output name="minecraft:stone" chance="0.15" />
+      <output name="minecraft:cobblestone" chance="0.15" />
       <output name="dustSilver" chance="0.1"/>
     </sagmilling>
   </recipe>
@@ -2814,7 +2814,7 @@
     <sagmilling energy="3600">
       <input name="oreAstralStarmetal" />
       <output name="dustAstralStarmetal" amount="2" />
-      <output name="minecraft:stone" chance="0.15" />
+      <output name="minecraft:cobblestone" chance="0.15" />
     </sagmilling>
   </recipe>
 
@@ -2823,7 +2823,7 @@
     <sagmilling energy="3600">
       <input name="oreDilithium" />
       <output name="dustDilithium" amount="2"/>
-      <output name="minecraft:stone" chance="0.15" />
+      <output name="minecraft:cobblestone" chance="0.15" />
     </sagmilling>
   </recipe>
 
@@ -2831,7 +2831,17 @@
     <sagmilling energy="3600">
       <input name="oreTritanium" />
       <output name="dustTritanium" amount="2"/>
-      <output name="minecraft:stone" chance="0.15" />
+      <output name="minecraft:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <!-- Thaumcraft -->
+  <recipe name="Sagmill: Thaumcraft Quartz Ore" required="true">
+    <sagmilling energy="3600">
+      <input name="thaumcraft:ore_quartz" />
+      <output name="gemQuartz" amount="2" />
+      <output name="POWDER_QUARTZ" chance="0.1" />
+      <output name="minecraft:cobblestone" chance="0.15" />
     </sagmilling>
   </recipe>
 
