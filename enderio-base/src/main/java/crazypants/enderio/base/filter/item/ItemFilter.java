@@ -43,9 +43,9 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
 
   private boolean isBlacklist = DEFAULT_BLACKLIST;
   private boolean matchMeta = DEFAULT_META;
-  private boolean matchNBT = DEFAULT_NBT;
-  private boolean useOreDict = DEFAULT_ORE_DICT;
-  private boolean sticky = DEFAULT_STICKY;
+  private boolean matchNBT;
+  private boolean useOreDict;
+  private boolean sticky;
   private @Nonnull DamageMode damageMode = DamageMode.DISABLED;
 
   private @Nonnull NNList<ItemStack> items;
@@ -83,6 +83,9 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     for (int i = 0; i < numItems; i++) {
       oreIds.add(null);
     }
+    matchNBT = isAdvanced && DEFAULT_NBT;
+    useOreDict = isAdvanced && DEFAULT_ORE_DICT;
+    sticky = isAdvanced && DEFAULT_STICKY;
   }
 
   @Override
