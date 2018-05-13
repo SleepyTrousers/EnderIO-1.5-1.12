@@ -148,7 +148,7 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
     BlockPos pos = getBundle().getLocation();
     if (world.isRemote) {
       if (clientSideNode == null) {
-        clientSideNode = new ConduitRefinedStorageNode(world, pos);
+        clientSideNode = new ConduitRefinedStorageNode(this);
       }
 
       return clientSideNode;
@@ -158,8 +158,8 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
 
     ConduitRefinedStorageNode node = (ConduitRefinedStorageNode) manager.getNode(pos);
 
-    if (node == null || !node.getId().equals("id_here")) {
-      manager.setNode(pos, node = new ConduitRefinedStorageNode(world, pos));
+    if (node == null || !node.getId().equals(ConduitRefinedStorageNode.ID)) {
+      manager.setNode(pos, node = new ConduitRefinedStorageNode(this));
       manager.markForSaving();
     }
 
@@ -193,6 +193,12 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
     if (!world.isRemote) {
       RSHelper.API.discoverNode(world, getBundle().getLocation());
     }
+  }
+
+  @Override
+  public void connectionsChanged() {
+    super.connectionsChanged();
+    getNode().onConduitConnectionChange();
   }
 
   // ---------------------------------------------------------

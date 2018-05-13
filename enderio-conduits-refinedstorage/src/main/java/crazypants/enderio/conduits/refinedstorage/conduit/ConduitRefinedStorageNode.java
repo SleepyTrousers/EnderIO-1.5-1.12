@@ -4,25 +4,32 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.raoulvdberge.refinedstorage.api.network.INetwork;
+import com.raoulvdberge.refinedstorage.api.network.INetworkNodeVisitor;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
 
+import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.conduits.refinedstorage.RSHelper;
 import crazypants.enderio.conduits.refinedstorage.init.ConduitRefinedStorageObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ConduitRefinedStorageNode implements INetworkNode {
+public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisitor {
+
+  public static final @Nonnull String ID = "rs_conduit";
 
   @Nullable
   protected INetwork rsNetwork;
-  protected World world;
-  protected BlockPos pos;
+  protected @Nonnull World world;
+  protected @Nonnull BlockPos pos;
+  protected @Nonnull IRefinedStorageConduit con;
 
-  public ConduitRefinedStorageNode(World world, BlockPos pos) {
-    this.world = world;
-    this.pos = pos;
+  public ConduitRefinedStorageNode(@Nonnull IRefinedStorageConduit con) {
+    this.con = con;
+    this.world = con.getBundle().getBundleworld();
+    this.pos = con.getBundle().getLocation();
   }
 
   @Override
@@ -86,7 +93,7 @@ public class ConduitRefinedStorageNode implements INetworkNode {
 
   @Override
   public String getId() {
-    return "id_here";
+    return ID;
   }
 
   @Override
@@ -110,6 +117,25 @@ public class ConduitRefinedStorageNode implements INetworkNode {
   @Override
   public int hashCode() {
     return RSHelper.API.getNetworkNodeHashCode(this);
+  }
+
+  public boolean canConduct(@Nonnull EnumFacing direction) {
+    return con.containsConduitConnection(direction) || con.getConnectionMode(direction) != ConnectionMode.DISABLED;
+  }
+
+  @Override
+  public void visit(Operator operator) {
+    for (EnumFacing facing : EnumFacing.VALUES) {
+      if (canConduct(facing)) {
+        operator.apply(world, pos.offset(facing), facing.getOpposite());
+      }
+    }
+  }
+
+  public void onConduitConnectionChange() {
+    if (rsNetwork != null) {
+      rsNetwork.getNodeGraph().rebuild();
+    }
   }
 
 }
