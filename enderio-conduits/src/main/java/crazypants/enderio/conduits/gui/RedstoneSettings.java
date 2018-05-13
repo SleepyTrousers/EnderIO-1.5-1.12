@@ -36,7 +36,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
   private @Nonnull IRedstoneConduit insCon;
 
   public RedstoneSettings(@Nonnull final IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_REDSTONE, ConduitObject.item_redstone_conduit.getUnlocalisedName(), gui, con, "in_out_settings");
+    super(IconEIO.WRENCH_OVERLAY_REDSTONE, ConduitObject.item_redstone_conduit.getUnlocalisedName(), gui, con, "filter_settings");
 
     int x = leftColumn;
     int y = customTop + 4;

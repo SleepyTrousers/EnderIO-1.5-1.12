@@ -165,6 +165,10 @@ public enum ModObject implements IModObject.Registerable {
   itemRedstoneNotFilter(ItemInvertingOutputSignalFilter.class),
   itemRedstoneOrFilter(ItemBasicOutputSignalFilter.class, "createOr"),
   itemRedstoneAndFilter(ItemBasicOutputSignalFilter.class, "createAnd"),
+  itemRedstoneNorFilter(ItemBasicOutputSignalFilter.class, "createNor"),
+  itemRedstoneNandFilter(ItemBasicOutputSignalFilter.class, "createNand"),
+  itemRedstoneXorFilter(ItemBasicOutputSignalFilter.class, "createXor"),
+  itemRedstoneXnorFilter(ItemBasicOutputSignalFilter.class, "createXnor"),
 
   blockFusedQuartz(BlockFusedQuartz.class, "createFusedQuartz"),
   blockFusedGlass(BlockFusedQuartz.class, "createFusedGlass"),

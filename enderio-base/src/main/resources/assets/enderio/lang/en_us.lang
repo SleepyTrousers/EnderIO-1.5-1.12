@@ -1016,13 +1016,24 @@ enderio.gui.existing_item_filter=Existing Item Filter
 enderio.gui.mod_item_filter=Mod Item Filter
 enderio.gui.power_item_filter=Power Item Filter
 enderio.gui.species_item_filter=Species Item Filter
+
 enderio.gui.fluid_filter=Fluid Filter
+
+enderio.gui.redstone_filter.and=Redstone AND Filter
+enderio.gui.redstone_filter.or=Redstone OR Filter
+enderio.gui.redstone_filter.nor=Redstone NOR Filter
+enderio.gui.redstone_filter.nand=Redstone NAND Filter
+enderio.gui.redstone_filter.xor=Redstone XOR Filter
+enderio.gui.redstone_filter.xnor=Redstone XNOR Filter
 
 enderio.gui.mod.item_filter.delete=Delete
 enderio.gui.mod.item_filter.slot=Input Slot
 
 enderio.gui.power.item_filter.compare=Comparison Mode
 enderio.gui.power.item_filter.percent=Power Percentage
+
+enderio.gui.redstone_filter.signal_color=Redstone Signal Color
+enderio.gui.redstone_filter.input_signal=Input Signal
 
 item.item_basic_item_filter.name=Basic Item Filter
 item.item_advanced_item_filter.name=Advanced Item Filter
@@ -1035,6 +1046,10 @@ item.item_power_item_filter.name=Power Item Filter
 
 item.item_fluid_filter.name=Fluid Filter
 
-item.item_redstone_not_filter=Redstone NOT Filter
-item.item_redstone_or_filter=Redstone OR Filter
-item.item_redstone_and_filter=Redstone AND Filter
+item.item_redstone_not_filter.name=Redstone NOT Filter
+item.item_redstone_or_filter.name=Redstone OR Filter
+item.item_redstone_and_filter.name=Redstone AND Filter
+item.item_redstone_nor_filter.name=Redstone NOR Filter
+item.item_redstone_nand_filter.name=Redstone NAND Filter
+item.item_redstone_xor_filter.name=Redstone XOR Filter
+item.item_redstone_xnor_filter.name=Redstone XNOR Filter

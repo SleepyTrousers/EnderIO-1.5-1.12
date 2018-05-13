@@ -24,4 +24,8 @@ public interface IRedstoneSignalFilter extends IFilter {
   default void readFromByteBuf(@Nonnull ByteBuf buf) {
   }
 
+  default boolean isDefault() {
+    return true;
+  }
+
 }

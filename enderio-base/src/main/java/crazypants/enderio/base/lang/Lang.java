@@ -130,7 +130,16 @@ public enum Lang implements ILang {
 
   GUI_SPECIES_ITEM_FILTER(".gui.species_item_filter"),
   GUI_FLUID_FILTER(".gui.fluid_filter"),
-  GUI_SIGNAL_COLOR(".gui.signal_color"),
+
+  GUI_REDSTONE_FILTER_AND(".gui.redstone_filter.and"),
+  GUI_REDSTONE_FILTER_OR(".gui.redstone_filter.or"),
+  GUI_REDSTONE_FILTER_NAND(".gui.redstone_filter.nand"),
+  GUI_REDSTONE_FILTER_NOR(".gui.redstone_filter.nor"),
+  GUI_REDSTONE_FILTER_XOR(".gui.redstone_filter.xor"),
+  GUI_REDSTONE_FILTER_XNOR(".gui.redstone_filter.xnor"),
+
+  GUI_REDSTONE_FILTER_SIGNAL_COLOR(".gui.redstone_filter.signal_color"),
+  GUI_REDSTONE_FILTER_INPUT_SIGNAL(".gui.redstone_filter.input_signal"),
 
   ;
 

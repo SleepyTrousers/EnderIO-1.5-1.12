@@ -699,21 +699,17 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     for (Entry<EnumFacing, IRedstoneSignalFilter> entry : inputFilters.entrySet()) {
       if (entry.getValue() != null) {
         IRedstoneSignalFilter f = entry.getValue();
-        if (!isDefault(f)) {
-          NBTTagCompound itemRoot = new NBTTagCompound();
-          FilterRegistry.writeFilterToNbt(f, itemRoot);
-          nbtRoot.setTag("inSignalFilts." + entry.getKey().name(), itemRoot);
-        }
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        FilterRegistry.writeFilterToNbt(f, itemRoot);
+        nbtRoot.setTag("inSignalFilts." + entry.getKey().name(), itemRoot);
       }
     }
     for (Entry<EnumFacing, IRedstoneSignalFilter> entry : outputFilters.entrySet()) {
       if (entry.getValue() != null) {
         IRedstoneSignalFilter f = entry.getValue();
-        if (!isDefault(f)) {
-          NBTTagCompound itemRoot = new NBTTagCompound();
-          FilterRegistry.writeFilterToNbt(f, itemRoot);
-          nbtRoot.setTag("outSignalFilts." + entry.getKey().name(), itemRoot);
-        }
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        FilterRegistry.writeFilterToNbt(f, itemRoot);
+        nbtRoot.setTag("outSignalFilts." + entry.getKey().name(), itemRoot);
       }
     }
     for (Entry<EnumFacing, ItemStack> entry : inputFilterUpgrades.entrySet()) {
@@ -740,10 +736,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       }
     }
 
-  }
-
-  private boolean isDefault(IRedstoneSignalFilter f) {
-    return true;
   }
 
   @Override

@@ -38,6 +38,22 @@ public class ItemBasicOutputSignalFilter extends Item implements IItemOutputSign
     return new ItemBasicOutputSignalFilter(modObject, EnumSignalFilterType.AND);
   }
 
+  public static ItemBasicOutputSignalFilter createNor(@Nonnull IModObject modObject) {
+    return new ItemBasicOutputSignalFilter(modObject, EnumSignalFilterType.NOR);
+  }
+
+  public static ItemBasicOutputSignalFilter createNand(@Nonnull IModObject modObject) {
+    return new ItemBasicOutputSignalFilter(modObject, EnumSignalFilterType.NAND);
+  }
+
+  public static ItemBasicOutputSignalFilter createXor(@Nonnull IModObject modObject) {
+    return new ItemBasicOutputSignalFilter(modObject, EnumSignalFilterType.XOR);
+  }
+
+  public static ItemBasicOutputSignalFilter createXnor(@Nonnull IModObject modObject) {
+    return new ItemBasicOutputSignalFilter(modObject, EnumSignalFilterType.XNOR);
+  }
+
   public ItemBasicOutputSignalFilter(@Nonnull IModObject modObject, @Nonnull EnumSignalFilterType filterType) {
     this.filterType = filterType;
     modObject.apply(this);

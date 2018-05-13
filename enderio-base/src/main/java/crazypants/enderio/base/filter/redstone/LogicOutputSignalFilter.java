@@ -10,15 +10,18 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
+import crazypants.enderio.base.lang.ILang;
+import crazypants.enderio.base.lang.Lang;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 public class LogicOutputSignalFilter implements IOutputSignalFilter {
 
-  public enum EnumSignalFilterType {
-    OR(2) {
+  public enum EnumSignalFilterType implements ILogicSignalFilterType {
+    OR(2, Lang.GUI_REDSTONE_FILTER_OR) {
 
+      @Override
       @Nonnull
       public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
         for (DyeColor sigColor : signalColors) {
@@ -30,8 +33,9 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
       }
 
     },
-    AND(2) {
+    AND(2, Lang.GUI_REDSTONE_FILTER_AND) {
 
+      @Override
       @Nonnull
       public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
         for (DyeColor sigColor : signalColors) {
@@ -42,21 +46,91 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
         return Signal.MAX;
       }
 
-    }
+    },
+
+    NAND(2, Lang.GUI_REDSTONE_FILTER_NAND) {
+
+      @Override
+      @Nonnull
+      public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
+        for (DyeColor sigColor : signalColors) {
+          if (!(bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength())) {
+            return Signal.MAX;
+          }
+        }
+        return Signal.NONE;
+      }
+
+    },
+
+    NOR(2, Lang.GUI_REDSTONE_FILTER_NOR) {
+
+      @Override
+      @Nonnull
+      public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
+        for (DyeColor sigColor : signalColors) {
+          if (bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength()) {
+            return Signal.NONE;
+          }
+        }
+        return Signal.MAX;
+      }
+
+    },
+
+    XOR(2, Lang.GUI_REDSTONE_FILTER_XOR) {
+
+      @Override
+      @Nonnull
+      public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
+        boolean output = false;
+        for (DyeColor sigColor : signalColors) {
+          if (bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength()) {
+            output = !output;
+          }
+        }
+        return output ? Signal.MAX : Signal.NONE;
+      }
+
+    },
+
+    XNOR(2, Lang.GUI_REDSTONE_FILTER_XNOR) {
+
+      @Override
+      @Nonnull
+      public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
+        boolean output = false;
+        for (DyeColor sigColor : signalColors) {
+          if (bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength()) {
+            output = !output;
+          }
+        }
+        return !output ? Signal.MAX : Signal.NONE;
+      }
+
+    },
 
     ;
 
     private final int numButtons;
+    private final ILang headingLang;
 
-    EnumSignalFilterType(int numButtons) {
+    EnumSignalFilterType(int numButtons, @Nonnull ILang headingLang) {
       this.numButtons = numButtons;
+      this.headingLang = headingLang;
     }
 
+    @Override
     public int getNumButtons() {
       return numButtons;
     }
 
-    public abstract Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors);
+    @Override
+    @Nonnull
+    public String getHeading() {
+      return headingLang.get();
+    }
+
   }
 
   private final @Nonnull List<DyeColor> signalColors;
@@ -150,7 +224,18 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
 
   @Nonnull
   public String getHeading() {
-    return "Redstone Filter";
+    return type.getHeading();
+  }
+
+  @Override
+  public boolean isDefault() {
+    boolean result = true;
+    for (int i = 0; i < getNumColors(); i++) {
+      if (signalColors.get(i) != DyeColor.fromIndex(i)) {
+        result = false;
+      }
+    }
+    return result;
   }
 
 }
