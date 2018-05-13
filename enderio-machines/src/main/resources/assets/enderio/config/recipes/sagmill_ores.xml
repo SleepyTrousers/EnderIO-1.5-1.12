@@ -2836,7 +2836,7 @@
   </recipe>
 
   <!-- Thaumcraft -->
-  <recipe name="Sagmill: Thaumcraft Quartz Ore" required="true">
+  <recipe name="Sagmill: Thaumcraft Quartz Ore" required="false">
     <sagmilling energy="3600">
       <input name="thaumcraft:ore_quartz" />
       <output name="gemQuartz" amount="2" />
