@@ -17,6 +17,7 @@ public final class DarkSteelConfig {
 
   public static final IValue<Boolean> rightClickPlaceEnabled_axe = FA.make("rightClickPlaceEnabled", false, //
       "If enabled, right clicking with the dark steel axe will place a block.");
+  public static final IValue<Integer> darkSteelHoeCost = FA.make("darkSteelHoeCost", 4, "Number of levels required for the 'Hoe' upgrade.");
 
   public static final IValueFactory F = F_DARK_STEEL.section(".sword");
 

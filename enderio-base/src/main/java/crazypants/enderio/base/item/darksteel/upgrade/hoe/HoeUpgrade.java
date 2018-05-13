@@ -3,7 +3,7 @@ package crazypants.enderio.base.item.darksteel.upgrade.hoe;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import net.minecraft.init.Items;
@@ -16,7 +16,7 @@ public class HoeUpgrade extends AbstractUpgrade {
   public static final @Nonnull HoeUpgrade INSTANCE = new HoeUpgrade();
 
   public HoeUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.hoe", new ItemStack(Items.DIAMOND_HOE), Config.darkSteelHoeCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.hoe", new ItemStack(Items.DIAMOND_HOE), DarkSteelConfig.darkSteelHoeCost.get());
   }
 
   @Override
