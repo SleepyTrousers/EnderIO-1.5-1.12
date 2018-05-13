@@ -479,7 +479,7 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-    <recipe name="Filter, Fluid" required="true">
+  <recipe name="Filter, Fluid" required="true">
     <crafting>
       <grid>
         <item /><item name="oredict:paper" /><item />
@@ -487,6 +487,117 @@ XML editor will display that as tooltips when editing this file.
         <item /><item name="oredict:paper" /><item/>
       </grid>
       <output name="enderio:item_fluid_filter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Redstone Base" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="REDSTONE_ALLOY"/><item name="oredict:paper" /><item name="REDSTONE_ALLOY"/>
+        <item name="oredict:paper" /><item name="oredict:ingotIron"/><item name="oredict:paper" />
+        <item name="REDSTONE_ALLOY"/><item name="oredict:paper" /><item name="REDSTONE_ALLOY"/>
+      </grid>
+      <output name="REDSTONE_FILTER_BASE" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Redstone NOT" required="true">
+    <crafting>
+      <grid size="3x1">
+        <item name="minecraft:redstone_torch"/>
+        <item name="REDSTONE_FILTER_BASE" />
+        <item name="REDSTONE_ALLOY"/>
+      </grid>
+      <output name="enderio:item_redstone_not_filter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Redstone OR" required="true">
+    <crafting>
+      <grid size="1x3">
+        <item name="REDSTONE_ALLOY"/><item name="REDSTONE_FILTER_BASE" /><item name="REDSTONE_ALLOY"/>
+      </grid>
+      <output name="REDSTONE_FILTER_OR" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Redstone AND" required="true">
+    <crafting>
+      <grid size="1x3">
+        <item name="minecraft:redstone_torch"/><item name="REDSTONE_FILTER_BASE" /><item name="minecraft:redstone_torch"/>
+      </grid>
+      <output name="REDSTONE_FILTER_AND" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Redstone XOR" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="minecraft:redstone_torch"/><item />
+        <item name="REDSTONE_ALLOY"/><item name="REDSTONE_FILTER_BASE" /><item name="REDSTONE_ALLOY"/>
+        <item /><item name="minecraft:redstone_torch"/><item />
+      </grid>
+      <output name="REDSTONE_FILTER_XOR" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Redstone NAND" required="true">
+    <crafting>
+      <shapeless>
+        <item name="minecraft:redstone_torch"/>
+        <item name="REDSTONE_FILTER_AND" />
+      </shapeless>
+      <output name="REDSTONE_FILTER_NAND" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Redstone NAND Uncraft" required="true">
+    <crafting>
+      <shapeless>
+        <item name="minecraft:redstone_torch"/>
+        <item name="REDSTONE_FILTER_NAND" />
+      </shapeless>
+      <output name="REDSTONE_FILTER_AND" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Redstone NOR" required="true">
+    <crafting>
+      <shapeless>
+        <item name="minecraft:redstone_torch"/>
+        <item name="REDSTONE_FILTER_OR" />
+      </shapeless>
+      <output name="REDSTONE_FILTER_NOR" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Redstone NOR Uncraft" required="true">
+    <crafting>
+      <shapeless>
+        <item name="minecraft:redstone_torch"/>
+        <item name="REDSTONE_FILTER_NOR" />
+      </shapeless>
+      <output name="REDSTONE_FILTER_OR" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Redstone XNOR" required="true">
+    <crafting>
+      <shapeless>
+        <item name="minecraft:redstone_torch"/>
+        <item name="REDSTONE_FILTER_XOR" />
+      </shapeless>
+      <output name="REDSTONE_FILTER_XNOR" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Redstone XNOR Uncraft" required="true">
+    <crafting>
+      <shapeless>
+        <item name="minecraft:redstone_torch"/>
+        <item name="REDSTONE_FILTER_XNOR" />
+      </shapeless>
+      <output name="REDSTONE_FILTER_XOR" />
     </crafting>
   </recipe>
 

@@ -365,6 +365,11 @@
         "textures": {
             "layer0": "enderio:items/item_material_grinding_ball_lumium"
         }
+      },
+      "redstone_filter_base":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_redstone_filter_base"
+        }
       }
     }
   }

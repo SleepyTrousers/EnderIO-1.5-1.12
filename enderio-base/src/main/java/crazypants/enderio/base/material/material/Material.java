@@ -88,6 +88,8 @@ public enum Material {
   GRINDING_BALL_ENDERIUM("grindingBallEnderium"),
   GRINDING_BALL_LUMIUM("grindingBallLumium"),
 
+  REDSTONE_FILTER_BASE("redstoneFilterBase"),
+
   ;
 
   public final boolean hasEffect;

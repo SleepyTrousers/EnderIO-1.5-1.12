@@ -182,4 +182,12 @@ XML editor will display that as tooltips when editing this file.
   <alias name="ENDERIUM_BALL" item="itemGrindingBallEnderium" />
   <alias name="LUMIUM_BALL" item="itemGrindingBallLumium" />
 
+  <alias name="REDSTONE_FILTER_BASE" item="itemRedstoneFilterBase" />
+  <alias name="REDSTONE_FILTER_AND" item="enderio:item_redstone_and_filter" />
+  <alias name="REDSTONE_FILTER_OR" item="enderio:item_redstone_or_filter" />
+  <alias name="REDSTONE_FILTER_XOR" item="enderio:item_redstone_xor_filter" />
+  <alias name="REDSTONE_FILTER_NAND" item="enderio:item_redstone_nand_filter" />
+  <alias name="REDSTONE_FILTER_NOR" item="enderio:item_redstone_nor_filter" />
+  <alias name="REDSTONE_FILTER_XNOR" item="enderio:item_redstone_xnor_filter" />
+
 </enderio:recipes>

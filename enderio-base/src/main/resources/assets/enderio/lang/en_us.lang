@@ -223,6 +223,7 @@ item.item_material.unsouled_machine_chassi.tooltip.detailed.line1=An advanced fr
 item.item_material.grinding_ball_signalum.name=Signalum Grinding Ball
 item.item_material.grinding_ball_enderium.name=Enderium Grinding Ball
 item.item_material.grinding_ball_lumium.name=Lumium Grinding Ball
+item.item_material.redstone_filter_base.name=Redstone Filter Base
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad
