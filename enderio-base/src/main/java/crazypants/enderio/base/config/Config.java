@@ -187,6 +187,7 @@ public final class Config {
 
   public static int darkSteelTravelCost = 16;
   public static int darkSteelSpoonCost = 4;
+  public static int darkSteelHoeCost = 4;
 
   public static boolean darkSteelSolarChargeOthers = true;
 
@@ -547,6 +548,9 @@ public final class Config {
 
     darkSteelSpoonCost = config.get(sectionDarkSteel.name, "darkSteelSpoonCost", darkSteelSpoonCost, "Number of levels required for the 'Spoon' upgrade.")
         .getInt(darkSteelSpoonCost);
+
+    darkSteelHoeCost = config.get(sectionDarkSteel.name, "darkSteelHoeCost", darkSteelHoeCost, "Number of levels required for the 'Hoe' upgrade.")
+        .getInt(darkSteelHoeCost);
 
     darkSteelSolarChargeOthers = config.get(sectionDarkSteel.name, "darkSteelSolarChargeOthers", darkSteelSolarChargeOthers,
         "If enabled allows the solar upgrade to charge non-darksteel armors that the player is wearing.").getBoolean();
