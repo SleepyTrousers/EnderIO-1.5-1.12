@@ -126,7 +126,7 @@ public class LootManager {
       lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 0.2F));
       lp.addEntry(createLootEntry(Material.GEAR_VIBRANT.getStack(), 1, 2, 0.0625F));
       lp.addEntry(createLootEntry(itemTravelStaff.getItemNN(), 0.1F));
-      lp.addEntry(createLootCapacitor(25));
+      lp.addEntry(createLootCapacitor(.5f));
 
     } else if (evt.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)) {
 
