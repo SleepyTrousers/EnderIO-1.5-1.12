@@ -122,8 +122,6 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
 
   @Override
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    list.add(EnergyUpgradeManager.getStoredEnergyString(itemstack));
-
     List<String> entries = new ArrayList<String>();
     SpecialTooltipHandler.addDetailedTooltipFromResources(entries, getUnlocalizedName());
     list.addAll(entries);
