@@ -8,6 +8,7 @@ import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
@@ -15,6 +16,8 @@ import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.IFilterContainer;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.material.material.Material;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduits.init.ConduitObject;
@@ -22,6 +25,7 @@ import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.network.PacketRedstoneConduitOutputStrength;
 import crazypants.enderio.conduits.network.PacketRedstoneConduitSignalColor;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.item.ItemStack;
 
 public class RedstoneSettings extends BaseSettingsPanel {
 
@@ -85,6 +89,8 @@ public class RedstoneSettings extends BaseSettingsPanel {
   @Override
   protected void initCustomOptions() {
     gui.getContainer().setInOutSlotsVisible(true, false, insCon);
+    createGhostSlots();
+
     inputColorB.setColorIndex(insCon.getInputSignalColor(gui.getDir()).ordinal());
     inputColorB.onGuiInit();
     outputColorB.setColorIndex(insCon.getOutputSignalColor(gui.getDir()).ordinal());
@@ -94,8 +100,20 @@ public class RedstoneSettings extends BaseSettingsPanel {
     filtersChanged();
   }
 
+  private void createGhostSlots() {
+    NNList<ItemStack> filtersOut = new NNList<>(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.REDSTONE_FILTER_BASE.ordinal()),
+        new ItemStack(ModObject.itemRedstoneAndFilter.getItemNN()), new ItemStack(ModObject.itemRedstoneNandFilter.getItemNN()),
+        new ItemStack(ModObject.itemRedstoneNorFilter.getItemNN()), new ItemStack(ModObject.itemRedstoneNotFilter.getItemNN()),
+        new ItemStack(ModObject.itemRedstoneOrFilter.getItemNN()), new ItemStack(ModObject.itemRedstoneToggleFilter.getItemNN()),
+        new ItemStack(ModObject.itemRedstoneXnorFilter.getItemNN()), new ItemStack(ModObject.itemRedstoneXorFilter.getItemNN()));
+    NNList<ItemStack> filtersIn = new NNList<>(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.REDSTONE_FILTER_BASE.ordinal()));
+    NNList<ItemStack> upgrades = new NNList<>();
+    gui.getContainer().createGhostSlots(gui.getGhostSlotHandler().getGhostSlots(), filtersIn, filtersOut, upgrades);
+  }
+
   @Override
   public void deactivate() {
+    super.deactivate();
     gui.getContainer().setInOutSlotsVisible(false, false, insCon);
     inputColorB.detach();
     outputColorB.detach();

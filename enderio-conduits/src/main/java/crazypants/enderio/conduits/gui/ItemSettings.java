@@ -1,14 +1,12 @@
 package crazypants.enderio.conduits.gui;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
-import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.DyeColor;
@@ -41,7 +39,7 @@ public class ItemSettings extends BaseSettingsPanel {
   private static final int ID_INSERT_CHANNEL = 23;
   private static final int ID_EXTRACT_CHANNEL = 27;
 
-  private IItemConduit itemConduit;
+  private @Nonnull IItemConduit itemConduit;
 
   private final ToggleButton loopB;
   private final ToggleButton roundRobinB;
@@ -50,17 +48,13 @@ public class ItemSettings extends BaseSettingsPanel {
   private final MultiIconButton priDownB;
 
   private final RedstoneModeButton<?> rsB;
-  private final ColorButton colorB;
+  private final @Nonnull ColorButton colorB;
 
   private ColorButton insertChannelB;
   private ColorButton extractChannelB;
 
   private int priLeft = 46;
   private int priWidth = 32;
-
-  private final GuiToolTip functionUpgradeTooltip;
-  private final GuiToolTip filterExtractUpgradeTooltip;
-  private final GuiToolTip filterInsertUpgradeTooltip;
 
   public ItemSettings(@Nonnull final IGuiExternalConnection gui, @Nonnull IClientConduit con) {
     super(IconEIO.WRENCH_OVERLAY_ITEM, ConduitObject.item_item_conduit.getUnlocalisedName(), gui, con, "filter_upgrade_settings");
@@ -89,33 +83,6 @@ public class ItemSettings extends BaseSettingsPanel {
     loopB.setSelectedToolTip(Lang.GUI_SELF_FEED_ENABLED.get());
     loopB.setUnselectedToolTip(Lang.GUI_SELF_FEED_DISABLED.get());
     loopB.setPaintSelectedBorder(false);
-
-    filterExtractUpgradeTooltip = new GuiToolTip(new Rectangle(rightColumn, 70, 18, 18), Lang.GUI_ITEM_FILTER_UPGRADE.get()) {
-      @Override
-      public boolean shouldDraw() {
-        return !gui.getContainer().hasFilter(false) && super.shouldDraw();
-      }
-    };
-
-    filterInsertUpgradeTooltip = new GuiToolTip(new Rectangle(leftColumn, 70, 18, 18), Lang.GUI_ITEM_FILTER_UPGRADE.get()) {
-      @Override
-      public boolean shouldDraw() {
-        return !gui.getContainer().hasFilter(true) && super.shouldDraw();
-      }
-    };
-
-    // ArrayList<String> list = new ArrayList<String>();
-    // SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.conduit.item.functionupgrade.line");
-    // for (FunctionUpgrade upgrade : FunctionUpgrade.values()) {
-    // list.add(EnderIO.lang.localizeExact(upgrade.unlocName.concat(".name")));
-    // }
-    functionUpgradeTooltip = new GuiToolTip(new Rectangle(x - 22, customTop + 43, 18, 18), Lang.GUI_ITEM_FUNCTION_UPGRADE.get(),
-        Lang.GUI_ITEM_FUNCTION_UPGRADE_2.get(), Lang.GUI_ITEM_FUNCTION_UPGRADE_3.get()) {
-      @Override
-      public boolean shouldDraw() {
-        return !gui.getContainer().hasFunctionUpgrade() && super.shouldDraw();
-      }
-    };
 
     y += insertChannelB.getHeight() + 6;
     x = rightColumn;
@@ -148,13 +115,10 @@ public class ItemSettings extends BaseSettingsPanel {
     rsB.onGuiInit();
     rsB.setMode(RedstoneControlMode.IconHolder.getFromMode(itemConduit.getExtractionRedstoneMode(gui.getDir())));
 
-    gui.addToolTip(filterExtractUpgradeTooltip);
-    gui.addToolTip(filterInsertUpgradeTooltip);
     loopB.onGuiInit();
     loopB.setSelected(itemConduit.isSelfFeedEnabled(gui.getDir()));
     roundRobinB.onGuiInit();
     roundRobinB.setSelected(itemConduit.isRoundRobinEnabled(gui.getDir()));
-    gui.addToolTip(functionUpgradeTooltip);
 
     priUpB.onGuiInit();
     priDownB.onGuiInit();
@@ -206,21 +170,22 @@ public class ItemSettings extends BaseSettingsPanel {
   }
 
   @Override
-  protected void renderCustomOptions(int top, float par1, int par2, int par3) {
+  protected void renderCustomOptions(int top1, float par1, int par2, int par3) {
     FontRenderer fr = gui.getFontRenderer();
 
     GlStateManager.color(1, 1, 1);
-    IconEIO.map.render(EnderWidget.BUTTON_DOWN, left + priLeft, top - 5, priWidth, 16, 0, true);
+    IconEIO.map.render(EnderWidget.BUTTON_DOWN, left + priLeft, top1 - 5, priWidth, 16, 0, true);
     String str = itemConduit.getOutputPriority(gui.getDir()) + "";
     int sw = fr.getStringWidth(str);
 
     String priority = Lang.GUI_PRIORITY.get();
-    fr.drawString(priority, left + 12, top + 25, ColorUtil.getRGB(Color.black));
-    fr.drawString(str, left + priLeft + priWidth - sw - gap, top + 25, ColorUtil.getRGB(Color.black));
+    fr.drawString(priority, left + 12, top1 + 25, ColorUtil.getRGB(Color.black));
+    fr.drawString(str, left + priLeft + priWidth - sw - gap, top1 + 25, ColorUtil.getRGB(Color.black));
   }
 
   @Override
   public void deactivate() {
+    super.deactivate();
     gui.getContainer().setInOutSlotsVisible(false, false, itemConduit);
     rsB.detach();
     colorB.detach();
@@ -228,15 +193,17 @@ public class ItemSettings extends BaseSettingsPanel {
     loopB.detach();
     priUpB.detach();
     priDownB.detach();
-    gui.removeToolTip(functionUpgradeTooltip);
-    gui.removeToolTip(filterExtractUpgradeTooltip);
-    gui.removeToolTip(filterInsertUpgradeTooltip);
     insertChannelB.detach();
     extractChannelB.detach();
   }
 
   @Override
   protected boolean hasFilters() {
+    return true;
+  }
+
+  @Override
+  protected boolean hasUpgrades() {
     return true;
   }
 

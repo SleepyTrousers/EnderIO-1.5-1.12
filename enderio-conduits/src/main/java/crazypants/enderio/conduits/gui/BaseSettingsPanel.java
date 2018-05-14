@@ -1,6 +1,7 @@
 package crazypants.enderio.conduits.gui;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
 import javax.annotation.Nonnull;
 
@@ -8,6 +9,7 @@ import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.EnderIO;
@@ -64,6 +66,10 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
   protected int customTop = 0;
 
+  private final @Nonnull GuiToolTip functionUpgradeTooltip;
+  private final @Nonnull GuiToolTip filterExtractUpgradeTooltip;
+  private final @Nonnull GuiToolTip filterInsertUpgradeTooltip;
+
   protected BaseSettingsPanel(@Nonnull IWidgetIcon icon, @Nonnull String typeName, @Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con,
       @Nonnull String texture) {
     this.icon = icon;
@@ -108,6 +114,28 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
         }
       });
     }
+
+    filterExtractUpgradeTooltip = new GuiToolTip(new Rectangle(rightColumn, 70, 18, 18), Lang.GUI_ITEM_FILTER_UPGRADE.get()) {
+      @Override
+      public boolean shouldDraw() {
+        return !gui.getContainer().hasFilter(false) && super.shouldDraw();
+      }
+    };
+
+    filterInsertUpgradeTooltip = new GuiToolTip(new Rectangle(leftColumn, 70, 18, 18), Lang.GUI_ITEM_FILTER_UPGRADE.get()) {
+      @Override
+      public boolean shouldDraw() {
+        return !gui.getContainer().hasFilter(true) && super.shouldDraw();
+      }
+    };
+
+    functionUpgradeTooltip = new GuiToolTip(new Rectangle(rightColumn + 18, customTop + 43, 18, 18), Lang.GUI_ITEM_FUNCTION_UPGRADE.get(),
+        Lang.GUI_ITEM_FUNCTION_UPGRADE_2.get(), Lang.GUI_ITEM_FUNCTION_UPGRADE_3.get()) {
+      @Override
+      public boolean shouldDraw() {
+        return !gui.getContainer().hasFunctionUpgrade() && super.shouldDraw();
+      }
+    };
 
     gui.getContainer().setInOutSlotsVisible(false, false, con);
 
@@ -157,7 +185,19 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     insertEnabledB.setSelected(insertEnabled);
     extractEnabledB.setSelected(extractEnabled);
 
+    if (hasFilters()) {
+      gui.addToolTip(filterExtractUpgradeTooltip);
+      gui.addToolTip(filterInsertUpgradeTooltip);
+    }
+    if (hasUpgrades()) {
+      gui.addToolTip(functionUpgradeTooltip);
+    }
+
     initCustomOptions();
+  }
+
+  protected boolean hasUpgrades() {
+    return false;
   }
 
   protected void initCustomOptions() {
@@ -169,6 +209,10 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     extractEnabledB.detach();
     insertFilterOptionsB.detach();
     extractFilterOptionsB.detach();
+
+    gui.removeToolTip(functionUpgradeTooltip);
+    gui.removeToolTip(filterExtractUpgradeTooltip);
+    gui.removeToolTip(filterInsertUpgradeTooltip);
   }
 
   @Override

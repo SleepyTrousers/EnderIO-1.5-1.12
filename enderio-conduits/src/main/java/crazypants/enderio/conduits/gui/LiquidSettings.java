@@ -200,6 +200,7 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   @Override
   public void deactivate() {
+    super.deactivate();
     gui.getContainer().setInOutSlotsVisible(false, false, conduit);
     rsB.detach();
     colorB.detach();
@@ -230,6 +231,11 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   @Override
   protected boolean hasFilters() {
+    return true;
+  }
+
+  @Override
+  protected boolean hasUpgrades() {
     return true;
   }
 
