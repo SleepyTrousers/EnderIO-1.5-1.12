@@ -124,7 +124,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("alloy_smelter");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 82, 78);
 
-    IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 176, 0, 13, 13);
+    IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 176, 0, 14, 14);
     flame = guiHelper.createAnimatedDrawable(flameDrawable, 200, IDrawableAnimated.StartDirection.BOTTOM, false);
   }
 
@@ -145,8 +145,8 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
 
   @Override
   public void drawExtras(@Nonnull Minecraft minecraft) {
-    flame.draw(minecraft, 56 - xOff, 36 - yOff);
-    flame.draw(minecraft, 103 - xOff, 36 - yOff);
+    flame.draw(minecraft, 56 - xOff - 1, 36 - yOff - 1);
+    flame.draw(minecraft, 103 - xOff, 36 - yOff - 1);
   }
 
   @Override
