@@ -5,14 +5,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.lang.ILang;
 import crazypants.enderio.base.lang.Lang;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
@@ -201,19 +199,6 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
     t.setInteger("type", type.ordinal());
     nbtRoot.setTag("filterType", t);
     nbtRoot.setTag("signalColors", colorList);
-  }
-
-  @Override
-  public void writeToByteBuf(@Nonnull ByteBuf buf) {
-    NBTTagCompound root = new NBTTagCompound();
-    writeToNBT(root);
-    NetworkUtil.writeNBTTagCompound(root, buf);
-  }
-
-  @Override
-  public void readFromByteBuf(@Nonnull ByteBuf buf) {
-    NBTTagCompound tag = NetworkUtil.readNBTTagCompound(buf);
-    readFromNBT(tag);
   }
 
   @Override

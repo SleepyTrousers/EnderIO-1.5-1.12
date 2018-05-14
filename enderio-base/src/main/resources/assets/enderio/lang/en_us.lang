@@ -1054,3 +1054,4 @@ item.item_redstone_nor_filter.name=Redstone NOR Filter
 item.item_redstone_nand_filter.name=Redstone NAND Filter
 item.item_redstone_xor_filter.name=Redstone XOR Filter
 item.item_redstone_xnor_filter.name=Redstone XNOR Filter
+item.item_redstone_toggle_filter.name=Redstone Toggle Latch Filter
