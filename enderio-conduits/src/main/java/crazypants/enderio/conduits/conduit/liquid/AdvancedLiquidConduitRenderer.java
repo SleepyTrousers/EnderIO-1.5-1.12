@@ -77,13 +77,14 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
       @Nonnull
       TextureAtlasSprite texture = fluid != null ? RenderUtil.getStillTexture(fluid) : lc.getNotSetEdgeTexture();
   
-      float scaleFactor = 0.75f;
-      float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
-      float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
-      float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
+      // FIXME this logic is duplicated from DefaultConduitRenderer
+      float shrink = 1 / 32f;
+      float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 0 : shrink;
+      float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 0 : shrink;
+      float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 0 : shrink;
   
       BoundingBox cube = component.bound;
-      BoundingBox bb = cube.scale(xLen, yLen, zLen);
+      BoundingBox bb = cube.expand(-xLen, -yLen, -zLen);
   
       List<Vertex> vertices = new ArrayList<Vertex>();
       for (EnumFacing d : EnumFacing.VALUES) {

@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.NullHelper;
+import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
@@ -134,6 +135,12 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
     return result;
   }
+  
+  @Nonnull
+  private static final Vector4f CORE_UVS = new Vector4f(2, 2, 14, 14); 
+  static {
+    CORE_UVS.scale(1 / 16f);
+  }
 
   private void addConduitQuads(@Nonnull IBlockStateWrapper state, @Nonnull IConduitBundle bundle, float brightness, @Nonnull BlockRenderLayer layer,
       @Nonnull List<BakedQuad> quads) {
@@ -179,7 +186,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
               if (tex == null) {
                 tex = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
               }
-              BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
+              BakedQuadBuilder.addBakedQuads(quads, component.bound, CORE_UVS, tex);
             } else {
               addWireBounds(wireBounds, component);
             }

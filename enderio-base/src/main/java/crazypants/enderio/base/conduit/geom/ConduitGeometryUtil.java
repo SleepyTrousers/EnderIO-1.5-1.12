@@ -43,7 +43,7 @@ public class ConduitGeometryUtil {
 
   @SubscribeEvent
   public static void preInit(EnderIOLifecycleEvent.Config.Post event) {
-    float size = (float) (0.075f + (0.175f * Config.conduitScale));
+    float size = (float) ((1 / 16f) * Config.conduitPixels);
 
     WIDTH = size;
     HEIGHT = size;
@@ -56,7 +56,7 @@ public class ConduitGeometryUtil {
     CORE_MAX = core_max;
     CORE_BOUNDS = new BoundingBox(core_min, core_max);
 
-    float connectorWidth = (float) (0.25f + (Config.conduitScale * 0.5f));
+    float connectorWidth = (float) (1 / 16f) + ((1 / 16f) * Config.conduitPixels * 3);
     for (EnumFacing dir : EnumFacing.VALUES) {
       EXTERNAL_CONNECTOR_BOUNDS.put(dir, createExternalConnector(dir, CONNECTOR_DEPTH, connectorWidth));
     }

@@ -20,6 +20,7 @@ import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
@@ -63,11 +64,11 @@ public final class Config {
   public static final @Nonnull Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
   public static final @Nonnull Section sectionHoes = new Section("Farm Settings.Hoes", "hoes");
 
-  public static final double DEFAULT_CONDUIT_SCALE = 0.6;
+  public static final int DEFAULT_CONDUIT_PIXELS = 4;
 
   public static final float EXPLOSION_RESISTANT = 2000f * 3.0f / 5.0f; // obsidian
 
-  public static double conduitScale = DEFAULT_CONDUIT_SCALE;
+  public static int conduitPixels = DEFAULT_CONDUIT_PIXELS;
 
   public static File configDirectory;
 
@@ -348,11 +349,11 @@ public final class Config {
   public static void processConfig(@SuppressWarnings("hiding") Configuration config) {
 
     // TODO change geometry to be re-baked after server join
-    conduitScale = config
-        .get(sectionMisc.name, "conduitScale", DEFAULT_CONDUIT_SCALE,
-            "Valid values are between 0-1, smallest conduits at 0, largest at 1.\n" + "In SMP, all clients must be using the same value as the server.")
-        .getDouble(DEFAULT_CONDUIT_SCALE);
-    conduitScale = VecmathUtil.clamp(conduitScale, 0, 1);
+    conduitPixels = config
+        .get(sectionMisc.name, "conduitPixels", DEFAULT_CONDUIT_PIXELS,
+            "Valid values are between 1-5, smallest conduits at 1, largest at 5.\n" + "In SMP, all clients must be using the same value as the server.")
+        .getInt(DEFAULT_CONDUIT_PIXELS);
+    conduitPixels = MathHelper.clamp(conduitPixels, 1, 5);
 
     travelAnchorMaximumDistance = config.get(sectionAnchor.name, "travelAnchorMaxDistance", travelAnchorMaximumDistance,
         "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaximumDistance);
