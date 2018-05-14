@@ -58,10 +58,10 @@ public class TankRenderHelper {
         buffer.add(bb, EnumFacing.EAST, 0f, 1f, height, 1f, sprite, vecC, gas);
         buffer.add(bb, EnumFacing.SOUTH, 0f, 1f, height, 1f, sprite, vecC, gas);
         buffer.add(bb, EnumFacing.WEST, 0f, 1f, height, 1f, sprite, vecC, gas);
-        if (!gas || renderBottom) {
+        if ((!gas && height > 0) || renderBottom) {
           buffer.add(bb, EnumFacing.UP, 0f, 1f, 0f, 1f, sprite, vecC);
         }
-        if (gas || renderBottom) {
+        if ((gas && height > 0) || renderBottom) {
           buffer.add(bb, EnumFacing.DOWN, 0f, 1f, 0f, 1f, sprite, vecC);
         }
 
