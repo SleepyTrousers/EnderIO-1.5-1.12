@@ -26,6 +26,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -57,7 +58,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected void addTransmissionQuads(TextureAtlasSprite tex, Vector4f color, IConduit conduit, CollidableComponent component, float selfIllum,
+  protected void addTransmissionQuads(TextureAtlasSprite tex, Vector4f color, BlockRenderLayer layer, IConduit conduit, CollidableComponent component, float selfIllum,
       List<BakedQuad> quads) {
     // Handled in dynamic render
   }

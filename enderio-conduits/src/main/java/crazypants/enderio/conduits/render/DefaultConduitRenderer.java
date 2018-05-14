@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.reflect.ConstructorUtils;
 
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
@@ -61,7 +64,7 @@ public class DefaultConduitRenderer implements IConduitRenderer {
 
   @Override
   public void addBakedQuads(@Nonnull TileEntitySpecialRenderer<?> conduitBundleRenderer, @Nonnull IConduitBundle bundle,
-      @Nonnull IClientConduit.WithDefaultRendering conduit, float brightness, @Nonnull BlockRenderLayer layer, List<BakedQuad> quads) {
+      @Nonnull IClientConduit.WithDefaultRendering conduit, float brightness, @Nullable BlockRenderLayer layer, List<BakedQuad> quads) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
@@ -71,7 +74,7 @@ public class DefaultConduitRenderer implements IConduitRenderer {
         final TextureAtlasSprite transmitionTextureForState = conduit.getTransmitionTextureForState(component);
         if (layer != null && isNSEWUD(component.dir) && transmitionTextureForState != null) {
           Vector4f color = conduit.getTransmitionTextureColorForState(component);
-          addTransmissionQuads(transmitionTextureForState, color, conduit, component, selfIllum, quads);
+          addTransmissionQuads(transmitionTextureForState, color, layer, conduit, component, selfIllum, quads);
         }
         TextureAtlasSprite tex = conduit.getTextureForState(component);
         if (tex == null) {
@@ -81,11 +84,19 @@ public class DefaultConduitRenderer implements IConduitRenderer {
       }
     }
   }
+  
+  protected BlockRenderLayer getConduitQuadsLayer() {
+    return BlockRenderLayer.CUTOUT;
+  }
+  
+  protected BlockRenderLayer getTransmissionQuadsLayer() {
+    return BlockRenderLayer.CUTOUT;
+  }
 
   protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,
       @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
     if (isNSEWUD(component.dir)) {
-      if (layer == null) {
+      if (layer != getConduitQuadsLayer()) {
         return; // TODO? null is the blockbreaking animation
       }
 
@@ -128,8 +139,12 @@ public class DefaultConduitRenderer implements IConduitRenderer {
     }
   }
 
-  protected void addTransmissionQuads(TextureAtlasSprite tex, Vector4f color, IConduit conduit, CollidableComponent component, float selfIllum,
+  protected void addTransmissionQuads(TextureAtlasSprite tex, Vector4f color, BlockRenderLayer layer, IConduit conduit, CollidableComponent component, float selfIllum,
       List<BakedQuad> quads) {
+    
+    if (layer != getTransmissionQuadsLayer()) {
+      return;
+    }
 
     float scaleFactor = 0.6f;
     float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;

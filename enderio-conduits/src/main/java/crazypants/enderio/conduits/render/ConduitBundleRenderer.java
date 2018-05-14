@@ -113,10 +113,6 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
   public @Nonnull List<BakedQuad> getGeneralQuads(@Nonnull IBlockStateWrapper state, BlockRenderLayer layer) {
 
-    if (layer != null && layer != BlockRenderLayer.CUTOUT) {
-      return Collections.emptyList();
-    }
-
     List<BakedQuad> result = new ArrayList<BakedQuad>();
     IConduitBundle bundle = (IConduitBundle) state.getTileEntity();
 
@@ -154,7 +150,9 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
       IClientConduit.WithDefaultRendering con = (IClientConduit.WithDefaultRendering) c;
       if (state.getYetaDisplayMode().renderConduit(con)) {
         IConduitRenderer renderer = getRendererForConduit(con);
-        renderer.addBakedQuads(this, bundle, con, brightness, layer, quads);
+        if (renderer.canRenderInLayer(con, layer)) {
+          renderer.addBakedQuads(this, bundle, con, brightness, layer, quads);
+        }
         Set<EnumFacing> extCons = con.getExternalConnections();
         for (EnumFacing dir : extCons) {
           if (con.getConnectionMode(dir) != ConnectionMode.DISABLED && con.getConnectionMode(dir) != ConnectionMode.NOT_SET) {

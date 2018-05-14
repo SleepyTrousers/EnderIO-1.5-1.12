@@ -12,6 +12,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IClientConduit.WithDefaultRendering;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
@@ -32,6 +33,16 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
   public boolean isRendererForConduit(@Nonnull IConduit conduit) {
     return conduit instanceof AdvancedLiquidConduit;
   }
+  
+  @Override
+  public boolean canRenderInLayer(WithDefaultRendering con, BlockRenderLayer layer) {
+    return layer == BlockRenderLayer.TRANSLUCENT || super.canRenderInLayer(con, layer);
+  }
+  
+  @Override
+  protected BlockRenderLayer getTransmissionQuadsLayer() {
+    return BlockRenderLayer.TRANSLUCENT;
+  }
 
   @Override
   protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,
@@ -44,71 +55,79 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
 
     AdvancedLiquidConduit lc = (AdvancedLiquidConduit) conduit;
 
-    for (EnumFacing dir : conduit.getExternalConnections()) {
-      TextureAtlasSprite ioTex = null;
-      if (conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
-        ioTex = lc.getTextureForInputMode();
-      } else if (conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
-        ioTex = lc.getTextureForOutputMode();
-      }
-      if (ioTex != null) {
-        Offset offset = bundle.getOffset(ILiquidConduit.class, dir);
-        ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ioTex, new Vector4f(1, 1, 1, 1), quads);
-      }
-    }
-
-    FluidStack fluid = lc.getFluidType();
-    @Nonnull
-    TextureAtlasSprite texture = fluid != null ? RenderUtil.getStillTexture(fluid) : lc.getNotSetEdgeTexture();
-
-    float scaleFactor = 0.75f;
-    float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
-    float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
-    float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
-
-    BoundingBox cube = component.bound;
-    BoundingBox bb = cube.scale(xLen, yLen, zLen);
-
-    List<Vertex> vertices = new ArrayList<Vertex>();
-    for (EnumFacing d : EnumFacing.VALUES) {
-      if (d != component.dir && d != component.dir.getOpposite()) {
-
-        EnumFacing vDir = RenderUtil.getVDirForFace(d);
-        if (component.dir == EnumFacing.UP || component.dir == EnumFacing.DOWN) {
-          vDir = RenderUtil.getUDirForFace(d);
-        } else if ((component.dir == EnumFacing.NORTH || component.dir == EnumFacing.SOUTH) && d.getFrontOffsetY() != 0) {
-          vDir = RenderUtil.getUDirForFace(d);
+    if (layer == BlockRenderLayer.CUTOUT) {
+  
+      for (EnumFacing dir : conduit.getExternalConnections()) {
+        TextureAtlasSprite ioTex = null;
+        if (conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
+          ioTex = lc.getTextureForInputMode();
+        } else if (conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
+          ioTex = lc.getTextureForOutputMode();
         }
-
-        float minU = texture.getMinU();
-        float maxU = texture.getMaxU();
-        float minV = texture.getMinV();
-        float maxV = texture.getMaxV();
-
-        double sideScale = Math.max(bb.sizeX(), bb.sizeY()) * 2 / 16f;
-        sideScale = Math.max(sideScale, bb.sizeZ() * 2 / 16f);
-        double width = Math.min(bb.sizeX(), bb.sizeY()) * 15f / 16f;
-
-        List<Vertex> corners = bb.getCornersWithUvForFace(d, minU, maxU, minV, maxV);
-        moveEdgeCorners(corners, vDir, width);
-        moveEdgeCorners(corners, component.dir.getOpposite(), sideScale);
-        for (Vertex c : corners) {
-          vertices.add(c);
+        if (ioTex != null) {
+          Offset offset = bundle.getOffset(ILiquidConduit.class, dir);
+          ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ioTex, new Vector4f(1, 1, 1, 1), quads);
         }
-
-        corners = bb.getCornersWithUvForFace(d, minU, maxU, minV, maxV);
-        moveEdgeCorners(corners, vDir.getOpposite(), width);
-        moveEdgeCorners(corners, component.dir.getOpposite(), sideScale);
-        for (Vertex c : corners) {
-          vertices.add(c);
-        }
-
       }
     }
+    
+    if (layer == BlockRenderLayer.TRANSLUCENT) {
+  
+      FluidStack fluid = lc.getFluidType();
+      @Nonnull
+      TextureAtlasSprite texture = fluid != null ? RenderUtil.getStillTexture(fluid) : lc.getNotSetEdgeTexture();
+  
+      float scaleFactor = 0.75f;
+      float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
+      float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
+      float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
+  
+      BoundingBox cube = component.bound;
+      BoundingBox bb = cube.scale(xLen, yLen, zLen);
+  
+      List<Vertex> vertices = new ArrayList<Vertex>();
+      for (EnumFacing d : EnumFacing.VALUES) {
+        if (d != component.dir && d != component.dir.getOpposite()) {
+  
+          EnumFacing vDir = RenderUtil.getVDirForFace(d);
+          if (component.dir == EnumFacing.UP || component.dir == EnumFacing.DOWN) {
+            vDir = RenderUtil.getUDirForFace(d);
+          } else if ((component.dir == EnumFacing.NORTH || component.dir == EnumFacing.SOUTH) && d.getFrontOffsetY() != 0) {
+            vDir = RenderUtil.getUDirForFace(d);
+          }
+  
+          float minU = texture.getMinU();
+          float maxU = texture.getMaxU();
+          float minV = texture.getMinV();
+          float maxV = texture.getMaxV();
+  
+          double sideScale = Math.max(bb.sizeX(), bb.sizeY()) * 2 / 16f;
+          sideScale = Math.max(sideScale, bb.sizeZ() * 2 / 16f);
+          double width = Math.min(bb.sizeX(), bb.sizeY()) * 15f / 16f;
+  
+          List<Vertex> corners = bb.getCornersWithUvForFace(d, minU, maxU, minV, maxV);
+          moveEdgeCorners(corners, vDir, width);
+          moveEdgeCorners(corners, component.dir.getOpposite(), sideScale);
+          for (Vertex c : corners) {
+            vertices.add(c);
+          }
+  
+          corners = bb.getCornersWithUvForFace(d, minU, maxU, minV, maxV);
+          moveEdgeCorners(corners, vDir.getOpposite(), width);
+          moveEdgeCorners(corners, component.dir.getOpposite(), sideScale);
+          for (Vertex c : corners) {
+            vertices.add(c);
+          }
+  
+        }
+      }
+      BakedQuadBuilder.addBakedQuads(quads, vertices, texture, null);
+    }
 
-    if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
+    if (layer == BlockRenderLayer.TRANSLUCENT && conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
       tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
       List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+      List<Vertex> vertices = new ArrayList<>();
       for (Vertex c : corners) {
         vertices.add(c);
       }
@@ -117,9 +136,9 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
         Vertex c = corners.get(i);
         vertices.add(c);
       }
+      
+      BakedQuadBuilder.addBakedQuads(quads, vertices, tex, null);
     }
-
-    BakedQuadBuilder.addBakedQuads(quads, vertices, texture, null);
 
   }
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.conduit.IClientConduit.WithDefaultRendering;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.BlockRenderLayer;
@@ -24,6 +25,10 @@ public interface IConduitRenderer {
 
   default boolean isDynamic() {
     return false;
+  }
+
+  default boolean canRenderInLayer(WithDefaultRendering con, BlockRenderLayer layer) {
+    return layer == BlockRenderLayer.CUTOUT;
   }
 
 }
