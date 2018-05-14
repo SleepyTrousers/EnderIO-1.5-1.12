@@ -38,6 +38,7 @@ import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.redstone.DefaultInputSignalFilter;
 import crazypants.enderio.base.filter.redstone.DefaultOutputSignalFilter;
+import crazypants.enderio.base.filter.redstone.IInputSignalFilter;
 import crazypants.enderio.base.filter.redstone.IOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.IRedstoneSignalFilter;
 import crazypants.enderio.base.render.registry.TextureRegistry;
@@ -433,6 +434,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       int input = getExternalPowerLevel(side);
       if (input > result.getStrength()) {
         result = new Signal(input);
+        IInputSignalFilter filter = (IInputSignalFilter) getSignalFilter(side, false);
+        result = filter.apply(result, getInputSignalColor(side));
       }
     }
 
@@ -910,8 +913,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   // -------------------------------------------
 
   @Nonnull
-  public IRedstoneSignalFilter getSignalFilter(@Nonnull EnumFacing dir, boolean isInput) {
-    if (!isInput) {
+  public IRedstoneSignalFilter getSignalFilter(@Nonnull EnumFacing dir, boolean isOutput) {
+    if (!isOutput) {
       return inputFilters.get(dir);
     } else {
       return outputFilters.get(dir);
