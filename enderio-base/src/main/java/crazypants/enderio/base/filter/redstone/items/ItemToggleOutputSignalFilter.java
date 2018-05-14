@@ -14,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemToggleOutputSignalFilter extends Item implements IItemOutputSignalFilterUpgrade {
 
@@ -37,6 +39,7 @@ public class ItemToggleOutputSignalFilter extends Item implements IItemOutputSig
     return filter;
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   @Nullable
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
