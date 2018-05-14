@@ -15,4 +15,8 @@ public class InvertingOutputSignalFilter implements IOutputSignalFilter {
     return bundledSignal.getSignal(color).getStrength() > 0 ? Signal.NONE : Signal.MAX;
   }
 
+  @Override
+  public boolean hasGui() {
+    return false;
+  }
 }

@@ -117,17 +117,21 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     insertFilterOptionsB.onGuiInit();
     extractFilterOptionsB.onGuiInit();
 
-    if (gui.getContainer().hasFilter(true)) {
+    if (gui.getContainer().hasFilter(true) && hasFilterGui(true)) {
       insertFilterOptionsB.setIsVisible(true);
     } else {
       insertFilterOptionsB.setIsVisible(false);
     }
 
-    if (gui.getContainer().hasFilter(false)) {
+    if (gui.getContainer().hasFilter(false) && hasFilterGui(false)) {
       extractFilterOptionsB.setIsVisible(true);
     } else {
       extractFilterOptionsB.setIsVisible(false);
     }
+  }
+
+  protected boolean hasFilterGui(boolean input) {
+    return true;
   }
 
   public boolean updateConduit(@Nonnull IClientConduit conduit) {

@@ -52,4 +52,9 @@ public class ToggleOutputSignalFilter implements IOutputSignalFilter {
     return !active;
   }
 
+  @Override
+  public boolean hasGui() {
+    return false;
+  }
+
 }

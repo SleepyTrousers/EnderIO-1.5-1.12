@@ -11,6 +11,8 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
+import crazypants.enderio.base.filter.IFilter;
+import crazypants.enderio.base.filter.IFilterContainer;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.network.PacketHandler;
@@ -89,6 +91,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
     outputColorB.onGuiInit();
     strongCB.onGuiInit();
     strongCB.setSelected(insCon.isOutputStrong(gui.getDir()));
+    filtersChanged();
   }
 
   @Override
@@ -116,6 +119,16 @@ public class RedstoneSettings extends BaseSettingsPanel {
   @Nonnull
   protected String getOutputHeading() {
     return Lang.GUI_REDSTONE_CONDUIT_OUTPUT_MODE.get();
+  }
+
+  @Override
+  protected boolean hasFilterGui(boolean output) {
+    IFilterContainer<?> container = (IFilterContainer<?>) gui.getContainer();
+    IFilter filter = container.getFilter(output ? FilterGuiUtil.INDEX_INPUT_REDSTONE : FilterGuiUtil.INDEX_OUTPUT_REDSTONE);
+    if (filter != null) {
+      return filter.hasGui();
+    }
+    return super.hasFilterGui(output);
   }
 
   @Override
