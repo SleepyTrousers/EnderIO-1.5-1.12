@@ -351,9 +351,9 @@ public final class Config {
     // TODO change geometry to be re-baked after server join
     conduitPixels = config
         .get(sectionMisc.name, "conduitPixels", DEFAULT_CONDUIT_PIXELS,
-            "Valid values are between 1-5, smallest conduits at 1, largest at 5.\n" + "In SMP, all clients must be using the same value as the server.")
+            "Valid values are between 2-5, smallest conduits at 2, largest at 5.\n" + "In SMP, all clients must be using the same value as the server.")
         .getInt(DEFAULT_CONDUIT_PIXELS);
-    conduitPixels = MathHelper.clamp(conduitPixels, 1, 5);
+    conduitPixels = MathHelper.clamp(conduitPixels, 2, 5);
 
     travelAnchorMaximumDistance = config.get(sectionAnchor.name, "travelAnchorMaxDistance", travelAnchorMaximumDistance,
         "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaximumDistance);
