@@ -16,7 +16,7 @@ public class HoeUpgrade extends AbstractUpgrade {
   public static final @Nonnull HoeUpgrade INSTANCE = new HoeUpgrade();
 
   public HoeUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.hoe", new ItemStack(Items.DIAMOND_HOE), DarkSteelConfig.darkSteelHoeCost.get());
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.hoe", new ItemStack(Items.DIAMOND_HOE), DarkSteelConfig.darkSteelHoeCost);
   }
 
   @Override
