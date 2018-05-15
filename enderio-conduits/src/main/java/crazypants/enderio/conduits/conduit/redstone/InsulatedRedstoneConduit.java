@@ -432,11 +432,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     Signal result = Signal.NONE;
     if (acceptSignalsForDir(side)) {
       int input = getExternalPowerLevel(side);
-      if (input > result.getStrength()) {
-        result = new Signal(input);
-        IInputSignalFilter filter = (IInputSignalFilter) getSignalFilter(side, false);
-        result = filter.apply(result, getInputSignalColor(side));
-      }
+      result = new Signal(input);
+      IInputSignalFilter filter = (IInputSignalFilter) getSignalFilter(side, false);
+
+      result = filter.apply(result, getBundle().getBundleworld(), getBundle().getLocation().offset(side));
     }
 
     if (network != null) {
@@ -912,6 +911,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   // FILTERS
   // -------------------------------------------
 
+  @Override
   @Nonnull
   public IRedstoneSignalFilter getSignalFilter(@Nonnull EnumFacing dir, boolean isOutput) {
     if (!isOutput) {
@@ -938,7 +938,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public void setFilter(int filterIndex, int param1, @Nonnull IRedstoneSignalFilter filter) {
-    setSignalFilter(EnumFacing.getFront(param1), filterIndex == getInputFilterIndex() ? true : filterIndex == getOutputFilterIndex(), filter);
+    setSignalFilter(EnumFacing.getFront(param1), filterIndex == getInputFilterIndex() ? true : !(filterIndex == getOutputFilterIndex()), filter);
   }
 
   @Override

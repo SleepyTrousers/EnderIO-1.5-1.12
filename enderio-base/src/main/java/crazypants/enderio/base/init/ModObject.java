@@ -40,6 +40,7 @@ import crazypants.enderio.base.filter.item.items.ItemExistingItemFilter;
 import crazypants.enderio.base.filter.item.items.ItemModItemFilter;
 import crazypants.enderio.base.filter.item.items.ItemPowerItemFilter;
 import crazypants.enderio.base.filter.redstone.items.ItemBasicOutputSignalFilter;
+import crazypants.enderio.base.filter.redstone.items.ItemComparatorInputSignalFilter;
 import crazypants.enderio.base.filter.redstone.items.ItemInvertingOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.items.ItemToggleOutputSignalFilter;
 import crazypants.enderio.base.item.coldfire.ItemColdFireIgniter;
@@ -171,6 +172,7 @@ public enum ModObject implements IModObject.Registerable {
   itemRedstoneXorFilter(ItemBasicOutputSignalFilter.class, "createXor"),
   itemRedstoneXnorFilter(ItemBasicOutputSignalFilter.class, "createXnor"),
   itemRedstoneToggleFilter(ItemToggleOutputSignalFilter.class),
+  itemRedstoneComparatorFilter(ItemComparatorInputSignalFilter.class),
 
   blockFusedQuartz(BlockFusedQuartz.class, "createFusedQuartz"),
   blockFusedGlass(BlockFusedQuartz.class, "createFusedGlass"),

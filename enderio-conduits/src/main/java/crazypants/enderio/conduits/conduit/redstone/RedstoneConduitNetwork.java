@@ -19,15 +19,18 @@ import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
+import crazypants.enderio.base.filter.redstone.IInputSignalFilter;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
 
@@ -36,6 +39,8 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   boolean updatingNetwork = false;
 
   private boolean networkEnabled = true;
+
+  private boolean endTickUpdate = false;
 
   public RedstoneConduitNetwork() {
     super(IRedstoneConduit.class, IRedstoneConduit.class);
@@ -109,7 +114,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     updatingNetwork = true;
     Signal oldSig = con.getExternalSignalForDir(dir);
     Signal signal = con.getNetworkInput(dir);
-    if (oldSig != null && oldSig.getStrength() != signal.getStrength()) {
+    if (oldSig != null && oldSig.getStrength() != signal.getStrength() || endTickUpdate) {
       bundledSignal.remove(con.getInputSignalColor(dir), oldSig.getStrength());
     }
     bundledSignal.add(con.getInputSignalColor(dir), signal.getStrength());
@@ -136,11 +141,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   public BundledSignal getBundledSignal() {
-    if (networkEnabled) {
-      return bundledSignal;
-    } else {
-      return new BundledSignal();
-    }
+    return bundledSignal;
   }
 
   // Need to disable the network when determining the strength of external
@@ -259,6 +260,24 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
   public int getSignalStrengthForColor(@Nonnull DyeColor color) {
     return bundledSignal.getSignal(color).getStrength();
+  }
+
+  @Override
+  public void tickEnd(ServerTickEvent event, @Nullable Profiler profiler) {
+    super.tickEnd(event, profiler);
+
+    endTickUpdate = true;
+
+    for (IRedstoneConduit con : getConduits()) {
+      for (EnumFacing dir : EnumFacing.VALUES) {
+        if (((IInputSignalFilter) con.getSignalFilter(dir, false)).shouldUpdate()) {
+          updateInputsForSource(con, dir);
+          break;
+        }
+      }
+    }
+
+    endTickUpdate = false;
   }
 
 }
