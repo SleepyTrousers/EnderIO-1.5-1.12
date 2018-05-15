@@ -95,7 +95,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
           }
           return EnumActionResult.SUCCESS;
         } else {
-          TileEntity tileEntity = world.getTileEntity(pos);
+          TileEntity tileEntity = world.getTileEntity(placeAt);
           if (tileEntity instanceof IConduitBundle) {
             if (((IConduitBundle) tileEntity).handleFacadeClick(world, placeAt, player, side.getOpposite(), stack, hand, hitX, hitY, hitZ)) {
               return EnumActionResult.SUCCESS;
