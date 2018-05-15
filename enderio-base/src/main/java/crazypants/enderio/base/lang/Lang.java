@@ -140,6 +140,7 @@ public enum Lang implements ILang {
 
   GUI_REDSTONE_FILTER_SIGNAL_COLOR(".gui.redstone_filter.signal_color"),
   GUI_REDSTONE_FILTER_INPUT_SIGNAL(".gui.redstone_filter.input_signal"),
+  GUI_INFINTY_RECIPE_DIMENSIONS(".gui.infinity_recipe_dimensions"),
 
   ;
 

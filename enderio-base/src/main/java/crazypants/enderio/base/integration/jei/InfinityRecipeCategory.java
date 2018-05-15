@@ -1,5 +1,6 @@
 package crazypants.enderio.base.integration.jei;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +8,14 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.InfinityConfig;
 import crazypants.enderio.base.gui.BlockSceneRenderer;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.material.Material;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
@@ -111,6 +114,10 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
     final String text = "<" + (int) (InfinityConfig.dropChance.get() * 100) + "%";
     int stringWidth = minecraft.fontRenderer.getStringWidth(text);
     minecraft.fontRenderer.drawString(text, 59 - stringWidth / 2, 36, 0xFFFFFF, false);
+
+    if (InfinityConfig.enableInAllDimensions.get() == false) {
+      minecraft.fontRenderer.drawString(Lang.GUI_INFINTY_RECIPE_DIMENSIONS.get(), 59, 66, ColorUtil.getRGB(Color.GRAY));
+    }
   }
 
   @Override

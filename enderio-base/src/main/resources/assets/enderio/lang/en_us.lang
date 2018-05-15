@@ -1036,6 +1036,8 @@ enderio.gui.power.item_filter.percent=Power Percentage
 enderio.gui.redstone_filter.signal_color=Redstone Signal Color
 enderio.gui.redstone_filter.input_signal=Input Signal
 
+enderio.gui.infinity_recipe_dimensions=Overworld Only
+
 item.item_basic_item_filter.name=Basic Item Filter
 item.item_advanced_item_filter.name=Advanced Item Filter
 item.item_limited_item_filter.name=Limited Item Filter
