@@ -35,8 +35,8 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
   }
   
   @Override
-  public boolean canRenderInLayer(WithDefaultRendering con, BlockRenderLayer layer) {
-    return layer == BlockRenderLayer.TRANSLUCENT || super.canRenderInLayer(con, layer);
+  protected BlockRenderLayer getConduitQuadsLayer() {
+    return BlockRenderLayer.TRANSLUCENT;
   }
   
   @Override
@@ -66,7 +66,7 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
         }
         if (ioTex != null) {
           Offset offset = bundle.getOffset(ILiquidConduit.class, dir);
-          ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ioTex, new Vector4f(1, 1, 1, 1), quads);
+//          ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ioTex, new Vector4f(1, 1, 1, 1), quads);
         }
       }
     }

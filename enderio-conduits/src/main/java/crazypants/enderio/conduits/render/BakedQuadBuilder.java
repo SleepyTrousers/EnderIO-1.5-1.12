@@ -45,5 +45,10 @@ public class BakedQuadBuilder {
       boolean rotateUV, boolean flipU, Vector4f color) {
     RenderUtil.addBakedQuadForFace(quads, bb, tex, face, null, rotateUV, flipU, true, color);
   }
+  
+  public static void addBakedQuadForFace(@Nonnull List<BakedQuad> quads, @Nonnull BoundingBox bb, @Nonnull TextureAtlasSprite tex, @Nonnull EnumFacing face,
+      @Nonnull Vector4f uvs, boolean rotateUV, boolean flipU, Vector4f color) {
+    RenderUtil.addBakedQuadForFace(quads, bb, tex, face, uvs, null, rotateUV, flipU, true, color);
+  }
 
 }

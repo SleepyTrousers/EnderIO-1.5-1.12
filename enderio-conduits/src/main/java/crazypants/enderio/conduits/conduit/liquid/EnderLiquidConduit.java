@@ -31,6 +31,7 @@ import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
+import crazypants.enderio.conduits.conduit.item.ItemConduit;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -258,7 +259,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   @Override
   public @Nonnull TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
-    return null;
+    return ItemConduit.ICON_KEY_ENDER.get(TextureAtlasSprite.class);
   }
 
   @Override

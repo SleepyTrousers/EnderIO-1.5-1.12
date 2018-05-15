@@ -58,6 +58,11 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
+  protected BlockRenderLayer getConduitQuadsLayer() {
+    return BlockRenderLayer.TRANSLUCENT;
+  }
+  
+  @Override
   protected void addTransmissionQuads(TextureAtlasSprite tex, Vector4f color, BlockRenderLayer layer, IConduit conduit, CollidableComponent component, float selfIllum,
       List<BakedQuad> quads) {
     // Handled in dynamic render
@@ -69,7 +74,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
       LiquidConduit lc = (LiquidConduit) conduit;
       FluidStack fluid = lc.getFluidType();
       if (fluid != null) {
-        renderFluidOutline(component, fluid);
+//        renderFluidOutline(component, fluid);
       }
     }
   }

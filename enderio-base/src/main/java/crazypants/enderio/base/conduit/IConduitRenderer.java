@@ -31,4 +31,8 @@ public interface IConduitRenderer {
     return layer == BlockRenderLayer.CUTOUT;
   }
 
+  default BlockRenderLayer getCoreLayer() {
+    return BlockRenderLayer.SOLID;
+  }
+
 }

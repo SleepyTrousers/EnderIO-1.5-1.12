@@ -166,7 +166,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
             externals.add(dir);
           }
         }
-      } else if (con != null) {
+      } else if (con != null && layer == BlockRenderLayer.CUTOUT) {
         Collection<CollidableComponent> components = con.getCollidableComponents();
         for (CollidableComponent component : components) {
           addWireBounds(wireBounds, component);
@@ -181,13 +181,16 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
         if (component.conduitType != null) {
           IClientConduit.WithDefaultRendering conduit = (IClientConduit.WithDefaultRendering) bundle.getConduit(component.conduitType);
           if (conduit != null) {
+            IConduitRenderer renderer = getRendererForConduit(conduit);
             if (state.getYetaDisplayMode().renderConduit(component.conduitType)) {
-              TextureAtlasSprite tex = conduit.getTextureForState(component);
-              if (tex == null) {
-                tex = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+              if (renderer.getCoreLayer() == layer) {
+                TextureAtlasSprite tex = conduit.getTextureForState(component);
+                if (tex == null) {
+                  tex = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+                }
+                BakedQuadBuilder.addBakedQuads(quads, component.bound, CORE_UVS, tex);
               }
-              BakedQuadBuilder.addBakedQuads(quads, component.bound, CORE_UVS, tex);
-            } else {
+            } else if (layer == BlockRenderLayer.CUTOUT) {
               addWireBounds(wireBounds, component);
             }
           }
@@ -209,12 +212,13 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
       addQuadsForExternalConnection(dir, quads);
     }
 
-    if (quads.isEmpty() && !bundle.hasFacade()) {
-      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.10), ConduitBundleRenderManager.instance.getWireFrameIcon());
-      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.15), ConduitBundleRenderManager.instance.getWireFrameIcon());
-      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.20), ConduitBundleRenderManager.instance.getWireFrameIcon());
-      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.25), ConduitBundleRenderManager.instance.getWireFrameIcon());
-    }
+    // TODO this needs to know info about the core layer, which might not be CUTOUT
+//    if (quads.isEmpty() && !bundle.hasFacade()) {
+//      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.10), ConduitBundleRenderManager.instance.getWireFrameIcon());
+//      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.15), ConduitBundleRenderManager.instance.getWireFrameIcon());
+//      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.20), ConduitBundleRenderManager.instance.getWireFrameIcon());
+//      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.25), ConduitBundleRenderManager.instance.getWireFrameIcon());
+//    }
 
   }
 

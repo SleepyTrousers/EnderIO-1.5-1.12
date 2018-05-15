@@ -28,6 +28,11 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
     }
     return false;
   }
+  
+  @Override
+  public BlockRenderLayer getCoreLayer() {
+    return BlockRenderLayer.TRANSLUCENT;
+  }
 
   @Override
   protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,

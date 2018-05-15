@@ -20,6 +20,7 @@ import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitRenderer;
+import crazypants.enderio.base.conduit.IClientConduit.WithDefaultRendering;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -92,6 +93,16 @@ public class DefaultConduitRenderer implements IConduitRenderer {
   protected BlockRenderLayer getTransmissionQuadsLayer() {
     return BlockRenderLayer.CUTOUT;
   }
+  
+  @Override
+  public BlockRenderLayer getCoreLayer() {
+    return getConduitQuadsLayer();
+  }
+  
+  @Override
+  public boolean canRenderInLayer(WithDefaultRendering con, BlockRenderLayer layer) {
+    return layer == getConduitQuadsLayer() || layer == getTransmissionQuadsLayer();
+  }
 
   protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,
       @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
@@ -110,7 +121,7 @@ public class DefaultConduitRenderer implements IConduitRenderer {
       addQuadsForSection(bb, tex, component.dir, quads);
       if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
         tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
-        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, component.dir);
+        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, component.dir, new Vector4f(4 / 16f, 4 / 16f, 12 / 16f, 12 / 16f));
       }
     } else {
       BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
@@ -134,7 +145,10 @@ public class DefaultConduitRenderer implements IConduitRenderer {
         } else {
           doRotSides = rotateSides;
         }
-        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, face, doRotSides, rotateTopBottom, color);
+        float maxU = 13 / 16f, maxV = 4 / 16f;
+        Vector4f uvs = dir.getAxis().isHorizontal() ? new Vector4f(0, 0, maxU, maxV) : new Vector4f(0, 0, maxV, maxU);
+//        bb = new BoundingBox(bb.offset(0, -0.275, 0));
+        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, face, uvs, doRotSides, rotateTopBottom, color);
       }
     }
   }
@@ -146,13 +160,13 @@ public class DefaultConduitRenderer implements IConduitRenderer {
       return;
     }
 
-    float scaleFactor = 0.6f;
-    float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
-    float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
-    float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
+    float shrink = 1 / 32f;
+    float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 0 : shrink;
+    float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 0 : shrink;
+    float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 0 : shrink;
 
     BoundingBox cube = component.bound;
-    BoundingBox bb = cube.scale(xLen, yLen, zLen);
+    BoundingBox bb = cube.expand(-xLen, -yLen, -zLen);
     addQuadsForSection(bb, tex, component.dir, quads, color);
   }
 
