@@ -66,7 +66,7 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
         }
         if (ioTex != null) {
           Offset offset = bundle.getOffset(ILiquidConduit.class, dir);
-//          ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ioTex, new Vector4f(1, 1, 1, 1), quads);
+          ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ioTex, new Vector4f(1, 1, 1, 1), quads);
         }
       }
     }

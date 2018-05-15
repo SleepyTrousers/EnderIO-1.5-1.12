@@ -74,7 +74,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
       LiquidConduit lc = (LiquidConduit) conduit;
       FluidStack fluid = lc.getFluidType();
       if (fluid != null) {
-//        renderFluidOutline(component, fluid);
+        renderFluidOutline(component, fluid);
       }
     }
   }

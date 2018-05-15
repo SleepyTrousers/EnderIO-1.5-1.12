@@ -147,7 +147,6 @@ public class DefaultConduitRenderer implements IConduitRenderer {
         }
         float maxU = 13 / 16f, maxV = 4 / 16f;
         Vector4f uvs = dir.getAxis().isHorizontal() ? new Vector4f(0, 0, maxU, maxV) : new Vector4f(0, 0, maxV, maxU);
-//        bb = new BoundingBox(bb.offset(0, -0.275, 0));
         BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, face, uvs, doRotSides, rotateTopBottom, color);
       }
     }
