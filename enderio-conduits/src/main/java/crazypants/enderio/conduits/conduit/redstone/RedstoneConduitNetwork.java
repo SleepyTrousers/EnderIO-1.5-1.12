@@ -267,6 +267,10 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
       for (EnumFacing dir : EnumFacing.VALUES) {
         if (((IInputSignalFilter) con.getSignalFilter(dir, false)).shouldUpdate()) {
           updateInputsForSource(con, dir);
+
+          World world = con.getBundle().getBundleworld();
+          BlockPos pos = con.getBundle().getLocation();
+          world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock(), false);
           break;
         }
       }

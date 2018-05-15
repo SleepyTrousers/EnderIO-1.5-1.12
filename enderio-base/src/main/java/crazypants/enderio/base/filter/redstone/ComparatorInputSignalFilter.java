@@ -15,8 +15,7 @@ public class ComparatorInputSignalFilter implements IInputSignalFilter {
   public Signal apply(@Nonnull Signal signal, @Nonnull World world, @Nonnull BlockPos pos) {
     IBlockState block = world.getBlockState(pos);
     if (block.hasComparatorInputOverride()) {
-      Signal sig = new Signal(block.getComparatorInputOverride(world, pos), signal.getId());
-      return sig;
+      return new Signal(block.getComparatorInputOverride(world, pos), signal.getId());
     }
     return new Signal(CombinedSignal.NONE, signal.getId());
   }
