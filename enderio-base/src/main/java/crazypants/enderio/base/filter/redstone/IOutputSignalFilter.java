@@ -22,8 +22,7 @@ public interface IOutputSignalFilter extends IRedstoneSignalFilter {
    *          bundle to get the signal from
    * @return the signal after being modified by the filter
    */
-  default @Nonnull Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal) {
-    return Signal.NONE;
-  }
+  @Nonnull
+  Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal);
 
 }

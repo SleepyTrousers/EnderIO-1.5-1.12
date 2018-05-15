@@ -89,4 +89,6 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
   @Nonnull
   IRedstoneSignalFilter getSignalFilter(@Nonnull EnumFacing dir, boolean isOutput);
 
+  void setSignalIdBase(int id);
+
 }

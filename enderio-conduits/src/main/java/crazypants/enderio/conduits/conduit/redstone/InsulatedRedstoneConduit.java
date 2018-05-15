@@ -29,6 +29,7 @@ import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
+import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.diagnostics.Prof;
@@ -113,6 +114,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   private boolean activeDirty = false;
 
   private boolean connectionsDirty = false;
+
+  private int signalIdBase = 0;
 
   @SuppressWarnings("unused")
   public InsulatedRedstoneConduit() {
@@ -415,7 +418,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public Signal getNetworkOutput(@Nonnull EnumFacing side) {
     ConnectionMode mode = getConnectionMode(side);
     if (network == null || !mode.acceptsInput()) {
-      return Signal.NONE;
+      return new Signal(CombinedSignal.NONE, -1);
     }
     DyeColor col = getOutputSignalColor(side);
     BundledSignal bundledSignal = network.getBundledSignal();
@@ -429,10 +432,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       network.setNetworkEnabled(false);
     }
 
-    Signal result = Signal.NONE;
+    Signal result = new Signal(Signal.NONE, signalIdBase + side.ordinal());
     if (acceptSignalsForDir(side)) {
       int input = getExternalPowerLevel(side);
-      result = new Signal(input);
+      result = new Signal(input, signalIdBase + side.ordinal());
       IInputSignalFilter filter = (IInputSignalFilter) getSignalFilter(side, false);
 
       result = filter.apply(result, getBundle().getBundleworld(), getBundle().getLocation().offset(side));
@@ -478,7 +481,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     if (bundledInput >= 0) {
       for (int i = 0; i < 16; i++) {
         int color = bundledInput >>> i & 1;
-        Signal signal = new Signal(color == 1 ? 16 : 0);
+        Signal signal = new Signal(color == 1 ? 16 : 0, signalIdBase + side.ordinal());
         ccSignals.put(DyeColor.fromIndex(Math.max(0, 15 - i)), signal);
       }
     }
@@ -910,6 +913,11 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   // -------------------------------------------
   // FILTERS
   // -------------------------------------------
+
+  @Override
+  public void setSignalIdBase(int id) {
+    signalIdBase = id;
+  }
 
   @Override
   @Nonnull

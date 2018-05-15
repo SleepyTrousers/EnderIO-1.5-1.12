@@ -1,6 +1,11 @@
 package crazypants.enderio.base.conduit.redstone.signals;
 
+import javax.annotation.Nonnull;
+
 public class CombinedSignal {
+
+  public static final @Nonnull CombinedSignal NONE = new CombinedSignal(0);
+  public static final @Nonnull CombinedSignal MAX = new CombinedSignal(15);
 
   private int strength;
 

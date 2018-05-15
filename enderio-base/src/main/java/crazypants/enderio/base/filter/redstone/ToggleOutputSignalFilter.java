@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
+import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -24,7 +25,7 @@ public class ToggleOutputSignalFilter implements IOutputSignalFilter {
     if (signal.getStrength() == Signal.NONE.getStrength()) {
       deactivated = true;
     }
-    return active ? Signal.MAX : Signal.NONE;
+    return active ? new Signal(CombinedSignal.MAX, -2) : new Signal(CombinedSignal.NONE, -1);
   }
 
   @Override

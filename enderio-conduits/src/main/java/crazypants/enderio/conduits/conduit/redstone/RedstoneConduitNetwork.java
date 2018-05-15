@@ -42,6 +42,8 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
   private boolean endTickUpdate = false;
 
+  private int baseId = 0;
+
   public RedstoneConduitNetwork() {
     super(IRedstoneConduit.class, IRedstoneConduit.class);
   }
@@ -70,6 +72,8 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   @Override
   public void addConduit(@Nonnull IRedstoneConduit con) {
     super.addConduit(con);
+    baseId += 6;
+    con.setSignalIdBase(baseId);
     updateInputsFromConduit(con, true); // all call paths to here come from updateNetwork() which already notifies all neighbors
   }
 
@@ -82,7 +86,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     // Then ask them what inputs they have now
     Set<EnumFacing> externalConnections = con.getExternalConnections();
     for (EnumFacing side : EnumFacing.values()) {
-      if (externalConnections.contains(side)) {
+      if (con.getConnectionMode(side).acceptsOutput()) {
         updateInputsForSource(con, side);
       }
     }
@@ -112,25 +116,16 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
   private void updateInputsForSource(@Nonnull IRedstoneConduit con, @Nonnull EnumFacing dir) {
     updatingNetwork = true;
-    Signal oldSig = con.getExternalSignalForDir(dir);
     Signal signal = con.getNetworkInput(dir);
-    if (oldSig != null && oldSig.getStrength() != signal.getStrength() || endTickUpdate) {
-      bundledSignal.remove(con.getInputSignalColor(dir), oldSig.getStrength());
-    }
-    bundledSignal.add(con.getInputSignalColor(dir), signal.getStrength());
+    bundledSignal.addSignal(con.getInputSignalColor(dir), signal);
 
     if (Loader.isModLoaded("computercraft")) {
       Map<DyeColor, Signal> ccSignals = con.getComputerCraftSignals(dir);
 
       if (!ccSignals.isEmpty()) {
         for (DyeColor color : ccSignals.keySet()) {
-          Signal oldSigB = bundledSignal.getSignal(color);
           Signal ccSig = ccSignals.get(color);
-
-          if (oldSigB.getStrength() != ccSig.getStrength()) {
-            bundledSignal.remove(color, oldSigB.getStrength());
-          }
-          bundledSignal.add(color, ccSig.getStrength());
+          bundledSignal.addSignal(color, ccSig);
         }
       }
     }

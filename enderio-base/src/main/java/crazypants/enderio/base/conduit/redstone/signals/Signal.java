@@ -4,44 +4,41 @@ import javax.annotation.Nonnull;
 
 public class Signal extends CombinedSignal {
 
-  public static final @Nonnull Signal NONE = new Signal(0);
-  public static final @Nonnull Signal MAX = new Signal(15);
+  private int id;
 
-  private int totalStrength;
-
-  public Signal(int strength) {
+  public Signal(int strength, int id) {
     super(strength);
-    this.totalStrength = strength;
+    this.id = id;
   }
 
-  public Signal(@Nonnull CombinedSignal signal) {
-    this(signal.getStrength());
+  public Signal(@Nonnull CombinedSignal signal, int id) {
+    this(signal.getStrength(), id);
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
-    result = prime * result + getTotalStrength();
+    result = prime * result + getId();
     return result;
   }
 
-  public int getTotalStrength() {
-    return totalStrength;
+  public int getId() {
+    return id;
   }
 
   public void addStrength(int str) {
-    totalStrength += str;
-    setStrength(totalStrength);
+    str = getStrength() + str;
+    setStrength(str);
   }
 
   public void removeStrength(int str) {
-    totalStrength -= str;
-    setStrength(totalStrength);
+    str = getStrength() - str;
+    setStrength(str);
   }
 
   public void resetSignal() {
-    totalStrength = 0;
+    setStrength(0);
   }
 
   @Override
@@ -57,7 +54,7 @@ public class Signal extends CombinedSignal {
 
   @Override
   public String toString() {
-    return "Signal [getStrength()=" + getStrength() + ", getTotalStrengt()=" + getTotalStrength() + "]";
+    return "Signal [getStrength()=" + getStrength() + ", getId()=" + getId() + "]";
   }
 
 }
