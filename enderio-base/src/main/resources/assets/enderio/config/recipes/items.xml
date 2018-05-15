@@ -601,4 +601,26 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Filter, Redstone Toggle Latch" required="true">
+    <crafting>
+      <grid size="3x1">
+        <item name="minecraft:lever"/>
+        <item name="REDSTONE_FILTER_BASE" />
+        <item name="REDSTONE_ALLOY"/>
+      </grid>
+      <output name="enderio:item_redstone_toggle_filter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Redstone Scanner" required="true">
+    <crafting>
+      <grid size="3x1">
+        <item name="minecraft:comparator"/>
+        <item name="REDSTONE_FILTER_BASE" />
+        <item name="REDSTONE_ALLOY"/>
+      </grid>
+      <output name="enderio:item_redstone_sensor_filter" />
+    </crafting>
+  </recipe>
+
 </enderio:recipes>

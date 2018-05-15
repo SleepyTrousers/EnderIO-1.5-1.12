@@ -106,7 +106,8 @@ public class RedstoneSettings extends BaseSettingsPanel {
         new ItemStack(ModObject.itemRedstoneNorFilter.getItemNN()), new ItemStack(ModObject.itemRedstoneNotFilter.getItemNN()),
         new ItemStack(ModObject.itemRedstoneOrFilter.getItemNN()), new ItemStack(ModObject.itemRedstoneToggleFilter.getItemNN()),
         new ItemStack(ModObject.itemRedstoneXnorFilter.getItemNN()), new ItemStack(ModObject.itemRedstoneXorFilter.getItemNN()));
-    NNList<ItemStack> filtersIn = new NNList<>(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.REDSTONE_FILTER_BASE.ordinal()));
+    NNList<ItemStack> filtersIn = new NNList<>(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.REDSTONE_FILTER_BASE.ordinal()),
+        new ItemStack(ModObject.itemRedstoneSensorFilter.getItemNN()));
     NNList<ItemStack> upgrades = new NNList<>();
     gui.getContainer().createGhostSlots(gui.getGhostSlotHandler().getGhostSlots(), filtersIn, filtersOut, upgrades);
   }
