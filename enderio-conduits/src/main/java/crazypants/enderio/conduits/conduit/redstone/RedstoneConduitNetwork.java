@@ -72,8 +72,8 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   @Override
   public void addConduit(@Nonnull IRedstoneConduit con) {
     super.addConduit(con);
-    baseId += 6;
     con.setSignalIdBase(baseId);
+    baseId += 6;
     updateInputsFromConduit(con, true); // all call paths to here come from updateNetwork() which already notifies all neighbors
   }
 

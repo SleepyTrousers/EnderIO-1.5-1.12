@@ -3,7 +3,6 @@ package crazypants.enderio.base.filter.redstone;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
-import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -15,12 +14,12 @@ public class TimerInputSignalFilter implements IInputSignalFilter {
 
   @Override
   @Nonnull
-  public Signal apply(@Nonnull Signal signal, @Nonnull World world, @Nonnull BlockPos pos) {
+  public CombinedSignal apply(@Nonnull CombinedSignal signal, @Nonnull World world, @Nonnull BlockPos pos) {
     if (signal.getStrength() == 0 && currentTime == time) {
       currentTime = 0;
-      return new Signal(CombinedSignal.MAX, signal.getId());
+      return CombinedSignal.MAX;
     }
-    return new Signal(CombinedSignal.NONE, signal.getId());
+    return CombinedSignal.NONE;
   }
 
   @Override

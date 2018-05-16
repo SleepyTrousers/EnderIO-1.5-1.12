@@ -67,7 +67,7 @@ public class BundledSignal {
   }
 
   @Nonnull
-  public Signal get(@Nonnull DyeColor color, @Nonnull IOutputSignalFilter filter) {
+  public CombinedSignal getFilteredSignal(@Nonnull DyeColor color, @Nonnull IOutputSignalFilter filter) {
     return filter.apply(color, this);
   }
 

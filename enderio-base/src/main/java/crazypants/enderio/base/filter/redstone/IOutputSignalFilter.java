@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
-import crazypants.enderio.base.conduit.redstone.signals.Signal;
+import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
 
 /**
  * A filter that can be added to a redstone conduit to filter its output
@@ -23,6 +23,6 @@ public interface IOutputSignalFilter extends IRedstoneSignalFilter {
    * @return the signal after being modified by the filter
    */
   @Nonnull
-  Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal);
+  CombinedSignal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal);
 
 }

@@ -17,18 +17,23 @@ import net.minecraft.nbt.NBTTagList;
 
 public class LogicOutputSignalFilter implements IOutputSignalFilter {
 
+  @Nonnull
+  protected static CombinedSignal invertSignal(CombinedSignal sig) {
+    return sig.getStrength() > 0 ? CombinedSignal.NONE : CombinedSignal.MAX;
+  }
+
   public enum EnumSignalFilterType implements ILogicSignalFilterType {
     OR(2, Lang.GUI_REDSTONE_FILTER_OR) {
 
       @Override
       @Nonnull
-      public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
+      public CombinedSignal apply(@Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
         for (DyeColor sigColor : signalColors) {
           if (bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength()) {
-            return new Signal(CombinedSignal.MAX, -2);
+            return CombinedSignal.MAX;
           }
         }
-        return new Signal(CombinedSignal.NONE, -1);
+        return CombinedSignal.NONE;
       }
 
     },
@@ -36,13 +41,13 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
 
       @Override
       @Nonnull
-      public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
+      public CombinedSignal apply(@Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
         for (DyeColor sigColor : signalColors) {
           if (!(bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength())) {
-            return new Signal(CombinedSignal.NONE, -1);
+            return CombinedSignal.NONE;
           }
         }
-        return new Signal(CombinedSignal.MAX, -2);
+        return CombinedSignal.MAX;
       }
 
     },
@@ -51,13 +56,8 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
 
       @Override
       @Nonnull
-      public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
-        for (DyeColor sigColor : signalColors) {
-          if (!(bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength())) {
-            return new Signal(CombinedSignal.MAX, -2);
-          }
-        }
-        return new Signal(CombinedSignal.NONE, -1);
+      public CombinedSignal apply(@Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
+        return invertSignal(AND.apply(bundledSignal, signalColors));
       }
 
     },
@@ -66,13 +66,8 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
 
       @Override
       @Nonnull
-      public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
-        for (DyeColor sigColor : signalColors) {
-          if (bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength()) {
-            return new Signal(CombinedSignal.NONE, -1);
-          }
-        }
-        return new Signal(CombinedSignal.MAX, -2);
+      public CombinedSignal apply(@Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
+        return invertSignal(OR.apply(bundledSignal, signalColors));
       }
 
     },
@@ -81,14 +76,14 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
 
       @Override
       @Nonnull
-      public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
+      public CombinedSignal apply(@Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
         boolean output = false;
         for (DyeColor sigColor : signalColors) {
           if (bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength()) {
             output = !output;
           }
         }
-        return output ? new Signal(CombinedSignal.MAX, -2) : new Signal(CombinedSignal.NONE, -1);
+        return output ? CombinedSignal.MAX : CombinedSignal.NONE;
       }
 
     },
@@ -97,14 +92,8 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
 
       @Override
       @Nonnull
-      public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
-        boolean output = false;
-        for (DyeColor sigColor : signalColors) {
-          if (bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength()) {
-            output = !output;
-          }
-        }
-        return !output ? new Signal(CombinedSignal.MAX, -2) : new Signal(CombinedSignal.NONE, -1);
+      public CombinedSignal apply(@Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
+        return invertSignal(XOR.apply(bundledSignal, signalColors));
       }
 
     },
@@ -165,6 +154,7 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
     return DyeColor.fromIndex(0);
   }
 
+  @Nonnull
   public List<DyeColor> getSignalColors() {
     return signalColors;
   }
@@ -204,8 +194,8 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
 
   @Override
   @Nonnull
-  public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal) {
-    return type.apply(color, bundledSignal, getSignalColors());
+  public CombinedSignal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal) {
+    return type.apply(bundledSignal, getSignalColors());
   }
 
   @Nonnull

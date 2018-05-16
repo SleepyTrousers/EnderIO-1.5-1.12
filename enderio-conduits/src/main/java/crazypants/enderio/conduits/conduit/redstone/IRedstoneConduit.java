@@ -10,6 +10,7 @@ import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IServerConduit;
+import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.filter.redstone.IRedstoneSignalFilter;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -33,7 +34,7 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
 
   Signal getNetworkInput(@Nonnull EnumFacing side);
 
-  Signal getNetworkOutput(@Nonnull EnumFacing side);
+  CombinedSignal getNetworkOutput(@Nonnull EnumFacing side);
 
   @Nonnull
   DyeColor getInputSignalColor(@Nonnull EnumFacing dir);

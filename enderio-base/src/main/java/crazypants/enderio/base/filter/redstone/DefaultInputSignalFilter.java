@@ -2,7 +2,7 @@ package crazypants.enderio.base.filter.redstone;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.conduit.redstone.signals.Signal;
+import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -15,8 +15,8 @@ public class DefaultInputSignalFilter implements IInputSignalFilter {
 
   @Override
   @Nonnull
-  public Signal apply(@Nonnull Signal signal, @Nonnull World world, @Nonnull BlockPos pos) {
-    return signal;
+  public CombinedSignal apply(@Nonnull CombinedSignal signal, @Nonnull World world, @Nonnull BlockPos pos) {
+    return new CombinedSignal(signal.getStrength());
   }
 
 }

@@ -143,7 +143,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
   @Override
   protected boolean hasFilterGui(boolean output) {
     IFilterContainer<?> container = (IFilterContainer<?>) gui.getContainer();
-    IFilter filter = container.getFilter(output ? FilterGuiUtil.INDEX_INPUT_REDSTONE : FilterGuiUtil.INDEX_OUTPUT_REDSTONE);
+    IFilter filter = container.getFilter(!output ? FilterGuiUtil.INDEX_INPUT_REDSTONE : FilterGuiUtil.INDEX_OUTPUT_REDSTONE);
     if (filter != null) {
       return filter.hasGui();
     }

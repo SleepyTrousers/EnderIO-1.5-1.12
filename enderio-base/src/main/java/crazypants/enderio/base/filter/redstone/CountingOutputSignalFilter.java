@@ -6,7 +6,6 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
 import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
-import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class CountingOutputSignalFilter implements IOutputSignalFilter {
@@ -17,22 +16,22 @@ public class CountingOutputSignalFilter implements IOutputSignalFilter {
 
   @Override
   @Nonnull
-  public Signal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal) {
-    Signal signal = bundledSignal.getSignal(color);
-    if (signal.getStrength() > Signal.NONE.getStrength() && deactivated) {
+  public CombinedSignal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal) {
+    CombinedSignal signal = bundledSignal.getSignal(color);
+    if (signal.getStrength() > CombinedSignal.NONE.getStrength() && deactivated) {
       count++;
       deactivated = false;
     }
-    if (signal.getStrength() == Signal.NONE.getStrength()) {
+    if (signal.getStrength() == CombinedSignal.NONE.getStrength()) {
       deactivated = true;
     }
 
     if (count > maxCount) {
       count = 1;
     } else if (count == maxCount) {
-      return new Signal(CombinedSignal.MAX, -2);
+      return CombinedSignal.MAX;
     }
-    return new Signal(CombinedSignal.NONE, -1);
+    return CombinedSignal.NONE;
   }
 
   @Override

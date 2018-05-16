@@ -3,7 +3,6 @@ package crazypants.enderio.base.filter.redstone;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
-import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -12,12 +11,12 @@ public class ComparatorInputSignalFilter implements IInputSignalFilter {
 
   @Override
   @Nonnull
-  public Signal apply(@Nonnull Signal signal, @Nonnull World world, @Nonnull BlockPos pos) {
+  public CombinedSignal apply(@Nonnull CombinedSignal signal, @Nonnull World world, @Nonnull BlockPos pos) {
     IBlockState block = world.getBlockState(pos);
     if (block.hasComparatorInputOverride()) {
-      return new Signal(block.getComparatorInputOverride(world, pos), signal.getId());
+      return new CombinedSignal(block.getComparatorInputOverride(world, pos));
     }
-    return new Signal(CombinedSignal.NONE, signal.getId());
+    return CombinedSignal.NONE;
   }
 
   @Override

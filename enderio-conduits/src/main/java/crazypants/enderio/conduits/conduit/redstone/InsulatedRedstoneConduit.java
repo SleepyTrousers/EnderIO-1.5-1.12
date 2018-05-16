@@ -394,7 +394,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return 0;
     }
     int result = 0;
-    Signal signal = getNetworkOutput(toDirection);
+    CombinedSignal signal = getNetworkOutput(toDirection);
     result = Math.max(result, signal.getStrength());
     return result;
   }
@@ -415,14 +415,14 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   @Nonnull
-  public Signal getNetworkOutput(@Nonnull EnumFacing side) {
+  public CombinedSignal getNetworkOutput(@Nonnull EnumFacing side) {
     ConnectionMode mode = getConnectionMode(side);
     if (network == null || !mode.acceptsInput()) {
-      return new Signal(CombinedSignal.NONE, -1);
+      return CombinedSignal.NONE;
     }
     DyeColor col = getOutputSignalColor(side);
     BundledSignal bundledSignal = network.getBundledSignal();
-    return bundledSignal.get(col, (IOutputSignalFilter) getSignalFilter(side, true));
+    return bundledSignal.getFilteredSignal(col, (IOutputSignalFilter) getSignalFilter(side, true));
   }
 
   @Override
@@ -432,10 +432,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       network.setNetworkEnabled(false);
     }
 
-    Signal result = new Signal(Signal.NONE, signalIdBase + side.ordinal());
+    CombinedSignal result = CombinedSignal.NONE;
     if (acceptSignalsForDir(side)) {
       int input = getExternalPowerLevel(side);
-      result = new Signal(input, signalIdBase + side.ordinal());
+      result = new CombinedSignal(input);
       IInputSignalFilter filter = (IInputSignalFilter) getSignalFilter(side, false);
 
       result = filter.apply(result, getBundle().getBundleworld(), getBundle().getLocation().offset(side));
@@ -445,7 +445,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       network.setNetworkEnabled(true);
     }
 
-    return result;
+    return new Signal(result, signalIdBase + side.ordinal());
   }
 
   protected int getExternalPowerLevel(@Nonnull EnumFacing dir) {
