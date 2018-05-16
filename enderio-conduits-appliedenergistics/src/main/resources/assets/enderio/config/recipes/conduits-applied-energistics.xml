@@ -26,14 +26,38 @@ XML editor will display that as tooltips when editing this file.
 
 
 
-  <recipe name="Conduit, Refined Storage" required="true">
+  <recipe name="Conduit, ME Conduit" required="true">
     <crafting>
       <grid>
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
-        <item name="refinedstorage:quartz_enriched_iron" /><item name="refinedstorage:cable" /><item name="refinedstorage:quartz_enriched_iron" />
+        <item name="crystalFluix" /><item name="appliedenergistics2:part:140" /><item name="crystalFluix" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_refined_storage_conduit" amount="8">
+      <output name="enderio:item_me_conduit:0" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, ME Conduit (Pure)" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="crystalPureFluix" /><item name="appliedenergistics2:part:140" /><item name="crystalPureFluix" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_me_conduit:0" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, ME Conduit Dense" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="enderio:item_me_conduit:0" /><item name="CONDUIT_BINDER" />
+        <item name="enderio:item_me_conduit:0" /><item name="CONDUIT_BINDER" /><item name="enderio:item_me_conduit:0" />
+        <item name="CONDUIT_BINDER" /><item name="enderio:item_me_conduit:0" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_me_conduit:1" amount="8">
       </output>
     </crafting>
   </recipe>

@@ -1,0 +1,6 @@
+dependencies {
+  compile "appeng:appliedenergistics2:${ae_version}:api"
+
+  compile project(":enderio-base")
+  compile project(":enderio-conduits")
+}
