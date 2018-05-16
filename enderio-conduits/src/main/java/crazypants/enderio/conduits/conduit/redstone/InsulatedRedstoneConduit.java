@@ -326,7 +326,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public DyeColor getOutputSignalColor(@Nonnull EnumFacing dir) {
     DyeColor res = outputSignalColors.get(dir);
     if (res == null) {
-      return DyeColor.RED;
+      return DyeColor.GREEN;
     }
     return res;
   }
