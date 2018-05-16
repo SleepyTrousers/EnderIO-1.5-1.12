@@ -130,9 +130,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
       }
     }
 
-    con.setExternalSignalForDir(dir, signal);
     updatingNetwork = false;
-
   }
 
   public BundledSignal getBundledSignal() {
@@ -274,6 +272,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
           break;
         }
       }
+      notifyConduitNeighbours(con);
     }
 
     endTickUpdate = false;

@@ -105,8 +105,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   private Map<EnumFacing, Boolean> signalStrengths = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
 
-  private final Map<EnumFacing, Signal> externalSignals = new EnumMap<EnumFacing, Signal>(EnumFacing.class);
-
   private RedstoneConduitNetwork network;
 
   private int activeUpdateCooldown = 0;
@@ -518,6 +516,19 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
+  @Nonnull
+  public NNList<ItemStack> getDrops() {
+    NNList<ItemStack> res = super.getDrops();
+    for (ItemStack stack : inputFilterUpgrades.values()) {
+      res.add(stack);
+    }
+    for (ItemStack stack : outputFilterUpgrades.values()) {
+      res.add(stack);
+    }
+    return res;
+  }
+
+  @Override
   public boolean onNeighborBlockChange(@Nonnull Block blockId) {
     World world = getBundle().getBundleworld();
     if (world.isRemote) {
@@ -893,21 +904,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Nonnull
   public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
     return "";
-  }
-
-  @Override
-  @Nullable
-  public Signal getExternalSignalForDir(@Nonnull EnumFacing dir) {
-    return externalSignals.get(dir);
-  }
-
-  @Override
-  public void setExternalSignalForDir(@Nonnull EnumFacing dir, @Nullable Signal signal) {
-    if (signal != null) {
-      externalSignals.put(dir, signal);
-    } else {
-      externalSignals.remove(dir);
-    }
   }
 
   // -------------------------------------------

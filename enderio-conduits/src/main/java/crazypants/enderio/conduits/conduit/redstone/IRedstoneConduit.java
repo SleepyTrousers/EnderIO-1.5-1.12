@@ -74,11 +74,6 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
   @Nonnull
   TextureAtlasSprite getTextureForInOutBackground();
 
-  @Nullable
-  Signal getExternalSignalForDir(@Nonnull EnumFacing dir);
-
-  void setExternalSignalForDir(@Nonnull EnumFacing dir, @Nullable Signal signal);
-
   @Override
   @Nullable
   RedstoneConduitNetwork getNetwork() throws NullPointerException;
