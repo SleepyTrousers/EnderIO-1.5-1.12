@@ -731,11 +731,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   }
 
   public void setRoundRobinEnabled(@Nonnull EnumFacing dir, boolean enabled) {
-    if (!enabled) {
-      roundRobin.remove(dir);
-    } else {
-      roundRobin.put(dir, enabled);
-    }
+    roundRobin.put(dir, enabled);
     if (network != null) {
       network.connectionChanged(this, dir);
     }
