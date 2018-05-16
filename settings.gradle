@@ -1,4 +1,4 @@
-include ':enderio-base', ':enderio-machines', ':enderio-conduits', ':enderio-invpanel', ':enderio-integration-tic', ':enderio-integration-forestry', ':enderio-integration-thaumcraft', ':enderio-conduits-refinedstorage'
+include ':enderio-base', ':enderio-machines', ':enderio-conduits', ':enderio-invpanel', ':enderio-integration-tic', ':enderio-integration-forestry', ':enderio-integration-thaumcraft', ':enderio-conduits-refinedstorage', ':enderio-conduits-opencomputers'
 
 rootProject.name = 'EnderIO'
 

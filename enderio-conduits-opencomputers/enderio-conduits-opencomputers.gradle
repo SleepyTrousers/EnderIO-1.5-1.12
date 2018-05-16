@@ -1,0 +1,6 @@
+dependencies {
+  compile "li.cil.oc:OpenComputers:${opencomputers_version}:api"
+  
+  compile project(":enderio-base")
+  compile project(":enderio-conduits")
+}
