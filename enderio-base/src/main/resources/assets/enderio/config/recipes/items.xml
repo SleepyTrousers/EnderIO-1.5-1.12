@@ -623,4 +623,26 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Filter, Redstone Timer" required="true">
+    <crafting>
+      <grid size="3x1">
+        <item name="REDSTONE_ALLOY"/>
+        <item name="REDSTONE_FILTER_BASE" />
+        <item name="minecraft:clock"/>
+      </grid>
+      <output name="enderio:item_redstone_timer_filter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Redstone Counting" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="REDSTONE_ALLOY"/><item /><item />
+        <item name="REDSTONE_ALLOY" /><item name="REDSTONE_FILTER_BASE" /><item name="REDSTONE_ALLOY" />
+        <item name="REDSTONE_ALLOY"/><item /><item />
+      </grid>
+      <output name="enderio:item_redstone_counting_filter" />
+    </crafting>
+  </recipe>
+
 </enderio:recipes>
