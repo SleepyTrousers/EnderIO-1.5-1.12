@@ -1027,6 +1027,7 @@ enderio.gui.redstone_filter.nand=Redstone NAND Filter
 enderio.gui.redstone_filter.xor=Redstone XOR Filter
 enderio.gui.redstone_filter.xnor=Redstone XNOR Filter
 enderio.gui.redstone_filter.counting=Redstone Counting Filter
+enderio.gui.redstone_filter.timer=Redstone Timer Filter
 
 enderio.gui.mod.item_filter.delete=Delete
 enderio.gui.mod.item_filter.slot=Input Slot
@@ -1037,6 +1038,7 @@ enderio.gui.power.item_filter.percent=Power Percentage
 enderio.gui.redstone_filter.signal_color=Redstone Signal Color
 enderio.gui.redstone_filter.input_signal=Input Signal
 enderio.gui.redstone_filter.count=Count
+enderio.gui.redstone_filter.time=Time
 
 enderio.gui.infinity_recipe_dimensions=Overworld Only
 
@@ -1061,3 +1063,4 @@ item.item_redstone_xnor_filter.name=Redstone XNOR Filter
 item.item_redstone_toggle_filter.name=Redstone Toggle Latch Filter
 item.item_redstone_sensor_filter.name=Redstone Sensor Filter
 item.item_redstone_counting_filter.name=Redstone Counting Filter
+item.item_redstone_timer_filter.name=Redstone Timer Filter

@@ -138,11 +138,13 @@ public enum Lang implements ILang {
   GUI_REDSTONE_FILTER_XOR(".gui.redstone_filter.xor"),
   GUI_REDSTONE_FILTER_XNOR(".gui.redstone_filter.xnor"),
   GUI_REDSTONE_FILTER_COUNTING(".gui.redstone_filter.counting"),
+  GUI_REDSTONE_FILTER_TIMER(".gui.redstone_filter.timer"),
 
   GUI_REDSTONE_FILTER_SIGNAL_COLOR(".gui.redstone_filter.signal_color"),
   GUI_REDSTONE_FILTER_INPUT_SIGNAL(".gui.redstone_filter.input_signal"),
   GUI_INFINTY_RECIPE_DIMENSIONS(".gui.infinity_recipe_dimensions"),
   GUI_REDSTONE_FILTER_COUNT(".gui.redstone_filter.count"),
+  GUI_REDSTONE_FILTER_TIME(".gui.redstone_filter.time"),
 
   ;
 

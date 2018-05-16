@@ -941,7 +941,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public IRedstoneSignalFilter getFilter(int filterIndex, int param1) {
-    return getSignalFilter(EnumFacing.getFront(param1), filterIndex == getInputFilterIndex() ? true : filterIndex == getOutputFilterIndex());
+    return getSignalFilter(EnumFacing.getFront(param1), filterIndex == getInputFilterIndex() ? true : !(filterIndex == getOutputFilterIndex()));
   }
 
   @Override

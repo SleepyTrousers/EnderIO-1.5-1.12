@@ -43,6 +43,7 @@ import crazypants.enderio.base.filter.redstone.items.ItemBasicOutputSignalFilter
 import crazypants.enderio.base.filter.redstone.items.ItemComparatorInputSignalFilter;
 import crazypants.enderio.base.filter.redstone.items.ItemCountingOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.items.ItemInvertingOutputSignalFilter;
+import crazypants.enderio.base.filter.redstone.items.ItemTimerInputSignalFilter;
 import crazypants.enderio.base.filter.redstone.items.ItemToggleOutputSignalFilter;
 import crazypants.enderio.base.item.coldfire.ItemColdFireIgniter;
 import crazypants.enderio.base.item.conduitprobe.ItemConduitProbe;
@@ -176,6 +177,7 @@ public enum ModObject implements IModObject.Registerable {
   itemRedstoneCountingFilter(ItemCountingOutputSignalFilter.class),
 
   itemRedstoneSensorFilter(ItemComparatorInputSignalFilter.class),
+  itemRedstoneTimerFilter(ItemTimerInputSignalFilter.class),
 
   blockFusedQuartz(BlockFusedQuartz.class, "createFusedQuartz"),
   blockFusedGlass(BlockFusedQuartz.class, "createFusedGlass"),
