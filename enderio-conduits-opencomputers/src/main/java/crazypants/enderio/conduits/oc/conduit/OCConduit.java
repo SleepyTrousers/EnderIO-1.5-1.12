@@ -1,7 +1,5 @@
 package crazypants.enderio.conduits.oc.conduit;
 
-import static crazypants.enderio.conduits.oc.init.ConduitOpenComputersObject.item_opencomputers_conduit;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -57,16 +55,18 @@ import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.conduits.oc.init.ConduitOpenComputersObject.item_opencomputers_conduit;
+
 public class OCConduit extends AbstractConduit implements IOCConduit, IConduitComponent {
 
   protected OCConduitNetwork network;
 
   private final Map<EnumFacing, DyeColor> signalColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
-  private static final TextureSupplier coreTextureS = TextureRegistry.registerTexture("blocks/ocConduitCore");
-  private static final TextureSupplier coreTextureA = TextureRegistry.registerTexture("blocks/ocConduitCoreAnim");
-  private static final TextureSupplier longTextureS = TextureRegistry.registerTexture("blocks/ocConduit");
-  private static final TextureSupplier longTextureA = TextureRegistry.registerTexture("blocks/ocConduitAnim");
+  private static final TextureSupplier coreTextureS = TextureRegistry.registerTexture("blocks/oc_conduit_core");
+  private static final TextureSupplier coreTextureA = TextureRegistry.registerTexture("blocks/oc_conduit_core_anim");
+  private static final TextureSupplier longTextureS = TextureRegistry.registerTexture("blocks/oc_conduit");
+  private static final TextureSupplier longTextureA = TextureRegistry.registerTexture("blocks/oc_conduit_anim");
 
   public OCConduit() {
     super();
@@ -77,12 +77,12 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
-  protected void readTypeSettings(EnumFacing dir, NBTTagCompound dataRoot) {
+  protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     setSignalColor(dir, DyeColor.values()[dataRoot.getShort("signalColor")]);
   }
 
   @Override
-  protected void writeTypeSettingsToNbt(EnumFacing dir, NBTTagCompound dataRoot) {
+  protected void writeTypeSettingsToNbt(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     dataRoot.setShort("signalColor", (short) getSignalColor(dir).ordinal());
   }
 
@@ -96,7 +96,8 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
-  public Collection<CollidableComponent> createCollidables(CacheKey key) {
+  @Nonnull
+  public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
     Collection<CollidableComponent> baseCollidables = super.createCollidables(key);
     if (key.dir == null) {
       return baseCollidables;
@@ -113,7 +114,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
+  public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
     if (signalColors.size() >= 0) {
       byte[] modes = new byte[6];
@@ -132,7 +133,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
+  public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
     signalColors.clear();
     byte[] cols = nbtRoot.getByteArray("signalColors");
@@ -159,11 +160,13 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
+  @Nonnull
   public Class<? extends IConduit> getBaseConduitType() {
     return IOCConduit.class;
   }
 
   @Override
+  @Nonnull
   public ItemStack createItem() {
     return new ItemStack(item_opencomputers_conduit.getItem(), 1, 0);
   }
@@ -194,7 +197,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
     String at = "";
     Environment host = o.host();
     if (host instanceof TileEntity) {
-      BlockPos bc = ((TileEntity)host).getPos();
+      BlockPos bc = ((TileEntity) host).getPos();
       at = " at " + bc.getX() + "/" + bc.getY() + "/" + bc.getZ();
     }
     return host.getClass().getName().replaceFirst("^.*\\.", "") + at;
@@ -241,7 +244,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
-  public boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all) {
+  public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     DyeColor col = DyeColor.getColorFromDye(player.getHeldItem(hand));
     if (col != null && res.component != null) {
       setSignalColor(res.component.dir, col);
@@ -307,7 +310,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
-  public void setConnectionMode(EnumFacing dir, ConnectionMode mode) {
+  public void setConnectionMode(@Nonnull EnumFacing dir, @Nonnull ConnectionMode mode) {
     if (mode == ConnectionMode.DISABLED) {
       disconnectNode(dir);
     }
@@ -353,7 +356,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
     }
   }
 
-  private void disconnectNode(EnumFacing direction) {
+  private void disconnectNode(@Nonnull EnumFacing direction) {
     World world = getBundle().getBundleworld();
     TileEntity te = world.getTileEntity(getBundle().getLocation().offset(direction));
     Node other = null;
@@ -368,10 +371,8 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   /**
-   * This will disconnect a node from our network unless it has another
-   * connection to our network. This only works if all the node's blocks are
-   * adjacent to us. Connecting 2 ManagedEnvironments at different locations
-   * won't work well.
+   * This will disconnect a node from our network unless it has another connection to our network. This only works if all the node's blocks are adjacent to us.
+   * Connecting 2 ManagedEnvironments at different locations won't work well.
    * 
    * @param other
    *          The node to disconnect from us
@@ -455,19 +456,21 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
-  public ConnectionMode getNextConnectionMode(EnumFacing dir) {
+  @Nonnull
+  public ConnectionMode getNextConnectionMode(@Nonnull EnumFacing dir) {
     ConnectionMode mode = getConnectionMode(dir);
     mode = mode == ConnectionMode.IN_OUT ? ConnectionMode.DISABLED : ConnectionMode.IN_OUT;
     return mode;
   }
 
   @Override
-  public ConnectionMode getPreviousConnectionMode(EnumFacing dir) {
+  @Nonnull
+  public ConnectionMode getPreviousConnectionMode(@Nonnull EnumFacing dir) {
     return getNextConnectionMode(dir);
   }
 
   @Override
-  public boolean canConnectToExternal(EnumFacing direction, boolean ignoreConnectionMode) {
+  public boolean canConnectToExternal(@Nonnull EnumFacing direction, boolean ignoreConnectionMode) {
     TileEntity te = getBundle().getBundleworld().getTileEntity(getBundle().getLocation().offset(direction));
     if (te instanceof SidedEnvironment) {
       if (getBundle().getBundleworld().isRemote) {
@@ -521,31 +524,34 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
-  public TextureAtlasSprite getTextureForState(CollidableComponent component) {
+  @Nonnull
+  public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
     // TODO
-//    if (Config.enableOCConduitsAnimatedTexture) {
-      if (component.dir == null) {
-        return coreTextureA.get(TextureAtlasSprite.class);
-      } else {
-        return longTextureA.get(TextureAtlasSprite.class);
-      }
-//    } else {
-//      if (component.dir == null) {
-//        return coreTextureS.get(TextureAtlasSprite.class);
-//      } else {
-//        return longTextureS.get(TextureAtlasSprite.class);
-//      }
-//    }
+    // if (Config.enableOCConduitsAnimatedTexture) {
+    if (component.dir == null) {
+      return coreTextureA.get(TextureAtlasSprite.class);
+    } else {
+      return longTextureA.get(TextureAtlasSprite.class);
+    }
+    // } else {
+    // if (component.dir == null) {
+    // return coreTextureS.get(TextureAtlasSprite.class);
+    // } else {
+    // return longTextureS.get(TextureAtlasSprite.class);
+    // }
+    // }
   }
 
   @Override
-  public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
+  @Nonnull
+  public TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     return null;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Vector4f getTransmitionTextureColorForState(CollidableComponent component) {
+  @Nonnull
+  public Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     return null;
   }
 
@@ -556,13 +562,15 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
+  @Nonnull
   public IConduitNetwork<?, ?> createNetworkForType() {
     return new OCConduitNetwork();
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public ITabPanel createGuiPanel(IGuiExternalConnection gui, IClientConduit con) {
+  @Nonnull
+  public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
     return new OCSettings(gui, con);
   }
 
@@ -587,7 +595,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   @Nonnull
   public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
     // TODO Auto-generated method stub
-    return null;
+    return "";
   }
 
   @Override
