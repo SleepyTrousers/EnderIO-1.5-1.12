@@ -645,7 +645,7 @@ XML editor will display that as tooltips when editing this file.
     <alloying energy="4000" exp="0">
       <input name="ingotLead" amount="3"/>
       <input name="ingotPlatinum"/>
-      <input name="ordecit:enderpearl" amount="4"/>
+      <input name="oredict:enderpearl" amount="4"/>
       <output name="ingotEnderiumBase" amount="4"/>
     </alloying>
   </recipe>
