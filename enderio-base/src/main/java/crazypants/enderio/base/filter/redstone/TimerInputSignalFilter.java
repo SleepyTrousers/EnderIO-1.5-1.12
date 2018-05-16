@@ -16,7 +16,7 @@ public class TimerInputSignalFilter implements IInputSignalFilter {
   @Override
   @Nonnull
   public Signal apply(@Nonnull Signal signal, @Nonnull World world, @Nonnull BlockPos pos) {
-    if (currentTime == time) {
+    if (signal.getStrength() == 0 && currentTime == time) {
       currentTime = 0;
       return new Signal(CombinedSignal.MAX, signal.getId());
     }
@@ -59,7 +59,10 @@ public class TimerInputSignalFilter implements IInputSignalFilter {
   @Override
   public boolean shouldUpdate() {
     currentTime++;
-    return currentTime == time;
+    if (currentTime > time) {
+      currentTime = 1;
+    }
+    return currentTime == time || currentTime == 1;
   }
 
 }
