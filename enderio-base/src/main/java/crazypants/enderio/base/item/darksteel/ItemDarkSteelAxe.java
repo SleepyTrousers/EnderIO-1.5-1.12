@@ -15,6 +15,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.OreDictionaryHelper;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
@@ -29,18 +30,22 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.item.darksteel.upgrade.hoe.HoeUpgrade;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirt;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
@@ -48,6 +53,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -177,12 +183,42 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     }
   }
 
+  @SuppressWarnings("incomplete-switch")
   @Override
   public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
       @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
+    ItemStack stack = player.getHeldItem(hand);
+
+    if (player.canPlayerEdit(pos, side, stack) && HoeUpgrade.INSTANCE.hasUpgrade(stack)) {
+      int hook = net.minecraftforge.event.ForgeEventFactory.onHoeUse(stack, player, world, pos);
+      if (hook == 0) {
+
+        IBlockState iblockstate = world.getBlockState(pos);
+        Block block = iblockstate.getBlock();
+
+        if (side != EnumFacing.DOWN && world.isAirBlock(pos.up())) {
+          if (block == Blocks.GRASS || block == Blocks.GRASS_PATH) {
+            this.setBlock(stack, player, world, pos, Blocks.FARMLAND.getDefaultState());
+            return EnumActionResult.SUCCESS;
+          }
+
+          if (block == Blocks.DIRT) {
+            switch (iblockstate.getValue(BlockDirt.VARIANT)) {
+            case DIRT:
+              this.setBlock(stack, player, world, pos, Blocks.FARMLAND.getDefaultState());
+              return EnumActionResult.SUCCESS;
+            case COARSE_DIRT:
+              this.setBlock(stack, player, world, pos, Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT));
+              return EnumActionResult.SUCCESS;
+            }
+          }
+        }
+      }
+    }
     if (world.isRemote && DarkSteelConfig.rightClickPlaceEnabled_axe.get()) {
       return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, pos, side, hand, hitX, hitY, hitZ);
     }
+
     return EnumActionResult.PASS;
   }
 
@@ -290,6 +326,20 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   @Override
   public boolean isAxe() {
     return true;
+  }
+
+  protected void setBlock(ItemStack stack, @Nonnull EntityPlayer player, World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    worldIn.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+
+    if (!worldIn.isRemote) {
+      worldIn.setBlockState(pos, state, 11);
+      stack.damageItem(1, player);
+    }
+  }
+
+  @Override
+  public boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
+    return upgrade == HoeUpgrade.INSTANCE;
   }
 
 }

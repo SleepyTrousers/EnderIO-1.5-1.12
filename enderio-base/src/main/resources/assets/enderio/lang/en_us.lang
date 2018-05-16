@@ -611,6 +611,9 @@ enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click t
 enderio.darksteel.upgrade.spoon.name=Spoon
 enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Who needs a shovel when you have a spoon...
 
+enderio.darksteel.upgrade.hoe.name=Fork
+enderio.darksteel.upgrade.hoe.tooltip.detailed.line1=Who needs a hoe when you have a fork...
+
 enderio.darksteel.upgrade.tnt.name=Explosive
 enderio.darksteel.upgrade.tnt.tooltip.detailed.line1=Adds explosive power to the pickaxe, damaging surrounding blocks while mining.
 enderio.darksteel.upgrade.tnt.tooltip.detailed.line2=For problems that look like nails.
