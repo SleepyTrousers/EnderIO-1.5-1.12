@@ -6,9 +6,10 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
 import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
+import crazypants.enderio.base.lang.Lang;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class CountingOutputSignalFilter implements IOutputSignalFilter {
+public class CountingOutputSignalFilter implements IOutputSignalFilter, IFilterIncrementingValue {
 
   private int maxCount = 1;
   private int count = 0;
@@ -61,22 +62,31 @@ public class CountingOutputSignalFilter implements IOutputSignalFilter {
     nbtRoot.setTag("maxCount", m);
   }
 
-  public void setMaxCount(int max) {
-    maxCount = max;
+  @Override
+  public boolean hasGui() {
+    return true;
   }
 
-  public int getMaxCount() {
+  @Override
+  public int getIncrementingValue() {
     return maxCount;
   }
 
   @Override
-  public boolean isDefault() {
-    return false;
+  public void setIncrementingValue(int value) {
+    this.maxCount = value;
   }
 
   @Override
-  public boolean hasGui() {
-    return true;
+  @Nonnull
+  public String getFilterHeading() {
+    return Lang.GUI_REDSTONE_FILTER_COUNTING.get();
+  }
+
+  @Override
+  @Nonnull
+  public String getIncrementingValueName() {
+    return Lang.GUI_REDSTONE_FILTER_COUNT.get();
   }
 
 }

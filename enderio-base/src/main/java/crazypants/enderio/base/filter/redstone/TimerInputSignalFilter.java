@@ -3,11 +3,12 @@ package crazypants.enderio.base.filter.redstone;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
+import crazypants.enderio.base.lang.Lang;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TimerInputSignalFilter implements IInputSignalFilter {
+public class TimerInputSignalFilter implements IInputSignalFilter, IFilterIncrementingValue {
 
   private int time = 20;
   private int currentTime = 0;
@@ -42,14 +43,6 @@ public class TimerInputSignalFilter implements IInputSignalFilter {
     nbtRoot.setTag("maxTime", m);
   }
 
-  public int getTime() {
-    return time;
-  }
-
-  public void setTime(int time) {
-    this.time = time;
-  }
-
   @Override
   public boolean hasGui() {
     return true;
@@ -62,6 +55,26 @@ public class TimerInputSignalFilter implements IInputSignalFilter {
       currentTime = 1;
     }
     return currentTime == time || currentTime == 1;
+  }
+
+  @Override
+  public int getIncrementingValue() {
+    return time;
+  }
+
+  @Override
+  public void setIncrementingValue(int value) {
+    this.time = value;
+  }
+
+  @Override
+  public String getFilterHeading() {
+    return Lang.GUI_REDSTONE_FILTER_TIMER.get();
+  }
+
+  @Override
+  public String getIncrementingValueName() {
+    return Lang.GUI_REDSTONE_FILTER_TIME.get();
   }
 
 }

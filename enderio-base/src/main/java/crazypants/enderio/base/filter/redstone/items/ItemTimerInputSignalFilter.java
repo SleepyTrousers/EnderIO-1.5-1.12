@@ -8,7 +8,7 @@ import com.enderio.core.common.TileEntityBase;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilterContainer;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
-import crazypants.enderio.base.filter.gui.TimerRedstoneSignalFilterGui;
+import crazypants.enderio.base.filter.gui.IncrementingValueFilterGui;
 import crazypants.enderio.base.filter.redstone.IInputSignalFilter;
 import crazypants.enderio.base.filter.redstone.TimerInputSignalFilter;
 import crazypants.enderio.base.init.IModObject;
@@ -53,10 +53,10 @@ public class ItemTimerInputSignalFilter extends Item implements IItemInputSignal
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     Container container = player.openContainer;
     if (container instanceof IFilterContainer) {
-      return new TimerRedstoneSignalFilterGui(player.inventory, new ContainerFilter(player, (TileEntityBase) world.getTileEntity(pos), facing, param1),
+      return new IncrementingValueFilterGui(player.inventory, new ContainerFilter(player, (TileEntityBase) world.getTileEntity(pos), facing, param1),
           world.getTileEntity(pos), ((IFilterContainer<TimerInputSignalFilter>) container).getFilter(param1));
     } else {
-      return new TimerRedstoneSignalFilterGui(player.inventory, new ContainerFilter(player, null, facing, param1), null,
+      return new IncrementingValueFilterGui(player.inventory, new ContainerFilter(player, null, facing, param1), null,
           FilterRegistry.getFilterForUpgrade(player.getHeldItem(EnumHand.values()[param1])));
     }
   }

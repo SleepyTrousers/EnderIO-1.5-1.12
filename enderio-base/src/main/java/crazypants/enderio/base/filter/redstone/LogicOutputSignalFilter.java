@@ -203,15 +203,4 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
     return type.getHeading();
   }
 
-  @Override
-  public boolean isDefault() {
-    boolean result = true;
-    for (int i = 0; i < getNumColors(); i++) {
-      if (signalColors.get(i) != DyeColor.fromIndex(i)) {
-        result = false;
-      }
-    }
-    return result;
-  }
-
 }

@@ -31,8 +31,4 @@ public interface IRedstoneSignalFilter extends IFilter {
     readFromNBT(tag);
   }
 
-  default boolean isDefault() {
-    return true;
-  }
-
 }
