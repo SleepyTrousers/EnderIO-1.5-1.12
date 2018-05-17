@@ -96,7 +96,6 @@ allprojects {
         maven { url = "https://maven.latmod.com" } // FTBLib
         maven { url = "http://maven.covers1624.net/" } // CoFHCore
         maven { url = "http://cc.crzd.me/maven/" } // ComputerCraft
-        maven { url = "https://dl.bintray.com/raoulvdberge/dev/" } // Refined Storage (old)
         maven { url = "https://repo.raoulvdberge.com/" } // Refined Storage (new)
         ivy {
             url "http://ae-mod.info/builds"
