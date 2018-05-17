@@ -202,7 +202,9 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
       if (node != null) {
         node.setPlayerID(playerID);
         setGridNode(node);
-        getNode().updateState();
+        if (getNode() != null) {
+          getNode().updateState();
+        }
       }
     }
 
@@ -306,7 +308,9 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Method(modid = "appliedenergistics2")
   public void onBeforeRemovedFromBundle() {
     super.onBeforeRemovedFromBundle();
-    getNode().destroy();
+    if (getNode() != null) {
+      getNode().destroy();
+    }
     setGridNode(null);
   }
 
