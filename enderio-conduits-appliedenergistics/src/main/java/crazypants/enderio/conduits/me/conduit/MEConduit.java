@@ -327,11 +327,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Method(modid = "appliedenergistics2")
   private IGridNode getNode() {
-    TileEntity bundleME = getBundle().getEntity();
-    if (bundleME instanceof IGridHost) {
-      return ((IGridHost) bundleME).getGridNode(null);
-    }
-    return null;
+    return getGridNode();
   }
 
   @Override
