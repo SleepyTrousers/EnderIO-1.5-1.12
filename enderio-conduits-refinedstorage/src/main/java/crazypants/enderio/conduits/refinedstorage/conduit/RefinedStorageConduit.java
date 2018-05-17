@@ -1,6 +1,7 @@
 package crazypants.enderio.conduits.refinedstorage.conduit;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -11,13 +12,17 @@ import com.enderio.core.common.vecmath.Vector4f;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeManager;
 
+import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
+import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
+import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.refinedstorage.RSHelper;
 import crazypants.enderio.conduits.refinedstorage.conduit.gui.RefinedStorageSettings;
@@ -27,6 +32,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -185,6 +191,32 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   }
 
   @Override
+  public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
+    if (ToolUtil.isToolEquipped(player, hand)) {
+      if (!getBundle().getEntity().getWorld().isRemote) {
+        if (res != null && res.component != null) {
+          EnumFacing connDir = res.component.dir;
+          EnumFacing faceHit = res.movingObjectPosition.sideHit;
+          if (connDir == null || connDir == faceHit) {
+            if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
+              setConnectionMode(faceHit, ConnectionMode.IN_OUT);
+              return true;
+            }
+            return ConduitUtil.connectConduits(this, faceHit);
+          } else if (externalConnections.contains(connDir)) {
+            setConnectionMode(connDir, getNextConnectionMode(connDir));
+            return true;
+          } else if (containsConduitConnection(connDir)) {
+            ConduitUtil.disconnectConduits(this, connDir);
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  @Override
   public void onAddedToBundle() {
     super.onAddedToBundle();
 
@@ -199,6 +231,13 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   public void connectionsChanged() {
     super.connectionsChanged();
     getNode().onConduitConnectionChange();
+  }
+
+  @Override
+  public @Nonnull ConnectionMode getNextConnectionMode(@Nonnull EnumFacing dir) {
+    ConnectionMode mode = getConnectionMode(dir);
+    mode = mode == ConnectionMode.IN_OUT ? ConnectionMode.DISABLED : ConnectionMode.IN_OUT;
+    return mode;
   }
 
   // ---------------------------------------------------------

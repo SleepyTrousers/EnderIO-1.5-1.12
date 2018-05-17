@@ -98,19 +98,6 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
   @Override
   public boolean equals(Object right) {
-    // Currently doing this to avoid a class cast exception in the log
-    if (!(right instanceof INetworkNode)) {
-      return false;
-    }
-
-    if (this == right) {
-      return true;
-    }
-
-    if (right instanceof ConduitRefinedStorageNode) {
-      return false;
-    }
-
     return RSHelper.API.isNetworkNodeEqual(this, right);
   }
 

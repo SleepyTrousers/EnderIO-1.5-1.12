@@ -702,14 +702,24 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
       for (IConduit conduit : getConduits()) {
-        if (conduit.hasCapability(capability, facing))
+        if (conduit.hasCapability(capability, facing)) {
           return true;
+        }
       }
     }
 
     for (IConduit conduit : getServerConduits()) {
-      if (conduit.hasCapability(capability, facing))
+      if (conduit.hasCapability(capability, facing)) {
         return true;
+      }
+    }
+
+    if (world.isRemote) {
+      for (IConduit conduit : this.getClientConduits()) {
+        if (conduit.hasCapability(capability, facing)) {
+          return true;
+        }
+      }
     }
     return super.hasCapability(capability, facing);
   }
