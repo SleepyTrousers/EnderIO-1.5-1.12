@@ -59,9 +59,6 @@ public class DummyCraftingGrid implements IInventory {
   @Override
   public void setInventorySlotContents(int i, @Nonnull ItemStack itemstack) {
     inv.set(i, itemstack.copy());
-    // if (i < 9) {
-    // inv.get(i).setCount(0);
-    // }
   }
 
   @Override

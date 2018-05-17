@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.inventory.EnderInventory.Type;
 import com.enderio.core.common.inventory.Filters;
+import com.enderio.core.common.inventory.Filters.PredicateItemStack;
 import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
@@ -49,6 +50,21 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
 
   }
 
+  private class PredicateItemStackMatch extends PredicateItemStack {
+
+    private final int slot;
+
+    PredicateItemStackMatch(int slot) {
+      this.slot = slot;
+    }
+
+    @Override
+    public boolean doApply(@Nonnull ItemStack input) {
+      return input.isItemEqual(craftingGrid.getStackInSlot(slot));
+    }
+
+  }
+
   public static final @Nonnull String OUTPUT_SLOT = "OUTPUT";
   public static final @Nonnull String INPUT_SLOT = "INPUT";
   public static final int BASE_TICK_RATE = 10;
@@ -75,7 +91,8 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
     containerItems = new NNList<ItemStack>();
 
     for (int i = 0; i < 9; i++) {
-      getInventory().add(Type.INPUT, INPUT_SLOT + i, new InventorySlot(Filters.ALWAYS_TRUE, Filters.ALWAYS_TRUE));
+      PredicateItemStackMatch predicate = new PredicateItemStackMatch(i);
+      getInventory().add(Type.INPUT, INPUT_SLOT + i, new InventorySlot(predicate, Filters.ALWAYS_TRUE));
     }
 
     getInventory().add(Type.OUTPUT, OUTPUT_SLOT, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
@@ -276,7 +293,7 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
   }
 
   private boolean canMergeOutput() {
-    ItemStack oldOutput = getInventory().getStackInSlot(9);
+    ItemStack oldOutput = getInventory().getSlot(OUTPUT_SLOT).get();
     if (oldOutput.isEmpty()) {
       return true;
     }
