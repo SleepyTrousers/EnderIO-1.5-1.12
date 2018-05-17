@@ -1,0 +1,20 @@
+[
+{
+  "modid": "enderioaddons",
+  "name": "Ender IO Addons",
+  "description": "All the things that don't belong in Ender IO but sort of do...",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://enderio.com",
+  "updateUrl": "",
+  "authorList": [ "CrazyPants", "tterrag", "HenryLoenwind", "MatthiasM", "EpicSquid"],
+  "credits": "By CrazyPants, with the help of many",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"enderio",
+  "dependencies": [
+        "enderiomachines"
+  ]
+}
+]
