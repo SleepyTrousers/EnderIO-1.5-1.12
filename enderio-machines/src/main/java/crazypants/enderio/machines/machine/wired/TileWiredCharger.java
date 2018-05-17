@@ -24,7 +24,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity, IProgressTile {
 
   public TileWiredCharger() {
-    super(new SlotDefinition(1, 1, 1), CapacitorKey.WIRED_POWER_INTAKE, CapacitorKey.WIRED_POWER_BUFFER, CapacitorKey.WIRED_POWER_OUTPUT);
+    super(new SlotDefinition(1, 1, 1), CapacitorKey.WIRED_POWER_INTAKE, CapacitorKey.WIRED_POWER_BUFFER,
+        crazypants.enderio.base.capacitor.CapacitorKey.NO_POWER);
   }
 
   @Override

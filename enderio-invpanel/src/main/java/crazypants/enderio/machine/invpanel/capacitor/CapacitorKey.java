@@ -1,4 +1,4 @@
-package crazypants.enderio.powertools.capacitor;
+package crazypants.enderio.machine.invpanel.capacitor;
 
 import java.util.Locale;
 
@@ -10,21 +10,20 @@ import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.Scaler;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.powertools.EnderIOPowerTools;
-import crazypants.enderio.powertools.init.PowerToolObject;
+import crazypants.enderio.machine.EnderIOInvPanel;
+import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber(modid = EnderIOPowerTools.MODID)
+@EventBusSubscriber(modid = EnderIOInvPanel.MODID)
 public enum CapacitorKey implements ICapacitorKey {
 
-  POWER_MONITOR_POWER_INTAKE(PowerToolObject.block_power_monitor, CapacitorKeyType.ENERGY_INTAKE, "intake"),
-  POWER_MONITOR_POWER_BUFFER(PowerToolObject.block_power_monitor, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
-  POWER_MONITOR_POWER_USE(PowerToolObject.block_power_monitor, CapacitorKeyType.ENERGY_USE, "use"),
+  INVPANEL_ENERGY_INTAKE(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  INVPANEL_ENERGY_BUFFER(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  INVPANEL_ENERGY_USE(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_USE, "use"),
 
-  //
   ;
 
   // /////////////////////////////////////////////////////////////////// //
@@ -41,7 +40,7 @@ public enum CapacitorKey implements ICapacitorKey {
   private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull String shortname) {
     this.owner = owner;
     this.valueType = valueType;
-    this.registryName = new ResourceLocation(EnderIOPowerTools.MODID, owner.getUnlocalisedName() + "/" + shortname.toLowerCase(Locale.ENGLISH));
+    this.registryName = new ResourceLocation(EnderIOInvPanel.MODID, owner.getUnlocalisedName() + "/" + shortname.toLowerCase(Locale.ENGLISH));
   }
 
   @Override

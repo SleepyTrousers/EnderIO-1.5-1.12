@@ -66,6 +66,12 @@ public interface Scaler {
    *
    */
   public enum Factory implements Scaler {
+    INVALID(new Scaler() { // 0-0-0-...
+      @Override
+      public float scaleValue(float idx) {
+        return 0;
+      }
+    }),
     IDENTITY(new Scaler() { // 1-2-3-...
       @Override
       public float scaleValue(float idx) {

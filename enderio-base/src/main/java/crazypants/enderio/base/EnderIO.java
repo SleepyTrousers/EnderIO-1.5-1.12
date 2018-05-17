@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.api.addon.IEnderIOAddon;
+import crazypants.enderio.base.capacitor.CapacitorKeyRegistry;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
@@ -149,6 +150,8 @@ public class EnderIO implements IEnderIOAddon {
 
     RecipeLoader.addRecipes();
 
+    CapacitorKeyRegistry.validate();
+
     // END mess
 
     Log.debug("PHASE IMC END");
@@ -276,7 +279,7 @@ public class EnderIO implements IEnderIOAddon {
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
     return new NNList<>(Triple.of(0, null, "aliases"), Triple.of(1, null, "materials"), Triple.of(1, null, "items"), Triple.of(1, null, "base"),
-        Triple.of(1, null, "balls"), Triple.of(9, null, "misc"));
+        Triple.of(1, null, "balls"), Triple.of(9, null, "misc"), Triple.of(9, null, "capacitor"));
   }
 
   @Override

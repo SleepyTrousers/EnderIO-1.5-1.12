@@ -10,11 +10,9 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.Things;
-import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.BaseConfig;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.enchantment.Enchantment.Rarity;
@@ -840,7 +838,6 @@ public final class Config {
       e.printStackTrace();
     }
 
-    CapacitorKey.processConfig(config);
     BaseConfig.load();
     BaseConfig.F.setConfig(config);
   }

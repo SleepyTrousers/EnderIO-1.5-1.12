@@ -896,12 +896,40 @@
     <sequence>
       <element name="config" type="enderio:configComplexType" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="dependency" type="enderio:dependencyComplexType" minOccurs="0" maxOccurs="unbounded"></element>
-      <choice>
+      <choice minOccurs="0" maxOccurs="1">
         <element name="scaler" minOccurs="1" maxOccurs="1">
           <complexType>
-            <attribute name="name" use="required">
-              <simpleType>
-                <restriction base="string">
+            <attribute name="name" use="required" type="enderio:ScalerString"></attribute>
+          </complexType>
+        </element>
+        <element name="indexed" minOccurs="1" maxOccurs="1">
+          <complexType>
+            <sequence>
+              <element name="data" minOccurs="1" maxOccurs="unbounded">
+                <complexType>
+                  <attribute name="value" type="float" use="required"></attribute>
+                </complexType>
+              </element>
+            </sequence>
+            <attribute name="step" type="float" use="optional" default="1"></attribute>
+          </complexType>
+        </element>
+      </choice>
+    </sequence>
+    <attribute name="key" use="required">
+      <simpleType>
+        <restriction base="string">
+          <pattern value="[a-z][a-z0-9]*:[^:]+"></pattern>
+        </restriction>
+      </simpleType>
+    </attribute>
+    <attribute name="required" type="boolean" use="optional" default="true"></attribute>
+    <attribute name="disabled" type="boolean" use="optional" default="false"></attribute>
+    <attribute name="base" type="int" use="required"></attribute>
+    <attribute name="scaler" type="enderio:ScalerString" use="optional"></attribute>
+  </complexType>
+  <simpleType name="ScalerString">
+    <restriction base="string">
                   <enumeration value="IDENTITY"></enumeration>
                   <enumeration value="LINEAR_0_8"></enumeration>
                   <enumeration value="QUADRATIC"></enumeration>
@@ -919,31 +947,5 @@
                   <enumeration value="CHEMICAL"></enumeration>
                   <enumeration value="DROPOFF"></enumeration>
                 </restriction>
-              </simpleType>
-            </attribute>
-          </complexType>
-        </element>
-        <element name="indexed" minOccurs="1" maxOccurs="1">
-          <complexType>
-            <sequence>
-                            <element name="data" minOccurs="1" maxOccurs="unbounded">
-                <complexType>
-                  <attribute name="value" type="float" use="required"></attribute>
-                </complexType></element>
-                        </sequence>
-            <attribute name="step" type="float" use="optional" default="1"></attribute>
-          </complexType></element>
-      </choice>
-    </sequence>
-    <attribute name="key" use="required">
-      <simpleType>
-        <restriction base="string">
-          <pattern value="[a-z][a-z0-9]*:[^:]+"></pattern>
-        </restriction>
-      </simpleType>
-    </attribute>
-    <attribute name="required" type="boolean" use="optional" default="true"></attribute>
-    <attribute name="disabled" type="boolean" use="optional" default="false"></attribute>
-    <attribute name="base" type="int" use="required"></attribute>
-  </complexType>
+  </simpleType>
 </schema>

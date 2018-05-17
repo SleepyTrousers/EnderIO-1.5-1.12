@@ -4,18 +4,15 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.InventorySlot;
 
-import crazypants.enderio.base.capacitor.CapacitorKeyType;
-import crazypants.enderio.base.capacitor.DefaultCapacitorData;
-import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
-import crazypants.enderio.base.capacitor.ICapacitorData;
-import crazypants.enderio.base.capacitor.Scaler;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.machine.invpanel.capacitor.CapacitorKey;
 import crazypants.enderio.machine.invpanel.init.InvpanelObject;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -125,11 +122,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
 
   // called by our block
   private TileInventoryChest(EnumChestSize size) {
-    super(new EnderInventory(),
-        new DefaultCapacitorKey(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 10),
-        new DefaultCapacitorKey(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 100000),
-        new DefaultCapacitorKey(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 1)
-    );
+    super(new EnderInventory(), CapacitorKey.INVPANEL_ENERGY_INTAKE, CapacitorKey.INVPANEL_ENERGY_BUFFER, CapacitorKey.INVPANEL_ENERGY_USE);
     chestInventory = getInventory();
     this.size = size;
     for (int i = 0; i < size.getSlots(); i++) {
@@ -173,7 +166,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
   }
 
   @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facingIn) {
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && !hasPower()) {
       return false;
     }
@@ -181,7 +174,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
   }
 
   @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && !hasPower()) {
       return null;
     }

@@ -9,18 +9,14 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.UserIdent;
-import com.feed_the_beast.ftblib.lib.data.FTBLibAPI;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.base.capacitor.CapacitorKeyType;
-import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
+import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
-import crazypants.enderio.base.capacitor.Scaler;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.integration.ftblib.FtblIntegration;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -37,15 +33,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Storable
 public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity implements ITravelAccessable, IPaintable.IPaintableTileEntity {
 
-  private static final @Nonnull ICapacitorKey NONE = new DefaultCapacitorKey(MachineObject.block_travel_anchor, CapacitorKeyType.ENERGY_INTAKE,
-      Scaler.Factory.FIXED_1, 0);
-
   protected TileTravelAnchor(@Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
     super(null, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
   public TileTravelAnchor() {
-    this(NONE, NONE, NONE);
+    this(CapacitorKey.NO_POWER, CapacitorKey.NO_POWER, CapacitorKey.NO_POWER);
   }
 
   @Store

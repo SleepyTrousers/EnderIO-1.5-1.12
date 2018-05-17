@@ -24,8 +24,11 @@ public class NBTCapacitorData implements ICapacitorData {
 
   @Override
   public float getUnscaledValue(@Nonnull ICapacitorKey key) {
-    if (tag.hasKey(key.getName(), 99)) {
-      return tag.getFloat(key.getName());
+    if (tag.hasKey(key.getRegistryName().toString(), 99)) {
+      return tag.getFloat(key.getRegistryName().toString());
+    }
+    if (tag.hasKey(key.getLegacyName(), 99)) {
+      return tag.getFloat(key.getLegacyName());
     }
     if (tag.hasKey(key.getOwner().getUnlocalisedName(), 10)) {
       NBTTagCompound subtag = tag.getCompoundTag(key.getOwner().getUnlocalisedName());

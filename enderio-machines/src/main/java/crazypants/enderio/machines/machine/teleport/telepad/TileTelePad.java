@@ -23,18 +23,14 @@ import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.capacitor.CapacitorKeyType;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
-import crazypants.enderio.base.capacitor.DefaultCapacitorKey;
-import crazypants.enderio.base.capacitor.ICapacitorKey;
-import crazypants.enderio.base.capacitor.Scaler;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.teleport.TeleportUtil;
+import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.config.config.TelePadConfig;
-import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
@@ -73,13 +69,6 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
       return TelepadTarget.readFromNBT(input) != null;
     }
   };
-
-  private static final @Nonnull ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_INTAKE,
-      Scaler.Factory.FIXED_1, TelePadConfig.telepadEnergyUsePerTickRF.get());
-  private static final @Nonnull ICapacitorKey maxEnergyStored = new DefaultCapacitorKey(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_BUFFER,
-      Scaler.Factory.FIXED_1, TelePadConfig.telepadEnergyBufferRF.get());
-  private static final @Nonnull ICapacitorKey maxEnergyUsed = new DefaultCapacitorKey(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_USE,
-      Scaler.Factory.FIXED_1, TelePadConfig.telepadEnergyUsePerTickRF.get());
 
   private TileTelePad masterTile = null;
 
@@ -120,7 +109,7 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
   public float speedMult = 2.5f;
 
   public TileTelePad() {
-    super(maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+    super(CapacitorKey.TELEPAD_POWER_INTAKE, CapacitorKey.TELEPAD_POWER_BUFFER, CapacitorKey.TELEPAD_POWER_USE);
 
     getInventory().add(Type.INPUT, "INPUT", new InventorySlot(LOCATION_PRINTOUTS, 1));
     getInventory().add(Type.OUTPUT, "OUTPUT", new InventorySlot(1));

@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagFloat;
 
 public class CapacitorHelper {
-  
+
   private CapacitorHelper() {
   }
 
@@ -96,7 +96,7 @@ public class CapacitorHelper {
   private static void addCapData(@Nonnull NBTTagCompound tag, @Nonnull SetType setType, @Nonnull ICapacitorKey key, float value) {
     switch (setType) {
     case NAME:
-      tag.setFloat(key.getName(), value);
+      tag.setFloat(key.getRegistryName().toString(), value);
       break;
     case OWNER_TYPE:
       NBTTagCompound subtag = tag.getCompoundTag(key.getOwner().getUnlocalisedName());

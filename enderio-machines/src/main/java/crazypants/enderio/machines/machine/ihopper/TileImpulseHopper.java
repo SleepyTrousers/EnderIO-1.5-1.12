@@ -9,7 +9,6 @@ import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -118,24 +117,6 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
     this.isOutputLocked = isOutputLocked;
   }
 
-  private int getPowerNeedForSlot(int slot) {
-    final ItemStack stack = getGhostSlotContents(slot);
-    return !stack.isEmpty() ? CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.getBaseValue() * stack.getCount() : 0;
-  }
-
-  /**
-   * Used to create a capacitor key with a given usage dynamically
-   * 
-   * @param energy
-   *          the energy to use for the operation
-   * @return a capacitor key for this
-   */
-  @Nonnull
-  private ICapacitorKey getCapKey(int energy) {
-    CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.setBaseValue(energy);
-    return CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM;
-  }
-
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
     if (shouldDoWorkThisTick() && redstoneCheck) {
@@ -147,7 +128,7 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
           if (checkGhostSlot(slot)) {
             if (checkInputSlot(slot) && checkOutputSlot(slot)) {
               doSomething = true;
-              neededPower += getPowerNeedForSlot(slot);
+              neededPower += getGhostSlotContents(slot).getCount();
             } else {
               // We cannot, one of the preconditions is false
               return false;
@@ -155,8 +136,7 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
           }
         }
         // (2) Abort if there is nothing to copy or we don't have enough power
-        if (!doSomething || !this.getEnergy().useEnergy(getCapKey(neededPower))) {
-          CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.setBaseValue(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.getDefaultBaseValue());
+        if (!doSomething || getEnergy().getMaxUsage(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM) * neededPower < getEnergy().getEnergyStored()) {
           return false;
         }
         // (3) Do the copy. Skip all the checks done above
@@ -184,8 +164,9 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
           }
         }
         getEnergy().useEnergy();
-        getEnergy().useEnergy(getCapKey(neededPower));
-        CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.setBaseValue(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM.getDefaultBaseValue());
+        for (int i = 0; i < neededPower; i++) {
+          getEnergy().useEnergy(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM);
+        }
         // playSound();
         return super.processTasks(redstoneCheck);
       } else {
