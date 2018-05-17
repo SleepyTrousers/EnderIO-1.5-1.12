@@ -9,15 +9,11 @@ import appeng.api.util.AEPartLocation;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.conduits.conduit.TileConduitBundle;
-import net.minecraftforge.fml.common.Optional.Interface;
-import net.minecraftforge.fml.common.Optional.Method;
 
-@SimpleMixin(TileConduitBundle.class)
-@Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2")
+@SimpleMixin(value = TileConduitBundle.class, dependencies = "appliedenergistics2|API")
 public interface MEMixin extends IConduitBundle, IGridHost {
 
   @Override
-  @Method(modid = "appliedenergistics2")
   public default IGridNode getGridNode(AEPartLocation loc) {
     IMEConduit cond = getConduit(IMEConduit.class);
     if (cond != null) {
@@ -29,7 +25,6 @@ public interface MEMixin extends IConduitBundle, IGridHost {
   }
 
   @Override
-  @Method(modid = "appliedenergistics2")
   public default AECableType getCableConnectionType(AEPartLocation loc) {
     IMEConduit cond = getConduit(IMEConduit.class);
     if (cond == null || loc == AEPartLocation.INTERNAL) {
@@ -40,7 +35,6 @@ public interface MEMixin extends IConduitBundle, IGridHost {
   }
 
   @Override
-  @Method(modid = "appliedenergistics2")
   public default void securityBreak() {
   }
 
