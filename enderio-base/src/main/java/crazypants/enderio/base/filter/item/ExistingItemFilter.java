@@ -40,20 +40,18 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   private boolean isStackInInventory(@Nonnull IItemHandler inventory, @Nonnull ItemStack item) {
-    if (inventory != null) {
-      int numSlots = inventory.getSlots();
-      for (int i = 0; i < numSlots; i++) {
-        ItemStack stack = inventory.getStackInSlot(i);
-        if (stackEqual(item, stack)) {
-          return true;
-        }
+    int numSlots = inventory.getSlots();
+    for (int i = 0; i < numSlots; i++) {
+      ItemStack stack = inventory.getStackInSlot(i);
+      if (stackEqual(item, stack)) {
+        return true;
       }
     }
     return false;
   }
 
-  boolean isStackInSnapshot(@Nonnull ItemStack item) {
-    NNIterator<ItemStack> iterator = snapshot.iterator();
+  private boolean isStackInSnapshot(@Nonnull ItemStack item) {
+    NNIterator<ItemStack> iterator = snapshot.fastIterator();
     while (iterator.hasNext()) {
       if (stackEqual(item, iterator.next())) {
         return true;
@@ -62,7 +60,7 @@ public class ExistingItemFilter implements IItemFilter {
     return false;
   }
 
-  boolean stackEqual(@Nonnull ItemStack toInsert, @Nonnull ItemStack existing) {
+  private boolean stackEqual(@Nonnull ItemStack toInsert, @Nonnull ItemStack existing) {
     if (Prep.isInvalid(toInsert) || Prep.isInvalid(existing)) {
       return false;
     }
@@ -113,9 +111,9 @@ public class ExistingItemFilter implements IItemFilter {
     return 0;
   }
 
-  public void setSnapshot(@Nonnull IItemHandler ni) {
+  public void setSnapshot(@Nonnull IItemHandler inventory) {
     snapshot = new NNList<ItemStack>();
-    mergeSnapshot(ni);
+    mergeSnapshot(inventory);
   }
 
   public boolean mergeSnapshot(@Nonnull IItemHandler inventory) {
@@ -125,7 +123,7 @@ public class ExistingItemFilter implements IItemFilter {
     boolean added = false;
     int numSlots = inventory.getSlots();
     for (int i = 0; i < numSlots; i++) {
-      ItemStack stack = inventory.getStackInSlot(i);
+      ItemStack stack = inventory.getStackInSlot(i).copy().splitStack(1);
       if (Prep.isValid(stack) && !isStackInSnapshot(stack)) {
         snapshot.add(stack);
         added = true;
