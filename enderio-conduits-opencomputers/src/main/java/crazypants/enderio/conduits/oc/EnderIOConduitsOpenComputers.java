@@ -11,10 +11,10 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.conduits.conduit.TileConduitBundle;
 import crazypants.enderio.conduits.oc.init.ConduitOpenComputersObject;
+import crazypants.enderio.conduits.oc.network.PacketHandler;
 import li.cil.oc.api.network.Environment;
 import net.minecraft.block.Block;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -50,6 +50,7 @@ public class EnderIOConduitsOpenComputers implements IEnderIOAddon {
     if (OCUtil.isOCEnabled()) {
       // Sanity checking
       System.out.println("Mixin successful? " + Environment.class.isAssignableFrom(TileConduitBundle.class));
+      PacketHandler.init(event);
     }
   }
 
