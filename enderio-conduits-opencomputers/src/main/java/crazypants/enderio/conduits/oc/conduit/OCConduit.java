@@ -576,6 +576,9 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
 
   @Override
   public boolean updateGuiPanel(@Nonnull ITabPanel panel) {
+    if (panel instanceof OCSettings) {
+      return ((OCSettings) panel).updateConduit(this);
+    }
     return false;
   }
 

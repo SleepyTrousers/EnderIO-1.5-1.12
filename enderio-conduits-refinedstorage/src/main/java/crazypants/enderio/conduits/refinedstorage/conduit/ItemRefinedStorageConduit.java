@@ -9,10 +9,10 @@ import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.conduit.registry.ConduitBuilder;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
+import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.conduits.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduits.conduit.item.AbstractItemConduit;
-import crazypants.enderio.conduits.refinedstorage.conduit.gui.IconRS;
 import crazypants.enderio.conduits.render.ConduitBundleRenderManager;
 import crazypants.enderio.conduits.render.DefaultConduitRenderer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +32,7 @@ public class ItemRefinedStorageConduit extends AbstractItemConduit {
     ConduitRegistry.register(ConduitBuilder.start().setUUID(new ResourceLocation(EnderIO.DOMAIN, "refinedstorage")).setClass(getBaseConduitType())
         .setOffsets(Offset.EAST_DOWN, Offset.SOUTH_DOWN, Offset.EAST_DOWN, Offset.EAST_DOWN).build()
         .setUUID(new ResourceLocation(EnderIO.DOMAIN, "refinedstorage_conduit")).setClass(RefinedStorageConduit.class).build().finish());
-    ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(getBaseConduitType(), IconRS.WRENCH_OVERLAY_RS, IconRS.WRENCH_OVERLAY_RS_OFF));
+    ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(getBaseConduitType(), IconEIO.WRENCH_OVERLAY_RS, IconEIO.WRENCH_OVERLAY_RS_OFF));
   }
 
   @Override

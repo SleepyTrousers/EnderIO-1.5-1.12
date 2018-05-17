@@ -14,4 +14,9 @@ public class MESettings extends BaseSettingsPanel {
     super(IconEIO.WRENCH_OVERLAY_ME, ConduitAppliedEnergisticsObject.item_me_conduit.getUnlocalisedName(), gui, con, "simple_settings");
   }
 
+  @Override
+  protected boolean hasInOutModes() {
+    return false;
+  }
+
 }

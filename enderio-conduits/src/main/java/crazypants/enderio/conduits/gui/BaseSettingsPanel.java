@@ -34,6 +34,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
   static final int ID_EXTRACT_ENABLED = 328;
   protected static final int ID_INSERT_FILTER_OPTIONS = 329;
   protected static final int ID_EXTRACT_FILTER_OPTIONS = 330;
+  protected final int ID_ENABLED = 331;
 
   protected final @Nonnull IWidgetIcon icon;
   protected final @Nonnull IGuiExternalConnection gui;
@@ -46,11 +47,17 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
   private @Nonnull String inputHeading;
   private @Nonnull String outputHeading;
 
+  private @Nonnull String enabledHeading;
+
   private boolean insertEnabled = false;
   private boolean extractEnabled = false;
 
+  private boolean enabled = false;
+
   private final @Nonnull CheckBox extractEnabledB;
   private final @Nonnull CheckBox insertEnabledB;
+
+  private final @Nonnull CheckBox enabledB;
 
   private @Nonnull IconButton insertFilterOptionsB;
   private @Nonnull IconButton extractFilterOptionsB;
@@ -80,6 +87,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
     inputHeading = getInputHeading();
     outputHeading = getOutputHeading();
+    enabledHeading = getEnabledHeading();
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
@@ -90,6 +98,8 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     int y = 6;
 
     insertEnabledB = new CheckBox(gui, ID_INSERT_ENABLED, x, y);
+
+    enabledB = new CheckBox(gui, ID_ENABLED, x, y);
 
     x = rightColumn;
 
@@ -179,11 +189,16 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
     updateConduit(con);
 
-    insertEnabledB.onGuiInit();
-    extractEnabledB.onGuiInit();
+    if (hasInOutModes()) {
+      insertEnabledB.onGuiInit();
+      extractEnabledB.onGuiInit();
 
-    insertEnabledB.setSelected(insertEnabled);
-    extractEnabledB.setSelected(extractEnabled);
+      insertEnabledB.setSelected(insertEnabled);
+      extractEnabledB.setSelected(extractEnabled);
+    } else {
+      enabledB.onGuiInit();
+      enabledB.setSelected(enabled);
+    }
 
     if (hasFilters()) {
       gui.addToolTip(filterExtractUpgradeTooltip);
@@ -241,7 +256,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
   private void updateConnectionMode() {
     ConnectionMode mode = ConnectionMode.DISABLED;
-    if (insertEnabled && extractEnabled) {
+    if (insertEnabled && extractEnabled || enabled) {
       mode = ConnectionMode.IN_OUT;
     } else if (insertEnabled) {
       mode = ConnectionMode.OUTPUT;
@@ -259,13 +274,20 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     } else if (guiButton.id == ID_EXTRACT_ENABLED) {
       extractEnabled = !extractEnabled;
       updateConnectionMode();
+    } else if (guiButton.id == ID_ENABLED) {
+      enabled = !enabled;
+      updateConnectionMode();
     }
   }
 
   protected void connectionModeChanged(@Nonnull ConnectionMode mode) {
     oldConnectionMode = mode;
-    insertEnabled = mode.acceptsOutput();
-    extractEnabled = mode.acceptsInput();
+    if (hasInOutModes()) {
+      insertEnabled = mode.acceptsOutput();
+      extractEnabled = mode.acceptsInput();
+    } else {
+      enabled = mode == ConnectionMode.IN_OUT;
+    }
   }
 
   @Override
@@ -275,9 +297,15 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     int rgb = ColorUtil.getRGB(Color.darkGray);
     int x = left + 32;
     int y = gui.getGuiTop() + 10;
-    fr.drawString(inputHeading, x, y, rgb);
-    x += 92;
-    fr.drawString(outputHeading, x, y, rgb);
+
+    if (hasInOutModes()) {
+      fr.drawString(inputHeading, x, y, rgb);
+      x += 92;
+      fr.drawString(outputHeading, x, y, rgb);
+    } else {
+      String heading = enabled ? getEnabledHeading() : getDisabledHeading();
+      fr.drawString(heading, x, y, rgb);
+    }
     renderCustomOptions(y + gap + fr.FONT_HEIGHT + gap, par1, par2, par3);
   }
 
@@ -311,6 +339,20 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
   @Nonnull
   protected String getOutputHeading() {
     return Lang.GUI_CONDUIT_EXTRACT_MODE.get();
+  }
+
+  @Nonnull
+  protected String getEnabledHeading() {
+    return Lang.GUI_CONDUIT_ENABLED_MODE.get();
+  }
+
+  @Nonnull
+  protected String getDisabledHeading() {
+    return Lang.GUI_CONDUIT_DISABLED_MODE.get();
+  }
+
+  protected boolean hasInOutModes() {
+    return true;
   }
 
 }
