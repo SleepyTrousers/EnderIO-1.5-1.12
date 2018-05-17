@@ -2,12 +2,12 @@
 {
   "modid": "enderioinvpanel",
   "name": "Ender IO Inventory Panel",
-  "description": "Compact conduits, painted things and all sorts of stuff and bling.",
+  "description": "A mass-storage solution!",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "http://enderio.com",
   "updateUrl": "",
-  "authorList": [ "CrazyPants", "tterrag", "HenryLoenwind", "MatthiasM" , "CyanideX"],
+  "authorList": [ "CrazyPants", "tterrag", "HenryLoenwind", "MatthiasM" , "CyanideX", "EpicSquid"],
   "credits": "By CrazyPants, with the help of many",
   "logoFile": "",
   "screenshots": [
