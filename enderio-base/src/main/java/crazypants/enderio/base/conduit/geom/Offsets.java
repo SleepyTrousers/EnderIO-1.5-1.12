@@ -24,7 +24,7 @@ public class Offsets {
    *          The offset for conduit arms on the Y axis
    * @param z
    *          The offset for conduit arms on the Z axis
-   * @return true if the offset was registered. false if the conduit already is registered of if one of the axis are already in use.
+   * @return true if the offset was registered. false if the conduit already is registered or if one of the axis is already in use.
    */
   public static boolean registerOffsets(Class<? extends IConduit> type, Offset none, Offset x, Offset y, Offset z) {
     OffsetKey keyNone = key(type, Axis.NONE);
