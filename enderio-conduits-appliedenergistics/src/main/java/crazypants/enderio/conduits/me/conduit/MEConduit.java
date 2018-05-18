@@ -306,8 +306,8 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Override
   @Method(modid = "appliedenergistics2")
-  public void onBeforeRemovedFromBundle() {
-    super.onBeforeRemovedFromBundle();
+  public void onAfterRemovedFromBundle() {
+    super.onAfterRemovedFromBundle();
     if (getNode() != null) {
       getNode().destroy();
     }
@@ -320,8 +320,8 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     super.onChunkUnload();
     if (getNode() != null) {
       getNode().destroy();
-      setGridNode(null);
     }
+    setGridNode(null);
   }
 
   @Override
