@@ -38,7 +38,8 @@ public enum CapacitorKey implements ICapacitorKey {
   private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull String shortname) {
     this.owner = owner;
     this.valueType = valueType;
-    this.registryName = new ResourceLocation(EnderIO.MODID, owner.getUnlocalisedName() + "/" + shortname.toLowerCase(Locale.ENGLISH));
+    this.registryName = new ResourceLocation(owner.getRegistryName().getResourceDomain(),
+        owner.getRegistryName().getResourcePath() + "/" + shortname.toLowerCase(Locale.ENGLISH));
   }
 
   @Override

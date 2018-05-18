@@ -108,7 +108,7 @@ public interface Scaler {
     SPEED(new IndexedScaler(1f, 100, 20, 10, 2, 1)),
     POWER10(new IndexedScaler(1f, 0, 1, 2, 10, 20)),
     RANGE(new IndexedScaler(1f, 0, 4, 6, 10, 17)),
-    FIXED_1(new Scaler() { // 1-1-1
+    FIXED(new Scaler() { // 1-1-1
       @Override
       public float scaleValue(float idx) {
         return 1;

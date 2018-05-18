@@ -31,12 +31,17 @@ public interface ICapacitorKey extends IForgeRegistryEntry<ICapacitorKey> {
   CapacitorKeyType getValueType();
 
   @Nonnull
-  @Deprecated
+  @Deprecated // TODO 1.13: Remove
   String getLegacyName();
 
   @Override
   @Nonnull
   ResourceLocation getRegistryName();
+
+  /*
+   * These methods are used by the xml configuration system only. For keys that are not configured that way, make the setters complain and the validate do
+   * nothing.
+   */
 
   void setScaler(@Nonnull Scaler scaler);
 
