@@ -32,6 +32,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumFacing.Axis;
 
 import static net.minecraft.util.EnumFacing.DOWN;
 import static net.minecraft.util.EnumFacing.EAST;
@@ -121,7 +122,7 @@ public class DefaultConduitRenderer implements IConduitRenderer {
       addQuadsForSection(bb, tex, component.dir, quads);
       if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
         tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
-        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, component.dir, new Vector4f(4 / 16f, 4 / 16f, 12 / 16f, 12 / 16f));
+        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, component.dir);
       }
     } else {
       BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
@@ -135,19 +136,24 @@ public class DefaultConduitRenderer implements IConduitRenderer {
   protected void addQuadsForSection(BoundingBox bb, TextureAtlasSprite tex, EnumFacing dir, List<BakedQuad> quads, Vector4f color) {
 
     boolean rotateSides = dir == UP || dir == DOWN;
-    boolean rotateTopBottom = dir == DOWN || dir == EAST || dir == EnumFacing.SOUTH;
+    boolean rotateTopBottom = dir == DOWN || dir == EAST || dir == SOUTH;
 
-    boolean doRotSides = rotateSides;
     for (EnumFacing face : EnumFacing.VALUES) {
       if (face != dir && face.getOpposite() != dir) {
+        boolean doRotSides = rotateSides;
+        boolean doRotateTopBottom = rotateTopBottom;
         if (face == UP || face == DOWN) {
           doRotSides = dir == SOUTH || dir == NORTH;
-        } else {
-          doRotSides = rotateSides;
+        }
+        if (dir.getAxis().isVertical() && (face == NORTH || face == EAST)) {
+          doRotateTopBottom = !doRotateTopBottom;
+        }
+        if (dir.getAxis() == Axis.Z && face == DOWN) {
+          doRotateTopBottom = !doRotateTopBottom;
         }
         float maxU = 13 / 16f, maxV = 4 / 16f;
-        Vector4f uvs = dir.getAxis().isHorizontal() ? new Vector4f(0, 0, maxU, maxV) : new Vector4f(0, 0, maxV, maxU);
-        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, face, uvs, doRotSides, rotateTopBottom, color);
+        Vector4f uvs = new Vector4f(0, 0, maxU, maxV);
+        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, face, uvs, doRotSides, doRotateTopBottom, color);
       }
     }
   }
