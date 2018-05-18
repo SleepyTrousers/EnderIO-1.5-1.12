@@ -47,6 +47,7 @@ import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.gui.ExternalConnectionContainer;
 import crazypants.enderio.conduits.gui.GuiExternalConnection;
 import crazypants.enderio.conduits.gui.GuiExternalConnectionSelector;
+import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduits.render.ConduitRenderMapper;
 import net.minecraft.block.Block;
@@ -79,6 +80,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -742,10 +744,13 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     IConduitItem equipped = (IConduitItem) stack.getItem();
     if (!bundle.hasType(equipped.getBaseConduitType())) {
       if (!world.isRemote) {
-        bundle.addConduit(equipped.createConduit(stack, player));
-        ConduitUtil.playBreakSound(SoundType.METAL, world, pos);
-        if (!player.capabilities.isCreativeMode) {
-          player.getHeldItem(hand).shrink(1);
+        if (bundle.addConduit(equipped.createConduit(stack, player))) {
+          ConduitUtil.playBreakSound(SoundType.METAL, world, pos);
+          if (!player.capabilities.isCreativeMode) {
+            player.getHeldItem(hand).shrink(1);
+          }
+        } else {
+          player.sendStatusMessage(new TextComponentTranslation(Lang.GUI_CONDUIT_BUNDLE_FULL.getKey()), true);
         }
       }
       return true;
