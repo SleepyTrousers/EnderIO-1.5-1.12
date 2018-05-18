@@ -39,6 +39,8 @@ public enum Lang implements ILang {
   GUI_REDSTONE_CONDUIT_INPUT_MODE(".gui.redstone_conduit_input_mode"),
   GUI_REDSTONE_CONDUIT_OUTPUT_MODE(".gui.redstone_conduit_output_mode"),
 
+  GUI_CONDUIT_BUNDLE_FULL(".gui.conduit_bundle_full"),
+
   ;
 
   private final @Nonnull String key;

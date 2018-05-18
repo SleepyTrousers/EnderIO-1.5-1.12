@@ -56,7 +56,7 @@ public class ConduitGeometryUtil {
     CORE_MAX = core_max;
     CORE_BOUNDS = new BoundingBox(core_min, core_max);
 
-    float connectorWidth = (float) (1 / 16f) + ((1 / 16f) * Config.conduitPixels * 3);
+    float connectorWidth = Math.min((2 / 16f) + (size * 3), 1);
     for (EnumFacing dir : EnumFacing.VALUES) {
       EXTERNAL_CONNECTOR_BOUNDS.put(dir, createExternalConnector(dir, CONNECTOR_DEPTH, connectorWidth));
     }

@@ -14,6 +14,7 @@ import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.conduits.conduit.ItemConduitSubtype;
+import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -30,6 +31,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -72,8 +74,11 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem, 
           TileEntity te = world.getTileEntity(placeAt);
           if (te instanceof IConduitBundle) {
             IConduitBundle bundle = (IConduitBundle) te;
-            bundle.addConduit(createConduit(held, player));
-            ConduitUtil.playBreakSound(SoundType.METAL, world, placeAt);
+            if (bundle.addConduit(createConduit(held, player))) {
+              ConduitUtil.playBreakSound(SoundType.METAL, world, placeAt);
+            } else {
+              player.sendStatusMessage(new TextComponentTranslation(Lang.GUI_CONDUIT_BUNDLE_FULL.getKey()), true);
+            }
           }
         }
       }

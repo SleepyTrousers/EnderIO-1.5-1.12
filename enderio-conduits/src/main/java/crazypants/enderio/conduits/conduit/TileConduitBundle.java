@@ -446,34 +446,42 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   @Override
-  public void addConduit(IServerConduit conduit) {
+  public boolean addConduit(IServerConduit conduit) {
     if (world.isRemote) {
-      return;
+      return false;
     }
-    conduit.setBundle(this);
-    getServerConduits().add(conduit);
-    conduit.onAddedToBundle();
-    dirty();
+    if (getServerConduits().size() < 9) {
+      conduit.setBundle(this);
+      getServerConduits().add(conduit);
+      conduit.onAddedToBundle();
+      dirty();
+      return true;
+    }
+    return false;
   }
 
   @Override
-  public void removeConduit(IConduit conduit) {
+  public boolean removeConduit(IConduit conduit) {
     if (conduit instanceof IServerConduit) {
-      removeConduit((IServerConduit) conduit, true);
+      return removeConduit((IServerConduit) conduit, true);
     }
+    return false;
   }
 
-  public void removeConduit(IServerConduit conduit, boolean notify) {
+  public boolean removeConduit(IServerConduit conduit, boolean notify) {
     if (world.isRemote) {
-      return;
+      return false;
     }
     conduit.onBeforeRemovedFromBundle();
-    getServerConduits().remove(conduit);
-    conduit.onAfterRemovedFromBundle();
-    conduit.setBundle(null);
-    if (notify) {
-      dirty();
+    if (getServerConduits().remove(conduit)) {
+      conduit.onAfterRemovedFromBundle();
+      conduit.setBundle(null);
+      if (notify) {
+        dirty();
+      }
+      return true;
     }
+    return false;
   }
 
   @Override

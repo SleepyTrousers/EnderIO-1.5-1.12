@@ -72,7 +72,7 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
    * @param conduit
    *          the conduit to add
    */
-  void addConduit(IServerConduit conduit);
+  boolean addConduit(IServerConduit conduit);
 
   /**
    * removes a conduit from the bundle
@@ -80,7 +80,7 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
    * @param conduit
    *          the conduit to remove
    */
-  void removeConduit(IConduit conduit);
+  boolean removeConduit(IConduit conduit);
 
   /**
    * @return Collection of all the conduits in the bundle

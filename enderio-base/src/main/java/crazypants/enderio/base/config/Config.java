@@ -62,7 +62,7 @@ public final class Config {
   public static final @Nonnull Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
   public static final @Nonnull Section sectionHoes = new Section("Farm Settings.Hoes", "hoes");
 
-  public static final int DEFAULT_CONDUIT_PIXELS = 4;
+  public static final int DEFAULT_CONDUIT_PIXELS = 3;
 
   public static final float EXPLOSION_RESISTANT = 2000f * 3.0f / 5.0f; // obsidian
 

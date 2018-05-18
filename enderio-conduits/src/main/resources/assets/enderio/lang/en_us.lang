@@ -107,6 +107,8 @@ enderio.gui.conduit_item.header=Item Conduit
 enderio.gui.conduit_fluid.header=Fluid Conduit
 enderio.gui.conduit_redstone.header=Redstone Conduit
 
+enderio.gui.conduit_bundle_full=Bundle Full
+
 # Gauge
 tile.block_gauge.name=Energy Gauge
 tile.block_gauge.tooltip.detailed.line1=Displays energy levels of adjacent blocks.
