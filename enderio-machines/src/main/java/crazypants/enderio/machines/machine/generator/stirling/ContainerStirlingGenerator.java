@@ -7,7 +7,6 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
-import crazypants.enderio.base.integration.jei.ItemHelper;
 import crazypants.enderio.base.machine.fuel.ISolidFuelHandler;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -45,7 +44,7 @@ public class ContainerStirlingGenerator<T extends TileStirlingGenerator> extends
 
   public void addGhostslots(NNList<GhostSlot> ghostSlots) {
     NNList<ItemStack> fuels = new NNList<>();
-    ItemHelper.getValidItems().apply(new Callback<ItemStack>() {
+    FuelCache.getFuels().apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack e) {
         if (getTe().isMachineItemValidForSlot(0, e)) {

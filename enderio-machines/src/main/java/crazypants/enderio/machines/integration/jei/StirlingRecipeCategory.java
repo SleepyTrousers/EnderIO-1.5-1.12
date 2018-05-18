@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NNMap;
 
 import crazypants.enderio.base.EnderIO;
@@ -23,6 +24,7 @@ import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.generator.stirling.ContainerStirlingGenerator;
+import crazypants.enderio.machines.machine.generator.stirling.FuelCache;
 import crazypants.enderio.machines.machine.generator.stirling.GuiStirlingGenerator;
 import crazypants.enderio.machines.machine.generator.stirling.TileStirlingGenerator;
 import crazypants.enderio.util.Prep;
@@ -135,22 +137,24 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
     long start = System.nanoTime();
 
     // Put valid fuel to "buckets" based on their burn time (energy production)
+    FuelCache.initialize(registry.getIngredientRegistry().getAllIngredients(ItemStack.class));
     NNMap<Integer, NNList<ItemStack>> recipeInputs = new NNMap.Brutal<>();
-    List<ItemStack> validItems = registry.getIngredientRegistry().getIngredients(ItemStack.class);
-    int fuelCount = 0;
-    for (ItemStack stack : validItems) {
-      int burntime = stack == null ? -1 : TileStirlingGenerator.getBurnTimeGeneric(stack);
-      if (burntime <= 0)
-        continue;
-      ++fuelCount;
-      if (recipeInputs.containsKey(burntime)) {
-        recipeInputs.get(burntime).add(stack);
-      } else {
-        NNList<ItemStack> list = new NNList<>();
-        list.add(stack);
-        recipeInputs.put(burntime, list);
+
+    FuelCache.getFuels().apply(new Callback<ItemStack>() {
+      @Override
+      public void apply(@Nonnull ItemStack stack) {
+        int burntime = TileStirlingGenerator.getBurnTimeGeneric(stack);
+        if (burntime <= 0)
+          return;
+        if (recipeInputs.containsKey(burntime)) {
+          recipeInputs.get(burntime).add(stack);
+        } else {
+          NNList<ItemStack> list = new NNList<>();
+          list.add(stack);
+          recipeInputs.put(burntime, list);
+        }
       }
-    }
+    });
 
     List<StirlingRecipeWrapper> recipeList = new ArrayList<StirlingRecipeWrapper>();
     // Order recipes from best to worst
@@ -162,8 +166,8 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
     registry.addRecipes(recipeList, UID);
 
     long end = System.nanoTime();
-    Log.info(String.format("StirlingRecipeCategory: Added %d stirling generator recipes for %d solid fuel to JEI in %.3f seconds.", recipeList.size(),
-        fuelCount, (end - start) / 1000000000d));
+    Log.info(String.format("StirlingRecipeCategory: Added %d stirling generator recipes for %d solid fuels to JEI in %.3f seconds.", recipeList.size(),
+        FuelCache.getFuels().size(), (end - start) / 1000000000d));
   }
 
   // ------------ Category
