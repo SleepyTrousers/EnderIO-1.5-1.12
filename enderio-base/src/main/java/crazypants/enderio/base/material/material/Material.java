@@ -90,6 +90,10 @@ public enum Material {
 
   REDSTONE_FILTER_BASE("redstoneFilterBase"),
 
+  POWDER_CONFUSION("confusingDust"),
+  SHARD_ENDER("enderFragment"),
+  POWDER_WITHERING("witheringDust"),
+
   ;
 
   public final boolean hasEffect;

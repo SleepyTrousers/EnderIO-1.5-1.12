@@ -370,6 +370,21 @@
         "textures": {
             "layer0": "enderio:items/item_material_redstone_filter_base"
         }
+      },
+      "confusing_dust":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_confusing_dust"
+        }
+      },
+      "ender_fragment":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_ender_fragment"
+        }
+      },
+      "withering_dust":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_withering_dust"
+        }
       }
     }
   }

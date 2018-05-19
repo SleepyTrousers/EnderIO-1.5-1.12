@@ -1033,4 +1033,48 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Confusion Charge" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemConfusingDust"/><item name="oredict:sand"/><item name="itemConfusingDust"/>
+        <item name="oredict:sand"/><item name="gunpowder"/><item name="oredict:sand"/>
+        <item name="itemConfusingDust"/><item name="oredict:sand"/><item name="itemConfusingDust"/>
+      </grid>
+      <output name="enderio:block_confusion_charge" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Concussion Charge" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemEnderFragment"/><item name="itemEnderFragment"/><item name="itemEnderFragment"/>
+        <item name="oredict:sand"/><item name="gunpowder"/><item name="oredict:sand"/>
+        <item name="itemConfusingDust"/><item name="itemConfusingDust"/><item name="itemConfusingDust"/>
+      </grid>
+      <output name="enderio:block_concussion_charge" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Ender Charge" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemEnderFragment"/><item name="oredict:sand"/><item name="itemEnderFragment"/>
+        <item name="oredict:sand"/><item name="gunpowder"/><item name="oredict:sand"/>
+        <item name="itemEnderFragment"/><item name="oredict:sand"/><item name="itemEnderFragment"/>
+      </grid>
+      <output name="enderio:block_ender_charge" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Ender Defragmentation" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="itemEnderFragment"/><item />
+        <item name="itemEnderFragment"/><item name="itemEnderFragment"/><item name="itemEnderFragment"/>
+        <item /><item name="itemEnderFragment"/><item />
+      </grid>
+      <output name="oredict:enderpearl" amount="1"/>
+    </crafting>
+  </recipe>
+
 </enderio:recipes>
