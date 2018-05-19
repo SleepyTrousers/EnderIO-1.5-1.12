@@ -10,7 +10,6 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.machines.EnderIOMachines;
-import crazypants.enderio.machines.capacitor.CapacitorKey;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -81,8 +80,6 @@ public class ConfigHandler {
   private static void processConfig() {
     Config.load();
     Config.F.setConfig(config);
-
-    CapacitorKey.processConfig(config);
   }
 
 }

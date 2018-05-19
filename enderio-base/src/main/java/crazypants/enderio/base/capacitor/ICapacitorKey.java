@@ -2,10 +2,11 @@ package crazypants.enderio.base.capacitor;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.base.init.IModObject;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public interface ICapacitorKey {
+public interface ICapacitorKey extends IForgeRegistryEntry<ICapacitorKey> {
 
   /**
    * Calculates the value to use for the given capacitor. Calculation is:
@@ -18,7 +19,7 @@ public interface ICapacitorKey {
   int get(@Nonnull ICapacitorData capacitor);
 
   /**
-   * See {@link CapacitorKey#get(ICapacitorData)}, but this method will return the value as a float. Depending on the scaler and capacitor level, this may make
+   * See {@link ICapacitorKey#get(ICapacitorData)}, but this method will return the value as a float. Depending on the scaler and capacitor level, this may make
    * a difference.
    */
   float getFloat(@Nonnull ICapacitorData capacitor);
@@ -30,40 +31,22 @@ public interface ICapacitorKey {
   CapacitorKeyType getValueType();
 
   @Nonnull
-  String getName();
+  @Deprecated // TODO 1.13: Remove
+  String getLegacyName();
 
-  public static interface Computable extends ICapacitorKey {
+  @Override
+  @Nonnull
+  ResourceLocation getRegistryName();
 
-    @Nonnull
-    Scaler getScaler();
+  /*
+   * These methods are used by the xml configuration system only. For keys that are not configured that way, make the setters complain and the validate do
+   * nothing.
+   */
 
-    void setScaler(@Nonnull Scaler scaler);
+  void setScaler(@Nonnull Scaler scaler);
 
-    @Nonnull
-    String getConfigKey();
+  void setBaseValue(int baseValue);
 
-    @Nonnull
-    Section getConfigSection();
-
-    @Nonnull
-    String getConfigComment();
-
-    int getDefaultBaseValue();
-
-    int getBaseValue();
-
-    void setBaseValue(int baseValue);
-
-    @Override
-    default float getFloat(@Nonnull ICapacitorData capacitor) {
-      return getBaseValue() * getScaler().scaleValue(capacitor.getUnscaledValue(this));
-    };
-
-    @Override
-    default int get(@Nonnull ICapacitorData capacitor) {
-      return (int) (getBaseValue() * getScaler().scaleValue(capacitor.getUnscaledValue(this)));
-    }
-
-  }
+  void validate();
 
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the build-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+To make changes to the recipes, copy the recipes you want to change to
+a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
+and set it to true, e.g.: <recipe name="Gear" disabled="true" />
+
+You can also disabled all build in recipes, so that only your files in the
+'user' folder will be loaded.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <!-- This is a stand-in that is used for machines that don't use/take power. Do Not Change! -->
+  <capacitor key="enderio:block_machine_base/no_power" base="0" scaler="FIXED" />
+
+  <!-- These are used during development for new machines and by those few that don't have their
+       own keys yet. -->
+  <capacitor key="enderio:block_machine_base/legacy_intake" base="80" scaler="POWER" />
+  <capacitor key="enderio:block_machine_base/legacy_buffer" base="100000" scaler="POWER" />
+  <capacitor key="enderio:block_machine_base/legacy_use" base="20" scaler="POWER" />
+
+</enderio:recipes>

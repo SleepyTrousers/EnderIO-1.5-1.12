@@ -3,161 +3,165 @@ package crazypants.enderio.machines.capacitor;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.CapacitorHelper.SetType;
-import crazypants.enderio.base.capacitor.CapacitorKeyHelper;
 import crazypants.enderio.base.capacitor.CapacitorKeyType;
+import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.Scaler;
-import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.loot.WeightedUpgrade;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.init.MachineObject;
-import net.minecraftforge.common.config.Configuration;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import static crazypants.enderio.machines.config.Config.sectionCapacitor;
+@EventBusSubscriber(modid = EnderIOMachines.MODID)
+public enum CapacitorKey implements ICapacitorKey {
 
-public enum CapacitorKey implements ICapacitorKey.Computable {
+  SIMPLE_ALLOY_SMELTER_POWER_INTAKE(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  SIMPLE_ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  SIMPLE_ALLOY_SMELTER_POWER_USE(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_USE, "use"),
+  SIMPLE_ALLOY_SMELTER_POWER_LOSS(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_LOSS, "loss"),
 
-  SIMPLE_ALLOY_SMELTER_POWER_INTAKE(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 20),
-  SIMPLE_ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 1000),
-  SIMPLE_ALLOY_SMELTER_POWER_USE(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
-  SIMPLE_ALLOY_SMELTER_POWER_LOSS(MachineObject.block_simple_alloy_smelter, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 1),
+  ALLOY_SMELTER_POWER_INTAKE(MachineObject.block_alloy_smelter, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  ALLOY_SMELTER_POWER_USE(MachineObject.block_alloy_smelter, CapacitorKeyType.ENERGY_USE, "use"),
 
-  ALLOY_SMELTER_POWER_INTAKE(MachineObject.block_alloy_smelter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
-  ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  ALLOY_SMELTER_POWER_USE(MachineObject.block_alloy_smelter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
+  CREATIVE_BUFFER_POWER_INTAKE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_INTAKE, "intake_creative"),
+  CREATIVE_BUFFER_POWER_BUFFER(MachineObject.block_buffer, CapacitorKeyType.ENERGY_BUFFER, "buffer_creative"),
+  CREATIVE_BUFFER_POWER_USE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_USE, "use_creative"),
 
-  CREATIVE_BUFFER_POWER_INTAKE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 100000),
-  CREATIVE_BUFFER_POWER_BUFFER(MachineObject.block_buffer, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 1000000),
-  CREATIVE_BUFFER_POWER_USE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 0),
+  BUFFER_POWER_INTAKE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  BUFFER_POWER_BUFFER(MachineObject.block_buffer, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  BUFFER_POWER_USE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_USE, "use"),
 
-  BUFFER_POWER_INTAKE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.CUBIC, 2500),
-  BUFFER_POWER_BUFFER(MachineObject.block_buffer, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  BUFFER_POWER_USE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 0),
+  FARM_POWER_INTAKE(MachineObject.block_farm_station, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  FARM_POWER_BUFFER(MachineObject.block_farm_station, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  FARM_POWER_USE(MachineObject.block_farm_station, CapacitorKeyType.ENERGY_USE, "use"),
+  FARM_BASE_SIZE(MachineObject.block_farm_station, CapacitorKeyType.AREA, "base_size"),
+  FARM_BONUS_SIZE(MachineObject.block_farm_station, CapacitorKeyType.AREA, "bonus_size"),
+  FARM_STACK_LIMIT(MachineObject.block_farm_station, CapacitorKeyType.AMOUNT, "stacksize_limit"),
 
-  FARM_POWER_INTAKE(MachineObject.block_farm_station, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.RANGE, 400),
-  FARM_POWER_BUFFER(MachineObject.block_farm_station, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.RANGE, 250000),
-  FARM_POWER_USE(MachineObject.block_farm_station, CapacitorKeyType.ENERGY_USE, Scaler.Factory.RANGE, 10),
-  FARM_BASE_SIZE(MachineObject.block_farm_station, CapacitorKeyType.AREA, Scaler.Factory.FIXED_1, 1),
-  FARM_BONUS_SIZE(MachineObject.block_farm_station, CapacitorKeyType.AREA, Scaler.Factory.IDENTITY, 2),
-  FARM_STACK_LIMIT(MachineObject.block_farm_station, CapacitorKeyType.AMOUNT, Scaler.Factory.QUADRATIC, 16),
+  COMBUSTION_POWER_LOSS(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
+  COMBUSTION_POWER_BUFFER(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  COMBUSTION_POWER_GEN(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
 
-  COMBUSTION_POWER_LOSS(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 0),
-  COMBUSTION_POWER_BUFFER(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  COMBUSTION_POWER_GEN(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.CHEMICAL, 1),
+  ENHANCED_COMBUSTION_POWER_LOSS(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
+  ENHANCED_COMBUSTION_POWER_BUFFER(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  ENHANCED_COMBUSTION_POWER_GEN(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
 
-  ENHANCED_COMBUSTION_POWER_LOSS(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 0),
-  ENHANCED_COMBUSTION_POWER_BUFFER(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 200000),
-  ENHANCED_COMBUSTION_POWER_GEN(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.CHEMICAL, 1),
+  STIRLING_POWER_LOSS(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
+  STIRLING_POWER_BUFFER(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  STIRLING_POWER_GEN(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
+  STIRLING_POWER_TIME(MachineObject.block_stirling_generator, CapacitorKeyType.SPEED, "burntime"),
 
-  STIRLING_POWER_LOSS(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 0),
-  STIRLING_POWER_BUFFER(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  STIRLING_POWER_GEN(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.DROPOFF, 40),
-  STIRLING_POWER_TIME(MachineObject.block_stirling_generator, CapacitorKeyType.SPEED, Scaler.Factory.BURNTIME, 1),
+  SIMPLE_STIRLING_POWER_LOSS(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
+  SIMPLE_STIRLING_POWER_BUFFER(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  SIMPLE_STIRLING_POWER_GEN(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
 
-  SIMPLE_STIRLING_POWER_LOSS(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 1),
-  SIMPLE_STIRLING_POWER_BUFFER(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 1000),
-  SIMPLE_STIRLING_POWER_GEN(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.FIXED_1, 20),
+  ZOMBIE_POWER_LOSS(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
+  ZOMBIE_POWER_BUFFER(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  ZOMBIE_POWER_GEN(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
 
-  ZOMBIE_POWER_LOSS(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 0),
-  ZOMBIE_POWER_BUFFER(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  ZOMBIE_POWER_GEN(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_GEN, Scaler.Factory.CHEMICAL, 80),
+  ATTRACTOR_POWER_INTAKE(MachineObject.block_attractor_obelisk, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  ATTRACTOR_POWER_BUFFER(MachineObject.block_attractor_obelisk, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  ATTRACTOR_POWER_USE(MachineObject.block_attractor_obelisk, CapacitorKeyType.ENERGY_USE, "use"),
+  ATTRACTOR_RANGE(MachineObject.block_attractor_obelisk, CapacitorKeyType.AREA, "range"),
 
-  ATTRACTOR_POWER_INTAKE(MachineObject.block_attractor_obelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.QUADRATIC, 80),
-  ATTRACTOR_POWER_BUFFER(MachineObject.block_attractor_obelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  ATTRACTOR_POWER_USE(MachineObject.block_attractor_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 20),
-  ATTRACTOR_RANGE(MachineObject.block_attractor_obelisk, CapacitorKeyType.AREA, Scaler.Factory.QUADRATIC, 16),
+  AVERSION_POWER_INTAKE(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  AVERSION_POWER_BUFFER(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  AVERSION_POWER_USE(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_USE, "use"),
+  AVERSION_RANGE(MachineObject.block_aversion_obelisk, CapacitorKeyType.AREA, "range"),
 
-  AVERSION_POWER_INTAKE(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.CUBIC, 640),
-  AVERSION_POWER_BUFFER(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  AVERSION_POWER_USE(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.CUBIC, 80),
-  AVERSION_RANGE(MachineObject.block_aversion_obelisk, CapacitorKeyType.AREA, Scaler.Factory.RANGE, 16),
+  INHIBITOR_POWER_INTAKE(MachineObject.block_inhibitor_obelisk, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  INHIBITOR_POWER_BUFFER(MachineObject.block_inhibitor_obelisk, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  INHIBITOR_POWER_USE(MachineObject.block_inhibitor_obelisk, CapacitorKeyType.ENERGY_USE, "use"),
+  INHIBITOR_RANGE(MachineObject.block_inhibitor_obelisk, CapacitorKeyType.AREA, "range"),
 
-  INHIBITOR_POWER_INTAKE(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.CUBIC, 80),
-  INHIBITOR_POWER_BUFFER(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  INHIBITOR_POWER_USE(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.CUBIC, 20),
-  INHIBITOR_RANGE(MachineObject.block_aversion_obelisk, CapacitorKeyType.AREA, Scaler.Factory.RANGE, 8),
+  RELOCATOR_POWER_INTAKE(MachineObject.block_relocator_obelisk, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  RELOCATOR_POWER_BUFFER(MachineObject.block_relocator_obelisk, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  RELOCATOR_POWER_USE(MachineObject.block_relocator_obelisk, CapacitorKeyType.ENERGY_USE, "use"),
+  RELOCATOR_RANGE(MachineObject.block_relocator_obelisk, CapacitorKeyType.AREA, "range"),
 
-  RELOCATOR_POWER_INTAKE(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.CUBIC, 640),
-  RELOCATOR_POWER_BUFFER(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  RELOCATOR_POWER_USE(MachineObject.block_aversion_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.CUBIC, 80),
-  RELOCATOR_RANGE(MachineObject.block_aversion_obelisk, CapacitorKeyType.AREA, Scaler.Factory.RANGE, 12),
+  WEATHER_POWER_INTAKE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  WEATHER_POWER_BUFFER(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  WEATHER_POWER_USE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_USE, "use"),
+  WEATHER_POWER_FLUID_USE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_USE, "fluid_use"),
 
-  WEATHER_POWER_INTAKE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
-  WEATHER_POWER_BUFFER(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  WEATHER_POWER_USE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
-  WEATHER_POWER_FLUID_USE(MachineObject.block_weather_obelisk, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 4),
+  PAINTER_POWER_INTAKE(MachineObject.block_painter, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  PAINTER_POWER_BUFFER(MachineObject.block_painter, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  PAINTER_POWER_USE(MachineObject.block_painter, CapacitorKeyType.ENERGY_USE, "use"),
 
-  PAINTER_POWER_INTAKE(MachineObject.block_painter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
-  PAINTER_POWER_BUFFER(MachineObject.block_painter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  PAINTER_POWER_USE(MachineObject.block_painter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
+  SAG_MILL_POWER_INTAKE(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  SAG_MILL_POWER_BUFFER(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  SAG_MILL_POWER_USE(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_USE, "use"),
 
-  SAG_MILL_POWER_INTAKE(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
-  SAG_MILL_POWER_BUFFER(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  SAG_MILL_POWER_USE(MachineObject.block_sag_mill, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
+  SIMPLE_SAG_MILL_POWER_INTAKE(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  SIMPLE_SAG_MILL_POWER_BUFFER(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  SIMPLE_SAG_MILL_POWER_USE(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_USE, "use"),
+  SIMPLE_SAG_MILL_POWER_LOSS(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_LOSS, "loss"),
 
-  SIMPLE_SAG_MILL_POWER_INTAKE(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 20),
-  SIMPLE_SAG_MILL_POWER_BUFFER(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 1000),
-  SIMPLE_SAG_MILL_POWER_USE(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
-  SIMPLE_SAG_MILL_POWER_LOSS(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_LOSS, Scaler.Factory.FIXED_1, 1),
+  SLICE_POWER_INTAKE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  SLICE_POWER_BUFFER(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  SLICE_POWER_USE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_USE, "use"),
 
-  SLICE_POWER_INTAKE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.QUADRATIC, 160),
-  SLICE_POWER_BUFFER(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  SLICE_POWER_USE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 80),
+  SOUL_BINDER_POWER_INTAKE(MachineObject.block_soul_binder, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  SOUL_BINDER_POWER_BUFFER(MachineObject.block_soul_binder, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  SOUL_BINDER_POWER_USE(MachineObject.block_soul_binder, CapacitorKeyType.ENERGY_USE, "use"),
+  SOUL_BINDER_SOUND_PITCH(MachineObject.block_soul_binder, CapacitorKeyType.AMOUNT, "pitch"),
 
-  SOUL_BINDER_POWER_INTAKE(MachineObject.block_soul_binder, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.QUADRATIC, 1000),
-  SOUL_BINDER_POWER_BUFFER(MachineObject.block_soul_binder, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  SOUL_BINDER_POWER_USE(MachineObject.block_soul_binder, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 500),
-  SOUL_BINDER_SOUND_PITCH(MachineObject.block_soul_binder, CapacitorKeyType.AMOUNT, Scaler.Factory.IDENTITY, 1),
+  SPAWNER_POWER_INTAKE(MachineObject.block_powered_spawner, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  SPAWNER_POWER_BUFFER(MachineObject.block_powered_spawner, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  SPAWNER_POWER_USE(MachineObject.block_powered_spawner, CapacitorKeyType.ENERGY_USE, "use"),
+  SPAWNER_SPEEDUP(MachineObject.block_powered_spawner, CapacitorKeyType.SPEED, "speed"),
 
-  SPAWNER_POWER_INTAKE(MachineObject.block_powered_spawner, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.SPAWNER, 200),
-  SPAWNER_POWER_BUFFER(MachineObject.block_powered_spawner, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  SPAWNER_POWER_USE(MachineObject.block_powered_spawner, CapacitorKeyType.ENERGY_USE, Scaler.Factory.SPAWNER, 160),
-  SPAWNER_SPEEDUP(MachineObject.block_powered_spawner, CapacitorKeyType.SPEED, Scaler.Factory.QUADRATIC, 1),
+  TRANSCEIVER_POWER_INTAKE(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  TRANSCEIVER_POWER_BUFFER(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  TRANSCEIVER_POWER_USE(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_USE, "use"),
 
-  TRANSCEIVER_POWER_INTAKE(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 20480 * 2),
-  TRANSCEIVER_POWER_BUFFER(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.CUBIC, 500000),
-  TRANSCEIVER_POWER_USE(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 10),
+  VAT_POWER_INTAKE(MachineObject.block_vat, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  VAT_POWER_BUFFER(MachineObject.block_vat, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  VAT_POWER_USE(MachineObject.block_vat, CapacitorKeyType.ENERGY_USE, "use"),
 
-  VAT_POWER_INTAKE(MachineObject.block_vat, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
-  VAT_POWER_BUFFER(MachineObject.block_vat, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  VAT_POWER_USE(MachineObject.block_vat, CapacitorKeyType.ENERGY_USE, Scaler.Factory.CHEMICAL, 20),
+  WIRED_POWER_INTAKE(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  WIRED_POWER_BUFFER(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  WIRED_POWER_CHARGE(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_USE, "charge"),
 
-  WIRED_POWER_INTAKE(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 10000),
-  WIRED_POWER_BUFFER(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  WIRED_POWER_OUTPUT(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 10000),
-  WIRED_POWER_CHARGE(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_USE, Scaler.Factory.CHARGE, 1),
+  WIRELESS_POWER_INTAKE(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  WIRELESS_POWER_BUFFER(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  WIRELESS_POWER_OUTPUT(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_USE, "charge"),
 
-  WIRELESS_POWER_INTAKE(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 10000),
-  WIRELESS_POWER_BUFFER(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 200000),
-  WIRELESS_POWER_OUTPUT(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10000),
+  DIALING_DEVICE_POWER_INTAKE(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  DIALING_DEVICE_POWER_BUFFER(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  DIALING_DEVICE_POWER_USE(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_USE, "use"),
+  DIALING_DEVICE_POWER_USE_TELEPORT(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_USE, "use_teleport"),
+  DIALING_DEVICE_POWER_USE_PAPER(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_USE, "use_paper"),
 
-  DIALING_DEVICE_POWER_INTAKE(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 80),
-  DIALING_DEVICE_POWER_BUFFER(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 100000),
-  DIALING_DEVICE_POWER_USE(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 5),
-  DIALING_DEVICE_POWER_USE_TELEPORT(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 1000),
-  DIALING_DEVICE_POWER_USE_PAPER(MachineObject.block_dialing_device, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 1000),
+  IMPULSE_HOPPER_POWER_INTAKE(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  IMPULSE_HOPPER_POWER_BUFFER(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  IMPULSE_HOPPER_POWER_USE(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_USE, "use"),
+  IMPULSE_HOPPER_POWER_USE_PER_ITEM(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_USE, "user_item"),
+  IMPULSE_HOPPER_SPEED(MachineObject.block_impulse_hopper, CapacitorKeyType.SPEED, "speed"),
 
-  IMPULSE_HOPPER_POWER_INTAKE(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
-  IMPULSE_HOPPER_POWER_BUFFER(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  IMPULSE_HOPPER_POWER_USE(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 16),
-  IMPULSE_HOPPER_POWER_USE_PER_ITEM(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
-  IMPULSE_HOPPER_SPEED(MachineObject.block_impulse_hopper, CapacitorKeyType.SPEED, Scaler.Factory.QUADRATIC, 1),
+  CRAFTER_POWER_INTAKE(MachineObject.block_crafter, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  CRAFTER_POWER_BUFFER(MachineObject.block_crafter, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  CRAFTER_POWER_USE(MachineObject.block_crafter, CapacitorKeyType.ENERGY_USE, "use"),
+  CRAFTER_POWER_CRAFT(MachineObject.block_crafter, CapacitorKeyType.ENERGY_USE, "use_craft"),
+  CRAFTER_SPEED(MachineObject.block_crafter, CapacitorKeyType.SPEED, "speed"),
 
-  CRAFTER_POWER_INTAKE(MachineObject.block_crafter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
-  CRAFTER_POWER_BUFFER(MachineObject.block_crafter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  CRAFTER_POWER_USE(MachineObject.block_crafter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 10),
-  CRAFTER_POWER_CRAFT(MachineObject.block_crafter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
-  CRAFTER_SPEED(MachineObject.block_crafter, CapacitorKeyType.SPEED, Scaler.Factory.QUADRATIC, 1),
+  SIMPLE_CRAFTER_POWER_INTAKE(MachineObject.block_simple_crafter, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  SIMPLE_CRAFTER_POWER_BUFFER(MachineObject.block_simple_crafter, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  SIMPLE_CRAFTER_POWER_USE(MachineObject.block_simple_crafter, CapacitorKeyType.ENERGY_USE, "use"),
+  SIMPLE_CRAFTER_POWER_CRAFT(MachineObject.block_simple_crafter, CapacitorKeyType.ENERGY_USE, "use_craft"),
+  SIMPLE_CRAFTER_SPEED(MachineObject.block_simple_crafter, CapacitorKeyType.SPEED, "speed"),
 
-  SIMPLE_CRAFTER_POWER_INTAKE(MachineObject.block_crafter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.FIXED_1, 20),
-  SIMPLE_CRAFTER_POWER_BUFFER(MachineObject.block_crafter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.FIXED_1, 10000),
-  SIMPLE_CRAFTER_POWER_USE(MachineObject.block_crafter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
-  SIMPLE_CRAFTER_POWER_CRAFT(MachineObject.block_crafter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.FIXED_1, 10),
-  SIMPLE_CRAFTER_SPEED(MachineObject.block_crafter, CapacitorKeyType.SPEED, Scaler.Factory.QUADRATIC, 1),
+  TELEPAD_POWER_INTAKE(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  TELEPAD_POWER_BUFFER(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  TELEPAD_POWER_USE(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_USE, "use"),
 
   //
   ;
@@ -166,28 +170,28 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   // /////////////////////////////////////////////////////////////////// //
   // /////////////////////////////////////////////////////////////////// //
 
+  private final @Nonnull ResourceLocation registryName;
   private final @Nonnull IModObject owner;
   private final @Nonnull CapacitorKeyType valueType;
-  private @Nonnull Scaler scaler;
-  private final @Nonnull String configKey;
-  private final @Nonnull Section configSection;
-  private final @Nonnull String configComment;
-  private final int defaultBaseValue;
-  private int baseValue;
 
-  private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull Scaler scaler, int defaultBaseValue) {
-    this(owner, valueType, scaler, defaultBaseValue, sectionCapacitor, null);
-  }
+  private @Nonnull Scaler scaler = Scaler.Factory.INVALID;
+  private int baseValue = Integer.MIN_VALUE;
 
-  private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull Scaler scaler, int defaultBaseValue,
-      @Nonnull Section configSection, @Nullable String configKey) {
+  private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull String shortname) {
     this.owner = owner;
     this.valueType = valueType;
-    this.scaler = scaler;
-    this.configKey = CapacitorKeyHelper.createConfigKey(this, configKey);
-    this.configSection = configSection;
-    this.configComment = CapacitorKeyHelper.localizeComment(EnderIOMachines.lang, this.configSection, this.configKey);
-    this.baseValue = this.defaultBaseValue = defaultBaseValue;
+    this.registryName = new ResourceLocation(owner.getRegistryName().getResourceDomain(),
+        owner.getRegistryName().getResourcePath() + "/" + shortname.toLowerCase(Locale.ENGLISH));
+  }
+
+  @Override
+  public int get(@Nonnull ICapacitorData capacitor) {
+    return (int) (baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this)));
+  }
+
+  @Override
+  public float getFloat(@Nonnull ICapacitorData capacitor) {
+    return baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this));
   }
 
   @Override
@@ -201,13 +205,8 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   }
 
   @Override
-  public @Nonnull String getName() {
+  public @Nonnull String getLegacyName() {
     return name().toLowerCase(Locale.ENGLISH);
-  }
-
-  @Override
-  public @Nonnull Scaler getScaler() {
-    return scaler;
   }
 
   @Override
@@ -216,37 +215,43 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
   }
 
   @Override
-  public @Nonnull String getConfigKey() {
-    return configKey;
-  }
-
-  @Override
-  public @Nonnull Section getConfigSection() {
-    return configSection;
-  }
-
-  @Override
-  public @Nonnull String getConfigComment() {
-    return configComment;
-  }
-
-  @Override
-  public int getDefaultBaseValue() {
-    return defaultBaseValue;
-  }
-
-  @Override
-  public int getBaseValue() {
-    return baseValue;
-  }
-
-  @Override
   public void setBaseValue(int baseValue) {
     this.baseValue = baseValue;
   }
 
-  public static void processConfig(Configuration config) {
-    CapacitorKeyHelper.processConfig(config, values());
+  @Override
+  public void validate() {
+    if (scaler == Scaler.Factory.INVALID || baseValue == Integer.MIN_VALUE) {
+      throw new RuntimeException(
+          "CapacitorKey " + getRegistryName() + " has not been configured. This should not be possible and may be caused by a 3rd-party addon mod.");
+    }
+  }
+
+  public final ICapacitorKey setRegistryName(String name) {
+    throw new IllegalStateException("Attempted to set registry name with existing registry name! New: " + name + " Old: " + getRegistryName());
+  }
+
+  @Override
+  public final ICapacitorKey setRegistryName(ResourceLocation name) {
+    throw new IllegalStateException("Attempted to set registry name with existing registry name! New: " + name + " Old: " + getRegistryName());
+  }
+
+  @Override
+  public final @Nonnull ResourceLocation getRegistryName() {
+    return registryName;
+  }
+
+  @Override
+  public final Class<ICapacitorKey> getRegistryType() {
+    return ICapacitorKey.class;
+  };
+
+  @SubscribeEvent
+  public static void register(RegistryEvent.Register<ICapacitorKey> event) {
+    for (CapacitorKey key : values()) {
+      event.getRegistry().register(key);
+      Log.debug("<capacitor key=\"", key.getRegistryName() + "\" base=\"\" scaler=\"\" />");
+    }
   }
 
   static {

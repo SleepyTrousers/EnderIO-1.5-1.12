@@ -108,6 +108,10 @@ public class Recipes implements RecipeRoot {
       addRecipe(new Grindingball(), factory, startElement);
       return true;
     }
+    if ("capacitor".equals(name)) {
+      addRecipe(new Capacitor(), factory, startElement);
+      return true;
+    }
 
     return false;
   }

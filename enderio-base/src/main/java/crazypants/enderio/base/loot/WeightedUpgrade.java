@@ -57,7 +57,10 @@ public class WeightedUpgrade {
     for (WeightedUpgradeImpl wa : WeightedUpgradeImpl.weightedUpgrades) {
       switch (wa.upgrade.setType) {
       case NAME:
-        if (wa.upgrade.capacitorKey.getName().equals(raw)) {
+        if (wa.upgrade.capacitorKey.getLegacyName().equals(raw)) {
+          return wa.upgrade;
+        }
+        if (wa.upgrade.capacitorKey.getRegistryName().toString().equals(raw)) {
           return wa.upgrade;
         }
         break;

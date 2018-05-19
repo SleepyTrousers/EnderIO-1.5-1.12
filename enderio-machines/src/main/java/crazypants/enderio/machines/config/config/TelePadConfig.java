@@ -13,10 +13,6 @@ public class TelePadConfig {
       "Power for a teleport is calculated by the formula:\npower = [this value] * ln(0.005*distance + 1)").setMin(0).sync();
   public static final IValue<Integer> telepadPowerInterdimensional = F.make("telepadPowerInterdimensional", 100000, //
       "The amount of RF required for an interdimensional teleport.").setMin(0).sync();
-  public static final IValue<Integer> telepadEnergyBufferRF = F.make("telepadEnergyBufferRF", 100000, //
-      "The amount of RF in the internal buffer.").setMin(1).sync();
-  public static final IValue<Integer> telepadEnergyUsePerTickRF = F.make("telepadEnergyUsePerTickRF", 4000, //
-      "The max amount of RF that can be used per tick. Higher values allow faster teleporting.").setMin(1).sync();
   public static final IValue<Integer> telepadFluidUse = F.make("telepadFluidUse", 50, //
       "The max amount of fluid in mb used per teleport. If set to 0 fluid use will be disabled").setMin(0).sync();
 

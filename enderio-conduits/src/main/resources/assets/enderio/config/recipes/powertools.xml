@@ -90,4 +90,10 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <capacitor key="enderio:block_power_monitor/intake" base="10" scaler="FIXED" />
+
+  <capacitor key="enderio:block_power_monitor/buffer" base="1000" scaler="FIXED" />
+
+  <capacitor key="enderio:block_power_monitor/use" base="5" scaler="FIXED" />
+
 </enderio:recipes>

@@ -896,43 +896,24 @@
     <sequence>
       <element name="config" type="enderio:configComplexType" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="dependency" type="enderio:dependencyComplexType" minOccurs="0" maxOccurs="unbounded"></element>
-      <choice>
+      <choice minOccurs="0" maxOccurs="1">
         <element name="scaler" minOccurs="1" maxOccurs="1">
           <complexType>
-            <attribute name="name" use="required">
-              <simpleType>
-                <restriction base="string">
-                  <enumeration value="IDENTITY"></enumeration>
-                  <enumeration value="LINEAR_0_8"></enumeration>
-                  <enumeration value="QUADRATIC"></enumeration>
-                  <enumeration value="QUADRATIC_1_8"></enumeration>
-                  <enumeration value="CUBIC"></enumeration>
-                  <enumeration value="OCTADIC_1_8"></enumeration>
-                  <enumeration value="POWER"></enumeration>
-                  <enumeration value="CHARGE"></enumeration>
-                  <enumeration value="SPEED"></enumeration>
-                  <enumeration value="POWER10"></enumeration>
-                  <enumeration value="RANGE"></enumeration>
-                  <enumeration value="FIXED_1"></enumeration>
-                  <enumeration value="SPAWNER"></enumeration>
-                  <enumeration value="BURNTIME"></enumeration>
-                  <enumeration value="CHEMICAL"></enumeration>
-                  <enumeration value="DROPOFF"></enumeration>
-                </restriction>
-              </simpleType>
-            </attribute>
+            <attribute name="name" use="required" type="enderio:ScalerString"></attribute>
           </complexType>
         </element>
         <element name="indexed" minOccurs="1" maxOccurs="1">
           <complexType>
-            <sequence>
-                            <element name="data" minOccurs="1" maxOccurs="unbounded">
+            <sequence>
+              <element name="data" minOccurs="1" maxOccurs="unbounded">
                 <complexType>
                   <attribute name="value" type="float" use="required"></attribute>
-                </complexType></element>
-                        </sequence>
+                </complexType>
+              </element>
+            </sequence>
             <attribute name="step" type="float" use="optional" default="1"></attribute>
-          </complexType></element>
+          </complexType>
+        </element>
       </choice>
     </sequence>
     <attribute name="key" use="required">
@@ -945,5 +926,26 @@
     <attribute name="required" type="boolean" use="optional" default="true"></attribute>
     <attribute name="disabled" type="boolean" use="optional" default="false"></attribute>
     <attribute name="base" type="int" use="required"></attribute>
+    <attribute name="scaler" type="enderio:ScalerString" use="optional"></attribute>
   </complexType>
+  <simpleType name="ScalerString">
+    <restriction base="string">
+                  <enumeration value="IDENTITY"></enumeration>
+                  <enumeration value="LINEAR_0_8"></enumeration>
+                  <enumeration value="QUADRATIC"></enumeration>
+                  <enumeration value="QUADRATIC_1_8"></enumeration>
+                  <enumeration value="CUBIC"></enumeration>
+                  <enumeration value="OCTADIC_1_8"></enumeration>
+                  <enumeration value="POWER"></enumeration>
+                  <enumeration value="CHARGE"></enumeration>
+                  <enumeration value="SPEED"></enumeration>
+                  <enumeration value="POWER10"></enumeration>
+                  <enumeration value="RANGE"></enumeration>
+                  <enumeration value="FIXED"></enumeration>
+                  <enumeration value="SPAWNER"></enumeration>
+                  <enumeration value="BURNTIME"></enumeration>
+                  <enumeration value="CHEMICAL"></enumeration>
+                  <enumeration value="DROPOFF"></enumeration>
+                </restriction>
+  </simpleType>
 </schema>
