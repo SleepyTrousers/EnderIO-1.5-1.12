@@ -9,6 +9,7 @@ import appeng.api.networking.IGridBlock;
 import appeng.api.networking.IGridHost;
 import appeng.api.util.AEColor;
 import appeng.api.util.DimensionalCoord;
+import crazypants.enderio.base.conduit.IConduitBundle;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -70,11 +71,11 @@ public class MEConduitGrid implements IGridBlock {
 
   @Override
   public IGridHost getMachine() {
-    TileEntity bundleME = conduit.getBundle().getEntity();
-    if (bundleME instanceof IGridHost) {
-      return ((IGridHost) bundleME);
+    IConduitBundle bundle = conduit.getBundle();
+    if (bundle instanceof IGridHost) {
+      return ((IGridHost) bundle);
     }
-    return null;
+    throw new IllegalStateException("Bundle was null or not an IGridHost. Maybe a mixin issue? Bundle: " + bundle);
   }
 
   @Override
