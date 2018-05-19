@@ -22,6 +22,7 @@ public class MachinesPlugin extends BlankModPlugin {
     EnchanterRecipeCategory.register(registry, guiHelper);
     PainterRecipeCategory.register(registry, registry.getJeiHelpers());
     SagMillRecipeCategory.register(registry, guiHelper);
+    SagMillGrindingBallCategory.register(registry, guiHelper);
     SliceAndSpliceRecipeCategory.register(registry, guiHelper);
     SolarPanelRecipeCategory.register(registry, guiHelper);
     SoulBinderRecipeCategory.register(registry, guiHelper);
