@@ -39,7 +39,7 @@ public class TraitPickup extends ModifierTrait {
   }
 
   // @Override (newer API version)
-  int getPriority() {
+  public int getPriority() {
     return 10;
   }
 
