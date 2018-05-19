@@ -5,6 +5,9 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.block.charge.BlockConcussionCharge;
+import crazypants.enderio.base.block.charge.BlockConfusionCharge;
+import crazypants.enderio.base.block.charge.BlockEnderCharge;
 import crazypants.enderio.base.block.coldfire.BlockColdFire;
 import crazypants.enderio.base.block.darksteel.anvil.BlockDarkSteelAnvil;
 import crazypants.enderio.base.block.darksteel.bars.BlockDarkIronBars;
@@ -113,6 +116,11 @@ public enum ModObject implements IModObject.Registerable {
   blockDecoration2(BlockDecorationFacing.class),
   blockDecoration3(BlockDecorationFacing.class, "create2"),
   blockIndustrialInsulation(BlockIndustrialInsulation.class),
+
+  // Charges
+  blockConfusionCharge(BlockConfusionCharge.class),
+  blockConcussionCharge(BlockConcussionCharge.class),
+  blockEnderCharge(BlockEnderCharge.class),
 
   // Painter
   blockPaintedFence(BlockPaintedFence.class, ModTileEntity.TileEntityPaintedBlock),

@@ -1,0 +1,21 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "enderio:blocks/block_concussion_charge_side",
+      "bottom": "enderio:blocks/block_concussion_charge_bottom",
+      "top": "enderio:blocks/block_concussion_charge_top",
+      "side": "enderio:blocks/block_concussion_charge_side"
+    },
+    "model": "enderio:sided_cube"
+  },
+  "variants": {
+    "inventory": [{}],
+    "explode": {
+      "true": {
+      },
+      "false": {
+      }
+    }
+  }
+}

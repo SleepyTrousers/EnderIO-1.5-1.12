@@ -556,6 +556,13 @@ enderio.config.recipe.painter=Painter Recipes
 enderio.config.diagnostics=Diagnostic Settings
 enderio.config.diagnostics.tooltip=Use with care!
 
+enderio.config.blocks=Blocks
+enderio.config.blocks.charges=Charges
+enderio.config.blocks.charges.confusion=Confusion Charge
+enderio.config.blocks.charges.concussion=Concussion Charge
+enderio.config.blocks.charges.ender=Ender Charge
+
+
 enchantment.soulbound=Soulbound
 description.enchantment.enderio.soulbound=Prevents item from being lost on death
 
@@ -1067,3 +1074,7 @@ item.item_redstone_toggle_filter.name=Redstone Toggle Latch Filter
 item.item_redstone_sensor_filter.name=Redstone Sensor Filter
 item.item_redstone_counting_filter.name=Redstone Counting Filter
 item.item_redstone_timer_filter.name=Redstone Timer Filter
+
+tile.block_confusion_charge.name=Confusing Charge
+tile.block_ender_charge.name=Ender Charge
+tile.block_concussion_charge.name=Concussion Charge
