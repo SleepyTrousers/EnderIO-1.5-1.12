@@ -88,7 +88,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   @Nonnull
   public ItemStack createItem() {
-    return new ItemStack(item_me_conduit.getItem(), 1, getDamageForState(isDense));
+    return new ItemStack(item_me_conduit.getItemNN(), 1, getDamageForState(isDense));
   }
 
   @Override
