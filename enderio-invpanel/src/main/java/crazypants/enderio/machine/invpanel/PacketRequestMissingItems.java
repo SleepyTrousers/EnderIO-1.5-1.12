@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 import com.enderio.core.common.network.CompressedDataOutput;
 import com.enderio.core.common.network.NetworkUtil;
 
-import crazypants.enderio.conduits.conduit.item.IInventoryDatabaseServer;
-import crazypants.enderio.conduits.conduit.item.IServerItemEntry;
+import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
+import crazypants.enderio.base.invpanel.database.IServerItemEntry;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import io.netty.buffer.ByteBuf;

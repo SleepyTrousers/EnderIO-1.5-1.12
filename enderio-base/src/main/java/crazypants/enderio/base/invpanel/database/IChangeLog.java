@@ -1,6 +1,6 @@
-package crazypants.enderio.conduits.conduit.item;
+package crazypants.enderio.base.invpanel.database;
 
-public interface ChangeLog {
+public interface IChangeLog {
 
   void entryChanged(IServerItemEntry entry);
 

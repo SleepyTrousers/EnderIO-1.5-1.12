@@ -1,4 +1,6 @@
-package crazypants.enderio.conduits.conduit.item;
+package crazypants.enderio.base.invpanel.database;
+
+import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.item.ItemStack;
@@ -26,7 +28,7 @@ public abstract class AbstractInventory {
    * @param pos
    *          A changed location.
    */
-  public void markForScanning(BlockPos pos) {
+  public void markForScanning(@Nonnull BlockPos pos) {
   }
 
   /**
@@ -68,30 +70,30 @@ public abstract class AbstractInventory {
     }
   }
 
-  protected void setEmpty(IInventoryDatabaseServer db) {
+  protected void setEmpty(@Nonnull IInventoryDatabaseServer db) {
     if (slotKeys.length != 0) {
       reset(db, 0);
     }
   }
 
-  protected void reset(IInventoryDatabaseServer db, int count) {
+  protected void reset(@Nonnull IInventoryDatabaseServer db, int count) {
     for (SlotKey slotKey : slotKeys) {
-      if(slotKey != null) {
+      if (slotKey != null) {
         slotKey.remove(db);
       }
     }
     slotKeys = new SlotKey[count];
   }
 
-  protected void updateSlot(IInventoryDatabaseServer db, int slot, ItemStack stack) {
-    if (stack == null) {
+  protected void updateSlot(@Nonnull IInventoryDatabaseServer db, int slot, @Nonnull ItemStack stack) {
+    if (stack.isEmpty()) {
       emptySlot(db, slot);
     } else {
       updateSlot(db, slot, stack, stack.getCount());
     }
   }
 
-  protected void updateSlot(IInventoryDatabaseServer db, int slot, ItemStack stack, int count) {
+  protected void updateSlot(@Nonnull IInventoryDatabaseServer db, int slot, @Nonnull ItemStack stack, int count) {
     SlotKey slotKey = slotKeys[slot];
     IServerItemEntry current = slotKey != null ? slotKey.item : null;
     IServerItemEntry key = db.lookupItem(stack, current, true);
@@ -105,7 +107,7 @@ public abstract class AbstractInventory {
     }
   }
 
-  protected void emptySlot(IInventoryDatabaseServer db, int slot) {
+  protected void emptySlot(@Nonnull IInventoryDatabaseServer db, int slot) {
     SlotKey slotKey = slotKeys[slot];
     if (slotKey != null) {
       onChangeFound();
@@ -114,12 +116,12 @@ public abstract class AbstractInventory {
     }
   }
 
-  private void updateSlotKey(IInventoryDatabaseServer db, int slot, SlotKey slotKey, IServerItemEntry key, int count) {
+  private void updateSlotKey(@Nonnull IInventoryDatabaseServer db, int slot, SlotKey slotKey, IServerItemEntry key, int count) {
     if (slotKey != null) {
       slotKey.remove(db);
       slotKey = null;
     }
-    if (key != null)  {
+    if (key != null) {
       slotKey = new SlotKey(this, slot, key, count);
       key.addSlot(slotKey);
       db.entryChanged(key);
@@ -127,7 +129,7 @@ public abstract class AbstractInventory {
     slotKeys[slot] = slotKey;
   }
 
-  protected void updateCount(IInventoryDatabaseServer db, int slot, IServerItemEntry entry, int count) {
+  protected void updateCount(@Nonnull IInventoryDatabaseServer db, int slot, IServerItemEntry entry, int count) {
     SlotKey slotKey = slotKeys[slot];
     if (slotKey != null && slotKey.count != count && slotKey.item == entry) {
       if (count == 0) {
@@ -140,8 +142,8 @@ public abstract class AbstractInventory {
     }
   }
 
-  public abstract int scanInventory(IInventoryDatabaseServer db);
+  public abstract int scanInventory(@Nonnull IInventoryDatabaseServer db);
 
-  public abstract int extractItem(IInventoryDatabaseServer db, IServerItemEntry entry, int slot, int count);
+  public abstract int extractItem(@Nonnull IInventoryDatabaseServer db, IServerItemEntry entry, int slot, int count);
 
 }

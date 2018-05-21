@@ -20,12 +20,12 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.ItemUtil;
 
+import crazypants.enderio.base.invpanel.database.IChangeLog;
+import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
+import crazypants.enderio.base.invpanel.database.IItemEntry;
+import crazypants.enderio.base.invpanel.database.IServerItemEntry;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.conduits.conduit.item.ChangeLog;
-import crazypants.enderio.conduits.conduit.item.IInventoryDatabaseServer;
-import crazypants.enderio.conduits.conduit.item.IItemEntry;
-import crazypants.enderio.conduits.conduit.item.IServerItemEntry;
 import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
@@ -43,7 +43,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class InventoryPanelContainer extends AbstractMachineContainer<TileInventoryPanel> implements ChangeLog {
+public class InventoryPanelContainer extends AbstractMachineContainer<TileInventoryPanel> implements IChangeLog {
 
   // JEI wants this data without giving us a chance to instantiate a container
   public static int FIRST_RECIPE_SLOT = 1;

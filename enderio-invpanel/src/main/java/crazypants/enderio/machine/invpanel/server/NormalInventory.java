@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.invpanel.server;
 
-import crazypants.enderio.conduits.conduit.item.AbstractInventory;
-import crazypants.enderio.conduits.conduit.item.IInventoryDatabaseServer;
-import crazypants.enderio.conduits.conduit.item.IServerItemEntry;
+import crazypants.enderio.base.invpanel.database.AbstractInventory;
+import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
+import crazypants.enderio.base.invpanel.database.IServerItemEntry;
 import crazypants.enderio.conduits.conduit.item.NetworkedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;

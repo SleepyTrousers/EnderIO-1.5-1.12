@@ -1,8 +1,6 @@
 package crazypants.enderio.conduits.conduit.item;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -222,112 +220,5 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
   public List<NetworkedInventory> getInventoryPanelSources() {
     return Collections.emptyList();
-  }
-
-  // TODO make all of this actually do stuff
-  public IInventoryDatabaseServer getDatabase() {
-    return new IInventoryDatabaseServer() {
-
-      @Override
-      public int getGeneration() {
-        return 0;
-      }
-
-      @Override
-      public IServerItemEntry lookupItem(ItemStack stack, IServerItemEntry hint, boolean create) {
-        return null;
-      }
-
-      @Override
-      public IServerItemEntry getItem(int dbID) {
-        return null;
-      }
-
-      @Override
-      public IServerItemEntry getExistingItem(int dbID) {
-        return null;
-      }
-
-      @Override
-      public boolean isCurrent() {
-        return false;
-      }
-
-      @Override
-      public void addChangeLog(ChangeLog cl) {
-
-      }
-
-      @Override
-      public void removeChangeLog(ChangeLog cl) {
-
-      }
-
-      @Override
-      public List<? extends IServerItemEntry> decompressMissingItems(byte[] compressed) throws IOException {
-        return null;
-      }
-
-      @Override
-      public byte[] compressItemInfo(List<? extends IServerItemEntry> items) throws IOException {
-        return null;
-      }
-
-      @Override
-      public byte[] compressItemList() throws IOException {
-        return null;
-      }
-
-      @Override
-      public byte[] compressChangedItems(Collection<? extends IServerItemEntry> items) throws IOException {
-        return null;
-      }
-
-      @Override
-      public void resetDatabase() {
-
-      }
-
-      @Override
-      public int getNumInventories() {
-        return 0;
-      }
-
-      @Override
-      public float getPower() {
-        return 0;
-      }
-
-      @Override
-      public void addPower(float power) {
-
-      }
-
-      @Override
-      public boolean isOperational() {
-        return false;
-      }
-
-      @Override
-      public int extractItems(IServerItemEntry entry, int count, IInventoryPanel te) {
-        return 0;
-      }
-
-      @Override
-      public void tick() {
-      }
-
-      @Override
-      public void sendChangeLogs() {
-      }
-
-      @Override
-      public void onNeighborChange(BlockPos neighborPos) {
-      }
-
-      @Override
-      public void entryChanged(IServerItemEntry entry) {
-      }
-    };
   }
 }

@@ -16,13 +16,13 @@ import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
+import crazypants.enderio.base.invpanel.database.IInventoryPanel;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduits.conduit.TileConduitBundle;
-import crazypants.enderio.conduits.conduit.item.IInventoryDatabaseServer;
-import crazypants.enderio.conduits.conduit.item.IInventoryPanel;
 import crazypants.enderio.conduits.conduit.item.ItemConduit;
 import crazypants.enderio.conduits.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.machine.invpanel.HandleStoredCraftingRecipe.HandleStoredCraftingRecipeArrayList;
@@ -191,7 +191,8 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     }
 
     if (icn != null) {
-      dbServer = icn.getDatabase();
+      // TODO Data Conduit
+      // dbServer = icn.getDatabase();
       dbServer.sendChangeLogs();
       refuelPower(dbServer);
 

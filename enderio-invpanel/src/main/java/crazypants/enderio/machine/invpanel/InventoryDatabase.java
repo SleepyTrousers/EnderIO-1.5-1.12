@@ -3,9 +3,9 @@ package crazypants.enderio.machine.invpanel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import crazypants.enderio.conduits.conduit.item.IInventoryDatabase;
-import crazypants.enderio.conduits.conduit.item.IItemEntry;
-import crazypants.enderio.conduits.conduit.item.ItemEntryBase;
+import crazypants.enderio.base.invpanel.database.IInventoryDatabase;
+import crazypants.enderio.base.invpanel.database.IItemEntry;
+import crazypants.enderio.base.invpanel.database.ItemEntryBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

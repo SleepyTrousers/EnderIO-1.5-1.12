@@ -2,10 +2,10 @@ package crazypants.enderio.machine.invpanel.server;
 
 import java.util.IdentityHashMap;
 
-import crazypants.enderio.conduits.conduit.item.IInventoryDatabaseServer;
-import crazypants.enderio.conduits.conduit.item.IServerItemEntry;
-import crazypants.enderio.conduits.conduit.item.ItemEntryBase;
-import crazypants.enderio.conduits.conduit.item.SlotKey;
+import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
+import crazypants.enderio.base.invpanel.database.IServerItemEntry;
+import crazypants.enderio.base.invpanel.database.ItemEntryBase;
+import crazypants.enderio.base.invpanel.database.SlotKey;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemEntry extends ItemEntryBase implements IServerItemEntry {

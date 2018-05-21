@@ -1,4 +1,4 @@
-package crazypants.enderio.conduits.conduit.item;
+package crazypants.enderio.base.invpanel.database;
 
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,7 +26,7 @@ public class ItemEntryBase implements IItemEntry {
 
   @Override
   public boolean equals(Object obj) {
-    if(obj instanceof ItemEntryBase) {
+    if (obj instanceof ItemEntryBase) {
       ItemEntryBase other = (ItemEntryBase) obj;
       return this.dbID == other.dbID;
     }
@@ -42,7 +42,7 @@ public class ItemEntryBase implements IItemEntry {
   public Item getItem() {
     return Item.getItemById(itemID);
   }
-  
+
   @Override
   public int getDbID() {
     return dbID;

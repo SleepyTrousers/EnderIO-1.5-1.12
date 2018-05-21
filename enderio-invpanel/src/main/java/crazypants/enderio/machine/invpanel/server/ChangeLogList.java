@@ -2,40 +2,40 @@ package crazypants.enderio.machine.invpanel.server;
 
 import java.util.ArrayList;
 
-import crazypants.enderio.conduits.conduit.item.ChangeLog;
-import crazypants.enderio.conduits.conduit.item.IServerItemEntry;
+import crazypants.enderio.base.invpanel.database.IChangeLog;
+import crazypants.enderio.base.invpanel.database.IServerItemEntry;
 
-final class ChangeLogList implements ChangeLog {
-  final ArrayList<ChangeLog> clList;
+final class ChangeLogList implements IChangeLog {
+  final ArrayList<IChangeLog> clList;
 
-  public ChangeLogList(ChangeLog cl0, ChangeLog cl1) {
-    clList = new ArrayList<ChangeLog>(2);
+  public ChangeLogList(IChangeLog cl0, IChangeLog cl1) {
+    clList = new ArrayList<IChangeLog>(2);
     clList.add(cl0);
     clList.add(cl1);
   }
 
   @Override
   public void entryChanged(IServerItemEntry entry) {
-    for (ChangeLog cl : clList) {
+    for (IChangeLog cl : clList) {
       cl.entryChanged(entry);
     }
   }
 
   @Override
   public void databaseReset() {
-    for (ChangeLog cl : clList) {
+    for (IChangeLog cl : clList) {
       cl.databaseReset();
     }
   }
 
   @Override
   public void sendChangeLog() {
-    for (ChangeLog cl : clList) {
+    for (IChangeLog cl : clList) {
       cl.sendChangeLog();
     }
   }
 
-  ChangeLog remove(ChangeLog cl) {
+  IChangeLog remove(IChangeLog cl) {
     clList.remove(cl);
     if (clList.size() == 1) {
       return clList.get(0);
@@ -43,7 +43,7 @@ final class ChangeLogList implements ChangeLog {
     return this;
   }
 
-  void add(ChangeLog cl) {
+  void add(IChangeLog cl) {
     if (!clList.contains(cl)) {
       clList.add(cl);
     }

@@ -1,4 +1,4 @@
-package crazypants.enderio.conduits.conduit.item;
+package crazypants.enderio.base.invpanel.database;
 
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;

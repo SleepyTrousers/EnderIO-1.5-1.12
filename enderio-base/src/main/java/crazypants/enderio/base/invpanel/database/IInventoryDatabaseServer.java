@@ -1,19 +1,20 @@
-package crazypants.enderio.conduits.conduit.item;
+package crazypants.enderio.base.invpanel.database;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.energy.IEnergyStorage;
 
 public interface IInventoryDatabaseServer extends IInventoryDatabase<IServerItemEntry> {
 
   boolean isCurrent();
 
-  void addChangeLog(ChangeLog cl);
+  void addChangeLog(IChangeLog cl);
 
-  void removeChangeLog(ChangeLog cl);
+  void removeChangeLog(IChangeLog cl);
 
   List<? extends IServerItemEntry> decompressMissingItems(byte[] compressed) throws IOException;
 
@@ -33,7 +34,7 @@ public interface IInventoryDatabaseServer extends IInventoryDatabase<IServerItem
 
   boolean isOperational();
 
-  int extractItems(IServerItemEntry entry, int count, IInventoryPanel te);
+  int extractItems(IServerItemEntry entry, int count, @Nonnull IInventoryPanel te);
 
   void tick();
 
@@ -46,7 +47,7 @@ public interface IInventoryDatabaseServer extends IInventoryDatabase<IServerItem
    * @param neighborPos
    *          The BlockPos of the neighbor
    */
-  void onNeighborChange(BlockPos neighborPos);
+  void onNeighborChange(@Nonnull BlockPos neighborPos);
 
   void entryChanged(IServerItemEntry entry);
 

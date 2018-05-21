@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.conduits.conduit.item.ItemEntryBase;
+import crazypants.enderio.base.invpanel.database.ItemEntryBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

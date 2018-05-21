@@ -12,13 +12,13 @@ import com.enderio.core.common.network.CompressedDataInput;
 import com.enderio.core.common.network.CompressedDataOutput;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.invpanel.database.AbstractInventory;
+import crazypants.enderio.base.invpanel.database.IChangeLog;
+import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
+import crazypants.enderio.base.invpanel.database.IInventoryPanel;
+import crazypants.enderio.base.invpanel.database.IServerItemEntry;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.util.CompositeList;
-import crazypants.enderio.conduits.conduit.item.AbstractInventory;
-import crazypants.enderio.conduits.conduit.item.ChangeLog;
-import crazypants.enderio.conduits.conduit.item.IInventoryDatabaseServer;
-import crazypants.enderio.conduits.conduit.item.IInventoryPanel;
-import crazypants.enderio.conduits.conduit.item.IServerItemEntry;
 import crazypants.enderio.conduits.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduits.conduit.item.NetworkedInventory;
 import crazypants.enderio.machine.invpanel.InventoryDatabase;
@@ -37,7 +37,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<IServerItemEntry>
 
   private AbstractInventory[] inventories;
   private int currentInventory;
-  private ChangeLog changeLog;
+  private IChangeLog changeLog;
   private boolean sentToClient;
   private int tickPause;
   private float power;
@@ -58,7 +58,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<IServerItemEntry>
   }
 
   @Override
-  public void addChangeLog(ChangeLog cl) {
+  public void addChangeLog(IChangeLog cl) {
     if(changeLog == null) {
       changeLog = cl;
     } else if(changeLog instanceof ChangeLogList) {
@@ -69,7 +69,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<IServerItemEntry>
   }
   
   @Override
-  public void removeChangeLog(ChangeLog cl) {
+  public void removeChangeLog(IChangeLog cl) {
     if(changeLog == cl) {
       changeLog = null;
     } else if(changeLog instanceof ChangeLogList) {
