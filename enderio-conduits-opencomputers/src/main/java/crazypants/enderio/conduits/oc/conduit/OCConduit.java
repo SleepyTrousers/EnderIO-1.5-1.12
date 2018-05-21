@@ -168,7 +168,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   @Override
   @Nonnull
   public ItemStack createItem() {
-    return new ItemStack(item_opencomputers_conduit.getItem(), 1, 0);
+    return new ItemStack(item_opencomputers_conduit.getItemNN(), 1, 0);
   }
 
   @Override
@@ -178,11 +178,6 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
 
   @Override
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
-    if (network == null) {
-      for (EnumFacing dir : getExternalConnections()) {
-        disconnectNode(dir);
-      }
-    }
     this.network = (OCConduitNetwork) network;
     addMissingNodeConnections();
     return true;

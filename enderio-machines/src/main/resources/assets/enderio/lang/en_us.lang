@@ -338,9 +338,10 @@ enderio.jei.stirling_generator.notSimple.line1=This fuel cannot be used in
 enderio.jei.stirling_generator.notSimple.line2=Simple Stirling generator
 enderio.jei.alloy_smelter.notSimple.line1=This recipe cannot be made in
 enderio.jei.alloy_smelter.notSimple.line2=Simple Alloy Smelter
-enderio.jei.grinding_ball.main.line1=Adds a chance to double all outputs.
-enderio.jei.grinding_ball.bonus.line1=Increases the chances of any random outputs, but will not bring them above 100%%.
-enderio.jei.grinding_ball.power.line1=Affects the power used per operation, speeding up or slowing down the machine.
+enderio.jei.grinding_ball.main.line1=Adds a chance to double all outputs
+enderio.jei.grinding_ball.bonus.line1=Increases the chances of any random outputs, but will not bring them above 100%%
+enderio.jei.grinding_ball.bonus.line3=Calculated as original chance * bonus chance. 
+enderio.jei.grinding_ball.power.line1=Affects the power used per operation, speeding up or slowing down the machine
 
 
 enderio.darksteel.upgrade.solar_1.name=Solar I
