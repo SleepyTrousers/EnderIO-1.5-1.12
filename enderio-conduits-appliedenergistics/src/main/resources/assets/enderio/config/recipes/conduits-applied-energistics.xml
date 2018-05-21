@@ -57,7 +57,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="enderio:item_me_conduit:0" /><item name="CONDUIT_BINDER" /><item name="enderio:item_me_conduit:0" />
         <item name="CONDUIT_BINDER" /><item name="enderio:item_me_conduit:0" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_me_conduit:1" amount="8">
+      <output name="enderio:item_me_conduit:1" amount="4">
       </output>
     </crafting>
   </recipe>
