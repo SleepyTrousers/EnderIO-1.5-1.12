@@ -475,6 +475,10 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
     if (m == null) {
       return;
     }
+    if (target.getY() <= 0) {
+      // coords have not yet been set or have been set to a very unhealthy location
+      return;
+    }
     if (m.world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketTeleportTrigger(m));
     } else {
