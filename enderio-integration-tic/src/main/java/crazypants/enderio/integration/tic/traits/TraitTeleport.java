@@ -66,8 +66,8 @@ public class TraitTeleport extends AbstractTraitLeveled {
     return !(otherModifier instanceof TraitTeleport);
   }
 
-  // @Override (newer API version)
-  int getPriority() {
+  @Override
+  public int getPriority() {
     return 12;
   }
 

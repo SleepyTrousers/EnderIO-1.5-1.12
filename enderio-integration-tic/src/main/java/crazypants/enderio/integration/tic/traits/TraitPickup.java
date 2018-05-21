@@ -38,7 +38,7 @@ public class TraitPickup extends ModifierTrait {
     return !(otherModifier instanceof TraitPickup);
   }
 
-  // @Override (newer API version)
+  @Override
   public int getPriority() {
     return 10;
   }
