@@ -2,6 +2,7 @@ package crazypants.enderio.conduits.conduit.liquid;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
@@ -31,6 +32,7 @@ import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
+import crazypants.enderio.conduits.conduit.IEnderConduit;
 import crazypants.enderio.conduits.conduit.item.ItemConduit;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.util.Prep;
@@ -52,7 +54,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.conduits.init.ConduitObject.item_liquid_conduit;
 
-public class EnderLiquidConduit extends AbstractLiquidConduit implements IConduitComponent, IFilterHolder<IFluidFilter>, IUpgradeHolder {
+public class EnderLiquidConduit extends AbstractLiquidConduit implements IConduitComponent, IFilterHolder<IFluidFilter>, IUpgradeHolder, IEnderConduit {
 
   public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_ender");
   public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core_ender");
@@ -290,32 +292,25 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Override
   public void setConnectionMode(@Nonnull EnumFacing dir, @Nonnull ConnectionMode mode) {
     super.setConnectionMode(dir, mode);
-    refreshConnections(dir);
+    refreshConnection(dir);
   }
 
   @Override
   public void setExtractionRedstoneMode(@Nonnull RedstoneControlMode mode, @Nonnull EnumFacing dir) {
     super.setExtractionRedstoneMode(mode, dir);
-    refreshConnections(dir);
-  }
-
-  private void refreshConnections(@Nonnull EnumFacing dir) {
-    if (network == null) {
-      return;
-    }
-    network.connectionChanged(this, dir);
+    refreshConnection(dir);
   }
 
   @Override
   public void externalConnectionAdded(@Nonnull EnumFacing fromDirection) {
     super.externalConnectionAdded(fromDirection);
-    refreshConnections(fromDirection);
+    refreshConnection(fromDirection);
   }
 
   @Override
   public void externalConnectionRemoved(@Nonnull EnumFacing fromDirection) {
     super.externalConnectionRemoved(fromDirection);
-    refreshConnections(fromDirection);
+    refreshConnection(fromDirection);
   }
 
   @Override
@@ -666,95 +661,57 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     return FilterGuiUtil.INDEX_OUTPUT_FLUID;
   }
 
-  // Channel Colors
+  // ------------------------------------------------
+  // ENDER CONDUIT START
+  // ------------------------------------------------
+
+  @Override
   @Nonnull
-  public DyeColor getInputColor(@Nonnull EnumFacing dir) {
-    DyeColor result = inputColors.get(dir);
-    if (result == null) {
-      return DyeColor.GREEN;
-    }
-    return result;
+  public Map<EnumFacing, DyeColor> getInputColors() {
+    return inputColors;
   }
 
+  @Override
   @Nonnull
-  public DyeColor getOutputColor(@Nonnull EnumFacing dir) {
-    DyeColor result = outputColors.get(dir);
-    if (result == null) {
-      return DyeColor.GREEN;
-    }
-    return result;
+  public Map<EnumFacing, DyeColor> getOutputColors() {
+    return outputColors;
   }
 
-  public void setInputColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
-    inputColors.put(dir, col);
-    if (network != null) {
-      refreshConnections(dir);
-    }
+  @Override
+  @Nonnull
+  public Map<EnumFacing, Boolean> getSelfFeed() {
+    return selfFeed;
+  }
+
+  @Override
+  @Nonnull
+  public Map<EnumFacing, Boolean> getRoundRobin() {
+    return roundRobin;
+  }
+
+  @Override
+  @Nonnull
+  public Map<EnumFacing, Integer> getOutputPriorities() {
+    return priorities;
+  }
+
+  @Override
+  public void setClientDirty() {
     setClientStateDirty();
     collidablesDirty = true;
   }
 
-  public void setOutputColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
-    outputColors.put(dir, col);
-    if (network != null) {
-      refreshConnections(dir);
+  @Override
+  public void refreshConnection(@Nonnull EnumFacing dir) {
+    if (network == null) {
+      return;
     }
-    setClientStateDirty();
-    collidablesDirty = true;
+    network.connectionChanged(this, dir);
   }
 
-  public int getOutputPriority(@Nonnull EnumFacing dir) {
-    Integer res = priorities.get(dir);
-    if (res == null) {
-      return 0;
-    }
-    return res.intValue();
-  }
-
-  public void setOutputPriority(@Nonnull EnumFacing dir, int priority) {
-    if (priority == 0) {
-      priorities.remove(dir);
-    } else {
-      priorities.put(dir, priority);
-    }
-    if (network != null) {
-      refreshConnections(dir);
-    }
-  }
-
-  public boolean isRoundRobinEnabled(@Nonnull EnumFacing dir) {
-    Boolean val = roundRobin.get(dir);
-    if (val == null) {
-      return false;
-    }
-    return val;
-  }
-
-  public void setRoundRobinEnabled(@Nonnull EnumFacing dir, boolean enabled) {
-    roundRobin.put(dir, enabled);
-    if (network != null) {
-      network.connectionChanged(this, dir);
-    }
-  }
-
-  public boolean isSelfFeedEnabled(@Nonnull EnumFacing dir) {
-    Boolean val = selfFeed.get(dir);
-    if (val == null) {
-      return false;
-    }
-    return val;
-  }
-
-  public void setSelfFeedEnabled(@Nonnull EnumFacing dir, boolean enabled) {
-    if (!enabled) {
-      selfFeed.remove(dir);
-    } else {
-      selfFeed.put(dir, enabled);
-    }
-    if (network != null) {
-      network.connectionChanged(this, dir);
-    }
-  }
+  // -------------------------------
+  // END
+  // -------------------------------
 
   @Nonnull
   public ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir) {

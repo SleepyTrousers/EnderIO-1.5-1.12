@@ -2,6 +2,7 @@ package crazypants.enderio.conduits.conduit.item;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
@@ -99,7 +100,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   protected final EnumMap<EnumFacing, Boolean> roundRobin = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
 
-  protected final EnumMap<EnumFacing, Integer> priority = new EnumMap<EnumFacing, Integer>(EnumFacing.class);
+  protected final EnumMap<EnumFacing, Integer> priorities = new EnumMap<EnumFacing, Integer>(EnumFacing.class);
 
   protected final EnumMap<EnumFacing, DyeColor> outputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
   protected final EnumMap<EnumFacing, DyeColor> inputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
@@ -349,46 +350,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   }
 
   @Override
-  @Nonnull
-  public DyeColor getInputColor(@Nonnull EnumFacing dir) {
-    DyeColor result = inputColors.get(dir);
-    if (result == null) {
-      return DyeColor.GREEN;
-    }
-    return result;
-  }
-
-  @Override
-  @Nonnull
-  public DyeColor getOutputColor(@Nonnull EnumFacing dir) {
-    DyeColor result = outputColors.get(dir);
-    if (result == null) {
-      return DyeColor.GREEN;
-    }
-    return result;
-  }
-
-  @Override
-  public void setInputColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
-    inputColors.put(dir, col);
-    if (network != null) {
-      network.routesChanged();
-    }
-    setClientStateDirty();
-    collidablesDirty = true;
-  }
-
-  @Override
-  public void setOutputColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
-    outputColors.put(dir, col);
-    if (network != null) {
-      network.routesChanged();
-    }
-    setClientStateDirty();
-    collidablesDirty = true;
-  }
-
-  @Override
   public int getMaximumExtracted(@Nonnull EnumFacing dir) {
     ItemStack stack = functionUpgrades.get(dir);
     if (stack.isEmpty()) {
@@ -458,70 +419,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   }
 
   @Override
-  public boolean isSelfFeedEnabled(@Nonnull EnumFacing dir) {
-    Boolean val = selfFeed.get(dir);
-    if (val == null) {
-      return false;
-    }
-    return val;
-  }
-
-  @Override
-  public void setSelfFeedEnabled(@Nonnull EnumFacing dir, boolean enabled) {
-    if (!enabled) {
-      selfFeed.remove(dir);
-    } else {
-      selfFeed.put(dir, enabled);
-    }
-    if (network != null) {
-      network.routesChanged();
-    }
-  }
-
-  @Override
-  public boolean isRoundRobinEnabled(@Nonnull EnumFacing dir) {
-    Boolean val = roundRobin.get(dir);
-    if (val == null) {
-      return false;
-    }
-    return val;
-  }
-
-  @Override
-  public void setRoundRobinEnabled(@Nonnull EnumFacing dir, boolean enabled) {
-    if (!enabled) {
-      roundRobin.remove(dir);
-    } else {
-      roundRobin.put(dir, enabled);
-    }
-    if (network != null) {
-      network.routesChanged();
-    }
-  }
-
-  @Override
-  public int getOutputPriority(@Nonnull EnumFacing dir) {
-    Integer res = priority.get(dir);
-    if (res == null) {
-      return 0;
-    }
-    return res.intValue();
-  }
-
-  @Override
-  public void setOutputPriority(@Nonnull EnumFacing dir, int priority) {
-    if (priority == 0) {
-      this.priority.remove(dir);
-    } else {
-      this.priority.put(dir, priority);
-    }
-    if (network != null) {
-      network.routesChanged();
-    }
-
-  }
-
-  @Override
   public boolean canConnectToExternal(@Nonnull EnumFacing direction, boolean ignoreDisabled) {
     return getExternalInventory(direction) != null;
   }
@@ -559,6 +456,54 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public void clearNetwork() {
     this.network = null;
+  }
+
+  // ----------------------------------------
+  // ENDER CONDUIT
+  // ----------------------------------------
+
+  @Override
+  @Nonnull
+  public Map<EnumFacing, DyeColor> getInputColors() {
+    return inputColors;
+  }
+
+  @Override
+  @Nonnull
+  public Map<EnumFacing, DyeColor> getOutputColors() {
+    return outputColors;
+  }
+
+  @Override
+  @Nonnull
+  public Map<EnumFacing, Boolean> getSelfFeed() {
+    return selfFeed;
+  }
+
+  @Override
+  @Nonnull
+  public Map<EnumFacing, Boolean> getRoundRobin() {
+    return roundRobin;
+  }
+
+  @Override
+  @Nonnull
+  public Map<EnumFacing, Integer> getOutputPriorities() {
+    return priorities;
+  }
+
+  @Override
+  public void setClientDirty() {
+    setClientStateDirty();
+    collidablesDirty = true;
+  }
+
+  @Override
+  public void refreshConnection(@Nonnull EnumFacing dir) {
+    if (network == null) {
+      return;
+    }
+    network.routesChanged();
   }
 
   // -------------------------------------------
@@ -711,7 +656,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
       }
     }
 
-    for (Entry<EnumFacing, Integer> entry : priority.entrySet()) {
+    for (Entry<EnumFacing, Integer> entry : priorities.entrySet()) {
       if (entry.getValue() != null) {
         nbtRoot.setInteger("priority." + entry.getKey().name(), entry.getValue());
       }
@@ -816,7 +761,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
       key = "priority." + dir.name();
       if (nbtRoot.hasKey(key)) {
         int val = nbtRoot.getInteger(key);
-        priority.put(dir, val);
+        priorities.put(dir, val);
       }
 
       key = "inSC." + dir.name();

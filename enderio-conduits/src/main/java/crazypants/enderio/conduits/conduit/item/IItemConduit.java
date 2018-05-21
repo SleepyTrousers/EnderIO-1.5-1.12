@@ -2,18 +2,17 @@ package crazypants.enderio.conduits.conduit.item;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.DyeColor;
-
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IExtractor;
 import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.filter.item.IItemFilter;
+import crazypants.enderio.conduits.conduit.IEnderConduit;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
 
-public interface IItemConduit extends IExtractor, IServerConduit, IClientConduit {
+public interface IItemConduit extends IExtractor, IServerConduit, IClientConduit, IEnderConduit {
 
   // Textures
   TextureAtlasSprite getTextureForInputMode();
@@ -57,29 +56,9 @@ public interface IItemConduit extends IExtractor, IServerConduit, IClientConduit
   @Nonnull
   ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir);
 
-  int getOutputPriority(@Nonnull EnumFacing dir);
-
-  void setOutputPriority(@Nonnull EnumFacing dir, int priority);
-
   int getMetaData();
 
   boolean isExtractionRedstoneConditionMet(@Nonnull EnumFacing dir);
-
-  boolean isSelfFeedEnabled(@Nonnull EnumFacing dir);
-
-  void setSelfFeedEnabled(@Nonnull EnumFacing dir, boolean enabled);
-
-  boolean isRoundRobinEnabled(@Nonnull EnumFacing dir);
-
-  void setRoundRobinEnabled(@Nonnull EnumFacing dir, boolean enabled);
-
-  DyeColor getInputColor(@Nonnull EnumFacing dir);
-
-  DyeColor getOutputColor(@Nonnull EnumFacing dir);
-
-  void setInputColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);
-
-  void setOutputColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);
 
   // TODO Inventory
   // boolean isConnectedToNetworkAwareBlock(@Nonnull EnumFacing dir);

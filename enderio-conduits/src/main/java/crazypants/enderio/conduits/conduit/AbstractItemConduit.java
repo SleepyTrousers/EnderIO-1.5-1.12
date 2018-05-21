@@ -1,4 +1,4 @@
-package crazypants.enderio.conduits.conduit.item;
+package crazypants.enderio.conduits.conduit;
 
 import javax.annotation.Nonnull;
 
@@ -13,7 +13,6 @@ import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
-import crazypants.enderio.conduits.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.Block;
