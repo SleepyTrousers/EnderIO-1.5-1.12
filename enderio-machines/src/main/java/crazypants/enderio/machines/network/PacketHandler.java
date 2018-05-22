@@ -30,7 +30,7 @@ import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketTelepor
 import crazypants.enderio.machines.machine.transceiver.PacketItemFilter;
 import crazypants.enderio.machines.machine.transceiver.PacketSendRecieveChannel;
 import crazypants.enderio.machines.machine.transceiver.PacketSendRecieveChannelList;
-import crazypants.enderio.machines.machine.vacuum.PacketVaccumChest;
+import crazypants.enderio.machines.machine.vacuum.chest.PacketVaccumChest;
 import crazypants.enderio.machines.machine.vat.PacketDumpTank;
 import crazypants.enderio.machines.machine.vat.PacketTanks;
 import crazypants.enderio.machines.machine.vat.PacketVatProgress;
