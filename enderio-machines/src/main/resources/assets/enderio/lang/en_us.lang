@@ -92,6 +92,8 @@ enderio.gui.vacuum.range=Suction Strength
 enderio.gui.vacuum.header.chest=Vacuum Chest
 enderio.gui.vacuum.header.filter=Item Filter
 enderio.gui.vacuum.header.range=Range
+enderio.gui.vacuum.xp.header=XP Vacuum
+enderio.gui.vacuum.prime=To activate, right click the XP Vacuum with a bucket of Liquid XP.
 
 enderio.gui.trans.publicChannel=Public Channel
 enderio.gui.trans.privateChannel=Private Channel

@@ -1,27 +1,22 @@
-package crazypants.enderio.machines.machine.vacuum;
+package crazypants.enderio.machines.machine.vacuum.xp;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.inventory.EnderInventory;
 
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
-import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
-import crazypants.enderio.util.ClientUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -34,23 +29,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmartRenderAwareBlock, IEioGuiHandler.WithPos, IResourceTooltipProvider,
-    IRedstoneConnectable, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
+public class BlockXPVacuum extends BlockEio<TileXPVacuum>
+    implements ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IResourceTooltipProvider, IEioGuiHandler.WithPos {
 
-  public static BlockVacuumChest create(@Nonnull IModObject modObject) {
-    BlockVacuumChest res = new BlockVacuumChest(modObject);
+  public static BlockXPVacuum create(@Nonnull IModObject modObject) {
+    BlockXPVacuum res = new BlockXPVacuum(modObject);
     res.init();
     return res;
   }
 
-  protected BlockVacuumChest(@Nonnull IModObject modObject) {
+  protected BlockXPVacuum(@Nonnull IModObject modObject) {
     super(modObject);
     initDefaultState();
     setShape(mkShape(BlockFaceShape.BOWL));
@@ -58,20 +52,6 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
 
   protected void initDefaultState() {
     setDefaultState(getBlockState().getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
-  }
-
-  @Override
-  public boolean shouldRedstoneConduitConnect(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing from) {
-    return true;
-  }
-
-  @Override
-  public void neighborChanged(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock,
-      @Nonnull BlockPos fromPos) {
-    TileVacuumChest ent = getTileEntity(world, pos);
-    if (ent != null) {
-      ent.onNeighborBlockChange(state, world, fromPos, neighborBlock, fromPos);
-    }
   }
 
   @Override
@@ -108,7 +88,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
   @SideOnly(Side.CLIENT)
   public final @Nonnull IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
-    TileVacuumChest tileEntity = getTileEntitySafe(world, pos);
+    TileXPVacuum tileEntity = getTileEntitySafe(world, pos);
     if (tileEntity != null) {
       setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
     }
@@ -117,8 +97,8 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
   }
 
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
-      @Nonnull TileVacuumChest tileEntity) {
-    blockStateWrapper.addCacheKey(0);
+      @Nonnull TileXPVacuum tileEntity) {
+    blockStateWrapper.addCacheKey(tileEntity.isFormed());
   }
 
   protected @Nonnull BlockStateWrapperBase createBlockStateWrapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
@@ -128,12 +108,12 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
   @Override
   @SideOnly(Side.CLIENT)
   public @Nonnull IItemRenderMapper getItemRenderMapper() {
-    return VacuumRenderMapper.instance;
+    return XPRenderMapper.instance;
   }
 
   @SideOnly(Side.CLIENT)
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
-    return VacuumRenderMapper.instance;
+    return XPRenderMapper.instance;
   }
 
   @Override
@@ -145,32 +125,6 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
   @Override
   public boolean isOpaqueCube(@Nonnull IBlockState blockStateIn) {
     return false;
-  }
-
-  @Override
-  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
-      int param1) {
-    TileVacuumChest te = getTileEntity(world, pos);
-    if (te != null) {
-      return new ContainerVacuumChest(player.inventory, te);
-    }
-    return null;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
-      int param1) {
-    TileVacuumChest te = getTileEntity(world, pos);
-    if (te != null) {
-      return new GuiVacuumChest(player.inventory, te);
-    }
-    return null;
-  }
-
-  @Override
-  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
-    return getUnlocalizedName();
   }
 
   // ///////////////////////////////////////////////////////////////////////
@@ -199,41 +153,29 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
   // ///////////////////////////////////////////////////////////////////////
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public void registerRenderers(@Nonnull IModObject modObject) {
-    ClientUtil.registerDefaultItemRenderer(modObject);
-  }
-
-  // Comparator
-
-  @Override
-  public boolean hasComparatorInputOverride(@Nonnull IBlockState state) {
-    return true;
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
+    return getUnlocalizedName();
   }
 
   @Override
-  public int getComparatorInputOverride(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos) {
-    TileVacuumChest te = getTileEntity(worldIn, pos);
-    if (te == null) {
-      return 0;
-    } else {
-      int i = 0;
-      float f = 0.0F;
-
-      EnderInventory inv = te.getInventory();
-
-      for (int j = 0; j < inv.getSlots(); ++j) {
-        ItemStack itemstack = inv.getStackInSlot(j);
-
-        if (!itemstack.isEmpty()) {
-          f += (float) itemstack.getCount() / (float) Math.min(inv.getSlotLimit(j), itemstack.getMaxStackSize());
-          ++i;
-        }
-      }
-
-      f = f / inv.getSlots();
-      return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
+  @Nullable
+  public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
+    TileXPVacuum te = (TileXPVacuum) world.getTileEntity(pos);
+    if (te != null) {
+      return new ContainerXPVacuum(player.inventory, te);
     }
+    return null;
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  @Nullable
+  public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
+    TileXPVacuum te = (TileXPVacuum) world.getTileEntity(pos);
+    if (te != null) {
+      return new GuiXPVacuum(new ContainerXPVacuum(player.inventory, te), te);
+    }
+    return null;
   }
 
 }
