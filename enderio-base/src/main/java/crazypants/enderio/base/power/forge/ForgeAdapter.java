@@ -51,7 +51,13 @@ public class ForgeAdapter implements IPowerApiAdapter {
   @Override
   public IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, @Nullable EnumFacing side) {
     if (provider != null) {
-      return provider.getCapability(ENERGY_HANDLER, side);
+      final Object capability = provider.getCapability(ENERGY_HANDLER, side);
+      if (capability instanceof IEnergyStorage) {
+        return (IEnergyStorage) capability;
+      } else if (capability != null) {
+        throw new RuntimeException(
+            "'" + provider + "' returned '" + capability.getClass() + "' instead of an IEnergyStorage. This is a bug in THAT OTHER MOD, NOT Ender IO.");
+      }
     }
     return null;
   }
