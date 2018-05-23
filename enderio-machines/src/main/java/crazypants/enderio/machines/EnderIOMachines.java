@@ -76,7 +76,7 @@ public class EnderIOMachines implements IEnderIOAddon {
   @Override
   @Nonnull
   public NNList<String> getExampleFiles() {
-    return new NNList<>("machines_easy_recipes", "machines_easy_recipes", "infinity", "cheap_machines");
+    return new NNList<>("machines_easy_recipes", "machines_easy_recipes", "infinity", "cheap_machines", "cheaty_spawner");
   }
 
 }

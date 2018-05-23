@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <recipe name="Spawner, overrides" required="true">
+    <spawning>
+      <entity name="minecraft:elder_guardian"      costMultiplier="100" disabled="false"/> <!-- Elder Guardian -->
+      <entity name="minecraft:evocation_illager"   costMultiplier="250" disabled="false"/> <!-- Evoker -->
+      <entity name="minecraft:villager"            costMultiplier="100" disabled="false"/> <!-- Villager -->
+      <entity name="minecraft:villager_golem"      costMultiplier="100" disabled="false"/> <!-- Iron Golem -->
+      <entity name="minecraft:wither"              costMultiplier="500" disabled="false"/> <!-- Wither -->
+    </spawning>
+  </recipe>
+
+</enderio:recipes>
