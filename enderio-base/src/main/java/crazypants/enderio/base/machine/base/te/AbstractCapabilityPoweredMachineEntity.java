@@ -29,7 +29,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 @Storable
 public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCapabilityMachineEntity {
 
-  protected static final @Nonnull String CAPSLOT = "cap";
+  public static final @Nonnull String CAPSLOT = "cap";
 
   public final @Nonnull Callback<ItemStack> CAP_CALLBACK = new Callback<ItemStack>() {
     @Override
@@ -46,7 +46,7 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
   @Store({ NBTAction.SAVE, NBTAction.CLIENT })
   protected boolean isCapacitorDamageable = false;
 
-  private @Nonnull Random random = new Random();
+  protected @Nonnull Random random = new Random();
 
   protected AbstractCapabilityPoweredMachineEntity(@Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
       @Nonnull ICapacitorKey maxEnergyUsed) {
