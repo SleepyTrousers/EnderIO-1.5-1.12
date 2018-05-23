@@ -15,7 +15,6 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.BaseConfig;
 import crazypants.enderio.base.network.PacketHandler;
-import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -258,8 +257,6 @@ public final class Config {
   public static boolean clearGlassConnectToFusedQuartz = false;
   public static boolean glassConnectToTheirVariants = true;
   public static boolean glassConnectToTheirColorVariants = true;
-
-  public static Rarity enchantmentSoulBoundRarity = Rarity.VERY_RARE;
 
   public static boolean rodOfReturnCanTargetAnywhere = false;
   public static int rodOfReturnTicksToActivate = 50;
@@ -828,15 +825,6 @@ public final class Config {
     teleportEffectProbability = config
         .get(sectionAdvanced.name, "teleportEffectProbability", teleportEffectProbability, "The probability that Enderios do what they promise.")
         .getDouble(teleportEffectProbability);
-
-    String rareStr = config.get(sectionEnchantments.name, "enchantmentSoulBoundWeight", enchantmentSoulBoundRarity.toString(),
-        "The rarity of the enchantment. COMMON, UNCOMMON, RARE, VERY_RARE ").getString();
-    try {
-      enchantmentSoulBoundRarity = Rarity.valueOf(NullHelper.notnull(rareStr, "invalid config value"));
-    } catch (Exception e) {
-      Log.warn("Could not set value config entry enchantmentWitherArrowRarity Specified value " + rareStr);
-      e.printStackTrace();
-    }
 
     BaseConfig.load();
     BaseConfig.F.setConfig(config);

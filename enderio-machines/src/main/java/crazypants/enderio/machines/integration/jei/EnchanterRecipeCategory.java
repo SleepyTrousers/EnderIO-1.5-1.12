@@ -1,11 +1,5 @@
 package crazypants.enderio.machines.integration.jei;
 
-import static crazypants.enderio.machines.init.MachineObject.block_enchanter;
-import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.NUM_RECIPE_SLOT;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +17,6 @@ import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.enchanter.EnchanterRecipe;
 import crazypants.enderio.machines.EnderIOMachines;
-import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machines.machine.enchanter.GuiEnchanter;
 import mezz.jei.api.IGuiHelper;
@@ -38,11 +31,18 @@ import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
+
+import static crazypants.enderio.machines.init.MachineObject.block_enchanter;
+import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.NUM_RECIPE_SLOT;
 
 public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipeCategory.EnchanterRecipeWrapper> {
 
@@ -51,7 +51,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
   // ------------ Recipes
 
   public static class EnchanterRecipeWrapper extends BlankRecipeWrapper {
-    
+
     private static final @Nonnull ResourceLocation XP_ORB_TEXTURE = new ResourceLocation("textures/entity/experience_orb.png");
 
     private final EnchanterRecipe rec;
@@ -85,7 +85,16 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
             Entry<Enchantment, Integer> ench = enchants.entrySet().iterator().next();
             enchLvl = ench.getValue();
             String name = ench.getKey().getTranslatedName(enchLvl);
-            minecraft.fontRenderer.drawString(name, 147 - minecraft.fontRenderer.getStringWidth(name), 0, 0x8b8b8b);
+            String referenceName = getTranslatedName(ench.getKey(), enchLvl);
+            if (referenceName.equals(name)) {
+              name = getTranslatedNameBase(ench.getKey(), enchLvl);
+              minecraft.fontRenderer.drawString(name, 147 - minecraft.fontRenderer.getStringWidth(name), 0, 0x8b8b8b);
+              name = getTranslatedNameLevel(ench.getKey(), enchLvl);
+              minecraft.fontRenderer.drawString(name, 147, 0, 0x8b8b8b);
+            } else {
+              // modded enchantment that overrides getTranslatedName()
+              minecraft.fontRenderer.drawString(name, 147 - minecraft.fontRenderer.getStringWidth(name), 0, 0x8b8b8b);
+            }
           }
         }
       }
@@ -105,6 +114,31 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
           }
         }
       }
+    }
+
+    // copy of Enchantment.getTranslatedName()
+    public static @Nonnull String getTranslatedName(Enchantment e, int level) {
+      String s = I18n.translateToLocal(e.getName());
+
+      if (e.isCurse()) {
+        s = TextFormatting.RED + s;
+      }
+
+      return level == 1 && e.getMaxLevel() == 1 ? s : s + " " + I18n.translateToLocal("enchantment.level." + level);
+    }
+
+    public static @Nonnull String getTranslatedNameBase(Enchantment e, int level) {
+      String s = I18n.translateToLocal(e.getName());
+
+      if (e.isCurse()) {
+        s = TextFormatting.RED + s;
+      }
+
+      return s;
+    }
+
+    public static @Nonnull String getTranslatedNameLevel(Enchantment e, int level) {
+      return level == 1 && e.getMaxLevel() == 1 ? "" : " " + I18n.translateToLocal("enchantment.level." + level);
     }
 
     public void setInfoData(Map<Integer, ? extends IGuiIngredient<ItemStack>> ings) {

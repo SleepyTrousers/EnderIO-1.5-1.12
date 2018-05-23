@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.api.common.enchant.IAdvancedEnchant;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -26,8 +25,8 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
   }
 
   private EnchantmentSoulBound() {
-    super(Config.enchantmentSoulBoundRarity, EnumEnchantmentType.ALL, EntityEquipmentSlot.values());
-    setName(NAME);
+    super(Rarity.VERY_RARE, EnumEnchantmentType.ALL, EntityEquipmentSlot.values());
+    setName(EnderIO.DOMAIN + "." + NAME);
     setRegistryName(EnderIO.DOMAIN, NAME);
   }
 

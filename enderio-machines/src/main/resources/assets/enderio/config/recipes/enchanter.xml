@@ -184,63 +184,75 @@ For more information, see base.xml.
       <enchantment name="enderio:soulbound" costMultiplier="1"/>
     </enchanting>
   </recipe>
-<!--
-EnderZoo Enchantments WitherArrow, WitherWeapon
--->
-    <recipe name="Enchanter: enderzoo:witherarrow" required="false" disabled="false">
+  <recipe name="Enchanter: enderio:witherarrow" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:tipped_arrow" nbt='{Potion:"enderio:withering"}' amount="8"/>
+      <enchantment name="enderio:witherarrow" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: enderio:witherweapon" required="true" disabled="false">
+    <enchanting>
+      <input name="itemWitheringDust" amount="4"/>
+      <enchantment name="enderio:witherweapon" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+
+  <!-- EnderZoo Enchantments WitherArrow, WitherWeapon -->
+
+  <recipe name="Enchanter: enderzoo:witherarrow" required="false" disabled="false">
     <enchanting>
       <input name="minecraft:tipped_arrow" nbt='{Potion:"enderzoo:withering"}' amount="8"/>
       <enchantment name="enderzoo:witherarrow" costMultiplier="1"/>
     </enchanting>
   </recipe>
-    <recipe name="Enchanter: enderzoo:witherweapon" required="false" disabled="false">
+  <recipe name="Enchanter: enderzoo:witherweapon" required="false" disabled="false">
     <enchanting>
       <input name="enderzoo:witheringdust" amount="4"/>
       <enchantment name="enderzoo:witherweapon" costMultiplier="1"/>
     </enchanting>
   </recipe>
-<!--
-COFH Core Enchantments Holding, Insight, Leech, Multishot, Smelting, Vorpal
--->
-    <recipe name="Enchanter: cofhcore:holding" required="false" disabled="false">
+
+  <!-- COFH Core Enchantments Holding, Insight, Leech, Multishot, Smelting, Vorpal -->
+
+  <recipe name="Enchanter: cofhcore:holding" required="false" disabled="false">
     <enchanting>
       <input name="chestWood" amount="16"/>
       <enchantment name="cofhcore:holding" costMultiplier="1"/>
     </enchanting>
   </recipe>
-    <recipe name="Enchanter: cofhcore:insight" required="false" disabled="false">
+  <recipe name="Enchanter: cofhcore:insight" required="false" disabled="false">
     <enchanting>
       <input name="minecraft:experience_bottle" amount="4"/>
       <enchantment name="cofhcore:insight" costMultiplier="1"/>
     </enchanting>
   </recipe>
-    <recipe name="Enchanter: cofhcore:leech" required="false" disabled="false">
+  <recipe name="Enchanter: cofhcore:leech" required="false" disabled="false">
     <enchanting>
       <input name="minecraft:soul_sand" amount="4"/>
       <enchantment name="cofhcore:leech" costMultiplier="1"/>
     </enchanting>
   </recipe>
-    <recipe name="Enchanter: cofhcore:multishot" required="false" disabled="false">
+  <recipe name="Enchanter: cofhcore:multishot" required="false" disabled="false">
     <enchanting>
       <input name="SKELETAL_CONTRACTOR" amount="1"/>
       <enchantment name="cofhcore:multishot" costMultiplier="1"/>
     </enchanting>
   </recipe>
-    <recipe name="Enchanter: cofhcore:smelting" required="false" disabled="false">
+  <recipe name="Enchanter: cofhcore:smelting" required="false" disabled="false">
     <enchanting>
       <input name="minecraft:furnace" amount="16"/>
       <enchantment name="cofhcore:smelting" costMultiplier="1"/>
     </enchanting>
   </recipe>
-    <recipe name="Enchanter: cofhcore:vorpal" required="false" disabled="false">
+  <recipe name="Enchanter: cofhcore:vorpal" required="false" disabled="false">
     <enchanting>
       <input name="ZOMBIE_CONTROLLER" amount="1"/>
       <enchantment name="cofhcore:vorpal" costMultiplier="1"/>
     </enchanting>
   </recipe>
-<!--
-Draconic Evolution Enchant, Enchant_Reaper
--->
+
+  <!-- Draconic Evolution Enchant, Enchant_Reaper -->
+
   <recipe name="Enchanter: draconicevolution:enchant_reaper" required="false" disabled="false">
     <enchanting>
       <input name="draconicevolution:draconium_block" amount="12"/>
@@ -248,7 +260,8 @@ Draconic Evolution Enchant, Enchant_Reaper
     </enchanting>
   </recipe>
 
-<!-- Evil Craft -->
+  <!-- Evil Craft -->
+
   <recipe name="Enchanter: evilcraft:life_stealing" required="false" disabled="false">
     <enchanting>
       <input name="evilcraft:blood_orb:1" amount="2"/>
@@ -270,7 +283,8 @@ Draconic Evolution Enchant, Enchant_Reaper
     </enchanting>
   </recipe>
 
-<!-- Astral Sorcery -->
+  <!-- Astral Sorcery -->
+
   <recipe name="Enchanter: astralsorcery:enchantment.as.nightvision" required="false" disabled="false">
     <enchanting>
       <input name="dustAstralStarmetal" amount="8"/>
@@ -278,7 +292,8 @@ Draconic Evolution Enchant, Enchant_Reaper
     </enchanting>
   </recipe>
 
-<!-- AbyssalCraft -->
+  <!-- AbyssalCraft -->
+
   <recipe name="Enchanter: abyssalcraft:iron_wall" required="false" disabled="false">
     <enchanting>
       <input name="minecraft:iron_bars" amount="32"/>

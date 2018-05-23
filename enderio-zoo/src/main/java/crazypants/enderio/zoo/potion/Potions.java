@@ -5,7 +5,6 @@ import com.google.common.base.Predicate;
 import crazypants.enderio.zoo.EnderZoo;
 import crazypants.enderio.zoo.config.Config;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,22 +34,18 @@ public class Potions {
 
   private PotionType floating;
   private PotionType floatingLong;
-  private PotionType floatingTwo;  
+  private PotionType floatingTwo;
 
   private FloatingPotion floatingPotion;
 
   public Potions() {
-    withering = new PotionType(WITHERING, new PotionEffect(MobEffects.WITHER, 900)).setRegistryName(EnderZoo.MODID, WITHERING);
-    witheringLong = new PotionType(WITHERING, new PotionEffect(MobEffects.WITHER, 2400)).setRegistryName(EnderZoo.MODID, WITHERING_LONG);
-
-    confusion = new PotionType(CONFUSION, new PotionEffect(MobEffects.NAUSEA, 900)).setRegistryName(EnderZoo.MODID, CONFUSION);
-    confusionLong = new PotionType(CONFUSION, new PotionEffect(MobEffects.NAUSEA, 2400)).setRegistryName(EnderZoo.MODID, CONFUSION_LONG);
-
     if (Config.floatingPotionEnabled) {
       floatingPotion = FloatingPotion.create();
       floating = new PotionType(FLOATING, new PotionEffect(floatingPotion, Config.floatingPotionDuration)).setRegistryName(EnderZoo.MODID, FLOATING);
-      floatingLong = new PotionType(FLOATING, new PotionEffect(floatingPotion, Config.floatingPotionDurationLong)).setRegistryName(EnderZoo.MODID, FLOATING_TWO);
-      floatingTwo = new PotionType(FLOATING, new PotionEffect(floatingPotion, Config.floatingPotionTwoDuration, 1)).setRegistryName(EnderZoo.MODID, FLOATING_LONG);
+      floatingLong = new PotionType(FLOATING, new PotionEffect(floatingPotion, Config.floatingPotionDurationLong)).setRegistryName(EnderZoo.MODID,
+          FLOATING_TWO);
+      floatingTwo = new PotionType(FLOATING, new PotionEffect(floatingPotion, Config.floatingPotionTwoDuration, 1)).setRegistryName(EnderZoo.MODID,
+          FLOATING_LONG);
     }
 
   }
@@ -60,22 +55,6 @@ public class Potions {
 
     Ingredient redstone = Ingredient.fromItem(Items.REDSTONE);
     Ingredient glowstone = Ingredient.fromItem(Items.GLOWSTONE_DUST);
-
-    // Wither
-    reg.register(withering);
-    reg.register(witheringLong);
-
-    Ingredient witheringDust = Ingredient.fromItem(EnderZoo.itemWitheringDust);
-    registerPotionTypeConversion(PotionTypes.AWKWARD, witheringDust, withering);
-    registerPotionTypeConversion(withering, redstone, witheringLong);
-
-    // Confusion
-    reg.register(confusion);
-    reg.register(confusionLong);
-
-    Ingredient confusionDust = Ingredient.fromItem(EnderZoo.itemConfusingDust);
-    registerPotionTypeConversion(PotionTypes.AWKWARD, confusionDust, confusion);
-    registerPotionTypeConversion(confusion, redstone, confusionLong);
 
     // Rising
     if (Config.floatingPotionEnabled) {
@@ -92,11 +71,10 @@ public class Potions {
   }
 
   /**
-   * Registers a conversion from one PotionType to another PotionType, with the
-   * given reagent
+   * Registers a conversion from one PotionType to another PotionType, with the given reagent
    */
   private void registerPotionTypeConversion(PotionType input, Ingredient ingredient, PotionType output) {
-      PotionHelper.addMix(input, ingredient, output);
+    PotionHelper.addMix(input, ingredient, output);
   }
 
   public PotionType getWithering() {
@@ -130,8 +108,6 @@ public class Potions {
   public FloatingPotion getFloatingPotion() {
     return floatingPotion;
   }
-
-
 
   static class ItemPredicateInstance implements Predicate<ItemStack> {
     private final Item item;

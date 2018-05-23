@@ -566,8 +566,21 @@ enderio.config.blocks.charges.concussion=Concussion Charge
 enderio.config.blocks.charges.ender=Ender Charge
 
 
-enchantment.soulbound=Soulbound
+enchantment.enderio.soulbound=Soulbound
 description.enchantment.enderio.soulbound=Prevents item from being lost on death
+enchantment.enderio.witherarrow=Withering
+enchantment.enderio.witherweapon=Decay
+
+potion.effect.enderio.withering=Potion of Decay
+splash_potion.effect.enderio.withering=Splash Potion of Decay
+lingering_potion.effect.enderio.withering=Lingering Potion of Decay
+tipped_arrow.effect.enderio.withering=Arrow of Decay
+
+potion.effect.enderio.confusion=Potion of Confusion
+splash_potion.effect.enderio.confusion=Splash Potion of Confusion
+lingering_potion.effect.enderio.confusion=Lingering Potion of Confusion
+tipped_arrow.effect.enderio.confusion=Arrow of Confusion
+
 
 enderio.farm.note.outputFull=Output Full
 enderio.farm.note.noSeeds=No Seeds
