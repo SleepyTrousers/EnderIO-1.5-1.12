@@ -1,6 +1,6 @@
 {
     "parent": "enderio:item/item_conduit_base",
     "textures": {        
-        "all": "enderio:items/item_refined_storage_conduit"
+        "all": "enderio:blocks/refined_storage_conduit_core"
     }
 }
