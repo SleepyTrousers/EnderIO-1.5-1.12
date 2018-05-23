@@ -4,10 +4,10 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.api.farm.AbstractFarmerJoe;
 import crazypants.enderio.api.farm.FarmNotification;
 import crazypants.enderio.api.farm.FarmingAction;
 import crazypants.enderio.api.farm.IFarmer;
-import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.util.Prep;
@@ -19,9 +19,8 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.registries.IForgeRegistryEntry.Impl;
 
-public class PlaceableFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
+public class PlaceableFarmer extends AbstractFarmerJoe {
 
   private final @Nonnull Things DIRT;
   private final @Nonnull Things SEEDS;
@@ -57,7 +56,7 @@ public class PlaceableFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     IBlockState blockStateGround = farm.getBlockState(bc.down());
     Block ground = blockStateGround.getBlock();
     if (!DIRT.contains(ground)) {
@@ -66,13 +65,13 @@ public class PlaceableFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
 
     ItemStack seedStack = farm.getSeedTypeInSuppliesFor(bc);
     if (!canPlant(seedStack)) {
-      if (!farm.isSlotLocked(bc)) {
+      if (Prep.isInvalid(seedStack)) {
         farm.setNotification(FarmNotification.NO_SEEDS);
       }
       return false;
     }
 
-    return plant(farm, bc, meta);
+    return plant(farm, bc, state);
   }
 
   protected boolean plant(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
@@ -90,12 +89,12 @@ public class PlaceableFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     return false;
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     return null;
   }
 

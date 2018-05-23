@@ -43,7 +43,6 @@ import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
@@ -214,36 +213,39 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     return farmerCache != null ? farmerCache : (farmerCache = new FarmLogic(this));
   }
 
+  protected @Nullable BlockPos findNextPos() {
+    int i = 20;
+    while (i-- > 0) {
+      BlockPos farmingPos = getNextCoord();
+      if (!farmingPos.equals(getPos()) && world.isBlockLoaded(farmingPos)) {
+        if (PermissionAPI.hasPermission(getOwner().getAsGameProfile(), BlockFarmStation.permissionFarming,
+            new BlockPosContext(getFarmer().getFakePlayer(), farmingPos, world.getBlockState(farmingPos), null))) {
+          return farmingPos;
+        }
+      }
+    }
+    return null;
+  }
+
   protected void doTick() {
-    IFarmer farmer = getFarmer();
-    BlockPos farmingPos = null;
-    IBlockState bs = null;
-    int infiniteLoop = 20;
-    while (farmingPos == null || bs == null || farmingPos.equals(getPos()) || !world.isBlockLoaded(farmingPos) || !PermissionAPI
-        .hasPermission(getOwner().getAsGameProfile(), BlockFarmStation.permissionFarming, new BlockPosContext(farmer.getFakePlayer(), farmingPos, bs, null))) {
-      if (infiniteLoop-- <= 0) {
-        return;
-      }
-      farmingPos = getNextCoord();
+    BlockPos farmingPos = findNextPos();
+    if (farmingPos == null) {
+      return;
+    }
+    IBlockState bs = world.getBlockState(farmingPos);
+
+    if (isOpen(farmingPos, bs)) {
+      Commune.instance.prepareBlock(getFarmer(), farmingPos, bs);
       bs = world.getBlockState(farmingPos);
     }
 
-    Block block = bs.getBlock();
-
-    if (isOpen(farmingPos, block)) {
-      Commune.instance.prepareBlock(farmer, farmingPos, block, bs);
-      bs = world.getBlockState(farmingPos);
-      block = bs.getBlock();
-    }
-
-    if (!isOpen(farmingPos, block)) {
-      if (!executeHarvest(farmer, farmingPos, bs, block)) {
-        executeBonemeal(farmer, farmingPos, block);
-      }
+    if (isOpen(farmingPos, bs) || !executeHarvest(farmingPos, bs)) {
+      executeBonemeal(farmingPos, bs);
     }
   }
 
-  private void executeBonemeal(@Nonnull IFarmer farmer, @Nonnull BlockPos farmingPos, @Nonnull Block block) {
+  private void executeBonemeal(@Nonnull BlockPos farmingPos, @Nonnull IBlockState bs) {
+    final IFarmer farmer = getFarmer();
     if (hasBonemeal() && bonemealCooldown-- <= 0 && random.nextFloat() <= FarmConfig.farmBonemealChance.get()
         && farmer.checkAction(FarmingAction.FERTILIZE, FarmingTool.HAND)) {
       final ItemStack fertStack = getStackInSlot(minFirtSlot);
@@ -251,9 +253,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       boolean doApply;
 
       if (fertilizer.applyOnPlant() && fertilizer.applyOnAir()) {
-        doApply = !isOpen(farmingPos, block) || world.isAirBlock(farmingPos);
+        doApply = !isOpen(farmingPos, bs) || world.isAirBlock(farmingPos);
       } else if (fertilizer.applyOnPlant()) {
-        doApply = !isOpen(farmingPos, block);
+        doApply = !isOpen(farmingPos, bs);
       } else if (fertilizer.applyOnAir()) {
         doApply = world.isAirBlock(farmingPos);
       } else {
@@ -277,12 +279,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     }
   }
 
-  private boolean isOpen(@Nonnull BlockPos farmingPos, @Nonnull Block block) {
-    return world.isAirBlock(farmingPos) || block.isReplaceable(world, farmingPos);
+  private boolean isOpen(@Nonnull BlockPos farmingPos, @Nonnull IBlockState bs) {
+    return world.isAirBlock(farmingPos) || bs.getBlock().isReplaceable(world, farmingPos);
   }
 
-  private boolean executeHarvest(@Nonnull IFarmer farmer, @Nonnull BlockPos farmingPos, @Nonnull IBlockState bs, @Nonnull Block block) {
-    IHarvestResult harvest = Commune.instance.harvestBlock(farmer, farmingPos, block, bs);
+  private boolean executeHarvest(@Nonnull BlockPos farmingPos, @Nonnull IBlockState bs) {
+    IHarvestResult harvest = Commune.instance.harvestBlock(getFarmer(), farmingPos, bs);
     if (harvest != null && (!harvest.getHarvestedBlocks().isEmpty() || !harvest.getDrops().isEmpty())) {
       if (!harvest.getHarvestedBlocks().isEmpty()) {
         PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());

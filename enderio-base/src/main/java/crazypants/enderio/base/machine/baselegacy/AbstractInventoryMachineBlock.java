@@ -30,6 +30,10 @@ public abstract class AbstractInventoryMachineBlock<T extends AbstractInventoryM
       @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
     T machine = getTileEntity(world, pos);
     ItemStack heldItem = entityPlayer.getHeldItem(hand);
+    if (entityPlayer.isCreative()) {
+      heldItem = heldItem.copy();
+    }
+
     if (Prep.isValid(heldItem) && machine != null) {
       if (machine.isValidUpgrade(heldItem)) {
         int slot = machine.getSlotDefinition().getMinUpgradeSlot();

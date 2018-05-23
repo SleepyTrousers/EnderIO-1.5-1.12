@@ -31,10 +31,12 @@ public class PoweredSpawnerSpecialRenderer extends ManagedTESR<TilePoweredSpawne
     renderMob(te, partialTicks);
     if (!te.getNotification().isEmpty()) {
       float offset = 0;
+      GlStateManager.disableDepth();
       for (SpawnerNotification note : te.getNotification()) {
         RenderUtil.drawBillboardedText(new Vector3f(0.5, 1.5 + offset, 0.5), note.getDisplayString(), 0.25f);
         offset += 0.375f;
       }
+      GlStateManager.enableDepth();
     }
   }
 

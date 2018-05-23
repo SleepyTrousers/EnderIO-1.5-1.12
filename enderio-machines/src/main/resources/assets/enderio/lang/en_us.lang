@@ -92,6 +92,8 @@ enderio.gui.vacuum.range=Suction Strength
 enderio.gui.vacuum.header.chest=Vacuum Chest
 enderio.gui.vacuum.header.filter=Item Filter
 enderio.gui.vacuum.header.range=Range
+enderio.gui.vacuum.xp.header=XP Vacuum
+enderio.gui.vacuum.prime=To activate, right click the XP Vacuum with a bucket of Liquid XP.
 
 enderio.gui.trans.publicChannel=Public Channel
 enderio.gui.trans.privateChannel=Private Channel
@@ -340,7 +342,7 @@ enderio.jei.alloy_smelter.notSimple.line1=This recipe cannot be made in
 enderio.jei.alloy_smelter.notSimple.line2=Simple Alloy Smelter
 enderio.jei.grinding_ball.main.line1=Adds a chance to double all outputs
 enderio.jei.grinding_ball.bonus.line1=Increases the chances of any random outputs, but will not bring them above 100%%
-enderio.jei.grinding_ball.bonus.line3=Calculated as original chance * bonus chance. 
+enderio.jei.grinding_ball.bonus.line2=Calculated as original chance * bonus chance. 
 enderio.jei.grinding_ball.power.line1=Affects the power used per operation, speeding up or slowing down the machine
 
 

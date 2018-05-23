@@ -10,7 +10,6 @@ import crazypants.enderio.base.farming.farmers.TreeFarmer;
 import net.minecraft.block.Block;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
@@ -19,7 +18,7 @@ public class MFRUtil {
   private MFRUtil() {
   }
 
-  @SubscribeEvent(priority = EventPriority.NORMAL)
+  @SubscribeEvent
   public static void registerFarmers(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
     Block cropBlock = FarmersRegistry.findBlock("minefactoryreloaded", "rubberwood.sapling");
     Block woodBlock = FarmersRegistry.findBlock("minefactoryreloaded", "rubberwood.log");

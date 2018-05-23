@@ -11,11 +11,11 @@ import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.farmers.TreeFarmer;
 import crazypants.enderio.base.farming.registry.Registry.Callback;
 import crazypants.enderio.util.Prep;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 
 public class Commune implements IFarmerJoe {
 
@@ -27,31 +27,31 @@ public class Commune implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     return Registry.foreach(new Callback<Boolean>() {
       @Override
       public Boolean run(@Nonnull IFarmerJoe joe) {
-        return joe.canHarvest(farm, bc, block, meta) ? Boolean.TRUE : null;
+        return joe.canHarvest(farm, bc, state) ? Boolean.TRUE : null;
       }
     }) != null;
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     return Registry.foreach(new Callback<IHarvestResult>() {
       @Override
       public IHarvestResult run(@Nonnull IFarmerJoe joe) {
-        return !ignoreTreeHarvest(farm, bc, joe) && joe.canHarvest(farm, bc, block, meta) ? joe.harvestBlock(farm, bc, block, meta) : null;
+        return !ignoreTreeHarvest(farm, bc, joe) && joe.canHarvest(farm, bc, state) ? joe.harvestBlock(farm, bc, state) : null;
       }
     });
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     return Registry.foreach(new Callback<Boolean>() {
       @Override
       public Boolean run(@Nonnull IFarmerJoe joe) {
-        return joe.prepareBlock(farm, bc, block, meta) ? Boolean.TRUE : null;
+        return joe.prepareBlock(farm, bc, state) ? Boolean.TRUE : null;
       }
     }) != null;
   }
@@ -97,6 +97,12 @@ public class Commune implements IFarmerJoe {
   @Override
   public Class<IFarmerJoe> getRegistryType() {
     return null;
+  }
+
+  @Override
+  @Nonnull
+  public EventPriority getPriority() {
+    return EventPriority.HIGHEST;
   }
 
 }

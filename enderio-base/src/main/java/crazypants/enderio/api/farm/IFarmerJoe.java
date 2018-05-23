@@ -3,10 +3,10 @@ package crazypants.enderio.api.farm;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
@@ -41,19 +41,17 @@ public interface IFarmerJoe extends IForgeRegistryEntry<IFarmerJoe> {
    *          The call back to the Farming Station.
    * @param pos
    *          The location to work on.
-   * @param block
-   *          The block at that location.
    * @param state
    *          The blockstate at that location.
    * @return True if this handler wants to handle this location. Doesn't mean that it actually did something, just that no other handler will get the chance to
    *         do so.
    */
-  boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull Block block, @Nonnull IBlockState state);
+  boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state);
 
   /**
    * This will be called whenever the Farming Station encounters a block that is not empty.
    * <p>
-   * The Handler is expected to check if there's a matching plant. If there is, {@link #canHarvest(IFarmer, BlockPos, Block, IBlockState)} will be called next.
+   * The Handler is expected to check if there's a matching plant. If there is, {@link #canHarvest(IFarmer, BlockPos, IBlockState)} will be called next.
    * <p>
    * Note: This is not a check if the plant is ready for harvest, but to find out which handler is responsible for it.
    * 
@@ -61,17 +59,15 @@ public interface IFarmerJoe extends IForgeRegistryEntry<IFarmerJoe> {
    *          The call back to the Farming Station.
    * @param pos
    *          The location to work on.
-   * @param block
-   *          The block at that location.
    * @param state
    *          The blockstate at that location.
    * @return True if this handler wants to handle this location. Doesn't mean that it actually will harvest something, just that no other handler will get the
    *         chance to do so.
    */
-  boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull Block block, @Nonnull IBlockState state);
+  boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state);
 
   /**
-   * This will be called after {@link #canHarvest(IFarmer, BlockPos, Block, IBlockState)}.
+   * This will be called after {@link #canHarvest(IFarmer, BlockPos, IBlockState)}.
    * <p>
    * The Handler is expected to check if the plant is ready for harvest, and if it is, to harvest it. If possible, the plant should also be replanted directly.
    * 
@@ -79,13 +75,13 @@ public interface IFarmerJoe extends IForgeRegistryEntry<IFarmerJoe> {
    *          The call back to the Farming Station.
    * @param pos
    *          The location to work on.
-   * @param block
-   *          The block at that location.
    * @param state
    *          The blockstate at that location.
    * @return Either <code>null</code> if no harvest happened or {@link IHarvestResult} with the result of the harvest.
    */
   @Nullable
-  IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull Block block, @Nonnull IBlockState state);
+  IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state);
 
+  @Nonnull
+  EventPriority getPriority();
 }

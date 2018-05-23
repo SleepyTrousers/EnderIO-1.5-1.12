@@ -136,7 +136,7 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity im
           }
         }
         // (2) Abort if there is nothing to copy or we don't have enough power
-        if (!doSomething || getEnergy().getMaxUsage(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM) * neededPower < getEnergy().getEnergyStored()) {
+        if (!doSomething || getEnergy().getMaxUsage(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM) * neededPower > getEnergy().getEnergyStored()) {
           return false;
         }
         // (3) Do the copy. Skip all the checks done above

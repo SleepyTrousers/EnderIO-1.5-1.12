@@ -33,17 +33,16 @@ public class StemFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
-    if (plantedBlock == block) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    if (plantedBlock == state.getBlock()) {
       return true;
     }
-    return plantFromInventory(farm, bc);
+    return plantFromInventory(farm, pos);
   }
 
   @Override
-  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
-    BlockPos up = bc.up();
-    return farm.getBlockState(up).getBlock() == plantedBlock;
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    return farm.getBlockState(pos.up()).getBlock() == plantedBlock;
   }
 
   @Override
@@ -52,7 +51,7 @@ public class StemFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull final IFarmer farm, @Nonnull final BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public IHarvestResult harvestBlock(@Nonnull final IFarmer farm, @Nonnull final BlockPos pos, @Nonnull IBlockState state) {
     boolean hasHoe = farm.hasTool(FarmingTool.HOE);
     if (!hasHoe) {
       return new HarvestResult();
@@ -61,7 +60,7 @@ public class StemFarmer extends CustomSeedFarmer {
     final EntityPlayerMP joe = farm.startUsingItem(FarmingTool.HOE);
     final int fortune = farm.getLootingValue(FarmingTool.HOE);
     final HarvestResult result = new HarvestResult();
-    BlockPos harvestCoord = bc;
+    BlockPos harvestCoord = pos;
     boolean done = false;
     do {
       harvestCoord = harvestCoord.offset(EnumFacing.UP);
@@ -69,8 +68,8 @@ public class StemFarmer extends CustomSeedFarmer {
       if (hasHoe && plantedBlock == harvestState.getBlock()) {
         result.getHarvestedBlocks().add(harvestCoord);
         NNList<ItemStack> drops = new NNList<>();
-        plantedBlock.getDrops(drops, world, harvestCoord, meta, fortune);
-        float chance = ForgeEventFactory.fireBlockHarvesting(drops, joe.world, harvestCoord, meta, fortune, 1.0F, false, joe);
+        plantedBlock.getDrops(drops, world, harvestCoord, state, fortune);
+        float chance = ForgeEventFactory.fireBlockHarvesting(drops, joe.world, harvestCoord, state, fortune, 1.0F, false, joe);
 
         BlockPos farmPos = farm.getLocation();
         for (ItemStack drop : drops) {
@@ -92,7 +91,7 @@ public class StemFarmer extends CustomSeedFarmer {
     NNList.wrap(farm.endUsingItem(FarmingTool.HOE)).apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack drop) {
-        result.getDrops().add(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, drop.copy()));
+        result.getDrops().add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));
       }
     });
 

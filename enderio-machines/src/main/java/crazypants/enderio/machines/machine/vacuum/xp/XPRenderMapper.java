@@ -1,4 +1,4 @@
-package crazypants.enderio.machines.machine.vacuum;
+package crazypants.enderio.machines.machine.vacuum.xp;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,10 +8,10 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
+import crazypants.enderio.api.farm.AbstractFarmerJoe;
 import crazypants.enderio.api.farm.FarmNotification;
 import crazypants.enderio.api.farm.FarmingAction;
 import crazypants.enderio.api.farm.IFarmer;
-import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.util.Prep;
@@ -29,9 +29,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.registries.IForgeRegistryEntry.Impl;
 
-public class PlantableFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
+public class PlantableFarmer extends AbstractFarmerJoe {
 
   private Set<Block> harvestExcludes = new HashSet<Block>();
 
@@ -48,7 +47,7 @@ public class PlantableFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     ItemStack seedStack = farm.getSeedTypeInSuppliesFor(bc);
     if (Prep.isInvalid(seedStack)) {
       if (!farm.isSlotLocked(bc)) {
@@ -139,16 +138,17 @@ public class PlantableFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
+    Block block = state.getBlock();
     if (!harvestExcludes.contains(block) && block instanceof IGrowable && !(block instanceof BlockStem)) {
-      return !((IGrowable) block).canGrow(farm.getWorld(), bc, meta, true);
+      return !((IGrowable) block).canGrow(farm.getWorld(), bc, state, true);
     }
     return false;
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, final @Nonnull BlockPos pos, @Nonnull Block block, @Nonnull IBlockState meta) {
-    if (!canHarvest(farm, pos, block, meta)) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, final @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    if (!canHarvest(farm, pos, state)) {
       return null;
     }
     if (!farm.hasTool(FarmingTool.HOE)) {
@@ -164,12 +164,12 @@ public class PlantableFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
     ItemStack removedPlantable = Prep.getEmpty();
 
     NNList<ItemStack> drops = new NNList<>();
-    block.getDrops(drops, world, pos, meta, fortune);
-    float chance = ForgeEventFactory.fireBlockHarvesting(drops, world, pos, meta, fortune, 1.0F, false, fakePlayer);
-    farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, meta, pos);
+    state.getBlock().getDrops(drops, world, pos, state, fortune);
+    float chance = ForgeEventFactory.fireBlockHarvesting(drops, world, pos, state, fortune, 1.0F, false, fakePlayer);
+    farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, state, pos);
     for (ItemStack stack : drops) {
       if (stack != null && Prep.isValid(stack) && world.rand.nextFloat() <= chance) {
-        if (Prep.isInvalid(removedPlantable) && isPlantableForBlock(stack, block)) {
+        if (Prep.isInvalid(removedPlantable) && isPlantableForBlock(stack, state.getBlock())) {
           removedPlantable = stack.copy();
           removedPlantable.setCount(1);
           stack.shrink(1);

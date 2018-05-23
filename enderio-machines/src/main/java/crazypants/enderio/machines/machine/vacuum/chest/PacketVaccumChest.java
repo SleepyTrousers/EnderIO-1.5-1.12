@@ -1,4 +1,4 @@
-package crazypants.enderio.machines.machine.vacuum;
+package crazypants.enderio.machines.machine.vacuum.chest;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

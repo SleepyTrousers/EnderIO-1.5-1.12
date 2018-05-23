@@ -2,8 +2,6 @@ package crazypants.enderio.base.farming.registry;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.NNList;
-
 import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.util.ResourceLocation;
@@ -32,7 +30,7 @@ public class Registry {
   }
 
   public static <T extends Object> T foreach(@Nonnull Callback<T> callback) {
-    for (ResourceLocation farmer : (NNList<ResourceLocation>) Registry.REGISTRY.getSlaveMap(Registry.PRIOLIST, NNList.class)) {
+    for (ResourceLocation farmer : Registry.REGISTRY.getSlaveMap(Registry.PRIOLIST, RegistryCallbacks.PrioMap.class).values()) {
       final IFarmerJoe joe = Registry.REGISTRY.getValue(farmer);
       if (joe != null) {
         T result = callback.run(joe);

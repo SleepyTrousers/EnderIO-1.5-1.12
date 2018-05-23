@@ -1,4 +1,4 @@
-package crazypants.enderio.machines.machine.vacuum;
+package crazypants.enderio.machines.machine.vacuum.chest;
 
 import java.util.Collections;
 import java.util.List;

@@ -8,7 +8,6 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.farming.farmers.RubberTreeFarmer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
@@ -17,7 +16,7 @@ public class IC2eUtil {
   private IC2eUtil() {
   }
 
-  @SubscribeEvent(priority = EventPriority.NORMAL)
+  @SubscribeEvent
   public static void registerFarmers(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
     RubberTreeFarmer farmer = RubberTreeFarmerIC2exp.create();
     if (farmer != null) {

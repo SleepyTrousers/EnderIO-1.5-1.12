@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.base.block.AbstractCapabilityPoweredMachineBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockImpulseHopper extends AbstractMachineBlock<TileImpulseHopper> implements ISmartRenderAwareBlock, IResourceTooltipProvider {
+public class BlockImpulseHopper extends AbstractCapabilityPoweredMachineBlock<TileImpulseHopper> implements ISmartRenderAwareBlock, IResourceTooltipProvider {
 
   public static BlockImpulseHopper create(@Nonnull IModObject modObject) {
     BlockImpulseHopper iHopper = new BlockImpulseHopper(modObject);
@@ -87,6 +87,11 @@ public class BlockImpulseHopper extends AbstractMachineBlock<TileImpulseHopper> 
 
   @Override
   public boolean shouldRedstoneConduitConnect(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing from) {
+    return true;
+  }
+
+  @Override
+  public boolean hasComparatorInputOverride(@Nonnull IBlockState state) {
     return true;
   }
 

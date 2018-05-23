@@ -1,12 +1,10 @@
-package crazypants.enderio.machines.machine.vacuum;
+package crazypants.enderio.machines.machine.vacuum.chest;
 
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-
-import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
@@ -25,6 +23,7 @@ import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import static crazypants.enderio.base.machine.gui.GuiMachineBase.BUTTON_SIZE;
@@ -152,7 +151,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO implements IOpenFilterRe
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int mouseX, int mouseY) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;

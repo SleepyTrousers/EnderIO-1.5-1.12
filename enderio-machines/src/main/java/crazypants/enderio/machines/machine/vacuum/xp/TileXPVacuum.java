@@ -1,4 +1,4 @@
-package crazypants.enderio.machines.machine.vacuum;
+package crazypants.enderio.machines.machine.vacuum.xp;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -10,34 +10,44 @@ import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.util.MagnetUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.base.Predicate;
 
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.YetaUtil;
+import crazypants.enderio.base.render.ranged.IRanged;
+import crazypants.enderio.base.render.ranged.RangeParticle;
 import crazypants.enderio.base.xp.ExperienceContainer;
 import crazypants.enderio.machines.config.config.VacuumConfig;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb>, IPaintable.IPaintableTileEntity, ITankAccess {
+public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb>, IPaintable.IPaintableTileEntity, IRanged, ITankAccess {
 
   private static final int IO_MB_TICK = 10000; // no need to slow down the vacuum any more than necessary, let the limit be the piping
+
+  @Store
+  private int range = VacuumConfig.vacuumXPRange.get();
+  private boolean showingRange;
 
   @Store
   private boolean formed = false;
   private boolean formedRender = false;
 
   @Store({ NBTAction.SAVE, NBTAction.ITEM })
-  private final ExperienceContainer xpCon;
+  private final @Nonnull ExperienceContainer xpCon;
 
   public TileXPVacuum() {
     xpCon = new ExperienceContainer(Integer.MAX_VALUE);
@@ -76,11 +86,11 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
     return MagnetUtil.shouldAttract(getPos(), entity);
   }
 
-  private static final double speed = 0.03;
+  private static final double speed = VacuumConfig.vacuumXPVelocity.get();
 
   private void doHoover() {
     boolean pickUpThisTick = xpCon.getFluidAmount() == 0;
-    for (EntityXPOrb entity : world.getEntitiesWithinAABB(EntityXPOrb.class, new BoundingBox(getPos()).expand(VacuumConfig.vacuumXPRange.get()), this)) {
+    for (EntityXPOrb entity : world.getEntitiesWithinAABB(EntityXPOrb.class, getBounds())) {
       // note the Predicate parameter
       double x = (pos.getX() + 0.5D - entity.posX);
       double y = (pos.getY() + 0.5D - entity.posY);
@@ -172,6 +182,50 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
       return (T) xpCon;
     }
     return super.getCapability(capability, facingIn);
+  }
+
+  @Nonnull
+  public ExperienceContainer getContainer() {
+    return xpCon;
+  }
+
+  // RANGE
+
+  private final static Vector4f color = new Vector4f(.46f, 1.0f, .29f, .4f);
+
+  @Override
+  public boolean isShowingRange() {
+    return showingRange;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public void setShowRange(boolean showRange) {
+    if (showingRange == showRange) {
+      return;
+    }
+    showingRange = showRange;
+    if (showingRange) {
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<TileXPVacuum>(this, color));
+    }
+  }
+
+  @Override
+  @Nonnull
+  public BoundingBox getBounds() {
+    return new BoundingBox(getPos()).expand(getRange() + (range == 0 ? 1 / 32f : 0));
+  }
+
+  private int limitRange(int rangeIn) {
+    return Math.max(0, Math.min(VacuumConfig.vacuumXPRange.get(), rangeIn));
+  }
+
+  public void setRange(int range) {
+    this.range = limitRange(range);
+    markDirty();
+  }
+
+  public float getRange() {
+    return range;
   }
 
 }

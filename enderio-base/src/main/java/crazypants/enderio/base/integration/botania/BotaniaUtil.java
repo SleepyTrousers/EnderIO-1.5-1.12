@@ -13,7 +13,6 @@ import crazypants.enderio.base.farming.farmers.PlaceableFarmer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
@@ -52,7 +51,7 @@ public class BotaniaUtil {
     return false;
   }
 
-  @SubscribeEvent(priority = EventPriority.NORMAL)
+  @SubscribeEvent
   public static void registerFarmers(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
     FarmersRegistry.registerFlower("block:botania:flower", "block:botania:doubleflower1", "block:botania:doubleflower2", "block:botania:shinyflower",
         "block:botania:mushroom");

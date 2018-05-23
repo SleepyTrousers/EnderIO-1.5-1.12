@@ -10,6 +10,7 @@ import crazypants.enderio.api.farm.FarmNotification;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.machines.config.config.FarmConfig;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -30,10 +31,12 @@ public class FarmingStationSpecialRenderer extends ManagedTESR<TileFarmStation> 
   @Override
   protected void renderTileEntity(@Nonnull TileFarmStation te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     float offset = 0;
+    GlStateManager.disableDepth();
     for (FarmNotification note : te.getNotification()) {
       RenderUtil.drawBillboardedText(new Vector3f(0.5, 1.5 + offset, 0.5), EnderIO.lang.localizeExact(note.getUnlocalizedName()), 0.25f);
       offset += 0.375f;
     }
+    GlStateManager.enableDepth();
   }
 
 }

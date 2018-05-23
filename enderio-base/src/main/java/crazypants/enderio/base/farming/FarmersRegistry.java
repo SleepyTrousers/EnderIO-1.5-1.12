@@ -49,36 +49,33 @@ public final class FarmersRegistry {
   private static final @Nonnull Things WOODS = new Things("logWood");
   private static final @Nonnull Things FLOWERS = new Things().add(Blocks.YELLOW_FLOWER).add(Blocks.RED_FLOWER);
 
-  @SubscribeEvent(priority = EventPriority.NORMAL)
+  @SubscribeEvent
   public static void registerFarmers(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
-  }
-
-  @SubscribeEvent(priority = EventPriority.LOW)
-  public static void registerFarmersLow(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
-    event.getRegistry().register(new FlowerPicker(FLOWERS).setRegistryName(EnderIO.DOMAIN, "flowers"));
-    event.getRegistry().register(new StemFarmer(Blocks.REEDS, new ItemStack(Items.REEDS)).setRegistryName(EnderIO.DOMAIN, "reeds"));
-    event.getRegistry().register(new StemFarmer(Blocks.CACTUS, new ItemStack(Blocks.CACTUS)).setRegistryName(EnderIO.DOMAIN, "cactus"));
-    event.getRegistry().register(new TreeFarmer(SAPLINGS, WOODS).setRegistryName(EnderIO.DOMAIN, "trees"));
-    event.getRegistry().register(new TreeFarmer(true, Blocks.RED_MUSHROOM, Blocks.RED_MUSHROOM_BLOCK).setRegistryName(EnderIO.DOMAIN, "red_mushrooms"));
-    event.getRegistry().register(new TreeFarmer(true, Blocks.BROWN_MUSHROOM, Blocks.BROWN_MUSHROOM_BLOCK).setRegistryName(EnderIO.DOMAIN, "brown_mushrooms"));
-    // special case of plantables to get spacing correct
+    event.getRegistry().register(new FlowerPicker(FLOWERS).setPriority(EventPriority.LOW).setRegistryName(EnderIO.DOMAIN, "flowers"));
     event.getRegistry()
-        .register(new MelonFarmer(Blocks.MELON_STEM, Blocks.MELON_BLOCK, new ItemStack(Items.MELON_SEEDS)).setRegistryName(EnderIO.DOMAIN, "melons"));
+        .register(new StemFarmer(Blocks.REEDS, new ItemStack(Items.REEDS)).setPriority(EventPriority.LOW).setRegistryName(EnderIO.DOMAIN, "reeds"));
     event.getRegistry()
-        .register(new MelonFarmer(Blocks.PUMPKIN_STEM, Blocks.PUMPKIN, new ItemStack(Items.PUMPKIN_SEEDS)).setRegistryName(EnderIO.DOMAIN, "pumpkins"));
-    // 'BlockNetherWart' is not an IGrowable
+        .register(new StemFarmer(Blocks.CACTUS, new ItemStack(Blocks.CACTUS)).setPriority(EventPriority.LOW).setRegistryName(EnderIO.DOMAIN, "cactus"));
+    event.getRegistry().register(new TreeFarmer(SAPLINGS, WOODS).setPriority(EventPriority.LOW).setRegistryName(EnderIO.DOMAIN, "trees"));
     event.getRegistry().register(
-        new CustomSeedFarmer(Blocks.NETHER_WART, 3, new ItemStack(Items.NETHER_WART)).setRequiresTilling(false).setRegistryName(EnderIO.DOMAIN, "netherwart"));
+        new TreeFarmer(true, Blocks.RED_MUSHROOM, Blocks.RED_MUSHROOM_BLOCK).setPriority(EventPriority.LOW).setRegistryName(EnderIO.DOMAIN, "red_mushrooms"));
+    event.getRegistry().register(new TreeFarmer(true, Blocks.BROWN_MUSHROOM, Blocks.BROWN_MUSHROOM_BLOCK).setPriority(EventPriority.LOW)
+        .setRegistryName(EnderIO.DOMAIN, "brown_mushrooms"));
+    // special case of plantables to get spacing correct
+    event.getRegistry().register(new MelonFarmer(Blocks.MELON_STEM, Blocks.MELON_BLOCK, new ItemStack(Items.MELON_SEEDS)).setPriority(EventPriority.LOW)
+        .setRegistryName(EnderIO.DOMAIN, "melons"));
+    event.getRegistry().register(new MelonFarmer(Blocks.PUMPKIN_STEM, Blocks.PUMPKIN, new ItemStack(Items.PUMPKIN_SEEDS)).setPriority(EventPriority.LOW)
+        .setRegistryName(EnderIO.DOMAIN, "pumpkins"));
+    // 'BlockNetherWart' is not an IGrowable
+    event.getRegistry().register(new CustomSeedFarmer(Blocks.NETHER_WART, 3, new ItemStack(Items.NETHER_WART)).setRequiresTilling(false)
+        .setPriority(EventPriority.LOW).setRegistryName(EnderIO.DOMAIN, "netherwart"));
     // Cocoa is odd
-    event.getRegistry().register(new CocoaFarmer().setRegistryName(EnderIO.DOMAIN, "cocoa"));
+    event.getRegistry().register(new CocoaFarmer().setPriority(EventPriority.LOW).setRegistryName(EnderIO.DOMAIN, "cocoa"));
     // Chorus plant is even odder
-    event.getRegistry().register(new ChorusFarmer().setRegistryName(EnderIO.DOMAIN, "chorus"));
-  }
+    event.getRegistry().register(new ChorusFarmer().setPriority(EventPriority.LOW).setRegistryName(EnderIO.DOMAIN, "chorus"));
 
-  @SubscribeEvent(priority = EventPriority.LOWEST)
-  public static void registerFarmersLowest(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
     // Handles all 'vanilla' style crops
-    event.getRegistry().register(new PlantableFarmer().setRegistryName(EnderIO.DOMAIN, "default"));
+    event.getRegistry().register(new PlantableFarmer().setPriority(EventPriority.LOWEST).setRegistryName(EnderIO.DOMAIN, "default"));
   }
 
   public static void addPickable(@Nonnull RegistryEvent.Register<IFarmerJoe> event, @Nonnull String mod, @Nonnull String blockName, @Nonnull String itemName) {
