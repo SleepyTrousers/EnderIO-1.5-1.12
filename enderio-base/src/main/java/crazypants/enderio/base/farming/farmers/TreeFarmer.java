@@ -184,6 +184,18 @@ public class TreeFarmer extends AbstractFarmerJoe {
     return res;
   }
 
+  /**
+   * Determine the drops for a single block and add them to the harvest result.
+   * 
+   * @param farm
+   *          The {@link IFarmer}
+   * @param world
+   *          The {@link World} the {@link BlockPos} of the {@link HarvestResult} refer to
+   * @param result
+   *          The {@link HarvestResult} to put the drops in
+   * @param harvestPos
+   *          The {@link BlockPos} to get the drops for. It <em>must</em> be part of the {@link HarvestResult}'s harvested blocks list!
+   */
   void harvestSingleBlock(@Nonnull IFarmer farm, final @Nonnull World world, final @Nonnull HarvestResult result, final @Nonnull BlockPos harvestPos) {
     float chance = 1.0F;
     NNList<ItemStack> drops = new NNList<>();

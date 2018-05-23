@@ -96,8 +96,8 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
   private void harvestLeavesBlock(@Nonnull final IFarmer farm, @Nonnull final HarvestResult res, final @Nonnull World world, final @Nonnull BlockPos pos) {
     IBlockState state = world.getBlockState(pos);
     if (IHarvestingTarget.isDefaultLeaves(state)) {
-      harvestSingleBlock(farm, world, res, pos);
       res.getHarvestedBlocks().add(pos);
+      harvestSingleBlock(farm, world, res, pos);
       harvestLeavesAround(farm, world, res, pos);
     }
   }
