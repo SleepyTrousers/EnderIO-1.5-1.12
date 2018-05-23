@@ -35,8 +35,8 @@ public class PickableFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull final BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
-    if (!canHarvest(farm, bc, block, meta)) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull final BlockPos pos, @Nonnull IBlockState state) {
+    if (!canHarvest(farm, pos, state)) {
       return null;
     }
     if (!farm.hasTool(FarmingTool.HOE)) {
@@ -47,15 +47,15 @@ public class PickableFarmer extends CustomSeedFarmer {
     final World world = farm.getWorld();
 
     EntityPlayerMP joe = farm.startUsingItem(FarmingTool.HOE);
-    joe.interactionManager.processRightClickBlock(joe, joe.world, joe.getHeldItemMainhand(), EnumHand.MAIN_HAND, bc, EnumFacing.DOWN, 0, 0, 0);
+    joe.interactionManager.processRightClickBlock(joe, joe.world, joe.getHeldItemMainhand(), EnumHand.MAIN_HAND, pos, EnumFacing.DOWN, 0, 0, 0);
     NNList.wrap(farm.endUsingItem(FarmingTool.HOE)).apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack drop) {
-        result.getDrops().add(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, drop.copy()));
+        result.getDrops().add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));
       }
     });
-    farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, meta, bc);
-    result.getHarvestedBlocks().add(bc);
+    farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, state, pos);
+    result.getHarvestedBlocks().add(pos);
 
     return result;
   }

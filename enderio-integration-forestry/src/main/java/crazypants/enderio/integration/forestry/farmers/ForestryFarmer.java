@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.farm.AbstractFarmerJoe;
 import crazypants.enderio.api.farm.IFarmer;
-import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.integration.forestry.EnderIOIntegrationForestry;
 import crazypants.enderio.integration.forestry.ForestryItemStacks;
@@ -14,13 +14,11 @@ import forestry.api.arboriculture.EnumGermlingType;
 import forestry.api.arboriculture.ITree;
 import forestry.api.arboriculture.ITreeRoot;
 import forestry.api.genetics.AlleleManager;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.registries.IForgeRegistryEntry.Impl;
 
-public class ForestryFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
+public class ForestryFarmer extends AbstractFarmerJoe {
 
   private ITreeRoot root = null;
 
@@ -34,7 +32,7 @@ public class ForestryFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     if (isValid()) {
       ItemStack sapling = farm.getSeedTypeInSuppliesFor(bc);
       if (sapling.getItem() == ForestryItemStacks.FORESTRY_SAPLING.getItem()) {
@@ -51,12 +49,12 @@ public class ForestryFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     return false;
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     return null;
   }
 

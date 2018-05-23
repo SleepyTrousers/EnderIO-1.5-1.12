@@ -22,7 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
@@ -31,7 +30,7 @@ public class NaturaUtil {
   private NaturaUtil() {
   }
 
-  @SubscribeEvent(priority = EventPriority.NORMAL)
+  @SubscribeEvent
   public static void registerFarmers(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
     int count = 0;
 
@@ -86,7 +85,7 @@ public class NaturaUtil {
     if (saguaroBlock != null && saguaroBabyItem != null) {
       event.getRegistry().register(new StemFarmer(saguaroBlock, new ItemStack(saguaroBabyItem)) {
         @Override
-        public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+        public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
           return false;
         }
       }.setRegistryName("natura", "saguaro"));

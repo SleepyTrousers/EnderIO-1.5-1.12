@@ -2,6 +2,7 @@ package crazypants.enderio.base.integration.immersiveengineering;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.farm.AbstractFarmerJoe;
 import crazypants.enderio.api.farm.IFarmer;
 import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.api.farm.IHarvestResult;
@@ -13,9 +14,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.registries.IForgeRegistryEntry.Impl;
 
-public class HempFarmerIE extends Impl<IFarmerJoe> implements IFarmerJoe {
+public class HempFarmerIE extends AbstractFarmerJoe {
 
   public static HempFarmerIE create() {
     if (Block.REGISTRY.containsKey(new ResourceLocation("ImmersiveEngineering", "hemp"))) {
@@ -38,13 +38,13 @@ public class HempFarmerIE extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
-    return seedFarmer.prepareBlock(farm, bc, block, state);
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
+    return seedFarmer.prepareBlock(farm, bc, state);
   }
 
   @Override
-  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
-    return seedFarmer.canHarvest(farm, bc, block, state);
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
+    return seedFarmer.canHarvest(farm, bc, state);
   }
 
   @Override
@@ -53,8 +53,8 @@ public class HempFarmerIE extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
-    return stemFarmer.harvestBlock(farm, bc, block, state);
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
+    return stemFarmer.harvestBlock(farm, bc, state);
   }
 
 }

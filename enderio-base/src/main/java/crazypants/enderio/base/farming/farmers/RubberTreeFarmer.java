@@ -39,7 +39,7 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block blockIn, @Nonnull IBlockState meta) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState meta) {
     if (canPlant(farm.getSeedTypeInSuppliesFor(bc))) {
       // we'll lose some spots in the center, but we can plant in the outer ring, which gives a net gain
       if (Math.abs(farm.getLocation().getX() - bc.getX()) % 2 == 0) {
@@ -59,13 +59,13 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
           }
         }
       }
-      return super.prepareBlock(farm, bc, blockIn, meta);
+      return super.prepareBlock(farm, bc, meta);
     }
     return false;
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull final IFarmer farm, @Nonnull BlockPos pos, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public IHarvestResult harvestBlock(@Nonnull final IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState meta) {
     final HarvestResult res = new HarvestResult();
     final World world = farm.getWorld();
 

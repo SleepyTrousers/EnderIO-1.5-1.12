@@ -21,7 +21,9 @@ public class NaturaBerryFarmer extends PickableFarmer {
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, final @Nonnull IBlockState stateIn) {
+    IBlockState state = stateIn;
+    Block block = state.getBlock();
     if (block != getPlantedBlock()) {
       return null;
     }
@@ -34,14 +36,14 @@ public class NaturaBerryFarmer extends PickableFarmer {
 
     BlockPos checkBlock = bc;
     while (checkBlock != null && checkBlock.getY() <= 255 && farm.hasTool(FarmingTool.HOE)) {
-      meta = farm.getBlockState(checkBlock);
-      block = meta.getBlock();
+      state = farm.getBlockState(checkBlock);
+      block = state.getBlock();
       if (block != getPlantedBlock()) {
         checkBlock = null;
       } else {
 
-        if (getFullyGrownBlockMeta() == block.getMetaFromState(meta)) {
-          IHarvestResult blockRes = super.harvestBlock(farm, checkBlock, block, meta);
+        if (getFullyGrownBlockMeta() == block.getMetaFromState(state)) {
+          IHarvestResult blockRes = super.harvestBlock(farm, checkBlock, state);
 
           if (blockRes != null) {
             res.getHarvestedBlocks().add(checkBlock);
@@ -61,18 +63,19 @@ public class NaturaBerryFarmer extends PickableFarmer {
   }
 
   @Override
-  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState bs) {
-    BlockPos checkBlock = bc;
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    BlockPos checkBlock = pos;
+    Block block = state.getBlock();
     while (checkBlock.getY() <= 255) {
       if (block != getPlantedBlock()) {
         return false;
       }
-      if (super.canHarvest(farm, checkBlock, block, bs)) {
+      if (super.canHarvest(farm, checkBlock, state)) {
         return true;
       }
       checkBlock = checkBlock.up();
-      bs = farm.getBlockState(checkBlock);
-      block = bs.getBlock();
+      state = farm.getBlockState(checkBlock);
+      block = state.getBlock();
     }
     return false;
   }

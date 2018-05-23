@@ -6,23 +6,21 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.api.farm.AbstractFarmerJoe;
 import crazypants.enderio.api.farm.FarmNotification;
 import crazypants.enderio.api.farm.FarmingAction;
 import crazypants.enderio.api.farm.IFarmer;
-import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.FarmingTool;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
-import net.minecraftforge.registries.IForgeRegistryEntry.Impl;
 
-public class FlowerPicker extends Impl<IFarmerJoe> implements IFarmerJoe {
+public class FlowerPicker extends AbstractFarmerJoe {
 
   protected Things flowers = new Things();
 
@@ -37,13 +35,13 @@ public class FlowerPicker extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState meta) {
     return false;
   }
 
   @Override
-  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
-    return flowers.contains(block) || block instanceof IShearable;
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
+    return flowers.contains(state.getBlock()) || state.getBlock() instanceof IShearable;
   }
 
   @Override
@@ -52,28 +50,28 @@ public class FlowerPicker extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull final IFarmer farm, @Nonnull final BlockPos pos, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public IHarvestResult harvestBlock(@Nonnull final IFarmer farm, @Nonnull final BlockPos pos, @Nonnull IBlockState state) {
     final World world = farm.getWorld();
     NNList<ItemStack> drops = new NNList<>();
 
-    if (block instanceof IShearable) {
+    if (state.getBlock() instanceof IShearable) {
       if (!farm.hasTool(FarmingTool.SHEARS)) {
         farm.setNotification(FarmNotification.NO_SHEARS);
         return null;
       }
       ItemStack shears = farm.getTool(FarmingTool.SHEARS);
-      if (!((IShearable) block).isShearable(shears, world, pos)) {
+      if (!((IShearable) state.getBlock()).isShearable(shears, world, pos)) {
         return null;
       }
-      drops.addAll(((IShearable) block).onSheared(shears, world, pos, farm.getLootingValue(FarmingTool.SHEARS)));
-      farm.registerAction(FarmingAction.HARVEST, FarmingTool.SHEARS, meta, pos);
+      drops.addAll(((IShearable) state.getBlock()).onSheared(shears, world, pos, farm.getLootingValue(FarmingTool.SHEARS)));
+      farm.registerAction(FarmingAction.HARVEST, FarmingTool.SHEARS, state, pos);
     } else {
       if (!farm.hasTool(FarmingTool.HOE)) {
         farm.setNotification(FarmNotification.NO_HOE);
         return null;
       }
-      block.getDrops(drops, world, pos, meta, farm.getLootingValue(FarmingTool.HOE));
-      farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, meta, pos);
+      state.getBlock().getDrops(drops, world, pos, state, farm.getLootingValue(FarmingTool.HOE));
+      farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, state, pos);
     }
 
     final NNList<EntityItem> result = new NNList<EntityItem>();

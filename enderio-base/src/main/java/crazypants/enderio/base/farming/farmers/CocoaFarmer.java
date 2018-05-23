@@ -9,7 +9,6 @@ import com.enderio.core.common.util.NNList.NNIterator;
 import crazypants.enderio.api.farm.FarmingAction;
 import crazypants.enderio.api.farm.IFarmer;
 import crazypants.enderio.base.farming.FarmingTool;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockCocoa;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
@@ -31,8 +30,8 @@ public class CocoaFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
-    return block == getPlantedBlock() && meta.getValue(BlockCocoa.AGE) == 2;
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
+    return state.getBlock() == getPlantedBlock() && state.getValue(BlockCocoa.AGE) == 2;
   }
 
   @Override

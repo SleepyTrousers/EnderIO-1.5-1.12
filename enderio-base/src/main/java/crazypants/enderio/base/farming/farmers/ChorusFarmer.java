@@ -6,14 +6,13 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NNList.NNIterator;
 
+import crazypants.enderio.api.farm.AbstractFarmerJoe;
 import crazypants.enderio.api.farm.FarmNotification;
 import crazypants.enderio.api.farm.FarmingAction;
 import crazypants.enderio.api.farm.IFarmer;
-import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.util.Prep;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockChorusFlower;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -30,9 +29,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.registries.IForgeRegistryEntry.Impl;
 
-public class ChorusFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
+public class ChorusFarmer extends AbstractFarmerJoe {
 
   private final @Nonnull Item flowerItem;
 
@@ -46,7 +44,7 @@ public class ChorusFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull Block block, @Nonnull IBlockState state) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
     final ItemStack seed = farm.getSeedTypeInSuppliesFor(pos);
     final EntityPlayerMP player = farm.getFakePlayer();
     final World world = farm.getWorld();
@@ -96,12 +94,12 @@ public class ChorusFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     return state.getBlock() == Blocks.CHORUS_PLANT || state.getBlock() == Blocks.CHORUS_FLOWER;
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     if (!farm.hasTool(FarmingTool.AXE)) {
       farm.setNotification(FarmNotification.NO_AXE);
       return null;

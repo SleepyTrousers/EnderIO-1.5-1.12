@@ -11,10 +11,10 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.api.farm.AbstractFarmerJoe;
 import crazypants.enderio.api.farm.FarmNotification;
 import crazypants.enderio.api.farm.FarmingAction;
 import crazypants.enderio.api.farm.IFarmer;
-import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.FarmingTool;
@@ -35,9 +35,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.registries.IForgeRegistryEntry.Impl;
 
-public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
+public class TreeFarmer extends AbstractFarmerJoe {
 
   private static final @Nonnull HeightComparator comp = new HeightComparator();
 
@@ -71,8 +70,8 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState bs) {
-    return isWood(block);
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
+    return isWood(state.getBlock());
   }
 
   public boolean isWood(Block block) {
@@ -85,14 +84,14 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
-    if (saplings.contains(block)) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
+    if (saplings.contains(state.getBlock())) {
       return true;
     }
-    return plantFromInventory(farm, bc, block, meta);
+    return plantFromInventory(farm, bc, state);
   }
 
-  protected boolean plantFromInventory(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+  protected boolean plantFromInventory(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     World world = farm.getWorld();
     final ItemStack currentSapling = farm.getSeedTypeInSuppliesFor(bc);
     if (canPlant(world, bc, currentSapling)) {
@@ -153,7 +152,7 @@ public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     setupHarvesting(farm, bc);
 
     if (!hasAxe) {
