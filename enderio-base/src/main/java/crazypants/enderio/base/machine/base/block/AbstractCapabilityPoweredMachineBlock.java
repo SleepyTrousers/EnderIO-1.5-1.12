@@ -33,26 +33,25 @@ public abstract class AbstractCapabilityPoweredMachineBlock<T extends AbstractCa
       @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
     T machine = getTileEntity(world, pos);
     ItemStack heldItem = entityPlayer.getHeldItem(hand);
-    if (Prep.isValid(heldItem) && machine != null) {
+    if (Prep.isValid(heldItem) && machine != null && machine.isValidUpgrade(heldItem)) {
       InventorySlot upgradeSlot = machine.getInventory().getSlot(AbstractCapabilityPoweredMachineEntity.CAPSLOT);
       ItemStack heldUpgrade = entityPlayer.isCreative() ? heldItem.copy() : heldItem.splitStack(1);
       heldUpgrade.setCount(1);
 
-      if (machine.isValidUpgrade(heldItem)) {
-        ItemStack temp = upgradeSlot.get();
-        if (Prep.isInvalid(temp)) {
-          upgradeSlot.set(heldUpgrade);
-          entityPlayer.inventory.markDirty();
-          return true;
-        } else if (!ItemStack.areItemsEqual(heldItem, temp)) {
-          upgradeSlot.set(heldUpgrade);
-          entityPlayer.inventory.markDirty();
-          if (!entityPlayer.inventory.addItemStackToInventory(temp)) {
-            entityPlayer.dropItem(temp, true);
-          }
-          return true;
+      ItemStack temp = upgradeSlot.get();
+      if (Prep.isInvalid(temp)) {
+        upgradeSlot.set(heldUpgrade);
+        entityPlayer.inventory.markDirty();
+        return true;
+      } else if (!ItemStack.areItemsEqual(heldItem, temp)) {
+        upgradeSlot.set(heldUpgrade);
+        entityPlayer.inventory.markDirty();
+        if (!entityPlayer.inventory.addItemStackToInventory(temp)) {
+          entityPlayer.dropItem(temp, true);
         }
+        return true;
       }
+
     }
 
     return super.onBlockActivated(world, pos, state, entityPlayer, hand, side, hitX, hitY, hitZ);
