@@ -366,7 +366,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     if (getMaxEnergyIO(subtype) == 0 || maxExtract <= 0) {
       return 0;
     }
-    return getMaxEnergyIO(subtype);
+    int result = Math.min(maxExtract, getEnergyStored());
+    if (!simulate && result > 0) {
+      setEnergyStored(getEnergyStored() - result);
+    }
+    return result;
   }
 
   @Override
