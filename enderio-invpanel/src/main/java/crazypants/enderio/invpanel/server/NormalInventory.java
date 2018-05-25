@@ -1,24 +1,25 @@
 package crazypants.enderio.invpanel.server;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.invpanel.database.AbstractInventory;
 import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
 import crazypants.enderio.base.invpanel.database.IServerItemEntry;
-import crazypants.enderio.conduits.conduit.item.NetworkedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandler;
 
 class NormalInventory extends AbstractInventory {
-  final NetworkedInventory ni;
+  final IItemHandler inv;
+  final BlockPos pos;
 
-  NormalInventory(NetworkedInventory ni) {
-    this.ni = ni;
+  NormalInventory(@Nonnull IItemHandler inv, @Nonnull BlockPos pos) {
+    this.inv = inv;
+    this.pos = pos;
   }
 
   @Override
-  public int scanInventory(IInventoryDatabaseServer db) {
-    IItemHandler inv = ni.getInventory();
-    
+  public int scanInventory(@Nonnull IInventoryDatabaseServer db) {
     if (inv == null) {
       setEmpty(db);
       return 0;
@@ -27,28 +28,28 @@ class NormalInventory extends AbstractInventory {
     if (numSlots < 1) {
       setEmpty(db);
       return 0;
-    }    
+    }
     if (numSlots != slotKeys.length) {
       reset(db, numSlots);
     }
-    for (int slot = 0; slot < numSlots; slot++) {      
+    for (int slot = 0; slot < numSlots; slot++) {
       ItemStack stack = inv.getStackInSlot(slot);
-      if (stack != null) {
+      if (!stack.isEmpty()) {
         if (stack.getCount() == 0) {
           // empty but type-restricted slot
-          stack = null;
+          stack = ItemStack.EMPTY;
         } else {
           // HL: I'm not sure why we double check the slot's content here
           ItemStack extracted = inv.extractItem(slot, stack.getCount(), true);
-          if (extracted == null) {
-            stack = null;
+          if (extracted.isEmpty()) {
+            stack = ItemStack.EMPTY;
           } else if (stack.getCount() > stack.getMaxStackSize()) {
             // big storage
             if (extracted.getCount() < stack.getMaxStackSize()) {
-              stack = null;
+              stack = ItemStack.EMPTY;
             }
           } else if (extracted.getCount() != stack.getCount()) {
-            stack = null;
+            stack = ItemStack.EMPTY;
           }
         }
       }
@@ -58,23 +59,21 @@ class NormalInventory extends AbstractInventory {
   }
 
   @Override
-  public int extractItem(IInventoryDatabaseServer db, IServerItemEntry entry, int slot, int count) {
-    IItemHandler inv = ni.getInventory();
+  public int extractItem(@Nonnull IInventoryDatabaseServer db, IServerItemEntry entry, int slot, int count) {
     if (inv == null) {
       return 0;
     }
     ItemStack stack = inv.getStackInSlot(slot);
-    if (stack == null || stack.getCount() == 0 || db.lookupItem(stack, entry, false) != entry) {
+    if (stack.isEmpty() || stack.getCount() == 0 || db.lookupItem(stack, entry, false) != entry) {
       return 0;
     }
     ItemStack extracted = inv.extractItem(slot, count, false);
-    if (extracted == null || extracted.getCount() == 0) {
+    if (extracted.isEmpty() || extracted.getCount() == 0) {
       return 0;
-    }    
-    ni.onItemExtracted(slot, extracted.getCount());
+    }
 
     stack = inv.getStackInSlot(slot);
-    if (stack != null) {
+    if (!stack.isEmpty()) {
       updateCount(db, slot, entry, stack.getCount());
     } else {
       updateCount(db, slot, entry, 0);
@@ -84,8 +83,8 @@ class NormalInventory extends AbstractInventory {
   }
 
   @Override
-  public void markForScanning(BlockPos pos) {
-    if (ni.isAt(pos)) {
+  public void markForScanning(@Nonnull BlockPos posIn) {
+    if (pos.equals(posIn)) {
       markForScanning();
     }
   }

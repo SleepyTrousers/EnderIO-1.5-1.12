@@ -51,4 +51,6 @@ public interface IInventoryDatabaseServer extends IInventoryDatabase<IServerItem
 
   void entryChanged(IServerItemEntry entry);
 
+  void updateNetworkSources();
+
 }

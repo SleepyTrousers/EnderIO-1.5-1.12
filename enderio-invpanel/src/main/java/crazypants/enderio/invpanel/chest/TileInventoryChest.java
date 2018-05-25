@@ -122,7 +122,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
 
   // called by our block
   private TileInventoryChest(EnumChestSize size) {
-    super(new EnderInventory(), CapacitorKey.INVPANEL_ENERGY_INTAKE, CapacitorKey.INVPANEL_ENERGY_BUFFER, CapacitorKey.INVPANEL_ENERGY_USE);
+    super(new EnderInventory(), CapacitorKey.INV_CHEST_ENERGY_INTAKE, CapacitorKey.INV_CHEST_ENERGY_BUFFER, CapacitorKey.INV_CHEST_ENERGY_USE);
     chestInventory = getInventory();
     this.size = size;
     for (int i = 0; i < size.getSlots(); i++) {

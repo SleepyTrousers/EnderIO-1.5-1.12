@@ -42,7 +42,6 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   public BlockInventoryPanel(@Nonnull IModObject modObj) {
     super(InvpanelObject.blockInventoryPanel);
-    modObj.apply(this);
     setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 

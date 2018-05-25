@@ -2,8 +2,12 @@ package crazypants.enderio.invpanel.server;
 
 import java.util.ArrayList;
 
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.base.invpanel.capability.InventoryDatabaseSource;
 import crazypants.enderio.base.invpanel.database.AbstractInventory;
-import crazypants.enderio.conduits.conduit.item.NetworkedInventory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.items.IItemHandler;
 
 public abstract class InventoryFactory {
 
@@ -15,17 +19,17 @@ public abstract class InventoryFactory {
   }
 
   // TODO: Remove networked inventory
-  static AbstractInventory createInventory(NetworkedInventory ni) {
+  static AbstractInventory createInventory(InventoryDatabaseSource source) {
     for (InventoryFactory f : factories) {
-      AbstractInventory ai = f.create(ni);
+      AbstractInventory ai = f.create(source.getSource(), source.getPos());
       if (ai != null) {
         return ai;
       }
     }
-    return new NormalInventory(ni);
+    return new NormalInventory(source.getSource(), source.getPos());
   }
 
-  abstract AbstractInventory create(NetworkedInventory ni);
+  abstract AbstractInventory create(@Nonnull IItemHandler inv, @Nonnull BlockPos pos);
 
   // static class DSUFactory extends InventoryFactory {
   // @Override

@@ -12,6 +12,7 @@ import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.invpanel.EnderIOInvPanel;
 import crazypants.enderio.invpanel.chest.BlockInventoryChest;
+import crazypants.enderio.invpanel.conduit.data.ItemDataConduit;
 import crazypants.enderio.invpanel.invpanel.BlockInventoryPanel;
 import crazypants.enderio.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.invpanel.sensor.BlockInventoryPanelSensor;
@@ -34,6 +35,9 @@ public enum InvpanelObject implements IModObject.Registerable {
 
   // Function Upgrades
   item_inventory_panel_upgrade(ItemFunctionUpgrade.class, "createInventoryPanelUpgrade"),
+
+  // Conduits
+  item_data_conduit(ItemDataConduit.class);
 
   ;
 

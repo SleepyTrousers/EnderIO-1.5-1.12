@@ -15,15 +15,14 @@ import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.base.invpanel.capability.CapabilityDatabaseHandler;
+import crazypants.enderio.base.invpanel.capability.IDatabaseHandler;
 import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
 import crazypants.enderio.base.invpanel.database.IInventoryPanel;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.conduits.conduit.TileConduitBundle;
-import crazypants.enderio.conduits.conduit.item.ItemConduit;
-import crazypants.enderio.conduits.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.invpanel.client.ClientDatabaseManager;
 import crazypants.enderio.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.invpanel.config.InvpanelConfig;
@@ -184,22 +183,16 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     EnumFacing facingDir = getFacing();
     EnumFacing backside = facingDir.getOpposite();
 
-    // TODO: Data conduit
-    ItemConduitNetwork icn = null;
-
     BlockPos p = pos.offset(backside);
     TileEntity te = world.getTileEntity(p);
-    if (te instanceof TileConduitBundle) {
-      TileConduitBundle teCB = (TileConduitBundle) te;
-      ItemConduit conduit = teCB.getConduit(ItemConduit.class);
-      if (conduit != null) {
-        icn = conduit.getNetwork();
-      }
+    IDatabaseHandler dbHandler = null;
+
+    if (te != null && te.hasCapability(CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY, null)) {
+      dbHandler = te.getCapability(CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY, null);
     }
 
-    if (icn != null) {
-      // TODO Data Conduit
-      // dbServer = icn.getDatabase();
+    if (dbHandler != null) {
+      dbServer = dbHandler.getDatabase();
       dbServer.sendChangeLogs();
       refuelPower(dbServer);
 

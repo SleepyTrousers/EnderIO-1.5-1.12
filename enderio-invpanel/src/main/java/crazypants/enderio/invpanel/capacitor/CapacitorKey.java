@@ -20,9 +20,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIOInvPanel.MODID)
 public enum CapacitorKey implements ICapacitorKey {
 
-  INVPANEL_ENERGY_INTAKE(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_INTAKE, "intake"),
-  INVPANEL_ENERGY_BUFFER(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
-  INVPANEL_ENERGY_USE(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_USE, "use"),
+  INV_CHEST_ENERGY_INTAKE(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  INV_CHEST_ENERGY_BUFFER(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  INV_CHEST_ENERGY_USE(InvpanelObject.blockInventoryChest, CapacitorKeyType.ENERGY_USE, "use"),
 
   ;
 
