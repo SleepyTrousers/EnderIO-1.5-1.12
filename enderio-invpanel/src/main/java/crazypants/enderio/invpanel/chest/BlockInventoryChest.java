@@ -105,6 +105,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
       int param1, @Nonnull TileInventoryChest te) {
     return null;
