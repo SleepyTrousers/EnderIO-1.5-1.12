@@ -149,7 +149,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     Set<EnumFacing> externals = new HashSet<EnumFacing>();
     List<BoundingBox> wireBounds = new ArrayList<BoundingBox>();
 
-    if (bundle.hasFacade() && state.getYetaDisplayMode().isHideFacades()) {
+    if (layer == BlockRenderLayer.CUTOUT && bundle.hasFacade() && state.getYetaDisplayMode().isHideFacades()) {
       wireBounds.add(BoundingBox.UNIT_CUBE);
     }
 
