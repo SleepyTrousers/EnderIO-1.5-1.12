@@ -10,6 +10,7 @@ import crazypants.enderio.base.diagnostics.EnderIOCrashCallable;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.integration.thaumcraft.ThaumcraftUtil;
 import crazypants.enderio.base.integration.top.TOPUtil;
+import crazypants.enderio.base.invpanel.capability.CapabilityDatabaseHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -51,6 +52,7 @@ public class CommonProxy {
   public void init(@Nonnull FMLPreInitializationEvent event) {
     TOPUtil.create();
     CapabilityFilterHolder.register();
+    CapabilityDatabaseHandler.register();
   }
 
   public void init(@Nonnull FMLInitializationEvent event) {
