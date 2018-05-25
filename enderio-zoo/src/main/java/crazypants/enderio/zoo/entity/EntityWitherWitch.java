@@ -5,11 +5,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import crazypants.enderio.base.potion.PotionUtil;
 import crazypants.enderio.zoo.EnderZoo;
 import crazypants.enderio.zoo.config.Config;
 import crazypants.enderio.zoo.entity.EntityWitherCat.GrowthMode;
 import crazypants.enderio.zoo.entity.ai.EntityAIRangedAttack;
-import crazypants.enderio.zoo.potion.BrewingUtil;
 import crazypants.enderio.zoo.vec.Point3i;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -52,10 +52,10 @@ public class EntityWitherWitch extends EntityMob implements IRangedAttackMob, IE
       new ItemStack(EnderZoo.itemWitheringDust),
       new ItemStack(EnderZoo.itemWitheringDust),
       new ItemStack(EnderZoo.itemWitheringDust),
-      BrewingUtil.createHealthPotion(false, false, true),
-      BrewingUtil.createWitherPotion(false, true),
-      BrewingUtil.createWitherPotion(false, true),
-      BrewingUtil.createRegenerationPotion(false, false, true)
+      PotionUtil.createHealthPotion(false, false, true),
+      PotionUtil.createWitherPotion(false, true),
+      PotionUtil.createWitherPotion(false, true),
+      PotionUtil.createRegenerationPotion(false, false, true)
   };
 
   private int attackTimer;
@@ -182,9 +182,9 @@ public class EntityWitherWitch extends EntityMob implements IRangedAttackMob, IE
     if(shouldStartHeal()) {
       ItemStack potion;
       if(rand.nextFloat() > 0.75) {
-        potion = BrewingUtil.createRegenerationPotion(false, true, true);
+        potion = PotionUtil.createRegenerationPotion(false, true, true);
       } else {
-        potion = BrewingUtil.createHealthPotion(false, false, true);
+        potion = PotionUtil.createHealthPotion(false, false, true);
       }
       setItemStackToSlot(EntityEquipmentSlot.MAINHAND, potion);
       healTimer = 10;
@@ -192,9 +192,9 @@ public class EntityWitherWitch extends EntityMob implements IRangedAttackMob, IE
     } else if(target != null && getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
       ItemStack potion;
       if(getActiveTarget().isPotionActive(MobEffects.WITHER)) {
-        potion = BrewingUtil.createHarmingPotion(EntityUtil.isHardDifficulty(world), true);
+        potion = PotionUtil.createHarmingPotion(EntityUtil.isHardDifficulty(world), true);
       } else {
-        potion = BrewingUtil.createWitherPotion(false, true);
+        potion = PotionUtil.createWitherPotion(false, true);
       }
       setItemStackToSlot(EntityEquipmentSlot.MAINHAND, potion);
       attackTimer = 10;

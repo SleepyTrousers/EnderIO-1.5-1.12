@@ -6,12 +6,10 @@ import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.potion.PotionUtil;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.PotionTypes;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionUtils;
 
 public class SpeedUpgrade extends AbstractUpgrade {
 
@@ -41,9 +39,7 @@ public class SpeedUpgrade extends AbstractUpgrade {
   }
 
   private static @Nonnull ItemStack createUpgradeItem() {
-    ItemStack pot = new ItemStack(Items.POTIONITEM, 1, 0);
-    PotionUtils.addPotionToItemStack(pot, PotionTypes.LONG_SWIFTNESS);
-    return pot;
+    return PotionUtil.createSwiftnessPotion(true, false);
   }
 
   public SpeedUpgrade(@Nonnull String unlocName, int level, int levelCost) {

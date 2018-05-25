@@ -36,4 +36,12 @@ public class PotionWithering {
     PotionHelper.addMix(withering, Ingredient.fromItem(Items.REDSTONE), witheringLong);
   }
 
+  public static @Nonnull PotionType getWithering() {
+    return withering;
+  }
+
+  public static @Nonnull PotionType getWitheringlong() {
+    return witheringLong;
+  }
+
 }

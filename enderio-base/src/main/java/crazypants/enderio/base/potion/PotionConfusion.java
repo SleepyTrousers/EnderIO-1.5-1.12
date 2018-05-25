@@ -36,4 +36,12 @@ public class PotionConfusion {
     PotionHelper.addMix(confusion, Ingredient.fromItem(Items.REDSTONE), confusionLong);
   }
 
+  public static @Nonnull PotionType getConfusion() {
+    return confusion;
+  }
+
+  public static @Nonnull PotionType getConfusionlong() {
+    return confusionLong;
+  }
+
 }

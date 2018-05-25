@@ -5,11 +5,9 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
-import net.minecraft.init.Items;
-import net.minecraft.init.PotionTypes;
+import crazypants.enderio.base.potion.PotionUtil;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionUtils;
 
 public class NightVisionUpgrade extends AbstractUpgrade {
 
@@ -18,9 +16,7 @@ public class NightVisionUpgrade extends AbstractUpgrade {
   public static final @Nonnull NightVisionUpgrade INSTANCE = new NightVisionUpgrade();
 
   private static @Nonnull ItemStack createUpgradeItem() {
-    ItemStack pot = new ItemStack(Items.POTIONITEM, 1, 0);
-    PotionUtils.addPotionToItemStack(pot, PotionTypes.NIGHT_VISION);
-    return pot;
+    return PotionUtil.createNightVisionPotion(false, false);
   }
 
   public NightVisionUpgrade() {

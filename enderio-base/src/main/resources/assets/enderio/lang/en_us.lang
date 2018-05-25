@@ -581,6 +581,11 @@ splash_potion.effect.enderio.confusion=Splash Potion of Confusion
 lingering_potion.effect.enderio.confusion=Lingering Potion of Confusion
 tipped_arrow.effect.enderio.confusion=Arrow of Confusion
 
+potion.effect.enderio.floating=Potion of Rising
+splash_potion.effect.enderio.floating=Splash Potion of Rising
+lingering_potion.effect.enderio.floating=Lingering Potion of Rising
+tipped_arrow.effect.enderio.floating=Arrow of Rising
+
 
 enderio.farm.note.outputFull=Output Full
 enderio.farm.note.noSeeds=No Seeds
