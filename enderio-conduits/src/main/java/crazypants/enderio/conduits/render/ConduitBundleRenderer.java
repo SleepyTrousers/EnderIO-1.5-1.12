@@ -212,13 +212,13 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
       addQuadsForExternalConnection(dir, quads);
     }
 
-    // TODO this needs to know info about the core layer, which might not be CUTOUT
-//    if (quads.isEmpty() && !bundle.hasFacade()) {
-//      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.10), ConduitBundleRenderManager.instance.getWireFrameIcon());
-//      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.15), ConduitBundleRenderManager.instance.getWireFrameIcon());
-//      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.20), ConduitBundleRenderManager.instance.getWireFrameIcon());
-//      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.25), ConduitBundleRenderManager.instance.getWireFrameIcon());
-//    }
+    // Dummy rendering for empty bundles (shouldn't we just remove these from the world?)
+    if (layer == BlockRenderLayer.CUTOUT && bundle.getClientConduits().isEmpty() && !bundle.hasFacade()) {
+      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.10), ConduitBundleRenderManager.instance.getWireFrameIcon());
+      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.15), ConduitBundleRenderManager.instance.getWireFrameIcon());
+      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.20), ConduitBundleRenderManager.instance.getWireFrameIcon());
+      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.25), ConduitBundleRenderManager.instance.getWireFrameIcon());
+    }
 
   }
 
