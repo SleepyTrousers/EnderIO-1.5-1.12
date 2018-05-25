@@ -363,10 +363,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   @Override
   public int extractEnergy(int maxExtract, boolean simulate) {
-    if (getMaxEnergyIO(subtype) == 0 || maxExtract <= 0) {
-      return 0;
-    }
-    return getMaxEnergyIO(subtype);
+    // Only support a push based model
+    return 0;
   }
 
   @Override
