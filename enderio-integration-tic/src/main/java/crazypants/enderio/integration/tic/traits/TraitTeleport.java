@@ -35,7 +35,7 @@ public class TraitTeleport extends AbstractTraitLeveled {
     if (wasHit) {
       ModifierNBT data = new ModifierNBT(TinkerUtil.getModifierTag(tool, name));
       if (random.nextFloat() < (data.level * .21f)) {
-        RandomTeleportUtil.teleportEntity(target.world, target, true);
+        RandomTeleportUtil.teleportEntity(target.world, target, true, false, 24);
       }
     }
   }

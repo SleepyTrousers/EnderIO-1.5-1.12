@@ -97,7 +97,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
   protected void onFoodEaten(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull EntityPlayer player) {
     super.onFoodEaten(stack, worldIn, player);
     if (!worldIn.isRemote && EnderFood.get(stack).doesTeleport() && worldIn.rand.nextFloat() < Config.teleportEffectProbability) {
-      RandomTeleportUtil.teleportEntity(worldIn, player, true);
+      RandomTeleportUtil.teleportEntity(worldIn, player, true, false, 16);
     }
   }
 

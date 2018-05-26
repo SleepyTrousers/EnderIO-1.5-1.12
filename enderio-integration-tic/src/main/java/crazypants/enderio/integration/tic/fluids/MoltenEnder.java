@@ -21,7 +21,7 @@ public class MoltenEnder extends BlockFluidEnder {
   @Override
   public void onEntityCollidedWithBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Entity entity) {
     if (!world.isRemote && entity.timeUntilPortal == 0) {
-      RandomTeleportUtil.teleportEntity(world, entity, false);
+      RandomTeleportUtil.teleportEntity(world, entity, false, false, 32);
     }
     super.onEntityCollidedWithBlock(world, pos, state, entity);
   }

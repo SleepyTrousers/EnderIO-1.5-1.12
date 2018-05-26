@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -44,16 +45,22 @@ public class RandomTeleportUtil {
     world.spawnEntity(entity);
   }
 
-  public static void teleportEntity(@Nonnull World world, @Nonnull Entity entity, boolean isItem) {
+  public static void teleportEntity(@Nonnull World world, @Nonnull Entity entity, boolean isItem, boolean dropToGround, float range) {
     double origX = entity.posX, origY = entity.posY, origZ = entity.posZ;
-    for (int i = 0; i < 5; i++) {
-      double targetX = origX + rand.nextGaussian() * 16f;
+    for (int i = 0; i < 15; i++) {
+      double targetX = origX + rand.nextGaussian() * range;
       double targetY = -1;
       while (targetY < 1.1) {
-        targetY = origY + rand.nextGaussian() * 8f;
+        targetY = origY + rand.nextGaussian() * (range / 2);
       }
-      double targetZ = origZ + rand.nextGaussian() * 16f;
-      if (isClear(world, entity, targetX, targetY, targetZ) && doTeleport(world, entity, targetX, targetY, targetZ)) {
+      double targetZ = origZ + rand.nextGaussian() * range;
+      if (dropToGround) {
+        targetY = MathHelper.floor(targetY) + .05;
+        while (targetY >= 2f && !(hasGround(world, targetX, targetY, targetZ) && isClear(world, entity, targetX, targetY, targetZ))) {
+          targetY -= 1f;
+        }
+      }
+      if (targetY >= 2f && isClear(world, entity, targetX, targetY, targetZ) && doTeleport(world, entity, targetX, targetY, targetZ)) {
         final SoundRegistry sound = isItem ? SoundRegistry.TRAVEL_SOURCE_ITEM : SoundRegistry.TRAVEL_SOURCE_BLOCK;
         world.playSound(null, origX, origY, origZ, sound.getSoundEvent(), sound.getSoundCategory(), 1, 1);
         world.playSound(null, targetX, targetY, targetZ, sound.getSoundEvent(), sound.getSoundCategory(), 1, 1);
@@ -73,6 +80,13 @@ public class RandomTeleportUtil {
     } finally {
       entity.setPosition(origX, origY, origZ);
     }
+  }
+
+  private static boolean hasGround(@Nonnull World world, double targetX, double targetY, double targetZ) {
+    int xInt = MathHelper.floor(targetX);
+    int yInt = MathHelper.floor(targetY);
+    int zInt = MathHelper.floor(targetZ);
+    return yInt > 1 && world.getBlockState(new BlockPos(xInt, yInt - 1, zInt)).getMaterial().blocksMovement();
   }
 
   private static boolean doTeleport(@Nonnull World world, @Nonnull Entity entity, double targetX, double targetY, double targetZ) {

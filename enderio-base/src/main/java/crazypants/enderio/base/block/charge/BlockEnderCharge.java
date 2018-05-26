@@ -62,7 +62,7 @@ public class BlockEnderCharge extends BlockConfusionCharge {
     List<EntityLivingBase> ents = world.getEntitiesWithinAABB(EntityLivingBase.class, bb);
     for (EntityLivingBase ent : ents) {
       if (ent != null) {
-        RandomTeleportUtil.teleportEntity(world, ent, false);
+        RandomTeleportUtil.teleportEntity(world, ent, false, true, 64);
       }
     }
   }
