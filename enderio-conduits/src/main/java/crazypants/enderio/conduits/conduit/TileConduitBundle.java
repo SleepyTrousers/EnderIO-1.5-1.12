@@ -565,10 +565,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       connectorsDirty = connectorsDirty || b;
     }
 
-//    if (!connectorsDirty && !cachedConnectors.isEmpty()) {
-//      result.addAll(cachedConnectors);
-//      return;
-//    }
+    if (!connectorsDirty && !cachedConnectors.isEmpty()) {
+      result.addAll(cachedConnectors);
+      return;
+    }
 
     cachedConnectors.clear();
 
