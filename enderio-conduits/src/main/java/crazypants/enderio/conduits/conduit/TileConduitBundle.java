@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -564,10 +565,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       connectorsDirty = connectorsDirty || b;
     }
 
-    if (!connectorsDirty && !cachedConnectors.isEmpty()) {
-      result.addAll(cachedConnectors);
-      return;
-    }
+//    if (!connectorsDirty && !cachedConnectors.isEmpty()) {
+//      result.addAll(cachedConnectors);
+//      return;
+//    }
 
     cachedConnectors.clear();
 
@@ -679,16 +680,18 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   private void addConduitCores(List<CollidableComponent> result, IConduit con) {
     CollidableCache cc = CollidableCache.instance;
     Class<? extends IConduit> type = con.getCollidableType();
+    Set<CollidableComponent> components = new LinkedHashSet<>();
     if (con.hasConnections()) {
       for (EnumFacing dir : con.getExternalConnections()) {
-        result.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), dir), null, false), con));
+        components.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), dir), null, false), con));
       }
       for (EnumFacing dir : con.getConduitConnections()) {
-        result.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), dir), null, false), con));
+        components.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), dir), null, false), con));
       }
     } else {
-      result.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), null), null, false), con));
+      components.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), null), null, false), con));
     }
+    result.addAll(components);
   }
 
   private int getConnectionCount(@Nullable EnumFacing dir) {
