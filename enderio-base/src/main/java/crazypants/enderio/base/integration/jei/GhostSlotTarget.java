@@ -12,7 +12,7 @@ import mezz.jei.api.gui.IGhostIngredientHandler.Target;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Optional;
 
-@Optional.Interface(iface = "mezz.jei.api.gui.IGhostIngredientHandler.Target", modid = "JustEnoughItems")
+@Optional.Interface(iface = "mezz.jei.api.gui.IGhostIngredientHandler$Target", modid = "jei")
 public class GhostSlotTarget<I> implements Target<I> {
 
   private IFilter filter;

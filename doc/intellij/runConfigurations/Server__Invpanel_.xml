@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Server (Invpanel)" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="GradleStartServer" />
+    <module name="enderio-invpanel_main" />
+    <option name="VM_PARAMETERS" value="-Dfml.coreMods.load=com.enderio.core.common.transform.EnderCorePlugin -DINDEV=1 -Dforge.verboseMissingModelLoggingCount=1000" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/run" />
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper RunnerId="Run" />
+    <method />
+  </configuration>
+</component>
