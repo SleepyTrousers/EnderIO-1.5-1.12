@@ -2,17 +2,17 @@
     "forge_marker": 1,
     "defaults": {
         "textures": {
-            "particle": "enderio:blocks/machine_bottom",
-            "top": "enderio:blocks/machine_top",
-            "bottom": "enderio:blocks/machine_bottom",
-            "side": "enderio:blocks/machine_side",
-            "back": "enderio:blocks/machine_back",
-            "frontframe": "enderio:blocks/machine_side",
+            "particle": "enderio:blocks/block_machine_bottom",
+            "top": "enderio:blocks/block_machine_top",
+            "bottom": "enderio:blocks/block_machine_bottom",
+            "side": "enderio:blocks/block_machine_side",
+            "back": "enderio:blocks/block_machine_back",
+            "frontframe": "enderio:blocks/block_machine_side",
             "chest": "entity/chest/normal",
             "bars": "enderio:blocks/block_reinforced_obsidian",
             "color": "enderio:blocks/zombie_gen_lid",
             "con": "enderio:blocks/inventory_chest_connectors",
-            "canvas": "enderio:blocks/machine_bottom"
+            "canvas": "enderio:blocks/block_machine_bottom"
         }
     },
 	"variants": {

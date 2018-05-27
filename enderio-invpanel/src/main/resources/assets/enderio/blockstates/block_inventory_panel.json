@@ -2,10 +2,10 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle":"enderio:blocks/machine_bottom",
+            "particle":"enderio:blocks/block_machine_bottom",
             "down": "enderio:blocks/inv_panel_top",
             "up": "enderio:blocks/inv_panel_top",
-            "north": "enderio:blocks/machine_bottom",
+            "north": "enderio:blocks/block_machine_bottom",
             "south": "enderio:blocks/inv_panel_front_on",
             "west": "enderio:blocks/inv_panel_side",
             "east": "enderio:blocks/inv_panel_side",
