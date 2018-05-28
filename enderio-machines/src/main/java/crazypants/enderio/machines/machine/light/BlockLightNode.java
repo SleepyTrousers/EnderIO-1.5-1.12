@@ -14,6 +14,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.NonNullList;
@@ -40,6 +41,12 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
     setTickRandomly(true);
     setDefaultState(getBlockState().getBaseState().withProperty(ACTIVE, false));
     setShape(mkShape(BlockFaceShape.UNDEFINED));
+  }
+
+  @Override
+  @Nullable
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return null;
   }
 
   @Override
