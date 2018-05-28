@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -78,6 +79,16 @@ public class BlockItemPaintedDoor extends BlockItemDarkSteelDoor {
   @Override
   public int getItemBurnTime(@Nonnull ItemStack itemStack) {
     return block.getDefaultState().getMaterial() == Material.WOOD ? -1 : 0;
+  }
+
+  @Override
+  public @Nonnull CreativeTabs[] getCreativeTabs() {
+    // Hack for JEI
+    if (getCreativeTab() != null) {
+      return super.getCreativeTabs();
+    } else {
+      return new CreativeTabs[] {};
+    }
   }
 
 }

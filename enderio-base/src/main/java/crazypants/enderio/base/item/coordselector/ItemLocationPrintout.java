@@ -166,4 +166,10 @@ public class ItemLocationPrintout extends Item implements IEioGuiHandler {
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
   }
 
+  @Override
+  public @Nonnull CreativeTabs[] getCreativeTabs() {
+    // Hack for JEI
+    return new CreativeTabs[] {};
+  }
+
 }

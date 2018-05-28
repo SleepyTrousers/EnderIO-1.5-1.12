@@ -2,9 +2,12 @@ package crazypants.enderio.base.block.painted;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.paint.PaintUtil;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -113,6 +116,16 @@ public class BlockItemPaintedSlab extends ItemBlock {
     }
 
     return false;
+  }
+
+  @Override
+  public @Nonnull CreativeTabs[] getCreativeTabs() {
+    // Hack for JEI
+    if (NullHelper.untrust(getCreativeTab()) != null) {
+      return super.getCreativeTabs();
+    } else {
+      return new CreativeTabs[] {};
+    }
   }
 
 }

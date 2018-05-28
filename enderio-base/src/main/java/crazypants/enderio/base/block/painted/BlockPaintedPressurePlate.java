@@ -11,7 +11,6 @@ import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
@@ -34,6 +33,7 @@ import crazypants.enderio.base.render.property.EnumRenderPart;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.render.util.QuadCollector;
 import crazypants.enderio.util.CapturedMob;
+import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBasePressurePlate;
 import net.minecraft.block.BlockPressurePlateWeighted;
@@ -91,7 +91,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   public BlockPaintedPressurePlate(@Nonnull IModObject modObject) {
     super(Material.IRON);
     this.setDefaultState(getBlockState().getBaseState().withProperty(BlockPressurePlateWeighted.POWER, 0));
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    Prep.setNoCreativeTab(this);
     modObject.apply(this);
     setSoundType(SoundType.WOOD);
   }
