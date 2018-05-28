@@ -1,7 +1,8 @@
 package crazypants.enderio.zoo.entity.navigate;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.zoo.entity.IFlyingMob;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityLookHelper;
 import net.minecraft.entity.ai.EntityMoveHelper;
@@ -9,21 +10,17 @@ import net.minecraft.util.math.MathHelper;
 
 public class FlyingMoveHelper extends EntityMoveHelper {
 
-  // private EntityOwl owl;
-  private EntityLiving entity;
-  private IFlyingMob mob;
+  private @Nonnull IFlyingMob mob;
 
   private double maxDescentSpeed = 0.1;
 
-  public FlyingMoveHelper(IFlyingMob owl) {
+  public FlyingMoveHelper(@Nonnull IFlyingMob owl) {
     super(owl.asEntityCreature());
     this.mob = owl;
-    this.entity = owl.asEntityCreature();
   }
 
   @Override
   public void onUpdateMoveHelper() {
-
     if (!entity.getNavigator().noPath()) {
       double xDelta = posX - entity.posX;
       double yDelta = posY - entity.posY;

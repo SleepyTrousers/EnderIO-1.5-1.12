@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.render;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.zoo.entity.EntityOwl;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -11,7 +13,7 @@ public class RenderOwl extends RenderLiving<EntityOwl> {
 
   public static final Factory FACTORY = new Factory();
 
-  private static final ResourceLocation TEX = new ResourceLocation("enderzoo:entity/owl.png");
+  private static final @Nonnull ResourceLocation TEX = new ResourceLocation("enderzoo:entity/owl.png");
 
   private int debug1 = 0;
   private int debug2 = 1;
@@ -21,20 +23,20 @@ public class RenderOwl extends RenderLiving<EntityOwl> {
   }
 
   @Override
-  public void doRender(EntityOwl entity, double x, double y, double z, float entityYaw, float partialTicks) {    
-//    RenderUtil.renderEntityBoundingBox(entity, x, y, z);    
-//    debug2 = 0;
+  public void doRender(@Nonnull EntityOwl entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    // RenderUtil.renderEntityBoundingBox(entity, x, y, z);
+    // debug2 = 0;
     if (debug1 == debug2) {
       mainModel = new ModelOwl();
       debug1++;
     }
     entity.calculateAngles(partialTicks);
-    super.doRender(entity, x, y, z, entityYaw, partialTicks);    
-    
+    super.doRender(entity, x, y, z, entityYaw, partialTicks);
+
   }
 
   @Override
-  protected ResourceLocation getEntityTexture(EntityOwl p_110775_1_) {
+  protected ResourceLocation getEntityTexture(@Nonnull EntityOwl p_110775_1_) {
     return TEX;
   }
 

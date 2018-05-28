@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.ai;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityCreature;
@@ -9,14 +11,14 @@ import net.minecraft.util.math.Vec3d;
 
 public class EntityAIFlyingShortWander extends EntityAIBase {
 
-  private EntityCreature entity;
+  private @Nonnull EntityCreature entity;
   protected double speed;
   private double randPosX;
   private double randPosY;
   private double randPosZ;
   private int executionChance;
 
-  public EntityAIFlyingShortWander(EntityCreature creature, double speedIn, int executionChanceIn) {
+  public EntityAIFlyingShortWander(@Nonnull EntityCreature creature, double speedIn, int executionChanceIn) {
     entity = creature;
     speed = speedIn;
     executionChance = executionChanceIn;
@@ -32,11 +34,11 @@ public class EntityAIFlyingShortWander extends EntityAIBase {
     if (entity.getRNG().nextInt(chance) != 0) {
       return false;
     }
-    
-    Vec3d vec3 = RandomPositionGenerator.findRandomTarget(entity, 4, 2);    
+
+    Vec3d vec3 = RandomPositionGenerator.findRandomTarget(entity, 4, 2);
     if (vec3 == null || entity.posY - vec3.y < -2) {
       return false;
-    }    
+    }
     randPosX = vec3.x;
     randPosY = vec3.y;
     randPosZ = vec3.z;

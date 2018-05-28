@@ -1,5 +1,6 @@
 package crazypants.enderio.zoo.entity.ai;
 
+import crazypants.enderio.util.Prep;
 import crazypants.enderio.zoo.entity.IFlyingMob;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -13,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 public class EntityAIFlyingAttackOnCollide extends EntityAIBase {
-  
+
   private EntityCreature attacker;
   private int attackTick;
   private double speedTowardsTarget;
@@ -25,26 +26,26 @@ public class EntityAIFlyingAttackOnCollide extends EntityAIBase {
   private double targetY;
   private double targetZ;
   private int failedPathFindingPenalty = 0;
-  private boolean canPenalize = false;  
+  private boolean canPenalize = false;
   private IFlyingMob flyingMob;
 
   public EntityAIFlyingAttackOnCollide(IFlyingMob mob, Class<? extends Entity> targetClass, double speedIn, boolean useLongMemory) {
     this(mob, speedIn, useLongMemory);
-    this.classTarget = targetClass;    
+    this.classTarget = targetClass;
   }
 
   public EntityAIFlyingAttackOnCollide(IFlyingMob mob, double speedIn, boolean useLongMemory) {
     this.flyingMob = mob;
     this.attacker = mob.asEntityCreature();
     this.speedTowardsTarget = speedIn;
-    this.longMemory = useLongMemory;    
+    this.longMemory = useLongMemory;
     this.setMutexBits(3);
   }
 
   @Override
   public boolean shouldExecute() {
     EntityLivingBase entitylivingbase = attacker.getAttackTarget();
-    if (entitylivingbase == null) {      
+    if (entitylivingbase == null) {
       return false;
     } else if (!entitylivingbase.isEntityAlive()) {
       return false;
@@ -69,15 +70,15 @@ public class EntityAIFlyingAttackOnCollide extends EntityAIBase {
   private void setPathTo(EntityLivingBase target) {
     Vec3d targPos = target.getPositionVector();
     AxisAlignedBB targBB = target.getEntityBoundingBox();
-    entityPathEntity = attacker.getNavigator().getPathToPos(new BlockPos(targPos.x, targBB.maxY + 1, targPos.z));    
+    entityPathEntity = attacker.getNavigator().getPathToPos(new BlockPos(targPos.x, targBB.maxY + 1, targPos.z));
   }
 
   @Override
   public boolean shouldContinueExecuting() {
     EntityLivingBase target = attacker.getAttackTarget();
-    if(target == null || !target.isEntityAlive()) {      
+    if (target == null || !target.isEntityAlive()) {
       return false;
-    }        
+    }
     return !longMemory ? !attacker.getNavigator().noPath() : attacker.isWithinHomeDistanceFromPosition(new BlockPos(target));
   }
 
@@ -89,20 +90,22 @@ public class EntityAIFlyingAttackOnCollide extends EntityAIBase {
 
   @Override
   public void resetTask() {
-    attacker.getNavigator().clearPathEntity();
+    attacker.getNavigator().clearPath();
   }
 
   @Override
   public void updateTask() {
     EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
+    if (entitylivingbase == null) {
+      return;
+    }
     attacker.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
     double distToTargSq = attacker.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
     double attackRangSq = getAttackRangeSq(entitylivingbase);
     --delayCounter;
 
-    if ((longMemory || attacker.getEntitySenses().canSee(entitylivingbase)) && delayCounter <= 0
-        && (targetX == 0.0D && targetY == 0.0D && targetZ == 0.0D
-            || entitylivingbase.getDistanceSq(targetX, targetY, targetZ) >= 1.0D || attacker.getRNG().nextFloat() < 0.05F)) {
+    if ((longMemory || attacker.getEntitySenses().canSee(entitylivingbase)) && delayCounter <= 0 && (targetX == 0.0D && targetY == 0.0D && targetZ == 0.0D
+        || entitylivingbase.getDistanceSq(targetX, targetY, targetZ) >= 1.0D || attacker.getRNG().nextFloat() < 0.05F)) {
       targetX = entitylivingbase.posX;
       targetY = entitylivingbase.getEntityBoundingBox().minY;
       targetZ = entitylivingbase.posZ;
@@ -110,8 +113,9 @@ public class EntityAIFlyingAttackOnCollide extends EntityAIBase {
 
       if (canPenalize) {
         targetX += failedPathFindingPenalty;
-        if (attacker.getNavigator().getPath() != null) {
-          PathPoint finalPathPoint = attacker.getNavigator().getPath().getFinalPathPoint();
+        final Path path = attacker.getNavigator().getPath();
+        if (path != null) {
+          PathPoint finalPathPoint = path.getFinalPathPoint();
           if (finalPathPoint != null && entitylivingbase.getDistanceSq(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
             failedPathFindingPenalty = 0;
           else
@@ -136,15 +140,15 @@ public class EntityAIFlyingAttackOnCollide extends EntityAIBase {
 
     if (distToTargSq <= attackRangSq && attackTick <= 0) {
       attackTick = 20;
-      if (attacker.getHeldItem(EnumHand.MAIN_HAND) != null) {
+      if (Prep.isValid(attacker.getHeldItem(EnumHand.MAIN_HAND))) {
         attacker.swingArm(EnumHand.MAIN_HAND);
       }
       attacker.attackEntityAsMob(entitylivingbase);
     }
   }
 
-  private boolean flyToAttacker(EntityLivingBase targetEnt) {        
-    AxisAlignedBB targBB = targetEnt.getEntityBoundingBox();    
+  private boolean flyToAttacker(EntityLivingBase targetEnt) {
+    AxisAlignedBB targBB = targetEnt.getEntityBoundingBox();
     return flyingMob.getFlyingNavigator().tryFlyToPos(targetEnt.posX, targBB.maxY + 0.5, targetEnt.posZ, speedTowardsTarget);
   }
 

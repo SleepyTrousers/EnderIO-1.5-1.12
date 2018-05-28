@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.render;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSkeleton;
@@ -11,16 +13,15 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class RenderFallenKnight extends RenderSkeleton {
 
   public static final Factory FACTORY = new Factory();
-  
-  private static final ResourceLocation texture = new ResourceLocation("enderzoo:entity/fallen_knight.png");
+
+  private static final @Nonnull ResourceLocation texture = new ResourceLocation("enderzoo:entity/fallen_knight.png");
 
   public RenderFallenKnight(RenderManager p_i46143_1_) {
     super(p_i46143_1_);
   }
 
   @Override
-  protected ResourceLocation getEntityTexture(AbstractSkeleton entity) {
-  
+  protected @Nonnull ResourceLocation getEntityTexture(@Nonnull AbstractSkeleton entity) {
     return texture;
   }
 
@@ -31,5 +32,5 @@ public class RenderFallenKnight extends RenderSkeleton {
       return new RenderFallenKnight(manager);
     }
   }
-  
+
 }

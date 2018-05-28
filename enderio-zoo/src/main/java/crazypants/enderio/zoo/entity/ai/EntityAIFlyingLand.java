@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.ai;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.zoo.entity.EntityUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityCreature;
@@ -8,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class EntityAIFlyingLand extends EntityAIBase {
 
-  private EntityCreature entity;
+  private @Nonnull EntityCreature entity;
   protected double speed;
   private double targetX;
   private double targetY;
@@ -20,7 +22,7 @@ public class EntityAIFlyingLand extends EntityAIBase {
   private int searchRange = 4;
   private int searchAttempts = 10;
 
-  public EntityAIFlyingLand(EntityCreature creature, double speedIn) {
+  public EntityAIFlyingLand(@Nonnull EntityCreature creature, double speedIn) {
     entity = creature;
     speed = speedIn;
     setMutexBits(1);
@@ -51,7 +53,7 @@ public class EntityAIFlyingLand extends EntityAIBase {
 
     if (target != null) {
       int distFromGround = ep.getY() - target.getY();
-      if (distFromGround > 12) {        
+      if (distFromGround > 12) {
         target = EntityUtil.findRandomClearArea(entity, searchRange, ep.getY() - 10, ep.getY() - 5, searchAttempts);
       }
     }
@@ -74,7 +76,7 @@ public class EntityAIFlyingLand extends EntityAIBase {
   public void startExecuting() {
     onGroundCount = 0;
     if (!entity.getNavigator().tryMoveToXYZ(targetX, targetY, targetZ, speed)) {
-//      System.out.println("EntityAIFlyingLand.startExecuting: No path to target");
+      // System.out.println("EntityAIFlyingLand.startExecuting: No path to target");
     }
   }
 
@@ -86,7 +88,7 @@ public class EntityAIFlyingLand extends EntityAIBase {
       if (onGroundCount >= 40) {
         // If we have been on the ground for a couple of seconds
         // time to chill no matter what
-        entity.getNavigator().clearPathEntity();
+        entity.getNavigator().clearPath();
         return false;
       }
 
@@ -97,7 +99,7 @@ public class EntityAIFlyingLand extends EntityAIBase {
         BlockPos bellow = entity.getPosition().down();
         IBlockState bs = entity.getEntityWorld().getBlockState(bellow);
         if (!bs.getBlock().isAir(bs, entity.getEntityWorld(), bellow)) {
-          entity.getNavigator().clearPathEntity();
+          entity.getNavigator().clearPath();
           return false;
         }
       }

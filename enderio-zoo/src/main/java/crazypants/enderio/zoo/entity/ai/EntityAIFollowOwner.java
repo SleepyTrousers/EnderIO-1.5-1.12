@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.ai;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.zoo.entity.IOwnable;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -8,6 +10,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 public class EntityAIFollowOwner extends EntityAIBase {
 
   /** The child that is following its parent. */
+  @Nonnull
   IOwnable<? extends EntityCreature, ? extends EntityLivingBase> owned;
   double followSpeed;
   private int pathingTimer;
@@ -15,7 +18,8 @@ public class EntityAIFollowOwner extends EntityAIBase {
   private double minDistanceSq;
   private double maxDistanceSq;
 
-  public EntityAIFollowOwner(IOwnable<? extends EntityCreature, ? extends EntityLivingBase> owned, double minDist, double maxDist, double followSpeed) {
+  public EntityAIFollowOwner(@Nonnull IOwnable<? extends EntityCreature, ? extends EntityLivingBase> owned, double minDist, double maxDist,
+      double followSpeed) {
     this.owned = owned;
     minDistanceSq = minDist * minDist;
     maxDistanceSq = maxDist * maxDist;
@@ -48,8 +52,8 @@ public class EntityAIFollowOwner extends EntityAIBase {
   }
 
   private double getDistanceSqFromOwner() {
-    double distance = owned.asEntity().getDistanceSqToEntity(owned.getOwner());
-    return distance;
+    final EntityLivingBase owner = owned.getOwner();
+    return owner == null ? 0 : owned.asEntity().getDistanceSq(owner);
   }
 
   @Override
@@ -69,11 +73,11 @@ public class EntityAIFollowOwner extends EntityAIBase {
     }
     double distance = getDistanceSqFromOwner();
     if (distance < minDistanceSq) {
-      owned.asEntity().getNavigator().clearPathEntity();
+      owned.asEntity().getNavigator().clearPath();
     }
     if (--pathingTimer <= 0) {
       pathingTimer = 10;
-      owned.asEntity().getNavigator().tryMoveToEntityLiving(owned.getOwner(), followSpeed);
+      owned.asEntity().getNavigator().tryMoveToEntityLiving(owner, followSpeed);
     }
   }
 }

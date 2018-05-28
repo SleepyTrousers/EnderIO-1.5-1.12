@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.render;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -34,7 +36,7 @@ public class ModelDireSlime extends ModelBase {
   }
 
   @Override
-  public void setLivingAnimations(EntityLivingBase p_78086_1_, float p_78086_2_, float p_78086_3_, float p_78086_4_) {
+  public void setLivingAnimations(@Nonnull EntityLivingBase p_78086_1_, float p_78086_2_, float p_78086_3_, float p_78086_4_) {
     EntityMagmaCube entitymagmacube = (EntityMagmaCube) p_78086_1_;
     float f3 = entitymagmacube.prevSquishFactor + (entitymagmacube.squishFactor - entitymagmacube.prevSquishFactor) * p_78086_4_;
     int size = entitymagmacube.getSlimeSize();
@@ -58,7 +60,7 @@ public class ModelDireSlime extends ModelBase {
   }
 
   @Override
-  public void render(Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float p_78088_7_) {
+  public void render(@Nonnull Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float p_78088_7_) {
     this.coreRenderer.render(p_78088_7_);
 
     for (int i = 0; i < this.sliceRenderers.length; ++i) {

@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.render;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 
@@ -16,9 +18,9 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class RenderWitherCat extends RenderLiving<EntityWitherCat> {
 
   public static final Factory FACTORY = new Factory();
-  
-  private ResourceLocation texture = new ResourceLocation("enderzoo:entity/wither_cat.png");
-  private ResourceLocation angryTexture = new ResourceLocation("enderzoo:entity/wither_cat_angry.png");
+
+  private @Nonnull ResourceLocation texture = new ResourceLocation("enderzoo:entity/wither_cat.png");
+  private @Nonnull ResourceLocation angryTexture = new ResourceLocation("enderzoo:entity/wither_cat_angry.png");
 
   public RenderWitherCat(RenderManager rm) {
     super(rm, new ModelWitherCat(), 0.4F);
@@ -26,12 +28,12 @@ public class RenderWitherCat extends RenderLiving<EntityWitherCat> {
   }
 
   @Override
-  protected ResourceLocation getEntityTexture(EntityWitherCat p_110775_1_) {
+  protected ResourceLocation getEntityTexture(@Nonnull EntityWitherCat p_110775_1_) {
     return texture;
   }
 
   @Override
-  public void doRender(EntityWitherCat entity, double x, double y, double z, float p_76986_8_, float p_76986_9_) {
+  public void doRender(@Nonnull EntityWitherCat entity, double x, double y, double z, float p_76986_8_, float p_76986_9_) {
     super.doRender(entity, x, y, z, p_76986_8_, p_76986_9_);
     GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
     // Debug to show hit box
@@ -39,9 +41,9 @@ public class RenderWitherCat extends RenderLiving<EntityWitherCat> {
   }
 
   @Override
-  protected void preRenderCallback(EntityWitherCat entity, float partialTick) {
+  protected void preRenderCallback(@Nonnull EntityWitherCat entity, float partialTick) {
 
-    EntityWitherCat cat = (EntityWitherCat) entity;
+    EntityWitherCat cat = entity;
     float scale = cat.getScale();
     if (scale > 1) {
       if (cat.getGrowthMode() == GrowthMode.SHRINK) {
@@ -57,7 +59,7 @@ public class RenderWitherCat extends RenderLiving<EntityWitherCat> {
   private class AngryLayer implements LayerRenderer<EntityWitherCat> {
 
     @Override
-    public void doRenderLayer(EntityWitherCat cat, float p_177201_2_, float p_177201_3_, float p_177201_4_, float p_177201_5_, float p_177201_6_,
+    public void doRenderLayer(@Nonnull EntityWitherCat cat, float p_177201_2_, float p_177201_3_, float p_177201_4_, float p_177201_5_, float p_177201_6_,
         float p_177201_7_, float p_177201_8_) {
 
       float blendFactor = 1.0F;
@@ -93,8 +95,7 @@ public class RenderWitherCat extends RenderLiving<EntityWitherCat> {
     }
 
   }
-  
-  
+
   public static class Factory implements IRenderFactory<EntityWitherCat> {
 
     @Override

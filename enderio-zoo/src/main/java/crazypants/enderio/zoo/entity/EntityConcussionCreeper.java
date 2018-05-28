@@ -3,10 +3,12 @@ package crazypants.enderio.zoo.entity;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.zoo.EnderZoo;
-import crazypants.enderio.zoo.Log;
+import crazypants.enderio.base.Log;
+import crazypants.enderio.base.material.material.Material;
+import crazypants.enderio.base.teleport.RandomTeleportUtil;
 import crazypants.enderio.zoo.config.Config;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -36,7 +38,7 @@ public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooM
       fTimeSinceIgnited = ReflectionHelper.findField(EntityCreeper.class, "timeSinceIgnited", "field_70833_d");
       fFuseTime = ReflectionHelper.findField(EntityCreeper.class, "fuseTime", "field_82225_f");
     } catch (Exception e) {
-      Log.error("Could not create ender creeper  logic as fields not found");
+      Log.error("Could not create ender creeper logic as fields not found");
     }
   }
 
@@ -57,14 +59,14 @@ public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooM
         setTimeSinceIgnited(0);
 
         int range = Config.concussionCreeperExplosionRange;
-        AxisAlignedBB bb = new AxisAlignedBB(posX - range, posY - range, posZ - range, posX + range, posY + range, posZ + range);        
+        AxisAlignedBB bb = new AxisAlignedBB(posX - range, posY - range, posZ - range, posX + range, posY + range, posZ + range);
         List<EntityLivingBase> ents = world.getEntitiesWithinAABB(EntityLivingBase.class, bb);
         for (EntityLivingBase ent : ents) {
           if (ent != this) {
             if (!world.isRemote) {
               boolean done = false;
               for (int i = 0; i < 20 && !done; i++) {
-                done = TeleportHelper.teleportRandomly(ent, Config.concussionCreeperMaxTeleportRange);
+                done = RandomTeleportUtil.teleportRandomly(ent.world, ent, false, true, Config.concussionCreeperMaxTeleportRange);
               }
             }
             if (ent instanceof EntityPlayer) {
@@ -73,7 +75,6 @@ public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooM
             }
           }
         }
-
 
         world.playSound(posX, posY, posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 4.0F,
             (1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F) * 0.7F, false);
@@ -98,10 +99,10 @@ public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooM
   }
 
   @Override
-  protected Item getDropItem() {
+  protected @Nonnull Item getDropItem() {
     int num = rand.nextInt(3);
     if (num == 0) {
-      return EnderZoo.itemEnderFragment;
+      return Material.SHARD_ENDER.getStack();
     } else if (num == 1) {
       return EnderZoo.itemConfusingDust;
     } else {

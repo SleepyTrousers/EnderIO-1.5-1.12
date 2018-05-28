@@ -1,7 +1,10 @@
 package crazypants.enderio.zoo.entity.render;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.util.Prep;
 import crazypants.enderio.zoo.entity.EntityWitherWitch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelWitch;
@@ -32,9 +35,10 @@ public class RenderWitherWitch extends RenderLiving<EntityWitherWitch> {
     addLayer(new LayerHeldItemWitch(this));
   }
 
-  public void doRender(EntityWitherWitch p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
+  @Override
+  public void doRender(@Nonnull EntityWitherWitch p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
     ItemStack itemstack = p_76986_1_.getHeldItem(EnumHand.MAIN_HAND);
-    this.witchModel.holdingItem = itemstack != null;
+    this.witchModel.holdingItem = Prep.isValid(itemstack);
     super.doRender(p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
   }
 
@@ -42,12 +46,14 @@ public class RenderWitherWitch extends RenderLiving<EntityWitherWitch> {
     GL11.glTranslatef(0.0F, 0.1875F, 0.0F);
   }
 
-  protected void preRenderCallback(EntityWitherWitch p_77041_1_, float p_77041_2_) {
+  @Override
+  protected void preRenderCallback(@Nonnull EntityWitherWitch p_77041_1_, float p_77041_2_) {
     float f1 = 0.9375F;
     GL11.glScalef(f1, f1, f1);
   }
 
-  protected ResourceLocation getEntityTexture(EntityWitherWitch p_110775_1_) {
+  @Override
+  protected ResourceLocation getEntityTexture(@Nonnull EntityWitherWitch p_110775_1_) {
     return witchTextures;
   }
 
@@ -66,11 +72,12 @@ public class RenderWitherWitch extends RenderLiving<EntityWitherWitch> {
       this.witchRenderer = witchRendererIn;
     }
 
-    public void doRenderLayer(EntityWitherWitch entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_,
+    @Override
+    public void doRenderLayer(@Nonnull EntityWitherWitch entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_,
         float p_177141_6_, float p_177141_7_, float scale) {
       ItemStack itemstack = entitylivingbaseIn.getHeldItem(EnumHand.MAIN_HAND);
 
-      if (itemstack != null) {
+      if (Prep.isValid(itemstack)) {
         GlStateManager.color(1.0F, 1.0F, 1.0F);
         GlStateManager.pushMatrix();
 
@@ -85,15 +92,15 @@ public class RenderWitherWitch extends RenderLiving<EntityWitherWitch> {
         GlStateManager.translate(-0.0625F, 0.53125F, 0.21875F);
         Item item = itemstack.getItem();
         Minecraft minecraft = Minecraft.getMinecraft();
-      //TODO: method is gone, so skip?
-//        if (item instanceof ItemBlock && minecraft.getBlockRendererDispatcher().isEntityBlockAnimated(Block.getBlockFromItem(item))) {
-//          GlStateManager.translate(0.0F, 0.0625F, -0.25F);
-//          GlStateManager.rotate(30.0F, 1.0F, 0.0F, 0.0F);
-//          GlStateManager.rotate(-5.0F, 0.0F, 1.0F, 0.0F);
-//          float f4 = 0.375F;
-//          GlStateManager.scale(f4, -f4, f4);
-//        } else 
-          if (item == Items.BOW) {
+        // TODO: method is gone, so skip?
+        // if (item instanceof ItemBlock && minecraft.getBlockRendererDispatcher().isEntityBlockAnimated(Block.getBlockFromItem(item))) {
+        // GlStateManager.translate(0.0F, 0.0625F, -0.25F);
+        // GlStateManager.rotate(30.0F, 1.0F, 0.0F, 0.0F);
+        // GlStateManager.rotate(-5.0F, 0.0F, 1.0F, 0.0F);
+        // float f4 = 0.375F;
+        // GlStateManager.scale(f4, -f4, f4);
+        // } else
+        if (item == Items.BOW) {
           GlStateManager.translate(0.0F, 0.125F, -0.125F);
           GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
           float f1 = 0.625F;
@@ -128,6 +135,7 @@ public class RenderWitherWitch extends RenderLiving<EntityWitherWitch> {
       }
     }
 
+    @Override
     public boolean shouldCombineTextures() {
       return false;
     }

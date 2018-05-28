@@ -1,5 +1,6 @@
 package crazypants.enderio.zoo.entity.ai;
 
+import crazypants.enderio.util.Prep;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -13,19 +14,17 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
 
   World worldObj;
   EntityCreature attacker;
-  
+
   int attackPause;
 
   double speedTowardsTarget;
   double speedTowardsTargetMounted;
-  
+
   /**
-   * When true, the mob will continue chasing its target, even if it can't find
-   * a path to them right now.
+   * When true, the mob will continue chasing its target, even if it can't find a path to them right now.
    */
   boolean longMemory;
-  
-  
+
   Path entityPathEntity;
   Class<?> classTarget;
   private int pathUpdateTimer;
@@ -34,9 +33,9 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
   private double targetPosZ;
 
   private int failedPathFindingPenalty;
-  
 
-  public EntityAIMountedAttackOnCollide(EntityCreature attacker, Class<?> targetClass, double speedTowardsTarget, double speedTowardsTargetMounted, boolean longMemory) {
+  public EntityAIMountedAttackOnCollide(EntityCreature attacker, Class<?> targetClass, double speedTowardsTarget, double speedTowardsTargetMounted,
+      boolean longMemory) {
     this(attacker, speedTowardsTarget, speedTowardsTargetMounted, longMemory);
     this.classTarget = targetClass;
   }
@@ -53,17 +52,18 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
   /**
    * Returns whether the EntityAIBase should begin execution.
    */
+  @Override
   public boolean shouldExecute() {
-    
+
     EntityLivingBase entitylivingbase = attacker.getAttackTarget();
-    if(entitylivingbase == null) {
+    if (entitylivingbase == null) {
       return false;
-    } else if(!entitylivingbase.isEntityAlive()) {
+    } else if (!entitylivingbase.isEntityAlive()) {
       return false;
-    } else if(this.classTarget != null && !classTarget.isAssignableFrom(entitylivingbase.getClass())) {
+    } else if (this.classTarget != null && !classTarget.isAssignableFrom(entitylivingbase.getClass())) {
       return false;
     } else {
-      if(--pathUpdateTimer <= 0) {
+      if (--pathUpdateTimer <= 0) {
         entityPathEntity = getNavigator().getPathToEntityLiving(entitylivingbase);
         pathUpdateTimer = 4 + attacker.getRNG().nextInt(7);
         return entityPathEntity != null;
@@ -78,13 +78,14 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
    */
   public boolean continueExecuting() {
     EntityLivingBase entitylivingbase = attacker.getAttackTarget();
-    return entitylivingbase == null ? false : (!entitylivingbase.isEntityAlive() ? false : (!longMemory ? !getNavigator().noPath()
-        : attacker.isWithinHomeDistanceCurrentPosition()));
+    return entitylivingbase == null ? false
+        : (!entitylivingbase.isEntityAlive() ? false : (!longMemory ? !getNavigator().noPath() : attacker.isWithinHomeDistanceCurrentPosition()));
   }
 
   /**
    * Execute a one shot task or start executing a continuous task
    */
+  @Override
   public void startExecuting() {
     PathNavigate nav = getNavigator();
     nav.setPath(entityPathEntity, speedTowardsTarget);
@@ -94,33 +95,37 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
   /**
    * Resets the task
    */
+  @Override
   public void resetTask() {
-    getNavigator().clearPathEntity();
+    getNavigator().clearPath();
   }
 
   /**
    * Updates the task
    */
+  @Override
   public void updateTask() {
 
     EntityLivingBase target = attacker.getAttackTarget();
-    attacker.getLookHelper().setLookPositionWithEntity(target, 30.0F, 30.0F);        
+    if (target == null) {
+      return;
+    }
+    attacker.getLookHelper().setLookPositionWithEntity(target, 30.0F, 30.0F);
     --pathUpdateTimer;
 
     double distanceFromAttackerSq = attacker.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
-    if((longMemory || attacker.getEntitySenses().canSee(target))
-        && pathUpdateTimer <= 0
-        && (targetPosX == 0.0D && targetPosY == 0.0D && targetPosZ == 0.0D
-            || target.getDistanceSq(targetPosX, targetPosY, targetPosZ) >= 1.0D || attacker.getRNG().nextFloat() < 0.05F)) {
-      
+    if ((longMemory || attacker.getEntitySenses().canSee(target)) && pathUpdateTimer <= 0 && (targetPosX == 0.0D && targetPosY == 0.0D && targetPosZ == 0.0D
+        || target.getDistanceSq(targetPosX, targetPosY, targetPosZ) >= 1.0D || attacker.getRNG().nextFloat() < 0.05F)) {
+
       targetPosX = target.posX;
       targetPosY = target.getEntityBoundingBox().minY;
       targetPosZ = target.posZ;
       pathUpdateTimer = failedPathFindingPenalty + 4 + attacker.getRNG().nextInt(7);
 
-      if(getNavigator().getPath() != null) {
-        PathPoint finalPathPoint = getNavigator().getPath().getFinalPathPoint();
-        if(finalPathPoint != null && target.getDistanceSq(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1) {
+      final Path path = getNavigator().getPath();
+      if (path != null) {
+        PathPoint finalPathPoint = path.getFinalPathPoint();
+        if (finalPathPoint != null && target.getDistanceSq(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1) {
           failedPathFindingPenalty = 0;
         } else {
           failedPathFindingPenalty += 10;
@@ -128,23 +133,23 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
       } else {
         failedPathFindingPenalty += 10;
       }
-      
-      if(distanceFromAttackerSq > 1024.0D) {
+
+      if (distanceFromAttackerSq > 1024.0D) {
         pathUpdateTimer += 10;
-      } else if(distanceFromAttackerSq > 256.0D) {
+      } else if (distanceFromAttackerSq > 256.0D) {
         pathUpdateTimer += 5;
       }
 
-      if(!getNavigator().tryMoveToEntityLiving(target, getAttackSpeed())) {
+      if (!getNavigator().tryMoveToEntityLiving(target, getAttackSpeed())) {
         pathUpdateTimer += 15;
       }
     }
 
     attackPause = Math.max(attackPause - 1, 0);
     double d1 = getAttackReach(target);
-    if(distanceFromAttackerSq <= d1 && attackPause <= 20) {
+    if (distanceFromAttackerSq <= d1 && attackPause <= 20) {
       attackPause = 20;
-      if(attacker.getHeldItem(EnumHand.MAIN_HAND) != null) {
+      if (Prep.isValid(attacker.getHeldItem(EnumHand.MAIN_HAND))) {
         attacker.swingArm(EnumHand.MAIN_HAND);
       }
       attacker.attackEntityAsMob(target);
@@ -152,7 +157,7 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
   }
 
   private double getAttackSpeed() {
-    if(attacker.isRiding()) {
+    if (attacker.isRiding()) {
       return speedTowardsTargetMounted;
     }
     return speedTowardsTarget;
@@ -161,10 +166,10 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
   protected PathNavigate getNavigator() {
     return attacker.getNavigator();
   }
-  
+
   protected double getAttackReach(EntityLivingBase target) {
     double res = attacker.width * 2.0 * attacker.width * 2.0 + target.width;
-    if(attacker.isRiding()) {
+    if (attacker.isRiding()) {
       res += 1;
     }
     return res;

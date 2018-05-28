@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.navigate;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -12,22 +14,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 public class FlyNodeProcessor extends WalkNodeProcessor {
- 
+
   @Override
-  public PathPoint getStart() {    
+  public @Nonnull PathPoint getStart() {
     EntityLiving entityIn = entity;
     return openPoint(MathHelper.floor(entityIn.getEntityBoundingBox().minX), MathHelper.floor(entityIn.getEntityBoundingBox().minY + 0.5D),
         MathHelper.floor(entityIn.getEntityBoundingBox().minZ));
   }
 
   @Override
-  public PathPoint getPathPointToCoords(double x, double y, double z) {
-    EntityLiving entityIn = entity;    
-    return openPoint(MathHelper.floor(x - entityIn.width / 2.0F), MathHelper.floor(y), MathHelper.floor(z - entityIn.width / 2.0F));       
+  public @Nonnull PathPoint getPathPointToCoords(double x, double y, double z) {
+    EntityLiving entityIn = entity;
+    return openPoint(MathHelper.floor(x - entityIn.width / 2.0F), MathHelper.floor(y), MathHelper.floor(z - entityIn.width / 2.0F));
   }
 
   @Override
-  public int findPathOptions(PathPoint[] pathOptions, PathPoint currentPoint, PathPoint targetPoint, float maxDistance) {
+  public int findPathOptions(@Nonnull PathPoint[] pathOptions, @Nonnull PathPoint currentPoint, @Nonnull PathPoint targetPoint, float maxDistance) {
     EntityLiving entityIn = entity;
     int i = 0;
     for (EnumFacing enumfacing : EnumFacing.values()) {
@@ -54,7 +56,7 @@ public class FlyNodeProcessor extends WalkNodeProcessor {
           IBlockState bs = blockaccess.getBlockState(mutableblockpos.setPos(i, j, k));
           if (bs.getMaterial() != Material.AIR) {
             AxisAlignedBB bb = bs.getCollisionBoundingBox(entityIn.world, mutableblockpos);
-            if(bb != null) {
+            if (bb != null) {
               return false;
             }
           }

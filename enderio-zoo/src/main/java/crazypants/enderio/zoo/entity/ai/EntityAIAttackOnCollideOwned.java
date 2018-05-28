@@ -13,8 +13,8 @@ public class EntityAIAttackOnCollideOwned extends EntityAIAttackMelee {
   private boolean retreating;
   private EntityAIFollowOwner followTask;
 
-  public EntityAIAttackOnCollideOwned(IOwnable<? extends EntityCreature, ? extends EntityLivingBase> ownable, Class<? extends Entity> p_i1635_2_, double p_i1635_3_,
-      boolean p_i1635_5_, EntityAIFollowOwner followTask) {
+  public EntityAIAttackOnCollideOwned(IOwnable<? extends EntityCreature, ? extends EntityLivingBase> ownable, Class<? extends Entity> p_i1635_2_,
+      double p_i1635_3_, boolean p_i1635_5_, EntityAIFollowOwner followTask) {
     super(ownable.asEntity(), p_i1635_3_, p_i1635_5_);
     this.ownable = ownable;
     this.followTask = followTask;
@@ -70,7 +70,8 @@ public class EntityAIAttackOnCollideOwned extends EntityAIAttackMelee {
   }
 
   private double getDistanceSqFromOwner() {
-    return ownable.asEntity().getDistanceSqToEntity(ownable.getOwner());
+    final EntityLivingBase owner = ownable.getOwner();
+    return owner == null ? 0 : ownable.asEntity().getDistanceSq(owner);
   }
 
 }

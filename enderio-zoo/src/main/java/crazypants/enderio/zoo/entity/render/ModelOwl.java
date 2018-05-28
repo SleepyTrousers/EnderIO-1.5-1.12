@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.render;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.zoo.entity.EntityOwl;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -120,7 +122,7 @@ public class ModelOwl extends ModelBase {
   }
 
   @Override
-  public void render(Entity entity, float time, float limbSwing, float f2, float headY, float headX, float scale) {
+  public void render(@Nonnull Entity entity, float time, float limbSwing, float f2, float headY, float headX, float scale) {
     super.render(entity, time, limbSwing, f2, headY, headX, scale);
 
     setRotationAngles(time, limbSwing, f2, headY, headX, scale, entity);
@@ -161,7 +163,7 @@ public class ModelOwl extends ModelBase {
   }
 
   @Override
-  public void setRotationAngles(float limbSwing1, float limbSwing2, float rotationAngle, float headY, float headX, float yOffset, Entity entity) {
+  public void setRotationAngles(float limbSwing1, float limbSwing2, float rotationAngle, float headY, float headX, float yOffset, @Nonnull Entity entity) {
 
     head.rotateAngleX = headX / (180F / (float) Math.PI);
     head.rotateAngleY = headY / (180F / (float) Math.PI);

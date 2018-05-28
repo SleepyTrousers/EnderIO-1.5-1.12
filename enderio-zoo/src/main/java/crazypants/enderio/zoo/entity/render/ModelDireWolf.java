@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.render;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.zoo.entity.EntityDireWolf;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -71,28 +73,28 @@ public class ModelDireWolf extends ModelBase {
    * Sets the models various rotation angles then renders the model.
    */
   @Override
-  public void render(Entity entity, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float p_78088_7_) {
+  public void render(@Nonnull Entity entity, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float p_78088_7_) {
     super.render(entity, p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, p_78088_7_);
     setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, p_78088_7_, entity);
 
-    //    if(isChild) {
-    //      float f6 = 2.0F;
-    //      GL11.glPushMatrix();
-    //      GL11.glTranslatef(0.0F, 5.0F * p_78088_7_, 2.0F * p_78088_7_);
-    //      //      wolfHeadMain.renderWithRotation(p_78088_7_);
-    //      GL11.glPopMatrix();
-    //      GL11.glPushMatrix();
-    //      GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
-    //      GL11.glTranslatef(0.0F, 24.0F * p_78088_7_, 0.0F);
-    //      //      wolfBody.render(p_78088_7_);
-    //      wolfLeg1.render(p_78088_7_);
-    //      wolfLeg2.render(p_78088_7_);
-    //      wolfLeg3.render(p_78088_7_);
-    //      wolfLeg4.render(p_78088_7_);
-    //      //      wolfTail.renderWithRotation(p_78088_7_);
-    //      //      wolfMane.render(p_78088_7_);
-    //      GL11.glPopMatrix();
-    //    } else {
+    // if(isChild) {
+    // float f6 = 2.0F;
+    // GL11.glPushMatrix();
+    // GL11.glTranslatef(0.0F, 5.0F * p_78088_7_, 2.0F * p_78088_7_);
+    // // wolfHeadMain.renderWithRotation(p_78088_7_);
+    // GL11.glPopMatrix();
+    // GL11.glPushMatrix();
+    // GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
+    // GL11.glTranslatef(0.0F, 24.0F * p_78088_7_, 0.0F);
+    // // wolfBody.render(p_78088_7_);
+    // wolfLeg1.render(p_78088_7_);
+    // wolfLeg2.render(p_78088_7_);
+    // wolfLeg3.render(p_78088_7_);
+    // wolfLeg4.render(p_78088_7_);
+    // // wolfTail.renderWithRotation(p_78088_7_);
+    // // wolfMane.render(p_78088_7_);
+    // GL11.glPopMatrix();
+    // } else {
     wolfHeadMain.renderWithRotation(p_78088_7_);
     wolfBody.render(p_78088_7_);
     wolfLeg1.render(p_78088_7_);
@@ -101,11 +103,11 @@ public class ModelDireWolf extends ModelBase {
     wolfLeg4.render(p_78088_7_);
     wolfTail.renderWithRotation(p_78088_7_);
     wolfMane.render(p_78088_7_);
-    //    }
+    // }
   }
 
   @Override
-  public void setLivingAnimations(EntityLivingBase entity, float p_78086_2_, float p_78086_3_, float p_78086_4_) {
+  public void setLivingAnimations(@Nonnull EntityLivingBase entity, float p_78086_2_, float p_78086_3_, float p_78086_4_) {
     EntityDireWolf entitywolf = (EntityDireWolf) entity;
 
     if (entitywolf.isAngry()) {
@@ -114,46 +116,47 @@ public class ModelDireWolf extends ModelBase {
       wolfTail.rotateAngleY = MathHelper.cos(p_78086_2_ * 0.6662F) * 1.4F * p_78086_3_;
     }
 
-    //    if(entitywolf.isSitting()) {
-    //      wolfMane.setRotationPoint(-1.0F, 16.0F, -3.0F);
-    //      wolfMane.rotateAngleX = ((float) Math.PI * 2F / 5F);
-    //      wolfMane.rotateAngleY = 0.0F;
-    //      wolfBody.setRotationPoint(0.0F, 18.0F, 0.0F);
-    //      wolfBody.rotateAngleX = ((float) Math.PI / 4F);
-    //      wolfTail.setRotationPoint(-1.0F, 21.0F, 6.0F);
-    //      wolfLeg1.setRotationPoint(-2.5F, 22.0F, 2.0F);
-    //      wolfLeg1.rotateAngleX = ((float) Math.PI * 3F / 2F);
-    //      wolfLeg2.setRotationPoint(0.5F, 22.0F, 2.0F);
-    //      wolfLeg2.rotateAngleX = ((float) Math.PI * 3F / 2F);
-    //      wolfLeg3.rotateAngleX = 5.811947F;
-    //      wolfLeg3.setRotationPoint(-2.49F, 17.0F, -4.0F);
-    //      wolfLeg4.rotateAngleX = 5.811947F;
-    //      wolfLeg4.setRotationPoint(0.51F, 17.0F, -4.0F);
-    //    } else {
+    // if(entitywolf.isSitting()) {
+    // wolfMane.setRotationPoint(-1.0F, 16.0F, -3.0F);
+    // wolfMane.rotateAngleX = ((float) Math.PI * 2F / 5F);
+    // wolfMane.rotateAngleY = 0.0F;
+    // wolfBody.setRotationPoint(0.0F, 18.0F, 0.0F);
+    // wolfBody.rotateAngleX = ((float) Math.PI / 4F);
+    // wolfTail.setRotationPoint(-1.0F, 21.0F, 6.0F);
+    // wolfLeg1.setRotationPoint(-2.5F, 22.0F, 2.0F);
+    // wolfLeg1.rotateAngleX = ((float) Math.PI * 3F / 2F);
+    // wolfLeg2.setRotationPoint(0.5F, 22.0F, 2.0F);
+    // wolfLeg2.rotateAngleX = ((float) Math.PI * 3F / 2F);
+    // wolfLeg3.rotateAngleX = 5.811947F;
+    // wolfLeg3.setRotationPoint(-2.49F, 17.0F, -4.0F);
+    // wolfLeg4.rotateAngleX = 5.811947F;
+    // wolfLeg4.setRotationPoint(0.51F, 17.0F, -4.0F);
+    // } else {
     wolfBody.setRotationPoint(0.0F, 14.0F, 2.0F);
     wolfBody.rotateAngleX = ((float) Math.PI / 2F);
     wolfMane.setRotationPoint(-1.0F, 14.0F, -3.0F);
     wolfMane.rotateAngleX = wolfBody.rotateAngleX;
     wolfTail.setRotationPoint(-1.0F, 12.0F, 8.0F);
-    //      wolfLeg1.setRotationPoint(-2.5F, 16.0F, 7.0F);
-    //      wolfLeg2.setRotationPoint(0.5F, 16.0F, 7.0F);
-    //      wolfLeg3.setRotationPoint(-2.5F, 16.0F, -4.0F);
-    //      wolfLeg4.setRotationPoint(0.5F, 16.0F, -4.0F);
+    // wolfLeg1.setRotationPoint(-2.5F, 16.0F, 7.0F);
+    // wolfLeg2.setRotationPoint(0.5F, 16.0F, 7.0F);
+    // wolfLeg3.setRotationPoint(-2.5F, 16.0F, -4.0F);
+    // wolfLeg4.setRotationPoint(0.5F, 16.0F, -4.0F);
     wolfLeg1.rotateAngleX = MathHelper.cos(p_78086_2_ * 0.6662F) * 1.4F * p_78086_3_;
     wolfLeg2.rotateAngleX = MathHelper.cos(p_78086_2_ * 0.6662F + (float) Math.PI) * 1.4F * p_78086_3_;
     wolfLeg3.rotateAngleX = MathHelper.cos(p_78086_2_ * 0.6662F + (float) Math.PI) * 1.4F * p_78086_3_;
     wolfLeg4.rotateAngleX = MathHelper.cos(p_78086_2_ * 0.6662F) * 1.4F * p_78086_3_;
-    //    }
+    // }
 
-    //    //Begging head tilt I think
-    //    wolfHeadMain.rotateAngleZ = entitywolf.getInterestedAngle(p_78086_4_) + entitywolf.getShakeAngle(p_78086_4_, 0.0F);
-    //    wolfMane.rotateAngleZ = entitywolf.getShakeAngle(p_78086_4_, -0.08F);
-    //    wolfBody.rotateAngleZ = entitywolf.getShakeAngle(p_78086_4_, -0.16F);
-    //    wolfTail.rotateAngleZ = entitywolf.getShakeAngle(p_78086_4_, -0.2F);
+    // //Begging head tilt I think
+    // wolfHeadMain.rotateAngleZ = entitywolf.getInterestedAngle(p_78086_4_) + entitywolf.getShakeAngle(p_78086_4_, 0.0F);
+    // wolfMane.rotateAngleZ = entitywolf.getShakeAngle(p_78086_4_, -0.08F);
+    // wolfBody.rotateAngleZ = entitywolf.getShakeAngle(p_78086_4_, -0.16F);
+    // wolfTail.rotateAngleZ = entitywolf.getShakeAngle(p_78086_4_, -0.2F);
   }
 
   @Override
-  public void setRotationAngles(float p_78087_1_, float p_78087_2_, float p_78087_3_, float p_78087_4_, float p_78087_5_, float p_78087_6_, Entity p_78087_7_) {
+  public void setRotationAngles(float p_78087_1_, float p_78087_2_, float p_78087_3_, float p_78087_4_, float p_78087_5_, float p_78087_6_,
+      @Nonnull Entity p_78087_7_) {
     super.setRotationAngles(p_78087_1_, p_78087_2_, p_78087_3_, p_78087_4_, p_78087_5_, p_78087_6_, p_78087_7_);
     wolfHeadMain.rotateAngleX = p_78087_5_ / (180F / (float) Math.PI);
     wolfHeadMain.rotateAngleY = p_78087_4_ / (180F / (float) Math.PI);

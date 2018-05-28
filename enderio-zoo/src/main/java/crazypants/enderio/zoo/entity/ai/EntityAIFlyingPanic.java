@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.ai;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -7,13 +9,13 @@ import net.minecraft.util.math.Vec3d;
 
 public class EntityAIFlyingPanic extends EntityAIBase {
 
-  private EntityCreature theEntityCreature;
+  private @Nonnull EntityCreature theEntityCreature;
   protected double speed;
   private double randPosX;
   private double randPosY;
   private double randPosZ;
 
-  public EntityAIFlyingPanic(EntityCreature creature, double speedIn) {
+  public EntityAIFlyingPanic(@Nonnull EntityCreature creature, double speedIn) {
     theEntityCreature = creature;
     speed = speedIn;
     setMutexBits(1);
@@ -29,7 +31,7 @@ public class EntityAIFlyingPanic extends EntityAIBase {
       return false;
     }
     double yOffset = 1 + theEntityCreature.getEntityWorld().rand.nextInt(3);
-    //double yOffset = 0;
+    // double yOffset = 0;
     randPosX = vec3.x;
     randPosY = vec3.y + yOffset;
     randPosZ = vec3.z;

@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.render;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.zoo.entity.EntityWitherCat;
@@ -29,7 +31,7 @@ public class ModelWitherCat extends ModelBase {
   /** The body model for the Ocelot. */
   ModelRenderer ocelotBody;
   int field_78163_i = 1;
-  
+
   public ModelWitherCat() {
     setTextureOffset("head.main", 0, 0);
     setTextureOffset("head.nose", 0, 24);
@@ -69,7 +71,7 @@ public class ModelWitherCat extends ModelBase {
    * Sets the models various rotation angles then renders the model.
    */
   @Override
-  public void render(Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float p_78088_7_) {
+  public void render(@Nonnull Entity p_78088_1_, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float p_78088_7_) {
     setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, p_78088_7_, p_78088_1_);
 
     if (isChild) {
@@ -103,13 +105,12 @@ public class ModelWitherCat extends ModelBase {
   }
 
   /**
-   * Sets the model's various rotation angles. For bipeds, par1 and par2 are
-   * used for animating the movement of arms and legs, where par1 represents the
-   * time(so that arms and legs swing back and forth) and par2 represents how
-   * "far" arms and legs can swing at most.
+   * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms and legs, where par1 represents the time(so
+   * that arms and legs swing back and forth) and par2 represents how "far" arms and legs can swing at most.
    */
   @Override
-  public void setRotationAngles(float p_78087_1_, float p_78087_2_, float p_78087_3_, float p_78087_4_, float p_78087_5_, float p_78087_6_, Entity p_78087_7_) {
+  public void setRotationAngles(float p_78087_1_, float p_78087_2_, float p_78087_3_, float p_78087_4_, float p_78087_5_, float p_78087_6_,
+      @Nonnull Entity p_78087_7_) {
 
     ocelotHead.rotateAngleX = p_78087_5_ / (180F / (float) Math.PI);
     ocelotHead.rotateAngleY = p_78087_4_ / (180F / (float) Math.PI);
@@ -139,12 +140,11 @@ public class ModelWitherCat extends ModelBase {
   }
 
   /**
-   * Used for easily adding entity-dependent animations. The second and third
-   * float params here are the same second and third as in the setRotationAngles
+   * Used for easily adding entity-dependent animations. The second and third float params here are the same second and third as in the setRotationAngles
    * method.
    */
   @Override
-  public void setLivingAnimations(EntityLivingBase p_78086_1_, float p_78086_2_, float p_78086_3_, float p_78086_4_) {
+  public void setLivingAnimations(@Nonnull EntityLivingBase p_78086_1_, float p_78086_2_, float p_78086_3_, float p_78086_4_) {
     EntityWitherCat entityocelot = (EntityWitherCat) p_78086_1_;
     ocelotBody.rotationPointY = 12.0F;
     ocelotBody.rotationPointZ = -10.0F;
@@ -176,27 +176,27 @@ public class ModelWitherCat extends ModelBase {
       ocelotTail2.rotateAngleX = ((float) Math.PI / 2F);
       field_78163_i = 2;
     }
-    //      else if (entityocelot.isSitting())
-    //      {
-    //          ocelotBody.rotateAngleX = ((float)Math.PI / 4F);
-    //          ocelotBody.rotationPointY += -4.0F;
-    //          ocelotBody.rotationPointZ += 5.0F;
-    //          ocelotHead.rotationPointY += -3.3F;
-    //          ++ocelotHead.rotationPointZ;
-    //          ocelotTail.rotationPointY += 8.0F;
-    //          ocelotTail.rotationPointZ += -2.0F;
-    //          ocelotTail2.rotationPointY += 2.0F;
-    //          ocelotTail2.rotationPointZ += -0.8F;
-    //          ocelotTail.rotateAngleX = 1.7278761F;
-    //          ocelotTail2.rotateAngleX = 2.670354F;
-    //          ocelotFrontLeftLeg.rotateAngleX = ocelotFrontRightLeg.rotateAngleX = -0.15707964F;
-    //          ocelotFrontLeftLeg.rotationPointY = ocelotFrontRightLeg.rotationPointY = 15.8F;
-    //          ocelotFrontLeftLeg.rotationPointZ = ocelotFrontRightLeg.rotationPointZ = -7.0F;
-    //          ocelotBackLeftLeg.rotateAngleX = ocelotBackRightLeg.rotateAngleX = -((float)Math.PI / 2F);
-    //          ocelotBackLeftLeg.rotationPointY = ocelotBackRightLeg.rotationPointY = 21.0F;
-    //          ocelotBackLeftLeg.rotationPointZ = ocelotBackRightLeg.rotationPointZ = 1.0F;
-    //          field_78163_i = 3;
-    //      }
+    // else if (entityocelot.isSitting())
+    // {
+    // ocelotBody.rotateAngleX = ((float)Math.PI / 4F);
+    // ocelotBody.rotationPointY += -4.0F;
+    // ocelotBody.rotationPointZ += 5.0F;
+    // ocelotHead.rotationPointY += -3.3F;
+    // ++ocelotHead.rotationPointZ;
+    // ocelotTail.rotationPointY += 8.0F;
+    // ocelotTail.rotationPointZ += -2.0F;
+    // ocelotTail2.rotationPointY += 2.0F;
+    // ocelotTail2.rotationPointZ += -0.8F;
+    // ocelotTail.rotateAngleX = 1.7278761F;
+    // ocelotTail2.rotateAngleX = 2.670354F;
+    // ocelotFrontLeftLeg.rotateAngleX = ocelotFrontRightLeg.rotateAngleX = -0.15707964F;
+    // ocelotFrontLeftLeg.rotationPointY = ocelotFrontRightLeg.rotationPointY = 15.8F;
+    // ocelotFrontLeftLeg.rotationPointZ = ocelotFrontRightLeg.rotationPointZ = -7.0F;
+    // ocelotBackLeftLeg.rotateAngleX = ocelotBackRightLeg.rotateAngleX = -((float)Math.PI / 2F);
+    // ocelotBackLeftLeg.rotationPointY = ocelotBackRightLeg.rotationPointY = 21.0F;
+    // ocelotBackLeftLeg.rotationPointZ = ocelotBackRightLeg.rotationPointZ = 1.0F;
+    // field_78163_i = 3;
+    // }
     else {
       field_78163_i = 1;
     }

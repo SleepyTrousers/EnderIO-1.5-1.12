@@ -1,5 +1,10 @@
 package crazypants.enderio.zoo.entity.navigate;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.NullHelper;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.Path;
@@ -16,7 +21,7 @@ public class FlyingPathNavigate extends PathNavigateGround {
 
   private int totalTicks;
   private int ticksAtLastPos;
-  private Vec3d lastPosCheck = new Vec3d(0.0D, 0.0D, 0.0D);
+  private @Nonnull Vec3d lastPosCheck = new Vec3d(0.0D, 0.0D, 0.0D);
 
   private boolean forceFlying = false;
 
@@ -33,7 +38,7 @@ public class FlyingPathNavigate extends PathNavigateGround {
   }
 
   @Override
-  protected PathFinder getPathFinder() {
+  protected @Nonnull PathFinder getPathFinder() {
     nodeProcessor = new FlyNodeProcessor();
     return new FlyingPathFinder(nodeProcessor);
   }
@@ -44,7 +49,7 @@ public class FlyingPathNavigate extends PathNavigateGround {
   }
 
   @Override
-  protected Vec3d getEntityPosition() {
+  protected @Nonnull Vec3d getEntityPosition() {
     int y = (int) (entity.getEntityBoundingBox().minY + 0.5D);
     return new Vec3d(entity.posX, y, entity.posZ);
   }
@@ -59,12 +64,12 @@ public class FlyingPathNavigate extends PathNavigateGround {
     return setPath(pathentity, speedIn, true);
   }
 
-  public boolean tryFlyToEntityLiving(Entity entityIn, double speedIn) {
-    Path pathentity = getPathToEntityLiving(entityIn);
+  public boolean tryFlyToEntityLiving(@Nonnull Entity entityIn, double speedIn) {
+    Path pathentity = NullHelper.untrust(getPathToEntityLiving(entityIn));
     return pathentity != null ? setPath(pathentity, speedIn, true) : false;
   }
 
-  public boolean setPath(Path path, double speed, boolean forceFlying) {
+  public boolean setPath(@Nullable Path path, double speed, boolean forceFlying) {
     if (super.setPath(path, speed)) {
       // String str = "FlyingPathNavigate.setPath:";
       // for (int i = 0; i < path.getCurrentPathLength(); i++) {
@@ -81,7 +86,7 @@ public class FlyingPathNavigate extends PathNavigateGround {
   }
 
   @Override
-  public boolean setPath(Path path, double speed) {
+  public boolean setPath(@Nullable Path path, double speed) {
     return setPath(path, speed, false);
   }
 
@@ -94,9 +99,6 @@ public class FlyingPathNavigate extends PathNavigateGround {
       pathFollow(); // follow it
       if (!noPath()) { // if we haven't finished, then set the new move point
         Vec3d targetPos = currentPath.getPosition(entity);
-        if (targetPos == null) {
-          return;
-        }
         double y = targetPos.y;
         if (forceFlying) {
           double aboveBlock = y - (int) y;
@@ -140,7 +142,7 @@ public class FlyingPathNavigate extends PathNavigateGround {
   }
 
   @Override
-  protected boolean isDirectPathBetweenPoints(Vec3d startPos, Vec3d endPos, int sizeX, int sizeY, int sizeZ) {
+  protected boolean isDirectPathBetweenPoints(@Nonnull Vec3d startPos, @Nonnull Vec3d endPos, int sizeX, int sizeY, int sizeZ) {
 
     Vec3d target = new Vec3d(endPos.x, endPos.y + entity.height * 0.5D, endPos.z);
     if (!isClear(startPos, target)) {
@@ -155,16 +157,16 @@ public class FlyingPathNavigate extends PathNavigateGround {
 
   }
 
-  private boolean isClear(Vec3d startPos, Vec3d target) {
+  private boolean isClear(@Nonnull Vec3d startPos, @Nonnull Vec3d target) {
     RayTraceResult hit = world.rayTraceBlocks(startPos, target, true, true, false);
     return hit == null || hit.typeOfHit == RayTraceResult.Type.MISS;
   }
 
   @Override
-  protected void checkForStuck(Vec3d positionVec3) {
+  protected void checkForStuck(@Nonnull Vec3d positionVec3) {
 
     if (totalTicks - ticksAtLastPos > 10 && positionVec3.squareDistanceTo(lastPosCheck) < 0.0625) {
-      clearPathEntity();
+      clearPath();
       ticksAtLastPos = totalTicks;
       lastPosCheck = positionVec3;
       return;
@@ -172,7 +174,7 @@ public class FlyingPathNavigate extends PathNavigateGround {
 
     if (totalTicks - ticksAtLastPos > 50) {
       if (positionVec3.squareDistanceTo(lastPosCheck) < 2.25D) {
-        clearPathEntity();
+        clearPath();
       }
 
       ticksAtLastPos = totalTicks;
