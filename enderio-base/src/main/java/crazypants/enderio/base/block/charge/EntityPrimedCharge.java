@@ -23,7 +23,7 @@ public class EntityPrimedCharge extends EntityTNTPrimed {
 
   @SubscribeEvent
   public static void onEntityRegister(Register<EntityEntry> event) {
-    EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.DOMAIN, "entity_primed_charge"), EntityPrimedCharge.class, "entity_primed_charge", 0,
+    EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.DOMAIN, "primed_charge"), EntityPrimedCharge.class, EnderIO.DOMAIN + ".primed_charge", 0,
         EnderIO.MODID, 64, 100, false);
   }
 

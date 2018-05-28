@@ -9,6 +9,7 @@ import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.material.glass.FusedQuartzType;
 import crazypants.enderio.base.material.material.Material;
@@ -97,6 +98,9 @@ public class MaterialOredicts {
     OreDictionary.registerOre("toolHoe", new ItemStack(Items.STONE_HOE, 1, OreDictionary.WILDCARD_VALUE));
     OreDictionary.registerOre("toolHoe", new ItemStack(Items.DIAMOND_HOE, 1, OreDictionary.WILDCARD_VALUE));
     OreDictionary.registerOre("toolHoe", new ItemStack(Items.GOLDEN_HOE, 1, OreDictionary.WILDCARD_VALUE));
+
+    // Zoo
+    OreDictionary.registerOre("egg", new ItemStack(ModObject.item_owl_egg.getItemNN()));
   }
 
 }

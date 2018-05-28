@@ -11,6 +11,7 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.zoo.config.ConfigHandler;
+import crazypants.enderio.zoo.init.CommonProxy;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -32,7 +33,7 @@ public class EnderIOZoo implements IEnderIOAddon {
   private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:" + crazypants.enderio.base.EnderIO.MODID;
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
 
-  @SidedProxy(clientSide = "crazypants.enderio.zoo.ClientProxy", serverSide = "crazypants.enderio.zoo.CommonProxy")
+  @SidedProxy(clientSide = "crazypants.enderio.zoo.init.ClientProxy", serverSide = "crazypants.enderio.zoo.init.CommonProxy")
   public static CommonProxy proxy;
 
   @EventHandler

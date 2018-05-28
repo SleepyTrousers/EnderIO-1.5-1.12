@@ -1,4 +1,4 @@
-package crazypants.enderio.zoo;
+package crazypants.enderio.zoo.init;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;

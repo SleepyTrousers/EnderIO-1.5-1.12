@@ -58,6 +58,7 @@ import crazypants.enderio.base.item.darksteel.ItemDarkSteelBow;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelPickaxe;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelShears;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelSword;
+import crazypants.enderio.base.item.eggs.ItemOwlEgg;
 import crazypants.enderio.base.item.enderface.ItemEnderface;
 import crazypants.enderio.base.item.magnet.ItemMagnet;
 import crazypants.enderio.base.item.rodofreturn.ItemRodOfReturn;
@@ -210,6 +211,8 @@ public enum ModObject implements IModObject.Registerable {
   itemDarkSteelBow(ItemDarkSteelBow.class),
   itemDarkSteelShears(ItemDarkSteelShears.class),
   itemStaffOfLevity(ItemStaffOfLevity.class),
+
+  item_owl_egg(ItemOwlEgg.class),
 
   ;
 

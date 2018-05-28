@@ -1,7 +1,8 @@
-package crazypants.enderio.zoo.entity.render;
+package crazypants.enderio.base.item.eggs;
 
-import crazypants.enderio.zoo.EnderZoo;
-import crazypants.enderio.zoo.entity.EntityOwlEgg;
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.base.init.ModObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.entity.Render;
@@ -16,21 +17,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderEntityOwlEgg extends RenderSnowball<EntityOwlEgg> {
 
   public static final Factory FACTORY = new Factory();
-  
+
   public RenderEntityOwlEgg(RenderManager renderManagerIn, RenderItem itemRendererIn) {
-    super(renderManagerIn, EnderZoo.itemOwlEgg, itemRendererIn);
-  }
-  
-  @Override
-  public void doRender(EntityOwlEgg entity, double x, double y, double z, float entityYaw, float partialTicks) {
-    super.doRender(entity, x, y, z, entityYaw, partialTicks);    
+    super(renderManagerIn, ModObject.item_owl_egg.getItemNN(), itemRendererIn);
   }
 
   @Override
-  public ItemStack getStackToRender(EntityOwlEgg entityIn) {    
-    return new ItemStack(EnderZoo.itemOwlEgg);
+  public void doRender(@Nonnull EntityOwlEgg entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    super.doRender(entity, x, y, z, entityYaw, partialTicks);
   }
-    
+
+  @Override
+  public @Nonnull ItemStack getStackToRender(@Nonnull EntityOwlEgg entityIn) {
+    return new ItemStack(ModObject.item_owl_egg.getItemNN());
+  }
+
   public static class Factory implements IRenderFactory<EntityOwlEgg> {
 
     @Override

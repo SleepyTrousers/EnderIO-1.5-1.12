@@ -146,6 +146,8 @@ public enum Lang implements ILang {
   GUI_REDSTONE_FILTER_COUNT(".gui.redstone_filter.count"),
   GUI_REDSTONE_FILTER_TIME(".gui.redstone_filter.time"),
 
+  OWL_NO_OWL(".owlegg.no_owl")
+
   ;
 
   private final @Nonnull String key;

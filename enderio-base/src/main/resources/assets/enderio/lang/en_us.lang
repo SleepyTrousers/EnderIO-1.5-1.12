@@ -1096,6 +1096,15 @@ item.item_redstone_sensor_filter.name=Redstone Sensor Filter
 item.item_redstone_counting_filter.name=Redstone Counting Filter
 item.item_redstone_timer_filter.name=Redstone Timer Filter
 
-tile.block_confusion_charge.name=Confusing Charge
+tile.block_confusion_charge.name=Confusion Charge
 tile.block_ender_charge.name=Ender Charge
 tile.block_concussion_charge.name=Concussion Charge
+
+enderio.owlegg.no_owl=No Owl found (install Ender IO Zoo!)
+item.item_owl_egg.name=Owl Egg
+
+entity.enderio.owl_egg.name=Owl Egg
+entity.enderio.enderio.owl_egg.name=Owl Egg
+
+entity.enderio.primed_charge.name=Primed Charge
+entity.enderio.enderio.primed_charge.name=Primed Charge

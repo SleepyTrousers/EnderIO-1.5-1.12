@@ -36,7 +36,7 @@ public class BlockConfusionCharge extends BlockTNT implements ICharge, IDefaultR
   }
 
   public BlockConfusionCharge(@Nonnull IModObject modObject) {
-    setCreativeTab(EnderIOTab.tabEnderIOMaterials);
+    setCreativeTab(EnderIOTab.tabEnderIO);
     modObject.apply(this);
     ChargeRegister.instance.registerCharge(this);
   }
