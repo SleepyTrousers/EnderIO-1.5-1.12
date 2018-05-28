@@ -25,7 +25,7 @@ XML editor will display that as tooltips when editing this file.
  -->
 
 
-  <recipe name="Filter, Species" required="true">
+  <recipe name="Filter, Species" required="false">
     <crafting>
       <grid size="3x1">
         <item name="forestry:propolis" /><item name="enderio:item_advanced_item_filter" /><item name="forestry:propolis" />
