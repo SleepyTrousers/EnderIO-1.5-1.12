@@ -50,7 +50,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Optional.InterfaceList({ @Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraftAPI|core"),
-    @Interface(iface = "cofh.api.item.IToolHammer", modid = "cofhapi|item") })
+    @Interface(iface = "cofh.api.item.IToolHammer", modid = "cofhcore") })
 public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, IToolWrench, IToolHammer {
 
   public static ItemYetaWrench create(@Nonnull IModObject modObject) {
