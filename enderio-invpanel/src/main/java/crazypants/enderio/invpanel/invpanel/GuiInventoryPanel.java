@@ -29,7 +29,6 @@ import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.integration.jei.JeiAccessor;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.invpanel.client.CraftingHelper;
 import crazypants.enderio.invpanel.client.DatabaseView;
 import crazypants.enderio.invpanel.client.InventoryDatabaseClient;
@@ -38,6 +37,7 @@ import crazypants.enderio.invpanel.client.SortOrder;
 import crazypants.enderio.invpanel.config.InvpanelConfig;
 import crazypants.enderio.invpanel.network.PacketFetchItem;
 import crazypants.enderio.invpanel.network.PacketGuiSettings;
+import crazypants.enderio.invpanel.network.PacketHandler;
 import crazypants.enderio.invpanel.network.PacketSetExtractionDisabled;
 import crazypants.enderio.invpanel.util.StoredCraftingRecipe;
 import crazypants.enderio.util.Prep;
@@ -697,7 +697,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
   }
 
-  protected void ghostSlotClicked(GhostSlot slot, int x, int y, int button) {
+  protected void ghostSlotClicked(@Nonnull GhostSlot slot, int x, int y, int button) {
     if (slot instanceof InvSlot) {
       InvSlot invSlot = (InvSlot) slot;
       InventoryDatabaseClient db = getDatabase();

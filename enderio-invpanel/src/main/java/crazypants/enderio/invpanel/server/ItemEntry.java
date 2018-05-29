@@ -2,6 +2,8 @@ package crazypants.enderio.invpanel.server;
 
 import java.util.IdentityHashMap;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
 import crazypants.enderio.base.invpanel.database.IServerItemEntry;
 import crazypants.enderio.base.invpanel.database.ItemEntryBase;
@@ -35,7 +37,7 @@ public class ItemEntry extends ItemEntryBase implements IServerItemEntry {
   }
 
   @Override
-  public int extractItems(IInventoryDatabaseServer db, int count) {
+  public int extractItems(@Nonnull IInventoryDatabaseServer db, int count) {
     int extracted = 0;
     SlotKey[] copy = slots.values().toArray(new SlotKey[slots.size()]);
     for (SlotKey slotKey : copy) {

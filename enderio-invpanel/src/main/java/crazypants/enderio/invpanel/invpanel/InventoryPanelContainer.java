@@ -19,7 +19,7 @@ import crazypants.enderio.base.invpanel.database.IChangeLog;
 import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
 import crazypants.enderio.base.invpanel.database.IServerItemEntry;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.invpanel.network.PacketHandler;
 import crazypants.enderio.invpanel.network.PacketItemList;
 import crazypants.enderio.invpanel.network.PacketMoveItems;
 import crazypants.enderio.invpanel.remote.ItemRemoteInvAccess;
@@ -318,7 +318,6 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @Override
   public void databaseReset() {
     changedItems.clear();
-
   }
 
   @Override
@@ -374,7 +373,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
         maxStackSize = slot.getSlotStackLimit();
       }
 
-      ItemStack tmpStack = new ItemStack(entry.getItem(), 0, entry.getMeta());
+      ItemStack tmpStack = new ItemStack(entry.getItem(), 1, entry.getMeta());
       tmpStack.setTagCompound(entry.getNbt());
       maxStackSize = Math.min(maxStackSize, tmpStack.getMaxStackSize());
 
@@ -386,11 +385,11 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
         targetStack = tmpStack.copy();
       }
 
-      count = Math.min(count, maxStackSize - targetStack.getCount());
+      count = Math.min(count, maxStackSize);
       if (count > 0) {
         int extracted = db.extractItems(entry, count, te);
         if (extracted > 0) {
-          targetStack.grow(extracted);
+          targetStack.setCount(extracted);
 
           // TODO Debug stuff
           // if (DebugCommand.SERVER.isEnabled(player)) {
@@ -455,13 +454,13 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     if (super.canInteractWith(player)) {
       return true;
     }
-    if ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ItemRemoteInvAccess)) {
+    if ((!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() instanceof ItemRemoteInvAccess)) {
       if (!player.getEntityWorld().isRemote) {
         return ((ItemRemoteInvAccess) player.getHeldItemMainhand().getItem()).canInteractWith(player.getHeldItemMainhand(), player);
       } else {
         return true;
       }
-    } else if ((player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() instanceof ItemRemoteInvAccess)) {
+    } else if ((!player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() instanceof ItemRemoteInvAccess)) {
       if (!player.getEntityWorld().isRemote) {
         return ((ItemRemoteInvAccess) player.getHeldItemOffhand().getItem()).canInteractWith(player.getHeldItemOffhand(), player);
       } else {
@@ -474,9 +473,9 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @SuppressWarnings("null")
   public void tick(@Nonnull EntityPlayer player) {
     if (!super.canInteractWith(player)) {
-      if ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ItemRemoteInvAccess)) {
+      if ((!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() instanceof ItemRemoteInvAccess)) {
         ((ItemRemoteInvAccess) player.getHeldItemMainhand().getItem()).tick(player.getHeldItemMainhand(), player);
-      } else if ((player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() instanceof ItemRemoteInvAccess)) {
+      } else if ((!player.getHeldItemOffhand().isEmpty() && player.getHeldItemOffhand().getItem() instanceof ItemRemoteInvAccess)) {
         ((ItemRemoteInvAccess) player.getHeldItemOffhand().getItem()).tick(player.getHeldItemOffhand(), player);
       }
     }
