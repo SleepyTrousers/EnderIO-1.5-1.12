@@ -1,8 +1,9 @@
 package crazypants.enderio.base.integration.jei;
 
-import java.awt.Rectangle;
+import java.awt.*;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
 
@@ -15,11 +16,12 @@ import net.minecraftforge.fml.common.Optional;
 @Optional.Interface(iface = "mezz.jei.api.gui.IGhostIngredientHandler$Target", modid = "jei")
 public class GhostSlotTarget<I> implements Target<I> {
 
-  private IFilter filter;
+  private @Nonnull IFilter filter;
   private int x, y, slotX, slotY, slotIndex;
-  private AbstractFilterGui gui;
+  private @Nonnull AbstractFilterGui gui;
+  private GhostSlot slot;
 
-  public GhostSlotTarget(IFilter filter, GhostSlot slot, int x, int y, AbstractFilterGui gui) {
+  public GhostSlotTarget(@Nonnull IFilter filter, @Nonnull GhostSlot slot, int x, int y, @Nonnull AbstractFilterGui gui) {
     this.filter = filter;
     this.slotIndex = slot.getSlot();
     this.slotX = slot.getX();
@@ -28,9 +30,10 @@ public class GhostSlotTarget<I> implements Target<I> {
     this.y = y;
     this.gui = gui;
     this.slotIndex = slot.getSlot();
+    this.slot = slot;
   }
 
-  public GhostSlotTarget(IFilter filter, int slot, int x, int y, int slotX, int slotY, AbstractFilterGui gui) {
+  public GhostSlotTarget(@Nonnull IFilter filter, int slot, int x, int y, int slotX, int slotY, @Nonnull AbstractFilterGui gui) {
     this.filter = filter;
     this.slotIndex = slot;
     this.x = x;
@@ -47,8 +50,12 @@ public class GhostSlotTarget<I> implements Target<I> {
   }
 
   @Override
-  public void accept(I ingredient) {
+  public void accept(@Nullable I ingredient) {
     if (ingredient instanceof ItemStack) {
+      if (slot != null) {
+        slot.putStack((ItemStack) ingredient, 1);
+        return;
+      }
       filter.setInventorySlotContents(slotIndex, (ItemStack) ingredient);
       gui.sendFilterChange();
     }
