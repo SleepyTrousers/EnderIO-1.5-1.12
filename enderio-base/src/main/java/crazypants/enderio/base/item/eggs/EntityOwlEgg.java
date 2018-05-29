@@ -6,6 +6,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.entity.Entity;
@@ -21,10 +22,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class EntityOwlEgg extends EntityThrowable {
@@ -33,6 +37,12 @@ public class EntityOwlEgg extends EntityThrowable {
   public static void onEntityRegister(Register<EntityEntry> event) {
     EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.MODID, "owl_egg"), EntityOwlEgg.class, EnderIO.MODID + ".owl_egg", 9, EnderIO.MODID, 64, 10,
         true);
+  }
+
+  @SubscribeEvent
+  @SideOnly(Side.CLIENT)
+  public static void onPreInit(EnderIOLifecycleEvent.PreInit event) {
+    RenderingRegistry.registerEntityRenderingHandler(EntityOwlEgg.class, RenderEntityOwlEgg.FACTORY);
   }
 
   public EntityOwlEgg(World worldIn) {

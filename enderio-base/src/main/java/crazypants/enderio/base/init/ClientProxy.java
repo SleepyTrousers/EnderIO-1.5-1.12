@@ -11,8 +11,6 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.block.charge.EntityPrimedCharge;
-import crazypants.enderio.base.block.charge.RenderPrimedCharge;
 import crazypants.enderio.base.block.coldfire.ColdFireStateMapper;
 import crazypants.enderio.base.block.lever.LeverStateMapper;
 import crazypants.enderio.base.diagnostics.EnderIOCrashCallable;
@@ -24,8 +22,6 @@ import crazypants.enderio.base.handler.KeyTracker;
 import crazypants.enderio.base.integration.jei.JeiAccessor;
 import crazypants.enderio.base.item.conduitprobe.ConduitProbeOverlayRenderer;
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetector;
-import crazypants.enderio.base.item.eggs.EntityOwlEgg;
-import crazypants.enderio.base.item.eggs.RenderEntityOwlEgg;
 import crazypants.enderio.base.item.yetawrench.YetaWrenchOverlayRenderer;
 import crazypants.enderio.base.material.glass.EnderIOGlassesStateMapper;
 import crazypants.enderio.base.paint.YetaUtil;
@@ -58,7 +54,6 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -154,10 +149,6 @@ public class ClientProxy extends CommonProxy {
     MinecraftForge.EVENT_BUS.register(TravelController.instance);
     MinecraftForge.EVENT_BUS.register(KeyTracker.instance);
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
-
-    // Entity Renderers
-    RenderingRegistry.registerEntityRenderingHandler(EntityPrimedCharge.class, RenderPrimedCharge.FACTORY);
-    RenderingRegistry.registerEntityRenderingHandler(EntityOwlEgg.class, RenderEntityOwlEgg.FACTORY);
   }
 
   @Override

@@ -3,6 +3,7 @@ package crazypants.enderio.base.block.charge;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
@@ -13,10 +14,13 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class EntityPrimedCharge extends EntityTNTPrimed {
@@ -25,6 +29,12 @@ public class EntityPrimedCharge extends EntityTNTPrimed {
   public static void onEntityRegister(Register<EntityEntry> event) {
     EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.DOMAIN, "primed_charge"), EntityPrimedCharge.class, EnderIO.DOMAIN + ".primed_charge", 0,
         EnderIO.MODID, 64, 100, false);
+  }
+
+  @SubscribeEvent
+  @SideOnly(Side.CLIENT)
+  public static void onPreInit(EnderIOLifecycleEvent.PreInit event) {
+    RenderingRegistry.registerEntityRenderingHandler(EntityPrimedCharge.class, RenderPrimedCharge.FACTORY);
   }
 
   private static final @Nonnull DataParameter<Integer> CHARGE = EntityDataManager.<Integer> createKey(EntityPrimedCharge.class, DataSerializers.VARINT);
