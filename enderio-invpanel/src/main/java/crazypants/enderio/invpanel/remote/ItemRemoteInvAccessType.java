@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.invpanel.config.InvpanelConfig;
 import net.minecraft.item.ItemStack;
@@ -13,9 +12,9 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 public enum ItemRemoteInvAccessType {
-  BASIC(0, "basic", 5 * 16, false, true),
-  ADVANCED(1, "advanced", -1, false, true),
-  ENDER(2, "ender", -1, true, true);
+  BASIC(0, "_basic", 5 * 16, false, true),
+  ADVANCED(1, "_advanced", -1, false, true),
+  ENDER(2, "_ender", -1, true, true);
 
   private final String nameSuffix;
   private final int range;
