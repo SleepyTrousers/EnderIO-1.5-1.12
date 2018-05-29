@@ -3,13 +3,13 @@ package crazypants.enderio.invpanel.sensor;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.modes.IoMode;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import net.minecraft.block.state.IBlockState;
@@ -23,39 +23,36 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockInventoryPanelSensor extends AbstractMachineBlock<TileInventoryPanelSensor> implements IResourceTooltipProvider, IPaintable.ISolidBlockPaintableBlock,
-IPaintable.IWrenchHideablePaint {
+public class BlockInventoryPanelSensor extends AbstractMachineBlock<TileInventoryPanelSensor>
+    implements IResourceTooltipProvider, IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  
   public static BlockInventoryPanelSensor create(@Nonnull IModObject modObject) {
-    
-    PacketHandler.INSTANCE.registerMessage(PacketActive.Handler.class, PacketActive.class, PacketHandler.nextID(), Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketItemToCheck.Handler.class, PacketItemToCheck.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketItemCount.Handler.class, PacketItemCount.class, PacketHandler.nextID(), Side.SERVER);
-    
-    
     BlockInventoryPanelSensor result = new BlockInventoryPanelSensor(modObject);
     result.init();
     return result;
   }
-  
+
   public BlockInventoryPanelSensor(@Nonnull IModObject modObject) {
     super(modObject);
   }
-  
+
   @Override
-  public Container getServerGuiElement(EntityPlayer player, World world, BlockPos pos, EnumFacing facing, int param1, TileInventoryPanelSensor te) {
-      return new ContainerSensor(player.inventory, te);
+  @Nullable
+  public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nullable BlockPos pos, @Nullable EnumFacing facing, int param1,
+      @Nonnull TileInventoryPanelSensor te) {
+    return new ContainerSensor(player.inventory, te);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public GuiScreen getClientGuiElement(EntityPlayer player, World world, BlockPos pos, EnumFacing facing, int param1, TileInventoryPanelSensor te) {
-      return new GuiSensor(player.inventory, te);
+  @Nullable
+  public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1,
+      @Nonnull TileInventoryPanelSensor te) {
+    return new GuiSensor(player.inventory, te);
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
@@ -68,12 +65,12 @@ IPaintable.IWrenchHideablePaint {
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
   }
 
   @Deprecated
   @Override
-  public int getWeakPower(IBlockState blockStateIn, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+  public int getWeakPower(@Nonnull IBlockState blockStateIn, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     TileInventoryPanelSensor te = getTileEntity(blockAccess, pos);
     if (te != null) {
       int res = te.getIoMode(side.getOpposite()) != IoMode.DISABLED ? te.getRedstoneLevel() : 0;
@@ -83,12 +80,12 @@ IPaintable.IWrenchHideablePaint {
   }
 
   @Override
-  public boolean canProvidePower(IBlockState state) {
+  public boolean canProvidePower(@Nonnull IBlockState state) {
     return true;
   }
 
   @Override
-  public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public boolean canConnectRedstone(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     TileInventoryPanelSensor te = getTileEntitySafe(world, pos);
     if (te != null && side != null) {
       return te.getIoMode(side.getOpposite()) != IoMode.DISABLED;

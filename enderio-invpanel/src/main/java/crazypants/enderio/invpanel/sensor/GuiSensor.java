@@ -2,27 +2,26 @@ package crazypants.enderio.invpanel.sensor;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.invpanel.network.PacketHandler;
+import crazypants.enderio.invpanel.network.sensor.PacketItemCount;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
 public class GuiSensor extends GuiMachineBase<TileInventoryPanelSensor> {
   
-  
   private TextFieldEnder startTF;
   private TextFieldEnder stopTF;
   
-  public GuiSensor(InventoryPlayer par1InventoryPlayer, @Nonnull TileInventoryPanelSensor te) {
-    super(te, new ContainerSensor(par1InventoryPlayer, te), "invPanelSensor");
+  public GuiSensor(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileInventoryPanelSensor te) {
+    super(te, new ContainerSensor(par1InventoryPlayer, te), "inv_panel_sensor");
     
     recipeButton.setYOrigin(recipeButton.getBounds().y + 19);
     redstoneButton.setIsVisible(false);
@@ -81,7 +80,7 @@ public class GuiSensor extends GuiMachineBase<TileInventoryPanelSensor> {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;

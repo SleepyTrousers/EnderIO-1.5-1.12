@@ -6,13 +6,14 @@ import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.invpanel.network.PacketHandler;
+import crazypants.enderio.invpanel.network.sensor.PacketItemToCheck;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
 public class ContainerSensor extends AbstractMachineContainer<TileInventoryPanelSensor> {
 
-  public ContainerSensor(InventoryPlayer playerInv, TileInventoryPanelSensor te) {
+  public ContainerSensor(@Nonnull InventoryPlayer playerInv, @Nonnull TileInventoryPanelSensor te) {
     super(playerInv, te);
   }
 
@@ -20,7 +21,7 @@ public class ContainerSensor extends AbstractMachineContainer<TileInventoryPanel
   protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
   }
 
-  public void addGhostSlots(GhostSlotHandler ghostSlots) {
+  public void addGhostSlots(@Nonnull GhostSlotHandler ghostSlots) {
     ghostSlots.add(new DummySlot(0, 80, 9));
   }
 

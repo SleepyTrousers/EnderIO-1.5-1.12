@@ -1,5 +1,7 @@
 package crazypants.enderio.invpanel.remote;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.invpanel.invpanel.TileInventoryPanel;
 import io.netty.buffer.ByteBuf;
@@ -30,7 +32,7 @@ public class PacketRemoteInvPanel implements IMessage, IMessageHandler<PacketRem
   public PacketRemoteInvPanel() {
   }
 
-  public PacketRemoteInvPanel(EnumHand hand) {
+  public PacketRemoteInvPanel(@Nonnull EnumHand hand) {
     this.hand = hand;
   }
 
@@ -45,11 +47,11 @@ public class PacketRemoteInvPanel implements IMessage, IMessageHandler<PacketRem
   }
 
   @Override
-  public IMessage onMessage(PacketRemoteInvPanel message, MessageContext ctx) {
+  public IMessage onMessage(@Nonnull PacketRemoteInvPanel message, @Nonnull MessageContext ctx) {
     EntityPlayerMP player = ctx.getServerHandler().player;
 
     ItemStack heldItem = player.getHeldItem(message.hand);
-    if (heldItem == null || !(heldItem.getItem() instanceof ItemRemoteInvAccess)) {
+    if (heldItem.isEmpty() || !(heldItem.getItem() instanceof ItemRemoteInvAccess)) {
       return null;
     }
 

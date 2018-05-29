@@ -36,8 +36,8 @@ public enum ItemRemoteInvAccessType {
     return values()[meta >= 0 && meta < values().length ? meta : 0];
   }
 
-  public static ItemRemoteInvAccessType fromStack(ItemStack stack) {
-    return fromMetadata(stack != null ? stack.getMetadata() : 0);
+  public static ItemRemoteInvAccessType fromStack(@Nonnull ItemStack stack) {
+    return fromMetadata(!stack.isEmpty() ? stack.getMetadata() : 0);
   }
 
   public boolean inRange(int dim0, int x0, int y0, int z0, int dim1, int x1, int y1, int z1) {

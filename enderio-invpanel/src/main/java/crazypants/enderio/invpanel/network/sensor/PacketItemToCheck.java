@@ -1,7 +1,10 @@
-package crazypants.enderio.invpanel.sensor;
+package crazypants.enderio.invpanel.network.sensor;
+
+import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
+import crazypants.enderio.invpanel.sensor.TileInventoryPanelSensor;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -11,12 +14,12 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketItemToCheck extends MessageTileEntity<TileInventoryPanelSensor> {
 
-  private ItemStack item;
+  private @Nonnull ItemStack item;
 
   public PacketItemToCheck() {
   }
 
-  public PacketItemToCheck(TileInventoryPanelSensor tile) {
+  public PacketItemToCheck(@Nonnull TileInventoryPanelSensor tile) {
     super(tile);
     this.item = tile.getItemToCheck();
   }
@@ -36,7 +39,7 @@ public class PacketItemToCheck extends MessageTileEntity<TileInventoryPanelSenso
   public static class Handler implements IMessageHandler<PacketItemToCheck, IMessage> {
   
     @Override
-    public IMessage onMessage(PacketItemToCheck message, MessageContext ctx) {
+    public IMessage onMessage(@Nonnull PacketItemToCheck message, @Nonnull MessageContext ctx) {
       TileInventoryPanelSensor te = message.getTileEntity(ctx.getServerHandler().player.world);
       if(te != null) {
         te.setItemToCheck(message.item);

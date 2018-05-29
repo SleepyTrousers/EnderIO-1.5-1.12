@@ -1,8 +1,11 @@
-package crazypants.enderio.invpanel.sensor;
+package crazypants.enderio.invpanel.network.sensor;
+
+import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.invpanel.sensor.TileInventoryPanelSensor;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -16,7 +19,7 @@ public class PacketActive extends MessageTileEntity<TileInventoryPanelSensor> {
   public PacketActive() {
   }
 
-  public PacketActive(TileInventoryPanelSensor tile) {
+  public PacketActive(@Nonnull TileInventoryPanelSensor tile) {
     super(tile);
     this.active = tile.isActive();
   }
@@ -36,7 +39,7 @@ public class PacketActive extends MessageTileEntity<TileInventoryPanelSensor> {
   public static class Handler implements IMessageHandler<PacketActive, IMessage> {
   
     @Override
-    public IMessage onMessage(PacketActive message, MessageContext ctx) {
+    public IMessage onMessage(@Nonnull PacketActive message, @Nonnull MessageContext ctx) {
       EntityPlayer player = EnderIO.proxy.getClientPlayer();
       TileInventoryPanelSensor te = message.getTileEntity(player.world);
       if(te != null) {

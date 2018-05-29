@@ -12,14 +12,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 
 public class ItemEntry extends ItemEntryBase {
-  String name;
-  String modId;
-  String lowerCaseLocName;
+  private String name;
+  private String modId;
+  private String lowerCaseLocName;
   private int count;
-  private ItemStack stack;
+  private @Nonnull ItemStack stack;
 
   public ItemEntry(int dbID, int hash, int itemID, int meta, NBTTagCompound nbt) {
     super(dbID, hash, itemID, meta, nbt);
+    stack = ItemStack.EMPTY;
   }
 
   public int getCount() {
@@ -28,17 +29,19 @@ public class ItemEntry extends ItemEntryBase {
 
   public void setCount(int count) {
     this.count = count;
-    stack = null;
+    stack = ItemStack.EMPTY;
   }
 
-  public @Nonnull ItemStack makeItemStack() {
-    if (stack == null) {
+  @Nonnull
+  public ItemStack makeItemStack() {
+    if (stack.isEmpty()) {
       stack = new ItemStack(getItem(), getCount(), getMeta());
       stack.setTagCompound(getNbt());
     }
     return stack;
   }
 
+  @Nonnull
   public String getUnlocName() {
     if (name == null) {
       findUnlocName();
@@ -46,6 +49,7 @@ public class ItemEntry extends ItemEntryBase {
     return name;
   }
 
+  @Nonnull
   public String getLowercaseUnlocName(Locale locale) {
     if (lowerCaseLocName == null) {
       lowerCaseLocName = I18n.translateToLocal(getUnlocName()).toLowerCase(locale);
@@ -57,9 +61,9 @@ public class ItemEntry extends ItemEntryBase {
     ItemStack stack = makeItemStack();
     try {
       name = stack.getDisplayName();
-      if (name == null || name.isEmpty()) {
+      if (name.isEmpty()) {
         name = stack.getItem().getUnlocalizedName();
-        if (name == null || name.isEmpty()) {
+        if (name.isEmpty()) {
           name = stack.getItem().getClass().getName();
         }
       }
@@ -68,6 +72,7 @@ public class ItemEntry extends ItemEntryBase {
     }
   }
 
+  @Nonnull
   public String getModId() {
     if (modId == null) {
       findModId();

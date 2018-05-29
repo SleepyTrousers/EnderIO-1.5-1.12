@@ -1,5 +1,7 @@
 package crazypants.enderio.invpanel.remote;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.invpanel.init.InvpanelObject;
 import crazypants.enderio.invpanel.invpanel.TileInventoryPanel;
@@ -13,7 +15,7 @@ public class ServerRemoteGuiManager {
   private ServerRemoteGuiManager() {
   }
 
-  public static void openGui(EntityPlayerMP player, World world, BlockPos pos) {
+  public static void openGui(@Nonnull EntityPlayerMP player, @Nonnull World world, @Nonnull BlockPos pos) {
     long posl = pos.toLong();
     int x = (int) posl;
     int y = world.provider.getDimension();

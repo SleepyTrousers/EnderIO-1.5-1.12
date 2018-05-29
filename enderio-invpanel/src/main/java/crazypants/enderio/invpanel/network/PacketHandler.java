@@ -6,6 +6,9 @@ import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.invpanel.EnderIOInvPanel;
 import crazypants.enderio.invpanel.remote.PacketPrimeInventoryPanelRemote;
+import crazypants.enderio.invpanel.network.sensor.PacketActive;
+import crazypants.enderio.invpanel.network.sensor.PacketItemCount;
+import crazypants.enderio.invpanel.network.sensor.PacketItemToCheck;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -47,6 +50,10 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketUpdateExtractionDisabled.Handler.class, PacketUpdateExtractionDisabled.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketPrimeInventoryPanelRemote.Handler.class, PacketPrimeInventoryPanelRemote.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketGuiSettingsUpdated.Handler.class, PacketGuiSettingsUpdated.class, PacketHandler.nextID(), Side.CLIENT);
+
+    INSTANCE.registerMessage(PacketActive.Handler.class, PacketActive.class, PacketHandler.nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketItemToCheck.Handler.class, PacketItemToCheck.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketItemCount.Handler.class, PacketItemCount.class, PacketHandler.nextID(), Side.SERVER);
   }
 
 }

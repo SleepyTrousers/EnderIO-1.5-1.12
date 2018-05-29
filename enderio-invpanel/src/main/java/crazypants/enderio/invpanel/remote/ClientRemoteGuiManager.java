@@ -1,5 +1,7 @@
 package crazypants.enderio.invpanel.remote;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.invpanel.invpanel.GuiInventoryPanel;
@@ -18,7 +20,7 @@ public class ClientRemoteGuiManager implements IGuiHandler {
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int posLow, int dim, int posHigh) {
+  public Object getServerGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, int posLow, int dim, int posHigh) {
     long posl = ((long) posHigh << 32) | (posLow & 0xffffffffL);
     BlockPos pos = BlockPos.fromLong(posl);
     World targetWorld = world;
@@ -41,7 +43,7 @@ public class ClientRemoteGuiManager implements IGuiHandler {
   static long targetTEtime;
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+  public Object getClientGuiElement(int ID, @Nonnull EntityPlayer player, @Nonnull World world, int x, int y, int z) {
     TileInventoryPanel te;
     if (targetTE != null && targetTEtime >= EnderIO.proxy.getTickCount()) {
       te = targetTE;

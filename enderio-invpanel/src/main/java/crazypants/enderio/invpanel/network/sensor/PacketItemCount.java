@@ -1,7 +1,10 @@
-package crazypants.enderio.invpanel.sensor;
+package crazypants.enderio.invpanel.network.sensor;
+
+import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
+import crazypants.enderio.invpanel.sensor.TileInventoryPanelSensor;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -15,7 +18,7 @@ public class PacketItemCount extends MessageTileEntity<TileInventoryPanelSensor>
   public PacketItemCount() {
   }
 
-  public PacketItemCount(TileInventoryPanelSensor tile) {
+  public PacketItemCount(@Nonnull TileInventoryPanelSensor tile) {
     super(tile);
     startCount = tile.getStartCount();
     stopCount = tile.getStopCount();
@@ -38,7 +41,7 @@ public class PacketItemCount extends MessageTileEntity<TileInventoryPanelSensor>
   public static class Handler implements IMessageHandler<PacketItemCount, IMessage> {
 
     @Override
-    public IMessage onMessage(PacketItemCount message, MessageContext ctx) {
+    public IMessage onMessage(@Nonnull PacketItemCount message, @Nonnull MessageContext ctx) {
       TileInventoryPanelSensor te = message.getTileEntity(ctx.getServerHandler().player.world);
       if (te != null) {
 

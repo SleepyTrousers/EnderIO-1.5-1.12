@@ -107,7 +107,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
     }
   }
 
-  public static TileInventoryChest create(EnumChestSize size) {
+  public static TileInventoryChest create(@Nonnull EnumChestSize size) {
     try {
       return CLASSES.get(size).newInstance();
     } catch (Throwable e) {
@@ -121,7 +121,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
   private final EnderInventory chestInventory;
 
   // called by our block
-  private TileInventoryChest(EnumChestSize size) {
+  private TileInventoryChest(@Nonnull EnumChestSize size) {
     super(new EnderInventory(), CapacitorKey.INV_CHEST_ENERGY_INTAKE, CapacitorKey.INV_CHEST_ENERGY_BUFFER, CapacitorKey.INV_CHEST_ENERGY_USE);
     chestInventory = getInventory();
     this.size = size;

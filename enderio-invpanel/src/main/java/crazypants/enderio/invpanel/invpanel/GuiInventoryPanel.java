@@ -99,7 +99,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final Rectangle btnAddStoredRecipe = new Rectangle();
 
   public GuiInventoryPanel(@Nonnull TileInventoryPanel te, @Nonnull Container container) {
-    super(te, container, "inventorypanel");
+    super(te, container, "inv_panel");
     redstoneButton.visible = false;
     configB.visible = false;
 

@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.capacitor.CapacitorKey;
-import crazypants.enderio.base.conduit.ConduitUtil;
-import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.invpanel.capability.CapabilityDatabaseHandler;
+import crazypants.enderio.base.invpanel.capability.IDatabaseHandler;
 import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
 import crazypants.enderio.base.invpanel.database.IServerItemEntry;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
@@ -13,14 +13,14 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.task.ContinuousTask;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable.IPaintableTileEntity;
 import crazypants.enderio.base.recipe.IMachineRecipe;
-import crazypants.enderio.conduits.conduit.item.IItemConduit;
-import crazypants.enderio.conduits.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.invpanel.init.InvpanelObject;
+import crazypants.enderio.invpanel.network.PacketHandler;
+import crazypants.enderio.invpanel.network.sensor.PacketActive;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
 public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {
@@ -38,7 +38,8 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
   private int currentSignal = 0;
 
   @Store
-  private ItemStack itemToCheck = null;
+  @Nonnull
+  private ItemStack itemToCheck = ItemStack.EMPTY;
 
   // send client side for rendering
   private boolean active = false;
@@ -48,12 +49,13 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
   }
 
   @Override
-  public @Nonnull String getMachineName() {
+  @Nonnull
+  public String getMachineName() {
     return InvpanelObject.blockInventoryPanelSensor.getUnlocalisedName();
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, @Nullable ItemStack item) {
+  public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack item) {
     return false;
   }
 
@@ -73,7 +75,7 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
     }
 
     if (shouldDoWorkThisTick(10)) {
-      if (itemToCheck != null) {
+      if (!itemToCheck.isEmpty()) {
 
         IInventoryDatabaseServer db = getInventoryDB();
         if (db != null) {
@@ -95,7 +97,7 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
   }
 
   private void updateRedstone(int invHasCount) {
-    if (itemToCheck == null) {
+    if (itemToCheck.isEmpty()) {
       setCurrentSignal(0);
       return;
     }
@@ -127,22 +129,21 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
   }
 
   @Override
-  protected IPoweredTask createTask(IMachineRecipe nextRecipe, long nextSeed) {
+  protected IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, long nextSeed) {
     return new ContinuousTask(getPowerUsePerTick());
   }
 
+  @Nullable
   public IInventoryDatabaseServer getInventoryDB() {
 
     for (EnumFacing dir : EnumFacing.values()) {
-      IItemConduit con = ConduitUtil.getConduit(world, this, dir, IItemConduit.class);
-      if (con != null) {
-        IConduitNetwork<?, ?> n = con.getNetwork();
-        if (n instanceof ItemConduitNetwork) {
-          // TODO Data Conduits
-          // IInventoryDatabaseServer db = ((ItemConduitNetwork) n).getDatabase();
-          // if (db != null) {
-          // return db;
-          // }
+      TileEntity te = world.getTileEntity(getPos().offset(dir));
+      if (te != null) {
+        if (te.hasCapability(CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY, dir.getOpposite())) {
+          IDatabaseHandler dbHandler = te.getCapability(CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY, dir.getOpposite());
+          if (dbHandler != null) {
+            return dbHandler.getDatabase();
+          }
         }
       }
     }
@@ -158,11 +159,12 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
     this.active = active;
   }
 
+  @Nonnull
   public ItemStack getItemToCheck() {
     return itemToCheck;
   }
 
-  public void setItemToCheck(ItemStack itemToCheck) {
+  public void setItemToCheck(@Nonnull ItemStack itemToCheck) {
     this.itemToCheck = itemToCheck;
     markDirty();
   }

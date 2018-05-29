@@ -1,12 +1,5 @@
 package crazypants.enderio.invpanel.remote;
 
-import static crazypants.enderio.util.NbtValue.ENERGY;
-import static crazypants.enderio.util.NbtValue.FLUIDAMOUNT;
-import static crazypants.enderio.util.NbtValue.REMOTE_D;
-import static crazypants.enderio.util.NbtValue.REMOTE_X;
-import static crazypants.enderio.util.NbtValue.REMOTE_Y;
-import static crazypants.enderio.util.NbtValue.REMOTE_Z;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,8 +55,14 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemRemoteInvAccess extends Item
-    implements IAdvancedTooltipProvider, IOverlayRenderAware, IInternalPoweredItem, IHaveRenderers {
+import static crazypants.enderio.util.NbtValue.ENERGY;
+import static crazypants.enderio.util.NbtValue.FLUIDAMOUNT;
+import static crazypants.enderio.util.NbtValue.REMOTE_D;
+import static crazypants.enderio.util.NbtValue.REMOTE_X;
+import static crazypants.enderio.util.NbtValue.REMOTE_Y;
+import static crazypants.enderio.util.NbtValue.REMOTE_Z;
+
+public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvider, IOverlayRenderAware, IInternalPoweredItem, IHaveRenderers {
 
   public static ItemRemoteInvAccess create(@Nonnull IModObject modObject) {
     ItemRemoteInvAccess result = new ItemRemoteInvAccess(modObject);
@@ -79,7 +78,7 @@ public class ItemRemoteInvAccess extends Item
   }
 
   @Override
-  public void registerRenderers(IModObject modObject) {
+  public void registerRenderers(@Nonnull IModObject modObject) {
     for (ItemRemoteInvAccessType type : ItemRemoteInvAccessType.values()) {
       ResourceLocation resourceLocation = new ResourceLocation(EnderIO.DOMAIN, type.getUnlocalizedName(modObject.getUnlocalisedName()));
       ModelBakery.registerItemVariants(this, resourceLocation);
@@ -88,13 +87,14 @@ public class ItemRemoteInvAccess extends Item
   }
 
   @Override
-  public String getUnlocalizedName(ItemStack stack) {
+  @Nonnull
+  public String getUnlocalizedName(@Nonnull ItemStack stack) {
     return ItemRemoteInvAccessType.fromStack(stack).getUnlocalizedName(getUnlocalizedName());
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
+  public void getSubItems(@Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     for (ItemRemoteInvAccessType type : ItemRemoteInvAccessType.values()) {
       if (type.isVisible()) {
         par3List.add(new ItemStack(this, 1, type.toMetadata()));
@@ -106,12 +106,14 @@ public class ItemRemoteInvAccess extends Item
   }
 
   @Override
-  public boolean hasEffect(ItemStack stack) {
+  public boolean hasEffect(@Nonnull ItemStack stack) {
     return super.hasEffect(stack) || NbtValue.GLINT.hasTag(stack);
   }
 
   @Override
-  public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+  @Nonnull
+  public EnumActionResult onItemUseFirst(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side, float hitX,
+      float hitY, float hitZ, EnumHand hand) {
 
     if (world.isRemote || !player.isSneaking()) {
       return EnumActionResult.PASS;
@@ -130,7 +132,8 @@ public class ItemRemoteInvAccess extends Item
   }
 
   @Override
-  public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+  @Nonnull
+  public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     if (!world.isRemote) {
       ItemStack equipped = player.getHeldItem(hand);
       if (!REMOTE_X.hasTag(equipped) || !REMOTE_Y.hasTag(equipped) || !REMOTE_Z.hasTag(equipped) || !REMOTE_D.hasTag(equipped)) {
@@ -194,7 +197,7 @@ public class ItemRemoteInvAccess extends Item
     return super.onItemRightClick(world, player, hand);
   }
 
-  public boolean canInteractWith(ItemStack stack, EntityPlayer player) {
+  public boolean canInteractWith(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
     if (getEnergyStored(stack) > 0) {
       return true;
     } else {
@@ -203,14 +206,14 @@ public class ItemRemoteInvAccess extends Item
     }
   }
 
-  public void tick(ItemStack stack, EntityPlayer player) {
+  public void tick(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
     if (EnderIO.proxy.getServerTickCount() % 10 == 0) {
       ItemRemoteInvAccessType type = ItemRemoteInvAccessType.fromStack(stack);
       extractInternal(stack, type.getRfPerTick() * 10);
     }
   }
 
-  private boolean extractInternal(ItemStack item, int powerUse) {
+  private boolean extractInternal(@Nonnull ItemStack item, int powerUse) {
     int stored = getEnergyStored(item);
     if (stored >= powerUse) {
       setEnergyStored(item, stored - powerUse);
@@ -221,37 +224,39 @@ public class ItemRemoteInvAccess extends Item
     return false;
   }
 
-  public void setFull(ItemStack container) {
+  public void setFull(@Nonnull ItemStack container) {
     setEnergyStored(container, getMaxEnergyStored(container));
     FLUIDAMOUNT.setInt(container, getCapacity(container));
   }
 
   @Override
-  public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
+  public void onCreated(@Nonnull ItemStack itemStack, @Nonnull World world, @Nonnull EntityPlayer entityPlayer) {
     setEnergyStored(itemStack, 0);
   }
 
   @Override
-  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
-    PowerBarOverlayRenderHelper.instance_fluid.render(stack, xPosition, yPosition,
-        PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition) ? 1 : 0);
+  public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
+    PowerBarOverlayRenderHelper.instance_fluid
+        .render(stack, xPosition, yPosition, PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition) ? 1 : 0);
   }
 
   @Override
-  public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-    return slotChanged ? super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged)
-        : (oldStack == null || newStack == null || oldStack.getItem() != newStack.getItem());
+  public boolean shouldCauseReequipAnimation(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
+    return slotChanged ?
+        super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) :
+        (oldStack.isEmpty() || newStack.isEmpty() || !ItemStack.areItemsEqual(oldStack, newStack));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+  public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
-    tooltip.add(LangPower.RF(getEnergyStored(stack) ,getMaxEnergyStored(stack)));
+    tooltip.add(LangPower.RF(getEnergyStored(stack), getMaxEnergyStored(stack)));
     tooltip.add(LangFluid.MB(FLUIDAMOUNT.getInt(stack, 0), getFluidType(stack)));
   }
 
-  private FluidStack getFluid(ItemStack container) {
+  @Nullable
+  private FluidStack getFluid(@Nonnull ItemStack container) {
     int amount = FLUIDAMOUNT.getInt(container, 0);
     if (amount > 0) {
       return new FluidStack(getFluidType(container), amount);
@@ -260,15 +265,16 @@ public class ItemRemoteInvAccess extends Item
     }
   }
 
-  private int getCapacity(ItemStack container) {
+  private int getCapacity(@Nonnull ItemStack container) {
     return ItemRemoteInvAccessType.fromStack(container).getFluidCapacity();
   }
-  
-  public @Nonnull Fluid getFluidType(ItemStack stack) {
+
+  @Nonnull
+  public Fluid getFluidType(@Nonnull ItemStack stack) {
     return ItemRemoteInvAccessType.fromStack(stack).getFluidType();
   }
 
-  private boolean drain(ItemStack container, int toDrain) {
+  private boolean drain(@Nonnull ItemStack container, int toDrain) {
     int amount = FLUIDAMOUNT.getInt(container, 0);
     if (toDrain > amount) {
       return false;
@@ -279,32 +285,32 @@ public class ItemRemoteInvAccess extends Item
   }
 
   @Override
-  public int getMaxEnergyStored(ItemStack container) {
+  public int getMaxEnergyStored(@Nonnull ItemStack container) {
     return ItemRemoteInvAccessType.fromStack(container).getRfCapacity();
   }
-  
+
   @Override
-  public void setEnergyStored(ItemStack container, int energy) {
-   ENERGY.setInt(container, energy);
+  public void setEnergyStored(@Nonnull ItemStack container, int energy) {
+    ENERGY.setInt(container, energy);
   }
-  
+
   @Override
-  public int getEnergyStored(ItemStack stack) {
+  public int getEnergyStored(@Nonnull ItemStack stack) {
     return ENERGY.getInt(stack);
   }
 
   @Override
-  public int getMaxInput(ItemStack stack) {
-    return ItemRemoteInvAccessType.fromStack(stack).getRfCapacity()/100;
+  public int getMaxInput(@Nonnull ItemStack stack) {
+    return ItemRemoteInvAccessType.fromStack(stack).getRfCapacity() / 100;
   }
 
   @Override
-  public int getMaxOutput(ItemStack stack) {
+  public int getMaxOutput(@Nonnull ItemStack stack) {
     return 0;
   }
 
   @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nonnull NBTTagCompound nbt) {
     return new CompoundCapabilityProvider(new CapabilityProvider(stack), new ItemPowerCapabilityBackend(stack));
   }
 
@@ -323,7 +329,7 @@ public class ItemRemoteInvAccess extends Item
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-      if(capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) {
+      if (capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) {
         return (T) this;
       }
       return null;
@@ -367,7 +373,7 @@ public class ItemRemoteInvAccess extends Item
     }
 
     @Override
-    public int fill(FluidStack resource, boolean doFill) {
+    public int fill(@Nullable FluidStack resource, boolean doFill) {
       if (container.isEmpty() || !(container.getItem() == ItemRemoteInvAccess.this) || resource == null || resource.amount <= 0 || resource.getFluid() == null
           || resource.getFluid() != getFluidType(container)) {
         return 0;
@@ -384,7 +390,7 @@ public class ItemRemoteInvAccess extends Item
 
     @Override
     @Nullable
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
+    public FluidStack drain(@Nullable FluidStack resource, boolean doDrain) {
       return null;
     }
 
@@ -402,17 +408,17 @@ public class ItemRemoteInvAccess extends Item
   }
 
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addCommonTooltipFromResources(list, getUnlocalizedName(itemstack));
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addBasicTooltipFromResources(list, getUnlocalizedName(itemstack));
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     List<String> list0 = new ArrayList<String>();
     SpecialTooltipHandler.addDetailedTooltipFromResources(list0, getUnlocalizedName(itemstack));
     Fluid fluid = getFluidType(itemstack);
