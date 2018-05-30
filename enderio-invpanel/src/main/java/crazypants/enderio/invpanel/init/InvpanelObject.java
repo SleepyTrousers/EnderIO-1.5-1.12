@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -32,9 +31,6 @@ public enum InvpanelObject implements IModObject.Registerable {
   blockInventoryPanelSensor(BlockInventoryPanelSensor.class, InvpanelTileEntity.TileInventoryPanelSensor),
 
   itemInventoryRemote(ItemRemoteInvAccess.class),
-
-  // Function Upgrades
-  item_inventory_panel_upgrade(ItemFunctionUpgrade.class, "createInventoryPanelUpgrade"),
 
   // Conduits
   item_data_conduit(ItemDataConduit.class);

@@ -1,19 +1,14 @@
+// Inv Panel
+tile.block_inventory_panel.name=Inventory Panel
+tile.block_inventory_panel.tooltip.basic.line1=Remote access and crafting
+tile.block_inventory_panel.tooltip.detailed.line1=Allows remote access to inventories via
+tile.block_inventory_panel.tooltip.detailed.line2=Remote Awareness Upgrades in item conduits.
+tile.block_inventory_panel.tooltip.detailed.line3=Uses Nutrient Distillation for power.
+tile.block_inventory_panel.tooltip.detailed.line4=Offers a persistent crafting grid.
 
-item.itemInventoryPanelUpgrade.name=Remote Awareness Upgrade
-item.itemInventoryPanelUpgrade.tooltip.basic.line1=Inventory Panel Remote Awareness
-item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Function upgrade for item conduits
-item.itemInventoryPanelUpgrade.tooltip.detailed.line2=Allows Inventory Panels attached
-item.itemInventoryPanelUpgrade.tooltip.detailed.line3=to this network to see and extract
-item.itemInventoryPanelUpgrade.tooltip.detailed.line4=items from this inventory independent
-item.itemInventoryPanelUpgrade.tooltip.detailed.line5=of the conduit mode.
-item.itemInventoryPanelUpgrade.tooltip.detailed.line6=(No need to set the conduit to extract)
+enderio.item_data_conduit.name=Data Conduit
 
-tile.blockInventoryPanel.name=Inventory Panel
-tile.blockInventoryPanel.tooltip.basic.line1=Remote access and crafting
-tile.blockInventoryPanel.tooltip.detailed.line1=Allows remote access to inventories via
-tile.blockInventoryPanel.tooltip.detailed.line2=Remote Awareness Upgrades in item conduits.
-tile.blockInventoryPanel.tooltip.detailed.line3=Uses Nutrient Distillation for power.
-tile.blockInventoryPanel.tooltip.detailed.line4=Offers a persistent crafting grid.
+// Gui
 enderio.gui.inventorypanel.header.crafting=Crafting grid
 enderio.gui.inventorypanel.header.return=Return area
 enderio.gui.inventorypanel.header.storage=Storage area
@@ -64,14 +59,16 @@ enderio.gui.inventorypanel.tooltip.sync.jei=JEI Sync
 enderio.gui.inventorypanel.tooltip.sync.jei.line1=Text entered into filter field will be remembered.
 enderio.gui.inventorypanel.tooltip.sync.jei.line2=Text entered into JEI field will not be remembered.
 
-tile.blockInventoryPanelSensor.name=Inventory Sensor
-tile.blockInventoryPanelSensor.tooltip.detailed.line1=Emits redstone signals based
-tile.blockInventoryPanelSensor.tooltip.detailed.line2=on the number of an item available
-tile.blockInventoryPanelSensor.tooltip.detailed.line3=in an Inventory Panel network
+// Sensor
+tile.block_inventory_panel_sensor.name=Inventory Sensor
+tile.block_inventory_panel_sensor.tooltip.detailed.line1=Emits redstone signals based
+tile.block_inventory_panel_sensor.tooltip.detailed.line2=on the number of an item available
+tile.block_inventory_panel_sensor.tooltip.detailed.line3=in an Inventory Panel network
 
 enderio.gui.inventorySensor.control1=Start when < 
 enderio.gui.inventorySensor.control2=Stop when >=
 
+// Remotes
 enderio.remoteinv.chat.set=Target set
 enderio.remoteinv.chat.notarget=ERROR: No target
 enderio.remoteinv.chat.outofrange=ERROR: Out of range
@@ -82,27 +79,28 @@ enderio.remoteinv.chat.outofpower=ERROR: Out of power
 enderio.remoteinv.chat.outoffluid=ERROR: Out of {FLUIDNAME}
 enderio.remoteinv.chat.error=ERROR: Technical error, see log
 
-item.itemRemoteInvAccessbasic.name=Inventory Panel Remote
-item.itemRemoteInvAccessbasic.tooltip.detailed.line1=Allows you to access an Inventory Panel from up to 5 chunks away.
-item.itemRemoteInvAccessbasic.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
-item.itemRemoteInvAccessbasic.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
+item.item_inventory_remote_basic.name=Inventory Panel Remote
+item.item_inventory_remote_basic.tooltip.detailed.line1=Allows you to access an Inventory Panel from up to 5 chunks away.
+item.item_inventory_remote_basic.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
+item.item_inventory_remote_basic.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
-item.itemRemoteInvAccessadvanced.name=Advanced Inventory Panel Remote
-item.itemRemoteInvAccessadvanced.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere in the same dimension.
-item.itemRemoteInvAccessadvanced.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
-item.itemRemoteInvAccessadvanced.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
+item.item_inventory_remote_advanced.name=Advanced Inventory Panel Remote
+item.item_inventory_remote_advanced.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere in the same dimension.
+item.item_inventory_remote_advanced.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
+item.item_inventory_remote_advanced.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
-item.itemRemoteInvAccessender.name=Ender Inventory Panel Remote
-item.itemRemoteInvAccessender.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere.
-item.itemRemoteInvAccessender.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
-item.itemRemoteInvAccessender.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
+item.item_inventory_remote_ender.name=Ender Inventory Panel Remote
+item.item_inventory_remote_ender.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere.
+item.item_inventory_remote_ender.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
+item.item_inventory_remote_ender.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
-tile.blockInventoryChest_tiny.name=Tiny Inventory System Storage
-tile.blockInventoryChest_small.name=Small Inventory System Storage
-tile.blockInventoryChest_medium.name=Medium Inventory System Storage
-tile.blockInventoryChest_big.name=Big Inventory System Storage
-tile.blockInventoryChest_large.name=Large Inventory System Storage
-tile.blockInventoryChest_huge.name=Huge Inventory System Storage
-tile.blockInventoryChest_enormous.name=Enormous Inventory System Storage
-tile.blockInventoryChest_warehouse.name=Inventory System Storage Warehouse
-tile.blockInventoryChest_warehouse13.name=Inventory System Storage Extended Warehouse
+// Warehouses
+tile.block_inventory_chest_tiny.name=Tiny Inventory System Storage
+tile.block_inventory_chest_small.name=Small Inventory System Storage
+tile.block_inventory_chest_medium.name=Medium Inventory System Storage
+tile.block_inventory_chest_big.name=Big Inventory System Storage
+tile.block_inventory_chest_large.name=Large Inventory System Storage
+tile.block_inventory_chest_huge.name=Huge Inventory System Storage
+tile.block_inventory_chest_enormous.name=Enormous Inventory System Storage
+tile.block_inventory_chest_warehouse.name=Inventory System Storage Warehouse
+tile.block_inventory_chest_warehouse13.name=Inventory System Storage Extended Warehouse
