@@ -204,20 +204,20 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   }
 
   @Override
-  @Optional.Method(modid = "cofhapi|item")
+  @Optional.Method(modid = "cofhcore")
   public boolean isUsable(ItemStack item, EntityLivingBase user, BlockPos pos) {
     return true;
   }
 
   @Override
-  @Optional.Method(modid = "cofhapi|item")
+  @Optional.Method(modid = "cofhcore")
   public boolean isUsable(ItemStack item, EntityLivingBase user, Entity entity) {
     return false;
   }
 
   @SuppressWarnings("null")
   @Override
-  @Optional.Method(modid = "cofhapi|item")
+  @Optional.Method(modid = "cofhcore")
   public void toolUsed(ItemStack item, EntityLivingBase user, BlockPos pos) {
     if (user instanceof EntityPlayer) {
       used(EnumHand.MAIN_HAND, (EntityPlayer) user, pos);
@@ -225,7 +225,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   }
 
   @Override
-  @Optional.Method(modid = "cofhapi|item")
+  @Optional.Method(modid = "cofhcore")
   public void toolUsed(ItemStack item, EntityLivingBase user, Entity entity) {
   }
 
