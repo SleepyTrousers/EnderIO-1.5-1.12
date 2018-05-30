@@ -2,9 +2,10 @@ package crazypants.enderio.base.power.wireless;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.render.BoundingBox;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public interface IWirelessCharger {
@@ -13,7 +14,7 @@ public interface IWirelessCharger {
   World getworld();
 
   @Nonnull
-  BlockPos getLocation();
+  BoundingBox getRange();
 
   boolean chargeItems(NonNullList<ItemStack> items);
 

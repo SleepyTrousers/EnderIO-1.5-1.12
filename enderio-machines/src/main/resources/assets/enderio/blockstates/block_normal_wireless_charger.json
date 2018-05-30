@@ -1,0 +1,32 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle": "enderio:blocks/block_wireless_charger_off",
+            "dish_atlas": "enderio:blocks/block_wireless_charger"
+        },
+        "model":"enderio:block_wireless_charger/base"
+    },
+    "variants":{
+        "normal":[{
+            "submodel":{ 
+                "down":{ "model":"enderio:block_wireless_charger/base" },
+                "up":{ "model":"enderio:block_wireless_charger/dish", "x":90 },
+                "east":{ "model":"enderio:block_wireless_charger/dish", "y":270 },
+                "west":{ "model":"enderio:block_wireless_charger/dish", "y":90 },
+                "north":{ "model":"enderio:block_wireless_charger/dish", "y":180 },
+                "south":{ "model":"enderio:block_wireless_charger/dish", "y":0 }
+            }
+        }],
+        "inventory":[{
+            "submodel":{ 
+                "down":{ "model":"enderio:block_wireless_charger/base" },
+                "up":{ "model":"enderio:block_wireless_charger/dish", "x":90 },
+                "east":{ "model":"enderio:block_wireless_charger/dish", "y":270 },
+                "west":{ "model":"enderio:block_wireless_charger/dish", "y":90 },
+                "north":{ "model":"enderio:block_wireless_charger/dish", "y":180 },
+                "south":{ "model":"enderio:block_wireless_charger/dish", "y":0 }
+            }
+        }]
+    }
+}

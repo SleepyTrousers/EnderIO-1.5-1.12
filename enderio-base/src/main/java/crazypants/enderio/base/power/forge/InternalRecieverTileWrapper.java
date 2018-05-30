@@ -9,7 +9,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 public class InternalRecieverTileWrapper extends InternalPoweredTileWrapper {
-  
+
   public static class RecieverTileCapabilityProvider extends PoweredTileCapabilityProvider {
 
     private final @Nonnull ILegacyPowerReceiver tile;
@@ -22,14 +22,14 @@ public class InternalRecieverTileWrapper extends InternalPoweredTileWrapper {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-      if (capability == CapabilityEnergy.ENERGY) {
+      if (capability == CapabilityEnergy.ENERGY && facing != null && tile.canConnectEnergy(facing)) {
         return (T) new InternalRecieverTileWrapper(tile, facing);
       }
       return null;
     }
 
   }
-  
+
   private final @Nonnull ILegacyPowerReceiver tile;
 
   public InternalRecieverTileWrapper(@Nonnull ILegacyPowerReceiver tile, @Nullable EnumFacing facing) {

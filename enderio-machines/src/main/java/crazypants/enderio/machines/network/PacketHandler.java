@@ -34,7 +34,6 @@ import crazypants.enderio.machines.machine.vacuum.chest.PacketVaccumChest;
 import crazypants.enderio.machines.machine.vat.PacketDumpTank;
 import crazypants.enderio.machines.machine.vat.PacketTanks;
 import crazypants.enderio.machines.machine.vat.PacketVatProgress;
-import crazypants.enderio.machines.machine.wireless.PacketStoredEnergy;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -72,7 +71,6 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketUpdateNotification.Handler.class, PacketUpdateNotification.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketFarmLockedSlot.Handler.class, PacketFarmLockedSlot.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketGrindingBall.Handler.class, PacketGrindingBall.class, PacketHandler.nextID(), Side.CLIENT);
-    INSTANCE.registerMessage(PacketStoredEnergy.Handler.class, PacketStoredEnergy.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketTankFluid.Handler.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketTankVoidMode.Handler.class, PacketTankVoidMode.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketVaccumChest.Handler.class, PacketVaccumChest.class, PacketHandler.nextID(), Side.SERVER);

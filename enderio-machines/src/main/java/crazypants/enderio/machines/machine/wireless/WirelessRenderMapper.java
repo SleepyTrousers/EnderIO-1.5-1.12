@@ -36,15 +36,15 @@ public class WirelessRenderMapper implements IRenderMapper.IBlockRenderMapper, I
     TileEntity tileEntity = state.getTileEntity();
     Block block = state.getBlock();
 
-    if ((tileEntity instanceof TileWirelessCharger) && (block instanceof BlockWirelessCharger)) {
-      return render(state.getState(), world, pos, blockLayer, (TileWirelessCharger) tileEntity, (BlockWirelessCharger) block);
+    if ((tileEntity instanceof TileWirelessCharger) && (block instanceof BlockNormalWirelessCharger)) {
+      return render(state.getState(), world, pos, blockLayer, (TileWirelessCharger) tileEntity, (BlockNormalWirelessCharger) block);
     }
     return null;
   }
 
   @SideOnly(Side.CLIENT)
   protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer, TileWirelessCharger tileEntity,
-      BlockWirelessCharger block) {
+      BlockNormalWirelessCharger block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
     boolean active = tileEntity.isActive();

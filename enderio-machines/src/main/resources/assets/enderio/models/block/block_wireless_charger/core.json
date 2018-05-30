@@ -1,0 +1,19 @@
+{
+	"__comment": "Designed by HenryLoenwind with Cubik Studio - https://cubik.studio",
+	"parent": "enderio:block/transform/block",
+	"elements": [ 	 
+		{
+			"__comment": "core",
+			"from": [ 7, 7, 7 ],
+			"to": [ 9, 9, 9 ],
+			"faces": {
+				"down": { "uv": [ 1, 4, 2, 5 ], "texture": "#dish_atlas" },
+				"up": { "uv": [ 1, 4, 2, 5 ], "texture": "#dish_atlas" },
+				"north": { "uv": [ 1, 4, 2, 5 ], "texture": "#dish_atlas" },
+				"south": { "uv": [ 1, 4, 2, 5 ], "texture": "#dish_atlas" },
+				"west": { "uv": [ 1, 4, 2, 5 ], "texture": "#dish_atlas" },
+				"east": { "uv": [ 1, 4, 2, 5 ], "texture": "#dish_atlas" }
+			}
+		}
+	]
+}

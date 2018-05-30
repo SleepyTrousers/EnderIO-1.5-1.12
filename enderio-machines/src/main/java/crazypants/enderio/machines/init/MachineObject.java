@@ -43,6 +43,9 @@ import crazypants.enderio.machines.machine.vacuum.chest.BlockVacuumChest;
 import crazypants.enderio.machines.machine.vacuum.xp.BlockXPVacuum;
 import crazypants.enderio.machines.machine.vat.BlockVat;
 import crazypants.enderio.machines.machine.wired.BlockWiredCharger;
+import crazypants.enderio.machines.machine.wireless.BlockAntenna;
+import crazypants.enderio.machines.machine.wireless.BlockEnhancedWirelessCharger;
+import crazypants.enderio.machines.machine.wireless.BlockNormalWirelessCharger;
 import crazypants.enderio.machines.machine.wireless.BlockWirelessCharger;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -89,6 +92,9 @@ public enum MachineObject implements IModObject.Registerable {
   block_vat(BlockVat.class, MachineTileEntity.TileVat),
   block_wired_charger(BlockWiredCharger.class, MachineTileEntity.TileWiredCharger),
   block_wireless_charger(BlockWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
+  block_normal_wireless_charger(BlockNormalWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
+  block_enhanced_wireless_charger(BlockEnhancedWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
+  block_wireless_charger_extension(BlockAntenna.class),
   block_tank(BlockTank.class, MachineTileEntity.TileTank),
   block_transceiver(BlockTransceiver.class, MachineTileEntity.TileTransceiver),
   block_vacuum_chest(BlockVacuumChest.class, MachineTileEntity.TileVacuumChest),
