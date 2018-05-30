@@ -385,6 +385,11 @@
         "textures": {
             "layer0": "enderio:items/item_material_withering_dust"
         }
+      },
+      "remote_awareness_upgrade":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_remote_awareness_upgrade"
+        }
       }
     }
   }

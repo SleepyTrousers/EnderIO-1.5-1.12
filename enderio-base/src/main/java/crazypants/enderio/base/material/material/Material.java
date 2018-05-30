@@ -94,6 +94,8 @@ public enum Material {
   SHARD_ENDER("enderFragment"),
   POWDER_WITHERING("witheringDust"),
 
+  REMOTE_AWARENESS_UPGRADE("remoteAwarenessUpgrade"),
+
   ;
 
   public final boolean hasEffect;
