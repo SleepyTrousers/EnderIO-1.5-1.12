@@ -2,6 +2,8 @@ package crazypants.enderio.machines.machine.wireless;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.render.BoundingBox;
+
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.paint.IPaintable;
@@ -11,9 +13,9 @@ import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.power.wireless.IWirelessCharger;
 import crazypants.enderio.base.power.wireless.WirelessChargerController;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
-import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -25,11 +27,12 @@ import net.minecraftforge.energy.IEnergyStorage;
 public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerReceiver, IWirelessCharger, IPaintable.IPaintableTileEntity {
 
   @Store
-  int storedEnergyRF;
-
-  private double lastPowerUpdate = -1;
+  private int storedEnergyRF;
 
   private boolean registered = false;
+
+  private @Nonnull BoundingBox bb = BoundingBox.UNIT_CUBE;
+  private IBlockState blockState = null;
 
   public TileWirelessCharger() {
   }
@@ -51,14 +54,8 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
     if (!registered) {
       WirelessChargerController.instance.registerCharger(this);
       registered = true;
+      disableTicking();
     }
-
-    if ((lastPowerUpdate == -1) || (lastPowerUpdate == 0 && storedEnergyRF > 0) || (lastPowerUpdate > 0 && storedEnergyRF == 0)
-        || (lastPowerUpdate != storedEnergyRF && shouldDoWorkThisTick(3 * 60 * 20))) {
-      lastPowerUpdate = storedEnergyRF;
-      PacketHandler.sendToAllAround(new PacketStoredEnergy(this), this);
-    }
-
   }
 
   @Override
@@ -114,17 +111,14 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
 
   @Override
   public int takeEnergy(int max) {
-    if (isActive()) {
-      int prev = storedEnergyRF;
-      storedEnergyRF = Math.max(0, storedEnergyRF - max);
-      return prev - storedEnergyRF;
-    }
-    return 0;
+    int prev = storedEnergyRF;
+    storedEnergyRF = Math.max(0, storedEnergyRF - max);
+    return prev - storedEnergyRF;
   }
 
   @Override
   public boolean canConnectEnergy(@Nonnull EnumFacing from) {
-    return true;
+    return from == EnumFacing.DOWN || !((BlockNormalWirelessCharger) world.getBlockState(pos).getBlock()).isAntenna();
   }
 
   @Override
@@ -139,7 +133,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
 
   @Override
   public boolean isActive() {
-    return getEnergyStored() > 0 && !isPoweredRedstone();
+    return true;
   }
 
   @Nonnull
@@ -149,8 +143,15 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
   }
 
   @Override
-  protected void onAfterDataPacket() {
-    updateBlock();
+  @Nonnull
+  public BoundingBox getRange() {
+    IBlockState actualState = world.getBlockState(pos).getActualState(world, pos);
+    if (actualState != blockState) {
+      blockState = actualState;
+      bb = ((BlockNormalWirelessCharger) actualState.getBlock()).getChargingStrength(actualState, pos);
+      System.out.println(bb);
+    }
+    return bb;
   }
 
 }

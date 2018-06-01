@@ -22,13 +22,13 @@ public class InternalPoweredTileWrapper implements IEnergyStorage {
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityEnergy.ENERGY;
+      return capability == CapabilityEnergy.ENERGY && facing != null && tile.canConnectEnergy(facing);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-      if (capability == CapabilityEnergy.ENERGY) {
+      if (capability == CapabilityEnergy.ENERGY && facing != null && tile.canConnectEnergy(facing)) {
         return (T) new InternalPoweredTileWrapper(tile, facing);
       }
       return null;

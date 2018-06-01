@@ -13,10 +13,6 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
 
   private final FunctionUpgrade upgradeType;
 
-  public static ItemFunctionUpgrade createInventoryPanelUpgrade(@Nonnull IModObject modObject) {
-    return new ItemFunctionUpgrade(modObject, FunctionUpgrade.INVENTORY_PANEL);
-  }
-
   public static ItemFunctionUpgrade createUpgrade(@Nonnull IModObject modObject) {
     return new ItemFunctionUpgrade(modObject, FunctionUpgrade.EXTRACT_SPEED_UPGRADE);
   }

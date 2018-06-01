@@ -227,6 +227,7 @@ item.item_material.redstone_filter_base.name=Redstone Filter Base
 item.item_material.confusing_dust.name=Confusing Powder
 item.item_material.ender_fragment.name=Ender Fragment
 item.item_material.withering_dust.name=Withering Dust
+item.item_material.remote_awareness_upgrade.name=Remote Awareness Upgrade
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad

@@ -1,0 +1,67 @@
+{
+	"__comment": "Designed by HenryLoenwind with Cubik Studio - https://cubik.studio",
+  "parent": "enderio:block/transform/block",
+	"elements": [ 	 
+		{
+      "__comment": "core",
+      "from": [ 7, 7, 7 ],
+      "to": [ 9, 9, 9 ],
+      "faces": {
+        "down": { "uv": [ 0, 0, 2, 2 ], "texture": "#dish3" },
+        "up": { "uv": [ 0, 0, 2, 2 ], "texture": "#dish3" },
+        "north": { "uv": [ 0, 0, 2, 2 ], "texture": "#dish3" },
+        "south": { "uv": [ 0, 0, 2, 2 ], "texture": "#dish3" },
+        "west": { "uv": [ 0, 0, 2, 2 ], "texture": "#dish3" },
+        "east": { "uv": [ 0, 0, 2, 2 ], "texture": "#dish3" }
+      }
+    },
+    {
+      "__comment": "crossbar1",
+      "from": [ 4, 2, 7.5 ],
+      "to": [ 12, 2.5, 8.5 ],
+      "faces": {
+        "up": { "uv": [ 4, 2, 12, 3 ], "texture": "#dish3" },
+        "north": { "uv": [ 4, 2, 12, 2.5 ], "texture": "#dish3" },
+        "south": { "uv": [ 4, 2.5, 12, 3 ], "texture": "#dish3" },
+        "west": { "uv": [ 12, 2, 13, 2.5 ], "texture": "#dish3" },
+        "east": { "uv": [ 12, 2, 13, 2.5 ], "texture": "#dish3" }
+      }
+    },
+    {
+      "__comment": "stem",
+      "from": [ 7, 2, 7 ],
+      "to": [ 9, 7, 9 ],
+      "faces": {
+        "north": { "uv": [ 0, 4.5, 2, 9.5 ], "texture": "#dish3" },
+        "south": { "uv": [ 0, 4.5, 2, 9.5 ], "texture": "#dish3" },
+        "west": { "uv": [ 0, 4.5, 2, 9.5 ], "texture": "#dish3" },
+        "east": { "uv": [ 0, 4.5, 2, 9.5 ], "texture": "#dish3" }
+      }
+    },
+    {
+      "__comment": "crossbar2",
+      "from": [ 7.5, 2, 4 ],
+      "to": [ 8.5, 2.5, 12 ],
+      "faces": {
+        "up": { "uv": [ 4, 2, 12, 3 ], "texture": "#dish3", "rotation": 90 },
+        "north": { "uv": [ 12, 2, 13, 2.5 ], "texture": "#dish3" },
+        "south": { "uv": [ 12, 2, 13, 2.5 ], "texture": "#dish3" },
+        "west": { "uv": [ 4.5, 2, 12, 2.5 ], "texture": "#dish3" },
+        "east": { "uv": [ 4, 2.5, 12, 3 ], "texture": "#dish3" }
+      }
+    },
+    {
+      "__comment": "Voxels",
+      "from": [ 3, 0, 3 ],
+      "to": [ 13, 2, 13 ],
+      "faces": {
+        "down": { "uv": [ 3, 3, 13, 13 ], "texture": "#dish4", "cullface": "down" },
+        "up": { "uv": [ 13, 3, 3, 13 ], "texture": "#dish3" },
+        "north": { "uv": [ 3, 13, 13, 15 ], "texture": "#dish3" },
+        "south": { "uv": [ 3, 13, 13, 15 ], "texture": "#dish3" },
+        "west": { "uv": [ 13, 13, 3, 15 ], "texture": "#dish3" },
+        "east": { "uv": [ 13, 13, 3, 15 ], "texture": "#dish3" }
+      }
+    }
+  ]
+}

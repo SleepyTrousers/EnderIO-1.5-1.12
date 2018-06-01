@@ -301,7 +301,16 @@ tile.block_wired_charger.name=Wired Charger
 tile.block_wired_charger.tooltip.detailed.line1=Charges items with µI
 
 tile.block_wireless_charger.name=Wireless Charger
-tile.block_wireless_charger.tooltip.detailed.line1=Charges items in nearby players inventories
+tile.block_wireless_charger.tooltip.detailed.line1=Charges items in nearby players inventories. Has a small range, but can be painted and hidden.
+
+tile.block_normal_wireless_charger.name=Wireless Charging Antenna
+tile.block_normal_wireless_charger.tooltip.detailed.line1=Charges items in nearby players inventories.
+
+tile.block_enhanced_wireless_charger.name=Enhanced Wireless Charging Antenna
+tile.block_enhanced_wireless_charger.tooltip.detailed.line1=Charges items in nearby players inventories. Has twice the range of the Wireless Charging Antenna.
+
+tile.block_wireless_charger_extension.name=Wireless Charging Antenna Extension
+tile.block_wireless_charger_extension.tooltip.detailed.line1=Doubles the range of the Enhanced Wireless Charging Antenna in one direction.
 
 tile.block_impulse_hopper.name=Impulse Hopper
 tile.block_impulse_hopper.tooltip.detailed.line1=Takes inputed items and only outputs them if there is a full set of required items in the input.

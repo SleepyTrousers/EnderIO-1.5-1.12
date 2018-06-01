@@ -7,25 +7,48 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.material.material.Material;
 import crazypants.enderio.base.teleport.RandomTeleportUtil;
-import crazypants.enderio.zoo.config.Config;
+import crazypants.enderio.zoo.EnderIOZoo;
+import crazypants.enderio.zoo.config.ZooConfig;
+import crazypants.enderio.zoo.entity.render.RenderConcussionCreeper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIOZoo.MODID)
 public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooMob {
 
-  public static final String NAME = "concussioncreeper";
+  @SubscribeEvent
+  public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
+    IEnderZooMob.register(event, NAME, EntityConcussionCreeper.class, EGG_BG_COL, EGG_FG_COL, 14);
+  }
+
+  @SubscribeEvent
+  @SideOnly(Side.CLIENT)
+  public static void onPreInit(EnderIOLifecycleEvent.PreInit event) {
+    RenderingRegistry.registerEntityRenderingHandler(EntityConcussionCreeper.class, RenderConcussionCreeper.FACTORY);
+  }
+
+  public static final @Nonnull String NAME = "concussioncreeper";
   public static final int EGG_BG_COL = 0x56FF8E;
   public static final int EGG_FG_COL = 0xFF0A22;
 
@@ -57,29 +80,24 @@ public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooM
 
       if (timeSinceIgnited >= fuseTime - 1) {
         setTimeSinceIgnited(0);
-
-        int range = Config.concussionCreeperExplosionRange;
-        AxisAlignedBB bb = new AxisAlignedBB(posX - range, posY - range, posZ - range, posX + range, posY + range, posZ + range);
-        List<EntityLivingBase> ents = world.getEntitiesWithinAABB(EntityLivingBase.class, bb);
-        for (EntityLivingBase ent : ents) {
-          if (ent != this) {
-            if (!world.isRemote) {
-              boolean done = false;
-              for (int i = 0; i < 20 && !done; i++) {
-                done = RandomTeleportUtil.teleportRandomly(ent.world, ent, false, true, Config.concussionCreeperMaxTeleportRange);
-              }
-            }
-            if (ent instanceof EntityPlayer) {
-              world.playSound(ent.posX, ent.posY, ent.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.HOSTILE, 1.0F, 1.0F, false);
-              EnderZoo.proxy.setInstantConfusionOnPlayer((EntityPlayer) ent, Config.concussionCreeperConfusionDuration);
-            }
-          }
-        }
-
         world.playSound(posX, posY, posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 4.0F,
             (1.0F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F) * 0.7F, false);
         world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, posX, posY, posZ, 1.0D, 0.0D, 0.0D);
         setDead();
+
+        int range = ZooConfig.explosionRange.get();
+        AxisAlignedBB bb = new AxisAlignedBB(posX - range, posY - range, posZ - range, posX + range, posY + range, posZ + range);
+        List<EntityLivingBase> ents = world.getEntitiesWithinAABB(EntityLivingBase.class, bb);
+        for (EntityLivingBase ent : ents) {
+          if (!ent.isDead) {
+            if (!world.isRemote) {
+              RandomTeleportUtil.teleportEntity(ent.world, ent, false, true, ZooConfig.teleportRange.get());
+            }
+            if (ent instanceof EntityPlayer) {
+              EnderIOZoo.proxy.setInstantConfusionOnPlayer((EntityPlayer) ent, ZooConfig.confusionDuration.get());
+            }
+          }
+        }
       }
     }
 
@@ -94,20 +112,24 @@ public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooM
       j += rand.nextInt(looting + 1);
     }
     for (int k = 0; k < j; ++k) {
-      dropItem(getDropItem(), 1);
+      entityDropItem(getDropItemStack(), 0f);
+    }
+  }
+
+  protected @Nonnull ItemStack getDropItemStack() {
+    int num = rand.nextInt(3);
+    if (num == 0) {
+      return Material.SHARD_ENDER.getStack();
+    } else if (num == 1) {
+      return Material.POWDER_CONFUSION.getStack();
+    } else {
+      return new ItemStack(Items.GUNPOWDER);
     }
   }
 
   @Override
   protected @Nonnull Item getDropItem() {
-    int num = rand.nextInt(3);
-    if (num == 0) {
-      return Material.SHARD_ENDER.getStack();
-    } else if (num == 1) {
-      return EnderZoo.itemConfusingDust;
-    } else {
-      return Items.GUNPOWDER;
-    }
+    return Items.AIR;
   }
 
   @Override

@@ -1,0 +1,16 @@
+{
+  "__comment": "Designed by HenryLoenwind with Cubik Studio - https://cubik.studio",
+  "elements": [    
+    {
+      "__comment": "extension",
+      "from": [ 7, 7, 9 ],
+      "to": [ 9, 9, 16 ],
+      "faces": {
+        "down": { "uv": [ 0, 2, 2, 9 ], "texture": "#dish3" },
+        "up": { "uv": [ 0, 2, 2, 9 ], "texture": "#dish3" },
+        "west": { "uv": [ 2, 0, 9, 2 ], "texture": "#dish3" },
+        "east": { "uv": [ 2, 0, 9, 2 ], "texture": "#dish3" }
+      }
+    }
+  ]
+}

@@ -86,11 +86,6 @@ public class BlockImpulseHopper extends AbstractCapabilityPoweredMachineBlock<Ti
   }
 
   @Override
-  public boolean shouldRedstoneConduitConnect(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing from) {
-    return true;
-  }
-
-  @Override
   public boolean hasComparatorInputOverride(@Nonnull IBlockState state) {
     return true;
   }

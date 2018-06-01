@@ -2,14 +2,13 @@ package crazypants.enderio.machines.machine.wireless;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.client.render.BoundingBox;
 
-import crazypants.enderio.base.BlockEio;
+import crazypants.enderio.base.config.config.ChargerConfig;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
-import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
@@ -23,7 +22,6 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -32,8 +30,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
-    implements IResourceTooltipProvider, ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
+public class BlockWirelessCharger extends BlockNormalWirelessCharger
+    implements ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockWirelessCharger create(@Nonnull IModObject modObject) {
     BlockWirelessCharger res = new BlockWirelessCharger(modObject);
@@ -43,7 +41,6 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
 
   private BlockWirelessCharger(@Nonnull IModObject modObject) {
     super(modObject);
-    setLightOpacity(1);
     setDefaultState(getBlockState().getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
     setShape(mkShape(BlockFaceShape.SOLID));
   }
@@ -57,23 +54,6 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
   @Nonnull
   protected BlockStateContainer createBlockState() {
     return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER });
-  }
-
-  @Override
-  @Nonnull
-  public IBlockState getStateFromMeta(int meta) {
-    return getDefaultState();
-  }
-
-  @Override
-  public int getMetaFromState(@Nonnull IBlockState state) {
-    return 0;
-  }
-
-  @Override
-  @Nonnull
-  public IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
-    return getDefaultState();
   }
 
   @Override
@@ -109,16 +89,6 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
     return WirelessRenderMapper.instance;
   }
 
-  @Override
-  public boolean isOpaqueCube(@Nonnull IBlockState state) {
-    return false;
-  }
-
-  @Override
-  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
-    return getUnlocalizedName();
-  }
-
   // ///////////////////////////////////////////////////////////////////////
   // PAINT START
   // ///////////////////////////////////////////////////////////////////////
@@ -147,6 +117,16 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger>
   @Override
   public void registerRenderers(@Nonnull IModObject modObject) {
     ClientUtil.registerDefaultItemRenderer(MachineObject.block_wireless_charger);
-  } // TODO: check if this is needed---smartmodelattacher should already take care of it...
+  }
+
+  @Override
+  protected @Nonnull BoundingBox getChargingStrength(@Nonnull IBlockState state, @Nonnull BlockPos pos) {
+    return new BoundingBox(pos).expand(ChargerConfig.wirelessRange.get());
+  }
+
+  @Override
+  protected boolean isAntenna() {
+    return false;
+  }
 
 }
