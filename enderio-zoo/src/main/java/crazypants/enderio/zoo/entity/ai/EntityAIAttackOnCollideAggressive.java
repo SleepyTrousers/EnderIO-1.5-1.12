@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.ai;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -44,7 +46,7 @@ public class EntityAIAttackOnCollideAggressive extends EntityAIBase {
     return attackFrequency;
   }
 
-  public EntityAIAttackOnCollideAggressive setAttackFrequency(int attackFrequency) {
+  public @Nonnull EntityAIAttackOnCollideAggressive setAttackFrequency(int attackFrequency) {
     this.attackFrequency = attackFrequency;
     return this;
   }
