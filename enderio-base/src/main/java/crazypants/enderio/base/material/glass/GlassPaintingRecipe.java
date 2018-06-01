@@ -23,7 +23,7 @@ public class GlassPaintingRecipe extends BasicPainterTemplate<BlockPaintedFusedQ
     NNIterator<FusedQuartzType> iterator = NNList.of(FusedQuartzType.class).iterator();
     while (iterator.hasNext()) {
       FusedQuartzType type = iterator.next();
-      if (type.getBlock() == targetBlock) {
+      if (type.getBlock() == Block.getBlockFromItem(target.getItem())) {
         return new ItemStack(targetBlock, 1, FusedQuartzType.getMetaFromType(type));
       }
     }
