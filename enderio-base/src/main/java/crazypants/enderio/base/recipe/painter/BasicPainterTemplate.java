@@ -49,9 +49,9 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
   }
 
   @Override
-  public @Nonnull ResultStack[] getCompletedResult(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
-    Block targetBlock = getTargetBlock(target);
-    if (Prep.isInvalid(target) || Prep.isInvalid(paintSource) || targetBlock == null) {
+  public @Nonnull ResultStack[] getCompletedResult(@Nonnull ItemStack paintSource, @Nonnull ItemStack inputStack) {
+    Block outputBlock = getTargetBlock(inputStack);
+    if (Prep.isInvalid(inputStack) || Prep.isInvalid(paintSource) || outputBlock == null) {
       return new ResultStack[0];
     }
     Block paintBlock = PaintUtil.getBlockFromItem(paintSource);
@@ -63,24 +63,24 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
       return new ResultStack[0];
     }
 
-    ItemStack result = isUnpaintingOp(paintSource, target);
-    if (Prep.isInvalid(result)) {
-      result = mkItemStack(target, targetBlock);
-      if (targetBlock == Block.getBlockFromItem(target.getItem()) && target.hasTagCompound()) {
-        result.setTagCompound(NullHelper.notnullM(target.getTagCompound(), "ItemStack.getTagCompound() after .hasTagCompound()").copy());
+    ItemStack outputStack = isUnpaintingOp(paintSource, inputStack);
+    if (Prep.isInvalid(outputStack)) {
+      outputStack = mkItemStack(inputStack, outputBlock);
+      if (outputBlock == Block.getBlockFromItem(inputStack.getItem()) && inputStack.hasTagCompound()) {
+        outputStack.setTagCompound(NullHelper.notnullM(inputStack.getTagCompound(), "ItemStack.getTagCompound() after .hasTagCompound()").copy());
       }
-      ((IPaintable) targetBlock).setPaintSource(targetBlock, result, paintState);
-    } else if (result.getItem() == target.getItem() && target.hasTagCompound()) {
-      result.setTagCompound(NullHelper.notnullM(target.getTagCompound(), "ItemStack.getTagCompound() after .hasTagCompound()").copy());
+      ((IPaintable) outputBlock).setPaintSource(outputBlock, outputStack, paintState);
+    } else if (outputStack.getItem() == inputStack.getItem() && inputStack.hasTagCompound()) {
+      outputStack.setTagCompound(NullHelper.notnullM(inputStack.getTagCompound(), "ItemStack.getTagCompound() after .hasTagCompound()").copy());
 
-      Block realresult = PaintUtil.getBlockFromItem(result);
+      Block realresult = PaintUtil.getBlockFromItem(outputStack);
       if (realresult instanceof IPaintable) {
-        ((IPaintable) realresult).setPaintSource(realresult, result, null);
+        ((IPaintable) realresult).setPaintSource(realresult, outputStack, null);
       } else {
-        PaintUtil.setSourceBlock(result, null);
+        PaintUtil.setSourceBlock(outputStack, null);
       }
     }
-    return new ResultStack[] { new ResultStack(result) };
+    return new ResultStack[] { new ResultStack(outputStack) };
   }
 
   protected @Nonnull ItemStack mkItemStack(@Nonnull ItemStack target, @Nonnull Block targetBlock) {

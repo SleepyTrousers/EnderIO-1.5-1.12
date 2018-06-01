@@ -87,9 +87,4 @@ public class BlockCrafter<T extends TileCrafter> extends AbstractMachineBlock<T>
     blockStateWrapper.addCacheKey(tileEntity.getFacing());
   }
 
-  @Override
-  public boolean shouldRedstoneConduitConnect(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing from) {
-    return true;
-  }
-
 }
