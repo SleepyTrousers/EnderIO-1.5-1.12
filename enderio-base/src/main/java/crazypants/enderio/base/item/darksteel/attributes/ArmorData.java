@@ -10,13 +10,43 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public enum ArmorData {
   DARK_STEEL(35, new int[] { 2, 5, 6, 2 }, new int[] { 3, 6, 8, 3 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1f, 2f, Alloy.DARK_STEEL.getOreIngot(),
       "dark_steel_layer_1", "dark_steel_layer_2"),
 
   END_STEEL(50, new int[] { 4, 7, 10, 4 }, new int[] { 5, 8, 12, 5 }, 25, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 3f, 4f, Alloy.END_STEEL.getOreIngot(),
-      "end_steel_layer_1", "end_steel_layer_2"),
+      "end_steel_layer_1", "end_steel_layer_2") {
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected @Nonnull String getAnimationFrame() {
+      // TODO config flag to disable this
+      int tick = (int) ((EnderIO.proxy.getTickCount() / 2) % 26);
+      switch (tick) {
+      case 16:
+      case 25:
+        return "_1";
+      case 17:
+      case 24:
+        return "_2";
+      case 18:
+      case 23:
+        return "_3";
+      case 19:
+      case 22:
+        return "_4";
+      case 20:
+      case 21:
+        return "_5";
+      default:
+        return "";
+      }
+    }
+
+  },
 
   // Note maximum total armor value that has any effect at toughness 4*4 for damage=20 is 24. End steel comes up to 25.
 
@@ -40,8 +70,8 @@ public enum ArmorData {
         new Class<?>[] { String.class, int.class, int[].class, int.class, SoundEvent.class, float.class }, name() + "_EMPOWERED", maxDamageFactor,
         damageReductionEmpowered, enchantability, soundEvent, toughnessEmpowered), "Failed to create armor material");
     this.repairIngotOredict = repairIngotOredict;
-    this.texture1 = EnderIO.DOMAIN + ":textures/models/armor/" + texture1 + ".png";
-    this.texture2 = EnderIO.DOMAIN + ":textures/models/armor/" + texture2 + ".png";
+    this.texture1 = EnderIO.DOMAIN + ":textures/models/armor/" + texture1;
+    this.texture2 = EnderIO.DOMAIN + ":textures/models/armor/" + texture2;
   }
 
   public @Nonnull ArmorMaterial getMaterial() {
@@ -57,11 +87,14 @@ public enum ArmorData {
   }
 
   public @Nonnull String getTexture1() {
-    return texture1;
+    return texture1 + getAnimationFrame() + ".png";
   }
 
   public @Nonnull String getTexture2() {
-    return texture2;
+    return texture2 + getAnimationFrame() + ".png";
   }
 
+  protected @Nonnull String getAnimationFrame() {
+    return "";
+  }
 }
