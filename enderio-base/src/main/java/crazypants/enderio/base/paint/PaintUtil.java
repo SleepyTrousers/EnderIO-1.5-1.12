@@ -156,11 +156,22 @@ public class PaintUtil {
     if (Prep.isInvalid(itemStack)) {
       return;
     }
-    if (paintSource == null || paintSource == Blocks.AIR) {
+    if (paintSource == null || paintSource.getBlock() == Blocks.AIR) {
       BLOCKSTATE.removeTag(itemStack);
       return;
     } else {
-      BLOCKSTATE.setTag(itemStack, NBTUtil.writeBlockState(new NBTTagCompound(), paintSource));
+      try {
+        BLOCKSTATE.setTag(itemStack, NBTUtil.writeBlockState(new NBTTagCompound(), paintSource));
+      } catch (Exception e) {
+        String s;
+        try {
+          s = "" + Block.REGISTRY.getNameForObject(paintSource.getBlock());
+        } catch (Exception e1) {
+          s = e1.getMessage();
+        }
+        throw new RuntimeException("Failed to write blockstate to nbt. blockstate=" + paintSource + " registry name=" + s + " block=" + paintSource.getBlock(),
+            e);
+      }
     }
   }
 
