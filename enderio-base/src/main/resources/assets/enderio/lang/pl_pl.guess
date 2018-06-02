@@ -1019,7 +1019,7 @@ item.item_dark_steel_armor.tooltip.levelcost.line1=
 item.item_dark_steel_armor.tooltip.levelcost.line2=
 #                                              en: %s%s  %s + %s levels
 item.item_dark_steel_armor.tooltip.line1=
-#                                    en: %sDiamond level protection when powered
+#                                    en: %sBetter protection when powered
 item.item_dark_steel_axe.name=
 #                         en: Dark Axe
 item.item_dark_steel_axe.tooltip.effPowered=
@@ -1058,6 +1058,16 @@ item.item_dark_steel_sword.tooltip.detailed.line1=
 #                                             en: Increased skull and ender pearl drops
 item.item_dark_steel_sword.tooltip.detailed.line2=
 #                                             en: When powered: Endermen can't teleport once hit, extra Damage and Speed
+item.item_end_steel_boots.name=
+#                          en: Ender Boots
+item.item_end_steel_boots.tooltip.line1=
+#                                   en: Fall damage negated when powered
+item.item_end_steel_chestplate.name=
+#                               en: Ender Plate
+item.item_end_steel_helmet.name=
+#                           en: Ender Helm
+item.item_end_steel_leggings.name=
+#                             en: Ender Leggings
 item.item_ender_food.enderios.name=
 #                              en: "Enderios"
 item.item_ender_food.enderios.tooltip.common.line1=

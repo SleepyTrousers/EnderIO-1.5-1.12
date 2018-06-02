@@ -210,6 +210,12 @@ public enum ModObject implements IModObject.Registerable {
   itemDarkSteelAxe(ItemDarkSteelAxe.class),
   itemDarkSteelBow(ItemDarkSteelBow.class),
   itemDarkSteelShears(ItemDarkSteelShears.class),
+
+  itemEndSteelHelmet(ItemDarkSteelArmor.class, "createEndSteelHelmet"),
+  itemEndSteelChestplate(ItemDarkSteelArmor.class, "createEndSteelChestplate"),
+  itemEndSteelLeggings(ItemDarkSteelArmor.class, "createEndSteelLeggings"),
+  itemEndSteelBoots(ItemDarkSteelArmor.class, "createEndSteelBoots"),
+
   itemStaffOfLevity(ItemStaffOfLevity.class),
 
   item_owl_egg(ItemOwlEgg.class),

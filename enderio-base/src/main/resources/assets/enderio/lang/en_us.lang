@@ -109,7 +109,7 @@ item.item_dark_steel_shears.tooltip.multiHarvest=Shears multiple blocks/sheep wh
 
 item.item_dark_steel_bow.name=Dark Bow
 
-item.item_dark_steel_armor.tooltip.line1=%sDiamond level protection when powered
+item.item_dark_steel_armor.tooltip.line1=%sBetter protection when powered
 item.item_dark_steel_armor.tooltip.levelcost.line1=%s%s:
 item.item_dark_steel_armor.tooltip.levelcost.line2=%s%s  %s + %s levels
 
@@ -121,6 +121,15 @@ item.item_dark_steel_chestplate.name=Dark Plate
 item.item_dark_steel_helmet.name=Dark Helm
 
 item.item_dark_steel_leggings.name=Dark Leggings
+
+item.item_end_steel_boots.name=Ender Boots
+item.item_end_steel_boots.tooltip.line1=Fall damage negated when powered
+
+item.item_end_steel_chestplate.name=Ender Plate
+
+item.item_end_steel_helmet.name=Ender Helm
+
+item.item_end_steel_leggings.name=Ender Leggings
 
 item.item_ender_food.enderios.name="Enderios"
 item.item_ender_food.enderios.tooltip.common.line1=Part of a balanced breakfast!

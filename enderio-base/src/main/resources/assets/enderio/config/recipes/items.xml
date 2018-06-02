@@ -132,6 +132,48 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="End Steel Helmet" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="END_STEEL" /><item name="END_STEEL" /><item name="END_STEEL" />
+        <item name="END_STEEL" /><item name="GUARDIAN_DIODE" /><item name="END_STEEL" />
+      </grid>
+      <output name="enderio:item_end_steel_helmet" />
+    </crafting>
+  </recipe>
+
+  <recipe name="End Steel Chestplate" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="END_STEEL" /><item name="GUARDIAN_DIODE" /><item name="END_STEEL" />
+        <item name="END_STEEL" /><item name="END_STEEL" /><item name="END_STEEL" />
+        <item name="END_STEEL" /><item name="END_STEEL" /><item name="END_STEEL" />
+      </grid>
+      <output name="enderio:item_end_steel_chestplate" />
+    </crafting>
+  </recipe>
+
+  <recipe name="End Steel Leggings" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="END_STEEL" /><item name="END_STEEL" /><item name="END_STEEL" />
+        <item name="END_STEEL" /><item name="GUARDIAN_DIODE" /><item name="END_STEEL" />
+        <item name="END_STEEL" /><item /><item name="END_STEEL" />
+      </grid>
+      <output name="enderio:item_end_steel_leggings" />
+    </crafting>
+  </recipe>
+
+  <recipe name="End Steel Boots" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="END_STEEL" /><item name="GUARDIAN_DIODE" /><item name="END_STEEL" />
+        <item name="END_STEEL" /><item /><item name="END_STEEL" />
+      </grid>
+      <output name="enderio:item_end_steel_boots" />
+    </crafting>
+  </recipe>
+
   <recipe name="Glider Wing" required="true">
     <crafting>
       <grid size="3x3">
