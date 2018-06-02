@@ -2,6 +2,30 @@
 #
 # Please wait until the en_us lang file has been completed before translating.
 #
+fluid.conductive_iron=
+#                 en: Molten Conductive Iron
+fluid.dark_steel=
+#            en: Molten Dark Steel
+fluid.electrical_steel=
+#                  en: Molten Electrical Steel
+fluid.end_steel=
+#           en: Molten End Steel
+fluid.enderio.ender=
+#               en: Liquefied Ender Pearls
+fluid.enderio.glowstone=
+#                   en: Glowgas
+fluid.enderio.redstone=
+#                  en: Molten Redstone
+fluid.energetic_alloy=
+#                 en: Molten Energetic Alloy
+fluid.pulsating_iron=
+#                en: Molten Pulsating Iron
+fluid.redstone_alloy=
+#                en: Molten Redstone Alloy
+fluid.soularium=
+#           en: Molten Soularium
+fluid.vibrant_alloy=
+#               en: Molten Vibrant Alloy
 material.conductive_iron.name=Leitendes Eisen
 #                         en: Conductive Iron
 material.conductive_iron.prefix=
@@ -14,6 +38,10 @@ material.electrical_steel.name=Elektrischer Stahl
 #                          en: Electrical Steel
 material.electrical_steel.prefix=
 #                            en: Electrical %s
+material.end_steel.name=
+#                   en: End Steel
+material.end_steel.prefix=
+#                     en: %s of the End
 material.energetic_alloy.name=Energetisierte Legierung
 #                         en: Energetic Alloy
 material.energetic_alloy.prefix=
@@ -42,3 +70,27 @@ modifier.enderport.desc=
 #                   en: §oOut of my way!§r\nChance to teleport enemies away.
 modifier.enderport.name=
 #                   en: Vanishing
+tile.fluid.conductive_iron.name=
+#                           en: Molten Conductive Iron
+tile.fluid.dark_steel.name=
+#                      en: Molten Dark Steel
+tile.fluid.electrical_steel.name=
+#                            en: Molten Electrical Steel
+tile.fluid.end_steel.name=
+#                     en: Molten End Steel
+tile.fluid.enderio.ender.name=
+#                         en: Liquefied Ender Pearls
+tile.fluid.enderio.glowstone.name=
+#                             en: Glowgas
+tile.fluid.enderio.redstone.name=
+#                            en: Molten Redstone
+tile.fluid.energetic_alloy.name=
+#                           en: Molten Energetic Alloy
+tile.fluid.pulsating_iron.name=
+#                          en: Molten Pulsating Iron
+tile.fluid.redstone_alloy.name=
+#                          en: Molten Redstone Alloy
+tile.fluid.soularium.name=
+#                     en: Molten Soularium
+tile.fluid.vibrant_alloy.name=
+#                         en: Molten Vibrant Alloy
