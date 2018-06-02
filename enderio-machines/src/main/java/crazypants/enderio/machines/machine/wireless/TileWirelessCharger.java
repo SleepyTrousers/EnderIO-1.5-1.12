@@ -149,7 +149,6 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
     if (actualState != blockState) {
       blockState = actualState;
       bb = ((BlockNormalWirelessCharger) actualState.getBlock()).getChargingStrength(actualState, pos);
-      System.out.println(bb);
     }
     return bb;
   }

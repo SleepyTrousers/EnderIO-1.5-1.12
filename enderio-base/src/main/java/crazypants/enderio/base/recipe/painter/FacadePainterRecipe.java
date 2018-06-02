@@ -23,7 +23,7 @@ public class FacadePainterRecipe extends AbstractPainterTemplate<ItemConduitFaca
   }
 
   @Override
-  public @Nonnull ResultStack[] getCompletedResult(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
+  public @Nonnull ResultStack[] produceCompletedResult(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
     if (Prep.isInvalid(target) || Prep.isInvalid(paintSource)) {
       return new ResultStack[0];
     }

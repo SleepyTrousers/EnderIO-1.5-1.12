@@ -49,7 +49,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
   }
 
   @Override
-  public @Nonnull ResultStack[] getCompletedResult(@Nonnull ItemStack paintSource, @Nonnull ItemStack inputStack) {
+  public @Nonnull ResultStack[] produceCompletedResult(@Nonnull ItemStack paintSource, @Nonnull ItemStack inputStack) {
     Block outputBlock = getTargetBlock(inputStack);
     if (Prep.isInvalid(inputStack) || Prep.isInvalid(paintSource) || outputBlock == null) {
       return new ResultStack[0];

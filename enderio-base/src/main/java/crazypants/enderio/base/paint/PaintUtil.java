@@ -7,6 +7,7 @@ import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
@@ -120,6 +121,35 @@ public class PaintUtil {
 
   public static IBlockState getSourceBlock(@Nonnull ItemStack itemStack) {
     return readNbt(itemStack.getTagCompound());
+  }
+
+  public static void setPaintSource(@Nonnull ItemStack itemStack, @Nonnull ItemStack paintSource) {
+    paintSource = paintSource.copy();
+    paintSource.setCount(1);
+    NbtValue.PAINT_SOURCE.setStack(itemStack, paintSource);
+  }
+
+  public static @Nonnull ItemStack getPaintSource(@Nonnull ItemStack itemStack) {
+    return NbtValue.PAINT_SOURCE.getStack(itemStack);
+  }
+
+  public static void setOriginalStack(@Nonnull ItemStack itemStack, @Nonnull ItemStack originalStack) {
+    originalStack = originalStack.copy();
+    originalStack.setCount(1);
+    NbtValue.ORIGINAL_STACK.setStack(itemStack, originalStack);
+  }
+
+  public static @Nonnull ItemStack getOriginalStack(@Nonnull ItemStack itemStack) {
+    if (NbtValue.ORIGINAL_STACK.hasTag(itemStack)) {
+      return NbtValue.ORIGINAL_STACK.getStack(itemStack);
+    } else if (hasPaintSource(itemStack)) {
+      return NbtValue.PAINT_SOURCE.removeTag(BLOCKSTATE.removeTagCopy(itemStack));
+    }
+    return Prep.getEmpty();
+  }
+
+  public static boolean hasPaintSource(@Nonnull ItemStack itemStack) {
+    return NbtValue.PAINT_SOURCE.hasTag(itemStack);
   }
 
   public static void setSourceBlock(@Nonnull ItemStack itemStack, IBlockState paintSource) {

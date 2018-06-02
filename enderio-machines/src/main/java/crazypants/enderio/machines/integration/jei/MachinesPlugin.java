@@ -3,24 +3,31 @@ package crazypants.enderio.machines.integration.jei;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.machines.integration.jei.sagmill.SagMillRecipeCategory;
-import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
+import mezz.jei.api.IJeiHelpers;
+import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 
 @JEIPlugin
-public class MachinesPlugin extends BlankModPlugin {
+public class MachinesPlugin implements IModPlugin {
+
+  @Override
+  public void registerCategories(@Nonnull IRecipeCategoryRegistration registry) {
+    IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+    registry.addRecipeCategories(new PainterRecipeCategory(jeiHelpers));
+  }
 
   @Override
   public void register(@Nonnull IModRegistry registry) {
-    super.register(registry);
 
     IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
 
     AlloyRecipeCategory.register(registry, guiHelper);
     CombustionRecipeCategory.register(registry, guiHelper);
     EnchanterRecipeCategory.register(registry, guiHelper);
-    PainterRecipeCategory.register(registry, registry.getJeiHelpers());
+    PainterRecipeCategory.register(registry);
     SagMillRecipeCategory.register(registry, guiHelper);
     SagMillGrindingBallCategory.register(registry, guiHelper);
     SliceAndSpliceRecipeCategory.register(registry, guiHelper);
