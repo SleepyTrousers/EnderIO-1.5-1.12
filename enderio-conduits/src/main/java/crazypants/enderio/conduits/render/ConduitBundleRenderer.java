@@ -2,7 +2,6 @@ package crazypants.enderio.conduits.render;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -137,7 +136,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
   }
   
   @Nonnull
-  private static final Vector4f CORE_UVS = new Vector4f(2, 2, 14, 14); 
+  private static final Vector4f CORE_UVS = new Vector4f(2, 14, 14, 2);
   static {
     CORE_UVS.scale(1 / 16f);
   }
