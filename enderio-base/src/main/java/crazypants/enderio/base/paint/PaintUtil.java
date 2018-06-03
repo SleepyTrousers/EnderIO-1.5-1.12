@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.lang.Lang;
@@ -278,7 +279,17 @@ public class PaintUtil {
       // Vanilla bug. ItemPiston returns an invalid block meta.
       return paintBlock.getDefaultState();
     }
-    return paintBlock.getStateFromMeta(paintSource.getItem().getMetadata(paintSource.getMetadata()));
+    final IBlockState stateFromMeta = paintBlock.getStateFromMeta(paintSource.getItem().getMetadata(paintSource.getMetadata()));
+    if (NullHelper.untrust(stateFromMeta) == null) {
+      throw new RuntimeException("Block " + paintBlock + " returned null from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
+    } else if (NullHelper.untrust(stateFromMeta.getBlock()) == null) {
+      throw new RuntimeException("Block " + paintBlock + " returned a blockstate (" + stateFromMeta
+          + ") without block from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
+    } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(stateFromMeta.getBlock())) == null) {
+      throw new RuntimeException("Block " + paintBlock + " returned a blockstate (" + stateFromMeta + ") that belongs to an unregistered block "
+          + stateFromMeta.getBlock() + " from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
+    }
+    return stateFromMeta;
   }
 
   /**
