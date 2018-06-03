@@ -281,13 +281,15 @@ public class PaintUtil {
     }
     final IBlockState stateFromMeta = paintBlock.getStateFromMeta(paintSource.getItem().getMetadata(paintSource.getMetadata()));
     if (NullHelper.untrust(stateFromMeta) == null) {
-      throw new RuntimeException("Block " + paintBlock + " returned null from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
+      throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource
+          + " returned null from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
     } else if (NullHelper.untrust(stateFromMeta.getBlock()) == null) {
-      throw new RuntimeException("Block " + paintBlock + " returned a blockstate (" + stateFromMeta
-          + ") without block from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
+      throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource + " returned a blockstate ("
+          + stateFromMeta + ") without block from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
     } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(stateFromMeta.getBlock())) == null) {
-      throw new RuntimeException("Block " + paintBlock + " returned a blockstate (" + stateFromMeta + ") that belongs to an unregistered block "
-          + stateFromMeta.getBlock() + " from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
+      throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource + " returned a blockstate ("
+          + stateFromMeta + ") that belongs to an unregistered block " + stateFromMeta.getBlock()
+          + " from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
     }
     return stateFromMeta;
   }
