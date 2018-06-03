@@ -14,6 +14,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,9 +29,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest>
     implements IResourceTooltipProvider, ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  // TODO Make these methods use the machine render mappers for each type of machine frame
   public static BlockInventoryChest create_simple(@Nonnull IModObject mo) {
-    return create(mo);
+    BlockInventoryChest res = new BlockInventoryChest(mo) {
+      @Override
+      @SideOnly(Side.CLIENT)
+      public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+    };
+    res.init();
+    return res;
   }
 
   public static BlockInventoryChest create_enhanced(@Nonnull IModObject mo) {
@@ -46,24 +60,13 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
 
   protected BlockInventoryChest(@Nonnull IModObject mo) {
     super(mo);
-    initDefaultState();
+    setShape(mkShape(BlockFaceShape.SOLID));
   }
 
   @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileInventoryChest tileEntity) {
  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
-    return RenderMappers.BODY_MAPPER;
-  }
-
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
-    return RenderMappers.BODY_MAPPER;
-  }
 
   // NO GUI
 
