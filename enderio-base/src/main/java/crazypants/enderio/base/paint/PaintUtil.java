@@ -252,8 +252,8 @@ public class PaintUtil {
       if (fluidStack != null && fluidStack.getFluid() != null) {
         final Block block = fluidStack.getFluid().getBlock();
         if (block != null && NullHelper.untrust(Block.REGISTRY.getNameForObject(block)) == null) {
-          throw new RuntimeException(
-              "Fluid " + fluidStack.getFluid() + " returned an unregistered block from getBlock(). This is a major bug in the mod that fluid belongs to.");
+          throw new RuntimeException("Fluid " + fluidStack.getFluid() + " (" + fluidStack.getFluid().getName() + ", " + fluidStack.getFluid().getClass()
+              + ") from item " + itemIn + " returned an unregistered block from getBlock(). This is a major bug in the mod that fluid belongs to.");
         }
         return block;
       }
@@ -277,8 +277,8 @@ public class PaintUtil {
       if (fluidStack != null && fluidStack.getFluid() != null) {
         final Block block = fluidStack.getFluid().getBlock();
         if (block != null && NullHelper.untrust(Block.REGISTRY.getNameForObject(block)) == null) {
-          throw new RuntimeException(
-              "Fluid " + fluidStack.getFluid() + " returned an unregistered block from getBlock(). This is a major bug in the mod that fluid belongs to.");
+          throw new RuntimeException("Fluid " + fluidStack.getFluid() + " (" + fluidStack.getFluid().getName() + ", " + fluidStack.getFluid().getClass()
+              + ") from item " + itemStack + " returned an unregistered block from getBlock(). This is a major bug in the mod that fluid belongs to.");
         }
         return block;
       }
