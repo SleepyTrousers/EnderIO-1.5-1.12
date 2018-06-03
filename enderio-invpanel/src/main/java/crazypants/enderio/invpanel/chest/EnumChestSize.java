@@ -1,20 +1,25 @@
 package crazypants.enderio.invpanel.chest;
 
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.NullHelper;
+
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
 
-import javax.annotation.Nonnull;
-import java.util.Locale;
-
 public enum EnumChestSize implements IStringSerializable {
+  // Simple
   TINY(9),
   SMALL(12),
   MEDIUM(15),
+  // Normal
   BIG(18),
   LARGE(21),
   HUGE(24),
+  // Enhanced
   ENORMOUS(27),
   WAREHOUSE(30),
   WAREHOUSE13(60),
@@ -43,11 +48,6 @@ public enum EnumChestSize implements IStringSerializable {
   @Nonnull
   public String getUnlocalizedName(Item me) {
     return me.getUnlocalizedName() + "_" + getName();
-  }
-
-  @Nonnull
-  public static EnumChestSize getTypeFromMeta(int meta) {
-    return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "EnumChestSize#values");
   }
 
   public static int getMetaFromType(EnumChestSize value) {

@@ -17,8 +17,8 @@ More information on the syntax can be found in the recipes.xsd file. An
 XML editor will display that as tooltips when editing this file.
 
  -->
-  <capacitor key="enderio:block_inventory_chest/intake" base="80" scaler="POWER" />
-  <capacitor key="enderio:block_inventory_chest/buffer" base="100000" scaler="POWER" />
-  <capacitor key="enderio:block_inventory_chest/use" base="20" scaler="POWER" />
+  <capacitor key="enderio:block_inventory_chest_tiny/intake" base="80" scaler="POWER" />
+  <capacitor key="enderio:block_inventory_chest_tiny/buffer" base="100000" scaler="POWER" />
+  <capacitor key="enderio:block_inventory_chest_tiny/use" base="20" scaler="POWER" />
 
 </enderio:recipes>
