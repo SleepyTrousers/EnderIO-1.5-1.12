@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.zoo.entity.EntityEnderminy;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -67,12 +69,13 @@ public class AIFindPlayer extends EntityAINearestAttackableTarget<EntityPlayer> 
    */
   @Override
   public boolean shouldContinueExecuting() {
-    if (targetPlayer != null) {
-      if (!enderminy.shouldAttackPlayer(targetPlayer)) {
+    final EntityPlayer targetPlayer2 = targetPlayer;
+    if (targetPlayer2 != null) {
+      if (!enderminy.shouldAttackPlayer(targetPlayer2)) {
         return false;
       } else {
         enderminy.setAggressive(true);
-        enderminy.faceEntity(targetPlayer, 10.0F, 10.0F);
+        enderminy.faceEntity(targetPlayer2, 10.0F, 10.0F);
         return true;
       }
     } else {
@@ -85,9 +88,10 @@ public class AIFindPlayer extends EntityAINearestAttackableTarget<EntityPlayer> 
    */
   @Override
   public void updateTask() {
-    if (targetPlayer != null) {
+    final EntityPlayer targetPlayer2 = targetPlayer;
+    if (targetPlayer2 != null) {
       if (--stareTimer <= 0) {
-        targetEntity = targetPlayer;
+        targetEntity = targetPlayer2;
         targetPlayer = null;
         super.startExecuting();
         enderminy.playSound(SoundEvents.ENTITY_ENDERMEN_STARE, 1.0F, 1.0F);
@@ -96,7 +100,7 @@ public class AIFindPlayer extends EntityAINearestAttackableTarget<EntityPlayer> 
         iattributeinstance.applyModifier(EntityEnderminy.getAttackingspeedboostmodifier());
       }
     } else {
-      if (targetEntity != null) {
+      if (NullHelper.untrust(targetEntity) != null) {
         if (enderminy.shouldAttackPlayer(this.targetEntity)) {
           if (targetEntity.getDistanceSq(enderminy) < 16.0D) {
             enderminy.teleportRandomly();

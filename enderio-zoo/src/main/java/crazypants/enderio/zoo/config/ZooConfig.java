@@ -57,4 +57,19 @@ public final class ZooConfig {
   public static final IValue<Double> wolfAggressionRange = WOLF.make("aggressionRange", 3d, //
       "If a player gets within this range they will be attacked.").setRange(0, 32).sync();
 
+  public static final IValueFactory MINI = F0.section(".endermini");
+
+  public static final IValue<Boolean> attackPlayers = MINI.make("attackPlayers", false, //
+      "When true an Enderminy will attack a player if it looks at them, otherwise they are neutral mobs.").sync();
+  public static final IValue<Boolean> attackCreepers = MINI.make("attackCreepers", true, //
+      "When true Enderminies will attack creepers.").sync();
+  public static final IValue<Boolean> spawnInLitAreas = MINI.make("spawnInLitAreas", false, //
+      "When true enderminies will spawn in well lit areas, when false they will only spawn in dark areas.").sync();
+  public static final IValue<Boolean> spawnOnlyOnGrass = MINI.make("spawnOnlyOnGrass", true, //
+      "When true enderminies will spawn only on (vanilla) grass blocks.").sync();
+  public static final IValue<Integer> spawnMinY = MINI.make("spawnMinY", 0, //
+      "The minimum Y level at which enderminies will spawn.").setRange(0, 255).sync();
+  public static final IValue<Boolean> miniPackAttackEnabled = MINI.make("packAttackEnabled", true, //
+      "When true attacking one Enderminy will cause other Enderminies who witness the attack to attack the player as well.").sync();
+
 }

@@ -6,7 +6,8 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.zoo.config.Config;
+import crazypants.enderio.base.material.material.Material;
+import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.ai.AIFindPlayer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -72,19 +73,23 @@ public class EntityEnderminy extends EntityMob implements IEnderZooMob {
     tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
     tasks.addTask(8, new EntityAILookIdle(this));
     targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
-
-    if (Config.enderminyAttacksPlayerOnSight) {
-      targetTasks.addTask(2, new AIFindPlayer(this));
-    }
-
-    if (Config.enderminyAttacksCreepers) {
-      targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityCreeper>(this, EntityCreeper.class, true, true));
-    }
+    targetTasks.addTask(2, new AIFindPlayer(this) {
+      @Override
+      public boolean shouldExecute() {
+        return ZooConfig.attackPlayers.get() ? super.shouldExecute() : false;
+      }
+    });
+    targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityCreeper>(this, EntityCreeper.class, true, true) {
+      @Override
+      public boolean shouldExecute() {
+        return ZooConfig.attackCreepers.get() ? super.shouldExecute() : false;
+      }
+    });
   }
 
   @Override
   protected boolean isValidLightLevel() {
-    return Config.enderminySpawnInLitAreas ? true : super.isValidLightLevel();
+    return ZooConfig.spawnInLitAreas.get() ? true : super.isValidLightLevel();
   }
 
   @Override
@@ -103,13 +108,13 @@ public class EntityEnderminy extends EntityMob implements IEnderZooMob {
   @Override
   public boolean getCanSpawnHere() {
     boolean passedGrassCheck = true;
-    if (Config.enderminySpawnOnlyOnGrass) {
+    if (ZooConfig.spawnOnlyOnGrass.get()) {
       int i = MathHelper.floor(posX);
       int j = MathHelper.floor(getEntityBoundingBox().minY);
       int k = MathHelper.floor(posZ);
       passedGrassCheck = world.getBlockState(new BlockPos(i, j - 1, k)).getBlock() == Blocks.GRASS;
     }
-    return passedGrassCheck && posY > Config.enderminyMinSpawnY && super.getCanSpawnHere();
+    return passedGrassCheck && posY >= ZooConfig.spawnMinY.get() && super.getCanSpawnHere();
   }
 
   /**
@@ -278,11 +283,15 @@ public class EntityEnderminy extends EntityMob implements IEnderZooMob {
       int numItems = rand.nextInt(2 + looting);
       for (int i = 0; i < numItems; ++i) {
         if (rand.nextFloat() <= 0.5) {
-          dropItem(EnderZoo.itemEnderFragment, 1);
+          entityDropItem(getDropItemStack(), 0);
         }
         dropItem(item, 1);
       }
     }
+  }
+
+  protected @Nonnull ItemStack getDropItemStack() {
+    return Material.SHARD_ENDER.getStack();
   }
 
   /**
@@ -331,19 +340,14 @@ public class EntityEnderminy extends EntityMob implements IEnderZooMob {
   }
 
   private void doGroupArgo() {
-    if (!Config.enderminyGroupAgro) {
-      return;
-    }
-    if (!(getAttackTarget() instanceof EntityPlayer)) {
+    if (!ZooConfig.miniPackAttackEnabled.get() || !(getAttackTarget() instanceof EntityPlayer)) {
       return;
     }
     int range = 16;
     AxisAlignedBB bb = new AxisAlignedBB(posX - range, posY - range, posZ - range, posX + range, posY + range, posZ + range);
     List<EntityEnderminy> minies = world.getEntitiesWithinAABB(EntityEnderminy.class, bb);
-    if (minies != null && !minies.isEmpty()) {
-
+    if (!minies.isEmpty()) {
       for (EntityEnderminy miny : minies) {
-
         if (miny.getAttackTarget() == null) { // && miny.canEntityBeSeen(this)) {
           miny.setAttackTarget(getAttackTarget());
         }
@@ -370,26 +374,5 @@ public class EntityEnderminy extends EntityMob implements IEnderZooMob {
   public void setAggressive(boolean isAggressive) {
     this.isAggressive = isAggressive;
   }
-
-  // private final class ClosestEntityComparator implements Comparator<EntityCreeper> {
-  //
-  // Vec3 pos = new Vec3(0, 0, 0);
-  //
-  // @Override
-  // public int compare(EntityCreeper o1, EntityCreeper o2) {
-  // pos = new Vec3(posX, posY, posZ);
-  // double d1 = distanceSquared(o1.posX, o1.posY, o1.posZ, pos);
-  // double d2 = distanceSquared(o2.posX, o2.posY, o2.posZ, pos);
-  // return Double.compare(d1, d2);
-  // }
-  // }
-  //
-  // public double distanceSquared(double x, double y, double z, Vec3 v2) {
-  // double dx, dy, dz;
-  // dx = x - v2.xCoord;
-  // dy = y - v2.yCoord;
-  // dz = z - v2.zCoord;
-  // return (dx * dx + dy * dy + dz * dz);
-  // }
 
 }
