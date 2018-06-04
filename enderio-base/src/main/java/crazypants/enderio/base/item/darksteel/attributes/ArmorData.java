@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.material.alloy.Alloy;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -23,25 +24,28 @@ public enum ArmorData {
     @Override
     @SideOnly(Side.CLIENT)
     protected @Nonnull String getAnimationFrame() {
-      // TODO config flag to disable this
-      int tick = (int) ((EnderIO.proxy.getTickCount() / 2) % 26);
-      switch (tick) {
-      case 16:
-      case 25:
-        return "_1";
-      case 17:
-      case 24:
-        return "_2";
-      case 18:
-      case 23:
-        return "_3";
-      case 19:
-      case 22:
-        return "_4";
-      case 20:
-      case 21:
-        return "_5";
-      default:
+      if (PersonalConfig.animatedEnderArmorEnabled.get()) {
+        int tick = (int) ((EnderIO.proxy.getTickCount() / 2) % 26);
+        switch (tick) {
+        case 16:
+        case 25:
+          return "_1";
+        case 17:
+        case 24:
+          return "_2";
+        case 18:
+        case 23:
+          return "_3";
+        case 19:
+        case 22:
+          return "_4";
+        case 20:
+        case 21:
+          return "_5";
+        default:
+          return "";
+        }
+      } else {
         return "";
       }
     }
