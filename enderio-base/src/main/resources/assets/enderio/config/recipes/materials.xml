@@ -190,6 +190,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="End Iron Bars" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="END_STEEL"/><item name="END_STEEL"/><item name="END_STEEL"/>
+        <item name="END_STEEL"/><item name="END_STEEL"/><item name="END_STEEL"/>
+      </grid>
+      <output name="enderio:block_end_iron_bars" amount="16"/>
+    </crafting>
+  </recipe>
+
   <recipe name="Simple Chassis" required="true">
     <crafting>
       <grid>
@@ -209,6 +219,14 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
+  <recipe name="Enhanced Chassis">
+    <alloying energy="3600" exp="1">
+      <input name="END_STEEL_CHASSIS"/>
+      <input name="dyeEnhancedMachine"/>
+      <output name="ENHANCED_CHASSIS"/>
+    </alloying>
+  </recipe>
+
   <recipe name="Soul Chassis">
     <alloying energy="3600" exp="1">
       <input name="SIMPLE_CHASSIS"/>
@@ -217,14 +235,14 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
-  <recipe name="Enhanced Chassis" required="true">
+  <recipe name="End Steel Chassis" required="true">
     <crafting>
       <grid>
-        <item name="enderio:block_dark_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_dark_iron_bars"/>
+        <item name="enderio:block_end_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_end_iron_bars"/>
         <item name="ingotEndSteel"/><item name="CHASSIS"/><item name="ingotEndSteel"/>
-        <item name="enderio:block_dark_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_dark_iron_bars"/>
+        <item name="enderio:block_end_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_end_iron_bars"/>
       </grid>
-      <output name="ENHANCED_CHASSIS"/>
+      <output name="END_STEEL_CHASSIS"/>
     </crafting>
   </recipe>
 
@@ -247,6 +265,17 @@ XML editor will display that as tooltips when editing this file.
         <item name="ORGANIC_GREEN_DYE"/><item name="POWDER_QUARTZ"/><item name="dustLapis"/>
       </grid>
       <output name="dyeMachine" amount="6"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Enhanced Machine Dye">
+    <crafting>
+      <grid>
+        <item name="POWDER_PULSATING"/><item name="POWDER_QUARTZ"/><item name="POWDER_PULSATING"/>
+        <item name="POWDER_QUARTZ"/><item name="ORGANIC_BLACK_DYE"/><item name="POWDER_QUARTZ"/>
+        <item name="POWDER_PULSATING"/><item name="POWDER_QUARTZ"/><item name="POWDER_PULSATING"/>
+      </grid>
+      <output name="dyeMachine" amount="4"/>
     </crafting>
   </recipe>
 

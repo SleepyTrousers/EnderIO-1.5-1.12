@@ -29,6 +29,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="ENHANCED_CHASSIS" item="itemEnhancedMachineChassi" />
   <alias name="UNSOULED_CHASSIS" item="itemUnsouledMachineChassi" />
   <alias name="CHASSIPARTS" item="itemChassiParts" />
+  <alias name="END_STEEL_CHASSIS" item="itemEndSteelMachineChassi" />
 
   <alias name="GEAR_WOOD" item="gearWood" />
   <alias name="GEAR_STONE" item="gearStone" />
@@ -68,6 +69,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="POWDER_COBALT" item="dustCobalt" />
   <alias name="POWDER_INFINITY" item="dustBedrock" />
   <alias name="POWDER_QUARTZ" item="dustNetherQuartz" />
+  <alias name="POWDER_PULSATING" item="itemPulsatingPowder" />
   
   <!-- Note: ORGANIC_GREEN_DYE and ORGANIC_BROWN_DYE are added automatically -->
   
