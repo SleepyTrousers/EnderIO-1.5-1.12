@@ -27,9 +27,20 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public enum InvpanelObject implements IModObject.Registerable {
 
   blockInventoryPanel(BlockInventoryPanel.class, InvpanelTileEntity.TileInventoryPanel),
-  blockInventoryChest(BlockInventoryChest.class, InvpanelTileEntity.TileInventoryChest),
   blockInventoryPanelSensor(BlockInventoryPanelSensor.class, InvpanelTileEntity.TileInventoryPanelSensor),
 
+  // Warehouses
+  blockInventoryChestTiny(BlockInventoryChest.class, "create_simple", InvpanelTileEntity.TileInventoryChestTiny),
+  blockInventoryChestSmall(BlockInventoryChest.class, "create_simple", InvpanelTileEntity.TileInventoryChestSmall),
+  blockInventoryChestMedium(BlockInventoryChest.class, "create_simple", InvpanelTileEntity.TileInventoryChestMedium),
+  blockInventoryChestBig(BlockInventoryChest.class, InvpanelTileEntity.TileInventoryChestBig),
+  blockInventoryChestLarge(BlockInventoryChest.class, InvpanelTileEntity.TileInventoryChestLarge),
+  blockInventoryChestHuge(BlockInventoryChest.class, InvpanelTileEntity.TileInventoryChestHuge),
+  blockInventoryChestEnormous(BlockInventoryChest.class, "create_enhanced", InvpanelTileEntity.TileInventoryChestEnormous),
+  blockInventoryChestWarehouse(BlockInventoryChest.class, "create_enhanced", InvpanelTileEntity.TileInventoryChestWarehouse),
+  blockInventoryChestWarehouse13(BlockInventoryChest.class, "create_enhanced", InvpanelTileEntity.TileInventoryChestWarehouse13),
+
+  // Remotes
   itemInventoryRemote(ItemRemoteInvAccess.class),
 
   // Conduits

@@ -98,6 +98,9 @@ public enum Material {
 
   DISH("dish", "itemWirelessDish"),
 
+  END_STEEL_MACHINE_CHASSIS("endSteelMachineChassi"),
+  DYE_ENHANCED_MACHINE("enhanced_machine_dye", "dyeEnhancedMachine"),
+
   ;
 
   public final boolean hasEffect;

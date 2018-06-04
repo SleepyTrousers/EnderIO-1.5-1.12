@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "enderio:blocks/block_end_iron_bars"
+    }
+}
