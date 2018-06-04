@@ -129,9 +129,75 @@ XML editor will display that as tooltips when editing this file.
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
         <item name="ELECTRICAL_STEEL" /><item name="ENDER_RESONATOR" /><item name="ELECTRICAL_STEEL" />
-        <item name="ELECTRICAL_STEEL" /><item name="CAPACITOR3" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="CAPACITOR1" /><item name="ELECTRICAL_STEEL" />
       </grid>
       <output name="enderio:block_wireless_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Charger (Antenna)" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemWirelessDish" /><item name="ENDER_RESONATOR" /><item name="itemWirelessDish" />
+        <item name="itemWirelessDish" /><item name="CHASSIS" /><item name="itemWirelessDish" />
+        <item /><item name="CAPACITOR2" /><item />
+      </grid>
+      <output name="enderio:block_normal_wireless_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Charger (Antenna), Upgrade" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemWirelessDish" /><item name="enderio:block_wireless_charger" /><item name="itemWirelessDish" />
+        <item name="itemWirelessDish" /><item name="CHASSIS" /><item name="itemWirelessDish" />
+        <item /><item name="CAPACITOR2" /><item />
+      </grid>
+      <output name="enderio:block_normal_wireless_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Charger (Antenna, enhanced)" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemWirelessDish" /><item name="ENDER_RESONATOR" /><item name="itemWirelessDish" />
+        <item name="itemWirelessDish" /><item name="ENHANCED_CHASSIS" /><item name="itemWirelessDish" />
+        <item /><item name="CAPACITOR3" /><item />
+      </grid>
+      <output name="enderio:block_enhanced_wireless_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Charger (Antenna, enhanced), Upgrade 1" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemWirelessDish" /><item name="enderio:block_wireless_charger" /><item name="itemWirelessDish" />
+        <item name="itemWirelessDish" /><item name="ENHANCED_CHASSIS" /><item name="itemWirelessDish" />
+        <item /><item name="CAPACITOR3" /><item />
+      </grid>
+      <output name="enderio:block_enhanced_wireless_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Charger (Antenna, enhanced), Upgrade 2" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="enderio:block_normal_wireless_charger" /><item />
+        <item /><item name="ENHANCED_CHASSIS" /><item />
+        <item /><item name="CAPACITOR3" /><item />
+      </grid>
+      <output name="enderio:block_enhanced_wireless_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Charger (Antenna, extension" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="itemWirelessDish" /><item />
+        <item name="itemWirelessDish" /><item name="END_STEEL" /><item name="itemWirelessDish" />
+        <item /><item name="itemWirelessDish" /><item />
+      </grid>
+      <output name="enderio:block_wireless_charger_extension" />
     </crafting>
   </recipe>
 

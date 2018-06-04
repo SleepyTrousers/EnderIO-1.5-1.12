@@ -7,6 +7,7 @@ import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
@@ -238,11 +239,23 @@ public class PaintUtil {
   public static Block getBlockFromItem(Item itemIn) {
     if (itemIn != null) {
       if (itemIn instanceof ItemBlock) {
-        return ((ItemBlock) itemIn).getBlock();
+        final Block block = ((ItemBlock) itemIn).getBlock();
+        if (NullHelper.untrust(block) == null) {
+          Log.warn("ItemBlock " + itemIn + " returned null from getBlock(). This is a major bug in the mod that item belongs to.");
+        } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(block)) == null) {
+          throw new RuntimeException(
+              "ItemBlock " + itemIn + " returned an unregistered block from getBlock(). This is a major bug in the mod that item belongs to.");
+        }
+        return block;
       }
       FluidStack fluidStack = FluidUtil.getFluidTypeFromItem(new ItemStack(itemIn));
-      if (fluidStack != null) {
-        return fluidStack.getFluid().getBlock();
+      if (fluidStack != null && fluidStack.getFluid() != null) {
+        final Block block = fluidStack.getFluid().getBlock();
+        if (block != null && NullHelper.untrust(Block.REGISTRY.getNameForObject(block)) == null) {
+          throw new RuntimeException("Fluid " + fluidStack.getFluid() + " (" + fluidStack.getFluid().getName() + ", " + fluidStack.getFluid().getClass()
+              + ") from item " + itemIn + " returned an unregistered block from getBlock(). This is a major bug in the mod that fluid belongs to.");
+        }
+        return block;
       }
     }
     return null;
@@ -251,11 +264,23 @@ public class PaintUtil {
   public static Block getBlockFromItem(@Nonnull ItemStack itemStack) {
     if (Prep.isValid(itemStack)) {
       if (itemStack.getItem() instanceof ItemBlock) {
-        return ((ItemBlock) itemStack.getItem()).getBlock();
+        final Block block = ((ItemBlock) itemStack.getItem()).getBlock();
+        if (NullHelper.untrust(block) == null) {
+          Log.warn("ItemBlock " + itemStack + " returned null from getBlock(). This is a major bug in the mod that item belongs to.");
+        } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(block)) == null) {
+          throw new RuntimeException(
+              "ItemBlock " + itemStack + " returned an unregistered block from getBlock(). This is a major bug in the mod that item belongs to.");
+        }
+        return block;
       }
       FluidStack fluidStack = FluidUtil.getFluidTypeFromItem(itemStack);
       if (fluidStack != null && fluidStack.getFluid() != null) {
-        return fluidStack.getFluid().getBlock();
+        final Block block = fluidStack.getFluid().getBlock();
+        if (block != null && NullHelper.untrust(Block.REGISTRY.getNameForObject(block)) == null) {
+          throw new RuntimeException("Fluid " + fluidStack.getFluid() + " (" + fluidStack.getFluid().getName() + ", " + fluidStack.getFluid().getClass()
+              + ") from item " + itemStack + " returned an unregistered block from getBlock(). This is a major bug in the mod that fluid belongs to.");
+        }
+        return block;
       }
     }
     return null;
@@ -281,13 +306,15 @@ public class PaintUtil {
     }
     final IBlockState stateFromMeta = paintBlock.getStateFromMeta(paintSource.getItem().getMetadata(paintSource.getMetadata()));
     if (NullHelper.untrust(stateFromMeta) == null) {
-      throw new RuntimeException("Block " + paintBlock + " returned null from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
+      throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource
+          + " returned null from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
     } else if (NullHelper.untrust(stateFromMeta.getBlock()) == null) {
-      throw new RuntimeException("Block " + paintBlock + " returned a blockstate (" + stateFromMeta
-          + ") without block from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
+      throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource + " returned a blockstate ("
+          + stateFromMeta + ") without block from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
     } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(stateFromMeta.getBlock())) == null) {
-      throw new RuntimeException("Block " + paintBlock + " returned a blockstate (" + stateFromMeta + ") that belongs to an unregistered block "
-          + stateFromMeta.getBlock() + " from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
+      throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource + " returned a blockstate ("
+          + stateFromMeta + ") that belongs to an unregistered block " + stateFromMeta.getBlock()
+          + " from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
     }
     return stateFromMeta;
   }

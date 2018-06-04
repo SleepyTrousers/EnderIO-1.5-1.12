@@ -1117,4 +1117,15 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Wireless Energy Transmitter Dish Assembly" required="true">
+    <crafting>
+      <grid>
+        <item name="dyeWhite"/><item name="ELECTRICAL_STEEL"/><item />
+        <item /><item name="dyeWhite"/><item name="ELECTRICAL_STEEL"/>
+        <item name="dyeWhite"/><item name="ELECTRICAL_STEEL"/><item />
+      </grid>
+      <output name="itemWirelessDish"/>
+    </crafting>
+  </recipe>
+
 </enderio:recipes>

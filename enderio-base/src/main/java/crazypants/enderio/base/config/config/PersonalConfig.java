@@ -79,4 +79,9 @@ public final class PersonalConfig {
   public static final IValue<Integer> GUIBrandingTiles = F.make("GUIBrandingTiles", 2, //
       "Number of tiles for the GUI background branding.").setRange(1, 64);
 
+  // Visuals
+
+  public static final IValue<Boolean> animatedEnderArmorEnabled = F.make("animatedEnderArmorEnabled", true, //
+      "Should the Ender Armor texture be animated?");
+
 }
