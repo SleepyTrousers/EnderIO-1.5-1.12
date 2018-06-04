@@ -96,6 +96,8 @@ public enum Material {
 
   REMOTE_AWARENESS_UPGRADE("remoteAwarenessUpgrade"),
 
+  DISH("dish", "itemWirelessDish"),
+
   ;
 
   public final boolean hasEffect;

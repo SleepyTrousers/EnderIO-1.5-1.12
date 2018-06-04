@@ -220,9 +220,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Enhanced Chassis" required="true">
     <crafting>
       <grid>
-        <item name="enderio:block_dark_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_dark_iron_bars"/>
-        <item name="ingotEndSteel"/><item name="CHASSIS"/><item name="ingotEndSteel"/>
-        <item name="enderio:block_dark_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_dark_iron_bars"/>
+        <item name="enderio:block_dark_iron_bars"/><item name="END_STEEL"/><item name="enderio:block_dark_iron_bars"/>
+        <item name="END_STEEL"/><item name="CHASSIS"/><item name="END_STEEL"/>
+        <item name="enderio:block_dark_iron_bars"/><item name="END_STEEL"/><item name="enderio:block_dark_iron_bars"/>
       </grid>
       <output name="ENHANCED_CHASSIS"/>
     </crafting>
@@ -1085,6 +1085,17 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="ELECTRICAL_STEEL" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="REMOTE_AWARENESS_UPGRADE" amount="3" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Energy Transmitter Dish Assembly" required="true">
+    <crafting>
+      <grid>
+        <item name="dyeWhite"/><item name="ELECTRICAL_STEEL"/><item />
+        <item /><item name="dyeWhite"/><item name="ELECTRICAL_STEEL"/>
+        <item name="dyeWhite"/><item name="ELECTRICAL_STEEL"/><item />
+      </grid>
+      <output name="itemWirelessDish"/>
     </crafting>
   </recipe>
 
