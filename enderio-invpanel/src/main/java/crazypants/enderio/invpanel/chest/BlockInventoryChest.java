@@ -48,7 +48,21 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   }
 
   public static BlockInventoryChest create_enhanced(@Nonnull IModObject mo) {
-    return create(mo);
+    BlockInventoryChest res = new BlockInventoryChest(mo) {
+      @Override
+      @SideOnly(Side.CLIENT)
+      public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
+        return RenderMappers.ENHANCED_BODY_MAPPER;
+      }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+        return RenderMappers.ENHANCED_BODY_MAPPER;
+      }
+    };
+    res.init();
+    return res;
   }
 
   @Nonnull

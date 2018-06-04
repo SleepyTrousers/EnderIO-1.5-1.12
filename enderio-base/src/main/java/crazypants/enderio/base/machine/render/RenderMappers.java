@@ -30,6 +30,8 @@ public final class RenderMappers {
 
   public static final @Nonnull MachineRenderMapper SIMPLE_BODY_MAPPER = new MachineRenderMapper(EnumRenderPart.SIMPLE_BODY);
 
+  public static final @Nonnull MachineRenderMapper ENHANCED_BODY_MAPPER = new MachineRenderMapper(EnumRenderPart.ENHANCED_BODY);
+
   public static final @Nonnull MachineRenderMapper SOUL_MAPPER = new MachineRenderMapper(EnumRenderPart.SOUL);
 
 }

@@ -29,7 +29,13 @@ public enum EnumRenderPart implements IStringSerializable {
   SIMPLE_BODY(true),
   SIMPLE_BODY_SOUTH(BODY),
   SIMPLE_BODY_WEST(BODY),
-  SIMPLE_BODY_EAST(BODY);
+  SIMPLE_BODY_EAST(BODY),
+  ENHANCED_BODY(true),
+  ENHANCED_BODY_SOUTH(BODY),
+  ENHANCED_BODY_WEST(BODY),
+  ENHANCED_BODY_EAST(BODY),
+
+  ;
 
   public static final @Nonnull PropertyEnum<EnumRenderPart> SUB = PropertyEnum.<EnumRenderPart> create("sub", EnumRenderPart.class);
 
