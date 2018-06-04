@@ -275,7 +275,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="POWDER_QUARTZ"/><item name="ORGANIC_BLACK_DYE"/><item name="POWDER_QUARTZ"/>
         <item name="POWDER_PULSATING"/><item name="POWDER_QUARTZ"/><item name="POWDER_PULSATING"/>
       </grid>
-      <output name="dyeMachine" amount="4"/>
+      <output name="dyeEnhancedMachine" amount="4"/>
     </crafting>
   </recipe>
 
