@@ -148,6 +148,11 @@ tile.block_alloy_smelter.tooltip.detailed.line3=Upgrade with capacitors to incre
 tile.block_simple_alloy_smelter.name=Simple Alloy Smelter
 tile.block_simple_alloy_smelter.tooltip.detailed.line1=Used to create EnderIO alloys
 
+tile.block_enhanced_alloy_smelter.name=Enhanced Alloy Smelter
+tile.block_enhanced_alloy_smelter.tooltip.detailed.line1=Used to create EnderIO alloys
+tile.block_enhanced_alloy_smelter.tooltip.detailed.line2=Can also be used as a powered furnace
+tile.block_enhanced_alloy_smelter.tooltip.detailed.line3=Upgrade with capacitors to increase speed and energy storage
+
 tile.block_buffer.item.name=Item Buffer
 tile.block_buffer.power.name=Power Buffer
 tile.block_buffer.omni.name=Omni Buffer

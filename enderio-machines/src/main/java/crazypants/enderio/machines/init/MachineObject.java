@@ -59,6 +59,8 @@ public enum MachineObject implements IModObject.Registerable {
 
   block_simple_alloy_smelter(BlockAlloySmelter.class, "create_simple", MachineTileEntity.TileAlloySmelterSimple),
   block_alloy_smelter(BlockAlloySmelter.class, MachineTileEntity.TileAlloySmelter),
+  block_enhanced_alloy_smelter(BlockAlloySmelter.class, "create_enhanced", MachineTileEntity.TileAlloySmelterEnhanced),
+  block_enhanced_alloy_smelter_top(BlockAlloySmelter.class, "create_extension"),
   block_buffer(BlockBuffer.class, MachineTileEntity.TileBufferAbstract),
   block_enchanter(BlockEnchanter.class, MachineTileEntity.TileEnchanter),
   block_farm_station(BlockFarmStation.class, MachineTileEntity.TileFarmStation),

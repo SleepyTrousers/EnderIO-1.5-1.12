@@ -31,6 +31,10 @@ public enum CapacitorKey implements ICapacitorKey {
   ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ALLOY_SMELTER_POWER_USE(MachineObject.block_alloy_smelter, CapacitorKeyType.ENERGY_USE, "use"),
 
+  ENHANCED_ALLOY_SMELTER_POWER_INTAKE(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  ENHANCED_ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  ENHANCED_ALLOY_SMELTER_POWER_USE(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_USE, "use"),
+
   CREATIVE_BUFFER_POWER_INTAKE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_INTAKE, "intake_creative"),
   CREATIVE_BUFFER_POWER_BUFFER(MachineObject.block_buffer, CapacitorKeyType.ENERGY_BUFFER, "buffer_creative"),
   CREATIVE_BUFFER_POWER_USE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_USE, "use_creative"),
