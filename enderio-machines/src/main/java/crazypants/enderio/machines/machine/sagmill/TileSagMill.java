@@ -62,6 +62,15 @@ public abstract class TileSagMill extends AbstractPoweredTaskEntity implements I
     public Enhanced() {
       super(new SlotDefinition(2, 4), ENHANCED_SAG_MILL_POWER_INTAKE, ENHANCED_SAG_MILL_POWER_BUFFER, ENHANCED_SAG_MILL_POWER_USE);
     }
+
+    @Override
+    protected boolean shouldDoubleTick(@Nonnull IPoweredTask task, int usedEnergy) {
+      double chance = 4 / (task.getRequiredEnergy() / usedEnergy);
+      if (random.nextDouble() < chance) {
+        return true;
+      }
+      return super.shouldDoubleTick(task, usedEnergy);
+    }
   }
 
   @Store

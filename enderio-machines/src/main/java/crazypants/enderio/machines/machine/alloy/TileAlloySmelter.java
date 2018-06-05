@@ -55,6 +55,15 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     public Enhanced() {
       super(new SlotDefinition(3, 1, 1), ENHANCED_ALLOY_SMELTER_POWER_INTAKE, ENHANCED_ALLOY_SMELTER_POWER_BUFFER, ENHANCED_ALLOY_SMELTER_POWER_USE);
     }
+
+    @Override
+    protected boolean shouldDoubleTick(@Nonnull IPoweredTask task, int usedEnergy) {
+      double chance = 4 / (task.getRequiredEnergy() / usedEnergy);
+      if (random.nextDouble() < chance) {
+        return true;
+      }
+      return super.shouldDoubleTick(task, usedEnergy);
+    }
   }
 
   public static enum Mode {
