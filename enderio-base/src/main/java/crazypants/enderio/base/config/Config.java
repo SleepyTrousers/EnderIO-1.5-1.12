@@ -220,7 +220,7 @@ public final class Config {
   public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;
   public static int magnetRange = 5;
-  public static String[] magnetBlacklist = new String[] { "appliedenergistics2:item.ItemCrystalSeed", "Botania:livingrock", "Botania:manaTablet" };
+  public static String[] magnetBlacklist = new String[] { "appliedenergistics2:crystal_seed", "botania:livingrock", "botania:manatablet" };
   public static int magnetMaxItems = 20;
 
   public static boolean magnetAllowInMainInventory = false;
