@@ -244,6 +244,11 @@ tile.block_sag_mill.tooltip.detailed.line3=Upgrade with capacitors to increase s
 tile.block_simple_sag_mill.name=Simple SAG Mill
 tile.block_simple_sag_mill.tooltip.detailed.line1=Grinds ore and other items
 
+tile.block_enhanced_sag_mill.name=Enhanced SAG Mill
+tile.block_enhanced_sag_mill.tooltip.detailed.line1=Grinds ore and other items
+tile.block_enhanced_sag_mill.tooltip.detailed.line2=Add grinding balls to increase output and efficiency
+tile.block_enhanced_sag_mill.tooltip.detailed.line3=Upgrade with capacitors to increase speed and energy storage
+
 tile.block_slice_and_splice.name=Slice'N'Splice
 tile.block_slice_and_splice.tooltip.detailed.line1=Slices heads and splices in all sorts of useful things
 

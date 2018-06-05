@@ -87,6 +87,8 @@ public enum MachineObject implements IModObject.Registerable {
   block_reservoir(BlockReservoir.class, MachineTileEntity.TileReservoir),
   block_simple_sag_mill(BlockSagMill.class, "create_simple", MachineTileEntity.TileSagMillSimple),
   block_sag_mill(BlockSagMill.class, MachineTileEntity.TileSagMill),
+  block_enhanced_sag_mill(BlockSagMill.class, "create_enhanced", MachineTileEntity.TileSagMillEnhanced),
+  block_enhanced_sag_mill_top(BlockSagMill.class, "create_extension"),
   block_slice_and_splice(BlockSliceAndSplice.class, MachineTileEntity.TileSliceAndSplice),
   block_solar_panel(BlockSolarPanel.class, MachineTileEntity.TileSolarPanel),
   block_soul_binder(BlockSoulBinder.class, MachineTileEntity.TileSoulBinder),

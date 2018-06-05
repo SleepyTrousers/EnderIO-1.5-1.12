@@ -78,6 +78,7 @@ public enum MachineTileEntity implements IModTileEntity {
   TileAlloySmelterEnhanced(TileAlloySmelter.Enhanced.class),
   TileSagMill(TileSagMill.Normal.class),
   TileSagMillSimple(TileSagMill.Simple.class),
+  TileSagMillEnhanced(TileSagMill.Enhanced.class),
   TileEntityPainter(TileEntityPainter.class),
   TileFarmStation(TileFarmStation.class),
   TilePoweredSpawner(TilePoweredSpawner.class),

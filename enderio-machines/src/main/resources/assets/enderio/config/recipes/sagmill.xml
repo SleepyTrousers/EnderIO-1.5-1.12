@@ -36,6 +36,28 @@
     </crafting>
   </recipe>
 
+  <recipe name="Enhanced SAG Mill" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemFlint" /><item name="itemFlint" /><item name="itemFlint" />
+        <item name="ingotIron" /><item name="ENHANCED_CHASSIS" /><item name="ingotIron" />
+        <item name="GEAR_VIBRANT" /><item name="minecraft:piston" /><item name="GEAR_VIBRANT" />
+      </grid>
+      <output name="enderio:block_enhanced_sag_mill" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Enhanced SAG Mill, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:block_sag_mill" /><item />
+        <item /><item name="ENHANCED_CHASSIS" /><item />
+        <item name="GEAR_VIBRANT" /><item /><item name="GEAR_VIBRANT" />
+      </grid>
+      <output name="enderio:block_enhanced_sag_mill" />
+    </crafting>
+  </recipe>
+
   <recipe name="Sagmill: Silicon" required="true">
     <sagmilling energy="720">
       <input name="oredict:sand"/>

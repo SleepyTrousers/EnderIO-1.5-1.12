@@ -6,11 +6,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.machine.base.block.BlockMachineExtension;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.machines.init.MachineObject;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -18,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -49,6 +53,28 @@ public class BlockSagMill<T extends TileSagMill> extends AbstractPoweredTaskBloc
     };
     res.init();
     return res;
+  }
+
+  public static BlockSagMill<TileSagMill.Enhanced> create_enhanced(@Nonnull IModObject modObject) {
+    BlockSagMill<TileSagMill.Enhanced> res = new BlockSagMill<TileSagMill.Enhanced>(modObject) {
+      @Override
+      @SideOnly(Side.CLIENT)
+      public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
+        return RenderMappers.ENHANCED_BODY_MAPPER;
+      }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+        return RenderMappers.ENHANCED_BODY_MAPPER;
+      }
+    };
+    res.init();
+    return res;
+  }
+
+  public static BlockMachineExtension create_extension(@Nonnull IModObject modObject) {
+    return new BlockMachineExtension(modObject, MachineObject.block_enhanced_sag_mill, new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 11D / 16D, 1.0D));
   }
 
   private BlockSagMill(@Nonnull IModObject modObject) {
@@ -102,4 +128,9 @@ public class BlockSagMill<T extends TileSagMill> extends AbstractPoweredTaskBloc
     blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isActive());
   }
 
+  @Nullable
+  @Override
+  public Block getEnhancedExtensionBlock() {
+    return MachineObject.block_enhanced_sag_mill_top.getBlockNN();
+  }
 }

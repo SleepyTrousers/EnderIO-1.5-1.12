@@ -14,6 +14,12 @@ public class ContainerSagMill<E extends TileSagMill> extends AbstractMachineCont
 
   static final int GRINDING_BALL_SLOT = 1;
 
+  public static class Enhanced extends ContainerSagMill<TileSagMill.Enhanced> {
+    public Enhanced(@Nonnull InventoryPlayer playerInv, @Nonnull TileSagMill.Enhanced te) {
+      super(playerInv, te);
+    }
+  }
+
   public static class Normal extends ContainerSagMill<TileSagMill.Normal> {
     public Normal(@Nonnull InventoryPlayer playerInv, @Nonnull TileSagMill.Normal te) {
       super(playerInv, te);
@@ -30,8 +36,10 @@ public class ContainerSagMill<E extends TileSagMill> extends AbstractMachineCont
   public static @Nonnull <E extends TileSagMill> ContainerSagMill<E> create(@Nonnull InventoryPlayer playerInv, @Nonnull E te) {
     if (te instanceof TileSagMill.Simple) {
       return (ContainerSagMill<E>) new Simple(playerInv, (TileSagMill.Simple) te);
-    } else {
+    } else if (te instanceof TileSagMill.Normal) {
       return (ContainerSagMill<E>) new Normal(playerInv, (TileSagMill.Normal) te);
+    } else {
+      return (ContainerSagMill<E>) new Enhanced(playerInv, (TileSagMill.Enhanced) te);
     }
   }
 
@@ -52,7 +60,7 @@ public class ContainerSagMill<E extends TileSagMill> extends AbstractMachineCont
       @Override
       @SideOnly(Side.CLIENT)
       public boolean isEnabled() {
-        return getTe() instanceof TileSagMill.Normal;
+        return getTe() instanceof TileSagMill.Normal || getTe() instanceof TileSagMill.Enhanced;
       }
     });
     addSlotToContainer(new Slot(getInv(), 2, 49, 59) {

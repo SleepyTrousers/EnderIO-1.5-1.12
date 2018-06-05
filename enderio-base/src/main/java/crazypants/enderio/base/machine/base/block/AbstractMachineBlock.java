@@ -52,6 +52,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     implements IEioGuiHandler.WithPos, IResourceTooltipProvider, ISmartRenderAwareBlock, IClearableConfiguration {
 
   protected final @Nonnull Random random;
+  protected boolean isEnhanced = false;
 
   protected AbstractMachineBlock(@Nonnull IModObject mo, @Nonnull Material mat) {
     super(mo, mat);
@@ -140,6 +141,12 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       return;
     }
     world.notifyBlockUpdate(pos, state, state, 3);
+
+    // Enhanced machine extensions
+    Block block = getEnhancedExtensionBlock();
+    if (isEnhanced && block != null) {
+      world.setBlockState(pos.up(), block.getDefaultState());
+    }
   }
 
   protected @Nonnull EnumFacing getFacingForHeading(@Nonnull EntityLivingBase player) {
@@ -157,6 +164,19 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     AbstractMachineEntity te = getTileEntity(worldIn, pos);
     if (te != null) {
       te.onNeighborBlockChange(state, worldIn, pos, blockIn, fromPos);
+    }
+
+    // Enhanced machines extensions
+    Block block = getEnhancedExtensionBlock();
+    if (isEnhanced && block != null) {
+      if (worldIn.getBlockState(pos.up()).getBlock() != block) {
+        if (super.canPlaceBlockAt(worldIn, pos.up())) {
+          worldIn.setBlockState(pos.up(), block.getDefaultState());
+        } else {
+          // impossible error state a.k.a. someone ripped the machine apart. And what do machines that are ripped apart do? They explode. Violently.
+          worldIn.createExplosion(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 3f, true); // 3 == normal Creeper
+        }
+      }
     }
   }
 
@@ -299,5 +319,18 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
     return true;
+  }
+
+  // Enhanced Machines
+
+  @Override
+  public boolean canPlaceBlockAt(@Nonnull World world, @Nonnull BlockPos pos) {
+    return super.canPlaceBlockAt(world, pos) && (!isEnhanced || (pos.getY() < 255 && super.canPlaceBlockAt(world, pos.up())));
+  }
+
+  // Null be default. Enhanced machines can override this for their needed machine objects.
+  @Nullable
+  public Block getEnhancedExtensionBlock() {
+    return null;
   }
 }

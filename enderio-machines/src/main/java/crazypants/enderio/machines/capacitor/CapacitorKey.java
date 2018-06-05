@@ -109,6 +109,10 @@ public enum CapacitorKey implements ICapacitorKey {
   SIMPLE_SAG_MILL_POWER_USE(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_USE, "use"),
   SIMPLE_SAG_MILL_POWER_LOSS(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_LOSS, "loss"),
 
+  ENHANCED_SAG_MILL_POWER_INTAKE(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  ENHANCED_SAG_MILL_POWER_BUFFER(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  ENHANCED_SAG_MILL_POWER_USE(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_USE, "use"),
+
   SLICE_POWER_INTAKE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   SLICE_POWER_BUFFER(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   SLICE_POWER_USE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_USE, "use"),
