@@ -1,0 +1,106 @@
+// Inv Panel
+tile.block_inventory_panel.name=インベントリパネル
+tile.block_inventory_panel.tooltip.basic.line1=ストレージの遠隔操作とクラフトが可能。
+tile.block_inventory_panel.tooltip.detailed.line1=遠隔認識アップグレードが搭載されたアイテム導管に
+tile.block_inventory_panel.tooltip.detailed.line2=接続されたストレージへのアクセスが可能。
+tile.block_inventory_panel.tooltip.detailed.line3=稼働には栄養蒸留液が必要。
+tile.block_inventory_panel.tooltip.detailed.line4=クラフト枠が付属。
+
+enderio.item_data_conduit.name=データ導管
+
+// Gui
+enderio.gui.inventorypanel.header.crafting=クラフト枠
+enderio.gui.inventorypanel.header.return=返送物置き場
+enderio.gui.inventorypanel.header.storage=保存物置き場
+enderio.gui.inventorypanel.info.filter=<アイテム検索>
+enderio.gui.inventorypanel.info.offline=<オフライン>
+enderio.gui.inventorypanel.tooltip.return.line1=アイテムの返送場所。
+enderio.gui.inventorypanel.tooltip.return.line2=ここに置かれたアイテムは
+enderio.gui.inventorypanel.tooltip.return.line3=アイテム導管へ輸送されるが、
+enderio.gui.inventorypanel.tooltip.return.line4=クラフトの材料対象とはならない。
+enderio.gui.inventorypanel.tooltip.return.line5=クリックで保存物置き場に変更。
+enderio.gui.inventorypanel.tooltip.storage.line1=アイテムの一時保存場所。
+enderio.gui.inventorypanel.tooltip.storage.line2=一時的にアイテムを保存しておく場所。
+enderio.gui.inventorypanel.tooltip.storage.line3=クリックで返送物置き場に変更。
+enderio.gui.inventorypanel.tooltip.filterslot.line1=フィルターカードスロット
+enderio.gui.inventorypanel.tooltip.filterslot.line2=ここに設定済みのフィルターカードを
+enderio.gui.inventorypanel.tooltip.filterslot.line3=配置することで、表示アイテムをフィルタリング。
+enderio.gui.inventorypanel.tooltip.sort.name_down.line1=名称順（降順）
+enderio.gui.inventorypanel.tooltip.sort.name_up.line1=名称順（昇順）
+enderio.gui.inventorypanel.tooltip.sort.name_up.line2=アイテムを名前の昇順で表示。
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line1=Mod ID 順（降順）
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line2=アイテムを同一 Mod 内から名称順で表示
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line1=Mod ID 順（昇順）
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line2=アイテムを同一 Mod 内から名称順で表示
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line3=名前の昇順で表示。
+enderio.gui.inventorypanel.tooltip.sort.count_down.line1=個数順（降順）
+enderio.gui.inventorypanel.tooltip.sort.count_down.line2=個数が多いアイテムから表示。
+enderio.gui.inventorypanel.tooltip.sort.count_up.line1=個数順（昇順）
+enderio.gui.inventorypanel.tooltip.sort.count_up.line2=個数が少ないアイテムから表示。
+enderio.gui.inventorypanel.tooltip.refill.line1=クラフト枠内のアイテムを補充
+enderio.gui.inventorypanel.tooltip.refill.line2=クリックでクラフトに必要な
+enderio.gui.inventorypanel.tooltip.refill.line3=アイテムを補充。
+enderio.gui.inventorypanel.tooltip.refill.line4=Shift クリックでクラフトに必要な
+enderio.gui.inventorypanel.tooltip.refill.line5=アイテムを可能な限り補充。
+enderio.gui.inventorypanel.tooltip.clear.line1=クラフト枠をクリア
+enderio.gui.inventorypanel.tooltip.clear.line2=すべてのアイテムを返送物置き場に移動。
+enderio.gui.inventorypanel.tooltip.fuelTank=栄養液タンク
+enderio.gui.inventorypanel.tooltip.itemsstored=格納中アイテム：%s
+enderio.gui.inventorypanel.tooltip.addrecipe.line1=現在のクラフトレシピを保存。
+enderio.gui.inventorypanel.tooltip.addrecipe.line2=最大６個までレシピを登録可能。
+enderio.gui.inventorypanel.tooltip.addrecipe.line3=登録レシピを左クリックで
+enderio.gui.inventorypanel.tooltip.addrecipe.line4=クラフトに必要なアイテムを自動配置。
+enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift 左クリックでクラフトに
+enderio.gui.inventorypanel.tooltip.addrecipe.line6=必要なアイテムを可能な限り配置。
+enderio.gui.inventorypanel.tooltip.addrecipe.line7=登録レシピは右クリックで削除可能。
+enderio.gui.inventorypanel.tooltip.sync=NEI/JEI と同期
+enderio.gui.inventorypanel.tooltip.sync.nei=NEI と同期
+enderio.gui.inventorypanel.tooltip.sync.jei=JEI と同期
+enderio.gui.inventorypanel.tooltip.sync.jei.line1=検索窓に入力した文字を反映
+enderio.gui.inventorypanel.tooltip.sync.jei.line2=JEI の検索窓に入力した文字を非反映
+
+// Sensor
+tile.block_inventory_panel_sensor.name=インベントリセンサー
+tile.block_inventory_panel_sensor.tooltip.detailed.line1=インベントリパネルネットワーク内にある
+tile.block_inventory_panel_sensor.tooltip.detailed.line2=アイテムの個数に基づいて
+tile.block_inventory_panel_sensor.tooltip.detailed.line3=レッドストーン信号を出力。
+
+enderio.gui.inventorySensor.control1=次の数以下で出力
+enderio.gui.inventorySensor.control2=次の数以上で停止
+
+// Remotes
+enderio.remoteinv.chat.set=接続先を設定しました
+enderio.remoteinv.chat.notarget=エラー：接続先が未設定です
+enderio.remoteinv.chat.outofrange=エラー：有効範囲外です
+enderio.remoteinv.chat.invalidtargetworld=エラー：接続先のディメンションにアクセスできません
+enderio.remoteinv.chat.notloaded=エラー：接続先が読み込まれていません
+enderio.remoteinv.chat.invalidtarget=エラー：接続先が存在しません
+enderio.remoteinv.chat.outofpower=エラー：電力が不足しています
+enderio.remoteinv.chat.outoffluid=エラー：{FLUIDNAME}が不足しています
+enderio.remoteinv.chat.error=エラー：テクニカルエラーが発生しました。ログファイルを参照してください
+
+item.item_inventory_remote_basic.name=遠隔型インベントリパネル
+item.item_inventory_remote_basic.tooltip.detailed.line1=最大５チャンク離れた場所からインベントリパネルへのアクセスが可能。
+item.item_inventory_remote_basic.tooltip.detailed.line2=パネルを Shift 右クリックすると登録が可能。
+item.item_inventory_remote_basic.tooltip.detailed.line3=稼働には{FLUIDNAME}と電力が必要。
+
+item.item_inventory_remote_advanced.name=遠隔型強化インベントリパネル
+item.item_inventory_remote_advanced.tooltip.detailed.line1=同じディメンション内のどこからでもインベントリパネルにアクセスが可能。
+item.item_inventory_remote_advanced.tooltip.detailed.line2=パネルを Shift 右クリックすると登録が可能。
+item.item_inventory_remote_advanced.tooltip.detailed.line3=稼働には{FLUIDNAME}と電力が必要。
+
+item.item_inventory_remote_ender.name=遠隔型エンダーインベントリパネル
+item.item_inventory_remote_ender.tooltip.detailed.line1=どこからでもインベントリパネルへのアクセスが可能。
+item.item_inventory_remote_ender.tooltip.detailed.line2=パネルを Shift 右クリックすると登録が可能。
+item.item_inventory_remote_ender.tooltip.detailed.line3=稼働には{FLUIDNAME}と電力が必要。
+
+// Warehouses
+tile.block_inventory_chest_tiny.name=極小インベントリシステムストレージ
+tile.block_inventory_chest_small.name=小型インベントリシステムストレージ
+tile.block_inventory_chest_medium.name=中型インベントリシステムストレージ
+tile.block_inventory_chest_big.name=大型インベントリシステムストレージ
+tile.block_inventory_chest_large.name=著大インベントリシステムストレージ
+tile.block_inventory_chest_huge.name=巨大インベントリシステムストレージ
+tile.block_inventory_chest_enormous.name=極大インベントリシステムストレージ
+tile.block_inventory_chest_warehouse.name=インベントリシステムストレージ倉庫
+tile.block_inventory_chest_warehouse13.name=インベントリシステムストレージ拡張倉庫
