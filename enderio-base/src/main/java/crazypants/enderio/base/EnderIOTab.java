@@ -11,7 +11,7 @@ import static crazypants.enderio.base.init.ModObject.itemEnderface;
 
 public class EnderIOTab extends CreativeTabs {
 
-  public static final @Nonnull CreativeTabs tabEnderIO, tabEnderIOItems, tabEnderIOMaterials, tabEnderIOMachines, tabEnderIOMobs;
+  public static final @Nonnull CreativeTabs tabEnderIO, tabEnderIOItems, tabEnderIOMaterials, tabEnderIOMachines, tabEnderIOMobs, tabEnderIOConduits, tabEnderIOInvpanel;
 
   static {
     tabEnderIOMachines = new EnderIOTab(3, "machines");
@@ -19,6 +19,8 @@ public class EnderIOTab extends CreativeTabs {
     tabEnderIOMaterials = new EnderIOTab(2, "materials");
     tabEnderIO = new EnderIOTab(0, "main");
     tabEnderIOMobs = new EnderIOTab(4, "mobs");
+    tabEnderIOConduits = new EnderIOTab(5, "conduits");
+    tabEnderIOInvpanel = new EnderIOTab(6, "invpanel");
   }
 
   private final int meta;

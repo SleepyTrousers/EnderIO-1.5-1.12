@@ -30,6 +30,11 @@
       	  "layer0": "enderio:items/item_enderface_conduits"
       	}
       },
+      "invpanel": {
+      	"textures": {
+      	  "layer0": "enderio:items/item_enderface_invpanel"
+      	}
+      },
       "none": {
         "textures": {
           "layer0": "enderio:items/item_enderface_none"

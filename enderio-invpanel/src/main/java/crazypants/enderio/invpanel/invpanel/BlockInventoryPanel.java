@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -42,7 +43,8 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   public BlockInventoryPanel(@Nonnull IModObject modObj) {
     super(InvpanelObject.blockInventoryPanel);
-    setShape(mkShape(BlockFaceShape.UNDEFINED));
+    setCreativeTab(EnderIOTab.tabEnderIOInvpanel);
+    setShape(mkShape(BlockFaceShape.SOLID));
   }
 
   @Override
