@@ -604,6 +604,28 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Simple Chassis Parts" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
+        <item name="ingotIron"/><item name="SIMPLE_CHASSIS"/><item name="ingotIron"/>
+        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
+      </grid>
+      <output name="SIMPLE_CHASSIPARTS" amount="16"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Enhanced Chassis Parts" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
+        <item name="ingotIron"/><item name="ENHANCED_CHASSIS"/><item name="ingotIron"/>
+        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
+      </grid>
+      <output name="ENHANCED_CHASSIPARTS" amount="16"/>
+    </crafting>
+  </recipe>
+
   <recipe name="Deco Block 1/0" required="true">
     <crafting>
       <grid size="3x3">

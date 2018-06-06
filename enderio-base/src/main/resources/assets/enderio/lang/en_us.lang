@@ -244,6 +244,8 @@ item.item_material.end_steel_machine_chassi.name=End Steel Chassis
 item.item_material.enhanced_machine_dye.name=Enhanced Machine Coating
 item.item_material.enhanced_machine_dye.tooltip.detailed.line1=Industrially produced dye with magical and inorganic components.
 item.item_material.enhanced_machine_dye.tooltip.detailed.line2=§7Warning: May contain traces of diamond. Please chew carefully before swallowing. Not gluten free. 
+item.item_material.simple_chassi_parts.name=Simple Machine Parts
+item.item_material.enhanced_chassi_parts.name=Enhanced Machine Parts
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad

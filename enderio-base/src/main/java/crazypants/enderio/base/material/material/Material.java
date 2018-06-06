@@ -100,6 +100,8 @@ public enum Material {
 
   END_STEEL_MACHINE_CHASSIS("endSteelMachineChassi"),
   DYE_ENHANCED_MACHINE("enhanced_machine_dye", "dyeEnhancedMachine"),
+  ENHANCED_CHASSIPARTS("enhancedChassiParts"),
+  SIMPLE_CHASSIPARTS("simpleChassiParts"),
 
   ;
 

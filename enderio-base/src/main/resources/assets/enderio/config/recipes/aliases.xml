@@ -30,6 +30,8 @@ XML editor will display that as tooltips when editing this file.
   <alias name="UNSOULED_CHASSIS" item="itemUnsouledMachineChassi" />
   <alias name="CHASSIPARTS" item="itemChassiParts" />
   <alias name="END_STEEL_CHASSIS" item="itemEndSteelMachineChassi" />
+  <alias name="SIMPLE_CHASSIPARTS" item="itemSimpleChassiParts" />
+  <alias name="ENHANCED_CHASSIPARTS" item="itemEnhancedChassiParts" />
 
   <alias name="GEAR_WOOD" item="gearWood" />
   <alias name="GEAR_STONE" item="gearStone" />

@@ -6,11 +6,14 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.InventorySlot;
 
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.invpanel.capacitor.CapacitorKey;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -83,17 +86,13 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
 
   private final EnumChestSize size;
 
-//  @Store({ NBTAction.SAVE, NBTAction.ITEM })
-//  private final EnderInventory chestInventory;
-
-  // called by our block
   private TileInventoryChest(@Nonnull EnumChestSize size) {
-    super(new EnderInventory(), CapacitorKey.INV_CHEST_ENERGY_INTAKE, CapacitorKey.INV_CHEST_ENERGY_BUFFER, CapacitorKey.INV_CHEST_ENERGY_USE);
-//    chestInventory = getInventory();
+    super(null, CapacitorKey.INV_CHEST_ENERGY_INTAKE, CapacitorKey.INV_CHEST_ENERGY_BUFFER, CapacitorKey.INV_CHEST_ENERGY_USE);
     this.size = size;
     for (int i = 0; i < size.getSlots(); i++) {
       getInventory().add(EnderInventory.Type.INOUT, "slot" + i, new InventorySlot());
     }
+    getInventory().getSlot(CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
   }
 
   @Override
