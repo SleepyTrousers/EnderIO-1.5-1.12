@@ -205,7 +205,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="itemSkull" /><item name="ELECTRICAL_STEEL" />
-        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="SOUL_CHASSIS" /><item name="ELECTRICAL_STEEL" />
         <item name="VIBRANT_CRYSTAL" /><item name="ZOMBIE_CONTROLLER" /><item name="VIBRANT_CRYSTAL" />
       </grid>
       <output name="enderio:block_powered_spawner" />
