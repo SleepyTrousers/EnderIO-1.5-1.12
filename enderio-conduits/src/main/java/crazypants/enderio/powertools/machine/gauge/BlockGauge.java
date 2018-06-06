@@ -11,6 +11,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.base.BlockEio;
+import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.power.IPowerInterface;
@@ -52,6 +53,7 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
     super(modObject, Material.GLASS);
     setLightOpacity(255);
     useNeighborBrightness = true;
+    setCreativeTab(EnderIOTab.tabEnderIOMachines);
     setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 

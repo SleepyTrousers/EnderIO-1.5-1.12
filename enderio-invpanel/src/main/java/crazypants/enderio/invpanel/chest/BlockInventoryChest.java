@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
+import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
@@ -74,6 +75,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
 
   protected BlockInventoryChest(@Nonnull IModObject mo) {
     super(mo);
+    setCreativeTab(EnderIOTab.tabEnderIOInvpanel);
     setShape(mkShape(BlockFaceShape.SOLID));
   }
 

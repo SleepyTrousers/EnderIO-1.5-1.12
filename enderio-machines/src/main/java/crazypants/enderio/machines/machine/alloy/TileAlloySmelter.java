@@ -25,6 +25,9 @@ import net.minecraft.item.ItemStack;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_ALLOY_SMELTER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_ALLOY_SMELTER_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_ALLOY_SMELTER_POWER_USE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_LOSS;
@@ -46,6 +49,21 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
       return Mode.ALLOY;
     }
 
+  }
+
+  public static class Enhanced extends TileAlloySmelter {
+    public Enhanced() {
+      super(new SlotDefinition(3, 1, 1), ENHANCED_ALLOY_SMELTER_POWER_INTAKE, ENHANCED_ALLOY_SMELTER_POWER_BUFFER, ENHANCED_ALLOY_SMELTER_POWER_USE);
+    }
+
+    @Override
+    protected boolean shouldDoubleTick(@Nonnull IPoweredTask task, int usedEnergy) {
+      double chance = 3 * (usedEnergy / task.getRequiredEnergy());
+      if (random.nextDouble() < chance) {
+        return true;
+      }
+      return super.shouldDoubleTick(task, usedEnergy);
+    }
   }
 
   public static enum Mode {

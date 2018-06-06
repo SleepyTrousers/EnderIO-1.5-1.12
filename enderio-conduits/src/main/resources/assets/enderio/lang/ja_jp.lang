@@ -1,0 +1,218 @@
+# Conduits
+enderio.block_conduit_bundle=導管束
+tile.block_conduit_bundle.name=導管接続部
+
+enderio.item_power_conduit.name=エネルギー導管
+enderio.item_power_conduit_enhanced.name=強化エネルギー導管
+enderio.item_power_conduit_ender.name=エンダーエネルギー導管
+enderio.power.max_output=最大出力
+
+enderio.item_redstone_conduit_insulated.name=レッドストーン導管
+
+enderio.item_liquid_conduit.name=液体導管
+enderio.item_liquid_conduit_advanced.name=加圧式液体導管
+enderio.item_liquid_conduit_ender.name=エンダー液体導管
+enderio.item_liquid_conduit.locked_type=以下の液体のみ流入可能にしました
+enderio.item_liquid_conduit.unlocked_type=流入可能液体の固定を解除しました
+enderio.item_liquid_conduit.locked_waila=次の液体で固定：
+
+enderio.fluid.millibuckets_tick=mB/t
+enderio.item_liquid_conduit.tooltip.max_extract=最大搬出：
+enderio.item_liquid_conduit.tooltip.max_io=最大搬入出：
+enderio.item_liquid_conduit.tooltip.detailed.line1=液体の流動は重力に影響。
+enderio.item_liquid_conduit.tooltip.detailed.line2=流量は液体の粘度に依存。
+
+enderio.item_liquid_conduit_ender.tooltip.detailed.line1=液体を瞬時に転送。
+enderio.item_liquid_conduit_ender.tooltip.detailed.line2=一度に複数の液体を流入可能。
+
+enderio.item_item_conduit.name=アイテム導管
+
+# CapBanks
+tile.block_cap_bank.creative.name=クリエイティブ専用蓄電装置
+tile.block_cap_bank.simple.name=簡易蓄電装置
+tile.block_cap_bank.activated.name=蓄電装置
+tile.block_cap_bank.vibrant.name=ヴァイブラント蓄電装置
+tile.block_cap_bank.tooltip.detailed.line1=マルチブロック型のエネルギー貯蔵庫。
+tile.block_cap_bank.tooltip.detailed.line2=RF を用いた道具を充電可能。（削除予定）
+tile.block_cap_bank.tooltip.detailed.line3=素手で面を Shift 右クリックすると
+tile.block_cap_bank.tooltip.detailed.line4=情報表示切り替え。
+tile.block_cap_bank.tooltip.has_items=§6内部に §4{0,number,integer}§6 {0,choice,1#アイテム|1<アイテム}保有中。
+
+# TODO dedupe these?
+enderio.capbank.max_io=最大入出力
+enderio.capbank.max_in=最大入力
+enderio.capbank.max_out=最大出力
+enderio.capbank.change=入出力
+enderio.capbank.iodisplay.stable=入出
+enderio.capbank.iodisplay.gain=入
+enderio.capbank.iodisplay.loss=出
+enderio.capbank.iodisplay.input=入力
+enderio.capbank.iodisplay.output=出力
+
+enderio.gui.cap_bank.input_rs=入力レッドストーンモード
+enderio.gui.cap_bank.output_rs=出力レッドストーンモード
+enderio.gui.cap_bank.max_io=最大入出力
+enderio.gui.cap_bank.max_input=最大入力
+enderio.gui.cap_bank.max_output=最大出力
+enderio.gui.cap_bank.input_mode=入力
+enderio.gui.cap_bank.output_mode=出力
+
+# Power Monitor
+tile.block_power_monitor.name=電力モニター
+tile.block_power_monitor.tooltip.detailed.line1=接続されている機械の電力使用量とストレージを表示。
+tile.block_power_monitor.tooltip.detailed.line3=蓄電量に応じてレッドストーン信号を出力することが可能。
+tile.block_power_monitor.tooltip.detailed.line5=EnderIO のエネルギー導管への接続が必要。
+
+tile.block_advanced_power_monitor.name=グラフィカル電力モニター
+tile.block_advanced_power_monitor.tooltip.detailed.line1=接続されている機械の電力使用量とストレージを表示。
+tile.block_advanced_power_monitor.tooltip.detailed.line3=蓄電量に応じてレッドストーン信号を出力することが可能。
+tile.block_advanced_power_monitor.tooltip.detailed.line5=EnderIO のエネルギー導管への接続が必要。
+
+enderio.gui.power_monitor.engine_control=エンジン制御
+enderio.gui.power_monitor.emit=Emit
+enderio.gui.power_monitor.engine_section1=ストレージが次より少ない際に信号を
+enderio.gui.power_monitor.engine_section2=出力：
+enderio.gui.power_monitor.engine_section3=%。
+enderio.gui.power_monitor.engine_section4=ストレージが次の割合以上で停止：
+enderio.gui.power_monitor.engine_section5=
+enderio.gui.power_monitor.of=/
+enderio.gui.power_monitor.conduit_storage=導管の通電量
+enderio.gui.power_monitor.capbank_storage=蓄電装置の蓄電量
+enderio.gui.power_monitor.machine_buffer=機械の蓄電量
+enderio.gui.power_monitor.average_output=５秒間の平均出力
+enderio.gui.power_monitor.average_input=５秒間の平均入力
+enderio.gui.power_monitor.no_network_error=導管に接続されていません。データを表示するには導管に接続してください。
+
+# Conduit Probe
+enderio.gui.conduit_probe.network_heading=電力ネットワーク
+enderio.gui.conduit_probe.conduit_buffer=内部バッファ
+enderio.gui.conduit_probe.request_range=１ティックの要求量
+enderio.gui.conduit_probe.current_request=現在の要求
+enderio.gui.conduit_probe.item_heading=アイテム導管
+enderio.gui.conduit_probe.item_no_connections=には何も接続されていません
+enderio.gui.conduit_probe.no_power_from_side=はこの面から給電できません
+enderio.gui.conduit_probe.connection_dir=は次の面と接続しています：
+enderio.gui.conduit_probe.extracted_items=搬入アイテム
+enderio.gui.conduit_probe.extracted_item=アイテム
+enderio.gui.conduit_probe.no_outputs=の搬入先がありません
+enderio.gui.conduit_probe.inserted_into=は次のストレージに搬入されます：
+enderio.gui.conduit_probe.no_items=この導管にアイテムは運搬されません
+enderio.gui.conduit_probe.no_item=運搬できません
+enderio.gui.conduit_probe.receive_items=次のストレージからアイテムを運搬できます：
+enderio.gui.conduit_probe.receive_item1=次のストレージから
+enderio.gui.conduit_probe.receive_item2=運搬できます：
+
+enderio.gui.conduit_energy.header=エネルギー導管
+enderio.gui.conduit_item.header=アイテム導管
+enderio.gui.conduit_fluid.header=液体導管
+enderio.gui.conduit_redstone.header=レッドストーン導管
+
+enderio.gui.conduit_bundle_full=Bundle Full
+
+# Gauge
+tile.block_gauge.name=エネルギーゲージ
+tile.block_gauge.tooltip.detailed.line1=機械と隣接して設置することで、電力残量を可視化。
+
+
+enderio.config.capbank=蓄電装置
+enderio.config.condit=導管
+enderio.config.condit.energy=エネルギー導管
+enderio.config.condit.fluid=液体導管
+enderio.config.condit.item=アイテム導管
+enderio.config.condit.redstone=レッドストーン導管
+
+# Upgrades
+
+item.item_extract_speed_upgrade.name=搬出速度アップグレード
+item.item_extract_speed_downgrade.name=搬出速度ダウングレード
+item.item_inventory_panel_upgrade.name=インベントリパネルアップグレード
+
+# GUI
+enderio.gui.conduit_insert_mode=入力
+enderio.gui.conduit_extract_mode=出力
+enderio.gui.conduit_enabled_mode=有効
+enderio.gui.conduit_disabled_mode=無効
+enderio.gui.redstone_conduit_input_mode=入力
+enderio.gui.redstone_conduit_output_mode=出力
+
+enderio.gui.conduit_channel=チャンネル
+enderio.gui.round_robin_enabled=均等分配有効
+enderio.gui.round_robin_disabled=均等分配無効
+enderio.gui.self_feed_enabled=循環有効
+enderio.gui.self_feed_disabled=循環無効
+enderio.gui.item_filter_upgrade=フィルターアップグレード
+enderio.gui.item_function_upgrade=機能アップグレード
+enderio.gui.item_function_upgrade2=速度アップグレードは１５個まで、
+enderio.gui.item_function_upgrade3=速度ダウングレードは１個まで搭載可能。
+enderio.gui.signal_color=信号色
+enderio.gui.priority=優先度
+
+enderio.gui.liquid_auto_extract=自動搬出
+enderio.gui.liquid_filter=フィルター
+enderio.gui.liquid_whitelist=ホワイトリスト
+enderio.gui.liquid_blacklist=ブラックリスト
+
+enderio.gui.redstone_signal_strength=強信号
+
+# Advancements
+
+enderio.advancement.conduits.root.name=Ender IO 導管
+enderio.advancement.conduits.root.desc=一箇所にいくつパイプがあるんだ？
+
+enderio.advancement.conduits.binder_composite.name=モルタルなんかとは違う
+enderio.advancement.conduits.binder_composite.desc=導管接合材を作る
+
+# Temp?
+enderio.advancement.conduits.conduit_binder.name=ユニバーサルバインダー
+enderio.advancement.conduits.conduit_binder.desc=導管接合材を製錬する
+
+# Temp
+enderio.advancement.conduits.energy_conduit.basic.name=エネルギーのキホン
+enderio.advancement.conduits.energy_conduit.basic.desc=エネルギー導管を作る
+
+# Temp
+enderio.advancement.conduits.energy_conduit.enhanced.name=強化エネルギー
+enderio.advancement.conduits.energy_conduit.enhanced.desc=強化エネルギー導管を作る
+
+# Temp
+enderio.advancement.conduits.energy_conduit.ender.name=エンダーエネルギー
+enderio.advancement.conduits.energy_conduit.ender.desc=エンダーエネルギー導管を作る
+
+# Temp
+enderio.advancement.conduits.fluid_conduit.basic.name=液体のキホン
+enderio.advancement.conduits.fluid_conduit.basic.desc=液体導管を作る
+
+# Temp?
+enderio.advancement.conduits.fluid_conduit.pressurized.name=プレッシャーを受けつつ
+enderio.advancement.conduits.fluid_conduit.pressurized.desc=加圧式液体導管を作る
+
+enderio.advancement.conduits.fluid_conduit.ender.name=エンダーを足せば液体も瞬時に
+enderio.advancement.conduits.fluid_conduit.ender.desc=エンダー液体導管を作る
+
+# Temp
+enderio.advancement.conduits.item_conduit.name=アイテムの通り道
+enderio.advancement.conduits.item_conduit.desc=アイテム導管を作る
+
+enderio.advancement.conduits.basic_filter.name=ダミーのための絞り込み
+enderio.advancement.conduits.basic_filter.desc=基本アイテムフィルターを作る
+
+enderio.advancement.conduits.advanced_filter.name=最大制御
+enderio.advancement.conduits.advanced_filter.desc=強化アイテムフィルターを作る
+
+enderio.advancement.conduits.big_filter.name=極大
+enderio.advancement.conduits.big_filter.desc=大容量アイテムフィルターを作る
+
+enderio.advancement.conduits.big_advanced_filter.name=敵なしフィルター
+enderio.advancement.conduits.big_advanced_filter.desc=大容量強化アイテムフィルターを作る
+
+# Temp
+enderio.advancement.conduits.redstone_conduit.name=レッドストーン通り
+enderio.advancement.conduits.redstone_conduit.desc=レッドストーン導管を作る
+
+# Temp?
+enderio.advancement.conduits.all_conduits.name=何でも屋
+enderio.advancement.conduits.all_conduits.desc=主要な導管をすべて作る
+
+# Temp?
+enderio.advancement.conduits.all_filters.name=白黒ハッキリ！
+enderio.advancement.conduits.all_filters.desc=主要なフィルターをすべて作る

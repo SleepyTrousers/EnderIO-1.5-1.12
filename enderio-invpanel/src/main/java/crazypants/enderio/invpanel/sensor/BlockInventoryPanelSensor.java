@@ -7,11 +7,13 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
+import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,6 +36,8 @@ public class BlockInventoryPanelSensor extends AbstractMachineBlock<TileInventor
 
   public BlockInventoryPanelSensor(@Nonnull IModObject modObject) {
     super(modObject);
+    setCreativeTab(EnderIOTab.tabEnderIOInvpanel);
+    setShape(mkShape(BlockFaceShape.SOLID));
   }
 
   @Override

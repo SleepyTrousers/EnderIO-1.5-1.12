@@ -1,0 +1,20 @@
+# forestry
+
+enderio.darksteel.upgrade.naturalist_eye.name=博物学者の目
+enderio.darksteel.upgrade.naturalist_eye.tooltip.detailed.line1=受粉した葉を可視化。
+
+enderio.darksteel.upgrade.apiarist_armor.head.name=養蜂用防護服（面布）
+enderio.darksteel.upgrade.apiarist_armor.head.tooltip.detailed.line1=蜂の攻撃から保護。
+
+enderio.darksteel.upgrade.apiarist_armor.chest.name=養蜂用防護服（上）
+enderio.darksteel.upgrade.apiarist_armor.chest.tooltip.detailed.line1=蜂の攻撃から保護。
+
+enderio.darksteel.upgrade.apiarist_armor.legs.name=養蜂用防護服（下）
+enderio.darksteel.upgrade.apiarist_armor.legs.tooltip.detailed.line1=蜂の攻撃から保護。
+
+enderio.darksteel.upgrade.apiarist_armor.feet.name=養蜂用防護服（長靴）
+enderio.darksteel.upgrade.apiarist_armor.feet.tooltip.detailed.line1=蜂の攻撃から保護。
+
+enderio.config.items.darksteel.upgrades.forestry=Forestry アップグレード
+
+item.item_species_item_filter.name=品種アイテムフィルター

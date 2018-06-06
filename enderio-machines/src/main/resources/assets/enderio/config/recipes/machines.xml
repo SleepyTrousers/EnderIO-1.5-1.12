@@ -205,7 +205,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="itemSkull" /><item name="ELECTRICAL_STEEL" />
-        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="SOUL_CHASSIS" /><item name="ELECTRICAL_STEEL" />
         <item name="VIBRANT_CRYSTAL" /><item name="ZOMBIE_CONTROLLER" /><item name="VIBRANT_CRYSTAL" />
       </grid>
       <output name="enderio:block_powered_spawner" />
@@ -275,6 +275,28 @@ XML editor will display that as tooltips when editing this file.
         <item name="GEAR_ENERGIZED" /><item name="item:minecraft:cauldron" /><item name="GEAR_ENERGIZED" />
       </grid>
       <output name="enderio:block_alloy_smelter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Enhanced Alloy Smelter" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron" /><item name="minecraft:furnace" /><item name="ingotIron" />
+        <item name="minecraft:furnace" /><item name="ENHANCED_CHASSIS" /><item name="minecraft:furnace" />
+        <item name="GEAR_VIBRANT" /><item name="item:minecraft:cauldron" /><item name="GEAR_VIBRANT" />
+      </grid>
+      <output name="enderio:block_enhanced_alloy_smelter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Enhanced Alloy Smelter, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:block_alloy_smelter" /><item />
+        <item /><item name="ENHANCED_CHASSIS" /><item />
+        <item name="GEAR_VIBRANT" /><item name="item:minecraft:cauldron" /><item name="GEAR_VIBRANT" />
+      </grid>
+      <output name="enderio:block_enhanced_alloy_smelter" />
     </crafting>
   </recipe>
 

@@ -59,6 +59,8 @@ public enum MachineObject implements IModObject.Registerable {
 
   block_simple_alloy_smelter(BlockAlloySmelter.class, "create_simple", MachineTileEntity.TileAlloySmelterSimple),
   block_alloy_smelter(BlockAlloySmelter.class, MachineTileEntity.TileAlloySmelter),
+  block_enhanced_alloy_smelter(BlockAlloySmelter.class, "create_enhanced", MachineTileEntity.TileAlloySmelterEnhanced),
+  block_enhanced_alloy_smelter_top(BlockAlloySmelter.class, "create_extension"),
   block_buffer(BlockBuffer.class, MachineTileEntity.TileBufferAbstract),
   block_enchanter(BlockEnchanter.class, MachineTileEntity.TileEnchanter),
   block_farm_station(BlockFarmStation.class, MachineTileEntity.TileFarmStation),
@@ -85,6 +87,8 @@ public enum MachineObject implements IModObject.Registerable {
   block_reservoir(BlockReservoir.class, MachineTileEntity.TileReservoir),
   block_simple_sag_mill(BlockSagMill.class, "create_simple", MachineTileEntity.TileSagMillSimple),
   block_sag_mill(BlockSagMill.class, MachineTileEntity.TileSagMill),
+  block_enhanced_sag_mill(BlockSagMill.class, "create_enhanced", MachineTileEntity.TileSagMillEnhanced),
+  block_enhanced_sag_mill_top(BlockSagMill.class, "create_extension"),
   block_slice_and_splice(BlockSliceAndSplice.class, MachineTileEntity.TileSliceAndSplice),
   block_solar_panel(BlockSolarPanel.class, MachineTileEntity.TileSolarPanel),
   block_soul_binder(BlockSoulBinder.class, MachineTileEntity.TileSoulBinder),

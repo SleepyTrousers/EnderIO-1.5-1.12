@@ -44,7 +44,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem, 
   protected AbstractItemConduit(@Nonnull IModObject modObj, ItemConduitSubtype... subtypes) {
     this.modObj = modObj;
     this.subtypes = subtypes;
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOConduits);
     setUnlocalizedName(modObj.getUnlocalisedName());
     setMaxStackSize(64);
     setHasSubtypes(true);

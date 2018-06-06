@@ -45,6 +45,7 @@ public class ItemEnderface extends Item implements IHaveRenderers {
     registerVariant(modObject, 3, "machines");
     registerVariant(modObject, 4, "mobs");
     registerVariant(modObject, 5, "conduits");
+    registerVariant(modObject, 6, "invpanel");
   }
   
   private void registerVariant(@Nonnull IModObject mo, int meta, String name) {

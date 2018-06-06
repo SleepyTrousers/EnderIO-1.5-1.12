@@ -26,6 +26,10 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_alloy_smelter/intake" base="80" scaler="POWER" />
   <capacitor key="enderio:block_alloy_smelter/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_alloy_smelter/use" base="20" scaler="POWER" />
+
+  <capacitor key="enderio:block_enhanced_alloy_smelter/intake" base="320" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_alloy_smelter/buffer" base="1000000" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_alloy_smelter/use" base="40" scaler="POWER" />
   
   <capacitor key="enderio:block_buffer/intake_creative" base="100000" scaler="FIXED" />
   <capacitor key="enderio:block_buffer/buffer_creative" base="1000000" scaler="FIXED" />
@@ -100,6 +104,10 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_simple_sag_mill/buffer" base="1000" scaler="FIXED" />
   <capacitor key="enderio:block_simple_sag_mill/use" base="10" scaler="FIXED" />
   <capacitor key="enderio:block_simple_sag_mill/loss" base="1" scaler="FIXED" />
+
+  <capacitor key="enderio:block_enhanced_sag_mill/intake" base="320" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_sag_mill/buffer" base="1000000" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_sag_mill/use" base="40" scaler="POWER" />
   
   <capacitor key="enderio:block_slice_and_splice/intake" base="160" scaler="QUADRATIC" />
   <capacitor key="enderio:block_slice_and_splice/buffer" base="100000" scaler="POWER" />
