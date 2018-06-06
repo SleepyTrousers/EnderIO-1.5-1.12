@@ -121,6 +121,7 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone
     // if silk touch is required, the painted drop is handled in harvestBlock as that has the required te
     if (Config.paintedGlowstoneRequireSilkTouch) {
       super.getDrops(drops, world, pos, state, fortune);
+      return;
     }
 
     TileEntity te = world.getTileEntity(pos);
