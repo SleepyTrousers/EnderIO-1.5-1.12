@@ -418,6 +418,16 @@
         "textures": {
             "layer0": "enderio:items/item_material_enhanced_machine_dye"
         }
+      },
+      "simple_chassi_parts": {
+        "textures": {
+          "layer0": "enderio:items/item_material_simple_chassi_parts"
+        }
+      },
+      "enhanced_chassi_parts": {
+        "textures": {
+          "layer0": "enderio:items/item_material_enhanced_chassi_parts"
+        }
       }
     }
   }

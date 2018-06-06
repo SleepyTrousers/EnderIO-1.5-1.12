@@ -17,11 +17,11 @@ public enum EnumChestSize implements IStringSerializable {
   MEDIUM(15),
   // Normal
   BIG(18),
-  LARGE(21),
-  HUGE(24),
+  LARGE(24),
+  HUGE(30),
   // Enhanced
-  ENORMOUS(27),
-  WAREHOUSE(30),
+  ENORMOUS(39),
+  WAREHOUSE(48),
   WAREHOUSE13(60),
 
   // Be honest, you expected a bra size joke here, didn't you?
