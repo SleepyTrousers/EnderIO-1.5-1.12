@@ -65,7 +65,7 @@ public abstract class TileSagMill extends AbstractPoweredTaskEntity implements I
 
     @Override
     protected boolean shouldDoubleTick(@Nonnull IPoweredTask task, int usedEnergy) {
-      double chance = 4 / (task.getRequiredEnergy() / usedEnergy);
+      double chance = 3 * (usedEnergy / task.getRequiredEnergy());
       if (random.nextDouble() < chance) {
         return true;
       }

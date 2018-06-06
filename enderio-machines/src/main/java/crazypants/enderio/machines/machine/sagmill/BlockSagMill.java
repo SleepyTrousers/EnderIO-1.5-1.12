@@ -69,6 +69,7 @@ public class BlockSagMill<T extends TileSagMill> extends AbstractPoweredTaskBloc
         return RenderMappers.ENHANCED_BODY_MAPPER;
       }
     };
+    res.isEnhanced = true;
     res.init();
     return res;
   }
