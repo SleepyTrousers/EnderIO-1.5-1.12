@@ -7,7 +7,8 @@
             "front": "enderio:blocks/block_enhanced_sagmill_front",
             "side": "enderio:blocks/block_enhanced_machine_bottom",
             "top": "enderio:blocks/block_enhanced_machine_top",
-            "uppertop": "enderio:blocks/block_enhanced_machine_top"
+            "uppertop": "enderio:blocks/block_enhanced_machine_top",
+            "extensionbars": "enderio:blocks/enhanced_extension_bars"
         }
     },
     "variants":{
