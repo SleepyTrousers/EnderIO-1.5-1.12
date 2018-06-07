@@ -16,20 +16,25 @@ import net.minecraftforge.items.ItemHandlerHelper;
 public class SlotCraftingWrapper extends SlotCrafting {
 
   public TileInventoryPanel inventory; // Shadow super field
+  protected EntityPlayer player; // Shadow super field
+  protected int amountCrafted; // Shadow super field
   private final InventoryCrafting craftMatrix;
 
-  public SlotCraftingWrapper(EntityPlayer player, InventoryCrafting craftingInventory, IInventory inventory, int slotIndex, int xPosition, int yPosition) {
+  public SlotCraftingWrapper(@Nonnull EntityPlayer player, @Nonnull InventoryCrafting craftingInventory, @Nonnull IInventory inventory, int slotIndex,
+      int xPosition, int yPosition) {
     super(player, craftingInventory, inventory, slotIndex, xPosition, yPosition);
     craftMatrix = craftingInventory;
+    this.player = player;
   }
 
   @Override
-  public @Nonnull ItemStack onTake(@Nonnull EntityPlayer playerIn, @Nonnull ItemStack stack) {
+  @Nonnull
+  public ItemStack onTake(@Nonnull EntityPlayer playerIn, @Nonnull ItemStack stack) {
 
     net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerCraftingEvent(playerIn, stack, craftMatrix);
     this.onCrafting(stack);
     net.minecraftforge.common.ForgeHooks.setCraftingPlayer(playerIn);
-    NonNullList<ItemStack> containeritems = CraftingManager.getRemainingItems(this.craftMatrix, playerIn.world);
+    NonNullList<ItemStack> containeritems = CraftingManager.getRemainingItems(craftMatrix, playerIn.world);
     net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
 
     for (int i = 0; i < containeritems.size(); ++i) {
@@ -44,8 +49,8 @@ public class SlotCraftingWrapper extends SlotCrafting {
         if (this.craftMatrix.getStackInSlot(i).isEmpty()) {
           this.craftMatrix.setInventorySlotContents(i, containeritemstack);
         } else {
-          ItemStack remainder = ItemHandlerHelper.insertItem(inventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), containeritemstack,
-              false);
+          ItemStack remainder = ItemHandlerHelper
+              .insertItem(inventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), containeritemstack, false);
           if (!remainder.isEmpty()) {
             if (!playerIn.inventory.addItemStackToInventory(remainder)) {
               playerIn.dropItem(remainder, false);
@@ -58,11 +63,37 @@ public class SlotCraftingWrapper extends SlotCrafting {
   }
 
   @Override
-  public @Nonnull ItemStack decrStackSize(int p_75209_1_) {
+  protected void onCrafting(@Nonnull ItemStack stack, int amount) {
+    amountCrafted += amount;
+    onCrafting(stack);
+  }
+
+  @Override
+  protected void onCrafting(@Nonnull ItemStack stack) {
+    if (amountCrafted > 0) {
+      stack.onCrafting(player.world, player, amountCrafted);
+      net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerCraftingEvent(player, stack, craftMatrix);
+    }
+
+    amountCrafted = 0;
+    //    InventoryCraftResult inventorycraftresult = (InventoryCraftResult)this.inventory;
+    //    IRecipe irecipe = inventorycraftresult.getRecipeUsed();
+    //
+    //    if (irecipe != null && !irecipe.isDynamic())
+    //    {
+    //      this.player.unlockRecipes(Lists.newArrayList(irecipe));
+    //      inventorycraftresult.setRecipeUsed((IRecipe)null);
+    //    }
+  }
+
+  @Override
+  @Nonnull
+  public ItemStack decrStackSize(int amount) {
     if (this.getHasStack()) {
       // on a right click we are asked to craft half a result. Ignore that.
-      return super.decrStackSize(this.getStack().getCount());
+      amountCrafted += getStack().getCount();
+      return super.decrStackSize(getStack().getCount());
     }
-    return super.decrStackSize(p_75209_1_);
+    return super.decrStackSize(amount);
   }
 }
