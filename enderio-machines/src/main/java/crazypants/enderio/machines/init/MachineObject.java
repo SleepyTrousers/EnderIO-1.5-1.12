@@ -94,6 +94,8 @@ public enum MachineObject implements IModObject.Registerable {
   block_soul_binder(BlockSoulBinder.class, MachineTileEntity.TileSoulBinder),
   block_powered_spawner(BlockPoweredSpawner.class, MachineTileEntity.TilePoweredSpawner),
   block_vat(BlockVat.class, MachineTileEntity.TileVat),
+  block_enhanced_vat(BlockVat.class, "create_enhanced", MachineTileEntity.TileVatEnhanced),
+  block_enhanced_vat_top(BlockVat.class, "create_extension"),
   block_wired_charger(BlockWiredCharger.class, MachineTileEntity.TileWiredCharger),
   block_wireless_charger(BlockWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
   block_normal_wireless_charger(BlockNormalWirelessCharger.class, MachineTileEntity.TileWirelessCharger),

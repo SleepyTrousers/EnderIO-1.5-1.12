@@ -135,6 +135,10 @@ public enum CapacitorKey implements ICapacitorKey {
   VAT_POWER_BUFFER(MachineObject.block_vat, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   VAT_POWER_USE(MachineObject.block_vat, CapacitorKeyType.ENERGY_USE, "use"),
 
+  ENHANCED_VAT_POWER_INTAKE(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  ENHANCED_VAT_POWER_BUFFER(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  ENHANCED_VAT_POWER_USE(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_USE, "use"),
+
   WIRED_POWER_INTAKE(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   WIRED_POWER_BUFFER(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   WIRED_POWER_CHARGE(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_USE, "charge"),

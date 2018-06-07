@@ -311,6 +311,28 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="The Enhanced Vat" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="item:minecraft:cauldron" /><item name="ELECTRICAL_STEEL" />
+        <item name="enderio:block_tank:0" /><item name="ENHANCED_CHASSIS" /><item name="enderio:block_tank:0" />
+        <item name="ELECTRICAL_STEEL" /><item name="minecraft:furnace" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:block_enhanced_vat" />
+    </crafting>
+  </recipe>
+
+  <recipe name="The Enhanced Vat, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:block_vat" /><item />
+        <item /><item name="ENHANCED_CHASSIS" /><item />
+        <item name="enderio:block_tank:0" /><item name="minecraft:furnace" /><item name="enderio:block_tank:0" />
+      </grid>
+      <output name="enderio:block_enhanced_vat" />
+    </crafting>
+  </recipe>
+
   <recipe name="Painter" required="true">
     <crafting>
       <grid size="3x3">

@@ -86,6 +86,7 @@ public enum MachineTileEntity implements IModTileEntity {
   TileSoulBinder(TileSoulBinder.class),
   TileTransceiver(TileTransceiver.class),
   TileVat(TileVat.class),
+  TileVatEnhanced(TileVat.Enhanced.class),
   TileSolarPanel(TileSolarPanel.class),
   TileVacuumChest(TileVacuumChest.class),
   TileWirelessCharger(TileWirelessCharger.class),
