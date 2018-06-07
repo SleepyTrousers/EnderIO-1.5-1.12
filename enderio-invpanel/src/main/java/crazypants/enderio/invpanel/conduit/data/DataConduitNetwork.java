@@ -40,12 +40,14 @@ public class DataConduitNetwork extends AbstractConduitNetwork<IDataConduit, IDa
   public void addSource(@Nonnull InventoryDatabaseSource source) {
     if (!inventories.contains(source)) {
       inventories.add(source);
+      changeCount++;
     }
   }
 
   public void removeSource(InventoryDatabaseSource source) {
     if (source != null) {
       inventories.remove(source);
+      changeCount++;
     }
   }
 
