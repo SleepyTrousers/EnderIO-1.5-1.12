@@ -1,0 +1,12 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle":"enderio:blocks/block_enhanced_wired_charger_front"
+        }
+    },
+    "variants":{
+        "normal":{ "model":"enderio:transform/block" },
+        "inventory":{ "model":"enderio:transform/block" }
+    }
+}

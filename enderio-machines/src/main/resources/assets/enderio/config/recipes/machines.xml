@@ -124,6 +124,28 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Enhanced Wired Charger" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="END_STEEL" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="ENHANCED_CHASSIS" /><item name="ELECTRICAL_STEEL" />
+        <item name="GEAR_VIBRANT" /><item name="ELECTRICAL_STEEL" /><item name="GEAR_VIBRANT" />
+      </grid>
+      <output name="enderio:block_enhanced_wired_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Enhanced Wired Charger, Upgrade" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="END_STEEL" /><item />
+        <item /><item name="ENHANCED_CHASSIS" /><item />
+        <item name="GEAR_VIBRANT" /><item name="enderio:block_wired_charger" /><item name="GEAR_VIBRANT" />
+      </grid>
+      <output name="enderio:block_enhanced_wired_charger" />
+    </crafting>
+  </recipe>
+
   <recipe name="Wireless Charger" required="true">
     <crafting>
       <grid size="3x3">

@@ -143,6 +143,10 @@ public enum CapacitorKey implements ICapacitorKey {
   WIRED_POWER_BUFFER(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   WIRED_POWER_CHARGE(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_USE, "charge"),
 
+  ENHANCED_WIRED_POWER_INTAKE(MachineObject.block_enhanced_wired_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  ENHANCED_WIRED_POWER_BUFFER(MachineObject.block_enhanced_wired_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  ENHANCED_WIRED_POWER_CHARGE(MachineObject.block_enhanced_wired_charger, CapacitorKeyType.ENERGY_USE, "charge"),
+
   WIRELESS_POWER_INTAKE(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   WIRELESS_POWER_BUFFER(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   WIRELESS_POWER_OUTPUT(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_USE, "charge"),

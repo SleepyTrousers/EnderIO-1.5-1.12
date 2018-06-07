@@ -138,6 +138,10 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_wired_charger/intake" base="10000" scaler="POWER" />
   <capacitor key="enderio:block_wired_charger/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_wired_charger/charge" base="1" scaler="CHARGE" />
+
+  <capacitor key="enderio:block_enhanced_wired_charger/intake" base="20000" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_wired_charger/buffer" base="10000000" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_wired_charger/charge" base="1" scaler="CHARGE" />
   
   <capacitor key="enderio:block_wireless_charger/intake" base="10000" scaler="FIXED" />
   <capacitor key="enderio:block_wireless_charger/buffer" base="200000" scaler="FIXED" />

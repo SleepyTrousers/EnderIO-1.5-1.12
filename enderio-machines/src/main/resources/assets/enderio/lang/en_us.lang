@@ -313,6 +313,9 @@ tile.block_enhanced_vat.tooltip.detailed.line1=Used to brew EnderIO fluids
 tile.block_wired_charger.name=Wired Charger
 tile.block_wired_charger.tooltip.detailed.line1=Charges items with µI
 
+tile.block_enhanced_wired_charger.name=Enhanced Wired Charger
+tile.block_enhanced_wired_charger.tooltip.detailed.line1=Charges items with µI
+
 tile.block_wireless_charger.name=Wireless Charger
 tile.block_wireless_charger.tooltip.detailed.line1=Charges items in nearby players inventories. Has a small range, but can be painted and hidden.
 
