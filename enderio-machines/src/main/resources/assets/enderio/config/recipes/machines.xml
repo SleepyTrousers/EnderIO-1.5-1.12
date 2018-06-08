@@ -369,9 +369,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Farming Station" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ELECTRICAL_STEEL" /><item name="minecraft:diamond_hoe" /><item name="ELECTRICAL_STEEL" />
-        <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
-        <item name="GEAR_ENERGIZED" /><item name="minecraft:diamond_axe" /><item name="GEAR_ENERGIZED" />
+        <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
+        <item name="minecraft:diamond_axe" /><item name="SOUL_CHASSIS" /><item name="minecraft:diamond_hoe" />
+        <item name="GEAR_ENERGIZED" /><item name="ZOMBIE_CONTROLLER" /><item name="GEAR_ENERGIZED" />
       </grid>
       <output name="enderio:block_farm_station" />
     </crafting>

@@ -2,10 +2,10 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-		        "particle":"enderio:blocks/block_machine_bottom",
-		        "machineTop":"enderio:blocks/block_machine_top",
+		        "particle":"enderio:blocks/block_soul_machine_bottom",
+		        "machineTop":"enderio:blocks/block_soul_machine_top",
 		        "farmBaseTop":"enderio:blocks/farm_base_top",
-		        "machineBottom":"enderio:blocks/block_machine_bottom",
+		        "machineBottom":"enderio:blocks/block_soul_machine_bottom",
 		        "farmSide":"enderio:blocks/farm_side",
 		        "farmHatBottom":"enderio:blocks/farm_hat_bottom",
 		        "farmCore":"enderio:blocks/farm_core"
