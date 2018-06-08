@@ -7,9 +7,11 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.machine.base.block.BlockMachineExtension;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerBlock;
+import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
+import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
@@ -36,7 +38,19 @@ public class BlockWiredCharger<T extends TileWiredCharger> extends AbstractPower
   }
 
   public static BlockWiredCharger<TileWiredCharger.Enhanced> create_enhanced(@Nonnull IModObject modObject) {
-    BlockWiredCharger<TileWiredCharger.Enhanced> res = new BlockWiredCharger<TileWiredCharger.Enhanced>(modObject);
+    BlockWiredCharger<TileWiredCharger.Enhanced> res = new BlockWiredCharger<TileWiredCharger.Enhanced>(modObject){
+      @Override
+      @SideOnly(Side.CLIENT)
+      public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
+        return RenderMappers.ENHANCED_BODY_MAPPER;
+      }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+        return RenderMappers.ENHANCED_BODY_MAPPER;
+      }
+    };
     res.isEnhanced = true;
     res.init();
     return res;
