@@ -4,19 +4,15 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.ToggleButton;
 
-import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.gui.RedstoneModeButton;
+import crazypants.enderio.base.machine.gui.GuiCapMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
-import crazypants.enderio.base.machine.gui.GuiButtonIoConfig;
-import crazypants.enderio.base.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
-// TODO we need a GuiMachineBase for cap machines
-public class GuiImpulseHopper extends GuiContainerBaseEIO implements ImpulseHopperRemoteExec.GUI {
+public class GuiImpulseHopper extends GuiCapMachineBase<TileImpulseHopper> implements ImpulseHopperRemoteExec.GUI {
 
   private static final int ID_REDSTONE_BUTTON = 139;
   private static final int ID_IO_MODE_BUTTON = 140;
@@ -33,16 +29,12 @@ public class GuiImpulseHopper extends GuiContainerBaseEIO implements ImpulseHopp
   private static final int ROW1 = 9;
   private static final int ROW2 = ROW1 + D + D / 2;
   private static final int COL = 44;
-
-  private final @Nonnull RedstoneModeButton<TileImpulseHopper> rsB;
   private final @Nonnull ToggleButton lockOutputB;
-  private final @Nonnull GuiOverlayIoConfig<TileImpulseHopper> configOverlay;
-  private final @Nonnull GuiButtonIoConfig<TileImpulseHopper> configB;
 
   private final @Nonnull TileImpulseHopper te;
 
   public GuiImpulseHopper(@Nonnull InventoryPlayer playerInv, @Nonnull TileImpulseHopper te) {
-    super(new ContainerImpulseHopper(playerInv, te), "impulse_hopper");
+    super(te, new ContainerImpulseHopper(playerInv, te), "impulse_hopper");
     this.te = te;
 
     xSize = 176;
@@ -51,13 +43,7 @@ public class GuiImpulseHopper extends GuiContainerBaseEIO implements ImpulseHopp
     int x = REDSTONE_MODE_LEFT;
     int y = REDSTONE_MODE_TOP;
 
-    rsB = new RedstoneModeButton<TileImpulseHopper>(this, ID_REDSTONE_BUTTON, x, y, te);
-
     y += 20;
-    configOverlay = new GuiOverlayIoConfig<TileImpulseHopper>(te);
-    addOverlay(configOverlay);
-
-    configB = new GuiButtonIoConfig<TileImpulseHopper>(this, ID_IO_MODE_BUTTON, x, y, te, configOverlay);
 
     y += 35;
 
@@ -71,8 +57,6 @@ public class GuiImpulseHopper extends GuiContainerBaseEIO implements ImpulseHopp
   @Override
   public void initGui() {
     super.initGui();
-    rsB.onGuiInit();
-    configB.onGuiInit();
     lockOutputB.onGuiInit();
     lockOutputB.setSelected(te.isOutputLocked());
 
