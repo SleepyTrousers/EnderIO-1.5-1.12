@@ -17,6 +17,7 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.inventory.EnderInventory;
+import com.enderio.core.common.inventory.EnderInventory.Type;
 import com.enderio.core.common.inventory.EnderSlot;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
@@ -119,13 +120,27 @@ public class GuiCapMachineBase<T extends AbstractCapabilityMachineEntity> extend
   }
 
   public void renderSlotHighlights(@Nonnull IoMode mode) {
-    Map<EnderSlot, Point> slotLocations = getInventory().getEnderSlotLocations();
-    for (EnderSlot slot : slotLocations.keySet()) {
-      if ((mode == IoMode.PULL || mode == IoMode.PUSH_PULL) && slot.getType() == EnderInventory.Type.INPUT) {
-        renderSlotHighlight(slot, PULL_COLOR);
-      }
-      if (mode == IoMode.PUSH && slot.getType() == EnderInventory.Type.OUTPUT) {
-        renderSlotHighlight(slot, PUSH_COLOR);
+    Map<Slot, Point> slotLocations = getInventory().getSlotLocations();
+    for (Slot slot : slotLocations.keySet()) {
+      if (slot instanceof EnderSlot) {
+        Type type = ((EnderSlot) slot).getType();
+        if (mode == IoMode.PULL) {
+          if (type == EnderInventory.Type.INPUT || type == EnderInventory.Type.INOUT) {
+            renderSlotHighlight(slot, PULL_COLOR);
+          }
+        } else if (mode == IoMode.PUSH) {
+          if (type == EnderInventory.Type.OUTPUT || type == EnderInventory.Type.INOUT) {
+            renderSlotHighlight(slot, PUSH_COLOR);
+          }
+        } else if (mode == IoMode.PUSH_PULL) {
+          if (type == EnderInventory.Type.INPUT) {
+            renderSlotHighlight(slot, PULL_COLOR);
+          } else if (type == EnderInventory.Type.OUTPUT) {
+            renderSlotHighlight(slot, PUSH_COLOR);
+          } else if (type == EnderInventory.Type.INOUT) {
+            renderSplitHighlight(slot);
+          }
+        }
       }
     }
   }
@@ -137,6 +152,17 @@ public class GuiCapMachineBase<T extends AbstractCapabilityMachineEntity> extend
   protected void renderSlotHighlight(@Nonnull Vector4f col, int x, int y, int widthIn, int heightIn) {
     GlStateManager.enableBlend();
     RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y, 0, widthIn, heightIn, col);
+    GlStateManager.disableBlend();
+  }
+
+  protected void renderSplitHighlight(@Nonnull Slot invSlot) {
+    renderSplitHighlight(invSlot.xPos, invSlot.yPos, 16, 16);
+  }
+
+  protected void renderSplitHighlight(int x, int y, int widthIn, int heightIn) {
+    GlStateManager.enableBlend();
+    RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y, 0, widthIn, heightIn / 2, PULL_COLOR);
+    RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y + (heightIn / 2), 0, widthIn, heightIn / 2, PUSH_COLOR);
     GlStateManager.disableBlend();
   }
 
