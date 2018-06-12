@@ -188,7 +188,12 @@ public enum Fluids {
       throw new RuntimeException("The fluid " + fluid + " (" + fluid.getUnlocalizedName()
           + ") is registered in the FluidRegistry, but the FluidRegistry has no delegate for it. This is impossible.", e);
     }
-    return FluidUtil.getFilledBucket(fluidStack);
+    try {
+      return FluidUtil.getFilledBucket(fluidStack);
+    } catch (Exception e) {
+      throw new RuntimeException("The fluid " + fluid + " (" + fluid.getUnlocalizedName()
+          + ") is registered in the FluidRegistry, but crashes when put into a bucket. This is a bug in the mod it belongs to.", e);
+    }
   }
 
   public static @Nonnull NNList<ItemStack> getBuckets() {
