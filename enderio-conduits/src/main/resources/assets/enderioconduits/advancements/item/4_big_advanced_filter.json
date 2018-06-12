@@ -26,5 +26,5 @@
   "rewards": {
     "experience": 30
   },
-  "parent": "enderioconduits:item/3_advanced_item_filter"
+  "parent": "enderioconduits:item/3_advanced_filter"
 }
