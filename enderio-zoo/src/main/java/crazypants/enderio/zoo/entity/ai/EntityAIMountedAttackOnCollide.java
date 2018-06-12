@@ -1,5 +1,6 @@
 package crazypants.enderio.zoo.entity.ai;
 
+import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,8 +18,8 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
 
   int attackPause;
 
-  double speedTowardsTarget;
-  double speedTowardsTargetMounted;
+  IValue<Double> speedTowardsTarget;
+  IValue<Double> speedTowardsTargetMounted;
 
   /**
    * When true, the mob will continue chasing its target, even if it can't find a path to them right now.
@@ -34,13 +35,14 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
 
   private int failedPathFindingPenalty;
 
-  public EntityAIMountedAttackOnCollide(EntityCreature attacker, Class<?> targetClass, double speedTowardsTarget, double speedTowardsTargetMounted,
-      boolean longMemory) {
+  public EntityAIMountedAttackOnCollide(EntityCreature attacker, Class<?> targetClass, IValue<Double> speedTowardsTarget,
+      IValue<Double> speedTowardsTargetMounted, boolean longMemory) {
     this(attacker, speedTowardsTarget, speedTowardsTargetMounted, longMemory);
     this.classTarget = targetClass;
   }
 
-  public EntityAIMountedAttackOnCollide(EntityCreature attacker, double speedTowardsTarget, double speedTowardsTargetMounted, boolean longMemory) {
+  public EntityAIMountedAttackOnCollide(EntityCreature attacker, IValue<Double> speedTowardsTarget, IValue<Double> speedTowardsTargetMounted,
+      boolean longMemory) {
     this.attacker = attacker;
     this.worldObj = attacker.world;
     this.speedTowardsTarget = speedTowardsTarget;
@@ -88,7 +90,7 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
   @Override
   public void startExecuting() {
     PathNavigate nav = getNavigator();
-    nav.setPath(entityPathEntity, speedTowardsTarget);
+    nav.setPath(entityPathEntity, speedTowardsTarget.get());
     pathUpdateTimer = 0;
   }
 
@@ -157,10 +159,7 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
   }
 
   private double getAttackSpeed() {
-    if (attacker.isRiding()) {
-      return speedTowardsTargetMounted;
-    }
-    return speedTowardsTarget;
+    return (attacker.isRiding() ? speedTowardsTargetMounted : speedTowardsTarget).get();
   }
 
   protected PathNavigate getNavigator() {

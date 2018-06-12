@@ -72,4 +72,67 @@ public final class ZooConfig {
   public static final IValue<Boolean> miniPackAttackEnabled = MINI.make("packAttackEnabled", true, //
       "When true attacking one Enderminy will cause other Enderminies who witness the attack to attack the player as well.").sync();
 
+  public static final IValueFactory KNIGHT = F0.section(".fallen_knight");
+
+  public static final IValue<Double> fallenKnightChargeSpeed = KNIGHT.make("chargeSpeed", 1.2, //
+      "The speed at which a knight will charge its target.").setRange(0, 10).sync();
+  public static final IValue<Double> fallenKnightFollowRange = KNIGHT.make("followRange", 40.0, //
+      "Follow range of a knight.").setRange(0, 10).sync();
+  public static final IValue<Integer> fallenKnightRangedMinAttackPause = KNIGHT.make("rangedMinAttackPause", 20, //
+      "The min number of ticks between ranged attacks.").setRange(1, 200).sync();
+  public static final IValue<Integer> fallenKnightRangedMaxAttackPause = KNIGHT.make("rangedMaxAttackPause", 60, //
+      "The max number of ticks between ranged attacks.").setRange(1, 200).sync();
+  public static final IValue<Float> fallenKnightRangedMaxRange = KNIGHT.make("rangedMaxRange", 15f, //
+      "The max attack range when using a bow.").setRange(1, 200).sync();
+  public static final IValue<Boolean> fallKnightMountedArchersMaintainDistance = KNIGHT.make("mountedArchersMaintainDistance", true, //
+      "When true mounted archer knights will attempt to keep distance between themselves and their target.").sync();
+  public static final IValue<Boolean> fallenKnightArchersSwitchToMelee = KNIGHT.make("archersSwitchToMelee", true, //
+      "When true archer knights will switch to a sword when target is within melee range."
+          + "Doesn't apply to mounted archers if fallKnightMountedArchersMaintainDistance is true")
+      .sync();
+
+  public static final IValueFactory MOUNT = F0.section(".fallen_mount");
+
+  public static final IValue<Double> fallenMountChargeSpeed = MOUNT.make("chargeSpeed", 2.5, //
+      "The speed at which a mount will charge its target.").setRange(0, 10).sync();
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+
 }
