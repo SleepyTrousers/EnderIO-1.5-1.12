@@ -66,7 +66,6 @@ public class ModObjectRegistry {
         }
       }
     }
-    throw new RuntimeException();
   }
 
   @SubscribeEvent(priority = EventPriority.LOW)
