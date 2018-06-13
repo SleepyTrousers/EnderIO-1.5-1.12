@@ -109,7 +109,7 @@ public class PlantableFarmer extends AbstractFarmerJoe {
 
   protected boolean plantFromInventory(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IPlantable plantable) {
     World world = farm.getWorld();
-    if (canPlant(world, bc, plantable) && Prep.isValid(farm.takeSeedFromSupplies(bc))) {
+    if (canPlant(farm, world, bc, plantable) && Prep.isValid(farm.takeSeedFromSupplies(bc))) {
       return plant(farm, world, bc, plantable);
     }
     return false;
@@ -117,7 +117,7 @@ public class PlantableFarmer extends AbstractFarmerJoe {
 
   protected boolean plant(@Nonnull IFarmer farm, @Nonnull World world, @Nonnull BlockPos bc, @Nonnull IPlantable plantable) {
     world.setBlockState(bc, Blocks.AIR.getDefaultState(), 1 | 2);
-    IBlockState target = plantable.getPlant(null, new BlockPos(0, 0, 0));
+    IBlockState target = getPlant(farm, plantable);
     if (target == null) {
       return false;
     }
@@ -126,8 +126,8 @@ public class PlantableFarmer extends AbstractFarmerJoe {
     return true;
   }
 
-  protected boolean canPlant(@Nonnull World world, @Nonnull BlockPos bc, @Nonnull IPlantable plantable) {
-    IBlockState target = plantable.getPlant(null, new BlockPos(0, 0, 0));
+  protected boolean canPlant(@Nonnull IFarmer farm, @Nonnull World world, @Nonnull BlockPos bc, @Nonnull IPlantable plantable) {
+    IBlockState target = getPlant(farm, plantable);
     BlockPos groundPos = bc.down();
     IBlockState groundBS = world.getBlockState(groundPos);
     Block ground = groundBS.getBlock();
@@ -169,7 +169,7 @@ public class PlantableFarmer extends AbstractFarmerJoe {
     farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, state, pos);
     for (ItemStack stack : drops) {
       if (stack != null && Prep.isValid(stack) && world.rand.nextFloat() <= chance) {
-        if (Prep.isInvalid(removedPlantable) && isPlantableForBlock(stack, state.getBlock())) {
+        if (Prep.isInvalid(removedPlantable) && isPlantableForBlock(farm, stack, state.getBlock())) {
           removedPlantable = stack.copy();
           removedPlantable.setCount(1);
           stack.shrink(1);
@@ -199,13 +199,17 @@ public class PlantableFarmer extends AbstractFarmerJoe {
     return new HarvestResult(result, pos);
   }
 
-  private boolean isPlantableForBlock(@Nonnull ItemStack stack, @Nonnull Block block) {
+  private boolean isPlantableForBlock(@Nonnull IFarmer farm, @Nonnull ItemStack stack, @Nonnull Block block) {
     if (!(stack.getItem() instanceof IPlantable)) {
       return false;
     }
     IPlantable plantable = (IPlantable) stack.getItem();
-    IBlockState b = plantable.getPlant(null, new BlockPos(0, 0, 0));
+    IBlockState b = getPlant(farm, plantable);
     return b != null && b.getBlock() == block;
+  }
+
+  private IBlockState getPlant(@Nonnull IFarmer farm, IPlantable plantable) {
+    return plantable.getPlant(farm.getWorld(), farm.getLocation().up(256));
   }
 
 }
