@@ -90,11 +90,26 @@ public final class ZooConfig {
       "When true archer knights will switch to a sword when target is within melee range."
           + "Doesn't apply to mounted archers if fallKnightMountedArchersMaintainDistance is true")
       .sync();
+  public static final IValue<Float> fallenKnightChanceMounted = KNIGHT.make("chanceMounted", .75f, //
+      "The chance a spawned knight will be mounted.").setRange(0, 1).sync();
+  public static final IValue<Float> fallenKnightChancePerArmorPiece = KNIGHT.make("chancePerArmorPiece", .7f, //
+      "The chance each armor piece has of being added to a spawned knight.").setRange(0, 1).sync();
+  public static final IValue<Float> fallenKnightChancePerArmorPieceHard = KNIGHT.make("chancePerArmorPieceHard", .9f, //
+      "The chance each armor piece has of being added to a spawned knight when difficulty is set to hard.").setRange(0, 1).sync();
+  public static final IValue<Float> fallenKnightRangedRatio = KNIGHT.make("chanceArchers", .25f, //
+      "The precentage of spawned knoghts equipped with bows.").setRange(0, 1).sync();
+  public static final IValue<Float> fallenKnightChanceAgentOfShield = KNIGHT.make("chanceShield", .3f, //
+      "The chance a shield will be equipped.").setRange(0, 1).sync();
+
+  public static final IValue<Float> fallenKnightChanceArmorUpgrade = KNIGHT.make("chanceArmorUpgrade", .2f, //
+      "The chance the type of armor equipped will be improved.").setRange(0, 1).sync();
+  public static final IValue<Float> fallenKnightChanceArmorUpgradeHard = KNIGHT.make("chanceArmorUpgradeHard", .4f, //
+      "The chance the type of armor equipped will be improved when difficulty is set to hard.").setRange(0, 1).sync();
 
   public static final IValueFactory MOUNT = F0.section(".fallen_mount");
 
   public static final IValue<Double> fallenMountChargeSpeed = MOUNT.make("chargeSpeed", 2.5, //
-      "The speed at which a mount will charge its target.").setRange(0, 10).sync();
+      "The speed at which a mount will charge its target. 0 to disable.").setRange(0, 10).sync();
 
   //
   //

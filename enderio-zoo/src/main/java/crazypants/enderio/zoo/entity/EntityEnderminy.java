@@ -6,9 +6,12 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.material.material.Material;
+import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.ai.AIFindPlayer;
+import crazypants.enderio.zoo.entity.render.RenderEnderminy;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -44,9 +47,28 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIOZoo.MODID)
 public class EntityEnderminy extends EntityMob implements IEnderZooMob {
+
+  @SubscribeEvent
+  public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
+    IEnderZooMob.register(event, NAME, EntityEnderminy.class, EGG_BG_COL, EGG_FG_COL, 314);
+  }
+
+  @SubscribeEvent
+  @SideOnly(Side.CLIENT)
+  public static void onPreInit(EnderIOLifecycleEvent.PreInit event) {
+    RenderingRegistry.registerEntityRenderingHandler(EntityEnderminy.class, RenderEnderminy.FACTORY);
+  }
 
   public static final @Nonnull String NAME = "enderminy";
   public static final int EGG_BG_COL = 0x27624D;
