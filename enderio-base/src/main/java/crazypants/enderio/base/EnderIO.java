@@ -31,7 +31,6 @@ import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.integration.bigreactors.BRProxy;
 import crazypants.enderio.base.integration.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.base.integration.chiselsandbits.CABIMC;
-import crazypants.enderio.base.integration.te.TEUtil;
 import crazypants.enderio.base.loot.LootManager;
 import crazypants.enderio.base.material.recipes.MaterialOredicts;
 import crazypants.enderio.base.network.PacketHandler;
@@ -175,7 +174,7 @@ public class EnderIO implements IEnderIOAddon {
     PaintSourceValidator.instance.loadConfig();
 
     BuildcraftIntegration.init(event);
-//    TEUtil.init(event);
+    // TEUtil.init(event);
 
     proxy.init(event);
 

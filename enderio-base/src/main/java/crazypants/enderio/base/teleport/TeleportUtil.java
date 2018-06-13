@@ -2,6 +2,7 @@ package crazypants.enderio.base.teleport;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -49,6 +50,7 @@ public class TeleportUtil {
     EntityPlayerMP player = null;
     if (entity instanceof EntityPlayerMP) {
       player = (EntityPlayerMP) entity;
+      ChunkTicket.loadChunk(player, player.world, BlockCoord.get(player));
     }
     int x = pos.getX();
     int y = pos.getY();
@@ -63,6 +65,8 @@ public class TeleportUtil {
       // play sound at the dimension we are leaving for others to hear
       SoundHelper.playSound(server.getWorld(entity.dimension), entity, source.sound, 1.0F, 1.0F);
       if (player != null) {
+        ChunkTicket.loadChunk(player, toDim, pos);
+
         server.getPlayerList().transferPlayerToDimension(player, targetDim, teleporter);
         if (from == 1 && entity.isEntityAlive()) { // get around vanilla End
                                                    // hacks
@@ -90,6 +94,8 @@ public class TeleportUtil {
           return false;
         }
       }
+    } else if (player != null) {
+      ChunkTicket.loadChunk(player, player.world, pos);
     }
 
     // Force the chunk to load
