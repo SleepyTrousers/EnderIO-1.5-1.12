@@ -86,6 +86,9 @@ public class RecipeLoader {
       } catch (InvalidRecipeConfigException e) {
         recipeError(NullHelper.first(e.getFilename(), "Core Recipes"), e.getMessage());
       }
+    } else {
+      Log.warn("Ender IO core recipe loading has been disabled in the configuration.");
+      Log.warn("This is valid, but do NOT report recipe errors to the Ender IO team!");
     }
 
     if (imcRecipes != null) {
@@ -206,27 +209,48 @@ public class RecipeLoader {
   }
 
   private static void recipeError(String filename, String message) {
-    EnderIO.proxy.stopWithErrorScreen( //
-        "=======================================================================", //
-        "== ENDER IO FATAL ERROR ==", //
-        "=======================================================================", //
-        "Cannot register recipes as configured. This means that either", //
-        "your custom config file has an error or another mod does bad", //
-        "things to vanilla items or the Ore Dictionary.", //
-        "=======================================================================", //
-        "== Bad file ==", //
-        filename, //
-        "=======================================================================", //
-        "== Error Message ==", //
-        message, //
-        "=======================================================================", //
-        "", //
-        "=======================================================================", //
-        "Note: To start the game anyway, you can disable recipe loading in the", //
-        "Ender IO config file. However, then all of Ender IO's crafting recipes", //
-        "will be missing.", //
-        "=======================================================================" //
-    );
+    if (RecipeConfig.loadCoreRecipes.get()) {
+      EnderIO.proxy.stopWithErrorScreen( //
+          "=======================================================================", //
+          "== ENDER IO FATAL RECIPE ERROR ==", //
+          "=======================================================================", //
+          "Cannot register recipes as configured. This means that either", //
+          "your custom recipe files have an error or another mod does bad", //
+          "things to vanilla items or the Ore Dictionary.", //
+          "=======================================================================", //
+          "== Bad file ==", //
+          filename, //
+          "=======================================================================", //
+          "== Error Message ==", //
+          message, //
+          "=======================================================================", //
+          "", //
+          "=======================================================================", //
+          "Note: If this is a modpack, report to the modpack author, not to", //
+          "the Ender IO team.", //
+          "=======================================================================" //
+      );
+    } else {
+      EnderIO.proxy.stopWithErrorScreen( //
+          "=======================================================================", //
+          "== ENDER IO FATAL RECIPE ERROR ==", //
+          "=======================================================================", //
+          "Cannot register recipes as configured. This means that your custom ", //
+          "recipe files have an error.", //
+          "=======================================================================", //
+          "== Bad file ==", //
+          filename, //
+          "=======================================================================", //
+          "== Error Message ==", //
+          message, //
+          "=======================================================================", //
+          "", //
+          "=======================================================================", //
+          "Do NOT report this to the Ender IO team. If this is a modpack, report", //
+          "to the modpack author. If not, YOU made a mistake.", //
+          "=======================================================================" //
+      );
+    }
   }
 
 }
